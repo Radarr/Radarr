@@ -88,12 +88,13 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             if (tvdbId.HasValue)
             {
-                requestBuilder.AddQueryParam("search_tvdb", tvdbId.Value);
+                string imdbId = string.Format("tt{0:D7}", tvdbId);
+                requestBuilder.AddQueryParam("search_imdb", imdbId);
             }
 
             if (query.IsNotNullOrWhiteSpace())
             {
-                requestBuilder.AddQueryParam("search_string", string.Format(query, args));
+                //requestBuilder.AddQueryParam("search_string", string.Format(query, args));
             }
 
             if (!Settings.RankedOnly)
@@ -101,7 +102,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "18;41");
+            requestBuilder.AddQueryParam("category", "movies");
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");

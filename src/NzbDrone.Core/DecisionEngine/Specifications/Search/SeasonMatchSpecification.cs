@@ -28,7 +28,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
             if (singleEpisodeSpec.SeasonNumber != remoteEpisode.ParsedEpisodeInfo.SeasonNumber)
             {
                 _logger.Debug("Season number does not match searched season number, skipping.");
-                return Decision.Reject("Wrong season");
+                //return Decision.Reject("Wrong season");
+                //Unnecessary for Movies
             }
 
             return Decision.Accept();

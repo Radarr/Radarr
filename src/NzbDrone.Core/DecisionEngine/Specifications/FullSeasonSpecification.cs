@@ -30,7 +30,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 if (subject.Episodes.Any(e => !e.AirDateUtc.HasValue || e.AirDateUtc.Value.After(DateTime.UtcNow)))
                 {
                     _logger.Debug("Full season release {0} rejected. All episodes haven't aired yet.", subject.Release.Title);
-                    return Decision.Reject("Full season release rejected. All episodes haven't aired yet.");
+                    //return Decision.Reject("Full season release rejected. All episodes haven't aired yet.");
                 }
             }
 
