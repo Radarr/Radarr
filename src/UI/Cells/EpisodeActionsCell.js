@@ -35,6 +35,7 @@ module.exports = NzbDroneCell.extend({
     },
 
     _manualSearch : function() {
+      console.warn(this.cellValue);
         vent.trigger(vent.Commands.ShowEpisodeDetails, {
             episode        : this.cellValue,
             hideSeriesLink : true,

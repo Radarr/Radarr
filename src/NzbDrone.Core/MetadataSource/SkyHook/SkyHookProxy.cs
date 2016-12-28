@@ -65,7 +65,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             series.Title = json.Title;
             series.TitleSlug = series.Title.ToLower().Replace(" ", "-");
             series.Overview = json.Plot;
-            series.CleanTitle = series.Title;
+            series.CleanTitle = Parser.Parser.CleanSeriesTitle(series.Title);
             series.TvdbId = tvdbSeriesId;
             string airDateStr = json.Released;
             DateTime airDate = DateTime.Parse(airDateStr);
@@ -76,6 +76,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             string url = json.Poster;
             var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, url);
             series.Images.Add(imdbPoster);
+            string runtime = json.Runtime;
+            int runtimeNum = 0;
+            int.TryParse(runtime.Replace("min", "").Trim(), out runtimeNum);
+            series.Runtime = runtimeNum;
 
             var season = new Season();
             season.SeasonNumber = 1;
@@ -85,7 +89,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var episode = new Episode();
 
-            episode.AirDate = airDate.ToShortTimeString();
+            episode.AirDate = airDate.ToBestDateString();
             episode.Title = json.Title;
             episode.SeasonNumber = 1;
             episode.EpisodeNumber = 1;

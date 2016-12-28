@@ -17,8 +17,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
         {
             if (localEpisode.ParsedEpisodeInfo.FullSeason)
             {
-                _logger.Debug("Single episode file detected as containing all episodes in the season");
-                return Decision.Reject("Single episode file contains all episodes in seasons");
+                //_logger.Debug("Single episode file detected as containing all episodes in the season"); //Not needed for Movies mwhahahahah
+                //return Decision.Reject("Single episode file contains all episodes in seasons");
             }
 
             return Decision.Accept();

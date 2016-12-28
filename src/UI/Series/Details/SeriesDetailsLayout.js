@@ -32,7 +32,8 @@ module.exports = Marionette.Layout.extend({
         refresh   : '.x-refresh',
         rename    : '.x-rename',
         search    : '.x-search',
-        poster    : '.x-series-poster'
+        poster    : '.x-series-poster',
+        manualSearch : '.x-manual-search'
     },
 
     events : {
@@ -41,7 +42,8 @@ module.exports = Marionette.Layout.extend({
         'click .x-edit'                : '_editSeries',
         'click .x-refresh'             : '_refreshSeries',
         'click .x-rename'              : '_renameSeries',
-        'click .x-search'              : '_seriesSearch'
+        'click .x-search'              : '_seriesSearch',
+        'click .x-manual-search'       : '_manualSearchM'
     },
 
     initialize : function() {
@@ -178,11 +180,11 @@ module.exports = Marionette.Layout.extend({
             if (self.model.get('id') !== seriesId) {
                 return [];
             }
-            
+
             if (sceneSeasonNumber === undefined) {
                 sceneSeasonNumber = seasonNumber;
             }
-            
+
             return _.where(self.model.get('alternateTitles'),
                 function(alt) {
                     return alt.sceneSeasonNumber === sceneSeasonNumber || alt.seasonNumber === seasonNumber;
@@ -254,5 +256,17 @@ module.exports = Marionette.Layout.extend({
         } else {
             $('body').removeClass('backdrop');
         }
+    },
+
+    _manualSearchM : function() {
+        console.warn("Manual Search started");
+        console.warn(this.model.get("seriesId"));
+        console.warn(this.model)
+        console.warn(this.episodeCollection);
+        vent.trigger(vent.Commands.ShowEpisodeDetails, {
+            episode        : this.episodeCollection.models[0],
+            hideSeriesLink : true,
+            openingTab     : 'search'
+        });
     }
 });

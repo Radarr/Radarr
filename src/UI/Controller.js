@@ -13,7 +13,7 @@ var SeriesEditorLayout = require('./Series/Editor/SeriesEditorLayout');
 
 module.exports = NzbDroneController.extend({
     addSeries : function(action) {
-        this.setTitle('Add Series');
+        this.setTitle('Add Movie');
         this.showMainRegion(new AddSeriesLayout({ action : action }));
     },
 

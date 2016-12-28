@@ -11,7 +11,7 @@ Handlebars.registerHelper('poster', function() {
         if (!poster[0].url.match(/^https?:\/\//)) {
             return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster[0].url, 250)));
         } else {
-            var url = poster[0].url.replace(/^https?\:/, '');
+            var url = poster[0].url.replace(/^https?\:/, 'https://'); //IMDb posters need https to work, k?
             return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
         }
     }
@@ -28,7 +28,7 @@ Handlebars.registerHelper('imdbUrl', function() {
 });
 
 Handlebars.registerHelper('tvdbUrl', function() {
-    return 'http://www.thetvdb.com/?tab=series&id=' + this.tvdbId;
+    return 'http://imdb.com/title/tt' + this.tvdbId;
 });
 
 Handlebars.registerHelper('tvRageUrl', function() {

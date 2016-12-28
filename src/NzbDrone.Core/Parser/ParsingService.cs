@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Parser
 
             if (parsedEpisodeInfo == null)
             {
-                return _seriesService.FindByTitle(title);
+                return _seriesService.FindByTitle(title); //Here we have a problem since it is not possible for movies to find a scene mapping, so these releases are always rejected :(
             }
 
             var series = _seriesService.FindByTitle(parsedEpisodeInfo.SeriesTitle);
@@ -252,10 +252,12 @@ namespace NzbDrone.Core.Parser
         {
             Series series = null;
 
+            /*var localEpisode = _seriesService.FindByTitle(parsedEpisodeInfo.SeriesTitle);
+
             var sceneMappingTvdbId = _sceneMappingService.FindTvdbId(parsedEpisodeInfo.SeriesTitle);
-            if (sceneMappingTvdbId.HasValue)
+            if (localEpisode != null)
             {
-                if (searchCriteria != null && searchCriteria.Series.TvdbId == sceneMappingTvdbId.Value)
+                if (searchCriteria != null && searchCriteria.Series.TvdbId == localEpisode.TvdbId)
                 {
                     return searchCriteria.Series;
                 }
@@ -269,7 +271,7 @@ namespace NzbDrone.Core.Parser
                 }
 
                 return series;
-            }
+            }*/ //This is only to find scene mapping should not be necessary for movies.
 
             if (searchCriteria != null)
             {

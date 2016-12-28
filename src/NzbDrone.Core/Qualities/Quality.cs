@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.WEBDL720p)   { Weight = 8,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.Bluray720p)  { Weight = 9,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.WEBDL1080p)  { Weight = 10, MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.Bluray1080p) { Weight = 11, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.Bluray1080p) { Weight = 11, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.HDTV2160p)   { Weight = 12, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.WEBDL2160p)  { Weight = 13, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.Bluray2160p) { Weight = 14, MinSize = 0, MaxSize = null },

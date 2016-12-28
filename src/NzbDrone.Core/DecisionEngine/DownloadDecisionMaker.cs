@@ -80,8 +80,9 @@ namespace NzbDrone.Core.DecisionEngine
 
                         if (remoteEpisode.Series == null)
                         {
-                            remoteEpisode.DownloadAllowed = true; //Fuck you :)
-                            decision = GetDecisionForReport(remoteEpisode, searchCriteria);
+                            //remoteEpisode.DownloadAllowed = true; //Fuck you :)
+                            //decision = GetDecisionForReport(remoteEpisode, searchCriteria);
+                            decision = new DownloadDecision(remoteEpisode, new Rejection("Unknown release. Movie not Found."));
                         }
                         else if (remoteEpisode.Episodes.Empty())
                         {

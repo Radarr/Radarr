@@ -26,6 +26,10 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^(?:\W*S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[ex]){1,2}(?<episode>\d{1,3}(?!\d+)))+){2,}",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
+                //Matches Movie name with AirYear
+                new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
                 //Episodes without a title, Single (S01E05, 1x05) AND Multi (S01E04E05, 1x04x05, etc)
                 new Regex(@"^(?:S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:\-|[ex]|\W[ex]|_){1,2}(?<episode>\d{2,3}(?!\d+)))+)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -296,6 +300,8 @@ namespace NzbDrone.Core.Parser
 
         public static ParsedEpisodeInfo ParseTitle(string title)
         {
+
+            ParsedEpisodeInfo realResult = null;
             try
             {
                 if (!ValidateBeforeParsing(title)) return null;
@@ -342,6 +348,8 @@ namespace NzbDrone.Core.Parser
                     }
                 }
 
+                
+
                 foreach (var regex in ReportTitleRegex)
                 {
                     var match = regex.Matches(simpleTitle);
@@ -383,6 +391,8 @@ namespace NzbDrone.Core.Parser
                                     Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
                                 }
 
+                                realResult = result;
+
                                 return result;
                             }
                         }
@@ -401,7 +411,7 @@ namespace NzbDrone.Core.Parser
             }
 
             Logger.Debug("Unable to parse {0}", title);
-            return null;
+            return realResult;
         }
 
         public static string ParseSeriesName(string title)
@@ -525,6 +535,7 @@ namespace NzbDrone.Core.Parser
 
             int airYear;
             int.TryParse(matchCollection[0].Groups["airyear"].Value, out airYear);
+            //int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);
 
             ParsedEpisodeInfo result;
 
