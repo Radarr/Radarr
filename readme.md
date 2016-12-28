@@ -1,4 +1,4 @@
-# Sonarr #
+# Radarr #
 
 This fork of Sonarr aims to turn it into something like Couchpotato.
 
