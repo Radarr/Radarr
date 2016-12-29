@@ -16,7 +16,7 @@ module.exports = NzbDroneController.extend({
     },
 
     series : function() {
-        this.setTitle('Sonarr');
+        this.setTitle('Radarr');
         this.showMainRegion(new SeriesIndexLayout());
     },
 
