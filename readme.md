@@ -1,7 +1,20 @@
-# Sonarr #
+# Radarr #
 
 This fork of Sonarr aims to turn it into something like Couchpotato.
-At the moment almost nothing is implemented.
+
+## Currently working:
+* Adding new movies (Note: Movies are currently added as one series with one season and one episode. This will change in the future)
+* Manually searching for releases of movies.
+* Automatically searching for releases.
+* Rarbg.to indexer (Other indexers are coming, I just need to find the right categories)
+* Everything that has nothing to do with series from Sonarr should be working as well.
+
+## Planned Features:
+* Scanning PreDB to know when a new release is available.
+* Fixing the other Indexers.
+* Fixing how movies are stored and displayed.
+* Importing of Sonarr config.
+* New TorrentPotato Indexer.
 
 ## Major Features Include: ##
 
