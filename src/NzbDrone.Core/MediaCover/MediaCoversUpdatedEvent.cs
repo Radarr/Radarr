@@ -7,9 +7,16 @@ namespace NzbDrone.Core.MediaCover
     {
         public Series Series { get; set; }
 
+        public Movie Movie { get; set; }
+
         public MediaCoversUpdatedEvent(Series series)
         {
             Series = series;
+        }
+
+        public MediaCoversUpdatedEvent(Movie movie)
+        {
+            Movie = movie;
         }
     }
 }

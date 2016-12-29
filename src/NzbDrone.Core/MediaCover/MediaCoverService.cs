@@ -22,6 +22,8 @@ namespace NzbDrone.Core.MediaCover
 
     public class MediaCoverService :
         IHandleAsync<SeriesUpdatedEvent>,
+        IHandleAsync<MovieUpdatedEvent>,
+        IHandleAsync<MovieAddedEvent>,
         IHandleAsync<SeriesDeletedEvent>,
         IMapCoversToLocal
     {
@@ -83,6 +85,8 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(_coverRootFolder, seriesId.ToString());
         }
 
+
+
         private void EnsureCovers(Series series)
         {
             foreach (var cover in series.Images)
@@ -110,7 +114,42 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
+        private void EnsureCovers(Movie movie)
+        {
+            foreach (var cover in movie.Images)
+            {
+                var fileName = GetCoverPath(movie.Id, cover.CoverType);
+                var alreadyExists = false;
+                try
+                {
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(cover.Url, fileName);
+                    if (!alreadyExists)
+                    {
+                        DownloadCover(movie, cover);
+                    }
+                }
+                catch (WebException e)
+                {
+                    _logger.Warn(string.Format("Couldn't download media cover for {0}. {1}", movie, e.Message));
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't download media cover for " + movie);
+                }
+
+                EnsureResizedCovers(movie, cover, !alreadyExists);
+            }
+        }
+
         private void DownloadCover(Series series, MediaCover cover)
+        {
+            var fileName = GetCoverPath(series.Id, cover.CoverType);
+
+            _logger.Info("Downloading {0} for {1} {2}", cover.CoverType, series, cover.Url);
+            _httpClient.DownloadFile(cover.Url, fileName);
+        }
+
+        private void DownloadCover(Movie series, MediaCover cover)
         {
             var fileName = GetCoverPath(series.Id, cover.CoverType);
 
@@ -163,10 +202,67 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
+        private void EnsureResizedCovers(Movie series, MediaCover cover, bool forceResize)
+        {
+            int[] heights;
+
+            switch (cover.CoverType)
+            {
+                default:
+                    return;
+
+                case MediaCoverTypes.Poster:
+                case MediaCoverTypes.Headshot:
+                    heights = new[] { 500, 250 };
+                    break;
+
+                case MediaCoverTypes.Banner:
+                    heights = new[] { 70, 35 };
+                    break;
+
+                case MediaCoverTypes.Fanart:
+                case MediaCoverTypes.Screenshot:
+                    heights = new[] { 360, 180 };
+                    break;
+            }
+
+            foreach (var height in heights)
+            {
+                var mainFileName = GetCoverPath(series.Id, cover.CoverType);
+                var resizeFileName = GetCoverPath(series.Id, cover.CoverType, height);
+
+                if (forceResize || !_diskProvider.FileExists(resizeFileName) || _diskProvider.GetFileSize(resizeFileName) == 0)
+                {
+                    _logger.Debug("Resizing {0}-{1} for {2}", cover.CoverType, height, series);
+
+                    try
+                    {
+                        _resizer.Resize(mainFileName, resizeFileName, height);
+                    }
+                    catch
+                    {
+                        _logger.Debug("Couldn't resize media cover {0}-{1} for {2}, using full size image instead.", cover.CoverType, height, series);
+                    }
+                }
+            }
+        }
+
         public void HandleAsync(SeriesUpdatedEvent message)
         {
             EnsureCovers(message.Series);
             _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Series));
+        }
+
+        public void HandleAsync(MovieUpdatedEvent message)
+        {
+            EnsureCovers(message.Movie);
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
+        }
+
+        public void HandleAsync(MovieAddedEvent message)
+        {
+            EnsureCovers(message.Movie);
+            _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Movie));
         }
 
         public void HandleAsync(SeriesDeletedEvent message)

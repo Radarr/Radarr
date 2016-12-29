@@ -43,6 +43,8 @@ var view = Marionette.ItemView.extend({
             throw 'model is required';
         }
 
+        console.log(this.route);
+
         this.templateHelpers = {};
         this._configureTemplateHelpers();
 
