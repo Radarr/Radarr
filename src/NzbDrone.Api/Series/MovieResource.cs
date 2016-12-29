@@ -4,8 +4,9 @@ using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Tv;
+using NzbDrone.Api.Series;
 
-namespace NzbDrone.Api.Series
+namespace NzbDrone.Api.Movie
 {
     public class MovieResource : RestResource
     {

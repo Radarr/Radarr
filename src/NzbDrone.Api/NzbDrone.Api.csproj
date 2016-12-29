@@ -233,6 +233,7 @@
     <Compile Include="Series\SeriesEditorModule.cs" />
     <Compile Include="Series\MovieLookupModule.cs" />
     <Compile Include="Series\SeriesLookupModule.cs" />
+    <Compile Include="Series\MovieModule.cs" />
     <Compile Include="Series\SeriesModule.cs" />
     <Compile Include="Series\MovieResource.cs" />
     <Compile Include="Series\SeriesResource.cs" />

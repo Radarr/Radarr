@@ -5,7 +5,7 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System.Linq;
 
-namespace NzbDrone.Api.Series
+namespace NzbDrone.Api.Movie
 {
     public class MovieLookupModule : NzbDroneRestModule<MovieResource>
     {

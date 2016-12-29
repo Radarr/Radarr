@@ -10,9 +10,9 @@ var moment = require('moment');
 require('../Mixins/backbone.signalr.mixin');
 
 var Collection = PageableCollection.extend({
-    url       : window.NzbDrone.ApiRoot + '/movies',
+    url       : window.NzbDrone.ApiRoot + '/movie',
     model     : MovieModel,
-    tableName : 'movies',
+    tableName : 'movie',
 
     state : {
         sortKey            : 'sortTitle',
@@ -115,6 +115,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('series');
+var data = ApiData.get('movie');
 
 module.exports = new Collection(data, { full : true }).bindSignalR();

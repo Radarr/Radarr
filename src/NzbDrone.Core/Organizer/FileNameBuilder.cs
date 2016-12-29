@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Organizer
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetSeriesFolder(Series series, NamingConfig namingConfig = null);
         string GetSeasonFolder(Series series, int seasonNumber, NamingConfig namingConfig = null);
+        string GetMovieFolder(Movie movie);
     }
 
     public class FileNameBuilder : IBuildFileNames
@@ -241,6 +242,11 @@ namespace NzbDrone.Core.Organizer
             AddSeasonTokens(tokenHandlers, seasonNumber);
 
             return CleanFolderName(ReplaceTokens(namingConfig.SeasonFolderFormat, tokenHandlers, namingConfig));
+        }
+
+        public string GetMovieFolder(Movie movie)
+        {
+            return CleanFolderName(Parser.Parser.CleanSeriesTitle(movie.Title));
         }
 
         public static string CleanTitle(string title)

@@ -735,6 +735,7 @@
     <Compile Include="MediaFiles\Events\EpisodeFileDeletedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeImportedEvent.cs" />
+    <Compile Include="MediaFiles\Events\MovieRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScanSkippedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScannedEvent.cs" />
@@ -1024,6 +1025,10 @@
     </Compile>
     <Compile Include="RootFolders\UnmappedFolder.cs" />
     <Compile Include="Security.cs" />
+    <Compile Include="MovieStats\SeasonStatistics.cs" />
+    <Compile Include="MovieStats\MovieStatistics.cs" />
+    <Compile Include="MovieStats\MovieStatisticsRepository.cs" />
+    <Compile Include="MovieStats\MovieStatisticsService.cs" />
     <Compile Include="SeriesStats\SeasonStatistics.cs" />
     <Compile Include="SeriesStats\SeriesStatistics.cs" />
     <Compile Include="SeriesStats\SeriesStatisticsRepository.cs" />
@@ -1058,11 +1063,15 @@
     </Compile>
     <Compile Include="Tv\EpisodeService.cs" />
     <Compile Include="Tv\Events\EpisodeInfoRefreshedEvent.cs" />
+    <Compile Include="Tv\Events\MovieAddedEvent.cs" />
     <Compile Include="Tv\Events\SeriesAddedEvent.cs" />
+    <Compile Include="Tv\Events\MovieDeletedEvent.cs" />
     <Compile Include="Tv\Events\SeriesDeletedEvent.cs" />
+    <Compile Include="Tv\Events\MovieEditedEvent.cs" />
     <Compile Include="Tv\Events\SeriesEditedEvent.cs" />
     <Compile Include="Tv\Events\SeriesMovedEvent.cs" />
     <Compile Include="Tv\Events\SeriesRefreshStartingEvent.cs" />
+    <Compile Include="Tv\Events\MovieUpdateEvent.cs" />
     <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
     <Compile Include="Tv\MonitoringOptions.cs" />
     <Compile Include="Tv\MoveSeriesService.cs" />
@@ -1073,14 +1082,17 @@
     <Compile Include="Tv\Movie.cs" />
     <Compile Include="Tv\Series.cs" />
     <Compile Include="Tv\SeriesAddedHandler.cs" />
+    <Compile Include="Tv\MovieRepository.cs" />
     <Compile Include="Tv\SeriesScannedHandler.cs" />
     <Compile Include="Tv\SeriesEditedService.cs" />
     <Compile Include="Tv\SeriesRepository.cs" />
+    <Compile Include="Tv\MovieService.cs" />
     <Compile Include="Tv\SeriesService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tv\MovieStatusType.cs" />
     <Compile Include="Tv\SeriesStatusType.cs" />
+    <Compile Include="Tv\MovieTitleNormalizer.cs" />
     <Compile Include="Tv\SeriesTitleNormalizer.cs" />
     <Compile Include="Tv\SeriesTypes.cs" />
     <Compile Include="Tv\ShouldRefreshSeries.cs" />
@@ -1109,6 +1121,9 @@
     <Compile Include="Validation\Paths\FolderWritableValidator.cs" />
     <Compile Include="Validation\Paths\PathExistsValidator.cs" />
     <Compile Include="Validation\Paths\PathValidator.cs" />
+    <Compile Include="Validation\Paths\MoviePathValidation.cs" />
+    <Compile Include="Validation\Paths\MovieAncestorValidator.cs" />
+    <Compile Include="Validation\Paths\MovieExistsValidator.cs" />
     <Compile Include="Validation\Paths\StartupFolderValidator.cs" />
     <Compile Include="Validation\Paths\RootFolderValidator.cs" />
     <Compile Include="Validation\Paths\SeriesAncestorValidator.cs" />

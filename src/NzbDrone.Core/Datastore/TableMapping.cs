@@ -76,6 +76,11 @@ namespace NzbDrone.Core.Datastore
                   .Relationship()
                   .HasOne(s => s.Profile, s => s.ProfileId);
 
+            Mapper.Entity<Movie>().RegisterModel("Movies")
+                .Ignore(s => s.RootFolderPath)
+                .Relationship()
+                .HasOne(s => s.Profile, s => s.ProfileId);
+
             Mapper.Entity<EpisodeFile>().RegisterModel("EpisodeFiles")
                   .Ignore(f => f.Path)
                   .Relationships.AutoMapICollectionOrComplexProperties()
