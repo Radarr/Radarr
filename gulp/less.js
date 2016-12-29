@@ -19,13 +19,15 @@ gulp.task('less', function() {
         paths.src.root + 'Series/series.less',
         paths.src.root + 'Activity/activity.less',
         paths.src.root + 'AddSeries/addSeries.less',
+                paths.src.root + 'AddMovies/addMovies.less',
         paths.src.root + 'Calendar/calendar.less',
         paths.src.root + 'Cells/cells.less',
         paths.src.root + 'ManualImport/manualimport.less',
         paths.src.root + 'Settings/settings.less',
         paths.src.root + 'System/Logs/logs.less',
         paths.src.root + 'System/Update/update.less',
-        paths.src.root + 'System/Info/info.less'
+        paths.src.root + 'System/Info/info.less',
+
     ];
 
     return gulp.src(src)

@@ -82,7 +82,7 @@ module.exports = Marionette.Layout.extend({
             {
                 title : 'Add Movie',
                 icon  : 'icon-sonarr-add',
-                route : 'addseries'
+                route : 'addmovies'
             },
             {
                 title : 'Season Pass',

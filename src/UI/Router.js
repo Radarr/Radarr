@@ -6,6 +6,8 @@ module.exports = Marionette.AppRouter.extend({
     appRoutes  : {
         'addseries'                  : 'addSeries',
         'addseries/:action(/:query)' : 'addSeries',
+        'addmovies'                  : 'addMovies',
+        'addmovies/:action(/:query)' : 'addMovies',
         'calendar'                   : 'calendar',
         'settings'                   : 'settings',
         'settings/:action(/:query)'  : 'settings',

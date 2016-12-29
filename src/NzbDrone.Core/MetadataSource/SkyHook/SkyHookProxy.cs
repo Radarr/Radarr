@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries
+    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -38,11 +38,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            string imdbId = string.Format("tt{0:D7}", tvdbSeriesId);
-
-            var imdbRequest = new HttpRequest("http://www.omdbapi.com/?i="+ imdbId + "&plot=full&r=json");
-
-            var httpResponse = _httpClient.Get(imdbRequest);
+            var httpResponse = _httpClient.Get<ShowResource>(httpRequest);
 
             if (httpResponse.HasHttpError)
             {
@@ -56,49 +52,140 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
+            var episodes = httpResponse.Resource.Episodes.Select(MapEpisode);
+            var series = MapSeries(httpResponse.Resource);
+
+            return new Tuple<Series, List<Episode>>(series, episodes.ToList());
+        }
+
+        public Movie GetMovieInfo(string ImdbId)
+        {
+            var imdbRequest = new HttpRequest("http://www.omdbapi.com/?i=" + ImdbId + "&plot=full&r=json");
+
+            var httpResponse = _httpClient.Get(imdbRequest);
+
+            if (httpResponse.HasHttpError)
+            {
+                if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new MovieNotFoundException(ImdbId);
+                }
+                else
+                {
+                    throw new HttpException(imdbRequest, httpResponse);
+                }
+            }
+
             var response = httpResponse.Content;
 
             dynamic json = JsonConvert.DeserializeObject(response);
 
-            var series = new Series();
+            var movie = new Movie();
 
-            series.Title = json.Title;
-            series.TitleSlug = series.Title.ToLower().Replace(" ", "-");
-            series.Overview = json.Plot;
-            series.CleanTitle = Parser.Parser.CleanSeriesTitle(series.Title);
-            series.TvdbId = tvdbSeriesId;
+            movie.Title = json.Title;
+            movie.TitleSlug = movie.Title.ToLower().Replace(" ", "-");
+            movie.Overview = json.Plot;
+            movie.CleanTitle = Parser.Parser.CleanSeriesTitle(movie.Title);
             string airDateStr = json.Released;
             DateTime airDate = DateTime.Parse(airDateStr);
-            series.FirstAired = airDate;
-            series.Year = airDate.Year;
-            series.ImdbId = imdbId;
-            series.Images = new List<MediaCover.MediaCover>();
+            movie.InCinemas = airDate;
+            movie.Year = airDate.Year;
+            movie.ImdbId = ImdbId;
+            string imdbRating = json.imdbVotes;
+            if (imdbRating == "N/A")
+            {
+                movie.Status = MovieStatusType.Announced;
+            }
+            else
+            {
+                movie.Status = MovieStatusType.Released;
+            }
             string url = json.Poster;
             var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, url);
-            series.Images.Add(imdbPoster);
+            movie.Images.Add(imdbPoster);
             string runtime = json.Runtime;
             int runtimeNum = 0;
             int.TryParse(runtime.Replace("min", "").Trim(), out runtimeNum);
-            series.Runtime = runtimeNum;
+            movie.Runtime = runtimeNum;
 
-            var season = new Season();
-            season.SeasonNumber = 1;
-            season.Monitored = true;
-            series.Seasons.Add(season);
-            
+            return movie;
+        }
 
-            var episode = new Episode();
+        public List<Movie> SearchForNewMovie(string title)
+        {
+            var lowerTitle = title.ToLower();
 
-            episode.AirDate = airDate.ToBestDateString();
-            episode.Title = json.Title;
-            episode.SeasonNumber = 1;
-            episode.EpisodeNumber = 1;
-            episode.Overview = series.Overview;
-            episode.AirDate = airDate.ToShortDateString();
+            if (lowerTitle.StartsWith("imdb:") || lowerTitle.StartsWith("imdbid:"))
+            {
+                var slug = lowerTitle.Split(':')[1].Trim();
 
-            var episodes = new List<Episode> { episode };
+                string imdbid = slug;
 
-            return new Tuple<Series, List<Episode>>(series, episodes.ToList());
+                if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace))
+                {
+                    return new List<Movie>();
+                }
+
+                try
+                {
+                    return new List<Movie> { GetMovieInfo(imdbid) };
+                }
+                catch (SeriesNotFoundException)
+                {
+                    return new List<Movie>();
+                }
+            }
+
+            var searchTerm = lowerTitle.Replace("+", "_").Replace(" ", "_");
+
+            var firstChar = searchTerm.First();
+
+            var imdbRequest = new HttpRequest("https://v2.sg.media-imdb.com/suggests/" + firstChar + "/" + searchTerm + ".json");
+
+            var response = _httpClient.Get(imdbRequest);
+
+            var imdbCallback = "imdb$" + searchTerm + "(";
+
+            var responseCleaned = response.Content.Replace(imdbCallback, "").TrimEnd(")");
+
+            dynamic json = JsonConvert.DeserializeObject(responseCleaned);
+
+            var imdbMovies = new List<Movie>();
+
+            foreach (dynamic entry in json.d)
+            {
+                var imdbMovie = new Movie();
+                imdbMovie.ImdbId = entry.id;
+                try
+                {
+                    imdbMovie.SortTitle = entry.l;
+                    imdbMovie.Title = entry.l;
+                    string titleSlug = entry.l;
+                    imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
+                    imdbMovie.Year = entry.y;
+                    imdbMovie.Images = new List<MediaCover.MediaCover>();
+                    try
+                    {
+                        string url = entry.i[0];
+                        var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, url);
+                        imdbMovie.Images.Add(imdbPoster);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Debug(entry);
+                        continue;
+                    }
+
+                    imdbMovies.Add(imdbMovie);
+                }
+                catch
+                {
+
+                }
+
+            }
+
+            return imdbMovies;
         }
 
         public List<Series> SearchForNewSeries(string title)
@@ -128,70 +215,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
+               
+
                 var httpRequest = _requestBuilder.Create()
                                                  .SetSegment("route", "search")
                                                  .AddQueryParam("term", title.ToLower().Trim())
                                                  .Build();
 
-                var searchTerm = lowerTitle.Replace("+", "_").Replace(" ", "_");
-
-                var firstChar = searchTerm.First();
-
-                var imdbRequest = new HttpRequest("https://v2.sg.media-imdb.com/suggests/"+firstChar+"/" + searchTerm + ".json");
-
-                var response = _httpClient.Get(imdbRequest);
-
-                var imdbCallback = "imdb$" + searchTerm + "(";
-
-                var responseCleaned = response.Content.Replace(imdbCallback, "").TrimEnd(")");
-
-                dynamic json = JsonConvert.DeserializeObject(responseCleaned);
-
-                var imdbMovies = new List<Series>();
-
-                foreach (dynamic entry in json.d)
-                {
-                    var imdbMovie = new Series();
-                    imdbMovie.ImdbId = entry.id;
-                    string noTT = imdbMovie.ImdbId.Replace("tt", "");
-                    try
-                    {
-                        imdbMovie.TvdbId = (int)Double.Parse(noTT);
-                    }
-                    catch
-                    {
-                        imdbMovie.TvdbId = 0;
-                    }
-                    try
-                    {
-                        imdbMovie.SortTitle = entry.l;
-                        imdbMovie.Title = entry.l;
-                        string titleSlug = entry.l;
-                        imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
-                        imdbMovie.Year = entry.y;
-                        imdbMovie.Images = new List<MediaCover.MediaCover>();
-                        try
-                        {
-                            string url = entry.i[0];
-                            var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, url);
-                            imdbMovie.Images.Add(imdbPoster);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Debug(entry);
-                            continue;
-                        }
-
-                        imdbMovies.Add(imdbMovie);
-                    }
-                    catch
-                    {
-
-                    }
-                    
-                }
-
-                return imdbMovies;
+                
 
                 var httpResponse = _httpClient.Get<List<ShowResource>>(httpRequest);
 

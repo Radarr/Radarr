@@ -28,7 +28,7 @@ Handlebars.registerHelper('imdbUrl', function() {
 });
 
 Handlebars.registerHelper('tvdbUrl', function() {
-    return 'http://imdb.com/title/tt' + this.tvdbId;
+    return 'http://imdb.com/title/tt' + this.imdbId;
 });
 
 Handlebars.registerHelper('tvRageUrl', function() {

@@ -488,6 +488,7 @@
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\DownstreamException.cs" />
     <Compile Include="Exceptions\NzbDroneClientException.cs" />
+    <Compile Include="Exceptions\MovieNotFoundExceptions.cs" />
     <Compile Include="Exceptions\SeriesNotFoundException.cs" />
     <Compile Include="Exceptions\ReleaseDownloadException.cs" />
     <Compile Include="Exceptions\StatusCodeToExceptions.cs" />
@@ -778,6 +779,8 @@
     <Compile Include="Messaging\Events\IEventAggregator.cs" />
     <Compile Include="Messaging\Events\IHandle.cs" />
     <Compile Include="Messaging\IProcessMessage.cs" />
+    <Compile Include="MetadataSource\IProvideMovieInfo.cs" />
+    <Compile Include="MetadataSource\ISearchForNewMovie.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
@@ -1067,6 +1070,7 @@
     <Compile Include="Tv\RefreshEpisodeService.cs" />
     <Compile Include="Tv\RefreshSeriesService.cs" />
     <Compile Include="Tv\Season.cs" />
+    <Compile Include="Tv\Movie.cs" />
     <Compile Include="Tv\Series.cs" />
     <Compile Include="Tv\SeriesAddedHandler.cs" />
     <Compile Include="Tv\SeriesScannedHandler.cs" />
@@ -1075,6 +1079,7 @@
     <Compile Include="Tv\SeriesService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tv\MovieStatusType.cs" />
     <Compile Include="Tv\SeriesStatusType.cs" />
     <Compile Include="Tv\SeriesTitleNormalizer.cs" />
     <Compile Include="Tv\SeriesTypes.cs" />

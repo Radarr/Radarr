@@ -4,6 +4,7 @@ var Marionette = require('marionette');
 var ActivityLayout = require('./Activity/ActivityLayout');
 var SettingsLayout = require('./Settings/SettingsLayout');
 var AddSeriesLayout = require('./AddSeries/AddSeriesLayout');
+var AddMoviesLayout = require('./AddMovies/AddMoviesLayout');
 var WantedLayout = require('./Wanted/WantedLayout');
 var CalendarLayout = require('./Calendar/CalendarLayout');
 var ReleaseLayout = require('./Release/ReleaseLayout');
@@ -15,6 +16,11 @@ module.exports = NzbDroneController.extend({
     addSeries : function(action) {
         this.setTitle('Add Movie');
         this.showMainRegion(new AddSeriesLayout({ action : action }));
+    },
+
+    addMovies : function(action) {
+      this.setTitle("Add Movie");
+      this.showMainRegion(new AddMoviesLayout({action : action}));
     },
 
     calendar : function() {
