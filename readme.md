@@ -30,6 +30,8 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 * Full support for specials and multi-episode releases
 * And a beautiful UI
 
+## Download
+The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
 
 ## Configuring Development Environment: ##
 
