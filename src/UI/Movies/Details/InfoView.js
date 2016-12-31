@@ -1,7 +1,7 @@
 var Marionette = require('marionette');
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Series/Details/InfoViewTemplate',
+    template : 'Movies/Details/InfoViewTemplate',
 
     initialize : function(options) {
         this.episodeFileCollection = options.episodeFileCollection;

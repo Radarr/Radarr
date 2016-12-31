@@ -7,7 +7,7 @@ var AsValidatedView = require('../../Mixins/AsValidatedView');
 require('../../Mixins/FileBrowser');
 
 var Layout = Marionette.Layout.extend({
-    template : 'AddSeries/RootFolders/RootFolderLayoutTemplate',
+    template : 'AddMovies/RootFolders/RootFolderLayoutTemplate',
 
     ui : {
         pathInput : '.x-path'
