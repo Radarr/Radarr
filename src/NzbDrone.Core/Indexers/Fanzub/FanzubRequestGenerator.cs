@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -83,6 +84,11 @@ namespace NzbDrone.Core.Indexers.Fanzub
         private string CleanTitle(string title)
         {
             return RemoveCharactersRegex.Replace(title, "");
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
         }
     }
 }

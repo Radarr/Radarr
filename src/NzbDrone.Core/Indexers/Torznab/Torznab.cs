@@ -7,7 +7,9 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers.Newznab;
+using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Indexers.Torznab
@@ -110,5 +112,6 @@ namespace NzbDrone.Core.Indexers.Torznab
                 return new ValidationFailure(string.Empty, "Unable to connect to indexer, check the log for more details");
             }
         }
+
     }
 }

@@ -31,6 +31,16 @@ Handlebars.registerHelper('tvdbUrl', function() {
     return 'http://imdb.com/title/tt' + this.imdbId;
 });
 
+Handlebars.registerHelper('inCinemas', function() {
+  var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+  var cinemasDate = new Date(this.inCinemas);
+  var year = cinemasDate.getFullYear();
+  var month = monthNames[cinemasDate.getMonth()];
+  return "In Cinemas " + month + " " + year;
+})
+
 Handlebars.registerHelper('tvRageUrl', function() {
     return 'http://www.tvrage.com/shows/id-' + this.tvRageId;
 });

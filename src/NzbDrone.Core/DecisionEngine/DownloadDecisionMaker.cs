@@ -37,7 +37,81 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> GetSearchDecision(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteriaBase)
         {
+            if (searchCriteriaBase.Movie != null)
+            {
+                return GetMovieDecisions(reports, searchCriteriaBase).ToList();
+            }
+
             return GetDecisions(reports, searchCriteriaBase).ToList();
+        }
+
+        private IEnumerable<DownloadDecision> GetMovieDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
+        {
+            if (reports.Any())
+            {
+                _logger.ProgressInfo("Processing {0} releases", reports.Count);
+            }
+
+            else
+            {
+                _logger.ProgressInfo("No results found");
+            }
+
+            var reportNumber = 1;
+
+            foreach (var report in reports)
+            {
+                DownloadDecision decision = null;
+                _logger.ProgressTrace("Processing release {0}/{1}", reportNumber, reports.Count);
+
+                try
+                {
+                    var parsedEpisodeInfo = Parser.Parser.ParseTitle(report.Title);
+
+                    if (parsedEpisodeInfo != null && !parsedEpisodeInfo.SeriesTitle.IsNullOrWhiteSpace())
+                    {
+                        RemoteMovie remoteEpisode = _parsingService.Map(parsedEpisodeInfo, "", searchCriteria);
+                        remoteEpisode.Release = report;
+
+                        if (remoteEpisode.Movie == null)
+                        {
+                            //remoteEpisode.DownloadAllowed = true; //Fuck you :)
+                            //decision = GetDecisionForReport(remoteEpisode, searchCriteria);
+                            decision = new DownloadDecision(remoteEpisode, new Rejection("Unknown release. Movie not Found."));
+                        }
+                        else
+                        {
+                            remoteEpisode.DownloadAllowed = true;
+                            //decision = GetDecisionForReport(remoteEpisode, searchCriteria); TODO: Rewrite this for movies!
+                            decision = new DownloadDecision(remoteEpisode);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't process release.");
+
+                    var remoteEpisode = new RemoteEpisode { Release = report };
+                    decision = new DownloadDecision(remoteEpisode, new Rejection("Unexpected error processing release"));
+                }
+
+                reportNumber++;
+
+                if (decision != null)
+                {
+                    if (decision.Rejections.Any())
+                    {
+                        _logger.Debug("Release rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
+                    }
+
+                    else
+                    {
+                        _logger.Debug("Release accepted");
+                    }
+
+                    yield return decision;
+                }
+            }
         }
 
         private IEnumerable<DownloadDecision> GetDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
@@ -82,7 +156,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             //remoteEpisode.DownloadAllowed = true; //Fuck you :)
                             //decision = GetDecisionForReport(remoteEpisode, searchCriteria);
-                            decision = new DownloadDecision(remoteEpisode, new Rejection("Unknown release. Movie not Found."));
+                            decision = new DownloadDecision(remoteEpisode, new Rejection("Unknown release. Series not Found."));
                         }
                         else if (remoteEpisode.Episodes.Empty())
                         {

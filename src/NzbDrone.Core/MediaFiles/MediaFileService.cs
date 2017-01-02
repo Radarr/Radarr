@@ -16,9 +16,11 @@ namespace NzbDrone.Core.MediaFiles
         void Update(EpisodeFile episodeFile);
         void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason);
         List<EpisodeFile> GetFilesBySeries(int seriesId);
+        List<EpisodeFile> GetFilesByMovie(int movieId);
         List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber);
         List<EpisodeFile> GetFilesWithoutMediaInfo();
         List<string> FilterExistingFiles(List<string> files, Series series);
+        List<string> FilterExistingFiles(List<string> files, Movie movie);
         EpisodeFile Get(int id);
         List<EpisodeFile> Get(IEnumerable<int> ids);
 
@@ -64,6 +66,11 @@ namespace NzbDrone.Core.MediaFiles
             return _mediaFileRepository.GetFilesBySeries(seriesId);
         }
 
+        public List<EpisodeFile> GetFilesByMovie(int movieId)
+        {
+            return _mediaFileRepository.GetFilesBySeries(movieId); //TODO: Update implementation for movie files.
+        }
+
         public List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber)
         {
             return _mediaFileRepository.GetFilesBySeason(seriesId, seasonNumber);
@@ -77,6 +84,15 @@ namespace NzbDrone.Core.MediaFiles
         public List<string> FilterExistingFiles(List<string> files, Series series)
         {
             var seriesFiles = GetFilesBySeries(series.Id).Select(f => Path.Combine(series.Path, f.RelativePath)).ToList();
+
+            if (!seriesFiles.Any()) return files;
+
+            return files.Except(seriesFiles, PathEqualityComparer.Instance).ToList();
+        }
+
+        public List<string> FilterExistingFiles(List<string> files, Movie movie)
+        {
+            var seriesFiles = GetFilesBySeries(movie.Id).Select(f => Path.Combine(movie.Path, f.RelativePath)).ToList();
 
             if (!seriesFiles.Any()) return files;
 

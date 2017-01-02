@@ -16,7 +16,7 @@ module.exports = Marionette.ItemView.extend({
         CommandController.bindToCommand({
             element : this.ui.refresh,
             command : {
-                name     : 'refreshSeries',
+                name     : 'refreshMovie',
                 seriesId : this.model.get('id')
             }
         });
@@ -27,9 +27,9 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _refreshSeries : function() {
-        CommandController.Execute('refreshSeries', {
-            name     : 'refreshSeries',
-            seriesId : this.model.id
+        CommandController.Execute('refreshMovie', {
+            name     : 'refreshMovie',
+            movieId : this.model.id
         });
     }
 });

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
@@ -127,6 +128,11 @@ namespace NzbDrone.Core.Indexers.HDBits
             request.SetContent(query.ToJson());
 
             yield return new IndexerRequest(request);
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
         }
     }
 }

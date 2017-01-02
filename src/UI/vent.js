@@ -18,6 +18,7 @@ vent.Commands = {
     OpenModal2Command        : 'OpenModal2Command',
     CloseModal2Command       : 'CloseModal2Command',
     ShowEpisodeDetails       : 'ShowEpisodeDetails',
+    ShowMovieDetails         : 'ShowMovieDetails',
     ShowHistoryDetails       : 'ShowHistoryDetails',
     ShowLogDetails           : 'ShowLogDetails',
     SaveSettings             : 'saveSettings',

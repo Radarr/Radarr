@@ -19,6 +19,7 @@ module.exports = Marionette.AppRouter.extend({
         vent.on(vent.Commands.EditSeriesCommand, this._editSeries, this);
         vent.on(vent.Commands.DeleteSeriesCommand, this._deleteSeries, this);
         vent.on(vent.Commands.ShowEpisodeDetails, this._showEpisode, this);
+        vent.on(vent.Commands.ShowMovieDetails, this._showMovie, this);
         vent.on(vent.Commands.ShowHistoryDetails, this._showHistory, this);
         vent.on(vent.Commands.ShowLogDetails, this._showLogDetails, this);
         vent.on(vent.Commands.ShowRenamePreview, this._showRenamePreview, this);
@@ -56,6 +57,15 @@ module.exports = Marionette.AppRouter.extend({
     _showEpisode : function(options) {
         var view = new EpisodeDetailsLayout({
             model          : options.episode,
+            hideSeriesLink : options.hideSeriesLink,
+            openingTab     : options.openingTab
+        });
+        AppLayout.modalRegion.show(view);
+    },
+
+    _showMovie : function(options) {
+        var view = new MoviesDetailsLayout({
+            model          : options.movie,
             hideSeriesLink : options.hideSeriesLink,
             openingTab     : options.openingTab
         });

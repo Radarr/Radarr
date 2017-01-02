@@ -1,4 +1,5 @@
-﻿using NzbDrone.Common.Http;
+﻿using System;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 
 namespace NzbDrone.Core.Indexers
@@ -20,6 +21,11 @@ namespace NzbDrone.Core.Indexers
             pageableRequests.Add(new[] { new IndexerRequest(_baseUrl, HttpAccept.Rss) });
 
             return pageableRequests;
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)

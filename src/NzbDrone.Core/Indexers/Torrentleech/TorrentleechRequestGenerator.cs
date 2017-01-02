@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 
@@ -18,6 +19,11 @@ namespace NzbDrone.Core.Indexers.Torrentleech
         }
 
         public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
             return new IndexerPageableRequestChain();
         }
