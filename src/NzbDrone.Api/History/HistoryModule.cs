@@ -76,8 +76,6 @@ namespace NzbDrone.Api.History
                 pagingSpec.FilterExpression = h => h.MovieId == i;
             }
 
-            var pg = _historyService.Paged(pagingSpec);
-
             return ApplyToPage(_historyService.Paged, pagingSpec, MapToResource);
         }
 
