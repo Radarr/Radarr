@@ -56,7 +56,7 @@ module.exports = Marionette.Layout.extend({
         this.model = options.model;
 
         this.collection = new HistoryCollection({
-            episodeId : this.model.id,
+            movieId : this.model.id,
             tableName : 'episodeHistory'
         });
         this.collection.fetch();

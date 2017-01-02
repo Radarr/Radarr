@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
@@ -16,6 +17,7 @@ namespace NzbDrone.Core.History
         List<History> FindByDownloadId(string downloadId);
         List<History> FindDownloadHistory(int idSeriesId, QualityModel quality);
         void DeleteForSeries(int seriesId);
+        History MostRecentForMovie(int movieId);
     }
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
@@ -75,6 +77,13 @@ namespace NzbDrone.Core.History
                                  .Join<History, Episode>(JoinType.Inner, h => h.Episode, (h, e) => h.EpisodeId == e.Id);
 
             return base.GetPagedQuery(baseQuery, pagingSpec);
+        }
+
+        public History MostRecentForMovie(int movieId)
+        {
+            return Query.Where(h => h.MovieId == movieId)
+                        .OrderByDescending(h => h.Date)
+                        .FirstOrDefault();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace NzbDrone.Core.History
     {
         QualityModel GetBestQualityInHistory(Profile profile, int episodeId);
         PagingSpec<History> Paged(PagingSpec<History> pagingSpec);
+        History MostRecentForMovie(int movieId);
         History MostRecentForEpisode(int episodeId);
         History MostRecentForDownloadId(string downloadId);
         History Get(int historyId);
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.History
 
     public class HistoryService : IHistoryService,
                                   IHandle<EpisodeGrabbedEvent>,
+                                  IHandle<MovieGrabbedEvent>,
                                   IHandle<EpisodeImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<EpisodeFileDeletedEvent>,
@@ -51,6 +53,11 @@ namespace NzbDrone.Core.History
         public History MostRecentForEpisode(int episodeId)
         {
             return _historyRepository.MostRecentForEpisode(episodeId);
+        }
+
+        public History MostRecentForMovie(int movieId)
+        {
+            return _historyRepository.MostRecentForMovie(movieId);
         }
 
         public History MostRecentForDownloadId(string downloadId)
@@ -138,7 +145,8 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.Episode.Release.Title,
                     SeriesId = episode.SeriesId,
                     EpisodeId = episode.Id,
-                    DownloadId = message.DownloadId
+                    DownloadId = message.DownloadId,
+                    MovieId = 0
                 };
 
                 history.Data.Add("Indexer", message.Episode.Release.Indexer);
@@ -172,6 +180,50 @@ namespace NzbDrone.Core.History
             }
         }
 
+        public void Handle(MovieGrabbedEvent message)
+        {
+            var history = new History
+            {
+                EventType = HistoryEventType.Grabbed,
+                Date = DateTime.UtcNow,
+                Quality = message.Movie.ParsedEpisodeInfo.Quality,
+                SourceTitle = message.Movie.Release.Title,
+                SeriesId = 0,
+                EpisodeId = 0,
+                DownloadId = message.DownloadId,
+                MovieId = message.Movie.Movie.Id
+            };
+
+                history.Data.Add("Indexer", message.Movie.Release.Indexer);
+                history.Data.Add("NzbInfoUrl", message.Movie.Release.InfoUrl);
+                history.Data.Add("ReleaseGroup", message.Movie.ParsedEpisodeInfo.ReleaseGroup);
+                history.Data.Add("Age", message.Movie.Release.Age.ToString());
+                history.Data.Add("AgeHours", message.Movie.Release.AgeHours.ToString());
+                history.Data.Add("AgeMinutes", message.Movie.Release.AgeMinutes.ToString());
+                history.Data.Add("PublishedDate", message.Movie.Release.PublishDate.ToString("s") + "Z");
+                history.Data.Add("DownloadClient", message.DownloadClient);
+                history.Data.Add("Size", message.Movie.Release.Size.ToString());
+                history.Data.Add("DownloadUrl", message.Movie.Release.DownloadUrl);
+                history.Data.Add("Guid", message.Movie.Release.Guid);
+                history.Data.Add("TvdbId", message.Movie.Release.TvdbId.ToString());
+                history.Data.Add("TvRageId", message.Movie.Release.TvRageId.ToString());
+                history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
+
+                if (!message.Movie.ParsedEpisodeInfo.ReleaseHash.IsNullOrWhiteSpace())
+                {
+                    history.Data.Add("ReleaseHash", message.Movie.ParsedEpisodeInfo.ReleaseHash);
+                }
+
+                var torrentRelease = message.Movie.Release as TorrentInfo;
+
+                if (torrentRelease != null)
+                {
+                    history.Data.Add("TorrentInfoHash", torrentRelease.InfoHash);
+                }
+
+                _historyRepository.Insert(history);
+        }
+
         public void Handle(EpisodeImportedEvent message)
         {
             if (!message.NewDownload)
@@ -189,15 +241,18 @@ namespace NzbDrone.Core.History
             foreach (var episode in message.EpisodeInfo.Episodes)
             {
                 var history = new History
-                    {
-                        EventType = HistoryEventType.DownloadFolderImported,
-                        Date = DateTime.UtcNow,
-                        Quality = message.EpisodeInfo.Quality,
-                        SourceTitle = message.ImportedEpisode.SceneName ?? Path.GetFileNameWithoutExtension(message.EpisodeInfo.Path),
-                        SeriesId = message.ImportedEpisode.SeriesId,
-                        EpisodeId = episode.Id,
-                        DownloadId = downloadId
-                    };
+                {
+                    EventType = HistoryEventType.DownloadFolderImported,
+                    Date = DateTime.UtcNow,
+                    Quality = message.EpisodeInfo.Quality,
+                    SourceTitle = message.ImportedEpisode.SceneName ?? Path.GetFileNameWithoutExtension(message.EpisodeInfo.Path),
+                    SeriesId = message.ImportedEpisode.SeriesId,
+                    EpisodeId = episode.Id,
+                    DownloadId = downloadId,
+                    MovieId = 0,
+
+
+                };
 
                 //Won't have a value since we publish this event before saving to DB.
                 //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
@@ -249,6 +304,7 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.EpisodeFile.Path,
                     SeriesId = message.EpisodeFile.SeriesId,
                     EpisodeId = episode.Id,
+                    MovieId = 0
                 };
 
                 history.Data.Add("Reason", message.Reason.ToString());

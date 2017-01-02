@@ -55,10 +55,14 @@ var Collection = PageableCollection.extend({
 
     initialize : function(options) {
         delete this.queryParams.episodeId;
+        delete this.queryParams.movieId;
 
         if (options) {
             if (options.episodeId) {
                 this.queryParams.episodeId = options.episodeId;
+            }
+            if (options.movieId) {
+                this.queryParams.movieId = options.movieId;
             }
         }
     },
