@@ -62,6 +62,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 if (parsedEpisodeInfo != null)
                 {
                     trackedDownload.RemoteEpisode = _parsingService.Map(parsedEpisodeInfo, 0, 0);
+                    trackedDownload.RemoteMovie = _parsingService.Map(parsedEpisodeInfo, "", null);
                 }
 
                 if (historyItems.Any())
@@ -69,10 +70,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).First();
                     trackedDownload.State = GetStateFromHistory(firstHistoryItem.EventType);
 
-                    if (parsedEpisodeInfo == null ||
+                    if ((parsedEpisodeInfo == null ||
                         trackedDownload.RemoteEpisode == null ||
                         trackedDownload.RemoteEpisode.Series == null ||
-                        trackedDownload.RemoteEpisode.Episodes.Empty())
+                        trackedDownload.RemoteEpisode.Episodes.Empty()) && trackedDownload.RemoteMovie == null)
                     {
                         // Try parsing the original source title and if that fails, try parsing it as a special
                         // TODO: Pass the TVDB ID and TVRage IDs in as well so we have a better chance for finding the item
@@ -85,7 +86,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     }
                 }
 
-                if (trackedDownload.RemoteEpisode == null)
+                if (trackedDownload.RemoteEpisode == null && trackedDownload.RemoteMovie == null)
                 {
                     return null;
                 }

@@ -4,6 +4,7 @@ using NzbDrone.Api.REST;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Api.Series;
 using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Movie;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace NzbDrone.Api.Queue
     {
         public SeriesResource Series { get; set; }
         public EpisodeResource Episode { get; set; }
+        public MovieResource Movie { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
@@ -49,7 +51,8 @@ namespace NzbDrone.Api.Queue
                 TrackedDownloadStatus = model.TrackedDownloadStatus,
                 StatusMessages = model.StatusMessages,
                 DownloadId = model.DownloadId,
-                Protocol = model.Protocol
+                Protocol = model.Protocol,
+                Movie = model.Movie.ToResource()
             };
         }
 

@@ -35,6 +35,14 @@ var QueueCollection = PageableCollection.extend({
             }
         },
 
+        movie : {
+            sortValue : function(model, attr) {
+                var movie = model.get(attr);
+
+                return movie.get('sortTitle');
+            }
+        },
+
         episode : {
             sortValue : function(model, attr) {
                 var episode = model.get('episode');
