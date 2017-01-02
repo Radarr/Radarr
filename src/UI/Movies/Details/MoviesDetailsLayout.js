@@ -9,6 +9,8 @@ var InfoView = require('./InfoView');
 var CommandController = require('../../Commands/CommandController');
 var LoadingView = require('../../Shared/LoadingView');
 var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEditorLayout');
+var HistoryLayout = require('../History/MovieHistoryLayout');
+var SearchLayout = require('../Search/MovieSearchLayout');
 require('backstrech');
 require('../../Mixins/backbone.signalr.mixin');
 
@@ -18,8 +20,11 @@ module.exports = Marionette.Layout.extend({
 
     regions : {
         seasons : '#seasons',
-        info    : '#info'
+        info    : '#info',
+        search  : '#movie-search',
+        history : '#movie-history'
     },
+
 
     ui : {
         header    : '.x-header',
@@ -29,7 +34,9 @@ module.exports = Marionette.Layout.extend({
         rename    : '.x-rename',
         search    : '.x-search',
         poster    : '.x-movie-poster',
-        manualSearch : '.x-manual-search'
+        manualSearch : '.x-manual-search',
+        history   : '.x-movie-history',
+        search    : '.x-movie-search'
     },
 
     events : {
@@ -39,7 +46,9 @@ module.exports = Marionette.Layout.extend({
         'click .x-refresh'             : '_refreshMovies',
         'click .x-rename'              : '_renameMovies',
         'click .x-search'              : '_moviesSearch',
-        'click .x-manual-search'       : '_manualSearchM'
+        'click .x-manual-search'       : '_showSearch',
+        'click .x-movie-history'     : '_showHistory',
+        'click .x-movie-search'      : '_showSearch'
     },
 
     initialize : function() {
@@ -60,17 +69,21 @@ module.exports = Marionette.Layout.extend({
     },
 
     onShow : function() {
+        this.searchLayout = new SearchLayout({ model : this.model });
+        this.searchLayout.startManualSearch = true;
+
         this._showBackdrop();
         this._showSeasons();
         this._setMonitoredState();
         this._showInfo();
+        this._showHistory();
     },
 
     onRender : function() {
         CommandController.bindToCommand({
             element : this.ui.refresh,
             command : {
-                name : 'refreshMovies'
+                name : 'refreshMovie'
             }
         });
         CommandController.bindToCommand({
@@ -110,6 +123,26 @@ module.exports = Marionette.Layout.extend({
         return undefined;
     },
 
+    _showHistory : function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.ui.history.tab('show');
+        this.history.show(new HistoryLayout({
+            model  : this.model
+        }));
+    },
+
+    _showSearch : function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.ui.search.tab('show');
+        this.search.show(this.searchLayout);
+    },
+
     _toggleMonitored : function() {
         var savePromise = this.model.save('monitored', !this.model.get('monitored'), { wait : true });
 
@@ -138,8 +171,8 @@ module.exports = Marionette.Layout.extend({
     },
 
     _refreshMovies : function() {
-        CommandController.Execute('refreshMovies', {
-            name     : 'refreshMovies',
+        CommandController.Execute('refreshMovie', {
+            name     : 'refreshMovie',
             movieId : this.model.id
         });
     },
@@ -198,8 +231,7 @@ module.exports = Marionette.Layout.extend({
 
     _showInfo : function() {
         this.info.show(new InfoView({
-            model                 : this.model,
-            episodeFileCollection : this.episodeFileCollection
+            model                 : this.model
         }));
     },
 
@@ -212,9 +244,9 @@ module.exports = Marionette.Layout.extend({
     },
 
     _refresh : function() {
-        this.seasonCollection.add(this.model.get('seasons'), { merge : true });
-        this.episodeCollection.fetch();
-        this.episodeFileCollection.fetch();
+        //this.seasonCollection.add(this.model.get('seasons'), { merge : true });
+        //this.episodeCollection.fetch();
+        //this.episodeFileCollection.fetch();
 
         this._setMonitoredState();
         this._showInfo();
@@ -252,11 +284,11 @@ module.exports = Marionette.Layout.extend({
 
     _manualSearchM : function() {
         console.warn("Manual Search started");
-        console.warn(this.model.get("moviesId"));
+        console.warn(this.model.id);
         console.warn(this.model)
         console.warn(this.episodeCollection);
         vent.trigger(vent.Commands.ShowEpisodeDetails, {
-            episode        : this.episodeCollection.models[0],
+            episode        : this.model,
             hideMoviesLink : true,
             openingTab     : 'search'
         });

@@ -562,6 +562,7 @@
     <Compile Include="Http\CloudFlare\CloudFlareHttpInterceptor.cs" />
     <Compile Include="Http\HttpProxySettingsProvider.cs" />
     <Compile Include="Http\TorcacheHttpInterceptor.cs" />
+    <Compile Include="IndexerSearch\Definitions\MovieSearchCriteria.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTv.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvSettings.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvRequestGenerator.cs" />
@@ -695,6 +696,7 @@
     <Compile Include="MediaFiles\Commands\BackendCommandAttribute.cs" />
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedEpisodesScanCommand.cs" />
+    <Compile Include="MediaFiles\Commands\RescanMovieCommand.cs" />
     <Compile Include="MediaFiles\EpisodeImport\ImportMode.cs" />
     <Compile Include="MediaFiles\Commands\RenameFilesCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameSeriesCommand.cs" />
@@ -737,6 +739,8 @@
     <Compile Include="MediaFiles\Events\EpisodeImportedEvent.cs" />
     <Compile Include="MediaFiles\Events\MovieRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
+    <Compile Include="MediaFiles\Events\MovieScannedEvent.cs" />
+    <Compile Include="MediaFiles\Events\MovieScanSkippedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScanSkippedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScannedEvent.cs" />
     <Compile Include="MediaFiles\FileDateType.cs" />
@@ -868,6 +872,7 @@
     <Compile Include="Parser\IsoLanguage.cs" />
     <Compile Include="Parser\IsoLanguages.cs" />
     <Compile Include="Parser\LanguageParser.cs" />
+    <Compile Include="Parser\Model\RemoteMovie.cs" />
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
@@ -1053,6 +1058,7 @@
     <Compile Include="Tv\Actor.cs" />
     <Compile Include="Tv\AddSeriesOptions.cs" />
     <Compile Include="Tv\Commands\MoveSeriesCommand.cs" />
+    <Compile Include="Tv\Commands\RefreshMovieCommand.cs" />
     <Compile Include="Tv\Commands\RefreshSeriesCommand.cs" />
     <Compile Include="Tv\Episode.cs" />
     <Compile Include="Tv\EpisodeAddedService.cs" />
@@ -1070,6 +1076,7 @@
     <Compile Include="Tv\Events\MovieEditedEvent.cs" />
     <Compile Include="Tv\Events\SeriesEditedEvent.cs" />
     <Compile Include="Tv\Events\SeriesMovedEvent.cs" />
+    <Compile Include="Tv\Events\MovieRefreshStartingEvent.cs" />
     <Compile Include="Tv\Events\SeriesRefreshStartingEvent.cs" />
     <Compile Include="Tv\Events\MovieUpdateEvent.cs" />
     <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
@@ -1077,12 +1084,15 @@
     <Compile Include="Tv\MoveSeriesService.cs" />
     <Compile Include="Tv\Ratings.cs" />
     <Compile Include="Tv\RefreshEpisodeService.cs" />
+    <Compile Include="Tv\RefreshMovieService.cs" />
     <Compile Include="Tv\RefreshSeriesService.cs" />
     <Compile Include="Tv\Season.cs" />
     <Compile Include="Tv\Movie.cs" />
     <Compile Include="Tv\Series.cs" />
+    <Compile Include="Tv\MovieAddedHandler.cs" />
     <Compile Include="Tv\SeriesAddedHandler.cs" />
     <Compile Include="Tv\MovieRepository.cs" />
+    <Compile Include="Tv\MovieEditedService.cs" />
     <Compile Include="Tv\SeriesScannedHandler.cs" />
     <Compile Include="Tv\SeriesEditedService.cs" />
     <Compile Include="Tv\SeriesRepository.cs" />
@@ -1095,6 +1105,7 @@
     <Compile Include="Tv\MovieTitleNormalizer.cs" />
     <Compile Include="Tv\SeriesTitleNormalizer.cs" />
     <Compile Include="Tv\SeriesTypes.cs" />
+    <Compile Include="Tv\ShouldRefreshMovie.cs" />
     <Compile Include="Tv\ShouldRefreshSeries.cs" />
     <Compile Include="Update\Commands\ApplicationUpdateCommand.cs" />
     <Compile Include="Update\InstallUpdateService.cs" />

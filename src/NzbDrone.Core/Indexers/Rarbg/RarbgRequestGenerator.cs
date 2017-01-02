@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -88,14 +89,43 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             if (tvdbId.HasValue)
             {
-                string imdbId = string.Format("tt{0:D7}", tvdbId);
-                requestBuilder.AddQueryParam("search_imdb", imdbId);
+                requestBuilder.AddQueryParam("search_tvdb", tvdbId.Value);
             }
 
             if (query.IsNotNullOrWhiteSpace())
             {
-                //requestBuilder.AddQueryParam("search_string", string.Format(query, args));
+                requestBuilder.AddQueryParam("search_string", string.Format(query, args));
             }
+
+            if (!Settings.RankedOnly)
+            {
+                requestBuilder.AddQueryParam("ranked", "0");
+            }
+
+            requestBuilder.AddQueryParam("category", "tv");
+            requestBuilder.AddQueryParam("limit", "100");
+            requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
+            requestBuilder.AddQueryParam("format", "json_extended");
+            requestBuilder.AddQueryParam("app_id", "Sonarr");
+
+            yield return new IndexerRequest(requestBuilder.Build());
+        }
+
+        private IEnumerable<IndexerRequest> GetMovieRequest(MovieSearchCriteria searchCriteria)
+        {
+            var requestBuilder = new HttpRequestBuilder(Settings.BaseUrl)
+                .Resource("/pubapi_v2.php")
+                .Accept(HttpAccept.Json);
+
+            if (Settings.CaptchaToken.IsNotNullOrWhiteSpace())
+            {
+                requestBuilder.UseSimplifiedUserAgent = true;
+                requestBuilder.SetCookie("cf_clearance", Settings.CaptchaToken);
+            }
+
+            requestBuilder.AddQueryParam("mode", "search");
+
+            requestBuilder.AddQueryParam("search_imdb", searchCriteria.Movie.ImdbId);
 
             if (!Settings.RankedOnly)
             {
@@ -109,6 +139,19 @@ namespace NzbDrone.Core.Indexers.Rarbg
             requestBuilder.AddQueryParam("app_id", "Sonarr");
 
             yield return new IndexerRequest(requestBuilder.Build());
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            
+
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            pageableRequests.Add(GetMovieRequest(searchCriteria));
+
+            return pageableRequests;
+
+            
         }
     }
 }

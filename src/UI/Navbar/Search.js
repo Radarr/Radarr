@@ -2,7 +2,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var Backbone = require('backbone');
-var SeriesCollection = require('../Series/SeriesCollection');
+var SeriesCollection = require('../Movies/MoviesCollection');
 require('typeahead');
 
 vent.on(vent.Hotkeys.NavbarSearch, function() {
@@ -32,6 +32,6 @@ $.fn.bindSearch = function() {
     $(this).on('typeahead:selected typeahead:autocompleted', function(e, series) {
         this.blur();
         $(this).val('');
-        Backbone.history.navigate('/series/{0}'.format(series.titleSlug), { trigger : true });
+        Backbone.history.navigate('/movies/{0}'.format(series.titleSlug), { trigger : true });
     });
 };

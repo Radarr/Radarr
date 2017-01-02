@@ -86,6 +86,11 @@ namespace NzbDrone.Api.Indexers
             var parsedEpisodeInfo = model.RemoteEpisode.ParsedEpisodeInfo;
             var remoteEpisode = model.RemoteEpisode;
             var torrentInfo = (model.RemoteEpisode.Release as TorrentInfo) ?? new TorrentInfo();
+            var downloadAllowed = model.RemoteEpisode.DownloadAllowed;
+            if (model.IsForMovie)
+            {
+                downloadAllowed = model.RemoteMovie.DownloadAllowed;
+            }
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
             return new ReleaseResource
@@ -119,7 +124,7 @@ namespace NzbDrone.Api.Indexers
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
-                DownloadAllowed = remoteEpisode.DownloadAllowed,
+                DownloadAllowed = downloadAllowed,
                 //ReleaseWeight
 
                 MagnetUrl = torrentInfo.MagnetUrl,

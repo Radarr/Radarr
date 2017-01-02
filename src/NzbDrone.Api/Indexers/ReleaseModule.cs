@@ -82,6 +82,11 @@ namespace NzbDrone.Api.Indexers
                 return GetEpisodeReleases(Request.Query.episodeId);
             }
 
+            if (Request.Query.movieId != null)
+            {
+                return GetMovieReleases(Request.Query.movieId);
+            }
+
             return GetRss();
         }
 
@@ -97,6 +102,27 @@ namespace NzbDrone.Api.Indexers
             catch (Exception ex)
             {
                 _logger.Error(ex, "Episode search failed: " + ex.Message);
+            }
+
+            return new List<ReleaseResource>();
+        }
+
+        private List<ReleaseResource> GetMovieReleases(int movieId)
+        {
+            try
+            {
+                var decisions = _nzbSearchService.MovieSearch(movieId, true);
+                var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
+
+                return MapDecisions(prioritizedDecisions);
+            }
+            catch (NotImplementedException ex)
+            {
+                _logger.Error(ex, "One or more indexer you selected does not support movie search yet: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Movie search failed: " + ex.Message);
             }
 
             return new List<ReleaseResource>();

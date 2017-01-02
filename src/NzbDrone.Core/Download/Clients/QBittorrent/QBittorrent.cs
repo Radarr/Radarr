@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
             }
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = true;//remoteEpisode.IsRecentEpisode(); TODO: Update to use RemoteMovie!
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)

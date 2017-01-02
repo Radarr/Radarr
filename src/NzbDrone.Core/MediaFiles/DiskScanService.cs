@@ -22,6 +22,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IDiskScanService
     {
         void Scan(Series series);
+        void Scan(Movie movie);
         string[] GetVideoFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
         List<string> FilterFiles(Series series, IEnumerable<string> files);
@@ -30,6 +31,8 @@ namespace NzbDrone.Core.MediaFiles
     public class DiskScanService :
         IDiskScanService,
         IHandle<SeriesUpdatedEvent>,
+        IHandle<MovieUpdatedEvent>,
+        IExecute<RescanMovieCommand>,
         IExecute<RescanSeriesCommand>
     {
         private readonly IDiskProvider _diskProvider;
@@ -39,6 +42,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly ISeriesService _seriesService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
@@ -48,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles
                                ISeriesService seriesService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IEventAggregator eventAggregator,
+                               IMovieService movieService,
                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -57,6 +62,7 @@ namespace NzbDrone.Core.MediaFiles
             _seriesService = seriesService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _eventAggregator = eventAggregator;
+            _movieService = movieService;
             _logger = logger;
         }
 
@@ -121,6 +127,64 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator.PublishEvent(new SeriesScannedEvent(series));
         }
 
+        public void Scan(Movie movie)
+        {
+            var rootFolder = _diskProvider.GetParentFolder(movie.Path);
+
+            if (!_diskProvider.FolderExists(rootFolder))
+            {
+                _logger.Warn("Series' root folder ({0}) doesn't exist.", rootFolder);
+                _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
+                return;
+            }
+
+            if (_diskProvider.GetDirectories(rootFolder).Empty())
+            {
+                _logger.Warn("Series' root folder ({0}) is empty.", rootFolder);
+                _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
+                return;
+            }
+
+            _logger.ProgressInfo("Scanning disk for {0}", movie.Title);
+
+            if (!_diskProvider.FolderExists(movie.Path))
+            {
+                if (_configService.CreateEmptySeriesFolders &&
+                    _diskProvider.FolderExists(rootFolder))
+                {
+                    _logger.Debug("Creating missing series folder: {0}", movie.Path);
+                    _diskProvider.CreateFolder(movie.Path);
+                    SetPermissions(movie.Path);
+                }
+                else
+                {
+                    _logger.Debug("Series folder doesn't exist: {0}", movie.Path);
+                }
+
+                _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.MovieFolderDoesNotExist));
+                return;
+            }
+
+            var videoFilesStopwatch = Stopwatch.StartNew();
+            var mediaFileList = FilterFiles(movie, GetVideoFiles(movie.Path)).ToList();
+
+            videoFilesStopwatch.Stop();
+            _logger.Trace("Finished getting episode files for: {0} [{1}]", movie, videoFilesStopwatch.Elapsed);
+
+            _logger.Debug("{0} Cleaning up media files in DB", movie);
+            _mediaFileTableCleanupService.Clean(movie, mediaFileList);
+
+            var decisionsStopwatch = Stopwatch.StartNew();
+            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie);
+            decisionsStopwatch.Stop();
+            _logger.Trace("Import decisions complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
+
+            _importApprovedEpisodes.Import(decisions, false);
+
+            _logger.Info("Completed scanning disk for {0}", movie.Title);
+            _eventAggregator.PublishEvent(new MovieScannedEvent(movie));
+        }
+
         public string[] GetVideoFiles(string path, bool allDirectories = true)
         {
             _logger.Debug("Scanning '{0}' for video files", path);
@@ -156,6 +220,13 @@ namespace NzbDrone.Core.MediaFiles
                         .ToList();
         }
 
+        public List<string> FilterFiles(Movie movie, IEnumerable<string> files)
+        {
+            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(movie.Path.GetRelativePath(file)))
+                        .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
+                        .ToList();
+        }
+
         private void SetPermissions(string path)
         {
             if (!_configService.SetPermissionsLinux)
@@ -180,6 +251,28 @@ namespace NzbDrone.Core.MediaFiles
         public void Handle(SeriesUpdatedEvent message)
         {
             Scan(message.Series);
+        }
+
+        public void Handle(MovieUpdatedEvent message)
+        {
+            Scan(message.Movie);
+        }
+
+        public void Execute(RescanMovieCommand message)
+        {
+            if (message.MovieId.HasValue)
+            {
+                var series = _movieService.GetMovie(message.MovieId.Value);
+            }
+            else
+            {
+                var allMovies = _movieService.GetAllMovies();
+
+                foreach (var movie in allMovies)
+                {
+                    Scan(movie);
+                }
+            }
         }
 
         public void Execute(RescanSeriesCommand message)

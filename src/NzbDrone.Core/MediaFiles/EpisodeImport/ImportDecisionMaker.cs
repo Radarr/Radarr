@@ -18,6 +18,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
     public interface IMakeImportDecision
     {
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource); //TODO: Needs changing to ParsedMovieInfo!!
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
     }
 
@@ -53,6 +55,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return GetImportDecisions(videoFiles, series, null, false);
         }
 
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie)
+        {
+            return GetImportDecisions(videoFiles, movie, null, false);
+        }
+
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource)
         {
             var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), series);
@@ -68,6 +75,75 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }
 
             return decisions;
+        }
+
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        {
+            var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
+
+            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
+
+            var shouldUseFolderName = ShouldUseFolderName(videoFiles, movie, folderInfo);
+            var decisions = new List<ImportDecision>();
+
+            foreach (var file in newFiles)
+            {
+                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName));
+            }
+
+            return decisions;
+        }
+
+        private ImportDecision GetDecision(string file, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
+        {
+            ImportDecision decision = null;
+
+            /*try
+            {
+                var localEpisode = _parsingService.GetLocalEpisode(file, movie, shouldUseFolderName ? folderInfo : null, sceneSource);
+
+                if (localEpisode != null)
+                {
+                    localEpisode.Quality = GetQuality(folderInfo, localEpisode.Quality, movie);
+                    localEpisode.Size = _diskProvider.GetFileSize(file);
+
+                    _logger.Debug("Size: {0}", localEpisode.Size);
+
+                    //TODO: make it so media info doesn't ruin the import process of a new series
+                    if (sceneSource)
+                    {
+                        localEpisode.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
+                    }
+
+                    if (localEpisode.Episodes.Empty())
+                    {
+                        decision = new ImportDecision(localEpisode, new Rejection("Invalid season or episode"));
+                    }
+                    else
+                    {
+                        decision = GetDecision(localEpisode);
+                    }
+                }
+
+                else
+                {
+                    localEpisode = new LocalEpisode();
+                    localEpisode.Path = file;
+
+                    decision = new ImportDecision(localEpisode, new Rejection("Unable to parse file"));
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Couldn't import file. " + file);
+
+                var localEpisode = new LocalEpisode { Path = file };
+                decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
+            }*/
+
+            decision = new ImportDecision(null, new Rejection("IMPLEMENTATION MISSING!!!"));
+
+            return decision;
         }
 
         private ImportDecision GetDecision(string file, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
@@ -169,6 +245,40 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                 var sample = _detectSample.IsSample(series, GetQuality(folderInfo, fileQuality, series), file, size, folderInfo.IsPossibleSpecialEpisode);
 
                 if (sample)
+                {
+                    return false;
+                }
+
+                if (SceneChecker.IsSceneTitle(Path.GetFileName(file)))
+                {
+                    return false;
+                }
+
+                return true;
+            }) == 1;
+        }
+
+        private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo)
+        {
+            if (folderInfo == null)
+            {
+                return false;
+            }
+
+            if (folderInfo.FullSeason)
+            {
+                return false;
+            }
+
+            return videoFiles.Count(file =>
+            {
+                var size = _diskProvider.GetFileSize(file);
+                var fileQuality = QualityParser.ParseQuality(file);
+                //var sample = null;//_detectSample.IsSample(movie, GetQuality(folderInfo, fileQuality, movie), file, size, folderInfo.IsPossibleSpecialEpisode); //Todo to this
+
+                return true;
+
+                //if (sample)
                 {
                     return false;
                 }

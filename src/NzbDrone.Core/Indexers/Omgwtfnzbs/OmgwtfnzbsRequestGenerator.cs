@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -100,6 +101,11 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             }
 
             yield return new IndexerRequest(url.ToString(), HttpAccept.Rss);
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
         }
     }
 }

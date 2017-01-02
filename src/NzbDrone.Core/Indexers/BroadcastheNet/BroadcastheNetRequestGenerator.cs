@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using System;
 
 namespace NzbDrone.Core.Indexers.BroadcastheNet
 {
@@ -188,6 +189,11 @@ namespace NzbDrone.Core.Indexers.BroadcastheNet
 
                 yield return new IndexerRequest(builder.Build());
             }
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
         }
     }
 }
