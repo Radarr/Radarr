@@ -58,6 +58,32 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
             return GetDownloadClientId(strmFile);
         }
 
+        public override string Download(RemoteMovie remoteEpisode)
+        {
+            var url = remoteEpisode.Release.DownloadUrl;
+            var title = remoteEpisode.Release.Title;
+
+            if (remoteEpisode.ParsedEpisodeInfo.FullSeason)
+            {
+                throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
+            }
+
+            title = FileNameBuilder.CleanFileName(title);
+
+            //Save to the Pneumatic directory (The user will need to ensure its accessible by XBMC)
+            var nzbFile = Path.Combine(Settings.NzbFolder, title + ".nzb");
+
+            _logger.Debug("Downloading NZB from: {0} to: {1}", url, nzbFile);
+            _httpClient.DownloadFile(url, nzbFile);
+
+            _logger.Debug("NZB Download succeeded, saved to: {0}", nzbFile);
+
+            var strmFile = WriteStrmFile(title, nzbFile);
+
+
+            return GetDownloadClientId(strmFile);
+        }
+
         public bool IsConfigured => !string.IsNullOrWhiteSpace(Settings.NzbFolder);
 
         public override IEnumerable<DownloadClientItem> GetItems()

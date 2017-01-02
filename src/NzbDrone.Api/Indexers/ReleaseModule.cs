@@ -26,6 +26,7 @@ namespace NzbDrone.Api.Indexers
         private readonly Logger _logger;
 
         private readonly ICached<RemoteEpisode> _remoteEpisodeCache;
+        private readonly ICached<RemoteMovie> _remoteMovieCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
                              ISearchForNzb nzbSearchService,
@@ -49,6 +50,7 @@ namespace NzbDrone.Api.Indexers
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             _remoteEpisodeCache = cacheManager.GetCache<RemoteEpisode>(GetType(), "remoteEpisodes");
+            _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }
 
         private Response DownloadRelease(ReleaseResource release)
@@ -59,7 +61,26 @@ namespace NzbDrone.Api.Indexers
             {
                 _logger.Debug("Couldn't find requested release in cache, cache timeout probably expired.");
 
-                return new NotFoundResponse();
+                var remoteMovie = _remoteMovieCache.Find(release.Guid);
+
+                if (remoteMovie == null)
+                {
+                    return new NotFoundResponse();
+                }
+
+                try
+                {
+                    _downloadService.DownloadReport(remoteMovie);
+                }
+                catch (ReleaseDownloadException ex)
+                {
+                    _logger.Error(ex, ex.Message);
+                    throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
+                }
+
+                return release.AsResponse();
+
+
             }
 
             try
@@ -139,7 +160,15 @@ namespace NzbDrone.Api.Indexers
 
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
-            _remoteEpisodeCache.Set(decision.RemoteEpisode.Release.Guid, decision.RemoteEpisode, TimeSpan.FromMinutes(30));
+            if (decision.IsForMovie)
+            {
+                _remoteMovieCache.Set(decision.RemoteMovie.Release.Guid, decision.RemoteMovie, TimeSpan.FromMinutes(30));
+            }
+            else
+            {
+                _remoteEpisodeCache.Set(decision.RemoteEpisode.Release.Guid, decision.RemoteEpisode, TimeSpan.FromMinutes(30));
+            }
+            
            return base.MapDecision(decision, initialWeight);
         }
     }

@@ -57,6 +57,7 @@ namespace NzbDrone.Core.Download
             get;
         }
 
+        
         public abstract string Download(RemoteEpisode remoteEpisode);
         public abstract IEnumerable<DownloadClientItem> GetItems();
         public abstract void RemoveItem(string downloadId, bool deleteData);
@@ -147,5 +148,7 @@ namespace NzbDrone.Core.Download
 
             return null;
         }
+
+        public abstract string Download(RemoteMovie remoteMovie);
     }
 }
