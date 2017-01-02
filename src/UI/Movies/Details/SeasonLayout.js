@@ -15,7 +15,7 @@ var _ = require('underscore');
 var Messenger = require('../../Shared/Messenger');
 
 module.exports = Marionette.Layout.extend({
-    template : 'Series/Details/SeasonLayoutTemplate',
+    template : 'Movies/Details/SeasonLayoutTemplate',
 
     ui : {
         seasonSearch    : '.x-season-search',
