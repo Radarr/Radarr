@@ -1,4 +1,4 @@
-# Radarr #
+# Radarr [![Build Status](https://travis-ci.org/galli-leo/Radarr.svg?branch=develop)](https://travis-ci.org/galli-leo/Radarr)#
 
 This fork of Sonarr aims to turn it into something like Couchpotato.
 
