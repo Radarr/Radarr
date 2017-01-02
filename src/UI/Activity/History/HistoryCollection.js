@@ -50,7 +50,7 @@ var Collection = PageableCollection.extend({
     },
 
     sortMappings : {
-        'series' : { sortKey : 'series.sortTitle' }
+        'movie' : { sortKey : 'movie.sortTitle' }
     },
 
     initialize : function(options) {
