@@ -19,6 +19,22 @@ Handlebars.registerHelper('poster', function() {
     return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
 });
 
+Handlebars.registerHelper('remotePoster', function() {
+  var placeholder = StatusModel.get('urlBase') + '/Content/Images/poster-dark.png';
+  var poster = this.remotePoster;
+
+  if (poster) {
+      if (!poster.match(/^https?:\/\//)) {
+          return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster, 250)));
+      } else {
+          var url = poster.replace(/^https?\:/, 'https://'); //IMDb posters need https to work, k?
+          return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
+      }
+  }
+
+  return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
+})
+
 Handlebars.registerHelper('traktUrl', function() {
     return 'http://trakt.tv/search/tvdb/' + this.tvdbId + '?id_type=show';
 });

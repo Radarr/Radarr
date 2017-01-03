@@ -120,16 +120,17 @@ module.exports = Marionette.Layout.extend({
     },
 
     _onMoviesAdded : function(options) {
-        if (this.isExisting && options.movies.get('path') === this.model.get('folder').path) {
+        if (this.isExisting && options.movie.get('path') === this.model.get('folder').path) {
             this.close();
         }
 
         else if (!this.isExisting) {
-            this.collection.term = '';
+            this.resultCollectionView.setExisting(options.movie.get('imdbId'))
+            /*this.collection.term = '';
             this.collection.reset();
             this._clearResults();
             this.ui.moviesSearch.val('');
-            this.ui.moviesSearch.focus();
+            this.ui.moviesSearch.focus();*/ //TODO: Maybe add option wheter to clear search result.
         }
     },
 
@@ -143,6 +144,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _clearResults : function() {
+
         if (!this.isExisting) {
             this.searchResult.show(new EmptyView());
         } else {
