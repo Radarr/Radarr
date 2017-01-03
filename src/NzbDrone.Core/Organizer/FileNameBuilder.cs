@@ -17,6 +17,8 @@ namespace NzbDrone.Core.Organizer
     public interface IBuildFileNames
     {
         string BuildFileName(List<Episode> episodes, Series series, EpisodeFile episodeFile, NamingConfig namingConfig = null);
+        string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null);
+        string BuildFilePath(Movie movie, string fileName, string extension);
         string BuildFilePath(Series series, int seasonNumber, string fileName, string extension);
         string BuildSeasonPath(Series series, int seasonNumber);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
@@ -137,11 +139,80 @@ namespace NzbDrone.Core.Organizer
             return fileName;
         }
 
+        public string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null)
+        {
+            if (namingConfig == null)
+            {
+                namingConfig = _namingConfigService.GetConfig();
+            }
+
+            if (!namingConfig.RenameEpisodes)
+            {
+                return GetOriginalTitle(movieFile);
+            }
+
+            /*if (namingConfig.StandardEpisodeFormat.IsNullOrWhiteSpace() && series.SeriesType == SeriesTypes.Standard)
+            {
+                throw new NamingFormatException("Standard episode format cannot be empty");
+            }
+
+            if (namingConfig.DailyEpisodeFormat.IsNullOrWhiteSpace() && series.SeriesType == SeriesTypes.Daily)
+            {
+                throw new NamingFormatException("Daily episode format cannot be empty");
+            }
+
+            if (namingConfig.AnimeEpisodeFormat.IsNullOrWhiteSpace() && series.SeriesType == SeriesTypes.Anime)
+            {
+                throw new NamingFormatException("Anime episode format cannot be empty");
+            }*/
+
+            /*var pattern = namingConfig.StandardEpisodeFormat;
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            episodes = episodes.OrderBy(e => e.SeasonNumber).ThenBy(e => e.EpisodeNumber).ToList();
+
+            if (series.SeriesType == SeriesTypes.Daily)
+            {
+                pattern = namingConfig.DailyEpisodeFormat;
+            }
+
+            if (series.SeriesType == SeriesTypes.Anime && episodes.All(e => e.AbsoluteEpisodeNumber.HasValue))
+            {
+                pattern = namingConfig.AnimeEpisodeFormat;
+            }
+
+            pattern = AddSeasonEpisodeNumberingTokens(pattern, tokenHandlers, episodes, namingConfig);
+            pattern = AddAbsoluteNumberingTokens(pattern, tokenHandlers, series, episodes, namingConfig);
+
+            AddSeriesTokens(tokenHandlers, series);
+            AddEpisodeTokens(tokenHandlers, episodes);
+            AddEpisodeFileTokens(tokenHandlers, episodeFile);
+            AddQualityTokens(tokenHandlers, series, episodeFile);
+            AddMediaInfoTokens(tokenHandlers, episodeFile);
+
+            var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
+            fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
+            fileName = TrimSeparatorsRegex.Replace(fileName, string.Empty);*/
+
+            //TODO: Update namingConfig for Movies!
+
+            return GetOriginalTitle(movieFile);
+        }
+
         public string BuildFilePath(Series series, int seasonNumber, string fileName, string extension)
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
             var path = BuildSeasonPath(series, seasonNumber);
+
+            return Path.Combine(path, fileName + extension);
+        }
+
+        public string BuildFilePath(Movie movie, string fileName, string extension)
+        {
+            Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
+
+            var path = movie.Path;
 
             return Path.Combine(path, fileName + extension);
         }
@@ -246,7 +317,7 @@ namespace NzbDrone.Core.Organizer
 
         public string GetMovieFolder(Movie movie)
         {
-            return CleanFolderName(Parser.Parser.CleanSeriesTitle(movie.Title));
+            return CleanFolderName(movie.Title);
         }
 
         public static string CleanTitle(string title)
@@ -766,6 +837,26 @@ namespace NzbDrone.Core.Organizer
         }
 
         private string GetOriginalFileName(EpisodeFile episodeFile)
+        {
+            if (episodeFile.RelativePath.IsNullOrWhiteSpace())
+            {
+                return Path.GetFileNameWithoutExtension(episodeFile.Path);
+            }
+
+            return Path.GetFileNameWithoutExtension(episodeFile.RelativePath);
+        }
+
+        private string GetOriginalTitle(MovieFile episodeFile)
+        {
+            if (episodeFile.SceneName.IsNullOrWhiteSpace())
+            {
+                return GetOriginalFileName(episodeFile);
+            }
+
+            return episodeFile.SceneName;
+        }
+
+        private string GetOriginalFileName(MovieFile episodeFile)
         {
             if (episodeFile.RelativePath.IsNullOrWhiteSpace())
             {

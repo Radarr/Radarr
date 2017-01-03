@@ -40,7 +40,7 @@ namespace NzbDrone.Automation.Test
             _runner.KillAll();
             _runner.Start();
 
-            driver.Url = "http://localhost:8989";
+            driver.Url = "http://localhost:7878";
 
             var page = new PageBase(driver);
             page.WaitForNoSpinner();

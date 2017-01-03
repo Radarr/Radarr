@@ -2,7 +2,11 @@
     <div class="row">
         <div class="col-md-2">
             <a href="{{imdbUrl}}" target="_blank">
+              {{#if remotePoster}}
+                {{remotePoster}}
+              {{else}}
                 {{poster}}
+              {{/if}}
             </a>
         </div>
         <div class="col-md-10">
@@ -74,7 +78,7 @@
                                 <i class="icon-sonarr-add"></i>
                             </button>
 
-                            <button class="btn btn-success add x-add-search" title="Add and Search for missing episodes">
+                            <button class="btn btn-success add x-add-search" title="Add and Search for movie">
                                 <i class="icon-sonarr-search"></i>
                             </button>
                         </div>

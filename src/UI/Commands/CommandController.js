@@ -86,7 +86,7 @@ var singleton = function() {
                     }
                 }
             });
-
+            console.warn(options)
             options.element.startSpin();
         }
     };

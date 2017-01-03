@@ -153,14 +153,14 @@ var view = Marionette.ItemView.extend({
     },
 
     _addWithoutSearch : function() {
-        this._addMovies(true);
+        this._addMovies(false);
     },
 
     _addAndSearch : function() {
         this._addMovies(true);
     },
 
-    _addMovies : function(searchForMissingEpisodes) {
+    _addMovies : function(searchForMovie) {
         var addButton = this.ui.addButton;
         var addSearchButton = this.ui.addSearchButton;
 
@@ -171,7 +171,8 @@ var view = Marionette.ItemView.extend({
         var rootFolderPath = this.ui.rootFolder.children(':selected').text();
 
         var options = this._getAddMoviesOptions();
-        options.searchForMissingEpisodes = searchForMissingEpisodes;
+        options.searchForMovie = searchForMovie;
+        console.warn(searchForMovie);
 
         this.model.set({
             profileId      : profile,
@@ -186,7 +187,7 @@ var view = Marionette.ItemView.extend({
         console.log(this.model.save);
         console.log(promise);
 
-        if (searchForMissingEpisodes) {
+        if (searchForMovie) {
             this.ui.addSearchButton.spinForPromise(promise);
         }
 

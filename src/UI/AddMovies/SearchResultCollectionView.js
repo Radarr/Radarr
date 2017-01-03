@@ -21,6 +21,18 @@ module.exports = Marionette.CollectionView.extend({
         return this.showing >= this.collection.length;
     },
 
+    setExisting : function(imdbid) {
+        var movies = this.collection.where({ imdbId : imdbid });
+        console.warn(movies)
+        //debugger;
+        if (movies.length > 0) {
+            this.children.findByModel(movies[0])._configureTemplateHelpers();
+            //this.children.findByModel(movies[0])._configureTemplateHelpers();
+            this.children.findByModel(movies[0]).render();
+            //this.templateHelpers.existing = existingMovies[0].toJSON();
+        }
+    },
+
     appendHtml : function(collectionView, itemView, index) {
         if (!this.isExisting || index < this.showing || index === 0) {
             collectionView.$el.append(itemView.el);

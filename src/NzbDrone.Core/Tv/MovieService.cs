@@ -10,6 +10,8 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.Events;
 
 namespace NzbDrone.Core.Tv
 {
@@ -22,14 +24,17 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title);
+        Movie GetMovieByFileId(int fileId);
         void DeleteMovie(int movieId, bool deleteFiles);
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie);
         bool MoviePathExists(string folder);
+        void RemoveAddOptions(Movie movie);
     }
 
-    public class MovieService : IMovieService
+    public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
+                                               IHandle<MovieFileDeletedEvent>
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IEventAggregator _eventAggregator;
@@ -190,5 +195,28 @@ namespace NzbDrone.Core.Tv
             return _movieRepository.MoviePathExists(folder);
         }
 
+        public void RemoveAddOptions(Movie movie)
+        {
+            _movieRepository.SetFields(movie, s => s.AddOptions);
+        }
+
+        public void Handle(MovieFileAddedEvent message)
+        {
+            _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
+            _logger.Debug("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
+        }
+
+        public void Handle(MovieFileDeletedEvent message)
+        {
+            var movie = _movieRepository.GetMoviesByFileId(message.MovieFile.Id).First();
+            movie.MovieFileId = 0;
+
+            UpdateMovie(movie);
+        }
+
+        public Movie GetMovieByFileId(int fileId)
+        {
+            return _movieRepository.GetMoviesByFileId(fileId).First();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
     public interface IDetectSample
     {
         bool IsSample(Series series, QualityModel quality, string path, long size, bool isSpecial);
+        bool IsSample(Movie movie, QualityModel quality, string path, long size, bool isSpecial);
     }
 
     public class DetectSample : IDetectSample
@@ -79,6 +80,57 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return false;
         }
 
+        public bool IsSample(Movie movie, QualityModel quality, string path, long size, bool isSpecial)
+        {
+            if (isSpecial)
+            {
+                _logger.Debug("Special, skipping sample check");
+                return false;
+            }
+
+            var extension = Path.GetExtension(path);
+
+            if (extension != null && extension.Equals(".flv", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _logger.Debug("Skipping sample check for .flv file");
+                return false;
+            }
+
+            if (extension != null && extension.Equals(".strm", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _logger.Debug("Skipping sample check for .strm file");
+                return false;
+            }
+
+            try
+            {
+                var runTime = _videoFileInfoReader.GetRunTime(path);
+                var minimumRuntime = GetMinimumAllowedRuntime(movie);
+
+                if (runTime.TotalMinutes.Equals(0))
+                {
+                    _logger.Error("[{0}] has a runtime of 0, is it a valid video file?", path);
+                    return true;
+                }
+
+                if (runTime.TotalSeconds < minimumRuntime)
+                {
+                    _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime, minimumRuntime);
+                    return true;
+                }
+            }
+
+            catch (DllNotFoundException)
+            {
+                _logger.Debug("Falling back to file size detection");
+
+                return CheckSize(size, quality);
+            }
+
+            _logger.Debug("Runtime is over 90 seconds");
+            return false;
+        }
+
         private bool CheckSize(long size, QualityModel quality)
         {
             if (_largeSampleSizeQualities.Contains(quality.Quality))
@@ -97,6 +149,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }
 
             return false;
+        }
+
+        private int GetMinimumAllowedRuntime(Movie movie)
+        {
+            return 120; //2 minutes
         }
 
         private int GetMinimumAllowedRuntime(Series series)

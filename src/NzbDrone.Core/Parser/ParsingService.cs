@@ -15,7 +15,10 @@ namespace NzbDrone.Core.Parser
     {
         LocalEpisode GetLocalEpisode(string filename, Series series);
         LocalEpisode GetLocalEpisode(string filename, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
+        LocalMovie GetLocalMovie(string filename, Movie movie);
+        LocalMovie GetLocalMovie(string filename, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource);
         Series GetSeries(string title);
+        Movie GetMovie(string title);
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int seriesId, IEnumerable<int> episodeIds);
         RemoteMovie Map(ParsedEpisodeInfo parsedEpisodeInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
@@ -98,13 +101,53 @@ namespace NzbDrone.Core.Parser
             };
         }
 
+        public LocalMovie GetLocalMovie(string filename, Movie movie)
+        {
+            return GetLocalMovie(filename, movie, null, false);
+        }
+
+        public LocalMovie GetLocalMovie(string filename, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        {
+            ParsedEpisodeInfo parsedEpisodeInfo;
+
+            if (folderInfo != null)
+            {
+                parsedEpisodeInfo = folderInfo.JsonClone();
+                parsedEpisodeInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
+            }
+
+            else
+            {
+                parsedEpisodeInfo = Parser.ParsePath(filename);
+            }
+
+            if (parsedEpisodeInfo == null)
+            {
+                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
+                {
+                    _logger.Warn("Unable to parse episode info from path {0}", filename);
+                }
+
+                return null;
+            }
+
+            return new LocalMovie
+            {
+                Movie = movie,
+                Quality = parsedEpisodeInfo.Quality,
+                Path = filename,
+                ParsedEpisodeInfo = parsedEpisodeInfo,
+                ExistingFile = movie.Path.IsParentPath(filename)
+            };
+        }
+
         public Series GetSeries(string title)
         {
             var parsedEpisodeInfo = Parser.ParseTitle(title);
 
             if (parsedEpisodeInfo == null)
             {
-                return _seriesService.FindByTitle(title); //Here we have a problem since it is not possible for movies to find a scene mapping, so these releases are always rejected :(
+                return _seriesService.FindByTitle(title);
             }
 
             var series = _seriesService.FindByTitle(parsedEpisodeInfo.SeriesTitle);
@@ -112,6 +155,26 @@ namespace NzbDrone.Core.Parser
             if (series == null)
             {
                 series = _seriesService.FindByTitle(parsedEpisodeInfo.SeriesTitleInfo.TitleWithoutYear,
+                                                    parsedEpisodeInfo.SeriesTitleInfo.Year);
+            }
+
+            return series;
+        }
+
+        public Movie GetMovie(string title)
+        {
+            var parsedEpisodeInfo = Parser.ParseTitle(title);
+
+            if (parsedEpisodeInfo == null)
+            {
+                return _movieService.FindByTitle(title);
+            }
+
+            var series = _movieService.FindByTitle(parsedEpisodeInfo.SeriesTitle);
+
+            if (series == null)
+            {
+                series = _movieService.FindByTitle(parsedEpisodeInfo.SeriesTitleInfo.TitleWithoutYear,
                                                     parsedEpisodeInfo.SeriesTitleInfo.Year);
             }
 

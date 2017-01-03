@@ -344,7 +344,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public void Handle(MovieGrabbedEvent message)
         {
-
+            //RemoveGrabbed(message.Movie);
         }
 
         public void Handle(RssSyncCompleteEvent message)

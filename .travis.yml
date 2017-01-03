@@ -7,3 +7,6 @@ script:    # the following commands are just examples, use whatever your build p
 install:
   - sudo apt-get install nodejs
   - sudo apt-get install npm
+after_success:
+  - chmod +x package.sh
+  - ./package.sh

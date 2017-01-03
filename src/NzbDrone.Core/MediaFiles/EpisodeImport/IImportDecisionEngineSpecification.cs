@@ -6,5 +6,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
     public interface IImportDecisionEngineSpecification
     {
         Decision IsSatisfiedBy(LocalEpisode localEpisode);
+
+        Decision IsSatisfiedBy(LocalMovie localMovie);
     }
 }

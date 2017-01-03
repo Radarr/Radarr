@@ -127,6 +127,9 @@ bin
 obj
 output/*
 
+#Packages
+Radarr_*/
+Radarr_*.zip
 
 #OS X metadata files
 ._*

@@ -4,6 +4,7 @@ using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -40,11 +41,18 @@ namespace NzbDrone.Core.Tv
         public DateTime? InCinemas { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public HashSet<int> Tags { get; set; }
-//        public AddMovieOptions AddOptions { get; set; }
+        public AddMovieOptions AddOptions { get; set; }
+        public LazyLoaded<MovieFile> MovieFile { get; set; }
+        public int MovieFileId { get; set; }
 
         public override string ToString()
         {
             return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());
         }
+    }
+
+    public class AddMovieOptions : MonitoringOptions
+    {
+        public bool SearchForMovie { get; set; }
     }
 }

@@ -37,5 +37,27 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
 
             return Decision.Accept();
         }
+
+        public Decision IsSatisfiedBy(LocalMovie localEpisode)
+        {
+            if (localEpisode.ExistingFile)
+            {
+                _logger.Debug("Existing file, skipping sample check");
+                return Decision.Accept();
+            }
+
+            var sample = _detectSample.IsSample(localEpisode.Movie,
+                                                localEpisode.Quality,
+                                                localEpisode.Path,
+                                                localEpisode.Size,
+                                                false);
+
+            if (sample)
+            {
+                return Decision.Reject("Sample");
+            }
+
+            return Decision.Accept();
+        }
     }
 }

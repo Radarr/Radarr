@@ -7,16 +7,20 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Common;
+using System;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileService
     {
+        MovieFile Add(MovieFile episodeFile);
+        void Update(MovieFile episodeFile);
+        void Delete(MovieFile episodeFile, DeleteMediaFileReason reason);
         EpisodeFile Add(EpisodeFile episodeFile);
         void Update(EpisodeFile episodeFile);
         void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason);
         List<EpisodeFile> GetFilesBySeries(int seriesId);
-        List<EpisodeFile> GetFilesByMovie(int movieId);
+        List<MovieFile> GetFilesByMovie(int movieId);
         List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber);
         List<EpisodeFile> GetFilesWithoutMediaInfo();
         List<string> FilterExistingFiles(List<string> files, Series series);
@@ -30,12 +34,14 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
+        private readonly IMovieFileRepository _movieFileRepository;
         private readonly Logger _logger;
 
-        public MediaFileService(IMediaFileRepository mediaFileRepository, IEventAggregator eventAggregator, Logger logger)
+        public MediaFileService(IMediaFileRepository mediaFileRepository, IMovieFileRepository movieFileRepository, IEventAggregator eventAggregator, Logger logger)
         {
             _mediaFileRepository = mediaFileRepository;
             _eventAggregator = eventAggregator;
+            _movieFileRepository = movieFileRepository;
             _logger = logger;
         }
 
@@ -61,14 +67,24 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator.PublishEvent(new EpisodeFileDeletedEvent(episodeFile, reason));
         }
 
+        public void Delete(MovieFile episodeFile, DeleteMediaFileReason reason)
+        {
+            //Little hack so we have the episodes and series attached for the event consumers
+            episodeFile.Movie.LazyLoad();
+            episodeFile.Path = Path.Combine(episodeFile.Movie.Value.Path, episodeFile.RelativePath);
+
+            _movieFileRepository.Delete(episodeFile);
+            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(episodeFile, reason));
+        }
+
         public List<EpisodeFile> GetFilesBySeries(int seriesId)
         {
             return _mediaFileRepository.GetFilesBySeries(seriesId);
         }
 
-        public List<EpisodeFile> GetFilesByMovie(int movieId)
+        public List<MovieFile> GetFilesByMovie(int movieId)
         {
-            return _mediaFileRepository.GetFilesBySeries(movieId); //TODO: Update implementation for movie files.
+            return _movieFileRepository.GetFilesByMovie(movieId); //TODO: Update implementation for movie files.
         }
 
         public List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber)
@@ -114,5 +130,18 @@ namespace NzbDrone.Core.MediaFiles
             var files = GetFilesBySeries(message.Series.Id);
             _mediaFileRepository.DeleteMany(files);
         }
+
+        public MovieFile Add(MovieFile episodeFile)
+        {
+            var addedFile = _movieFileRepository.Insert(episodeFile);
+            _eventAggregator.PublishEvent(new MovieFileAddedEvent(addedFile));
+            return addedFile;
+        }
+
+        public void Update(MovieFile episodeFile)
+        {
+            _movieFileRepository.Update(episodeFile);
+        }
+
     }
 }
