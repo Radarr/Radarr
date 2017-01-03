@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
@@ -11,6 +12,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
         public UnverifiedSceneNumberingSpecification(Logger logger)
         {
             _logger = logger;
+        }
+
+        public Decision IsSatisfiedBy(LocalMovie localMovie)
+        {
+            return Decision.Accept();
         }
 
         public Decision IsSatisfiedBy(LocalEpisode localEpisode)

@@ -22,9 +22,9 @@ rm $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr
 chmod +x $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr2
 mv $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr2 $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr >& error.log
 
-cp -r $outputFolder Radarr_Windows_$VERSION
-cp -r $outputFolderMono Radarr_Mono_$VERSION
-cp -r $outputFolderOsxApp Radarr_OSX_$VERSION
+cp -r $outputFolder/ Radarr_Windows_$VERSION
+cp -r $outputFolderMono/ Radarr_Mono_$VERSION
+cp -r $outputFolderOsxApp/ Radarr_OSX_$VERSION
 
 zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION >& /dev/null
 zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION >& /dev/null

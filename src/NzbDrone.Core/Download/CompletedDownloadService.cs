@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Download
         private readonly IEventAggregator _eventAggregator;
         private readonly IHistoryService _historyService;
         private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
+        private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
@@ -36,6 +37,7 @@ namespace NzbDrone.Core.Download
                                         IEventAggregator eventAggregator,
                                         IHistoryService historyService,
                                         IDownloadedEpisodesImportService downloadedEpisodesImportService,
+                                        IDownloadedMovieImportService downloadedMovieImportService,
                                         IParsingService parsingService,
                                         ISeriesService seriesService,
                                         IMovieService movieService,
@@ -45,6 +47,7 @@ namespace NzbDrone.Core.Download
             _eventAggregator = eventAggregator;
             _historyService = historyService;
             _downloadedEpisodesImportService = downloadedEpisodesImportService;
+            _downloadedMovieImportService = downloadedMovieImportService;
             _parsingService = parsingService;
             _movieService = movieService;
             _logger = logger;
@@ -64,7 +67,7 @@ namespace NzbDrone.Core.Download
 
                 if (historyItem == null && trackedDownload.DownloadItem.Category.IsNullOrWhiteSpace())
                 {
-                    trackedDownload.Warn("Download wasn't grabbed by Sonarr and not in a category, Skipping.");
+                    trackedDownload.Warn("Download wasn't grabbed by Radarr and not in a category, Skipping.");
                     return;
                 }
 
@@ -126,29 +129,59 @@ namespace NzbDrone.Core.Download
         private void Import(TrackedDownload trackedDownload)
         {
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
-            var importResults = _downloadedEpisodesImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
-
-            if (importResults.Empty())
+            if (trackedDownload.RemoteMovie.Movie != null)
             {
-                trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
-                return;
+                var importResults = _downloadedMovieImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteMovie.Movie, trackedDownload.DownloadItem);
+
+                if (importResults.Empty())
+                {
+                    trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+                    return;
+                }
+
+                if (importResults.Count(c => c.Result == ImportResultType.Imported) >= 1)
+                {
+                    trackedDownload.State = TrackedDownloadStage.Imported;
+                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                    return;
+                }
+
+                if (importResults.Any(c => c.Result != ImportResultType.Imported))
+                {
+                    var statusMessages = importResults
+                        .Where(v => v.Result != ImportResultType.Imported)
+                        .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalEpisode.Path), v.Errors))
+                        .ToArray();
+
+                    trackedDownload.Warn(statusMessages);
+                }
             }
-
-            if (importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteEpisode.Episodes.Count))
+            else
             {
-                trackedDownload.State = TrackedDownloadStage.Imported;
-                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
-                return;
-            }
+                var importResults = _downloadedEpisodesImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
 
-            if (importResults.Any(c => c.Result != ImportResultType.Imported))
-            {
-                var statusMessages = importResults
-                    .Where(v => v.Result != ImportResultType.Imported)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalEpisode.Path), v.Errors))
-                    .ToArray();
+                if (importResults.Empty())
+                {
+                    trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+                    return;
+                }
 
-                trackedDownload.Warn(statusMessages);
+                if (importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteEpisode.Episodes.Count))
+                {
+                    trackedDownload.State = TrackedDownloadStage.Imported;
+                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                    return;
+                }
+
+                if (importResults.Any(c => c.Result != ImportResultType.Imported))
+                {
+                    var statusMessages = importResults
+                        .Where(v => v.Result != ImportResultType.Imported)
+                        .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalEpisode.Path), v.Errors))
+                        .ToArray();
+
+                    trackedDownload.Warn(statusMessages);
+                }
             }
 
         }

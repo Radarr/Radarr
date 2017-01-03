@@ -15,6 +15,8 @@ namespace NzbDrone.Core.Parser
     {
         LocalEpisode GetLocalEpisode(string filename, Series series);
         LocalEpisode GetLocalEpisode(string filename, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
+        LocalMovie GetLocalMovie(string filename, Movie movie);
+        LocalMovie GetLocalMovie(string filename, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource);
         Series GetSeries(string title);
         Movie GetMovie(string title);
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
@@ -96,6 +98,46 @@ namespace NzbDrone.Core.Parser
                 Path = filename,
                 ParsedEpisodeInfo = parsedEpisodeInfo,
                 ExistingFile = series.Path.IsParentPath(filename)
+            };
+        }
+
+        public LocalMovie GetLocalMovie(string filename, Movie movie)
+        {
+            return GetLocalMovie(filename, movie, null, false);
+        }
+
+        public LocalMovie GetLocalMovie(string filename, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        {
+            ParsedEpisodeInfo parsedEpisodeInfo;
+
+            if (folderInfo != null)
+            {
+                parsedEpisodeInfo = folderInfo.JsonClone();
+                parsedEpisodeInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
+            }
+
+            else
+            {
+                parsedEpisodeInfo = Parser.ParsePath(filename);
+            }
+
+            if (parsedEpisodeInfo == null)
+            {
+                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
+                {
+                    _logger.Warn("Unable to parse episode info from path {0}", filename);
+                }
+
+                return null;
+            }
+
+            return new LocalMovie
+            {
+                Movie = movie,
+                Quality = parsedEpisodeInfo.Quality,
+                Path = filename,
+                ParsedEpisodeInfo = parsedEpisodeInfo,
+                ExistingFile = movie.Path.IsParentPath(filename)
             };
         }
 

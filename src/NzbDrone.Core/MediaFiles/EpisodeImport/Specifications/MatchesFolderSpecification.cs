@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
@@ -14,6 +15,37 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
         {
             _logger = logger;
         }
+
+        public Decision IsSatisfiedBy(LocalMovie localMovie)
+        {
+            if (localMovie.ExistingFile)
+            {
+                return Decision.Accept();
+            }
+
+            var dirInfo = new FileInfo(localMovie.Path).Directory;
+
+            if (dirInfo == null)
+            {
+                return Decision.Accept();
+            }
+
+            var folderInfo = Parser.Parser.ParseTitle(dirInfo.Name);
+
+            if (folderInfo == null)
+            {
+                return Decision.Accept();
+            }
+
+            if (folderInfo.FullSeason)
+            {
+                return Decision.Accept();
+            }
+
+            return Decision.Accept();
+        }
+    
+
         public Decision IsSatisfiedBy(LocalEpisode localEpisode)
         {
             if (localEpisode.ExistingFile)

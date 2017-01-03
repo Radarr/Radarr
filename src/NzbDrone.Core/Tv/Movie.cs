@@ -4,6 +4,7 @@ using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -41,6 +42,8 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<Profile> Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
+        public LazyLoaded<MovieFile> MovieFile { get; set; }
+        public int MovieFileId { get; set; }
 
         public override string ToString()
         {

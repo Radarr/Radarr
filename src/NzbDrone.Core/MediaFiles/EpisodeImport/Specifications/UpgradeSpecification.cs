@@ -26,5 +26,10 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
 
             return Decision.Accept();
         }
+
+        public Decision IsSatisfiedBy(LocalMovie localEpisode)
+        {
+            return Decision.Accept();
+        }
     }
 }

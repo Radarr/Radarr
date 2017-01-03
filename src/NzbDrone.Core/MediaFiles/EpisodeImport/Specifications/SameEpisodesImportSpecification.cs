@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
@@ -26,6 +27,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
 
             _logger.Debug("Episode file on disk contains more episodes than this file contains");
             return Decision.Reject("Episode file on disk contains more episodes than this file contains");
+        }
+
+        public Decision IsSatisfiedBy(LocalMovie localMovie)
+        {
+            return Decision.Accept();
         }
     }
 }

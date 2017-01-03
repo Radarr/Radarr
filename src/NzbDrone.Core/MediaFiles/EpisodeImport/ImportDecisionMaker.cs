@@ -98,36 +98,32 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         {
             ImportDecision decision = null;
 
-            /*try
+            try
             {
-                var localEpisode = _parsingService.GetLocalEpisode(file, movie, shouldUseFolderName ? folderInfo : null, sceneSource);
+                var localMovie = _parsingService.GetLocalMovie(file, movie, shouldUseFolderName ? folderInfo : null, sceneSource);
 
-                if (localEpisode != null)
+                if (localMovie != null)
                 {
-                    localEpisode.Quality = GetQuality(folderInfo, localEpisode.Quality, movie);
-                    localEpisode.Size = _diskProvider.GetFileSize(file);
+                    localMovie.Quality = GetQuality(folderInfo, localMovie.Quality, movie);
+                    localMovie.Size = _diskProvider.GetFileSize(file);
 
-                    _logger.Debug("Size: {0}", localEpisode.Size);
+                    _logger.Debug("Size: {0}", localMovie.Size);
 
                     //TODO: make it so media info doesn't ruin the import process of a new series
                     if (sceneSource)
                     {
-                        localEpisode.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
-                    }
-
-                    if (localEpisode.Episodes.Empty())
-                    {
-                        decision = new ImportDecision(localEpisode, new Rejection("Invalid season or episode"));
+                        localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
+                        decision = GetDecision(localMovie);
                     }
                     else
                     {
-                        decision = GetDecision(localEpisode);
+                        decision = GetDecision(localMovie);
                     }
                 }
 
                 else
                 {
-                    localEpisode = new LocalEpisode();
+                    var localEpisode = new LocalEpisode();
                     localEpisode.Path = file;
 
                     decision = new ImportDecision(localEpisode, new Rejection("Unable to parse file"));
@@ -139,11 +135,21 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                 var localEpisode = new LocalEpisode { Path = file };
                 decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
-            }*/
+            }
 
-            decision = new ImportDecision(null, new Rejection("IMPLEMENTATION MISSING!!!"));
+            //LocalMovie nullMovie = null;
+
+            //decision = new ImportDecision(nullMovie, new Rejection("IMPLEMENTATION MISSING!!!"));
 
             return decision;
+        }
+
+        private ImportDecision GetDecision(LocalMovie localMovie)
+        {
+            var reasons = _specifications.Select(c => EvaluateSpec(c, localMovie))
+                                         .Where(c => c != null);
+
+            return new ImportDecision(localMovie, reasons.ToArray());
         }
 
         private ImportDecision GetDecision(string file, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
@@ -202,6 +208,33 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                                          .Where(c => c != null);
 
             return new ImportDecision(localEpisode, reasons.ToArray());
+        }
+
+        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalMovie localMovie)
+        {
+            try
+            {
+                var result = spec.IsSatisfiedBy(localMovie);
+
+                if (!result.Accepted)
+                {
+                    return new Rejection(result.Reason);
+                }
+            }
+            catch (NotImplementedException e)
+            {
+                _logger.Warn(e, "Spec " + spec.ToString() + " currently does not implement evaluation for movies.");
+                return null;
+            }
+            catch (Exception e)
+            {
+                //e.Data.Add("report", remoteEpisode.Report.ToJson());
+                //e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
+                _logger.Error(e, "Couldn't evaluate decision on " + localMovie.Path);
+                return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));
+            }
+
+            return null;
         }
 
         private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalEpisode localEpisode)
@@ -292,6 +325,17 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }) == 1;
         }
 
+        private QualityModel GetQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Movie movie)
+        {
+            if (UseFolderQuality(folderInfo, fileQuality, movie))
+            {
+                _logger.Debug("Using quality from folder: {0}", folderInfo.Quality);
+                return folderInfo.Quality;
+            }
+
+            return fileQuality;
+        }
+
         private QualityModel GetQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Series series)
         {
             if (UseFolderQuality(folderInfo, fileQuality, series))
@@ -301,6 +345,31 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }
 
             return fileQuality;
+        }
+
+        private bool UseFolderQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Movie movie)
+        {
+            if (folderInfo == null)
+            {
+                return false;
+            }
+
+            if (folderInfo.Quality.Quality == Quality.Unknown)
+            {
+                return false;
+            }
+
+            if (fileQuality.QualitySource == QualitySource.Extension)
+            {
+                return true;
+            }
+
+            if (new QualityModelComparer(movie.Profile).Compare(folderInfo.Quality, fileQuality) > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool UseFolderQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Series series)
