@@ -44,6 +44,21 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             return response;
         }
 
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
+        {
+            var category = Settings.TvCategory; //could update this to MovieCategory
+            var priority = Settings.RecentTvPriority;
+
+            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
+
+            if(response == null)
+            {
+                throw new DownloadClientException("Failed to add nzb {0}", filename);
+            }
+
+            return response;
+        }
+
         private IEnumerable<DownloadClientItem> GetQueue()
         {
             NzbgetGlobalStatus globalStatus;
@@ -72,13 +87,14 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
                 var droneParameter = item.Parameters.SingleOrDefault(p => p.Name == "drone");
 
-                var queueItem = new DownloadClientItem();
-                queueItem.DownloadId = droneParameter == null ? item.NzbId.ToString() : droneParameter.Value.ToString();
-                queueItem.Title = item.NzbName;
-                queueItem.TotalSize = totalSize;
-                queueItem.Category = item.Category;
-                queueItem.DownloadClient = Definition.Name;
-
+                var queueItem = new DownloadClientItem()
+                {
+                    DownloadId = droneParameter == null ? item.NzbId.ToString() : droneParameter.Value.ToString(),
+                    Title = item.NzbName,
+                    TotalSize = totalSize,
+                    Category = item.Category,
+                    DownloadClient = Definition.Name
+                };
                 if (globalStatus.DownloadPaused || remainingSize == pausedSize && remainingSize != 0)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
@@ -131,17 +147,18 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             {
                 var droneParameter = item.Parameters.SingleOrDefault(p => p.Name == "drone");
 
-                var historyItem = new DownloadClientItem();
-                historyItem.DownloadClient = Definition.Name;
-                historyItem.DownloadId = droneParameter == null ? item.Id.ToString() : droneParameter.Value.ToString();
-                historyItem.Title = item.Name;
-                historyItem.TotalSize = MakeInt64(item.FileSizeHi, item.FileSizeLo);
-                historyItem.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(item.DestDir));
-                historyItem.Category = item.Category;
-                historyItem.Message = string.Format("PAR Status: {0} - Unpack Status: {1} - Move Status: {2} - Script Status: {3} - Delete Status: {4} - Mark Status: {5}", item.ParStatus, item.UnpackStatus, item.MoveStatus, item.ScriptStatus, item.DeleteStatus, item.MarkStatus);
-                historyItem.Status = DownloadItemStatus.Completed;
-                historyItem.RemainingTime = TimeSpan.Zero;
-
+                var historyItem = new DownloadClientItem()
+                {
+                    DownloadClient = Definition.Name,
+                    DownloadId = droneParameter == null ? item.Id.ToString() : droneParameter.Value.ToString(),
+                    Title = item.Name,
+                    TotalSize = MakeInt64(item.FileSizeHi, item.FileSizeLo),
+                    OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(item.DestDir)),
+                    Category = item.Category,
+                    Message = string.Format("PAR Status: {0} - Unpack Status: {1} - Move Status: {2} - Script Status: {3} - Delete Status: {4} - Mark Status: {5}", item.ParStatus, item.UnpackStatus, item.MoveStatus, item.ScriptStatus, item.DeleteStatus, item.MarkStatus),
+                    Status = DownloadItemStatus.Completed,
+                    RemainingTime = TimeSpan.Zero
+                };
                 if (item.DeleteStatus == "MANUAL")
                 {
                     continue;
