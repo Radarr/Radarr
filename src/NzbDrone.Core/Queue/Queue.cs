@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Queue
     {
         public Series Series { get; set; }
         public Episode Episode { get; set; }
+        public Movie Movie { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.Queue
         public List<TrackedDownloadStatusMessage> StatusMessages { get; set; }
         public string DownloadId { get; set; }
         public RemoteEpisode RemoteEpisode { get; set; }
+        public RemoteMovie RemoteMovie { get; set; }
         public DownloadProtocol Protocol { get; set; }
     }
 }

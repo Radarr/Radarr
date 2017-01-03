@@ -51,10 +51,40 @@ namespace NzbDrone.Core.Queue
                     yield return MapEpisode(trackedDownload, episode);
                 }
             }
-            else
+            else if (trackedDownload.RemoteMovie.Movie != null)
             {
-                // FIXME: Present queue items with unknown series/episodes
+                yield return MapMovie(trackedDownload, trackedDownload.RemoteMovie.Movie);
             }
+        }
+
+        private Queue MapMovie(TrackedDownload trackedDownload, Movie movie)
+        {
+            var queue = new Queue
+            {
+                Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}", trackedDownload.DownloadItem.DownloadId)),
+                Series = null,
+                Episode = null,
+                Quality = trackedDownload.RemoteMovie.ParsedEpisodeInfo.Quality,
+                Title = trackedDownload.DownloadItem.Title,
+                Size = trackedDownload.DownloadItem.TotalSize,
+                Sizeleft = trackedDownload.DownloadItem.RemainingSize,
+                Timeleft = trackedDownload.DownloadItem.RemainingTime,
+                Status = trackedDownload.DownloadItem.Status.ToString(),
+                TrackedDownloadStatus = trackedDownload.Status.ToString(),
+                StatusMessages = trackedDownload.StatusMessages.ToList(),
+                RemoteEpisode = trackedDownload.RemoteEpisode,
+                RemoteMovie = trackedDownload.RemoteMovie,
+                DownloadId = trackedDownload.DownloadItem.DownloadId,
+                Protocol = trackedDownload.Protocol,
+                Movie = movie
+            };
+
+            if (queue.Timeleft.HasValue)
+            {
+                queue.EstimatedCompletionTime = DateTime.UtcNow.Add(queue.Timeleft.Value);
+            }
+
+            return queue;
         }
 
         private Queue MapEpisode(TrackedDownload trackedDownload, Episode episode)

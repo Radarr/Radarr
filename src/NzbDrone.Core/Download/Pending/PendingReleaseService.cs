@@ -33,6 +33,7 @@ namespace NzbDrone.Core.Download.Pending
     public class PendingReleaseService : IPendingReleaseService,
                                          IHandle<SeriesDeletedEvent>,
                                          IHandle<EpisodeGrabbedEvent>,
+                                         IHandle<MovieGrabbedEvent>,
                                          IHandle<RssSyncCompleteEvent>
     {
         private readonly IIndexerStatusService _indexerStatusService;
@@ -339,6 +340,11 @@ namespace NzbDrone.Core.Download.Pending
         public void Handle(EpisodeGrabbedEvent message)
         {
             RemoveGrabbed(message.Episode);
+        }
+
+        public void Handle(MovieGrabbedEvent message)
+        {
+
         }
 
         public void Handle(RssSyncCompleteEvent message)

@@ -104,7 +104,8 @@ namespace NzbDrone.Core.Datastore.Migration
                   .WithColumn("Quality").AsString()
                   .WithColumn("Indexer").AsString()
                   .WithColumn("NzbInfoUrl").AsString().Nullable()
-                  .WithColumn("ReleaseGroup").AsString().Nullable();
+                  .WithColumn("ReleaseGroup").AsString().Nullable()
+                  .WithColumn("MovieId").AsInt32().WithDefaultValue(0);
 
             Create.TableForModel("Notifications")
                   .WithColumn("Name").AsString()

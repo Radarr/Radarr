@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
@@ -16,6 +17,7 @@ namespace NzbDrone.Core.History
         List<History> FindByDownloadId(string downloadId);
         List<History> FindDownloadHistory(int idSeriesId, QualityModel quality);
         void DeleteForSeries(int seriesId);
+        History MostRecentForMovie(int movieId);
     }
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
@@ -71,10 +73,20 @@ namespace NzbDrone.Core.History
 
         protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)
         {
-            var baseQuery = query.Join<History, Series>(JoinType.Inner, h => h.Series, (h, s) => h.SeriesId == s.Id)
-                                 .Join<History, Episode>(JoinType.Inner, h => h.Episode, (h, e) => h.EpisodeId == e.Id);
+            var baseQuery = query/*.Join<History, Series>(JoinType.Inner, h => h.Series, (h, s) => h.SeriesId == s.Id)
+                                 .Join<History, Episode>(JoinType.Inner, h => h.Episode, (h, e) => h.EpisodeId == e.Id)*/
+                                 .Join<History, Movie>(JoinType.Inner, h => h.Movie, (h, e) => h.MovieId == e.Id);
+
+
 
             return base.GetPagedQuery(baseQuery, pagingSpec);
+        }
+
+        public History MostRecentForMovie(int movieId)
+        {
+            return Query.Where(h => h.MovieId == movieId)
+                        .OrderByDescending(h => h.Date)
+                        .FirstOrDefault();
         }
     }
 }

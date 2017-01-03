@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Download
     public interface IDownloadService
     {
         void DownloadReport(RemoteEpisode remoteEpisode);
+        void DownloadReport(RemoteMovie remoteMovie);
     }
 
 
@@ -81,6 +82,63 @@ namespace NzbDrone.Core.Download
             }
 
             var episodeGrabbedEvent = new EpisodeGrabbedEvent(remoteEpisode);
+            episodeGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
+
+            if (!string.IsNullOrWhiteSpace(downloadClientId))
+            {
+                episodeGrabbedEvent.DownloadId = downloadClientId;
+            }
+
+            _logger.ProgressInfo("Report sent to {0}. {1}", downloadClient.Definition.Name, downloadTitle);
+            _eventAggregator.PublishEvent(episodeGrabbedEvent);
+        }
+
+        public void DownloadReport(RemoteMovie remoteMovie)
+        {
+            //Ensure.That(remoteEpisode.Series, () => remoteEpisode.Series).IsNotNull();
+            //Ensure.That(remoteEpisode.Episodes, () => remoteEpisode.Episodes).HasItems(); TODO update this shit
+
+            var downloadTitle = remoteMovie.Release.Title;
+            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol);
+
+            if (downloadClient == null)
+            {
+                _logger.Warn("{0} Download client isn't configured yet.", remoteMovie.Release.DownloadProtocol);
+                return;
+            }
+
+            // Limit grabs to 2 per second.
+            if (remoteMovie.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteMovie.Release.DownloadUrl.StartsWith("magnet:"))
+            {
+                var url = new HttpUri(remoteMovie.Release.DownloadUrl);
+                _rateLimitService.WaitAndPulse(url.Host, TimeSpan.FromSeconds(2));
+            }
+
+            string downloadClientId = "";
+            try
+            {
+                downloadClientId = downloadClient.Download(remoteMovie);
+                _indexerStatusService.RecordSuccess(remoteMovie.Release.IndexerId);
+            }
+            catch (NotImplementedException ex)
+            {
+                _logger.Error(ex, "The download client you are using is currently not configured to download movies. Please choose another one.");
+            }
+            catch (ReleaseDownloadException ex)
+            {
+                var http429 = ex.InnerException as TooManyRequestsException;
+                if (http429 != null)
+                {
+                    _indexerStatusService.RecordFailure(remoteMovie.Release.IndexerId, http429.RetryAfter);
+                }
+                else
+                {
+                    _indexerStatusService.RecordFailure(remoteMovie.Release.IndexerId);
+                }
+                throw;
+            }
+
+            var episodeGrabbedEvent = new MovieGrabbedEvent(remoteMovie);
             episodeGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
 
             if (!string.IsNullOrWhiteSpace(downloadClientId))
