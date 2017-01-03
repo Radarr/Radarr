@@ -26,7 +26,7 @@ zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION >& /dev/null
 zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION >& /dev/null
 zip -r Radarr_OSX_$VERSION.zip Radarr_OSX_$VERSION >& /dev/null
 
-ftp -n ftp.leonardogalli.ch << END_SCRIPT
+ftp -p -n ftp.leonardogalli.ch << END_SCRIPT
 quote USER $FTP_USER
 quote PASS $FTP_PASS
 mkdir builds
