@@ -17,8 +17,7 @@ namespace NzbDrone.Core.Datastore.Migration
                   .WithColumn("SourceTitle").AsString()
                   .WithColumn("Date").AsDateTime()
                   .WithColumn("Quality").AsString()
-                  .WithColumn("Data").AsString()
-                  .WithColumn("MovieId").AsInt32().WithDefaultValue(0);
+                  .WithColumn("Data").AsString();
         }
     }
 }
