@@ -32,7 +32,7 @@ module.exports = Marionette.Layout.extend({
         edit      : '.x-edit',
         refresh   : '.x-refresh',
         rename    : '.x-rename',
-        search    : '.x-search',
+        searchAuto    : '.x-search',
         poster    : '.x-movie-poster',
         manualSearch : '.x-manual-search',
         history   : '.x-movie-history',
@@ -86,8 +86,9 @@ module.exports = Marionette.Layout.extend({
                 name : 'refreshMovie'
             }
         });
+
         CommandController.bindToCommand({
-            element : this.ui.search,
+            element : this.ui.searchAuto,
             command : {
                 name : 'moviesSearch'
             }

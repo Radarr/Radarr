@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Download
         private readonly IHistoryService _historyService;
         private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
         private readonly IParsingService _parsingService;
+        private readonly IMovieService _movieService;
         private readonly Logger _logger;
         private readonly ISeriesService _seriesService;
 
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.Download
                                         IDownloadedEpisodesImportService downloadedEpisodesImportService,
                                         IParsingService parsingService,
                                         ISeriesService seriesService,
+                                        IMovieService movieService,
                                         Logger logger)
         {
             _configService = configService;
@@ -44,6 +46,7 @@ namespace NzbDrone.Core.Download
             _historyService = historyService;
             _downloadedEpisodesImportService = downloadedEpisodesImportService;
             _parsingService = parsingService;
+            _movieService = movieService;
             _logger = logger;
             _seriesService = seriesService;
         }
@@ -88,19 +91,31 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
+
                 var series = _parsingService.GetSeries(trackedDownload.DownloadItem.Title);
 
                 if (series == null)
                 {
                     if (historyItem != null)
                     {
-                        series = _seriesService.GetSeries(historyItem.SeriesId);
+                        //series = _seriesService.GetSeries(historyItem.SeriesId);
                     }
 
                     if (series == null)
                     {
-                        trackedDownload.Warn("Series title mismatch, automatic import is not possible.");
-                        return;
+                        var movie = _parsingService.GetMovie(trackedDownload.DownloadItem.Title);
+
+                        if (movie == null)
+                        {
+                            movie = _movieService.GetMovie(historyItem.MovieId);
+
+                            if (movie == null)
+                            {
+                                trackedDownload.Warn("Movie title mismatch, automatic import is not possible.");
+                            }
+                        }
+                        //trackedDownload.Warn("Series title mismatch, automatic import is not possible.");
+                        //return;
                     }
                 }
             }

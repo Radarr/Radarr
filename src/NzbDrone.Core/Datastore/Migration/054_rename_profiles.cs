@@ -21,11 +21,12 @@ namespace NzbDrone.Core.Datastore.Migration
 
             //Add HeldReleases
             Create.TableForModel("PendingReleases")
-                  .WithColumn("SeriesId").AsInt32()
+                  .WithColumn("SeriesId").AsInt32().WithDefaultValue(0)
                   .WithColumn("Title").AsString()
                   .WithColumn("Added").AsDateTime()
                   .WithColumn("ParsedEpisodeInfo").AsString()
-                  .WithColumn("Release").AsString();
+                  .WithColumn("Release").AsString()
+                  .WithColumn("MovieId").AsInt32().WithDefaultValue(0);
         }
     }
 }

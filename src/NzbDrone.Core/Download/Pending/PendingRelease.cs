@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Download.Pending
     public class PendingRelease : ModelBase
     {
         public int SeriesId { get; set; }
+        public int MovieId { get; set; }
         public string Title { get; set; }
         public DateTime Added { get; set; }
         public ParsedEpisodeInfo ParsedEpisodeInfo { get; set; }
@@ -14,5 +15,6 @@ namespace NzbDrone.Core.Download.Pending
 
         //Not persisted
         public RemoteEpisode RemoteEpisode { get; set; }
+        public RemoteMovie RemoteMovie { get; set; }
     }
 }

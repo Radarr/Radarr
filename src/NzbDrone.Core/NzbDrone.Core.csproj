@@ -564,6 +564,8 @@
     <Compile Include="Http\HttpProxySettingsProvider.cs" />
     <Compile Include="Http\TorcacheHttpInterceptor.cs" />
     <Compile Include="IndexerSearch\Definitions\MovieSearchCriteria.cs" />
+    <Compile Include="IndexerSearch\MoviesSearchCommand.cs" />
+    <Compile Include="IndexerSearch\MoviesSearchService.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTv.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvSettings.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvRequestGenerator.cs" />

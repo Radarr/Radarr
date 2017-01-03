@@ -32,53 +32,112 @@ namespace NzbDrone.Core.Download
 
         public ProcessedDecisions ProcessDecisions(List<DownloadDecision> decisions)
         {
-            var qualifiedReports = GetQualifiedReports(decisions);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(qualifiedReports);
+            //var qualifiedReports = GetQualifiedReports(decisions);
+            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
 
             foreach (var report in prioritizedDecisions)
             {
-                var remoteEpisode = report.RemoteEpisode;
 
-                var episodeIds = remoteEpisode.Episodes.Select(e => e.Id).ToList();
-
-                //Skip if already grabbed
-                if (grabbed.SelectMany(r => r.RemoteEpisode.Episodes)
-                                .Select(e => e.Id)
-                                .ToList()
-                                .Intersect(episodeIds)
-                                .Any())
+                if (report.IsForMovie)
                 {
-                    continue;
+                    var remoteMovie = report.RemoteMovie;
+
+                    if (report.TemporarilyRejected)
+                    {
+                        _pendingReleaseService.Add(report);
+                        pending.Add(report);
+                        continue;
+                    }
+
+                    if (remoteMovie == null || remoteMovie.Movie == null)
+                    {
+                        continue;
+                    }
+
+                    List<int> movieIds = new List<int> { remoteMovie.Movie.Id };
+
+
+                    //Skip if already grabbed
+                    if (grabbed.Select(r => r.RemoteMovie.Movie)
+                                    .Select(e => e.Id)
+                                    .ToList()
+                                    .Intersect(movieIds)
+                                    .Any())
+                    {
+                        continue;
+                    }
+
+                    if (pending.Select(r => r.RemoteMovie.Movie)
+                            .Select(e => e.Id)
+                            .ToList()
+                            .Intersect(movieIds)
+                            .Any())
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        _downloadService.DownloadReport(remoteMovie);
+                        grabbed.Add(report);
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: support for store & forward
+                        //We'll need to differentiate between a download client error and an indexer error
+                        _logger.Warn(e, "Couldn't add report to download queue. " + remoteMovie);
+                    }
                 }
+                else
+                {
+                    var remoteEpisode = report.RemoteEpisode;
 
-                if (report.TemporarilyRejected)
-                {
-                    _pendingReleaseService.Add(report);
-                    pending.Add(report);
-                    continue;
-                }
+                    if (remoteEpisode == null || remoteEpisode.Episodes == null)
+                    {
+                        continue;
+                    }
 
-                if (pending.SelectMany(r => r.RemoteEpisode.Episodes)
-                        .Select(e => e.Id)
-                        .ToList()
-                        .Intersect(episodeIds)
-                        .Any())
-                {
-                    continue;
-                }
+                    var episodeIds = remoteEpisode.Episodes.Select(e => e.Id).ToList();
 
-                try
-                {
-                    _downloadService.DownloadReport(remoteEpisode);
-                    grabbed.Add(report);
-                }
-                catch (Exception e)
-                {
-                    //TODO: support for store & forward
-                    //We'll need to differentiate between a download client error and an indexer error
-                    _logger.Warn(e, "Couldn't add report to download queue. " + remoteEpisode);
+                    //Skip if already grabbed
+                    if (grabbed.SelectMany(r => r.RemoteEpisode.Episodes)
+                                    .Select(e => e.Id)
+                                    .ToList()
+                                    .Intersect(episodeIds)
+                                    .Any())
+                    {
+                        continue;
+                    }
+
+                    if (report.TemporarilyRejected)
+                    {
+                        _pendingReleaseService.Add(report);
+                        pending.Add(report);
+                        continue;
+                    }
+
+                    if (pending.SelectMany(r => r.RemoteEpisode.Episodes)
+                            .Select(e => e.Id)
+                            .ToList()
+                            .Intersect(episodeIds)
+                            .Any())
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        _downloadService.DownloadReport(remoteEpisode);
+                        grabbed.Add(report);
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: support for store & forward
+                        //We'll need to differentiate between a download client error and an indexer error
+                        _logger.Warn(e, "Couldn't add report to download queue. " + remoteEpisode);
+                    }
                 }
             }
 
