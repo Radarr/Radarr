@@ -5,8 +5,7 @@ if [ $# -eq 0 ]; then
 fi
 
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  #VERSION="`date +%H:%M:%S`"
-  VERSION="15-11-15"
+  VERSION="`date +%H:%M:%S`"
   YEAR="`date +%Y`"
   MONTH="`date +%m`"
   DAY="`date +%d`"
@@ -26,7 +25,8 @@ zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION >& /dev/null
 zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION >& /dev/null
 zip -r Radarr_OSX_$VERSION.zip Radarr_OSX_$VERSION >& /dev/null
 
-ftp -p -n ftp.leonardogalli.ch << END_SCRIPT
+ftp -n ftp.leonardogalli.ch << END_SCRIPT
+passive
 quote USER $FTP_USER
 quote PASS $FTP_PASS
 mkdir builds
