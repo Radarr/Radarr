@@ -159,7 +159,7 @@ namespace NzbDrone.Integration.Test
         protected void ConnectSignalR()
         {
             _signalRReceived = new List<SignalRMessage>();
-            _signalrConnection = new Connection("http://localhost:8989/signalr");
+            _signalrConnection = new Connection("http://localhost:7878/signalr");
             _signalrConnection.Start(new LongPollingTransport()).ContinueWith(task =>
             {
                 if (task.IsFaulted)
