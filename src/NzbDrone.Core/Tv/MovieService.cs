@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Tv
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie);
         bool MoviePathExists(string folder);
+        void RemoveAddOptions(Movie movie);
     }
 
     public class MovieService : IMovieService
@@ -190,5 +191,9 @@ namespace NzbDrone.Core.Tv
             return _movieRepository.MoviePathExists(folder);
         }
 
+        public void RemoveAddOptions(Movie movie)
+        {
+            _movieRepository.SetFields(movie, s => s.AddOptions);
+        }
     }
 }

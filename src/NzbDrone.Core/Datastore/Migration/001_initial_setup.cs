@@ -63,7 +63,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Ratings").AsString().Nullable()
                 .WithColumn("Genres").AsString().Nullable()
                 .WithColumn("Tags").AsString().Nullable()
-                .WithColumn("Certification").AsString().Nullable();
+                .WithColumn("Certification").AsString().Nullable()
+                .WithColumn("AddOptions").AsString().Nullable();
 
 
             Create.TableForModel("Seasons")

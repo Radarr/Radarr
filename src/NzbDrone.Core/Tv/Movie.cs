@@ -40,11 +40,16 @@ namespace NzbDrone.Core.Tv
         public DateTime? InCinemas { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public HashSet<int> Tags { get; set; }
-//        public AddMovieOptions AddOptions { get; set; }
+        public AddMovieOptions AddOptions { get; set; }
 
         public override string ToString()
         {
             return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());
         }
+    }
+
+    public class AddMovieOptions : MonitoringOptions
+    {
+        public bool SearchForMovie { get; set; }
     }
 }

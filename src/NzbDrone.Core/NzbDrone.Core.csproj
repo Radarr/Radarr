@@ -1096,6 +1096,7 @@
     <Compile Include="Tv\SeriesAddedHandler.cs" />
     <Compile Include="Tv\MovieRepository.cs" />
     <Compile Include="Tv\MovieEditedService.cs" />
+    <Compile Include="Tv\MovieScannedHandler.cs" />
     <Compile Include="Tv\SeriesScannedHandler.cs" />
     <Compile Include="Tv\SeriesEditedService.cs" />
     <Compile Include="Tv\SeriesRepository.cs" />

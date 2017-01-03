@@ -48,6 +48,7 @@ namespace NzbDrone.Api.Movie
         public List<string> Genres { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
+        public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
@@ -110,6 +111,7 @@ namespace NzbDrone.Api.Movie
                 Genres = model.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
+                AddOptions = model.AddOptions,
                 Ratings = model.Ratings
             };
         }
@@ -152,6 +154,7 @@ namespace NzbDrone.Api.Movie
                 Genres = resource.Genres,
                 Tags = resource.Tags,
                 Added = resource.Added,
+                AddOptions = resource.AddOptions,
                 Ratings = resource.Ratings
             };
         }
@@ -167,6 +170,7 @@ namespace NzbDrone.Api.Movie
 
             movie.RootFolderPath = resource.RootFolderPath;
             movie.Tags = resource.Tags;
+            movie.AddOptions = resource.AddOptions;
 
             return movie;
         }
