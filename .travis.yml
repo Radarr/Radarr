@@ -8,4 +8,5 @@ install:
   - sudo apt-get install nodejs
   - sudo apt-get install npm
 after_success:
+  - chmod +x package.sh
   - ./package.sh
