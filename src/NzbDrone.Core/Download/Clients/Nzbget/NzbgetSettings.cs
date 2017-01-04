@@ -26,7 +26,9 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             Host = "localhost";
             Port = 6789;
-            TvCategory = "tv";
+            TvCategory = "Movies";
+            Username = "nzbget";
+            Password = "tegbzn6789";
             RecentTvPriority = (int)NzbgetPriority.Normal;
             OlderTvPriority = (int)NzbgetPriority.Normal;
         }
@@ -44,7 +46,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         public string Password { get; set; }
 
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Sonarr avoids conflicts with unrelated downloads, but it's optional")]
-        public string TvCategory { get; set; }
+        public string TvCategory { get; set; }        
 
         [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
         public int RecentTvPriority { get; set; }
