@@ -246,6 +246,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
                     imdbMovie.Year = DateTime.Parse(result.release_date).Year;
                     imdbMovie.Images = new List<MediaCover.MediaCover>();
+                    imdbMovie.Overview = result.overview;
                     try
                     {
                         string url = result.poster_path;
