@@ -30,8 +30,8 @@ namespace NzbDrone.Common.Cloud
                 .CreateFactory();
         }
 
-        public IHttpRequestBuilderFactory Services { get; private set; }
-        public IHttpRequestBuilderFactory SkyHookTvdb { get; private set; }
+        public IHttpRequestBuilderFactory Services { get; }
+        public IHttpRequestBuilderFactory SkyHookTvdb { get; }
         public IHttpRequestBuilderFactory TMDB { get; private set; }
         public IHttpRequestBuilderFactory TMDBSingle { get; private set; }
     }
