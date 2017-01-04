@@ -192,8 +192,8 @@ PackageOsxApp()
     rm -rf $outputFolderOsxApp
     mkdir $outputFolderOsxApp
 
-    cp -r ./osx/Sonarr.app $outputFolderOsxApp
-    cp -r $outputFolderOsx $outputFolderOsxApp/Sonarr.app/Contents/MacOS
+    cp -r ./osx/Radarr.app $outputFolderOsxApp
+    cp -r $outputFolderOsx $outputFolderOsxApp/Radarr.app/Contents/MacOS
 
     echo "##teamcity[progressFinish 'Creating OS X App Package']"
 }
