@@ -85,6 +85,19 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
+        private bool SupportsMovieSearch
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.SupportedMovieSearchParamters != null &&
+                       capabilities.SupportedMovieSearchParamters.Contains("imdb") &&
+                       capabilities.SupportedMovieSearchParamters.Contains("imdbtitle") &&
+                       capabilities.SupportedMovieSearchParamters.Contains("imdbyear");
+            }
+        }
+
         private bool SupportsAggregatedIdSearch
         {
             get
@@ -104,6 +117,19 @@ namespace NzbDrone.Core.Indexers.Newznab
             if (capabilities.SupportedTvSearchParameters != null)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories.Concat(Settings.AnimeCategories), "tvsearch", ""));
+            }
+
+            return pageableRequests;
+        }
+
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            if(SupportsMovieSearch)
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie",
+                        string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2)))); //strip off the "tt" - VERY HACKY
             }
 
             return pageableRequests;
@@ -273,11 +299,6 @@ namespace NzbDrone.Core.Indexers.Newznab
         private static string NewsnabifyTitle(string title)
         {
             return title.Replace("+", "%20");
-        }
-
-        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
         }
     }
 }

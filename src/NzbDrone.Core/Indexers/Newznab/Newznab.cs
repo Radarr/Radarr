@@ -106,8 +106,8 @@ namespace NzbDrone.Core.Indexers.Newznab
                 }
 
                 if (capabilities.SupportedTvSearchParameters != null &&
-                    new[] { "q", "tvdbid", "rid" }.Any(v => capabilities.SupportedTvSearchParameters.Contains(v)) &&
-                    new[] { "season", "ep" }.All(v => capabilities.SupportedTvSearchParameters.Contains(v)))
+                    new[] { "q", "imdb" }.Any(v => capabilities.SupportedMovieSearchParamters.Contains(v)) &&
+                    new[] { "imdbtitle", "imdbyear" }.All(v => capabilities.SupportedMovieSearchParamters.Contains(v)))
                 {
                     return null;
                 }

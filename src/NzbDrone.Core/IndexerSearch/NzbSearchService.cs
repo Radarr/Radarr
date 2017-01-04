@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -249,15 +249,15 @@ namespace NzbDrone.Core.IndexerSearch
 
         private TSpec Get<TSpec>(Series series, List<Episode> episodes, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
         {
-            var spec = new TSpec();
-
-            spec.Series = series;
-            spec.SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
+            var spec = new TSpec()
+            {
+                Series = series,
+                SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
                                                            episodes.Select(e => e.SeasonNumber).Distinct().ToList(),
-                                                           episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList());
+                                                           episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList()),
 
-            spec.Episodes = episodes;
-
+                Episodes = episodes
+            };
             spec.SceneTitles.Add(series.Title);
             spec.UserInvokedSearch = userInvokedSearch;
 
@@ -266,18 +266,18 @@ namespace NzbDrone.Core.IndexerSearch
 
         private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
         {
-            var spec = new TSpec();
+            var spec = new TSpec()
+            {
+                Movie = movie,
+                /*spec.SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
+                                                               episodes.Select(e => e.SeasonNumber).Distinct().ToList(),
+                                                               episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList());
 
-            spec.Movie = movie;
-            /*spec.SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
-                                                           episodes.Select(e => e.SeasonNumber).Distinct().ToList(),
-                                                           episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList());
+                spec.Episodes = episodes;
 
-            spec.Episodes = episodes;
-
-            spec.SceneTitles.Add(series.Title);*/
-            spec.UserInvokedSearch = userInvokedSearch;
-
+                spec.SceneTitles.Add(series.Title);*/
+                UserInvokedSearch = userInvokedSearch
+            };
             return spec;
         }
 
