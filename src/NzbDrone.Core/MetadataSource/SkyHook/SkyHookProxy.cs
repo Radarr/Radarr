@@ -148,11 +148,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var responseCleaned = response.Content.Replace(imdbCallback, "").TrimEnd(")");
 
-            dynamic json = JsonConvert.DeserializeObject(responseCleaned);
+            _logger.Warn("Cleaned response: " + responseCleaned);
+
+            ImdbResource json = JsonConvert.DeserializeObject<ImdbResource>(responseCleaned);
+
+            _logger.Warn("Json object: " + json);
+
+            _logger.Warn("Crash ahead.");
 
             var imdbMovies = new List<Movie>();
 
-            foreach (dynamic entry in json.d)
+            foreach (MovieResource entry in json.d)
             {
                 var imdbMovie = new Movie();
                 imdbMovie.ImdbId = entry.id;
@@ -166,7 +172,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     imdbMovie.Images = new List<MediaCover.MediaCover>();
                     try
                     {
-                        string url = entry.i[0];
+                        string url = (string)entry.i[0];
                         var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, url);
                         imdbMovie.Images.Add(imdbPoster);
                     }
