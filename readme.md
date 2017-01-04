@@ -3,18 +3,24 @@
 This fork of Sonarr aims to turn it into something like Couchpotato.
 
 ## Currently working:
-* Adding new movies (Note: Movies are currently added as one series with one season and one episode. This will change in the future)
+* Adding new movies
 * Manually searching for releases of movies.
 * Automatically searching for releases.
 * Rarbg.to indexer (Other indexers are coming, I just need to find the right categories)
-* Everything that has nothing to do with series from Sonarr should be working as well.
+* QBittorrent download client (Other clients are coming)
 
 ## Planned Features:
 * Scanning PreDB to know when a new release is available.
-* Fixing the other Indexers.
-* Fixing how movies are stored and displayed.
+* Fixing the other Indexers and download clients.
+* Fixing how movies are parsed.
+* Fixing movie import.
 * Importing of Sonarr config.
 * New TorrentPotato Indexer.
+
+## Download
+The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
+
+For more up to date versions (but also sometimes broken), daily builds can be found here: https://leonardogalli.ch/radarr/builds/.
 
 ## Major Features Include: ##
 
@@ -30,13 +36,10 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 * Full support for specials and multi-episode releases
 * And a beautiful UI
 
-## Download
-The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
-
 ## Configuring Development Environment: ##
 
 ### Requirements ###
-- Visual Studio 2015 [Free Community Edition](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
+- Visual Studio 2015 [Free Community Edition](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx) or Mono
 - [Git](http://git-scm.com/downloads)
 - [NodeJS](http://nodejs.org/download/)
 
@@ -52,7 +55,7 @@ The latest precompiled binary versions can be found here: https://github.com/gal
 
 
 ### Development ###
-- Open `NzbDrone.sln` in Visual Studio
+- Open `NzbDrone.sln` in Visual Studio or run the build.sh script, if Mono is installed.
 - Make sure `NzbDrone.Console` is set as the startup project
 
 
