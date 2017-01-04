@@ -66,9 +66,9 @@ namespace NzbDrone.Core.DecisionEngine
 
                 try
                 {
-                    var parsedEpisodeInfo = Parser.Parser.ParseTitle(report.Title);
+                    var parsedEpisodeInfo = Parser.Parser.ParseMovieTitle(report.Title);
 
-                    if (parsedEpisodeInfo != null && !parsedEpisodeInfo.SeriesTitle.IsNullOrWhiteSpace())
+                    if (parsedEpisodeInfo != null && !parsedEpisodeInfo.MovieTitle.IsNullOrWhiteSpace())
                     {
                         RemoteMovie remoteEpisode = _parsingService.Map(parsedEpisodeInfo, "", searchCriteria);
                         remoteEpisode.Release = report;

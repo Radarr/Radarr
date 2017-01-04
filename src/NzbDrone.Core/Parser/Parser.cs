@@ -15,6 +15,26 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Parser));
 
+        private static readonly Regex[] ReportMovieTitleRegex = new[]
+        {
+            //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<edition>(\w+\.?edition))\.(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>(\w+\.?edition))",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+             //Cut Movies, e.g: Mission.Impossible.3.Directors.Cut.2011
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<edition>(\w+\.?cut))\.(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+             //Cut Movies, e.g: Mission.Impossible.3.2011.Directors.Cut
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>(\w+\.?cut))",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+             //Normal movie format, e.g: Mission.Impossible.3.2011
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        };
+
         private static readonly Regex[] ReportTitleRegex = new[]
             {
                 //Anime - Absolute Episode Number + Title + Season+Episode
@@ -298,6 +318,94 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
+        public static ParsedMovieInfo ParseMovieTitle(string title)
+        {
+
+            ParsedMovieInfo realResult = null;
+            try
+            {
+                if (!ValidateBeforeParsing(title)) return null;
+
+                Logger.Debug("Parsing string '{0}'", title);
+
+                if (ReversedTitleRegex.IsMatch(title))
+                {
+                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
+                    Array.Reverse(titleWithoutExtension);
+
+                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
+
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                }
+
+                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+
+                simpleTitle = RemoveFileExtension(simpleTitle);
+
+                // TODO: Quick fix stripping [url] - prefixes.
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+
+                foreach (var regex in ReportMovieTitleRegex)
+                {
+                    var match = regex.Matches(simpleTitle);
+
+                    if (match.Count != 0)
+                    {
+                        Logger.Trace(regex);
+                        try
+                        {
+                            var result = ParseMovieMatchCollection(match);
+
+                            if (result != null)
+                            {
+
+                                result.Language = LanguageParser.ParseLanguage(title);
+                                Logger.Debug("Language parsed: {0}", result.Language);
+
+                                result.Quality = QualityParser.ParseQuality(title);
+                                Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                                result.ReleaseGroup = ParseReleaseGroup(title);
+
+                                var subGroup = GetSubGroup(match);
+                                if (!subGroup.IsNullOrWhiteSpace())
+                                {
+                                    result.ReleaseGroup = subGroup;
+                                }
+
+                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                                result.ReleaseHash = GetReleaseHash(match);
+                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                                {
+                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                                }
+
+                                realResult = result;
+
+                                return result;
+                            }
+                        }
+                        catch (InvalidDateException ex)
+                        {
+                            Logger.Debug(ex, ex.Message);
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                    Logger.Error(e, "An error has occurred while trying to parse " + title);
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return realResult;
+        }
+
         public static ParsedEpisodeInfo ParseTitle(string title)
         {
 
@@ -526,6 +634,31 @@ namespace NzbDrone.Core.Parser
             }
 
             return seriesTitleInfo;
+        }
+
+        private static ParsedMovieInfo ParseMovieMatchCollection(MatchCollection matchCollection)
+        {
+            var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');
+            seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
+
+            int airYear;
+            int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);
+
+            ParsedMovieInfo result;
+
+            result = new ParsedMovieInfo { Year = airYear };
+
+            if (matchCollection[0].Groups["edition"].Success)
+            {
+                result.Edition = matchCollection[0].Groups["edition"].Value.Replace(".", " ");
+            }
+
+            result.MovieTitle = seriesName;
+            result.MovieTitleInfo = GetSeriesTitleInfo(result.MovieTitle);
+
+            Logger.Debug("Movie Parsed. {0}", result);
+
+            return result;
         }
 
         private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)

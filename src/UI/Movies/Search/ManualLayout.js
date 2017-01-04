@@ -8,6 +8,7 @@ var DownloadReportCell = require('../../Release/DownloadReportCell');
 var AgeCell = require('../../Release/AgeCell');
 var ProtocolCell = require('../../Release/ProtocolCell');
 var PeersCell = require('../../Release/PeersCell');
+var EditionCell = require('../../Cells/EditionCell');
 
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Search/ManualLayoutTemplate',
@@ -31,6 +32,12 @@ module.exports = Marionette.Layout.extend({
             name  : 'title',
             label : 'Title',
             cell  : ReleaseTitleCell
+        },
+        {
+            name  : 'edition',
+            label : 'Edition',
+            cell  : EditionCell,
+            title : "Edition"
         },
         {
             name  : 'indexer',
