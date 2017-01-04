@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation;
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public NewznabSettings()
         {
-            Categories = new[] { 5030, 5040 };
+            Categories = new[] { 2030, 2040, 2050 };
             AnimeCategories = Enumerable.Empty<int>();
         }
 
