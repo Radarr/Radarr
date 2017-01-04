@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             ScanGracePeriod = TimeSpan.FromSeconds(30);
         }
 
-        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
             var title = remoteEpisode.Release.Title;
 
@@ -42,7 +42,25 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             using (var stream = _diskProvider.OpenWriteStream(filepath))
             {
-                stream.Write(fileContent, 0, fileContent.Length);
+                stream.Write(fileContents, 0, fileContents.Length);
+            }
+
+            _logger.Debug("NZB Download succeeded, saved to: {0}", filepath);
+
+            return null;
+        }
+
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
+        {
+            var title = remoteMovie.Release.Title;
+
+            title = FileNameBuilder.CleanFileName(title);
+
+            var filepath = Path.Combine(Settings.NzbFolder, title + ".nzb");
+
+            using (var stream = _diskProvider.OpenWriteStream(filepath))
+            {
+                stream.Write(fileContents, 0, fileContents.Length);
             }
 
             _logger.Debug("NZB Download succeeded, saved to: {0}", filepath);
