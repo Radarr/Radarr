@@ -18,9 +18,9 @@ namespace NzbDrone.Core.Validation.Paths
         {
             if (context.PropertyValue == null) return true;
 
-            var imdbid = context.PropertyValue.ToString();
+            int tmdbId = (int)context.PropertyValue;
 
-            return (!_seriesService.GetAllMovies().Exists(s => s.ImdbId == imdbid));
+            return (!_seriesService.GetAllMovies().Exists(s => s.TmdbId == tmdbId));
         }
     }
 }

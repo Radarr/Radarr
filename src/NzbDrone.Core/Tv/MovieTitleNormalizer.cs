@@ -4,16 +4,16 @@ namespace NzbDrone.Core.Tv
 {
     public static class MovieTitleNormalizer
     {
-        private readonly static Dictionary<string, string> PreComputedTitles = new Dictionary<string, string>
+        private readonly static Dictionary<int, string> PreComputedTitles = new Dictionary<int, string>
                                                                      {
-                                                                         { "tt_109823457098", "a to z" },
+                                                                         { 999999999, "a to z" },
                                                                      };
 
-        public static string Normalize(string title, string imdbid)
+        public static string Normalize(string title, int tmdbid)
         {
-            if (PreComputedTitles.ContainsKey(imdbid))
+            if (PreComputedTitles.ContainsKey(tmdbid))
             {
-                return PreComputedTitles[imdbid];
+                return PreComputedTitles[tmdbid];
             }
 
             return Parser.Parser.NormalizeTitle(title).ToLower();

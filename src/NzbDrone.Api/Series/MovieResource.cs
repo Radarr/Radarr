@@ -28,6 +28,7 @@ namespace NzbDrone.Api.Movie
         public string Overview { get; set; }
         public DateTime? InCinemas { get; set; }
         public List<MediaCover> Images { get; set; }
+        public string Website { get; set; }
 
         public string RemotePoster { get; set; }
         public int Year { get; set; }
@@ -42,6 +43,7 @@ namespace NzbDrone.Api.Movie
         public DateTime? LastInfoSync { get; set; }
         public string CleanTitle { get; set; }
         public string ImdbId { get; set; }
+        public int TmdbId { get; set; }
         public string TitleSlug { get; set; }
         public string RootFolderPath { get; set; }
         public string Certification { get; set; }
@@ -50,6 +52,7 @@ namespace NzbDrone.Api.Movie
         public DateTime Added { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
+        public List<string> AlternativeTitles { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
 
@@ -79,7 +82,7 @@ namespace NzbDrone.Api.Movie
             return new MovieResource
             {
                 Id = model.Id,
-
+                TmdbId = model.TmdbId,
                 Title = model.Title,
                 //AlternateTitles
                 SortTitle = model.SortTitle,
@@ -108,10 +111,12 @@ namespace NzbDrone.Api.Movie
                 TitleSlug = model.TitleSlug,
                 RootFolderPath = model.RootFolderPath,
                 Certification = model.Certification,
+                Website = model.Website,
                 Genres = model.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
+                AlternativeTitles = model.AlternativeTitles,
                 Ratings = model.Ratings
             };
         }
@@ -123,6 +128,7 @@ namespace NzbDrone.Api.Movie
             return new Core.Tv.Movie
             {
                 Id = resource.Id,
+                TmdbId = resource.TmdbId,
 
                 Title = resource.Title,
                 //AlternateTitles
@@ -151,10 +157,12 @@ namespace NzbDrone.Api.Movie
                 TitleSlug = resource.TitleSlug,
                 RootFolderPath = resource.RootFolderPath,
                 Certification = resource.Certification,
+                Website = resource.Website,
                 Genres = resource.Genres,
                 Tags = resource.Tags,
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
+                AlternativeTitles = resource.AlternativeTitles,
                 Ratings = resource.Ratings
             };
         }
@@ -162,6 +170,7 @@ namespace NzbDrone.Api.Movie
         public static Core.Tv.Movie ToModel(this MovieResource resource, Core.Tv.Movie movie)
         {
             movie.ImdbId = resource.ImdbId;
+            movie.TmdbId = resource.TmdbId;
 
             movie.Path = resource.Path;
             movie.ProfileId = resource.ProfileId;

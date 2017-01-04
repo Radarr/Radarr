@@ -73,7 +73,7 @@ namespace NzbDrone.Api.Movie
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.Title).NotEmpty();
-            PostValidator.RuleFor(s => s.ImdbId).NotNull().NotEmpty().SetValidator(moviesExistsValidator);
+            PostValidator.RuleFor(s => s.TmdbId).NotNull().NotEmpty().SetValidator(moviesExistsValidator);
 
             PutValidator.RuleFor(s => s.Path).IsValidPath();
         }

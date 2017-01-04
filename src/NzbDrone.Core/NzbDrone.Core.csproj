@@ -183,6 +183,7 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
+    <Compile Include="Datastore\Migration\106_add_tmdb_stuff.cs" />
     <Compile Include="Datastore\Migration\105_fix_history_movieId.cs" />
     <Compile Include="Datastore\Migration\005_added_eventtype_to_history.cs" />
     <Compile Include="Datastore\Migration\006_add_index_to_log_time.cs" />
@@ -811,6 +812,7 @@
     <Compile Include="MetadataSource\SkyHook\Resource\MovieResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\TMDBResources.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />

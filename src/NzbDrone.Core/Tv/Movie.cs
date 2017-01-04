@@ -16,8 +16,9 @@ namespace NzbDrone.Core.Tv
             Genres = new List<string>();
             Actors = new List<Actor>();
             Tags = new HashSet<int>();
+            AlternativeTitles = new List<string>();
         }
-
+        public int TmdbId { get; set; }
         public string ImdbId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
@@ -30,6 +31,7 @@ namespace NzbDrone.Core.Tv
         public int Runtime { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public string TitleSlug { get; set; }
+        public string Website { get; set; }
         public string Path { get; set; }
         public int Year { get; set; }
         public Ratings Ratings { get; set; }
@@ -44,7 +46,7 @@ namespace NzbDrone.Core.Tv
         public AddMovieOptions AddOptions { get; set; }
         public LazyLoaded<MovieFile> MovieFile { get; set; }
         public int MovieFileId { get; set; }
-
+        public List<string> AlternativeTitles { get; set; }
         public override string ToString()
         {
             return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());

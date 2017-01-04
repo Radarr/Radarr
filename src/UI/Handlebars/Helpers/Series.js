@@ -33,7 +33,7 @@ Handlebars.registerHelper('remotePoster', function() {
   }
 
   return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
-})
+});
 
 Handlebars.registerHelper('traktUrl', function() {
     return 'http://trakt.tv/search/tvdb/' + this.tvdbId + '?id_type=show';
@@ -47,6 +47,19 @@ Handlebars.registerHelper('tvdbUrl', function() {
     return 'http://imdb.com/title/tt' + this.imdbId;
 });
 
+Handlebars.registerHelper('tmdbUrl', function() {
+    return 'https://www.themoviedb.org/movie/' + this.tmdbId;
+});
+
+Handlebars.registerHelper('homepage', function() {
+    return this.website;
+});
+
+Handlebars.registerHelper('alternativeTitlesString', function() {
+  var titles = this.alternativeTitles;
+  return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
+});
+
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -55,7 +68,7 @@ Handlebars.registerHelper('inCinemas', function() {
   var year = cinemasDate.getFullYear();
   var month = monthNames[cinemasDate.getMonth()];
   return "In Cinemas " + month + " " + year;
-})
+});
 
 Handlebars.registerHelper('tvRageUrl', function() {
     return 'http://www.tvrage.com/shows/id-' + this.tvRageId;
