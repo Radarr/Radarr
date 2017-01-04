@@ -348,7 +348,7 @@ namespace NzbDrone.Core.Organizer
             name = FileNameCleanupRegex.Replace(name, match => match.Captures[0].Value[0].ToString());
             name = name.Trim(' ', '.');
 
-            return name.Replace(":", " -");
+            return CleanFileName(name);
         }
 
         private void AddSeriesTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Series series)
