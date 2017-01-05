@@ -387,7 +387,17 @@ namespace NzbDrone.Core.Parser
                     
             }
 
-            Movie movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
+            Movie movie = null;
+
+            if (searchCriteria == null)
+            {
+
+                movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
+
+                return movie;
+            }
+
+
 
             if (movie == null && imdbId.IsNotNullOrWhiteSpace())
             {
