@@ -8,7 +8,7 @@ using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Host;
+using Radarr.Host;
 using NzbDrone.Test.Common;
 using FluentAssertions;
 using System.Linq;
