@@ -9,6 +9,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 
@@ -21,12 +22,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IHttpRequestBuilderFactory _movieBuilder;
+        private readonly ITmdbConfigService _configService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -89,8 +92,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.InCinemas = DateTime.Parse(resource.release_date);
             movie.Year = movie.InCinemas.Value.Year;
 
-            movie.Images.Add(new MediaCover.MediaCover(MediaCoverTypes.Poster, "http://image.tmdb.org/t/p/"+"w500"+resource.poster_path));//TODO: Update to load image specs from tmdb page!
-            movie.Images.Add(new MediaCover.MediaCover(MediaCoverTypes.Banner, "http://image.tmdb.org/t/p/" + "w1280" + resource.backdrop_path));
+            movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
+            movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
             movie.Runtime = resource.runtime;
 
             foreach(Title title in resource.alternative_titles.titles)
@@ -250,7 +253,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     try
                     {
                         string url = result.poster_path;
-                        var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, "http://image.tmdb.org/t/p/" + "w500" + url);
+                        var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
                         imdbMovie.Images.Add(imdbPoster);
                     }
                     catch (Exception e)
