@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Host
+﻿namespace Radarr.Host
 {
     public interface IUserAlert
     {

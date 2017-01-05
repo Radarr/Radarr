@@ -1,6 +1,6 @@
 ﻿using Owin;
 
-namespace NzbDrone.Host.Owin.MiddleWare
+namespace Radarr.Host.Owin.MiddleWare
 {
     public interface IOwinMiddleWare
     {

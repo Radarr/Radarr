@@ -10,7 +10,7 @@ using NzbDrone.Common.Security;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Instrumentation;
 
-namespace NzbDrone.Host
+namespace Radarr.Host
 {
     public static class Bootstrap
     {

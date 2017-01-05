@@ -2,7 +2,7 @@
 using Microsoft.Owin.Hosting.Tracing;
 using NLog;
 
-namespace NzbDrone.Host.Owin
+namespace Radarr.Host.Owin
 {
     public class OwinTraceOutputFactory : ITraceOutputFactory
     {

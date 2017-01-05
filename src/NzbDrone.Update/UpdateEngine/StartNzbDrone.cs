@@ -62,12 +62,12 @@ namespace NzbDrone.Update.UpdateEngine
 
         private void StartWinform(string installationFolder)
         {
-            Start(installationFolder, "NzbDrone.exe");
+            Start(installationFolder, "Radarr.exe");
         }
 
         private void StartConsole(string installationFolder)
         {
-            Start(installationFolder, "NzbDrone.Console.exe");
+            Start(installationFolder, "Radarr.Console.exe");
         }
 
         private void Start(string installationFolder, string fileName)

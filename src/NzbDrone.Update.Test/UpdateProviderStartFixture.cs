@@ -232,7 +232,7 @@ namespace NzbDrone.Update.Test
                 .Verify(c => c.Start(It.IsAny<string>()), Times.Never());
 
             Mocker.GetMock<IProcessProvider>()
-                .Verify(c => c.Start(TARGET_FOLDER + "NzbDrone.exe"), Times.Once());
+                .Verify(c => c.Start(TARGET_FOLDER + "radarr.exe"), Times.Once());
         }
 
 

@@ -1,7 +1,7 @@
 ﻿using NLog;
 using NzbDrone.Common;
 
-namespace NzbDrone.Host
+namespace Radarr.Host
 {
     public class Router
     {

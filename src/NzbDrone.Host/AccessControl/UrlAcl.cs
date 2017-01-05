@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Host.AccessControl
+﻿namespace Radarr.Host.AccessControl
 {
     public class UrlAcl
     {

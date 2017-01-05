@@ -35,8 +35,8 @@ namespace NzbDrone.Common.Processes
     {
         private readonly Logger _logger;
 
-        public const string NZB_DRONE_PROCESS_NAME = "NzbDrone";
-        public const string NZB_DRONE_CONSOLE_PROCESS_NAME = "NzbDrone.Console";
+        public const string NZB_DRONE_PROCESS_NAME = "Radarr";
+        public const string NZB_DRONE_CONSOLE_PROCESS_NAME = "Radarr.Console";
 
         public ProcessProvider(Logger logger)
         {

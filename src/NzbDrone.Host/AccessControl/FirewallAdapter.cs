@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 
-namespace NzbDrone.Host.AccessControl
+namespace Radarr.Host.AccessControl
 {
     public interface IFirewallAdapter
     {

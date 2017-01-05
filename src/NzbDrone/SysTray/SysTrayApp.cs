@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
-using NzbDrone.Host;
+using Radarr.Host;
 
 namespace NzbDrone.SysTray
 {

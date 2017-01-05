@@ -8,7 +8,7 @@ namespace ServiceInstall
 {
     public static class ServiceHelper
     {
-        private static string NzbDroneExe => Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "NzbDrone.Console.exe");
+        private static string NzbDroneExe => Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Radarr.Console.exe");
 
         private static bool IsAnAdministrator()
         {
@@ -20,7 +20,7 @@ namespace ServiceInstall
         {
             if (!File.Exists(NzbDroneExe))
             {
-                Console.WriteLine("Unable to find NzbDrone.Console.exe in the current directory.");
+                Console.WriteLine("Unable to find Radarr.Console.exe in the current directory.");
                 return;
             }
 

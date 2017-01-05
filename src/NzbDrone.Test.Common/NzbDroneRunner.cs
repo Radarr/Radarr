@@ -32,16 +32,16 @@ namespace NzbDrone.Test.Common
         {
             AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + DateTime.Now.Ticks);
 
-            var nzbdroneConsoleExe = "NzbDrone.Console.exe";
+            var nzbdroneConsoleExe = "Radarr.Console.exe";
 
             if (OsInfo.IsNotWindows)
             {
-                nzbdroneConsoleExe = "NzbDrone.exe";
+                nzbdroneConsoleExe = "Radarr.exe";
             }
 
             if (BuildInfo.IsDebug)
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\..\\_output\\NzbDrone.Console.exe"));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\..\\_output\\Radarr.Console.exe"));
             }
             else
             {

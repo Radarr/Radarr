@@ -2,7 +2,7 @@
 using System.Text;
 using NLog;
 
-namespace NzbDrone.Host.Owin
+namespace Radarr.Host.Owin
 {
     public class NlogTextWriter : TextWriter
     {
