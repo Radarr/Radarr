@@ -31,6 +31,7 @@ namespace NzbDrone.Core.History
     public class HistoryService : IHistoryService,
                                   IHandle<EpisodeGrabbedEvent>,
                                   IHandle<MovieGrabbedEvent>,
+                                  IHandle<MovieImportedEvent>,
                                   IHandle<EpisodeImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<EpisodeFileDeletedEvent>,
@@ -262,6 +263,45 @@ namespace NzbDrone.Core.History
 
                 _historyRepository.Insert(history);
             }
+        }
+
+        public void Handle(MovieImportedEvent message)
+        {
+            if (!message.NewDownload)
+            {
+                return;
+            }
+
+            var downloadId = message.DownloadId;
+
+            if (downloadId.IsNullOrWhiteSpace())
+            {
+                //downloadId = FindDownloadId(message); For now fuck off.
+            }
+
+            var movie = message.MovieInfo.Movie;
+                var history = new History
+                {
+                    EventType = HistoryEventType.DownloadFolderImported,
+                    Date = DateTime.UtcNow,
+                    Quality = message.MovieInfo.Quality,
+                    SourceTitle = movie.Title,
+                    SeriesId = 0,
+                    EpisodeId = 0,
+                    DownloadId = downloadId,
+                    MovieId = movie.Id,
+
+
+                };
+
+                //Won't have a value since we publish this event before saving to DB.
+                //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
+                history.Data.Add("DroppedPath", message.MovieInfo.Path);
+                history.Data.Add("ImportedPath", Path.Combine(movie.Path, message.ImportedMovie.RelativePath));
+                history.Data.Add("DownloadClient", message.DownloadClient);
+
+                _historyRepository.Insert(history);
+            
         }
 
         public void Handle(DownloadFailedEvent message)
