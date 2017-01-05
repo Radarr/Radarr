@@ -633,6 +633,11 @@
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsRssParser.cs" />
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsSettings.cs" />
     <Compile Include="Indexers\HttpIndexerBase.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotato.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoParser.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoRequestGenerator.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoResponse.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoSettings.cs" />
     <Compile Include="Indexers\Rarbg\Rarbg.cs" />
     <Compile Include="Indexers\Rarbg\RarbgRequestGenerator.cs" />
     <Compile Include="Indexers\Rarbg\RarbgResponse.cs" />
