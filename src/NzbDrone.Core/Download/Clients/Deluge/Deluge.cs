@@ -31,6 +31,50 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy = proxy;
         }
 
+        protected override string AddFromMagnetLink(RemoteMovie remoteEpisode, string hash, string magnetLink)
+        {
+            var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
+
+            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            {
+                _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
+            }
+
+            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
+
+            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+
+            if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
+                !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
+            }*/
+
+            return actualHash.ToUpper();
+        }
+
+        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, byte[] fileContent)
+        {
+            var actualHash = _proxy.AddTorrentFromFile(filename, fileContent, Settings);
+
+            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            {
+                _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
+            }
+
+            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
+
+            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+
+            if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
+                !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
+            }*/
+
+            return actualHash.ToUpper();
+        }
+
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
             var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
