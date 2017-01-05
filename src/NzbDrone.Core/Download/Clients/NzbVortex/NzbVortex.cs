@@ -29,11 +29,25 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
             var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
+            
+            var response = _proxy.DownloadNzb(fileContents, filename, priority, Settings);
 
-            var response = _proxy.DownloadNzb(fileContent, filename, priority, Settings);
+            if (response == null)
+            {
+                throw new DownloadClientException("Failed to add nzb {0}", filename);
+            }
+
+            return response;
+        }
+
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
+        {
+            var priority = Settings.RecentTvPriority;
+
+            var response = _proxy.DownloadNzb(fileContents, filename, priority, Settings);
 
             if (response == null)
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using NLog;
-using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation.Extensions;
