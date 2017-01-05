@@ -30,12 +30,9 @@ namespace NzbDrone.Core.Download
         
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
-        protected abstract string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent);
+        protected abstract string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents);
 
-        protected virtual string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
-        {
-            throw new NotImplementedException();
-        }
+        protected abstract string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents);
 
         public override string Download(RemoteEpisode remoteEpisode)
         {
