@@ -20,7 +20,10 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 ## Download
 The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
 
-For more up to date versions (but also sometimes broken), daily builds can be found here: https://leonardogalli.ch/radarr/builds/.
+For more up to date versions (but also sometimes broken), daily builds can be found here:
+* [OSX](https://leonardogalli.ch/radarr/builds/latest.php?os=osx)
+* [Windows](https://leonardogalli.ch/radarr/builds/latest.php?os=windows)
+* [Linux](https://leonardogalli.ch/radarr/builds/latest.php?os=mono)
 
 ## Major Features Include: ##
 
