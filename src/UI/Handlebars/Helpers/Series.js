@@ -66,6 +66,65 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
   return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
 });
 
+Handlebars.registerHelper('GetStatus', function() {
+  var monitored = this.monitored;
+  var status = this.status;
+  var inCinemas = this.inCinemas;
+  var date = new Date(inCinemas);
+  var timeSince = new Date().getTime() - date.getTime();
+  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+
+  if (status === 'released') {
+      return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
+  }
+
+  if (numOfMonths > 3) {
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
+  }
+
+  if (numOfMonths < 3) {
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+  }
+
+  if (status === "announced") {
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
+  }
+
+  else if (!monitored) {
+      return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
+  }
+})
+
+Handlebars.registerHelper('GetBannerStatus', function() {
+  var monitored = this.monitored;
+  var status = this.status;
+  var inCinemas = this.inCinemas;
+  var date = new Date(inCinemas);
+  var timeSince = new Date().getTime() - date.getTime();
+  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+
+  if (status === 'released') {
+      return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
+  }
+
+  if (numOfMonths > 3) {
+    return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
+  }
+
+  if (numOfMonths < 3) {
+    return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
+  }
+
+  if (status === "announced") {
+    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
+  }
+
+  else if (!monitored) {
+      return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
+  }
+})
+
+
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
