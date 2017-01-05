@@ -326,6 +326,8 @@ namespace NzbDrone.Core.Parser
             {
                 if (!ValidateBeforeParsing(title)) return null;
 
+                title = title.Replace(" ", "."); //TODO: Determine if this breaks something. However, it shouldn't.
+
                 Logger.Debug("Parsing string '{0}'", title);
 
                 if (ReversedTitleRegex.IsMatch(title))
