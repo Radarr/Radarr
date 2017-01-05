@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         public NewznabCapabilities GetCapabilities(NewznabSettings indexerSettings)
         {
             var key = indexerSettings.ToJson();
+            _capabilitiesCache.Clear();
             var capabilities = _capabilitiesCache.Get(key, () => FetchCapabilities(indexerSettings), TimeSpan.FromDays(7));
 
             return capabilities;
@@ -96,6 +97,16 @@ namespace NzbDrone.Core.Indexers.Newznab
                 else if (xmlTvSearch.Attribute("supportedParams") != null)
                 {
                     capabilities.SupportedTvSearchParameters = xmlTvSearch.Attribute("supportedParams").Value.Split(',');
+                    capabilities.SupportsAggregateIdSearch = true;
+                }
+                var xmlMovieSearch = xmlSearching.Element("movie-search");
+                if (xmlMovieSearch == null || xmlMovieSearch.Attribute("available").Value != "yes")
+                {
+                    capabilities.SupportedMovieSearchParamters = null;
+                }
+                else if (xmlMovieSearch.Attribute("supportedParams") != null)
+                {
+                    capabilities.SupportedMovieSearchParamters = xmlMovieSearch.Attribute("supportedParams").Value.Split(',');
                     capabilities.SupportsAggregateIdSearch = true;
                 }
             }
