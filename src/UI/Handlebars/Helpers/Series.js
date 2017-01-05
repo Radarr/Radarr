@@ -57,6 +57,12 @@ Handlebars.registerHelper('homepage', function() {
 
 Handlebars.registerHelper('alternativeTitlesString', function() {
   var titles = this.alternativeTitles;
+  if (titles.length == 0) {
+    return "";
+  }
+  if (titles.length == 1) {
+    return titles[0];
+  }
   return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
 });
 
