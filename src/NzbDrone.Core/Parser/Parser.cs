@@ -29,9 +29,12 @@ namespace NzbDrone.Core.Parser
              //Cut Movies, e.g: Mission.Impossible.3.2011.Directors.Cut
              new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}cut))",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
-
+             
              //Normal movie format, e.g: Mission.Impossible.3.2011
              new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
