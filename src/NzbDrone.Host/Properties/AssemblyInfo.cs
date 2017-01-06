@@ -8,4 +8,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Radarr.exe")]
 [assembly: Guid("C2172AF4-F9A6-4D91-BAEE-C2E4EE680613")]
 
-[assembly: AssemblyVersion("10.0.0.*")]
+[assembly: AssemblyVersion("0.1.0.*")]
