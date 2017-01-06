@@ -154,8 +154,8 @@ PackageMono()
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
 
     echo "Renaming NzbDrone.Console.exe to NzbDrone.exe"
-    rm $outputFolderMono/NzbDrone.exe*
-    for file in $outputFolderMono/NzbDrone.Console.exe*; do
+    rm $outputFolderMono/Radarr.exe*
+    for file in $outputFolderMono/Radarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
