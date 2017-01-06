@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Qualities
     {
         public Quality Quality { get; set; }
         public Revision Revision { get; set; }
+        public string HardcodedSubs { get; set; }
 
         [JsonIgnore]
         public QualitySource QualitySource { get; set; }

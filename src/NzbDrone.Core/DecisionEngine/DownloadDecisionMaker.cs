@@ -81,9 +81,18 @@ namespace NzbDrone.Core.DecisionEngine
                         }
                         else
                         {
-                            remoteEpisode.DownloadAllowed = true;
-                            //decision = GetDecisionForReport(remoteEpisode, searchCriteria); TODO: Rewrite this for movies!
-                            decision = new DownloadDecision(remoteEpisode);
+                            if (parsedEpisodeInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
+                            {
+                                remoteEpisode.DownloadAllowed = true;
+                                decision = new DownloadDecision(remoteEpisode, new Rejection("Hardcoded subs found: " + parsedEpisodeInfo.Quality.HardcodedSubs));
+                            }
+                            else
+                            {
+                                remoteEpisode.DownloadAllowed = true;
+                                //decision = GetDecisionForReport(remoteEpisode, searchCriteria); TODO: Rewrite this for movies!
+                                decision = new DownloadDecision(remoteEpisode);
+                            }
+                            
                         }
                     }
                 }
