@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -38,6 +39,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
             }
 
             return Decision.Accept();
+        }
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            throw new NotImplementedException();
         }
     }
 }

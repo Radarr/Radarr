@@ -17,10 +17,10 @@ outputFolderMono='./_output_mono'
 outputFolderOsx='./_output_osx'
 outputFolderOsxApp='./_output_osx_app'
 
-tr -d "\r" < $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr > $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr2
-rm $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr
-chmod +x $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr2
-mv $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr2 $outputFolderOsxApp/Sonarr.app/Contents/MacOS/Sonarr >& error.log
+tr -d "\r" < $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr > $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2
+rm $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr
+chmod +x $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2
+mv $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2 $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr >& error.log
 
 cp -r $outputFolder/ Radarr_Windows_$VERSION
 cp -r $outputFolderMono/ Radarr_Mono_$VERSION

@@ -92,9 +92,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
                 return capabilities.SupportedMovieSearchParamters != null &&
-                       capabilities.SupportedMovieSearchParamters.Contains("imdb") &&
-                       capabilities.SupportedMovieSearchParamters.Contains("imdbtitle") &&
-                       capabilities.SupportedMovieSearchParamters.Contains("imdbyear");
+                       capabilities.SupportedMovieSearchParamters.Contains("imdb");
             }
         }
 
@@ -130,6 +128,12 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie",
                         string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2)))); //strip off the "tt" - VERY HACKY
+            }
+            else
+            {
+                //Let's try anyways with q parameter, worst case nothing found.
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
+                        string.Format("&q={0}", searchCriteria.Movie.Title)));
             }
 
             return pageableRequests;

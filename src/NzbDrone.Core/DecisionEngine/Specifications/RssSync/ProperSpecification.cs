@@ -49,5 +49,38 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             return Decision.Accept();
         }
+
+        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            if (searchCriteria != null)
+            {
+                return Decision.Accept();
+            }
+
+            if (subject.Movie.MovieFile.Value == null)
+            {
+                return Decision.Accept();
+            }
+
+            var file = subject.Movie.MovieFile.Value;
+
+                if (_qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality))
+                {
+                    if (file.DateAdded < DateTime.Today.AddDays(-7))
+                    {
+                        _logger.Debug("Proper for old file, rejecting: {0}", subject);
+                        return Decision.Reject("Proper for old file");
+                    }
+
+                    if (!_configService.AutoDownloadPropers)
+                    {
+                        _logger.Debug("Auto downloading of propers is disabled");
+                        return Decision.Reject("Proper downloading is disabled");
+                    }
+                }
+            
+
+            return Decision.Accept();
+        }
     }
 }

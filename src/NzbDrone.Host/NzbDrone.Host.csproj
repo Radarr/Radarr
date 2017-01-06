@@ -8,8 +8,8 @@
     <ProjectGuid>{95C11A9E-56ED-456A-8447-2C89C1139266}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NzbDrone.Host</RootNamespace>
-    <AssemblyName>NzbDrone.Host</AssemblyName>
+    <RootNamespace>Radarr.Host</RootNamespace>
+    <AssemblyName>Radarr.Host</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>

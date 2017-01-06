@@ -57,12 +57,17 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             try
             {
                 var parsedEpisodeInfo = Parser.Parser.ParseTitle(trackedDownload.DownloadItem.Title);
+                var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
+
+                if (parsedMovieInfo != null)
+                {
+                    trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null);
+                }
 
                 if (parsedEpisodeInfo != null)
                 {
                     trackedDownload.RemoteEpisode = _parsingService.Map(parsedEpisodeInfo, 0, 0);
-                    trackedDownload.RemoteMovie = _parsingService.Map(parsedEpisodeInfo, "", null);
                 }
 
                 if (historyItems.Any())

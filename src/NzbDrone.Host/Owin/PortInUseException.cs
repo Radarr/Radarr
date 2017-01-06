@@ -1,7 +1,7 @@
 ﻿using System;
 using NzbDrone.Common.Exceptions;
 
-namespace NzbDrone.Host.Owin
+namespace Radarr.Host.Owin
 {
     public class PortInUseException : NzbDroneException
     {

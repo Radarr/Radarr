@@ -91,7 +91,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _configureTemplateHelpers : function() {
-        var existingMovies = MoviesCollection.where({ imdbId : this.model.get('imdbId') });
+        var existingMovies = MoviesCollection.where({ tmdbId : this.model.get('tmdbId') });
         console.log(existingMovies)
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();

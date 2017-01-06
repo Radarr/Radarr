@@ -13,7 +13,7 @@ namespace NzbDrone.Common.Extensions
         private const string NZBDRONE_DB = "nzbdrone.db";
         private const string NZBDRONE_LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
-        private const string UPDATE_CLIENT_EXE = "NzbDrone.Update.exe";
+        private const string UPDATE_CLIENT_EXE = "Radarr.Update.exe";
         private const string BACKUP_FOLDER = "Backups";
 
         private static readonly string UPDATE_SANDBOX_FOLDER_NAME = "nzbdrone_update" + Path.DirectorySeparatorChar;

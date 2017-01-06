@@ -13,7 +13,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Sonarr</string>
 	<key>CFBundleIconFile</key>
-	<string>sonarr.icns</string>
+	<string>radarr.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.osx.sonarr.tv</string>
 	<key>CFBundleInfoDictionaryVersion</key>

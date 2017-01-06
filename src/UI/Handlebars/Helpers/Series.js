@@ -33,7 +33,7 @@ Handlebars.registerHelper('remotePoster', function() {
   }
 
   return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
-})
+});
 
 Handlebars.registerHelper('traktUrl', function() {
     return 'http://trakt.tv/search/tvdb/' + this.tvdbId + '?id_type=show';
@@ -47,6 +47,89 @@ Handlebars.registerHelper('tvdbUrl', function() {
     return 'http://imdb.com/title/tt' + this.imdbId;
 });
 
+Handlebars.registerHelper('tmdbUrl', function() {
+    return 'https://www.themoviedb.org/movie/' + this.tmdbId;
+});
+
+Handlebars.registerHelper('homepage', function() {
+    return this.website;
+});
+
+Handlebars.registerHelper('alternativeTitlesString', function() {
+  var titles = this.alternativeTitles;
+  if (titles.length == 0) {
+    return "";
+  }
+  if (titles.length == 1) {
+    return titles[0];
+  }
+  return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
+});
+
+Handlebars.registerHelper('GetStatus', function() {
+  var monitored = this.monitored;
+  var status = this.status;
+  var inCinemas = this.inCinemas;
+  var date = new Date(inCinemas);
+  var timeSince = new Date().getTime() - date.getTime();
+  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+
+
+  if (status === "announced") {
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
+  }
+
+  if (numOfMonths < 3) {
+
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+  }
+
+  if (numOfMonths > 3) {
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
+  }
+
+  if (status === 'released') {
+      return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
+  }
+
+  else if (!monitored) {
+      return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
+  }
+})
+
+Handlebars.registerHelper('GetBannerStatus', function() {
+  var monitored = this.monitored;
+  var status = this.status;
+  var inCinemas = this.inCinemas;
+  var date = new Date(inCinemas);
+  var timeSince = new Date().getTime() - date.getTime();
+  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+
+  if (status === "announced") {
+    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
+  }
+
+  if (numOfMonths < 3) {
+    return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
+  }
+
+  if (status === 'released') {
+      return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
+  }
+
+  if (numOfMonths > 3) {
+    return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
+  }
+
+
+
+
+  else if (!monitored) {
+      return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
+  }
+})
+
+
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -55,7 +138,7 @@ Handlebars.registerHelper('inCinemas', function() {
   var year = cinemasDate.getFullYear();
   var month = monthNames[cinemasDate.getMonth()];
   return "In Cinemas " + month + " " + year;
-})
+});
 
 Handlebars.registerHelper('tvRageUrl', function() {
     return 'http://www.tvrage.com/shows/id-' + this.tvRageId;

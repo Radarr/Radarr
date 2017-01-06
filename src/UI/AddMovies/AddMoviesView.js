@@ -125,7 +125,7 @@ module.exports = Marionette.Layout.extend({
         }
 
         else if (!this.isExisting) {
-            this.resultCollectionView.setExisting(options.movie.get('imdbId'))
+            this.resultCollectionView.setExisting(options.movie.get('tmdbId'))
             /*this.collection.term = '';
             this.collection.reset();
             this._clearResults();

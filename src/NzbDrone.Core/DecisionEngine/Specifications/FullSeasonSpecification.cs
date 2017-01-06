@@ -36,5 +36,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             return Decision.Accept();
         }
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

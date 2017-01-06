@@ -8,6 +8,22 @@
   max-width: 100%;
 }
 
+.movie-tabs-card {
+  .card;
+  .opacity(0.9);
+  margin  : 30px 10px;
+  padding : 10px 25px;
+
+  .show-hide-episodes {
+    .clickable();
+    text-align : center;
+
+    i {
+      .clickable();
+    }
+  }
+}
+
 .edit-movie-modal, .delete-movie-modal {
   overflow : visible;
 
@@ -51,6 +67,12 @@
 
   a {
     color : #000000;
+  }
+
+  .movie-info-links {
+    a {
+      color: white;
+    }
   }
 }
 
@@ -104,7 +126,7 @@
     .card;
     .clickable;
     margin-bottom : 20px;
-    height        : 315px;
+    height        : 324px;
 
     .center {
       display      : block;
@@ -184,7 +206,39 @@
       font-weight: 100;
     }
 
-    .ended-banner {
+    .announced-banner {
+      color                    : #eeeeee;
+      background-color         : #777;
+      .box-shadow(2px 2px 20px #888888);
+      -moz-transform-origin    : 50% 50%;
+      -webkit-transform-origin : 50% 50%;
+      position                 : absolute;
+      width                    : 320px;
+      top                      : 200px;
+      left                     : -122px;
+      text-align               : center;
+      .opacity(0.9);
+
+      .transform(rotate(45deg));
+    }
+
+    .released-banner {
+      color                    : #eeeeee;
+      background-color         : #5cb85c;
+      .box-shadow(2px 2px 20px #888888);
+      -moz-transform-origin    : 50% 50%;
+      -webkit-transform-origin : 50% 50%;
+      position                 : absolute;
+      width                    : 320px;
+      top                      : 200px;
+      left                     : -122px;
+      text-align               : center;
+      .opacity(0.9);
+
+      .transform(rotate(45deg));
+    }
+
+    .cinemas-banner {
       color                    : #eeeeee;
       background-color         : #b94a48;
       .box-shadow(2px 2px 20px #888888);
@@ -249,8 +303,15 @@
   }
 }
 
+
 .movie-detail-overview {
   margin-bottom : 50px;
+}
+
+.alternative-titles {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 180);
+  opacity: .75;
 }
 
 .movie-season {

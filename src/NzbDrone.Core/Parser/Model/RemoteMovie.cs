@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Parser.Model
     {
         public ReleaseInfo Release { get; set; }
         public ParsedEpisodeInfo ParsedEpisodeInfo { get; set; } //TODO: Change to ParsedMovieInfo, for now though ParsedEpisodeInfo will do.
+        public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public Movie Movie { get; set; }
         public bool DownloadAllowed { get; set; }
 

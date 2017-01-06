@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -26,6 +27,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             _logger.Debug("Episode file on disk contains more episodes than this release contains");
             return Decision.Reject("Episode file on disk contains more episodes than this release contains");
+        }
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            throw new NotImplementedException();
         }
     }
 }

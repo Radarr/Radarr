@@ -28,6 +28,8 @@ namespace NzbDrone.Core.Parser
                                                                 )\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUB))|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
         private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -59,6 +61,19 @@ namespace NzbDrone.Core.Parser
             name = name.Trim();
             var normalizedName = name.Replace('_', ' ').Trim().ToLower();
             var result = ParseQualityModifiers(name, normalizedName);
+            var subMatch = HardcodedSubsRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
+
+            if (subMatch != null && subMatch.Success)
+            {
+                if (subMatch.Groups["hcsub"].Success)
+                {
+                    result.HardcodedSubs = subMatch.Groups["hcsub"].Value;
+                }
+                else if (subMatch.Groups["hc"].Success)
+                {
+                    result.HardcodedSubs = "Generic Hardcoded Subs";
+                }
+            }
 
             if (RawHDRegex.IsMatch(normalizedName))
             {
@@ -69,6 +84,7 @@ namespace NzbDrone.Core.Parser
             var sourceMatch = SourceRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
+           
 
             if (sourceMatch != null && sourceMatch.Success)
             {
@@ -200,6 +216,8 @@ namespace NzbDrone.Core.Parser
                     return result;
                 }
             }
+
+           
 
 
             //Anime Bluray matching

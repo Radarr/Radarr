@@ -29,12 +29,12 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
             var category = Settings.TvCategory;
             var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
-            var response = _proxy.DownloadNzb(fileContent, filename, category, priority, Settings);
+            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
 
             if (response == null)
             {
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
-            var category = Settings.TvCategory; //could update this to MovieCategory
+            var category = Settings.TvCategory; // TODO: Update this to MovieCategory?
             var priority = Settings.RecentTvPriority;
 
             var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);

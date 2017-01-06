@@ -183,6 +183,10 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
+    <Compile Include="Datastore\Migration\108_update_schedule_interval.cs" />
+    <Compile Include="Datastore\Migration\107_fix_movie_files.cs" />
+    <Compile Include="Datastore\Migration\106_add_tmdb_stuff.cs" />
+    <Compile Include="Datastore\Migration\105_fix_history_movieId.cs" />
     <Compile Include="Datastore\Migration\005_added_eventtype_to_history.cs" />
     <Compile Include="Datastore\Migration\006_add_index_to_log_time.cs" />
     <Compile Include="Datastore\Migration\007_add_renameEpisodes_to_naming.cs" />
@@ -630,6 +634,11 @@
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsRssParser.cs" />
     <Compile Include="Indexers\Omgwtfnzbs\OmgwtfnzbsSettings.cs" />
     <Compile Include="Indexers\HttpIndexerBase.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotato.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoParser.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoRequestGenerator.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoResponse.cs" />
+    <Compile Include="Indexers\TorrentPotato\TorrentPotatoSettings.cs" />
     <Compile Include="Indexers\Rarbg\Rarbg.cs" />
     <Compile Include="Indexers\Rarbg\RarbgRequestGenerator.cs" />
     <Compile Include="Indexers\Rarbg\RarbgResponse.cs" />
@@ -803,12 +812,15 @@
     <Compile Include="MetadataSource\IProvideMovieInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewMovie.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\ConfigurationResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\MovieResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\TMDBResources.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />
@@ -833,6 +845,7 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewSeries.cs" />
+    <Compile Include="MetadataSource\TmdbConfigurationService.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />
@@ -889,6 +902,7 @@
     <Compile Include="Parser\IsoLanguages.cs" />
     <Compile Include="Parser\LanguageParser.cs" />
     <Compile Include="Parser\Model\LocalMovie.cs" />
+    <Compile Include="Parser\Model\ParsedMovieInfo.cs" />
     <Compile Include="Parser\Model\RemoteMovie.cs" />
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />

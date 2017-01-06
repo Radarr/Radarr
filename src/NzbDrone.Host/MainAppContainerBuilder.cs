@@ -6,7 +6,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http.Dispatchers;
 using NzbDrone.SignalR;
 
-namespace NzbDrone.Host
+namespace Radarr.Host
 {
     public class MainAppContainerBuilder : ContainerBuilderBase
     {
@@ -14,7 +14,7 @@ namespace NzbDrone.Host
         {
             var assemblies = new List<string>
                              {
-                                 "NzbDrone.Host",
+                                 "Radarr.Host",
                                  "NzbDrone.Common",
                                  "NzbDrone.Core",
                                  "NzbDrone.Api",

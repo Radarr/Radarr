@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NzbDrone.Host
+namespace Radarr.Host
 {
     public class TerminateApplicationException : ApplicationException
     {

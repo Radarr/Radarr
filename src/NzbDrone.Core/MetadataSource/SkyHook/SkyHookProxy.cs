@@ -9,6 +9,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 
@@ -20,11 +21,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly Logger _logger;
 
         private readonly IHttpRequestBuilderFactory _requestBuilder;
+        private readonly IHttpRequestBuilderFactory _movieBuilder;
+        private readonly ITmdbConfigService _configService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
+            _movieBuilder = requestBuilder.TMDB;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -56,6 +61,65 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var series = MapSeries(httpResponse.Resource);
 
             return new Tuple<Series, List<Episode>>(series, episodes.ToList());
+        }
+
+        public Movie GetMovieInfo(int TmdbId)
+        {
+            var request = _movieBuilder.Create()
+               .SetSegment("route", "movie")
+               .SetSegment("id", TmdbId.ToString())
+               .SetSegment("secondaryRoute", "")
+               .AddQueryParam("append_to_response", "alternative_titles")
+               .AddQueryParam("country", "US")
+               .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            var response = _httpClient.Get<MovieResourceRoot>(request);
+
+            var resource = response.Resource;
+
+            var movie = new Movie();
+
+            movie.TmdbId = TmdbId;
+            movie.ImdbId = resource.imdb_id;
+            movie.Title = resource.title;
+            movie.TitleSlug = movie.Title.ToLower().Replace(" ", "-");
+            movie.CleanTitle = Parser.Parser.CleanSeriesTitle(movie.Title);
+            movie.Overview = resource.overview;
+            movie.Website = resource.homepage;
+            movie.InCinemas = DateTime.Parse(resource.release_date);
+            movie.Year = movie.InCinemas.Value.Year;
+
+            movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
+            movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
+            movie.Runtime = resource.runtime;
+
+            foreach(Title title in resource.alternative_titles.titles)
+            {
+                movie.AlternativeTitles.Add(title.title);
+            }
+
+            movie.Ratings = new Ratings();
+            movie.Ratings.Votes = resource.vote_count;
+            movie.Ratings.Value = (decimal)resource.vote_average;
+
+            foreach(Genre genre in resource.genres)
+            {
+                movie.Genres.Add(genre.name);
+            }
+
+            if (resource.status == "Released")
+            {
+                movie.Status = MovieStatusType.Released;
+            }
+            else
+            {
+                movie.Status = MovieStatusType.Announced;
+            }
+
+            return movie;
         }
 
         public Movie GetMovieInfo(string ImdbId)
@@ -136,11 +200,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            var searchTerm = lowerTitle.Replace("+", "_").Replace(" ", "_");
+            var searchTerm = lowerTitle.Replace("_", "+").Replace(" ", "+");
 
             var firstChar = searchTerm.First();
 
-            var imdbRequest = new HttpRequest("https://v2.sg.media-imdb.com/suggests/" + firstChar + "/" + searchTerm + ".json");
+            var request = _movieBuilder.Create()
+                .SetSegment("route", "search")
+                .SetSegment("id", "movie")
+                .SetSegment("secondaryRoute", "")
+                .AddQueryParam("query", searchTerm)
+                .AddQueryParam("include_adult", false)
+                .Build();
+
+            request.AllowAutoRedirect = true;
+            request.SuppressHttpError = true;
+
+            /*var imdbRequest = new HttpRequest("https://v2.sg.media-imdb.com/suggests/" + firstChar + "/" + searchTerm + ".json");
 
             var response = _httpClient.Get(imdbRequest);
 
@@ -148,31 +223,42 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var responseCleaned = response.Content.Replace(imdbCallback, "").TrimEnd(")");
 
-            dynamic json = JsonConvert.DeserializeObject(responseCleaned);
+            _logger.Warn("Cleaned response: " + responseCleaned);
+
+            ImdbResource json = JsonConvert.DeserializeObject<ImdbResource>(responseCleaned);
+
+            _logger.Warn("Json object: " + json);
+
+            _logger.Warn("Crash ahead.");*/
+
+            var response = _httpClient.Get<MovieSearchRoot>(request);
+
+            var movieResults = response.Resource.results;
 
             var imdbMovies = new List<Movie>();
 
-            foreach (dynamic entry in json.d)
+            foreach (MovieResult result in movieResults)
             {
                 var imdbMovie = new Movie();
-                imdbMovie.ImdbId = entry.id;
+                imdbMovie.TmdbId = result.id;
                 try
                 {
-                    imdbMovie.SortTitle = entry.l;
-                    imdbMovie.Title = entry.l;
-                    string titleSlug = entry.l;
+                    imdbMovie.SortTitle = result.title;
+                    imdbMovie.Title = result.title;
+                    string titleSlug = result.title;
                     imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
-                    imdbMovie.Year = entry.y;
+                    imdbMovie.Year = DateTime.Parse(result.release_date).Year;
                     imdbMovie.Images = new List<MediaCover.MediaCover>();
+                    imdbMovie.Overview = result.overview;
                     try
                     {
-                        string url = entry.i[0];
-                        var imdbPoster = new MediaCover.MediaCover(MediaCoverTypes.Poster, url);
+                        string url = result.poster_path;
+                        var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
                         imdbMovie.Images.Add(imdbPoster);
                     }
                     catch (Exception e)
                     {
-                        _logger.Debug(entry);
+                        _logger.Debug(result);
                         continue;
                     }
 

@@ -5,7 +5,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Host;
+using Radarr.Host;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Common.Test

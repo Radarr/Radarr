@@ -7,5 +7,6 @@ namespace NzbDrone.Core.MetadataSource
     public interface IProvideMovieInfo
     {
         Movie GetMovieInfo(string ImdbId);
+        Movie GetMovieInfo(int TmdbId);
     }
 }

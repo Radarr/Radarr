@@ -5,13 +5,13 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var SeriesTitleCell = require('../../Cells/SeriesTitleCell');
+var InCinemasCell = require('../../Cells/InCinemasCell');
+var MovieTitleCell = require('../../Cells/MovieTitleCell2');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
-var EpisodeProgressCell = require('../../Cells/EpisodeProgressCell');
-var SeriesActionsCell = require('../../Cells/SeriesActionsCell');
-var SeriesStatusCell = require('../../Cells/SeriesStatusCell');
+var MovieLinksCell = require('../../Cells/MovieLinksCell');
+var MovieActionCell = require('../../Cells/MovieActionCell');
+var MovieStatusCell = require('../../Cells/MovieStatusCell');
 var FooterView = require('./FooterView');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
@@ -31,19 +31,14 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'statusWeight',
             label : '',
-            cell  : SeriesStatusCell
+            cell  : MovieStatusCell
         },
         {
             name      : 'title',
             label     : 'Title',
-            cell      : SeriesTitleCell,
+            cell      : MovieTitleCell,
             cellValue : 'this',
             sortValue : 'sortTitle'
-        },
-        {
-            name  : 'seasonCount',
-            label : 'Seasons',
-            cell  : 'integer'
         },
         {
             name  : 'profileId',
@@ -51,26 +46,21 @@ module.exports = Marionette.Layout.extend({
             cell  : ProfileCell
         },
         {
-            name  : 'network',
-            label : 'Network',
-            cell  : 'string'
+            name  : 'inCinemas',
+            label : 'In Cinemas',
+            cell  : InCinemasCell
         },
         {
-            name  : 'nextAiring',
-            label : 'Next Airing',
-            cell  : RelativeDateCell
-        },
-        {
-            name      : 'percentOfEpisodes',
-            label     : 'Episodes',
-            cell      : EpisodeProgressCell,
-            className : 'episode-progress-cell'
+            name      : 'this',
+            label     : 'Links',
+            cell      : MovieLinksCell,
+            className : "movie-links-cell"
         },
         {
             name     : 'this',
             label    : '',
             sortable : false,
-            cell     : SeriesActionsCell
+            cell     : MovieActionCell
         }
     ],
 

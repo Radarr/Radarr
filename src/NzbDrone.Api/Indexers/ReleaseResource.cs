@@ -24,6 +24,7 @@ namespace NzbDrone.Api.Indexers
         public string Indexer { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
+        public string Edition { get; set; }
         public string Title { get; set; }
         public bool FullSeason { get; set; }
         public int SeasonNumber { get; set; }
@@ -90,6 +91,55 @@ namespace NzbDrone.Api.Indexers
             if (model.IsForMovie)
             {
                 downloadAllowed = model.RemoteMovie.DownloadAllowed;
+                var parsedMovieInfo = model.RemoteMovie.ParsedMovieInfo;
+
+                return new ReleaseResource
+                {
+                    Guid = releaseInfo.Guid,
+                    Quality = parsedMovieInfo.Quality,
+                    //QualityWeight
+                    Age = releaseInfo.Age,
+                    AgeHours = releaseInfo.AgeHours,
+                    AgeMinutes = releaseInfo.AgeMinutes,
+                    Size = releaseInfo.Size,
+                    IndexerId = releaseInfo.IndexerId,
+                    Indexer = releaseInfo.Indexer,
+                    ReleaseGroup = parsedMovieInfo.ReleaseGroup,
+                    ReleaseHash = parsedMovieInfo.ReleaseHash,
+                    Title = releaseInfo.Title,
+                    FullSeason = parsedMovieInfo.FullSeason,
+                    SeasonNumber = parsedMovieInfo.SeasonNumber,
+                    Language = parsedMovieInfo.Language,
+                    AirDate = "",
+                    SeriesTitle = parsedMovieInfo.MovieTitle,
+                    EpisodeNumbers = new int[0],
+                    AbsoluteEpisodeNumbers = new int[0],
+                    Approved = model.Approved,
+                    TemporarilyRejected = model.TemporarilyRejected,
+                    Rejected = model.Rejected,
+                    TvdbId = releaseInfo.TvdbId,
+                    TvRageId = releaseInfo.TvRageId,
+                    Rejections = model.Rejections.Select(r => r.Reason).ToList(),
+                    PublishDate = releaseInfo.PublishDate,
+                    CommentUrl = releaseInfo.CommentUrl,
+                    DownloadUrl = releaseInfo.DownloadUrl,
+                    InfoUrl = releaseInfo.InfoUrl,
+                    DownloadAllowed = downloadAllowed,
+                    //ReleaseWeight
+
+                    MagnetUrl = torrentInfo.MagnetUrl,
+                    InfoHash = torrentInfo.InfoHash,
+                    Seeders = torrentInfo.Seeders,
+                    Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
+                    Protocol = releaseInfo.DownloadProtocol,
+
+                    Edition = parsedMovieInfo.Edition,
+
+                    IsDaily = false,
+                    IsAbsoluteNumbering = false,
+                    IsPossibleSpecialEpisode = false,
+                    Special = parsedMovieInfo.Special,
+                };
             }
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)

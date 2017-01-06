@@ -10,3 +10,5 @@ install:
 after_success:
   - chmod +x package.sh
   - ./package.sh
+notifications:
+  - webhooks: https://discordapp.com/api/webhooks/266910310219251712/V-QvCcnYkg3O8PMevcAJOJyCgrYkZQoF2pupLDGbaISNUECmYPd6LRwl3avKHsPyfgWP

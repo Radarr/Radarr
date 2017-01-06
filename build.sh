@@ -154,8 +154,8 @@ PackageMono()
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
 
     echo "Renaming NzbDrone.Console.exe to NzbDrone.exe"
-    rm $outputFolderMono/NzbDrone.exe*
-    for file in $outputFolderMono/NzbDrone.Console.exe*; do
+    rm $outputFolderMono/Radarr.exe*
+    for file in $outputFolderMono/Radarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
@@ -192,8 +192,8 @@ PackageOsxApp()
     rm -rf $outputFolderOsxApp
     mkdir $outputFolderOsxApp
 
-    cp -r ./osx/Sonarr.app $outputFolderOsxApp
-    cp -r $outputFolderOsx $outputFolderOsxApp/Sonarr.app/Contents/MacOS
+    cp -r ./osx/Radarr.app $outputFolderOsxApp
+    cp -r $outputFolderOsx $outputFolderOsxApp/Radarr.app/Contents/MacOS
 
     echo "##teamcity[progressFinish 'Creating OS X App Package']"
 }

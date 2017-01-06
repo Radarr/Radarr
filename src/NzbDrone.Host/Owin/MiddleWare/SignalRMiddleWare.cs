@@ -4,7 +4,7 @@ using NzbDrone.Common.Composition;
 using NzbDrone.SignalR;
 using Owin;
 
-namespace NzbDrone.Host.Owin.MiddleWare
+namespace Radarr.Host.Owin.MiddleWare
 {
     public class SignalRMiddleWare : IOwinMiddleWare
     {

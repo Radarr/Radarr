@@ -2,6 +2,7 @@ using NLog;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
+using System;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
@@ -25,6 +26,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 _logger.Debug("{0} is blacklisted, rejecting.", subject.Release.Title);
                 return Decision.Reject("Release is blacklisted");
             }
+
+            return Decision.Accept();
+        }
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+
+            throw new NotImplementedException();
 
             return Decision.Accept();
         }

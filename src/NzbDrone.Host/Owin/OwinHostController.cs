@@ -1,9 +1,9 @@
 using System;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Host.AccessControl;
+using Radarr.Host.AccessControl;
 
-namespace NzbDrone.Host.Owin
+namespace Radarr.Host.Owin
 {
     public class OwinHostController : IHostController
     {

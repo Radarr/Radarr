@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Tv
             
             try
             {
-                movieInfo = _movieInfo.GetMovieInfo(movie.ImdbId);
+                movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId);
             }
             catch (MovieNotFoundException)
             {
@@ -59,10 +59,10 @@ namespace NzbDrone.Core.Tv
                 return;
             }
 
-            if (movie.ImdbId != movieInfo.ImdbId)
+            if (movie.TmdbId != movieInfo.TmdbId)
             {
-                _logger.Warn("Movie '{0}' (tvdbid {1}) was replaced with '{2}' (tvdbid {3}), because the original was a duplicate.", movie.Title, movie.ImdbId, movieInfo.Title, movieInfo.ImdbId);
-                movie.ImdbId = movieInfo.ImdbId;
+                _logger.Warn("Movie '{0}' (tvdbid {1}) was replaced with '{2}' (tvdbid {3}), because the original was a duplicate.", movie.Title, movie.TmdbId, movieInfo.Title, movieInfo.TmdbId);
+                movie.TmdbId = movieInfo.TmdbId;
             }
 
             movie.Title = movieInfo.Title;
@@ -80,6 +80,8 @@ namespace NzbDrone.Core.Tv
             movie.Genres = movieInfo.Genres;
             movie.Certification = movieInfo.Certification;
             movie.InCinemas = movieInfo.InCinemas;
+            movie.Website = movieInfo.Website;
+            movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
 
             try

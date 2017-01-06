@@ -7,4 +7,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NzbDrone.SignalR")]
 [assembly: Guid("98bd985a-4f23-4201-8ed3-f6f3d7f2a5fe")]
 
-[assembly: AssemblyVersion("10.0.0.*")]
+[assembly: AssemblyVersion("0.1.0.*")]

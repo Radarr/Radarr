@@ -31,6 +31,7 @@ namespace NzbDrone.Core.History
     public class HistoryService : IHistoryService,
                                   IHandle<EpisodeGrabbedEvent>,
                                   IHandle<MovieGrabbedEvent>,
+                                  IHandle<MovieImportedEvent>,
                                   IHandle<EpisodeImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<EpisodeFileDeletedEvent>,
@@ -186,7 +187,7 @@ namespace NzbDrone.Core.History
             {
                 EventType = HistoryEventType.Grabbed,
                 Date = DateTime.UtcNow,
-                Quality = message.Movie.ParsedEpisodeInfo.Quality,
+                Quality = message.Movie.ParsedMovieInfo.Quality,
                 SourceTitle = message.Movie.Release.Title,
                 SeriesId = 0,
                 EpisodeId = 0,
@@ -196,7 +197,7 @@ namespace NzbDrone.Core.History
 
                 history.Data.Add("Indexer", message.Movie.Release.Indexer);
                 history.Data.Add("NzbInfoUrl", message.Movie.Release.InfoUrl);
-                history.Data.Add("ReleaseGroup", message.Movie.ParsedEpisodeInfo.ReleaseGroup);
+                history.Data.Add("ReleaseGroup", message.Movie.ParsedMovieInfo.ReleaseGroup);
                 history.Data.Add("Age", message.Movie.Release.Age.ToString());
                 history.Data.Add("AgeHours", message.Movie.Release.AgeHours.ToString());
                 history.Data.Add("AgeMinutes", message.Movie.Release.AgeMinutes.ToString());
@@ -209,9 +210,9 @@ namespace NzbDrone.Core.History
                 history.Data.Add("TvRageId", message.Movie.Release.TvRageId.ToString());
                 history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
 
-                if (!message.Movie.ParsedEpisodeInfo.ReleaseHash.IsNullOrWhiteSpace())
+                if (!message.Movie.ParsedMovieInfo.ReleaseHash.IsNullOrWhiteSpace())
                 {
-                    history.Data.Add("ReleaseHash", message.Movie.ParsedEpisodeInfo.ReleaseHash);
+                    history.Data.Add("ReleaseHash", message.Movie.ParsedMovieInfo.ReleaseHash);
                 }
 
                 var torrentRelease = message.Movie.Release as TorrentInfo;
@@ -262,6 +263,45 @@ namespace NzbDrone.Core.History
 
                 _historyRepository.Insert(history);
             }
+        }
+
+        public void Handle(MovieImportedEvent message)
+        {
+            if (!message.NewDownload)
+            {
+                return;
+            }
+
+            var downloadId = message.DownloadId;
+
+            if (downloadId.IsNullOrWhiteSpace())
+            {
+                //downloadId = FindDownloadId(message); For now fuck off.
+            }
+
+            var movie = message.MovieInfo.Movie;
+                var history = new History
+                {
+                    EventType = HistoryEventType.DownloadFolderImported,
+                    Date = DateTime.UtcNow,
+                    Quality = message.MovieInfo.Quality,
+                    SourceTitle = movie.Title,
+                    SeriesId = 0,
+                    EpisodeId = 0,
+                    DownloadId = downloadId,
+                    MovieId = movie.Id,
+
+
+                };
+
+                //Won't have a value since we publish this event before saving to DB.
+                //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
+                history.Data.Add("DroppedPath", message.MovieInfo.Path);
+                history.Data.Add("ImportedPath", Path.Combine(movie.Path, message.ImportedMovie.RelativePath));
+                history.Data.Add("DownloadClient", message.DownloadClient);
+
+                _historyRepository.Insert(history);
+            
         }
 
         public void Handle(DownloadFailedEvent message)

@@ -38,5 +38,24 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             return Decision.Accept();
         }
+
+        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            var delayProfile = _delayProfileService.BestForTags(subject.Movie.Tags);
+
+            if (subject.Release.DownloadProtocol == DownloadProtocol.Usenet && !delayProfile.EnableUsenet)
+            {
+                _logger.Debug("[{0}] Usenet is not enabled for this series", subject.Release.Title);
+                return Decision.Reject("Usenet is not enabled for this series");
+            }
+
+            if (subject.Release.DownloadProtocol == DownloadProtocol.Torrent && !delayProfile.EnableTorrent)
+            {
+                _logger.Debug("[{0}] Torrent is not enabled for this series", subject.Release.Title);
+                return Decision.Reject("Torrent is not enabled for this series");
+            }
+
+            return Decision.Accept();
+        }
     }
 }

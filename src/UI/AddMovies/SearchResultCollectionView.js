@@ -21,8 +21,8 @@ module.exports = Marionette.CollectionView.extend({
         return this.showing >= this.collection.length;
     },
 
-    setExisting : function(imdbid) {
-        var movies = this.collection.where({ imdbId : imdbid });
+    setExisting : function(tmdbid) {
+        var movies = this.collection.where({ tmdbId : tmdbid });
         console.warn(movies)
         //debugger;
         if (movies.length > 0) {

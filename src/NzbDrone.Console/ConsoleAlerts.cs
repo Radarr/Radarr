@@ -1,4 +1,4 @@
-﻿using NzbDrone.Host;
+﻿using Radarr.Host;
 
 namespace NzbDrone.Console
 {

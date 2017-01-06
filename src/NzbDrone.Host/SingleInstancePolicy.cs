@@ -4,7 +4,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Processes;
 
-namespace NzbDrone.Host
+namespace Radarr.Host
 {
     public interface ISingleInstancePolicy
     {
@@ -31,9 +31,9 @@ namespace NzbDrone.Host
         {
             if (IsAlreadyRunning())
             {
-                _logger.Warn("Another instance of Sonarr or Radarr is already running.");
+                _logger.Warn("Another instance of Radarr is already running.");
                 _browserService.LaunchWebUI();
-                //throw new TerminateApplicationException("Another instance is already running"); TODO: detect only radarr
+                throw new TerminateApplicationException("Another instance is already running");
             }
         }
 

@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Queue
                 Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}", trackedDownload.DownloadItem.DownloadId)),
                 Series = null,
                 Episode = null,
-                Quality = trackedDownload.RemoteMovie.ParsedEpisodeInfo.Quality,
+                Quality = trackedDownload.RemoteMovie.ParsedMovieInfo.Quality,
                 Title = trackedDownload.DownloadItem.Title,
                 Size = trackedDownload.DownloadItem.TotalSize,
                 Sizeleft = trackedDownload.DownloadItem.RemainingSize,

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -29,6 +30,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 {
                     _logger.Debug("Cutoff already met, rejecting.");
                     return Decision.Reject("Existing file meets cutoff: {0}", subject.Series.Profile.Value.Cutoff);
+                }
+            }
+
+            return Decision.Accept();
+        }
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            if (subject.Movie.MovieFile.Value != null)
+            {
+                if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Movie.Profile, subject.Movie.MovieFile.Value.Quality, subject.ParsedMovieInfo.Quality))
+                {
+                    return Decision.Reject("Existing file meets cutoff: {0}", subject.Movie.Profile.Value.Cutoff);
                 }
             }
 

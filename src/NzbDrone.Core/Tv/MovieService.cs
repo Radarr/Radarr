@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Tv
             _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
 
             newMovie.CleanTitle = newMovie.Title.CleanSeriesTitle();
-            newMovie.SortTitle = MovieTitleNormalizer.Normalize(newMovie.Title, newMovie.ImdbId);
+            newMovie.SortTitle = MovieTitleNormalizer.Normalize(newMovie.Title, newMovie.TmdbId);
             newMovie.Added = DateTime.UtcNow;
 
             _movieRepository.Insert(newMovie);
