@@ -89,8 +89,8 @@ namespace NzbDrone.Core.DecisionEngine
                             else
                             {
                                 remoteEpisode.DownloadAllowed = true;
-                                //decision = GetDecisionForReport(remoteEpisode, searchCriteria); TODO: Rewrite this for movies!
-                                decision = new DownloadDecision(remoteEpisode);
+                                decision = GetDecisionForReport(remoteEpisode, searchCriteria);
+                                //decision = new DownloadDecision(remoteEpisode);
                             }
                             
                         }
@@ -205,6 +205,14 @@ namespace NzbDrone.Core.DecisionEngine
             }
         }
 
+        private DownloadDecision GetDecisionForReport(RemoteMovie remoteEpisode, SearchCriteriaBase searchCriteria = null)
+        {
+            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteEpisode, searchCriteria))
+                                         .Where(c => c != null);
+
+            return new DownloadDecision(remoteEpisode, reasons.ToArray());
+        }
+
         private DownloadDecision GetDecisionForReport(RemoteEpisode remoteEpisode, SearchCriteriaBase searchCriteria = null)
         {
             var reasons = _specifications.Select(c => EvaluateSpec(c, remoteEpisode, searchCriteria))
@@ -231,6 +239,33 @@ namespace NzbDrone.Core.DecisionEngine
                 _logger.Error(e, "Couldn't evaluate decision on " + remoteEpisode.Release.Title + ", with spec: " + spec.GetType().Name);
                 //return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
                 //return null;
+            }
+
+            return null;
+        }
+
+        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteEpisode, SearchCriteriaBase searchCriteriaBase = null)
+        {
+            try
+            {
+                var result = spec.IsSatisfiedBy(remoteEpisode, searchCriteriaBase);
+
+                if (!result.Accepted)
+                {
+                    return new Rejection(result.Reason, spec.Type);
+                }
+            }
+            catch (NotImplementedException e)
+            {
+                _logger.Info("Spec " + spec.GetType().Name + " does not care about movies.");
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("report", remoteEpisode.Release.ToJson());
+                e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
+                _logger.Error(e, "Couldn't evaluate decision on " + remoteEpisode.Release.Title + ", with spec: " + spec.GetType().Name);
+                return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
+                return null;
             }
 
             return null;

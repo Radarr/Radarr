@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -15,6 +16,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
         }
 
         public RejectionType Type => RejectionType.Permanent;
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            throw new NotImplementedException();
+        }
 
         public Decision IsSatisfiedBy(RemoteEpisode remoteEpisode, SearchCriteriaBase searchCriteria)
         {

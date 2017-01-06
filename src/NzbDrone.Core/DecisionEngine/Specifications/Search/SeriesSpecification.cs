@@ -32,5 +32,23 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
 
             return Decision.Accept();
         }
+
+        public Decision IsSatisfiedBy(RemoteMovie remoteEpisode, SearchCriteriaBase searchCriteria)
+        {
+            if (searchCriteria == null)
+            {
+                return Decision.Accept();
+            }
+
+            _logger.Debug("Checking if movie matches searched movie");
+
+            if (remoteEpisode.Movie.Id != searchCriteria.Movie.Id)
+            {
+                _logger.Debug("Series {0} does not match {1}", remoteEpisode.Movie, searchCriteria.Series);
+                return Decision.Reject("Wrong movie");
+            }
+
+            return Decision.Accept();
+        }
     }
 }

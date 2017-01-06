@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
@@ -16,6 +17,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         }
 
         public Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        {
+            if (subject.Release.Title.ToLower().Contains("sample") && subject.Release.Size < 70.Megabytes())
+            {
+                _logger.Debug("Sample release, rejecting.");
+                return Decision.Reject("Sample");
+            }
+
+            return Decision.Accept();
+        }
+
+        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (subject.Release.Title.ToLower().Contains("sample") && subject.Release.Size < 70.Megabytes())
             {
