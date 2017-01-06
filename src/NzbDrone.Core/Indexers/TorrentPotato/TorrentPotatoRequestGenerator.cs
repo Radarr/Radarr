@@ -79,9 +79,8 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
             requestBuilder.AddQueryParam("passkey", Settings.Passkey);
             requestBuilder.AddQueryParam("user", Settings.User);
-            requestBuilder.AddQueryParam("imdbid", "tt0076759"); //For now just search for Star Wars.
-
-
+            // requestBuilder.AddQueryParam("imdbid", "tt0076759"); //For now just search for Star Wars.
+            requestBuilder.AddQueryParam("search", "the"); // there has to be movies with 'the' in the title on any indexer
 
             yield return new IndexerRequest(requestBuilder.Build());
         }
