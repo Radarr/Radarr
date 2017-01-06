@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Tv
             return Query.Where(m => m.MovieFileId == fileId).ToList();
         }
 
-        public void SetFileId(int episodeId, int fileId)
+        public void SetFileId(int fileId, int episodeId)
         {
             SetFields(new Movie { Id = episodeId, MovieFileId = fileId }, movie => movie.MovieFileId);
         }
