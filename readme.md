@@ -6,16 +6,17 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 * Adding new movies
 * Manually searching for releases of movies.
 * Automatically searching for releases.
-* Rarbg.to indexer (Other indexers are coming, I just need to find the right categories)
-* QBittorrent download client (Other clients are coming)
+* Automatically importing downloaded movies.
+* Recognizing Special Editions, Director's Cut, etc.
+* Identifying releases with hardcoded subs.
+* Rarbg.to, Torznab and Newznab Indexer.
+* QBittorrent and Deluge download client (Other clients are coming)
+* New TorrentPotato Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
 
 ## Planned Features:
 * Scanning PreDB to know when a new release is available.
 * Fixing the other Indexers and download clients.
-* Fixing how movies are parsed.
-* Fixing movie import.
 * Importing of Sonarr config.
-* New TorrentPotato Indexer.
 
 ## Download
 The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
@@ -28,15 +29,11 @@ For more up to date versions (but also sometimes broken), daily builds can be fo
 ## Major Features Include: ##
 
 * Support for major platforms: Windows, Linux, OSX, Raspberry Pi, etc.
-* Automatically detects new episodes
-* Can scan your existing library and download any missing episodes
-* Can watch for better quality of the episodes you already have and do an automatic upgrade. *eg. from DVD to Blu-Ray*
+* Can watch for better quality of the movies you have and do an upgrade.
 * Automatic failed download handling will try another release if one fails
-* Manual search so you can pick any release or to see why a release was not downloaded automatically
-* Fully configurable episode renaming
-* Full integration with SABNzbd and NzbGet
-* Full integration with XBMC, Plex (notification, library update, metadata)
-* Full support for specials and multi-episode releases
+* Manual search so you can pick any release or to see why a release was not downloaded automatically.
+* Full integration with SABNzbd and NzbGet.
+* Full integration with XBMC, Plex (notification, library update, metadata).
 * And a beautiful UI
 
 ## Configuring Development Environment: ##
