@@ -2,4 +2,6 @@
 
 
 Provide a description of the feature request or bug, the more details the better.
-Please use https://forums.sonarr.tv/ for support or other questions. (When in doubt, use the forums)
+When possible include a log!
+
+Please use our [Discord server](https://discord.gg/NWYch8M) for support or longer discussions.
