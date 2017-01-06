@@ -10,6 +10,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 
@@ -23,13 +24,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
+        private readonly IPreDBService _predbService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IPreDBService predbService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
             _configService = configService;
+            _predbService = predbService;
             _logger = logger;
         }
 
@@ -110,13 +113,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Genres.Add(genre.name);
             }
 
-            if (resource.status == "Released")
+            var timeSinceCinemas = DateTime.Now - movie.InCinemas;
+
+            if (timeSinceCinemas.Value.Days > 30*6)
             {
-                movie.Status = MovieStatusType.Released;
+                movie.Status = MovieStatusType.Released; //Just assume that movies are released to some form of media after half a year.
             }
             else
             {
-                movie.Status = MovieStatusType.Announced;
+                if (_predbService.HasReleases(movie))
+                {
+                    movie.Status = MovieStatusType.Released;
+                }
+                else
+                {
+                    movie.Status = MovieStatusType.Announced;
+                }
             }
 
             return movie;

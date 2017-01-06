@@ -16,6 +16,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Update.Commands;
+using NzbDrone.Core.MetadataSource.PreDB;
 
 namespace NzbDrone.Core.Jobs
 {
@@ -62,6 +63,7 @@ namespace NzbDrone.Core.Jobs
             var defaultTasks = new[]
                 {
                     new ScheduledTask{ Interval = 0.25f, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
+                    new ScheduledTask{ Interval = 1, TypeName = typeof(PreDBSyncCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
                     new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},

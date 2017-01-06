@@ -99,6 +99,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -811,6 +812,10 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideMovieInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewMovie.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBResult.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBSyncCommand.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBSyncEvent.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBService.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ConfigurationResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
