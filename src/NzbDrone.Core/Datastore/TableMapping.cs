@@ -140,6 +140,7 @@ namespace NzbDrone.Core.Datastore
             RegisterEmbeddedConverter();
             RegisterProviderSettingConverter();
 
+            
             MapRepository.Instance.RegisterTypeConverter(typeof(int), new Int32Converter());
             MapRepository.Instance.RegisterTypeConverter(typeof(double), new DoubleConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(DateTime), new UtcConverter());
