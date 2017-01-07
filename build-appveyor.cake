@@ -20,7 +20,7 @@ Task("Build")
 		ToolVersion = MSBuildToolVersion.VS2015
 	}.WithTarget("Clean"));
 
-	Restore(solutionFile);
+	NuGetRestore(solutionFile);
 
 	MSBuild(solutionFile, new MSBuildSettings {
 		ToolVersion = MSBuildToolVersion.VS2015,
