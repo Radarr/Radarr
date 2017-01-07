@@ -2,8 +2,9 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("sonarr.tv")]
+[assembly: AssemblyCompany("radarr.tv")]
 [assembly: AssemblyProduct("NzbDrone")]
+[assembly: AssemblyVersion("0.1.0.*")]
 [assembly: AssemblyCopyright("GNU General Public v3")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
