@@ -61,7 +61,7 @@ public void CreateMdbs(string path) {
 }
 
 // Tasks
-Task("Build").Does(() => {
+Task("Compile").Does(() => {
 	// Build
 	if (DirectoryExists(outputFolder)) {
 		DeleteDirectory(outputFolder, true);
@@ -224,11 +224,22 @@ Task("PackageTests").Does(() => {
 	CopyFiles(sourceFolder + "/ExternalModules/CurlSharp/libs/i386/*", testPackageFolder);
 });
 
+Task("CleanupWindowsPackage").Does(() => {
+	// Remove mono
+	DeleteFiles(outputFolder + "/NzbDrone.Mono.*");
+
+	// Adding NzbDrone.Windows to updatePackage
+	CopyFiles(outputFolder + "/NzbDrone.Windows.*", updateFolder);
+});
+
+Task("Build")
+	.IsDependentOn("Compile")
+	.IsDependentOn("Gulp")
+	.IsDependentOn("PackageMono")
+	.IsDependentOn("PackageOsx")
+	.IsDependentOn("PackageOsxApp")
+	.IsDependentOn("PackageTests")
+	.IsDependentOn("CleanupWindowsPackage");
+
 // Run
 RunTarget("Build");
-RunTarget("Gulp");
-RunTarget("PackageMono");
-RunTarget("PackageOsx");
-RunTarget("PackageOsxApp");
-RunTarget("PackageTests");
-// RunTarget("CleanupWindowsPackage");
