@@ -39,13 +39,13 @@ cp -r $outputFolderMono/ Radarr_Mono_$VERSION
 cp -r $outputFolderOsxApp/ Radarr_OSX_$VERSION
 
 if [ $runtime = "dotnet" ] ; then
-  ./7za.exe a Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION
-  ./7za.exe a -ttar -so Radarr_Mono_$VERSION.tar Radarr_Mono_$VERSION | ./7za.exe a -si Radarr_Mono_$VERSION.tar.gz
-  ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar Radarr_OSX_$VERSION | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
+  ./7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*
+  ./7za.exe a -ttar -so Radarr_Mono_$VERSION.tar ./Radarr_Mono_$VERSION/* | ./7za.exe a -si Radarr_Mono_$VERSION.tar.gz
+  ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./Radarr_OSX_$VERSION/* | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
 else
-zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION >& /dev/null
-zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION >& /dev/null
-zip -r Radarr_OSX_$VERSION.zip Radarr_OSX_$VERSION >& /dev/null
+zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/* >& /dev/null
+zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION/* >& /dev/null #TODO update for tar.gz
+zip -r Radarr_OSX_$VERSION.zip Radarr_OSX_$VERSION/* >& /dev/null
 fi
 ftp -n ftp.leonardogalli.ch << END_SCRIPT
 passive
