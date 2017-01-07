@@ -54,7 +54,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Radarr.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Radarr.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>NzbDrone.WindowsApp</StartupObject>
@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Radarr.ico" />
+    <None Include="Resources\Radarr.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
