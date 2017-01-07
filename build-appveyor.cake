@@ -20,6 +20,11 @@ Task("Build")
 		ToolVersion = MSBuildToolVersion.VS2015
 	}.WithTarget("Clean"));
 
+	// MSBuild(solutionFile, new MSBuildSettings {
+	// 	ToolVersion = MSBuildToolVersion.VS2015,
+	// 	PlatformTarget = PlatformTarget.x86
+	// }.WithTarget("Clean"));,
+
 	// DotNetBuild(solutionFile, settings => 
 	// 						  settings.SetConfiguration("Release")
 	// 								  .WithTarget("Build")
