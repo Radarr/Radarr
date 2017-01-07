@@ -138,7 +138,21 @@ Task("PackageMono").Does(() => {
 });
 
 Task("PackageOsx").Does(() => {
-	
+	// Start osx package
+	if (DirectoryExists(outputFolderOsx)) {
+		DeleteDirectory(outputFolderOsx, true);
+	}
+
+	CopyDirectory(outputFolderMono, outputFolderOsx);
+
+	// Adding sqlite dylibs
+	CopyFiles(sourceFolder + "/Libraries/Sqlite/*.dylib", outputFolderOsx);
+
+	// Adding MediaInfo dylib
+	CopyFiles(sourceFolder + "/Libraries/MediaInfo/*.dylib", outputFolderOsx);
+
+	// Adding Startup script
+	CopyFile("./osx/Sonarr", outputFolderOsx + "/Sonarr");
 });
 
 Task("PackageOsxApp").Does(() => {
@@ -146,10 +160,10 @@ Task("PackageOsxApp").Does(() => {
 });
 
 // Run
-// RunTarget("Build");
-// RunTarget("Gulp");
+RunTarget("Build");
+RunTarget("Gulp");
 RunTarget("PackageMono");
-// RunTarget("PackageOsx");
+RunTarget("PackageOsx");
 // RunTarget("PackageOsxApp");
 // RunTarget("PackageTests");
 // RunTarget("CleanupWindowsPackage");
