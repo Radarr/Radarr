@@ -130,6 +130,7 @@ output/*
 #Packages
 Radarr_*/
 Radarr_*.zip
+Radarr_*.gz
 
 #OS X metadata files
 ._*
