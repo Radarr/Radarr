@@ -59,7 +59,16 @@ namespace NzbDrone.Properties {
                 resourceCulture = value;
             }
         }
-        
+
+        internal static System.Drawing.Icon NzbDrone
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("NzbDrone", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
