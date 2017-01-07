@@ -1,3 +1,5 @@
+#addin "Cake.Npm"
+
 var outputFolder = "./_output";
 var outputFolderMono = outputFolder + "_mono";
 var outputFolderOsx = outputFolder + "_osx";
@@ -42,10 +44,28 @@ public void CleanFolder(string path, bool keepConfigFiles) {
 	RemoveEmptyFolders(path);
 }
 
+public void CreateMdbs(string path) {
+	foreach (var file in System.IO.Directory.EnumerateFiles(path, "*.pdb", System.IO.SearchOption.AllDirectories)) {
+		var actualFile = file.Substring(0, file.Length - 4);
+		
+		if (FileExists(actualFile + ".exe")) {
+			StartProcess("./tools/pdb2mdb/pdb2mdb.exe", new ProcessSettings()
+				.WithArguments(args => args.Append(actualFile + ".exe")));
+		}
+		
+		if (FileExists(actualFile + ".dll")) {
+			StartProcess("./tools/pdb2mdb/pdb2mdb.exe", new ProcessSettings()
+				.WithArguments(args => args.Append(actualFile + ".dll")));
+		}
+	}
+}
+
 // Tasks
 Task("Build").Does(() => {
 	// Build
-	CleanDirectories(outputFolder);
+	if (DirectoryExists(outputFolder)) {
+		DeleteDirectory(outputFolder, true);
+	}
 
 	MSBuild(solutionFile, config => 
 		config.UseToolVersion(MSBuildToolVersion.VS2015)
@@ -71,10 +91,64 @@ Task("Build").Does(() => {
 	DeleteFile(outputFolder + "/Mono.Posix.dll");
 });
 
+Task("Gulp").Does(() => {
+	Npm.Install();
+	Npm.RunScript("build");
+});
+
+Task("PackageMono").Does(() => {
+	// Start mono package
+	if (DirectoryExists(outputFolderMono)) {
+		DeleteDirectory(outputFolderMono, true);
+	}
+
+	CopyDirectory(outputFolder, outputFolderMono);
+
+	// Create MDBs
+	CreateMdbs(outputFolderMono);
+
+	// Remove PDBs
+	DeleteFiles(outputFolderMono + "/**/*.pdb");
+
+	// Remove service helpers
+	DeleteFiles(outputFolderMono + "/ServiceUninstall.*");
+	DeleteFiles(outputFolderMono + "/ServiceInstall.*");
+	
+	// Remove native windows binaries
+	DeleteFiles(outputFolderMono + "/sqlite3.*");
+	DeleteFiles(outputFolderMono + "/MediaInfo.*");
+
+	// Adding NzbDrone.Core.dll.config (for dllmap)
+	CopyFile(sourceFolder + "/NzbDrone.Core/NzbDrone.Core.dll.config", outputFolderMono + "/NzbDrone.Core.dll.config");
+
+	// Adding CurlSharp.dll.config (for dllmap)
+	CopyFile(sourceFolder + "/NzbDrone.Common/CurlSharp.dll.config", outputFolderMono + "/CurlSharp.dll.config");
+
+	// Renaming Radarr.Console.exe to Radarr.exe
+	DeleteFiles(outputFolderMono + "/Radarr.exe*");
+	MoveFile(outputFolderMono + "/Radarr.Console.exe", outputFolderMono + "/Radarr.exe");
+	MoveFile(outputFolderMono + "/Radarr.Console.exe.config", outputFolderMono + "/Radarr.exe.config");
+	MoveFile(outputFolderMono + "/Radarr.Console.exe.mdb", outputFolderMono + "/Radarr.exe.mdb");
+
+	// Remove NzbDrone.Windows.*
+	DeleteFiles(outputFolderMono + "/NzbDrone.Windows.*");
+
+	// Adding NzbDrone.Mono to updatePackage
+	CopyFiles(outputFolderMono + "/NzbDrone.Mono.*", updateFolderMono);
+});
+
+Task("PackageOsx").Does(() => {
+	
+});
+
+Task("PackageOsxApp").Does(() => {
+	
+});
+
 // Run
-RunTarget("Build");
-// RunTarget("RunGulp");
-// RunTarget("PackageMono");
+// RunTarget("Build");
+// RunTarget("Gulp");
+RunTarget("PackageMono");
 // RunTarget("PackageOsx");
 // RunTarget("PackageOsxApp");
 // RunTarget("PackageTests");
