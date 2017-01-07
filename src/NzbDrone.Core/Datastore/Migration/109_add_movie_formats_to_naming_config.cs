@@ -37,14 +37,12 @@ namespace NzbDrone.Core.Datastore.Migration
                         var qualityFormat = "[{Quality Title}]";
 
                         movieTitlePattern = "{Movie Title}";
-                        
 
-                        movieTitlePattern += " ";
+                        var standardMovieFormat = string.Format("{0} {1} {2}", movieTitlePattern, 
+                                                                             movieYearPattern,
+                                                                             qualityFormat);
 
-                        var standardMovieFormat = string.Format("{0}{1}", movieTitlePattern,
-                                                                                         qualityFormat);
-
-                        var movieFolderFormat = string.Format("{0}{1}", movieTitlePattern, movieYearPattern);
+                        var movieFolderFormat = string.Format("{0} {1}", movieTitlePattern, movieYearPattern);
                         
 
                         using (IDbCommand updateCmd = conn.CreateCommand())

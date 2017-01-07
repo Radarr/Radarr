@@ -14,8 +14,8 @@ namespace NzbDrone.Core.Organizer
             AnimeEpisodeFormat = "{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}",
             SeriesFolderFormat = "{Series Title}",
             SeasonFolderFormat = "Season {season}",
-            MovieFolderFormat = "{Movie Title}",
-            StandardMovieFormat = "{Movie Title} {Quality Full}",
+            MovieFolderFormat = "{Movie Title} ({Release Year})",
+            StandardMovieFormat = "{Movie Title} ({Release Year}) {Quality Full}",
         };
 
         public bool RenameEpisodes { get; set; }
