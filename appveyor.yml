@@ -4,7 +4,7 @@ branches:
 
 assembly_info:
   patch: false
-  
+
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
@@ -13,6 +13,8 @@ install:
 
 build_script:
   - ps: ./build-appveyor.ps1
+  
+test: off
 
 # artifacts:
 #  - path: 'output\*.zip'
