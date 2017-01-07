@@ -1,11 +1,11 @@
 var Marionette = require('marionette');
-var AddSeriesView = require('../AddSeriesView');
+var AddMoviesView = require('../AddMoviesView');
 var UnmappedFolderCollection = require('./UnmappedFolderCollection');
 
 module.exports = Marionette.CompositeView.extend({
-    itemView          : AddSeriesView,
+    itemView          : AddMoviesView,
     itemViewContainer : '.x-loading-folders',
-    template          : 'AddSeries/Existing/AddExistingSeriesCollectionViewTemplate',
+    template          : 'AddMovies/Existing/AddExistingMovieCollectionViewTemplate',
 
     ui : {
         loadingFolders : '.x-loading-folders'
