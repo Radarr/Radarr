@@ -69,7 +69,8 @@ Task("Build").Does(() => {
 
 	MSBuild(solutionFile, config => 
 		config.UseToolVersion(MSBuildToolVersion.VS2015)
-			.WithTarget("Clean"));
+			.WithTarget("Clean")
+			.SetVerbosity(Verbosity.Minimal));
 
 	NuGetRestore(solutionFile);
 
@@ -78,7 +79,8 @@ Task("Build").Does(() => {
 			.SetPlatformTarget(PlatformTarget.x86)
 			.SetConfiguration("Release")
 			.WithProperty("AllowedReferenceRelatedFileExtensions", new string[] { ".pdb" })
-			.WithTarget("Build"));
+			.WithTarget("Build")
+			.SetVerbosity(Verbosity.Minimal));
 
 	CleanFolder(outputFolder, false);
 
@@ -156,7 +158,16 @@ Task("PackageOsx").Does(() => {
 });
 
 Task("PackageOsxApp").Does(() => {
-	
+	// Start osx app package
+	if (DirectoryExists(outputFolderOsxApp)) {
+		DeleteDirectory(outputFolderOsxApp, true);
+	}
+
+	CreateDirectory(outputFolderOsxApp);
+
+	// Copy osx package files
+	CopyDirectory("./osx/Radarr.app", outputFolderOsxApp + "/Radarr.app");
+	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Radarr.app/Contents/MacOS");
 });
 
 // Run
@@ -164,6 +175,6 @@ RunTarget("Build");
 RunTarget("Gulp");
 RunTarget("PackageMono");
 RunTarget("PackageOsx");
-// RunTarget("PackageOsxApp");
+RunTarget("PackageOsxApp");
 // RunTarget("PackageTests");
 // RunTarget("CleanupWindowsPackage");
