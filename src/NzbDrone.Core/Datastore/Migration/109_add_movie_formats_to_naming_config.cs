@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         // Output Settings
                         var movieTitlePattern = "";
-                        var movieYearPattern = "({Release Year})";
+                        //var movieYearPattern = "({Release Year})";
                         var qualityFormat = " [{Quality Title}]";
 
                         if (replaceSpaces)
@@ -55,11 +55,10 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         movieTitlePattern += separator;
 
-                        var standardMovieFormat = string.Format("{0}{1}{2}", movieTitlePattern,
-                                                                                         movieYearPattern,
+                        var standardMovieFormat = string.Format("{0}{1}", movieTitlePattern,
                                                                                          qualityFormat);
 
-                        var movieFolderFormat = string.Format("{0}{1}", movieTitlePattern, movieYearPattern);
+                        var movieFolderFormat = string.Format("{0}", movieTitlePattern);
 
                         if (includeQuality)
                         {

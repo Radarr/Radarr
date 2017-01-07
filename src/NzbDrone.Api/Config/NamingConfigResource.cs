@@ -68,12 +68,12 @@ namespace NzbDrone.Api.Config
 
                 RenameEpisodes = resource.RenameEpisodes,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
-                MultiEpisodeStyle = resource.MultiEpisodeStyle,
-                StandardEpisodeFormat = resource.StandardEpisodeFormat,
-                DailyEpisodeFormat = resource.DailyEpisodeFormat,
-                AnimeEpisodeFormat = resource.AnimeEpisodeFormat,
-                SeriesFolderFormat = resource.SeriesFolderFormat,
-                SeasonFolderFormat = resource.SeasonFolderFormat,
+                //MultiEpisodeStyle = resource.MultiEpisodeStyle,
+                //StandardEpisodeFormat = resource.StandardEpisodeFormat,
+                //DailyEpisodeFormat = resource.DailyEpisodeFormat,
+                //AnimeEpisodeFormat = resource.AnimeEpisodeFormat,
+                //SeriesFolderFormat = resource.SeriesFolderFormat,
+                //SeasonFolderFormat = resource.SeasonFolderFormat,
                 StandardMovieFormat = resource.StandardMovieFormat,
                 MovieFolderFormat = resource.MovieFolderFormat
             };
