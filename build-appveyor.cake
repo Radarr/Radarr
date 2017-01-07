@@ -20,20 +20,16 @@ Task("Build")
 		ToolVersion = MSBuildToolVersion.VS2015
 	}.WithTarget("Clean"));
 
-	//MSBuild(solutionFile, new MSBuildSettings {
-	//	ToolVersion = MSBuildToolVersion.VS2015,
-	//	PlatformTarget = PlatformTarget.x86,
-	//	Configuration = "Release",
-	//	Properties = new Dictionary<string, List<string>>() {
-	//		{ "AllowedReferenceRelatedFileExtensions", new List<string> { ".pdb" } }
-	//	}
-	//}.WithTarget("Build"));
+	Restore(solutionFile);
 
-	// DotNetBuild(solutionFile, settings => 
-	// 						  settings.SetConfiguration("Release")
-	// 								  .WithTarget("Build")
-	// 								  .WithProperty("Platform", new string[] { "x86" })
-	// 								  .WithProperty("AllowedReferenceRelatedFileExtensions", new string[] { ".pdb" }));
+	MSBuild(solutionFile, new MSBuildSettings {
+		ToolVersion = MSBuildToolVersion.VS2015,
+		PlatformTarget = PlatformTarget.x86,
+		Configuration = "Release",
+		Properties = new Dictionary<string, List<string>>() {
+			{ "AllowedReferenceRelatedFileExtensions", new List<string> { ".pdb" } }
+		}
+	}.WithTarget("Build"));
 });
 
 RunTarget("Build");
