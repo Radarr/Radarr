@@ -26,7 +26,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function(options) {
-        console.log(options)
+        console.log(options);
         this.isExisting = options.isExisting;
         this.collection = new AddMoviesCollection();
 
@@ -125,7 +125,7 @@ module.exports = Marionette.Layout.extend({
         }
 
         else if (!this.isExisting) {
-            this.resultCollectionView.setExisting(options.movie.get('tmdbId'))
+            this.resultCollectionView.setExisting(options.movie.get('tmdbId'));
             /*this.collection.term = '';
             this.collection.reset();
             this._clearResults();
