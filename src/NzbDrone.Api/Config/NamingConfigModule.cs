@@ -110,7 +110,7 @@ namespace NzbDrone.Api.Config
             //        ? "Invalid format"
             //        : animeMultiEpisodeSampleResult.FileName;
 
-            sampleResource.MovieExample = _filenameValidationService.ValidateMovieFilename(movieSampleResult) != null
+            sampleResource.MovieExample = nameSpec.StandardMovieFormat.IsNullOrWhiteSpace()
                 ? "Invalid Format"
                 : movieSampleResult.FileName;
 
@@ -145,17 +145,17 @@ namespace NzbDrone.Api.Config
             var animeEpisodeValidationResult = _filenameValidationService.ValidateAnimeFilename(animeEpisodeSampleResult);
             var animeMultiEpisodeValidationResult = _filenameValidationService.ValidateAnimeFilename(animeMultiEpisodeSampleResult);
 
-            var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult);
+            //var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult); For now, let's hope the user is not stupid enough :/
 
             var validationFailures = new List<ValidationFailure>();
 
-            validationFailures.AddIfNotNull(singleEpisodeValidationResult);
-            validationFailures.AddIfNotNull(multiEpisodeValidationResult);
-            validationFailures.AddIfNotNull(dailyEpisodeValidationResult);
-            validationFailures.AddIfNotNull(animeEpisodeValidationResult);
-            validationFailures.AddIfNotNull(animeMultiEpisodeValidationResult);
+            //validationFailures.AddIfNotNull(singleEpisodeValidationResult);
+            //validationFailures.AddIfNotNull(multiEpisodeValidationResult);
+            //validationFailures.AddIfNotNull(dailyEpisodeValidationResult);
+            //validationFailures.AddIfNotNull(animeEpisodeValidationResult);
+            //validationFailures.AddIfNotNull(animeMultiEpisodeValidationResult);
 
-            validationFailures.AddIfNotNull(standardMovieValidationResult);
+            //validationFailures.AddIfNotNull(standardMovieValidationResult);
 
             if (validationFailures.Any())
             {

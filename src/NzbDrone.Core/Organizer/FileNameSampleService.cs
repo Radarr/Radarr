@@ -46,7 +46,8 @@ namespace NzbDrone.Core.Organizer
 
             _movie = new Movie
             {
-                Title = "Movie Title (2010)"
+                Title = "Movie Title",
+                Year = 2010
             };
 
             _standardSeries = new Series

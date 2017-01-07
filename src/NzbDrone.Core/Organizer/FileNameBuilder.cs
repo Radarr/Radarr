@@ -160,7 +160,7 @@ namespace NzbDrone.Core.Organizer
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
-            //AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
+            AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
 
@@ -214,6 +214,8 @@ namespace NzbDrone.Core.Organizer
 
         public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
         {
+            return new BasicNamingConfig(); //For now let's be lazy
+
             var episodeFormat = GetEpisodeFormat(nameSpec.StandardEpisodeFormat).LastOrDefault();
 
             if (episodeFormat == null)
@@ -297,6 +299,7 @@ namespace NzbDrone.Core.Organizer
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
+            AddReleaseDateTokens(tokenHandlers, movie.Year);
 
             return CleanFolderName(ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig));
         }
@@ -470,7 +473,7 @@ namespace NzbDrone.Core.Organizer
 
         private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
         {
-            tokenHandlers["{Release Year}"] = m => string.Format("({0})", releaseYear.ToString()); //Do I need m.CustomFormat?
+            tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); //Do I need m.CustomFormat?
         }
 
         private void AddSeasonTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int seasonNumber)

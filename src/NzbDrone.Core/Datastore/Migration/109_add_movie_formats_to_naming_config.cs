@@ -28,48 +28,24 @@ namespace NzbDrone.Core.Datastore.Migration
                 namingConfigCmd.CommandText = @"SELECT * FROM NamingConfig LIMIT 1";
                 using (IDataReader namingConfigReader = namingConfigCmd.ExecuteReader())
                 {
-                    var separatorIndex = namingConfigReader.GetOrdinal("Separator");
-                    var includeQualityIndex = namingConfigReader.GetOrdinal("IncludeQuality");
-                    var replaceSpacesIndex = namingConfigReader.GetOrdinal("ReplaceSpaces");
 
                     while (namingConfigReader.Read())
                     {
-                        var separator = namingConfigReader.GetString(separatorIndex);
-                        var includeQuality = namingConfigReader.GetBoolean(includeQualityIndex);
-                        var replaceSpaces = namingConfigReader.GetBoolean(replaceSpacesIndex);
-
                         // Output Settings
                         var movieTitlePattern = "";
-                        //var movieYearPattern = "({Release Year})";
-                        var qualityFormat = " [{Quality Title}]";
+                        var movieYearPattern = "({Release Year})";
+                        var qualityFormat = "[{Quality Title}]";
 
-                        if (replaceSpaces)
-                        {
-                            movieTitlePattern = "{Movie.Title}";
+                        movieTitlePattern = "{Movie Title}";
+                        
 
-                        }
-                        else
-                        {
-                            movieTitlePattern = "{Movie Title}";
-                        }
-
-                        movieTitlePattern += separator;
+                        movieTitlePattern += " ";
 
                         var standardMovieFormat = string.Format("{0}{1}", movieTitlePattern,
                                                                                          qualityFormat);
 
-                        var movieFolderFormat = string.Format("{0}", movieTitlePattern);
-
-                        if (includeQuality)
-                        {
-                            if (replaceSpaces)
-                            {
-                                qualityFormat = ".[{Quality.Title}]";
-                            }
-
-                            movieFolderFormat += qualityFormat;
-                            standardMovieFormat += qualityFormat;
-                        }
+                        var movieFolderFormat = string.Format("{0}{1}", movieTitlePattern, movieYearPattern);
+                        
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
