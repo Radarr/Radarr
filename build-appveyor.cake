@@ -16,14 +16,15 @@ Task("Build")
 
 	CleanDirectories(outputFolder);
 
-	DotNetBuild(solutionFile, settings => 
-							  settings.WithTarget("Clean"));
+	MSBuild(solutionFile, new MSBuildSettings {
+		ToolVersion = MSBuildToolVersion.VS2015
+	}.WithTarget("Clean"));
 
-	DotNetBuild(solutionFile, settings => 
-							  settings.SetConfiguration("Release")
-							  settings.WithTarget("Build")
-							  settings.WithProperty("Platform", new string[] { "x86" })
-							  settings.WithProperty("AllowedReferenceRelatedFileExtensions", new string[] { ".pdb" }));
+	// DotNetBuild(solutionFile, settings => 
+	// 						  settings.SetConfiguration("Release")
+	// 								  .WithTarget("Build")
+	// 								  .WithProperty("Platform", new string[] { "x86" })
+	// 								  .WithProperty("AllowedReferenceRelatedFileExtensions", new string[] { ".pdb" }));
 });
 
 RunTarget("Build");
