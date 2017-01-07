@@ -94,8 +94,8 @@ Task("Build").Does(() => {
 });
 
 Task("Gulp").Does(() => {
-	Npm.Install();
-	Npm.RunScript("build");
+	Npm.WithLogLevel(NpmLogLevel.Silent).Install();
+	Npm.WithLogLevel(NpmLogLevel.Silent).RunScript("build");
 });
 
 Task("PackageMono").Does(() => {
