@@ -173,11 +173,62 @@ Task("PackageOsxApp").Does(() => {
 	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Radarr.app/Contents/MacOS");
 });
 
+Task("PackageTests").Does(() => {
+	// Start tests package
+	if (DirectoryExists(testPackageFolder)) {
+		DeleteDirectory(testPackageFolder, true);
+	}
+
+	CreateDirectory(testPackageFolder);
+
+	// Copy tests
+	CopyFiles(sourceFolder + "/" + testSearchPattern + "/*", testPackageFolder);
+	foreach (var directory in System.IO.Directory.GetDirectories(sourceFolder, "*.Test")) {
+		var releaseDirectory = directory + "/bin/x86/Release";
+		if (DirectoryExists(releaseDirectory)) {
+			foreach (var releaseSubDirectory in System.IO.Directory.GetDirectories(releaseDirectory)) {
+				Information(System.IO.Path.GetDirectoryName(releaseSubDirectory));
+				CopyDirectory(releaseSubDirectory, testPackageFolder + "/" + System.IO.Path.GetFileName(releaseSubDirectory));
+			}
+		}
+	}
+
+	// Install NUnit.ConsoleRunner
+	NuGetInstall("NUnit.ConsoleRunner", new NuGetInstallSettings {
+		Version = "3.2.0",
+		OutputDirectory = testPackageFolder
+	});
+
+	// Copy dlls
+	CopyFiles(outputFolder + "/*.dll", testPackageFolder);
+	
+	// Copy scripts
+	CopyFiles("./*.sh", testPackageFolder);
+
+	// Create MDBs for tests
+	CreateMdbs(testPackageFolder);
+
+	// Remove config
+	DeleteFiles(testPackageFolder + "/*.log.config");
+
+	// Clean
+	CleanFolder(testPackageFolder, true);
+
+	// Adding NzbDrone.Core.dll.config (for dllmap)
+	CopyFile(sourceFolder + "/NzbDrone.Core/NzbDrone.Core.dll.config", testPackageFolder + "/NzbDrone.Core.dll.config");
+
+	// Adding CurlSharp.dll.config (for dllmap)
+	CopyFile(sourceFolder + "/NzbDrone.Common/CurlSharp.dll.config", testPackageFolder + "/CurlSharp.dll.config");
+
+	// Adding CurlSharp libraries
+	CopyFiles(sourceFolder + "/ExternalModules/CurlSharp/libs/i386/*", testPackageFolder);
+});
+
 // Run
 RunTarget("Build");
 RunTarget("Gulp");
 RunTarget("PackageMono");
 RunTarget("PackageOsx");
 RunTarget("PackageOsxApp");
-// RunTarget("PackageTests");
+RunTarget("PackageTests");
 // RunTarget("CleanupWindowsPackage");
