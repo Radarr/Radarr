@@ -16,20 +16,18 @@ Task("Build")
 
 	CleanDirectories(outputFolder);
 
-	MSBuild(solutionFile, new MSBuildSettings {
-		ToolVersion = MSBuildToolVersion.VS2015
-	}.WithTarget("Clean"));
+	MSBuild(solutionFile, config => 
+		config.UseToolVersion(MSBuildToolVersion.VS2015)
+			.WithTarget("Clean"));
 
 	NuGetRestore(solutionFile);
 
-	MSBuild(solutionFile, new MSBuildSettings {
-		ToolVersion = MSBuildToolVersion.VS2015,
-		PlatformTarget = PlatformTarget.x86,
-		Configuration = "Release",
-		Properties = new Dictionary<string, List<string>>() {
-			{ "AllowedReferenceRelatedFileExtensions", new List<string> { ".pdb" } }
-		}
-	}.WithTarget("Build"));
+	MSBuild(solutionFile, config => 
+		config.UseToolVersion(MSBuildToolVersion.VS2015)
+			.SetPlatformTarget(PlatformTarget.x86)
+			.SetConfiguration("Release")
+			.WithProperty("AllowedReferenceRelatedFileExtensions", new string[] { ".pdb" })
+			.WithTarget("Build"));
 });
 
 RunTarget("Build");
