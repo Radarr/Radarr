@@ -192,9 +192,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private string StripTrailingTheFromTitle(string title)
         {
-            if(title.EndsWith(", the") || title.EndsWith(",the"))
+            if(title.EndsWith(",the"))
             {
                 title = title.Substring(title.Length - 4);
+            } else if(title.EndsWith(", the"))
+            {
+                title = title.Substring(title.Length - 5);
             }
             return title;
         }
