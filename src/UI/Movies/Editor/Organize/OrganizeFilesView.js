@@ -12,19 +12,19 @@ module.exports = Marionette.ItemView.extend({
     },
 
     initialize : function(options) {
-        this.series = options.series;
+        this.movies = options.movies;
         this.templateHelpers = {
-            numberOfSeries : this.series.length,
-            series         : new Backbone.Collection(this.series).toJSON()
+            numberOfMovies : this.movies.length,
+            movies         : new Backbone.Collection(this.movies).toJSON()
         };
     },
 
     _organize : function() {
-        var seriesIds = _.pluck(this.series, 'id');
+        var movieIds = _.pluck(this.movies, 'id');
 
-        CommandController.Execute('renameSeries', {
-            name      : 'renameSeries',
-            seriesIds : seriesIds
+        CommandController.Execute('renameMovie', {
+            name      : 'renameMovie',
+            movieIds : movieIds
         });
 
         this.trigger('organizingFiles');

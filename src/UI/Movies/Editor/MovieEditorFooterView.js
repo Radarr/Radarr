@@ -4,7 +4,7 @@ var vent = require('vent');
 var Profiles = require('../../Profile/ProfileCollection');
 var RootFolders = require('../../AddMovies/RootFolders/RootFolderCollection');
 var RootFolderLayout = require('../../AddMovies/RootFolders/RootFolderLayout');
-var UpdateFilesSeriesView = require('./Organize/OrganizeFilesView');
+var UpdateFilesMoviesView = require('./Organize/OrganizeFilesView');
 var Config = require('../../Config');
 
 module.exports = Marionette.ItemView.extend({
@@ -34,14 +34,14 @@ module.exports = Marionette.ItemView.extend({
     },
 
     initialize : function(options) {
-        this.seriesCollection = options.collection;
+        this.moviesCollection = options.collection;
 
         RootFolders.fetch().done(function() {
             RootFolders.synced = true;
         });
 
         this.editorGrid = options.editorGrid;
-        this.listenTo(this.seriesCollection, 'backgrid:selected', this._updateInfo);
+        this.listenTo(this.moviesCollection, 'backgrid:selected', this._updateInfo);
         this.listenTo(RootFolders, 'all', this.render);
     },
 
@@ -83,14 +83,14 @@ module.exports = Marionette.ItemView.extend({
             model.edited = true;
         });
 
-        this.seriesCollection.save();
+        this.moviesCollection.save();
     },
 
     _updateInfo : function() {
         var selected = this.editorGrid.getSelectedModels();
         var selectedCount = selected.length;
 
-        this.ui.selectedCount.html('{0} series selected'.format(selectedCount));
+        this.ui.selectedCount.html('{0} movies selected'.format(selectedCount));
 
         if (selectedCount === 0) {
             this.ui.actions.attr('disabled', 'disabled');
@@ -118,9 +118,9 @@ module.exports = Marionette.ItemView.extend({
 
     _organizeFiles : function() {
         var selected = this.editorGrid.getSelectedModels();
-        var updateFilesSeriesView = new UpdateFilesSeriesView({ series : selected });
-        this.listenToOnce(updateFilesSeriesView, 'updatingFiles', this._afterSave);
+        var updateFilesMoviesView = new UpdateFilesMoviesView({ movies : selected });
+        this.listenToOnce(updateFilesMoviesView, 'updatingFiles', this._afterSave);
 
-        vent.trigger(vent.Commands.OpenModalCommand, updateFilesSeriesView);
+        vent.trigger(vent.Commands.OpenModalCommand, updateFilesMoviesView);
     }
 });

@@ -29,12 +29,13 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function(options) {
-        this.model = options.series;
+        this.model = options.movie;
         this.seasonNumber = options.seasonNumber;
 
         var viewOptions = {};
-        viewOptions.seriesId = this.model.id;
-        viewOptions.seasonNumber = this.seasonNumber;
+        //viewOptions.seriesId = this.model.id;
+        //viewOptions.seasonNumber = this.seasonNumber;
+        viewOptions.movieId = this.model.id;
 
         this.collection = new RenamePreviewCollection(viewOptions);
         this.listenTo(this.collection, 'sync', this._showPreviews);
@@ -74,21 +75,26 @@ module.exports = Marionette.Layout.extend({
             return;
         }
 
-        if (this.seasonNumber) {
+        // if (this.seasonNumber) {
+        //     CommandController.Execute('renameFiles', {
+        //         name         : 'renameFiles',
+        //         movieId     : this.model.id,
+        //         //seasonNumber : this.seasonNumber,
+        //         files        : files
+        //     });
+        // } else {
+            // CommandController.Execute('renameFiles', {
+            //     name         : 'renameFiles',
+            //     seriesId     : this.model.id,
+            //     seasonNumber : -1,
+            //     files        : files
+            // });
             CommandController.Execute('renameFiles', {
                 name         : 'renameFiles',
-                seriesId     : this.model.id,
-                seasonNumber : this.seasonNumber,
+                movieId     : this.model.id,
                 files        : files
             });
-        } else {
-            CommandController.Execute('renameFiles', {
-                name         : 'renameFiles',
-                seriesId     : this.model.id,
-                seasonNumber : -1,
-                files        : files
-            });
-        }
+        //}
 
         vent.trigger(vent.Commands.CloseModalCommand);
     },

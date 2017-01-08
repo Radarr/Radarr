@@ -5,6 +5,7 @@ var Profiles = require('../../Profile/ProfileCollection');
 var RootFolders = require('../../AddSeries/RootFolders/RootFolderCollection');
 var RootFolderLayout = require('../../AddSeries/RootFolders/RootFolderLayout');
 var UpdateFilesSeriesView = require('./Organize/OrganizeFilesView');
+var UPdateFilesMoviesView = require('./Organize/OrganizeFilesView');
 var Config = require('../../Config');
 
 module.exports = Marionette.ItemView.extend({
@@ -118,8 +119,11 @@ module.exports = Marionette.ItemView.extend({
 
     _organizeFiles : function() {
         var selected = this.editorGrid.getSelectedModels();
-        var updateFilesSeriesView = new UpdateFilesSeriesView({ series : selected });
-        this.listenToOnce(updateFilesSeriesView, 'updatingFiles', this._afterSave);
+        //var updateFilesSeriesView = new UpdateFilesSeriesView({ series : selected });
+        //this.listenToOnce(updateFilesSeriesView, 'updatingFiles', this._afterSave);
+
+        var updateFilesMoviesView = new UpdateFilesMoviesView({ movies: selected });
+        this.listenToOnce(updateFilesMOviesVIew, 'updatingFiles', this._afterSave);
 
         vent.trigger(vent.Commands.OpenModalCommand, updateFilesSeriesView);
     }
