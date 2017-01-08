@@ -6,7 +6,7 @@ branches:
 
 assembly_info:
   patch: true
-  file: ./src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs
+  file: 'src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs'
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}-rc1'
