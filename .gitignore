@@ -138,3 +138,7 @@ Radarr_*.gz
 
 _start
 _temp_*/**/*
+
+#AppVeyor
+/tools-cake/
+/_artifacts/
