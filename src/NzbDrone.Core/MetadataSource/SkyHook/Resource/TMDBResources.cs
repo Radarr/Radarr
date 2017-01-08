@@ -61,6 +61,27 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public float vote_average { get; set; }
         public int vote_count { get; set; }
         public AlternativeTitles alternative_titles { get; set; }
+        public ReleaseDatesResource release_dates { get; set; }
+    }
+
+    public class ReleaseDatesResource
+    {
+        public List<ReleaseDates> results { get; set; }
+    }
+
+    public class ReleaseDate
+    {
+        public string certification { get; set; }
+        public string iso_639_1 { get; set; }
+        public string note { get; set; }
+        public string release_date { get; set; }
+        public int type { get; set; }
+    }
+
+    public class ReleaseDates
+    {
+        public string iso_3166_1 { get; set; }
+        public List<ReleaseDate> release_dates { get; set; }
     }
 
     public class Belongs_To_Collection

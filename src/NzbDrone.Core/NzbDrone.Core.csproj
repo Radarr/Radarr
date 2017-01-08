@@ -286,6 +286,7 @@
     <Compile Include="Datastore\Migration\098_remove_titans_of_tv.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Datastore\Migration\110_add_physical_release_to_table.cs" />
     <Compile Include="Datastore\Migration\109_add_movie_formats_to_naming_config.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
