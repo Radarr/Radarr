@@ -108,7 +108,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     if (releaseDate.type == 5 || releaseDate.type == 4)
                     {
-                        movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date);
+                        if (movie.PhysicalRelease.HasValue)
+                        {
+                            if (movie.PhysicalRelease.Value.After(DateTime.Parse(releaseDate.release_date)))
+                            {
+                                movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date); //Use oldest release date available.
+                            }
+                        }
+                        else
+                        {
+                            movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date);
+                        }
                     }
                 }
             }

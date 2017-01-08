@@ -134,10 +134,17 @@ Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
+  if (this.physicalRelease) {
+    var d = new Date(this.physicalRelease);
+    var day = d.getDate();
+    var month = monthNames[d.getMonth()];
+    var year = d.getFullYear();
+    return "Available: " + day + ". " + month + " " + year;
+  }
   var cinemasDate = new Date(this.inCinemas);
   var year = cinemasDate.getFullYear();
   var month = monthNames[cinemasDate.getMonth()];
-  return "In Cinemas " + month + " " + year;
+  return "In Cinemas: " + month + " " + year;
 });
 
 Handlebars.registerHelper('tvRageUrl', function() {
