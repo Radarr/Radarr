@@ -83,6 +83,7 @@ namespace NzbDrone.Core.Tv
             movie.Website = movieInfo.Website;
             movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
+            movie.PhysicalRelease = movieInfo.PhysicalRelease;
 
             try
             {

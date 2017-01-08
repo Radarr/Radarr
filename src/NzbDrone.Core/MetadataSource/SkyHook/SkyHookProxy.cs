@@ -70,7 +70,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                .SetSegment("route", "movie")
                .SetSegment("id", TmdbId.ToString())
                .SetSegment("secondaryRoute", "")
-               .AddQueryParam("append_to_response", "alternative_titles")
+               .AddQueryParam("append_to_response", "alternative_titles,release_dates")
                .AddQueryParam("country", "US")
                .Build();
 
@@ -100,6 +100,27 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             foreach(Title title in resource.alternative_titles.titles)
             {
                 movie.AlternativeTitles.Add(title.title);
+            }
+
+            foreach(ReleaseDates releaseDates in resource.release_dates.results)
+            {
+                foreach(ReleaseDate releaseDate in releaseDates.release_dates)
+                {
+                    if (releaseDate.type == 5 || releaseDate.type == 4)
+                    {
+                        if (movie.PhysicalRelease.HasValue)
+                        {
+                            if (movie.PhysicalRelease.Value.After(DateTime.Parse(releaseDate.release_date)))
+                            {
+                                movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date); //Use oldest release date available.
+                            }
+                        }
+                        else
+                        {
+                            movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date);
+                        }
+                    }
+                }
             }
 
             movie.Ratings = new Ratings();
