@@ -127,7 +127,39 @@ Handlebars.registerHelper('GetBannerStatus', function() {
   else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
   }
+});
+
+Handlebars.registerHelper('DownloadedStatusColor', function() {
+  if (!this.monitored) {
+    if (this.downloaded) {
+      return "default";
+    }
+    return "warning";
+  }
+
+    if (this.downloaded) {
+      return "success";
+    }
+
+  if (this.status != "released") {
+    return "primary";
+  }
+
+  return "danger";
 })
+
+Handlebars.registerHelper('DownloadedStatus', function() {
+
+  if (this.downloaded) {
+    return "Downloaded";
+  }
+  if (!this.monitored) {
+    return "Not Monitored";
+  }
+
+
+  return "Missing";
+});
 
 
 Handlebars.registerHelper('inCinemas', function() {

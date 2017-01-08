@@ -12,6 +12,7 @@ var ProfileCell = require('../../Cells/ProfileCell');
 var MovieLinksCell = require('../../Cells/MovieLinksCell');
 var MovieActionCell = require('../../Cells/MovieActionCell');
 var MovieStatusCell = require('../../Cells/MovieStatusCell');
+var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
 var FooterView = require('./FooterView');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
@@ -54,6 +55,11 @@ module.exports = Marionette.Layout.extend({
             label     : 'Links',
             cell      : MovieLinksCell,
             className : "movie-links-cell"
+        },
+        {
+          name        : "this",
+          label       : "Status",
+          cell        : MovieDownloadStatusCell,
         },
         {
             name     : 'this',
@@ -134,6 +140,10 @@ module.exports = Marionette.Layout.extend({
                 {
                     title : 'In Cinemas',
                     name  : 'inCinemas'
+                },
+                {
+                  title : "Status",
+                  name : "status",
                 }
             ]
         };
