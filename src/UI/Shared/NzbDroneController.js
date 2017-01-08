@@ -41,7 +41,7 @@ module.exports = Marionette.AppRouter.extend({
         var label = window.location.pathname === window.NzbDrone.UrlBase + '/system/updates' ? 'Reload' : 'View Changes';
 
         Messenger.show({
-            message   : 'Sonarr has been updated',
+            message   : 'Radarr has been updated',
             hideAfter : 0,
             id        : 'sonarrUpdated',
             actions   : {
