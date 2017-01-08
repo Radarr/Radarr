@@ -38,7 +38,6 @@ module.exports = Marionette.Layout.extend({
             label     : 'Title',
             cell      : MovieTitleCell,
             cellValue : 'this',
-            sortValue : 'sortTitle'
         },
         {
             name  : 'profileId',
@@ -129,24 +128,12 @@ module.exports = Marionette.Layout.extend({
                     name  : 'title'
                 },
                 {
-                    title : 'Seasons',
-                    name  : 'seasonCount'
-                },
-                {
                     title : 'Quality',
                     name  : 'profileId'
                 },
                 {
-                    title : 'Network',
-                    name  : 'network'
-                },
-                {
-                    title : 'Next Airing',
-                    name  : 'nextAiring'
-                },
-                {
-                    title : 'Episodes',
-                    name  : 'percentOfEpisodes'
+                    title : 'In Cinemas',
+                    name  : 'inCinemas'
                 }
             ]
         };
@@ -169,27 +156,6 @@ module.exports = Marionette.Layout.extend({
                     title    : '',
                     tooltip  : 'Monitored Only',
                     icon     : 'icon-sonarr-monitored',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'continuing',
-                    title    : '',
-                    tooltip  : 'Continuing Only',
-                    icon     : 'icon-sonarr-series-continuing',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'ended',
-                    title    : '',
-                    tooltip  : 'Ended Only',
-                    icon     : 'icon-sonarr-series-ended',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'missing',
-                    title    : '',
-                    tooltip  : 'Missing',
-                    icon     : 'icon-sonarr-missing',
                     callback : this._setFilter
                 }
             ]
