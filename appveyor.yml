@@ -1,9 +1,15 @@
+version: '0.1.0.{build}'
+
 branches:
   only:
   - develop
 
 assembly_info:
-  patch: false
+  patch: true
+  file: ./src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}-rc1'
 
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1

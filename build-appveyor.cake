@@ -283,10 +283,17 @@ Task("ArtifactsOsxApp").Does(() => {
 });
 
 Task("CompressArtifacts").Does(() => {
-	Zip(artifactsFolderWindows, artifactsFolder + "/windows.zip");
-	GZipCompress(artifactsFolderLinux, artifactsFolder + "/linux.tar.gz");
-	GZipCompress(artifactsFolderOsx, artifactsFolder + "/osx.tar.gz");
-	Zip(artifactsFolderOsxApp, artifactsFolder + "/osx.zip");
+	var prefix = "";
+
+	if (AppVeyor.IsRunningOnAppVeyor) {
+		prefix += AppVeyor.Environment.Repository.Branch + ".";
+		prefix += AppVeyor.Environment.Build.Version + ".";
+	}
+
+	Zip(artifactsFolderWindows, artifactsFolder + "/Radarr." + prefix + "windows.zip");
+	GZipCompress(artifactsFolderLinux, artifactsFolder + "/Radarr." + prefix + "linux.tar.gz");
+	GZipCompress(artifactsFolderOsx, artifactsFolder + "/Radarr." + prefix + "osx.tar.gz");
+	Zip(artifactsFolderOsxApp, artifactsFolder + "/Radarr." + prefix + "osx-app.zip");
 });
 
 Task("Artifacts")
@@ -298,5 +305,5 @@ Task("Artifacts")
 	.IsDependentOn("CompressArtifacts");
 
 // Run
-RunTarget("Build");
+// RunTarget("Build");
 RunTarget("Artifacts");
