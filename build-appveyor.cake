@@ -252,12 +252,6 @@ Task("Build")
 	.IsDependentOn("CleanupWindowsPackage");
 
 // Build Artifacts
-
-// Artifacts file name: 
-// 		Windows: Radarr.(branch).(assembly_version).windows.zip
-// 		Linux  : Radarr.(branch).(assembly_version).mono.tar.gz
-// 		OSx	   : Radarr.(branch).(assembly_version).osx.tar.gz
-
 Task("CleanArtifacts").Does(() => {
 	if (DirectoryExists(artifactsFolder)) {
 		DeleteDirectory(artifactsFolder, true);
