@@ -16,8 +16,9 @@ build_script:
   
 test: off
 
-# artifacts:
-#  - path: 'output\*.zip'
+artifacts:
+  - path: '_artifacts\*.zip'
+  - path: '_artifacts\*.tar.gz'
 
 cache:
   - '%USERPROFILE%\.nuget\packages'

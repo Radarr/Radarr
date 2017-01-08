@@ -1,5 +1,8 @@
 #addin "Cake.Npm"
+#addin "SharpZipLib"
+#addin "Cake.Compression"
 
+// Build variables
 var outputFolder = "./_output";
 var outputFolderMono = outputFolder + "_mono";
 var outputFolderOsx = outputFolder + "_osx";
@@ -10,6 +13,13 @@ var sourceFolder = "./src";
 var solutionFile = sourceFolder + "/NzbDrone.sln";
 var updateFolder = outputFolder + "/NzbDrone.Update";
 var updateFolderMono = outputFolderMono + "/NzbDrone.Update";
+
+// Artifact variables
+var artifactsFolder = "./_artifacts";
+var artifactsFolderWindows = artifactsFolder + "/windows";
+var artifactsFolderLinux = artifactsFolder + "/linux";
+var artifactsFolderOsx = artifactsFolder + "/osx";
+var artifactsFolderOsxApp = artifactsFolder + "/osx-app";
 
 // Utility methods
 public void RemoveEmptyFolders(string startLocation) {
@@ -60,7 +70,7 @@ public void CreateMdbs(string path) {
 	}
 }
 
-// Tasks
+// Build Tasks
 Task("Compile").Does(() => {
 	// Build
 	if (DirectoryExists(outputFolder)) {
@@ -241,5 +251,52 @@ Task("Build")
 	.IsDependentOn("PackageTests")
 	.IsDependentOn("CleanupWindowsPackage");
 
+// Build Artifacts
+
+// Artifacts file name: 
+// 		Windows: Radarr.(branch).(assembly_version).windows.zip
+// 		Linux  : Radarr.(branch).(assembly_version).mono.tar.gz
+// 		OSx	   : Radarr.(branch).(assembly_version).osx.tar.gz
+
+Task("CleanArtifacts").Does(() => {
+	if (DirectoryExists(artifactsFolder)) {
+		DeleteDirectory(artifactsFolder, true);
+	}
+
+	CreateDirectory(artifactsFolder);
+});
+
+Task("ArtifactsWindows").Does(() => {
+	CopyDirectory(outputFolder, artifactsFolderWindows);
+});
+
+Task("ArtifactsLinux").Does(() => {
+	CopyDirectory(outputFolderMono, artifactsFolderLinux);
+});
+
+Task("ArtifactsOsx").Does(() => {
+	CopyDirectory(outputFolderOsx, artifactsFolderOsx);
+});
+
+Task("ArtifactsOsxApp").Does(() => {
+	CopyDirectory(outputFolderOsxApp, artifactsFolderOsxApp);
+});
+
+Task("CompressArtifacts").Does(() => {
+	Zip(artifactsFolderWindows, artifactsFolder + "/windows.zip");
+	GZipCompress(artifactsFolderLinux, artifactsFolder + "/linux.tar.gz");
+	GZipCompress(artifactsFolderOsx, artifactsFolder + "/osx.tar.gz");
+	Zip(artifactsFolderOsxApp, artifactsFolder + "/osx.zip");
+});
+
+Task("Artifacts")
+	.IsDependentOn("CleanArtifacts")
+	.IsDependentOn("ArtifactsWindows")
+	.IsDependentOn("ArtifactsLinux")
+	.IsDependentOn("ArtifactsOsx")
+	.IsDependentOn("ArtifactsOsxApp")
+	.IsDependentOn("CompressArtifacts");
+
 // Run
 RunTarget("Build");
+RunTarget("Artifacts");
