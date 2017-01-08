@@ -19,7 +19,9 @@ module.exports = (function() {
             namingTokenHelper        : '.x-naming-token-helper',
             multiEpisodeStyle        : '.x-multi-episode-style',
             seriesFolderExample      : '.x-series-folder-example',
-            seasonFolderExample      : '.x-season-folder-example'
+            seasonFolderExample      : '.x-season-folder-example',
+            movieExample             : '.x-movie-example',
+            movieFolderExample       : '.x-movie-folder-example'
         },
         events                              : {
             "change .x-rename-episodes"      : '_setFailedDownloadOptionsVisibility',
@@ -58,6 +60,8 @@ module.exports = (function() {
             this.ui.animeMultiEpisodeExample.html(this.namingSampleModel.get('animeMultiEpisodeExample'));
             this.ui.seriesFolderExample.html(this.namingSampleModel.get('seriesFolderExample'));
             this.ui.seasonFolderExample.html(this.namingSampleModel.get('seasonFolderExample'));
+            this.ui.movieExample.html(this.namingSampleModel.get('movieExample'));
+            this.ui.movieFolderExample.html(this.namingSampleModel.get('movieFolderExample'));
         },
         _addToken                           : function(e) {
             e.preventDefault();

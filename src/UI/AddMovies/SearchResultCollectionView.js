@@ -23,7 +23,7 @@ module.exports = Marionette.CollectionView.extend({
 
     setExisting : function(tmdbid) {
         var movies = this.collection.where({ tmdbId : tmdbid });
-        console.warn(movies)
+        console.warn(movies);
         //debugger;
         if (movies.length > 0) {
             this.children.findByModel(movies[0])._configureTemplateHelpers();

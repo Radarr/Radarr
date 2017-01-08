@@ -92,14 +92,14 @@ var view = Marionette.ItemView.extend({
 
     _configureTemplateHelpers : function() {
         var existingMovies = MoviesCollection.where({ tmdbId : this.model.get('tmdbId') });
-        console.log(existingMovies)
+        console.log(existingMovies);
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();
         }
 
         this.templateHelpers.profiles = Profiles.toJSON();
-        console.log(this.model)
-        console.log(this.templateHelpers.existing)
+        console.log(this.model);
+        console.log(this.templateHelpers.existing);
         if (!this.model.get('isExisting')) {
             this.templateHelpers.rootFolders = RootFolders.toJSON();
         }
@@ -245,14 +245,14 @@ var view = Marionette.ItemView.extend({
             options.ignoreEpisodesWithoutFiles = true;
         }
 
-        else if (monitor === 'latest') {
-            this.model.setSeasonPass(lastSeason.seasonNumber);
-        }
+        // else if (monitor === 'latest') {
+        //     this.model.setSeasonPass(lastSeason.seasonNumber);
+        // }
 
-        else if (monitor === 'first') {
-            this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-            this.model.setSeasonMonitored(firstSeason.seasonNumber);
-        }
+        // else if (monitor === 'first') {
+        //     this.model.setSeasonPass(lastSeason.seasonNumber + 1);
+        //     this.model.setSeasonMonitored(firstSeason.seasonNumber);
+        // }
 
         else if (monitor === 'missing') {
             options.ignoreEpisodesWithFiles = true;
@@ -262,9 +262,9 @@ var view = Marionette.ItemView.extend({
             options.ignoreEpisodesWithoutFiles = true;
         }
 
-        else if (monitor === 'none') {
-            this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-        }
+        // else if (monitor === 'none') {
+        //     this.model.setSeasonPass(lastSeason.seasonNumber + 1);
+        // }
 
         return options;
     }

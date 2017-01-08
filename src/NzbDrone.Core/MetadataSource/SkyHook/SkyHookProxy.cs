@@ -12,6 +12,7 @@ using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -175,9 +176,41 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return movie;
         }
 
+        private string[] SeparateYearFromTitle(string title)
+        {
+            var yearPattern = @"((?:19|20)\d{2})";
+            var newTitle = title;
+            var substrings = Regex.Split(title, yearPattern);
+            var year = "";
+            if (substrings.Length > 1) {
+                newTitle = substrings[0].TrimEnd("(");
+                year = substrings[1];
+            }
+            
+            return new[] { newTitle.Trim(), year.Trim() };
+        }
+
+        private string StripTrailingTheFromTitle(string title)
+        {
+            if(title.EndsWith(",the"))
+            {
+                title = title.Substring(title.Length - 4);
+            } else if(title.EndsWith(", the"))
+            {
+                title = title.Substring(title.Length - 5);
+            }
+            return title;
+        }
+
         public List<Movie> SearchForNewMovie(string title)
         {
             var lowerTitle = title.ToLower();
+            var yearCheck = SeparateYearFromTitle(lowerTitle); // TODO: Make this much less hacky!
+
+            lowerTitle = yearCheck[0];
+            var yearTerm = yearCheck[1];
+
+            lowerTitle = StripTrailingTheFromTitle(lowerTitle);
 
             if (lowerTitle.StartsWith("imdb:") || lowerTitle.StartsWith("imdbid:"))
             {
@@ -209,6 +242,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 .SetSegment("id", "movie")
                 .SetSegment("secondaryRoute", "")
                 .AddQueryParam("query", searchTerm)
+                .AddQueryParam("year", yearTerm)
                 .AddQueryParam("include_adult", false)
                 .Build();
 

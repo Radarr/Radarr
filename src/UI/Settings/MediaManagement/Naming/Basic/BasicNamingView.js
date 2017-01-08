@@ -26,10 +26,10 @@ var view = Marionette.ItemView.extend({
     },
 
     _parseNamingModel : function() {
-        var standardFormat = this.namingModel.get('standardEpisodeFormat');
+        var standardFormat = this.namingModel.get('standardMovieFormat');
 
-        var includeSeriesTitle = standardFormat.match(/\{Series[-_. ]Title\}/i);
-        var includeEpisodeTitle = standardFormat.match(/\{Episode[-_. ]Title\}/i);
+        var includeSeriesTitle = false;//standardFormat.match(/\{Series[-_. ]Title\}/i);
+        var includeEpisodeTitle = false;//standardFormat.match(/\{Episode[-_. ]Title\}/i);
         var includeQuality = standardFormat.match(/\{Quality[-_. ]Title\}/i);
         var numberStyle = standardFormat.match(/s?\{season(?:\:0+)?\}[ex]\{episode(?:\:0+)?\}/i);
         var replaceSpaces = standardFormat.indexOf(' ') === -1;

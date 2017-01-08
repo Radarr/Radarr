@@ -3,6 +3,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.MediaFiles.MediaInfo;
+using System;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -13,8 +14,10 @@ namespace NzbDrone.Core.Organizer
         SampleResult GetDailySample(NamingConfig nameSpec);
         SampleResult GetAnimeSample(NamingConfig nameSpec);
         SampleResult GetAnimeMultiEpisodeSample(NamingConfig nameSpec);
+        SampleResult GetMovieSample(NamingConfig nameSpec);
         string GetSeriesFolderSample(NamingConfig nameSpec);
         string GetSeasonFolderSample(NamingConfig nameSpec);
+        string GetMovieFolderSample(NamingConfig nameSpec);
     }
 
     public class FileNameSampleService : IFilenameSampleService
@@ -34,9 +37,18 @@ namespace NzbDrone.Core.Organizer
         private static EpisodeFile _animeEpisodeFile;
         private static EpisodeFile _animeMultiEpisodeFile;
 
+        private static MovieFile _movieFile;
+        private static Movie _movie;
+
         public FileNameSampleService(IBuildFileNames buildFileNames)
         {
             _buildFileNames = buildFileNames;
+
+            _movie = new Movie
+            {
+                Title = "Movie Title",
+                Year = 2010
+            };
 
             _standardSeries = new Series
             {
@@ -104,6 +116,15 @@ namespace NzbDrone.Core.Organizer
                 AudioChannelPositions = "3/2/0.1",
                 AudioLanguages = "Japanese",
                 Subtitles = "Japanese/English"
+            };
+
+            _movieFile = new MovieFile
+            {
+                Quality = new QualityModel(Quality.Bluray1080p, new Revision(2)),
+                RelativePath = "Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE.mkv",
+                SceneName = "Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE",
+                ReleaseGroup = "RlsGrp",
+                MediaInfo = mediaInfo
             };
 
             _singleEpisodeFile = new EpisodeFile
@@ -217,6 +238,16 @@ namespace NzbDrone.Core.Organizer
             return result;
         }
 
+        public SampleResult GetMovieSample(NamingConfig nameSpec)
+        {
+            var result = new SampleResult
+            {
+                FileName = BuildSample(_movie, _movieFile, nameSpec),
+            };
+
+            return result;
+        }
+
         public string GetSeriesFolderSample(NamingConfig nameSpec)
         {
             return _buildFileNames.GetSeriesFolder(_standardSeries, nameSpec);
@@ -227,11 +258,28 @@ namespace NzbDrone.Core.Organizer
             return _buildFileNames.GetSeasonFolder(_standardSeries, _episode1.SeasonNumber, nameSpec);
         }
 
+        public string GetMovieFolderSample(NamingConfig nameSpec)
+        {
+            return _buildFileNames.GetMovieFolder(_movie, nameSpec);
+        }
+
         private string BuildSample(List<Episode> episodes, Series series, EpisodeFile episodeFile, NamingConfig nameSpec)
         {
             try
             {
                 return _buildFileNames.BuildFileName(episodes, series, episodeFile, nameSpec);
+            }
+            catch (NamingFormatException)
+            {
+                return string.Empty;
+            }
+        }
+
+        private string BuildSample(Movie movie, MovieFile movieFile, NamingConfig nameSpec)
+        {
+            try
+            {
+                return _buildFileNames.BuildFileName(movie, movieFile, nameSpec);
             }
             catch (NamingFormatException)
             {
