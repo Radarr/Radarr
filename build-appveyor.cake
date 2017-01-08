@@ -305,5 +305,5 @@ Task("Artifacts")
 	.IsDependentOn("CompressArtifacts");
 
 // Run
-// RunTarget("Build");
+RunTarget("Build");
 RunTarget("Artifacts");

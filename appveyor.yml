@@ -28,3 +28,4 @@ artifacts:
 
 cache:
   - '%USERPROFILE%\.nuget\packages'
+  - node_modules
