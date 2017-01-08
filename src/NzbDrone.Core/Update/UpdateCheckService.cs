@@ -28,7 +28,8 @@ namespace NzbDrone.Core.Update
 
         public UpdatePackage AvailableUpdate()
         {
-            return _updatePackageProvider.GetLatestUpdate(_configFileProvider.Branch, BuildInfo.Version);
+            //For new let's just use develop, afterwards we can change it back to the config: _configFileProvider.Branch
+            return _updatePackageProvider.GetLatestUpdate("develop", BuildInfo.Version);
         }
     }
 }
