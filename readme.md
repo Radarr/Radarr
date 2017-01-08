@@ -1,4 +1,9 @@
-# Radarr [![Build Status](https://travis-ci.org/galli-leo/Radarr.svg?branch=develop)](https://travis-ci.org/galli-leo/Radarr)#
+# Radarr
+
+| Service  | Master                      | Develop                      |
+|----------|:---------------------------:|:----------------------------:|
+| AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) |
+| Travis   | [![Travis](https://img.shields.io/travis/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/galli-leo/Radarr) | [![Travis](https://img.shields.io/travis/galli-leo/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/galli-leo/Radarr) |
 
 This fork of Sonarr aims to turn it into something like Couchpotato.
 
