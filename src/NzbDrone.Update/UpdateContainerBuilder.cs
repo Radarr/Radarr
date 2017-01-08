@@ -17,7 +17,7 @@ namespace NzbDrone.Update
         {
             var assemblies = new List<string>
                              {
-                                 "NzbDrone.Update",
+                                 "Radarr.Update",
                                  "NzbDrone.Common"
                              };
 

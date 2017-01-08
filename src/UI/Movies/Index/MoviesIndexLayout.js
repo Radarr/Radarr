@@ -12,6 +12,7 @@ var ProfileCell = require('../../Cells/ProfileCell');
 var MovieLinksCell = require('../../Cells/MovieLinksCell');
 var MovieActionCell = require('../../Cells/MovieActionCell');
 var MovieStatusCell = require('../../Cells/MovieStatusCell');
+var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
 var FooterView = require('./FooterView');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
@@ -38,7 +39,6 @@ module.exports = Marionette.Layout.extend({
             label     : 'Title',
             cell      : MovieTitleCell,
             cellValue : 'this',
-            sortValue : 'sortTitle'
         },
         {
             name  : 'profileId',
@@ -55,6 +55,11 @@ module.exports = Marionette.Layout.extend({
             label     : 'Links',
             cell      : MovieLinksCell,
             className : "movie-links-cell"
+        },
+        {
+          name        : "this",
+          label       : "Status",
+          cell        : MovieDownloadStatusCell,
         },
         {
             name     : 'this',
@@ -124,24 +129,16 @@ module.exports = Marionette.Layout.extend({
                     name  : 'title'
                 },
                 {
-                    title : 'Seasons',
-                    name  : 'seasonCount'
-                },
-                {
                     title : 'Quality',
                     name  : 'profileId'
                 },
                 {
-                    title : 'Network',
-                    name  : 'network'
+                    title : 'In Cinemas',
+                    name  : 'inCinemas'
                 },
                 {
-                    title : 'Next Airing',
-                    name  : 'nextAiring'
-                },
-                {
-                    title : 'Episodes',
-                    name  : 'percentOfEpisodes'
+                  title : "Status",
+                  name : "status",
                 }
             ]
         };
@@ -164,27 +161,6 @@ module.exports = Marionette.Layout.extend({
                     title    : '',
                     tooltip  : 'Monitored Only',
                     icon     : 'icon-sonarr-monitored',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'continuing',
-                    title    : '',
-                    tooltip  : 'Continuing Only',
-                    icon     : 'icon-sonarr-series-continuing',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'ended',
-                    title    : '',
-                    tooltip  : 'Ended Only',
-                    icon     : 'icon-sonarr-series-ended',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'missing',
-                    title    : '',
-                    tooltip  : 'Missing',
-                    icon     : 'icon-sonarr-missing',
                     callback : this._setFilter
                 }
             ]
