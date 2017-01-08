@@ -43,17 +43,65 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 foreach (var torrent in result.Torrents)
                 {
                     var id = torrent.Id;
-                    torrentInfos.Add(new TorrentInfo()
+
+                    if (_settings.GoldenOnly)
                     {
-                        Guid = string.Format("PassThePopcorn-{0}", id),
-                        Title = torrent.ReleaseName,
-                        Size = Int64.Parse(torrent.Size),
-                        DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
-                        InfoUrl = GetInfoUrl(result.GroupId, id),
-                        Seeders = Int32.Parse(torrent.Seeders),
-                        Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
-                        PublishDate = torrent.UploadTime.ToUniversalTime()
-                    });
+                        if (torrent.GoldenPopcorn)
+                        {
+                            torrentInfos.Add(new TorrentInfo()
+                            {
+                                Guid = string.Format("PassThePopcorn-{0}", id),
+                                Title = torrent.ReleaseName,
+                                Size = Int64.Parse(torrent.Size),
+                                DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
+                                InfoUrl = GetInfoUrl(result.GroupId, id),
+                                Seeders = Int32.Parse(torrent.Seeders),
+                                Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
+                                PublishDate = torrent.UploadTime.ToUniversalTime()
+                            });
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (_settings.CheckedOnly)
+                    {
+                        if (torrent.Checked)
+                        {
+                            torrentInfos.Add(new TorrentInfo()
+                            {
+                                Guid = string.Format("PassThePopcorn-{0}", id),
+                                Title = torrent.ReleaseName,
+                                Size = Int64.Parse(torrent.Size),
+                                DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
+                                InfoUrl = GetInfoUrl(result.GroupId, id),
+                                Seeders = Int32.Parse(torrent.Seeders),
+                                Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
+                                PublishDate = torrent.UploadTime.ToUniversalTime()
+                            });
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (!_settings.GoldenOnly && !_settings.CheckedOnly)
+                    {
+                        torrentInfos.Add(new TorrentInfo()
+                        {
+                            Guid = string.Format("PassThePopcorn-{0}", id),
+                            Title = torrent.ReleaseName,
+                            Size = Int64.Parse(torrent.Size),
+                            DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
+                            InfoUrl = GetInfoUrl(result.GroupId, id),
+                            Seeders = Int32.Parse(torrent.Seeders),
+                            Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
+                            PublishDate = torrent.UploadTime.ToUniversalTime()
+                        });
+                    }
                 }
             }
 
