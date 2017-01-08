@@ -12,6 +12,7 @@ vent.Events = {
 
 vent.Commands = {
     EditSeriesCommand        : 'EditSeriesCommand',
+    EditMovieCommand         : 'EditMovieCommand',
     DeleteSeriesCommand      : 'DeleteSeriesCommand',
     OpenModalCommand         : 'OpenModalCommand',
     CloseModalCommand        : 'CloseModalCommand',

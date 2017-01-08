@@ -42,7 +42,7 @@ module.exports = Marionette.Layout.extend({
     events : {
         'click .x-episode-file-editor' : '_openEpisodeFileEditor',
         'click .x-monitored'           : '_toggleMonitored',
-        'click .x-edit'                : '_editMovies',
+        'click .x-edit'                : '_editMovie',
         'click .x-refresh'             : '_refreshMovies',
         'click .x-rename'              : '_renameMovies',
         'click .x-search'              : '_moviesSearch',
@@ -167,8 +167,8 @@ module.exports = Marionette.Layout.extend({
         }
     },
 
-    _editMovies : function() {
-        vent.trigger(vent.Commands.EditMoviesCommand, { movie : this.model });
+    _editMovie : function() {
+        vent.trigger(vent.Commands.EditMovieCommand, { movie : this.model });
     },
 
     _refreshMovies : function() {

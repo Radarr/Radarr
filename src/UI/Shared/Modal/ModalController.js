@@ -2,6 +2,7 @@ var vent = require('vent');
 var AppLayout = require('../../AppLayout');
 var Marionette = require('marionette');
 var EditSeriesView = require('../../Series/Edit/EditSeriesView');
+var EditMovieView = require('../../Movies/Edit/EditMovieView');
 var DeleteSeriesView = require('../../Series/Delete/DeleteSeriesView');
 var EpisodeDetailsLayout = require('../../Episode/EpisodeDetailsLayout');
 var HistoryDetailsLayout = require('../../Activity/History/Details/HistoryDetailsLayout');
@@ -17,6 +18,7 @@ module.exports = Marionette.AppRouter.extend({
         vent.on(vent.Commands.OpenModal2Command, this._openModal2, this);
         vent.on(vent.Commands.CloseModal2Command, this._closeModal2, this);
         vent.on(vent.Commands.EditSeriesCommand, this._editSeries, this);
+        vent.on(vent.Commands.EditMovieCommand, this._editMovie, this);
         vent.on(vent.Commands.DeleteSeriesCommand, this._deleteSeries, this);
         vent.on(vent.Commands.ShowEpisodeDetails, this._showEpisode, this);
         vent.on(vent.Commands.ShowMovieDetails, this._showMovie, this);
@@ -46,6 +48,11 @@ module.exports = Marionette.AppRouter.extend({
 
     _editSeries : function(options) {
         var view = new EditSeriesView({ model : options.series });
+        AppLayout.modalRegion.show(view);
+    },
+
+    _editMovie : function(options) {
+        var view = new EditMovieView({ model : options.movie });
         AppLayout.modalRegion.show(view);
     },
 
