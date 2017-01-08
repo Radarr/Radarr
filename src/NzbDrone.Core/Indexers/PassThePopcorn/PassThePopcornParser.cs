@@ -6,6 +6,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
 using System;
+using System.Linq;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
@@ -57,7 +58,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                                 InfoUrl = GetInfoUrl(result.GroupId, id),
                                 Seeders = Int32.Parse(torrent.Seeders),
                                 Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
-                                PublishDate = torrent.UploadTime.ToUniversalTime()
+                                PublishDate = torrent.UploadTime.ToUniversalTime(),
+                                Golden = torrent.GoldenPopcorn,
+                                Checked = torrent.Checked
                             });
                         }
                         else
@@ -79,7 +82,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                                 InfoUrl = GetInfoUrl(result.GroupId, id),
                                 Seeders = Int32.Parse(torrent.Seeders),
                                 Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
-                                PublishDate = torrent.UploadTime.ToUniversalTime()
+                                PublishDate = torrent.UploadTime.ToUniversalTime(),
+                                Golden = torrent.GoldenPopcorn,
+                                Checked = torrent.Checked
                             });
                         }
                         else
@@ -99,13 +104,15 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             InfoUrl = GetInfoUrl(result.GroupId, id),
                             Seeders = Int32.Parse(torrent.Seeders),
                             Peers = Int32.Parse(torrent.Leechers) + Int32.Parse(torrent.Seeders),
-                            PublishDate = torrent.UploadTime.ToUniversalTime()
+                            PublishDate = torrent.UploadTime.ToUniversalTime(),
+                            Golden = torrent.GoldenPopcorn,
+                            Checked = torrent.Checked
                         });
                     }
                 }
             }
 
-            return torrentInfos.ToArray();
+            return torrentInfos.OrderBy(o => ((dynamic)o).Golden ? 0 : 1).ThenBy(o => ((dynamic)o).Checked ? 0 : 1).ThenBy(o => ((dynamic)o).PublishDate).ToArray();
         }
 
         private string GetDownloadUrl(int torrentId, string authKey, string passKey)

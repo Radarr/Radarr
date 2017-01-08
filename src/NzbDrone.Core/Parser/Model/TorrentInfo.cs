@@ -10,6 +10,10 @@ namespace NzbDrone.Core.Parser.Model
         public int? Peers { get; set; }
         public bool Freeleech { get; set; }
 
+        // For PassThePopcorn
+        public bool? Golden { get; set; }
+        public bool? Checked { get; set; }
+
         public static int? GetSeeders(ReleaseInfo release)
         {
             var torrentInfo = release as TorrentInfo;
