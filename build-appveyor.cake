@@ -267,15 +267,15 @@ Task("CleanArtifacts").Does(() => {
 });
 
 Task("ArtifactsWindows").Does(() => {
-	CopyDirectory(outputFolder, artifactsFolderWindows);
+	CopyDirectory(outputFolder, artifactsFolderWindows + "/Radarr");
 });
 
 Task("ArtifactsLinux").Does(() => {
-	CopyDirectory(outputFolderMono, artifactsFolderLinux);
+	CopyDirectory(outputFolderMono, artifactsFolderLinux + "/Radarr");
 });
 
 Task("ArtifactsOsx").Does(() => {
-	CopyDirectory(outputFolderOsx, artifactsFolderOsx);
+	CopyDirectory(outputFolderOsx, artifactsFolderOsx + "/Radarr");
 });
 
 Task("ArtifactsOsxApp").Does(() => {
