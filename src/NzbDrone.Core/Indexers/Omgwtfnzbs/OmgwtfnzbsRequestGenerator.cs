@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();
-            url.AppendFormat("{0}?catid=19,20&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
+            url.AppendFormat("{0}?catid=15,16,17&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
 
             if (query.IsNotNullOrWhiteSpace())
             {
@@ -105,7 +105,12 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
         public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
-            return new IndexerPageableRequestChain();
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            pageableRequests.Add(GetPagedRequests(string.Format("{0}",
+                    searchCriteria.Movie.Title)));
+         
+            return pageableRequests;
         }
     }
 }
