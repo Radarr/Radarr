@@ -24,15 +24,15 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         {
             LocalMovie = localMovie;
             Rejections = rejections.ToList();
-            LocalMovie = new LocalMovie
-            {
-                Quality = localMovie.Quality,
-                ExistingFile = localMovie.ExistingFile,
-                MediaInfo = localMovie.MediaInfo,
-                ParsedMovieInfo = localMovie.ParsedMovieInfo,
-                Path = localMovie.Path,
-                Size = localMovie.Size
-            };
+            //LocalMovie = new LocalMovie
+            //{
+            //    Quality = localMovie.Quality,
+            //    ExistingFile = localMovie.ExistingFile,
+            //    MediaInfo = localMovie.MediaInfo,
+            //    ParsedMovieInfo = localMovie.ParsedMovieInfo,
+            //    Path = localMovie.Path,
+            //    Size = localMovie.Size
+            //};
         }
     }
 }

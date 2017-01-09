@@ -27,6 +27,8 @@ namespace NzbDrone.Core.MediaFiles
         List<string> FilterExistingFiles(List<string> files, Movie movie);
         EpisodeFile Get(int id);
         List<EpisodeFile> Get(IEnumerable<int> ids);
+        List<MovieFile> GetMovies(IEnumerable<int> ids);
+
         //List<MovieFile> Get(IEnumerable<int> ids);
     }
 
@@ -125,10 +127,10 @@ namespace NzbDrone.Core.MediaFiles
             return _mediaFileRepository.Get(ids).ToList();
         }
 
-        //public List<MovieFile> Get(IEnumerable<int> ids)
-        //{
-        //    return _mediaFileRepository.Get(ids).ToList();
-        //}
+        public List<MovieFile> GetMovies(IEnumerable<int> ids)
+        {
+            return _movieFileRepository.Get(ids).ToList();
+        }
 
         public void HandleAsync(SeriesDeletedEvent message)
         {

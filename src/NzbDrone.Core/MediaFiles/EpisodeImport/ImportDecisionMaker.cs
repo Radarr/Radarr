@@ -123,18 +123,18 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                 else
                 {
-                    var localEpisode = new LocalEpisode();
-                    localEpisode.Path = file;
+                    localMovie = new LocalMovie();
+                    localMovie.Path = file;
 
-                    decision = new ImportDecision(localEpisode, new Rejection("Unable to parse file"));
+                    decision = new ImportDecision(localMovie, new Rejection("Unable to parse file"));
                 }
             }
             catch (Exception e)
             {
                 _logger.Error(e, "Couldn't import file. " + file);
 
-                var localEpisode = new LocalEpisode { Path = file };
-                decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
+                var localMovie = new LocalMovie { Path = file };
+                decision = new ImportDecision(localMovie, new Rejection("Unexpected error processing file"));
             }
 
             //LocalMovie nullMovie = null;

@@ -110,25 +110,29 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        //public void Execute(RenameMovieFilesCommand message)
-        //{
-        //    var movie = _movieService.GetMovie(message.MovieId);
-        //    var movieFiles = _mediaFileService.Get(message.Files);
+        public void Execute(RenameMovieFilesCommand message)
+        {
+            var movie = _movieService.GetMovie(message.MovieId);
+            var movieFiles = _mediaFileService.GetMovies(message.Files);
 
-        //    _logger.ProgressInfo("Renaming {0} files for {1}", movieFiles.Count, movie.Title);
-        //    RenameFiles(movieFiles, movie);
-        //    _logger.ProgressInfo("Selected movie files renamed for {0}", movie.Title);
-        //}
+            _logger.ProgressInfo("Renaming {0} files for {1}", movieFiles.Count, movie.Title);
+            RenameFiles(movieFiles, movie);
+            _logger.ProgressInfo("Selected movie files renamed for {0}", movie.Title);
+        }
 
         public void Execute(RenameMovieCommand message)
         {
             _logger.Debug("Renaming all files for selected movie");
-            var movieToRename = _movieService.GetMovie(message.MovieId);
+            var moviesToRename = _movieService.GetMovies(message.MovieIds);
 
-            var movieFiles = _mediaFileService.GetFilesByMovie(movieToRename.Id);
-            _logger.ProgressInfo("Renaming all files in movie: {0}", movieToRename.Title);
-            RenameFiles(movieFiles, movieToRename);
-            _logger.ProgressInfo("All movie files renamed for {0}", movieToRename.Title);
+            foreach(var movie in moviesToRename)
+            {
+                var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+                _logger.ProgressInfo("Renaming all files in movie: {0}", movie.Title);
+                RenameFiles(movieFiles, movie);
+                _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
+            }
+            
         }
     }
 }

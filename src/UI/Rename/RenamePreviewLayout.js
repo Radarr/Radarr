@@ -89,8 +89,8 @@ module.exports = Marionette.Layout.extend({
             //     seasonNumber : -1,
             //     files        : files
             // });
-            CommandController.Execute('renameFiles', {
-                name         : 'renameFiles',
+            CommandController.Execute('renameMovieFiles', {
+                name         : 'renameMovieFiles',
                 movieId     : this.model.id,
                 files        : files
             });
