@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
                     if (torrent.GoldenPopcorn)
                     {
-                        title = $"{title} 🍿";
+                        title = $"{title} ★";
                     }
 
                     if (torrent.Checked)

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetRequest(null));
+            pageableRequests.Add(GetRequest(""));
 
             return pageableRequests;
         }
@@ -52,9 +52,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             return new IndexerPageableRequestChain();
         }
 
-        private IEnumerable<IndexerRequest> GetRequest(string searchParameters)
+        private IEnumerable<IndexerRequest> GetRequest(string query)
         {
-            var request = new IndexerRequest(string.Format("{0}/torrents.php?json=noredirect&searchstr={1}", Settings.BaseUrl.Trim().TrimEnd('/'), searchParameters), HttpAccept.Json);
+            var request = new IndexerRequest(string.Format("{0}/torrents.php?json=noredirect&searchstr={1}", Settings.BaseUrl.Trim().TrimEnd('/'), query), HttpAccept.Json);
 
             foreach (var cookie in HttpHeader.ParseCookies(Settings.Cookie))
             {
