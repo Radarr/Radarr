@@ -46,9 +46,22 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     var id = torrent.Id;
                     var title = torrent.ReleaseName;
 
+                    if (torrent.GoldenPopcorn)
+                    {
+                        title = $"{title} ★";
+                    }
+
+                    if (torrent.Checked)
+                    {
+                        title = $"{title} ✔";
+                    }
+
                     //if (IsPropertyExist(torrent, "RemasterTitle"))
                     //{
-                    //    title = string.Format("{0] - {1}", title, torrent.RemasterTitle);
+                    //    if (torrent.RemasterTitle != null)
+                    //    {
+                    //        title = $"{title} - {torrent.RemasterTitle}";
+                    //    }
                     //}
 
                     // Only add approved torrents
@@ -123,9 +136,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             return url.FullUri;
         }
 
-        public static bool IsPropertyExist(dynamic torrents, string name)
-        {
-            return torrents.GetType().GetProperty(name) != null;
-        }
+        //public static bool IsPropertyExist(dynamic torrents, string name)
+        //{
+        //    return torrents.GetType().GetProperty(name) != null;
+        //}
     }
 }
