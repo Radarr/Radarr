@@ -165,10 +165,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if(title.EndsWith(",the"))
             {
-                title = title.Substring(title.Length - 4);
+                title = title.Substring(0, title.Length - 4);
             } else if(title.EndsWith(", the"))
             {
-                title = title.Substring(title.Length - 5);
+                title = title.Substring(0, title.Length - 5);
             }
             return title;
         }
