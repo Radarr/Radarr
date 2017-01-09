@@ -12,7 +12,8 @@ namespace NzbDrone.Core.Parser.Model
 
         // For PassThePopcorn
         public bool? Golden { get; set; }
-        public bool? Checked { get; set; }
+        public bool? Scene { get; set; }
+        public bool? Approved { get; set; }
 
         public static int? GetSeeders(ReleaseInfo release)
         {

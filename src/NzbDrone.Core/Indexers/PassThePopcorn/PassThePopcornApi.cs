@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public bool Scene { get; set; }
         public string Size { get; set; }
         public DateTime UploadTime { get; set; }
+        public string RemasterTitle { get; set; }
         public string Snatched { get; set; }
         public string Seeders { get; set; }
         public string Leechers { get; set; }
