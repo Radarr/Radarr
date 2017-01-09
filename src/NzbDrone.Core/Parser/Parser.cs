@@ -321,6 +321,28 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
+        public static ParsedMovieInfo ParseMoviePath(string path)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var result = ParseMovieTitle(fileInfo.Name);
+
+            if (result == null)
+            {
+                Logger.Debug("Attempting to parse episode info using directory and file names. {0}", fileInfo.Directory.Name);
+                result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
+            }
+
+            if (result == null)
+            {
+                Logger.Debug("Attempting to parse episode info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension);
+            }
+
+            return result;
+
+        }
+
         public static ParsedMovieInfo ParseMovieTitle(string title)
         {
 

@@ -19,7 +19,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
     {
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource); //TODO: Needs changing to ParsedMovieInfo!!
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource); //TODO: Needs changing to ParsedMovieInfo!!
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
     }
 
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decisions;
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
         {
             var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
 
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decisions;
         }
 
-        private ImportDecision GetDecision(string file, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
+        private ImportDecision GetDecision(string file, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
         {
             ImportDecision decision = null;
 
@@ -291,17 +291,17 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }) == 1;
         }
 
-        private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo)
+        private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo)
         {
             if (folderInfo == null)
             {
                 return false;
             }
 
-            if (folderInfo.FullSeason)
-            {
-                return false;
-            }
+            //if (folderInfo.FullSeason)
+            //{
+            //    return false;
+            //}
 
             return videoFiles.Count(file =>
             {
@@ -325,7 +325,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }) == 1;
         }
 
-        private QualityModel GetQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Movie movie)
+        private QualityModel GetQuality(ParsedMovieInfo folderInfo, QualityModel fileQuality, Movie movie)
         {
             if (UseFolderQuality(folderInfo, fileQuality, movie))
             {
@@ -347,7 +347,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return fileQuality;
         }
 
-        private bool UseFolderQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Movie movie)
+        private bool UseFolderQuality(ParsedMovieInfo folderInfo, QualityModel fileQuality, Movie movie)
         {
             if (folderInfo == null)
             {

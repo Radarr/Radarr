@@ -159,7 +159,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = Parser.Parser.ParseTitle(directoryInfo.Name);
+            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
 
             if (folderInfo != null)
             {

@@ -48,6 +48,9 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<MovieFile> MovieFile { get; set; }
         public int MovieFileId { get; set; }
         public List<string> AlternativeTitles { get; set; }
+
+        public bool HasFile => MovieFileId > 0;
+
         public override string ToString()
         {
             return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());

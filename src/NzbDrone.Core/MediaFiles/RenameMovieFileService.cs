@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles
                 var movieFilePath = Path.Combine(movie.Path, file.RelativePath);
 
                 var newName = _filenameBuilder.BuildFileName(movie, file);
-                var newPath = _filenameBuilder.BuildFilePath(movie, newName, Path.GetExtension(file.Path));
+                var newPath = _filenameBuilder.BuildFilePath(movie, newName, Path.GetExtension(movieFilePath));
 
                 if(!movieFilePath.PathEquals(newPath, StringComparison.Ordinal))
                 {

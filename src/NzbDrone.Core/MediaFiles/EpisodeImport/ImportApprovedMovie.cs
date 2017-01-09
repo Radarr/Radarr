@@ -80,7 +80,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     episodeFile.Quality = localMovie.Quality;
                     episodeFile.MediaInfo = localMovie.MediaInfo;
                     episodeFile.Movie = localMovie.Movie;
-                    episodeFile.ReleaseGroup = localMovie.ParsedEpisodeInfo.ReleaseGroup;
+                    episodeFile.ReleaseGroup = localMovie.ParsedMovieInfo.ReleaseGroup;
 
                     bool copyOnly;
                     switch (importMode)

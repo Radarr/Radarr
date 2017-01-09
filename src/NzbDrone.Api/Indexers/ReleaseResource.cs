@@ -107,8 +107,8 @@ namespace NzbDrone.Api.Indexers
                     ReleaseGroup = parsedMovieInfo.ReleaseGroup,
                     ReleaseHash = parsedMovieInfo.ReleaseHash,
                     Title = releaseInfo.Title,
-                    FullSeason = parsedMovieInfo.FullSeason,
-                    SeasonNumber = parsedMovieInfo.SeasonNumber,
+                    //FullSeason = parsedMovieInfo.FullSeason,
+                    //SeasonNumber = parsedMovieInfo.SeasonNumber,
                     Language = parsedMovieInfo.Language,
                     AirDate = "",
                     SeriesTitle = parsedMovieInfo.MovieTitle,
@@ -138,7 +138,7 @@ namespace NzbDrone.Api.Indexers
                     IsDaily = false,
                     IsAbsoluteNumbering = false,
                     IsPossibleSpecialEpisode = false,
-                    Special = parsedMovieInfo.Special,
+                    //Special = parsedMovieInfo.Special,
                 };
             }
 

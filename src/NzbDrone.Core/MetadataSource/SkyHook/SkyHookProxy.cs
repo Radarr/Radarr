@@ -254,7 +254,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            var searchTerm = lowerTitle.Replace("_", "+").Replace(" ", "+");
+            var searchTerm = lowerTitle.Replace("_", "+").Replace(" ", "+").Replace(".", "+");
 
             var firstChar = searchTerm.First();
 
