@@ -127,17 +127,56 @@ Handlebars.registerHelper('GetBannerStatus', function() {
   else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
   }
+});
+
+Handlebars.registerHelper('DownloadedStatusColor', function() {
+  if (!this.monitored) {
+    if (this.downloaded) {
+      return "default";
+    }
+    return "warning";
+  }
+
+    if (this.downloaded) {
+      return "success";
+    }
+
+  if (this.status != "released") {
+    return "primary";
+  }
+
+  return "danger";
 })
+
+Handlebars.registerHelper('DownloadedStatus', function() {
+
+  if (this.downloaded) {
+    return "Downloaded";
+  }
+  if (!this.monitored) {
+    return "Not Monitored";
+  }
+
+
+  return "Missing";
+});
 
 
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
+  if (this.physicalRelease) {
+    var d = new Date(this.physicalRelease);
+    var day = d.getDate();
+    var month = monthNames[d.getMonth()];
+    var year = d.getFullYear();
+    return "Available: " + day + ". " + month + " " + year;
+  }
   var cinemasDate = new Date(this.inCinemas);
   var year = cinemasDate.getFullYear();
   var month = monthNames[cinemasDate.getMonth()];
-  return "In Cinemas " + month + " " + year;
+  return "In Cinemas: " + month + " " + year;
 });
 
 Handlebars.registerHelper('tvRageUrl', function() {

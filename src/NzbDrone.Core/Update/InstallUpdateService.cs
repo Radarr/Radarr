@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Update
             _diskTransferService.TransferFolder(_appFolderInfo.GetUpdateClientFolder(), updateSandboxFolder, TransferMode.Move, false);
 
             _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath());
-            _logger.ProgressInfo("Sonarr will restart shortly.");
+            _logger.ProgressInfo("Radarr will restart shortly.");
 
             _processProvider.Start(_appFolderInfo.GetUpdateClientExePath(), GetUpdaterArgs(updateSandboxFolder));
         }
@@ -178,8 +178,9 @@ namespace NzbDrone.Core.Update
         {
             var processId = _processProvider.GetCurrentProcess().Id.ToString();
             var executingApplication = _runtimeInfo.ExecutingApplication;
-
-            return string.Join(" ", processId, updateSandboxFolder.TrimEnd(Path.DirectorySeparatorChar).WrapInQuotes(), executingApplication.WrapInQuotes(), _startupContext.PreservedArguments);
+            var args = string.Join(" ", processId, updateSandboxFolder.TrimEnd(Path.DirectorySeparatorChar).WrapInQuotes(), executingApplication.WrapInQuotes(), _startupContext.PreservedArguments);
+            _logger.Info("Updater Arguments: " + args);
+            return args;
         }
 
         private void EnsureAppDataSafety()
@@ -187,7 +188,7 @@ namespace NzbDrone.Core.Update
             if (_appFolderInfo.StartUpFolder.IsParentPath(_appFolderInfo.AppDataFolder) ||
                 _appFolderInfo.StartUpFolder.PathEquals(_appFolderInfo.AppDataFolder))
             {
-                throw new UpdateFailedException("Your Sonarr configuration '{0}' is being stored in application folder '{1}' which will cause data lost during the upgrade. Please remove any symlinks or redirects before trying again.", _appFolderInfo.AppDataFolder, _appFolderInfo.StartUpFolder);
+                throw new UpdateFailedException("Your Radarr configuration '{0}' is being stored in application folder '{1}' which will cause data lost during the upgrade. Please remove any symlinks or redirects before trying again.", _appFolderInfo.AppDataFolder, _appFolderInfo.StartUpFolder);
             }
         }
 
