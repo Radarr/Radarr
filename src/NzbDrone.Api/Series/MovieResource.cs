@@ -85,6 +85,12 @@ namespace NzbDrone.Api.Movie
             long size = 0;
             bool downloaded = false;
 
+            
+            if(model.MovieFile != null)
+            {
+                model.MovieFile.LazyLoad();
+            }
+
             if (model.MovieFile != null && model.MovieFile.IsLoaded && model.MovieFile.Value != null)
             {
                 size = model.MovieFile.Value.Size;

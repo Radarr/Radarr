@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
-                                          //IExecute<RenameMovieFilesCommand>,
+                                          IExecute<RenameMovieFilesCommand>,
                                           IExecute<RenameMovieCommand>
     {
         private readonly IMovieService _movieService;
