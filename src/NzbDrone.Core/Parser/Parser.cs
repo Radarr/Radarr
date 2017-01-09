@@ -18,20 +18,20 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<edition>(\w+\.?edition))\.(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\w+\.?edition))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}edition))",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}edition))",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              //Cut Movies, e.g: Mission.Impossible.3.Directors.Cut.2011
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<edition>(\w+\.?cut))\.(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\w+\.?cut))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              //Cut Movies, e.g: Mission.Impossible.3.2011.Directors.Cut
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}cut))",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}cut))",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              
              //Normal movie format, e.g: Mission.Impossible.3.2011
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(?<!e|x)\d{4}(?!p|i|\d+|\)|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
         //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
              new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)",
@@ -263,6 +263,8 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex ReportImdbId = new Regex(@"(?<imdbid>tt\d{9})", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex SimpleTitleRegex = new Regex(@"(?:480[ip]|720[ip]|1080[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|(8|10)b(it)?)\s*",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -374,6 +376,8 @@ namespace NzbDrone.Core.Parser
 
                                 result.ReleaseGroup = ParseReleaseGroup(title);
 
+                                result.ImdbId = ParseImdbId(title);
+
                                 var subGroup = GetSubGroup(match);
                                 if (!subGroup.IsNullOrWhiteSpace())
                                 {
@@ -409,6 +413,23 @@ namespace NzbDrone.Core.Parser
 
             Logger.Debug("Unable to parse {0}", title);
             return realResult;
+        }
+
+        public static string ParseImdbId(string title)
+        {
+            var match = ReportImdbId.Match(title);
+            if (match.Success)
+            {
+                if (match.Groups["imdbid"].Value != null)
+                {
+                    if (match.Groups["imdbid"].Length == 11)
+                    {
+                        return match.Groups["imdbid"].Value;
+                    }
+                }
+            }
+
+            return "";
         }
 
         public static ParsedEpisodeInfo ParseTitle(string title)
