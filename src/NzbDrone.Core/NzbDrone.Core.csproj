@@ -594,6 +594,7 @@
     <Compile Include="Indexers\FetchAndParseRssService.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcorn.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornApi.cs" />
+    <Compile Include="Indexers\PassThePopcorn\PassThePopcornInfo.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornParser.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornRequestGenerator.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornSettings.cs" />

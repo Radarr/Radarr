@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     // Only add approved torrents
                     if (_settings.Approved && torrent.Checked)
                     {
-                        torrentInfos.Add(new TorrentInfo()
+                        torrentInfos.Add(new PassThePopcornInfo()
                         {
                             Guid = string.Format("PassThePopcorn-{0}", id),
                             Title = title,
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     // Add all torrents
                     else if (!_settings.Approved)
                     {
-                        torrentInfos.Add(new TorrentInfo()
+                        torrentInfos.Add(new PassThePopcornInfo()
                         {
                             Guid = string.Format("PassThePopcorn-{0}", id),
                             Title = title,
