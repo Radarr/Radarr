@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title);
+        Movie FindByTitleSlug(string slug);
         Movie GetMovieByFileId(int fileId);
         void DeleteMovie(int movieId, bool deleteFiles);
         List<Movie> GetAllMovies();
@@ -217,6 +218,11 @@ namespace NzbDrone.Core.Tv
         public Movie GetMovieByFileId(int fileId)
         {
             return _movieRepository.GetMoviesByFileId(fileId).First();
+        }
+
+        public Movie FindByTitleSlug(string slug)
+        {
+            return _movieRepository.FindByTitleSlug(slug);
         }
     }
 }

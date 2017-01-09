@@ -24,13 +24,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
+        private readonly IMovieService _movieService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
             _configService = configService;
+            _movieService = movieService;
             _logger = logger;
         }
 
@@ -92,6 +94,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Website = resource.homepage;
             movie.InCinemas = DateTime.Parse(resource.release_date);
             movie.Year = movie.InCinemas.Value.Year;
+
+            var slugResult = _movieService.FindByTitleSlug(movie.TitleSlug);
+            if (slugResult != null)
+            {
+                _logger.Debug("Movie with this title slug already exists. Adding year...");
+            }
+            movie.TitleSlug += "-" + movie.Year.ToString();
 
             movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
             movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
@@ -320,6 +329,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 string titleSlug = result.title;
                 imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
                 imdbMovie.Year = DateTime.Parse(result.release_date).Year;
+
+                var slugResult = _movieService.FindByTitleSlug(imdbMovie.TitleSlug);
+                if (slugResult != null)
+                {
+                    _logger.Debug("Movie with this title slug already exists. Adding year...");
+                }
+                imdbMovie.TitleSlug += "-" + imdbMovie.Year.ToString();
+
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
                 try

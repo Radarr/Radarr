@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitle(string cleanTitle);
         Movie FindByTitle(string cleanTitle, int year);
         Movie FindByImdbId(string imdbid);
+        Movie FindByTitleSlug(string slug);
         List<Movie> GetMoviesByFileId(int fileId);
         void SetFileId(int fileId, int movieId);
     }
@@ -114,5 +115,9 @@ namespace NzbDrone.Core.Tv
             SetFields(new Movie { Id = episodeId, MovieFileId = fileId }, movie => movie.MovieFileId);
         }
 
+        public Movie FindByTitleSlug(string slug)
+        {
+            return Query.Where(m => m.TitleSlug == slug).FirstOrDefault();
+        }
     }
 }
