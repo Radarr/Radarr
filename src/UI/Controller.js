@@ -11,6 +11,7 @@ var ReleaseLayout = require('./Release/ReleaseLayout');
 var SystemLayout = require('./System/SystemLayout');
 var SeasonPassLayout = require('./SeasonPass/SeasonPassLayout');
 var SeriesEditorLayout = require('./Series/Editor/SeriesEditorLayout');
+var MovieEditorLayout = require('./Movies/Editor/MovieEditorLayout');
 
 module.exports = NzbDroneController.extend({
     addSeries : function(action) {
@@ -61,5 +62,10 @@ module.exports = NzbDroneController.extend({
     seriesEditor : function() {
         this.setTitle('Series Editor');
         this.showMainRegion(new SeriesEditorLayout());
+    },
+
+    movieEditor : function() {
+        this.setTitle('Movie Editor');
+        this.showMainRegion(new MovieEditorLayout());
     }
 });

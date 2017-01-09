@@ -111,6 +111,18 @@ namespace NzbDrone.Core.Extras
             }
         }
 
+        //TODO: Implementing this will fix a lot of our warning exceptions
+        //public void Handle(MediaCoversUpdatedEvent message)
+        //{
+        //    var movie = message.Movie;
+        //    var movieFiles = GetMovieFiles(movie.Id);
+
+        //    foreach (var extraFileManager in _extraFileManagers)
+        //    {
+        //        extraFileManager.CreateAfterMovieScan(movie, movieFiles);
+        //    }
+        //}
+
         public void Handle(EpisodeFolderCreatedEvent message)
         {
             var series = message.Series;

@@ -18,7 +18,7 @@ namespace NzbDrone.Api.Movie
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-
+         
         //View Only
         public string Title { get; set; }
         public List<AlternateTitleResource> AlternateTitles { get; set; }
@@ -33,6 +33,7 @@ namespace NzbDrone.Api.Movie
         public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
+        public bool HasFile { get; set; }
 
         //View & Edit
         public string Path { get; set; }
@@ -84,12 +85,17 @@ namespace NzbDrone.Api.Movie
             long size = 0;
             bool downloaded = false;
 
+            
+            if(model.MovieFile != null)
+            {
+                model.MovieFile.LazyLoad();
+            }
+
             if (model.MovieFile != null && model.MovieFile.IsLoaded && model.MovieFile.Value != null)
             {
                 size = model.MovieFile.Value.Size;
                 downloaded = true;
             }
-            //long Size = model.MovieFile != null ? model.MovieFile.Value.Size : 0;
 
             return new MovieResource
             {
@@ -100,7 +106,7 @@ namespace NzbDrone.Api.Movie
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
-              
+                HasFile = model.HasFile,
                 Downloaded = downloaded,
                 //TotalEpisodeCount
                 //EpisodeCount

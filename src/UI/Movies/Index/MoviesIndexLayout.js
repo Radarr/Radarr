@@ -80,14 +80,9 @@ module.exports = Marionette.Layout.extend({
                 route : 'addmovies'
             },
             {
-                title : 'Season Pass',
-                icon  : 'icon-sonarr-monitored',
-                route : 'seasonpass'
-            },
-            {
-                title : 'Series Editor',
+                title : 'Movie Editor',
                 icon  : 'icon-sonarr-edit',
-                route : 'serieseditor'
+                route : 'movieeditor'
             },
             {
                 title        : 'RSS Sync',

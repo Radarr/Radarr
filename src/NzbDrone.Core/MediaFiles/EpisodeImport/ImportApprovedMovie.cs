@@ -47,6 +47,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         public List<ImportResult> Import(List<ImportDecision> decisions, bool newDownload, DownloadClientItem downloadClientItem = null, ImportMode importMode = ImportMode.Auto)
         {
+            _logger.Debug("Decisions: {0}", decisions.Count);
+
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalMovie.Movie.Id, (i, s) => s
                    .OrderByDescending(c => c.LocalMovie.Quality, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
@@ -80,7 +82,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     episodeFile.Quality = localMovie.Quality;
                     episodeFile.MediaInfo = localMovie.MediaInfo;
                     episodeFile.Movie = localMovie.Movie;
-                    episodeFile.ReleaseGroup = localMovie.ParsedEpisodeInfo.ReleaseGroup;
+                    episodeFile.ReleaseGroup = localMovie.ParsedMovieInfo.ReleaseGroup;
 
                     bool copyOnly;
                     switch (importMode)

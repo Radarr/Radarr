@@ -97,7 +97,7 @@ module.exports = Marionette.Layout.extend({
         CommandController.bindToCommand({
             element : this.ui.rename,
             command : {
-                name         : 'renameFiles',
+                name         : 'renameMovieFiles',
                 movieId     : this.model.id,
                 seasonNumber : -1
             }
@@ -237,7 +237,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _commandComplete : function(options) {
-        if (options.command.get('name') === 'renamefiles') {
+        if (options.command.get('name') === 'renameMoviefiles') {
             if (options.command.get('moviesId') === this.model.get('id')) {
                 this._refresh();
             }

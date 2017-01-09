@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -13,9 +13,9 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileService
     {
-        MovieFile Add(MovieFile episodeFile);
-        void Update(MovieFile episodeFile);
-        void Delete(MovieFile episodeFile, DeleteMediaFileReason reason);
+        MovieFile Add(MovieFile movieFile);
+        void Update(MovieFile movieFile);
+        void Delete(MovieFile movieFile, DeleteMediaFileReason reason);
         EpisodeFile Add(EpisodeFile episodeFile);
         void Update(EpisodeFile episodeFile);
         void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason);
@@ -27,7 +27,9 @@ namespace NzbDrone.Core.MediaFiles
         List<string> FilterExistingFiles(List<string> files, Movie movie);
         EpisodeFile Get(int id);
         List<EpisodeFile> Get(IEnumerable<int> ids);
+        List<MovieFile> GetMovies(IEnumerable<int> ids);
 
+        //List<MovieFile> Get(IEnumerable<int> ids);
     }
 
     public class MediaFileService : IMediaFileService, IHandleAsync<SeriesDeletedEvent>
@@ -123,6 +125,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<EpisodeFile> Get(IEnumerable<int> ids)
         {
             return _mediaFileRepository.Get(ids).ToList();
+        }
+
+        public List<MovieFile> GetMovies(IEnumerable<int> ids)
+        {
+            return _movieFileRepository.Get(ids).ToList();
         }
 
         public void HandleAsync(SeriesDeletedEvent message)
