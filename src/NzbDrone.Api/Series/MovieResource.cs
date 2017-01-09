@@ -80,7 +80,16 @@ namespace NzbDrone.Api.Movie
         {
             if (model == null) return null;
 
-            long Size = model.MovieFile.Value != null ? model.MovieFile.Value.Size : 0;
+
+            long size = 0;
+            bool downloaded = false;
+
+            if (model.MovieFile != null && model.MovieFile.IsLoaded && model.MovieFile.Value != null)
+            {
+                size = model.MovieFile.Value.Size;
+                downloaded = true;
+            }
+            //long Size = model.MovieFile != null ? model.MovieFile.Value.Size : 0;
 
             return new MovieResource
             {
@@ -92,7 +101,7 @@ namespace NzbDrone.Api.Movie
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
               
-                Downloaded = model.MovieFile.Value != null,
+                Downloaded = downloaded,
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount
@@ -110,7 +119,7 @@ namespace NzbDrone.Api.Movie
                 
                 Monitored = model.Monitored,
 
-                SizeOnDisk = Size,
+                SizeOnDisk = size,
 
                 Runtime = model.Runtime,
                 LastInfoSync = model.LastInfoSync,
