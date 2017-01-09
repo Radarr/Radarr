@@ -237,8 +237,6 @@
     <Compile Include="IndexerSearchTests\NzbSearchServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\SearchDefinitionFixture.cs" />
     <Compile Include="IndexerTests\BasicRssParserFixture.cs" />
-    <Compile Include="IndexerTests\BitMeTvTests\BitMeTvFixture.cs" />
-    <Compile Include="IndexerTests\BroadcastheNetTests\BroadcastheNetFixture.cs" />
     <Compile Include="IndexerTests\HDBitsTests\HDBitsFixture.cs" />
     <Compile Include="IndexerTests\IndexerServiceFixture.cs" />
     <Compile Include="IndexerTests\IndexerStatusServiceFixture.cs" />
@@ -259,7 +257,6 @@
     <Compile Include="IndexerTests\IPTorrentsTests\IPTorrentsFixture.cs" />
     <Compile Include="IndexerTests\KickassTorrentsTests\KickassTorrentsFixture.cs" />
     <Compile Include="IndexerTests\NyaaTests\NyaaFixture.cs" />
-    <Compile Include="IndexerTests\TorrentleechTests\TorrentleechFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TorrentRssIndexerFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TestTorrentRssIndexer.cs" />
     <Compile Include="IndexerTests\WomblesTests\WomblesFixture.cs" />
