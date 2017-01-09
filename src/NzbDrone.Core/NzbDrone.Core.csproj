@@ -183,6 +183,9 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
+    <Compile Include="Datastore\Migration\111_remove_bitmetv.cs" />
+    <Compile Include="Datastore\Migration\112_remove_torrentleech.cs" />
+    <Compile Include="Datastore\Migration\113_remove_broadcasthenet.cs" />
     <Compile Include="Datastore\Migration\108_update_schedule_interval.cs" />
     <Compile Include="Datastore\Migration\107_fix_movie_files.cs" />
     <Compile Include="Datastore\Migration\106_add_tmdb_stuff.cs" />
@@ -573,16 +576,6 @@
     <Compile Include="IndexerSearch\Definitions\MovieSearchCriteria.cs" />
     <Compile Include="IndexerSearch\MoviesSearchCommand.cs" />
     <Compile Include="IndexerSearch\MoviesSearchService.cs" />
-    <Compile Include="Indexers\BitMeTv\BitMeTv.cs" />
-    <Compile Include="Indexers\BitMeTv\BitMeTvSettings.cs" />
-    <Compile Include="Indexers\BitMeTv\BitMeTvRequestGenerator.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNetRequestGenerator.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNet.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNetSettings.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNetParser.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNetTorrent.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNetTorrentQuery.cs" />
-    <Compile Include="Indexers\BroadcastheNet\BroadcastheNetTorrents.cs" />
     <Compile Include="Indexers\DownloadProtocol.cs" />
     <Compile Include="Indexers\Exceptions\ApiKeyException.cs" />
     <Compile Include="Indexers\Exceptions\IndexerException.cs" />
@@ -658,9 +651,6 @@
     <Compile Include="Indexers\RssSyncCommand.cs" />
     <Compile Include="Indexers\RssSyncCompleteEvent.cs" />
     <Compile Include="Indexers\RssSyncService.cs" />
-    <Compile Include="Indexers\Torrentleech\TorrentleechRequestGenerator.cs" />
-    <Compile Include="Indexers\Torrentleech\Torrentleech.cs" />
-    <Compile Include="Indexers\Torrentleech\TorrentleechSettings.cs" />
     <Compile Include="Indexers\TorrentRss\TorrentRssIndexer.cs" />
     <Compile Include="Indexers\TorrentRss\TorrentRssIndexerParserSettings.cs" />
     <Compile Include="Indexers\TorrentRss\TorrentRssIndexerRequestGenerator.cs" />
