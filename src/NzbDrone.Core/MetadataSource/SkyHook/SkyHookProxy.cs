@@ -319,10 +319,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     imdbMovies.Add(imdbMovie);
                 }
-                catch
-                {
-
-                }
+                catch (Exception e)
+                    {
+                        _logger.Error(e, "Error occured while searching for new movies.");
+                    }
 
             }
 
