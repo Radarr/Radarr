@@ -161,6 +161,14 @@ Handlebars.registerHelper('DownloadedStatus', function() {
   return "Missing";
 });
 
+Handlebars.registerHelper("DownloadedQuality", function() {
+  if (this.movieFile) {
+    return this.movieFile.quality.quality.name;
+  }
+
+  return "";
+})
+
 
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",

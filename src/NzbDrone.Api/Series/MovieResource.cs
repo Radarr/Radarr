@@ -55,6 +55,7 @@ namespace NzbDrone.Api.Movie
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public List<string> AlternativeTitles { get; set; }
+        public MovieFileResource MovieFile { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
 
@@ -84,6 +85,7 @@ namespace NzbDrone.Api.Movie
 
             long size = 0;
             bool downloaded = false;
+            MovieFileResource movieFile = null;
 
             
             if(model.MovieFile != null)
@@ -95,6 +97,7 @@ namespace NzbDrone.Api.Movie
             {
                 size = model.MovieFile.Value.Size;
                 downloaded = true;
+                movieFile = model.MovieFile.Value.ToResource();
             }
 
             return new MovieResource
@@ -140,7 +143,8 @@ namespace NzbDrone.Api.Movie
                 Added = model.Added,
                 AddOptions = model.AddOptions,
                 AlternativeTitles = model.AlternativeTitles,
-                Ratings = model.Ratings
+                Ratings = model.Ratings,
+                MovieFile = movieFile
             };
         }
 

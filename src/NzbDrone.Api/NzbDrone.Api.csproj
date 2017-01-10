@@ -232,6 +232,7 @@
     <Compile Include="RootFolders\RootFolderResource.cs" />
     <Compile Include="SeasonPass\SeasonPassResource.cs" />
     <Compile Include="Series\AlternateTitleResource.cs" />
+    <Compile Include="Series\MovieFileResource.cs" />
     <Compile Include="Series\SeasonResource.cs" />
     <Compile Include="SeasonPass\SeasonPassModule.cs" />
     <Compile Include="Series\SeriesEditorModule.cs" />
