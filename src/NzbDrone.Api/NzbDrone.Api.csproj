@@ -119,6 +119,7 @@
     <Compile Include="Movies\MovieModule.cs" />
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />
+    <Compile Include="Movies\MovieEditorModule.cs" />
     <Compile Include="Parse\ParseModule.cs" />
     <Compile Include="Parse\ParseResource.cs" />
     <Compile Include="ManualImport\ManualImportModule.cs" />
