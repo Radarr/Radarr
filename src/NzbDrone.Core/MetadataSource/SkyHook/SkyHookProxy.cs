@@ -92,8 +92,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.CleanTitle = Parser.Parser.CleanSeriesTitle(movie.Title);
             movie.Overview = resource.overview;
             movie.Website = resource.homepage;
-            movie.InCinemas = DateTime.Parse(resource.release_date);
-            movie.Year = movie.InCinemas.Value.Year;
+            if (resource.release_date.IsNotNullOrWhiteSpace())
+            {
+                movie.InCinemas = DateTime.Parse(resource.release_date);
+                movie.Year = movie.InCinemas.Value.Year;
+            }
 
             var slugResult = _movieService.FindByTitleSlug(movie.TitleSlug);
             if (slugResult != null)
@@ -328,7 +331,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 imdbMovie.Title = result.title;
                 string titleSlug = result.title;
                 imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
-                imdbMovie.Year = DateTime.Parse(result.release_date).Year;
+
+                if (result.release_date.IsNotNullOrWhiteSpace())
+                {
+                    imdbMovie.Year = DateTime.Parse(result.release_date).Year;
+                }
+
+
 
                 var slugResult = _movieService.FindByTitleSlug(imdbMovie.TitleSlug);
                 if (slugResult != null)
