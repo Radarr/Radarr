@@ -192,6 +192,11 @@ namespace NzbDrone.Core.Parser
                                                     parsedEpisodeInfo.MovieTitleInfo.Year);
             }
 
+            if (series == null)
+            {
+                series = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle.Replace("DC", "").Trim());
+            }
+
             return series;
         }
 

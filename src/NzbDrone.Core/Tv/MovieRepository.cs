@@ -63,11 +63,11 @@ namespace NzbDrone.Core.Tv
                 cleanNum = cleanNum.Replace(roman, num);
             }
 
-            var result = Query.Where(s => s.CleanTitle == cleanTitle).SingleOrDefault();
+            var result = Query.Where(s => s.CleanTitle == cleanTitle).FirstOrDefault();
 
             if (result == null)
             {
-                result = Query.Where(s => s.CleanTitle == cleanNum).OrWhere(s => s.CleanTitle == cleanRoman).SingleOrDefault();
+                result = Query.Where(s => s.CleanTitle == cleanNum).OrWhere(s => s.CleanTitle == cleanRoman).FirstOrDefault();
 
                 if (result == null)
                 {
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Tv
 
                     result = movies.Where(m => m.AlternativeTitles.Any(t => Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanTitle ||
                     Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanRoman ||
-                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanNum)).SingleOrDefault();
+                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanNum)).FirstOrDefault();
 
                     return result;
                 }

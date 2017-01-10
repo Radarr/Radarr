@@ -94,7 +94,6 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
-
                 var series = _parsingService.GetSeries(trackedDownload.DownloadItem.Title);
 
                 if (series == null)
@@ -156,7 +155,7 @@ namespace NzbDrone.Core.Download
                     trackedDownload.Warn(statusMessages);
                 }
             }
-            else
+            else if (trackedDownload.RemoteEpisode.Series != null)
             {
                 var importResults = _downloadedEpisodesImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
 
