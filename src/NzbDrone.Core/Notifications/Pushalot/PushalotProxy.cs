@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Notifications.Pushalot
             try
             {
                 const string title = "Test Notification";
-                const string body = "This is a test message from Sonarr";
+                const string body = "This is a test message from Radarr";
 
                 SendNotification(title, body, settings);
             }
