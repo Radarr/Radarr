@@ -58,7 +58,7 @@ var view = Marionette.ItemView.extend({
         var defaultProfile = Config.getValue(Config.Keys.DefaultProfileId);
         var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
         var useSeasonFolder = Config.getValueBoolean(Config.Keys.UseSeasonFolder, true);
-        var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'missing');
+        var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'all');
 
         if (Profiles.get(defaultProfile)) {
             this.ui.profile.val(defaultProfile);
@@ -169,6 +169,7 @@ var view = Marionette.ItemView.extend({
 
         var profile = this.ui.profile.val();
         var rootFolderPath = this.ui.rootFolder.children(':selected').text();
+        var monitor = this.ui.monitor.val();
 
         var options = this._getAddMoviesOptions();
         options.searchForMovie = searchForMovie;
@@ -178,7 +179,7 @@ var view = Marionette.ItemView.extend({
             profileId      : profile,
             rootFolderPath : rootFolderPath,
             addOptions     : options,
-            monitored      : true
+            monitored      : (monitor === 'all' ? true : false)
         }, { silent : true });
 
         var self = this;
@@ -229,44 +230,10 @@ var view = Marionette.ItemView.extend({
     },
 
     _getAddMoviesOptions : function() {
-        var monitor = this.ui.monitor.val();
-
-        var options = {
+        return {
             ignoreEpisodesWithFiles    : false,
             ignoreEpisodesWithoutFiles : false
         };
-
-        if (monitor === 'all') {
-            return options;
-        }
-
-        else if (monitor === 'future') {
-            options.ignoreEpisodesWithFiles = true;
-            options.ignoreEpisodesWithoutFiles = true;
-        }
-
-        // else if (monitor === 'latest') {
-        //     this.model.setSeasonPass(lastSeason.seasonNumber);
-        // }
-
-        // else if (monitor === 'first') {
-        //     this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-        //     this.model.setSeasonMonitored(firstSeason.seasonNumber);
-        // }
-
-        else if (monitor === 'missing') {
-            options.ignoreEpisodesWithFiles = true;
-        }
-
-        else if (monitor === 'existing') {
-            options.ignoreEpisodesWithoutFiles = true;
-        }
-
-        // else if (monitor === 'none') {
-        //     this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-        // }
-
-        return options;
     }
 });
 
