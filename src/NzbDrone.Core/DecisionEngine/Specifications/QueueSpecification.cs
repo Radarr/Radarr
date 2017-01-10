@@ -60,7 +60,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             foreach (var remoteEpisode in matchingSeries)
             {
-                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteEpisode.ParsedEpisodeInfo.Quality);
+                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteEpisode.ParsedMovieInfo.Quality);
 
                 if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Movie.Profile, remoteEpisode.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))
                 {
