@@ -165,6 +165,31 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return hash;
         }
 
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
+        {
+            _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
+            if (remoteMovie.Release.Age < 14 && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
+                remoteMovie.Release.Age > 14 && Settings.OlderTvPriority == (int)TransmissionPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }
+
+            return hash;
+        }
+
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
+        {
+            _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
+
+            if (remoteMovie.Release.Age < 14 && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
+                remoteMovie.Release.Age > 14 && Settings.OlderTvPriority == (int)TransmissionPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }
+
+            return hash;
+        }
+
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());
