@@ -25,6 +25,7 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 
 ## Download
 The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
+A docker container can be found here: https://hub.docker.com/r/lsiodev/radarr/.
 
 For more up to date versions (but also sometimes broken), daily builds can be found here:
 * [OSX](https://leonardogalli.ch/radarr/builds/latest.php?os=osx)
