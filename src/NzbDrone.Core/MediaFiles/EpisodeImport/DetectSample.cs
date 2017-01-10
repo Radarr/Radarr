@@ -153,7 +153,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         private int GetMinimumAllowedRuntime(Movie movie)
         {
-            return 120; //2 minutes
+            return 360; //6 minutes
         }
 
         private int GetMinimumAllowedRuntime(Series series)
