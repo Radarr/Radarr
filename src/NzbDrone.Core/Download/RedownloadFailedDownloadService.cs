@@ -34,6 +34,15 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
+            if (message.MovieId != 0)
+            {
+                _logger.Debug("Failed download contains a movie, searching again.");
+
+                _commandQueueManager.Push(new MoviesSearchCommand { MovieId = message.MovieId });
+
+                return;
+            }
+
             if (message.EpisodeIds.Count == 1)
             {
                 _logger.Debug("Failed download only contains one episode, searching again");
