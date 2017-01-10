@@ -83,7 +83,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             if (parsedEpisodeInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
                             {
-                                remoteEpisode.DownloadAllowed = true;
+                                remoteEpisode.DownloadAllowed = false;
                                 decision = new DownloadDecision(remoteEpisode, new Rejection("Hardcoded subs found: " + parsedEpisodeInfo.Quality.HardcodedSubs));
                             }
                             else
@@ -257,7 +257,7 @@ namespace NzbDrone.Core.DecisionEngine
             }
             catch (NotImplementedException e)
             {
-                _logger.Info("Spec " + spec.GetType().Name + " does not care about movies.");
+                _logger.Trace("Spec " + spec.GetType().Name + " does not care about movies.");
             }
             catch (Exception e)
             {

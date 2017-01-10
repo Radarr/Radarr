@@ -51,6 +51,12 @@ namespace NzbDrone.Core.Download
                         continue;
                     }
 
+                    if (report.Rejections.Any())
+                    {
+                        _logger.Debug("Rejecting release {0} because {1}", report.ToString(), report.Rejections.First().Reason);
+                        continue;
+                    }
+
                     if (remoteMovie == null || remoteMovie.Movie == null)
                     {
                         continue;
