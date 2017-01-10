@@ -34,11 +34,11 @@ namespace NzbDrone.Api.Config
             Get["/samples"] = x => GetExamples(this.Bind<NamingConfigResource>());
 
             SharedValidator.RuleFor(c => c.MultiEpisodeStyle).InclusiveBetween(0, 5);
-            SharedValidator.RuleFor(c => c.StandardEpisodeFormat).ValidEpisodeFormat();
+            /*SharedValidator.RuleFor(c => c.StandardEpisodeFormat).ValidEpisodeFormat();
             SharedValidator.RuleFor(c => c.DailyEpisodeFormat).ValidDailyEpisodeFormat();
             SharedValidator.RuleFor(c => c.AnimeEpisodeFormat).ValidAnimeEpisodeFormat();
             SharedValidator.RuleFor(c => c.SeriesFolderFormat).ValidSeriesFolderFormat();
-            SharedValidator.RuleFor(c => c.SeasonFolderFormat).ValidSeasonFolderFormat();
+            SharedValidator.RuleFor(c => c.SeasonFolderFormat).ValidSeasonFolderFormat();*/
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();
         }

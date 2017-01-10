@@ -67,6 +67,8 @@ namespace NzbDrone.Core.Organizer
         {
             var value = context.PropertyValue as string;
 
+            return true;
+
             if (!FileNameBuilder.SeasonEpisodePatternRegex.IsMatch(value) &&
                 !FileNameValidation.OriginalTokenRegex.IsMatch(value))
             {
@@ -88,6 +90,8 @@ namespace NzbDrone.Core.Organizer
         protected override bool IsValid(PropertyValidatorContext context)
         {
             var value = context.PropertyValue as string;
+
+            return true;
 
             if (!FileNameBuilder.SeasonEpisodePatternRegex.IsMatch(value) &&
                 !FileNameBuilder.AirDateRegex.IsMatch(value) &&
@@ -111,6 +115,8 @@ namespace NzbDrone.Core.Organizer
         protected override bool IsValid(PropertyValidatorContext context)
         {
             var value = context.PropertyValue as string;
+
+            return true;
 
             if (!FileNameBuilder.SeasonEpisodePatternRegex.IsMatch(value) &&
                 !FileNameBuilder.AbsoluteEpisodePatternRegex.IsMatch(value) &&
