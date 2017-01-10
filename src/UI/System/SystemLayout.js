@@ -131,7 +131,7 @@ module.exports = Marionette.Layout.extend({
         });
 
         Messenger.show({
-            message : 'Sonarr will shutdown shortly',
+            message : 'Radarr will shutdown shortly',
             type    : 'info'
         });
     },
@@ -143,7 +143,7 @@ module.exports = Marionette.Layout.extend({
         });
 
         Messenger.show({
-            message : 'Sonarr will restart shortly',
+            message : 'Radarr will restart shortly',
             type    : 'info'
         });
     }
