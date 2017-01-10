@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Indexers.Wombles
 
         public override IIndexerRequestGenerator GetRequestGenerator()
         {
-            return new RssIndexerRequestGenerator("http://newshost.co.za/rss/?sec=TV&fr=false");
+            return new RssIndexerRequestGenerator("http://newshost.co.za/rss/?sec=Movies&fr=false");
         }
 
         public Wombles(IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
