@@ -185,6 +185,7 @@
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
     <Compile Include="Datastore\Migration\111_remove_bitmetv.cs" />
     <Compile Include="Datastore\Migration\112_remove_torrentleech.cs" />
+    <Compile Include="Datastore\Migration\114_remove_fanzub.cs" />
     <Compile Include="Datastore\Migration\113_remove_broadcasthenet.cs" />
     <Compile Include="Datastore\Migration\108_update_schedule_interval.cs" />
     <Compile Include="Datastore\Migration\107_fix_movie_files.cs" />
@@ -582,9 +583,6 @@
     <Compile Include="Indexers\Exceptions\RequestLimitReachedException.cs" />
     <Compile Include="Indexers\Exceptions\UnsupportedFeedException.cs" />
     <Compile Include="Indexers\EzrssTorrentRssParser.cs" />
-    <Compile Include="Indexers\Fanzub\Fanzub.cs" />
-    <Compile Include="Indexers\Fanzub\FanzubRequestGenerator.cs" />
-    <Compile Include="Indexers\Fanzub\FanzubSettings.cs" />
     <Compile Include="Indexers\FetchAndParseRssService.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcorn.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornApi.cs" />
