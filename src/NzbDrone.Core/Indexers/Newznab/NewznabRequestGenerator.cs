@@ -91,8 +91,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
-                return capabilities.SupportedMovieSearchParamters != null &&
-                       capabilities.SupportedMovieSearchParamters.Contains("imdbid");
+                return capabilities.SupportedMovieSearchParameters != null &&
+                       capabilities.SupportedMovieSearchParameters.Contains("imdbid");
             }
         }
 
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
-            if (capabilities.SupportedMovieSearchParamters != null)
+            if (capabilities.SupportedMovieSearchParameters != null)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories.Concat(Settings.AnimeCategories), "movie", ""));
             }
@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if(SupportsMovieSearch)
+            if (SupportsMovieSearch)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie",
                         string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2)))); //strip off the "tt" - VERY HACKY

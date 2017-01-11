@@ -102,11 +102,11 @@ namespace NzbDrone.Core.Indexers.Newznab
                 var xmlMovieSearch = xmlSearching.Element("movie-search");
                 if (xmlMovieSearch == null || xmlMovieSearch.Attribute("available").Value != "yes")
                 {
-                    capabilities.SupportedMovieSearchParamters = null;
+                    capabilities.SupportedMovieSearchParameters = null;
                 }
                 else if (xmlMovieSearch.Attribute("supportedParams") != null)
                 {
-                    capabilities.SupportedMovieSearchParamters = xmlMovieSearch.Attribute("supportedParams").Value.Split(',');
+                    capabilities.SupportedMovieSearchParameters = xmlMovieSearch.Attribute("supportedParams").Value.Split(',');
                     capabilities.SupportsAggregateIdSearch = true;
                 }
             }
