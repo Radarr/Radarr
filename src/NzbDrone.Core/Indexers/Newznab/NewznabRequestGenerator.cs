@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
                 return capabilities.SupportedMovieSearchParamters != null &&
-                       capabilities.SupportedMovieSearchParamters.Contains("imdb");
+                       capabilities.SupportedMovieSearchParamters.Contains("imdbid");
             }
         }
 

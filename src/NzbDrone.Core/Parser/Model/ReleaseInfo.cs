@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Parser.Model
         public DownloadProtocol DownloadProtocol { get; set; }
         public int TvdbId { get; set; }
         public int TvRageId { get; set; }
+        public int ImdbId { get; set; }
         public DateTime PublishDate { get; set; }
 
         public string Origin { get; set; }
@@ -82,6 +83,7 @@ namespace NzbDrone.Core.Parser.Model
                     stringBuilder.AppendLine("DownloadProtocol: " + DownloadProtocol ?? "Empty");
                     stringBuilder.AppendLine("TvdbId: " + TvdbId ?? "Empty");
                     stringBuilder.AppendLine("TvRageId: " + TvRageId ?? "Empty");
+                    stringBuilder.AppendLine("ImdbId: " + ImdbId ?? "Empty");
                     stringBuilder.AppendLine("PublishDate: " + PublishDate ?? "Empty");
                     return stringBuilder.ToString();
                 default:

@@ -48,9 +48,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
-
-            releaseInfo.TvdbId = GetTvdbId(item);
-            releaseInfo.TvRageId = GetTvRageId(item);
+            releaseInfo.ImdbId = GetImdbId(item);
 
             return releaseInfo;
         }
@@ -114,27 +112,14 @@ namespace NzbDrone.Core.Indexers.Newznab
             return url;
         }
 
-        protected virtual int GetTvdbId(XElement item)
+        protected virtual int GetImdbId(XElement item)
         {
-            var tvdbIdString = TryGetNewznabAttribute(item, "tvdbid");
-            int tvdbId;
+            var imdbIdString = TryGetNewznabAttribute(item, "imdb");
+            int imdbId;
 
-            if (!tvdbIdString.IsNullOrWhiteSpace() && int.TryParse(tvdbIdString, out tvdbId))
+            if (!imdbIdString.IsNullOrWhiteSpace() && int.TryParse(imdbIdString, out imdbId))
             {
-                return tvdbId;
-            }
-
-            return 0;
-        }
-
-        protected virtual int GetTvRageId(XElement item)
-        {
-            var tvRageIdString = TryGetNewznabAttribute(item, "rageid");
-            int tvRageId;
-
-            if (!tvRageIdString.IsNullOrWhiteSpace() && int.TryParse(tvRageIdString, out tvRageId))
-            {
-                return tvRageId;
+                return imdbId;
             }
 
             return 0;
