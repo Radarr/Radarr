@@ -8,7 +8,7 @@ module.exports = TemplatedCell.extend({
       "July", "August", "September", "October", "November", "December"
     ];
 
-      this.$el.html("To be announced");
+      this.$el.html("");
 
       if (this.model.get("inCinemas")) {
         var cinemasDate = new Date(this.model.get("inCinemas"));

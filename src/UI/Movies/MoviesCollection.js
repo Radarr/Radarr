@@ -100,7 +100,18 @@ var Collection = PageableCollection.extend({
                 return percentOfEpisodes + episodeCount / 1000000;
             }
         },
+        inCinemas : {
 
+          sortValue : function(model, attr) {
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+            if (model.get("inCinemas")) {
+              return model.get("inCinemas");
+            }
+            return "2100-01-01";
+          }
+        },
         path : {
             sortValue : function(model) {
                 var path = model.get('path');
