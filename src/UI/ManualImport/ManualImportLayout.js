@@ -16,6 +16,7 @@ var QualityCell = require('./Cells/QualityCell');
 var FileSizeCell = require('../Cells/FileSizeCell');
 var ApprovalStatusCell = require('../Cells/ApprovalStatusCell');
 var ManualImportCollection = require('./ManualImportCollection');
+var MovieCell = require('./Cells/MovieCell');
 var Messenger = require('../Shared/Messenger');
 
 module.exports = Marionette.Layout.extend({
@@ -49,23 +50,29 @@ module.exports = Marionette.Layout.extend({
             sortable   : true
         },
         {
-            name       : 'series',
-            label      : 'Series',
-            cell       : SeriesCell,
+            name       : 'movie',
+            label      : 'Movie',
+            cell       : MovieCell,
             sortable   : true
         },
-        {
-            name       : 'seasonNumber',
-            label      : 'Season',
-            cell       : SeasonCell,
-            sortable   : true
-        },
-        {
-            name       : 'episodes',
-            label      : 'Episode(s)',
-            cell       : EpisodesCell,
-            sortable   : false
-        },
+        // {
+        //     name       : 'series',
+        //     label      : 'Series',
+        //     cell       : SeriesCell,
+        //     sortable   : true
+        // },
+        // {
+        //     name       : 'seasonNumber',
+        //     label      : 'Season',
+        //     cell       : SeasonCell,
+        //     sortable   : true
+        // },
+        // {
+        //     name       : 'episodes',
+        //     label      : 'Episode(s)',
+        //     cell       : EpisodesCell,
+        //     sortable   : false
+        // },
         {
             name       : 'quality',
             label      : 'Quality',
@@ -176,29 +183,36 @@ module.exports = Marionette.Layout.extend({
             return;
         }
 
-        if (_.any(selected, function (model) {
-                return !model.has('series');
-            })) {
-
-            this._showErrorMessage('Series must be chosen for each selected file');
+        if(_.any(selected, function(model) {
+            return !model.has('movie');
+        })) {
+            this._showErrorMessage('Movie must be chosen for each selected file');
             return;
         }
 
-        if (_.any(selected, function (model) {
-                return !model.has('seasonNumber');
-            })) {
+        // if (_.any(selected, function (model) {
+        //         return !model.has('series');
+        //     })) {
 
-            this._showErrorMessage('Season must be chosen for each selected file');
-            return;
-        }
+        //     this._showErrorMessage('Series must be chosen for each selected file');
+        //     return;
+        // }
 
-        if (_.any(selected, function (model) {
-                return !model.has('episodes') || model.get('episodes').length === 0;
-            })) {
+        // if (_.any(selected, function (model) {
+        //         return !model.has('seasonNumber');
+        //     })) {
 
-            this._showErrorMessage('One or more episodes must be chosen for each selected file');
-            return;
-        }
+        //     this._showErrorMessage('Season must be chosen for each selected file');
+        //     return;
+        // }
+
+        // if (_.any(selected, function (model) {
+        //         return !model.has('episodes') || model.get('episodes').length === 0;
+        //     })) {
+
+        //     this._showErrorMessage('One or more episodes must be chosen for each selected file');
+        //     return;
+        // }
 
         var importMode = this.ui.importMode.val();
 
@@ -207,8 +221,9 @@ module.exports = Marionette.Layout.extend({
             files : _.map(selected, function (file) {
                 return {
                     path       : file.get('path'),
-                    seriesId   : file.get('series').id,
-                    episodeIds : _.map(file.get('episodes'), 'id'),
+                    movieId    : file.get('movie').id,
+                    // seriesId   : file.get('series').id,
+                    // episodeIds : _.map(file.get('episodes'), 'id'),
                     quality    : file.get('quality'),
                     downloadId : file.get('downloadId')
                 };
