@@ -122,6 +122,16 @@
     <Compile Include="Authentication\User.cs" />
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
+    <Compile Include="AutoImport.derp\AutoImportBase.cs" />
+    <Compile Include="AutoImport.derp\IAutoImport.cs" />
+    <Compile Include="AutoImport.derp\IMDbWatchList\IMDbWatchList.cs" />
+    <Compile Include="AutoImport.derp\IMDbWatchList\IMDbWatchListSettings.cs" />
+    <Compile Include="AutoImport.derp\IMDbWatchList\IMDbWatchListProxy.cs" />
+    <Compile Include="AutoImport.derp\AutoImportRepository.cs" />
+    <Compile Include="AutoImport.derp\AutoImportDefinition.cs" />
+    <Compile Include="AutoImporter\AutoImporterBase.cs" />
+    <Compile Include="AutoImporter\IAutoImporter.cs" />
+    <Compile Include="AutoImporter\AutoImporterDefinition.cs" />
     <Compile Include="Backup\Backup.cs" />
     <Compile Include="Backup\BackupCommand.cs" />
     <Compile Include="Backup\BackupService.cs" />
