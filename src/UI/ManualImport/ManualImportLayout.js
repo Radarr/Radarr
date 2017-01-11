@@ -168,8 +168,8 @@ module.exports = Marionette.Layout.extend({
     },
 
     _automaticImport : function (e) {
-        CommandController.Execute('downloadedEpisodesScan', {
-            name : 'downloadedEpisodesScan',
+        CommandController.Execute('downloadedMovieScan', {
+            name : 'downloadedMovieScan',
             path : e.folder
         });
 

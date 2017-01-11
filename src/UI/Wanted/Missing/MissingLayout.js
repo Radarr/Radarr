@@ -133,7 +133,7 @@ module.exports = Marionette.Layout.extend({
                 {
                     title      : 'Rescan Drone Factory Folder',
                     icon       : 'icon-sonarr-refresh',
-                    command    : 'downloadedepisodesscan',
+                    command    : 'downloadedMovieScan',
                     properties : { sendUpdates : true }
                 },
                 {
