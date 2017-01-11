@@ -78,7 +78,7 @@ module.exports = Marionette.Layout.extend({
 
         CommandController.Execute('renameMovieFiles', {
             name         : 'renameMovieFiles',
-            movieId     : this.model.id,
+            movieId      : this.model.id,
             files        : files
         });
 

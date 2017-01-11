@@ -10,5 +10,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
         public List<int> EpisodeIds { get; set; }
         public QualityModel Quality { get; set; }
         public string DownloadId { get; set; }
+        public int MovieId { get; set; }
     }
 }

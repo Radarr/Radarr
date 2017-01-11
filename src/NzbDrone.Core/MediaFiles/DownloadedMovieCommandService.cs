@@ -1,265 +1,107 @@
-﻿using System.Collections.Generic;
+﻿using NLog;
+using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.MediaFiles.Commands;
+using NzbDrone.Core.MediaFiles.EpisodeImport;
+using NzbDrone.Core.Messaging.Commands;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NLog;
-using NzbDrone.Common.Disk;
-using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.Parser.Model;
+using System.Text;
 
 namespace NzbDrone.Core.MediaFiles
 {
-    public interface IDownloadedMovieImportService
+    public class DownloadedMovieCommandService : IExecute<DownloadedMovieScanCommand>
     {
-        List<ImportResult> ProcessRootFolder(DirectoryInfo directoryInfo);
-        List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Movie movie = null, DownloadClientItem downloadClientItem = null);
-        bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Movie movie);
-    }
-
-    public class DownloadedMovieImportService : IDownloadedMovieImportService
-    {
+        private readonly IDownloadedMovieImportService _downloadedMovieImportService;
+        private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDiskProvider _diskProvider;
-        private readonly IDiskScanService _diskScanService;
-        private readonly IMovieService _movieService;
-        private readonly IParsingService _parsingService;
-        private readonly IMakeImportDecision _importDecisionMaker;
-        private readonly IImportApprovedMovie _importApprovedMovie;
-        private readonly IDetectSample _detectSample;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public DownloadedMovieImportService(IDiskProvider diskProvider,
-                                               IDiskScanService diskScanService,
-                                               IMovieService movieService,
-                                               IParsingService parsingService,
-                                               IMakeImportDecision importDecisionMaker,
-                                               IImportApprovedMovie importApprovedMovie,
-                                               IDetectSample detectSample,
-                                               Logger logger)
+        public DownloadedMovieCommandService(IDownloadedMovieImportService downloadedMovieImportService,
+                                                ITrackedDownloadService trackedDownloadService,
+                                                IDiskProvider diskProvider,
+                                                IConfigService configService,
+                                                Logger logger)
         {
+            _downloadedMovieImportService = downloadedMovieImportService;
+            _trackedDownloadService = trackedDownloadService;
             _diskProvider = diskProvider;
-            _diskScanService = diskScanService;
-            _movieService = movieService;
-            _parsingService = parsingService;
-            _importDecisionMaker = importDecisionMaker;
-            _importApprovedMovie = importApprovedMovie;
-            _detectSample = detectSample;
+            _configService = configService;
             _logger = logger;
         }
 
-        public List<ImportResult> ProcessRootFolder(DirectoryInfo directoryInfo)
+        private List<ImportResult> ProcessDroneFactoryFolder()
         {
-            var results = new List<ImportResult>();
+            var downloadedEpisodesFolder = _configService.DownloadedEpisodesFolder;
 
-            foreach (var subFolder in _diskProvider.GetDirectories(directoryInfo.FullName))
+            if (string.IsNullOrEmpty(downloadedEpisodesFolder))
             {
-                var folderResults = ProcessFolder(new DirectoryInfo(subFolder), ImportMode.Auto, null);
-                results.AddRange(folderResults);
-            }
-
-            foreach (var videoFile in _diskScanService.GetVideoFiles(directoryInfo.FullName, false))
-            {
-                var fileResults = ProcessFile(new FileInfo(videoFile), ImportMode.Auto, null);
-                results.AddRange(fileResults);
-            }
-
-            return results;
-        }
-
-        public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Movie movie = null, DownloadClientItem downloadClientItem = null)
-        {
-            if (_diskProvider.FolderExists(path))
-            {
-                var directoryInfo = new DirectoryInfo(path);
-
-                if (movie == null)
-                {
-                    return ProcessFolder(directoryInfo, importMode, downloadClientItem);
-                }
-
-                return ProcessFolder(directoryInfo, importMode, movie, downloadClientItem);
-            }
-
-            if (_diskProvider.FileExists(path))
-            {
-                var fileInfo = new FileInfo(path);
-
-                if (movie == null)
-                {
-                    return ProcessFile(fileInfo, importMode, downloadClientItem);
-                }
-
-                return ProcessFile(fileInfo, importMode, movie, downloadClientItem);
-            }
-
-            _logger.Error("Import failed, path does not exist or is not accessible by Sonarr: {0}", path);
-            return new List<ImportResult>();
-        }
-
-        public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Movie movie)
-        {
-            var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
-            var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f) == ".rar");
-
-            foreach (var videoFile in videoFiles)
-            {
-                var episodeParseResult = Parser.Parser.ParseTitle(Path.GetFileName(videoFile));
-
-                if (episodeParseResult == null)
-                {
-                    _logger.Warn("Unable to parse file on import: [{0}]", videoFile);
-                    return false;
-                }
-
-                var size = _diskProvider.GetFileSize(videoFile);
-                var quality = QualityParser.ParseQuality(videoFile);
-
-                if (!_detectSample.IsSample(movie, quality, videoFile, size, episodeParseResult.IsPossibleSpecialEpisode))
-                {
-                    _logger.Warn("Non-sample file detected: [{0}]", videoFile);
-                    return false;
-                }
-            }
-
-            if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
-            {
-                _logger.Warn("RAR file detected, will require manual cleanup");
-                return false;
-            }
-
-            return true;
-        }
-
-        private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
-        {
-            var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var movie = _parsingService.GetMovie(cleanedUpName);
-
-            if (movie == null)
-            {
-                _logger.Debug("Unknown Movie {0}", cleanedUpName);
-
-                return new List<ImportResult>
-                       {
-                           UnknownMovieResult("Unknown Movie")
-                       };
-            }
-
-            return ProcessFolder(directoryInfo, importMode, movie, downloadClientItem);
-        }
-
-        private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, Movie movie, DownloadClientItem downloadClientItem)
-        {
-            if (_movieService.MoviePathExists(directoryInfo.FullName))
-            {
-                _logger.Warn("Unable to process folder that is mapped to an existing show");
+                _logger.Trace("Drone Factory folder is not configured");
                 return new List<ImportResult>();
             }
 
-            var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
-
-            if (folderInfo != null)
+            if (!_diskProvider.FolderExists(downloadedEpisodesFolder))
             {
-                _logger.Debug("{0} folder quality: {1}", cleanedUpName, folderInfo.Quality);
+                _logger.Warn("Drone Factory folder [{0}] doesn't exist.", downloadedEpisodesFolder);
+                return new List<ImportResult>();
             }
 
-            var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
+            return _downloadedMovieImportService.ProcessRootFolder(new DirectoryInfo(downloadedEpisodesFolder));
+        }
 
-            if (downloadClientItem == null)
+        private List<ImportResult> ProcessPath(DownloadedMovieScanCommand message)
+        {
+            if (!_diskProvider.FolderExists(message.Path) && !_diskProvider.FileExists(message.Path))
             {
-                foreach (var videoFile in videoFiles)
+                _logger.Warn("Folder/File specified for import scan [{0}] doesn't exist.", message.Path);
+                return new List<ImportResult>();
+            }
+
+            if (message.DownloadClientId.IsNotNullOrWhiteSpace())
+            {
+                var trackedDownload = _trackedDownloadService.Find(message.DownloadClientId);
+
+                if (trackedDownload != null)
                 {
-                    if (_diskProvider.IsFileLocked(videoFile))
-                    {
-                        return new List<ImportResult>
-                               {
-                                   FileIsLockedResult(videoFile)
-                               };
-                    }
+                    _logger.Debug("External directory scan request for known download {0}. [{1}]", message.DownloadClientId, message.Path);
+
+                    return _downloadedMovieImportService.ProcessPath(message.Path, message.ImportMode, trackedDownload.RemoteMovie.Movie, trackedDownload.DownloadItem);
+                }
+                else
+                {
+                    _logger.Warn("External directory scan request for unknown download {0}, attempting normal import. [{1}]", message.DownloadClientId, message.Path);
+
+                    return _downloadedMovieImportService.ProcessPath(message.Path, message.ImportMode);
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, folderInfo, true);
-            var importResults = _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
+            return _downloadedMovieImportService.ProcessPath(message.Path, message.ImportMode);
+        }
 
-            if ((downloadClientItem == null || !downloadClientItem.IsReadOnly) &&
-                importResults.Any(i => i.Result == ImportResultType.Imported) &&
-                ShouldDeleteFolder(directoryInfo, movie))
+        public void Execute(DownloadedMovieScanCommand message)
+        {
+            List<ImportResult> importResults;
+
+            if (message.Path.IsNotNullOrWhiteSpace())
             {
-                _logger.Debug("Deleting folder after importing valid files");
-                _diskProvider.DeleteFolder(directoryInfo.FullName, true);
+                importResults = ProcessPath(message);
+            }
+            else
+            {
+                importResults = ProcessDroneFactoryFolder();
             }
 
-            return importResults;
-        }
-
-        private List<ImportResult> ProcessFile(FileInfo fileInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
-        {
-            var movie = _parsingService.GetMovie(Path.GetFileNameWithoutExtension(fileInfo.Name));
-
-            if (movie == null)
+            if (importResults == null || importResults.All(v => v.Result != ImportResultType.Imported))
             {
-                _logger.Debug("Unknown Movie for file: {0}", fileInfo.Name);
-
-                return new List<ImportResult>
-                       {
-                           UnknownMovieResult(string.Format("Unknown Movie for file: {0}", fileInfo.Name), fileInfo.FullName)
-                       };
+                // Atm we don't report it as a command failure, coz that would cause the download to be failed.
+                // Changing the message won't do a thing either, coz it will get set to 'Completed' a msec later.
+                //message.SetMessage("Failed to import");
             }
-
-            return ProcessFile(fileInfo, importMode, movie, downloadClientItem);
-        }
-
-        private List<ImportResult> ProcessFile(FileInfo fileInfo, ImportMode importMode, Movie movie, DownloadClientItem downloadClientItem)
-        {
-            if (Path.GetFileNameWithoutExtension(fileInfo.Name).StartsWith("._"))
-            {
-                _logger.Debug("[{0}] starts with '._', skipping", fileInfo.FullName);
-
-                return new List<ImportResult>
-                       {
-                           new ImportResult(new ImportDecision(new LocalEpisode { Path = fileInfo.FullName }, new Rejection("Invalid video file, filename starts with '._'")), "Invalid video file, filename starts with '._'")
-                       };
-            }
-
-            if (downloadClientItem == null)
-            {
-                if (_diskProvider.IsFileLocked(fileInfo.FullName))
-                {
-                    return new List<ImportResult>
-                           {
-                               FileIsLockedResult(fileInfo.FullName)
-                           };
-                }
-            }
-
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, null, true);
-
-            return _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
-        }
-
-        private string GetCleanedUpFolderName(string folder)
-        {
-            folder = folder.Replace("_UNPACK_", "")
-                           .Replace("_FAILED_", "");
-
-            return folder;
-        }
-
-        private ImportResult FileIsLockedResult(string videoFile)
-        {
-            _logger.Debug("[{0}] is currently locked by another process, skipping", videoFile);
-            return new ImportResult(new ImportDecision(new LocalEpisode { Path = videoFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
-        }
-
-        private ImportResult UnknownMovieResult(string message, string videoFile = null)
-        {
-            var localEpisode = videoFile == null ? null : new LocalEpisode { Path = videoFile };
-
-            return new ImportResult(new ImportDecision(localEpisode, new Rejection("Unknown Movie")), message);
         }
     }
 }

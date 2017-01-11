@@ -10,6 +10,7 @@ var LogDetailsView = require('../../System/Logs/Table/Details/LogDetailsView');
 var RenamePreviewLayout = require('../../Rename/RenamePreviewLayout');
 var ManualImportLayout = require('../../ManualImport/ManualImportLayout');
 var FileBrowserLayout = require('../FileBrowser/FileBrowserLayout');
+var MoviesDetailsLayout = require('../../Movies/Details/MoviesDetailsLayout');
 
 module.exports = Marionette.AppRouter.extend({
     initialize : function() {
