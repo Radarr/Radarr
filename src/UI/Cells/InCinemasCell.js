@@ -7,10 +7,16 @@ module.exports = TemplatedCell.extend({
       var monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
-      var cinemasDate = new Date(this.model.get("inCinemas"));
-      var year = cinemasDate.getFullYear();
-      var month = monthNames[cinemasDate.getMonth()];
-        this.$el.html(month + " " + year); //Hack, but somehow handlebar helper does not work.
-        return this;
+
+      this.$el.html("To be announced");
+
+      if (this.model.get("inCinemas")) {
+        var cinemasDate = new Date(this.model.get("inCinemas"));
+        var year = cinemasDate.getFullYear();
+        var month = monthNames[cinemasDate.getMonth()];
+          this.$el.html(month + " " + year); //Hack, but somehow handlebar helper does not work.
+      }
+
+      return this;
     }
 });

@@ -181,10 +181,13 @@ Handlebars.registerHelper('inCinemas', function() {
     var year = d.getFullYear();
     return "Available: " + day + ". " + month + " " + year;
   }
-  var cinemasDate = new Date(this.inCinemas);
-  var year = cinemasDate.getFullYear();
-  var month = monthNames[cinemasDate.getMonth()];
-  return "In Cinemas: " + month + " " + year;
+  if (this.inCinemas) {
+    var cinemasDate = new Date(this.inCinemas);
+    var year = cinemasDate.getFullYear();
+    var month = monthNames[cinemasDate.getMonth()];
+    return "In Cinemas: " + month + " " + year;
+  }
+  return "To be announced";
 });
 
 Handlebars.registerHelper('tvRageUrl', function() {
