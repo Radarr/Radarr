@@ -55,7 +55,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public Production_Companies[] production_companies { get; set; }
         public Production_Countries[] production_countries { get; set; }
         public string release_date { get; set; }
-        public int revenue { get; set; }
+        public long revenue { get; set; }
         public int runtime { get; set; }
         public Spoken_Languages[] spoken_languages { get; set; }
         public string status { get; set; }
