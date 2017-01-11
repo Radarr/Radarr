@@ -189,7 +189,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             var lowerTitle = title.ToLower();
 
-            var parserResult = Parser.Parser.ParseMovieTitle(title);
+            var parserResult = Parser.Parser.ParseMovieTitle(title, true);
 
             var yearTerm = "";
 
