@@ -97,7 +97,7 @@ namespace NzbDrone.Api.Indexers
                 {
                     Guid = releaseInfo.Guid,
                     Quality = parsedMovieInfo.Quality,
-                    //QualityWeight
+                    QualityWeight = parsedMovieInfo.Quality.Quality.Id, //Id kinda hacky for wheight, but what you gonna do? TODO: Fix this shit!
                     Age = releaseInfo.Age,
                     AgeHours = releaseInfo.AgeHours,
                     AgeMinutes = releaseInfo.AgeMinutes,
