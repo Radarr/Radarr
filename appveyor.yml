@@ -36,3 +36,10 @@ artifacts:
 cache:
   - '%USERPROFILE%\.nuget\packages'
   - node_modules
+
+only_commits:
+  files:
+    - src/
+    - osx/
+    - gulp/
+    - logo/
