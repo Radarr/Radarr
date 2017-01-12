@@ -26,6 +26,8 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 ## Download
 The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
 
+To connect to the UI, fire up your browser and open localhost:7878 or your-ip:7878.
+
 Docker containers from [linuxserver.io](https://linuxserver.io) can be found here.
 * [Radarr (x64)](https://hub.docker.com/r/linuxserver/radarr/) 
 * [Radarr (armhf)](https://hub.docker.com/r/lsioarmhf/radarr/) 
