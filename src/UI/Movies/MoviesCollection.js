@@ -15,10 +15,10 @@ var Collection = PageableCollection.extend({
     tableName : 'movie',
 
     state : {
-        sortKey            : 'title',
+        sortKey            : 'sortTitle',
         order              : 1,
         pageSize           : 100000,
-        secondarySortKey   : 'title',
+        secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
     },
 
@@ -73,7 +73,7 @@ var Collection = PageableCollection.extend({
 
     sortMappings : {
         title : {
-            sortKey : 'title'
+            sortKey : 'sortTitle'
         },
 
         nextAiring : {

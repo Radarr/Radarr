@@ -327,7 +327,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             imdbMovie.TmdbId = result.id;
             try
             {
-                imdbMovie.SortTitle = result.title;
+                imdbMovie.SortTitle = Parser.Parser.NormalizeTitle(result.title);
                 imdbMovie.Title = result.title;
                 string titleSlug = result.title;
                 imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
