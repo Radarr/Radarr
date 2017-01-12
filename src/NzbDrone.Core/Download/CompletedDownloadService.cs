@@ -109,7 +109,11 @@ namespace NzbDrone.Core.Download
 
                         if (movie == null)
                         {
-                            movie = _movieService.GetMovie(historyItem.MovieId);
+                            if (historyItem != null)
+                            {
+                                movie = _movieService.GetMovie(historyItem.MovieId);
+                            }
+
 
                             if (movie == null)
                             {
