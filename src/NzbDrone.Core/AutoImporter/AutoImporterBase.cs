@@ -9,27 +9,24 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.AutoImporter
 {
     public abstract class AutoImporterBase<TSettings> : IAutoImporter
         where TSettings : IProviderConfig, new()
     {
-        // protected readonly IAutoImporterStatusService _autoImporterStatusService;
         protected readonly IConfigService _configService;
         protected readonly IParsingService _parsingService;
         protected readonly Logger _logger;
 
         public abstract string Name { get; }
-        // public abstract DownloadProtocol Protocol { get; }
         public abstract string Link { get; }
 
         public abstract bool Enabled { get; }
-        // public abstract bool SupportsSearch { get; }
 
-        public AutoImporterBase(/*IAutoImporterStatusService autoImporterStatusService, */IConfigService configService, IParsingService parsingService, Logger logger)
+        public AutoImporterBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {
-            //_autoImporterStatusService = autoImporterStatusService;
             _configService = configService;
             _parsingService = parsingService;
             _logger = logger;
@@ -62,7 +59,7 @@ namespace NzbDrone.Core.AutoImporter
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 
-        public abstract IList<ReleaseInfo> Fetch();
+        public abstract IList<Movie> Fetch();
 
         public ValidationResult Test()
         {
@@ -87,5 +84,6 @@ namespace NzbDrone.Core.AutoImporter
         {
             return Definition.Name;
         }
+
     }
 }
