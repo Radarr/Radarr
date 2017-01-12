@@ -13,6 +13,7 @@ var MovieLinksCell = require('../../Cells/MovieLinksCell');
 var MovieActionCell = require('../../Cells/MovieActionCell');
 var MovieStatusCell = require('../../Cells/MovieStatusCell');
 var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
+var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var FooterView = require('./FooterView');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
@@ -41,6 +42,11 @@ module.exports = Marionette.Layout.extend({
             cellValue : 'this',
         },
         {
+          name : "downloadedQuality",
+          label : "Downloaded",
+          cell : DownloadedQualityCell,
+        },
+        {
             name  : 'profileId',
             label : 'Profile',
             cell  : ProfileCell
@@ -54,12 +60,19 @@ module.exports = Marionette.Layout.extend({
             name      : 'this',
             label     : 'Links',
             cell      : MovieLinksCell,
-            className : "movie-links-cell"
+            className : "movie-links-cell",
+            sortable : false,
         },
         {
           name        : "this",
           label       : "Status",
           cell        : MovieDownloadStatusCell,
+          sortValue : function(m, k) {
+            if (m.get("downloaded")) {
+              return -1;
+            }
+            return 0;
+          }
         },
         {
             name     : 'this',
