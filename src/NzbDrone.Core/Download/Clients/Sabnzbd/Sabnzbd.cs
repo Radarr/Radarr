@@ -372,7 +372,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                         return new NzbDroneValidationFailure("Version", "Sabnzbd develop version, assuming version 1.1.0 or higher.")
                         {
                             IsWarning = true,
-                            DetailedDescription = "Sonarr may not be able to support new features added to SABnzbd when running develop versions."
+                            DetailedDescription = "Radarr may not be able to support new features added to SABnzbd when running develop versions."
                         };
                     }
 
@@ -431,7 +431,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("", "Disable 'Check before download' option in Sabnbzd")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/switches/", Settings.Host, Settings.Port),
-                    DetailedDescription = "Using Check before download affects Sonarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
+                    DetailedDescription = "Using Check before download affects Radarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
                 };
             }
 
@@ -450,7 +450,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Enable Job folders")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
-                        DetailedDescription = "Sonarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
+                        DetailedDescription = "Radarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -475,7 +475,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Disable TV Sorting")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                        DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Sonarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                        DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -489,7 +489,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Disable Movie Sorting")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                        DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Sonarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                        DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -503,7 +503,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Disable Date Sorting")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                        DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Sonarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                        DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
                     };
                 }
             }

@@ -232,7 +232,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
-                    DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Sonarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
+                    DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
                 };
             }
             catch (WebException ex)

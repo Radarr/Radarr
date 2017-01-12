@@ -18,14 +18,14 @@ namespace NzbDrone.Core.Notifications.Join
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Sonarr - Episode Grabbed";
+            const string title = "Radarr - Episode Grabbed";
 
             _proxy.SendNotification(title, grabMessage.Message, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Sonarr - Episode Downloaded";
+            const string title = "Radarr - Episode Downloaded";
 
             _proxy.SendNotification(title, message.Message, Settings);
         }
