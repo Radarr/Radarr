@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Notifications.Slack
         {
             try
             {
-                var message = $"Test message from Sonarr posted at {DateTime.Now}";
+                var message = $"Test message from Radarr posted at {DateTime.Now}";
                 var payload = new SlackPayload
                 {
                     IconEmoji = Settings.Icon,

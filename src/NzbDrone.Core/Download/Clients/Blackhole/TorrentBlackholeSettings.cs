@@ -26,10 +26,10 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         private static readonly TorrentBlackholeSettingsValidator Validator = new TorrentBlackholeSettingsValidator();
 
-        [FieldDefinition(0, Label = "Torrent Folder", Type = FieldType.Path, HelpText = "Folder in which Sonarr will store the .torrent file")]
+        [FieldDefinition(0, Label = "Torrent Folder", Type = FieldType.Path, HelpText = "Folder in which Radarr will store the .torrent file")]
         public string TorrentFolder { get; set; }
 
-        [FieldDefinition(1, Label = "Watch Folder", Type = FieldType.Path, HelpText = "Folder from which Sonarr should import completed downloads")]
+        [FieldDefinition(1, Label = "Watch Folder", Type = FieldType.Path, HelpText = "Folder from which Radarr should import completed downloads")]
         public string WatchFolder { get; set; }
 
         [DefaultValue(false)]
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         [DefaultValue(false)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        [FieldDefinition(3, Label = "Read Only", Type = FieldType.Checkbox, HelpText = "Instead of moving files this will instruct Sonarr to Copy or Hardlink (depending on settings/system configuration)")]
+        [FieldDefinition(3, Label = "Read Only", Type = FieldType.Checkbox, HelpText = "Instead of moving files this will instruct Radarr to Copy or Hardlink (depending on settings/system configuration)")]
         public bool ReadOnly { get; set; }
 
         public NzbDroneValidationResult Validate()
