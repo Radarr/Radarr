@@ -37,51 +37,23 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             _rTorrentDirectoryValidator = rTorrentDirectoryValidator;
         }
 
+        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        {
+            throw new NotImplementedException("Episodes are not working with Radarr");
+        }
+
+        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        {
+            throw new NotImplementedException("Episodes are not working with Radarr");
+        }
+
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
 
             // Download the magnet to the appropriate directory.
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
-            //SetPriority(remoteEpisode, hash);
+            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
             SetDownloadDirectory(hash);
-
-            // Once the magnet meta download finishes, rTorrent replaces it with the actual torrent download with default settings.
-            // Schedule an event to apply the appropriate settings when that happens.
-            // var priority = (RTorrentPriority)(remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
-            //_proxy.SetDeferredMagnetProperties(hash, Settings.TvCategory, Settings.TvDirectory, priority, Settings);
-
-            _proxy.StartTorrent(hash, Settings);
-
-            // Wait for the magnet to be resolved.
-            var tries = 10;
-            var retryDelay = 500;
-            if (WaitForTorrent(hash, tries, retryDelay))
-            {
-                return hash;
-            }
-            else
-            {
-                _logger.Warn("rTorrent could not resolve magnet within {0} seconds, download may remain stuck: {1}.", tries * retryDelay / 1000, magnetLink);
-
-                return hash;
-            }
-        }
-
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
-        {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings);
-
-            // Download the magnet to the appropriate directory.
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
-            SetPriority(remoteEpisode, hash);
-            SetDownloadDirectory(hash);
-
-            // Once the magnet meta download finishes, rTorrent replaces it with the actual torrent download with default settings.
-            // Schedule an event to apply the appropriate settings when that happens.
-            var priority = (RTorrentPriority)(remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
-            _proxy.SetDeferredMagnetProperties(hash, Settings.TvCategory, Settings.TvDirectory, priority, Settings);
-
             _proxy.StartTorrent(hash, Settings);
 
             // Wait for the magnet to be resolved.
@@ -107,13 +79,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             var retryDelay = 100;
             if (WaitForTorrent(hash, tries, retryDelay))
             {
-                _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
-
-                //SetPriority(remoteEpisode, hash);
+                _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
                 SetDownloadDirectory(hash);
-
                 _proxy.StartTorrent(hash, Settings);
-
                 return hash;
             }
             else
@@ -122,32 +90,6 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
                 RemoveItem(hash, true);
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading torrent failed");
-            }
-        }
-
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
-        {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-
-            var tries = 2;
-            var retryDelay = 100;
-            if (WaitForTorrent(hash, tries, retryDelay))
-            {
-                _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
-
-                SetPriority(remoteEpisode, hash);
-                SetDownloadDirectory(hash);
-
-                _proxy.StartTorrent(hash, Settings);
-
-                return hash;
-            }
-            else
-            {
-                _logger.Debug("rTorrent could not add file");
-
-                RemoveItem(hash, true);
-                throw new ReleaseDownloadException(remoteEpisode.Release, "Downloading torrent failed");
             }
         }
 
@@ -167,7 +109,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                 foreach (RTorrentTorrent torrent in torrents)
                 {
                     // Don't concern ourselves with categories other than specified
-                    if (torrent.Category != Settings.TvCategory) continue;
+                    if (torrent.Category != Settings.MovieCategory) continue;
 
                     if (torrent.Path.StartsWith("."))
                     {
@@ -287,17 +229,11 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             return result.Errors.First();
         }
 
-        private void SetPriority(RemoteEpisode remoteEpisode, string hash)
-        {
-            var priority = (RTorrentPriority)(remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
-            _proxy.SetTorrentPriority(hash, priority, Settings);
-        }
-
         private void SetDownloadDirectory(string hash)
         {
-            if (Settings.TvDirectory.IsNotNullOrWhiteSpace())
+            if (Settings.MovieDirectory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetTorrentDownloadDirectory(hash, Settings.TvDirectory, Settings);
+                _proxy.SetTorrentDownloadDirectory(hash, Settings.MovieDirectory, Settings);
             }
         }
 

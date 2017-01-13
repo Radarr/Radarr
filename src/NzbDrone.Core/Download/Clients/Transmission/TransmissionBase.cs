@@ -54,21 +54,21 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
                 var outputPath = new OsPath(torrent.DownloadDir);
 
-                if (Settings.TvDirectory.IsNotNullOrWhiteSpace())
+                if (Settings.MovieDirectory.IsNotNullOrWhiteSpace())
                 {
-                    if (!new OsPath(Settings.TvDirectory).Contains(outputPath)) continue;
+                    if (!new OsPath(Settings.MovieDirectory).Contains(outputPath)) continue;
                 }
-                else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                else if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
                 {
                     var directories = outputPath.FullPath.Split('\\', '/');
-                    if (!directories.Contains(Settings.TvCategory)) continue;
+                    if (!directories.Contains(Settings.MovieCategory)) continue;
                 }
 
                 outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
 
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.HashString.ToUpper();
-                item.Category = Settings.TvCategory;
+                item.Category = Settings.MovieCategory;
                 item.Title = torrent.Name;
 
                 item.DownloadClient = Definition.Name;
@@ -123,9 +123,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             var config = _proxy.GetConfig(Settings);
             var destDir = config.GetValueOrDefault("download-dir") as string;
             
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                destDir = string.Format("{0}/.{1}", destDir, Settings.TvCategory);
+                destDir = string.Format("{0}/.{1}", destDir, Settings.MovieCategory);
             }
 
             return new DownloadClientStatus
@@ -137,56 +137,23 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
-
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)TransmissionPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash, Settings);
-            }
-
-            return hash;
+            throw new NotImplementedException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
         {
-            _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
-
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)TransmissionPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash, Settings);
-            }
-
-            return hash;
+            throw new NotImplementedException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
-            if (remoteMovie.Release.Age < 14 && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
-                remoteMovie.Release.Age > 14 && Settings.OlderTvPriority == (int)TransmissionPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash, Settings);
-            }
-
             return hash;
         }
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
-
-            if (remoteMovie.Release.Age < 14 && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
-                remoteMovie.Release.Age > 14 && Settings.OlderTvPriority == (int)TransmissionPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash, Settings);
-            }
-
             return hash;
         }
 
@@ -204,16 +171,16 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected string GetDownloadDirectory()
         {
-            if (Settings.TvDirectory.IsNotNullOrWhiteSpace())
+            if (Settings.MovieDirectory.IsNotNullOrWhiteSpace())
             {
-                return Settings.TvDirectory;
+                return Settings.MovieDirectory;
             }
-            else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            else if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
                 var config = _proxy.GetConfig(Settings);
                 var destDir = (string)config.GetValueOrDefault("download-dir");
 
-                return string.Format("{0}/{1}", destDir.TrimEnd('/'), Settings.TvCategory);
+                return string.Format("{0}/{1}", destDir.TrimEnd('/'), Settings.MovieCategory);
             }
             else
             {

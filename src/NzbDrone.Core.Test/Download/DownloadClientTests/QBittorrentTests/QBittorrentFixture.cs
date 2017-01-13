@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                                               Port = 2222,
                                               Username = "admin",
                                               Password = "pass",
-                                              TvCategory = "tv"
+                                              MovieCategory = "movies-radarr"
                                           };
 
             Mocker.GetMock<ITorrentFileInfoReader>()

@@ -139,7 +139,7 @@ module.exports = Marionette.Layout.extend({
             items          : [
                 {
                     title : 'Title',
-                    name  : 'title'
+                    name  : 'sortTitle'
                 },
                 {
                     title : 'Quality',
