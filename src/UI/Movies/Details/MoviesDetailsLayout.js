@@ -43,7 +43,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     events : {
-        'click .x-episode-file-editor' : '_openEpisodeFileEditor',
+        'click .x-episode-file-editor' : '_showFiles',
         'click .x-monitored'           : '_toggleMonitored',
         'click .x-edit'                : '_editMovie',
         'click .x-refresh'             : '_refreshMovies',
