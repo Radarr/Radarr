@@ -294,7 +294,6 @@
     </Compile>
     <Compile Include="Datastore\Migration\110_add_physical_release_to_table.cs" />
     <Compile Include="Datastore\Migration\109_add_movie_formats_to_naming_config.cs" />
-    <Compile Include="Datastore\Migration\117_fix_movie_slugs.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
