@@ -33,80 +33,34 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings);
-
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
-            {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
-            }
-
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
-            }
-
-            return hash;
+            throw new NotImplementedException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, Byte[] fileContent)
         {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
-            {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
-            }
-
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
-            }
-
-            return hash;
+            throw new NotImplementedException("Episodes are not working with Radarr");
         }
 
-        protected override string AddFromMagnetLink(RemoteMovie remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
 
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
+                _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
             }
-
-            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
-            }*/ //TODO: Maybe reimplement for movies
 
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, Byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, Byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
+                _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
             }
-
-            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
-            }*/
 
             return hash;
         }
@@ -236,7 +190,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 else if (version < 6)
                 {
                     // API version 6 introduced support for labels
-                    if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                    if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
                     {
                         return new NzbDroneValidationFailure("Category", "Category is not supported")
                         {
@@ -244,7 +198,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         };
                     }
                 }
-                else if (Settings.TvCategory.IsNullOrWhiteSpace())
+                else if (Settings.MovieCategory.IsNullOrWhiteSpace())
                 {
                     // warn if labels are supported, but category is not provided
                     return new NzbDroneValidationFailure("TvCategory", "Category is recommended")
