@@ -7,8 +7,12 @@ module.exports = NzbDroneCell.extend({
         this.$el.empty();
 
         var info = this.model.get('mediaInfo');
-        var video = info.videoCodec;
-        var audio = info.audioFormat;
+        var runtime = info.runTime;
+        if (runtime) {
+          runtime = runtime.split(".")[0];
+        }
+        var video = "{0} ({1}x{2}) ({3})".format(info.videoCodec, info.width, info.height, runtime);
+        var audio = "{0} ({1})".format(info.audioFormat, info.audioLanguages);
         this.$el.html(video + " " + audio);
 
         return this;

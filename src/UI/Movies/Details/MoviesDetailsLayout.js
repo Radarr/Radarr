@@ -82,7 +82,12 @@ module.exports = Marionette.Layout.extend({
         this._showSeasons();
         this._setMonitoredState();
         this._showInfo();
-        this._showHistory();
+        if (this.model.get("movieFile")) {
+          this._showFiles()
+        } else {
+          this._showHistory();
+        }
+
     },
 
     onRender : function() {
