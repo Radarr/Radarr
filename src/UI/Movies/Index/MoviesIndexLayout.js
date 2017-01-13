@@ -175,6 +175,13 @@ module.exports = Marionette.Layout.extend({
                     tooltip  : 'Monitored Only',
                     icon     : 'icon-sonarr-monitored',
                     callback : this._setFilter
+                },
+                {
+                    key      : 'missing',
+                    title    : '',
+                    tooltip  : 'Missing Only',
+                    icon     : 'icon-sonarr-missing',
+                    callback : this._setFilter
                 }
             ]
         };
