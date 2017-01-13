@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Download
         private void Import(TrackedDownload trackedDownload)
         {
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
-            if (trackedDownload.RemoteMovie.Movie != null)
+            if (trackedDownload.RemoteMovie != null && trackedDownload.RemoteMovie.Movie != null)
             {
                 var importResults = _downloadedMovieImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteMovie.Movie, trackedDownload.DownloadItem);
 
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Download
                     trackedDownload.Warn(statusMessages);
                 }
             }
-            else if (trackedDownload.RemoteEpisode.Series != null)
+            else if (trackedDownload.RemoteEpisode != null && trackedDownload.RemoteEpisode.Series != null)
             {
                 var importResults = _downloadedEpisodesImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
 

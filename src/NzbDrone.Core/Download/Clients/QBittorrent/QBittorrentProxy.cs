@@ -58,8 +58,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         public List<QBittorrentTorrent> GetTorrents(QBittorrentSettings settings)
         {
             var request = BuildRequest(settings).Resource("/query/torrents")
-                                                .AddQueryParam("label", settings.TvCategory)
-                                                .AddQueryParam("category", settings.TvCategory);
+                                                .AddQueryParam("label", settings.MovieCategory)
+                                                .AddQueryParam("category", settings.MovieCategory);
 
             var response = ProcessRequest<List<QBittorrentTorrent>>(request, settings);
 

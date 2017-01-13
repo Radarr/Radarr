@@ -90,6 +90,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Title = resource.title;
             movie.TitleSlug = movie.Title.ToLower().Replace(" ", "-");
             movie.CleanTitle = Parser.Parser.CleanSeriesTitle(movie.Title);
+            movie.SortTitle = Parser.Parser.NormalizeTitle(movie.Title);
             movie.Overview = resource.overview;
             movie.Website = resource.homepage;
             if (resource.release_date.IsNotNullOrWhiteSpace())
