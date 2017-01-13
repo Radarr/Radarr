@@ -18,14 +18,8 @@ module.exports = Backgrid.Cell.extend({
         this.$el.empty();
         if (this.model.get("movieFile")) {
           var profileId = this.model.get("movieFile").quality.quality.id;
-
-          var profile = _.findWhere(ProfileCollection.models, { id : profileId });
-
-          if (profile) {
-              this.$el.html(profile.get('name'));
-          } else {
             this.$el.html(this.model.get("movieFile").quality.quality.name);
-          }
+          
         }
 
 
