@@ -13,7 +13,6 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -30,7 +29,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, Logger logger)
         {
             _httpClient = httpClient;
-            _requestBuilder = requestBuilder.SkyHookTvdb;
+             _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
             _configService = configService;
             _movieService = movieService;
@@ -89,7 +88,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
             movie.Title = resource.title;
-            movie.TitleSlug = ToUrlSlug(movie.Title);
+            movie.TitleSlug = movie.Title.ToLower().Replace(" ", "-");
             movie.CleanTitle = Parser.Parser.CleanSeriesTitle(movie.Title);
             movie.SortTitle = Parser.Parser.NormalizeTitle(movie.Title);
             movie.Overview = resource.overview;
@@ -105,21 +104,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 _logger.Debug("Movie with this title slug already exists. Adding year...");
             }
-            //movie.TitleSlug += "-" + movie.Year.ToString();
             movie.TitleSlug += "-" + movie.Year.ToString();
 
             movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
             movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
             movie.Runtime = resource.runtime;
 
-            foreach (Title title in resource.alternative_titles.titles)
+            foreach(Title title in resource.alternative_titles.titles)
             {
                 movie.AlternativeTitles.Add(title.title);
             }
 
-            foreach (ReleaseDates releaseDates in resource.release_dates.results)
+            foreach(ReleaseDates releaseDates in resource.release_dates.results)
             {
-                foreach (ReleaseDate releaseDate in releaseDates.release_dates)
+                foreach(ReleaseDate releaseDate in releaseDates.release_dates)
                 {
                     if (releaseDate.type == 5 || releaseDate.type == 4)
                     {
@@ -142,7 +140,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Ratings.Votes = resource.vote_count;
             movie.Ratings.Value = (decimal)resource.vote_average;
 
-            foreach (Genre genre in resource.genres)
+            foreach(Genre genre in resource.genres)
             {
                 movie.Genres.Add(genre.name);
             }
@@ -178,11 +176,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private string StripTrailingTheFromTitle(string title)
         {
-            if (title.EndsWith(",the"))
+            if(title.EndsWith(",the"))
             {
                 title = title.Substring(0, title.Length - 4);
-            }
-            else if (title.EndsWith(", the"))
+            } else if(title.EndsWith(", the"))
             {
                 title = title.Substring(0, title.Length - 5);
             }
@@ -205,7 +202,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     yearTerm = parserResult.Year.ToString();
                 }
-
+                
                 if (parserResult.ImdbId.IsNotNullOrWhiteSpace())
                 {
                     return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
@@ -301,14 +298,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
-
+               
 
                 var httpRequest = _requestBuilder.Create()
                                                  .SetSegment("route", "search")
                                                  .AddQueryParam("term", title.ToLower().Trim())
                                                  .Build();
 
-
+                
 
                 var httpResponse = _httpClient.Get<List<ShowResource>>(httpRequest);
 
@@ -333,8 +330,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 imdbMovie.SortTitle = Parser.Parser.NormalizeTitle(result.title);
                 imdbMovie.Title = result.title;
-                string titleSlug = ToUrlSlug(result.title);
-                // imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
+                string titleSlug = result.title;
+                imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
 
                 if (result.release_date.IsNotNullOrWhiteSpace())
                 {
@@ -343,16 +340,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
 
 
-                //var slugResult = _movieService.FindByTitleSlug(titleSlug);
-                //if (slugResult != null)
-                //{
-                //    _logger.Debug("Movie with this title slug already exists. Adding year...");
-                //}
-                //imdbMovie.TitleSlug += "-" + imdbMovie.Year.ToString();
-
-                titleSlug += "-" + imdbMovie.Year.ToString(); ;
-
-                imdbMovie.TitleSlug = titleSlug;
+                var slugResult = _movieService.FindByTitleSlug(imdbMovie.TitleSlug);
+                if (slugResult != null)
+                {
+                    _logger.Debug("Movie with this title slug already exists. Adding year...");
+                }
+                imdbMovie.TitleSlug += "-" + imdbMovie.Year.ToString();
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
@@ -426,7 +419,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 series.Certification = show.ContentRating.ToUpper();
             }
-
+            
             series.Actors = show.Actors.Select(MapActors).ToList();
             series.Seasons = show.Seasons.Select(MapSeason).ToList();
             series.Images = show.Images.Select(MapImage).ToList();
@@ -531,31 +524,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 default:
                     return MediaCoverTypes.Unknown;
             }
-        }
-
-        public static string ToUrlSlug(string value)
-        {
-
-            //First to lower case
-            value = value.ToLowerInvariant();
-
-            //Remove all accents
-            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
-            value = Encoding.ASCII.GetString(bytes);
-
-            //Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
-
-            //Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
-
-            //Trim dashes from end
-            value = value.Trim('-', '_');
-
-            //Replace double occurences of - or _
-            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
-
-            return value;
         }
     }
 }
