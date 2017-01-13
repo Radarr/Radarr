@@ -112,12 +112,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         protected void GivenTvCategory()
         {
-            _settings.TvCategory = "sonarr";
+            _settings.MovieCategory = "radarr";
         }
 
         protected void GivenTvDirectory()
         {
-            _settings.TvDirectory = @"C:/Downloads/Finished/sonarr";
+            _settings.MovieDirectory = @"C:/Downloads/Finished/radarr";
         }
 
         protected void GivenFailedDownload()
