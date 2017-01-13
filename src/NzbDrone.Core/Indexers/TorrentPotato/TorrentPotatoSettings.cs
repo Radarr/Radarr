@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
         public TorrentPotatoSettings()
         {
-            BaseUrl = "";
+            BaseUrl = "http://127.0.0.1";
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to TorrentPotato api.")]
