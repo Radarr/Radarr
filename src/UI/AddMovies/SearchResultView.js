@@ -84,7 +84,7 @@ var view = Marionette.ItemView.extend({
             content   : content,
             html      : true,
             trigger   : 'hover',
-            title     : 'Episode Monitoring Options',
+            title     : 'Movie Monitoring Options',
             placement : 'right',
             container : this.$el
         });
