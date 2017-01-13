@@ -78,7 +78,10 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
                 .Accept(HttpAccept.Json);
 
             requestBuilder.AddQueryParam("passkey", Settings.Passkey);
-            requestBuilder.AddQueryParam("user", !string.IsNullOrWhiteSpace(Settings.User) ? Settings.User : "");
+            if (!string.IsNullOrWhiteSpace(Settings.User))
+            {
+                requestBuilder.AddQueryParam("user", Settings.User);
+            }
             requestBuilder.AddQueryParam("search", "the");
 
             yield return new IndexerRequest(requestBuilder.Build());
@@ -90,7 +93,11 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
                  .Accept(HttpAccept.Json);
 
             requestBuilder.AddQueryParam("passkey", Settings.Passkey);
-            requestBuilder.AddQueryParam("user", !string.IsNullOrWhiteSpace(Settings.User) ? Settings.User : "");
+
+            if (!string.IsNullOrWhiteSpace(Settings.User))
+            {
+                requestBuilder.AddQueryParam("user", Settings.User);
+            }
 
             if (searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
             {
