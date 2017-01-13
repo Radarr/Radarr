@@ -44,14 +44,14 @@ namespace NzbDrone.Core.Queue
 
         private IEnumerable<Queue> MapQueue(TrackedDownload trackedDownload)
         {
-            if (trackedDownload.RemoteEpisode.Episodes != null && trackedDownload.RemoteEpisode.Episodes.Any())
+            if (trackedDownload.RemoteEpisode != null && trackedDownload.RemoteEpisode.Episodes != null && trackedDownload.RemoteEpisode.Episodes.Any())
             {
                 foreach (var episode in trackedDownload.RemoteEpisode.Episodes)
                 {
                     yield return MapEpisode(trackedDownload, episode);
                 }
             }
-            else if (trackedDownload.RemoteMovie.Movie != null)
+            else if (trackedDownload.RemoteMovie != null && trackedDownload.RemoteMovie.Movie != null)
             {
                 yield return MapMovie(trackedDownload, trackedDownload.RemoteMovie.Movie);
             }
