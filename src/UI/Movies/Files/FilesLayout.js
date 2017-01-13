@@ -18,6 +18,7 @@ var AgeCell = require('../../Release/AgeCell');
 var ProtocolCell = require('../../Release/ProtocolCell');
 var PeersCell = require('../../Release/PeersCell');
 var EditionCell = require('../../Cells/EditionCell');
+var DeleteFileCell = require("./DeleteFileCell");
 
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Files/FilesLayoutTemplate',
@@ -59,6 +60,11 @@ module.exports = Marionette.Layout.extend({
             name  : 'quality',
             label : 'Quality',
             cell  : QualityCell,
+        },
+        {
+          name : "delete",
+          label : "",
+          cell : DeleteFileCell,
         }
     ],
 

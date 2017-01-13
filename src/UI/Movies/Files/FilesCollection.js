@@ -3,7 +3,7 @@ var FileModel = require('./FileModel');
 var AsSortedCollection = require('../../Mixins/AsSortedCollection');
 
 var Collection = PagableCollection.extend({
-    url   : window.NzbDrone.ApiRoot,
+    url   : window.NzbDrone.ApiRoot + "/moviefile",
     model : FileModel,
 
     state : {
