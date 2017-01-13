@@ -30,8 +30,8 @@ namespace NzbDrone.Api.Movie
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
         public MovieResource Movie { get; set; }
-
-       
+        public string Edition { get; set; }
+        public Core.MediaFiles.MediaInfo.MediaInfoModel MediaInfo { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
     }
@@ -63,7 +63,8 @@ namespace NzbDrone.Api.Movie
                 ReleaseGroup = model.ReleaseGroup,
                 Quality = model.Quality,
                 Movie = movie,
-                
+                MediaInfo = model.MediaInfo,
+                Edition = model.Edition
             };
         }
 

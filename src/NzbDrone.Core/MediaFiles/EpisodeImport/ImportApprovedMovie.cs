@@ -83,6 +83,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     episodeFile.MediaInfo = localMovie.MediaInfo;
                     episodeFile.Movie = localMovie.Movie;
                     episodeFile.ReleaseGroup = localMovie.ParsedMovieInfo.ReleaseGroup;
+                    episodeFile.Edition = localMovie.ParsedMovieInfo.Edition;
 
                     bool copyOnly;
                     switch (importMode)

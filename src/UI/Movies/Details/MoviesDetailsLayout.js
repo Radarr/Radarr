@@ -11,6 +11,7 @@ var LoadingView = require('../../Shared/LoadingView');
 var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEditorLayout');
 var HistoryLayout = require('../History/MovieHistoryLayout');
 var SearchLayout = require('../Search/MovieSearchLayout');
+var FilesLayout = require("../Files/FilesLayout");
 require('backstrech');
 require('../../Mixins/backbone.signalr.mixin');
 
@@ -22,7 +23,8 @@ module.exports = Marionette.Layout.extend({
         seasons : '#seasons',
         info    : '#info',
         search  : '#movie-search',
-        history : '#movie-history'
+        history : '#movie-history',
+        files : "#movie-files"
     },
 
 
@@ -36,7 +38,8 @@ module.exports = Marionette.Layout.extend({
         poster    : '.x-movie-poster',
         manualSearch : '.x-manual-search',
         history   : '.x-movie-history',
-        search    : '.x-movie-search'
+        search    : '.x-movie-search',
+        files : ".x-movie-files"
     },
 
     events : {
@@ -48,7 +51,8 @@ module.exports = Marionette.Layout.extend({
         'click .x-search'              : '_moviesSearch',
         'click .x-manual-search'       : '_showSearch',
         'click .x-movie-history'     : '_showHistory',
-        'click .x-movie-search'      : '_showSearch'
+        'click .x-movie-search'      : '_showSearch',
+        "click .x-movie-files" : "_showFiles",
     },
 
     initialize : function() {
@@ -71,6 +75,8 @@ module.exports = Marionette.Layout.extend({
     onShow : function() {
         this.searchLayout = new SearchLayout({ model : this.model });
         this.searchLayout.startManualSearch = true;
+
+        this.filesLayout = new FilesLayout({ model : this.model });
 
         this._showBackdrop();
         this._showSeasons();
@@ -142,6 +148,15 @@ module.exports = Marionette.Layout.extend({
 
         this.ui.search.tab('show');
         this.search.show(this.searchLayout);
+    },
+
+    _showFiles : function(e) {
+        if (e) {
+            e.preventDefault();
+        }
+
+        this.ui.files.tab('show');
+        this.files.show(this.filesLayout);
     },
 
     _toggleMonitored : function() {
