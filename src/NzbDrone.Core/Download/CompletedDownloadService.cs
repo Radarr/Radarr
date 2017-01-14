@@ -112,12 +112,26 @@ namespace NzbDrone.Core.Download
                             if (historyItem != null)
                             {
                                 movie = _movieService.GetMovie(historyItem.MovieId);
+                                if (movie.HasFile)
+                                {
+                                    movie.MovieFile.LazyLoad();
+                                    if (movie.MovieFile.Value != null)
+                                    {
+                                        _logger.Debug("File Title: {0}, download item title: {1}", Parser.Parser.CleanSeriesTitle(movie.MovieFile.Value.RelativePath), Parser.Parser.CleanSeriesTitle(trackedDownload.DownloadItem.Title));
+                                        if (Parser.Parser.CleanSeriesTitle(movie.MovieFile.Value.RelativePath).Contains(Parser.Parser.CleanSeriesTitle(trackedDownload.DownloadItem.Title)))
+                                        {
+                                            trackedDownload.Warn("Seems like the movie already has a file associated with this download item. Maybe the History failed?");
+                                            return;
+                                        }
+                                    }
+                                }
                             }
 
 
                             if (movie == null)
                             {
                                 trackedDownload.Warn("Movie title mismatch, automatic import is not possible.");
+                                return;
                             }
                         }
                         //trackedDownload.Warn("Series title mismatch, automatic import is not possible.");
