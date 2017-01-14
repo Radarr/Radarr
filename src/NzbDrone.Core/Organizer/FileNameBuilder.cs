@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Organizer
             AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
-            AddReleaseGroupTokens(tokenHandlers, movie, movieFile);
+            AddMovieFileTokens(tokenHandlers, movieFile);
 
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -504,6 +504,13 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Group}"] = m => episodeFile.ReleaseGroup ?? m.DefaultValue("Sonarr");
         }
 
+        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile episodeFile)
+        {
+            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(episodeFile);
+            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(episodeFile);
+            tokenHandlers["{Release Group}"] = m => episodeFile.ReleaseGroup ?? m.DefaultValue("Sonarr");
+        }
+
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Series series, EpisodeFile episodeFile)
         {
             var qualityTitle = _qualityDefinitionService.Get(episodeFile.Quality.Quality).Title;
@@ -526,13 +533,6 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Quality Title}"] = m => qualityTitle;
             tokenHandlers["{Quality Proper}"] = m => qualityProper;
             tokenHandlers["{Quality Real}"] = m => qualityReal;
-        }
-
-        private void AddReleaseGroupTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
-        {
-            var releaseGroup = movieFile.ReleaseGroup;
-
-            tokenHandlers["{Release Group}"] = m => releaseGroup;
         }
 
         private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, EpisodeFile episodeFile)
