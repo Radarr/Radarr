@@ -5,7 +5,7 @@
 | AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1) |
 | Travis   | [![Travis](https://img.shields.io/travis/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/galli-leo/Radarr) | [![Travis](https://img.shields.io/travis/galli-leo/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/galli-leo/Radarr) |
 
-This fork of Sonarr aims to turn it into something like Couchpotato.
+This fork of Sonarr aims to turn it into something like CouchPotato.
 
 ## Currently working:
 
@@ -27,11 +27,11 @@ This fork of Sonarr aims to turn it into something like Couchpotato.
 
 ## Download
 
-The latest precompiled binary versions can be found here: https://github.com/galli-leo/Radarr/releases.
+The latest precompiled binary versions can be found here: https://github.com/Radarr/Radarr/releases.
 
 To connect to the UI, fire up your browser and open localhost:7878 or your-ip:7878.
 
-Docker containers from [linuxserver.io](https://linuxserver.io) can be found here.
+Docker containers from [linuxserver.io](https://linuxserver.io) can be found here:
 * [Radarr (x64)](https://hub.docker.com/r/linuxserver/radarr/)
 * [Radarr (armhf)](https://hub.docker.com/r/lsioarmhf/radarr/)
 * [Radarr (aarch64)](https://hub.docker.com/r/lsioarmhf/radarr-aarch64/)
@@ -40,6 +40,9 @@ For more up to date versions (but also sometimes broken), daily builds can be fo
 * [OSX](https://leonardogalli.ch/radarr/builds/latest.php?os=osx)
 * [Windows](https://leonardogalli.ch/radarr/builds/latest.php?os=windows)
 * [Linux](https://leonardogalli.ch/radarr/builds/latest.php?os=mono)
+
+Continuous builds can be found on:
+* [AppVeyor](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
 
 ## Major Features Include:
 
