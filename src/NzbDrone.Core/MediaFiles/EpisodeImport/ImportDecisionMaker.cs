@@ -57,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie)
         {
-            return GetImportDecisions(videoFiles, movie, null, false);
+            return GetImportDecisions(videoFiles, movie, null, true);
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource)

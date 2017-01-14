@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles
         List<string> FilterExistingFiles(List<string> files, Series series);
         List<string> FilterExistingFiles(List<string> files, Movie movie);
         EpisodeFile Get(int id);
+        MovieFile GetMovie(int id);
         List<EpisodeFile> Get(IEnumerable<int> ids);
         List<MovieFile> GetMovies(IEnumerable<int> ids);
 
@@ -150,5 +151,9 @@ namespace NzbDrone.Core.MediaFiles
             _movieFileRepository.Update(episodeFile);
         }
 
+        public MovieFile GetMovie(int id)
+        {
+            return _movieFileRepository.Get(id);
+        }
     }
 }
