@@ -82,6 +82,11 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             {
                 requestBuilder.AddQueryParam("user", Settings.User);
             }
+            else
+            {
+                requestBuilder.AddQueryParam("user", "");
+            }
+
             requestBuilder.AddQueryParam("search", "the");
 
             yield return new IndexerRequest(requestBuilder.Build());
@@ -97,6 +102,10 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             if (!string.IsNullOrWhiteSpace(Settings.User))
             {
                 requestBuilder.AddQueryParam("user", Settings.User);
+            }
+            else
+            {
+                requestBuilder.AddQueryParam("user", "");
             }
 
             if (searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
