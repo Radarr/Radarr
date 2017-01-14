@@ -163,6 +163,7 @@ namespace NzbDrone.Core.Organizer
             AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
+            AddReleaseGroupTokens(tokenHandlers, movie, movieFile);
 
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -525,6 +526,13 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Quality Title}"] = m => qualityTitle;
             tokenHandlers["{Quality Proper}"] = m => qualityProper;
             tokenHandlers["{Quality Real}"] = m => qualityReal;
+        }
+
+        private void AddReleaseGroupTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
+        {
+            var releaseGroup = movieFile.ReleaseGroup;
+
+            tokenHandlers["{Release Group}"] = m => releaseGroup;
         }
 
         private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, EpisodeFile episodeFile)
