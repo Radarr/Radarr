@@ -183,6 +183,7 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
+    <Compile Include="Datastore\Migration\118_update_movie_slug.cs" />
     <Compile Include="Datastore\Migration\117_update_movie_file.cs" />
     <Compile Include="Datastore\Migration\116_update_movie_sorttitle_again.cs" />
     <Compile Include="Datastore\Migration\115_update_movie_sorttitle.cs" />
