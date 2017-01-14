@@ -27,22 +27,18 @@ This fork of Sonarr aims to turn it into something like CouchPotato.
 
 ## Download
 
-The latest precompiled binary versions can be found here: https://github.com/Radarr/Radarr/releases.
-
-To connect to the UI, fire up your browser and open localhost:7878 or your-ip:7878.
-
-Docker containers from [linuxserver.io](https://linuxserver.io) can be found here:
-* [Radarr (x64)](https://hub.docker.com/r/linuxserver/radarr/)
-* [Radarr (armhf)](https://hub.docker.com/r/lsioarmhf/radarr/)
-* [Radarr (aarch64)](https://hub.docker.com/r/lsioarmhf/radarr-aarch64/)
-
-For more up to date versions (but also sometimes broken), daily builds can be found here:
-* [OSX](https://leonardogalli.ch/radarr/builds/latest.php?os=osx)
-* [Windows](https://leonardogalli.ch/radarr/builds/latest.php?os=windows)
-* [Linux](https://leonardogalli.ch/radarr/builds/latest.php?os=mono)
+Release builds can be found on:
+* [GitHub](https://github.com/Radarr/Radarr/releases)
 
 Continuous builds can be found on:
 * [AppVeyor](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
+
+Docker containers from [linuxserver.io](http://tools.linuxserver.io/dockers) can be found here:
+* [x64](https://store.docker.com/community/images/linuxserver/radarr)
+* [armhf](https://store.docker.com/community/images/lsioarmhf/radarr)
+* [aarch64](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
+
+To connect to the UI, fire up your browser and open http://localhost:7878 or http://your-ip:7878.
 
 ## Major Features Include:
 
