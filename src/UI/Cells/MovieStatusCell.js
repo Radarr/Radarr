@@ -32,10 +32,10 @@ module.exports = NzbDroneCell.extend({
           this._setStatusWeight(1);
         }
 
-        else if (!monitored) {
-            this.$el.html('<i class="icon-sonarr-series-unmonitored grid-icon" title="Not Monitored"></i>');
-            this._setStatusWeight(0);
-        }
+        // else if (!monitored) {
+        //     this.$el.html('<i class="icon-sonarr-series-unmonitored grid-icon" title="Not Monitored"></i>');
+        //     this._setStatusWeight(0);
+        // }
         
         return this;
     },
