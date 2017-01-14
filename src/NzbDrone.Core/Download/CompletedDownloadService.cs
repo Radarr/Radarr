@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Download
                             if (historyItem != null)
                             {
                                 movie = _movieService.GetMovie(historyItem.MovieId);
-                                if (movie.HasFile)
+                                if (movie.MovieFile != null)
                                 {
                                     movie.MovieFile.LazyLoad();
                                     if (movie.MovieFile.Value != null)
