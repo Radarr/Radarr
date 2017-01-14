@@ -54,7 +54,7 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 
 ### Requirements
 
-* [Visual Studio Community](https://www.visualstudio.com/vs/community/) or [Mono](http://www.mono-project.com/)
+* [Visual Studio Community](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com)
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
 
