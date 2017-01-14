@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetRequest("tt2488496"));
+            pageableRequests.Add(GetRequest(null));
 
             return pageableRequests;
         }
@@ -54,8 +54,15 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
         private IEnumerable<IndexerRequest> GetRequest(string searchParameters)
         {
-            var request = new IndexerRequest(string.Format("{0}/searchapi.php?action=imdbsearch&passkey={1}&imdb={2}", Settings.BaseUrl.Trim().TrimEnd('/'), Settings.Passkey.Trim(), searchParameters), HttpAccept.Rss);
-            yield return request;
+            if (searchParameters != null)
+            {
+                yield return new IndexerRequest(string.Format("{0}/searchapi.php?action=imdbsearch&passkey={1}&imdb={2}", Settings.BaseUrl.Trim().TrimEnd('/'), Settings.Passkey.Trim(), searchParameters), HttpAccept.Rss);
+            }
+            else
+            {
+                yield return new IndexerRequest(string.Format("{0}/searchapi.php?action=latestmovies&passkey={1}", Settings.BaseUrl.Trim().TrimEnd('/'), Settings.Passkey.Trim()), HttpAccept.Rss);
+            }
+
         }
     }
 }
