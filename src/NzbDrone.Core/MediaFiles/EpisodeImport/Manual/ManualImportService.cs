@@ -161,7 +161,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
             }
 
             var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file },
-                movie, null, SceneSource(movie, folder));
+                movie, null, SceneSource(movie, folder), true);
 
             return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : null;
         }
