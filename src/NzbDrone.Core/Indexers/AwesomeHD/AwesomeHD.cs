@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
     {
         public override string Name => "AwesomeHD";
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
-        public override bool SupportsRss => false;
+        public override bool SupportsRss => true;
         public override bool SupportsSearch => true;
         public override int PageSize => 50;
 
