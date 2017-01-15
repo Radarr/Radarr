@@ -26,9 +26,9 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 
 ## Support
 
-<a href="https://discord.gg/AD3UP37"><img src="https://simpleicons.org/icons/discord.svg" height="48" width="48" alt="Discord" title="Come chat with us on Discord"></a>
-<a href="https://www.reddit.com/r/radarr"><img src="https://simpleicons.org/icons/reddit.svg" height="48" width="48" alt="Reddit" title="Ask your questions on Reddit"></a>
-<a href="https://github.com/Radarr/Radarr/issues"><img src="https://simpleicons.org/icons/github.svg" height="48" width="48" alt="GitHub" title="Place a bug report or feature request"></a>
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
+[![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
+[![GitHub](https://img.shields.io/badge/github-issues-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
 
 ## Features
 
