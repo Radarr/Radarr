@@ -265,7 +265,6 @@ namespace NzbDrone.Core.DecisionEngine
                 e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
                 _logger.Error(e, "Couldn't evaluate decision on " + remoteEpisode.Release.Title + ", with spec: " + spec.GetType().Name);
                 return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
-                return null;
             }
 
             return null;

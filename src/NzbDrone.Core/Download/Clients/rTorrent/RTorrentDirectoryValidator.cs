@@ -18,13 +18,13 @@ namespace NzbDrone.Core.Download.Clients.rTorrent
                                           DroneFactoryValidator droneFactoryValidator,
                                           MappedNetworkDriveValidator mappedNetworkDriveValidator)
         {
-            RuleFor(c => c.TvDirectory).Cascade(CascadeMode.StopOnFirstFailure)
+            RuleFor(c => c.MovieDirectory).Cascade(CascadeMode.StopOnFirstFailure)
                                        .IsValidPath()
                                        .SetValidator(rootFolderValidator)
                                        .SetValidator(droneFactoryValidator)
                                        .SetValidator(mappedNetworkDriveValidator)
                                        .SetValidator(pathExistsValidator)
-                                       .When(c => c.TvDirectory.IsNotNullOrWhiteSpace())
+                                       .When(c => c.MovieDirectory.IsNotNullOrWhiteSpace())
                                        .When(c => c.Host == "localhost" || c.Host == "127.0.0.1");
         }
     }

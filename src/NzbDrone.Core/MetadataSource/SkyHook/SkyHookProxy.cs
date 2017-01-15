@@ -13,6 +13,7 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -88,8 +89,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
             movie.Title = resource.title;
-            movie.TitleSlug = movie.Title.ToLower().Replace(" ", "-");
+            movie.TitleSlug = ToUrlSlug(movie.Title);
             movie.CleanTitle = Parser.Parser.CleanSeriesTitle(movie.Title);
+            movie.SortTitle = Parser.Parser.NormalizeTitle(movie.Title);
             movie.Overview = resource.overview;
             movie.Website = resource.homepage;
             if (resource.release_date.IsNotNullOrWhiteSpace())
@@ -98,11 +100,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Year = movie.InCinemas.Value.Year;
             }
 
-            var slugResult = _movieService.FindByTitleSlug(movie.TitleSlug);
-            if (slugResult != null)
-            {
-                _logger.Debug("Movie with this title slug already exists. Adding year...");
-            }
             movie.TitleSlug += "-" + movie.Year.ToString();
 
             movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
@@ -189,7 +186,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             var lowerTitle = title.ToLower();
 
-            var parserResult = Parser.Parser.ParseMovieTitle(title);
+            var parserResult = Parser.Parser.ParseMovieTitle(title, true);
 
             var yearTerm = "";
 
@@ -327,23 +324,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             imdbMovie.TmdbId = result.id;
             try
             {
-                imdbMovie.SortTitle = result.title;
+                imdbMovie.SortTitle = Parser.Parser.NormalizeTitle(result.title);
                 imdbMovie.Title = result.title;
-                string titleSlug = result.title;
+                string titleSlug = ToUrlSlug(result.title);
                 imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
 
                 if (result.release_date.IsNotNullOrWhiteSpace())
                 {
                     imdbMovie.Year = DateTime.Parse(result.release_date).Year;
                 }
-
-
-
-                var slugResult = _movieService.FindByTitleSlug(imdbMovie.TitleSlug);
-                if (slugResult != null)
-                {
-                    _logger.Debug("Movie with this title slug already exists. Adding year...");
-                }
+                //var slugResult = _movieService.FindByTitleSlug(imdbMovie.TitleSlug);
+                //if (slugResult != null)
+                //{
+                //    _logger.Debug("Movie with this title slug already exists. Adding year...");
+                //}
                 imdbMovie.TitleSlug += "-" + imdbMovie.Year.ToString();
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
@@ -523,6 +517,30 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 default:
                     return MediaCoverTypes.Unknown;
             }
+        }
+
+        public static string ToUrlSlug(string value)
+        {
+            //First to lower case
+            value = value.ToLowerInvariant();
+
+            //Remove all accents
+            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
+            value = Encoding.ASCII.GetString(bytes);
+
+            //Replace spaces
+            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
+
+            //Remove invalid chars
+            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
+
+            //Trim dashes from end
+            value = value.Trim('-', '_');
+
+            //Replace double occurences of - or _
+            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
+
+            return value;
         }
     }
 }

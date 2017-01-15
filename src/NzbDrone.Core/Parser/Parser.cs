@@ -18,16 +18,10 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\w+\.?edition))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\.?((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final|Extended|Rogue|Special|Despecialized).(Cut|Edition|Version)|Extended|Uncensored|Remastered|Unrated|Uncut|IMAX)))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}edition))",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-             //Cut Movies, e.g: Mission.Impossible.3.Directors.Cut.2011
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\w+\.?cut))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-             //Cut Movies, e.g: Mission.Impossible.3.2011.Directors.Cut
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((\w+\.?){1,3}cut))",
+             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final|Extended|Rogue|Special|Despecialized).(Cut|Edition|Version)|Extended|Uncensored|Remastered|Unrated|Uncut|IMAX))",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              
              //Normal movie format, e.g: Mission.Impossible.3.2011
@@ -36,6 +30,15 @@ namespace NzbDrone.Core.Parser
         //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
              new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
+             //That did not work? Maybe some tool uses [] for years. Who would do that?
+              new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        };
+
+        private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
+        {
+            //When year comes first.
+            new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
         };
 
         private static readonly Regex[] ReportTitleRegex = new[]
@@ -327,7 +330,7 @@ namespace NzbDrone.Core.Parser
         {
             var fileInfo = new FileInfo(path);
 
-            var result = ParseMovieTitle(fileInfo.Name);
+            var result = ParseMovieTitle(fileInfo.Name, true);
 
             if (result == null)
             {
@@ -345,7 +348,7 @@ namespace NzbDrone.Core.Parser
 
         }
 
-        public static ParsedMovieInfo ParseMovieTitle(string title)
+        public static ParsedMovieInfo ParseMovieTitle(string title, bool isDir = false)
         {
 
             ParsedMovieInfo realResult = null;
@@ -376,7 +379,14 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
 
-                foreach (var regex in ReportMovieTitleRegex)
+                var allRegexes = ReportMovieTitleRegex.ToList();
+
+                if (isDir)
+                {
+                    allRegexes.AddRange(ReportMovieTitleFolderRegex);
+                }
+
+                foreach (var regex in allRegexes)
                 {
                     var match = regex.Matches(simpleTitle);
 

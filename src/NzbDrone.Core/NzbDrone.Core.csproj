@@ -193,6 +193,10 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
+    <Compile Include="Datastore\Migration\118_update_movie_slug.cs" />
+    <Compile Include="Datastore\Migration\117_update_movie_file.cs" />
+    <Compile Include="Datastore\Migration\116_update_movie_sorttitle_again.cs" />
+    <Compile Include="Datastore\Migration\115_update_movie_sorttitle.cs" />
     <Compile Include="Datastore\Migration\111_remove_bitmetv.cs" />
     <Compile Include="Datastore\Migration\112_remove_torrentleech.cs" />
     <Compile Include="Datastore\Migration\114_remove_fanzub.cs" />
@@ -587,6 +591,7 @@
     <Compile Include="IndexerSearch\Definitions\MovieSearchCriteria.cs" />
     <Compile Include="IndexerSearch\MoviesSearchCommand.cs" />
     <Compile Include="IndexerSearch\MoviesSearchService.cs" />
+    <Compile Include="Indexers\AwesomeHD\AwesomeHDRssParser.cs" />
     <Compile Include="Indexers\DownloadProtocol.cs" />
     <Compile Include="Indexers\Exceptions\ApiKeyException.cs" />
     <Compile Include="Indexers\Exceptions\IndexerException.cs" />
@@ -594,6 +599,10 @@
     <Compile Include="Indexers\Exceptions\UnsupportedFeedException.cs" />
     <Compile Include="Indexers\EzrssTorrentRssParser.cs" />
     <Compile Include="Indexers\FetchAndParseRssService.cs" />
+    <Compile Include="Indexers\AwesomeHD\AwesomeHD.cs" />
+    <Compile Include="Indexers\AwesomeHD\AwesomeHDApi.cs" />
+    <Compile Include="Indexers\AwesomeHD\AwesomeHDRequestGenerator.cs" />
+    <Compile Include="Indexers\AwesomeHD\AwesomeHDSettings.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcorn.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornApi.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcornInfo.cs" />

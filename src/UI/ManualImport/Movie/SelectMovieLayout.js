@@ -21,7 +21,7 @@ module.exports = Marionette.Layout.extend({
             name      : 'title',
             label     : 'Title',
             cell      : 'String',
-            sortValue : 'sortTitle'
+            sortValue : 'title'
         }
     ],
 

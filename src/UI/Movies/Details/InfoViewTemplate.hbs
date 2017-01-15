@@ -15,12 +15,6 @@
 
         <span class="label label-info">{{Bytes sizeOnDisk}}</span>
 
-        {{#if_eq fileCount compare="1"}}
-            <span class="label label-info"> 1 file</span>
-        {{else}}
-            <span class="label label-info"> {{fileCount}} files</span>
-        {{/if_eq}}
-
         {{#if_eq status compare="released"}}
             <span class="label label-info">{{inCinemas}}</span>
         {{else}}

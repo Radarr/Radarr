@@ -101,16 +101,21 @@ App_Data/*.ldf
 _NCrunch_*
 _TeamCity*
 
-# Sonarr
-config.xml
-nzbdrone.log*txt
+# Radarr
+Backups/
+logs/
+MediaCover/
 UpdateLogs/
+xdg/
+config.xml
+logs.db*
+nzbdrone.db*
+nzbdrone.pid
 *workspace.xml
 *.test-cache
 *.userprefs
 */test-results/*
 src/UI/.idea/*
-*log.txt
 node_modules/
 _output*
 _rawPackage/
@@ -122,23 +127,26 @@ setup/Output/
 
 UI.Phantom/
 
-#VS outout folders
+# VS outout folders
 bin
 obj
 output/*
 
-#Packages
+# Packages
 Radarr_*/
 Radarr_*.zip
 Radarr_*.gz
 
-#OS X metadata files
+# macOS metadata files
 ._*
 .DS_Store
 
 _start
 _temp_*/**/*
 
-#AppVeyor
+# Windows thumbnail cache files
+Thumbs.db
+
+# AppVeyor
 /tools-cake/
 /_artifacts/

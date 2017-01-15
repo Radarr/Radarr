@@ -149,7 +149,11 @@ namespace NzbDrone.Core.RootFolders
             foreach (string unmappedFolder in unmappedFolders)
             {
                 var di = new DirectoryInfo(unmappedFolder.Normalize());
-                results.Add(new UnmappedFolder { Name = di.Name, Path = di.FullName });
+                if (!di.Attributes.HasFlag(FileAttributes.System) && !di.Attributes.HasFlag(FileAttributes.Hidden))
+                {
+                    results.Add(new UnmappedFolder { Name = di.Name, Path = di.FullName });
+                }
+
             }
 
             var setToRemove = SpecialFolders;

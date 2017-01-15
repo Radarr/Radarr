@@ -178,7 +178,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileTableCleanupService.Clean(movie, mediaFileList);
 
             var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie);
+            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie, true);
             decisionsStopwatch.Stop();
             _logger.Trace("Import decisions complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
 

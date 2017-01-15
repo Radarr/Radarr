@@ -68,6 +68,38 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return hash;
         }
 
+        protected override string AddFromMagnetLink(RemoteMovie remoteEpisode, string hash, string magnetLink)
+        {
+            _proxy.AddTorrentFromUrl(magnetLink, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+
+            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+
+            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }*/
+
+            return hash;
+        }
+
+        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, byte[] fileContent)
+        {
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+
+            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+
+            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }*/
+
+            return hash;
+        }
+
         public override string Name => "uTorrent";
 
         public override IEnumerable<DownloadClientItem> GetItems()

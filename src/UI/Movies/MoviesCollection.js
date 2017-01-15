@@ -15,10 +15,10 @@ var Collection = PageableCollection.extend({
     tableName : 'movie',
 
     state : {
-        sortKey            : 'title',
+        sortKey            : 'sortTitle',
         order              : 1,
         pageSize           : 100000,
-        secondarySortKey   : 'title',
+        secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
     },
 
@@ -65,17 +65,35 @@ var Collection = PageableCollection.extend({
             true
         ],
         'missing'  : [
-            null,
-            null,
-            function(model) { return model.get('episodeCount') !== model.get('episodeFileCount'); }
+            'downloaded',
+            false
         ]
     },
 
     sortMappings : {
         title : {
-            sortKey : 'title'
+            sortKey : 'sortTitle'
         },
+        statusWeight : {
+          sortValue : function(model, attr) {
+            if (model.getStatus() == "released") {
+              return 1;
+            }
+            if (model.getStatus() == "inCinemas") {
+              return 0;
+            }
+            return -1;
+          }
+        },
+        downloadedQuality : {
+          sortValue : function(model, attr) {
+            if (model.get("movieFile")) {
+              return 1000-model.get("movieFile").quality.quality.id;
+            }
 
+            return -1;
+          }
+        },
         nextAiring : {
             sortValue : function(model, attr, order) {
                 var nextAiring = model.get(attr);
@@ -91,7 +109,15 @@ var Collection = PageableCollection.extend({
                 return Number.MAX_VALUE;
             }
         },
-
+        status: {
+          sortValue : function(model, attr) {
+            debugger;
+            if (model.get("downloaded")) {
+              return -1;
+            }
+            return 0;
+          }
+        },
         percentOfEpisodes : {
             sortValue : function(model, attr) {
                 var percentOfEpisodes = model.get(attr);
@@ -100,7 +126,18 @@ var Collection = PageableCollection.extend({
                 return percentOfEpisodes + episodeCount / 1000000;
             }
         },
+        inCinemas : {
 
+          sortValue : function(model, attr) {
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+            if (model.get("inCinemas")) {
+              return model.get("inCinemas");
+            }
+            return "2100-01-01";
+          }
+        },
         path : {
             sortValue : function(model) {
                 var path = model.get('path');

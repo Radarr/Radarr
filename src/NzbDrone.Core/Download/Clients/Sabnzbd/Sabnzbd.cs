@@ -30,13 +30,13 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         }
 
         // patch can be a number (releases) or 'x' (git)
-        private static readonly Regex VersionRegex = new Regex(@"(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+|x)(?<candidate>.*)", RegexOptions.Compiled);
+        private static readonly Regex VersionRegex = new Regex(@"(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+|x)", RegexOptions.Compiled);
 
         protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
             var category = Settings.TvCategory;
             var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
-            
+
             var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
 
             if (response != null && response.Ids.Any())
@@ -284,110 +284,103 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             failures.AddIfNotNull(TestCategory());
         }
 
-        private bool HasVersion(int major, int minor, int patch = 0, string candidate = null)
+        private bool HasVersion(int major, int minor, int patch = 0)
         {
-            candidate = candidate ?? string.Empty;
+            var rawVersion = _proxy.GetVersion(Settings);
+            var version = ParseVersion(rawVersion);
 
-            var version = _proxy.GetVersion(Settings);
+            if (version == null)
+            {
+                return false;
+            }
+
+            if (version.Major > major)
+            {
+                return true;
+            }
+            else if (version.Major < major)
+            {
+                return false;
+            }
+
+            if (version.Minor > minor)
+            {
+                return true;
+            }
+            else if (version.Minor < minor)
+            {
+                return false;
+            }
+
+            if (version.Build > patch)
+            {
+                return true;
+            }
+            else if (version.Build < patch)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private Version ParseVersion(string version)
+        {
             var parsed = VersionRegex.Match(version);
 
-            int actualMajor;
-            int actualMinor;
-            int actualPatch;
-            string actualCandidate;
+            int major;
+            int minor;
+            int patch;
 
-            if (!parsed.Success)
+            if (parsed.Success)
+            {
+                major = Convert.ToInt32(parsed.Groups["major"].Value);
+                minor = Convert.ToInt32(parsed.Groups["minor"].Value);
+                patch = Convert.ToInt32(parsed.Groups["patch"].Value.Replace("x", "0"));
+            }
+
+            else
             {
                 if (!version.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return false;
+                    return null;
                 }
 
-                actualMajor = 1;
-                actualMinor = 1;
-                actualPatch = 0;
-                actualCandidate = null;
+                major = 1;
+                minor = 1;
+                patch = 0;
             }
 
-            else
-            {
-                actualMajor = Convert.ToInt32(parsed.Groups["major"].Value);
-                actualMinor = Convert.ToInt32(parsed.Groups["minor"].Value);
-                actualPatch = Convert.ToInt32(parsed.Groups["patch"].Value.Replace("x", ""));
-                actualCandidate = parsed.Groups["candidate"].Value.ToUpper();
-            }
-
-            if (actualMajor > major)
-            {
-                return true;
-            }
-            else if (actualMajor < major)
-            {
-                return false;
-            }
-
-            if (actualMinor > minor)
-            {
-                return true;
-            }
-            else if (actualMinor < minor)
-            {
-                return false;
-            }
-
-            if (actualPatch > patch)
-            {
-                return true;
-            }
-            else if (actualPatch < patch)
-            {
-                return false;
-            }
-
-            if (actualCandidate.IsNullOrWhiteSpace())
-            {
-                return true;
-            }
-            else if (candidate.IsNullOrWhiteSpace())
-            {
-                return false;
-            }
-            else
-            {
-                return actualCandidate.CompareTo(candidate) > 0;
-            }
+            return new Version(major, minor, patch);
         }
 
         private ValidationFailure TestConnectionAndVersion()
         {
             try
             {
-                var version = _proxy.GetVersion(Settings);
-                var parsed = VersionRegex.Match(version);
+                var rawVersion = _proxy.GetVersion(Settings);
+                var version = ParseVersion(rawVersion);
 
-                if (!parsed.Success)
+                if (version == null)
                 {
-                    if (version.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        return new NzbDroneValidationFailure("Version", "Sabnzbd develop version, assuming version 1.1.0 or higher.")
-                        {
-                            IsWarning = true,
-                            DetailedDescription = "Sonarr may not be able to support new features added to SABnzbd when running develop versions."
-                        };
-                    }
-
                     return new ValidationFailure("Version", "Unknown Version: " + version);
                 }
 
-                var major = Convert.ToInt32(parsed.Groups["major"].Value);
-                var minor = Convert.ToInt32(parsed.Groups["minor"].Value);
+                if (rawVersion.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return new NzbDroneValidationFailure("Version", "Sabnzbd develop version, assuming version 1.1.0 or higher.")
+                    {
+                        IsWarning = true,
+                        DetailedDescription = "Radarr may not be able to support new features added to SABnzbd when running develop versions."
+                    };
+                }
 
-                if (major >= 1)
+                if (version.Major >= 1)
                 {
                     return null;
                 }
 
-                if (minor >= 7)
+                if (version.Minor >= 7)
                 {
                     return null;
                 }
@@ -431,7 +424,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("", "Disable 'Check before download' option in Sabnbzd")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/switches/", Settings.Host, Settings.Port),
-                    DetailedDescription = "Using Check before download affects Sonarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
+                    DetailedDescription = "Using Check before download affects Radarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
                 };
             }
 
@@ -450,7 +443,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Enable Job folders")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
-                        DetailedDescription = "Sonarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
+                        DetailedDescription = "Radarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -475,7 +468,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Disable TV Sorting")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                        DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Sonarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                        DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -489,7 +482,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Disable Movie Sorting")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                        DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Sonarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                        DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
                     };
                 }
             }
@@ -503,7 +496,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("TvCategory", "Disable Date Sorting")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                        DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Sonarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                        DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
                     };
                 }
             }
