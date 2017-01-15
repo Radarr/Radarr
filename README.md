@@ -18,9 +18,9 @@ This fork of Sonarr aims to turn it into something like CouchPotato.
 
 [![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
 
-[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
-[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
-[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
+[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
+[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
+[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
 
