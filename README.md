@@ -1,24 +1,27 @@
 ## Status
 
-[![GitHub issues](https://img.shields.io/github/issues/radarr/radarr.svg?style=flat-square)](https://github.com/Radarr/Radarr/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/radarr/radarr.svg?style=flat-square)](https://github.com/Radarr/Radarr/pulls)
-[![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?style=flat-square)](http://www.gnu.org/licenses/gpl.html)
-[![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?style=flat-square)](https://github.com/Radarr/Radarr)
+[![GitHub issues](https://img.shields.io/github/issues/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/pulls)
+[![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?maxAge=60&style=flat-square)](http://www.gnu.org/licenses/gpl.html)
+[![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
 
-[![AppVeyor Build](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1.svg?label=appveyor&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
-[![Travis](https://img.shields.io/travis/Radarr/Radarr.svg?label=travis&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
+[![AppVeyor master](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&label=appveyor-master&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
+[![AppVeyor develop](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&label=appveyor-develop&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
+
+[![Travis master](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&label=travis-master&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
+[![Travis develop](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&label=travis-develop&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
 
 This fork of Sonarr aims to turn it into something like CouchPotato.
 
 ## Downloads
 
-[![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?style=flat-square)](https://github.com/Radarr/Radarr/releases)
+[![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)
 
-[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
+[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
 
-[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
-[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
-[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
+[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
+[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
+[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
 
