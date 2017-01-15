@@ -27,6 +27,7 @@ module.exports = Marionette.Layout.extend({
 
     initialize : function(options) {
         console.log(options);
+        
         this.isExisting = options.isExisting;
         this.collection = new AddMoviesCollection();
 

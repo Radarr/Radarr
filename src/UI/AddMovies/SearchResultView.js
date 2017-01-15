@@ -43,7 +43,7 @@ var view = Marionette.ItemView.extend({
             throw 'model is required';
         }
 
-        console.log(this.route);
+        //console.log(this.route);
 
         this.templateHelpers = {};
         this._configureTemplateHelpers();
@@ -92,14 +92,12 @@ var view = Marionette.ItemView.extend({
 
     _configureTemplateHelpers : function() {
         var existingMovies = MoviesCollection.where({ tmdbId : this.model.get('tmdbId') });
-        console.log(existingMovies);
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();
         }
 
         this.templateHelpers.profiles = Profiles.toJSON();
-        console.log(this.model);
-        console.log(this.templateHelpers.existing);
+        //console.log(this.templateHelpers.isExisting);
         if (!this.model.get('isExisting')) {
             this.templateHelpers.rootFolders = RootFolders.toJSON();
         }
@@ -185,8 +183,8 @@ var view = Marionette.ItemView.extend({
         var self = this;
         var promise = this.model.save();
 
-        console.log(this.model.save);
-        console.log(promise);
+        //console.log(this.model.save);
+        //console.log(promise);
 
         if (searchForMovie) {
             this.ui.addSearchButton.spinForPromise(promise);
