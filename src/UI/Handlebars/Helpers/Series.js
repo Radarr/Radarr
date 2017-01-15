@@ -51,6 +51,10 @@ Handlebars.registerHelper('tmdbUrl', function() {
     return 'https://www.themoviedb.org/movie/' + this.tmdbId;
 });
 
+Handlebars.registerHelper('youTubeTrailerUrl', function() {
+    return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
+});
+
 Handlebars.registerHelper('homepage', function() {
     return this.website;
 });
