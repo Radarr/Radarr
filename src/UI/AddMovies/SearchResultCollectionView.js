@@ -1,5 +1,6 @@
 var Marionette = require('marionette');
 var SearchResultView = require('./SearchResultView');
+var MoviesCollection = require('../Movies/MoviesCollection');
 var vent = require('vent');
 
 module.exports = Marionette.CollectionView.extend({
@@ -43,13 +44,15 @@ module.exports = Marionette.CollectionView.extend({
     },
 
     appendHtml : function(collectionView, itemView, index) {
-        if(this.isExisting) {
+        var tmdbId = itemView.model.get('tmdbId');
+        var existingMovies = MoviesCollection.where({ tmdbId: tmdbId });
+        if(existingMovies.length > 0) {
             if(this.showExisting) {
                 if (index < this.showing || index === 0) {
                     collectionView.$el.append(itemView.el);
                 }
             }
-        } else if(!this.isExisting) {
+        } else {
             if (index < this.showing || index === 0) {
                 collectionView.$el.append(itemView.el);
             }
