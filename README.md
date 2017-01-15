@@ -5,7 +5,7 @@
 [![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?maxAge=60&style=flat-square)](http://www.gnu.org/licenses/gpl.html)
 [![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
 
-[![AppVeyor master](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&label=appveyor-master&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
+[![AppVeyor master](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&label=appveyor-master&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr)
 [![AppVeyor develop](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&label=appveyor-develop&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
 
 [![Travis master](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&label=travis-master&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
