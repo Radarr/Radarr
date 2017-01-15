@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (SupportsMovieSearch)
+            if (false)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie",
                         string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2)))); //strip off the "tt" - VERY HACKY
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 //Let's try anyways with q parameter, worst case nothing found.
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search",
-                        string.Format("&q={0}", searchCriteria.Movie.Title)));
+                        string.Format("&q={0}", Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title))));
             }
 
             return pageableRequests;
