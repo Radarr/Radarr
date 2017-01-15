@@ -48,6 +48,7 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<MovieFile> MovieFile { get; set; }
         public int MovieFileId { get; set; }
         public List<string> AlternativeTitles { get; set; }
+        public string YouTubeTrailerId{ get; set; }
 
         public bool HasFile => MovieFileId > 0;
 

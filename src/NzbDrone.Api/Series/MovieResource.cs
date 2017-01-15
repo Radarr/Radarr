@@ -34,6 +34,7 @@ namespace NzbDrone.Api.Movie
         public string RemotePoster { get; set; }
         public int Year { get; set; }
         public bool HasFile { get; set; }
+        public string YouTubeTrailerId { get; set; }
 
         //View & Edit
         public string Path { get; set; }
@@ -144,7 +145,8 @@ namespace NzbDrone.Api.Movie
                 AddOptions = model.AddOptions,
                 AlternativeTitles = model.AlternativeTitles,
                 Ratings = model.Ratings,
-                MovieFile = movieFile
+                MovieFile = movieFile,
+                YouTubeTrailerId = model.YouTubeTrailerId
             };
         }
 
@@ -191,7 +193,8 @@ namespace NzbDrone.Api.Movie
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
                 AlternativeTitles = resource.AlternativeTitles,
-                Ratings = resource.Ratings
+                Ratings = resource.Ratings,
+                YouTubeTrailerId = resource.YouTubeTrailerId
             };
         }
 
