@@ -2,9 +2,11 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/radarr/radarr.svg?style=flat-square)](https://github.com/Radarr/Radarr/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/radarr/radarr.svg?style=flat-square)](https://github.com/Radarr/Radarr/pulls)
-[![AppVeyor Build](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1.svg?label=build-appveyor&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
-[![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl.html)
-[![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg)](https://github.com/Radarr/Radarr)
+[![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?style=flat-square)](http://www.gnu.org/licenses/gpl.html)
+[![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?style=flat-square)](https://github.com/Radarr/Radarr)
+
+[![AppVeyor Build](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1.svg?label=appveyor&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
+[![Travis](https://img.shields.io/travis/Radarr/Radarr.svg?label=travis&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
 
 This fork of Sonarr aims to turn it into something like CouchPotato.
 
