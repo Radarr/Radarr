@@ -40,11 +40,13 @@ namespace NzbDrone.Core.NetImport.IMDbWatchList
 
             foreach (var result in responseData)
             {
+                var title = Parser.Parser.ParseMovieTitle(result.Title, false);
+
                 torrentInfos.Add(new Movie()
                 {
-                    Title = Parser.Parser.ParseMovieTitle(result.Title, false).MovieTitle,
-                    Year = Parser.Parser.ParseMovieTitle(result.Title, false).Year,
-                    ImdbId = Parser.Parser.ParseImdbId(result.Link).ToString()
+                    Title = title.MovieTitle,
+                    Year = title.Year,
+                    ImdbId = Parser.Parser.ParseImdbId(result.Link)
                 });
             }
 

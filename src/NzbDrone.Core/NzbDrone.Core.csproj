@@ -122,6 +122,7 @@
     <Compile Include="Authentication\User.cs" />
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
+    <Compile Include="Datastore\Migration\119_create_netimport_table.cs" />
     <Compile Include="NetImport\Exceptions\NetImportException.cs" />
     <Compile Include="NetImport\HttpNetImportBase.cs" />
     <Compile Include="NetImport\IProcessNetImportResponse.cs" />
