@@ -1,12 +1,14 @@
 language: csharp
 solution: src/NzbDrone.sln
-script:    # the following commands are just examples, use whatever your build process requires
+addons:
+  apt:
+    packages:
+      - nodejs
+      - npm
+script:
   - ./build.sh
   - chmod +x test.sh
 #  - ./test.sh Linux Unit Takes far too long, maybe even crashes travis :/
-install:
-  - sudo apt-get install nodejs
-  - sudo apt-get install npm
 after_success:
   - chmod +x package.sh
   - ./package.sh
