@@ -24,6 +24,12 @@ This fork of Sonarr aims to turn it into something like CouchPotato.
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
 
+## Support
+
+<a href="https://discord.gg/AD3UP37"><img src="https://simpleicons.org/icons/discord.svg" height="48" width="48" alt="Discord" title="Come chat with us on Discord"></a>
+<a href="https://www.reddit.com/r/radarr"><img src="https://simpleicons.org/icons/reddit.svg" height="48" width="48" alt="Reddit" title="Ask your questions on Reddit"></a>
+<a href="https://github.com/Radarr/Radarr/issues"><img src="https://simpleicons.org/icons/github.svg" height="48" width="48" alt="GitHub" title="Place a bug report or feature request"></a>
+
 ## Features
 
 ### Currently Working
@@ -70,7 +76,8 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 * Install the required Node Packages `npm install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
 
-*Please note: gulp must be running at all times while you are working with Radarr client source files.*
+> **Notice**  
+> Gulp must be running at all times while you are working with Radarr client source files.
 
 ### Development
 
