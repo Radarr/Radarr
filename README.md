@@ -18,11 +18,17 @@ This fork of Sonarr aims to turn it into something like CouchPotato.
 
 [![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
 
-[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
-[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
-[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
+[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
+[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
+[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
+
+## Support
+
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
+[![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
+[![GitHub](https://img.shields.io/badge/github-issues-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
 
 ## Features
 
@@ -70,7 +76,8 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 * Install the required Node Packages `npm install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
 
-*Please note: gulp must be running at all times while you are working with Radarr client source files.*
+> **Notice**  
+> Gulp must be running at all times while you are working with Radarr client source files.
 
 ### Development
 
