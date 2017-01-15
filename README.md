@@ -1,28 +1,33 @@
-# Radarr
+## Status
 
-| Service  | Master                      | Develop                      |
-|----------|:---------------------------:|:----------------------------:|
-| AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1) |
-| Travis   | [![Travis](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) | [![Travis](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) |
+[![GitHub issues](https://img.shields.io/github/issues/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/pulls)
+[![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?maxAge=60&style=flat-square)](http://www.gnu.org/licenses/gpl.html)
+[![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
+
+[![AppVeyor master](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&label=appveyor-master&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr)
+[![AppVeyor develop](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&label=appveyor-develop&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1)
+
+[![Travis master](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&label=travis-master&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
+[![Travis develop](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&label=travis-develop&style=flat-square)](https://travis-ci.org/Radarr/Radarr)
 
 This fork of Sonarr aims to turn it into something like CouchPotato.
 
-## Download
+## Downloads
 
-Release builds can be found on:
-* [GitHub](https://github.com/Radarr/Radarr/releases)
+[![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)
 
-Continuous builds can be found on:
-* [AppVeyor](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
+[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
 
-Docker containers from [linuxserver.io](http://tools.linuxserver.io/dockers) can be found here:
-* [x64](https://store.docker.com/community/images/linuxserver/radarr)
-* [armhf](https://store.docker.com/community/images/lsioarmhf/radarr)
-* [aarch64](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
+[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
+[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
+[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
 
-## Currently Working
+## Features
+
+### Currently Working
 
 * Adding new movies
 * Manually searching for releases of movies
@@ -34,13 +39,13 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 * QBittorrent and Deluge download client (Other clients are coming)
 * New TorrentPotato Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
 
-## Planned Features
+### Planned Features
 
 * Scanning PreDB to know when a new release is available
 * Fixing the other Indexers and download clients
 * Importing of Sonarr config
 
-## Major Features
+### Major Features
 
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
 * Can watch for better quality of the movies you have and do an automatic upgrade. *eg. from DVD to Blu-Ray*
@@ -73,12 +78,7 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 * Open `NzbDrone.sln` in Visual Studio or run the build.sh script, if Mono is installed
 * Make sure `NzbDrone.Console` is set as the startup project
 
-### License
-
-* [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2016
-
-### Sponsors
+## Sponsors
 
 [JetBrains](http://www.jetbrains.com) for providing us with free licenses to their great tools:
 * [ReSharper](http://www.jetbrains.com/resharper)
