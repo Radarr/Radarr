@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitle(string cleanTitle, int year);
         Movie FindByImdbId(string imdbid);
         Movie FindByTitleSlug(string slug);
+        List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         List<Movie> GetMoviesByFileId(int fileId);
         void SetFileId(int fileId, int movieId);
     }
@@ -118,6 +119,18 @@ namespace NzbDrone.Core.Tv
         public Movie FindByTitleSlug(string slug)
         {
             return Query.Where(m => m.TitleSlug == slug).FirstOrDefault();
+        }
+
+        public List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
+        {
+            var query = Query.Where(m => m.InCinemas >= start && m.InCinemas <= end).OrWhere(m => m.PhysicalRelease >= start && m.PhysicalRelease <= end);
+
+            if (!includeUnmonitored)
+            {
+                query.AndWhere(e => e.Monitored);
+            }
+
+            return query.ToList();
         }
     }
 }

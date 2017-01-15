@@ -98,10 +98,6 @@ module.exports = Marionette.ItemView.extend({
         else if (event.model.get('unverifiedSceneNumbering')) {
             this._addStatusIcon(element, 'icon-sonarr-form-warning', 'Scene number hasn\'t been verified yet.');
         }
-
-        else if (event.model.get('series').seriesType === 'anime' && event.model.get('seasonNumber') > 0 && !event.model.has('absoluteEpisodeNumber')) {
-            this._addStatusIcon(element, 'icon-sonarr-form-warning', 'Episode does not have an absolute episode number');
-        }
     },
 
     _eventAfterAllRender :  function () {
@@ -135,11 +131,11 @@ module.exports = Marionette.ItemView.extend({
                 end         : end,
                 unmonitored : this.showUnmonitored
             },
-            success : this._setEventData.bind(this)
+            success : this._setEventData.bind(this, new Date(start), new Date(end))
         });
     },
 
-    _setEventData : function(collection) {
+    _setEventData : function(startD, endD, collection) {
         if (collection.length === 0) {
             return;
         }
@@ -148,9 +144,13 @@ module.exports = Marionette.ItemView.extend({
         var self = this;
 
         collection.each(function(model) {
-            var seriesTitle = model.get('series').title;
-            var start = model.get('airDateUtc');
-            var runtime = model.get('series').runtime;
+            var seriesTitle = model.get('title');
+            var start = model.get('inCinemas');
+            var startDate = new Date(start);
+            if (!(startD <= startDate && startDate <= endD)) {
+              start = model.get("physicalRelease");
+            }
+            var runtime = model.get('runtime');
             var end = moment(start).add('minutes', runtime).toISOString();
 
             var event = {
@@ -159,9 +159,9 @@ module.exports = Marionette.ItemView.extend({
                 end         : moment(end),
                 allDay      : false,
                 statusLevel : self._getStatusLevel(model, end),
-                downloading : QueueCollection.findEpisode(model.get('id')),
+                downloading : QueueCollection.findMovie(model.get('id')),
                 model       : model,
-                sortOrder   : (model.get('seasonNumber') === 0 ? 1000000 : model.get('seasonNumber') * 10000) + model.get('episodeNumber')
+                sortOrder   : 0
             };
 
             events.push(event);
@@ -172,11 +172,12 @@ module.exports = Marionette.ItemView.extend({
 
     _getStatusLevel : function(element, endTime) {
         var hasFile = element.get('hasFile');
-        var downloading = QueueCollection.findEpisode(element.get('id')) || element.get('grabbed');
+        var downloading = QueueCollection.findMovie(element.get('id')) || element.get('grabbed');
         var currentTime = moment();
-        var start = moment(element.get('airDateUtc'));
+        var start = moment(element.get('inCinemas'));
+        var status = element.getStatus();
         var end = moment(endTime);
-        var monitored = element.get('series').monitored && element.get('monitored');
+        var monitored = element.get('monitored');
 
         var statusLevel = 'primary';
 
@@ -192,16 +193,16 @@ module.exports = Marionette.ItemView.extend({
             statusLevel = 'unmonitored';
         }
 
-        else if (currentTime.isAfter(start) && currentTime.isBefore(end)) {
-            statusLevel = 'warning';
+        else if (status == "inCinemas") {
+            statusLevel = 'premiere';
         }
 
-        else if (start.isBefore(currentTime) && !hasFile) {
+        else if (status == "released") {
             statusLevel = 'danger';
         }
 
-        else if (element.get('episodeNumber') === 1) {
-            statusLevel = 'premiere';
+        else if (status == "announced") {
+            statusLevel = 'primary';
         }
 
         if (end.isBefore(currentTime.startOf('day'))) {
@@ -213,7 +214,10 @@ module.exports = Marionette.ItemView.extend({
 
     _reloadCalendarEvents : function() {
         this.$el.fullCalendar('removeEvents');
-        this._setEventData(this.collection);
+        var view = this.$el.fullCalendar('getView');
+        var start = moment(view.start.toISOString()).toISOString();
+        var end = moment(view.end.toISOString()).toISOString();
+        this._setEventData(new Date(start), new Date(end), this.collection);
     },
 
     _getOptions    : function() {
