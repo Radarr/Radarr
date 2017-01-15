@@ -3,13 +3,13 @@ using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
-namespace NzbDrone.Core.AutoImport.IMDbWatchList
+namespace NzbDrone.Core.NetImport.IMDbWatchList
 {
     public class IMDbWatchListSettingsValidator : AbstractValidator<IMDbWatchListSettings>
     {
         public IMDbWatchListSettingsValidator()
         {
-            RuleFor(c => c.IMDbWatchListId).NotEmpty();
+            RuleFor(c => c.Link).NotEmpty();
         }
     }
 
@@ -17,10 +17,15 @@ namespace NzbDrone.Core.AutoImport.IMDbWatchList
     {
         private static readonly IMDbWatchListSettingsValidator Validator = new IMDbWatchListSettingsValidator();
 
-        [FieldDefinition(0, Label = "Watch List Id", HelpLink = "http://rss.imdb.com/list/")]
-        public string IMDbWatchListId { get; set; }
+        public IMDbWatchListSettings()
+        {
+            Link = "http://rss.imdb.com/list/";
+        }
 
-        public bool IsValid => !string.IsNullOrWhiteSpace(IMDbWatchListId);
+        [FieldDefinition(0, Label = "Watch List RSS link", HelpLink = "http://rss.imdb.com/list/")]
+        public string Link { get; set; }
+
+        public bool IsValid => !string.IsNullOrWhiteSpace(Link);
 
         public NzbDroneValidationResult Validate()
         {

@@ -1,8 +1,8 @@
 ﻿using NzbDrone.Core.ThingiProvider;
 
-namespace NzbDrone.Core.AutoImporter
+namespace NzbDrone.Core.NetImport
 {
-    public class AutoImporterDefinition : ProviderDefinition
+    public class NetImportDefinition : ProviderDefinition
     {
         public bool Enabled { get; set; }
         public string Link { get; set; }

@@ -11,9 +11,9 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Tv;
 
-namespace NzbDrone.Core.AutoImporter
+namespace NzbDrone.Core.NetImport
 {
-    public abstract class AutoImporterBase<TSettings> : IAutoImporter
+    public abstract class NetImportBase<TSettings> : INetImport
         where TSettings : IProviderConfig, new()
     {
         protected readonly IConfigService _configService;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.AutoImporter
 
         public abstract bool Enabled { get; }
 
-        public AutoImporterBase(IConfigService configService, IParsingService parsingService, Logger logger)
+        public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {
             _configService = configService;
             _parsingService = parsingService;
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.AutoImporter
             {
                 var config = (IProviderConfig)new TSettings();
 
-                yield return new AutoImporterDefinition
+                yield return new NetImportDefinition
                 {
                     Name = GetType().Name,
                     Link = Link,

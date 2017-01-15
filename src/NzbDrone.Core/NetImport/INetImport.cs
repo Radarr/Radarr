@@ -4,9 +4,9 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Tv;
 
-namespace NzbDrone.Core.AutoImporter
+namespace NzbDrone.Core.NetImport
 {
-    public interface IAutoImporter : IProvider
+    public interface INetImport : IProvider
     {
         string Link { get; }
         bool Enabled { get; }

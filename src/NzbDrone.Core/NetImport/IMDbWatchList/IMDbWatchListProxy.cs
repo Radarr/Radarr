@@ -8,7 +8,7 @@ using NzbDrone.Core.Exceptions;
 using RestSharp;
 using NzbDrone.Core.Rest;
 
-namespace NzbDrone.Core.AutoImport.IMDbWatchList
+namespace NzbDrone.Core.NetImport.IMDbWatchList
 {
     public interface IIMDbWatchListProxy
     {
@@ -64,8 +64,8 @@ namespace NzbDrone.Core.AutoImport.IMDbWatchList
         {
             try
             {
-                Verify(settings.IMDbWatchListId);
-                ImportMovies(settings.IMDbWatchListId);
+                Verify(settings.Link);
+                ImportMovies(settings.Link);
             }
             catch (Exception ex)
             {
