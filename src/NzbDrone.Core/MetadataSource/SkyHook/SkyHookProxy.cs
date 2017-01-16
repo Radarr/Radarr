@@ -162,6 +162,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
+            if (resource.production_companies != null && resource.production_companies.Count() > 0)
+            {
+                movie.Studio = resource.production_companies[0].name;
+            }
+
             return movie;
         }
 
