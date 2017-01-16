@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                .SetSegment("route", "movie")
                .SetSegment("id", TmdbId.ToString())
                .SetSegment("secondaryRoute", "")
-               .AddQueryParam("append_to_response", "alternative_titles,release_dates")
+               .AddQueryParam("append_to_response", "alternative_titles,release_dates,videos")
                .AddQueryParam("country", "US")
                .Build();
 
@@ -148,6 +148,23 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             else
             {
                 movie.Status = MovieStatusType.Announced;
+            }
+            
+            if (resource.videos != null)
+            {
+                foreach(Video video in resource.videos.results)
+                {
+                    if(video.type == "Trailer" && video.site == "YouTube")
+                    {
+                        movie.YouTubeTrailerId = video.key;
+                        break;
+                    }
+                }
+            }
+
+            if (resource.production_companies != null && resource.production_companies.Count() > 0)
+            {
+                movie.Studio = resource.production_companies[0].name;
             }
 
             return movie;

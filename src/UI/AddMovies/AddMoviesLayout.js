@@ -17,7 +17,8 @@ module.exports = Marionette.Layout.extend({
 
     events : {
         'click .x-import'  : '_importMovies',
-        'click .x-add-new' : '_addMovies'
+        'click .x-add-new' : '_addMovies',
+        'click .x-show-existing' : '_toggleExisting'
     },
 
     attributes : {
@@ -31,13 +32,20 @@ module.exports = Marionette.Layout.extend({
         });
     },
 
+    _toggleExisting : function(e) {
+        var showExisting = e.target.checked;
+        
+        vent.trigger(vent.Commands.ShowExistingCommand, {
+            showExisting: showExisting
+        });
+    },
+
     onShow : function() {
         this.workspace.show(new AddMoviesView());
     },
 
     _folderSelected : function(options) {
         vent.trigger(vent.Commands.CloseModalCommand);
-        //TODO: Fix this shit.
         this.workspace.show(new ExistingMoviesCollectionView({ model : options.model }));
     },
 

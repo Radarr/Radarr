@@ -1,12 +1,22 @@
 var Marionette = require('marionette');
 var SearchResultView = require('./SearchResultView');
+var MoviesCollection = require('../Movies/MoviesCollection');
+var vent = require('vent');
 
 module.exports = Marionette.CollectionView.extend({
     itemView : SearchResultView,
 
     initialize : function(options) {
+        this.showExisting = true;
         this.isExisting = options.isExisting;
         this.showing = 1;
+        vent.on(vent.Commands.ShowExistingCommand, this._onExistingToggle.bind(this));
+    },
+
+    _onExistingToggle : function(data) {
+        this.showExisting = data.showExisting;
+
+        this.render();
     },
 
     showAll : function() {
@@ -34,8 +44,19 @@ module.exports = Marionette.CollectionView.extend({
     },
 
     appendHtml : function(collectionView, itemView, index) {
-        if (!this.isExisting || index < this.showing || index === 0) {
-            collectionView.$el.append(itemView.el);
+        var tmdbId = itemView.model.get('tmdbId');
+        var existingMovies = MoviesCollection.where({ tmdbId: tmdbId });
+        if(existingMovies.length > 0) {
+            if(this.showExisting) {
+                if (index < this.showing || index === 0) {
+                    collectionView.$el.append(itemView.el);
+                }
+            }
+        } else {
+            if (index < this.showing || index === 0) {
+                collectionView.$el.append(itemView.el);
+            }
         }
+        
     }
 });
