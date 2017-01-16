@@ -83,7 +83,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             if (parsedEpisodeInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
                             {
-                                remoteEpisode.DownloadAllowed = false;
+                                remoteEpisode.DownloadAllowed = true;
                                 decision = new DownloadDecision(remoteEpisode, new Rejection("Hardcoded subs found: " + parsedEpisodeInfo.Quality.HardcodedSubs));
                             }
                             else
