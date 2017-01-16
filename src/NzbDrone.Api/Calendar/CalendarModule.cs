@@ -2,24 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Movie;
+using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.MovieStats;
+using NzbDrone.Core.Tv;
+using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Validation.Paths;
+using NzbDrone.Core.DataAugmentation.Scene;
+using NzbDrone.Core.Validation;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Tv;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Calendar
 {
-    public class CalendarModule : EpisodeModuleWithSignalR
+    public class CalendarModule : MovieModule
     {
-        public CalendarModule(IEpisodeService episodeService,
-                              ISeriesService seriesService,
-                              IQualityUpgradableSpecification qualityUpgradableSpecification,
-                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "calendar")
+        public CalendarModule(IBroadcastSignalRMessage signalR,
+                            IMovieService moviesService,
+                            IMovieStatisticsService moviesStatisticsService,
+                            ISceneMappingService sceneMappingService,
+                            IMapCoversToLocal coverMapper)
+            : base(signalR, moviesService, moviesStatisticsService, sceneMappingService, coverMapper, "calendar")
         {
+            
             GetResourceAll = GetCalendar;
         }
 
-        private List<EpisodeResource> GetCalendar()
+        private List<MovieResource> GetCalendar()
         {
             var start = DateTime.Today;
             var end = DateTime.Today.AddDays(2);
@@ -33,9 +47,9 @@ namespace NzbDrone.Api.Calendar
             if (queryEnd.HasValue) end = DateTime.Parse(queryEnd.Value);
             if (queryIncludeUnmonitored.HasValue) includeUnmonitored = Convert.ToBoolean(queryIncludeUnmonitored.Value);
 
-            var resources = MapToResource(_episodeService.EpisodesBetweenDates(start, end, includeUnmonitored), true, true);
+            var resources = _moviesService.GetMoviesBetweenDates(start, end, includeUnmonitored).Select(MapToResource);
 
-            return resources.OrderBy(e => e.AirDateUtc).ToList();
+            return resources.OrderBy(e => e.InCinemas).ToList();
         }
     }
 }

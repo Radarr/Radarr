@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitleInexact(string title);
         Movie FindByTitleSlug(string slug);
         Movie GetMovieByFileId(int fileId);
+        List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         void DeleteMovie(int movieId, bool deleteFiles);
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
@@ -223,6 +224,13 @@ namespace NzbDrone.Core.Tv
         public Movie FindByTitleSlug(string slug)
         {
             return _movieRepository.FindByTitleSlug(slug);
+        }
+
+        public List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
+        {
+            var episodes = _movieRepository.MoviesBetweenDates(start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
+
+            return episodes;
         }
     }
 }
