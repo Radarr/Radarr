@@ -36,12 +36,11 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
                 torrentInfo.Size = (long)torrent.size*1000*1000;
                 torrentInfo.DownloadUrl = torrent.download_url;
                 torrentInfo.InfoUrl = torrent.details_url;
-                torrentInfo.PublishDate = new System.DateTime();
+                torrentInfo.PublishDate = torrent.publishdate.ToUniversalTime();
                 torrentInfo.Seeders = torrent.seeders;
                 torrentInfo.Peers = torrent.leechers + torrent.seeders;
                 torrentInfo.Freeleech = torrent.freeleech;
-                torrentInfo.PublishDate = torrent.publishdate.ToUniversalTime();
-
+                
                 results.Add(torrentInfo);
             }
 
