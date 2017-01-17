@@ -152,19 +152,25 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             
             if (resource.videos != null)
             {
-                foreach(Video video in resource.videos.results)
+                foreach (Video video in resource.videos.results)
                 {
-                    if(video.type == "Trailer" && video.site == "YouTube")
+                    if (video.type == "Trailer" && video.site == "YouTube")
                     {
-                        movie.YouTubeTrailerId = video.key;
-                        break;
+                        if (video.key != null)
+                        {
+                            movie.YouTubeTrailerId = video.key;
+                            break;
+                        }
                     }
                 }
             }
 
-            if (resource.production_companies != null && resource.production_companies.Count() > 0)
+            if (resource.production_companies != null)
             {
-                movie.Studio = resource.production_companies[0].name;
+                if (resource.production_companies.Any())
+                {
+                    movie.Studio = resource.production_companies[0].name;
+                }
             }
 
             return movie;
@@ -345,25 +351,19 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 imdbMovie.SortTitle = Parser.Parser.NormalizeTitle(result.title);
                 imdbMovie.Title = result.title;
-                string titleSlug = ToUrlSlug(result.title);
-                imdbMovie.TitleSlug = titleSlug.ToLower().Replace(" ", "-");
+                imdbMovie.TitleSlug = ToUrlSlug(result.title);
 
                 if (result.release_date.IsNotNullOrWhiteSpace())
                 {
                     imdbMovie.Year = DateTime.Parse(result.release_date).Year;
                 }
-                //var slugResult = _movieService.FindByTitleSlug(imdbMovie.TitleSlug);
-                //if (slugResult != null)
-                //{
-                //    _logger.Debug("Movie with this title slug already exists. Adding year...");
-                //}
-                imdbMovie.TitleSlug += "-" + imdbMovie.Year.ToString();
+
+                imdbMovie.TitleSlug += "-" + imdbMovie.Year;
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
                 try
                 {
-                    string url = result.poster_path;
                     var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
                     imdbMovie.Images.Add(imdbPoster);
                 }
