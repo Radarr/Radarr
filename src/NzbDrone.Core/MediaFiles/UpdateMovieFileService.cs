@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
     }
 
     public class UpdateMovieFileService : IUpdateMovieFileService,
-                                            IHandle<SeriesScannedEvent>
+                                            IHandle<MovieScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
@@ -47,10 +47,60 @@ namespace NzbDrone.Core.MediaFiles
         {
             var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
+            switch (_configService.FileDate)
+            {
+                case FileDateType.Release:
+                    {
+                        var airDate = movie.PhysicalRelease;
+
+                        if (airDate == null)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, airDate.Value);
+                    }
+
+                case FileDateType.Cinemas:
+                    {
+                        var airDate = movie.InCinemas;
+
+                        if (airDate == null)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, airDate.Value);
+                    }
+            }
+
             return false;
         }
 
-        public void Handle(SeriesScannedEvent message)
+        private bool ChangeFileDate(string filePath, DateTime date)
+        {
+            DateTime oldDateTime = _diskProvider.FileGetLastWrite(filePath);
+
+            if (!DateTime.Equals(date, oldDateTime))
+            {
+                try
+                {
+                    _diskProvider.FileSetLastWriteTime(filePath, date);
+                    _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", filePath, oldDateTime, date);
+
+                    return true;
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
+                }
+            }
+
+            return false;
+        }
+
+        public void Handle(MovieScannedEvent message)
         {
             if (_configService.FileDate == FileDateType.None)
             {
