@@ -206,8 +206,8 @@ module.exports = Marionette.Layout.extend({
         });
     },
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} missing episodes? '.format(this.collection.state.totalRecords) +
-                           'One API request to each indexer will be used for each episode. ' + 'This cannot be stopped once started.')) {
+        if (window.confirm('Are you sure you want to search for {0} missing movies? '.format(this.collection.state.totalRecords) +
+                           'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
             CommandController.Execute('missingEpisodeSearch', { name : 'missingEpisodeSearch' });
         }
     },
