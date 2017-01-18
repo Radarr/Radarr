@@ -161,6 +161,7 @@ namespace NzbDrone.Core.Organizer
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
+            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
             AddMovieFileTokens(tokenHandlers, movieFile);
@@ -301,6 +302,7 @@ namespace NzbDrone.Core.Organizer
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
+            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
 
             return CleanFolderName(ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig));
         }
@@ -477,6 +479,11 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); //Do I need m.CustomFormat?
         }
 
+        private void AddImdbIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, string imdbId)
+        {
+            tokenHandlers["{IMDb Id}"] = m => $"{imdbId}";
+        }
+
         private void AddSeasonTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int seasonNumber)
         {
             tokenHandlers["{Season}"] = m => seasonNumber.ToString(m.CustomFormat);
@@ -508,6 +515,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(episodeFile);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(episodeFile);
+            //tokenHandlers["{IMDb Id}"] = m => 
             tokenHandlers["{Release Group}"] = m => episodeFile.ReleaseGroup ?? m.DefaultValue("Sonarr");
         }
 
