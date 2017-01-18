@@ -218,7 +218,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             if (parserResult != null && parserResult.MovieTitle != title)
             {
                 //Parser found something interesting!
-                lowerTitle = parserResult.MovieTitle.ToLower();
+                lowerTitle = parserResult.MovieTitle.ToLower().replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
                 if (parserResult.Year > 1800)
                 {
                     yearTerm = parserResult.Year.ToString();
