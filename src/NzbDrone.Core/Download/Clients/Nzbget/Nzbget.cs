@@ -32,9 +32,12 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
             var category = Settings.TvCategory;
+
             var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
+            var addpaused = Settings.AddPaused;
+
+            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, addpaused, Settings);
 
             if (response == null)
             {
@@ -47,9 +50,12 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
             var category = Settings.TvCategory; // TODO: Update this to MovieCategory?
+
             var priority = Settings.RecentTvPriority;
 
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
+            var addpaused = Settings.AddPaused;
+
+            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, addpaused, Settings);
 
             if(response == null)
             {
