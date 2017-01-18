@@ -211,14 +211,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             lowerTitle = lowerTitle.Replace(".", "");
 
-            var parserResult = Parser.Parser.ParseMovieTitle(title.Replace(".", ""), true);
+            var parserResult = Parser.Parser.ParseMovieTitle(title, true);
 
             var yearTerm = "";
 
             if (parserResult != null && parserResult.MovieTitle != title)
             {
                 //Parser found something interesting!
-                lowerTitle = parserResult.MovieTitle.ToLower().replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
+                lowerTitle = parserResult.MovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
                 if (parserResult.Year > 1800)
                 {
                     yearTerm = parserResult.Year.ToString();
