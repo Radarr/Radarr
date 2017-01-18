@@ -9,10 +9,11 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Create.TableForModel("NetImport")
-                  .WithColumn("Enabled").AsBoolean()
-                  .WithColumn("Name").AsString().Unique()
-                  .WithColumn("Implementation").AsString()
-                  .WithColumn("Settings").AsString().Nullable();
+                .WithColumn("Enabled").AsBoolean()
+                .WithColumn("ProfileId").AsInt32()
+                .WithColumn("Name").AsString().Unique()
+                .WithColumn("Implementation").AsString()
+                .WithColumn("Settings").AsString().Nullable();
         }
     }
 }

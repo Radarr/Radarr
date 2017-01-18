@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Http;
@@ -15,8 +16,8 @@ namespace NzbDrone.Core.NetImport.IMDbWatchList
     {
         public override string Name => "IMDbWatchList";
         public override string Link => "http://rss.imdb.com/list/";
+        public override int ProfileId => 1;
         public override bool Enabled => true;
-
 
         public IMDbWatchList(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)

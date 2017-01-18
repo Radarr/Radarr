@@ -46,6 +46,7 @@ namespace NzbDrone.Core.NetImport.IMDbWatchList
                 {
                     Title = title.MovieTitle,
                     Year = title.Year,
+                    ProfileId = _settings.ProfileId,
                     ImdbId = Parser.Parser.ParseImdbId(result.Link)
                 });
             }

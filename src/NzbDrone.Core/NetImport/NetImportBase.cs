@@ -22,6 +22,7 @@ namespace NzbDrone.Core.NetImport
 
         public abstract string Name { get; }
         public abstract string Link { get; }
+        public abstract int ProfileId { get; }
 
         public abstract bool Enabled { get; }
 
@@ -46,6 +47,7 @@ namespace NzbDrone.Core.NetImport
                 {
                     Name = GetType().Name,
                     Link = Link,
+                    ProfileId = ProfileId,
                     Enabled = config.Validate().IsValid && Enabled,
                     Implementation = GetType().Name,
                     Settings = config
