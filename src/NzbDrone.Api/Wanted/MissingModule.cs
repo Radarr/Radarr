@@ -12,7 +12,7 @@ namespace NzbDrone.Api.Wanted
                              ISeriesService seriesService,
                              IQualityUpgradableSpecification qualityUpgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
+            : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing_episodes")
         {
             GetResourcePaged = GetMissingEpisodes;
         }
