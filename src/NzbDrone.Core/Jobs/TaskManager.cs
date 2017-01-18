@@ -79,8 +79,8 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask
                     { 
                         Interval = _configService.DownloadedEpisodesScanInterval,
-                        // TypeName = typeof(DownloadedEpisodesScanCommand).FullName
-                        TypeName = typeof(DownloadedMovieScanCommand).FullName
+                        TypeName = typeof(DownloadedEpisodesScanCommand).FullName
+                        //TypeName = typeof(DownloadedMovieScanCommand).FullName
                     },
                 };
 
