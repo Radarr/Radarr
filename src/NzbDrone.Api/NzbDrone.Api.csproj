@@ -118,6 +118,7 @@
     <Compile Include="Indexers\ReleasePushModule.cs" />
     <Compile Include="Movies\MovieFileModule.cs" />
     <Compile Include="Movies\MovieModule.cs" />
+    <Compile Include="Movies\MovieModuleWithSignalR.cs" />
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />
     <Compile Include="Movies\MovieEditorModule.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Wanted\CutoffModule.cs" />
     <Compile Include="Wanted\LegacyMissingModule.cs" />
     <Compile Include="Wanted\MissingModule.cs" />
+    <Compile Include="Wanted\MovieMissingModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

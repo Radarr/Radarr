@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-
+using NzbDrone.Core.Datastore.Extensions;
 
 namespace NzbDrone.Core.Tv
 {
@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByImdbId(string imdbid);
         Movie FindByTitleSlug(string slug);
         List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
+        PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
         void SetFileId(int fileId, int movieId);
     }
@@ -131,6 +132,22 @@ namespace NzbDrone.Core.Tv
             }
 
             return query.ToList();
+        }
+
+        public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
+        {
+
+            var query = Query.Where(pagingSpec.FilterExpression)
+                             .AndWhere(m => m.MovieFileId == 0)
+                             .AndWhere(m => m.Status == MovieStatusType.Released)
+                             .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                             .Skip(pagingSpec.PagingOffset())
+                             .Take(pagingSpec.PageSize);
+
+            pagingSpec.Records = query.ToList();
+            pagingSpec.TotalRecords = pagingSpec.Records.Count;
+
+            return pagingSpec;
         }
     }
 }

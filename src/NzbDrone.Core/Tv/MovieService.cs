@@ -12,6 +12,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Tv
 {
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitleSlug(string slug);
         Movie GetMovieByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
+        PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         void DeleteMovie(int movieId, bool deleteFiles);
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
@@ -231,6 +233,13 @@ namespace NzbDrone.Core.Tv
             var episodes = _movieRepository.MoviesBetweenDates(start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
 
             return episodes;
+        }
+
+        public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
+        {
+            var movieResult = _movieRepository.MoviesWithoutFiles(pagingSpec);
+
+            return movieResult;
         }
     }
 }
