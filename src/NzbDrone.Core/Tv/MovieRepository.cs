@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Datastore.Extensions;
+using Marr.Data.QGen;
 
 namespace NzbDrone.Core.Tv
 {
@@ -137,17 +138,20 @@ namespace NzbDrone.Core.Tv
         public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
         {
 
-            var query = Query.Where(pagingSpec.FilterExpression)
+            pagingSpec.TotalRecords = GetMoviesWithoutFilesQuery(pagingSpec).GetRowCount();
+            pagingSpec.Records = GetMoviesWithoutFilesQuery(pagingSpec).ToList();
+
+            return pagingSpec;
+        }
+
+        public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
+        {
+            return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
                              .AndWhere(m => m.Status == MovieStatusType.Released)
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
-
-            pagingSpec.Records = query.ToList();
-            pagingSpec.TotalRecords = pagingSpec.Records.Count;
-
-            return pagingSpec;
         }
     }
 }
