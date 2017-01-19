@@ -239,7 +239,7 @@ namespace NzbDrone.Api.Movie
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            //BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
+            BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
         }
     }
 }
