@@ -201,6 +201,8 @@ namespace NzbDrone.Api.Movie
             //var mappings = null;//_sceneMappingService.FindByTvdbId(resource.TvdbId);
 
             //if (mappings == null) return;
+            
+            //Not necessary anymore
 
             //resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
         }
