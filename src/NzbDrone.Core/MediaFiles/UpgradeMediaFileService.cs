@@ -44,7 +44,7 @@ namespace NzbDrone.Core.MediaFiles
             var existingFile = localEpisode.Movie.MovieFile;
             existingFile.LazyLoad();
 
-            if (existingFile.IsLoaded)
+            if (existingFile.IsLoaded && existingFile.Value != null)
             {
                 var file = existingFile.Value;
                 var episodeFilePath = Path.Combine(localEpisode.Movie.Path, file.RelativePath);
