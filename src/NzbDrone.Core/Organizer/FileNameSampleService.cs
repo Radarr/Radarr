@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Organizer
 
             _movie = new Movie
             {
-                Title = "Movie Title",
+                Title = "The Movie Title",
                 Year = 2010,
                 ImdbId = "tt0066921"
             };
