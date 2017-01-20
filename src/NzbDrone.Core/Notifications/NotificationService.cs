@@ -15,7 +15,8 @@ namespace NzbDrone.Core.Notifications
     public class NotificationService
         : IHandle<EpisodeGrabbedEvent>,
           IHandle<EpisodeDownloadedEvent>,
-          IHandle<SeriesRenamedEvent>
+          IHandle<MovieGrabbedEvent>,
+            IHandle<SeriesRenamedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -67,6 +68,41 @@ namespace NzbDrone.Core.Notifications
                                     qualityString);
         }
 
+        private string GetMessage(Movie movie, QualityModel quality)
+        {
+            var qualityString = quality.Quality.ToString();
+
+            if (quality.Revision.Version > 1)
+            {
+                    qualityString += " Proper";
+            }
+
+            return string.Format("{0}[{1}]",
+                                    movie.Title,
+                                    qualityString);
+        }
+
+        private bool ShouldHandleMovie(ProviderDefinition definition, Movie movie)
+        {
+            var notificationDefinition = (NotificationDefinition)definition;
+
+            if (notificationDefinition.Tags.Empty())
+            {
+                _logger.Debug("No tags set for this notification.");
+                return true;
+            }
+
+            if (notificationDefinition.Tags.Intersect(movie.Tags).Any())
+            {
+                _logger.Debug("Notification and series have one or more matching tags.");
+                return true;
+            }
+
+            //TODO: this message could be more clear
+            _logger.Debug("{0} does not have any tags that match {1}'s tags", notificationDefinition.Name, movie.Title);
+            return false;
+        }
+
         private bool ShouldHandleSeries(ProviderDefinition definition, Series series)
         {
             var notificationDefinition = (NotificationDefinition) definition;
@@ -102,6 +138,33 @@ namespace NzbDrone.Core.Notifications
                 try
                 {
                     if (!ShouldHandleSeries(notification.Definition, message.Episode.Series)) continue;
+                    notification.OnGrab(grabMessage);
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, "Unable to send OnGrab notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(MovieGrabbedEvent message)
+        {
+            var grabMessage = new GrabMessage
+            {
+                Message = GetMessage(message.Movie.Movie, message.Movie.ParsedMovieInfo.Quality),
+                Series = null,
+                Quality = message.Movie.ParsedMovieInfo.Quality,
+                Episode = null,
+                Movie = message.Movie.Movie,
+                RemoteMovie = message.Movie
+            };
+
+            foreach (var notification in _notificationFactory.OnGrabEnabled())
+            {
+                try
+                {
+                    if (!ShouldHandleMovie(notification.Definition, message.Movie.Movie)) continue;
                     notification.OnGrab(grabMessage);
                 }
 
