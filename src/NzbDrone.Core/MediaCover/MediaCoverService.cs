@@ -114,7 +114,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private void EnsureCovers(Movie movie)
+        private void EnsureCovers(Movie movie, int retried = 0)
         {
             foreach (var cover in movie.Images)
             {
@@ -130,7 +130,25 @@ namespace NzbDrone.Core.MediaCover
                 }
                 catch (WebException e)
                 {
-                    _logger.Warn(string.Format("Couldn't download media cover for {0}. {1}", movie, e.Message));
+                    if (e.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        _logger.Warn(e, "Server returned different code than 200. The poster is probably not available yet.");
+                        return;
+                    }
+
+                    _logger.Warn(e, string.Format("Couldn't download media cover for {0}. {1}", movie, e.Message));
+                    if (retried < 3)
+                    {
+                        retried = +1;
+                        _logger.Warn("Retrying for the {0}. time in ten seconds.", retried);
+                        System.Threading.Thread.Sleep(10*1000);
+                        EnsureCovers(movie, retried);
+                    }
+                    else
+                    {
+                        _logger.Warn(e, "Couldn't download media cover even after retrying five times :(.");
+                    }
+
                 }
                 catch (Exception e)
                 {
