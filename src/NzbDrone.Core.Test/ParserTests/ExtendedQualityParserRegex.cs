@@ -47,5 +47,17 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             QualityParser.ParseQuality(title).Revision.Version.Should().Be(version);
         }
+
+        [TestCase("Deadpool 2016 2160p 4K UltraHD BluRay DTS-HD MA 7 1 x264-Whatevs", 19)]
+        [TestCase("Deadpool 2016 2160p 4K UltraHD DTS-HD MA 7 1 x264-Whatevs", 16)]
+        [TestCase("Deadpool 2016 4K 2160p UltraHD BluRay AAC2 0 HEVC x265", 19)]
+        [TestCase("The Revenant 2015 2160p UHD BluRay DTS x264-Whatevs", 19)]
+        [TestCase("The Revenant 2015 2160p UHD BluRay FLAC 7 1 x264-Whatevs", 19)]
+        [TestCase("The Martian 2015 2160p Ultra HD BluRay DTS-HD MA 7 1 x264-Whatevs", 19)]
+        [TestCase("Into the Inferno 2016 2160p Netflix WEBRip DD5 1 x264-Whatevs", 18)]
+        public void should_parse_ultrahd_from_title(string title, int version)
+        {
+            QualityParser.ParseQuality(title).Quality.Id.Should().Be(version);
+        }
     }
 }
