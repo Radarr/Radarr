@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Organizer
         public static readonly Regex SeriesTitleRegex = new Regex(@"(?<token>\{(?:Series)(?<separator>[- ._])(Clean)?Title\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean)?Title)\})",
+        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean)?Title(The)?)\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -316,6 +316,22 @@ namespace NzbDrone.Core.Organizer
             return title;
         }
 
+        public static string TitleThe(string title)
+        {
+            string[] prefixes = { "The ", "An ", "A " };
+            foreach (string prefix in prefixes)
+            {
+                int prefix_length = prefix.Length;
+                if (prefix.ToLower() == title.Substring(0, prefix_length).ToLower())
+                {
+                    title = title.Substring(prefix_length) + ", " + prefix.Trim();
+                    break;
+                }
+            }
+
+            return title.Trim();
+        }
+
         public static string CleanFileName(string name, bool replace = true)
         {
             string result = name;
@@ -472,6 +488,7 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Movie Title}"] = m => movie.Title;
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(movie.Title);
+            tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
         }
 
         private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
