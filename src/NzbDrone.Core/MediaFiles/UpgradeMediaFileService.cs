@@ -38,8 +38,11 @@ namespace NzbDrone.Core.MediaFiles
 
         public MovieFileMoveResult UpgradeMovieFile(MovieFile episodeFile, LocalMovie localEpisode, bool copyOnly = false)
         {
+            _logger.Trace("Upgrading existing episode file.");
             var moveFileResult = new MovieFileMoveResult();
+            localEpisode.Movie.MovieFile.LazyLoad();
             var existingFile = localEpisode.Movie.MovieFile;
+            existingFile.LazyLoad();
 
             if (existingFile.IsLoaded)
             {
@@ -54,6 +57,10 @@ namespace NzbDrone.Core.MediaFiles
 
                 moveFileResult.OldFiles.Add(file);
                 _mediaFileService.Delete(file, DeleteMediaFileReason.Upgrade);
+            }
+            else
+            {
+                _logger.Warn("The existing movie file was not lazy loaded.");
             }
 
             
