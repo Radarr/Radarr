@@ -5,6 +5,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Datastore.Extensions;
 using Marr.Data.QGen;
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -16,6 +17,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByImdbId(string imdbid);
         Movie FindByTitleSlug(string slug);
         List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
+        List<Movie> MoviesWithFiles(int movieId);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
         void SetFileId(int fileId, int movieId);
@@ -133,6 +135,12 @@ namespace NzbDrone.Core.Tv
             }
 
             return query.ToList();
+        }
+
+        public List<Movie> MoviesWithFiles(int movieId)
+        {
+            return Query.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, mf) => m.MovieFileId == mf.Id)
+                        .Where(m => m.Id == movieId);
         }
 
         public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-           /* var movies = _movieService.MoviesWithFiles(message.Series.Id);
+            var movies = _movieService.MoviesWithFiles(message.Movie.Id);
 
             var movieFiles = new List<MovieFile>();
             var updated = new List<MovieFile>();
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 movieFiles.Add(movieFile);
 
-                if (ChangeFileDate(movieFile, message.Series, moviesInFile))
+                if (ChangeFileDate(movieFile, message.Movie))
                 {
                     updated.Add(movieFile);
                 }
@@ -127,13 +127,13 @@ namespace NzbDrone.Core.MediaFiles
 
             if (updated.Any())
             {
-                _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, movieFiles.Count, message.Series.Title);
+                _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, movieFiles.Count, message.Movie.Title);
             }
 
             else
             {
-                _logger.ProgressDebug("No file dates changed for {0}", message.Series.Title);
-            }*/
+                _logger.ProgressDebug("No file dates changed for {0}", message.Movie.Title);
+            }
         }
 
         private bool ChangeFileDateToLocalAirDate(string filePath, string fileDate, string fileTime)
