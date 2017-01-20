@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Tv
         List<Movie> UpdateMovie(List<Movie> movie);
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
+        List<Movie> MoviesWithFiles(int movieId);
     }
 
     public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
@@ -233,6 +234,11 @@ namespace NzbDrone.Core.Tv
             var episodes = _movieRepository.MoviesBetweenDates(start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
 
             return episodes;
+        }
+
+        public List<Movie> MoviesWithFiles(int movieId)
+        {
+            return _movieRepository.MoviesWithFiles(movieId);
         }
 
         public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
