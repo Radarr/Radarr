@@ -12,7 +12,7 @@ namespace NzbDrone.Api.Movies
         private readonly IRenameMovieFileService _renameMovieFileService;
 
         public RenameMovieModule(IRenameMovieFileService renameMovieFileService)
-            : base("rename")
+            : base("renameMovie")
         {
             _renameMovieFileService = renameMovieFileService;
 

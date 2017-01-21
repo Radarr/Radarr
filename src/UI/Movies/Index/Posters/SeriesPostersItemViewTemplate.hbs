@@ -18,7 +18,7 @@
 
     <div class="center">
         <div class="labels">
-
+            <span class="label label-{{DownloadedStatusColor}}" title="{{DownloadedQuality}}">{{DownloadedStatus}}</span>
           {{#if website}}
             <a href="{{homepage}}" class="label label-info">Homepage</a>
           {{/if}}
@@ -26,7 +26,9 @@
           {{#if imdbId}}
               <a href="{{imdbUrl}}" class="label label-info">IMDB</a>
           {{/if}}
-
+          {{#if youTubeTrailerId}}
+              <a href="{{youTubeTrailerUrl}}" class="label label-info">Trailer</a>
+          {{/if}}
         </div>
     </div>
 </div>

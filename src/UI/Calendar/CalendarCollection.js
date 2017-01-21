@@ -1,5 +1,5 @@
 var Backbone = require('backbone');
-var EpisodeModel = require('../Series/EpisodeModel');
+var EpisodeModel = require('../Movies/MovieModel');
 
 module.exports = Backbone.Collection.extend({
     url       : window.NzbDrone.ApiRoot + '/calendar',
@@ -7,7 +7,7 @@ module.exports = Backbone.Collection.extend({
     tableName : 'calendar',
 
     comparator : function(model) {
-        var date = new Date(model.get('airDateUtc'));
+        var date = new Date(model.get('inCinemas'));
         var time = date.getTime();
         return time;
     }

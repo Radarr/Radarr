@@ -28,7 +28,7 @@ namespace NzbDrone.Api.Movie
                                 IHandle<MediaCoversUpdatedEvent>
 
     {
-        private readonly IMovieService _moviesService;
+        protected readonly IMovieService _moviesService;
         private readonly IMovieStatisticsService _moviesStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
 
@@ -78,13 +78,33 @@ namespace NzbDrone.Api.Movie
             PutValidator.RuleFor(s => s.Path).IsValidPath();
         }
 
+        public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
+                            IMovieService moviesService,
+                            IMovieStatisticsService moviesStatisticsService,
+                            ISceneMappingService sceneMappingService,
+                            IMapCoversToLocal coverMapper,
+                            string resource)
+            : base(signalRBroadcaster, resource)
+        {
+            _moviesService = moviesService;
+            _moviesStatisticsService = moviesStatisticsService;
+
+            _coverMapper = coverMapper;
+
+            GetResourceAll = AllMovie;
+            GetResourceById = GetMovie;
+            CreateResource = AddMovie;
+            UpdateResource = UpdateMovie;
+            DeleteResource = DeleteMovie;
+        }
+
         private MovieResource GetMovie(int id)
         {
             var movies = _moviesService.GetMovie(id);
             return MapToResource(movies);
         }
 
-        private MovieResource MapToResource(Core.Tv.Movie movies)
+        protected MovieResource MapToResource(Core.Tv.Movie movies)
         {
             if (movies == null) return null;
 
@@ -181,6 +201,8 @@ namespace NzbDrone.Api.Movie
             //var mappings = null;//_sceneMappingService.FindByTvdbId(resource.TvdbId);
 
             //if (mappings == null) return;
+            
+            //Not necessary anymore
 
             //resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
         }
@@ -219,7 +241,7 @@ namespace NzbDrone.Api.Movie
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            //BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
+            BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
         }
     }
 }

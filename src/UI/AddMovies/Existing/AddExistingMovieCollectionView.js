@@ -1,6 +1,7 @@
 var Marionette = require('marionette');
 var AddMoviesView = require('../AddMoviesView');
 var UnmappedFolderCollection = require('./UnmappedFolderCollection');
+var vent = require('vent');
 
 module.exports = Marionette.CompositeView.extend({
     itemView          : AddMoviesView,

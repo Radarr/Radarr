@@ -64,9 +64,9 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 0.25f, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
-                    new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
+                    // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
-                    new ScheduledTask{ Interval = 12*60, TypeName = typeof(RefreshSeriesCommand).FullName},
+                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
                     new ScheduledTask{ Interval = 7*24*60, TypeName = typeof(BackupCommand).FullName},
 
@@ -80,6 +80,7 @@ namespace NzbDrone.Core.Jobs
                     { 
                         Interval = _configService.DownloadedEpisodesScanInterval,
                         TypeName = typeof(DownloadedEpisodesScanCommand).FullName
+                        //TypeName = typeof(DownloadedMovieScanCommand).FullName
                     },
                 };
 

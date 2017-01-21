@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (false)
+            if (SupportsMovieSearch)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie",
                         string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2)))); //strip off the "tt" - VERY HACKY

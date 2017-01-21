@@ -5,11 +5,9 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var MissingCollection = require('./MissingCollection');
 var SelectAllCell = require('../../Cells/SelectAllCell');
-var SeriesTitleCell = require('../../Cells/SeriesTitleCell');
-var EpisodeNumberCell = require('../../Cells/EpisodeNumberCell');
-var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
+var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var EpisodeStatusCell = require('../../Cells/EpisodeStatusCell');
+var MovieStatusWithTextCell = require('../../Cells/MovieStatusWithTextCell');
 var GridPager = require('../../Shared/Grid/Pager');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var LoadingView = require('../../Shared/LoadingView');
@@ -40,34 +38,28 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name      : 'series',
-            label     : 'Series Title',
-            cell      : SeriesTitleCell,
-            sortValue : 'series.sortTitle'
-        },
-        {
             name     : 'this',
-            label    : 'Episode',
-            cell     : EpisodeNumberCell,
+            label    : 'Movie Title',
+            cell     : MovieTitleCell,
             sortable : false
         },
         {
-            name     : 'this',
-            label    : 'Episode Title',
-            cell     : EpisodeTitleCell,
-            sortable : false
+            name  : 'inCinemas',
+            label : 'In Cinemas',
+            cell  : RelativeDateCell
         },
         {
-            name  : 'airDateUtc',
-            label : 'Air Date',
+            name  : 'physicalRelease',
+            label : 'PhysicalRelease',
             cell  : RelativeDateCell
         },
         {
             name     : 'status',
             label    : 'Status',
-            cell     : EpisodeStatusCell,
+            cell     : MovieStatusWithTextCell,
             sortable : false
-        }
+        },
+
     ],
 
     initialize : function() {
@@ -206,8 +198,8 @@ module.exports = Marionette.Layout.extend({
         });
     },
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} missing episodes? '.format(this.collection.state.totalRecords) +
-                           'One API request to each indexer will be used for each episode. ' + 'This cannot be stopped once started.')) {
+        if (window.confirm('Are you sure you want to search for {0} missing movies? '.format(this.collection.state.totalRecords) +
+                           'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
             CommandController.Execute('missingEpisodeSearch', { name : 'missingEpisodeSearch' });
         }
     },

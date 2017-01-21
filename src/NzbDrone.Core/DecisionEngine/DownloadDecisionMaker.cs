@@ -32,7 +32,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> GetRssDecision(List<ReleaseInfo> reports)
         {
-            return GetDecisions(reports).ToList();
+            return GetMovieDecisions(reports).ToList();
         }
 
         public List<DownloadDecision> GetSearchDecision(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteriaBase)
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             if (parsedEpisodeInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
                             {
-                                remoteEpisode.DownloadAllowed = false;
+                                remoteEpisode.DownloadAllowed = true;
                                 decision = new DownloadDecision(remoteEpisode, new Rejection("Hardcoded subs found: " + parsedEpisodeInfo.Quality.HardcodedSubs));
                             }
                             else

@@ -49,7 +49,7 @@ namespace NzbDrone.Core.MediaFiles
 
             switch (_configService.FileDate)
             {
-                case FileDateType.LocalAirDate:
+                case FileDateType.Release:
                     {
                         var airDate = episodes.First().AirDate;
                         var airTime = series.AirTime;
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.MediaFiles
                         return ChangeFileDateToLocalAirDate(episodeFilePath, airDate, airTime);
                     }
 
-                case FileDateType.UtcAirDate:
+                case FileDateType.Cinemas:
                     {
                         var airDateUtc = episodes.First().AirDateUtc;
 

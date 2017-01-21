@@ -26,6 +26,12 @@ var QueueCollection = PageableCollection.extend({
         });
     },
 
+    findMovie : function(movieId) {
+        return _.find(this.fullCollection.models, function(queueModel) {
+            return queueModel.get('movie').id === movieId;
+        });
+    },
+
     sortMappings : {
         series : {
             sortValue : function(model, attr) {

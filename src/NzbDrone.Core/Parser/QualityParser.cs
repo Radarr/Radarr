@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Parser
                                                                 )\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUB))|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUB)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);

@@ -109,7 +109,7 @@ module.exports = Marionette.Layout.extend({
             element : this.ui.rename,
             command : {
                 name         : 'renameMovieFiles',
-                movieId     : this.model.id,
+                movieId      : this.model.id,
                 seasonNumber : -1
             }
         });

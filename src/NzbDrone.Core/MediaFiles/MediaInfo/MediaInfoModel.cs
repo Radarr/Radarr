@@ -48,7 +48,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     return AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? AudioChannels - 1 + 0.1m : AudioChannels;
                 }
 
-                return AudioChannelPositions.Split('/').Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
+                decimal channels = 0;
+
+                decimal.TryParse(AudioChannelPositions.Split('/').First(), out channels);
+
+                return channels;
             }
         }
     }

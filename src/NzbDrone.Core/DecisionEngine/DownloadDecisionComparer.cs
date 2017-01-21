@@ -68,6 +68,17 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)
         {
 
+
+            if (x.IsForMovie)
+            {
+                return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode =>
+                {
+                    var delayProfile = _delayProfileService.BestForTags(remoteEpisode.Movie.Tags);
+                    var downloadProtocol = remoteEpisode.Release.DownloadProtocol;
+                    return downloadProtocol == delayProfile.PreferredProtocol;
+                });
+            }
+            
             var result = CompareBy(x.RemoteEpisode, y.RemoteEpisode, remoteEpisode =>
             {
                 var delayProfile = _delayProfileService.BestForTags(remoteEpisode.Series.Tags);
@@ -75,15 +86,7 @@ namespace NzbDrone.Core.DecisionEngine
                 return downloadProtocol == delayProfile.PreferredProtocol;
             });
 
-            if (x.IsForMovie)
-            {
-                result = CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode =>
-                {
-                    var delayProfile = _delayProfileService.BestForTags(remoteEpisode.Movie.Tags);
-                    var downloadProtocol = remoteEpisode.Release.DownloadProtocol;
-                    return downloadProtocol == delayProfile.PreferredProtocol;
-                });
-            }
+            
 
             return result;
         }
@@ -125,8 +128,8 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareAgeIfUsenet(DownloadDecision x, DownloadDecision y)
         {
-            if (x.RemoteEpisode.Release.DownloadProtocol != DownloadProtocol.Usenet ||
-                y.RemoteEpisode.Release.DownloadProtocol != DownloadProtocol.Usenet)
+            if (x.RemoteMovie.Release.DownloadProtocol != DownloadProtocol.Usenet ||
+                y.RemoteMovie.Release.DownloadProtocol != DownloadProtocol.Usenet)
             {
                 return 0;
             }
