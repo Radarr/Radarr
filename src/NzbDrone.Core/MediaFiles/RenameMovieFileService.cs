@@ -80,6 +80,16 @@ namespace NzbDrone.Core.MediaFiles
             
         }
 
+        private void RenameMovieFiles(List<MovieFile> movieFiles, Movie movie)
+        {
+
+        }
+
+        private void RenameFolder(Movie movie)
+        {
+
+        }
+
         private void RenameFiles(List<MovieFile> movieFiles, Movie movie)
         {
             var renamed = new List<MovieFile>();
