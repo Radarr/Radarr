@@ -13,6 +13,8 @@ var IndexerLayout = require('./Indexers/IndexerLayout');
 var IndexerCollection = require('./Indexers/IndexerCollection');
 var IndexerSettingsModel = require('./Indexers/IndexerSettingsModel');
 var NetImportSettingsModel = require("./NetImport/NetImportSettingsModel");
+var NetImportCollection = require('./NetImport/NetImportCollection');
+var NetImportLayout = require('./NetImport/NetImportLayout');
 var DownloadClientLayout = require('./DownloadClient/DownloadClientLayout');
 var DownloadClientSettingsModel = require('./DownloadClient/DownloadClientSettingsModel');
 var NotificationCollectionView = require('./Notifications/NotificationCollectionView');
@@ -102,6 +104,7 @@ module.exports = Marionette.Layout.extend({
 										self.quality.show(new QualityLayout());
 										self.indexers.show(new IndexerLayout({ model : self.indexerSettings }));
 										self.downloadClient.show(new DownloadClientLayout({ model : self.downloadClientSettings }));
+										self.netImport.show(new NetImportLayout({model : self.netImportSettings}));
 										self.notifications.show(new NotificationCollectionView({ collection : self.notificationCollection }));
 										self.metadata.show(new MetadataLayout());
 										self.general.show(new GeneralView({ model : self.generalSettings }));
@@ -190,7 +193,7 @@ module.exports = Marionette.Layout.extend({
 						e.preventDefault();
 				}
 
-				this.ui.downloadClientTab.tab('show');
+				this.ui.netImportTab.tab('show');
 				this._navigate('settings/netimport');
 		},
 
