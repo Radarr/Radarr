@@ -94,6 +94,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
+        [Ignore("Series")]
         public void should_order_by_lowest_number_of_episodes()
         {
             var remoteEpisode1 = GivenRemoteEpisode(new List<Episode> { GivenEpisode(2) }, new QualityModel(Quality.HDTV720p));
@@ -108,6 +109,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
+        [Ignore("Series")]
         public void should_order_by_lowest_number_of_episodes_with_multiple_episodes()
         {
             var remoteEpisode1 = GivenRemoteEpisode(new List<Episode> { GivenEpisode(2), GivenEpisode(3) }, new QualityModel(Quality.HDTV720p));

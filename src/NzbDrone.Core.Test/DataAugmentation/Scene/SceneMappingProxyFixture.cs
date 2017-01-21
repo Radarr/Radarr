@@ -8,6 +8,7 @@ using NzbDrone.Test.Common.Categories;
 namespace NzbDrone.Core.Test.DataAugmentation.Scene
 {
     [TestFixture]
+    [Ignore("Series")]
     [IntegrationTest]
     public class SceneMappingProxyFixture : CoreTest<SceneMappingProxy>
     {
@@ -18,6 +19,7 @@ namespace NzbDrone.Core.Test.DataAugmentation.Scene
         }
 
         [Test]
+
         public void fetch_should_return_list_of_mappings()
         {
             var mappings = Subject.Fetch();
