@@ -10,7 +10,6 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Create.TableForModel("NetImport")
                 .WithColumn("Enabled").AsBoolean()
-                .WithColumn("ProfileId").AsInt32()
                 .WithColumn("Name").AsString().Unique()
                 .WithColumn("Implementation").AsString()
                 .WithColumn("Settings").AsString().Nullable();

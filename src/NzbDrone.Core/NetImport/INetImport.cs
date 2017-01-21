@@ -8,7 +8,6 @@ namespace NzbDrone.Core.NetImport
 {
     public interface INetImport : IProvider
     {
-        string Link { get; }
         bool Enabled { get; }
         
         IList<Movie> Fetch();

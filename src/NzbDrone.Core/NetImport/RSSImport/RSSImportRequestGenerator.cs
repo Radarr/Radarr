@@ -5,11 +5,11 @@ using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.IndexerSearch.Definitions;
 
-namespace NzbDrone.Core.NetImport.IMDbWatchList
+namespace NzbDrone.Core.NetImport.RSSImport
 {
-    public class IMDbWatchListRequestGenerator : INetImportRequestGenerator
+    public class RSSImportRequestGenerator : INetImportRequestGenerator
     {
-        public IMDbWatchListSettings Settings { get; set; }
+        public RSSImportSettings Settings { get; set; }
 
         public virtual NetImportPageableRequestChain GetMovies()
         {

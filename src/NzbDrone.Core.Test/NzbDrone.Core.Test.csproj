@@ -284,6 +284,7 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
+    <Compile Include="NetImport\RSSImportFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\EpisodeTitleCollapseFixture.cs" />
@@ -407,6 +408,9 @@
     </Content>
     <Content Include="..\Libraries\Sqlite\sqlite3.dll">
       <Link>sqlite3.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\imdb_watchlist.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="License.txt" />

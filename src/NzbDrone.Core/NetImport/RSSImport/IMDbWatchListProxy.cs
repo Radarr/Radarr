@@ -8,12 +8,12 @@ using NzbDrone.Core.Exceptions;
 using RestSharp;
 using NzbDrone.Core.Rest;
 
-namespace NzbDrone.Core.NetImport.IMDbWatchList
+namespace NzbDrone.Core.NetImport.RSSImport
 {
     public interface IIMDbWatchListProxy
     {
         void ImportMovies(string url);
-        ValidationFailure Test(IMDbWatchListSettings settings);
+        ValidationFailure Test(RSSImportSettings settings);
     }
 
     public class IMDbWatchListProxy : IIMDbWatchListProxy
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.NetImport.IMDbWatchList
             }
         }
 
-        public ValidationFailure Test(IMDbWatchListSettings settings)
+        public ValidationFailure Test(RSSImportSettings settings)
         {
             try
             {

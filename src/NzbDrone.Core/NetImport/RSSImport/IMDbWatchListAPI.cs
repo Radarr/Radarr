@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace NzbDrone.Core.NetImport.IMDbWatchList
+namespace NzbDrone.Core.NetImport.RSSImport
 {
     class IMDbWatchListAPI
     {

@@ -21,8 +21,6 @@ namespace NzbDrone.Core.NetImport
         protected readonly Logger _logger;
 
         public abstract string Name { get; }
-        public abstract string Link { get; }
-        public abstract int ProfileId { get; }
 
         public abstract bool Enabled { get; }
 
@@ -46,8 +44,6 @@ namespace NzbDrone.Core.NetImport
                 yield return new NetImportDefinition
                 {
                     Name = GetType().Name,
-                    Link = Link,
-                    ProfileId = ProfileId,
                     Enabled = config.Validate().IsValid && Enabled,
                     Implementation = GetType().Name,
                     Settings = config

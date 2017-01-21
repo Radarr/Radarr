@@ -4,16 +4,16 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
-namespace NzbDrone.Core.NetImport.IMDbWatchList
+namespace NzbDrone.Core.NetImport.RSSImport
 {
 
-    public class IMDbWatchListSettings : NetImportBaseSettings
+    public class RSSImportSettings : NetImportBaseSettings
     {
         //private const string helpLink = "https://imdb.com";
 
-        public IMDbWatchListSettings()
+        public RSSImportSettings()
         {
-            Link = "http://rss.imdb.com/list/";
+            Link = "http://rss.yoursite.com";
             ProfileId = 1;
         }
 
