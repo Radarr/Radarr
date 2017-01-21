@@ -5,7 +5,7 @@ namespace NzbDrone.Api.NetImport
     public class NetImportModule : ProviderModuleBase<NetImportResource, INetImport, NetImportDefinition>
     {
         public NetImportModule(NetImportFactory indexerFactory)
-            : base(indexerFactory, "indexer")
+            : base(indexerFactory, "netimport")
         {
         }
 
