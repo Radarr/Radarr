@@ -31,7 +31,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
                 yield return new NetImportDefinition
                 {
-                    Name = GetType().Name,
+                    Name = "IMDb Watchlist",
                     Enabled = config.Validate().IsValid && Enabled,
                     Implementation = GetType().Name,
                     Settings = config
