@@ -126,6 +126,7 @@
     <Compile Include="NetImport\Exceptions\NetImportException.cs" />
     <Compile Include="NetImport\HttpNetImportBase.cs" />
     <Compile Include="NetImport\IProcessNetImportResponse.cs" />
+    <Compile Include="NetImport\NetImportBaseSettings.cs" />
     <Compile Include="NetImport\NetImportPageableRequest.cs" />
     <Compile Include="NetImport\NetImportPageableRequestChain.cs" />
     <Compile Include="NetImport\INetImportRequestGenerator.cs" />

@@ -6,17 +6,10 @@ using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.NetImport.IMDbWatchList
 {
-    public class IMDbWatchListSettingsValidator : AbstractValidator<IMDbWatchListSettings>
-    {
-        public IMDbWatchListSettingsValidator()
-        {
-            RuleFor(c => c.Link).NotEmpty();
-        }
-    }
 
-    public class IMDbWatchListSettings : IProviderConfig
+    public class IMDbWatchListSettings : NetImportBaseSettings
     {
-        private static readonly IMDbWatchListSettingsValidator Validator = new IMDbWatchListSettingsValidator();
+        //private const string helpLink = "https://imdb.com";
 
         public IMDbWatchListSettings()
         {
@@ -24,17 +17,7 @@ namespace NzbDrone.Core.NetImport.IMDbWatchList
             ProfileId = 1;
         }
 
-        [FieldDefinition(0, Label = "Watch List RSS link", HelpLink = "http://rss.imdb.com/list/")]
-        public string Link { get; set; }
-        
-        [FieldDefinition(1, Label = "Quality", Type = FieldType.Select, SelectOptions = typeof(Profile), HelpText = "Quality of all imported movies")]
-        public int ProfileId { get; set; }
-
-        public bool IsValid => !string.IsNullOrWhiteSpace(Link);
-
-        public NzbDroneValidationResult Validate()
-        {
-            return new NzbDroneValidationResult(Validator.Validate(this));
-        }
+        [FieldDefinition(0, Label = "RSS Link", HelpText = "Link to the rss feed of movies.")]
+        public new string Link { get; set; }
     }
 }
