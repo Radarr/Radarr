@@ -26,6 +26,10 @@ namespace NzbDrone.Core.NetImport
 
         public override bool Enabled => true;
 
+        public bool SupportsPaging => PageSize > 0;
+
+        public virtual int PageSize => 0;
+
         public virtual TimeSpan RateLimit => TimeSpan.FromSeconds(2);
 
         public abstract INetImportRequestGenerator GetRequestGenerator();
@@ -39,7 +43,189 @@ namespace NzbDrone.Core.NetImport
 
         public override IList<Movie> Fetch()
         {
-            return new List<Movie>();
+            var generator = GetRequestGenerator();
+            
+            return FetchMovies(generator.GetMovies());
+        }
+
+        protected virtual IList<Movie> FetchMovies(NetImportPageableRequestChain pageableRequestChain, bool isRecent = false)
+        {
+            var movies = new List<Movie>();
+            var url = string.Empty;
+
+            var parser = GetParser();
+
+            try
+            {
+                var fullyUpdated = false;
+                Movie lastMovie = null;
+                if (isRecent)
+                {
+                    //lastReleaseInfo = _indexerStatusService.GetLastRssSyncReleaseInfo(Definition.Id);
+                }
+
+                for (int i = 0; i < pageableRequestChain.Tiers; i++)
+                {
+                    var pageableRequests = pageableRequestChain.GetTier(i);
+
+                    foreach (var pageableRequest in pageableRequests)
+                    {
+                        var pagedReleases = new List<Movie>();
+
+                        foreach (var request in pageableRequest)
+                        {
+                            url = request.Url.FullUri;
+
+                            var page = FetchPage(request, parser);
+
+                            pagedReleases.AddRange(page);
+
+                            if (isRecent && page.Any())
+                            {
+                                if (lastMovie == null)
+                                {
+                                    fullyUpdated = true;
+                                    break;
+                                }/*
+                                var oldestReleaseDate = page.Select(v => v.PublishDate).Min();
+                                if (oldestReleaseDate < lastReleaseInfo.PublishDate || page.Any(v => v.DownloadUrl == lastReleaseInfo.DownloadUrl))
+                                {
+                                    fullyUpdated = true;
+                                    break;
+                                }
+
+                                if (pagedReleases.Count >= MaxNumResultsPerQuery &&
+                                    oldestReleaseDate < DateTime.UtcNow - TimeSpan.FromHours(24))
+                                {
+                                    fullyUpdated = false;
+                                    break;
+                                }*///update later
+                            }
+                            else if (pagedReleases.Count >= MaxNumResultsPerQuery)
+                            {
+                                break;
+                            }
+
+                            if (!IsFullPage(page))
+                            {
+                                break;
+                            }
+                        }
+
+                        movies.AddRange(pagedReleases);
+                    }
+
+                    if (movies.Any())
+                    {
+                        break;
+                    }
+                }
+
+                if (isRecent && !movies.Empty())
+                {
+                    var ordered = movies.OrderByDescending(v => v.Title).ToList();
+
+                    lastMovie = ordered.First();
+                    //_indexerStatusService.UpdateRssSyncStatus(Definition.Id, lastReleaseInfo);
+                }
+
+                //_indexerStatusService.RecordSuccess(Definition.Id);
+            }
+            catch (WebException webException)
+            {
+                if (webException.Status == WebExceptionStatus.NameResolutionFailure ||
+                    webException.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    //_indexerStatusService.RecordConnectionFailure(Definition.Id);
+                }
+                else
+                {
+                    //_indexerStatusService.RecordFailure(Definition.Id);
+                }
+
+                if (webException.Message.Contains("502") || webException.Message.Contains("503") ||
+                    webException.Message.Contains("timed out"))
+                {
+                    _logger.Warn("{0} server is currently unavailable. {1} {2}", this, url, webException.Message);
+                }
+                else
+                {
+                    _logger.Warn("{0} {1} {2}", this, url, webException.Message);
+                }
+            }
+            catch (HttpException httpException)
+            {
+                if ((int)httpException.Response.StatusCode == 429)
+                {
+                    //_indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
+                    _logger.Warn("API Request Limit reached for {0}", this);
+                }
+                else
+                {
+                    //_indexerStatusService.RecordFailure(Definition.Id);
+                    _logger.Warn("{0} {1}", this, httpException.Message);
+                }
+            }
+            catch (RequestLimitReachedException)
+            {
+                //_indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
+                _logger.Warn("API Request Limit reached for {0}", this);
+            }
+            catch (ApiKeyException)
+            {
+                //_indexerStatusService.RecordFailure(Definition.Id);
+                _logger.Warn("Invalid API Key for {0} {1}", this, url);
+            }
+            catch (CloudFlareCaptchaException ex)
+            {
+                //_indexerStatusService.RecordFailure(Definition.Id);
+                if (ex.IsExpired)
+                {
+                    _logger.Error(ex, "Expired CAPTCHA token for {0}, please refresh in indexer settings.", this);
+                }
+                else
+                {
+                    _logger.Error(ex, "CAPTCHA token required for {0}, check indexer settings.", this);
+                }
+            }
+            catch (IndexerException ex)
+            {
+                //_indexerStatusService.RecordFailure(Definition.Id);
+                var message = string.Format("{0} - {1}", ex.Message, url);
+                _logger.Warn(ex, message);
+            }
+            catch (Exception feedEx)
+            {
+                //_indexerStatusService.RecordFailure(Definition.Id);
+                feedEx.Data.Add("FeedUrl", url);
+                _logger.Error(feedEx, "An error occurred while processing feed. " + url);
+            }
+
+            return movies;
+        }
+
+        protected virtual bool IsFullPage(IList<Movie> page)
+        {
+            return PageSize != 0 && page.Count >= PageSize;
+        }
+
+        protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)
+        {
+            var response = FetchIndexerResponse(request);
+
+            return parser.ParseResponse(response).ToList();
+        }
+
+        protected virtual NetImportResponse FetchIndexerResponse(NetImportRequest request)
+        {
+            _logger.Debug("Downloading List " + request.HttpRequest.ToString(false));
+
+            if (request.HttpRequest.RateLimit < RateLimit)
+            {
+                request.HttpRequest.RateLimit = RateLimit;
+            }
+
+            return new NetImportResponse(request, _httpClient.Execute(request.HttpRequest));
         }
 
         protected override void Test(List<ValidationFailure> failures)

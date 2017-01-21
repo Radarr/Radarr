@@ -1,32 +1,42 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FizzWare.NBuilder;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.RSSImport;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.NetImport
 {
-    public class RSSImportTest : CoreTest<RSSImportParser>
+    [TestFixture]
+    public class RSSImportFixture : CoreTest<RSSImport>
     {
-        private NetImportResponse CreateResponse(string url, string content)
-        {
-            var httpRequest = new HttpRequest(url);
-            var httpResponse = new HttpResponse(httpRequest, new HttpHeader(), Encoding.UTF8.GetBytes(content));
 
-            return new NetImportResponse(new NetImportRequest(httpRequest), httpResponse);
+        [SetUp]
+        public void Setup()
+        {
+            Subject.Definition = Subject.DefaultDefinitions.First();
+        }
+        private void GivenRecentFeedResponse(string rssXmlFile)
+        {
+            var recentFeed = ReadAllText(@"Files/" + rssXmlFile);
+
+            Mocker.GetMock<IHttpClient>()
+                .Setup(o => o.Execute(It.IsAny<HttpRequest>()))
+                .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), recentFeed));
         }
 
-
         [Test]
-        public void should_handle_relative_url()
+        public void should_fetch_imdb_list()
         {
-            var xml = ReadAllText("Files/imdb_watchlist.xml");
+            GivenRecentFeedResponse("imdb_watchlist.xml");
 
-            var result = Subject.ParseResponse(CreateResponse("http://my.indexer.com/api?q=My+Favourite+Show", xml));
+            var result = Subject.Fetch();
 
             result.First().Title.Should().Be("Think Like a Man Too");
             result.First().ImdbId.Should().Be("tt2239832");
