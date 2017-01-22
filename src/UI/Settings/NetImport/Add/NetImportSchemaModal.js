@@ -2,7 +2,7 @@ var _ = require('underscore');
 var AppLayout = require('../../../AppLayout');
 var Backbone = require('backbone');
 var SchemaCollection = require('../NetImportCollection');
-var AddCollectionView = require('./IndexerAddCollectionView');
+var AddCollectionView = require('./NetImportAddCollectionView');
 
 module.exports = {
 		open : function(collection) {

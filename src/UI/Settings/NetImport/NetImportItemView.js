@@ -1,6 +1,6 @@
 var AppLayout = require('../../AppLayout');
 var Marionette = require('marionette');
-var EditView = require('./Edit/IndexerEditView');
+var EditView = require('./Edit/NetImportEditView');
 
 module.exports = Marionette.ItemView.extend({
 		template : 'Settings/NetImport/NetImportItemViewTemplate',

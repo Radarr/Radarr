@@ -34,6 +34,7 @@ using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.NetImport;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -54,6 +55,10 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.Protocol)
                   .Ignore(i => i.SupportsRss)
                   .Ignore(i => i.SupportsSearch);
+
+            Mapper.Entity<NetImportDefinition>().RegisterDefinition("NetImport")
+                .Ignore(i => i.Enable)
+                .Ignore(i => i.ConfigContract);
 
             Mapper.Entity<NotificationDefinition>().RegisterDefinition("Notifications")
                   .Ignore(i => i.SupportsOnGrab)

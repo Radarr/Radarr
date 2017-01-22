@@ -1,6 +1,6 @@
 var Marionette = require('marionette');
 var ItemView = require('./NetImportItemView');
-var SchemaModal = require('./Add/IndexerSchemaModal');
+var SchemaModal = require('./Add/NetImportSchemaModal');
 
 module.exports = Marionette.CompositeView.extend({
 		itemView          : ItemView,

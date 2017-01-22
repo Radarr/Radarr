@@ -1,7 +1,7 @@
 var Marionette = require('marionette');
 var NetImportCollection = require('./NetImportCollection');
 var CollectionView = require('./NetImportCollectionView');
-var OptionsView = require('./Options/IndexerOptionsView');
+var OptionsView = require('./Options/NetImportOptionsView');
 
 module.exports = Marionette.Layout.extend({
 		template : 'Settings/NetImport/NetImportLayoutTemplate',

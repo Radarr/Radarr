@@ -10,6 +10,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Http.CloudFlare;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
@@ -230,13 +231,65 @@ namespace NzbDrone.Core.NetImport
 
         protected override void Test(List<ValidationFailure> failures)
         {
-            throw new NotImplementedException();
+            failures.AddIfNotNull(TestConnection());
         }
 
         protected virtual ValidationFailure TestConnection()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var parser = GetParser();
+                var generator = GetRequestGenerator();
+                var releases = FetchPage(generator.GetMovies().GetAllTiers().First().First(), parser);
+
+                if (releases.Empty())
+                {
+                    return new ValidationFailure(string.Empty, "No results were returned from your list, please check your settings.");
+                }
+            }
+            catch (ApiKeyException)
+            {
+                _logger.Warn("List returned result for RSS URL, API Key appears to be invalid");
+
+                return new ValidationFailure("ApiKey", "Invalid API Key");
+            }
+            catch (RequestLimitReachedException)
+            {
+                _logger.Warn("Request limit reached");
+            }
+            catch (CloudFlareCaptchaException ex)
+            {
+                if (ex.IsExpired)
+                {
+                    return new ValidationFailure("CaptchaToken", "CloudFlare CAPTCHA token expired, please Refresh.");
+                }
+                else
+                {
+                    return new ValidationFailure("CaptchaToken", "Site protected by CloudFlare CAPTCHA. Valid CAPTCHA token required.");
+                }
+            }
+            catch (UnsupportedFeedException ex)
+            {
+                _logger.Warn(ex, "List feed is not supported");
+
+                return new ValidationFailure(string.Empty, "List feed is not supported: " + ex.Message);
+            }
+            catch (NetImportException ex)
+            {
+                _logger.Warn(ex, "Unable to connect to list");
+
+                return new ValidationFailure(string.Empty, "Unable to connect to indexer. " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Unable to connect to list");
+
+                return new ValidationFailure(string.Empty, "Unable to connect to list, check the log for more details");
+            }
+
+            return null;
         }
     }
+    
 
 }

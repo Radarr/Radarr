@@ -27,7 +27,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             get
             {
                 var config = (RSSImportSettings)new RSSImportSettings();
-                config.Link = "https://rss.imdb.com/list/YOURLISTID";
+                config.Link = "http://rss.imdb.com/list/YOURLISTID";
 
                 yield return new NetImportDefinition
                 {
