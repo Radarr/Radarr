@@ -209,7 +209,7 @@ module.exports = Marionette.Layout.extend({
     _moviesSearch : function() {
         CommandController.Execute('moviesSearch', {
             name     : 'moviesSearch',
-            movieId : this.model.id
+            movieIds : [this.model.id]
         });
     },
 
