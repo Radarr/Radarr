@@ -122,7 +122,7 @@
     <Compile Include="Authentication\User.cs" />
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
-    <Compile Include="Datastore\Migration\119_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoAPI.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoParser.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoRequestGenerator.cs" />
