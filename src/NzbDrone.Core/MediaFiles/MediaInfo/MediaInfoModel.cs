@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
@@ -48,11 +49,14 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     return AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? AudioChannels - 1 + 0.1m : AudioChannels;
                 }
 
-                decimal channels = 0;
+                    return
+                        AudioChannelPositions.Replace(" / ", "$")
+                            .Split('$')
+                            .First()
+                            .Split('/')
+                            .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
 
-                decimal.TryParse(AudioChannelPositions.Split('/').First(), out channels);
-
-                return channels;
+                
             }
         }
     }
