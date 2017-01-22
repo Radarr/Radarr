@@ -21,7 +21,13 @@ namespace NzbDrone.Core.NetImport.CouchPotato
 
         private IEnumerable<NetImportRequest> GetMovies(string searchParameters)
         {
-            var request = new NetImportRequest($"{Settings.Link.Trim()}:{Settings.Port}/api/{Settings.ApiKey}/movie.list/?status=active", HttpAccept.Json);
+            var urlBase = "";
+            if (!string.IsNullOrWhiteSpace(Settings.UrlBase))
+            {
+                urlBase = Settings.UrlBase.StartsWith("/") ? Settings.UrlBase : $"/{Settings.UrlBase}";
+            }
+
+            var request = new NetImportRequest($"{Settings.Link.Trim()}:{Settings.Port}{urlBase}/api/{Settings.ApiKey}/movie.list/?status=active", HttpAccept.Json);
             yield return request;
         }
     }
