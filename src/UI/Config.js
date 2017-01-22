@@ -2,6 +2,8 @@ var $ = require('jquery');
 var vent = require('./vent');
 
 module.exports = {
+    ConfigNamespace : 'Radarr',
+
     Events : {
         ConfigUpdatedEvent : 'ConfigUpdatedEvent'
     },
@@ -16,6 +18,7 @@ module.exports = {
     },
 
     getValueJson : function (key, defaultValue) {
+        key = this.ConfigNamespace + key;
         defaultValue = defaultValue || {};
 
         var storeValue = window.localStorage.getItem(key);
@@ -34,6 +37,7 @@ module.exports = {
     },
 
     getValue : function(key, defaultValue) {
+        key = this.ConfigNamespace + key;
         var storeValue = window.localStorage.getItem(key);
 
         if (!storeValue) {
@@ -48,6 +52,7 @@ module.exports = {
     },
 
     setValue : function(key, value) {
+        key = this.ConfigNamespace + key;
         console.log('Config: [{0}] => [{1}]'.format(key, value));
 
         if (this.getValue(key) === value.toString()) {
