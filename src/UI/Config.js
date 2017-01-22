@@ -55,7 +55,7 @@ module.exports = {
         var storeKey = this.ConfigNamespace + key;
         console.log('Config: [{0}] => [{1}]'.format(storeKey, value));
 
-        if (this.getValue(storeKey) === value.toString()) {
+        if (this.getValue(key) === value.toString()) {
             return;
         }
 
