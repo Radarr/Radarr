@@ -45,7 +45,7 @@ namespace NzbDrone.Core.ThingiProvider
             {
                 var definition = provider.DefaultDefinitions
                     .OfType<TProviderDefinition>()
-                    .FirstOrDefault(v => v.Name == null || v.Name == provider.GetType().Name);
+                    .FirstOrDefault(v => v.Name == null || v.Name == provider.Name);
 
                 if (definition == null)
                 {

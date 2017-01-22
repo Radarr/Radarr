@@ -18,10 +18,10 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "Link to your CoouchPootato.")]
         public new string Link { get; set; }
 
-        [FieldDefinition(2, Label = "CouchPotato Port", HelpText = "Port your CoouchPootato uses.")]
+        [FieldDefinition(1, Label = "CouchPotato Port", HelpText = "Port your CoouchPootato uses.")]
         public string Port { get; set; }
 
-        [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
+        [FieldDefinition(2, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
         public string ApiKey { get; set; }
     }
 }

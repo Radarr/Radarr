@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
@@ -48,7 +49,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
 
     public class ReleaseInfo
     {
-        public int size { get; set; }
+        public double size { get; set; }
         public int seeders { get; set; }
         public string protocol { get; set; }
         public string description { get; set; }

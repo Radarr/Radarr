@@ -26,17 +26,18 @@ namespace NzbDrone.Core.NetImport.RSSImport
         {
             get
             {
-                var config = (RSSImportSettings)new RSSImportSettings();
-                config.Link = "http://rss.imdb.com/list/YOURLISTID";
-
+                foreach (var def in base.DefaultDefinitions)
+                {
+                    yield return def;
+                }
                 yield return new NetImportDefinition
                 {
                     Name = "IMDb Watchlist",
-                    Enabled = config.Validate().IsValid && Enabled,
+                    Enabled = Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
                     Implementation = GetType().Name,
-                    Settings = config
+                    Settings = new RSSImportSettings { Link = "http://rss.imdb.com/list/YOURLISTID" },
                 };
             }
         }
