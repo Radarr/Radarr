@@ -12,16 +12,20 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public CouchPotatoSettings()
         {
             Link = "http://localhost";
-            Port = "5050";
+            Port = 5050;
+            UrlBase = "";
         }
 
         [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "Link to your CoouchPootato.")]
         public new string Link { get; set; }
 
         [FieldDefinition(1, Label = "CouchPotato Port", HelpText = "Port your CoouchPootato uses.")]
-        public string Port { get; set; }
+        public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
+        [FieldDefinition(2, Label = "CouchPotato Url Base", HelpText = "UrlBase your CoouchPootato uses, leave blank for none")]
+        public string UrlBase { get; set; }
+
+        [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
         public string ApiKey { get; set; }
     }
 }
