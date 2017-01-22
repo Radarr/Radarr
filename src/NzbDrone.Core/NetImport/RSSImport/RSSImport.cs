@@ -22,7 +22,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             : base(httpClient, configService, parsingService, logger)
         { }
 
-        public new virtual IEnumerable<ProviderDefinition> DefaultDefinitions
+        public override IEnumerable<ProviderDefinition> DefaultDefinitions
         {
             get
             {

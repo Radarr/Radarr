@@ -68,6 +68,13 @@ namespace NzbDrone.Core.ThingiProvider
         {
             var provider = _providers.First(v => v.GetType().Name == providerDefinition.Implementation);
 
+            var defs = provider.DefaultDefinitions.OfType<TProviderDefinition>();
+
+            foreach (var def in defs)
+            {
+                _logger.Debug(def);
+            }
+
             var definitions = provider.DefaultDefinitions
                    .OfType<TProviderDefinition>()
                    .Where(v => v.Name != null && v.Name != provider.GetType().Name)
