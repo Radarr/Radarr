@@ -190,6 +190,9 @@
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveRejectedFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveGrabbedFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\AddFixture.cs" />
+    <None Include="Files\couchpotato_movie_list.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Files\Indexers\Rarbg\RecentFeed_v1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -284,6 +287,7 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
+    <Compile Include="NetImport\CouchPotato\CouchPotatoParserFixture.cs" />
     <Compile Include="NetImport\RSSImportFixture.cs" />
     <Compile Include="NetImport\RSSImportParserFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />

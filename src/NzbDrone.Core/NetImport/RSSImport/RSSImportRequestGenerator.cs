@@ -20,10 +20,10 @@ namespace NzbDrone.Core.NetImport.RSSImport
             return pageableRequests;
         }
 
-        public NetImportPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
-        {
-            return new NetImportPageableRequestChain();
-        }
+        //public NetImportPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        //{
+        //    return new NetImportPageableRequestChain();
+        //}
 
         private IEnumerable<NetImportRequest> GetMovies(string searchParameters)
         {

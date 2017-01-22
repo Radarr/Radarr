@@ -123,6 +123,10 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\119_create_netimport_table.cs" />
+    <Compile Include="NetImport\CouchPotato\CouchPotatoAPI.cs" />
+    <Compile Include="NetImport\CouchPotato\CouchPotatoParser.cs" />
+    <Compile Include="NetImport\CouchPotato\CouchPotatoRequestGenerator.cs" />
+    <Compile Include="NetImport\CouchPotato\CouchPotatoSettings.cs" />
     <Compile Include="NetImport\Exceptions\NetImportException.cs" />
     <Compile Include="NetImport\HttpNetImportBase.cs" />
     <Compile Include="NetImport\NetImportFactory.cs" />
@@ -131,7 +135,6 @@
     <Compile Include="NetImport\NetImportPageableRequest.cs" />
     <Compile Include="NetImport\NetImportPageableRequestChain.cs" />
     <Compile Include="NetImport\INetImportRequestGenerator.cs" />
-    <Compile Include="NetImport\RSSImport\IMDbWatchListAPI.cs" />
     <Compile Include="NetImport\RSSImport\RSSImportParser.cs" />
     <Compile Include="NetImport\RSSImport\RSSImportRequestGenerator.cs" />
     <Compile Include="NetImport\NetImportRequest.cs" />
@@ -141,7 +144,6 @@
     <Compile Include="NetImport\INetImport.cs" />
     <Compile Include="NetImport\NetImportDefinition.cs" />
     <Compile Include="NetImport\RSSImport\RSSImport.cs" />
-    <Compile Include="NetImport\RSSImport\IMDbWatchListProxy.cs" />
     <Compile Include="NetImport\RSSImport\RSSImportSettings.cs" />
     <Compile Include="Backup\Backup.cs" />
     <Compile Include="Backup\BackupCommand.cs" />
@@ -1279,9 +1281,7 @@
     </Content>
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NetImport\CouchPotato\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

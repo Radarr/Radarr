@@ -14,7 +14,6 @@ namespace NzbDrone.Core.NetImport.RSSImport
         public RSSImportSettings()
         {
             Link = "http://rss.yoursite.com";
-            ProfileId = 1;
         }
 
         [FieldDefinition(0, Label = "RSS Link", HelpText = "Link to the rss feed of movies.")]
