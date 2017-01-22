@@ -12,6 +12,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public CouchPotatoSettings()
         {
             Link = "http://localhost";
+            Port = "5050";
         }
 
         [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "Link to your CoouchPootato.")]
