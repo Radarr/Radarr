@@ -14,7 +14,9 @@ namespace NzbDrone.Core.Datastore.Migration
                     .WithColumn("Enabled").AsBoolean()
                     .WithColumn("Name").AsString().Unique()
                     .WithColumn("Implementation").AsString()
-                    .WithColumn("Settings").AsString().Nullable();
+                    .WithColumn("ConfigContract").AsString().Nullable()
+                    .WithColumn("Settings").AsString().Nullable()
+                    .WithColumn("EnableAuto").AsInt32();
             }
         }
     }

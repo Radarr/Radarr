@@ -57,8 +57,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsSearch);
 
             Mapper.Entity<NetImportDefinition>().RegisterDefinition("NetImport")
-                .Ignore(i => i.Enable)
-                .Ignore(i => i.ConfigContract);
+                .Ignore(i => i.Enable);
 
             Mapper.Entity<NotificationDefinition>().RegisterDefinition("Notifications")
                   .Ignore(i => i.SupportsOnGrab)

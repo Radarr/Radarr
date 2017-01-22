@@ -226,6 +226,8 @@ namespace NzbDrone.Core.NetImport
                 request.HttpRequest.RateLimit = RateLimit;
             }
 
+            request.HttpRequest.AllowAutoRedirect = true;
+
             return new NetImportResponse(request, _httpClient.Execute(request.HttpRequest));
         }
 
