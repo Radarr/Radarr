@@ -22,7 +22,7 @@ namespace NzbDrone.Api.NetImport
             int index = 0;
             foreach (var field in resource.Fields)
             {
-                if (field.Label == "Quality")
+                if (field.Label == "Quality Profile")
                 {
                     index = resource.Fields.FindIndex(f => f.Label == field.Label);
                     field.SelectOptions =
