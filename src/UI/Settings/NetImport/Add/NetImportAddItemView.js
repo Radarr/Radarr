@@ -38,8 +38,7 @@ module.exports = Marionette.ItemView.extend({
 		_openEdit : function() {
 				this.model.set({
 						id           : undefined,
-						enableRss    : this.model.get('supportsRss'),
-						enableSearch : this.model.get('supportsSearch')
+						enableAuto    : this.model.get('enableAuto')
 				});
 
 				var editView = new EditView({

@@ -3,6 +3,7 @@ var $ = require('jquery');
 var vent = require('vent');
 var Marionette = require('marionette');
 var DeleteView = require('../Delete/IndexerDeleteView');
+var Profiles = require('../../../Profile/ProfileCollection');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
@@ -22,6 +23,8 @@ var view = Marionette.ItemView.extend({
 
 		initialize : function(options) {
 				this.targetCollection = options.targetCollection;
+				this.templateHelpers = {};
+				this.templateHelpers.profiles = Profiles.toJSON();
 		},
 
 		_onAfterSave : function() {

@@ -18,19 +18,8 @@ namespace NzbDrone.Api.NetImport
             base.MapToResource(resource, definition);
 
             resource.Enabled = definition.Enabled;
-            Field theField = null;
-            int index = 0;
-            foreach (var field in resource.Fields)
-            {
-                if (field.Label == "Quality Profile")
-                {
-                    index = resource.Fields.FindIndex(f => f.Label == field.Label);
-                    field.SelectOptions =
-                        _profileService.All().ConvertAll(p => new SelectOption {Name = p.Name, Value = p.Id});
-
-                    theField = field;
-                }
-            }
+            resource.EnableAuto = definition.EnableAuto;
+            resource.ProfileId = definition.ProfileId;
 
         }
 
@@ -38,7 +27,9 @@ namespace NzbDrone.Api.NetImport
         {
             base.MapToModel(definition, resource);
 
-            resource.Enabled = definition.Enabled;
+            definition.Enabled = resource.Enabled;
+            definition.EnableAuto = resource.EnableAuto;
+            definition.ProfileId = resource.ProfileId;
         }
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)

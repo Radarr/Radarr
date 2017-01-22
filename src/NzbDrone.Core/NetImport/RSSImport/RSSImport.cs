@@ -33,6 +33,8 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 {
                     Name = "IMDb Watchlist",
                     Enabled = config.Validate().IsValid && Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = config
                 };

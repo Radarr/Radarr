@@ -45,6 +45,8 @@ namespace NzbDrone.Core.NetImport
                 {
                     Name = this.Name,
                     Enabled = config.Validate().IsValid && Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = config
                 };

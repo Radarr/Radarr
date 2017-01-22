@@ -21,14 +21,10 @@ namespace NzbDrone.Core.NetImport
         public NetImportBaseSettings()
         {
             Link = "http://rss.imdb.com/list/";
-            ProfileId = 1;
         }
 
         [FieldDefinition(0, Label = "Link", HelpText = "Link to the list of movies.")]
         public string Link { get; set; }
-
-        [FieldDefinition(1, Label = "Quality Profile", Type = FieldType.Select, SelectOptions = typeof(Profile), HelpText = "Quality Profile of all added movies")]
-        public int ProfileId { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(Link);
 
