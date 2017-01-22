@@ -3,6 +3,7 @@ using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Tv
 {
@@ -37,7 +38,7 @@ namespace NzbDrone.Core.Tv
 
             if (movie.AddOptions.SearchForMovie)
             {
-                _commandQueueManager.Push(new MoviesSearchCommand { MovieId = movie.Id});
+                _commandQueueManager.Push(new MoviesSearchCommand { MovieIds = new List<int> { movie.Id } });
             }
 
             movie.AddOptions = null;
