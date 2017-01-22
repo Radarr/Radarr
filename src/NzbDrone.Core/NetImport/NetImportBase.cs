@@ -43,7 +43,7 @@ namespace NzbDrone.Core.NetImport
 
                 yield return new NetImportDefinition
                 {
-                    Name = GetType().Name,
+                    Name = this.Name,
                     Enabled = config.Validate().IsValid && Enabled,
                     Implementation = GetType().Name,
                     Settings = config

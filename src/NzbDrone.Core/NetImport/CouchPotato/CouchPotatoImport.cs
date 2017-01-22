@@ -22,7 +22,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             : base(httpClient, configService, parsingService, logger)
         { }
 
-        public new virtual IEnumerable<ProviderDefinition> DefaultDefinitions
+        /*public new virtual IEnumerable<ProviderDefinition> DefaultDefinitions
         {
             get
             {
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                     Settings = config
                 };
             }
-        }
+        }*/
 
         public override INetImportRequestGenerator GetRequestGenerator()
         {
