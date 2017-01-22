@@ -7,12 +7,12 @@ module.exports = {
     },
 
     Keys : {
-        DefaultProfileId    : 'DefaultProfileId',
-        DefaultRootFolderId : 'DefaultRootFolderId',
-        UseSeasonFolder     : 'UseSeasonFolder',
-        DefaultSeriesType   : 'DefaultSeriesType',
-        MonitorEpisodes     : 'MonitorEpisodes',
-        AdvancedSettings    : 'advancedSettings'
+        DefaultProfileId    : 'RadarrDefaultProfileId',
+        DefaultRootFolderId : 'RadarrDefaultRootFolderId',
+        UseSeasonFolder     : 'RadarrUseSeasonFolder',
+        DefaultSeriesType   : 'RadarrDefaultSeriesType',
+        MonitorEpisodes     : 'RadarrMonitorEpisodes',
+        AdvancedSettings    : 'RadarradvancedSettings'
     },
 
     getValueJson : function (key, defaultValue) {
@@ -48,7 +48,6 @@ module.exports = {
     },
 
     setValue : function(key, value) {
-
         console.log('Config: [{0}] => [{1}]'.format(key, value));
 
         if (this.getValue(key) === value.toString()) {
