@@ -41,6 +41,9 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex EpisodeRegex = new Regex(@"(?<episode>\{episode(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex TagsRegex = new Regex(@"(?<tags>\{tags(?:\:0+)?})",
+                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly Regex SeasonRegex = new Regex(@"(?<season>\{season(?:\:0+)?})",
                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -165,6 +168,7 @@ namespace NzbDrone.Core.Organizer
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
             AddMovieFileTokens(tokenHandlers, movieFile);
+            AddTagsTokens(tokenHandlers, movieFile);
 
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -489,6 +493,11 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Title}"] = m => movie.Title;
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(movie.Title);
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
+        }
+
+        private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
+        {
+            tokenHandlers["{Tags}"] = m => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
         }
 
         private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
