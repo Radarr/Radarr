@@ -1,8 +1,9 @@
 var _ = require('underscore');
 var vent = require('vent');
 var Marionette = require('marionette');
+var Backgrid = require('backgrid');
 var AddFromListCollection = require('./AddFromListCollection');
-//var SearchResultCollectionView = require('./SearchResultCollectionView');
+var AddFromListCollectionView = require('./AddFromListCollectionView');
 var AddListView = require("../../Settings/NetImport/Add/NetImportAddItemView");
 var EmptyView = require('../EmptyView');
 var NotFoundView = require('../NotFoundView');
@@ -10,6 +11,16 @@ var ListCollection = require("../../Settings/NetImport/NetImportCollection");
 var ErrorView = require('../ErrorView');
 var LoadingView = require('../../Shared/LoadingView');
 var AppLayout = require('../../AppLayout');
+var InCinemasCell = require('../../Cells/InCinemasCell');
+var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var TemplatedCell = require('../../Cells/TemplatedCell');
+var ProfileCell = require('../../Cells/ProfileCell');
+var MovieLinksCell = require('../../Cells/MovieLinksCell');
+var MovieActionCell = require('../../Cells/MovieActionCell');
+var MovieStatusCell = require('../../Cells/MovieStatusCell');
+var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
+var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
+
 var SchemaModal = require('../../Settings/NetImport/Add/NetImportSchemaModal');
 
 module.exports = Marionette.Layout.extend({
@@ -24,6 +35,27 @@ module.exports = Marionette.Layout.extend({
 				listSelection : ".x-list-selection",
 
 		},
+
+		columns : [
+				{
+						name      : 'title',
+						label     : 'Title',
+						cell      : MovieTitleCell,
+						cellValue : 'this',
+				},
+				{
+						name  : 'profileId',
+						label : 'Profile',
+						cell  : ProfileCell
+				},
+				{
+						name      : 'this',
+						label     : 'Links',
+						cell      : MovieLinksCell,
+						className : "movie-links-cell",
+						sortable : false,
+				}
+		],
 
 		events : {
 				'click .x-load-more' : '_onLoadMore',
@@ -45,6 +77,8 @@ module.exports = Marionette.Layout.extend({
 				this.listCollection.fetch();
 
 				this.collection = new AddFromListCollection();
+
+				this.listenTo(this.collection, 'sync', this._showResults);
 
 				/*this.listenTo(this.collection, 'sync', this._showResults);
 
@@ -126,7 +160,7 @@ module.exports = Marionette.Layout.extend({
 			this.fetchResult.show(new LoadingView());
 
 			this.currentFetchPromise = this.collection.fetch(
-				{ data : { profileId : listId} }
+				{ data : { listId : listId} }
 			)
 			this.currentFetchPromise.fail(function() {
 					self._showError();
@@ -149,17 +183,16 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_showResults : function() {
-				if (!this.isClosed) {
 						if (this.collection.length === 0) {
-								this.ui.searchBar.show();
-								this.searchResult.show(new NotFoundView({ term : this.collection.term }));
+								this.fetchResult.show(new NotFoundView({ term : "" }));
 						} else {
-								this.searchResult.show(this.resultCollectionView);
-								if (!this.showingAll) {
-										this.ui.loadMore.show();
-								}
+								this.fetchResult.show(new Backgrid.Grid({
+										collection : this.collection,
+										columns    : this.columns,
+										className  : 'table table-hover'
+								}));
 						}
-				}
+
 		},
 
 		_abortExistingSearch : function() {
