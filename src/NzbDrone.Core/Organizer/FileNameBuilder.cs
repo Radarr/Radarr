@@ -497,7 +497,7 @@ namespace NzbDrone.Core.Organizer
 
         private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
-            tokenHandlers["{Tags}"] = m => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
+            tokenHandlers["{Edition Tags}"] = m => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
         }
 
         private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
