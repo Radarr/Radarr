@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     .WithColumn("Settings").AsString().Nullable()
                     .WithColumn("EnableAuto").AsInt32()
                     .WithColumn("RootFolderPath").AsString()
+                    .WithColumn("ShouldMonitor").AsInt32()
                     .WithColumn("ProfileId").AsInt32();
             }
         }

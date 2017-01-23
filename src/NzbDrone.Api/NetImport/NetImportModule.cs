@@ -21,6 +21,7 @@ namespace NzbDrone.Api.NetImport
             resource.EnableAuto = definition.EnableAuto;
             resource.ProfileId = definition.ProfileId;
             resource.RootFolderPath = definition.RootFolderPath;
+            resource.ShouldMonitor = definition.ShouldMonitor;
         }
 
         protected override void MapToModel(NetImportDefinition definition, NetImportResource resource)
@@ -31,6 +32,7 @@ namespace NzbDrone.Api.NetImport
             definition.EnableAuto = resource.EnableAuto;
             definition.ProfileId = resource.ProfileId;
             definition.RootFolderPath = resource.RootFolderPath;
+            definition.ShouldMonitor = resource.ShouldMonitor;
         }
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)
