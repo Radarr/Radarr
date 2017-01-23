@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using FluentMigrator.Expressions;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
@@ -17,6 +18,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     .WithColumn("ConfigContract").AsString().Nullable()
                     .WithColumn("Settings").AsString().Nullable()
                     .WithColumn("EnableAuto").AsInt32()
+                    .WithColumn("RootFolderPath").AsString()
                     .WithColumn("ProfileId").AsInt32();
             }
         }

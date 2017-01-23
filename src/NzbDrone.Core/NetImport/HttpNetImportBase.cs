@@ -214,7 +214,12 @@ namespace NzbDrone.Core.NetImport
         {
             var response = FetchIndexerResponse(request);
 
-            return parser.ParseResponse(response).ToList();
+            return parser.ParseResponse(response).ToList().Select(m =>
+            {
+                m.RootFolderPath = ((NetImportDefinition) Definition).RootFolderPath;
+                m.ProfileId = ((NetImportDefinition) Definition).ProfileId;
+                return m;
+            }).ToList();
         }
 
         protected virtual NetImportResponse FetchIndexerResponse(NetImportRequest request)

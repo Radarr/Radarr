@@ -561,5 +561,40 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             return value;
         }
+
+        public Movie MapMovieToTmdbMovie(Movie movie)
+        {
+            Movie newMovie = movie;
+            if (movie.TmdbId > 0)
+            {
+                return newMovie;
+            }
+
+            if (movie.ImdbId.IsNotNullOrWhiteSpace())
+            {
+                newMovie = GetMovieInfo(movie.ImdbId);
+            }
+            else
+            {
+                var yearStr = "";
+                if (movie.Year > 1900)
+                {
+                    yearStr = $" {movie.Year}";
+                }
+                newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
+            }
+
+            if (newMovie == null)
+            {
+                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB.");
+                return null;
+            }
+
+            newMovie.Path = movie.Path;
+            newMovie.RootFolderPath = movie.RootFolderPath;
+            newMovie.ProfileId = movie.ProfileId;
+
+            return newMovie;
+        }
     }
 }

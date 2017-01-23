@@ -7,6 +7,9 @@ var Profiles = require('../../../Profile/ProfileCollection');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
+var RootFolders = require('../../../AddMovies/RootFolders/RootFolderCollection');
+var RootFolderLayout = require('../../../AddMovies/RootFolders/RootFolderLayout');
+var Config = require('../../../Config');
 require('../../../Form/FormBuilder');
 require('../../../Mixins/AutoComplete');
 require('bootstrap');
@@ -14,9 +17,15 @@ require('bootstrap');
 var view = Marionette.ItemView.extend({
 		template : 'Settings/NetImport/Edit/NetImportEditViewTemplate',
 
+		ui : {
+				profile         : '.x-profile',
+				rootFolder      : '.x-root-folder',
+			},
+
 		events : {
 				'click .x-back'            : '_back',
-				'click .x-captcha-refresh' : '_onRefreshCaptcha'
+				'click .x-captcha-refresh' : '_onRefreshCaptcha',
+								'change .x-root-folder'   : '_rootFolderChanged',
 		},
 
 		_deleteView : DeleteView,
@@ -24,7 +33,26 @@ var view = Marionette.ItemView.extend({
 		initialize : function(options) {
 				this.targetCollection = options.targetCollection;
 				this.templateHelpers = {};
-				this.templateHelpers.profiles = Profiles.toJSON();
+
+				this._configureTemplateHelpers();
+				this.listenTo(this.model, 'change', this.render);
+				this.listenTo(RootFolders, 'all', this._rootFoldersUpdated);
+		},
+
+		onRender : function() {
+				var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
+				if (RootFolders.get(defaultRoot)) {
+						this.ui.rootFolder.val(defaultRoot);
+				}
+		},
+
+		_onBeforeSave : function() {
+			var profile = this.ui.profile.val();
+			var rootFolderPath = this.ui.rootFolder.children(':selected').text();
+			this.model.set({
+				profileId : profile,
+				rootFolderPath : rootFolderPath,
+			})
 		},
 
 		_onAfterSave : function() {
@@ -44,6 +72,28 @@ var view = Marionette.ItemView.extend({
 				}
 
 				require('../Add/NetImportSchemaModal').open(this.targetCollection);
+		},
+
+		_configureTemplateHelpers : function() {
+			this.templateHelpers.profiles = Profiles.toJSON();
+			this.templateHelpers.rootFolders = RootFolders.toJSON();
+		},
+
+		_rootFolderChanged : function() {
+			var rootFolderValue = this.ui.rootFolder.val();
+			if (rootFolderValue === 'addNew') {
+					var rootFolderLayout = new RootFolderLayout();
+					this.listenToOnce(rootFolderLayout, 'folderSelected', this._setRootFolder);
+					AppLayout.modalRegion.show(rootFolderLayout);
+			} else {
+					Config.setValue(Config.Keys.DefaultRootFolderId, rootFolderValue);
+			}
+		},
+
+		_rootFoldersUpdated : function() {
+				this._configureTemplateHelpers();
+				debugger;
+				this.render();
 		},
 
 		_onRefreshCaptcha : function(event) {

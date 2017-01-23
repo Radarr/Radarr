@@ -27,7 +27,14 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                 urlBase = Settings.UrlBase.StartsWith("/") ? Settings.UrlBase : $"/{Settings.UrlBase}";
             }
 
-            var request = new NetImportRequest($"{Settings.Link.Trim()}:{Settings.Port}{urlBase}/api/{Settings.ApiKey}/movie.list/?status=active", HttpAccept.Json);
+            var status = "";
+
+            if (Settings.OnlyActive)
+            {
+                status = "?status=active";
+            }
+
+            var request = new NetImportRequest($"{Settings.Link.Trim()}:{Settings.Port}{urlBase}/api/{Settings.ApiKey}/movie.list/{status}", HttpAccept.Json);
             yield return request;
         }
     }

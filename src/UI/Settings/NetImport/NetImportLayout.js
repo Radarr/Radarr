@@ -2,6 +2,7 @@ var Marionette = require('marionette');
 var NetImportCollection = require('./NetImportCollection');
 var CollectionView = require('./NetImportCollectionView');
 var OptionsView = require('./Options/NetImportOptionsView');
+var RootFolderCollection = require('../../AddMovies/RootFolders/RootFolderCollection');
 
 module.exports = Marionette.Layout.extend({
 		template : 'Settings/NetImport/NetImportLayoutTemplate',
@@ -14,6 +15,9 @@ module.exports = Marionette.Layout.extend({
 		initialize : function() {
 				this.indexersCollection = new NetImportCollection();
 				this.indexersCollection.fetch();
+				RootFolderCollection.fetch().done(function() {
+						RootFolderCollection.synced = true;
+				});
 		},
 
 		onShow : function() {

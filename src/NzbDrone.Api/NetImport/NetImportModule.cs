@@ -20,7 +20,7 @@ namespace NzbDrone.Api.NetImport
             resource.Enabled = definition.Enabled;
             resource.EnableAuto = definition.EnableAuto;
             resource.ProfileId = definition.ProfileId;
-
+            resource.RootFolderPath = definition.RootFolderPath;
         }
 
         protected override void MapToModel(NetImportDefinition definition, NetImportResource resource)
@@ -30,6 +30,7 @@ namespace NzbDrone.Api.NetImport
             definition.Enabled = resource.Enabled;
             definition.EnableAuto = resource.EnableAuto;
             definition.ProfileId = resource.ProfileId;
+            definition.RootFolderPath = resource.RootFolderPath;
         }
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.NetImport
@@ -20,13 +23,25 @@ namespace NzbDrone.Core.NetImport
         private readonly Logger _logger;
         private readonly INetImportFactory _netImportFactory;
         private readonly IMovieService _movieService;
+        private readonly ISearchForNewMovie _movieSearch;
+        private readonly IRootFolderService _rootFolder;
+        private string defaultRootFolder;
 
-        public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService, Logger logger)
+        public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
+            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, Logger logger)
         {
             _netImportFactory = netImportFactory;
             _movieService = movieService;
+            _movieSearch = movieSearch;
+            _rootFolder = rootFolder;
+            var folder = _rootFolder.All().FirstOrDefault();
+            if (folder != null)
+            {
+                defaultRootFolder = folder.Path;
+            }
             _logger = logger;
         }
+
 
         public List<Movie> Fetch(int listId, bool onlyEnableAuto = false)
         {
@@ -65,9 +80,19 @@ namespace NzbDrone.Core.NetImport
 
         public void Execute(NetImportSyncCommand message)
         {
-            var movies = FetchAndFilter(2, false);
+            var movies = FetchAndFilter(0, true);
 
-            _logger.Debug("Found {0} movies on your lists not in your library", movies.Count);
+            _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
+
+            foreach (var movie in movies)
+            {
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+
+                if (mapped != null)
+                {
+                    _movieService.AddMovie(mapped);
+                }
+            }
         }
     }
 }

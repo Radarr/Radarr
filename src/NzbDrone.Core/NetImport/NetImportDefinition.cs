@@ -10,6 +10,7 @@ namespace NzbDrone.Core.NetImport
         public bool EnableAuto { get; set; }
         public int ProfileId { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
+        public string RootFolderPath { get; set; }
         public override bool Enable => Enabled;
     }
 }
