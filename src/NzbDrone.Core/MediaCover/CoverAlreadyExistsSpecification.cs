@@ -46,9 +46,16 @@ namespace NzbDrone.Core.MediaCover
         {
             try
             {
+                GdiPlusInterop.CheckGdiPlus();
+
                 using (var bmp = new Bitmap(filename))
                 {
                 }
+                return true;
+            }
+            catch (DllNotFoundException ex)
+            {
+                _logger.Error(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
                 return true;
             }
             catch (Exception ex)
