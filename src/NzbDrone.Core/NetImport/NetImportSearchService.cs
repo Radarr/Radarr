@@ -28,15 +28,34 @@ namespace NzbDrone.Core.NetImport
 
         public List<Movie> Fetch(int listId, bool onlyEnableAuto)
         {
+            return MovieListSearch(listId, onlyEnableAuto);
+        }
+
+        public List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto)
+        {
+            var existingMovies = _movieService.GetAllMovies();
+
+            var movies = MovieListSearch(listId, onlyEnableAuto);
+
+            // remove from movies list where existMovies (choose one)
+            // movies.RemoveAll(x => existingMovies.Contains(x));
+            // return movies;
+            //// or
+            // movies.RemoveAll(a => existingMovies.Exists(w => w.TmdbId == a.TmdbId));
+            // return movies;
+            //// or
+
+            return movies.Where(x => !existingMovies.Contains(x)).ToList();
+        }
+
+        public List<Movie> MovieListSearch(int listId, bool onlyEnableAuto)
+        {
             var movies = new List<Movie>();
 
-            // Get all the lists
             var importLists = _netImportFactory.GetAvailableProviders();
 
-            // No listId is set return all movies in all lists
-            var lists = listId == 0 ? importLists.Where(n => ((NetImportDefinition) n.Definition).Enabled == true) : importLists.Where(n => ((NetImportDefinition) n.Definition).Id == listId);
+            var lists = listId == 0 ? importLists.Where(n => ((NetImportDefinition)n.Definition).Enabled == true) : importLists.Where(n => ((NetImportDefinition)n.Definition).Id == listId);
 
-            // Only return lists where enabledAuto is truthy
             if (onlyEnableAuto)
             {
                 lists = importLists.Where(a => a.EnableAuto == true);
@@ -48,39 +67,6 @@ namespace NzbDrone.Core.NetImport
             }
 
             return movies;
-        }
-
-        public List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto)
-        {
-            var movies = new List<Movie>();
-
-            // Get all the lists
-            var importLists = _netImportFactory.GetAvailableProviders();
-
-            // No listId is set return all movies in all lists
-            var lists = listId == 0 ? importLists.Where(n => ((NetImportDefinition)n.Definition).Enabled == true) : importLists.Where(n => ((NetImportDefinition)n.Definition).Id == listId);
-
-            // Only return lists where enabledAuto is truthy
-            if (onlyEnableAuto)
-            {
-                lists = importLists.Where(a => a.EnableAuto == true);
-            }
-
-            // Get all existing movies
-            var existingMovies = _movieService.GetAllMovies();
-
-            foreach (var list in lists)
-            {
-                movies.AddRange((List<Movie>)list.Fetch());
-            }
-
-            // remove from movies list where existMovies (choose one)
-            // movies.RemoveAll(x => existingMovies.Contains(x));
-            // return movies;
-            // movies.RemoveAll(a => existingMovies.Exists(w => w.TmdbId == a.TmdbId));
-            // return movies;
-
-            return movies.Where(x => !existingMovies.Contains(x)).ToList();
         }
     }
 }
