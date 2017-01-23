@@ -123,6 +123,11 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="NetImport\Trakt\TraktAPI.cs" />
+    <Compile Include="NetImport\Trakt\TraktImport.cs" />
+    <Compile Include="NetImport\Trakt\TraktParser.cs" />
+    <Compile Include="NetImport\Trakt\TraktRequestGenerator.cs" />
+    <Compile Include="NetImport\Trakt\TraktSettings.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoAPI.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoParser.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoRequestGenerator.cs" />
@@ -132,7 +137,7 @@
     <Compile Include="NetImport\StevenLu\StevenLuParser.cs" />
     <Compile Include="NetImport\StevenLu\StevenLuRequestGenerator.cs" />
     <Compile Include="NetImport\StevenLu\StevenLuSettings.cs" />
-    <Compile Include="NetImport\StevenLu\StevenLuImport.cs" />    
+    <Compile Include="NetImport\StevenLu\StevenLuImport.cs" />
     <Compile Include="NetImport\Exceptions\NetImportException.cs" />
     <Compile Include="NetImport\HttpNetImportBase.cs" />
     <Compile Include="NetImport\NetImportSearchService.cs" />
