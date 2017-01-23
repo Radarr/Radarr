@@ -1,51 +1,47 @@
 var Marionette = require('marionette');
-var AddMoviesView = require('../AddMoviesView');
+var ListItemView = require('./ListItemView');
 var vent = require('vent');
 
-module.exports = Marionette.CompositeView.extend({
-		itemView          : AddMoviesView,
-		itemViewContainer : '.x-loading-folders',
-		template          : 'AddMovies/List/AddFromListCollectionViewTemplate',
+module.exports = Marionette.CollectionView.extend({
+		itemView          : ListItemView,
 
 		ui : {
-				loadingFolders : '.x-loading-list'
+				loadingList : '.x-loading-list'
 		},
 
 		initialize : function() {
-				this.collection = new UnmappedFolderCollection();
-				this.collection.importItems(this.model);
+
 		},
 
 		showCollection : function() {
-				this._showAndSearch(0);
-		},
-
-		appendHtml : function(collectionView, itemView, index) {
-				collectionView.ui.loadingFolders.before(itemView.el);
-		},
-
-		_showAndSearch : function(index) {
-				var self = this;
-				var model = this.collection.at(index);
-
-				if (model) {
-						var currentIndex = index;
-						var folderName = model.get('folder').name;
-						this.addItemView(model, this.getItemView(), index);
-						this.children.findByModel(model).search({ term : folderName }).always(function() {
-								if (!self.isClosed) {
-										self._showAndSearch(currentIndex + 1);
-								}
-						});
-				}
-
-				else {
-						this.ui.loadingFolders.hide();
-				}
-		},
-
-		itemViewOptions : {
-				isExisting : true
-		}
+		 },
+		//
+		// appendHtml : function(collectionView, itemView, index) {
+		// 		collectionView.ui.loadingFolders.before(itemView.el);
+		// },
+		//
+		// _showAndSearch : function(index) {
+		// 		var self = this;
+		// 		var model = this.collection.at(index);
+		//
+		// 		if (model) {
+		// 				var currentIndex = index;
+		// 				var folderName = model.get('folder').name;
+		// 				this.addItemView(model, this.getItemView(), index);
+		// 				this.children.findByModel(model).search({ term : folderName }).always(function() {
+		// 						if (!self.isClosed) {
+		// 								self._showAndSearch(currentIndex + 1);
+		// 						}
+		// 				});
+		// 		}
+		//
+		// 		else {
+		// 				this.ui.loadingFolders.hide();
+		// 		}
+		// },
+		//
+		// itemViewOptions : {
+		// 		isExisting : true
+		// }
 
 });
