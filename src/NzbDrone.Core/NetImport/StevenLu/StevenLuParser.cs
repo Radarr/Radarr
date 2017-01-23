@@ -42,7 +42,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
                 return movies;
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<StevenLuResponse>(_importResponse.Content);
+            var jsonResponse = JsonConvert.DeserializeObject<List<StevenLuResponse>>(_importResponse.Content);
 
             // no movies were return
             if (jsonResponse == null)
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
                 return movies;
             }
 
-            foreach (var item in jsonResponse.Movie)
+            foreach (var item in jsonResponse)
             {
                 movies.AddIfNotNull(new Tv.Movie()
                 {
