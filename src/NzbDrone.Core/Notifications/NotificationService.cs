@@ -15,8 +15,11 @@ namespace NzbDrone.Core.Notifications
     public class NotificationService
         : IHandle<EpisodeGrabbedEvent>,
           IHandle<EpisodeDownloadedEvent>,
+          IHandle<SeriesRenamedEvent>,
+          // IHandle<MovieRenamedEvent>, TODO Will have to update OnRename to Movies 
           IHandle<MovieGrabbedEvent>,
-            IHandle<SeriesRenamedEvent>
+          IHandle<MovieDownloadedEvent>
+
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -191,6 +194,36 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleSeries(notification.Definition, message.Episode.Series))
                     {
                         if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
+                        {
+                            notification.OnDownload(downloadMessage);
+                        }
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(MovieDownloadedEvent message)
+        {
+            var downloadMessage = new DownloadMessage();
+            downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.ParsedMovieInfo.Quality);
+            downloadMessage.Series = null;
+            downloadMessage.EpisodeFile = null;
+            downloadMessage.Movie = message.Movie.Movie;
+            downloadMessage.OldMovieFiles = message.OldFiles;
+            downloadMessage.SourcePath = message.Movie.Path;
+
+            foreach (var notification in _notificationFactory.OnDownloadEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleMovie(notification.Definition, message.Movie.Movie))
+                    {
+                        if (downloadMessage.OldMovieFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
                             notification.OnDownload(downloadMessage);
                         }
