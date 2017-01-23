@@ -130,6 +130,7 @@
     <Compile Include="NetImport\CouchPotato\CouchPotatoImport.cs" />
     <Compile Include="NetImport\Exceptions\NetImportException.cs" />
     <Compile Include="NetImport\HttpNetImportBase.cs" />
+    <Compile Include="NetImport\NetImportSearchService.cs" />
     <Compile Include="NetImport\NetImportFactory.cs" />
     <Compile Include="NetImport\IProcessNetImportResponse.cs" />
     <Compile Include="NetImport\NetImportBaseSettings.cs" />

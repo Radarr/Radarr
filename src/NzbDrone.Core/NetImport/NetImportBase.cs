@@ -23,6 +23,7 @@ namespace NzbDrone.Core.NetImport
         public abstract string Name { get; }
 
         public abstract bool Enabled { get; }
+        public abstract bool EnableAuto { get; }
 
         public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {
