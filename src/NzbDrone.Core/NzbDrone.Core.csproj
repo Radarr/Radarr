@@ -128,6 +128,11 @@
     <Compile Include="NetImport\CouchPotato\CouchPotatoRequestGenerator.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoSettings.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoImport.cs" />
+    <Compile Include="NetImport\StevenLu\StevenLuAPI.cs" />
+    <Compile Include="NetImport\StevenLu\StevenLuParser.cs" />
+    <Compile Include="NetImport\StevenLu\StevenLuRequestGenerator.cs" />
+    <Compile Include="NetImport\StevenLu\StevenLuSettings.cs" />
+    <Compile Include="NetImport\StevenLu\StevenLuImport.cs" />    
     <Compile Include="NetImport\Exceptions\NetImportException.cs" />
     <Compile Include="NetImport\HttpNetImportBase.cs" />
     <Compile Include="NetImport\NetImportSearchService.cs" />
