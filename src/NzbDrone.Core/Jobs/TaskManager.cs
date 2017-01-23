@@ -14,6 +14,7 @@ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Update.Commands;
 
@@ -64,7 +65,7 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 0.25f, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
-                    // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
+                    new ScheduledTask{ Interval = 12*60, TypeName = typeof(NetImportSyncCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},

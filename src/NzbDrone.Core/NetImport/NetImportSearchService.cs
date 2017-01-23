@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
+using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.NetImport
@@ -13,7 +15,7 @@ namespace NzbDrone.Core.NetImport
         List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto);
     }
 
-    public class NetImportSearchService : IFetchNetImport
+    public class NetImportSearchService : IFetchNetImport, IExecute<NetImportSyncCommand>
     {
         private readonly Logger _logger;
         private readonly INetImportFactory _netImportFactory;
@@ -26,39 +28,29 @@ namespace NzbDrone.Core.NetImport
             _logger = logger;
         }
 
-        public List<Movie> Fetch(int listId, bool onlyEnableAuto)
+        public List<Movie> Fetch(int listId, bool onlyEnableAuto = false)
         {
             return MovieListSearch(listId, onlyEnableAuto);
         }
 
         public List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto)
         {
-            var existingMovies = _movieService.GetAllMovies();
-
             var movies = MovieListSearch(listId, onlyEnableAuto);
 
-            // remove from movies list where existMovies (choose one)
-            // movies.RemoveAll(x => existingMovies.Contains(x));
-            // return movies;
-            //// or
-            // movies.RemoveAll(a => existingMovies.Exists(w => w.TmdbId == a.TmdbId));
-            // return movies;
-            //// or
-
-            return movies.Where(x => !existingMovies.Contains(x)).ToList();
+            return movies.Where(x => !_movieService.MovieExists(x)).ToList();
         }
 
-        public List<Movie> MovieListSearch(int listId, bool onlyEnableAuto)
+        public List<Movie> MovieListSearch(int listId, bool onlyEnableAuto = false)
         {
             var movies = new List<Movie>();
 
             var importLists = _netImportFactory.GetAvailableProviders();
 
-            var lists = listId == 0 ? importLists.Where(n => ((NetImportDefinition)n.Definition).Enabled == true) : importLists.Where(n => ((NetImportDefinition)n.Definition).Id == listId);
+            var lists = listId == 0 ? importLists : importLists.Where(n => ((NetImportDefinition)n.Definition).Id == listId);
 
             if (onlyEnableAuto)
             {
-                lists = importLists.Where(a => a.EnableAuto == true);
+                lists = importLists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
             }
 
             foreach (var list in lists)
@@ -66,7 +58,16 @@ namespace NzbDrone.Core.NetImport
                 movies.AddRange(list.Fetch());
             }
 
+            _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", lists.Select(l => l.Definition.Name)));
+
             return movies;
+        }
+
+        public void Execute(NetImportSyncCommand message)
+        {
+            var movies = FetchAndFilter(2, false);
+
+            _logger.Debug("Found {0} movies on your lists not in your library", movies.Count);
         }
     }
 }

@@ -886,6 +886,7 @@
     <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewSeries.cs" />
     <Compile Include="MetadataSource\TmdbConfigurationService.cs" />
+    <Compile Include="NetImport\NetImportSyncCommand.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />
