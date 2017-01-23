@@ -42,6 +42,10 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
             if (Settings.UpdateLibrary)

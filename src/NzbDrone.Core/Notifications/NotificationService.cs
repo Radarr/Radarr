@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications
         : IHandle<EpisodeGrabbedEvent>,
           IHandle<EpisodeDownloadedEvent>,
           IHandle<SeriesRenamedEvent>,
-          // IHandle<MovieRenamedEvent>, TODO Will have to update OnRename to Movies 
+          IHandle<MovieRenamedEvent>, 
           IHandle<MovieGrabbedEvent>,
           IHandle<MovieDownloadedEvent>
 
@@ -246,6 +246,25 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleSeries(notification.Definition, message.Series))
                     {
                         notification.OnRename(message.Series);
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(MovieRenamedEvent message)
+        {
+            foreach (var notification in _notificationFactory.OnRenameEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleMovie(notification.Definition, message.Movie))
+                    {
+                        notification.OnMovieRename(message.Movie);
                     }
                 }
 

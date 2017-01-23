@@ -69,6 +69,10 @@ namespace NzbDrone.Core.Notifications.Slack
             NotifySlack(payload);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
             var payload = new SlackPayload
