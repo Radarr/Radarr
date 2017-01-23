@@ -5,7 +5,7 @@ var RootFolderLayout = require('./RootFolders/RootFolderLayout');
 var ExistingMoviesCollectionView = require('./Existing/AddExistingMovieCollectionView');
 var AddMoviesView = require('./AddMoviesView');
 var ProfileCollection = require('../Profile/ProfileCollection');
-var ListCollection = require("../Settings/NetImport/NetImportCollection");
+var AddFromListView = require("./List/AddFromListView");
 var RootFolderCollection = require('./RootFolders/RootFolderCollection');
 require('../Movies/MoviesCollection');
 
@@ -19,6 +19,7 @@ module.exports = Marionette.Layout.extend({
 		events : {
 				'click .x-import'  : '_importMovies',
 				'click .x-add-new' : '_addMovies',
+				"click .x-add-lists" : "_addFromList",
 				'click .x-show-existing' : '_toggleExisting'
 		},
 
@@ -31,12 +32,7 @@ module.exports = Marionette.Layout.extend({
 				RootFolderCollection.fetch().done(function() {
 						RootFolderCollection.synced = true;
 				});
-				this.templateHelpers = {}
-				this.listCollection = new ListCollection();
-				this.templateHelpers.lists = this.listCollection.toJSON();
 
-				this.listenTo(this.listCollection, 'all', this._listsUpdated);
-				this.listCollection.fetch();
 
 		},
 
@@ -52,10 +48,6 @@ module.exports = Marionette.Layout.extend({
 				this.workspace.show(new AddMoviesView());
 		},
 
-		_listsUpdated : function() {
-			this.templateHelpers.lists = this.listCollection.toJSON();
-			this.render();
-		},
 
 		_folderSelected : function(options) {
 				vent.trigger(vent.Commands.CloseModalCommand);
@@ -70,5 +62,9 @@ module.exports = Marionette.Layout.extend({
 
 		_addMovies : function() {
 				this.workspace.show(new AddMoviesView());
+		},
+
+		_addFromList : function() {
+			this.workspace.show(new AddFromListView());
 		}
 });
