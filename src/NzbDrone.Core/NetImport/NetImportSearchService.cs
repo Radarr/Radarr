@@ -71,7 +71,7 @@ namespace NzbDrone.Core.NetImport
 
             foreach (var list in lists)
             {
-                movies = (List<Movie>)list.Fetch();
+                movies.AddRange((List<Movie>)list.Fetch());
             }
 
             // remove from movies list where existMovies (choose one)
