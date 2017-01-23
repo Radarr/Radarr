@@ -1,0 +1,10 @@
+<select class="col-md-4 form-control x-root-folder" validation-name="RootFolderPath">
+		{{#if this}}
+		{{#each this}}
+		<option value="{{id}}">{{name}}</option>
+		{{/each}}
+		{{else}}
+		<option value="">Select List</option>
+		{{/if}}
+		<option value="addNew">Add a new list</option>
+</select>
