@@ -125,9 +125,9 @@ namespace NzbDrone.Core.Jobs
         {
             var interval = _configService.RssSyncInterval;
 
-            if (interval > 0 && interval < 10)
+            if (interval > 0 && interval < 60)
             {
-                return 10;
+                return 60;
             }
 
             if (interval < 0)
