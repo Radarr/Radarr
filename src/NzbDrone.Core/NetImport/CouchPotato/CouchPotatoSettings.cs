@@ -30,7 +30,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(4, Label = "Only Active", HelpText = "Should only active (not yet downloaded) movies be fetched", Type = FieldType.Checkbox)]
+        [FieldDefinition(4, Label = "Only Wanted", HelpText = "Only add wanted movies.", Type = FieldType.Checkbox)]
         public bool OnlyActive { get; set; }
 
     }
