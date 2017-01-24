@@ -18,18 +18,22 @@ namespace NzbDrone.Core.Notifications.Growl
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Episode Grabbed";
+            const string title = "Movie Grabbed";
 
             _growlService.SendNotification(title, grabMessage.Message, "GRAB", Settings.Host, Settings.Port, Settings.Password);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Episode Downloaded";
+            const string title = "Movie Downloaded";
 
             _growlService.SendNotification(title, message.Message, "DOWNLOAD", Settings.Host, Settings.Port, Settings.Password);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
         }

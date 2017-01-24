@@ -18,18 +18,22 @@ namespace NzbDrone.Core.Notifications.PushBullet
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Radarr - Episode Grabbed";
+            const string title = "Radarr - Movie Grabbed";
 
             _proxy.SendNotification(title, grabMessage.Message, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Radarr - Episode Downloaded";
+            const string title = "Radarr - Movie Downloaded";
 
             _proxy.SendNotification(title, message.Message, Settings);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
         }

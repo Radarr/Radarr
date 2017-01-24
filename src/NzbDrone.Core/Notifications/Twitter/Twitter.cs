@@ -29,6 +29,10 @@ namespace NzbDrone.Core.Notifications.Twitter
             _twitterService.SendNotification($"Imported: {message.Message}", Settings);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
         }

@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Notifications.Email
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string subject = "Radarr [TV] - Grabbed";
+            const string subject = "Radarr [Movie] - Grabbed";
             var body = string.Format("{0} sent to queue.", grabMessage.Message);
 
             _emailService.SendEmail(Settings, subject, body);
@@ -26,12 +26,16 @@ namespace NzbDrone.Core.Notifications.Email
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string subject = "Radarr [TV] - Downloaded";
+            const string subject = "Radarr [Movie] - Downloaded";
             var body = string.Format("{0} Downloaded and sorted.", message.Message);
 
             _emailService.SendEmail(Settings, subject, body);
         }
-
+		
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
         }
