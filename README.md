@@ -61,6 +61,8 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 * Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
 * Full integration with Kodi, Plex (notification, library update, metadata)
 
+##Feature Requests
+[![Feature Requests](http://feathub.com/Radarr/Radarr?format=svg)](http://feathub.com/Radarr/Radarr)
 
 ## Configuring Development Environment
 
