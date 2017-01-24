@@ -77,7 +77,8 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                         {
                             Title = item.title,
                             ImdbId = item.info.imdb,
-                            TmdbId = item.info.tmdb_id
+                            TmdbId = item.info.tmdb_id,
+                            Monitored = false
                         });
                     }
                 }
