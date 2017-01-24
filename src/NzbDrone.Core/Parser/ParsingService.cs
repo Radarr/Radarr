@@ -396,9 +396,15 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria == null)
             {
-
-                movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
-
+                if (parsedEpisodeInfo.Year > 1900)
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
+                        //Todo: same as above!
+                }
+                else
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
+                }
                 return movie;
             }
 
