@@ -102,13 +102,13 @@ namespace NzbDrone.Core.Extras
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            var series = message.Series;
-            var episodeFiles = GetEpisodeFiles(series.Id);
+            //var series = message.Series;
+            //var episodeFiles = GetEpisodeFiles(series.Id);
 
-            foreach (var extraFileManager in _extraFileManagers)
-            {
-                extraFileManager.CreateAfterSeriesScan(series, episodeFiles);
-            }
+            //foreach (var extraFileManager in _extraFileManagers)
+            //{
+            //    extraFileManager.CreateAfterSeriesScan(series, episodeFiles);
+            //}
         }
 
         //TODO: Implementing this will fix a lot of our warning exceptions
