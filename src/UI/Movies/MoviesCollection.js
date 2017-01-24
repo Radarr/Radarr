@@ -16,7 +16,7 @@ var Collection = PageableCollection.extend({
 
     state : {
         sortKey            : 'sortTitle',
-        order              : 1,
+        order              : -1,
         pageSize           : 100000,
         secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
