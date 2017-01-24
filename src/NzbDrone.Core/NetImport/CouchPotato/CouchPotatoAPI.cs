@@ -59,7 +59,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public int leechers { get; set; }
         public int score { get; set; }
         public string provider { get; set; }
-        public int seed_time { get; set; }
+        public int? seed_time { get; set; }
         public string provider_extra { get; set; }
         public string detail_url { get; set; }
         public string type { get; set; }
