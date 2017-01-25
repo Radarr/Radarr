@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Notifications.Plex
     public interface IPlexServerService
     {
         void UpdateLibrary(Series series, PlexServerSettings settings);
+        void UpdateMovieSections(Movie movie, PlexServerSettings settings);
         ValidationFailure Test(PlexServerSettings settings);
     }
 
@@ -62,11 +63,43 @@ namespace NzbDrone.Core.Notifications.Plex
             }
         }
 
+        public void UpdateMovieSections(Movie movie, PlexServerSettings settings)
+        {
+            try
+            {
+                _logger.Debug("Sending Update Request to Plex Server");
+
+                var version = _versionCache.Get(settings.Host, () => GetVersion(settings), TimeSpan.FromHours(2));
+                ValidateVersion(version);
+
+                var sections = GetSections(settings);
+                var partialUpdates = _partialUpdateCache.Get(settings.Host, () => PartialUpdatesAllowed(settings, version), TimeSpan.FromHours(2));
+
+                // TODO: Investiate partial updates later, for now just update all movie sections...
+                
+                //if (partialUpdates)
+                //{
+                //    UpdatePartialSection(series, sections, settings);
+                //}
+
+                //else
+                //{
+                    sections.ForEach(s => UpdateSection(s.Id, settings));
+                //}
+            }
+
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Failed to Update Plex host: " + settings.Host);
+                throw;
+            }
+        }
+
         private List<PlexSection> GetSections(PlexServerSettings settings)
         {
             _logger.Debug("Getting sections from Plex host: {0}", settings.Host);
 
-            return _plexServerProxy.GetTvSections(settings).ToList();
+            return _plexServerProxy.GetMovieSections(settings).ToList();
         }
 
         private bool PartialUpdatesAllowed(PlexServerSettings settings, Version version)
