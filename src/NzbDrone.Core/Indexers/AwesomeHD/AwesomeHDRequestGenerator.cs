@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
             if (searchParameters != null)
             {
-                yield return new IndexerRequest($"{Settings.BaseUrl.Trim().TrimEnd('/')}/searchapi.php?action=imdbsearch&passkey={Settings.Passkey.Trim()}&imdb={searchParameters}{onlyInternal}", HttpAccept.Rss);
+                yield return new IndexerRequest($"{Settings.BaseUrl.Trim().TrimEnd('/')}/searchapi.php?action=imdbsearch&passkey={Settings.Passkey.Trim()}&imdb={searchParameters}", HttpAccept.Rss);
             }
             else
             {
