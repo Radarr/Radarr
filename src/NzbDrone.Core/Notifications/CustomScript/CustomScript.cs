@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var movie = message.Movie;
             var remoteMovie = message.RemoteMovie;
-            var releaseGroup = remoteMovie.ParsedEpisodeInfo.ReleaseGroup;
+            var releaseGroup = remoteMovie.ParsedMovieInfo.ReleaseGroup;
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Grab");
@@ -84,16 +84,6 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
         public override void OnRename(Series series)
         {
-            var environmentVariables = new StringDictionary();
-
-            environmentVariables.Add("Radarr_EventType", "Rename");
-            environmentVariables.Add("Radarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Radarr_Series_Title", series.Title);
-            environmentVariables.Add("Radarr_Series_Path", series.Path);
-            environmentVariables.Add("Radarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Radarr_Series_Type", series.SeriesType.ToString());
-
-            ExecuteScript(environmentVariables);
         }
 
         public override string Name => "Custom Script";
