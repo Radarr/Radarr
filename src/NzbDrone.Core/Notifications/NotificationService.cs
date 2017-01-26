@@ -213,7 +213,9 @@ namespace NzbDrone.Core.Notifications
             downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.Quality);
             downloadMessage.Series = null;
             downloadMessage.EpisodeFile = null;
+            downloadMessage.MovieFile = message.MovieFile;
             downloadMessage.Movie = message.Movie.Movie;
+            downloadMessage.OldFiles = null;
             downloadMessage.OldMovieFiles = message.OldFiles;
             downloadMessage.SourcePath = message.Movie.Path;
 
