@@ -123,6 +123,17 @@ namespace NzbDrone.Core.Extras
         //    }
         //}
 
+        // TODO
+        public void Handle(MovieFolderCreatedEvent message)
+        {
+            var movie = message.Movie;
+
+            foreach(var extraFileManager in _extraFileManagers)
+            {
+                //extraFileManager.CreateAfterMovieImport(movie, message.MovieFolder);
+            }
+        }
+
         public void Handle(EpisodeFolderCreatedEvent message)
         {
             var series = message.Series;

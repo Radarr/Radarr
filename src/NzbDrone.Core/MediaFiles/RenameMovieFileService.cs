@@ -95,6 +95,7 @@ namespace NzbDrone.Core.MediaFiles
                     _movieFileMover.MoveMovieFile(movieFile, movie);
 
                     _mediaFileService.Update(movieFile);
+                    _movieService.UpdateMovie(movie);
                     renamed.Add(movieFile);
 
                     _logger.Debug("Renamed movie file: {0}", movieFile);
@@ -123,7 +124,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RenameMovieCommand message)
         {
-            _logger.Debug("Renaming all files for selected movie");
+            _logger.Debug("Renaming all files for selected movies");
             var moviesToRename = _movieService.GetMovies(message.MovieIds);
 
             foreach(var movie in moviesToRename)
