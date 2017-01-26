@@ -64,6 +64,11 @@ namespace NzbDrone.Common.Extensions
             return childPath.Substring(parentPath.Length).Trim(Path.DirectorySeparatorChar);
         }
 
+        public static string GetRelativePathWithoutChildCheck(this string parentPath, string childPath)
+        {
+            return childPath.Substring(parentPath.Length).Trim(Path.DirectorySeparatorChar);
+        }
+
         public static string GetParentPath(this string childPath)
         {
             var parentPath = childPath.TrimEnd('\\', '/');

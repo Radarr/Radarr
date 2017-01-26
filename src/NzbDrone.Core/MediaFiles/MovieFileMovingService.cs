@@ -60,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles
             var newFileName = _buildFileNames.BuildFileName(movie, movieFile);
             var filePath = _buildFileNames.BuildFilePath(movie, newFileName, Path.GetExtension(movieFile.RelativePath));
 
-            filePath = EnsureMovieFolder(movieFile, movie, filePath);
+            EnsureMovieFolder(movieFile, movie, filePath);
 
             _logger.Debug("Renaming movie file: {0} to {1}", movieFile, filePath);
             
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.MediaFiles
             var newFileName = _buildFileNames.BuildFileName(localMovie.Movie, movieFile);
             var filePath = _buildFileNames.BuildFilePath(localMovie.Movie, newFileName, Path.GetExtension(localMovie.Path));
 
-            filePath = EnsureMovieFolder(movieFile, localMovie, filePath);
+            EnsureMovieFolder(movieFile, localMovie, filePath);
 
             _logger.Debug("Moving movie file: {0} to {1}", movieFile.Path, filePath);
             
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.MediaFiles
             var newFileName = _buildFileNames.BuildFileName(localMovie.Movie, movieFile);
             var filePath = _buildFileNames.BuildFilePath(localMovie.Movie, newFileName, Path.GetExtension(localMovie.Path));
 
-            filePath = EnsureMovieFolder(movieFile, localMovie, filePath);
+            EnsureMovieFolder(movieFile, localMovie, filePath);
 
             if (_configService.CopyUsingHardlinks)
             {
@@ -116,7 +116,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
 
-            movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
+            movieFile.RelativePath = movie.Path.GetRelativePathWithoutChildCheck(destinationFilePath);
 
             _updateMovieFileService.ChangeFileDateForFile(movieFile, movie);
 
@@ -135,17 +135,16 @@ namespace NzbDrone.Core.MediaFiles
             return movieFile;
         }
 
-        private string EnsureMovieFolder(MovieFile movieFile, LocalMovie localMovie, string filePath)
+        private void EnsureMovieFolder(MovieFile movieFile, LocalMovie localMovie, string filePath)
         {
-            return EnsureMovieFolder(movieFile, localMovie.Movie, filePath);
+            EnsureMovieFolder(movieFile, localMovie.Movie, filePath);
         }
 
-        private string EnsureMovieFolder(MovieFile movieFile, Movie movie, string filePath)
+        private void EnsureMovieFolder(MovieFile movieFile, Movie movie, string filePath)
         {
             var movieFolder = Path.GetDirectoryName(filePath);
             var rootFolder = new OsPath(movieFolder).Directory.FullPath;
             var fileName = Path.GetFileName(filePath);
-            var newPath = "";
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
@@ -159,18 +158,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 CreateFolder(movieFolder);
                 newEvent.SeriesFolder = movieFolder;
-                newPath = Path.Combine(rootFolder, movieFolder, fileName);
-                changed = true;
-            }
-
-            var newFolder = _buildFileNames.GetMovieFolder(movie);
-
-            if(_diskProvider.FolderExists(movieFolder) && movieFolder != newFolder)
-            {
-                newFolder = Path.Combine(rootFolder, newFolder);
-                CreateFolder(newFolder);
-                newEvent.SeriesFolder = newFolder;
-                newPath = Path.Combine(newFolder, fileName);
                 changed = true;
             }
 
@@ -178,8 +165,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _eventAggregator.PublishEvent(newEvent);
             }
-
-            return newPath;
         }
 
         private void CreateFolder(string directoryName)
