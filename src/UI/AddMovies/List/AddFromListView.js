@@ -12,7 +12,8 @@ var ErrorView = require('../ErrorView');
 var LoadingView = require('../../Shared/LoadingView');
 var AppLayout = require('../../AppLayout');
 var InCinemasCell = require('../../Cells/InCinemasCell');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var MovieTitleCell = require('../../Cells/MovieListTitleCell');
+var SelectAllCell = require('../../Cells/SelectAllCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
 var MovieLinksCell = require('../../Cells/MovieLinksCell');
@@ -20,6 +21,7 @@ var MovieActionCell = require('../../Cells/MovieActionCell');
 var MovieStatusCell = require('../../Cells/MovieStatusCell');
 var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
+var MoviesCollection = require('../../Movies/MoviesCollection');
 
 var SchemaModal = require('../../Settings/NetImport/Add/NetImportSchemaModal');
 
@@ -37,6 +39,12 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		columns : [
+				{
+						name       : '',
+						cell       : SelectAllCell,
+						headerCell : 'select-all',
+						sortable   : false
+				},
 				{
 						name      : 'title',
 						label     : 'Title',
@@ -60,7 +68,8 @@ module.exports = Marionette.Layout.extend({
 		events : {
 				'click .x-load-more' : '_onLoadMore',
 				"change .x-list-selection" : "_listSelected",
-				"click .x-fetch-list" : "_fetchList"
+				"click .x-fetch-list" : "_fetchList",
+				"click .x-import-selected" : "_importSelected"
 		},
 
 		initialize : function(options) {
@@ -173,6 +182,21 @@ module.exports = Marionette.Layout.extend({
 			this.render();
 		},
 
+		_importSelected : function() {
+			var selected = this.importGrid.getSelectedModels();
+			console.log(selected);
+			_.each(selected, function(elem){
+				elem.save();
+			})
+			/*for (m in selected) {
+				debugger;
+				m.save()
+				MoviesCollection.add(m);
+			}*/
+
+			//MoviesCollection.save();
+		},
+
 		_clearResults : function() {
 
 				if (!this.isExisting) {
@@ -186,11 +210,12 @@ module.exports = Marionette.Layout.extend({
 						if (this.collection.length === 0) {
 								this.fetchResult.show(new NotFoundView({ term : "" }));
 						} else {
-								this.fetchResult.show(new Backgrid.Grid({
+								this.importGrid = new Backgrid.Grid({
 										collection : this.collection,
 										columns    : this.columns,
 										className  : 'table table-hover'
-								}));
+								});
+								this.fetchResult.show(this.importGrid);
 						}
 
 		},

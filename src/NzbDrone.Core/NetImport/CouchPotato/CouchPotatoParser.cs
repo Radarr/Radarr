@@ -56,6 +56,8 @@ namespace NzbDrone.Core.NetImport.CouchPotato
 
             foreach (var item in responseData)
             {
+                int tmdbid = item.info.tmdb_id ?? 0;
+
                 // if there are no releases at all the movie wasn't found on CP, so return movies
                 if (!item.releases.Any() && item.type == "movie")
                 {
@@ -63,7 +65,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                     {
                         Title = item.title,
                         ImdbId = item.info.imdb,
-                        TmdbId = item.info.tmdb_id
+                        TmdbId = tmdbid
                     });
                 }
                 else
@@ -77,7 +79,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                         {
                             Title = item.title,
                             ImdbId = item.info.imdb,
-                            TmdbId = item.info.tmdb_id,
+                            TmdbId = tmdbid,
                             Monitored = false
                         });
                     }

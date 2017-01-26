@@ -11,11 +11,13 @@ namespace NzbDrone.Api.Movie
     public class FetchMovieListModule : NzbDroneRestModule<MovieResource>
     {
         private readonly IFetchNetImport _fetchNetImport;
+        private readonly ISearchForNewMovie _movieSearch;
 
-        public FetchMovieListModule(IFetchNetImport netImport)
+        public FetchMovieListModule(IFetchNetImport netImport, ISearchForNewMovie movieSearch)
             : base("/netimport/movies")
         {
             _fetchNetImport = netImport;
+            _movieSearch = movieSearch;
             Get["/"] = x => Search();
         }
 
@@ -23,7 +25,20 @@ namespace NzbDrone.Api.Movie
         private Response Search()
         {
             var results = _fetchNetImport.FetchAndFilter((int) Request.Query.listId, false);
-            return MapToResource(results).AsResponse();
+
+            List<Core.Tv.Movie> realResults = new List<Core.Tv.Movie>();
+
+            foreach (var movie in results)
+            {
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+
+                if (mapped != null)
+                {
+                    realResults.Add(mapped);
+                }
+            }
+
+            return MapToResource(realResults).AsResponse();
         }
 
 
