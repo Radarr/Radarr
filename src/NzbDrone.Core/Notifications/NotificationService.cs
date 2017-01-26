@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Notifications
                     qualityString += " Proper";
             }
 
-            return string.Format("{0}[{1}]",
+            return string.Format("{0} [{1}]",
                                     movie.Title,
                                     qualityString);
         }
@@ -210,7 +210,7 @@ namespace NzbDrone.Core.Notifications
         public void Handle(MovieDownloadedEvent message)
         {
             var downloadMessage = new DownloadMessage();
-            downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.ParsedMovieInfo.Quality);
+            downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.Quality);
             downloadMessage.Series = null;
             downloadMessage.EpisodeFile = null;
             downloadMessage.Movie = message.Movie.Movie;
