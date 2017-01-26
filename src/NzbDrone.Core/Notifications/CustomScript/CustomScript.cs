@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId.ToString());
-            //environmentVariables.Add("Radarr_MovieFile_Id", movieFile.Id.ToString());  TODO: Debug issue with moviefile ID and add back later
+            environmentVariables.Add("Radarr_MovieFile_Id", movieFile.Id.ToString());
             environmentVariables.Add("Radarr_MovieFile_RelativePath", movieFile.RelativePath);
             environmentVariables.Add("Radarr_MovieFile_Path", Path.Combine(movie.Path, movieFile.RelativePath));
             environmentVariables.Add("Radarr_MovieFile_Quality", movieFile.Quality.Quality.Name);
