@@ -14,7 +14,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             Link = "http://localhost";
             Port = 5050;
             UrlBase = "";
-            OnlyActive = false;
+            OnlyActive = true;
         }
 
         [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "Link to your CoouchPootato.")]
