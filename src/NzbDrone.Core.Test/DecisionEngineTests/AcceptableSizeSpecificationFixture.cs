@@ -196,18 +196,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsSatisfiedBy(parseResultSingle, null).Accepted.Should().BeTrue();
         }
 
-        [Test]
-        public void should_return_true_if_RAWHD()
-        {
-            parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.RAWHD);
+        //[Test]
+        //public void should_return_true_if_RAWHD()
+        //{
+        //    parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.RAWHD);
             
-            series.Runtime = 45;
-            parseResultSingle.Series = series;
-            parseResultSingle.Series.SeriesType = SeriesTypes.Daily;
-            parseResultSingle.Release.Size = 8000.Megabytes();
+        //    series.Runtime = 45;
+        //    parseResultSingle.Series = series;
+        //    parseResultSingle.Series.SeriesType = SeriesTypes.Daily;
+        //    parseResultSingle.Release.Size = 8000.Megabytes();
 
-            Subject.IsSatisfiedBy(parseResultSingle, null).Accepted.Should().BeTrue();
-        }
+        //    Subject.IsSatisfiedBy(parseResultSingle, null).Accepted.Should().BeTrue();
+        //}
 
         [Test]
         public void should_return_true_for_special()

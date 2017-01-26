@@ -75,11 +75,11 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (RawHDRegex.IsMatch(normalizedName))
-            {
-                result.Quality = Quality.RAWHD;
-                return result;
-            }
+            //if (RawHDRegex.IsMatch(normalizedName))
+            //{
+            //    result.Quality = Quality.RAWHD;
+            //    return result;
+            //}
 
             var sourceMatch = SourceRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
             var resolution = ParseResolution(normalizedName);

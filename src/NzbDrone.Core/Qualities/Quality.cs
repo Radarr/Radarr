@@ -55,45 +55,67 @@ namespace NzbDrone.Core.Qualities
             return !Equals(left, right);
         }
 
-        public static Quality Unknown => new Quality(0,  "Unknown");
-        public static Quality SDTV => new Quality(1,  "SDTV");
-        public static Quality DVD => new Quality(2,  "DVD");
-        public static Quality WEBDL1080p => new Quality(3,  "WEBDL-1080p");
-        public static Quality HDTV720p => new Quality(4,  "HDTV-720p");
-        public static Quality WEBDL720p => new Quality(5,  "WEBDL-720p");
-        public static Quality Bluray720p => new Quality(6,  "Bluray-720p");
-        public static Quality Bluray1080p => new Quality(7,  "Bluray-1080p");
-        public static Quality WEBDL480p => new Quality(8,  "WEBDL-480p");
-        public static Quality HDTV1080p => new Quality(9,  "HDTV-1080p");
-        public static Quality RAWHD => new Quality(10, "Raw-HD");
-        //public static Quality HDTV480p    { get { return new Quality(11, "HDTV-480p"); } }
-        //public static Quality WEBRip480p  { get { return new Quality(12, "WEBRip-480p"); } }
-        //public static Quality Bluray480p  { get { return new Quality(13, "Bluray-480p"); } }
-        //public static Quality WEBRip720p  { get { return new Quality(14, "WEBRip-720p"); } }
-        //public static Quality WEBRip1080p { get { return new Quality(15, "WEBRip-1080p"); } }
+        // Unable to determine
+        public static Quality Unknown => new Quality(0, "Unknown");
+
+        // Pre-release
+        public static Quality CAM => new Quality(24, "CAM"); // new
+        public static Quality TELECINE => new Quality(25, "TELECINE"); // new
+        public static Quality DVDSCR => new Quality(26, "DVDSCR"); // new
+        public static Quality R5 => new Quality(27, "R5"); // new
+
+        // SD
+        public static Quality SDTV => new Quality(1, "SDTV");
+        public static Quality DVD => new Quality(2, "DVD");
+        public static Quality DVDR => new Quality(23, "DVD-R"); // new
+
+        // HDTV
+        public static Quality HDTV720p => new Quality(4, "HDTV-720p");
+        public static Quality HDTV1080p => new Quality(9, "HDTV-1080p");
         public static Quality HDTV2160p => new Quality(16, "HDTV-2160p");
-        //public static Quality WEBRip2160p { get { return new Quality(17, "WEBRip-2160p"); } }
+
+        // Web-DL
+        public static Quality WEBDL480p => new Quality(8, "WEBDL-480p");
+        public static Quality WEBDL720p => new Quality(5, "WEBDL-720p");
+        public static Quality WEBDL1080p => new Quality(3, "WEBDL-1080p");
         public static Quality WEBDL2160p => new Quality(18, "WEBDL-2160p");
+
+        // Bluray
+        public static Quality Bluray480p => new Quality(20, "Bluray-480p"); // new
+        public static Quality Bluray576p => new Quality(21, "Bluray-576p"); // new
+        public static Quality Bluray720p => new Quality(6, "Bluray-720p");
+        public static Quality Bluray1080p => new Quality(7, "Bluray-1080p");
         public static Quality Bluray2160p => new Quality(19, "Bluray-2160p");
+        public static Quality BRDISK => new Quality(22, "BR-DISK"); // new
+
+        // Others
+        // public static Quality RAWHD => new Quality(10, "Raw-HD");
 
         static Quality()
         {
             All = new List<Quality>
             {
                 Unknown,
+                CAM,
+                TELECINE,
+                DVDSCR,
+                R5,
                 SDTV,
                 DVD,
-                WEBDL1080p,
+                DVDR,
                 HDTV720p,
+                HDTV1080p,
+                HDTV2160p,
+                WEBDL480p,
                 WEBDL720p,
+                WEBDL1080p,
+                WEBDL2160p,
+                Bluray480p,
+                Bluray576p,
                 Bluray720p,
                 Bluray1080p,
-                WEBDL480p,
-                HDTV1080p,
-                RAWHD,
-                HDTV2160p,
-                WEBDL2160p,
                 Bluray2160p,
+                BRDISK
             };
 
             AllLookup = new Quality[All.Select(v => v.Id).Max() + 1];
@@ -105,19 +127,30 @@ namespace NzbDrone.Core.Qualities
             DefaultQualityDefinitions = new HashSet<QualityDefinition>
             {
                 new QualityDefinition(Quality.Unknown)     { Weight = 1,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.SDTV)        { Weight = 2,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.WEBDL480p)   { Weight = 3,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.DVD)         { Weight = 4,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.HDTV720p)    { Weight = 5,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.HDTV1080p)   { Weight = 6,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.RAWHD)       { Weight = 7,  MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.WEBDL720p)   { Weight = 8,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.Bluray720p)  { Weight = 9,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 10, MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.Bluray1080p) { Weight = 11, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.HDTV2160p)   { Weight = 12, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 13, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.Bluray2160p) { Weight = 14, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.CAM)         { Weight = 2,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.TELECINE)    { Weight = 3,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.R5)          { Weight = 4,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.DVDSCR)      { Weight = 5,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.SDTV)        { Weight = 6,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.DVD)         { Weight = 7,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.DVDR)        { Weight = 8,  MinSize = 0, MaxSize = null },
+
+                new QualityDefinition(Quality.HDTV720p)    { Weight = 9,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.HDTV1080p)   { Weight = 10, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.HDTV2160p)   { Weight = 11, MinSize = 0, MaxSize = null },
+
+                new QualityDefinition(Quality.WEBDL480p)   { Weight = 12, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.WEBDL720p)   { Weight = 13, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 14, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 15, MinSize = 0, MaxSize = null },
+
+                new QualityDefinition(Quality.Bluray480p)  { Weight = 16, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.Bluray576p)  { Weight = 17, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.Bluray720p)  { Weight = 18, MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.Bluray2160p) { Weight = 20, MinSize = 0, MaxSize = null },
+
+                new QualityDefinition(Quality.BRDISK)      { Weight = 21, MinSize = 0, MaxSize = null }
             };
         }
 
