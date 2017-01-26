@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.DVDSCR)      { Weight = 5,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.SDTV)        { Weight = 6,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.DVD)         { Weight = 7,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.DVDR)        { Weight = 8,  MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.DVDR)        { Weight = 8,  MinSize = 0, MaxSize = 100 },
 
                 new QualityDefinition(Quality.WEBDL480p)   { Weight = 9, MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.Bluray480p)  { Weight = 10, MinSize = 0, MaxSize = 100 },
