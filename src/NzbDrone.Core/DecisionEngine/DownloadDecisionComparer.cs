@@ -23,6 +23,7 @@ namespace NzbDrone.Core.DecisionEngine
             var comparers = new List<CompareDelegate>
             {
                 CompareQuality,
+                ComparePreferredWords,
                 CompareProtocol,
                 ComparePeersIfTorrent,
                 CompareAgeIfUsenet,
@@ -64,6 +65,20 @@ namespace NzbDrone.Core.DecisionEngine
                            CompareBy(x.RemoteEpisode, y.RemoteEpisode, remoteEpisode => remoteEpisode.ParsedEpisodeInfo.Quality.Revision.Real),
                            CompareBy(x.RemoteEpisode, y.RemoteEpisode, remoteEpisode => remoteEpisode.ParsedEpisodeInfo.Quality.Revision.Version));
         }
+
+        private int ComparePreferredWords(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
+            {
+                var title = remoteMovie.Release.Title;
+                var preferredWords = remoteMovie.Movie.Profile.Value.PreferredTags;
+
+                var num = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
+
+                return num;
+
+            });
+;        }
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)
         {
