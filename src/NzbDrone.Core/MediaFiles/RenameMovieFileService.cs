@@ -71,8 +71,9 @@ namespace NzbDrone.Core.MediaFiles
                     {
                         MovieId = movie.Id,
                         MovieFileId = file.Id,
-                        ExistingPath = file.RelativePath,
-                        NewPath = movie.Path.GetRelativePath(newPath)
+                        ExistingPath = movieFilePath,
+                        //NewPath = movie.Path.GetRelativePath(newPath)
+                        NewPath = newPath
                     };
                 }
 

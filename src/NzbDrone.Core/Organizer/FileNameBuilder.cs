@@ -155,12 +155,11 @@ namespace NzbDrone.Core.Organizer
                 return GetOriginalTitle(movieFile);
             }
 
-            //TODO: Update namingConfig for Movies!
             var pattern = namingConfig.StandardMovieFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
-            AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
+            AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddImdbIdTokens(tokenHandlers, movie.ImdbId);
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
@@ -186,9 +185,35 @@ namespace NzbDrone.Core.Organizer
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
-            var path = movie.Path;
+            var path = BuildMoviePath(movie);
 
             return Path.Combine(path, fileName + extension);
+        }
+
+        public string BuildMoviePath(Movie movie)
+        {
+            var path = movie.Path;
+            var directory = new DirectoryInfo(path).Name;
+            var parentDirectoryPath = new DirectoryInfo(path).Parent.FullName;
+            var namingConfig = _namingConfigService.GetConfig();
+
+            var movieFile = movie.MovieFile;
+
+            var pattern = namingConfig.MovieFolderFormat;
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            AddMovieTokens(tokenHandlers, movie);
+            AddReleaseDateTokens(tokenHandlers, movie.Year);
+            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
+            AddQualityTokens(tokenHandlers, movie, movieFile);
+            AddMediaInfoTokens(tokenHandlers, movieFile);
+            AddMovieFileTokens(tokenHandlers, movieFile);
+
+            var directoryName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
+            directoryName = FileNameCleanupRegex.Replace(directoryName, match => match.Captures[0].Value[0].ToString());
+            directoryName = TrimSeparatorsRegex.Replace(directoryName, string.Empty);
+
+            return Path.Combine(parentDirectoryPath, directoryName);
         }
 
         public string BuildSeasonPath(Series series, int seasonNumber)
