@@ -74,6 +74,19 @@ module.exports = Marionette.Layout.extend({
         var file = movie.model.get("movieFile");
         this.filesCollection.add(file);
         //this.listenTo(this.releaseCollection, 'sync', this._showSearchResults);
+
+        this.listenTo(this.model, 'change', function(model, options) {
+            if (options && options.changeSource === 'signalr') {
+                this._refresh(movie);
+            }
+        });
+    },
+
+    _refresh : function(movie) {
+        this.filesCollection = new FilesCollection();
+        var file = movie.model.get("movieFile");
+        this.filesCollection.add(file);
+        this.onShow();
     },
 
     onShow : function() {
