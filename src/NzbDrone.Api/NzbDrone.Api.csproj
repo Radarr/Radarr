@@ -123,6 +123,7 @@
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />
     <Compile Include="Movies\MovieEditorModule.cs" />
+    <Compile Include="NetImport\ListImportModule.cs" />
     <Compile Include="NetImport\NetImportModule.cs" />
     <Compile Include="NetImport\NetImportResource.cs" />
     <Compile Include="Parse\ParseModule.cs" />

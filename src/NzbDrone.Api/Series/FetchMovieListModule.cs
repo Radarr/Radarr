@@ -28,7 +28,7 @@ namespace NzbDrone.Api.Movie
 
             List<Core.Tv.Movie> realResults = new List<Core.Tv.Movie>();
 
-            foreach (var movie in results)
+            /*foreach (var movie in results)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
 
@@ -36,9 +36,9 @@ namespace NzbDrone.Api.Movie
                 {
                     realResults.Add(mapped);
                 }
-            }
+            }*/
 
-            return MapToResource(realResults).AsResponse();
+            return MapToResource(results).AsResponse();
         }
 
 

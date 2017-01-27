@@ -25,7 +25,6 @@ namespace NzbDrone.Core.NetImport
         private readonly IMovieService _movieService;
         private readonly ISearchForNewMovie _movieSearch;
         private readonly IRootFolderService _rootFolder;
-        private string defaultRootFolder;
 
         public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
             ISearchForNewMovie movieSearch, IRootFolderService rootFolder, Logger logger)
@@ -34,11 +33,6 @@ namespace NzbDrone.Core.NetImport
             _movieService = movieService;
             _movieSearch = movieSearch;
             _rootFolder = rootFolder;
-            var folder = _rootFolder.All().FirstOrDefault();
-            if (folder != null)
-            {
-                defaultRootFolder = folder.Path;
-            }
             _logger = logger;
         }
 

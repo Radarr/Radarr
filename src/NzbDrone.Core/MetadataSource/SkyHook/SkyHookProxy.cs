@@ -84,6 +84,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var resource = response.Resource;
 
+            if (resource.status_message != null)
+            {
+                if (resource.status_code == 34)
+                {
+                    _logger.Warn("Movie with TmdbId {0} could not be found. This is probably the case when the movie was deleted from TMDB.", TmdbId);
+                    return null;
+                }
+
+                _logger.Warn(resource.status_message);
+                return null;
+            }
+
             var movie = new Movie();
 
             movie.TmdbId = TmdbId;
@@ -567,10 +579,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             Movie newMovie = movie;
             if (movie.TmdbId > 0)
             {
-                return newMovie;
+                newMovie = GetMovieInfo(movie.TmdbId);
             }
-
-            if (movie.ImdbId.IsNotNullOrWhiteSpace())
+            else if (movie.ImdbId.IsNotNullOrWhiteSpace())
             {
                 newMovie = GetMovieInfo(movie.ImdbId);
             }
@@ -586,7 +597,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             if (newMovie == null)
             {
-                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB.");
+                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
                 return null;
             }
 

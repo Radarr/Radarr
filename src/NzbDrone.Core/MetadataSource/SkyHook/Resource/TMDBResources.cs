@@ -42,6 +42,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public bool adult { get; set; }
         public string backdrop_path { get; set; }
         public Belongs_To_Collection belongs_to_collection { get; set; }
+        public int? status_code { get; set; }
+        public string status_message { get; set; }
         public int budget { get; set; }
         public Genre[] genres { get; set; }
         public string homepage { get; set; }

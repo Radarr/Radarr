@@ -22,7 +22,8 @@ var MovieStatusCell = require('../../Cells/MovieStatusCell');
 var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var MoviesCollection = require('../../Movies/MoviesCollection');
-
+var Messenger = require('../../Shared/Messenger');
+require('jquery.dotdotdot');
 var SchemaModal = require('../../Settings/NetImport/Add/NetImportSchemaModal');
 
 module.exports = Marionette.Layout.extend({
@@ -35,7 +36,7 @@ module.exports = Marionette.Layout.extend({
 		ui : {
 				moviesSearch : '.x-movies-search',
 				listSelection : ".x-list-selection",
-
+				importSelected : ".x-import-selected"
 		},
 
 		columns : [
@@ -185,9 +186,24 @@ module.exports = Marionette.Layout.extend({
 		_importSelected : function() {
 			var selected = this.importGrid.getSelectedModels();
 			console.log(selected);
-			_.each(selected, function(elem){
-				elem.save();
-			})
+			var promise = MoviesCollection.importFromList(selected);
+			this.ui.importSelected.spinForPromise(promise);
+			this.ui.importSelected.addClass('disabled');
+
+			Messenger.show({
+				message : "Importing {0} movies. This can take multiple minutes depending on how many movies should be imported. Don't close this browser window until it is finished!".format(selected.length),
+				hideOnNavigate : false,
+				hideAfter : 30,
+				type : "error"
+			});
+
+			promise.done(function() {
+					Messenger.show({
+							message        : "Imported movies from list.",
+							hideAfter      : 8,
+							hideOnNavigate : true
+					});
+			});
 			/*for (m in selected) {
 				debugger;
 				m.save()
