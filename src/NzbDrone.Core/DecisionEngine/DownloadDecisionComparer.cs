@@ -71,7 +71,13 @@ namespace NzbDrone.Core.DecisionEngine
             return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
             {
                 var title = remoteMovie.Release.Title;
+                remoteMovie.Movie.Profile.LazyLoad();
                 var preferredWords = remoteMovie.Movie.Profile.Value.PreferredTags;
+
+                if (preferredWords == null)
+                {
+                    return 0;
+                }
 
                 var num = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
 
