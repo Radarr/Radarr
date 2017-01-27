@@ -37,14 +37,18 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, message.Series);
+                _mediaBrowserService.UpdateMovies(Settings, message.Movie);
             }
         }
 
         public override void OnMovieRename(Movie movie)
         {
+            if (Settings.UpdateLibrary)
+            {
+                _mediaBrowserService.UpdateMovies(Settings, movie);
+            }
         }
-		
+
         public override void OnRename(Series series)
         {
             if (Settings.UpdateLibrary)
