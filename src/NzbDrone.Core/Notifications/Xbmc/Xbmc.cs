@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             const string header = "Radarr - Downloaded";
 
             Notify(Settings, header, message.Message);
-            UpdateAndCleanMovie(message.Movie, message.OldFiles.Any());
+            UpdateAndCleanMovie(message.Movie, message.OldMovieFiles.Any());
         }
 
         public override void OnMovieRename(Movie movie)
