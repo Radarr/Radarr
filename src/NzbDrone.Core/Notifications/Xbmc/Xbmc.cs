@@ -33,13 +33,14 @@ namespace NzbDrone.Core.Notifications.Xbmc
             const string header = "Radarr - Downloaded";
 
             Notify(Settings, header, message.Message);
-            UpdateAndClean(message.Series, message.OldFiles.Any());
+            UpdateAndCleanMovie(message.Movie, message.OldFiles.Any());
         }
 
         public override void OnMovieRename(Movie movie)
         {
+            UpdateAndCleanMovie(movie);
         }
-		
+
         public override void OnRename(Series series)
         {
             UpdateAndClean(series);
@@ -79,6 +80,27 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 if (Settings.UpdateLibrary)
                 {
                     _xbmcService.Update(Settings, series);
+                }
+
+                if (clean && Settings.CleanLibrary)
+                {
+                    _xbmcService.Clean(Settings);
+                }
+            }
+            catch (SocketException ex)
+            {
+                var logMessage = string.Format("Unable to connect to XBMC Host: {0}:{1}", Settings.Host, Settings.Port);
+                _logger.Debug(ex, logMessage);
+            }
+        }
+
+        private void UpdateAndCleanMovie(Movie movie, bool clean = true)
+        {
+            try
+            {
+                if (Settings.UpdateLibrary)
+                {
+                    _xbmcService.UpdateMovie(Settings, movie);
                 }
 
                 if (clean && Settings.CleanLibrary)
