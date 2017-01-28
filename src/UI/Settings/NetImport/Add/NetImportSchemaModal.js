@@ -19,9 +19,10 @@ module.exports = {
 						var groups = schemaCollection.groupBy(function(model, iterator) {
 								return model.get('protocol');
 						});
+						//key is "undefined", which is being placed in the header
 						var modelCollection = _.map(groups, function(values, key, list) {
 								return {
-										"header"   : key,
+										//"header"   : key,
 										collection : values
 								};
 						});

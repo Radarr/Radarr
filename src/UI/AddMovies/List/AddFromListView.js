@@ -102,10 +102,12 @@ module.exports = Marionette.Layout.extend({
 
 		onRender : function() {
 				var self = this;
+				this.ui.importSelected.hide();
 		},
 
 		onShow : function() {
 				this.ui.moviesSearch.focus();
+				
 		},
 
 		search : function(options) {
@@ -232,6 +234,7 @@ module.exports = Marionette.Layout.extend({
 										className  : 'table table-hover'
 								});
 								this.fetchResult.show(this.importGrid);
+								this.ui.importSelected.show();
 						}
 
 		},

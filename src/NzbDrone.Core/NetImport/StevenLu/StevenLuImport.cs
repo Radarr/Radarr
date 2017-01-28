@@ -15,7 +15,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
 {
     public class StevenLuImport : HttpNetImportBase<StevenLuSettings>
     {
-        public override string Name => "Popular movies from StevenLu";
+        public override string Name => "StevenLu";
         public override bool Enabled => true;
         public override bool EnableAuto => true;
 
