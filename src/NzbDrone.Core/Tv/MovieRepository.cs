@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByTitle(string cleanTitle);
         Movie FindByTitle(string cleanTitle, int year);
         Movie FindByImdbId(string imdbid);
+        Movie FindByTmdbId(int tmdbid);
         Movie FindByTitleSlug(string slug);
         List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         List<Movie> MoviesWithFiles(int movieId);
@@ -100,9 +101,46 @@ namespace NzbDrone.Core.Tv
         {
             cleanTitle = cleanTitle.ToLowerInvariant();
 
-            return Query.Where(s => s.CleanTitle == cleanTitle)
-                        .AndWhere(s => s.Year == year)
-                        .SingleOrDefault();
+            var cleanRoman = cleanTitle;
+
+            var cleanNum = cleanTitle;
+
+            foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
+            {
+                string num = entry.Key;
+                string roman = entry.Value.ToLower();
+
+                cleanRoman = cleanRoman.Replace(num, roman);
+
+                cleanNum = cleanNum.Replace(roman, num);
+            }
+
+            var results = Query.Where(s => s.CleanTitle == cleanTitle);
+
+            if (results == null)
+            {
+                results = Query.Where(s => s.CleanTitle == cleanNum).OrWhere(s => s.CleanTitle == cleanRoman);
+
+                if (results == null)
+                {
+                    var movies = this.All();
+
+                    var listResults = movies.Where(m => m.AlternativeTitles.Any(t => Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanTitle ||
+                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanRoman ||
+                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanNum));
+
+                    return listResults.Where(m => m.Year == year).FirstOrDefault();
+                }
+                else
+                {
+                    return results.Where(m => m.Year == year).FirstOrDefault();
+                }
+
+            }
+            else
+            {
+                return results.Where(m => m.Year == year).FirstOrDefault();
+            }
         }
 
         public Movie FindByImdbId(string imdbid)
@@ -122,7 +160,7 @@ namespace NzbDrone.Core.Tv
 
         public Movie FindByTitleSlug(string slug)
         {
-            return Query.Where(m => m.TitleSlug == slug).FirstOrDefault();
+            return Query.FirstOrDefault(m => m.TitleSlug == slug);
         }
 
         public List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
@@ -160,6 +198,11 @@ namespace NzbDrone.Core.Tv
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
+        }
+
+        public Movie FindByTmdbId(int tmdbid)
+        {
+            return Query.Where(m => m.TmdbId == tmdbid).FirstOrDefault();
         }
     }
 }

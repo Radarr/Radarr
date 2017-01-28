@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Organizer
             AddEpisodeFileTokens(tokenHandlers, episodeFile);
             AddQualityTokens(tokenHandlers, series, episodeFile);
             AddMediaInfoTokens(tokenHandlers, episodeFile);
-            
+
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
             fileName = TrimSeparatorsRegex.Replace(fileName, string.Empty);
@@ -230,10 +230,10 @@ namespace NzbDrone.Core.Organizer
             }
 
             var basicNamingConfig = new BasicNamingConfig
-                                    {
-                                        Separator = episodeFormat.Separator,
-                                        NumberStyle = episodeFormat.SeasonEpisodePattern
-                                    };
+            {
+                Separator = episodeFormat.Separator,
+                NumberStyle = episodeFormat.SeasonEpisodePattern
+            };
 
             var titleTokens = TitleRegex.Matches(nameSpec.StandardEpisodeFormat);
 
@@ -297,7 +297,7 @@ namespace NzbDrone.Core.Organizer
 
         public string GetMovieFolder(Movie movie, NamingConfig namingConfig = null)
         {
-            if(namingConfig == null)
+            if (namingConfig == null)
             {
                 namingConfig = _namingConfigService.GetConfig();
             }
@@ -443,7 +443,7 @@ namespace NzbDrone.Core.Organizer
                 var absoluteEpisodePattern = absoluteEpisodeFormat.AbsoluteEpisodePattern;
                 string formatPattern;
 
-                switch ((MultiEpisodeStyle) namingConfig.MultiEpisodeStyle)
+                switch ((MultiEpisodeStyle)namingConfig.MultiEpisodeStyle)
                 {
 
                     case MultiEpisodeStyle.Duplicate:
@@ -466,14 +466,14 @@ namespace NzbDrone.Core.Organizer
                     case MultiEpisodeStyle.Range:
                     case MultiEpisodeStyle.PrefixedRange:
                         formatPattern = "-" + absoluteEpisodeFormat.AbsoluteEpisodePattern;
-                        var eps = new List<Episode> {episodes.First()};
+                        var eps = new List<Episode> { episodes.First() };
 
                         if (episodes.Count > 1) eps.Add(episodes.Last());
 
                         absoluteEpisodePattern = FormatAbsoluteNumberTokens(absoluteEpisodePattern, formatPattern, eps);
                         break;
 
-                        //MultiEpisodeStyle.Extend
+                    //MultiEpisodeStyle.Extend
                     default:
                         formatPattern = "-" + absoluteEpisodeFormat.AbsoluteEpisodePattern;
                         absoluteEpisodePattern = FormatAbsoluteNumberTokens(absoluteEpisodePattern, formatPattern, episodes);
@@ -921,7 +921,7 @@ namespace NzbDrone.Core.Organizer
 
         private AbsoluteEpisodeFormat[] GetAbsoluteFormat(string pattern)
         {
-            return _absoluteEpisodeFormatCache.Get(pattern, () =>  AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
+            return _absoluteEpisodeFormatCache.Get(pattern, () => AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
                 .Select(match => new AbsoluteEpisodeFormat
                 {
                     Separator = match.Groups["separator"].Value.IsNotNullOrWhiteSpace() ? match.Groups["separator"].Value : "-",
