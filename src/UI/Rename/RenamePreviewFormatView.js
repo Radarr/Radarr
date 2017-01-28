@@ -9,7 +9,6 @@ module.exports = Marionette.ItemView.extend({
         //var type = this.model.get('seriesType');
         return {
             rename : this.naming.get('renameEpisodes'),
-            folderFormat: this.naming.get('movieFolderFormat'),
             format : this.naming.get('standardMovieFormat')
         };
     },

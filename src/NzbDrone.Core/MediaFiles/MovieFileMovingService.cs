@@ -116,12 +116,6 @@ namespace NzbDrone.Core.MediaFiles
 
             _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
 
-            var oldMoviePath = new OsPath(movieFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
-            
-
-            var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
-            movie.Path = newMoviePath;
-
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
 
             _updateMovieFileService.ChangeFileDateForFile(movieFile, movie);
@@ -138,8 +132,6 @@ namespace NzbDrone.Core.MediaFiles
 
             _mediaFileAttributeService.SetFilePermissions(destinationFilePath);
 
-            _diskProvider.DeleteFolder(oldMoviePath, true);
-
             return movieFile;
         }
 
@@ -152,7 +144,6 @@ namespace NzbDrone.Core.MediaFiles
         {
             var movieFolder = Path.GetDirectoryName(filePath);
             var rootFolder = new OsPath(movieFolder).Directory.FullPath;
-            var fileName = Path.GetFileName(filePath);
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
@@ -165,7 +156,7 @@ namespace NzbDrone.Core.MediaFiles
             if (!_diskProvider.FolderExists(movieFolder))
             {
                 CreateFolder(movieFolder);
-                newEvent.MovieFolder = movieFolder;
+                newEvent.SeriesFolder = movieFolder;
                 changed = true;
             }
 
