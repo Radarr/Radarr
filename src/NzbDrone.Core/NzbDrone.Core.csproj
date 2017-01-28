@@ -218,6 +218,8 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
+    <Compile Include="Datastore\Migration\125_fix_imdb_unique.cs" />
+    <Compile Include="Datastore\Migration\124_add_preferred_tags_to_profile.cs" />
     <Compile Include="Datastore\Migration\122_add_movieid_to_blacklist.cs" />
     <Compile Include="Datastore\Migration\121_update_filedate_config.cs" />
     <Compile Include="Datastore\Migration\120_add_studio_to_table.cs" />
@@ -618,6 +620,7 @@
     <Compile Include="Http\HttpProxySettingsProvider.cs" />
     <Compile Include="Http\TorcacheHttpInterceptor.cs" />
     <Compile Include="IndexerSearch\Definitions\MovieSearchCriteria.cs" />
+    <Compile Include="IndexerSearch\MissingMoviesSearchCommand.cs" />
     <Compile Include="IndexerSearch\MoviesSearchCommand.cs" />
     <Compile Include="IndexerSearch\MoviesSearchService.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHDRssParser.cs" />

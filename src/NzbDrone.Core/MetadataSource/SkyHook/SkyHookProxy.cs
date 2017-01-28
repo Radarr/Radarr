@@ -14,6 +14,8 @@ using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Text;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -67,21 +69,23 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new Tuple<Series, List<Episode>>(series, episodes.ToList());
         }
 
-        public Movie GetMovieInfo(int TmdbId)
+        public Movie GetMovieInfo(int TmdbId, Profile profile = null)
         {
+            var langCode = profile != null ? IsoLanguages.Get(profile.Language).TwoLetterCode : "us";
+
             var request = _movieBuilder.Create()
                .SetSegment("route", "movie")
                .SetSegment("id", TmdbId.ToString())
                .SetSegment("secondaryRoute", "")
                .AddQueryParam("append_to_response", "alternative_titles,release_dates,videos")
-               .AddQueryParam("country", "US")
+               .AddQueryParam("language", langCode.ToUpper())
+               // .AddQueryParam("country", "US")
                .Build();
 
             request.AllowAutoRedirect = true;
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<MovieResourceRoot>(request);
-
             var resource = response.Resource;
 
             if (resource.status_message != null)
@@ -97,6 +101,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             var movie = new Movie();
+
+            foreach (var alternativeTitle in resource.alternative_titles.titles)
+            {
+                if (alternativeTitle.iso_3166_1.ToLower() == langCode)
+                {
+                    movie.AlternativeTitles.Add(alternativeTitle.title);
+                }
+                else if (alternativeTitle.iso_3166_1.ToLower() == "us")
+                {
+                    movie.AlternativeTitles.Add(alternativeTitle.title);
+                }
+            }
 
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
@@ -118,10 +134,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
             movie.Runtime = resource.runtime;
 
-            foreach(Title title in resource.alternative_titles.titles)
-            {
-                movie.AlternativeTitles.Add(title.title);
-            }
+            //foreach(Title title in resource.alternative_titles.titles)
+            //{
+            //    movie.AlternativeTitles.Add(title.title);
+            //}
 
             foreach(ReleaseDates releaseDates in resource.release_dates.results)
             {
@@ -161,7 +177,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 movie.Status = MovieStatusType.Announced;
             }
-            
+
             if (resource.videos != null)
             {
                 foreach (Video video in resource.videos.results)

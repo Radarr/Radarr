@@ -31,12 +31,14 @@ namespace NzbDrone.Core.Jobs
     {
         private readonly IScheduledTaskRepository _scheduledTaskRepository;
         private readonly IConfigService _configService;
+        private readonly IConfigFileProvider _configFileProvider;
         private readonly Logger _logger;
 
-        public TaskManager(IScheduledTaskRepository scheduledTaskRepository, IConfigService configService, Logger logger)
+        public TaskManager(IScheduledTaskRepository scheduledTaskRepository, IConfigService configService, IConfigFileProvider configFileProvider, Logger logger)
         {
             _scheduledTaskRepository = scheduledTaskRepository;
             _configService = configService;
+            _configFileProvider = configFileProvider;
             _logger = logger;
         }
 
@@ -60,11 +62,19 @@ namespace NzbDrone.Core.Jobs
 
         public void Handle(ApplicationStartedEvent message)
         {
+            float updateInterval = 6 * 60;
+
+            if (_configFileProvider.Branch == "nightly")
+            {
+                updateInterval = 30;
+            }
+
             var defaultTasks = new[]
                 {
                     new ScheduledTask{ Interval = 0.25f, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
-                    new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
+                    new ScheduledTask{ Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName},
+                    // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
                     new ScheduledTask{ Interval = 12*60, TypeName = typeof(NetImportSyncCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},

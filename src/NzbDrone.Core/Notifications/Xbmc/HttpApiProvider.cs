@@ -51,6 +51,24 @@ namespace NzbDrone.Core.Notifications.Xbmc
             UpdateLibrary(settings, series);
         }
 
+        public void UpdateMovie(XbmcSettings settings, Movie movie)
+        {
+            if (!settings.AlwaysUpdate)
+            {
+                _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
+                var activePlayers = GetActivePlayers(settings);
+
+                if (activePlayers.Any(a => a.Type.Equals("video")))
+                {
+                    _logger.Debug("Video is currently playing, skipping library update");
+                    return;
+                }
+            }
+
+            UpdateMovieLibrary(settings, movie);
+        }
+
+
         public void Clean(XbmcSettings settings)
         {
             const string cleanVideoLibrary = "CleanLibrary(video)";
@@ -166,6 +184,37 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 _logger.Debug(ex, ex.Message);
             }
         }
+
+        private void UpdateMovieLibrary(XbmcSettings settings, Movie movie)
+        {
+            try
+            {
+                //_logger.Debug("Sending Update DB Request to XBMC Host: {0}", settings.Address);
+                //var xbmcSeriesPath = GetSeriesPath(settings, series);
+
+                ////If the path is found update it, else update the whole library
+                //if (!string.IsNullOrEmpty(xbmcSeriesPath))
+                //{
+                //    _logger.Debug("Updating series [{0}] on XBMC host: {1}", series, settings.Address);
+                //    var command = BuildExecBuiltInCommand(string.Format("UpdateLibrary(video,{0})", xbmcSeriesPath));
+                //    SendCommand(settings, command);
+                //}
+
+                //else
+                //{
+                    //Update the entire library
+                    _logger.Debug("Series [{0}] doesn't exist on XBMC host: {1}, Updating Entire Library", movie, settings.Address);
+                    var command = BuildExecBuiltInCommand("UpdateLibrary(video)");
+                    SendCommand(settings, command);
+                //}
+            }
+
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, ex.Message);
+            }
+        }
+
 
         private string SendCommand(XbmcSettings settings, string command)
         {

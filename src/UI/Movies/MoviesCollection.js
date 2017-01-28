@@ -14,13 +14,13 @@ var Collection = PageableCollection.extend({
 		model     : MovieModel,
 		tableName : 'movie',
 
-		state : {
-				sortKey            : 'sortTitle',
-				order              : 1,
-				pageSize           : 100000,
-				secondarySortKey   : 'sortTitle',
-				secondarySortOrder : -1
-		},
+    state : {
+        sortKey            : 'sortTitle',
+        order              : -1,
+        pageSize           : 100000,
+        secondarySortKey   : 'sortTitle',
+        secondarySortOrder : -1
+    },
 
 		mode : 'client',
 
@@ -46,6 +46,44 @@ var Collection = PageableCollection.extend({
 
 				return proxy.save();
 		},
+
+    filterModes : {
+        'all'        : [
+            null,
+            null
+        ],
+        'continuing' : [
+            'status',
+            'continuing'
+        ],
+        'ended'      : [
+            'status',
+            'ended'
+        ],
+        'monitored'  : [
+            'monitored',
+            true
+        ],
+        'missing'  : [
+            'downloaded',
+            false
+        ],
+        'released'  : [
+            null,
+            null,
+            function(model) { return model.getStatus() == "released"; }
+        ],
+        'announced'  : [
+            null,
+            null,
+            function(model) { return model.getStatus() == "announced"; }
+        ],
+        'cinemas'  : [
+            null,
+            null,
+            function(model) { return model.getStatus() == "inCinemas"; }
+        ]
+    },
 
 		importFromList : function(models) {
 			var self = this;

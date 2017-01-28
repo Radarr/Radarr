@@ -40,6 +40,16 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             ProcessRequest(request, settings);
         }
 
+
+        public void UpdateMovies(MediaBrowserSettings settings, string imdbid)
+        {
+            var path = string.Format("/Library/Movies/Updated?ImdbId={0}", imdbid);
+            var request = BuildRequest(path, settings);
+            request.Headers.Add("Content-Length", "0");
+
+            ProcessRequest(request, settings);
+        }
+
         private string ProcessRequest(HttpRequest request, MediaBrowserSettings settings)
         {
             request.Headers.Add("X-MediaBrowser-Token", settings.ApiKey);

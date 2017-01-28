@@ -4,23 +4,36 @@ var LanguageCollection = require('../Language/LanguageCollection');
 var Config = require('../../../Config');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
+require('../../../Mixins/TagInput');
+require('bootstrap');
+require('bootstrap.tagsinput');
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/Profile/Edit/EditProfileViewTemplate',
+		template : 'Settings/Profile/Edit/EditProfileViewTemplate',
 
-    ui : { cutoff : '.x-cutoff' },
+		ui : { cutoff : '.x-cutoff',
+					preferred : '.x-preferred',
+				},
 
-    templateHelpers : function() {
-        return {
-            languages : LanguageCollection.toJSON()
-        };
-    },
+		onRender : function() {
+			this.ui.preferred.tagsinput({
+					trimValue : true,
+					allowDuplicates: true,
+					tagClass  : 'label label-success'
+			});
+		},
 
-    getCutoff : function() {
-        var self = this;
+		templateHelpers : function() {
+				return {
+						languages : LanguageCollection.toJSON()
+				};
+		},
 
-        return _.findWhere(_.pluck(this.model.get('items'), 'quality'), { id : parseInt(self.ui.cutoff.val(), 10) });
-    }
+		getCutoff : function() {
+				var self = this;
+
+				return _.findWhere(_.pluck(this.model.get('items'), 'quality'), { id : parseInt(self.ui.cutoff.val(), 10) });
+		}
 });
 
 AsValidatedView.call(view);

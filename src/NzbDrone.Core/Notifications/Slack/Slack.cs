@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Notifications.Slack
                     new Attachment
                     {
                         Fallback = message.Message,
-                        Title = message.Series.Title,
+                        Title = message.Movie.Title,
                         Text = message.Message,
                         Color = "warning"
                     }
@@ -59,9 +59,28 @@ namespace NzbDrone.Core.Notifications.Slack
                     new Attachment
                     {
                         Fallback = message.Message,
-                        Title = message.Series.Title,
+                        Title = message.Movie.Title,
                         Text = message.Message,
                         Color = "good"
+                    }
+                }
+            };
+
+            NotifySlack(payload);
+        }
+
+        public override void OnMovieRename(Movie movie)
+        {
+            var payload = new SlackPayload
+            {
+                IconEmoji = Settings.Icon,
+                Username = Settings.Username,
+                Text = "Renamed",
+                Attachments = new List<Attachment>
+                {
+                    new Attachment
+                    {
+                        Title = movie.Title,
                     }
                 }
             };
