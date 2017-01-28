@@ -27,6 +27,10 @@ namespace NzbDrone.Core.Notifications.Webhook
             _service.OnDownload(message.Series, message.EpisodeFile, Settings);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
             _service.OnRename(series, Settings);

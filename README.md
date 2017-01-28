@@ -12,7 +12,9 @@
 | AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1) |
 | Travis   | [![Travis](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) | [![Travis](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) |
 
-This fork of Sonarr aims to turn it into something like CouchPotato.
+A fork of [Sonarr](https://github.com/Sonarr/Sonarr) to work with movies à la Couchpotato.
+
+**This fork works independently of Sonarr and will not interfere with it.**
 
 ## Downloads
 
@@ -34,33 +36,33 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 
 ## Features
 
-### Currently Working
+### Current Features
 
-* Adding new movies
-* Manually searching for releases of movies
-* Automatically searching for releases
-* Automatically importing downloaded movies
-* Recognizing Special Editions, Director's Cut, etc.
-* Identifying releases with hardcoded subs
-* Rarbg.to, Torznab and Newznab Indexer
-* QBittorrent and Deluge download client (Other clients are coming)
-* New TorrentPotato Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
-
-### Planned Features
-
-* Scanning PreDB to know when a new release is available
-* Fixing the other Indexers and download clients
-* Importing of Sonarr config
-
-### Major Features
-
+* Adding new movies with lots of information, such as trailers, ratings, etc.
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
 * Can watch for better quality of the movies you have and do an automatic upgrade. *eg. from DVD to Blu-Ray*
 * Automatic failed download handling will try another release if one fails
 * Manual search so you can pick any release or to see why a release was not downloaded automatically
 * Full integration with SABnzbd and NZBGet
-* Full integration with Kodi, Plex (notification, library update, metadata)
+* Automatically searching for releases as well as RSS Sync
+* Automatically importing downloaded movies
+* Recognizing Special Editions, Director's Cut, etc.
+* Identifying releases with hardcoded subs
+* All indexers supported by Sonarr also supported
+* New PassThePopcorn Indexer
+* QBittorrent, Deluge, rTorrent, Transmission and uTorrent download client (Other clients are coming)
+* New TorrentPotato Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
 * And a beautiful UI
+
+### Planned Features
+
+* Scanning PreDB to know when a new release is available
+* Fixing the other Indexers and download clients
+* Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
+* Full integration with Kodi, Plex (notification, library update, metadata)
+
+##Feature Requests
+[![Feature Requests](http://feathub.com/Radarr/Radarr?format=svg)](http://feathub.com/Radarr/Radarr)
 
 ## Configuring Development Environment
 

@@ -29,6 +29,9 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         [FieldDefinition(1, Label = "Passkey")]
         public string Passkey { get; set; }
 
+        [FieldDefinition(2, Type = FieldType.Checkbox, Label = "Require Internal", HelpText = "Will only include internal releases for RSS Sync.")]
+        public bool Internal { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

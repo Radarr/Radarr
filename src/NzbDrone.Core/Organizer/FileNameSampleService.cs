@@ -125,7 +125,8 @@ namespace NzbDrone.Core.Organizer
                 RelativePath = "Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE.mkv",
                 SceneName = "Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE",
                 ReleaseGroup = "RlsGrp",
-                MediaInfo = mediaInfo
+                MediaInfo = mediaInfo,
+                Edition = "Ultimate extended edition",
             };
 
             _singleEpisodeFile = new EpisodeFile
