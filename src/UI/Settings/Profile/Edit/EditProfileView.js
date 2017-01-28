@@ -18,6 +18,7 @@ var view = Marionette.ItemView.extend({
 		onRender : function() {
 			this.ui.preferred.tagsinput({
 					trimValue : true,
+					allowDuplicates: true,
 					tagClass  : 'label label-success'
 			});
 		},
