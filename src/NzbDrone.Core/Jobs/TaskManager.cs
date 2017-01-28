@@ -181,7 +181,10 @@ namespace NzbDrone.Core.Jobs
             var downloadedEpisodes = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
             downloadedEpisodes.Interval = _configService.DownloadedEpisodesScanInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes });
+            var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
+            netImport.Interval = _configService.NetImportSyncInterval;
+
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes, netImport });
         }
     }
 }
