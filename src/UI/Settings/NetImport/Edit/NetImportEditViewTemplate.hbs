@@ -66,7 +66,11 @@
 							<label class="col-sm-3 control-label">Quality Profile</label>
 
 							<div class="col-sm-5">
-								{{> ProfileSelectionPartial profiles}}
+								<select class="form-control x-profile" id="inputProfile" name="profileId">
+                                {{#each profiles}}
+                                	<option value="{{id}}">{{name}}</option>
+                                {{/each}}
+                            	</select>
 							</div>
 						</div>
 

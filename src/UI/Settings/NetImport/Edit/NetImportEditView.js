@@ -25,7 +25,7 @@ var view = Marionette.ItemView.extend({
 		events : {
 				'click .x-back'            : '_back',
 				'click .x-captcha-refresh' : '_onRefreshCaptcha',
-								'change .x-root-folder'   : '_rootFolderChanged',
+				'change .x-root-folder'   : '_rootFolderChanged',
 		},
 
 		_deleteView : DeleteView,
