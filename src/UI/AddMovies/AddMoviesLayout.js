@@ -13,7 +13,11 @@ module.exports = Marionette.Layout.extend({
 		template : 'AddMovies/AddMoviesLayoutTemplate',
 
 		regions : {
-				workspace : '#add-movies-workspace'
+				workspace : '#add-movies-workspace',
+		},
+
+		ui : {
+			$existing : '#show-existing-movies-toggle'
 		},
 
 		events : {
@@ -32,25 +36,26 @@ module.exports = Marionette.Layout.extend({
 				RootFolderCollection.fetch().done(function() {
 						RootFolderCollection.synced = true;
 				});
-
-
 		},
 
 		_toggleExisting : function(e) {
-				var showExisting = e.target.checked;
+			var showExisting = e.target.checked;
 
-				vent.trigger(vent.Commands.ShowExistingCommand, {
-						showExisting: showExisting
-				});
+			vent.trigger(vent.Commands.ShowExistingCommand, {
+					showExisting: showExisting
+			});
 		},
 
 		onShow : function() {
+
 				this.workspace.show(new AddMoviesView());
+				this.ui.$existing.hide();
 		},
 
 
 		_folderSelected : function(options) {
 				vent.trigger(vent.Commands.CloseModalCommand);
+				this.ui.$existing.show();
 				this.workspace.show(new ExistingMoviesCollectionView({ model : options.model }));
 		},
 
@@ -65,6 +70,7 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_addFromList : function() {
+			this.ui.$existing.hide();
 			this.workspace.show(new AddFromListView());
 		}
 });
