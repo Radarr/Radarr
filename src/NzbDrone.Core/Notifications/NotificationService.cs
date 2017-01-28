@@ -80,8 +80,9 @@ namespace NzbDrone.Core.Notifications
                     qualityString += " Proper";
             }
 
-            return string.Format("{0} [{1}]",
+            return string.Format("{0} ({1}) [{2}]",
                                     movie.Title,
+                                    movie.Year,
                                     qualityString);
         }
 
