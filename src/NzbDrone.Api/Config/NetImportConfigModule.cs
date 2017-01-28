@@ -10,6 +10,8 @@ namespace NzbDrone.Api.Config
         public NetImportConfigModule(IConfigService configService)
             : base(configService)
         {
+            SharedValidator.RuleFor(c => c.NetImportSyncInterval)
+               .IsValidNetImportSyncInterval();
         }
 
         protected override NetImportConfigResource ToResource(IConfigService model)

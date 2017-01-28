@@ -75,7 +75,6 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName},
                     // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
-                    new ScheduledTask{ Interval = 12*60, TypeName = typeof(NetImportSyncCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshMovieCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
@@ -85,6 +84,12 @@ namespace NzbDrone.Core.Jobs
                     { 
                         Interval = GetRssSyncInterval(),
                         TypeName = typeof(RssSyncCommand).FullName
+                    },
+
+                    new ScheduledTask
+                    {
+                        Interval = GetNetImportSyncInterval(),
+                        TypeName = typeof(NetImportSyncCommand).FullName
                     },
 
                     new ScheduledTask
@@ -126,6 +131,23 @@ namespace NzbDrone.Core.Jobs
         private int GetRssSyncInterval()
         {
             var interval = _configService.RssSyncInterval;
+
+            if (interval > 0 && interval < 10)
+            {
+                return 10;
+            }
+
+            if (interval < 0)
+            {
+                return 0;
+            }
+
+            return interval;
+        }
+
+        private int GetNetImportSyncInterval()
+        {
+            var interval = _configService.NetImportSyncInterval;
 
             if (interval > 0 && interval < 10)
             {
