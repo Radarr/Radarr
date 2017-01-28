@@ -138,7 +138,9 @@ namespace NzbDrone.Core.MediaFiles
 
             _mediaFileAttributeService.SetFilePermissions(destinationFilePath);
 
-            _diskProvider.DeleteFolder(oldMoviePath, true);
+
+            if(oldMoviePath != newMoviePath)
+                _diskProvider.DeleteFolder(oldMoviePath, true);
 
             return movieFile;
         }
