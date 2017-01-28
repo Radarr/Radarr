@@ -15,7 +15,7 @@ namespace NzbDrone.Core.NetImport.Trakt
     public class Movie
     {
         public string title { get; set; }
-        public int year { get; set; }
+        public int? year { get; set; }
         public Ids ids { get; set; }
     }
 
