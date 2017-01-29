@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                 { 
                     new ProfileQualityItem { Allowed = true, Quality = Quality.SDTV },
                     new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL480p },
-                    new ProfileQualityItem { Allowed = true, Quality = Quality.RAWHD }
+                    //new ProfileQualityItem { Allowed = true, Quality = Quality.RAWHD }
                 }
             };
 
@@ -71,13 +71,13 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
 
             var qualityMet = new EpisodeFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.WEBDL480p } };
             var qualityUnmet = new EpisodeFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.SDTV } };
-            var qualityRawHD = new EpisodeFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.RAWHD } };
+            //var qualityRawHD = new EpisodeFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.RAWHD } };
 
             MediaFileRepository fileRepository = Mocker.Resolve<MediaFileRepository>();
 
             qualityMet = fileRepository.Insert(qualityMet);
             qualityUnmet = fileRepository.Insert(qualityUnmet);
-            qualityRawHD = fileRepository.Insert(qualityRawHD);
+            //qualityRawHD = fileRepository.Insert(qualityRawHD);
 
             var monitoredSeriesEpisodes = Builder<Episode>.CreateListOfSize(4)
                                            .All()
@@ -90,8 +90,8 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                                            .With(e => e.Monitored = false)
                                            .With(e => e.EpisodeFileId = qualityMet.Id)
                                            .TheNext(1)
-                                           .With(e => e.EpisodeFileId = qualityRawHD.Id)
-                                           .TheLast(1)
+                                           //.With(e => e.EpisodeFileId = qualityRawHD.Id)
+                                           //.TheLast(1)
                                            .With(e => e.SeasonNumber = 0)
                                            .Build();
 
