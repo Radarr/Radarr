@@ -15,7 +15,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 {
     public class TraktImport : HttpNetImportBase<TraktSettings>
     {
-        public override string Name => "Trakt User List";
+        public override string Name => "Trakt List";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
