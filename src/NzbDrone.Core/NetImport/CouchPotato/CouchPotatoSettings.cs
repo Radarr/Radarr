@@ -7,6 +7,16 @@ using NzbDrone.Core.Validation;
 namespace NzbDrone.Core.NetImport.CouchPotato
 {
 
+    public class CouchPotatoSettingsValidator : AbstractValidator<CouchPotatoSettings>
+    {
+        public CouchPotatoSettingsValidator()
+        {
+            RuleFor(c => c.Link).ValidRootUrl();
+            RuleFor(c => c.Port).InclusiveBetween(1, 65535);
+            RuleFor(c => c.ApiKey).NotEmpty();
+        }
+    }
+
     public class CouchPotatoSettings : NetImportBaseSettings
     {
         public CouchPotatoSettings()

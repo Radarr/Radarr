@@ -125,6 +125,7 @@
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="NetImport\Trakt\TraktAPI.cs" />
     <Compile Include="NetImport\Trakt\TraktImport.cs" />
+    <Compile Include="NetImport\Trakt\TraktListType.cs" />
     <Compile Include="NetImport\Trakt\TraktParser.cs" />
     <Compile Include="NetImport\Trakt\TraktRequestGenerator.cs" />
     <Compile Include="NetImport\Trakt\TraktSettings.cs" />
