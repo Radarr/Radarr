@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Configuration
 
         public int DownloadedEpisodesScanInterval
         {
-            get { return GetValueInt("DownloadedEpisodesScanInterval", 1); }
+            get { return GetValueInt("DownloadedEpisodesScanInterval", 0); }
 
             set { SetValue("DownloadedEpisodesScanInterval", value); }
         }
