@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.Qualities
                 Quality.CAM,
                 Quality.TELECINE,
                 Quality.DVDSCR,
-                Quality.R5,
+                Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
                 Quality.DVDR,
@@ -84,7 +84,8 @@ namespace NzbDrone.Core.Test.Qualities
                 Quality.Bluray720p,
                 Quality.Bluray1080p,
                 Quality.Bluray2160p,
-                Quality.BRDISK
+                Quality.BRDISK,
+                Quality.RAWHD
             };
 
             if (allowed.Length == 0)

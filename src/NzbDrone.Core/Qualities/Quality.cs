@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Qualities
         public static Quality BRDISK => new Quality(22, "BR-DISK"); // new
 
         // Others
-        // public static Quality RAWHD => new Quality(10, "Raw-HD");
+        public static Quality RAWHD => new Quality(10, "Raw-HD");
 
         static Quality()
         {
@@ -119,7 +119,8 @@ namespace NzbDrone.Core.Qualities
                 Bluray720p,
                 Bluray1080p,
                 Bluray2160p,
-                BRDISK
+                BRDISK,
+                RAWHD
             };
 
             AllLookup = new Quality[All.Select(v => v.Id).Max() + 1];
@@ -157,7 +158,8 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.WEBDL2160p)  { Weight = 21, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.Bluray2160p) { Weight = 22, MinSize = 0, MaxSize = null },
 
-                new QualityDefinition(Quality.BRDISK)      { Weight = 23, MinSize = 0, MaxSize = null }
+                new QualityDefinition(Quality.BRDISK)      { Weight = 23, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.RAWHD)       { Weight = 24, MinSize = 0, MaxSize = null }
             };
         }
 
