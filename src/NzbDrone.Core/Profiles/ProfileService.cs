@@ -85,11 +85,13 @@ namespace NzbDrone.Core.Profiles
 
             _logger.Info("Setting up default quality profiles");
 
-            AddDefaultProfile("Any", Quality.DVD,
+            AddDefaultProfile("Any", Quality.Bluray480p,
+                Quality.WORKPRINT,
                 Quality.CAM,
+                Quality.TELESYNC,
                 Quality.TELECINE,
                 Quality.DVDSCR,
-                Quality.R5,
+                Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
                 Quality.DVDR,
@@ -107,14 +109,18 @@ namespace NzbDrone.Core.Profiles
                 Quality.Bluray2160p,
                 Quality.BRDISK);
 
-            AddDefaultProfile("SD", Quality.DVD,
+            AddDefaultProfile("SD", Quality.Bluray480p,
+                Quality.WORKPRINT,
                 Quality.CAM,
+                Quality.TELESYNC,
                 Quality.TELECINE,
                 Quality.DVDSCR,
-                Quality.R5,
+                Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
-                Quality.WEBDL480p);
+                Quality.WEBDL480p,
+                Quality.Bluray480p,
+                Quality.Bluray576p);
 
             AddDefaultProfile("HD-720p", Quality.Bluray720p,
                 Quality.HDTV720p,
