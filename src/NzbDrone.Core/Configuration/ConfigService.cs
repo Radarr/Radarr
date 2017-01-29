@@ -105,6 +105,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RssSyncInterval", value); }
         }
 
+        public int NetImportSyncInterval
+        {
+            get { return GetValueInt("NetImportSyncInterval", 60); }
+
+            set { SetValue("NetImportSyncInterval", value); }
+        }
+
         public int MinimumAge
         {
             get { return GetValueInt("MinimumAge", 0); }

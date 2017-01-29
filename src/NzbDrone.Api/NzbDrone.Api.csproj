@@ -109,6 +109,8 @@
     <Compile Include="ClientSchema\SelectOption.cs" />
     <Compile Include="Commands\CommandModule.cs" />
     <Compile Include="Commands\CommandResource.cs" />
+    <Compile Include="Config\NetImportConfigModule.cs" />
+    <Compile Include="Config\NetImportConfigResource.cs" />
     <Compile Include="Extensions\AccessControlHeaders.cs" />
     <Compile Include="Extensions\Pipelines\CorsPipeline.cs" />
     <Compile Include="Extensions\Pipelines\RequestLoggingPipeline.cs" />
@@ -121,6 +123,9 @@
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />
     <Compile Include="Movies\MovieEditorModule.cs" />
+    <Compile Include="NetImport\ListImportModule.cs" />
+    <Compile Include="NetImport\NetImportModule.cs" />
+    <Compile Include="NetImport\NetImportResource.cs" />
     <Compile Include="Parse\ParseModule.cs" />
     <Compile Include="Parse\ParseResource.cs" />
     <Compile Include="ManualImport\ManualImportModule.cs" />
@@ -234,6 +239,7 @@
     <Compile Include="SeasonPass\SeasonPassResource.cs" />
     <Compile Include="Series\AlternateTitleResource.cs" />
     <Compile Include="Series\MovieFileResource.cs" />
+    <Compile Include="Series\FetchMovieListModule.cs" />
     <Compile Include="Series\SeasonResource.cs" />
     <Compile Include="SeasonPass\SeasonPassModule.cs" />
     <Compile Include="Series\SeriesEditorModule.cs" />
@@ -254,6 +260,7 @@
     <Compile Include="TinyIoCNancyBootstrapper.cs" />
     <Compile Include="Update\UpdateModule.cs" />
     <Compile Include="Update\UpdateResource.cs" />
+    <Compile Include="Validation\NetImportSyncIntervalValidator.cs" />
     <Compile Include="Validation\RssSyncIntervalValidator.cs" />
     <Compile Include="Validation\EmptyCollectionValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />

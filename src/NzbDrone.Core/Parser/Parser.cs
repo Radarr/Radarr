@@ -266,7 +266,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex ReportImdbId = new Regex(@"(?<imdbid>tt\d{9})", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ReportImdbId = new Regex(@"(?<imdbid>tt\d{7})", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex SimpleTitleRegex = new Regex(@"(?:480[ip]|576[ip]|720[ip]|1080[ip]|2160[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|(8|10)b(it)?)\s*",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -454,7 +454,7 @@ namespace NzbDrone.Core.Parser
             {
                 if (match.Groups["imdbid"].Value != null)
                 {
-                    if (match.Groups["imdbid"].Length == 11)
+                    if (match.Groups["imdbid"].Length == 9)
                     {
                         return match.Groups["imdbid"].Value;
                     }

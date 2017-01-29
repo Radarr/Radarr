@@ -6,30 +6,32 @@ require('./AllowedLabeler');
 require('./LanguageLabel');
 require('bootstrap');
 
+
 var view = Marionette.ItemView.extend({
-    template : 'Settings/Profile/ProfileViewTemplate',
-    tagName  : 'li',
+		template : 'Settings/Profile/ProfileViewTemplate',
+		tagName  : 'li',
 
-    ui : {
-        "progressbar"  : '.progress .bar',
-        "deleteButton" : '.x-delete'
-    },
+		ui : {
+				"progressbar"  : '.progress .bar',
+				"deleteButton" : '.x-delete',
 
-    events : {
-        'click' : '_editProfile'
-    },
+		},
 
-    initialize : function() {
-        this.listenTo(this.model, 'sync', this.render);
-    },
+		events : {
+				'click' : '_editProfile'
+		},
 
-    _editProfile : function() {
-        var view = new EditProfileView({
-            model             : this.model,
-            profileCollection : this.model.collection
-        });
-        AppLayout.modalRegion.show(view);
-    }
+		initialize : function() {
+				this.listenTo(this.model, 'sync', this.render);
+		},
+
+		_editProfile : function() {
+				var view = new EditProfileView({
+						model             : this.model,
+						profileCollection : this.model.collection
+				});
+				AppLayout.modalRegion.show(view);
+		}
 });
 
 module.exports = AsModelBoundView.call(view);

@@ -80,8 +80,9 @@ namespace NzbDrone.Core.Notifications
                     qualityString += " Proper";
             }
 
-            return string.Format("{0} [{1}]",
+            return string.Format("{0} ({1}) [{2}]",
                                     movie.Title,
+                                    movie.Year,
                                     qualityString);
         }
 
@@ -213,7 +214,9 @@ namespace NzbDrone.Core.Notifications
             downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.Quality);
             downloadMessage.Series = null;
             downloadMessage.EpisodeFile = null;
+            downloadMessage.MovieFile = message.MovieFile;
             downloadMessage.Movie = message.Movie.Movie;
+            downloadMessage.OldFiles = null;
             downloadMessage.OldMovieFiles = message.OldFiles;
             downloadMessage.SourcePath = message.Movie.Path;
 

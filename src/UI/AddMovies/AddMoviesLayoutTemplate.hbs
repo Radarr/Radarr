@@ -1,43 +1,46 @@
 <div class="row">
-    <div class="col-md-12">
-        <div class="btn-group add-movies-btn-group btn-group-lg btn-block">
-            <button type="button" class="btn btn-default col-md-10 col-xs-8 add-movies-import-btn x-import">
-                <i class="icon-sonarr-hdd"/>
-                Import existing movies on disk
-            </button>
-            <button class="btn btn-default col-md-2 col-xs-4 x-add-new"><i class="icon-sonarr-active hidden-xs"></i> Add New Movie</button>
-        </div>
-    </div>
+		<div class="col-md-12">
+				<div class="btn-group add-movies-btn-group btn-group-lg btn-block">
+						<button type="button" class="btn btn-default col-md-7 col-xs-4 add-movies-import-btn x-import">
+								<i class="icon-sonarr-hdd"/>
+								Import existing movies on disk
+						</button>
+						<button class="btn btn-default col-md-2 col-xs-4 x-add-new"><i class="icon-sonarr-active hidden-xs"></i> Add New Movie</button>
+						<button class="btn btn-default col-md-3 col-xs-4 x-add-lists"><i class="icon-sonarr-active hidden-xs"></i> Add Movies from Lists</button>
+				</div>
+		</div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <div class="form-horizontal" style="margin-top: 15px;">
-            <div class="form-group" style="margin-bottom: 0px;">
-                <label class="col-sm-3 control-label">Display Existing Movies</label>
+	<div class="col-md-12">
+		<div class="form-horizontal" style="margin-top: 15px;">
+			<div id="show-existing-movies-toggle">
+				<div class="form-group" style="margin-bottom: 0px;">
+					<label class="col-sm-3 control-label">Display Existing Movies</label>
 
-                <div class="col-sm-8">
-                    <div class="input-group">
-                        <label class="checkbox toggle well">
-                            <input class="x-show-existing" type="checkbox" checked="checked" name="showExisting"/>
-                            <p>
-                                <span>Yes</span>
-                                <span>No</span>
-                            </p>
+					<div class="col-sm-8">
+						<div class="input-group">
+							<label class="checkbox toggle well">
+								<input class="x-show-existing" type="checkbox" checked="checked" name="showExisting"/>
+								<p>
+										<span>Yes</span>
+										<span>No</span>
+								</p>
 
-                            <div class="btn btn-primary slide-button"/>
-                        </label>
+								<div class="btn btn-primary slide-button"/>
+							</label>
 
-                        <span class="help-inline-checkbox">
-                            <i class="icon-sonarr-form-info" title="Should Radarr display movies already in your collection?"/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+							<span class="help-inline-checkbox">
+								<i class="icon-sonarr-form-info" title="Should Radarr display movies already in your collection?"/>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <div id="add-movies-workspace"></div>
-    </div>
+		<div class="col-md-12">
+				<div id="add-movies-workspace"></div>
+		</div>
 </div>

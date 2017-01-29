@@ -88,6 +88,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var response = _httpClient.Get<MovieResourceRoot>(request);
             var resource = response.Resource;
 
+            if (resource.status_message != null)
+            {
+                if (resource.status_code == 34)
+                {
+                    _logger.Warn("Movie with TmdbId {0} could not be found. This is probably the case when the movie was deleted from TMDB.", TmdbId);
+                    return null;
+                }
+
+                _logger.Warn(resource.status_message);
+                return null;
+            }
+
             var movie = new Movie();
 
             foreach (var alternativeTitle in resource.alternative_titles.titles)
@@ -576,6 +588,41 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
 
             return value;
+        }
+
+        public Movie MapMovieToTmdbMovie(Movie movie)
+        {
+            Movie newMovie = movie;
+            if (movie.TmdbId > 0)
+            {
+                newMovie = GetMovieInfo(movie.TmdbId);
+            }
+            else if (movie.ImdbId.IsNotNullOrWhiteSpace())
+            {
+                newMovie = GetMovieInfo(movie.ImdbId);
+            }
+            else
+            {
+                var yearStr = "";
+                if (movie.Year > 1900)
+                {
+                    yearStr = $" {movie.Year}";
+                }
+                newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
+            }
+
+            if (newMovie == null)
+            {
+                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
+                return null;
+            }
+
+            newMovie.Path = movie.Path;
+            newMovie.RootFolderPath = movie.RootFolderPath;
+            newMovie.ProfileId = movie.ProfileId;
+            newMovie.Monitored = movie.Monitored;
+
+            return newMovie;
         }
     }
 }

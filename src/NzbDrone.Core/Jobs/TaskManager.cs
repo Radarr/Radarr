@@ -14,6 +14,7 @@ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Update.Commands;
 
@@ -86,6 +87,12 @@ namespace NzbDrone.Core.Jobs
                     },
 
                     new ScheduledTask
+                    {
+                        Interval = GetNetImportSyncInterval(),
+                        TypeName = typeof(NetImportSyncCommand).FullName
+                    },
+
+                    new ScheduledTask
                     { 
                         Interval = _configService.DownloadedEpisodesScanInterval,
                         TypeName = typeof(DownloadedEpisodesScanCommand).FullName
@@ -138,6 +145,23 @@ namespace NzbDrone.Core.Jobs
             return interval;
         }
 
+        private int GetNetImportSyncInterval()
+        {
+            var interval = _configService.NetImportSyncInterval;
+
+            if (interval > 0 && interval < 10)
+            {
+                return 10;
+            }
+
+            if (interval < 0)
+            {
+                return 0;
+            }
+
+            return interval;
+        }
+
         public void Handle(CommandExecutedEvent message)
         {
             var scheduledTask = _scheduledTaskRepository.All().SingleOrDefault(c => c.TypeName == message.Command.Body.GetType().FullName);
@@ -157,7 +181,10 @@ namespace NzbDrone.Core.Jobs
             var downloadedEpisodes = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
             downloadedEpisodes.Interval = _configService.DownloadedEpisodesScanInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes });
+            var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
+            netImport.Interval = _configService.NetImportSyncInterval;
+
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes, netImport });
         }
     }
 }
