@@ -24,10 +24,10 @@ namespace NzbDrone.Core.Datastore.Migration
             updater.SplitQualityPrepend(2, 28); // DVDSCR   BEFORE     DVD
             updater.SplitQualityPrepend(2, 29); // REGIONAL BEFORE     DVD
 
-            updater.SplitQualityAppend(1, 20); // Bluray480p   AFTER     SDTV
-            updater.SplitQualityAppend(1, 21); // Bluray576p   AFTER     SDTV
+            updater.SplitQualityAppend(2, 21); // Bluray576p   AFTER     SDTV
+            updater.SplitQualityAppend(2, 20); // Bluray480p   AFTER     SDTV
 
-            updater.SplitQualityPrepend(10, 22); // BRDISK       BEFORE      RAWHD
+            updater.AppendQuality(22);
 
             updater.Commit();
         }
