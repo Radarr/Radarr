@@ -47,6 +47,27 @@ var Collection = PageableCollection.extend({
         return proxy.save();
     },
 
+    importFromList : function(models) {
+        var self = this;
+
+        var proxy = _.extend(new Backbone.Model(), {
+            id : "",
+
+            url : self.url + "/import",
+
+            toJSON : function() {
+                return models;
+            }
+        });
+
+        this.listenTo(proxy, "sync", function(proxyModel, models) {
+            this.add(models, { merge : true});
+            this.trigger("save", this);
+        });
+
+        return proxy.save();
+    },
+
     filterModes : {
         'all'        : [
             null,
