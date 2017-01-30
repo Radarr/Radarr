@@ -10,9 +10,9 @@ var moment = require('moment');
 require('../Mixins/backbone.signalr.mixin');
 
 var Collection = PageableCollection.extend({
-		url       : window.NzbDrone.ApiRoot + '/movie',
-		model     : MovieModel,
-		tableName : 'movie',
+    url       : window.NzbDrone.ApiRoot + '/movie',
+    model     : MovieModel,
+    tableName : 'movie',
 
     state : {
         sortKey            : 'sortTitle',
@@ -22,30 +22,30 @@ var Collection = PageableCollection.extend({
         secondarySortOrder : -1
     },
 
-		mode : 'client',
+    mode : 'client',
 
-		save : function() {
-				var self = this;
+    save : function() {
+        var self = this;
 
-				var proxy = _.extend(new Backbone.Model(), {
-						id : '',
+        var proxy = _.extend(new Backbone.Model(), {
+            id : '',
 
-						url : self.url + '/editor',
+            url : self.url + '/editor',
 
-						toJSON : function() {
-								return self.filter(function(model) {
-										return model.edited;
-								});
-						}
-				});
+            toJSON : function() {
+                return self.filter(function(model) {
+                    return model.edited;
+                });
+            }
+        });
 
-				this.listenTo(proxy, 'sync', function(proxyModel, models) {
-						this.add(models, { merge : true });
-						this.trigger('save', this);
-				});
+        this.listenTo(proxy, 'sync', function(proxyModel, models) {
+            this.add(models, { merge : true });
+            this.trigger('save', this);
+        });
 
-				return proxy.save();
-		},
+        return proxy.save();
+    },
 
     filterModes : {
         'all'        : [
@@ -85,126 +85,82 @@ var Collection = PageableCollection.extend({
         ]
     },
 
-		importFromList : function(models) {
-			var self = this;
+    sortMappings : {
+        title : {
+            sortKey : 'sortTitle'
+        },
+        statusWeight : {
+          sortValue : function(model, attr) {
+            if (model.getStatus() == "released") {
+              return 1;
+            }
+            if (model.getStatus() == "inCinemas") {
+              return 0;
+            }
+            return -1;
+          }
+        },
+        downloadedQuality : {
+          sortValue : function(model, attr) {
+            if (model.get("movieFile")) {
+              return 1000-model.get("movieFile").quality.quality.id;
+            }
 
-			var proxy = _.extend(new Backbone.Model(), {
-				id : "",
+            return -1;
+          }
+        },
+        nextAiring : {
+            sortValue : function(model, attr, order) {
+                var nextAiring = model.get(attr);
 
-				url : self.url + "/import",
+                if (nextAiring) {
+                    return moment(nextAiring).unix();
+                }
 
-				toJSON : function() {
-					return models;
-				}
-			});
+                if (order === 1) {
+                    return 0;
+                }
 
-			this.listenTo(proxy, "sync", function(proxyModel, models) {
-				this.add(models, { merge : true});
-				this.trigger("save", this);
-			});
+                return Number.MAX_VALUE;
+            }
+        },
+        status: {
+          sortValue : function(model, attr) {
+            debugger;
+            if (model.get("downloaded")) {
+              return -1;
+            }
+            return 0;
+          }
+        },
+        percentOfEpisodes : {
+            sortValue : function(model, attr) {
+                var percentOfEpisodes = model.get(attr);
+                var episodeCount = model.get('episodeCount');
 
-			return proxy.save();
-		},
+                return percentOfEpisodes + episodeCount / 1000000;
+            }
+        },
+        inCinemas : {
 
-		filterModes : {
-				'all'        : [
-						null,
-						null
-				],
-				'continuing' : [
-						'status',
-						'continuing'
-				],
-				'ended'      : [
-						'status',
-						'ended'
-				],
-				'monitored'  : [
-						'monitored',
-						true
-				],
-				'missing'  : [
-						'downloaded',
-						false
-				]
-		},
+          sortValue : function(model, attr) {
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+          ];
+            if (model.get("inCinemas")) {
+              return model.get("inCinemas");
+            }
+            return "2100-01-01";
+          }
+        },
+        path : {
+            sortValue : function(model) {
+                var path = model.get('path');
 
-		sortMappings : {
-				title : {
-						sortKey : 'sortTitle'
-				},
-				statusWeight : {
-					sortValue : function(model, attr) {
-						if (model.getStatus() == "released") {
-							return 1;
-						}
-						if (model.getStatus() == "inCinemas") {
-							return 0;
-						}
-						return -1;
-					}
-				},
-				downloadedQuality : {
-					sortValue : function(model, attr) {
-						if (model.get("movieFile")) {
-							return 1000-model.get("movieFile").quality.quality.id;
-						}
-
-						return -1;
-					}
-				},
-				nextAiring : {
-						sortValue : function(model, attr, order) {
-								var nextAiring = model.get(attr);
-
-								if (nextAiring) {
-										return moment(nextAiring).unix();
-								}
-
-								if (order === 1) {
-										return 0;
-								}
-
-								return Number.MAX_VALUE;
-						}
-				},
-				status: {
-					sortValue : function(model, attr) {
-						debugger;
-						if (model.get("downloaded")) {
-							return -1;
-						}
-						return 0;
-					}
-				},
-				percentOfEpisodes : {
-						sortValue : function(model, attr) {
-								var percentOfEpisodes = model.get(attr);
-								var episodeCount = model.get('episodeCount');
-
-								return percentOfEpisodes + episodeCount / 1000000;
-						}
-				},
-				inCinemas : {
-
-					sortValue : function(model, attr) {
-						var monthNames = ["January", "February", "March", "April", "May", "June",
-						"July", "August", "September", "October", "November", "December"
-					];
-						if (model.get("inCinemas")) {
-							return model.get("inCinemas");
-						}
-						return "2100-01-01";
-					}
-				},
-				path : {
-						sortValue : function(model) {
-								var path = model.get('path');
-
-								return path.toLowerCase();
-						}
-				}
-		}
+                return path.toLowerCase();
+            }
+        }
+    }
 });
 
 Collection = AsFilteredCollection.call(Collection);
