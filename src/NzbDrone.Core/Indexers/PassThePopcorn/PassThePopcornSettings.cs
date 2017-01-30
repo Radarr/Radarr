@@ -11,12 +11,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public PassThePopcornSettingsValidator()
         {
             RuleFor(c => c.BaseUrl).ValidRootUrl();
-            RuleFor(c => c.Cookie).NotEmpty();
-
-            RuleFor(c => c.Cookie)
-                .Matches(@"__cfduid=[0-9a-f]{43}", RegexOptions.IgnoreCase)
-                .WithMessage("Wrong pattern")
-                .AsWarning();
+            RuleFor(c => c.Username).NotEmpty();
+            RuleFor(c => c.Password).NotEmpty();
+            RuleFor(c => c.Passkey).NotEmpty();
         }
     }
 
@@ -29,22 +26,28 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             BaseUrl = "https://passthepopcorn.me";
         }
 
-        [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]
+        [FieldDefinition(0, Label = "URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "Cookie", HelpText = "PassThePopcorn uses a login cookie needed to access the API, you'll have to retrieve it via a browser.")]
-        public string Cookie { get; set; }
+        [FieldDefinition(1, Label = "Username", HelpText = "PTP Username")]
+        public string Username { get; set; }
 
-        [FieldDefinition(2, Type = FieldType.Checkbox, Label = "Prefer Golden", HelpText = "Favors Golden Popcorn-releases over all other releases.")]
+        [FieldDefinition(2, Label = "Password", HelpText = "PTP Password")]
+        public string Password { get; set; }
+
+        [FieldDefinition(3, Label = "Passkey", Type = FieldType.Password, HelpText = "PTP Passkey")]
+        public string Passkey { get; set; }
+
+        [FieldDefinition(4, Label = "Prefer Golden", Type = FieldType.Checkbox , HelpText = "Favors Golden Popcorn-releases over all other releases.")]
         public bool Golden { get; set; }
 
-        [FieldDefinition(3, Type = FieldType.Checkbox, Label = "Prefer Scene", HelpText = "Favors scene-releases over non-scene releases.")]
+        [FieldDefinition(5, Label = "Prefer Scene", Type = FieldType.Checkbox, HelpText = "Favors scene-releases over non-scene releases.")]
         public bool Scene { get; set; }
 
-        [FieldDefinition(4, Type = FieldType.Checkbox, Label = "Require Approved", HelpText = "Require staff-approval for releases to be accepted.")]
+        [FieldDefinition(6, Label = "Require Approved", Type = FieldType.Checkbox, HelpText = "Require staff-approval for releases to be accepted.")]
         public bool Approved { get; set; }
 
-        [FieldDefinition(5, Type = FieldType.Checkbox, Label = "Require Golden", HelpText = "Require Golden Popcorn-releases for releases to be accepted.")]
+        [FieldDefinition(7, Label = "Require Golden", Type = FieldType.Checkbox, HelpText = "Require Golden Popcorn-releases for releases to be accepted.")]
         public bool RequireGolden { get; set; }
 
         public NzbDroneValidationResult Validate()
