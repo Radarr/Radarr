@@ -32,10 +32,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(1, Label = "Username", HelpText = "PTP Username")]
         public string Username { get; set; }
 
-        [FieldDefinition(2, Label = "Password", HelpText = "PTP Password")]
+        [FieldDefinition(2, Label = "Password", Type = FieldType.Password, HelpText = "PTP Password")]
         public string Password { get; set; }
 
-        [FieldDefinition(3, Label = "Passkey", Type = FieldType.Password, HelpText = "PTP Passkey")]
+        [FieldDefinition(3, Label = "Passkey",  HelpText = "PTP Passkey")]
         public string Passkey { get; set; }
 
         [FieldDefinition(4, Label = "Prefer Golden", Type = FieldType.Checkbox , HelpText = "Favors Golden Popcorn-releases over all other releases.")]
