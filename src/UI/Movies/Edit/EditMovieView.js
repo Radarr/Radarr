@@ -17,7 +17,7 @@ var view = Marionette.ItemView.extend({
     },
 
     events : {
-        'click .x-remove' : '_removeSeries'
+        'click .x-remove' : '_removeMovie'
     },
 
     initialize : function() {
@@ -42,7 +42,7 @@ var view = Marionette.ItemView.extend({
         vent.trigger(vent.Commands.CloseModalCommand);
     },
 
-    _removeSeries : function() {
+    _removeMovie : function() {
         vent.trigger(vent.Commands.DeleteMovieCommand, { movie : this.model });
     }
 });
