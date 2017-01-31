@@ -55,7 +55,7 @@ module.exports = Marionette.Layout.extend({
 
 		_folderSelected : function(options) {
 				vent.trigger(vent.Commands.CloseModalCommand);
-				this.ui.$existing.show();
+				//this.ui.$existing.show();
 				this.workspace.show(new ExistingMoviesCollectionView({ model : options.model }));
 		},
 
@@ -70,7 +70,7 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_addFromList : function() {
-			this.ui.$existing.hide();
+			//this.ui.$existing.hide();
 			this.workspace.show(new AddFromListView());
 		}
 });
