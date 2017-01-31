@@ -3,16 +3,14 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var CutoffUnmetCollection = require('./CutoffUnmetCollection');
 var SelectAllCell = require('../../Cells/SelectAllCell');
-var SeriesTitleCell = require('../../Cells/SeriesTitleCell');
-var EpisodeNumberCell = require('../../Cells/EpisodeNumberCell');
-var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var EpisodeStatusCell = require('../../Cells/EpisodeStatusCell');
+var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var MovieStatusWithTextCell = require('../../Cells/MovieStatusWithTextCell');
 var GridPager = require('../../Shared/Grid/Pager');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var LoadingView = require('../../Shared/LoadingView');
 var Messenger = require('../../Shared/Messenger');
 var CommandController = require('../../Commands/CommandController');
+
 require('backgrid.selectall');
 require('../../Mixins/backbone.signalr.mixin');
 
@@ -37,32 +35,25 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name      : 'series',
-            label     : 'Series Title',
-            cell      : SeriesTitleCell,
-            sortValue : 'series.sortTitle'
+            name      : 'this',
+            label     : 'Movie Title',
+            cell      : MovieTitleCell,
+            sortValue : false
         },
         {
-            name     : 'this',
-            label    : 'Episode',
-            cell     : EpisodeNumberCell,
-            sortable : false
+            name      : 'inCinemas',
+            label     : 'In Cinemas',
+            cell      : RelativeDateCell
         },
         {
-            name     : 'this',
-            label    : 'Episode Title',
-            cell     : EpisodeTitleCell,
-            sortable : false
-        },
-        {
-            name  : 'airDateUtc',
-            label : 'Air Date',
-            cell  : RelativeDateCell
+            name      : 'physicalRelease',
+            label     : 'PhysicalRelease',
+            cell      : RelativeDateCell
         },
         {
             name     : 'status',
             label    : 'Status',
-            cell     : EpisodeStatusCell,
+            cell     : MovieStatusWithTextCell,
             sortable : false
         }
     ],
@@ -107,9 +98,36 @@ module.exports = Marionette.Layout.extend({
                     className    : 'x-search-selected'
                 },
                 {
+                    title        : 'Search All Missing',
+                    icon         : 'icon-sonarr-search',
+                    callback     : this._searchMissing,
+                    ownerContext : this,
+                    className    : 'x-search-missing'
+                },
+                {
+                    title        : 'Toggle Selected',
+                    icon         : 'icon-sonarr-monitored',
+                    tooltip      : 'Toggle monitored status of selected',
+                    callback     : this._toggleMonitoredOfSelected,
+                    ownerContext : this,
+                    className    : 'x-unmonitor-selected'
+                },
+                {
                     title : 'Season Pass',
                     icon  : 'icon-sonarr-monitored',
                     route : 'seasonpass'
+                },
+                {
+                    title      : 'Rescan Drone Factory Folder',
+                    icon       : 'icon-sonarr-refresh',
+                    command    : 'downloadedMovieScan',
+                    properties : { sendUpdates: true }
+                },
+                {
+                    title        : 'Manual Import',
+                    icon         : 'icon-sonarr-search-manual',
+                    callback     : this._manualImport,
+                    ownerContext : this
                 }
             ]
         };
@@ -148,9 +166,9 @@ module.exports = Marionette.Layout.extend({
         }));
 
         CommandController.bindToCommand({
-            element : this.$('.x-search-selected'),
-            command : {
-                name : 'episodeSearch'
+            element  : this.$('.x-search-selected'),
+            command  : {
+                name : 'moviesSearch'
             }
         });
     },
@@ -172,7 +190,7 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No episodes selected'
+                message : 'No movies selected'
             });
 
             return;
@@ -180,8 +198,8 @@ module.exports = Marionette.Layout.extend({
 
         var ids = _.pluck(selected, 'id');
 
-        CommandController.Execute('episodeSearch', {
-            name       : 'episodeSearch',
+        CommandController.Execute('moviesSearch', {
+            name       : 'moviesSearch',
             episodeIds : ids
         });
     }
