@@ -323,6 +323,12 @@ namespace NzbDrone.Core.Organizer
         public static string TitleThe(string title)
         {
             string[] prefixes = { "The ", "An ", "A " };
+
+			if (title.Length < 5)
+			{
+				return title;
+			}
+
             foreach (string prefix in prefixes)
             {
                 int prefix_length = prefix.Length;
