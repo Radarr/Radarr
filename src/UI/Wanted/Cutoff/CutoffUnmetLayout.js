@@ -5,6 +5,7 @@ var CutoffUnmetCollection = require('./CutoffUnmetCollection');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var MovieStatusWithTextCell = require('../../Cells/MovieStatusWithTextCell');
+var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var GridPager = require('../../Shared/Grid/Pager');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var LoadingView = require('../../Shared/LoadingView');
