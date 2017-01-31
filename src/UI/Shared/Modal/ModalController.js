@@ -3,7 +3,7 @@ var AppLayout = require('../../AppLayout');
 var Marionette = require('marionette');
 var EditSeriesView = require('../../Series/Edit/EditSeriesView');
 var EditMovieView = require('../../Movies/Edit/EditMovieView');
-var DeleteSeriesView = require('../../Series/Delete/DeleteSeriesView');
+var DeleteMovieView = require('../../Movies/Delete/DeleteMovieView');
 var EpisodeDetailsLayout = require('../../Episode/EpisodeDetailsLayout');
 var HistoryDetailsLayout = require('../../Activity/History/Details/HistoryDetailsLayout');
 var LogDetailsView = require('../../System/Logs/Table/Details/LogDetailsView');
@@ -22,7 +22,7 @@ module.exports = Marionette.AppRouter.extend({
 				vent.on(vent.Commands.EditSeriesCommand, this._editSeries, this);
 				vent.on(vent.Commands.EditMovieCommand, this._editMovie, this);
 				vent.on(vent.Commands.EditFileCommand, this._editFile, this);
-				vent.on(vent.Commands.DeleteSeriesCommand, this._deleteSeries, this);
+				vent.on(vent.Commands.DeleteMovieCommand, this._deleteMovie, this);
 				vent.on(vent.Commands.ShowEpisodeDetails, this._showEpisode, this);
 				vent.on(vent.Commands.ShowMovieDetails, this._showMovie, this);
 				vent.on(vent.Commands.ShowHistoryDetails, this._showHistory, this);
@@ -64,8 +64,8 @@ module.exports = Marionette.AppRouter.extend({
 				AppLayout.modalRegion.show(view);
 		},
 
-		_deleteSeries : function(options) {
-				var view = new DeleteSeriesView({ model : options.series });
+		_deleteMovie : function(options) {
+				var view = new DeleteMovieView({ model : options.movie });
 				AppLayout.modalRegion.show(view);
 		},
 

@@ -43,7 +43,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _removeSeries : function() {
-        vent.trigger(vent.Commands.DeleteSeriesCommand, { series : this.model });
+        vent.trigger(vent.Commands.DeleteMovieCommand, { movie : this.model });
     }
 });
 
