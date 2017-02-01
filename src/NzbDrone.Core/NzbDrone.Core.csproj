@@ -1169,6 +1169,7 @@
     <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
     <Compile Include="Tv\MonitoringOptions.cs" />
     <Compile Include="Tv\MoveSeriesService.cs" />
+    <Compile Include="Tv\MovieCutoffService.cs" />
     <Compile Include="Tv\Ratings.cs" />
     <Compile Include="Tv\RefreshEpisodeService.cs" />
     <Compile Include="Tv\RefreshMovieService.cs" />

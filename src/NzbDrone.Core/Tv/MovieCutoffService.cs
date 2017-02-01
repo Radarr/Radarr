@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Tv
                 }
             }
 
-            return _movieRepository.MoviesWhereCutoffUnmet(pagingSpec, qualitiesBelowCutoff, false);
+            return _movieRepository.MoviesWhereCutoffUnmet(pagingSpec, qualitiesBelowCutoff);
         }
     }
 }

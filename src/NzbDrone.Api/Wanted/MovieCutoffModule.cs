@@ -12,6 +12,7 @@ namespace NzbDrone.Api.Wanted
         private readonly IMovieCutoffService _movieCutoffService;
 
         public MovieCutoffModule(IMovieCutoffService movieCutoffService,
+                                 IMovieService movieService,
                                  IQualityUpgradableSpecification qualityUpgradableSpecification,
                                  IBroadcastSignalRMessage signalRBroadcaster)
             : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/cutoff")
