@@ -747,7 +747,7 @@ namespace NzbDrone.Core.Organizer
                     break;
 
                 case "DTS":
-                    if (movieFile.MediaInfo.AudioProfile == "ES Discrete" || movieFile.MediaInfo.AudioProfile == "ES Matrix")
+                    if (movieFile.MediaInfo.AudioProfile == "ES" || movieFile.MediaInfo.AudioProfile == "ES Discrete" || movieFile.MediaInfo.AudioProfile == "ES Matrix")
                     {
                         audioCodec = "DTS-ES";
                     }
