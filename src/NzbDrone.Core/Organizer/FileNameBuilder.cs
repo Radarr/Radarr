@@ -730,6 +730,10 @@ namespace NzbDrone.Core.Organizer
                 case "E-AC-3":
                     audioCodec = "EAC3";
                     break;
+                
+                case "Atmos / TrueHD":
+                    audioCodec = "Atmos TrueHD";
+                    break;
 
                 case "MPEG Audio":
                     if (movieFile.MediaInfo.AudioProfile == "Layer 3")
