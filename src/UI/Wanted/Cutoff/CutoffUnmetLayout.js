@@ -201,7 +201,7 @@ module.exports = Marionette.Layout.extend({
 
         CommandController.Execute('moviesSearch', {
             name       : 'moviesSearch',
-            episodeIds : ids
+            movieIds : ids
         });
     }
 });
