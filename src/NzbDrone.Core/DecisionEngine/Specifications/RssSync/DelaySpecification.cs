@@ -68,7 +68,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
             var bestQualityInProfile = new QualityModel(profile.LastAllowedQuality());
-            var isBestInProfile = comparer.Compare(subject.ParsedEpisodeInfo.Quality, bestQualityInProfile) >= 0;
+            var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality, bestQualityInProfile) >= 0;
 
             if (isBestInProfile && isPreferredProtocol)
             {
@@ -82,13 +82,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             if (oldest != null && oldest.Release.AgeMinutes > delay)
             {
                 return Decision.Accept();
-            }
+            }*/
 
             if (subject.Release.AgeMinutes < delay)
             {
                 _logger.Debug("Waiting for better quality release, There is a {0} minute delay on {1}", delay, subject.Release.DownloadProtocol);
                 return Decision.Reject("Waiting for better quality release");
-            }*/ //TODO: Update for movies!
+            } //TODO: Update for movies!
 
             return Decision.Accept();
         }
