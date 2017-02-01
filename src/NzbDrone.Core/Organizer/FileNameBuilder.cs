@@ -743,7 +743,26 @@ namespace NzbDrone.Core.Organizer
                     break;
 
                 case "DTS":
-                    audioCodec = movieFile.MediaInfo.AudioFormat;
+                    if (episodeFile.MediaInfo.AudioProfile == "ES Discrete / Core" || episodeFile.MediaInfo.AudioProfile == "ES Matrix / Core")
+                    {
+                        audioCodec = "DTS-ES";
+                    }
+                    else if (episodeFile.MediaInfo.AudioProfile == "MA / Core" || episodeFile.MediaInfo.AudioProfile == "MA / ES Matrix / Core")
+                    {
+                        audioCodec = "DTS-HD MA";
+                    }
+                    else if (episodeFile.MediaInfo.AudioProfile == "HRA / Core")
+                    {
+                        audioCodec = "DTS-HD HRA";
+                    }
+                    else if (episodeFile.MediaInfo.AudioProfile == "X / MA / Core")
+                    {
+                        audioCodec = "DTS-X";
+                    }
+                    else
+                    {
+                        audioCodec = episodeFile.MediaInfo.AudioFormat;
+                    }
                     break;
 
                 default:
