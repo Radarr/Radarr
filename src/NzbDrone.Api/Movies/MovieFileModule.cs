@@ -18,21 +18,21 @@ namespace NzbDrone.Api.EpisodeFiles
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;
-        private readonly IMovieService _seriesService;
+        private readonly IMovieService _movieService;
         private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
         public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                              IMediaFileService mediaFileService,
                              IRecycleBinProvider recycleBinProvider,
-                             IMovieService seriesService,
+                             IMovieService movieService,
                              IQualityUpgradableSpecification qualityUpgradableSpecification,
                              Logger logger)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
             _recycleBinProvider = recycleBinProvider;
-            _seriesService = seriesService;
+            _movieService = movieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;
             GetResourceById = GetMovieFile;
@@ -63,22 +63,30 @@ namespace NzbDrone.Api.EpisodeFiles
             return _mediaFileService.GetFilesBySeries(seriesId).ConvertAll(f => f.ToResource(series, _qualityUpgradableSpecification));
         }
         */
-        private void SetQuality(MovieFileResource episodeFileResource)
-        {
-            var episodeFile = _mediaFileService.GetMovie(episodeFileResource.Id);
-            episodeFile.Quality = episodeFileResource.Quality;
-            _mediaFileService.Update(episodeFile);
+        private void SetQuality(MovieFileResource movieFileResource)
+        {  
+            var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
+            movieFile.Quality = movieFileResource.Quality;
+            _mediaFileService.Update(movieFile);
+
+            BroadcastResourceChange(ModelAction.Updated, movieFile.Id);
         }
 
+        //TODO
         private void DeleteEpisodeFile(int id)
         {
             var episodeFile = _mediaFileService.GetMovie(id);
-            var series = _seriesService.GetMovie(episodeFile.MovieId);
+            var series = _movieService.GetMovie(episodeFile.MovieId);
             var fullPath = Path.Combine(series.Path, episodeFile.RelativePath);
 
             _logger.Info("Deleting episode file: {0}", fullPath);
             _recycleBinProvider.DeleteFile(fullPath);
             _mediaFileService.Delete(episodeFile, DeleteMediaFileReason.Manual);
+        }
+
+        public void Handle(MovieFileUpdatedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, message.MovieFile.Id);
         }
 
         public void Handle(EpisodeFileAddedEvent message)

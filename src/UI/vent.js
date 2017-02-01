@@ -32,7 +32,8 @@ vent.Commands = {
 		CloseFileBrowser         : 'closeFileBrowser',
 		OpenControlPanelCommand  : 'OpenControlPanelCommand',
 		CloseControlPanelCommand : 'CloseControlPanelCommand',
-		ShowExistingCommand      : 'ShowExistingCommand'
+		ShowExistingCommand      : 'ShowExistingCommand',
+		MovieFileEdited			 : 'MovieFileEdited'
 };
 
 vent.Hotkeys = {

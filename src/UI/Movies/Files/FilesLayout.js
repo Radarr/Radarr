@@ -82,35 +82,37 @@ module.exports = Marionette.Layout.extend({
 				this.filesCollection.add(file);
 				//this.listenTo(this.releaseCollection, 'sync', this._showSearchResults);
 				this.listenTo(this.model, 'change', function(model, options) {
-										if (options && options.changeSource === 'signalr') {
-												this._refresh(movie);
-										}
-								});
+					if (options && options.changeSource === 'signalr') {
+							this._refresh();
+					}
+				});
 
-				vent.on(vent.Commands.CloseModalCommand, this._refreshClose, this);
+				vent.on(vent.Commands.MovieFileEdited, this._showGrid, this);
 		},
 
-		_refresh : function(movie) {
-								this.filesCollection = new FilesCollection();
-								var file = movie.model.get("movieFile");
-								this.filesCollection.add(file);
-								this.onShow();
-		},
-
-		_refreshClose : function(options) {
+		_refresh : function() {
 			this.filesCollection = new FilesCollection();
 			var file = this.movie.model.get("movieFile");
 			this.filesCollection.add(file);
-			this.onShow();
+			this._showGrid();
 		},
 
 		onShow : function() {
-				this.grid.show(new Backgrid.Grid({
-						row        : Backgrid.Row,
-						columns    : this.columns,
-						collection : this.filesCollection,
-						className  : 'table table-hover'
-				}));
+			this.grid.show(new Backgrid.Grid({
+				row        : Backgrid.Row,
+				columns    : this.columns,
+				collection : this.filesCollection,
+				className  : 'table table-hover'
+			}));
+		},
+
+		_showGrid : function() {
+			this.regionManager.get('grid').show(new Backgrid.Grid({
+				row        : Backgrid.Row,
+				columns    : this.columns,
+				collection : this.filesCollection,
+				className  : 'table table-hover'
+			}));
 		},
 
 		_showMainView : function() {

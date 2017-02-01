@@ -48,6 +48,7 @@ var view = Marionette.ItemView.extend({
 
 		_onAfterSave : function() {
 				this.trigger('saved');
+				vent.trigger(vent.Commands.MovieFileEdited);
 				vent.trigger(vent.Commands.CloseModalCommand);
 		},
 
