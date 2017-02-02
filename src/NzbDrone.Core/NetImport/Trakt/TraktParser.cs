@@ -42,26 +42,45 @@ namespace NzbDrone.Core.NetImport.Trakt
                 return movies;
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content);
-
-            // no movies were return
-            if (jsonResponse == null)
+            if (_settings.ListType == (int) TraktListType.PopularMovies)
             {
-                return movies;
-            }
+                var jsonResponse = JsonConvert.DeserializeObject<List<Movie>>(_importResponse.Content);
 
-            foreach (var movie in jsonResponse)
-            {
-                movies.AddIfNotNull(new Tv.Movie()
+                foreach (var movie in jsonResponse)
                 {
-                    Title = movie.movie.title,
-                    ImdbId = movie.movie.ids.imdb,
-                    TmdbId = movie.movie.ids.tmdb,
-                    Year = (movie.movie.year ?? 0)
-                });
+                    movies.AddIfNotNull(new Tv.Movie()
+                    {
+                        Title = movie.title,
+                        ImdbId = movie.ids.imdb,
+                        TmdbId = movie.ids.tmdb,
+                        Year = (movie.year ?? 0)
+                    });
+                }
             }
-            
+            else
+            {
+                var jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content);
+
+                // no movies were return
+                if (jsonResponse == null)
+                {
+                    return movies;
+                }
+
+                foreach (var movie in jsonResponse)
+                {
+                    movies.AddIfNotNull(new Tv.Movie()
+                    {
+                        Title = movie.movie.title,
+                        ImdbId = movie.movie.ids.imdb,
+                        TmdbId = movie.movie.ids.tmdb,
+                        Year = (movie.movie.year ?? 0)
+                    });
+                }
+            }
+
             return movies;
+
         }
 
         protected virtual bool PreProcess(NetImportResponse indexerResponse)
