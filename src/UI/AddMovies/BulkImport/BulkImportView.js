@@ -36,7 +36,7 @@ module.exports = Marionette.Layout.extend({
 				},
 				{
 					name : "",
-					label : "",
+					label : "select-all",
 					cell : SelectAllCell,
 					headerCell : 'select-all',
 					sortable : false

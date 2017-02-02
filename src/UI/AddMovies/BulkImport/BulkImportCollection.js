@@ -14,14 +14,26 @@ BulkImportCollection = Backbone.PageableCollection.extend({
 				sortKey: 'sortTitle'
 		},
 
-		parse : function(response) {
+		/*parse : function(response) {
 				var self = this;
 
-				_.each(response, function(model) {
+				_.each(response.records, function(model) {
 						model.id = undefined;
 				});
 
 				return response;
+		},*/
+
+		parseState : function(resp) {
+				return { totalRecords : resp.totalRecords };
+		},
+
+		parseRecords : function(resp) {
+				if (resp) {
+						return resp.records;
+				}
+
+				return resp;
 		}
 });
 

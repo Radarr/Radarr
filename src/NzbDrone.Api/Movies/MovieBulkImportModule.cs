@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Core.MediaCover;
@@ -7,12 +8,22 @@ using NzbDrone.Core.Parser;
 using System.Linq;
 using Marr.Data;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Api.Movie
 {
+
+    public class UnmappedComparer : IComparer<UnmappedFolder>
+    {
+        public int Compare(UnmappedFolder a, UnmappedFolder b)
+        {
+            return a.Name.CompareTo(b.Name);
+        }
+    }
+
     public class MovieBulkImportModule : NzbDroneRestModule<MovieResource>
     {
         private readonly ISearchForNewMovie _searchProxy;
@@ -40,7 +51,22 @@ namespace NzbDrone.Api.Movie
 
             RootFolder rootFolder = _rootFolderService.Get(Request.Query.Id);
 
-            var parsed = rootFolder.UnmappedFolders.Select(f =>
+            int page = Request.Query.page;
+            int per_page = Request.Query.per_page;
+
+            int min = (page - 1) * per_page;
+
+            int max = page * per_page;
+
+            var unmapped = rootFolder.UnmappedFolders.OrderBy(f => f.Name).ToList();
+
+            int total_count = unmapped.Count;
+
+            max = total_count >= max ? max : total_count;
+
+            var paged = unmapped.GetRange(min, max);
+
+            var parsed = paged.Select(f =>
             {
                 Core.Tv.Movie m = null;
 
@@ -95,7 +121,15 @@ namespace NzbDrone.Api.Movie
                 return _searchProxy.MapMovieToTmdbMovie(p);
             });
 
-            return MapToResource(mapped.Where(m => m != null)).AsResponse();
+            return new PagingResource<MovieResource>
+            {
+                Page = page,
+                PageSize = per_page,
+                SortDirection = SortDirection.Ascending,
+                SortKey = Request.Query.sort_by,
+                TotalRecords = total_count - mapped.Where(m => m == null).Count(),
+                Records = MapToResource(mapped.Where(m => m != null)).ToList()
+            }.AsResponse();
         }
 
 
