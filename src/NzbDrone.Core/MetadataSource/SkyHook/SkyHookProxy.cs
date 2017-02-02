@@ -626,6 +626,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             newMovie.RootFolderPath = movie.RootFolderPath;
             newMovie.ProfileId = movie.ProfileId;
             newMovie.Monitored = movie.Monitored;
+            newMovie.MovieFile = movie.MovieFile;
 
             return newMovie;
         }
