@@ -756,6 +756,10 @@ namespace NzbDrone.Core.Organizer
                 case "E-AC-3":
                     audioCodec = "EAC3";
                     break;
+                
+                case "Atmos / TrueHD":
+                    audioCodec = "Atmos TrueHD";
+                    break;
 
                 case "MPEG Audio":
                     if (movieFile.MediaInfo.AudioProfile == "Layer 3")
@@ -769,7 +773,26 @@ namespace NzbDrone.Core.Organizer
                     break;
 
                 case "DTS":
-                    audioCodec = movieFile.MediaInfo.AudioFormat;
+                    if (movieFile.MediaInfo.AudioProfile == "ES" || movieFile.MediaInfo.AudioProfile == "ES Discrete" || movieFile.MediaInfo.AudioProfile == "ES Matrix")
+                    {
+                        audioCodec = "DTS-ES";
+                    }
+                    else if (movieFile.MediaInfo.AudioProfile == "MA")
+                    {
+                        audioCodec = "DTS-HD MA";
+                    }
+                    else if (movieFile.MediaInfo.AudioProfile == "HRA")
+                    {
+                        audioCodec = "DTS-HD HRA";
+                    }
+                    else if (movieFile.MediaInfo.AudioProfile == "X")
+                    {
+                        audioCodec = "DTS-X";
+                    }
+                    else
+                    {
+                        audioCodec = movieFile.MediaInfo.AudioFormat;
+                    }
                     break;
 
                 default:

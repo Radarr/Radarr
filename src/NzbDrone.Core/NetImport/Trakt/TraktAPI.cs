@@ -21,9 +21,18 @@ namespace NzbDrone.Core.NetImport.Trakt
 
     public class TraktResponse
     {
-        public int rank { get; set; }
+        public int? rank { get; set; }
         public string listed_at { get; set; }
         public string type { get; set; }
+
+        public int? watchers { get; set; }
+
+        public long? revenue { get; set; }
+
+        public long? watcher_count { get; set; }
+        public long? play_count { get; set; }
+        public long? collected_count { get; set; }
+
         public Movie movie { get; set; }
     }
 }
