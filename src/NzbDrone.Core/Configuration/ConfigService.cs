@@ -357,9 +357,9 @@ namespace NzbDrone.Core.Configuration
 	    set { SetValue("NetflixCountryCode", value); }
 	}
 
-	public bool EnableAllFlicks
+	public string EnableAllFlicks
 	{
-	    get { return GetValueBoolean("EnableAllFlicks", false); }
+	    get { return GetValue("EnableAllFlicks", "disabled"); }
 	    set { SetValue("EnableAllFlicks", value); }
 	}
 

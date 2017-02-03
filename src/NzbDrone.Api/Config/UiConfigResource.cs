@@ -17,7 +17,7 @@ namespace NzbDrone.Api.Config
 
         //AllFlicks
 	public string NetflixCountryCode{ get; set; }
-	public bool EnableAllFlicks { get; set; }
+	public string EnableAllFlicks { get; set; }
 
         public bool EnableColorImpairedMode { get; set; }
 

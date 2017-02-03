@@ -120,38 +120,32 @@
 
     <fieldset>
         <legend>AllFlicks</legend>
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">Netflix Region</label>
+	              <div class="col-sm-4">
+	                  <select name="netflixCountryCode" class="form-control">
+	                      <option value="ca">Canada</option>
+		                    <option value="us">United States</option>
+                    </select>
+	              </div>
+	          </div>
 
-	<div class="form-group">
-	    <label class="col-sm-3 control-label">Netflix Region</label>
+	          <div class="form-group">
+	              <label class="col-sm-1 control-label">AllFlicks Support Level</label>
+	              <div class="col-sm-1 col-sm-push-4 help-inline">
+                    <i class="icon-sonarr-form-info" title="Simple URL assumption vs. complex xmlHTTPRequest"/>
+                </div>
 
-	    <div class="col-sm-4">
-	        <select name="netflixCountryCode" class="form-control">
-	            <option value="ca">Canada</option>
-		    <option value="us">United States</option>
-                </select>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-3 control-label">Enable AllFlicks Support</label>
-
-	    <div class="col-sm-8">
-	        <div class="input-group">
-		    <label class="checkbox toggle well">
-		        <input type="checkbox" name="enableAllFlicks"/>
-
-			<p>
-			    <span>Yes</span>
-			    <span>No</span>
-			</p>
-
-			<div class="btn btn-primary slide-button"/>
-                    </label>
-		</div>
-	    </div>
-	</div>
+	              <div class="col-sm-4 col-sm-pull-1">
+	                  <select name="enableAllFlicks" class="form-control">
+		                    <option value="disabled">Disabled</option>
+		                    <option value="simple">Simple</option>
+		                    <option value="complex">Complex</option>
+	                  </select>
+	              </div>
+    
+	      </div>
     </fieldset>
-	    
 
     <fieldset>
         <legend>Style</legend>

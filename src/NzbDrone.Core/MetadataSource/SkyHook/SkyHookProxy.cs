@@ -305,56 +305,53 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
             movie.AllFlicksUrl = null;
-
-            bool enableAllFlicks = _settingsService.EnableAllFlicks;
-            if (enableAllFlicks)
+            string enableAllFlicks = _settingsService.EnableAllFlicks;
+            if ((enableAllFlicks!="disabled")&&((enableAllFlicks=="simple")||(enableAllFlicks=="complex")))
             {
-
                 string countryCode = _settingsService.NetflixCountryCode;
-                //string countryCode = "us";
-                //string countryCode = "ca";
-
                 string referer;
-                if (countryCode == "ca")
-                    referer = "https://www.allflicks.net/canada/";
-                else if (countryCode == "us")
-                    referer = "https://www.allflicks.net/";
-                else
-                    referer = "https://www.allflicks.net/";
-                int now_year = DateTime.Now.Year;
-
-                string url = "https://www.allflicks.net/wp-content/themes/responsive/processing/processing_" + countryCode + ".php";
-
-                bool enableSimplifiedAllFlicksCheck = false; //_settingsService.EnableSimplifiedAllFLicksCheck;
-                if (enableSimplifiedAllFlicksCheck)
+                switch (countryCode)
                 {
-                    ;
-                    //can add some code in here that will make use of for example: https://webduck.nl/plex2netflix/search?imdb=tt3171832
+                    case "ca":
+                        {
+                            referer = "https://www.allflicks.net/canada/";
+                            break;
+                        }
+                    case "us":
+                    default:
+                        {
+                            referer = "https://www.allflicks.net/";
+                            break;
+                        }
+                }
+                if (enableAllFlicks=="simple")
+                {
                     using (WebClient client = new WebClient())
                     {
-                        string r1 = client.DownloadString("https://webduck.nl/plex2netflix/search?imdb=" + movie.ImdbId);
-                        //Console.WriteLine(r1);
-                        dynamic j1 = JObject.Parse(r1);
-                        var results = j1.countries;
-                        foreach (var result in results)
+                        string tempTitle = referer + "title/" + ToUrlSlug(movie.Title);
+                        for (int i = -1; i < 2; i++)
                         {
-                            //Console.WriteLine(result);
-                            if (result == countryCode)
-                                movie.AllFlicksUrl = referer + "title/" + movie.TitleSlug;
+                            int tempYear = movie.Year + i;
+                            movie.AllFlicksUrl = tempTitle + "-" + tempYear.ToString();
+                            string r1 = client.DownloadString(movie.AllFlicksUrl);
+                            if (r1.Contains("Nothing here..."))
+                                movie.AllFlicksUrl = null;
+                            else
+                                break;
                         }
                     }
                 }
                 else
                 {
+                    int now_year = DateTime.Now.Year;
+                    string url = "https://www.allflicks.net/wp-content/themes/responsive/processing/processing_" + countryCode + ".php";
                     string cookIdent;
                     using (WebClient client = new WebClient())
                     {
                         string htmlCode = client.DownloadString("https://allflicks.net");
                         htmlCode = htmlCode.Replace(" ", String.Empty);
                         cookIdent = "identifier=" + getBetween(htmlCode, "document.cookie=\"identifier=", "\"+expires+\";path=/;domain=.allflicks.net\"");
-                        //Console.WriteLine(cookIdent);
                     }
-
                     int length = 100;
                     int start = 0;
                     string titleForNetflix = movie.Title;
@@ -366,47 +363,33 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                         HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
                         rquest.Method = "POST";
-                        rquest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:51.0) Gecko/20100101 Firefox/51.0";
-                        rquest.Accept = "application.json, text/javascript, */*; q=0.01";
                         rquest.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                        rquest.Referer = referer;
                         rquest.Headers.Add("Cookie", cookIdent);
                         rquest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                        rquest.Host = "www.allflicks.net";
                         using (var st = rquest.GetRequestStream())
                             st.Write(byteArray, 0, byteArray.Length);
-
                         var rsponse = (HttpWebResponse)rquest.GetResponse();
-                        //Console.WriteLine((rsponse).StatusDescription);
-
                         var rsponseString = new StreamReader(rsponse.GetResponseStream()).ReadToEnd();
                         rsponse.Close();
-                        //Console.WriteLine(rsponseString);
                         dynamic j1 = JObject.Parse(rsponseString);
-
                         numFound = j1.recordsFiltered;
                         if (!(numFound > 0))
                             break;
                         var results = j1.data;
-                        //Console.WriteLine(results);
                         foreach (var result in results)
                         {
-                            //Console.WriteLine(result);
                             if (result.title.ToString().ToUpper() == titleForNetflix.ToUpper())
                             {
                                 if ((Convert.ToInt32(result.year) <= movie.Year + 1) && (Convert.ToInt32(result.year) >= movie.Year - 1))
                                 {
                                     movie.AllFlicksUrl = referer + "title/" + result.slug;
-                                    //Console.WriteLine(movie.AllFlicksUrl);
                                 }
                             }
                         }
-                        //Console.WriteLine("numFound=" + numFound.ToString());
                         start = start + length;
                     }
                 }
             }
-
             return movie;
         }
 
