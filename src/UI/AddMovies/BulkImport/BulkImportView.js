@@ -41,7 +41,7 @@ module.exports = Marionette.Layout.extend({
 				this.bulkImportCollection.folderId = this.folderId;
 				this.bulkImportCollection.folder = this.folder;
 				this.bulkImportCollection.fetch();
-				this.listenTo(this.bulkImportCollection, 'sync error', this._handleEvent);
+				this.listenTo(this.bulkImportCollection, {"sync" : this._showContent, "error" : this._showContent});
 		},
 
 		columns : [
