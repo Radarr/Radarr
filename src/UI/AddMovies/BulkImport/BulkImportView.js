@@ -41,7 +41,7 @@ module.exports = Marionette.Layout.extend({
 				this.bulkImportCollection.folderId = this.folderId;
 				this.bulkImportCollection.folder = this.folder;
 				this.bulkImportCollection.fetch();
-				this.listenTo(this.bulkImportCollection, 'all', this._showContent);
+				this.listenTo(this.bulkImportCollection, 'sync error', this._handleEvent);
 		},
 
 		columns : [
@@ -163,6 +163,12 @@ module.exports = Marionette.Layout.extend({
 
 		_addAll : function() {
 			console.log("TODO");
+		},
+
+		_handleEvent : function(event_name, data) {
+			if (event_name == "sync" || event_name == "content") {
+				this._showContent()
+			}
 		},
 
 		_showTable : function() {
