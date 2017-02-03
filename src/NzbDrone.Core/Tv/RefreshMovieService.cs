@@ -87,6 +87,7 @@ namespace NzbDrone.Core.Tv
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
+	    	movie.AllFlicksTitle = movieInfo.AllFlicksTitle;
 
             try
             {

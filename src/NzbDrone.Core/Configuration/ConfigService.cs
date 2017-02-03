@@ -350,6 +350,19 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ShowRelativeDates", value); }
         }
 
+	public string NetflixCountryCode
+	{
+	    get { return GetValue("NetflixCountryCode","ca"); }
+
+	    set { SetValue("NetflixCountryCode", value); }
+	}
+
+	public bool EnableAllFlicks
+	{
+	    get { return GetValueBoolean("EnableAllFlicks", false); }
+	    set { SetValue("EnableAllFlicks", value); }
+	}
+
         public bool EnableColorImpairedMode
         {
             get { return GetValueBoolean("EnableColorImpairedMode", false); }

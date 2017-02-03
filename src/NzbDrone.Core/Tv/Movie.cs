@@ -53,6 +53,7 @@ namespace NzbDrone.Core.Tv
         public List<string> AlternativeTitles { get; set; }
         public string YouTubeTrailerId{ get; set; }
         public string Studio { get; set; }
+	public string AllFlicksTitle { get; set; }
 
         public bool HasFile => MovieFileId > 0;
 
