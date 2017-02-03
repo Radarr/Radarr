@@ -62,9 +62,14 @@ namespace NzbDrone.Api.Movie
 
             int total_count = unmapped.Count;
 
+            if (Request.Query.total_entries.HasValue)
+            {
+                total_count = Request.Query.total_entries;
+            }
+
             max = total_count >= max ? max : total_count;
 
-            var paged = unmapped.GetRange(min, max);
+            var paged = unmapped.GetRange(min, max-min);
 
             var parsed = paged.Select(f =>
             {

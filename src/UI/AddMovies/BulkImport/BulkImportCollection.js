@@ -41,6 +41,22 @@ var BulkImportCollection = PageableCollection.extend({
 				}
 
 				return resp;
+		},
+
+		fetch : function(options) {
+
+			options = options || {};
+
+			var data = options.data || {};
+
+			if (data.id == undefined || data.folder == undefined) {
+				data.id = this.folderId;
+				data.folder = this.folder;
+			}
+
+			options.data = data;
+
+			return Backbone.PageableCollection.prototype.fetch.call(this, options);
 		}
 });
 

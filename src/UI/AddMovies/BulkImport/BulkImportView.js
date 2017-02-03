@@ -37,7 +37,10 @@ module.exports = Marionette.Layout.extend({
 				this.bulkImportCollection = new BulkImportCollection().bindSignalR({ updateOnly : true });
 				this.model = options.model;
 				this.folder = this.model.get("path");
-				this.bulkImportCollection.fetch({ data : { folder : this.folder, id : this.model.get("id") }});
+				this.folderId = this.model.get("id");
+				this.bulkImportCollection.folderId = this.folderId;
+				this.bulkImportCollection.folder = this.folder;
+				this.bulkImportCollection.fetch();
 				this.listenTo(this.bulkImportCollection, 'all', this._showContent);
 		},
 
@@ -73,7 +76,7 @@ module.exports = Marionette.Layout.extend({
 					cell     : QualityCell,
 					cellValue : 'this',
 					sortable : false
-					
+
 				}
 		],
 
@@ -140,7 +143,7 @@ module.exports = Marionette.Layout.extend({
 					message : 'No movies selected'
 				});
 				return;
-        	}
+					}
 
 			Messenger.show({
 				message : "Importing {0} movies. This can take multiple minutes depending on how many movies should be imported. Don't close this browser window until it is finished!".format(selected.length),
