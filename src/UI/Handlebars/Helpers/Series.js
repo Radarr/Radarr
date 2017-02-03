@@ -54,8 +54,8 @@ Handlebars.registerHelper('tmdbUrl', function() {
 Handlebars.registerHelper('youTubeTrailerUrl', function() {
     return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
 });
-Handlebars.registerHelper('allFlicksTitleUrl', function() {
-    return 'https://www.allflicks.net/canada/title/' +this.allFlicksTitle;
+Handlebars.registerHelper('allFlicksUrl', function() {
+    return this.allFlicksUrl;
 });
 
 Handlebars.registerHelper('homepage', function() {

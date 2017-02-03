@@ -36,7 +36,7 @@ namespace NzbDrone.Api.Movie
         public bool HasFile { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
-	    public string AllFlicksTitle { get; set; }
+        public string AllFlicksUrl { get; set; }
 
         //View & Edit
         public string Path { get; set; }
@@ -158,7 +158,7 @@ namespace NzbDrone.Api.Movie
                 MovieFile = movieFile,
                 YouTubeTrailerId = model.YouTubeTrailerId,
                 Studio = model.Studio,
-		AllFlicksTitle = model.AllFlicksTitle
+		AllFlicksUrl = model.AllFlicksUrl
             };
         }
 
@@ -209,7 +209,7 @@ namespace NzbDrone.Api.Movie
                 Ratings = resource.Ratings,
                 YouTubeTrailerId = resource.YouTubeTrailerId,
                 Studio = resource.Studio,
-		AllFlicksTitle = resource.AllFlicksTitle
+		AllFlicksUrl = resource.AllFlicksUrl
             };
         }
 

@@ -16,7 +16,7 @@ namespace NzbDrone.Api.Config
         public bool ShowRelativeDates { get; set; }
 
         //AllFlicks
-	public string NetflixCountryCode;
+	public string NetflixCountryCode{ get; set; }
 	public bool EnableAllFlicks { get; set; }
 
         public bool EnableColorImpairedMode { get; set; }

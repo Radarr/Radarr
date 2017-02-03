@@ -9,11 +9,11 @@ using System.Data;
 namespace NzbDrone.Core.Datastore.Migration
 {
     [Migration(127)]
-    public class add_allflickstitle : NzbDroneMigrationBase
+    public class add_allflicksurl : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("Movies").AddColumn("AllFlicksTitle").AsString().Nullable();
+            Alter.Table("Movies").AddColumn("AllFlicksUrl").AsString().Nullable();
         }
 
     }

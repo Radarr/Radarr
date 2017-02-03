@@ -88,6 +88,7 @@ namespace NzbDrone.Core.Tv
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
 	    	movie.AllFlicksTitle = movieInfo.AllFlicksTitle;
+	    	movie.AllFlicksUrl = movieInfo.AllFlicksUrl;
 
             try
             {
