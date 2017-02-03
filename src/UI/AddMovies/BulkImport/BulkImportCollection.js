@@ -1,18 +1,25 @@
-var Backbone = require('backbone');
 var _ = require('underscore');
 var PageableCollection = require('backbone.pageable');
 var MovieModel = require('../../Movies/MovieModel');
 var AsSortedCollection = require('../../Mixins/AsSortedCollection');
 var AsPageableCollection = require('../../Mixins/AsPageableCollection');
 
-BulkImportCollection = Backbone.PageableCollection.extend({
+var BulkImportCollection = PageableCollection.extend({
 		url   : window.NzbDrone.ApiRoot + '/movies/bulkimport',
 		model : MovieModel,
+		tableName : 'bulkimport',
 
 		state : {
-				pageSize : 500,
-				sortKey: 'sortTitle'
+			pageSize : 15,
+			sortKey: 'sortTitle'
 		},
+
+		// queryParams : {
+		// 	totalPages : null,
+		// 	totalRecords : null,
+		// 	pageSize : 'pageSize',
+		// 	sortKey : 'sortKey'
+		// },
 
 		/*parse : function(response) {
 				var self = this;
@@ -40,4 +47,5 @@ BulkImportCollection = Backbone.PageableCollection.extend({
 
 BulkImportCollection = AsSortedCollection.call(BulkImportCollection);
 BulkImportCollection = AsPageableCollection.call(BulkImportCollection);
+
 module.exports = BulkImportCollection;
