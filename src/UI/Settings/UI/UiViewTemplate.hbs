@@ -144,25 +144,36 @@
 	                  </select>
 	              </div>
 	          </div>
-	             
-            <div class="form-group">
-		            <label class="col-sm-3 control-label">Ignore Netflix Titles</label>
-			          <div class="col-sm-8">
-			              <div class="input-group">
-			                  <label class="checkbox toggle well">
-			                      <input type="checkbox" name="ignoreNetflixTitles"/>
-			                      <p>
-			                          <span>Yes</span>
-			                          <span>No</span>
-			                      </p>
-			                      <div class="btn btn-primary slide-button"/>
-			                  </label>
-                        <span class="help-inline-checkbox">
-			                      <i class="icon-sonarr-form-info" title="Titles known to be on netflix will be marked unmonitored upon refresh"/>
-			                  </span>
-			              </div>
-			          </div>
-			      </div>
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">Ignore Netflix Titles</label>
+	              <div class="col-sm-1 col-sm-push-4 help-inline">
+                    <i class="icon-sonarr-form-info" title="Unmonitor based on netflix status"/>
+                </div>
+
+	              <div class="col-sm-4 col-sm-pull-1">
+	                  <select name="ignoreNetflixTitles" class="form-control">
+		                    <option value="disabled">Disabled</option>
+		                    <option value="onAdd">On Add Detected Only</option>
+		                    <option value="onEveryRefresh">On Every Refresh </option>
+	                  </select>
+	              </div>
+	          </div>
+	          
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">Monitor on Netflix Removal</label>
+	              <div class="col-sm-1 col-sm-push-4 help-inline">
+                    <i class="icon-sonarr-form-info" title="Monitor based on netflix status"/>
+                </div>
+
+	              <div class="col-sm-4 col-sm-pull-1">
+	                  <select name="monitorLeaveNetflix" class="form-control">
+		                    <option value="disabled">Disabled</option>
+		                    <option value="onRemoval">On Removal Detected Only</option>
+		                    <option value="onEveryRefresh">On Every Refresh </option>
+	                  </select>
+	              </div>
+	          </div>
+	          
 	      </div>
     </fieldset>
 

@@ -91,20 +91,36 @@ namespace NzbDrone.Core.Tv
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
-            // some comments in the next block of code
-            // because it is anticipated that this could conflict
+
+            // it is anticipated that this could conflict
             // with things that were unmonitored when files were deleted
             // and we dont want to inadvertantly remonitor them when
-            // a title leaves netflix
-            if (_settingsService.IgnoreNetflixTitles) 
+            // a title leaves netflix. right now this would be considered a user error = because they should disable one or the other
+            if (movie.Monitored) // maybe only do this for downloaded items too?
             {
-                if ((movieInfo.AllFlicksUrl != null) && (movie.AllFlicksUrl == null) && movie.Monitored) //only do this if not downloaded
+                if (_settingsService.IgnoreNetflixTitles == "onAdd")
+                {
+                    if ((movieInfo.AllFlicksUrl != null) && (movie.AllFlicksUrl == null))
+                    {
+                        movie.Monitored = false;
+                    }
+                }
+                else if ((_settingsService.IgnoreNetflixTitles == "onEveryRefresh") && (movieInfo.AllFlicksUrl != null))
                 {
                     movie.Monitored = false;
-                    //should also leave a fingerprint behind
                 }
-                else if(_settingsService.IgnoreNetflixTitles &&((movieInfo.AllFlicksUrl == null) && (movie.AllFlicksUrl != null) && !movie.Monitored )) // only do this if the fingerprint exists 
-                {   //should be a different option for if the user wants to auto-remonitor stuff
+            }
+            else if (!movie.Monitored)
+            {
+                if (_settingsService.MonitorLeaveNetflix == "onRemoval")
+                {
+                    if ((movieInfo.AllFlicksUrl == null) && (movie.AllFlicksUrl != null)) 
+                    {
+                        movie.Monitored = true;
+                    }
+                }
+                else if ((_settingsService.MonitorLeaveNetflix == "onEveryRefresh") && (movieInfo.AllFlicksUrl == null))
+                {
                     movie.Monitored = true;
                 }
             }

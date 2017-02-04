@@ -363,11 +363,18 @@ namespace NzbDrone.Core.Configuration
 	    set { SetValue("EnableAllFlicks", value); }
 	}
 
-	public bool IgnoreNetflixTitles
+	public string IgnoreNetflixTitles
 	{
-	    get { return GetValueBoolean("IgnoreNetflixTitles", false); }
+	    get { return GetValue("IgnoreNetflixTitles", "disabled"); }
 
 	    set { SetValue("IgnoreNetflixTitles", value); }
+	}
+
+	public string MonitorLeaveNetflix
+	{
+	    get { return GetValue("MonitorLeaveNetflix", "disabled"); }
+
+	    set { SetValue("MonitorLeaveNetflix", value); }
 	}
 
         public bool EnableColorImpairedMode

@@ -69,7 +69,8 @@ namespace NzbDrone.Core.Configuration
 
 	string NetflixCountryCode { get; set; }
 	string EnableAllFlicks { get; set; }
-	bool IgnoreNetflixTitles { get; set; }
+	string IgnoreNetflixTitles { get; set; }
+	string MonitorLeaveNetflix { get; set; }
 
         bool EnableColorImpairedMode { get; set; }
 

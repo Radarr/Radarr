@@ -18,7 +18,8 @@ namespace NzbDrone.Api.Config
         //AllFlicks
 	public string NetflixCountryCode{ get; set; }
 	public string EnableAllFlicks { get; set; }
-	public bool IgnoreNetflixTitles { get; set; }
+	public string IgnoreNetflixTitles { get; set; }
+	public string MonitorLeaveNetflix { get; set; }
 
         public bool EnableColorImpairedMode { get; set; }
 
@@ -41,6 +42,7 @@ namespace NzbDrone.Api.Config
 		NetflixCountryCode = model.NetflixCountryCode,
 		EnableAllFlicks = model.EnableAllFlicks,
 		IgnoreNetflixTitles = model.IgnoreNetflixTitles,
+		MonitorLeaveNetflix = model.MonitorLeaveNetflix,
 
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
             };
