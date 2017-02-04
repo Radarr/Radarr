@@ -49,7 +49,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             var comparer = new QualityModelComparer(profile);
 
-            if (isPreferredProtocol)
+            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0))
             {
                     var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, subject.Movie.MovieFile.Value.Quality, subject.ParsedMovieInfo.Quality);
 
