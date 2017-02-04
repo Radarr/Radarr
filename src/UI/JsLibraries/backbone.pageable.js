@@ -756,7 +756,7 @@
     hasNext: function () {
       var state = this.state;
       var currentPage = this.state.currentPage;
-      if (this.mode != "infinite") return currentPage < state.lastPage;
+      if (true/*this.mode != "infinite"*/) return currentPage < state.lastPage;
       return !!this.links[currentPage + 1];
     },
 
