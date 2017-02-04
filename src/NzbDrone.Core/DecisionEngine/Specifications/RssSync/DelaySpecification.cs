@@ -69,10 +69,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
             var bestQualityInProfile = new QualityModel(profile.LastAllowedQuality());
             var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality, bestQualityInProfile) >= 0;
+            var title = subject.Release.Title;
+            var preferredWords = subject.Movie.Profile.Value.PreferredTags;
+            var num = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
 
-            if (isBestInProfile && isPreferredProtocol)
+            if (isBestInProfile && isPreferredProtocol && (num > 0  || preferredWords == null))
             {
-                _logger.Debug("Quality is highest in profile for preferred protocol, will not delay");
+                _logger.Debug("Quality is highest in profile for preferred protocol and preferred word count is {0}, will not delay",num);
                 return Decision.Accept();
             }
 
