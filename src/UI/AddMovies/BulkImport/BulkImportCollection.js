@@ -7,12 +7,25 @@ var AsPageableCollection = require('../../Mixins/AsPageableCollection');
 var BulkImportCollection = PageableCollection.extend({
 		url   : window.NzbDrone.ApiRoot + '/movies/bulkimport',
 		model : MovieModel,
+		mode: "infinite",
 		tableName : 'bulkimport',
 
 		state : {
 			pageSize : 15,
-			sortKey: 'sortTitle'
+			sortKey: 'sortTitle',
+			firstPage: 1
 		},
+
+		queryParams: {
+    totalPages: null,
+    totalRecords: null,
+    sortKey: "sort",
+    order: "direction",
+    directions: {
+      "-1": "asc",
+      "1": "desc"
+    }
+  },
 
 		// queryParams : {
 		// 	totalPages : null,

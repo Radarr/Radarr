@@ -41,7 +41,7 @@ module.exports = Marionette.Layout.extend({
 				this.bulkImportCollection.folderId = this.folderId;
 				this.bulkImportCollection.folder = this.folder;
 				this.bulkImportCollection.fetch();
-				this.listenTo(this.bulkImportCollection, {"sync" : this._showContent, "error" : this._showContent});
+				this.listenTo(this.bulkImportCollection, {"sync" : this._showContent, "error" : this._showContent, "backgrid:selected" : this._select});
 		},
 
 		columns : [
@@ -169,6 +169,10 @@ module.exports = Marionette.Layout.extend({
 			if (event_name == "sync" || event_name == "content") {
 				this._showContent()
 			}
+		},
+
+		_select : function(options) {
+			console.warn(options)
 		},
 
 		_showTable : function() {
