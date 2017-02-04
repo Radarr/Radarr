@@ -222,7 +222,7 @@ module.exports = Marionette.Layout.extend({
                     name  : 'profileId'
                 },
                 {
-                    title : 'In Cinemas',
+                    title : 'Initial Release',
                     name  : 'inCinemas'
                 },
                 /*{
@@ -266,6 +266,13 @@ module.exports = Marionette.Layout.extend({
                     icon     : 'icon-sonarr-movie-released',
                     callback : this._setFilter
                 },
+	        {
+		    key      : 'netflix',
+		    title    : '',
+		    tooltip  : 'On Netflix',
+		    icon     : 'icon-sonarr-movie-netflix',
+		    callback : this._setFilter
+		},
                 {
                     key      : 'announced',
                     title    : '',
@@ -437,7 +444,8 @@ module.exports = Marionette.Layout.extend({
         var announced = 0;
 		var incinemas = 0;
 		var released = 0;
-
+        
+        var netflix = 0;
     	var monitored = 0;
 
 		var downloaded =0;
@@ -460,6 +468,9 @@ module.exports = Marionette.Layout.extend({
 	    	else if (model.get('status').toLowerCase() === 'announced') {
             	announced++;
         	}
+            if (model.get('allFlicksUrl')) {
+   		        netflix++;
+	        }
 
         	if (model.get('monitored')) {
             		monitored++;
@@ -507,7 +518,8 @@ module.exports = Marionette.Layout.extend({
 	    	missingMonitored 			: missingMonitored,
             missingMonitoredAvailable   : missingMonitoredAvailable,
 	    	missingMonitoredNotAvailable 		: missingMonitoredNotAvailable,
-	    	missingNotMonitored 		: missingNotMonitored
+	    	missingNotMonitored 		: missingNotMonitored,
+	    	netflix      				: netflix
         });
 
         this.footer.show(new FooterView({ model : footerModel }));

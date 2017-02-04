@@ -11,6 +11,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Tv.Events;
 
@@ -25,6 +26,7 @@ namespace NzbDrone.Core.Tv
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
         private readonly Logger _logger;
+        private readonly IConfigService _settingsService;
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
@@ -32,6 +34,7 @@ namespace NzbDrone.Core.Tv
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
+                                    IConfigService settingsService,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
@@ -39,6 +42,7 @@ namespace NzbDrone.Core.Tv
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
             _diskScanService = diskScanService;
+            _settingsService = settingsService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _logger = logger;
         }
@@ -87,8 +91,11 @@ namespace NzbDrone.Core.Tv
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
-	    	movie.AllFlicksTitle = movieInfo.AllFlicksTitle;
 	    	movie.AllFlicksUrl = movieInfo.AllFlicksUrl;
+            if (_settingsService.IgnoreNetflixTitles && (movie.AllFlicksUrl != null))
+            {
+                movie.Monitored = false;
+            }
 
             try
             {

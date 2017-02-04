@@ -67,8 +67,9 @@ namespace NzbDrone.Core.Configuration
         string TimeFormat { get; set; }
         bool ShowRelativeDates { get; set; }
 
-		string NetflixCountryCode { get; set; }
-		bool EnableAllFlicks { get; set; }
+	string NetflixCountryCode { get; set; }
+	string EnableAllFlicks { get; set; }
+	bool IgnoreNetflixTitles { get; set; }
 
         bool EnableColorImpairedMode { get; set; }
 

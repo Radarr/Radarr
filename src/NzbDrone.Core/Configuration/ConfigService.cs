@@ -363,6 +363,13 @@ namespace NzbDrone.Core.Configuration
 	    set { SetValue("EnableAllFlicks", value); }
 	}
 
+	public bool IgnoreNetflixTitles
+	{
+	    get { return GetValueBoolean("IgnoreNetflixTitles", false); }
+
+	    set { SetValue("IgnoreNetflixTitles", value); }
+	}
+
         public bool EnableColorImpairedMode
         {
             get { return GetValueBoolean("EnableColorImpairedMode", false); }

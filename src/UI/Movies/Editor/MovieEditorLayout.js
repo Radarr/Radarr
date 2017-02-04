@@ -144,6 +144,13 @@ module.exports = Marionette.Layout.extend({
                     icon     : 'icon-sonarr-movie-released',
                     callback : this._setFilter
                 },
+	        {
+		    key      : 'netflix',
+		    title    : '',
+		    tooltip  : 'On Netflix',
+		    icon     : 'icon-sonarr-movie-netflix',
+		    callback : this._setFilter
+		},
                 {
                     key      : 'announced',
                     title    : '',
