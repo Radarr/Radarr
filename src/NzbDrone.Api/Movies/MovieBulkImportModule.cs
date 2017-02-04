@@ -6,12 +6,15 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using System.Linq;
+using System;
 using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.RootFolders;
+using NzbDrone.Common.Cache;
+using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Api.Movie
 {
@@ -30,14 +33,17 @@ namespace NzbDrone.Api.Movie
         private readonly IRootFolderService _rootFolderService;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IDiskScanService _diskScanService;
+		private readonly ICached<Core.Tv.Movie> _mappedMovies;
 
-        public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker, IDiskScanService diskScanService)
+        public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker,
+		                             IDiskScanService diskScanService, ICacheManager cacheManager)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
             _rootFolderService = rootFolderService;
             _importDecisionMaker = importDecisionMaker;
             _diskScanService = diskScanService;
+			_mappedMovies = cacheManager.GetCache<Core.Tv.Movie>(GetType(), "mappedMoviesCache");
             Get["/"] = x => Search();
         }
 
@@ -71,59 +77,65 @@ namespace NzbDrone.Api.Movie
 
             var paged = unmapped.GetRange(min, max-min);
 
-            var parsed = paged.Select(f =>
-            {
-                Core.Tv.Movie m = null;
+            var mapped = paged.Select(f =>
+			{
+				Core.Tv.Movie m = null;
 
-                var parsedTitle = Parser.ParseMoviePath(f.Name);
-                if (parsedTitle == null)
-                {
-                    m = new Core.Tv.Movie
-                    {
-                        Title = f.Name.Replace(".", " ").Replace("-", " "),
-                        Path = f.Path,
-                    };
-                }
-                else
-                {
-                    m = new Core.Tv.Movie
-                    {
-                        Title = parsedTitle.MovieTitle,
-                        Year = parsedTitle.Year,
-                        ImdbId = parsedTitle.ImdbId,
-                        Path = f.Path
-                    };
-                }
+				var mappedMovie = _mappedMovies.Find(f.Name);
+
+				if (mappedMovie != null)
+				{
+					return mappedMovie;
+				}
+
+				var parsedTitle = Parser.ParseMoviePath(f.Name);
+				if (parsedTitle == null)
+				{
+					m = new Core.Tv.Movie
+					{
+						Title = f.Name.Replace(".", " ").Replace("-", " "),
+						Path = f.Path,
+					};
+				}
+				else
+				{
+					m = new Core.Tv.Movie
+					{
+						Title = parsedTitle.MovieTitle,
+						Year = parsedTitle.Year,
+						ImdbId = parsedTitle.ImdbId,
+						Path = f.Path
+					};
+				}
 
 
 
-                var files = _diskScanService.GetVideoFiles(f.Path);
+				var files = _diskScanService.GetVideoFiles(f.Path);
 
-                var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m);
+				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m);
 
-                var decision = decisions.Where(d => d.Approved && !d.Rejections.Any()).FirstOrDefault();
+				var decision = decisions.Where(d => d.Approved && !d.Rejections.Any()).FirstOrDefault();
 
-                if (decision != null)
-                {
-                    var local = decision.LocalMovie;
+				if (decision != null)
+				{
+					var local = decision.LocalMovie;
 
-                    m.MovieFile = new LazyLoaded<MovieFile>(new MovieFile
-                    {
-                        Path = local.Path,
-                        Edition = local.ParsedMovieInfo.Edition,
-                        Quality = local.Quality,
-                        MediaInfo = local.MediaInfo,
-                        ReleaseGroup = local.ParsedMovieInfo.ReleaseGroup,
-                        RelativePath = f.Path.GetRelativePath(local.Path)
-                    });
-                }
+					m.MovieFile = new LazyLoaded<MovieFile>(new MovieFile
+					{
+						Path = local.Path,
+						Edition = local.ParsedMovieInfo.Edition,
+						Quality = local.Quality,
+						MediaInfo = local.MediaInfo,
+						ReleaseGroup = local.ParsedMovieInfo.ReleaseGroup,
+						RelativePath = f.Path.GetRelativePath(local.Path)
+					});
+				}
 
-                return m;
-            });
+				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
 
-            var mapped = parsed.Select(p =>
-            {
-                return _searchProxy.MapMovieToTmdbMovie(p);
+				_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
+
+				return mappedMovie;
             });
 
             return new PagingResource<MovieResource>
