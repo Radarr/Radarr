@@ -572,7 +572,7 @@
 
         if (mode == "infinite") {
           if (!links[currentPage + '']) {
-            throw new RangeError("No link found for page " + currentPage);
+            //throw new RangeError("No link found for page " + currentPage);
           }
         }
         else if (currentPage < firstPage ||
