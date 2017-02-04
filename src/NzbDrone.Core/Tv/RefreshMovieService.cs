@@ -91,11 +91,24 @@ namespace NzbDrone.Core.Tv
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
-	    	movie.AllFlicksUrl = movieInfo.AllFlicksUrl;
-            if (_settingsService.IgnoreNetflixTitles && (movie.AllFlicksUrl != null))
+            // some comments in the next block of code
+            // because it is anticipated that this could conflict
+            // with things that were unmonitored when files were deleted
+            // and we dont want to inadvertantly remonitor them when
+            // a title leaves netflix
+            if (_settingsService.IgnoreNetflixTitles) 
             {
-                movie.Monitored = false;
+                if ((movieInfo.AllFlicksUrl != null) && (movie.AllFlicksUrl == null) && movie.Monitored) //only do this if not downloaded
+                {
+                    movie.Monitored = false;
+                    //should also leave a fingerprint behind
+                }
+                else if(_settingsService.IgnoreNetflixTitles &&((movieInfo.AllFlicksUrl == null) && (movie.AllFlicksUrl != null) && !movie.Monitored )) // only do this if the fingerprint exists 
+                {   //should be a different option for if the user wants to auto-remonitor stuff
+                    movie.Monitored = true;
+                }
             }
+            movie.AllFlicksUrl = movieInfo.AllFlicksUrl;
 
             try
             {
