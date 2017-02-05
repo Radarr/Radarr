@@ -55,13 +55,15 @@ module.exports = Marionette.Layout.extend({
 					name     : 'movie',
 					label    : 'Movie',
 					cell     : MovieTitleCell,
-					cellValue : 'this'
+					cellValue : 'this',
+					sortable : false,
 				},
 				{
 					name : "path",
 					label : "Path",
 					cell : MoviePathCell,
-					cellValue : 'this'
+					cellValue : 'this',
+					sortable : false,
 				},
 				{
 					name	: 'tmdbId',
@@ -129,7 +131,9 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_addSelected : function() {
-			var selected = this.importGrid.getSelectedModels();
+			var selected = _.filter(this.bulkImportCollection.fullCollection.models, function(elem){
+				return elem.selected;
+			})
 			console.log(selected);
 
 			var promise = MoviesCollection.importFromList(selected);
@@ -171,8 +175,8 @@ module.exports = Marionette.Layout.extend({
 			}
 		},
 
-		_select : function(options) {
-			console.warn(options)
+		_select : function(model, selected) {
+			model.selected = selected;
 		},
 
 		_showTable : function() {

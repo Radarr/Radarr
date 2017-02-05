@@ -6,8 +6,8 @@ module.exports = NzbDroneCell.extend({
 
         render : function() {
             var collection = this.model.collection;
-            this.listenTo(collection, 'sync', this._renderCell);
-            
+            //this.listenTo(collection, 'sync', this._renderCell);
+
             this._renderCell();
 
             return this;

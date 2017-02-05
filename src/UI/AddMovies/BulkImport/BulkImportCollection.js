@@ -70,6 +70,15 @@ var BulkImportCollection = PageableCollection.extend({
 			options.data = data;
 
 			return Backbone.PageableCollection.prototype.fetch.call(this, options);
+		},
+
+		parseLinks : function(options) {
+			console.log(options);
+			return {
+				first : this.url,
+				next: this.url,
+				last : this.url
+			}
 		}
 });
 
