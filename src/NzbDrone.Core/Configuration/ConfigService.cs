@@ -112,6 +112,20 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("NetImportSyncInterval", value); }
         }
 
+	public string TraktAuthToken
+	{
+            get { return GetValue("TraktAuthToken", string.Empty); }
+
+            set { SetValue("TraktAuthToken", value); }
+	}
+
+	public string TraktRefreshToken
+	{
+	    get { return GetValue("TraktRefreshToken", string.Empty); }
+
+	    set {SetValue("TraktRefreshToken", value); }
+	}
+
         public int MinimumAge
         {
             get { return GetValueInt("MinimumAge", 0); }

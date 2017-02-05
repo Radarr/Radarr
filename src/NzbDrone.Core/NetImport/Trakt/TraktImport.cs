@@ -18,14 +18,15 @@ namespace NzbDrone.Core.NetImport.Trakt
         public override string Name => "Trakt List";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
+        public IConfigService _configService;
 
         public TraktImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)
-        { }
+        { _configService = configService; }
 
         public override INetImportRequestGenerator GetRequestGenerator()
         {
-            return new TraktRequestGenerator() { Settings = Settings };
+            return new TraktRequestGenerator() { Settings = Settings, _configService = _configService };
         }
 
         public override IParseNetImportResponse GetParser()

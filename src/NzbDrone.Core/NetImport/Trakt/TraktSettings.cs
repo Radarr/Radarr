@@ -21,8 +21,6 @@ namespace NzbDrone.Core.NetImport.Trakt
             Link = "https://api.trakt.tv";
             Username = "";
             Listname = "";
-	        Authtoken = "";
-	        Refreshtoken = "";
         }
 
         [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
@@ -36,12 +34,6 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         [FieldDefinition(3, Label = "Trakt List Name", HelpText = "Required for Custom List")]
         public string Listname { get; set; }
-
-        [FieldDefinition(4, Label = "Trakt auth_token", HelpText = "Required for Private Lists (expires every 3 months)")]
-        public string Authtoken { get; set; }
-
-        [FieldDefinition(5, Label = "Trakt refresh_token", HelpText = "Required for to refresh auth_token every 3 months")]
-        public string Refreshtoken { get; set; }
         
     }
 

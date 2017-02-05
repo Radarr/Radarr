@@ -6,11 +6,13 @@ using System.Text;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
     public class TraktRequestGenerator : INetImportRequestGenerator
     {
+        public IConfigService _configService;
         public TraktSettings Settings { get; set; }
 
         public virtual NetImportPageableRequestChain GetMovies()
@@ -63,28 +65,27 @@ namespace NzbDrone.Core.NetImport.Trakt
                     break;
             }
 
-            /*
-            if (Settings.Refreshtoken ! = null) //if a refreshToken exists
+            if (_configService.TraktRefreshToken != null) //if a refreshToken exists
             {
-                TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0,DateTimeKind.Utc));
-                double unixTime = span.TotalSeconds;
-                bool tokenExpired = false; //TokenCreatedAt + TokenExpiresIn < unixTime()
+                //TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0,DateTimeKind.Utc));
+                //double unixTime = span.TotalSeconds;
+                bool tokenExpired = true; //TokenCreatedAt + TokenExpiresIn < unixTime()
                 if (tokenExpired)
                 {
                     var url = Settings.Link.Trim();
                     url = url + "/oauth/token";
 
-                    string postData = "refresh_token=" + Settings.Refreshtoken.Trim();
-                    postData += "&client_id=" + Settings.Authtoken.Trim();
-                    postData += "&client_secret=b16be19076b515553bb830141e08729c1d987fe686b3c3bc0316ba4382c2b810";
-                    postData += "&redirect_uri=urn:ietf:wg:oauth:2.0:oob";
-                    postData += "&grant_type=refresh_token";
+                    string postData = "{\"refresh_token\":\""+ _configService.TraktRefreshToken+"\"";
+                    postData += ",\"client_id\":\"657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0\"";
+                    postData += ",\"client_secret\":\"b16be19076b515553bb830141e08729c1d987fe686b3c3bc0316ba4382c2b810\"";
+                    postData += ",\"redirect_uri\":\"urn:ietf:wg:oauth:2.0:oob\"";
+                    postData += ",\"grant_type\":\"refresh_token\"}";
 
                     byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
                     HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
                     rquest.Method = "POST";
-                    rquest.Headers.ContentType = "application/json";
+                    rquest.ContentType = "application/json";
                     using (var st = rquest.GetRequestStream())
                         st.Write(byteArray, 0, byteArray.Length);
                     var rsponse = (HttpWebResponse)rquest.GetResponse();
@@ -92,22 +93,19 @@ namespace NzbDrone.Core.NetImport.Trakt
                     rsponse.Close();
                     dynamic j1 = JObject.Parse(rsponseString);
 
-                    //these need to be updated and need to but so far dont know how
-                    //this shoud only be done if the post request was successful.
-                    Settings.Authtoken = j1.access_token;
-                    Settings.Refreshtoken = j1.refresh_token;
-                    TokenCreatedAt = j1.created_at; //convert to double
-                    TokenExpiresIn = j1.expires_in; //convert to double
+                    _configService.TraktAuthToken = j1.access_token;
+                    _configService.TraktRefreshToken = j1.refresh_token;
+                    //TokenCreatedAt = j1.created_at; //convert to double
+                    //TokenExpiresIn = j1.expires_in; //convert to double
                 }
             }
-            */
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
             request.HttpRequest.Headers.Add("trakt-api-key", "657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0");
-            if (Settings.Authtoken != null)
+            if (_configService.TraktAuthToken != null)
             {
-                request.HttpRequest.Headers.Add("Authorization", "Bearer " + Settings.Authtoken.Trim());
+                request.HttpRequest.Headers.Add("Authorization", "Bearer " + _configService.TraktAuthToken);
             }
 
                 yield return request;
