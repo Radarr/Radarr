@@ -132,6 +132,7 @@ namespace NzbDrone.Api.Movie
 				}
 
 				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
+				mappedMovie.Monitored = true;
 
 				_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
 
