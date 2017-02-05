@@ -69,14 +69,8 @@ namespace NzbDrone.Core.NetImport.Trakt
             {
                 TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0,DateTimeKind.Utc));
                 double unixTime = span.TotalSeconds;
-                int expiryTime = 0;
-                int createdAt, expiresIn;
-                if (int.TryParse(_configService.TraktTokenExpiresIn, out expiresIn) && int.TryParse(_configService.TraktTokenCreatedAt, out createdAt))
-                {
-                    expiryTime = createdAt + expiresIn;
-                }
                              
-                if ( unixTime > expiryTime)
+                if ( unixTime > _configService.TraktTokenExpiry)
                 {
                     var url = Settings.Link.Trim();
                     url = url + "/oauth/token";
@@ -101,13 +95,11 @@ namespace NzbDrone.Core.NetImport.Trakt
 
                     _configService.TraktAuthToken = j1.access_token;
                     _configService.TraktRefreshToken = j1.refresh_token;
-                    _configService.TraktTokenCreatedAt = j1.created_at; 
-                    _configService.TraktTokenExpiresIn = j1.expires_in; 
+                    string createdAt = j1.created_at;
+                    string expiresIn = j1.expires_in;
+                    _configService.TraktTokenExpiry = int.Parse(createdAt) + int.Parse(expiresIn);
                 }
             }
-
-            //Console.WriteLine(_configService.TraktTokenCreatedAt);
-            //_configService.TraktTokenCreatedAt += "t";
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");

@@ -8,8 +8,7 @@ namespace NzbDrone.Api.Config
         public int NetImportSyncInterval { get; set; }
 	public string TraktAuthToken { get; set; }
 	public string TraktRefreshToken { get; set; }
-	public string TraktTokenCreatedAt { get; set; }
-	public string TraktTokenExpiresIn { get; set; }
+	public int TraktTokenExpiry { get; set; }
     }
 
     public static class NetImportConfigResourceMapper
@@ -21,8 +20,7 @@ namespace NzbDrone.Api.Config
                 NetImportSyncInterval = model.NetImportSyncInterval,
 		TraktAuthToken = model.TraktAuthToken,
 		TraktRefreshToken = model.TraktRefreshToken,
-		TraktTokenCreatedAt = model.TraktTokenCreatedAt,
-		TraktTokenExpiresIn = model.TraktTokenExpiresIn,
+		TraktTokenExpiry = model.TraktTokenExpiry,
             };
         }
     }
