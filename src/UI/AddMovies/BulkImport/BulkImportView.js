@@ -8,7 +8,7 @@ var QualityCell = require('./QualityCell');
 var TmdbIdCell = require('./TmdbIdCell');
 var GridPager = require('../../Shared/Grid/Pager');
 var SelectAllCell = require('../../Cells/SelectAllCell');
-var ProfileCell = require('./BulkImportProfileCell');
+var ProfileCell = require('./BulkImportProfileCellT');
 var MoviePathCell = require("./MoviePathCell");
 var LoadingView = require('../../Shared/LoadingView');
 var EmptyView = require("./EmptyView");
@@ -16,6 +16,7 @@ var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var CommandController = require('../../Commands/CommandController');
 var Messenger = require('../../Shared/Messenger');
 var MoviesCollection = require('../../Movies/MoviesCollection');
+var ProfileCollection = require('../../Profile/ProfileCollection');
 
 require('backgrid.selectall');
 require('../../Mixins/backbone.signalr.mixin');
@@ -35,6 +36,7 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		initialize : function(options) {
+				ProfileCollection.fetch();
 				this.bulkImportCollection = new BulkImportCollection().bindSignalR({ updateOnly : true });
 				this.model = options.model;
 				this.folder = this.model.get("path");
@@ -76,7 +78,8 @@ module.exports = Marionette.Layout.extend({
 				{
 					name : 'profileId',
 					label : 'Profile',
-					cell  : ProfileCell
+					cell  : ProfileCell,
+					cellValue : "this",
 				},
 				{
 					name     : 'quality',

@@ -6,20 +6,30 @@ var _ = require('underscore');
 module.exports = Backgrid.SelectCell.extend({
     className : 'profile-cell',
 
-    _originalInit : Backgrid.SelectCell.prototype.initialize,
+    _orig : Backgrid.SelectCell.prototype.initialize,
 
     initialize : function () {
-        this._originalInit.apply(this, arguments);
+        this._orig.apply(this, arguments);
 
         this.defaultProfile = Config.getValue(Config.Keys.DefaultProfileId);
         if(ProfileCollection.get(this.defaultProfile))
         {
             this.profile = this.defaultProfile;
         }
+
+        this.render();
         //this.listenTo(ProfileCollection, 'sync', this.render);
+
     },
 
-    render : function() {
+    optionValues : function() {
+      //debugger;
+      return _.map(ProfileCollection.models, function(model){
+        return [model.get("name"), model.get("id")+""];
+      });
+    }
+
+    /*render : function() {
 
         this.$el.empty();
         var profileId = this.model.get(this.column.get('name'));
@@ -31,5 +41,5 @@ module.exports = Backgrid.SelectCell.extend({
         }
 
         return this;
-    }
+    }*/
 });
