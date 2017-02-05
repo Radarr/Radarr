@@ -29,7 +29,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _updateUrl : function() {
-        var icalUrl = window.location.host + StatusModel.get('urlBase') + '/feed/calendar/NzbDrone.ics?';
+        var icalUrl = window.location.host + StatusModel.get('urlBase') + '/feed/calendar/Radarr.ics?';
 
         if (this.ui.includeUnmonitored.prop('checked')) {
             icalUrl += 'unmonitored=true&';
