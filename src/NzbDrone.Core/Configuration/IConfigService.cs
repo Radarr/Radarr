@@ -49,6 +49,8 @@ namespace NzbDrone.Core.Configuration
         int NetImportSyncInterval { get; set; }
 	string TraktAuthToken { get; set; }
 	string TraktRefreshToken { get; set; }
+	string TraktTokenExpiresIn { get; set; }
+	string TraktTokenCreatedAt { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }

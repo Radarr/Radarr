@@ -126,6 +126,21 @@ namespace NzbDrone.Core.Configuration
 	    set {SetValue("TraktRefreshToken", value); }
 	}
 
+	public string TraktTokenExpiresIn
+	{
+		get { return GetValue("TraktTokenExpiresIn", string.Empty); }
+
+		set { SetValue("TraktTokenExpiresIn", value); }
+	}
+
+	public string TraktTokenCreatedAt
+	{
+		get { return GetValue("TraktTokenCreatedAt", string.Empty); }
+
+		set { SetValue("TraktTokenCreatedAt", value); }
+
+	}
+
         public int MinimumAge
         {
             get { return GetValueInt("MinimumAge", 0); }

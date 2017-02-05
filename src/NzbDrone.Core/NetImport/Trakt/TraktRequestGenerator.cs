@@ -65,12 +65,18 @@ namespace NzbDrone.Core.NetImport.Trakt
                     break;
             }
 
-            if (_configService.TraktRefreshToken != null) //if a refreshToken exists
+            if (_configService.TraktRefreshToken != null) 
             {
-                //TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0,DateTimeKind.Utc));
-                //double unixTime = span.TotalSeconds;
-                bool tokenExpired = true; //TokenCreatedAt + TokenExpiresIn < unixTime()
-                if (tokenExpired)
+                TimeSpan span = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0,DateTimeKind.Utc));
+                double unixTime = span.TotalSeconds;
+                int expiryTime = 0;
+                int createdAt, expiresIn;
+                if (int.TryParse(_configService.TraktTokenExpiresIn, out expiresIn) && int.TryParse(_configService.TraktTokenCreatedAt, out createdAt))
+                {
+                    expiryTime = createdAt + expiresIn;
+                }
+                             
+                if ( unixTime > expiryTime)
                 {
                     var url = Settings.Link.Trim();
                     url = url + "/oauth/token";
@@ -95,10 +101,13 @@ namespace NzbDrone.Core.NetImport.Trakt
 
                     _configService.TraktAuthToken = j1.access_token;
                     _configService.TraktRefreshToken = j1.refresh_token;
-                    //TokenCreatedAt = j1.created_at; //convert to double
-                    //TokenExpiresIn = j1.expires_in; //convert to double
+                    _configService.TraktTokenCreatedAt = j1.created_at; 
+                    _configService.TraktTokenExpiresIn = j1.expires_in; 
                 }
             }
+
+            //Console.WriteLine(_configService.TraktTokenCreatedAt);
+            //_configService.TraktTokenCreatedAt += "t";
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
