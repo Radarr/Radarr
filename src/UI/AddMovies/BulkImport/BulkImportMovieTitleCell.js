@@ -16,6 +16,6 @@ module.exports = NzbDroneCell.extend({
         _renderCell : function() {
             this.$el.empty();
 
-            this.$el.html('<a href="https://www.themoviedb.org/movie/' + this.cellValue.get('tmdbId') +'">' + this.cellValue.get('title') +'</a>');
+            this.$el.html('<a href="https://www.themoviedb.org/movie/' + this.cellValue.get('tmdbId') +'">' + this.cellValue.get('title') + ' (' + this.cellValue.get('year') + ')' +'</a>');
         }
 });

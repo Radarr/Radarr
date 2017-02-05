@@ -3,6 +3,7 @@ var PageableCollection = require('backbone.pageable');
 var MovieModel = require('../../Movies/MovieModel');
 var AsSortedCollection = require('../../Mixins/AsSortedCollection');
 var AsPageableCollection = require('../../Mixins/AsPageableCollection');
+var AsPersistedStateCollection = require('../../Mixins/AsPersistedStateCollection');
 
 var BulkImportCollection = PageableCollection.extend({
 		url   : window.NzbDrone.ApiRoot + '/movies/bulkimport',
@@ -62,7 +63,7 @@ var BulkImportCollection = PageableCollection.extend({
 
 			var data = options.data || {};
 
-			if (data.id == undefined || data.folder == undefined) {
+			if (data.id === undefined || data.folder === undefined) {
 				data.id = this.folderId;
 				data.folder = this.folder;
 			}
@@ -85,5 +86,6 @@ var BulkImportCollection = PageableCollection.extend({
 
 BulkImportCollection = AsSortedCollection.call(BulkImportCollection);
 BulkImportCollection = AsPageableCollection.call(BulkImportCollection);
+BulkImportCollection = AsPersistedStateCollection.call(BulkImportCollection);
 
 module.exports = BulkImportCollection;

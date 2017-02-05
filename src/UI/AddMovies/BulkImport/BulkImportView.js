@@ -8,6 +8,7 @@ var QualityCell = require('./QualityCell');
 var TmdbIdCell = require('./TmdbIdCell');
 var GridPager = require('../../Shared/Grid/Pager');
 var SelectAllCell = require('../../Cells/SelectAllCell');
+var ProfileCell = require('./BulkImportProfileCell');
 var MoviePathCell = require("./MoviePathCell");
 var LoadingView = require('../../Shared/LoadingView');
 var EmptyView = require("./EmptyView");
@@ -71,6 +72,11 @@ module.exports = Marionette.Layout.extend({
 					cell	: TmdbIdCell,
 					cellValue : 'this',
 					sortable: false
+				},
+				{
+					name : 'profileId',
+					label : 'Profile',
+					cell  : ProfileCell
 				},
 				{
 					name     : 'quality',
