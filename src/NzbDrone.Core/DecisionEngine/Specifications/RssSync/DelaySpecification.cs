@@ -44,8 +44,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             // Preferred word count 
             var title = subject.Release.Title;
             var preferredWords = subject.Movie.Profile.Value.PreferredTags;
-            var preferredCount = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
+            var preferredCount = 0;
 
+            if (preferredWords == null)
+            {
+                preferredCount = 1;
+                _logger.Debug("Preferred words is null, setting preffered count to 1.");
+            }
+            else
+            {
+                preferredCount = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
+            }
 
             if (delay == 0)
             {
