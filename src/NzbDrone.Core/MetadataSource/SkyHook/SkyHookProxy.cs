@@ -372,8 +372,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         var rsponseString = new StreamReader(rsponse.GetResponseStream()).ReadToEnd();
                         rsponse.Close();
                         dynamic j1 = JObject.Parse(rsponseString);
-                        numFound = j1.recordsFiltered;
-                        if (!(numFound > 0))
+                        if (j1.recordsFiltered != null)
+                        {
+                            numFound = j1.recordsFiltered;
+                        }
+                        else
+                        {
+                            numFound = 0;
+                        }
+			if (!(numFound > 0))
                             break;
                         var results = j1.data;
                         foreach (var result in results)
