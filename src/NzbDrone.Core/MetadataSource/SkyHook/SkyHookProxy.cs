@@ -304,8 +304,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     movie.Studio = resource.production_companies[0].name;
                 }
             }
-            movie.AllFlicksUrl = null;
+
             string enableAllFlicks = _settingsService.EnableAllFlicks;
+            if (enableAllFlicks=="disabledKeep")
+	        {
+	            enableAllFlicks="disabled";
+	        }
             if ((enableAllFlicks!="disabled")&&((enableAllFlicks=="simple")||(enableAllFlicks=="complex")))
             {
                 string countryCode = _settingsService.NetflixCountryCode;

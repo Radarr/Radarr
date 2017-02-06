@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Tv
             _logger.ProgressInfo("Updating Info for {0}", movie.Title);
 
             Movie movieInfo;
-            
+
             try
             {
                 movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
@@ -91,6 +91,11 @@ namespace NzbDrone.Core.Tv
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
+
+            if (_settingsService.EnableAllFlicks == "disabledKeep")
+            {
+                movieInfo.AllFlicksUrl = movie.AllFlicksUrl;
+            }
 
             // it is anticipated that this could conflict
             // with things that were unmonitored when files were deleted
