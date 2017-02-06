@@ -124,6 +124,7 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
     <Compile Include="NetImport\Trakt\TraktAPI.cs" />
     <Compile Include="NetImport\Trakt\TraktImport.cs" />
     <Compile Include="NetImport\Trakt\TraktListType.cs" />
@@ -667,10 +668,6 @@
     <Compile Include="Indexers\IPTorrents\IPTorrentsRequestGenerator.cs" />
     <Compile Include="Indexers\IPTorrents\IPTorrents.cs" />
     <Compile Include="Indexers\IPTorrents\IPTorrentsSettings.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrents.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrentsRssParser.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrentsSettings.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrentsRequestGenerator.cs" />
     <Compile Include="Indexers\Newznab\Newznab.cs" />
     <Compile Include="Indexers\Newznab\NewznabCapabilities.cs" />
     <Compile Include="Indexers\Newznab\NewznabCapabilitiesProvider.cs" />
@@ -714,8 +711,6 @@
     <Compile Include="Indexers\Torznab\TorznabException.cs" />
     <Compile Include="Indexers\Torznab\TorznabRssParser.cs" />
     <Compile Include="Indexers\Torznab\TorznabSettings.cs" />
-    <Compile Include="Indexers\Wombles\Wombles.cs" />
-    <Compile Include="Indexers\Wombles\WomblesRssParser.cs" />
     <Compile Include="Indexers\XElementExtensions.cs" />
     <Compile Include="IndexerSearch\Definitions\AnimeEpisodeSearchCriteria.cs" />
     <Compile Include="IndexerSearch\Definitions\DailyEpisodeSearchCriteria.cs" />
