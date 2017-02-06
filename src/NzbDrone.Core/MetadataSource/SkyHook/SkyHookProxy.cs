@@ -133,7 +133,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Year = movie.InCinemas.Value.Year;
             }
 
-            movie.TitleSlug += "-" + movie.Year.ToString();
+            movie.TitleSlug += "-" + movie.TmdbId.ToString();
 
             movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
             movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
@@ -391,7 +391,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     imdbMovie.Year = DateTime.Parse(result.release_date).Year;
                 }
 
-                imdbMovie.TitleSlug += "-" + imdbMovie.Year;
+                imdbMovie.TitleSlug += "-" + imdbMovie.TmdbId;
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
@@ -577,7 +577,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             value = value.ToLowerInvariant();
 
             //Remove all accents
-            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
+            var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
             value = Encoding.ASCII.GetString(bytes);
 
             //Replace spaces
