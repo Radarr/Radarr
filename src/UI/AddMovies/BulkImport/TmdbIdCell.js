@@ -1,11 +1,13 @@
 var vent = require('vent');
+var _ = require('underscore');
+var $ = require('jquery');
 var NzbDroneCell = require('../../Cells/NzbDroneCell');
 var CommandController = require('../../Commands/CommandController');
 
 module.exports = NzbDroneCell.extend({
 		className : 'tmdbId-cell',
 
-        // Should maybe list for Enter as well?
+        // would like to use change with a _.debounce eventually
         events : {
             'blur input.tmdbId-input' : '_updateId'
         },
@@ -13,18 +15,29 @@ module.exports = NzbDroneCell.extend({
         render : function() {
             this.$el.empty();
 
-            this.$el.html('<input type="text" class="tmdbId-input form-control" value="' + this.cellValue.get('tmdbId') + '" />');
+            this.$el.html('<input type="text" class="x-tmdbId tmdbId-input form-control" value="' + this.cellValue.get('tmdbId') + '" />');
             
             return this;
         },
 
         _updateId : function() {
-            console.log('TODO Update Id');
-            //Should we use a command for this? Is there a better way?
-            // CommandController.Execute('updateTmdbId', {
-            //     name     : 'updateTmdbId',
-            //     movieId : this.cellValue.get('id'),
-            //     tmdbId : this.cellValue.get('tmdbId')
-            // });
+            var data = this.$el.find('.x-tmdbId').val();
+
+            var promise = $.ajax({
+                url  : window.NzbDrone.ApiRoot + '/movies/lookup/tmdb?tmdbId=' + data,
+                type : 'GET',
+            });
+
+            //this.$(this.ui.grab).spinForPromise(promise);
+            var _self = this;
+            var cacheMonitored = this.model.get('monitored');
+            promise.success(function(response) {            
+                _self.model.set(response);
+                _self.model.set('monitored', cacheMonitored); //reset to the previous monitored value
+            });
+
+            promise.error(function(request, status, error) {
+                console.error("Status: " + status, "Error: " + error);
+            });
         }
 });
