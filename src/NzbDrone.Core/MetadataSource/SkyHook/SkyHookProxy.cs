@@ -14,6 +14,7 @@ using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 
@@ -86,8 +87,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<MovieResourceRoot>(request);
-            var resource = response.Resource;
 
+            // The dude abides, so should us, Lets be nice to TMDb
+            // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
+            // var reset = long.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()); // get time when it resets
+            var remaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First());
+            if (remaining == 5)
+            {
+                _logger.Trace("Waiting 5 seconds to get information for the next 35 movies");
+                Thread.Sleep(5000);
+            }
+
+            var resource = response.Resource;
             if (resource.status_message != null)
             {
                 if (resource.status_code == 34)
