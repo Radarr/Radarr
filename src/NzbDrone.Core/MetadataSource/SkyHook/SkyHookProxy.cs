@@ -92,7 +92,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
             // var reset = long.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()); // get time when it resets
             var remaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First());
-            if (remaining == 5)
+            if (remaining <= 5)
             {
                 _logger.Trace("Waiting 5 seconds to get information for the next 35 movies");
                 Thread.Sleep(5000);
