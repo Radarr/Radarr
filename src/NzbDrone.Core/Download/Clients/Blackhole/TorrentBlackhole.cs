@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
                 {
                     DownloadClient = Definition.Name,
                     DownloadId = Definition.Name + "_" + item.DownloadId,
-                    Category = "sonarr",
+                    Category = "radarr",
                     Title = item.Title,
 
                     TotalSize = item.TotalSize,
