@@ -7,6 +7,14 @@ using NzbDrone.Core.Validation;
 namespace NzbDrone.Core.NetImport.StevenLu
 {
 
+    public class StevenLuSettingsValidator : AbstractValidator<StevenLuSettings>
+    {
+        public StevenLuSettingsValidator()
+        {
+            RuleFor(c => c.Link).ValidRootUrl();
+        }
+    }
+
     public class StevenLuSettings : NetImportBaseSettings
     {
         public StevenLuSettings()

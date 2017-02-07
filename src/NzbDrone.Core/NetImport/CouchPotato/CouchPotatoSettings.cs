@@ -14,6 +14,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             RuleFor(c => c.Link).ValidRootUrl();
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
             RuleFor(c => c.ApiKey).NotEmpty();
+            // RuleFor(c => c.UrlBase).ValidUrlBase();
         }
     }
 
@@ -33,7 +34,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         [FieldDefinition(1, Label = "CouchPotato Port", HelpText = "Port your CoouchPootato uses.")]
         public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "CouchPotato Url Base",
+        [FieldDefinition(2, Label = "CouchPotato Url Base", Advanced = true,
             HelpText = "UrlBase your CoouchPootato uses, leave blank for none")]
         public string UrlBase { get; set; }
 

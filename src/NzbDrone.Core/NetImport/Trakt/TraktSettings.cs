@@ -32,7 +32,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         [FieldDefinition(2, Label = "Trakt Username", HelpText = "Required for User List")]
         public string Username { get; set; }
 
-        [FieldDefinition(3, Label = "Trakt List Name", HelpText = "Required for Custom List")]
+        [FieldDefinition(3, Label = "Custom Listname", HelpText = "Required for Custom List Option")]
         public string Listname { get; set; }
 
     }
