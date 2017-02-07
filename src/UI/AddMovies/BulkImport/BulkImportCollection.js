@@ -18,14 +18,14 @@ var BulkImportCollection = PageableCollection.extend({
 		},
 
 		queryParams: {
-    totalPages: null,
-    totalRecords: null,
-    sortKey: "sort",
-    order: "direction",
-    directions: {
-      "-1": "asc",
-      "1": "desc"
-    }
+			totalPages: null,
+			totalRecords: null,
+			sortKey: "sort",
+			order: "direction",
+			directions: {
+			"-1": "asc",
+			"1": "desc"
+		}
   },
 
 		// queryParams : {
@@ -70,7 +70,7 @@ var BulkImportCollection = PageableCollection.extend({
 
 			options.data = data;
 
-			return Backbone.PageableCollection.prototype.fetch.call(this, options);
+			return PageableCollection.prototype.fetch.call(this, options);
 		},
 
 		parseLinks : function(options) {

@@ -33,8 +33,11 @@ module.exports = Marionette.Layout.extend({
 
 		ui : {
 			addSelectdBtn : '.x-add-selected',
-			addAllBtn : '.x-add-all'
+			addAllBtn : '.x-add-all',
+			pageSizeSelector : '.x-page-size'
 		},
+
+		events: { "change .x-page-size" : "_pageSizeChanged" },
 
 		initialize : function(options) {
 				ProfileCollection.fetch();
@@ -46,6 +49,12 @@ module.exports = Marionette.Layout.extend({
 				this.bulkImportCollection.folder = this.folder;
 				this.bulkImportCollection.fetch();
 				this.listenTo(this.bulkImportCollection, {"sync" : this._showContent, "error" : this._showContent, "backgrid:selected" : this._select});
+		},
+
+		_pageSizeChanged : function(event) {
+			var pageSize = parseInt($(event.target).val());
+			this.bulkImportCollection.setPageSize(pageSize);
+			this.bulkImportCollection.fetch();
 		},
 
 		columns : [
@@ -135,15 +144,8 @@ module.exports = Marionette.Layout.extend({
 				right   : [],
 				context : this
 			}));
-			//We could handle these through commands?
-			// CommandController.bindToCommand({
-			// 	element : this.$('.x-add-selected'),
-			// 	command : { name : 'moviesAddSelected' }
-			// });
-			// CommandController.bindToCommand({
-			// 	element : this.$('.x-add-all'),
-			// 	command : { name : 'moviesAddBulk' }
-			// });
+
+			$('#x-toolbar').addClass('inline');
 		},
 
 		_addSelected : function() {

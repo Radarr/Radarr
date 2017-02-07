@@ -31,19 +31,19 @@ module.exports = NzbDroneCell.extend({
 
 						//field.spinForPromise(promise);
 
-						field.prop("disabled", true)
+            field.prop("disabled", true)
 
-						var icon = this.$(".icon-sonarr-info");
+            var icon = this.$(".icon-sonarr-info");
 
-						icon.removeClass("hidden");
+            icon.removeClass("hidden");
 
             icon.spinForPromise(promise);
             var _self = this;
             var cacheMonitored = this.model.get('monitored');
-						var cacheProfile = this.model.get("profileId");
-						var cachePath = this.model.get("path");
-						var cacheFile = this.model.get("movieFile");
-						var cacheRoot = this.model.get("rootFolderPath");
+            var cacheProfile = this.model.get("profileId");
+            var cachePath = this.model.get("path");
+            var cacheFile = this.model.get("movieFile");
+            var cacheRoot = this.model.get("rootFolderPath");
 
             promise.success(function(response) {
                 _self.model.set(response);
