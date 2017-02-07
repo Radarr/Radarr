@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -116,6 +117,7 @@ namespace NzbDrone.Core.Tv
             {
                 var allMovie = _movieService.GetAllMovies().OrderBy(c => c.SortTitle).ToList();
 
+                var i = 0;
                 foreach (var movie in allMovie)
                 {
                     if (message.Trigger == CommandTrigger.Manual || _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie))
@@ -123,13 +125,19 @@ namespace NzbDrone.Core.Tv
                         try
                         {
                             RefreshMovieInfo(movie);
+                            i++;
                         }
                         catch (Exception e)
                         {
                             _logger.Error(e, "Couldn't refresh info for {0}".Inject(movie));
                         }
-                    }
 
+                        // The dude abides, so do we. Lets be nice to Trakt
+                        if (i % 4 == 0)
+                        {
+                            Thread.Sleep(1000);
+                        }
+                    }
                     else
                     {
                         try
