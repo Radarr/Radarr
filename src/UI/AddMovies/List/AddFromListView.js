@@ -187,13 +187,13 @@ module.exports = Marionette.Layout.extend({
 
 		_importSelected : function() {
 			var selected = this.importGrid.getSelectedModels();
-			console.log(selected);
+			// console.log(selected);
 			var promise = MoviesCollection.importFromList(selected);
 			this.ui.importSelected.spinForPromise(promise);
 			this.ui.importSelected.addClass('disabled');
 
 			Messenger.show({
-				message : "Importing {0} movies. This can take multiple minutes depending on how many movies should be imported. Don't close this browser window until it is finished!".format(selected.length),
+				message : "Importing {0} movies. Don't close this browser window until it has finished".format(selected.length),
 				hideOnNavigate : false,
 				hideAfter : 30,
 				type : "error"
