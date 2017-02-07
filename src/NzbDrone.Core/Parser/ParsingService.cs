@@ -399,11 +399,16 @@ namespace NzbDrone.Core.Parser
                 if (parsedEpisodeInfo.Year > 1900)
                 {
                     movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
-                        //Todo: same as above!
+                    
                 }
                 else
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                }
+
+                if (movie == null)
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
                 }
                 return movie;
             }
@@ -412,7 +417,6 @@ namespace NzbDrone.Core.Parser
 
             if (movie == null && imdbId.IsNotNullOrWhiteSpace())
             {
-                //TODO: If series is found by TvdbId, we should report it as a scene naming exception, since it will fail to import
                 movie = _movieService.FindByImdbId(imdbId);
             }
 
