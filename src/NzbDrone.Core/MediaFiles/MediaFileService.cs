@@ -169,6 +169,7 @@ namespace NzbDrone.Core.MediaFiles
 			{
 				var files = GetFilesByMovie(message.Movie.Id);
 				_movieFileRepository.DeleteMany(files);
+                //this doesnt actually delete the files, i think it just deletes the file ids etc. in the db..
 			}
 		}
 	}
