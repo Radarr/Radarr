@@ -41,7 +41,6 @@ module.exports = Marionette.Layout.extend({
             name     : 'this',
             label    : 'Movie Title',
             cell     : MovieTitleCell,
-            sortable : false
         },
         {
             name  : 'inCinemas',
@@ -57,7 +56,6 @@ module.exports = Marionette.Layout.extend({
             name     : 'status',
             label    : 'Status',
             cell     : MovieStatusWithTextCell,
-            sortable : false
         },
 
     ],
