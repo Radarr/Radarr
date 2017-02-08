@@ -17,12 +17,12 @@ var Collection = PageableCollection.extend({
     state : {
         sortKey            : 'sortTitle',
         order              : -1,
-        pageSize           : 100000,
+        pageSize           : 4,
         secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
     },
 
-    mode : 'client',
+    mode : 'infinite',
 
     save : function() {
         var self = this;

@@ -15,6 +15,7 @@ var MovieStatusCell = require('../../Cells/MovieStatusCell');
 var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var FooterView = require('./FooterView');
+var GridPager = require('../../Shared/Grid/Pager');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 require('../../Mixins/backbone.signalr.mixin');
@@ -26,7 +27,8 @@ module.exports = Marionette.Layout.extend({
         seriesRegion : '#x-series',
         toolbar      : '#x-toolbar',
         toolbar2     : '#x-toolbar2',
-        footer       : '#x-series-footer'
+        footer       : '#x-series-footer',
+        pager : "#x-movie-pager"
     },
 
     columns : [
@@ -250,6 +252,8 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
+        this._showPager();
+
         this._renderView();
     },
 
@@ -315,6 +319,13 @@ module.exports = Marionette.Layout.extend({
             ],
             context : this
         }));
+    },
+
+    _showPager : function() {
+      this.pager.show(new GridPager({
+          columns    : this.columns,
+          collection : MoviesCollection,
+      }));
     },
 
     _showFooter : function() {
