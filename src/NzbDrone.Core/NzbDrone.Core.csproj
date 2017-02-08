@@ -636,7 +636,6 @@
     <Compile Include="Indexers\EzrssTorrentRssParser.cs" />
     <Compile Include="Indexers\FetchAndParseRssService.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHD.cs" />
-    <Compile Include="Indexers\AwesomeHD\AwesomeHDApi.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHDRequestGenerator.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHDSettings.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcorn.cs" />
