@@ -47,8 +47,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(6, Label = "Require Approved", Type = FieldType.Checkbox, HelpText = "Require staff-approval for releases to be accepted.")]
         public bool Approved { get; set; }
 
-        [FieldDefinition(7, Label = "Require Golden", Type = FieldType.Checkbox, HelpText = "Require Golden Popcorn-releases for releases to be accepted.")]
-        public bool RequireGolden { get; set; }
+        //[FieldDefinition(7, Label = "Require Golden", Type = FieldType.Checkbox, HelpText = "Require Golden Popcorn-releases for releases to be accepted.")]
+        //public bool RequireGolden { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
