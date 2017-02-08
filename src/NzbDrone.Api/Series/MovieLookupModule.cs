@@ -4,18 +4,35 @@ using NzbDrone.Api.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System.Linq;
+using System;
+using NzbDrone.Api.REST;
 
 namespace NzbDrone.Api.Movie
 {
     public class MovieLookupModule : NzbDroneRestModule<MovieResource>
     {
         private readonly ISearchForNewMovie _searchProxy;
+        private readonly IProvideMovieInfo _movieInfo;
 
-        public MovieLookupModule(ISearchForNewMovie searchProxy)
+        public MovieLookupModule(ISearchForNewMovie searchProxy, IProvideMovieInfo movieInfo)
             : base("/movies/lookup")
         {
+            _movieInfo = movieInfo;
             _searchProxy = searchProxy;
             Get["/"] = x => Search();
+            Get["/tmdb"] = x => SearchByTmdbId();
+        }
+
+        private Response SearchByTmdbId()
+        {
+            int tmdbId = -1;
+            if(Int32.TryParse(Request.Query.tmdbId, out tmdbId))
+            {
+                var result = _movieInfo.GetMovieInfo(tmdbId, null);
+                return result.ToResource().AsResponse();
+            }
+
+            throw new BadRequestException("Tmdb Id was not valid");
         }
 
 
@@ -24,7 +41,6 @@ namespace NzbDrone.Api.Movie
             var imdbResults = _searchProxy.SearchForNewMovie((string)Request.Query.term);
             return MapToResource(imdbResults).AsResponse();
         }
-
 
         private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Tv.Movie> movies)
         {
