@@ -118,6 +118,18 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("NetImportSyncInterval", value); }
         }
 
+	public string ListSyncLevel
+	{
+	    get { return GetValue("ListSyncLevel", "disabled"); }
+	    set { SetValue("ListSyncLevel", value); }
+	}
+
+	public string ImportExclusions
+	{
+	    get { return GetValue("ImportExclusions", string.Empty); }
+	    set { SetValue("ImportExclusions", value); }
+	}
+
         public int MinimumAge
         {
             get { return GetValueInt("MinimumAge", 0); }

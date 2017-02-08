@@ -49,6 +49,8 @@ namespace NzbDrone.Core.Configuration
 	int AvailabilityDelay { get; set; }
 
         int NetImportSyncInterval { get; set; }
+	string ListSyncLevel { get; set; }
+	string ImportExclusions { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }

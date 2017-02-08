@@ -5,6 +5,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -21,15 +22,18 @@ namespace NzbDrone.Core.NetImport
         private readonly IMovieService _movieService;
         private readonly ISearchForNewMovie _movieSearch;
         private readonly IRootFolderService _rootFolder;
+        private readonly IConfigService _configService;
+        
 
         public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
-            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, Logger logger)
+            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, IConfigService configService, Logger logger)
         {
             _netImportFactory = netImportFactory;
             _movieService = movieService;
             _movieSearch = movieSearch;
             _rootFolder = rootFolder;
             _logger = logger;
+            _configService = configService;
         }
 
 
@@ -70,8 +74,8 @@ namespace NzbDrone.Core.NetImport
 
         public void Execute(NetImportSyncCommand message)
         {
-            bool fullSync = false; // this should come from the option 
-            if (fullSync)
+
+            if (_configService.ListSyncLevel != "disabled")
             {
                 var listedMovies = Fetch(0,true);
                 var moviesInLibrary = _movieService.GetAllMovies();
@@ -89,21 +93,53 @@ namespace NzbDrone.Core.NetImport
                     }
                     if (!foundMatch)
                     {
-                        _logger.Debug("Movie: {0} was in your library, but not found in your lists --> it should be deleted", movie.ImdbId);
-                        //_movieService.DeleteMovie(movie.Id, false); //second parameter true if files to be deleted too 
+                        if (_configService.ListSyncLevel == "logOnly")
+                        {
+                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> you might want to remove it", movie.ImdbId);
+                        }
+                        else if (_configService.ListSyncLevel == "removeAndKeep")
+                        {
+                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library (keeping files)", movie.ImdbId);
+                            _movieService.DeleteMovie(movie.Id, false); 
+                        }
+                        else if (_configService.ListSyncLevel == "removeAndDelete")
+                        {
+                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library and deleting files", movie.ImdbId);
+                            _movieService.DeleteMovie(movie.Id, true); 
+                            //TODO: for some reason the files are not deleted in this case... any idea why? 
+                        }
                     }
                 }
             }
 
+            List<string> importExclusions = null;
+            if (_configService.ImportExclusions != String.Empty)
+            {
+                importExclusions = _configService.ImportExclusions.Split(',').ToList();
+            }
+          
             var movies = FetchAndFilter(0, true);
 
             _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
 
             foreach (var movie in movies)
             {
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                bool shouldAdd = true;
+                if (importExclusions != null)
+                {
+                    foreach (var exclusion in importExclusions)
+                    {
+                        if (exclusion == movie.ImdbId)
+                        {
+                            _logger.Info("Movie: {0} was found but will not be added because it imdbId was found on your exclusion list", movie.ImdbId);
+                            shouldAdd = false;
+                            break;
+                        }
+                    }
+                }
 
-                if (mapped != null)
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                if ((mapped != null) && shouldAdd)
                 {
                     _movieService.AddMovie(mapped);
                 }

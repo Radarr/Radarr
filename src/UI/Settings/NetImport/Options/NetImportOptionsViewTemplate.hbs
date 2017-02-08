@@ -13,4 +13,21 @@
 						<input type="number" name="netImportSyncInterval" class="form-control" min="0" max="1440"/>
 				</div>
 		</div>
+		<div class="form-group">
+	              <label class="col-sm-3 control-label">Clean Library Level</label>
+	              <div class="col-sm-4">
+	                  <select name="listSyncLevel" class="form-control">
+	                      <option value="disabled">Disabled</option>
+		                    <option value="logOnly">Log Only</option>
+				    <option value="removeAndKeep">Remove but Keep Files</option>
+				    <option value="removeAndDelete">Remove and Delete Files</option>
+                    </select>
+	              </div>
+	          </div>
+		  <div class="form-group">
+		                <label class="col-sm-3 control-label">Import Exclusions</label>
+				<div class="col-sm-4">
+				                <input type="text" name="importExclusions" class="form-control"/>
+				</div>
+	        </div>
 </fieldset>
