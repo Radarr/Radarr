@@ -51,13 +51,9 @@ namespace NzbDrone.Core.Tv
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _fileNameBuilder;
-        private readonly IMediaFileService _mediaFileService;
-        private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
 
         public MovieService(IMovieRepository movieRepository,
-                             IMediaFileService mediaFileService,
-                             IRecycleBinProvider recycleBinProvider,
                              IEventAggregator eventAggregator,
                              ISceneMappingService sceneMappingService,
                              IEpisodeService episodeService,
@@ -243,7 +239,7 @@ namespace NzbDrone.Core.Tv
 
         public void DeleteMovie(int movieId, bool deleteFiles)
         {
-            //this next block was added in order to implement listsynccleaning
+            /*//this next block was added in order to implement listsynccleaning
             //start of block
             if (deleteFiles)
             {
@@ -268,6 +264,7 @@ namespace NzbDrone.Core.Tv
                 //}
             }
             //end of block
+            */
             var movie = _movieRepository.Get(movieId);
             _movieRepository.Delete(movieId);
             _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));

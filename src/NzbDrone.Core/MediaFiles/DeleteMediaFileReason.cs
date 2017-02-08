@@ -5,7 +5,6 @@
         MissingFromDisk,
         Manual,
         Upgrade,
-        NoLinkedEpisodes,
-	    NotInList
+        NoLinkedEpisodes
     }
 }
