@@ -74,10 +74,9 @@ namespace NzbDrone.Core.NetImport
 
         public void Execute(NetImportSyncCommand message)
         {
-
+            var listedMovies = Fetch(0, true);
             if (_configService.ListSyncLevel != "disabled")
             {
-                var listedMovies = Fetch(0,true);
                 var moviesInLibrary = _movieService.GetAllMovies();
                 foreach (var movie in moviesInLibrary)
                     {
@@ -117,8 +116,8 @@ namespace NzbDrone.Core.NetImport
             {
                 importExclusions = _configService.ImportExclusions.Split(',').ToList();
             }
-          
-            var movies = FetchAndFilter(0, true);
+
+            var movies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
 
             _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
 
