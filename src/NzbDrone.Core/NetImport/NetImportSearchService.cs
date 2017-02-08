@@ -70,6 +70,31 @@ namespace NzbDrone.Core.NetImport
 
         public void Execute(NetImportSyncCommand message)
         {
+            bool fullSync = false; // this should come from the option 
+            if (fullSync)
+            {
+                var listedMovies = Fetch(0,true);
+                var moviesInLibrary = _movieService.GetAllMovies();
+                foreach (var movie in moviesInLibrary)
+                    {
+                    bool foundMatch = false;
+                    foreach (var listedMovie in listedMovies)
+                    {
+                        if (movie.ImdbId == listedMovie.ImdbId)
+                        {
+                            foundMatch = true;
+                            break;
+                        }
+
+                    }
+                    if (!foundMatch)
+                    {
+                        _logger.Debug("Movie: {0} was in your library, but not found in your lists --> it should be deleted", movie.ImdbId);
+                        //_movieService.DeleteMovie(movie.Id, false); //second parameter true if files to be deleted too 
+                    }
+                }
+            }
+
             var movies = FetchAndFilter(0, true);
 
             _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
