@@ -100,8 +100,37 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 }
             }
 
-            // order by golder, then date desc
-            return torrentInfos.OrderByDescending(o => o.PublishDate).ThenBy(o => ((dynamic)o).Golden ? 0 : 1).ToArray();
+            // prefer golden
+            if (_settings.Golden)
+            {
+                if (_settings.Scene)
+                {
+                    return
+                        torrentInfos.OrderByDescending(o => o.PublishDate)
+                            .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
+                            .ThenBy(o => ((dynamic) o).Scene ? 0 : 1)
+                            .ToArray();
+                }
+                return 
+                    torrentInfos.OrderByDescending(o => o.PublishDate)
+                        .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
+                        .ToArray();
+            }
+
+            // prefer scene
+            if (_settings.Scene)
+            {
+                return 
+                    torrentInfos.OrderByDescending(o => o.PublishDate)
+                        .ThenBy(o => ((dynamic)o).Scene ? 0 : 1)
+                        .ToArray();
+            }
+
+            // order by date
+            return 
+                torrentInfos
+                    .OrderByDescending(o => o.PublishDate)
+                    .ToArray();
 
         }
 
