@@ -56,14 +56,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         title = $"{title} ✔";
                     }
 
-                    //if (IsPropertyExist(torrent, "RemasterTitle"))
-                    //{
-                    //    if (torrent.RemasterTitle != null)
-                    //    {
-                    //        title = $"{title} - {torrent.RemasterTitle}";
-                    //    }
-                    //}
-
                     // Only add approved torrents
                     if (_settings.Approved && torrent.Checked)
                     {
@@ -108,10 +100,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 }
             }
 
-            // prefer golden
-            // prefer scene
-            // require approval
-            return torrentInfos.OrderBy(o => ((dynamic)o).Golden ? 0 : 1).ThenBy(o => ((dynamic)o).Scene ? 0 : 1).ThenByDescending(o => ((dynamic)o).PublishDate).ToArray();
+            // order by golder, then date desc
+            return torrentInfos.OrderByDescending(o => o.PublishDate).ThenBy(o => ((dynamic)o).Golden ? 0 : 1).ToArray();
+
         }
 
         private string GetDownloadUrl(int torrentId, string authKey, string passKey)
