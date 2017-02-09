@@ -52,10 +52,10 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_pageSizeChanged : function(event) {
-			this.table.show(new LoadingView());
 			var pageSize = parseInt($(event.target).val());
 			this.bulkImportCollection.fullCollection.reset();
 			this.bulkImportCollection.reset();
+            this.table.show(new LoadingView());
 			//debugger;
 			this.bulkImportCollection.setPageSize(pageSize);
 			//this.bulkImportCollection.fetch();
