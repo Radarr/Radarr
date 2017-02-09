@@ -71,7 +71,8 @@ namespace NzbDrone.Api.Wanted
 
         public void Handle(MovieDownloadedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.Movie.Movie.Id);
+            var resource = message.Movie.Movie.ToResource();
+            BroadcastResourceChange(ModelAction.Updated, resource);
         }
     }
 }
