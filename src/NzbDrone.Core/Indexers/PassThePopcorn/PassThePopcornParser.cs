@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     }
 
                     // Only add approved torrents
-                    if (_settings.Approved && torrent.Checked)
+                    if (_settings.RequireApproved && torrent.Checked)
                     {
                         torrentInfos.Add(new PassThePopcornInfo()
                         {
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         });
                     }
                     // Add all torrents
-                    else if (!_settings.Approved)
+                    else if (!_settings.RequireApproved)
                     {
                         torrentInfos.Add(new PassThePopcornInfo()
                         {
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         });
                     }
                     // Don't add any torrents
-                    else if (_settings.Approved && !torrent.Checked)
+                    else if (_settings.RequireApproved && !torrent.Checked)
                     {
                         continue;
                     }

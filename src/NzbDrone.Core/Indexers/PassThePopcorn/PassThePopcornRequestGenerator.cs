@@ -70,9 +70,18 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             Authenticate();
 
-            var request =
+            var filter = "";
+            if (searchParameters == null)
+            {
+                if (Settings.RequireGolden)
+                {
+                    filter = "&scene=2";
+                }
+            }
+
+        var request =
                 new IndexerRequest(
-                    $"{Settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php?json=noredirect&searchstr={searchParameters}",
+                    $"{Settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php??action=advanced&json=noredirect&searchstr={searchParameters}{filter}",
                     HttpAccept.Json);
 
             var cookies = AuthCookieCache.Find(Settings.BaseUrl.Trim().TrimEnd('/'));
