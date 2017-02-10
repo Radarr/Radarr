@@ -62,5 +62,24 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
         }
+
+		[TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
+		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", "1941")]
+		[TestCase("MY MOVIE (2016) [R][Action, Horror][720p.WEB-DL.AVC.8Bit.6ch.AC3].mkv", "MY MOVIE")]
+		[TestCase("R.I.P.D.2013.720p.BluRay.x264-SPARKS", "R.I.P.D.")]
+		[TestCase("V.H.S.2.2013.LIMITED.720p.BluRay.x264-GECKOS", "V.H.S. 2")]
+		[TestCase("This Is A Movie (1999) [IMDB #] <Genre, Genre, Genre> {ACTORS} !DIRECTOR +MORE_SILLY_STUFF_NO_ONE_NEEDS ?", "This Is A Movie")]
+		[TestCase("R.I.P.D.2013.720p.BluRay.x264-SPARKS", "R.I.P.D.")]
+		[TestCase("(500).Days.Of.Summer.(2009).DTS.1080p.BluRay.x264.NLsubs", "(500) Days Of Summer")]
+		public void should_parse_movie_title(string postTitle, string title)
+		{
+			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
+		}
+
+		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
+		public void should_parse_movie_year(string postTitle, int year)
+		{
+			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
+		}
     }
 }
