@@ -7,7 +7,7 @@ using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Wanted
 {
-    public class MovieCutoffModule : NzbDroneRestModuleWithSignalR<MovieResource, Core.Tv.Movie>
+    public class MovieCutoffModule : MovieModuleWithSignalR
     {
         private readonly IMovieCutoffService _movieCutoffService;
 
@@ -15,7 +15,7 @@ namespace NzbDrone.Api.Wanted
                                  IMovieService movieService,
                                  IQualityUpgradableSpecification qualityUpgradableSpecification,
                                  IBroadcastSignalRMessage signalRBroadcaster)
-            : base(signalRBroadcaster, "wanted/cutoff")
+            : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {
             _movieCutoffService = movieCutoffService;
             GetResourcePaged = GetCutoffUnmetMovies;
@@ -34,14 +34,8 @@ namespace NzbDrone.Api.Wanted
                 pagingSpec.FilterExpression = v => v.Monitored == true;
             }
 
-            var resource = ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, pagingSpec, v => MapToResource(v));
+            var resource = ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, true));
 
-            return resource;
-        }
-
-        private MovieResource MapToResource(Core.Tv.Movie movie)
-        {
-            var resource = movie.ToResource();
             return resource;
         }
     }
