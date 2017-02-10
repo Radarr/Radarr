@@ -71,7 +71,7 @@ namespace NzbDrone.Api.EpisodeFiles
 
         private void DeleteEpisodeFile(int id)
         {
-            var episodeFile = _mediaFileService.Get(id);
+			var episodeFile = _mediaFileService.Get(id);
             var series = _seriesService.GetSeries(episodeFile.SeriesId);
             var fullPath = Path.Combine(series.Path, episodeFile.RelativePath);
 
