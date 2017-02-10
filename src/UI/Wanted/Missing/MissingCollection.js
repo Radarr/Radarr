@@ -12,7 +12,7 @@ var Collection = PagableCollection.extend({
 
     state : {
         pageSize : 15,
-        sortKey  : 'inCinemas',
+        sortKey  : 'title',
         order    : -1
     },
 
