@@ -38,9 +38,10 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name     : 'this',
-            label    : 'Movie Title',
-            cell     : MovieTitleCell,
+            name      : 'title',
+            label     : 'Title',
+            cell      : MovieTitleCell,
+            cellValue : 'this',
         },
         {
             name  : 'inCinemas',
