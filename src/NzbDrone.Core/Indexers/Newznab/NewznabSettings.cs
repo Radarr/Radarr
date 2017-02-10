@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         [FieldDefinition(1, Label = "API Key")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(2, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
+        [FieldDefinition(2, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable all categories", Advanced = true)]
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(3, Label = "Anime Categories", HelpText = "Comma Separated list, leave blank to disable anime", Advanced = true)]
