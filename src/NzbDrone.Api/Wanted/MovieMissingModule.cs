@@ -30,7 +30,7 @@ namespace NzbDrone.Api.Wanted
 
         private PagingResource<MovieResource> GetMissingMovies(PagingResource<MovieResource> pagingResource)
         {
-            var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>("physicalRelease", SortDirection.Descending);
+            var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>("title", SortDirection.Descending);
 
             if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
             {
@@ -43,13 +43,6 @@ namespace NzbDrone.Api.Wanted
 
             var resource = ApplyToPage(_movieService.MoviesWithoutFiles, pagingSpec, v => MapToResource(v, false));
 
-            return resource;
-        }
-
-        private MovieResource GetMovie(int id)
-        {
-            var movie = _movieService.GetMovie(id);
-            var resource = MapToResource(movie, true);
             return resource;
         }
 
