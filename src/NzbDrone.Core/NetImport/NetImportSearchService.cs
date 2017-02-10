@@ -94,7 +94,12 @@ namespace NzbDrone.Core.NetImport
                     {
                         if (_configService.ListSyncLevel == "logOnly")
                         {
-                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> you might want to remove it", movie.ImdbId);
+                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> you might want to unmonitor or remove it", movie.ImdbId);
+                        }
+                        else if (_configService.ListSyncLevel == "keepAndUnmonitor")
+                        {
+                            _logger.Info("Movie: {0} was in your library, but was not found in your lists --> Keeping in library but Unmonitoring it", movie.ImdbId);
+                            movie.Monitored = false;
                         }
                         else if (_configService.ListSyncLevel == "removeAndKeep")
                         {
@@ -128,9 +133,9 @@ namespace NzbDrone.Core.NetImport
                 {
                     foreach (var exclusion in importExclusions)
                     {
-                        if (exclusion == movie.ImdbId)
+                        if (exclusion == movie.ImdbId || exclusion == movie.TmdbId.ToString())
                         {
-                            _logger.Info("Movie: {0} was found but will not be added because it imdbId was found on your exclusion list", movie.ImdbId);
+                            _logger.Info("Movie: {0} was found but will not be added because it {exclusion} was found on your exclusion list", exclusion);
                             shouldAdd = false;
                             break;
                         }
