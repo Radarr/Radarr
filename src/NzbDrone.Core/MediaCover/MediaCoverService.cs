@@ -132,7 +132,7 @@ namespace NzbDrone.Core.MediaCover
                 {
                     if (e.Status == WebExceptionStatus.ProtocolError)
                     {
-                        _logger.Warn(e, string.Format("Couldn't download media cover for {0}. {1}", movie, e.Message));
+                        _logger.Warn(e, string.Format("Couldn't download media cover for {0}, likely the cover doesn't exist for this movie. {1}", movie, e.Message));
                     }
                     else
                     {
