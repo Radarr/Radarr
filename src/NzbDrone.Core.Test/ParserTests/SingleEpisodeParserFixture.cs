@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 
     [TestFixture]
+	[Ignore("Series")]
     public class SingleEpisodeParserFixture : CoreTest
     {
         [TestCase("Sonny.With.a.Chance.S02E15", "Sonny With a Chance", 2, 15)]

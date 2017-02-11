@@ -6,6 +6,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 
     [TestFixture]
+	[Ignore("Series")]
     public class SeasonParserFixture : CoreTest
     {
         [TestCase("30.Rock.Season.04.HDTV.XviD-DIMENSION", "30 Rock", 4)]
