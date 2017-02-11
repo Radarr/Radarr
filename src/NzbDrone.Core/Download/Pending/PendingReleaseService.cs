@@ -23,22 +23,21 @@ namespace NzbDrone.Core.Download.Pending
         void Add(DownloadDecision decision);
 
         List<ReleaseInfo> GetPending();
-        List<RemoteEpisode> GetPendingRemoteEpisodes(int seriesId);
+        List<RemoteMovie> GetPendingRemoteMovies(int movieId);
         List<Queue.Queue> GetPendingQueue();
         Queue.Queue FindPendingQueueItem(int queueId);
         void RemovePendingQueueItems(int queueId);
-        RemoteEpisode OldestPendingRelease(int seriesId, IEnumerable<int> episodeIds);
+        RemoteMovie OldestPendingRelease(int movieId);
     }
 
     public class PendingReleaseService : IPendingReleaseService,
-                                         IHandle<SeriesDeletedEvent>,
-                                         IHandle<EpisodeGrabbedEvent>,
                                          IHandle<MovieGrabbedEvent>,
+                                         IHandle<MovieDeletedEvent>,
                                          IHandle<RssSyncCompleteEvent>
     {
         private readonly IIndexerStatusService _indexerStatusService;
         private readonly IPendingReleaseRepository _repository;
-        private readonly ISeriesService _seriesService;
+        private readonly IMovieService _movieService;
         private readonly IParsingService _parsingService;
         private readonly IDelayProfileService _delayProfileService;
         private readonly ITaskManager _taskManager;
@@ -48,7 +47,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public PendingReleaseService(IIndexerStatusService indexerStatusService,
                                     IPendingReleaseRepository repository,
-                                    ISeriesService seriesService,
+                                    IMovieService movieService,
                                     IParsingService parsingService,
                                     IDelayProfileService delayProfileService,
                                     ITaskManager taskManager,
@@ -58,7 +57,7 @@ namespace NzbDrone.Core.Download.Pending
         {
             _indexerStatusService = indexerStatusService;
             _repository = repository;
-            _seriesService = seriesService;
+            _movieService = movieService;
             _parsingService = parsingService;
             _delayProfileService = delayProfileService;
             _taskManager = taskManager;
@@ -72,13 +71,11 @@ namespace NzbDrone.Core.Download.Pending
         {
             var alreadyPending = GetPendingReleases();
 
-            var episodeIds = decision.RemoteEpisode.Episodes.Select(e => e.Id);
+            var movieId = decision.RemoteMovie.Movie.Id;
 
-            var existingReports = alreadyPending.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
-                                                             .Intersect(episodeIds)
-                                                             .Any());
+            var existingReports = alreadyPending.Where(r => r.RemoteMovie.Movie.Id == movieId);
 
-            if (existingReports.Any(MatchingReleasePredicate(decision.RemoteEpisode.Release)))
+            if (existingReports.Any(MatchingReleasePredicate(decision.RemoteMovie.Release)))
             {
                 _logger.Debug("This release is already pending, not adding again");
                 return;
@@ -107,9 +104,9 @@ namespace NzbDrone.Core.Download.Pending
             return releases.Where(release => !blockedIndexers.Contains(release.IndexerId)).ToList();
         }
 
-        public List<RemoteEpisode> GetPendingRemoteEpisodes(int seriesId)
+        public List<RemoteMovie> GetPendingRemoteMovies(int movieId)
         {
-            return _repository.AllBySeriesId(seriesId).Select(GetRemoteEpisode).ToList();
+            return _repository.AllByMovieId(movieId).Select(GetRemoteMovie).ToList();
         }
 
         public List<Queue.Queue> GetPendingQueue()
@@ -120,9 +117,9 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var pendingRelease in GetPendingReleases())
             {
-                foreach (var episode in pendingRelease.RemoteEpisode.Episodes)
-                {
-                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteEpisode));
+                //foreach (var episode in pendingRelease.RemoteEpisode.Episodes)
+                //{
+                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
 
                     if (ect < nextRssSync.Value)
                     {
@@ -135,21 +132,22 @@ namespace NzbDrone.Core.Download.Pending
 
                     var queue = new Queue.Queue
                                 {
-                                    Id = GetQueueId(pendingRelease, episode),
-                                    Series = pendingRelease.RemoteEpisode.Series,
-                                    Episode = episode,
-                                    Quality = pendingRelease.RemoteEpisode.ParsedEpisodeInfo.Quality,
+                                    Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
+                                    Series = null,
+                                    Episode = null,
+                                    Movie = pendingRelease.RemoteMovie.Movie,
+                                    Quality = pendingRelease.RemoteMovie.ParsedMovieInfo.Quality,
                                     Title = pendingRelease.Title,
-                                    Size = pendingRelease.RemoteEpisode.Release.Size,
-                                    Sizeleft = pendingRelease.RemoteEpisode.Release.Size,
-                                    RemoteEpisode = pendingRelease.RemoteEpisode,
+                                    Size = pendingRelease.RemoteMovie.Release.Size,
+                                    Sizeleft = pendingRelease.RemoteMovie.Release.Size,
+                                    RemoteMovie = pendingRelease.RemoteMovie,
                                     Timeleft = ect.Subtract(DateTime.UtcNow),
                                     EstimatedCompletionTime = ect,
                                     Status = "Pending",
-                                    Protocol = pendingRelease.RemoteEpisode.Release.DownloadProtocol
+                                    Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol
                                 };
                     queued.Add(queue);
-                }
+                //}
             }
 
             //Return best quality release for each episode
@@ -158,7 +156,7 @@ namespace NzbDrone.Core.Download.Pending
                 var series = g.First().Series;
 
                 return g.OrderByDescending(e => e.Quality, new QualityModelComparer(series.Profile))
-                        .ThenBy(q => PrioritizeDownloadProtocol(q.Series, q.Protocol))
+                        .ThenBy(q => PrioritizeDownloadProtocol(q.Movie, q.Protocol))
                         .First();
             });
 
@@ -173,20 +171,16 @@ namespace NzbDrone.Core.Download.Pending
         public void RemovePendingQueueItems(int queueId)
         {
             var targetItem = FindPendingRelease(queueId);
-            var seriesReleases = _repository.AllBySeriesId(targetItem.SeriesId);
+            var movieReleases = _repository.AllByMovieId(targetItem.MovieId);
 
-            var releasesToRemove = seriesReleases.Where(
-                c => c.ParsedEpisodeInfo.SeasonNumber == targetItem.ParsedEpisodeInfo.SeasonNumber &&
-                     c.ParsedEpisodeInfo.EpisodeNumbers.SequenceEqual(targetItem.ParsedEpisodeInfo.EpisodeNumbers));
+            var releasesToRemove = movieReleases.Where(c => c.ParsedMovieInfo.MovieTitle == targetItem.ParsedMovieInfo.MovieTitle);
 
             _repository.DeleteMany(releasesToRemove.Select(c => c.Id));
         }
 
-        public RemoteEpisode OldestPendingRelease(int seriesId, IEnumerable<int> episodeIds)
+        public RemoteMovie OldestPendingRelease(int movieId)
         {
-            return GetPendingRemoteEpisodes(seriesId).Where(r => r.Episodes.Select(e => e.Id).Intersect(episodeIds).Any())
-                                                     .OrderByDescending(p => p.Release.AgeHours)
-                                                     .FirstOrDefault();
+            return GetPendingRemoteMovies(movieId).OrderByDescending(p => p.Release.AgeHours).FirstOrDefault();
         }
 
         private List<PendingRelease> GetPendingReleases()
@@ -195,11 +189,11 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var release in _repository.All())
             {
-                var remoteEpisode = GetRemoteEpisode(release);
+                var remoteMovie = GetRemoteMovie(release);
 
-                if (remoteEpisode == null) continue;
+                if (remoteMovie == null) continue;
 
-                release.RemoteEpisode = remoteEpisode;
+                release.RemoteMovie = remoteMovie;
 
                 result.Add(release);
             }
@@ -207,20 +201,19 @@ namespace NzbDrone.Core.Download.Pending
             return result;
         }
 
-        private RemoteEpisode GetRemoteEpisode(PendingRelease release)
+        private RemoteMovie GetRemoteMovie(PendingRelease release)
         {
-            var series = _seriesService.GetSeries(release.SeriesId);
+            var movie = _movieService.GetMovie(release.MovieId);
 
             //Just in case the series was removed, but wasn't cleaned up yet (housekeeper will clean it up)
-            if (series == null) return null;
+            if (movie == null) return null;
 
-            var episodes = _parsingService.GetEpisodes(release.ParsedEpisodeInfo, series, true);
+            // var episodes = _parsingService.GetMovie(release.ParsedMovieInfo.MovieTitle);
 
-            return new RemoteEpisode
+            return new RemoteMovie
             {
-                Series = series,
-                Episodes = episodes,
-                ParsedEpisodeInfo = release.ParsedEpisodeInfo,
+                Movie = movie,
+                ParsedMovieInfo = release.ParsedMovieInfo,
                 Release = release.Release
             };
         }
@@ -229,10 +222,10 @@ namespace NzbDrone.Core.Download.Pending
         {
             _repository.Insert(new PendingRelease
             {
-                SeriesId = decision.RemoteEpisode.Series.Id,
-                ParsedEpisodeInfo = decision.RemoteEpisode.ParsedEpisodeInfo,
-                Release = decision.RemoteEpisode.Release,
-                Title = decision.RemoteEpisode.Release.Title,
+                MovieId = decision.RemoteMovie.Movie.Id,
+                ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
+                Release = decision.RemoteMovie.Release,
+                Title = decision.RemoteMovie.Release.Title,
                 Added = DateTime.UtcNow
             });
 
@@ -252,46 +245,46 @@ namespace NzbDrone.Core.Download.Pending
                    p.Release.Indexer == release.Indexer;
         }
 
-        private int GetDelay(RemoteEpisode remoteEpisode)
+        private int GetDelay(RemoteMovie remoteMovie)
         {
-            var delayProfile = _delayProfileService.AllForTags(remoteEpisode.Series.Tags).OrderBy(d => d.Order).First();
-            var delay = delayProfile.GetProtocolDelay(remoteEpisode.Release.DownloadProtocol);
+            var delayProfile = _delayProfileService.AllForTags(remoteMovie.Movie.Tags).OrderBy(d => d.Order).First();
+            var delay = delayProfile.GetProtocolDelay(remoteMovie.Release.DownloadProtocol);
             var minimumAge = _configService.MinimumAge;
 
             return new[] { delay, minimumAge }.Max();
         }
 
-        private void RemoveGrabbed(RemoteEpisode remoteEpisode)
-        {
-            var pendingReleases = GetPendingReleases();
-            var episodeIds = remoteEpisode.Episodes.Select(e => e.Id);
+        //private void RemoveGrabbed(RemoteEpisode remoteEpisode)
+        //{
+        //    var pendingReleases = GetPendingReleases();
+        //    var episodeIds = remoteEpisode.Episodes.Select(e => e.Id);
 
-            var existingReports = pendingReleases.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
-                                                             .Intersect(episodeIds)
-                                                             .Any())
-                                                             .ToList();
+        //    var existingReports = pendingReleases.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
+        //                                                     .Intersect(episodeIds)
+        //                                                     .Any())
+        //                                                     .ToList();
 
-            if (existingReports.Empty())
-            {
-                return;
-            }
+        //    if (existingReports.Empty())
+        //    {
+        //        return;
+        //    }
 
-            var profile = remoteEpisode.Series.Profile.Value;
+        //    var profile = remoteEpisode.Series.Profile.Value;
 
-            foreach (var existingReport in existingReports)
-            {
-                var compare = new QualityModelComparer(profile).Compare(remoteEpisode.ParsedEpisodeInfo.Quality,
-                                                                        existingReport.RemoteEpisode.ParsedEpisodeInfo.Quality);
+        //    foreach (var existingReport in existingReports)
+        //    {
+        //        var compare = new QualityModelComparer(profile).Compare(remoteEpisode.ParsedEpisodeInfo.Quality,
+        //                                                                existingReport.RemoteEpisode.ParsedEpisodeInfo.Quality);
 
-                //Only remove lower/equal quality pending releases
-                //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
-                if (compare >= 0)
-                {
-                    _logger.Debug("Removing previously pending release, as it was grabbed.");
-                    Delete(existingReport);
-                }
-            }
-        }
+        //        //Only remove lower/equal quality pending releases
+        //        //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
+        //        if (compare >= 0)
+        //        {
+        //            _logger.Debug("Removing previously pending release, as it was grabbed.");
+        //            Delete(existingReport);
+        //        }
+        //    }
+        //}
 
         private void RemoveRejected(List<DownloadDecision> rejected)
         {
@@ -300,7 +293,7 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var rejectedRelease in rejected)
             {
-                var matching = pending.Where(MatchingReleasePredicate(rejectedRelease.RemoteEpisode.Release));
+                var matching = pending.Where(MatchingReleasePredicate(rejectedRelease.RemoteMovie.Release));
 
                 foreach (var pendingRelease in matching)
                 {
@@ -312,17 +305,17 @@ namespace NzbDrone.Core.Download.Pending
 
         private PendingRelease FindPendingRelease(int queueId)
         {
-            return GetPendingReleases().First(p => p.RemoteEpisode.Episodes.Any(e => queueId == GetQueueId(p, e)));
+            return GetPendingReleases().First(p => queueId == GetQueueId(p, p.RemoteMovie.Movie));
         }
 
-        private int GetQueueId(PendingRelease pendingRelease, Episode episode)
+        private int GetQueueId(PendingRelease pendingRelease, Movie movie)
         {
-            return HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", pendingRelease.Id, episode.Id));
+            return HashConverter.GetHashInt31(string.Format("pending-{0}-movie{1}", pendingRelease.Id, movie.Id));
         }
 
-        private int PrioritizeDownloadProtocol(Series series, DownloadProtocol downloadProtocol)
+        private int PrioritizeDownloadProtocol(Movie movie, DownloadProtocol downloadProtocol)
         {
-            var delayProfile = _delayProfileService.BestForTags(series.Tags);
+            var delayProfile = _delayProfileService.BestForTags(movie.Tags);
 
             if (downloadProtocol == delayProfile.PreferredProtocol)
             {
@@ -332,14 +325,9 @@ namespace NzbDrone.Core.Download.Pending
             return 1;
         }
 
-        public void Handle(SeriesDeletedEvent message)
+        public void Handle(MovieDeletedEvent message)
         {
-            _repository.DeleteBySeriesId(message.Series.Id);
-        }
-
-        public void Handle(EpisodeGrabbedEvent message)
-        {
-            RemoveGrabbed(message.Episode);
+            _repository.DeleteByMovieId(message.Movie.Id);
         }
 
         public void Handle(MovieGrabbedEvent message)
