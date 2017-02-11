@@ -34,20 +34,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
-            var title = remoteEpisode.Release.Title;
-
-            title = FileNameBuilder.CleanFileName(title);
-
-            var filepath = Path.Combine(Settings.NzbFolder, title + ".nzb");
-
-            using (var stream = _diskProvider.OpenWriteStream(filepath))
-            {
-                stream.Write(fileContents, 0, fileContents.Length);
-            }
-
-            _logger.Debug("NZB Download succeeded, saved to: {0}", filepath);
-
-            return null;
+            throw new NotImplementedException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)

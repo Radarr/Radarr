@@ -38,10 +38,10 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name     : 'this',
-            label    : 'Movie Title',
-            cell     : MovieTitleCell,
-            sortable : false
+            name      : 'title',
+            label     : 'Title',
+            cell      : MovieTitleCell,
+            cellValue : 'this',
         },
         {
             name  : 'inCinemas',
@@ -50,14 +50,13 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'physicalRelease',
-            label : 'PhysicalRelease',
+            label : 'Physical Release',
             cell  : RelativeDateCell
         },
         {
             name     : 'status',
             label    : 'Status',
             cell     : MovieStatusWithTextCell,
-            sortable : false
         },
 
     ],
@@ -118,11 +117,6 @@ module.exports = Marionette.Layout.extend({
                     className    : 'x-unmonitor-selected'
                 },
                 {
-                    title : 'Season Pass',
-                    icon  : 'icon-sonarr-monitored',
-                    route : 'seasonpass'
-                },
-                {
                     title      : 'Rescan Drone Factory Folder',
                     icon       : 'icon-sonarr-refresh',
                     command    : 'downloadedMovieScan',
@@ -165,11 +159,11 @@ module.exports = Marionette.Layout.extend({
         }));
         CommandController.bindToCommand({
             element : this.$('.x-search-selected'),
-            command : { name : 'episodeSearch' }
+            command : { name : 'moviesSearch' }
         });
         CommandController.bindToCommand({
             element : this.$('.x-search-missing'),
-            command : { name : 'missingEpisodeSearch' }
+            command : { name : 'missingMoviesSearch' }
         });
     },
 
@@ -187,20 +181,20 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No episodes selected'
+                message : 'No movies selected'
             });
             return;
         }
         var ids = _.pluck(selected, 'id');
-        CommandController.Execute('episodeSearch', {
-            name       : 'episodeSearch',
-            episodeIds : ids
+        CommandController.Execute('moviesSearch', {
+            name       : 'moviesSearch',
+            movieIds : ids
         });
     },
     _searchMissing  : function() {
         if (window.confirm('Are you sure you want to search for {0} missing movies? '.format(this.collection.state.totalRecords) +
                            'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
-            CommandController.Execute('missingEpisodeSearch', { name : 'missingEpisodeSearch' });
+            CommandController.Execute('missingMoviesSearch', { name : 'missingMoviesSearch' });
         }
     },
     _toggleMonitoredOfSelected : function() {
@@ -209,7 +203,7 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No episodes selected'
+                message : 'No movies selected'
             });
             return;
         }

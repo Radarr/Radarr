@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string title = "Radarr - Grabbed";
+            const string title = "Radarr - Movie Grabbed";
 
             if (Settings.Notify)
             {
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string title = "Radarr - Downloaded";
+            const string title = "Radarr - Movie Downloaded";
 
             if (Settings.Notify)
             {
@@ -37,7 +37,15 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, message.Series);
+                _mediaBrowserService.UpdateMovies(Settings, message.Movie);
+            }
+        }
+
+        public override void OnMovieRename(Movie movie)
+        {
+            if (Settings.UpdateLibrary)
+            {
+                _mediaBrowserService.UpdateMovies(Settings, movie);
             }
         }
 

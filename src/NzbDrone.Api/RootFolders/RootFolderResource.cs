@@ -38,8 +38,8 @@ namespace NzbDrone.Api.RootFolders
                 Id = resource.Id,
 
                 Path = resource.Path,
-                //FreeSpace
-                //UnmappedFolders
+                FreeSpace = resource.FreeSpace,
+                UnmappedFolders = resource.UnmappedFolders
             };
         }
 

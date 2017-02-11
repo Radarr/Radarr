@@ -16,7 +16,7 @@ var Collection = PageableCollection.extend({
 
     state : {
         sortKey            : 'sortTitle',
-        order              : 1,
+        order              : -1,
         pageSize           : 100000,
         secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
@@ -47,6 +47,27 @@ var Collection = PageableCollection.extend({
         return proxy.save();
     },
 
+    importFromList : function(models) {
+        var self = this;
+
+        var proxy = _.extend(new Backbone.Model(), {
+            id : "",
+
+            url : self.url + "/import",
+
+            toJSON : function() {
+                return models;
+            }
+        });
+
+        this.listenTo(proxy, "sync", function(proxyModel, models) {
+            this.add(models, { merge : true});
+            this.trigger("save", this);
+        });
+
+        return proxy.save();
+    },
+
     filterModes : {
         'all'        : [
             null,
@@ -67,6 +88,21 @@ var Collection = PageableCollection.extend({
         'missing'  : [
             'downloaded',
             false
+        ],
+        'released'  : [
+            null,
+            null,
+            function(model) { return model.getStatus() == "released"; }
+        ],
+        'announced'  : [
+            null,
+            null,
+            function(model) { return model.getStatus() == "announced"; }
+        ],
+        'cinemas'  : [
+            null,
+            null,
+            function(model) { return model.getStatus() == "inCinemas"; }
         ]
     },
 

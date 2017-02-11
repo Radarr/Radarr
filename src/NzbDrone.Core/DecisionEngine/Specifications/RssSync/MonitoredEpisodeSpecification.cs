@@ -19,7 +19,21 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            throw new NotImplementedException();
+            if (searchCriteria != null)
+            {
+                if (searchCriteria.UserInvokedSearch)
+                {
+                    _logger.Debug("Skipping monitored check during search");
+                    return Decision.Accept();
+                }
+            }
+
+            if (!subject.Movie.Monitored)
+            {
+                return Decision.Reject("Movie is not monitored");
+            }
+
+            return Decision.Accept();
         }
 
         public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)

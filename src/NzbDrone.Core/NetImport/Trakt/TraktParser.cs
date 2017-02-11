@@ -1,0 +1,103 @@
+﻿using Newtonsoft.Json;
+using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.Tv;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
+using NLog;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Indexers.Exceptions;
+using NzbDrone.Core.Parser.Model;
+
+namespace NzbDrone.Core.NetImport.Trakt
+{
+    public class TraktParser : IParseNetImportResponse
+    {
+        private readonly TraktSettings _settings;
+        private NetImportResponse _importResponse;
+        private readonly Logger _logger;
+
+        public TraktParser(TraktSettings settings)
+        {
+            _settings = settings;
+        }
+
+        public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
+        {
+            _importResponse = importResponse;
+
+            var movies = new List<Tv.Movie>();
+
+            if (!PreProcess(_importResponse))
+            {
+                return movies;
+            }
+
+            if (_settings.ListType == (int) TraktListType.PopularMovies)
+            {
+                var jsonResponse = JsonConvert.DeserializeObject<List<Movie>>(_importResponse.Content);
+
+                foreach (var movie in jsonResponse)
+                {
+                    movies.AddIfNotNull(new Tv.Movie()
+                    {
+                        Title = movie.title,
+                        ImdbId = movie.ids.imdb,
+                        TmdbId = movie.ids.tmdb,
+                        Year = (movie.year ?? 0)
+                    });
+                }
+            }
+            else
+            {
+                var jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content);
+
+                // no movies were return
+                if (jsonResponse == null)
+                {
+                    return movies;
+                }
+
+                foreach (var movie in jsonResponse)
+                {
+                    movies.AddIfNotNull(new Tv.Movie()
+                    {
+                        Title = movie.movie.title,
+                        ImdbId = movie.movie.ids.imdb,
+                        TmdbId = movie.movie.ids.tmdb,
+                        Year = (movie.movie.year ?? 0)
+                    });
+                }
+            }
+
+            return movies;
+
+        }
+
+        protected virtual bool PreProcess(NetImportResponse indexerResponse)
+        {
+            if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
+            {
+                throw new NetImportException(indexerResponse, "Indexer API call resulted in an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
+            }
+
+            if (indexerResponse.HttpResponse.Headers.ContentType != null && indexerResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
+                indexerResponse.HttpRequest.Headers.Accept != null && !indexerResponse.HttpRequest.Headers.Accept.Contains("text/json"))
+            {
+                throw new NetImportException(indexerResponse, "Indexer responded with html content. Site is likely blocked or unavailable.");
+            }
+
+            return true;
+        }
+
+    }
+}

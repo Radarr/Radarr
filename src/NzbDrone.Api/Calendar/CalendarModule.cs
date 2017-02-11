@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nancy;
 using NzbDrone.Api.Episodes;
 using NzbDrone.Api.Movie;
+using NzbDrone.Api.Series;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;

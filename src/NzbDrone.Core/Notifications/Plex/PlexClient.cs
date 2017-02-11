@@ -28,6 +28,10 @@ namespace NzbDrone.Core.Notifications.Plex
             _plexClientService.Notify(Settings, header, message.Message);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
         }

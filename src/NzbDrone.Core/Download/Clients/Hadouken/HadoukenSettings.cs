@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         public HadoukenSettingsValidator()
         {
             RuleFor(c => c.Host).ValidHost();
-            RuleFor(c => c.Port).GreaterThan(0);
+            RuleFor(c => c.Port).InclusiveBetween(1, 65535);
 
             RuleFor(c => c.Username).NotEmpty()
                                     .WithMessage("Username must not be empty.");
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         {
             Host = "localhost";
             Port = 7070;
-            Category = "sonarr-tv";
+            Category = "radarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]

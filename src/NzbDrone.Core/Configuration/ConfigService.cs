@@ -100,9 +100,16 @@ namespace NzbDrone.Core.Configuration
 
         public int RssSyncInterval
         {
-            get { return GetValueInt("RssSyncInterval", 15); }
+            get { return GetValueInt("RssSyncInterval", 60); }
 
             set { SetValue("RssSyncInterval", value); }
+        }
+
+        public int NetImportSyncInterval
+        {
+            get { return GetValueInt("NetImportSyncInterval", 60); }
+
+            set { SetValue("NetImportSyncInterval", value); }
         }
 
         public int MinimumAge
@@ -169,7 +176,7 @@ namespace NzbDrone.Core.Configuration
 
         public int DownloadedEpisodesScanInterval
         {
-            get { return GetValueInt("DownloadedEpisodesScanInterval", 1); }
+            get { return GetValueInt("DownloadedEpisodesScanInterval", 0); }
 
             set { SetValue("DownloadedEpisodesScanInterval", value); }
         }

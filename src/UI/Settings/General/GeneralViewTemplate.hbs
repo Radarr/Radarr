@@ -322,13 +322,17 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Branch</label>
 
-            <div class="col-sm-4">
+            <div class="col-sm-1 col-sm-push-2 help-inline">
+                <i class="icon-sonarr-form-warning" title="If using Docker, do not use 'develop' or 'nightly' branches"/>
+            </div>
+
+            <div class="col-sm-2 col-sm-pull-1">
                 <input type="text" placeholder="master" name="branch" class="form-control"/>
             </div>
         </div>
 
         {{#if_mono}}
-        <div class="alert alert-warning">Please see: <a href="https://github.com/NzbDrone/NzbDrone/wiki/Updating">the wiki</a> for more information</div>
+        <div class="alert alert-warning">Please see: <a href="https://github.com/Radarr/Radarr/wiki">the wiki</a> for more information</div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Automatic</label>

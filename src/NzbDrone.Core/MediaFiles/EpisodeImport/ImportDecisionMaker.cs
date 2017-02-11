@@ -128,7 +128,48 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                             var current = localMovie.Quality;
                             var qualityName = current.Quality.Name.ToLower();
                             QualityModel updated = null;
-                            if (width > 1400)
+                            if (width > 2000)
+                            {
+                                if (qualityName.Contains("bluray"))
+                                {
+                                    updated = new QualityModel(Quality.Bluray2160p);
+                                }
+
+                                else if (qualityName.Contains("webdl"))
+                                {
+                                    updated = new QualityModel(Quality.WEBDL2160p);
+                                }
+
+                                else if (qualityName.Contains("hdtv"))
+                                {
+                                    updated = new QualityModel(Quality.HDTV2160p);
+                                }
+
+                                else
+                                {
+                                    var def = _qualitiesService.Get(Quality.HDTV2160p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.HDTV2160p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.WEBDL2160p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.WEBDL2160p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.Bluray2160p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray2160p);
+                                    }
+                                    if (updated == null)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray2160p);
+                                    }
+                                }
+
+                            }
+                            else if (width > 1400)
                             {
                                 if (qualityName.Contains("bluray"))
                                 {
@@ -147,7 +188,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                                 else
                                 {
-
                                     var def = _qualitiesService.Get(Quality.HDTV1080p);
                                     if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
                                     {

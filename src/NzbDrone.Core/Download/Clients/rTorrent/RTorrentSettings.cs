@@ -10,10 +10,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         public RTorrentSettingsValidator()
         {
             RuleFor(c => c.Host).ValidHost();
-            RuleFor(c => c.Port).InclusiveBetween(0, 65535);
+            RuleFor(c => c.Port).InclusiveBetween(1, 65535);
             RuleFor(c => c.MovieCategory).NotEmpty()
                                       .WithMessage("A category is recommended")
-                                      .AsWarning(); 
+                                      .AsWarning();
         }
     }
 
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             Host = "localhost";
             Port = 8080;
             UrlBase = "RPC2";
-            MovieCategory = "movies-radarr";
+            MovieCategory = "radarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]

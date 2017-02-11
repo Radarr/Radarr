@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 
     [TestFixture]
+	[Ignore("Series")]
     public class AbsoluteEpisodeNumberParserFixture : CoreTest
     {
         [TestCase("[SubDESU]_High_School_DxD_07_(1280x720_x264-AAC)_[6B7FD717]", "High School DxD", 7, 0, 0)]

@@ -41,6 +41,9 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex EpisodeRegex = new Regex(@"(?<episode>\{episode(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex TagsRegex = new Regex(@"(?<tags>\{tags(?:\:0+)?})",
+                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly Regex SeasonRegex = new Regex(@"(?<season>\{season(?:\:0+)?})",
                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -135,7 +138,7 @@ namespace NzbDrone.Core.Organizer
             AddEpisodeFileTokens(tokenHandlers, episodeFile);
             AddQualityTokens(tokenHandlers, series, episodeFile);
             AddMediaInfoTokens(tokenHandlers, episodeFile);
-            
+
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
             fileName = TrimSeparatorsRegex.Replace(fileName, string.Empty);
@@ -165,6 +168,7 @@ namespace NzbDrone.Core.Organizer
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
             AddMovieFileTokens(tokenHandlers, movieFile);
+            AddTagsTokens(tokenHandlers, movieFile);
 
             var fileName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -226,10 +230,10 @@ namespace NzbDrone.Core.Organizer
             }
 
             var basicNamingConfig = new BasicNamingConfig
-                                    {
-                                        Separator = episodeFormat.Separator,
-                                        NumberStyle = episodeFormat.SeasonEpisodePattern
-                                    };
+            {
+                Separator = episodeFormat.Separator,
+                NumberStyle = episodeFormat.SeasonEpisodePattern
+            };
 
             var titleTokens = TitleRegex.Matches(nameSpec.StandardEpisodeFormat);
 
@@ -293,7 +297,7 @@ namespace NzbDrone.Core.Organizer
 
         public string GetMovieFolder(Movie movie, NamingConfig namingConfig = null)
         {
-            if(namingConfig == null)
+            if (namingConfig == null)
             {
                 namingConfig = _namingConfigService.GetConfig();
             }
@@ -319,6 +323,12 @@ namespace NzbDrone.Core.Organizer
         public static string TitleThe(string title)
         {
             string[] prefixes = { "The ", "An ", "A " };
+
+			if (title.Length < 5)
+			{
+				return title;
+			}
+
             foreach (string prefix in prefixes)
             {
                 int prefix_length = prefix.Length;
@@ -439,7 +449,7 @@ namespace NzbDrone.Core.Organizer
                 var absoluteEpisodePattern = absoluteEpisodeFormat.AbsoluteEpisodePattern;
                 string formatPattern;
 
-                switch ((MultiEpisodeStyle) namingConfig.MultiEpisodeStyle)
+                switch ((MultiEpisodeStyle)namingConfig.MultiEpisodeStyle)
                 {
 
                     case MultiEpisodeStyle.Duplicate:
@@ -462,14 +472,14 @@ namespace NzbDrone.Core.Organizer
                     case MultiEpisodeStyle.Range:
                     case MultiEpisodeStyle.PrefixedRange:
                         formatPattern = "-" + absoluteEpisodeFormat.AbsoluteEpisodePattern;
-                        var eps = new List<Episode> {episodes.First()};
+                        var eps = new List<Episode> { episodes.First() };
 
                         if (episodes.Count > 1) eps.Add(episodes.Last());
 
                         absoluteEpisodePattern = FormatAbsoluteNumberTokens(absoluteEpisodePattern, formatPattern, eps);
                         break;
 
-                        //MultiEpisodeStyle.Extend
+                    //MultiEpisodeStyle.Extend
                     default:
                         formatPattern = "-" + absoluteEpisodeFormat.AbsoluteEpisodePattern;
                         absoluteEpisodePattern = FormatAbsoluteNumberTokens(absoluteEpisodePattern, formatPattern, episodes);
@@ -489,6 +499,14 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Title}"] = m => movie.Title;
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(movie.Title);
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
+        }
+
+        private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
+        {
+            if (movieFile.Edition.IsNotNullOrWhiteSpace())
+            {
+                tokenHandlers["{Edition Tags}"] = m => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
+            }
         }
 
         private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
@@ -712,6 +730,10 @@ namespace NzbDrone.Core.Organizer
                 case "E-AC-3":
                     audioCodec = "EAC3";
                     break;
+                
+                case "Atmos / TrueHD":
+                    audioCodec = "Atmos TrueHD";
+                    break;
 
                 case "MPEG Audio":
                     if (movieFile.MediaInfo.AudioProfile == "Layer 3")
@@ -725,7 +747,26 @@ namespace NzbDrone.Core.Organizer
                     break;
 
                 case "DTS":
-                    audioCodec = movieFile.MediaInfo.AudioFormat;
+                    if (movieFile.MediaInfo.AudioProfile == "ES" || movieFile.MediaInfo.AudioProfile == "ES Discrete" || movieFile.MediaInfo.AudioProfile == "ES Matrix")
+                    {
+                        audioCodec = "DTS-ES";
+                    }
+                    else if (movieFile.MediaInfo.AudioProfile == "MA")
+                    {
+                        audioCodec = "DTS-HD MA";
+                    }
+                    else if (movieFile.MediaInfo.AudioProfile == "HRA")
+                    {
+                        audioCodec = "DTS-HD HRA";
+                    }
+                    else if (movieFile.MediaInfo.AudioProfile == "X")
+                    {
+                        audioCodec = "DTS-X";
+                    }
+                    else
+                    {
+                        audioCodec = movieFile.MediaInfo.AudioFormat;
+                    }
                     break;
 
                 default:
@@ -909,7 +950,7 @@ namespace NzbDrone.Core.Organizer
 
         private AbsoluteEpisodeFormat[] GetAbsoluteFormat(string pattern)
         {
-            return _absoluteEpisodeFormatCache.Get(pattern, () =>  AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
+            return _absoluteEpisodeFormatCache.Get(pattern, () => AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
                 .Select(match => new AbsoluteEpisodeFormat
                 {
                     Separator = match.Groups["separator"].Value.IsNotNullOrWhiteSpace() ? match.Groups["separator"].Value : "-",

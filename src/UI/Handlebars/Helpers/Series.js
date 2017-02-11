@@ -36,7 +36,7 @@ Handlebars.registerHelper('remotePoster', function() {
 });
 
 Handlebars.registerHelper('traktUrl', function() {
-    return 'http://trakt.tv/search/tvdb/' + this.tvdbId + '?id_type=show';
+    return 'http://trakt.tv/search/tmdb/' + this.tmdbId + '?id_type=movie';
 });
 
 Handlebars.registerHelper('imdbUrl', function() {

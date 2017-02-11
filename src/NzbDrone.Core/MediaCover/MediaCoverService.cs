@@ -132,23 +132,23 @@ namespace NzbDrone.Core.MediaCover
                 {
                     if (e.Status == WebExceptionStatus.ProtocolError)
                     {
-                        _logger.Warn(e, "Server returned different code than 200. The poster is probably not available yet.");
-                        return;
-                    }
-
-                    _logger.Warn(e, string.Format("Couldn't download media cover for {0}. {1}", movie, e.Message));
-                    if (retried < 3)
-                    {
-                        retried = +1;
-                        _logger.Warn("Retrying for the {0}. time in ten seconds.", retried);
-                        System.Threading.Thread.Sleep(10*1000);
-                        EnsureCovers(movie, retried);
+                        _logger.Warn(e, string.Format("Couldn't download media cover for {0}, likely the cover doesn't exist for this movie. {1}", movie, e.Message));
                     }
                     else
                     {
-                        _logger.Warn(e, "Couldn't download media cover even after retrying five times :(.");
+                        _logger.Warn(e, string.Format("Couldn't download media cover for {0}. {1}", movie, e.Message));
+                        if (retried < 3)
+                        {
+                            retried = +1;
+                            _logger.Warn("Retrying for the {0}. time in ten seconds.", retried);
+                            System.Threading.Thread.Sleep(10 * 1000);
+                            EnsureCovers(movie, retried);
+                        }
+                        else
+                        {
+                            _logger.Warn(e, "Couldn't download media cover even after retrying five times :(.");
+                        }
                     }
-
                 }
                 catch (Exception e)
                 {

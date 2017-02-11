@@ -122,13 +122,13 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RenameMovieCommand message)
         {
-            _logger.Debug("Renaming all files for selected movie");
+            _logger.Debug("Renaming movie files for selected movie");
             var moviesToRename = _movieService.GetMovies(message.MovieIds);
 
             foreach(var movie in moviesToRename)
             {
                 var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-                _logger.ProgressInfo("Renaming all files in movie: {0}", movie.Title);
+                _logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
                 RenameFiles(movieFiles, movie);
                 _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
             }

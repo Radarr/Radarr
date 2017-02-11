@@ -35,21 +35,21 @@ namespace NzbDrone.Api.EpisodeFiles
             _seriesService = seriesService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;
-            /*GetResourceById = GetEpisodeFile;
-            GetResourceAll = GetEpisodeFiles;
+            GetResourceById = GetMovieFile;
+            /*GetResourceAll = GetEpisodeFiles;
             UpdateResource = SetQuality;*/
+            UpdateResource = SetQuality;
             DeleteResource = DeleteEpisodeFile;
         }
 
-        /*private EpisodeFileResource GetEpisodeFile(int id)
+        private MovieFileResource GetMovieFile(int id)
         {
-            var episodeFile = _mediaFileService.Get(id);
-            var series = _seriesService.GetSeries(episodeFile.SeriesId);
+            var episodeFile = _mediaFileService.GetMovie(id);
 
-            return episodeFile.ToResource(series, _qualityUpgradableSpecification);
+            return episodeFile.ToResource();
         }
 
-        private List<EpisodeFileResource> GetEpisodeFiles()
+        /*private List<EpisodeFileResource> GetEpisodeFiles()
         {
             if (!Request.Query.SeriesId.HasValue)
             {
@@ -62,13 +62,13 @@ namespace NzbDrone.Api.EpisodeFiles
 
             return _mediaFileService.GetFilesBySeries(seriesId).ConvertAll(f => f.ToResource(series, _qualityUpgradableSpecification));
         }
-
-        private void SetQuality(EpisodeFileResource episodeFileResource)
+        */
+        private void SetQuality(MovieFileResource episodeFileResource)
         {
-            var episodeFile = _mediaFileService.Get(episodeFileResource.Id);
+            var episodeFile = _mediaFileService.GetMovie(episodeFileResource.Id);
             episodeFile.Quality = episodeFileResource.Quality;
             _mediaFileService.Update(episodeFile);
-        }*/
+        }
 
         private void DeleteEpisodeFile(int id)
         {

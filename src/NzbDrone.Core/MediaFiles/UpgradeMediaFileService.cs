@@ -60,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             else
             {
-                _logger.Warn("The existing movie file was not lazy loaded.");
+                //_logger.Warn("The existing movie file was not lazy loaded.");
             }
 
             

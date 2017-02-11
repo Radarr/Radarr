@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Download
         public ProcessedDecisions ProcessDecisions(List<DownloadDecision> decisions)
         {
             //var qualifiedReports = GetQualifiedReports(decisions);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
+            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
 

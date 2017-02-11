@@ -21,11 +21,13 @@ namespace NzbDrone.Core.Tv
         Movie GetMovie(int movieId);
         List<Movie> GetMovies(IEnumerable<int> movieIds);
         Movie AddMovie(Movie newMovie);
+        List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title);
         Movie FindByTitleSlug(string slug);
+        bool MovieExists(Movie movie);
         Movie GetMovieByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
@@ -89,6 +91,35 @@ namespace NzbDrone.Core.Tv
             _eventAggregator.PublishEvent(new MovieAddedEvent(GetMovie(newMovie.Id)));
 
             return newMovie;
+        }
+
+        public List<Movie> AddMovies(List<Movie> newMovies)
+        {
+            _logger.Debug("Adding {0} movies", newMovies.Count);
+
+            newMovies.ForEach(m => Ensure.That(m, () => m).IsNotNull());
+
+            newMovies.ForEach(m =>
+            {
+                if (string.IsNullOrWhiteSpace(m.Path))
+                {
+                    var folderName = _fileNameBuilder.GetMovieFolder(m);
+                    m.Path = Path.Combine(m.RootFolderPath, folderName);
+                }
+
+                m.CleanTitle = m.Title.CleanSeriesTitle();
+                m.SortTitle = MovieTitleNormalizer.Normalize(m.Title, m.TmdbId);
+                m.Added = DateTime.UtcNow;
+            });
+
+            _movieRepository.InsertMany(newMovies);
+
+            newMovies.ForEach(m =>
+            {
+                _eventAggregator.PublishEvent(new MovieAddedEvent(m));
+            });
+
+            return newMovies;
         }
 
         public Movie FindByTitle(string title)
@@ -246,6 +277,40 @@ namespace NzbDrone.Core.Tv
             var movieResult = _movieRepository.MoviesWithoutFiles(pagingSpec);
 
             return movieResult;
+        }
+
+        public bool MovieExists(Movie movie)
+        {
+            Movie result = null;
+
+            if (movie.TmdbId != 0)
+            {
+                result = _movieRepository.FindByTmdbId(movie.TmdbId);
+                if (result != null)
+                {
+                    return true;
+                }
+            }
+
+            if (movie.ImdbId.IsNotNullOrWhiteSpace())
+            {
+                result = _movieRepository.FindByImdbId(movie.ImdbId);
+                if (result != null)
+                {
+                    return true;
+                }
+            }
+
+            if (movie.Year > 1850)
+            {
+                result = _movieRepository.FindByTitle(movie.Title.CleanSeriesTitle(), movie.Year);
+                if (result != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

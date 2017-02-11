@@ -15,7 +15,11 @@ namespace NzbDrone.Core.Notifications
     public class NotificationService
         : IHandle<EpisodeGrabbedEvent>,
           IHandle<EpisodeDownloadedEvent>,
-          IHandle<SeriesRenamedEvent>
+          IHandle<SeriesRenamedEvent>,
+          IHandle<MovieRenamedEvent>, 
+          IHandle<MovieGrabbedEvent>,
+          IHandle<MovieDownloadedEvent>
+
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -67,6 +71,42 @@ namespace NzbDrone.Core.Notifications
                                     qualityString);
         }
 
+        private string GetMessage(Movie movie, QualityModel quality)
+        {
+            var qualityString = quality.Quality.ToString();
+
+            if (quality.Revision.Version > 1)
+            {
+                    qualityString += " Proper";
+            }
+
+            return string.Format("{0} ({1}) [{2}]",
+                                    movie.Title,
+                                    movie.Year,
+                                    qualityString);
+        }
+
+        private bool ShouldHandleMovie(ProviderDefinition definition, Movie movie)
+        {
+            var notificationDefinition = (NotificationDefinition)definition;
+
+            if (notificationDefinition.Tags.Empty())
+            {
+                _logger.Debug("No tags set for this notification.");
+                return true;
+            }
+
+            if (notificationDefinition.Tags.Intersect(movie.Tags).Any())
+            {
+                _logger.Debug("Notification and series have one or more matching tags.");
+                return true;
+            }
+
+            //TODO: this message could be more clear
+            _logger.Debug("{0} does not have any tags that match {1}'s tags", notificationDefinition.Name, movie.Title);
+            return false;
+        }
+
         private bool ShouldHandleSeries(ProviderDefinition definition, Series series)
         {
             var notificationDefinition = (NotificationDefinition) definition;
@@ -112,6 +152,33 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
+        public void Handle(MovieGrabbedEvent message)
+        {
+            var grabMessage = new GrabMessage
+            {
+                Message = GetMessage(message.Movie.Movie, message.Movie.ParsedMovieInfo.Quality),
+                Series = null,
+                Quality = message.Movie.ParsedMovieInfo.Quality,
+                Episode = null,
+                Movie = message.Movie.Movie,
+                RemoteMovie = message.Movie
+            };
+
+            foreach (var notification in _notificationFactory.OnGrabEnabled())
+            {
+                try
+                {
+                    if (!ShouldHandleMovie(notification.Definition, message.Movie.Movie)) continue;
+                    notification.OnGrab(grabMessage);
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, "Unable to send OnGrab notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
         public void Handle(EpisodeDownloadedEvent message)
         {
             var downloadMessage = new DownloadMessage();
@@ -141,6 +208,38 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
+        public void Handle(MovieDownloadedEvent message)
+        {
+            var downloadMessage = new DownloadMessage();
+            downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.Quality);
+            downloadMessage.Series = null;
+            downloadMessage.EpisodeFile = null;
+            downloadMessage.MovieFile = message.MovieFile;
+            downloadMessage.Movie = message.Movie.Movie;
+            downloadMessage.OldFiles = null;
+            downloadMessage.OldMovieFiles = message.OldFiles;
+            downloadMessage.SourcePath = message.Movie.Path;
+
+            foreach (var notification in _notificationFactory.OnDownloadEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleMovie(notification.Definition, message.Movie.Movie))
+                    {
+                        if (downloadMessage.OldMovieFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
+                        {
+                            notification.OnDownload(downloadMessage);
+                        }
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
         public void Handle(SeriesRenamedEvent message)
         {
             foreach (var notification in _notificationFactory.OnRenameEnabled())
@@ -150,6 +249,25 @@ namespace NzbDrone.Core.Notifications
                     if (ShouldHandleSeries(notification.Definition, message.Series))
                     {
                         notification.OnRename(message.Series);
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnRename notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(MovieRenamedEvent message)
+        {
+            foreach (var notification in _notificationFactory.OnRenameEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleMovie(notification.Definition, message.Movie))
+                    {
+                        notification.OnMovieRename(message.Movie);
                     }
                 }
 

@@ -5,7 +5,7 @@ namespace NzbDrone.Api.Validation
     public class RssSyncIntervalValidator : PropertyValidator
     {
         public RssSyncIntervalValidator()
-            : base("Must be between 10 and 120 or 0 to disable")
+            : base("Must be between 10 and 720 or 0 to disable")
         {
         }
 
@@ -23,7 +23,7 @@ namespace NzbDrone.Api.Validation
                 return true;
             }
 
-            if (value >= 10 && value <= 120)
+            if (value >= 10 && value <= 720)
             {
                 return true;
             }

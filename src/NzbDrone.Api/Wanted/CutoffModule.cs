@@ -15,7 +15,7 @@ namespace NzbDrone.Api.Wanted
                             ISeriesService seriesService,
                             IQualityUpgradableSpecification qualityUpgradableSpecification,
                             IBroadcastSignalRMessage signalRBroadcaster)
-            : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/cutoff")
+            : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/cutoff-old")
         {
             _episodeCutoffService = episodeCutoffService;
             GetResourcePaged = GetCutoffUnmetEpisodes;

@@ -44,7 +44,25 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
             UpdateLibrary(settings, series);
         }
-        
+
+        public void UpdateMovie(XbmcSettings settings, Movie movie)
+        {
+            if (!settings.AlwaysUpdate)
+            {
+                _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
+                var activePlayers = _proxy.GetActivePlayers(settings);
+
+                if (activePlayers.Any(a => a.Type.Equals("video")))
+                {
+                    _logger.Debug("Video is currently playing, skipping library update");
+                    return;
+                }
+            }
+
+            UpdateMovieLibrary(settings, movie);
+        }
+
+
         public void Clean(XbmcSettings settings)
         {
             _proxy.CleanLibrary(settings);
@@ -96,6 +114,24 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 }
 
                 var response = _proxy.UpdateLibrary(settings, seriesPath);
+
+                if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _logger.Debug("Failed to update library for: {0}", settings.Address);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, ex.Message);
+            }
+        }
+
+        private void UpdateMovieLibrary(XbmcSettings settings, Movie movie)
+        {
+            try
+            {
+                var response = _proxy.UpdateLibrary(settings, null);
 
                 if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
                 {
