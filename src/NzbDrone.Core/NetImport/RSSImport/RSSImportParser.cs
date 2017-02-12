@@ -135,9 +135,16 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
         protected virtual Movie ProcessItem(XElement item, Movie releaseInfo)
         {
-            var result = Parser.Parser.ParseMovieTitle(GetTitle(item));
+            var title = GetTitle(item);
 
-            releaseInfo.Title = GetTitle(item);
+            // Loosely allow movies (will work with IMDB)
+            if (title.Contains("TV Series") || title.Contains("Mini-Series"))
+            {
+                return null;
+            }
+
+            releaseInfo.Title = title;
+            var result = Parser.Parser.ParseMovieTitle(title);
 
             if (result != null)
             {
