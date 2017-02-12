@@ -104,12 +104,12 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
         private List<ManualImportItem> ProcessFolder(string folder, string downloadId)
         {
             var directoryInfo = new DirectoryInfo(folder);
-            var series = _parsingService.GetSeries(directoryInfo.Name);
+            var series = _parsingService.GetMovie(directoryInfo.Name);
 
             if (series == null && downloadId.IsNotNullOrWhiteSpace())
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
-                series = trackedDownload.RemoteEpisode.Series;
+                series = trackedDownload.RemoteMovie.Movie;
             }
 
             if (series == null)
@@ -119,9 +119,9 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
                 return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
             }
 
-            var folderInfo = Parser.Parser.ParseTitle(directoryInfo.Name);
+            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
             var seriesFiles = _diskScanService.GetVideoFiles(folder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(seriesFiles, series, folderInfo, SceneSource(series, folder));
+            var decisions = _importDecisionMaker.GetImportDecisions(seriesFiles, series, folderInfo, SceneSource(series, folder), false);
 
             return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
         }
