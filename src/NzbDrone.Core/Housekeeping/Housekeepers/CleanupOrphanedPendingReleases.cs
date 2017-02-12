@@ -18,9 +18,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             mapper.ExecuteNonQuery(@"DELETE FROM PendingReleases
                                      WHERE Id IN (
                                      SELECT PendingReleases.Id FROM PendingReleases
-                                     LEFT OUTER JOIN Series
-                                     ON PendingReleases.SeriesId = Series.Id
-                                     WHERE Series.Id IS NULL)");
+                                     LEFT OUTER JOIN Movies
+                                     ON PendingReleases.MovieId = MovieId.Id
+                                     WHERE MovieId.Id IS NULL)");
         }
     }
 }
