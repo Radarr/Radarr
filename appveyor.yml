@@ -2,8 +2,6 @@
   branches:
     only:
       - 'patch/update-tests-continuous'
-      
-  configuration: Default
   
   test:
     assemblies:
@@ -17,8 +15,6 @@
   branches:
     only:
       - 'develop'
-      
-  configuration: Default
 
   test: off
 
@@ -27,8 +23,6 @@
     only:
       - 'develop'
       - 'patch/update-tests-continuous'
-      
-  configuration: Default
   
   version: '0.2.0.{build}'
 
