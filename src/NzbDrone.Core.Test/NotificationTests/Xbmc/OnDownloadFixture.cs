@@ -19,16 +19,16 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         [SetUp]
         public void Setup()
         {
-            var series = Builder<Series>.CreateNew()
+            var movie = Builder<Movie>.CreateNew()
                                         .Build();
 
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                    .Build();
 
             _downloadMessage = Builder<DownloadMessage>.CreateNew()
-                                                       .With(d => d.Series = series)
-                                                       .With(d => d.EpisodeFile = episodeFile)
-                                                       .With(d => d.OldFiles = new List<EpisodeFile>())
+                                                       .With(d => d.Movie = movie)
+                                                       .With(d => d.MovieFile = movieFile)
+                                                       .With(d => d.OldMovieFiles = new List<MovieFile>())
                                                        .Build();
 
             Subject.Definition = new NotificationDefinition();
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
         private void GivenOldFiles()
         {
-            _downloadMessage.OldFiles = Builder<EpisodeFile>.CreateListOfSize(1)
+            _downloadMessage.OldMovieFiles = Builder<MovieFile>.CreateListOfSize(1)
                                                             .Build()
                                                             .ToList();
 
