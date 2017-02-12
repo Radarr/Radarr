@@ -18,13 +18,16 @@ var view = Marionette.ItemView.extend({
 	
 	onShow : function() {
 		if (oauth && refresh){
-		document.getElementById("t1").value = oauth;
-		document.getElementById("t2").value = refresh;
+	        this.ui.authToken.val(oauth).trigger('change');
+		this.ui.refreshToken.val(refresh).trigger('change');;
+	        //this.model.isSaved = false;
 		}
 	},
 
 	ui : {
-		resetTraktTokens : '.x-reset-trakt-tokens'
+		resetTraktTokens : '.x-reset-trakt-tokens',
+		authToken : '.x-trakt-auth-token',
+		refreshToken : '.x-trakt-refresh-token'
 	},
 
 	_resetTraktTokens : function() {
