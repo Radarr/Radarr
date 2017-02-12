@@ -1,7 +1,7 @@
 -
   branches:
     only: 
-      - patch
+      - /patch.*/
   
   version: '0.2.0.{build}'
 
