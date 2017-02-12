@@ -5,7 +5,9 @@ var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var params = new URLSearchParams(window.location.search.slice(1));
 var oauth=params.get('oauth');
 var refresh=params.get('refresh');
-	
+var q = window.location;
+var url = q.protocol+'//'+q.hostname+(q.port ? ':' + q.port : '')+'/settings/netimport';
+history.pushState('object', 'title', url);
 var view = Marionette.ItemView.extend({
 	template : 'Settings/NetImport/Options/NetImportOptionsViewTemplate',
 	events : {
@@ -32,8 +34,8 @@ var view = Marionette.ItemView.extend({
 
 	_resetTraktTokens : function() {
 		if (window.confirm("You will now be taken to trakt.tv for authentication.\nYou will then be directed back here.\nDon't forget to click save when you get back!")){
-		l = window.location;
-		callback_url=l.protocol+'//'+l.hostname+(l.port ? ':' +l.port : '')+'/settings/netimport';
+		var l = window.location;
+		var callback_url=l.protocol+'//'+l.hostname+(l.port ? ':' +l.port : '')+'/settings/netimport';
 		window.location='https://api.couchpota.to/authorize/trakt/?target='+callback_url;
 		}
 	}
