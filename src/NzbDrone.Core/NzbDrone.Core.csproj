@@ -231,7 +231,7 @@
     <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
     <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
     <Compile Include="Datastore\Migration\004_updated_history.cs" />
-    <Compile Include="Datastore\Migration\127_add_allflicksurl_to_table.cs" />
+    <Compile Include="Datastore\Migration\132_add_allflicksurl_to_table.cs" />
     <Compile Include="Datastore\Migration\126_update_qualities_and_profiles.cs" />
     <Compile Include="Datastore\Migration\125_fix_imdb_unique.cs" />
     <Compile Include="Datastore\Migration\124_add_preferred_tags_to_profile.cs" />

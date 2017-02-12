@@ -8,7 +8,7 @@ using System.Data;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(127)]
+    [Migration(132)]
     public class add_allflicksurl : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()
