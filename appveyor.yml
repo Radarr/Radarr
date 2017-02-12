@@ -1,6 +1,6 @@
-- branches:
-    only:
-      - patch/update-tests-continuous
+branches:
+  only:
+    - patch/update-tests-continuous
   
   version: '0.2.0.{build}'
 
@@ -46,9 +46,9 @@
       - gulp/
       - logo/
 
-- branches:
-    only:
-      - develop
+branches:
+  only:
+    - develop
   
   version: '0.2.0.{build}'
 
