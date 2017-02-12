@@ -91,19 +91,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            /*
-            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Series.Id, episodeIds);
+            
+            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Movie.Id);
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)
             {
                 return Decision.Accept();
-            }*/
+            }
 
             if (subject.Release.AgeMinutes < delay)
             {
                 _logger.Debug("Waiting for better quality release, There is a {0} minute delay on {1}", delay, subject.Release.DownloadProtocol);
                 return Decision.Reject("Waiting for better quality release");
-            } //TODO: Update for movies!
+            }
 
             return Decision.Accept();
         }
@@ -158,14 +158,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var episodeIds = subject.Episodes.Select(e => e.Id);
+            // var episodeIds = subject.Episodes.Select(e => e.Id);
 
-            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Series.Id, episodeIds);
+            //var oldest = _pendingReleaseService.OldestPendingRelease(subject.Series.Id, episodeIds);
 
-            if (oldest != null && oldest.Release.AgeMinutes > delay)
-            {
-                return Decision.Accept();
-            }
+            //if (oldest != null && oldest.Release.AgeMinutes > delay)
+            //{
+            //    return Decision.Accept();
+            //}
 
             if (subject.Release.AgeMinutes < delay)
             {
