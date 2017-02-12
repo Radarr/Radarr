@@ -74,10 +74,10 @@ namespace NzbDrone.Core.NetImport.Trakt
                 {
                     var url = Settings.Link.Trim();
                     url = url + "/oauth/token";
-
+                    //this code is not going to work right now -- need to implement with apiServer
                     string postData = "{\"refresh_token\":\""+ _configService.TraktRefreshToken+"\"";
-                    postData += ",\"client_id\":\"657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0\"";
-                    postData += ",\"client_secret\":\"b16be19076b515553bb830141e08729c1d987fe686b3c3bc0316ba4382c2b810\"";
+                    //postData += ",\"client_id\":\"657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0\""; //radarr
+                    postData += ",\"client_id\":\"8a54ed7b5e1b56d874642770ad2e8b73e2d09d6e993c3a92b1e89690bb1c9014\""; //couchpotato
                     postData += ",\"redirect_uri\":\"urn:ietf:wg:oauth:2.0:oob\"";
                     postData += ",\"grant_type\":\"refresh_token\"}";
 
@@ -96,14 +96,16 @@ namespace NzbDrone.Core.NetImport.Trakt
                     _configService.TraktAuthToken = j1.access_token;
                     _configService.TraktRefreshToken = j1.refresh_token;
                     string createdAt = j1.created_at;
-                    string expiresIn = j1.expires_in;
-                    _configService.TraktTokenExpiry = int.Parse(createdAt) + int.Parse(expiresIn);
+                    //string expiresIn = j1.expires_in;
+		    //lets have it expire in 8 weeks (4838400 seconds)
+                    _configService.TraktTokenExpiry = int.Parse(createdAt) + 4838400;//int.Parse(expiresIn);
                 }
             }
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", "657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0");
+            //request.HttpRequest.Headers.Add("trakt-api-key", "657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0"); //radarr
+	    request.HttpRequest.Headers.Add("trakt-api-key", "8a54ed7b5e1b56d874642770ad2e8b73e2d09d6e993c3a92b1e89690bb1c9014"); //couchpotato
             if (_configService.TraktAuthToken != null)
             {
                 request.HttpRequest.Headers.Add("Authorization", "Bearer " + _configService.TraktAuthToken);
