@@ -1,7 +1,7 @@
 -
   branches:
     only:
-      - 'patch/update-tests-continuous'
+      - patch/update-tests-continuous
   
   version: '0.2.0.{build}'
 
@@ -50,7 +50,7 @@
 -
   branches:
     only:
-      - 'develop'
+      - develop
   
   version: '0.2.0.{build}'
 
