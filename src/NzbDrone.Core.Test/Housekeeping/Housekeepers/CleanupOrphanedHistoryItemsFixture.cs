@@ -11,37 +11,26 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
     [TestFixture]
     public class CleanupOrphanedHistoryItemsFixture : DbTest<CleanupOrphanedHistoryItems, History.History>
     {
-        private Series _series;
-        private Episode _episode;
+        private Movie _movie;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
+            _movie = Builder<Movie>.CreateNew()
                                      .BuildNew();
-
-            _episode = Builder<Episode>.CreateNew()
-                                       .BuildNew();
         }
 
         private void GivenSeries()
         {
-            Db.Insert(_series);
-        }
-
-        private void GivenEpisode()
-        {
-            Db.Insert(_episode);
+            Db.Insert(_movie);
         }
 
         [Test]
-        public void should_delete_orphaned_items_by_series()
+        public void should_delete_orphaned_items()
         {
-            GivenEpisode();
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.EpisodeId = _episode.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -50,60 +39,18 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_delete_orphaned_items_by_episode()
+        public void should_not_delete_unorphaned()
         {
             GivenSeries();
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.SeriesId = _series.Id)
+                                                  .With(h => h.MovieId = _movie.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
             Subject.Clean();
-            AllStoredModels.Should().BeEmpty();
-        }
-
-        [Test]
-        public void should_not_delete_unorphaned_data_by_series()
-        {
-            GivenSeries();
-            GivenEpisode();
-
-            var history = Builder<History.History>.CreateListOfSize(2)
-                                                  .All()
-                                                  .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.EpisodeId = _episode.Id)
-                                                  .TheFirst(1)
-                                                  .With(h => h.SeriesId = _series.Id)
-                                                  .BuildListOfNew();
-
-            Db.InsertMany(history);
-
-            Subject.Clean();
-            AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.SeriesId == _series.Id);
-        }
-
-        [Test]
-        public void should_not_delete_unorphaned_data_by_episode()
-        {
-            GivenSeries();
-            GivenEpisode();
-
-            var history = Builder<History.History>.CreateListOfSize(2)
-                                                  .All()
-                                                  .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.SeriesId = _series.Id)
-                                                  .TheFirst(1)
-                                                  .With(h => h.EpisodeId = _episode.Id)
-                                                  .BuildListOfNew();
-
-            Db.InsertMany(history);
-
-            Subject.Clean();
-            AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.EpisodeId == _episode.Id);
+			AllStoredModels.Should().HaveCount(1);
         }
     }
 }

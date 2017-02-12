@@ -29,14 +29,14 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_unorphaned_blacklist_items()
         {
-            var series = Builder<Series>.CreateNew().BuildNew();
+            var movie = Builder<Movie>.CreateNew().BuildNew();
 
-            Db.Insert(series);
+            Db.Insert(movie);
 
             var blacklist = Builder<Blacklist>.CreateNew()
                                               .With(h => h.EpisodeIds = new List<int>())
                                               .With(h => h.Quality = new QualityModel())
-                                              .With(b => b.SeriesId = series.Id)
+                                              .With(b => b.MovieId = movie.Id)
                                               .BuildNew();
 
             Db.Insert(blacklist);
