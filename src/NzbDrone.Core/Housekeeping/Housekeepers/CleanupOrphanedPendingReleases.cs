@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                      SELECT PendingReleases.Id FROM PendingReleases
                                      LEFT OUTER JOIN Movies
-                                     ON PendingReleases.MovieId = MovieId.Id
-                                     WHERE MovieId.Id IS NULL)");
+                                     ON PendingReleases.MovieId = Movies.Id
+                                     WHERE Movies.Id IS NULL)");
         }
     }
 }

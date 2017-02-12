@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("PendingReleases").AddColumn("ParsedMovieInfo").AsString();
+            Alter.Table("PendingReleases").AddColumn("ParsedMovieInfo").AsString().Nullable();
         }
     }
 }
