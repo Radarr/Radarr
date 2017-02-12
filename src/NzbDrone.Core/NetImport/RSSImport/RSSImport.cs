@@ -33,12 +33,21 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 }
                 yield return new NetImportDefinition
                 {
-                    Name = "IMDb Watchlist",
+                    Name = "IMDb List",
                     Enabled = Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = new RSSImportSettings { Link = "http://rss.imdb.com/list/YOURLISTID" },
+                };
+                yield return new NetImportDefinition
+                {
+                    Name = "IMDb Watchlist",
+                    Enabled = Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
+                    Implementation = GetType().Name,
+                    Settings = new RSSImportSettings { Link = "http://rss.imdb.com/user/IMDBUSERID/watchlist" },
                 };
             }
         }
