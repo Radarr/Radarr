@@ -1,5 +1,4 @@
--
-  branches:
+- branches:
     only:
       - patch/update-tests-continuous
   
@@ -47,8 +46,7 @@
       - gulp/
       - logo/
 
--
-  branches:
+- branches:
     only:
       - develop
   
