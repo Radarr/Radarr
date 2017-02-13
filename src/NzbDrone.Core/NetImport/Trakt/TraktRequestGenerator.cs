@@ -34,16 +34,16 @@ namespace NzbDrone.Core.NetImport.Trakt
                 case (int)TraktListType.UserWatchedList:
                     link = link + $"/users/{Settings.Username.Trim()}/watched/movies";
                     break;
-                case (int)TraktListType.TrendingMovies:
+                case (int)TraktListType.Trending:
                     link = link + "/movies/trending";
                     break;
-                case (int)TraktListType.PopularMovies:
+                case (int)TraktListType.Popular:
                     link = link + "/movies/popular";
                     break;
-                case (int)TraktListType.AnticipatedMovies:
+                case (int)TraktListType.Anticipated:
                     link = link + "/movies/anticipated";
                     break;
-                case (int)TraktListType.BoxOfficeMovies:
+                case (int)TraktListType.BoxOffice:
                     link = link + "/movies/boxoffice";
                     break;
                 case (int)TraktListType.TopWatchedByWeek:
