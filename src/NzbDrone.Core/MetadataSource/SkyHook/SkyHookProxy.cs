@@ -23,6 +23,29 @@ using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
+    public class Rootobject
+    {
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public Datum[] data { get; set; }
+    }
+
+    public class Datum
+    {
+        public string box_art { get; set; }
+        public string title { get; set; }
+        public string year { get; set; }
+        public string genre { get; set; }
+        public string rating { get; set; }
+        public string available { get; set; }
+        public string cast { get; set; }
+        public string director { get; set; }
+        public string genre2 { get; set; }
+        public string genre3 { get; set; }
+        public string slug { get; set; }
+    }
+
     public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie
     {
         private readonly IHttpClient _httpClient;
@@ -375,19 +398,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         var rsponse = (HttpWebResponse)rquest.GetResponse();
                         var rsponseString = new StreamReader(rsponse.GetResponseStream()).ReadToEnd();
                         rsponse.Close();
-                        dynamic j1 = JObject.Parse(rsponseString);
-                        if (j1.recordsFiltered != null)
-                        {
-                            numFound = j1.recordsFiltered;
-                        }
-                        else
-                        {
-                            numFound = 0;
-                        }
-			if (!(numFound > 0))
+                        Rootobject j1 = Newtonsoft.Json.JsonConvert.DeserializeObject<Rootobject>(rsponseString);               
+                        numFound = j1.recordsFiltered;
+			            if (!(numFound > 0))
                             break;
-                        var results = j1.data;
-                        foreach (var result in results)
+                        foreach (var result in j1.data)
                         {
                             if (result.title.ToString().ToUpper() == titleForNetflix.ToUpper())
                             {
