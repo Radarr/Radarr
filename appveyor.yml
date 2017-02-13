@@ -3,6 +3,7 @@ version: '0.2.0.{build}'
 branches:
   only:
   - develop
+  - patch/update-tests-continuous
 
 assembly_info:
   patch: true
