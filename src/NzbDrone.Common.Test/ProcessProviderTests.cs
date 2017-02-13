@@ -9,6 +9,7 @@ using NzbDrone.Common.Model;
 using NzbDrone.Common.Processes;
 using NzbDrone.Test.Common;
 using NzbDrone.Test.Dummy;
+using System.Reflection;
 
 namespace NzbDrone.Common.Test
 {
@@ -65,8 +66,16 @@ namespace NzbDrone.Common.Test
 
         [Test]
         public void Should_be_able_to_start_process()
-        {
-            var process = Subject.Start(Path.Combine(Directory.GetCurrentDirectory(), DummyApp.DUMMY_PROCCESS_NAME + ".exe"));
+		{
+			string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+			UriBuilder uri = new UriBuilder(codeBase);
+			string path = Uri.UnescapeDataString(uri.Path);
+			var rPath = Path.GetDirectoryName(path);
+
+			var root = Directory.GetParent(rPath).Parent.Parent.Parent;
+			var DummyAppDir = Path.Combine(root.FullName, "NzbDrone.Test.Dummy", "bin", "Release");
+
+			var process = Subject.Start(Path.Combine(DummyAppDir, DummyApp.DUMMY_PROCCESS_NAME + ".exe"));
 
             Subject.Exists(DummyApp.DUMMY_PROCCESS_NAME).Should()
                    .BeTrue("excepted one dummy process to be already running");
