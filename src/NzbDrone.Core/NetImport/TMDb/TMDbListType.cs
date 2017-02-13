@@ -4,13 +4,15 @@ namespace NzbDrone.Core.NetImport.TMDb
 {
     public enum TMDbListType
     {
+        [EnumMember(Value = "List")]
+        List = 0,
         [EnumMember(Value = "In Theaters")]
-        Theaters = 0,
+        Theaters = 1,
         [EnumMember(Value = "Popular")]
-        Popular = 1,
+        Popular = 2,
         [EnumMember(Value = "Top Rated")]
-        Top = 2,
+        Top = 3,
         [EnumMember(Value = "Upcoming")]
-        Upcoming = 3
+        Upcoming = 4
     }
 }

@@ -31,27 +31,61 @@ namespace NzbDrone.Core.NetImport.TMDb
                 return movies;
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(_importResponse.Content);
-
-            // no movies were return
-            if (jsonResponse == null)
+            if (_settings.ListType != (int) TMDbListType.List)
             {
-                return movies;
-            }
+                var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(_importResponse.Content);
 
-            foreach (var movie in jsonResponse.results)
-            {
-                if (movie.vote_average >= double.Parse(_settings.MinVoteAverage))
+                // no movies were return
+                if (jsonResponse == null)
                 {
-                    movies.AddIfNotNull(new Tv.Movie()
+                    return movies;
+                }
+
+                foreach (var movie in jsonResponse.results)
+                {
+                    if (movie.vote_average >= double.Parse(_settings.MinVoteAverage))
                     {
-                        Title = movie.title,
-                        TmdbId = movie.id,
-                        ImdbId = null,
-                        Year = DateTime.Parse(movie.release_date).Year
-                    });
+                        movies.AddIfNotNull(new Tv.Movie()
+                        {
+                            Title = movie.title,
+                            TmdbId = movie.id,
+                            ImdbId = null,
+                            Year = DateTime.Parse(movie.release_date).Year
+                        });
+                    }
                 }
             }
+            else
+            {
+                var jsonResponse = JsonConvert.DeserializeObject<ListResponseRoot>(_importResponse.Content);
+
+                // no movies were return
+                if (jsonResponse == null)
+                {
+                    return movies;
+                }
+
+                foreach (var movie in jsonResponse.items)
+                {
+                    // Skip non-movie things
+                    if (movie.media_type != "movie")
+                    {
+                        continue;
+                    }
+
+                    if (movie.vote_average >= double.Parse(_settings.MinVoteAverage))
+                    {
+                        movies.AddIfNotNull(new Tv.Movie()
+                        {
+                            Title = movie.title,
+                            TmdbId = movie.id,
+                            ImdbId = null,
+                            Year = DateTime.Parse(movie.release_date).Year
+                        });
+                    }
+                }
+            }
+
 
             return movies;
         }

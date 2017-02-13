@@ -39,6 +39,8 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(2, Label = "Minimum Vote Average", HelpText = "Filter movies by rating (0.0-10.0)")]
         public string MinVoteAverage { get; set; }
 
+        [FieldDefinition(3, Label = "Public List ID", HelpText = "Required for List")]
+        public string ListId { get; set; }
 
         public new NzbDroneValidationResult Validate()
         {
