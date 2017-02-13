@@ -6,6 +6,14 @@ namespace NzbDrone.Core.NetImport.TMDb
     public class TMDbRequestGenerator : INetImportRequestGenerator
     {
         public TMDbSettings Settings { get; set; }
+        public int MaxPages { get; set; }
+        public int PageSize { get; set; }
+
+        public TMDbRequestGenerator()
+        {
+            MaxPages = 100;
+            PageSize = 20;
+        }
 
         public virtual NetImportPageableRequestChain GetMovies()
         {
@@ -35,7 +43,7 @@ namespace NzbDrone.Core.NetImport.TMDb
         private IEnumerable<NetImportRequest> GetPagedRequests(string searchType)
         {
             var baseUrl = $"{Settings.Link.Trim()}{searchType}?api_key=1a7373301961d03f97f853a876dd1212";
-            for (var page = 1; page < 100; page++)
+            for (var page = 1; page < MaxPages; page++)
             {
                 yield return new NetImportRequest($"{baseUrl}&page={page}", HttpAccept.Json);
             }

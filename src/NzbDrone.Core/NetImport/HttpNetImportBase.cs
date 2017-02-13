@@ -60,10 +60,6 @@ namespace NzbDrone.Core.NetImport
             {
                 var fullyUpdated = false;
                 Movie lastMovie = null;
-                if (isRecent)
-                {
-                    //lastReleaseInfo = _indexerStatusService.GetLastRssSyncReleaseInfo(Definition.Id);
-                }
 
                 for (int i = 0; i < pageableRequestChain.Tiers; i++)
                 {
@@ -125,12 +121,9 @@ namespace NzbDrone.Core.NetImport
                 if (isRecent && !movies.Empty())
                 {
                     var ordered = movies.OrderByDescending(v => v.Title).ToList();
-
                     lastMovie = ordered.First();
-                    //_indexerStatusService.UpdateRssSyncStatus(Definition.Id, lastReleaseInfo);
                 }
 
-                //_indexerStatusService.RecordSuccess(Definition.Id);
             }
             catch (WebException webException)
             {
@@ -158,28 +151,23 @@ namespace NzbDrone.Core.NetImport
             {
                 if ((int)httpException.Response.StatusCode == 429)
                 {
-                    //_indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
                     _logger.Warn("API Request Limit reached for {0}", this);
                 }
                 else
                 {
-                    //_indexerStatusService.RecordFailure(Definition.Id);
                     _logger.Warn("{0} {1}", this, httpException.Message);
                 }
             }
             catch (RequestLimitReachedException)
             {
-                //_indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
                 _logger.Warn("API Request Limit reached for {0}", this);
             }
             catch (ApiKeyException)
             {
-                //_indexerStatusService.RecordFailure(Definition.Id);
                 _logger.Warn("Invalid API Key for {0} {1}", this, url);
             }
             catch (CloudFlareCaptchaException ex)
             {
-                //_indexerStatusService.RecordFailure(Definition.Id);
                 if (ex.IsExpired)
                 {
                     _logger.Error(ex, "Expired CAPTCHA token for {0}, please refresh in indexer settings.", this);
@@ -191,13 +179,11 @@ namespace NzbDrone.Core.NetImport
             }
             catch (IndexerException ex)
             {
-                //_indexerStatusService.RecordFailure(Definition.Id);
                 var message = string.Format("{0} - {1}", ex.Message, url);
                 _logger.Warn(ex, message);
             }
             catch (Exception feedEx)
             {
-                //_indexerStatusService.RecordFailure(Definition.Id);
                 feedEx.Data.Add("FeedUrl", url);
                 _logger.Error(feedEx, "An error occurred while processing feed. " + url);
             }
