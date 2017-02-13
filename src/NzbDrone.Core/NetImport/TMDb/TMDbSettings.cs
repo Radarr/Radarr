@@ -12,16 +12,18 @@ namespace NzbDrone.Core.NetImport.TMDb
         public TMDbSettingsValidator()
         {
             RuleFor(c => c.Link).ValidRootUrl();
-            RuleFor(c => c.MinVoteAverage).ExclusiveBetween(0.0, 10.0);
+            RuleFor(c => double.Parse(c.MinVoteAverage)).ExclusiveBetween(0, 10);
         }
     }
 
     public class TMDbSettings : NetImportBaseSettings
     {
+        private static readonly TMDbSettingsValidator Validator = new TMDbSettingsValidator();
+
         public TMDbSettings()
         {
             Link = "https://api.themoviedb.org";
-            MinVoteAverage = 5.0;
+            MinVoteAverage = "5.5";
             // Language = (int) TMDbLanguageCodes.en;
         }
 
@@ -34,9 +36,14 @@ namespace NzbDrone.Core.NetImport.TMDb
         //[FieldDefinition(2, Label = "Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter movies by Language")]
         //public int Language { get; set; }
 
-        [FieldDefinition(2, Label = "Minimum Vote Average", HelpText = "Filter movies by rating")]
-        public double MinVoteAverage { get; set; }
+        [FieldDefinition(2, Label = "Minimum Vote Average", HelpText = "Filter movies by rating (0.0-10.0)")]
+        public string MinVoteAverage { get; set; }
 
+
+        public new NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 
     

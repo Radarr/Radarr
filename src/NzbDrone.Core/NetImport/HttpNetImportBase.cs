@@ -27,9 +27,9 @@ namespace NzbDrone.Core.NetImport
 
         public override bool Enabled => true;
 
-        public bool SupportsPaging => PageSize > 0;
+        public bool SupportsPaging => PageSize > 20;
 
-        public virtual int PageSize => 0;
+        public virtual int PageSize => 20;
 
         public virtual TimeSpan RateLimit => TimeSpan.FromSeconds(2);
 
@@ -58,9 +58,6 @@ namespace NzbDrone.Core.NetImport
 
             try
             {
-                var fullyUpdated = false;
-                Movie lastMovie = null;
-
                 for (int i = 0; i < pageableRequestChain.Tiers; i++)
                 {
                     var pageableRequests = pageableRequestChain.GetTier(i);
@@ -76,37 +73,6 @@ namespace NzbDrone.Core.NetImport
                             var page = FetchPage(request, parser);
 
                             pagedReleases.AddRange(page);
-
-                            if (isRecent && page.Any())
-                            {
-                                if (lastMovie == null)
-                                {
-                                    fullyUpdated = true;
-                                    break;
-                                }/*
-                                var oldestReleaseDate = page.Select(v => v.PublishDate).Min();
-                                if (oldestReleaseDate < lastReleaseInfo.PublishDate || page.Any(v => v.DownloadUrl == lastReleaseInfo.DownloadUrl))
-                                {
-                                    fullyUpdated = true;
-                                    break;
-                                }
-
-                                if (pagedReleases.Count >= MaxNumResultsPerQuery &&
-                                    oldestReleaseDate < DateTime.UtcNow - TimeSpan.FromHours(24))
-                                {
-                                    fullyUpdated = false;
-                                    break;
-                                }*///update later
-                            }
-                            else if (pagedReleases.Count >= MaxNumResultsPerQuery)
-                            {
-                                break;
-                            }
-
-                            if (!IsFullPage(page))
-                            {
-                                break;
-                            }
                         }
 
                         movies.AddRange(pagedReleases);
@@ -117,26 +83,9 @@ namespace NzbDrone.Core.NetImport
                         break;
                     }
                 }
-
-                if (isRecent && !movies.Empty())
-                {
-                    var ordered = movies.OrderByDescending(v => v.Title).ToList();
-                    lastMovie = ordered.First();
-                }
-
             }
             catch (WebException webException)
             {
-                if (webException.Status == WebExceptionStatus.NameResolutionFailure ||
-                    webException.Status == WebExceptionStatus.ConnectFailure)
-                {
-                    //_indexerStatusService.RecordConnectionFailure(Definition.Id);
-                }
-                else
-                {
-                    //_indexerStatusService.RecordFailure(Definition.Id);
-                }
-
                 if (webException.Message.Contains("502") || webException.Message.Contains("503") ||
                     webException.Message.Contains("timed out"))
                 {
@@ -189,11 +138,6 @@ namespace NzbDrone.Core.NetImport
             }
 
             return movies;
-        }
-
-        protected virtual bool IsFullPage(IList<Movie> page)
-        {
-            return PageSize != 0 && page.Count >= PageSize;
         }
 
         protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)

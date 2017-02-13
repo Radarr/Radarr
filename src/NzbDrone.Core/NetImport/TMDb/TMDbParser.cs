@@ -41,12 +41,13 @@ namespace NzbDrone.Core.NetImport.TMDb
 
             foreach (var movie in jsonResponse.results)
             {
-                if (movie.vote_average >= _settings.MinVoteAverage)
+                if (movie.vote_average >= double.Parse(_settings.MinVoteAverage))
                 {
                     movies.AddIfNotNull(new Tv.Movie()
                     {
                         Title = movie.title,
                         TmdbId = movie.id,
+                        ImdbId = null,
                         Year = DateTime.Parse(movie.release_date).Year
                     });
                 }
