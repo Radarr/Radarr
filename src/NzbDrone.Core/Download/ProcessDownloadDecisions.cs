@@ -32,8 +32,8 @@ namespace NzbDrone.Core.Download
 
         public ProcessedDecisions ProcessDecisions(List<DownloadDecision> decisions)
         {
-            //var qualifiedReports = GetQualifiedReports(decisions);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
+            var qualifiedReports = GetQualifiedReports(decisions);
+            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(qualifiedReports);
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
 
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Download
         internal List<DownloadDecision> GetQualifiedReports(IEnumerable<DownloadDecision> decisions)
         {
             //Process both approved and temporarily rejected
-            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteEpisode.Episodes.Any()).ToList();
+            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && (c.RemoteMovie.Movie != null)).ToList();
         }
     }
 }
