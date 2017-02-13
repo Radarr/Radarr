@@ -127,6 +127,12 @@
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
     <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
+    <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
+    <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
+    <Compile Include="NetImport\TMDb\TMDbListType.cs" />
+    <Compile Include="NetImport\TMDb\TMDbImport.cs" />
+    <Compile Include="NetImport\TMDb\TMDbParser.cs" />
+    <Compile Include="NetImport\TMDb\TMDbRequestGenerator.cs" />
     <Compile Include="NetImport\Trakt\TraktAPI.cs" />
     <Compile Include="NetImport\Trakt\TraktImport.cs" />
     <Compile Include="NetImport\Trakt\TraktListType.cs" />
