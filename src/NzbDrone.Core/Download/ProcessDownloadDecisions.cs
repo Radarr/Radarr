@@ -44,6 +44,24 @@ namespace NzbDrone.Core.Download
                 {
                     var remoteMovie = report.RemoteMovie;
 
+					if (remoteMovie == null || remoteMovie.Movie == null)
+					{
+						continue;
+					}
+
+					List<int> movieIds = new List<int> { remoteMovie.Movie.Id };
+
+
+					//Skip if already grabbed
+					if (grabbed.Select(r => r.RemoteMovie.Movie)
+									.Select(e => e.Id)
+									.ToList()
+									.Intersect(movieIds)
+									.Any())
+					{
+						continue;
+					}
+
                     if (report.TemporarilyRejected)
                     {
                         _pendingReleaseService.Add(report);
@@ -57,23 +75,7 @@ namespace NzbDrone.Core.Download
                         continue;
                     }
 
-                    if (remoteMovie == null || remoteMovie.Movie == null)
-                    {
-                        continue;
-                    }
-
-                    List<int> movieIds = new List<int> { remoteMovie.Movie.Id };
-
-
-                    //Skip if already grabbed
-                    if (grabbed.Select(r => r.RemoteMovie.Movie)
-                                    .Select(e => e.Id)
-                                    .ToList()
-                                    .Intersect(movieIds)
-                                    .Any())
-                    {
-                        continue;
-                    }
+                   
 
                     if (pending.Select(r => r.RemoteMovie.Movie)
                             .Select(e => e.Id)
