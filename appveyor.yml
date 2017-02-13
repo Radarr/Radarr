@@ -1,91 +1,48 @@
--
-  branches:
-    only: 
-      - patch/update-tests-continuous
+version: '0.2.0.{build}'
+
+branches:
+  only:
+  - develop
+
+assembly_info:
+  patch: true
+  file: 'src\NzbDrone.Common\Properties\SharedAssemblyInfo.cs'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}-rc1'
+
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+install:
+  - git submodule update --init --recursive
+
+build_script:
+  - ps: ./build-appveyor.ps1
+
+# test: off
+test:
+  assemblies:
+    - '_tests\*Test.dll'
+  categories:
+    except:
+      - IntegrationTest
+      - AutomationTest
+
+artifacts:
+  - path: '_artifacts\*.zip'
+  - path: '_artifacts\*.tar.gz'
+
+cache:
+  - '%USERPROFILE%\.nuget\packages'
+  - node_modules
   
-  version: '0.2.0.{build}'
+pull_requests:
+  do_not_increment_build_number: true
 
-  assembly_info:
-    patch: true
-    file: 'src\NzbDrone.Common\Properties\SharedAssemblyInfo.cs'
-    assembly_version: '{version}'
-    assembly_file_version: '{version}'
-    assembly_informational_version: '{version}-rc1'
-
-  environment:
-    DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-  install:
-    - git submodule update --init --recursive
-
-  build_script:
-    - ps: ./build-appveyor.ps1
-
-  test:
-    assemblies:
-      - '_tests\*Test.dll'
-    categories:
-      except:
-        - IntegrationTest
-        - AutomationTest
-
-  artifacts:
-    - path: '_artifacts\*.zip'
-    - path: '_artifacts\*.tar.gz'
-
-  cache:
-    - '%USERPROFILE%\.nuget\packages'
-    - node_modules
-
-  pull_requests:
-    do_not_increment_build_number: true
-
-  only_commits:
-    files:
-      - src/
-      - osx/
-      - gulp/
-      - logo/
-
--
-  branches:
-    only: 
-      - develop
-  
-  version: '0.2.0.{build}'
-
-  assembly_info:
-    patch: true
-    file: 'src\NzbDrone.Common\Properties\SharedAssemblyInfo.cs'
-    assembly_version: '{version}'
-    assembly_file_version: '{version}'
-    assembly_informational_version: '{version}-rc1'
-
-  environment:
-    DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-  install:
-    - git submodule update --init --recursive
-
-  build_script:
-    - ps: ./build-appveyor.ps1
-
-  test: off
-
-  artifacts:
-    - path: '_artifacts\*.zip'
-    - path: '_artifacts\*.tar.gz'
-
-  cache:
-    - '%USERPROFILE%\.nuget\packages'
-    - node_modules
-
-  pull_requests:
-    do_not_increment_build_number: true
-
-  only_commits:
-    files:
-      - src/
-      - osx/
-      - gulp/
-      - logo/
+only_commits:
+  files:
+    - src/
+    - osx/
+    - gulp/
+    - logo/
