@@ -92,25 +92,26 @@ namespace NzbDrone.Core.NetImport
                     }
                     if (!foundMatch)
                     {
-                        if (_configService.ListSyncLevel == "logOnly")
+                        switch(_configService.ListSyncLevel)
                         {
-                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> you might want to unmonitor or remove it", movie.ImdbId);
-                        }
-                        else if (_configService.ListSyncLevel == "keepAndUnmonitor")
-                        {
-                            _logger.Info("Movie: {0} was in your library, but was not found in your lists --> Keeping in library but Unmonitoring it", movie.ImdbId);
-                            movie.Monitored = false;
-                        }
-                        else if (_configService.ListSyncLevel == "removeAndKeep")
-                        {
-                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library (keeping files)", movie.ImdbId);
-                            _movieService.DeleteMovie(movie.Id, false); 
-                        }
-                        else if (_configService.ListSyncLevel == "removeAndDelete")
-                        {
-                            _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library and deleting files", movie.ImdbId);
-                            _movieService.DeleteMovie(movie.Id, true); 
-                            //TODO: for some reason the files are not deleted in this case... any idea why? 
+                            case "logOnly":
+                                _logger.Info("Movie: {0} was in your library, but not found in your lists --> you might want to unmonitor or remove it", movie.ImdbId);
+                                break;
+                            case "keepAndUnmonitor":
+                                _logger.Info("Movie: {0} was in your library, but was not found in your lists --> Keeping in library but Unmonitoring it", movie.ImdbId);
+                                movie.Monitored = false;
+                                break;
+                            case "removeAndKeep":
+                                _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library (keeping files)", movie.ImdbId);
+                                _movieService.DeleteMovie(movie.Id, false);
+                                break;
+                            case "removeAndDelete":
+                                _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library and deleting files", movie.ImdbId);
+                                _movieService.DeleteMovie(movie.Id, true);
+                                //TODO: for some reason the files are not deleted in this case... any idea why?
+                                break;
+                            default:
+                                break; 
                         }
                     }
                 }
