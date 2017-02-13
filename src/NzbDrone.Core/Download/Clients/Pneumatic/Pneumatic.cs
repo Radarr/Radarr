@@ -34,36 +34,15 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         public override string Download(RemoteEpisode remoteEpisode)
         {
-            var url = remoteEpisode.Release.DownloadUrl;
-            var title = remoteEpisode.Release.Title;
-
-            if (remoteEpisode.ParsedEpisodeInfo.FullSeason)
-            {
-                throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
-            }
-
-            title = FileNameBuilder.CleanFileName(title);
-
-            //Save to the Pneumatic directory (The user will need to ensure its accessible by XBMC)
-            var nzbFile = Path.Combine(Settings.NzbFolder, title + ".nzb");
-
-            _logger.Debug("Downloading NZB from: {0} to: {1}", url, nzbFile);
-            _httpClient.DownloadFile(url, nzbFile);
-
-            _logger.Debug("NZB Download succeeded, saved to: {0}", nzbFile);
-
-            var strmFile = WriteStrmFile(title, nzbFile);
-
-
-            return GetDownloadClientId(strmFile);
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
-        public override string Download(RemoteMovie remoteEpisode)
+        public override string Download(RemoteMovie remoteMovie)
         {
-            var url = remoteEpisode.Release.DownloadUrl;
-            var title = remoteEpisode.Release.Title;
+            var url = remoteMovie.Release.DownloadUrl;
+            var title = remoteMovie.Release.Title;
 
-            if (remoteEpisode.ParsedEpisodeInfo.FullSeason)
+            if (remoteMovie.ParsedEpisodeInfo.FullSeason)
             {
                 throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
             }

@@ -281,6 +281,15 @@ namespace NzbDrone.Core.Test.ParserTests
             QualityParser.ParseQuality(title).QualitySource.Should().Be(QualitySource.Extension);
         }
 
+        [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "korsub")]
+        [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "korsubs")]
+        [TestCase("Movie.Title.2016.1080p.DKSUB.WEBRip.x264.AAC2.0-RADARR", "dksub")]
+        [TestCase("Movie.Title.2016.1080p.DKSUBS.WEBRip.x264.AAC2.0-RADARR", "dksubs")]
+        public void should_parse_hardcoded_subs(string postTitle, string sub)
+        {
+            QualityParser.ParseQuality(postTitle).HardcodedSubs.Should().Be(sub);
+        }
+
         private void ParseAndVerifyQuality(string title, Quality quality, bool proper)
         {
             var result = QualityParser.ParseQuality(title);

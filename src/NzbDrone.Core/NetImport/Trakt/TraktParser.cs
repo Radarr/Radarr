@@ -42,7 +42,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                 return movies;
             }
 
-            if (_settings.ListType == (int) TraktListType.PopularMovies)
+            if (_settings.ListType == (int) TraktListType.Popular)
             {
                 var jsonResponse = JsonConvert.DeserializeObject<List<Movie>>(_importResponse.Content);
 

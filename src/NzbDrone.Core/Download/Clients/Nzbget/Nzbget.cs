@@ -31,20 +31,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
-            var category = Settings.TvCategory;
-
-            var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
-
-            var addpaused = Settings.AddPaused;
-
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, addpaused, Settings);
-
-            if (response == null)
-            {
-                throw new DownloadClientException("Failed to add nzb {0}", filename);
-            }
-
-            return response;
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
