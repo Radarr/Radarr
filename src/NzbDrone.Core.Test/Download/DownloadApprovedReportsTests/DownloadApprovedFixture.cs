@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
 
             var remoteMovie3 = GetRemoteMovie(
                                                     new QualityModel(Quality.HDTV720p),
-											GetMovie(3)
+											GetMovie(2)
                                                  );
 
             var decisions = new List<DownloadDecision>();

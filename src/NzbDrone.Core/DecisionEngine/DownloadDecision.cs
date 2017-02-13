@@ -45,11 +45,14 @@ namespace NzbDrone.Core.DecisionEngine
         public DownloadDecision(RemoteMovie movie, params Rejection[] rejections)
         {
             RemoteMovie = movie;
-            RemoteEpisode = new RemoteEpisode
-            {
-                Release = movie.Release,
-                ParsedEpisodeInfo = movie.ParsedEpisodeInfo
-            };
+			if (movie != null)
+			{
+				RemoteEpisode = new RemoteEpisode
+				{
+					Release = movie.Release,
+					ParsedEpisodeInfo = new ParsedEpisodeInfo()
+				};
+			}
             IsForMovie = true;
             Rejections = rejections.ToList();
         }
