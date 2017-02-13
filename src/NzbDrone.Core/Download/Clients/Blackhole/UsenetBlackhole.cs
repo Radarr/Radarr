@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
-            throw new NotImplementedException("Episodes are not working with Radarr");
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
