@@ -27,86 +27,70 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                 .Returns<List<DownloadDecision>>(v => v);
         }
 
-        private Episode GetEpisode(int id)
+        private Movie GetMovie(int id)
         {
-            return Builder<Episode>.CreateNew()
+            return Builder<Movie>.CreateNew()
                             .With(e => e.Id = id)
-                            .With(e => e.EpisodeNumber = id)
+				                 .With(m => m.Tags = new HashSet<int>())
+
                             .Build();
         }
 
-        private RemoteEpisode GetRemoteEpisode(List<Episode> episodes, QualityModel quality)
-        {
-            var remoteEpisode = new RemoteEpisode();
-            remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            remoteEpisode.ParsedEpisodeInfo.Quality = quality;
+		private RemoteMovie GetRemoteMovie(QualityModel quality, Movie movie = null)
+		{
+			if (movie == null)
+			{
+				movie = GetMovie(1);
+			}
 
-            remoteEpisode.Episodes = new List<Episode>();
-            remoteEpisode.Episodes.AddRange(episodes);
+			movie.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities(), PreferredTags = new List<string>() };
 
-            remoteEpisode.Release = new ReleaseInfo();
-            remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+			var remoteEpisode = new RemoteMovie();
+			remoteEpisode.ParsedMovieInfo = new ParsedMovieInfo();
+			remoteEpisode.ParsedMovieInfo.Quality = quality;
+			remoteEpisode.ParsedMovieInfo.Year = 1998;
+			remoteEpisode.ParsedMovieInfo.MovieTitle = "A Movie";
+			remoteEpisode.ParsedMovieInfo.MovieTitleInfo = new SeriesTitleInfo();
 
-            remoteEpisode.Series = Builder<Series>.CreateNew()
-                .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
-                .Build();
+			remoteEpisode.Movie = movie;
 
-            return remoteEpisode;
-        }
+			remoteEpisode.Release = new ReleaseInfo();
+			remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+			remoteEpisode.Release.Title = "A.Movie.1998";
+			remoteEpisode.Release.Size = 200;
+
+			return remoteEpisode;
+		}
 
         [Test]
         public void should_download_report_if_epsiode_was_not_already_downloaded()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Once());
         }
 
         [Test]
         public void should_only_download_episode_once()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
             decisions.Add(new DownloadDecision(remoteEpisode));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Once());
-        }
-
-        [Test]
-        public void should_not_download_if_any_episode_was_already_downloaded()
-        {
-            var remoteEpisode1 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.HDTV720p)
-                                                 );
-
-            var remoteEpisode2 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1), GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
-                                                 );
-
-            var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteEpisode1));
-            decisions.Add(new DownloadDecision(remoteEpisode2));
-
-            Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Once());
         }
 
         [Test]
         public void should_return_downloaded_reports()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -117,15 +101,15 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_return_all_downloaded_reports()
         {
-            var remoteEpisode1 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.HDTV720p)
-                                                 );
+            var remoteEpisode1 = GetRemoteMovie(
+													new QualityModel(Quality.HDTV720p),
+											GetMovie(1)
+												 );
 
-            var remoteEpisode2 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
-                                                 );
+            var remoteEpisode2 = GetRemoteMovie(
+													new QualityModel(Quality.HDTV720p),
+											GetMovie(2)
+												 );
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -137,19 +121,19 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_only_return_downloaded_reports()
         {
-            var remoteEpisode1 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.HDTV720p)
-                                                 );
+            var remoteEpisode1 = GetRemoteMovie(
+													new QualityModel(Quality.HDTV720p),
+											GetMovie(1)
+												 );
 
-            var remoteEpisode2 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
-                                                 );
+            var remoteEpisode2 = GetRemoteMovie(
+													new QualityModel(Quality.HDTV720p),
+											GetMovie(2)
+												 );
 
-            var remoteEpisode3 = GetRemoteEpisode(
-                                                    new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.HDTV720p)
+            var remoteEpisode3 = GetRemoteMovie(
+                                                    new QualityModel(Quality.HDTV720p),
+											GetMovie(3)
                                                  );
 
             var decisions = new List<DownloadDecision>();
@@ -163,13 +147,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_add_to_downloaded_list_when_download_fails()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteEpisode>())).Throws(new Exception());
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>())).Throws(new Exception());
             Subject.ProcessDecisions(decisions).Grabbed.Should().BeEmpty();
             ExceptionVerification.ExpectedWarns(1);
         }
@@ -188,22 +171,20 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_grab_if_pending()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
             decisions.Add(new DownloadDecision(remoteEpisode));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteEpisode>()), Times.Never());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Never());
         }
 
         [Test]
         public void should_not_add_to_pending_if_episode_was_grabbed()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -216,8 +197,8 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_add_to_pending_even_if_already_added_to_pending()
         {
-            var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.HDTV720p));
+           
+            var remoteEpisode = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));

@@ -10,7 +10,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         public RemoteMovie RemoteMovie { get; private set; }
 
-        public bool IsForMovie = false;
+        public bool IsForMovie = true;
         public IEnumerable<Rejection> Rejections { get; private set; }
 
         public bool Approved => !Rejections.Any();
