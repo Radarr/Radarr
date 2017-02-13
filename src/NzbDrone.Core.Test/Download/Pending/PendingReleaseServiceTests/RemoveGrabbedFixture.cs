@@ -20,8 +20,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class RemoveGrabbedFixture : CoreTest<PendingReleaseService>
     {
         private DownloadDecision _temporarilyRejected;
-        private Movie _series;
-        private Episode _episode;
+        private Movie _movie;
         private Profile _profile;
         private ReleaseInfo _release;
         private ParsedMovieInfo _parsedEpisodeInfo;
@@ -30,7 +29,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Movie>.CreateNew()
+            _movie = Builder<Movie>.CreateNew()
                                      .Build();
 
             _profile = new Profile
@@ -45,7 +44,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                    },
                        };
 
-            _series.Profile = new LazyLoaded<Profile>(_profile);
+            _movie.Profile = new LazyLoaded<Profile>(_profile);
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
@@ -54,7 +53,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             _remoteEpisode = new RemoteMovie();
             //_remoteEpisode.Episodes = new List<Episode>{ _episode };
-            _remoteEpisode.Movie = _series;
+            _remoteEpisode.Movie = _movie;
             _remoteEpisode.ParsedMovieInfo = _parsedEpisodeInfo;
             _remoteEpisode.Release = _release;
             
@@ -66,7 +65,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.GetMovie(It.IsAny<int>()))
-                  .Returns(_series);
+                  .Returns(_movie);
 
             //Mocker.GetMock<IParsingService>()
             //      .Setup(s => s.GetMovie(It.IsAny<ParsedMovieInfo>(), _series.Title))
@@ -84,9 +83,9 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()
-                                                   .With(h => h.SeriesId = _series.Id)
+                                                   .With(h => h.MovieId = _movie.Id)
                                                    .With(h => h.Release = _release.JsonClone())
-                                                   .With(h => h.ParsedMovieInfo = _parsedEpisodeInfo)
+                                                   .With(h => h.ParsedMovieInfo = parsedEpisodeInfo)
                                                    .Build();
 
             Mocker.GetMock<IPendingReleaseRepository>()
