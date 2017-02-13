@@ -280,7 +280,7 @@ Task("CompressArtifacts").Does(() => {
 	var prefix = "";
 
 	if (AppVeyor.IsRunningOnAppVeyor) {
-		prefix += AppVeyor.Environment.Repository.Branch + ".";
+		prefix += AppVeyor.Environment.Repository.Branch.Replace("/", "-") + ".";
 		prefix += AppVeyor.Environment.Build.Version + ".";
 	}
 
