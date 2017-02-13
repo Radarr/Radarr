@@ -74,13 +74,13 @@ namespace NzbDrone.Core.NetImport.TMDb
             for (var pageNumber = 1; pageNumber < totalPages; pageNumber++)
             {
                 // Limit the amount of pages
-                if (pageNumber >= MaxPages)
+                if (pageNumber >= MaxPages+1)
                 {
                     Logger.Info($"Found more than {MaxPages} pages");
                     break;
                 }
 
-                Console.WriteLine($"{baseUrl}&page={pageNumber}");
+                Logger.Trace($"Importing TMDb movies from: {baseUrl}&page={pageNumber}");
                 yield return new NetImportRequest($"{baseUrl}&page={pageNumber}", HttpAccept.Json);
             }
         }
