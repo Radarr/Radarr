@@ -245,9 +245,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -257,10 +257,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
-            remoteEpisode.Release.DownloadUrl = magnetUrl;
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteMovie);
 
             id.Should().Be(expectedHash);
         }
@@ -290,9 +290,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -303,9 +303,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
