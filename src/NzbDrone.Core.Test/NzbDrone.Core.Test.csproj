@@ -183,7 +183,7 @@
     <Compile Include="Download\DownloadClientTests\TransmissionTests\TransmissionFixtureBase.cs" />
     <Compile Include="Download\DownloadClientTests\UTorrentTests\UTorrentFixture.cs" />
     <Compile Include="Download\DownloadClientTests\VuzeTests\VuzeFixture.cs" />
-    <Compile Include="Download\DownloadClientTests\DownloadStationTests\DownloadStationFixture.cs" />
+    <Compile Include="Download\DownloadClientTests\DownloadStationTests\TorrentDownloadStationFixture.cs" />
     <Compile Include="Download\DownloadClientTests\DownloadStationTests\SerialNumberProviderFixture.cs" />
     <Compile Include="Download\DownloadClientTests\DownloadStationTests\SharedFolderResolverFixture.cs" />
     <Compile Include="Download\DownloadServiceFixture.cs" />

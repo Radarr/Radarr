@@ -127,6 +127,7 @@
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
     <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
+    <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
     <Compile Include="NetImport\TMDb\TMDbListType.cs" />
@@ -419,7 +420,7 @@
     <Compile Include="Download\Clients\Deluge\DelugeUpdateUIResult.cs" />
     <Compile Include="Download\Clients\DownloadClientAuthenticationException.cs" />
     <Compile Include="Download\Clients\DownloadClientException.cs" />
-    <Compile Include="Download\Clients\DownloadStation\DownloadStation.cs" />
+    <Compile Include="Download\Clients\DownloadStation\TorrentDownloadStation.cs" />
     <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationSettings.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationTorrent.cs" />

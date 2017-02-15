@@ -16,7 +16,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 {
     [TestFixture]
-    public class DownloadStationFixture : DownloadClientFixtureBase<DownloadStation>
+    public class TorrentDownloadStationFixture : DownloadClientFixtureBase<TorrentDownloadStation>
     {
         protected DownloadStationSettings _settings;
 
