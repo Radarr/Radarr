@@ -74,6 +74,12 @@ namespace NzbDrone.Core.NetImport
 
         public void Execute(NetImportSyncCommand message)
         {
+            //if there are no lists that are enabled for automatic import then dont do anything
+            if((_netImportFactory.GetAvailableProviders()).Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
+            {
+                return;
+            }
+
             var listedMovies = Fetch(0, true);
             if (_configService.ListSyncLevel != "disabled")
             {
