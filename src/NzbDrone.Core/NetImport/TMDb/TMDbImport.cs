@@ -8,8 +8,8 @@ namespace NzbDrone.Core.NetImport.TMDb
 {
     public class TMDbImport : HttpNetImportBase<TMDbSettings>
     {
-        public override string Name => "TMDb Lists";
-        public override bool Enabled => true;
+        public override string Name => "TMDb";
+        public override bool Enabled => false;
         public override bool EnableAuto => false;
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
