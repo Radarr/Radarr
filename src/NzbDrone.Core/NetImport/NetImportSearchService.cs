@@ -101,18 +101,18 @@ namespace NzbDrone.Core.NetImport
                         switch(_configService.ListSyncLevel)
                         {
                             case "logOnly":
-                                _logger.Info("Movie: {0} was in your library, but not found in your lists --> you might want to unmonitor or remove it", movie.ImdbId);
+                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie.TitleSlug);
                                 break;
                             case "keepAndUnmonitor":
-                                _logger.Info("Movie: {0} was in your library, but was not found in your lists --> Keeping in library but Unmonitoring it", movie.ImdbId);
+                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie.TitleSlug);
                                 movie.Monitored = false;
                                 break;
                             case "removeAndKeep":
-                                _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library (keeping files)", movie.ImdbId);
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie.TitleSlug);
                                 _movieService.DeleteMovie(movie.Id, false);
                                 break;
                             case "removeAndDelete":
-                                _logger.Info("Movie: {0} was in your library, but not found in your lists --> removing from library and deleting files", movie.ImdbId);
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie.TitleSlug);
                                 _movieService.DeleteMovie(movie.Id, true);
                                 //TODO: for some reason the files are not deleted in this case... any idea why?
                                 break;
