@@ -43,16 +43,13 @@ namespace NzbDrone.Core.NetImport.TMDb
 
                 foreach (var movie in jsonResponse.results)
                 {
-                    if (movie.vote_average >= double.Parse(_settings.MinVoteAverage))
+                    movies.AddIfNotNull(new Tv.Movie()
                     {
-                        movies.AddIfNotNull(new Tv.Movie()
-                        {
-                            Title = movie.title,
-                            TmdbId = movie.id,
-                            ImdbId = null,
-                            Year = DateTime.Parse(movie.release_date).Year
-                        });
-                    }
+                        Title = movie.title,
+                        TmdbId = movie.id,
+                        ImdbId = null,
+                        Year = DateTime.Parse(movie.release_date).Year
+                    });
                 }
             }
             else
@@ -73,16 +70,13 @@ namespace NzbDrone.Core.NetImport.TMDb
                         continue;
                     }
 
-                    if (movie.vote_average >= double.Parse(_settings.MinVoteAverage))
+                    movies.AddIfNotNull(new Tv.Movie()
                     {
-                        movies.AddIfNotNull(new Tv.Movie()
-                        {
-                            Title = movie.title,
-                            TmdbId = movie.id,
-                            ImdbId = null,
-                            Year = DateTime.Parse(movie.release_date).Year
-                        });
-                    }
+                        Title = movie.title,
+                        TmdbId = movie.id,
+                        ImdbId = null,
+                        Year = DateTime.Parse(movie.release_date).Year
+                    });
                 }
             }
 
