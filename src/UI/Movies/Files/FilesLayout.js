@@ -42,9 +42,9 @@ module.exports = Marionette.Layout.extend({
 						cell  : FileTitleCell
 				},
 				{
-					name : "mediaInfo",
-					label : "Media Info",
-					cell : MediaInfoCell
+						name : "mediaInfo",
+						label : "Media Info",
+						cell : MediaInfoCell
 				},
 				{
 						name  : 'edition',
