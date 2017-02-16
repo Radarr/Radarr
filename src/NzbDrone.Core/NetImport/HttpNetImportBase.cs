@@ -9,10 +9,8 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Http.CloudFlare;
 using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Tv;
 

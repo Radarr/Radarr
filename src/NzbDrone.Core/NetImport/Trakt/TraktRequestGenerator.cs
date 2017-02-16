@@ -1,27 +1,28 @@
 ﻿using NzbDrone.Common.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
     public class TraktRequestGenerator : INetImportRequestGenerator
     {
         public TraktSettings Settings { get; set; }
+        public string TraktApiUrl { get; set; }
+
+        public TraktRequestGenerator()
+        {
+            TraktApiUrl = "https://api.trakt.tv";
+        }
 
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
-
-            pageableRequests.Add(GetMovies(null));
-
+            pageableRequests.Add(GetTraktMovies());
             return pageableRequests;
         }
 
-        private IEnumerable<NetImportRequest> GetMovies(string searchParameters)
+        private IEnumerable<NetImportRequest> GetTraktMovies()
         {
-            var link = Settings.Link.Trim();
+            var link = TraktApiUrl;
 
             switch (Settings.ListType)
             {

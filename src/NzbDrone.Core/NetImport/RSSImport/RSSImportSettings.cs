@@ -1,16 +1,10 @@
-﻿using FluentValidation;
-using NzbDrone.Core.Annotations;
-using NzbDrone.Core.Profiles;
-using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Validation;
+﻿using NzbDrone.Core.Annotations;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
 
     public class RSSImportSettings : NetImportBaseSettings
     {
-        //private const string helpLink = "https://imdb.com";
-
         public RSSImportSettings()
         {
             Link = "http://rss.yoursite.com";
