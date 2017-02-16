@@ -30,7 +30,7 @@ namespace NzbDrone.Core.NetImport.TMDb
             var ceritification = Settings.Ceritification;
             var includeGenreIds = Settings.IncludeGenreIds;
             var excludeGenreIds = Settings.ExcludeGenreIds;
-            var languageCode = (TMDbLanguageCodes)Settings.LanguageCode;
+            var languageCode = (TMDbLanguageCodes)Settings.OriginalLanguage;
 
             var todaysDate = DateTime.Now.ToString("yyyy-MM-dd");
             var threeMonthsAgo = DateTime.Parse(todaysDate).AddMonths(-3).ToString("yyyy-MM-dd");

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.NetImport.TMDb
@@ -14,15 +15,15 @@ namespace NzbDrone.Core.NetImport.TMDb
         }
     }
 
-    public class TMDbSettings : NetImportBaseSettings
+    public class TMDbSettings : IProviderConfig
     {
         private static readonly TMDbSettingsValidator Validator = new TMDbSettingsValidator();
 
         public TMDbSettings()
         {
             MinVoteAverage = "5.5";
-            MinVotes = 1000;
-            LanguageCode = (int)TMDbLanguageCodes.en;
+            MinVotes = 1;
+            OriginalLanguage = (int)TMDbLanguageCodes.en;
         }
 
         [FieldDefinition(0, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TMDbListType), HelpText = "Type of list your seeking to import from")]
@@ -46,10 +47,10 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(6, Label = "Exclude Genre Ids", HelpText = "Filter movies by TMDb Genre Ids (Comma Separated)")]
         public string ExcludeGenreIds { get; set; }
 
-        [FieldDefinition(7, Label = "Language Code", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
-        public int LanguageCode { get; set; }
+        [FieldDefinition(7, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
+        public int OriginalLanguage { get; set; }
 
-        public new NzbDroneValidationResult Validate()
+        public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
