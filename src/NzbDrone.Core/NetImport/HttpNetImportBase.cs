@@ -7,12 +7,8 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Http.CloudFlare;
-using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Tv;
 
@@ -107,30 +103,6 @@ namespace NzbDrone.Core.NetImport
                     _logger.Warn("{0} {1}", this, httpException.Message);
                 }
             }
-            catch (RequestLimitReachedException)
-            {
-                _logger.Warn("API Request Limit reached for {0}", this);
-            }
-            catch (ApiKeyException)
-            {
-                _logger.Warn("Invalid API Key for {0} {1}", this, url);
-            }
-            catch (CloudFlareCaptchaException ex)
-            {
-                if (ex.IsExpired)
-                {
-                    _logger.Error(ex, "Expired CAPTCHA token for {0}, please refresh in indexer settings.", this);
-                }
-                else
-                {
-                    _logger.Error(ex, "CAPTCHA token required for {0}, check indexer settings.", this);
-                }
-            }
-            catch (IndexerException ex)
-            {
-                var message = string.Format("{0} - {1}", ex.Message, url);
-                _logger.Warn(ex, message);
-            }
             catch (Exception feedEx)
             {
                 feedEx.Data.Add("FeedUrl", url);
@@ -184,33 +156,6 @@ namespace NzbDrone.Core.NetImport
                 {
                     return new ValidationFailure(string.Empty, "No results were returned from your list, please check your settings.");
                 }
-            }
-            catch (ApiKeyException)
-            {
-                _logger.Warn("List returned result for RSS URL, API Key appears to be invalid");
-
-                return new ValidationFailure("ApiKey", "Invalid API Key");
-            }
-            catch (RequestLimitReachedException)
-            {
-                _logger.Warn("Request limit reached");
-            }
-            catch (CloudFlareCaptchaException ex)
-            {
-                if (ex.IsExpired)
-                {
-                    return new ValidationFailure("CaptchaToken", "CloudFlare CAPTCHA token expired, please Refresh.");
-                }
-                else
-                {
-                    return new ValidationFailure("CaptchaToken", "Site protected by CloudFlare CAPTCHA. Valid CAPTCHA token required.");
-                }
-            }
-            catch (UnsupportedFeedException ex)
-            {
-                _logger.Warn(ex, "List feed is not supported");
-
-                return new ValidationFailure(string.Empty, "List feed is not supported: " + ex.Message);
             }
             catch (NetImportException ex)
             {
