@@ -22,8 +22,8 @@ namespace NzbDrone.Core.NetImport.TMDb
         public TMDbSettings()
         {
             Link = "https://api.themoviedb.org";
-            MinVoteAverage = "5.5";
-            MinVotes = 1000;
+            MinVoteAverage = "5";
+            MinVotes = 1;
             LanguageCode = (int)TMDbLanguageCodes.en;
         }
 

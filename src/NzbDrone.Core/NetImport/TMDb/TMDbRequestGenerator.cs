@@ -14,13 +14,11 @@ namespace NzbDrone.Core.NetImport.TMDb
         public IHttpClient HttpClient { get; set; }
         public Logger Logger { get; set; }
 
-        //public string TMDbApiUrl { get; set; }
         public int MaxPages { get; set; }
 
         public TMDbRequestGenerator()
         {
             MaxPages = 3;
-            // TMDbApiUrl = "https://api.themoviedb.org";
         }
 
         public virtual NetImportPageableRequestChain GetMovies()
@@ -45,7 +43,7 @@ namespace NzbDrone.Core.NetImport.TMDb
             switch (Settings.ListType)
             {
                 case (int)TMDbListType.List:
-                    tmdbParams = $"/3/list/{Settings.ListId}/?api_key=1a7373301961d03f97f853a876dd1212";
+                    tmdbParams = $"/3/list/{Settings.ListId}?api_key=1a7373301961d03f97f853a876dd1212";
                     break;
                 case (int)TMDbListType.Theaters:
                     tmdbParams = $"/3/discover/movie?api_key=1a7373301961d03f97f853a876dd1212&primary_release_date.gte={threeMonthsAgo}&primary_release_date.lte={todaysDate}&vote_count.gte={minVoteCount}&vote_average.gte={minVoteAverage}{ceritification}&with_genres={includeGenreIds}&without_genres={excludeGenreIds}&with_original_language={languageCode}";
@@ -82,15 +80,15 @@ namespace NzbDrone.Core.NetImport.TMDb
                 var result = Json.Deserialize<MovieSearchRoot>(response.Content);
 
                 // @TODO Prolly some error handling to do here
-                pageableRequests.Add(GetPagedRequests(tmdbParams, result.total_pages));
+                pageableRequests.Add(GetMovies(tmdbParams, result.total_pages));
                 return pageableRequests;
             }
 
-            pageableRequests.Add(GetPagedRequests(tmdbParams, 0));
+            pageableRequests.Add(GetMovies(tmdbParams, 0));
             return pageableRequests;
         }
 
-        private IEnumerable<NetImportRequest> GetPagedRequests(string tmdbParams, int totalPages)
+        private IEnumerable<NetImportRequest> GetMovies(string tmdbParams, int totalPages)
         {
             var baseUrl = $"{Settings.Link.TrimEnd("/")}{tmdbParams}";
             if (Settings.ListType != (int)TMDbListType.List)

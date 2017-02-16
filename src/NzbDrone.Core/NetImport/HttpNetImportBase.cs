@@ -17,16 +17,12 @@ namespace NzbDrone.Core.NetImport
     public abstract class HttpNetImportBase<TSettings> : NetImportBase<TSettings>
         where TSettings : IProviderConfig, new()
     {
-        protected const int MaxNumResultsPerQuery = 1000;
-
         protected readonly IHttpClient _httpClient;
 
         public override bool Enabled => true;
-
         public bool SupportsPaging => PageSize > 20;
 
         public virtual int PageSize => 20;
-
         public virtual TimeSpan RateLimit => TimeSpan.FromSeconds(2);
 
         public abstract INetImportRequestGenerator GetRequestGenerator();
@@ -41,7 +37,6 @@ namespace NzbDrone.Core.NetImport
         public override IList<Movie> Fetch()
         {
             var generator = GetRequestGenerator();
-            
             return FetchMovies(generator.GetMovies());
         }
 
@@ -57,17 +52,13 @@ namespace NzbDrone.Core.NetImport
                 for (int i = 0; i < pageableRequestChain.Tiers; i++)
                 {
                     var pageableRequests = pageableRequestChain.GetTier(i);
-
                     foreach (var pageableRequest in pageableRequests)
                     {
                         var pagedReleases = new List<Movie>();
-
                         foreach (var request in pageableRequest)
                         {
                             url = request.Url.FullUri;
-
                             var page = FetchPage(request, parser);
-
                             pagedReleases.AddRange(page);
                         }
 
@@ -114,7 +105,7 @@ namespace NzbDrone.Core.NetImport
 
         protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)
         {
-            var response = FetchIndexerResponse(request);
+            var response = FetchNetImportResponse(request);
 
             return parser.ParseResponse(response).ToList().Select(m =>
             {
@@ -125,7 +116,7 @@ namespace NzbDrone.Core.NetImport
             }).ToList();
         }
 
-        protected virtual NetImportResponse FetchIndexerResponse(NetImportRequest request)
+        protected virtual NetImportResponse FetchNetImportResponse(NetImportRequest request)
         {
             _logger.Debug("Downloading List " + request.HttpRequest.ToString(false));
 

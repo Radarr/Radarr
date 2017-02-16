@@ -10,9 +10,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
-
             pageableRequests.Add(GetMovies(null));
-
             return pageableRequests;
         }
 
