@@ -16,8 +16,8 @@ namespace NzbDrone.Core.NetImport.StevenLu
     public class StevenLuImport : HttpNetImportBase<StevenLuSettings>
     {
         public override string Name => "StevenLu";
-        public override bool Enabled => false;
-        public override bool EnableAuto => false;
+        public override bool Enabled => true;
+        public override bool EnableAuto => true;
 
         public StevenLuImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)
