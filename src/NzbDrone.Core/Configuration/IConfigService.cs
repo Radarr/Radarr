@@ -47,6 +47,9 @@ namespace NzbDrone.Core.Configuration
         int MinimumAge { get; set; }
 
         int NetImportSyncInterval { get; set; }
+	string TraktAuthToken { get; set; }
+	string TraktRefreshToken { get; set; }
+	int TraktTokenExpiry { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }

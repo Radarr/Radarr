@@ -34,7 +34,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         [FieldDefinition(3, Label = "List Name", HelpText = "Required for Custom List")]
         public string Listname { get; set; }
-
+        
     }
 
 

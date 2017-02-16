@@ -13,4 +13,22 @@
 						<input type="number" name="netImportSyncInterval" class="form-control" min="0" max="1440"/>
 				</div>
 		</div>
+		<legend>Trakt Authentication</legend>
+		<div class="form-group">
+		                <label class="col-sm-1 control-label">Auth Token</label>
+				<div class="col-sm-4">
+				                <input type="text" readonly="readonly" name="traktAuthToken" class="form-control x-trakt-auth-token"/>
+						<input type="text" readonly="readonly" name="traktTokenExpiry" class="form-control x-trakt-token-expiry"/>
+		</div></div>
+		<div class="form-group">
+		                <label class="col-sm-1 control-label">Refresh Token</label>
+				<div class="col-sm-4">
+				                <input type="text" readonly="readonly" name="traktRefreshToken" class="form-control x-trakt-refresh-token"/>
+</div>
+<div class="input-group-btn">
+                                                 <button class="btn btn-danger btn-icon-only x-reset-trakt-tokens" title="Reset Trakt Tokens"><i class="icon-sonarr-refresh"></i></button>
+	                                         <button class="btn btn-danger btn-icon-only x-revoke-trakt-tokens" title="Revoke Trakt Tokens"><i class="icon-sonarr-logout"></i></button>
+																							                                                                                                                                           </div >
+
+</div>	        
 </fieldset>
