@@ -101,18 +101,18 @@ namespace NzbDrone.Core.NetImport
                         switch(_configService.ListSyncLevel)
                         {
                             case "logOnly":
-                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie.TitleSlug);
+                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
                                 break;
                             case "keepAndUnmonitor":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie.TitleSlug);
+                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
                                 movie.Monitored = false;
                                 break;
                             case "removeAndKeep":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie.TitleSlug);
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
                                 _movieService.DeleteMovie(movie.Id, false);
                                 break;
                             case "removeAndDelete":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie.TitleSlug);
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
                                 _movieService.DeleteMovie(movie.Id, true);
                                 //TODO: for some reason the files are not deleted in this case... any idea why?
                                 break;
