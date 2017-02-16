@@ -8,13 +8,16 @@ using System.Data;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(132)]
+    [Migration(133)]
     public class add_allflicksurl : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("Movies").AddColumn("AllFlicksUrl").AsString().Nullable();
-        }
+	    if (!this.Schema.Schema("dbo").Table("Movies").Column("AllFlicksUrl").Exists())
+	    {
+                Alter.Table("Movies").AddColumn("AllFlicksUrl").AsString().Nullable();
+            }
+	}
 
     }
 }
