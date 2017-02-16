@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Tv;
 
@@ -25,7 +21,7 @@ namespace NzbDrone.Core.NetImport
         public abstract bool Enabled { get; }
         public abstract bool EnableAuto { get; }
 
-        public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
+        protected NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {
             _configService = configService;
             _parsingService = parsingService;
@@ -44,9 +40,9 @@ namespace NzbDrone.Core.NetImport
 
                 yield return new NetImportDefinition
                 {
-                    Name = this.Name,
+                    Name = Name,
                     Enabled = config.Validate().IsValid && Enabled,
-                    EnableAuto = true,
+                    EnableAuto = false,
                     ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = config

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using NzbDrone.Common.Http;
-using NzbDrone.Common.Serializer;
-using NzbDrone.Core.IndexerSearch.Definitions;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
@@ -14,18 +10,11 @@ namespace NzbDrone.Core.NetImport.RSSImport
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
-
-            pageableRequests.Add(GetMovies(null));
-
+            pageableRequests.Add(GetRssMovies());
             return pageableRequests;
         }
 
-        //public NetImportPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
-        //{
-        //    return new NetImportPageableRequestChain();
-        //}
-
-        private IEnumerable<NetImportRequest> GetMovies(string searchParameters)
+        private IEnumerable<NetImportRequest> GetRssMovies()
         {
             var request = new NetImportRequest($"{Settings.Link.Trim()}", HttpAccept.Rss);
             yield return request;

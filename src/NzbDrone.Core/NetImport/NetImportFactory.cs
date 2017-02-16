@@ -33,11 +33,6 @@ namespace NzbDrone.Core.NetImport
             return base.Active().Where(c => c.Enabled).ToList();
         }
 
-        public override void SetProviderCharacteristics(INetImport provider, NetImportDefinition definition)
-        {
-            base.SetProviderCharacteristics(provider, definition);
-        }
-
         public List<INetImport> Enabled()
         {
             var enabledImporters = GetAvailableProviders().Where(n => ((NetImportDefinition)n.Definition).Enabled);

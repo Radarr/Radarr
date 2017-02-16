@@ -1,22 +1,11 @@
 ﻿using Newtonsoft.Json;
 using NzbDrone.Core.NetImport.Exceptions;
-using NzbDrone.Core.Tv;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
 {
@@ -24,9 +13,6 @@ namespace NzbDrone.Core.NetImport.CouchPotato
     {
         private readonly CouchPotatoSettings _settings;
         private NetImportResponse _importResponse;
-        private readonly Logger _logger;
-
-        private static readonly Regex ReplaceEntities = new Regex("&[a-z]+;", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public CouchPotatoParser(CouchPotatoSettings settings)
         {

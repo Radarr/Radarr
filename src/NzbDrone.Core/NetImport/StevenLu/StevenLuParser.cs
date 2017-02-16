@@ -7,16 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.NetImport.StevenLu
 {
@@ -31,11 +23,11 @@ namespace NzbDrone.Core.NetImport.StevenLu
             _settings = settings;
         }
 
-        public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<Movie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Tv.Movie>();
+            var movies = new List<Movie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -44,7 +36,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
 
             var jsonResponse = JsonConvert.DeserializeObject<List<StevenLuResponse>>(_importResponse.Content);
 
-            // no movies were return
+            // no movies were returned
             if (jsonResponse == null)
             {
                 return movies;
