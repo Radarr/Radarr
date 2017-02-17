@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Messaging.Commands;
@@ -6,6 +7,7 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.NetImport
 {
