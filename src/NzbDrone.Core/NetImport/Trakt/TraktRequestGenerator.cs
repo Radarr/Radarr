@@ -1,10 +1,31 @@
 ﻿using NzbDrone.Common.Http;
+using System;
 using System.Collections.Generic;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using NzbDrone.Core.Configuration;
+
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
+    public class refreshRequestResponse
+    {
+	//the next 3 lines can eventually be removed and replaced with the ones marked below
+        public bool success { get; set; }
+        public string oauth { get; set; }
+        public string refresh { get; set; }
+	/*//replace with the lines below when radarrAPI changes have been merged
+	public string access_token { get; set; }
+        public string token_type { get; set; }
+        public int expires_in { get; set; }
+        public string refresh_token { get; set; }
+        public string scope { get; set; }*/
+    }
+
     public class TraktRequestGenerator : INetImportRequestGenerator
     {
+    	public IConfigService _configService;
         public TraktSettings Settings { get; set; }
 
         public virtual NetImportPageableRequestChain GetMovies()
@@ -58,10 +79,56 @@ namespace NzbDrone.Core.NetImport.Trakt
                     link = link + "/movies/watched/all" + filters;
                     break;
             }
+            if (_configService.TraktRefreshToken != string.Empty) 
+            {
+                //tokens were overwritten with something other than nothing
+                if (_configService.NewTraktTokenExpiry > _configService.TraktTokenExpiry)
+                {
+                    //but our refreshedTokens are more current
+                    _configService.TraktAuthToken = _configService.NewTraktAuthToken;
+                    _configService.TraktRefreshToken = _configService.NewTraktRefreshToken;
+                    _configService.TraktTokenExpiry = _configService.NewTraktTokenExpiry;
+                }
+
+                Int32 unixTime= (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
+                if ( unixTime > _configService.TraktTokenExpiry)
+                {
+		            //the next line should eventually be removed and replaced with the one commented out below it
+                    var url = "https://api.couchpota.to/authorize/trakt_refresh?token="+_configService.TraktRefreshToken;
+                    //var url = "https://radarr.aeonlucid.com/authorize/trakt_refresh?token="+_configService.TraktRefreshToken; 
+
+                    HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
+                    string rsponseString = string.Empty;
+                    using (HttpWebResponse rsponse = (HttpWebResponse)rquest.GetResponse())
+                    using (Stream stream = rsponse.GetResponseStream())
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        rsponseString = reader.ReadToEnd();
+                    }
+                    refreshRequestResponse j1 = Newtonsoft.Json.JsonConvert.DeserializeObject<refreshRequestResponse>(rsponseString);
+                    _configService.TraktAuthToken = j1.oauth; //eventually replace with j1.access_token
+                    _configService.TraktRefreshToken = j1.refresh; //eventually replace with j1.refresh_token
+
+                    //lets have it expire in 8 weeks (4838400 seconds)
+                    _configService.TraktTokenExpiry = unixTime + 4838400;
+
+                    //store the refreshed tokens in case they get overwritten by an old set of tokens
+                    _configService.NewTraktAuthToken = _configService.TraktAuthToken;
+                    _configService.NewTraktRefreshToken = _configService.TraktRefreshToken;
+                    _configService.NewTraktTokenExpiry = _configService.TraktTokenExpiry;
+                }
+            }
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", "657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0");
+            //request.HttpRequest.Headers.Add("trakt-api-key", "657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0"); //radarr
+            //the line below should eventually be replaced with the one commented out above
+	        request.HttpRequest.Headers.Add("trakt-api-key", "8a54ed7b5e1b56d874642770ad2e8b73e2d09d6e993c3a92b1e89690bb1c9014"); //couchpotato
+            if (_configService.TraktAuthToken != null)
+            {
+                request.HttpRequest.Headers.Add("Authorization", "Bearer " + _configService.TraktAuthToken);
+            }
 
             yield return request;
         }
