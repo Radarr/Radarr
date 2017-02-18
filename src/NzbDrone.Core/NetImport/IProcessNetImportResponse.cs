@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.NetImport

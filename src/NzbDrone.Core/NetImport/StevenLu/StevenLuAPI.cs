@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Xml.Serialization;
-
-namespace NzbDrone.Core.NetImport.StevenLu
+﻿namespace NzbDrone.Core.NetImport.StevenLu
 {
     public class StevenLuResponse
     {
