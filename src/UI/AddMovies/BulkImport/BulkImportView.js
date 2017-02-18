@@ -7,7 +7,7 @@ var BulkImportCollection = require("./BulkImportCollection");
 var QualityCell = require('./QualityCell');
 var TmdbIdCell = require('./TmdbIdCell');
 var GridPager = require('../../Shared/Grid/Pager');
-var SelectAllCell = require('../../Cells/SelectAllCell');
+var SelectAllCell = require('./BulkImportSelectAllCell');
 var ProfileCell = require('./BulkImportProfileCellT');
 var MonitorCell = require('./BulkImportMonitorCell');
 var MoviePathCell = require("./MoviePathCell");
@@ -66,7 +66,8 @@ module.exports = Marionette.Layout.extend({
 					name : '',
 					cell : SelectAllCell,
 					headerCell : 'select-all',
-					sortable : false
+					sortable : false,
+					cellValue : 'this'
 				},
 				{
 					name     : 'movie',
@@ -107,7 +108,6 @@ module.exports = Marionette.Layout.extend({
 					cell     : QualityCell,
 					cellValue : 'this',
 					sortable : false
-
 				}
 		],
 
@@ -182,7 +182,7 @@ module.exports = Marionette.Layout.extend({
 
 			promise.done(function() {
 				Messenger.show({
-					message        : "Imported movies from list.",
+					message        : "Imported movies from folder.",
 					hideAfter      : 8,
 					hideOnNavigate : true
 				});
@@ -214,6 +214,7 @@ module.exports = Marionette.Layout.extend({
 					return;
 				}
 
+				//TODO: override row in order to set an opacity based on duplication state of the movie
 				this.importGrid = new Backgrid.Grid({
 						columns    : this.columns,
 						collection : this.bulkImportCollection,

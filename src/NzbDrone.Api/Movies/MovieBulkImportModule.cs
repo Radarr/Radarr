@@ -57,7 +57,7 @@ namespace NzbDrone.Api.Movie
                 //Todo error handling
             }
 
-            var existingMovieTmdbIds = _movieService.GetAllMovies().Select(m => m.TmdbId);
+            //var existingMovieTmdbIds = _movieService.GetAllMovies().Select(m => m.TmdbId);
 
             RootFolder rootFolder = _rootFolderService.Get(Request.Query.Id);
 
@@ -135,7 +135,7 @@ namespace NzbDrone.Api.Movie
 
 				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
 
-				if (mappedMovie != null && !existingMovieTmdbIds.Contains(mappedMovie.TmdbId))
+				if (mappedMovie != null /*&& !existingMovieTmdbIds.Contains(mappedMovie.TmdbId)*/)
 				{
                     //Could split these checks to flag movie as possible duplicate
 
