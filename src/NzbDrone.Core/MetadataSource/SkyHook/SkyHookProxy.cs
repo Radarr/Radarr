@@ -355,7 +355,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     using (WebClient client = new WebClient())
                     {
-                        string tempTitle = referer + "title/" + ToUrlSlug(movie.Title);
+                        string tempTitle = referer + "title/" + ToUrlSlug(movie.Title, true);
                         for (int i = -1; i < 2; i++)
                         {
                             int tempYear = movie.Year + i;
@@ -808,7 +808,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        public static string ToUrlSlug(string value)
+        public static string ToUrlSlug(string value, bool allflicks = false)
         {
             //First to lower case
             value = value.ToLowerInvariant();
@@ -819,6 +819,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             //Replace spaces
             value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
+
+            if (allflicks)
+            {
+                //Replace & with and
+                value = Regex.Replace(value, @"&", "and", RegexOptions.Compiled);
+
+                //Replace / with -
+                value = Regex.Replace(value, @"/", "-", RegexOptions.Compiled);
+
+                //Replace ' with -
+                value = Regex.Replace(value, @"'", "-", RegexOptions.Compiled);
+            }
 
             //Remove invalid chars
             value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
