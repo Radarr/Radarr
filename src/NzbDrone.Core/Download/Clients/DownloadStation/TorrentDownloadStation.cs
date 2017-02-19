@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             failures.AddIfNotNull(TestOutputPath());
             if (failures.Any()) return;
             failures.AddIfNotNull(TestGetTorrents());
-        }        
+        }
 
         protected bool IsFinished(DownloadStationTorrent torrent)
         {
@@ -278,7 +278,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         protected ValidationFailure TestOutputPath()
         {
             try
-            {   
+            {
                 var folderInfo = _fileStationProxy.GetInfoFileOrDirectory($"/{GetDownloadDirectory()}", Settings);
 
                 if (!folderInfo.IsDir || folderInfo.Additional == null)
@@ -305,7 +305,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
-                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Sonarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
+                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
                 };
             }
             catch (WebException ex)
