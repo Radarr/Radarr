@@ -159,6 +159,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     movie.AlternativeTitles.Add(alternativeTitle.title);
                 }
             }
+            movie.AlternativeTitles.Add(resource.title);
+            movie.AlternativeTitles = movie.AlternativeTitles.Distinct().ToList();
 
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
@@ -353,19 +355,28 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
                 if (enableAllFlicks=="simple")
                 {
-                    using (WebClient client = new WebClient())
+                    foreach (var title in movie.AlternativeTitles)
                     {
-                        string tempTitle = referer + "title/" + ToUrlSlug(movie.Title, true);
+                        //using (WebClient client = new WebClient())
+                        //{
+                        string tempTitle = referer + "title/" + ToUrlSlug(title, true);
                         for (int i = -1; i < 2; i++)
                         {
                             int tempYear = movie.Year + i;
                             movie.AllFlicksUrl = tempTitle + "-" + tempYear.ToString();
-                            string r1 = client.DownloadString(movie.AllFlicksUrl);
+                            string r1;
+                            using (WebClient client = new WebClient())
+                            {
+                                r1 = client.DownloadString(movie.AllFlicksUrl);
+                            }
                             if (r1.Contains("Nothing here..."))
                                 movie.AllFlicksUrl = null;
                             else
                                 break;
-                        }
+                            }
+                        //}
+                        if (movie.AllFlicksUrl != null)
+                            break;
                     }
                 }
                 else
@@ -381,38 +392,48 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                     int length = 100;
                     int start = 0;
-                    string titleForNetflix = movie.Title;
-                    int numFound = 1;
-                    while (start < numFound && !(movie.Year > now_year))
+                    foreach (var title in movie.AlternativeTitles)
                     {
-                        string postData = "draw=4&columns[0][data]=box_art&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=title&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=true&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=year&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=true&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=genre&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=true&columns[3][search][value]=&columns[3][search][regex]=false&columns[4][data]=rating&columns[4][name]=&columns[4][searchable]=true&columns[4][orderable]=true&columns[4][search][value]=&columns[4][search][regex]=false&columns[5][data]=available&columns[5][name]=&columns[5][searchable]=true&columns[5][orderable]=true&columns[5][search][value]=&columns[5][search][regex]=false&columns[6][data]=director&columns[6][name]=&columns[6][searchable]=true&columns[6][orderable]=true&columns[6][search][value]=&columns[6][search][regex]=false&columns[7][data]=cast&columns[7][name]=&columns[7][searchable]=true&columns[7][orderable]=true&columns[7][search][value]=&columns[7][search][regex]=false&order[0][column]=5&order[0][dir]=desc&start=" + start.ToString() + "&length=" + length.ToString() + "&search[value]=" + titleForNetflix + "&search[regex]=false&movies=true&shows=false&documentaries=true&rating=netflix&min=1900&max=" + now_year.ToString();
-                        byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-
-                        HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
-                        rquest.Method = "POST";
-                        rquest.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                        rquest.Headers.Add("Cookie", cookIdent);
-                        rquest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                        using (var st = rquest.GetRequestStream())
-                            st.Write(byteArray, 0, byteArray.Length);
-                        var rsponse = (HttpWebResponse)rquest.GetResponse();
-                        var rsponseString = new StreamReader(rsponse.GetResponseStream()).ReadToEnd();
-                        rsponse.Close();
-                        Rootobject j1 = Newtonsoft.Json.JsonConvert.DeserializeObject<Rootobject>(rsponseString);               
-                        numFound = j1.recordsFiltered;
-			            if (!(numFound > 0))
-                            break;
-                        foreach (var result in j1.data)
+                        string titleForNetflix = title;
+                        int numFound = 1;
+                        while (start < numFound && !(movie.Year > now_year))
                         {
-                            if (result.title.ToString().ToUpper() == titleForNetflix.ToUpper())
+                            string postData = "draw=4&columns[0][data]=box_art&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=title&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=true&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=year&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=true&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=genre&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=true&columns[3][search][value]=&columns[3][search][regex]=false&columns[4][data]=rating&columns[4][name]=&columns[4][searchable]=true&columns[4][orderable]=true&columns[4][search][value]=&columns[4][search][regex]=false&columns[5][data]=available&columns[5][name]=&columns[5][searchable]=true&columns[5][orderable]=true&columns[5][search][value]=&columns[5][search][regex]=false&columns[6][data]=director&columns[6][name]=&columns[6][searchable]=true&columns[6][orderable]=true&columns[6][search][value]=&columns[6][search][regex]=false&columns[7][data]=cast&columns[7][name]=&columns[7][searchable]=true&columns[7][orderable]=true&columns[7][search][value]=&columns[7][search][regex]=false&order[0][column]=5&order[0][dir]=desc&start=" + start.ToString() + "&length=" + length.ToString() + "&search[value]=" + titleForNetflix + "&search[regex]=false&movies=true&shows=false&documentaries=true&rating=netflix&min=1900&max=" + now_year.ToString();
+                            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+                            HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
+                            rquest.Method = "POST";
+                            rquest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                            rquest.Headers.Add("Cookie", cookIdent);
+                            rquest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+                            using (var st = rquest.GetRequestStream())
+                                st.Write(byteArray, 0, byteArray.Length);
+                            var rsponse = (HttpWebResponse)rquest.GetResponse();
+                            var rsponseString = new StreamReader(rsponse.GetResponseStream()).ReadToEnd();
+                            rsponse.Close();
+                            Rootobject j1 = Newtonsoft.Json.JsonConvert.DeserializeObject<Rootobject>(rsponseString);
+                            numFound = j1.recordsFiltered;
+                            if (!(numFound > 0))
+                                break;
+                            foreach (var result in j1.data)
                             {
-                                if ((Convert.ToInt32(result.year) <= movie.Year + 1) && (Convert.ToInt32(result.year) >= movie.Year - 1))
+                                if (result.title.ToString().ToUpper() == titleForNetflix.ToUpper())
                                 {
-                                    movie.AllFlicksUrl = referer + "title/" + result.slug;
+                                    if ((Convert.ToInt32(result.year) <= movie.Year + 1) && (Convert.ToInt32(result.year) >= movie.Year - 1))
+                                    {
+                                        movie.AllFlicksUrl = referer + "title/" + result.slug;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        movie.AllFlicksUrl = null;
+                                    }
                                 }
                             }
+                            start = start + length;
                         }
-                        start = start + length;
+                        if (movie.AllFlicksUrl != null)
+                            break;
                     }
                 }
             }
