@@ -29,11 +29,11 @@ namespace NzbDrone.Core.Notifications.Pushalot
             var client = RestClientFactory.BuildClient(URL);
             var request = BuildRequest();
 
-            request.AddParameter("Source", "Sonarr");
+            request.AddParameter("Source", "Radarr");
 
             if (settings.Image)
             {
-                request.AddParameter("Image", "https://raw.githubusercontent.com/Sonarr/Sonarr/develop/Logo/128.png");                
+                request.AddParameter("Image", "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png");                
             }
 
             request.AddParameter("Title", title);
