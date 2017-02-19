@@ -185,14 +185,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Genres.Add(genre.name);
             }
 
-            if (resource.status == "Released")
+            var now = DateTime.Now;
+            if (now < movie.InCinemas)
+                movie.Status = MovieStatusType.Announced;
+            if (now >= movie.InCinemas) 
+                movie.Status = MovieStatusType.InCinemas;
+            if (now >= movie.PhysicalRelease)
+                movie.Status = MovieStatusType.Released;
+
+            /*if (resource.status == "Released")
             {
                 movie.Status = MovieStatusType.Released;
             }
             else
             {
                 movie.Status = MovieStatusType.Announced;
-            }
+            }*/
 
             if (resource.videos != null)
             {

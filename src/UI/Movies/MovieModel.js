@@ -23,7 +23,7 @@ module.exports = Backbone.Model.extend({
         return "announced"
       }
 
-      if (numOfMonths < 3 && numOfMonths > 0) {
+      if (status === "inCinemas") {
 
         return "inCinemas";
       }

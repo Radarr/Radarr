@@ -82,16 +82,17 @@ Handlebars.registerHelper('GetStatus', function() {
   if (status === "announced") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
   }
+  
 
-  if (numOfMonths < 3) {
-
+  if (status ==="inCinemas") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
   }
-
-  if (numOfMonths > 3) {
-    return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
-  }
-
+  //if (numOfMonths < 3) {
+  //  return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+  //}
+  //if (numOfMonths > 3) {
+  //  return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
+  //}
   if (status === 'released') {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
@@ -113,7 +114,7 @@ Handlebars.registerHelper('GetBannerStatus', function() {
     return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
 
-  if (numOfMonths < 3) {
+  if (status === "inCinemas") {
     return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
@@ -121,9 +122,9 @@ Handlebars.registerHelper('GetBannerStatus', function() {
       return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
   }
 
-  if (numOfMonths > 3) {
-    return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
-  }
+  //if (numOfMonths > 3) {
+  //  return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
+  //}
 
 
 
