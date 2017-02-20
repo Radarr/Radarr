@@ -54,6 +54,9 @@ Handlebars.registerHelper('tmdbUrl', function() {
 Handlebars.registerHelper('youTubeTrailerUrl', function() {
     return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
 });
+Handlebars.registerHelper('allFlicksUrl', function() {
+    return this.allFlicksUrl;
+});
 
 Handlebars.registerHelper('homepage', function() {
     return this.website;
@@ -155,14 +158,18 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
 
 Handlebars.registerHelper('DownloadedStatus', function() {
 
+  //if (this.allFlicksUrl) {
+  //  return "On Netflix";
+  //}
   if (this.downloaded) {
     return "Downloaded";
   }
   if (!this.monitored) {
     return "Not Monitored";
   }
-
-
+  //if (this.allFlicksUrl) {
+  //  return "On Netflix";
+  //}
   return "Missing";
 });
 
@@ -190,7 +197,12 @@ Handlebars.registerHelper('inCinemas', function() {
     var cinemasDate = new Date(this.inCinemas);
     var year = cinemasDate.getFullYear();
     var month = monthNames[cinemasDate.getMonth()];
+    if (this.status === 'announced') {
+	    return "Announced(In Cinemas: " + month + " " + year+")";
+    }
+    else {
     return "In Cinemas: " + month + " " + year;
+    }
   }
   return "To be announced";
 });

@@ -17,11 +17,11 @@
         {{/if}}
 
         <span class="label label-info">{{Bytes sizeOnDisk}}</span>
-        {{#if_eq status compare="announced"}}
-            <span class="label label-default">Announced</span>
+	{{#if_eq status  compare="announced"}}
+	    <span class="label label-default">{{inCinemas}}</span>
 	{{else}}
             <span class="label label-info">{{inCinemas}}</span>
-        {{/if_eq}}
+	{{/if_eq}}
         <span class="label label-{{DownloadedStatusColor}}" title="{{DownloadedQuality}}">{{DownloadedStatus}}</span>
     </div>
     <div class="col-md-4">
@@ -39,6 +39,10 @@
             {{#if youTubeTrailerId}}
                 <a href="{{youTubeTrailerUrl}}" class="label label-info">Trailer</a>
             {{/if}}
+	    
+	    {{#if allFlicksUrl}}
+	        <a href="{{allFlicksUrl}}" class="label label-info">AllFlicks</a>
+	    {{/if}}
         </span>
     </div>
 </div>
