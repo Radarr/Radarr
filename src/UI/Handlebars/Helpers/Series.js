@@ -164,7 +164,8 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
     }
 
   //if (this.status != "released") {
-  if (x < parseInt(this.minimumavailability)) {
+  var minAvail = parseInt(this.minimumavailability);
+  if (x < (isNaN(minAvail) ? 3 : minAvail)) {
     return "primary";
   }
 
