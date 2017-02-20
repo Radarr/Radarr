@@ -149,7 +149,22 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
       return "success";
     }
   //need a check in here to determine if the status exceeds the minavailability specification for the movie
-  if (this.status != "released") {
+  //should match cases from: src\NzbDrone.Core\Tv\MovieStatusType.cs
+  var x;
+    switch(this.status) {
+	case "announced":
+		    x= 1;
+		    break;
+	case "inCinemas":
+		    x=2;
+		    break;
+	case "released":
+		    x=3;
+		    break;
+    }
+
+  //if (this.status != "released") {
+  if (x < parseInt(this.minimumavailability)) {
     return "primary";
   }
 
