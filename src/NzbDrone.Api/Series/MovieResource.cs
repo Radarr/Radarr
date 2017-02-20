@@ -43,6 +43,7 @@ namespace NzbDrone.Api.Movie
 
         //Editing Only
         public bool Monitored { get; set; }
+	    public string Minimumavailability { get; set; }
         public int Runtime { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public string CleanTitle { get; set; }
@@ -129,6 +130,7 @@ namespace NzbDrone.Api.Movie
                 ProfileId = model.ProfileId,
                 
                 Monitored = model.Monitored,
+                Minimumavailability = model.Minimumavailability,
 
                 SizeOnDisk = size,
 
@@ -181,6 +183,7 @@ namespace NzbDrone.Api.Movie
                 ProfileId = resource.ProfileId,
 
                 Monitored = resource.Monitored,
+                Minimumavailability = resource.Minimumavailability,
 
                 Runtime = resource.Runtime,
                 LastInfoSync = resource.LastInfoSync,
@@ -210,6 +213,7 @@ namespace NzbDrone.Api.Movie
             movie.ProfileId = resource.ProfileId;
 
             movie.Monitored = resource.Monitored;
+	    movie.Minimumavailability = resource.Minimumavailability;
 
             movie.RootFolderPath = resource.RootFolderPath;
             movie.Tags = resource.Tags;
