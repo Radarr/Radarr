@@ -13,6 +13,7 @@ module.exports = Marionette.ItemView.extend({
     ui : {
         monitored           : '.x-monitored',
         profile             : '.x-profiles',
+	minimumavailability : '.x-minimumavailability',
         seasonFolder        : '.x-season-folder',
         rootFolder          : '.x-root-folder',
         selectedCount       : '.x-selected-count',
@@ -53,6 +54,7 @@ module.exports = Marionette.ItemView.extend({
         var selected = this.editorGrid.getSelectedModels();
 
         var monitored = this.ui.monitored.val();
+	var minAvail = this.ui.minimumavailability.val();
         var profile = this.ui.profile.val();
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();
@@ -63,6 +65,10 @@ module.exports = Marionette.ItemView.extend({
             } else if (monitored === 'false') {
                 model.set('monitored', false);
             }
+
+            if (minAvail !=='noChange') {
+		model.set('Minimumavailability', parseInt(minAvail,10));
+	    }
 
             if (profile !== 'noChange') {
                 model.set('profileId', parseInt(profile, 10));
