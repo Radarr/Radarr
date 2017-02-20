@@ -44,6 +44,7 @@ namespace NzbDrone.Core.NetImport
                     Enabled = config.Validate().IsValid && Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
+		    Minimumavailability = "3",
                     Implementation = GetType().Name,
                     Settings = config
                 };

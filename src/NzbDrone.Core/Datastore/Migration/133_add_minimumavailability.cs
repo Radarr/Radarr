@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentMigrator;
+﻿using FluentMigrator;
+using FluentMigrator.Expressions;
 using NzbDrone.Core.Datastore.Migration.Framework;
-using System.Data;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -13,9 +9,14 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("Movies").AddColumn("Minimumavailability").AsString().Nullable();
-
+            if (!this.Schema.Schema("dbo").Table("NetImport").Column("Minimumavailability").Exists())
+            {
+                Alter.Table("NetImport").AddColumn("Minimumavailability").AsString().Nullable();
+            }
+	    if (!this.Schema.Schema("dbo").Table("Movies").Column("Minimumavailability").Exists())
+	    {
+		Alter.Table("Movies").AddColumn("Minimumavailability").AsString().Nullable();
+	    }
         }
-
     }
 }

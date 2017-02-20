@@ -9,5 +9,6 @@ namespace NzbDrone.Api.NetImport
         public bool ShouldMonitor { get; set; }
         public string RootFolderPath { get; set; }
         public int ProfileId { get; set; }
+        public string Minimumavailability { get; set; }
     }
 }
