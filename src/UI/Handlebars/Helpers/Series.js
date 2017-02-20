@@ -148,7 +148,7 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
     if (this.downloaded) {
       return "success";
     }
-
+  //need a check in here to determine if the status exceeds the minavailability specification for the movie
   if (this.status != "released") {
     return "primary";
   }
