@@ -197,12 +197,7 @@ Handlebars.registerHelper('inCinemas', function() {
     var cinemasDate = new Date(this.inCinemas);
     var year = cinemasDate.getFullYear();
     var month = monthNames[cinemasDate.getMonth()];
-    if (this.status === 'announced') {
-	    return "Announced(In Cinemas: " + month + " " + year+")";
-    }
-    else {
     return "In Cinemas: " + month + " " + year;
-    }
   }
   return "To be announced";
 });
