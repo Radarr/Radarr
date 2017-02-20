@@ -28,7 +28,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     return Decision.Accept();
                 }
             }
-
+            //this should then become a check if subject.Movie.Status >= subject.Movie.MinimumAvailability
             if (subject.Movie.Status != MovieStatusType.Released)
             {
                 return Decision.Reject("Movie is not available");

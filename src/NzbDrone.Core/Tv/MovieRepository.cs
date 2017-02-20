@@ -196,6 +196,7 @@ namespace NzbDrone.Core.Tv
         {
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
+			     //this next line shouldchange to something like >= m.minmumAvailability
                              .AndWhere(m => m.Status == MovieStatusType.Released)
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())

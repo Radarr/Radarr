@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Tv
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
+	public string Minimumavailability { get; set; }
         public int ProfileId { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
