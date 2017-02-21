@@ -21,7 +21,7 @@ module.exports = NzbDroneCell.extend({
         },
 
         _updateId : function() {
-						var field = this.$el.find('.x-tmdbId');
+            var field = this.$el.find('.x-tmdbId');
             var data = field.val();
 
             var promise = $.ajax({
@@ -31,7 +31,7 @@ module.exports = NzbDroneCell.extend({
 
 						//field.spinForPromise(promise);
 
-            field.prop("disabled", true)
+            field.prop("disabled", true);
 
             var icon = this.$(".icon-sonarr-info");
 
@@ -48,15 +48,15 @@ module.exports = NzbDroneCell.extend({
             promise.success(function(response) {
                 _self.model.set(response);
                 _self.model.set('monitored', cacheMonitored); //reset to the previous monitored value
-								_self.model.set('profileId', cacheProfile);
-								_self.model.set('path', cachePath);
-								_self.model.set('movieFile', cacheFile); // may be unneccessary.
-								field.prop("disabled", false)
+                _self.model.set('profileId', cacheProfile);
+                _self.model.set('path', cachePath);
+                _self.model.set('movieFile', cacheFile); // may be unneccessary.
+                field.prop("disabled", false);
             });
 
             promise.error(function(request, status, error) {
                 console.error("Status: " + status, "Error: " + error);
-								field.prop("disabled", false)
+                field.prop("disabled", false);
             });
         }
 });

@@ -34,9 +34,10 @@ namespace NzbDrone.Api.Movie
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IDiskScanService _diskScanService;
 		private readonly ICached<Core.Tv.Movie> _mappedMovies;
+        private readonly IMovieService _movieService;
 
         public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker,
-		                             IDiskScanService diskScanService, ICacheManager cacheManager)
+		                             IDiskScanService diskScanService, ICacheManager cacheManager, IMovieService movieService)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
@@ -44,6 +45,7 @@ namespace NzbDrone.Api.Movie
             _importDecisionMaker = importDecisionMaker;
             _diskScanService = diskScanService;
 			_mappedMovies = cacheManager.GetCache<Core.Tv.Movie>(GetType(), "mappedMoviesCache");
+            _movieService = movieService;
             Get["/"] = x => Search();
         }
 
@@ -54,6 +56,8 @@ namespace NzbDrone.Api.Movie
             {
                 //Todo error handling
             }
+
+            //var existingMovieTmdbIds = _movieService.GetAllMovies().Select(m => m.TmdbId);
 
             RootFolder rootFolder = _rootFolderService.Get(Request.Query.Id);
 
@@ -108,8 +112,6 @@ namespace NzbDrone.Api.Movie
 					};
 				}
 
-
-
 				var files = _diskScanService.GetVideoFiles(f.Path);
 
 				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m);
@@ -133,8 +135,10 @@ namespace NzbDrone.Api.Movie
 
 				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
 
-				if (mappedMovie != null)
+				if (mappedMovie != null /*&& !existingMovieTmdbIds.Contains(mappedMovie.TmdbId)*/)
 				{
+                    //Could split these checks to flag movie as possible duplicate
+
 					mappedMovie.Monitored = true;
 
 					_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
@@ -144,7 +148,7 @@ namespace NzbDrone.Api.Movie
 
 				return null;
             });
-
+            
             return new PagingResource<MovieResource>
             {
                 Page = page,
@@ -159,10 +163,10 @@ namespace NzbDrone.Api.Movie
 
         private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Tv.Movie> movies)
         {
-            foreach (var currentSeries in movies)
+            foreach (var currentMovie in movies)
             {
-                var resource = currentSeries.ToResource();
-                var poster = currentSeries.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var resource = currentMovie.ToResource();
+                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;

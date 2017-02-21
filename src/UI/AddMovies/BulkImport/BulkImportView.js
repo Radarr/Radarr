@@ -7,7 +7,7 @@ var BulkImportCollection = require("./BulkImportCollection");
 var QualityCell = require('./QualityCell');
 var TmdbIdCell = require('./TmdbIdCell');
 var GridPager = require('../../Shared/Grid/Pager');
-var SelectAllCell = require('../../Cells/SelectAllCell');
+var SelectAllCell = require('./BulkImportSelectAllCell');
 var ProfileCell = require('./BulkImportProfileCellT');
 var MonitorCell = require('./BulkImportMonitorCell');
 var MoviePathCell = require("./MoviePathCell");
@@ -33,7 +33,7 @@ module.exports = Marionette.Layout.extend({
 
 		ui : {
 			addSelectdBtn : '.x-add-selected',
-			addAllBtn : '.x-add-all',
+			//addAllBtn : '.x-add-all',
 			pageSizeSelector : '.x-page-size'
 		},
 
@@ -66,7 +66,8 @@ module.exports = Marionette.Layout.extend({
 					name : '',
 					cell : SelectAllCell,
 					headerCell : 'select-all',
-					sortable : false
+					sortable : false,
+					cellValue : 'this'
 				},
 				{
 					name     : 'movie',
@@ -107,7 +108,6 @@ module.exports = Marionette.Layout.extend({
 					cell     : QualityCell,
 					cellValue : 'this',
 					sortable : false
-
 				}
 		],
 
@@ -132,14 +132,14 @@ module.exports = Marionette.Layout.extend({
 						callback     : this._addSelected,
 						ownerContext : this,
 						className    : 'x-add-selected'
-					},
-					{
-						title        : 'Add All',
-						icon         : 'icon-sonarr-add',
-						callback     : this._addAll,
-						ownerContext : this,
-						className    : 'x-add-all'
-					}
+					}//,
+					// {
+					// 	title        : 'Add All',
+					// 	icon         : 'icon-sonarr-add',
+					// 	callback     : this._addAll,
+					// 	ownerContext : this,
+					// 	className    : 'x-add-all'
+					// }
 				]
 			};
 
@@ -155,13 +155,13 @@ module.exports = Marionette.Layout.extend({
 		_addSelected : function() {
 			var selected = _.filter(this.bulkImportCollection.fullCollection.models, function(elem){
 				return elem.selected;
-			})
+			});
 			console.log(selected);
 
 			var promise = MoviesCollection.importFromList(selected);
 			this.ui.addSelectdBtn.spinForPromise(promise);
 			this.ui.addSelectdBtn.addClass('disabled');
-			this.ui.addAllBtn.addClass('disabled');
+			//this.ui.addAllBtn.addClass('disabled');
 
 			if (selected.length === 0) {
 				Messenger.show({
@@ -169,7 +169,7 @@ module.exports = Marionette.Layout.extend({
 					message : 'No movies selected'
 				});
 				return;
-					}
+			}
 
 			Messenger.show({
 				message : "Importing {0} movies. This can take multiple minutes depending on how many movies should be imported. Don't close this browser window until it is finished!".format(selected.length),
@@ -178,12 +178,19 @@ module.exports = Marionette.Layout.extend({
 				type : "error"
 			});
 
+			var _this = this;
+
 			promise.done(function() {
-					Messenger.show({
-							message        : "Imported movies from list.",
-							hideAfter      : 8,
-							hideOnNavigate : true
-					});
+				Messenger.show({
+					message        : "Imported movies from folder.",
+					hideAfter      : 8,
+					hideOnNavigate : true
+				});
+
+
+				_.forEach(selected, function(movie) {
+					movie.destroy(); //update the collection without the added movies
+				});
 			});
 		},
 
@@ -192,8 +199,8 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_handleEvent : function(event_name, data) {
-			if (event_name == "sync" || event_name == "content") {
-				this._showContent()
+			if (event_name === "sync" || event_name === "content") {
+				this._showContent();
 			}
 		},
 
@@ -207,6 +214,7 @@ module.exports = Marionette.Layout.extend({
 					return;
 				}
 
+				//TODO: override row in order to set an opacity based on duplication state of the movie
 				this.importGrid = new Backgrid.Grid({
 						columns    : this.columns,
 						collection : this.bulkImportCollection,

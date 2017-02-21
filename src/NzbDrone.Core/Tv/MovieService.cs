@@ -95,8 +95,6 @@ namespace NzbDrone.Core.Tv
 
         public List<Movie> AddMovies(List<Movie> newMovies)
         {
-            _logger.Debug("Adding {0} movies", newMovies.Count);
-
             newMovies.ForEach(m => Ensure.That(m, () => m).IsNotNull());
 
             newMovies.ForEach(m =>
@@ -112,7 +110,15 @@ namespace NzbDrone.Core.Tv
                 m.Added = DateTime.UtcNow;
             });
 
+            //var existingMovies = GetAllMovies();
+            //var potentialMovieCount = newMovies.Count;
+
+            //newMovies = newMovies.ExceptBy(n => n.TitleSlug, existingMovies, e => e.TitleSlug, StringComparer.InvariantCultureIgnoreCase).ToList();
+
             _movieRepository.InsertMany(newMovies);
+
+            //_logger.Debug("Adding {0} movies, {1} duplicates detected", newMovies.Count, potentialMovieCount - newMovies.Count);
+            _logger.Debug("Adding {0} movies", newMovies.Count);
 
             newMovies.ForEach(m =>
             {
