@@ -10,7 +10,7 @@ namespace NzbDrone.Core.NetImport
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
         public bool ShouldMonitor { get; set; }
-	    public MovieStatusType Minimumavailability { get; set; }
+        public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public string RootFolderPath { get; set; }

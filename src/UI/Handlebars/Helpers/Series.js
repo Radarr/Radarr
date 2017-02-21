@@ -155,7 +155,7 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
       inCinemas : 2,
       released : 3
     };
-  if (MovieStatusType[this.status] < MovieStatusType[this.minimumavailability]) {
+  if (MovieStatusType[this.status] < MovieStatusType[this.minimumAvailability]) {
     return "primary";
   }
 

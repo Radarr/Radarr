@@ -44,7 +44,7 @@ namespace NzbDrone.Core.NetImport
                     Enabled = config.Validate().IsValid && Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
-		            Minimumavailability = MovieStatusType.Released,
+		    MinimumAvailability = MovieStatusType.Released,
                     Implementation = GetType().Name,
                     Settings = config
                 };

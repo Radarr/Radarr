@@ -19,7 +19,7 @@ var view = Marionette.ItemView.extend({
 
 		ui : {
 				profile         : '.x-profile',
-				minimumavailability : '.x-minimumavailability',
+				minimumAvailability : '.x-minimumavailability',
 				rootFolder      : '.x-root-folder',
 			},
 
@@ -45,17 +45,17 @@ var view = Marionette.ItemView.extend({
 				if (RootFolders.get(defaultRoot)) {
 						this.ui.rootFolder.val(defaultRoot);
 				}
-			        this.ui.minimumavailability.val("released");
+			        this.ui.minimumAvailability.val("released");
 		},
 
 		_onBeforeSave : function() {
 			var profile = this.ui.profile.val();
-			var minAvail = this.ui.minimumavailability.val();
+			var minAvail = this.ui.minimumAvailability.val();
 			var rootFolderPath = this.ui.rootFolder.children(':selected').text();
 			this.model.set({
 				profileId : profile,
 				rootFolderPath : rootFolderPath,
-				minimumavailability : minAvail,
+				minimumAvailability : minAvail,
 			})
 		},
 

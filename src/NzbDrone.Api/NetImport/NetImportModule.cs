@@ -22,7 +22,7 @@ namespace NzbDrone.Api.NetImport
             resource.ProfileId = definition.ProfileId;
             resource.RootFolderPath = definition.RootFolderPath;
             resource.ShouldMonitor = definition.ShouldMonitor;
-            resource.Minimumavailability = definition.Minimumavailability;
+            resource.MinimumAvailability = definition.MinimumAvailability;
         }
 
         protected override void MapToModel(NetImportDefinition definition, NetImportResource resource)
@@ -34,7 +34,7 @@ namespace NzbDrone.Api.NetImport
             definition.ProfileId = resource.ProfileId;
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ShouldMonitor = resource.ShouldMonitor;
-            definition.Minimumavailability = resource.Minimumavailability;
+            definition.MinimumAvailability = resource.MinimumAvailability;
         }
 
         protected override void Validate(NetImportDefinition definition, bool includeWarnings)

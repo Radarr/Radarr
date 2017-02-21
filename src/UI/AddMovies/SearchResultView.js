@@ -22,8 +22,8 @@ var view = Marionette.ItemView.extend({
         rootFolder      : '.x-root-folder',
         seasonFolder    : '.x-season-folder',
         monitor         : '.x-monitor',
-	minimumavailability : '.x-minimumavailability',
-	minimumavailabilityTooltip : '.x-minimumavailability-tooltip',
+	minimumAvailability : '.x-minimumavailability',
+	minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
         monitorTooltip  : '.x-monitor-tooltip',
         addButton       : '.x-add',
         addSearchButton : '.x-add-search',
@@ -36,7 +36,6 @@ var view = Marionette.ItemView.extend({
         'change .x-profile'       : '_profileChanged',
         'change .x-root-folder'   : '_rootFolderChanged',
         'change .x-season-folder' : '_seasonFolderChanged',
-	'change .x-minimumavailability' : '_minimumavailabilityChanged',
         'change .x-monitor'       : '_monitorChanged'
     },
 
@@ -73,7 +72,7 @@ var view = Marionette.ItemView.extend({
 
         this.ui.seasonFolder.prop('checked', useSeasonFolder);
         this.ui.monitor.val(defaultMonitorEpisodes);
-	this.ui.minimumavailability.val("released");
+	this.ui.minimumAvailability.val("released");
 
         //TODO: make this work via onRender, FM?
         //works with onShow, but stops working after the first render
@@ -93,10 +92,10 @@ var view = Marionette.ItemView.extend({
             container : this.$el
         });
 
-	this.templateFunction = Marionette.TemplateCache.get('AddMovies/MinimumavailabilityTooltipTemplate');
+	this.templateFunction = Marionette.TemplateCache.get('AddMovies/MinimumAvailabilityTooltipTemplate');
 	var content1 = this.templateFunction();
 	
-	this.ui.minimumavailabilityTooltip.popover({
+	this.ui.minimumAvailabilityTooltip.popover({
 		content : content1,
 		html :true,
 		trigger : 'hover',
@@ -184,7 +183,7 @@ var view = Marionette.ItemView.extend({
         var profile = this.ui.profile.val();
         var rootFolderPath = this.ui.rootFolder.children(':selected').text();
         var monitor = this.ui.monitor.val();
-        var minAvail = this.ui.minimumavailability.val();
+        var minAvail = this.ui.minimumAvailability.val();
 
         var options = this._getAddMoviesOptions();
         options.searchForMovie = searchForMovie;
@@ -194,7 +193,7 @@ var view = Marionette.ItemView.extend({
             profileId      : profile,
             rootFolderPath : rootFolderPath,
             addOptions     : options,
-	    minimumavailability : minAvail,
+	    minimumAvailability : minAvail,
             monitored      : (monitor === 'all' ? true : false)
         }, { silent : true });
 

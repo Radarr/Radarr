@@ -10,6 +10,6 @@ namespace NzbDrone.Api.NetImport
         public bool ShouldMonitor { get; set; }
         public string RootFolderPath { get; set; }
         public int ProfileId { get; set; }
-        public MovieStatusType Minimumavailability { get; set; }
+        public MovieStatusType MinimumAvailability { get; set; }
     }
 }

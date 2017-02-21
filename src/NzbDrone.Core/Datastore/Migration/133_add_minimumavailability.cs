@@ -10,13 +10,13 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            if (!this.Schema.Schema("dbo").Table("NetImport").Column("Minimumavailability").Exists())
+            if (!this.Schema.Schema("dbo").Table("NetImport").Column("MinimumAvailability").Exists())
             {
-                Alter.Table("NetImport").AddColumn("Minimumavailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
+                Alter.Table("NetImport").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
             }
-	        if (!this.Schema.Schema("dbo").Table("Movies").Column("Minimumavailability").Exists())
+	        if (!this.Schema.Schema("dbo").Table("Movies").Column("MinimumAvailability").Exists())
 	        {
-		        Alter.Table("Movies").AddColumn("Minimumavailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
+		        Alter.Table("Movies").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
 	        }
         }
     }
