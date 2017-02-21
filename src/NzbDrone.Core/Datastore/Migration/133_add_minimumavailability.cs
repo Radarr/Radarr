@@ -1,6 +1,7 @@
 ﻿using FluentMigrator;
-using FluentMigrator.Expressions;
+//using FluentMigrator.Expressions;
 using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -15,7 +16,7 @@ namespace NzbDrone.Core.Datastore.Migration
             }
 	    if (!this.Schema.Schema("dbo").Table("Movies").Column("Minimumavailability").Exists())
 	    {
-		Alter.Table("Movies").AddColumn("Minimumavailability").AsString().Nullable();
+		Alter.Table("Movies").AddColumn("Minimumavailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
 	    }
         }
     }

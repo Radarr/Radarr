@@ -45,7 +45,7 @@ var view = Marionette.ItemView.extend({
 				if (RootFolders.get(defaultRoot)) {
 						this.ui.rootFolder.val(defaultRoot);
 				}
-			        this.ui.minimumavailability.val("3");
+			        this.ui.minimumavailability.val("released");
 		},
 
 		_onBeforeSave : function() {

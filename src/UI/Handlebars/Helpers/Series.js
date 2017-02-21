@@ -148,24 +148,14 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
     if (this.downloaded) {
       return "success";
     }
-  //need a check in here to determine if the status exceeds the minavailability specification for the movie
   //should match cases from: src\NzbDrone.Core\Tv\MovieStatusType.cs
-  var x;
-    switch(this.status) {
-	case "announced":
-		    x= 1;
-		    break;
-	case "inCinemas":
-		    x=2;
-		    break;
-	case "released":
-		    x=3;
-		    break;
-    }
-
-  //if (this.status != "released") {
-  var minAvail = parseInt(this.minimumavailability,10);
-  if (x < (isNaN(minAvail) ? 3 : minAvail)) {
+  var MovieStatusType = {
+      tBA : 0, 
+      announced : 1,
+      inCinemas : 2,
+      released : 3
+    };
+  if (MovieStatusType[this.status] < MovieStatusType[this.minimumavailability]) {
     return "primary";
   }
 

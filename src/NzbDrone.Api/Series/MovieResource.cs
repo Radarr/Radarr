@@ -43,7 +43,7 @@ namespace NzbDrone.Api.Movie
 
         //Editing Only
         public bool Monitored { get; set; }
-	    public string Minimumavailability { get; set; }
+	    public MovieStatusType Minimumavailability { get; set; }
         public int Runtime { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public string CleanTitle { get; set; }

@@ -29,11 +29,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 }
             }
 
-            MovieStatusType minAvail;
+            /*MovieStatusType minAvail;
             int x = 0;
             bool result = Int32.TryParse(subject.Movie.Minimumavailability, out x);
             //should match cases from: src\NzbDrone.Core\Tv\MovieStatusType.cs
-            switch (x)
+            switch (subject.Movie)
             {
                 case 1:
                     minAvail = MovieStatusType.Announced;
@@ -47,8 +47,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 default:
                     minAvail = MovieStatusType.Released;
                     break;
-            }
-            if (subject.Movie.Status < minAvail)
+            }*/
+            if (subject.Movie.Status < subject.Movie.Minimumavailability)
             {
                 return Decision.Reject("Movie is not available");
             }
