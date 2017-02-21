@@ -132,11 +132,17 @@ namespace NzbDrone.Api.Movie
 				}
 
 				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
-				mappedMovie.Monitored = true;
 
-				_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
+				if (mappedMovie != null)
+				{
+					mappedMovie.Monitored = true;
 
-				return mappedMovie;
+					_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
+
+					return mappedMovie;
+				}
+
+				return null;
             });
 
             return new PagingResource<MovieResource>

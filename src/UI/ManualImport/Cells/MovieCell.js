@@ -18,6 +18,10 @@ module.exports = NzbDroneCell.extend({
         {
             this.$el.html(movie.title + " (" + movie.year + ")" );
         }
+        else
+        {
+            this.$el.html("Click to select movie");
+        }
 
         this.delegateEvents();
         return this;

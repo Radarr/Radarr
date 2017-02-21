@@ -74,6 +74,10 @@ module.exports = Marionette.Layout.extend({
 				this.listenTo(this.model,  'change:images', this._updateImages);
 		},
 
+		_refreshFiles : function() {
+			this._showFiles();
+		},
+
 		onShow : function() {
 				this.searchLayout = new SearchLayout({ model : this.model });
 				this.searchLayout.startManualSearch = true;
@@ -159,7 +163,7 @@ module.exports = Marionette.Layout.extend({
 
 		_showFiles : function(e) {
 				if (e) {
-						e.preventDefault();
+					e.preventDefault();
 				}
 
 				this.ui.files.tab('show');

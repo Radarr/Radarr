@@ -33,6 +33,11 @@ namespace NzbDrone.Core.Parser
              //That did not work? Maybe some tool uses [] for years. Who would do that?
               new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+			//As a last resort for movies that have ( or [ in their title.
+			new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+						  RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
         };
 
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
@@ -357,7 +362,7 @@ namespace NzbDrone.Core.Parser
             {
                 if (!ValidateBeforeParsing(title)) return null;
 
-                title = title.Replace(" ", "."); //TODO: Determine if this breaks something. However, it shouldn't.
+                //title = title.Replace(" ", "."); //TODO: Determine if this breaks something. However, it shouldn't.
 
                 Logger.Debug("Parsing string '{0}'", title);
 
@@ -704,8 +709,33 @@ namespace NzbDrone.Core.Parser
             }
             
             
-            var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');
+            var seriesName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
             seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
+
+			var parts = seriesName.Split('.');
+			seriesName = "";
+			int n;
+			bool previousAcronym = false;
+			foreach (var part in parts)
+			{
+				if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
+				{
+					seriesName += part + ".";
+					previousAcronym = true;
+				}
+				else
+				{
+					if (previousAcronym)
+					{
+						seriesName += " ";
+						previousAcronym = false;
+					}
+					seriesName += part + " ";
+				}
+
+			}
+
+			seriesName = seriesName.Trim(' ');
 
             int airYear;
             int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);

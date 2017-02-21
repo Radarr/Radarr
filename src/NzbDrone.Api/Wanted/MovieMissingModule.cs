@@ -12,16 +12,14 @@ using NzbDrone.Core.Datastore.Events;
 
 namespace NzbDrone.Api.Wanted
 {
-    class MovieMissingModule : NzbDroneRestModuleWithSignalR<MovieResource, Core.Tv.Movie>,
-        IHandle<MovieGrabbedEvent>,
-        IHandle<MovieDownloadedEvent>
+    class MovieMissingModule : MovieModuleWithSignalR
     {
         protected readonly IMovieService _movieService;
 
         public MovieMissingModule(IMovieService movieService, 
                                   IQualityUpgradableSpecification qualityUpgradableSpecification, 
                                   IBroadcastSignalRMessage signalRBroadcaster) 
-            : base(signalRBroadcaster, "wanted/missing")
+            : base(movieService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
         {
 
             _movieService = movieService;
@@ -30,7 +28,7 @@ namespace NzbDrone.Api.Wanted
 
         private PagingResource<MovieResource> GetMissingMovies(PagingResource<MovieResource> pagingResource)
         {
-            var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>("physicalRelease", SortDirection.Descending);
+            var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>("title", SortDirection.Descending);
 
             if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
             {
@@ -41,37 +39,9 @@ namespace NzbDrone.Api.Wanted
                 pagingSpec.FilterExpression = v => v.Monitored == true;
             }
 
-            var resource = ApplyToPage(_movieService.MoviesWithoutFiles, pagingSpec, v => MapToResource(v, false));
+            var resource = ApplyToPage(_movieService.MoviesWithoutFiles, pagingSpec, v => MapToResource(v, true));
 
             return resource;
-        }
-
-        private MovieResource GetMovie(int id)
-        {
-            var movie = _movieService.GetMovie(id);
-            var resource = MapToResource(movie, true);
-            return resource;
-        }
-
-        private MovieResource MapToResource(Core.Tv.Movie movie, bool includeMovieFile)
-        {
-            var resource = movie.ToResource();
-            return resource;
-        }
-
-        public void Handle(MovieGrabbedEvent message)
-        {
-            var resource = message.Movie.Movie.ToResource();
-
-            //add a grabbed field in MovieResource?
-            //resource.Grabbed = true;
-
-            BroadcastResourceChange(ModelAction.Updated, resource);
-        }
-
-        public void Handle(MovieDownloadedEvent message)
-        {
-            BroadcastResourceChange(ModelAction.Updated, message.Movie.Movie.Id);
         }
     }
 }

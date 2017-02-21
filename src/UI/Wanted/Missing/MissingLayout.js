@@ -38,10 +38,10 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name     : 'this',
-            label    : 'Movie Title',
-            cell     : MovieTitleCell,
-            sortable : false
+            name      : 'title',
+            label     : 'Title',
+            cell      : MovieTitleCell,
+            cellValue : 'this',
         },
         {
             name  : 'inCinemas',
@@ -50,14 +50,13 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'physicalRelease',
-            label : 'PhysicalRelease',
+            label : 'Physical Release',
             cell  : RelativeDateCell
         },
         {
             name     : 'status',
             label    : 'Status',
             cell     : MovieStatusWithTextCell,
-            sortable : false
         },
 
     ],
@@ -116,11 +115,6 @@ module.exports = Marionette.Layout.extend({
                     callback     : this._toggleMonitoredOfSelected,
                     ownerContext : this,
                     className    : 'x-unmonitor-selected'
-                },
-                {
-                    title : 'Season Pass',
-                    icon  : 'icon-sonarr-monitored',
-                    route : 'seasonpass'
                 },
                 {
                     title      : 'Rescan Drone Factory Folder',

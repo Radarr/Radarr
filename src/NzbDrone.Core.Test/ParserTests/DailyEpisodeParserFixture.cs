@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 
     [TestFixture]
+	[Ignore("Series")]
     public class DailyEpisodeParserFixture : CoreTest
     {
         [TestCase("Conan 2011 04 18 Emma Roberts HDTV XviD BFF", "Conan", 2011, 04, 18)]

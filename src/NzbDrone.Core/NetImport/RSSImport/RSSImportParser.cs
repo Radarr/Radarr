@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using NzbDrone.Core.NetImport.Exceptions;
+﻿using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Tv;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
@@ -15,7 +13,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
@@ -135,9 +132,16 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
         protected virtual Movie ProcessItem(XElement item, Movie releaseInfo)
         {
-            var result = Parser.Parser.ParseMovieTitle(GetTitle(item));
+            var title = GetTitle(item);
 
-            releaseInfo.Title = GetTitle(item);
+            // Loosely allow movies (will work with IMDB)
+            if (title.ContainsIgnoreCase("TV Series") || title.ContainsIgnoreCase("Mini-Series"))
+            {
+                return null;
+            }
+
+            releaseInfo.Title = title;
+            var result = Parser.Parser.ParseMovieTitle(title);
 
             if (result != null)
             {

@@ -5,6 +5,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.ParserTests
 {
     [TestFixture]
+	[Ignore("Series")]
     public class SeriesTitleInfoFixture : CoreTest
     {
         [Test]

@@ -56,16 +56,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         title = $"{title} ✔";
                     }
 
-                    //if (IsPropertyExist(torrent, "RemasterTitle"))
-                    //{
-                    //    if (torrent.RemasterTitle != null)
-                    //    {
-                    //        title = $"{title} - {torrent.RemasterTitle}";
-                    //    }
-                    //}
-
                     // Only add approved torrents
-                    if (_settings.Approved && torrent.Checked)
+                    if (_settings.RequireApproved && torrent.Checked)
                     {
                         torrentInfos.Add(new PassThePopcornInfo()
                         {
@@ -83,7 +75,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         });
                     }
                     // Add all torrents
-                    else if (!_settings.Approved)
+                    else if (!_settings.RequireApproved)
                     {
                         torrentInfos.Add(new PassThePopcornInfo()
                         {
@@ -101,7 +93,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         });
                     }
                     // Don't add any torrents
-                    else if (_settings.Approved && !torrent.Checked)
+                    else if (_settings.RequireApproved && !torrent.Checked)
                     {
                         continue;
                     }
@@ -109,9 +101,37 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             }
 
             // prefer golden
+            if (_settings.Golden)
+            {
+                if (_settings.Scene)
+                {
+                    return
+                        torrentInfos.OrderByDescending(o => o.PublishDate)
+                            .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
+                            .ThenBy(o => ((dynamic) o).Scene ? 0 : 1)
+                            .ToArray();
+                }
+                return 
+                    torrentInfos.OrderByDescending(o => o.PublishDate)
+                        .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
+                        .ToArray();
+            }
+
             // prefer scene
-            // require approval
-            return torrentInfos.OrderBy(o => ((dynamic)o).Golden ? 0 : 1).ThenBy(o => ((dynamic)o).Scene ? 0 : 1).ThenByDescending(o => ((dynamic)o).PublishDate).ToArray();
+            if (_settings.Scene)
+            {
+                return 
+                    torrentInfos.OrderByDescending(o => o.PublishDate)
+                        .ThenBy(o => ((dynamic)o).Scene ? 0 : 1)
+                        .ToArray();
+            }
+
+            // order by date
+            return 
+                torrentInfos
+                    .OrderByDescending(o => o.PublishDate)
+                    .ToArray();
+
         }
 
         private string GetDownloadUrl(int torrentId, string authKey, string passKey)

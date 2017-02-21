@@ -4,7 +4,7 @@ addons:
   apt:
     packages:
       - nodejs
-      - npm
+#      - npm apparently not needed anymore.
 script:
   - ./build.sh
   - chmod +x test.sh

@@ -266,7 +266,8 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (message.MovieId.HasValue)
             {
-                var series = _movieService.GetMovie(message.MovieId.Value);
+                var movie = _movieService.GetMovie(message.MovieId.Value);
+                Scan(movie);
             }
             else
             {

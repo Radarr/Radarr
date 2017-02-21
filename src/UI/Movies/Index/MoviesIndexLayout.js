@@ -144,7 +144,11 @@ module.exports = Marionette.Layout.extend({
                     name  : 'sortTitle'
                 },
                 {
-                    title : 'Quality',
+                    title: 'Downloaded',
+                    name: 'downloadedQuality'
+                },
+                {
+                    title : 'Profile',
                     name  : 'profileId'
                 },
                 {

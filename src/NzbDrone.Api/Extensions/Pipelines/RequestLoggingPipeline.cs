@@ -66,13 +66,9 @@ namespace NzbDrone.Api.Extensions.Pipelines
         private Response LogError(NancyContext context, Exception exception)
         {
             var response = _errorPipeline.HandleException(context, exception);
-
             context.Response = response;
-
             LogEnd(context);
-
             context.Response = null;
-
             return response;
         }
 
@@ -80,12 +76,9 @@ namespace NzbDrone.Api.Extensions.Pipelines
         {
             if (request.Url.Query.IsNotNullOrWhiteSpace())
             {
-                return string.Concat(request.Url.Path, "?", request.Url.Query);
+                return string.Concat(request.Url.Path, request.Url.Query);
             }
-            else
-            {
-                return request.Url.Path;
-            }
+            return request.Url.Path;
         }
     }
 }

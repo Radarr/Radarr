@@ -6,6 +6,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 
     [TestFixture]
+	[Ignore("Series")]
     public class MultiEpisodeParserFixture : CoreTest
     {
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD", "WEEDS", 3, new[] { 1, 2, 3, 4, 5, 6 })]
