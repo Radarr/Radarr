@@ -194,10 +194,14 @@ namespace NzbDrone.Core.Tv
 
         public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
         {
+            
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
-			     //this next line shouldchange to something like >= m.minmumAvailability
-                             .AndWhere(m => m.Status == MovieStatusType.Released)
+                             //this needs to handle the cases from src\nzbdrone.core\tv\moviestatustype.cs
+                             .AndWhere(m => 
+                             (m.MinimumAvailability==MovieStatusType.Released && m.Status >=MovieStatusType.Released) ||
+                             (m.MinimumAvailability==MovieStatusType.InCinemas && m.Status >= MovieStatusType.InCinemas) ||
+                             (m.MinimumAvailability==MovieStatusType.Announced && m.Status >=MovieStatusType.Announced))
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
