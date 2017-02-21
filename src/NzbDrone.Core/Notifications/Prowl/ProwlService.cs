@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Notifications.Prowl
             {
                 var notification = new Prowlin.Notification
                                    {
-                                       Application = "Sonarr",
+                                       Application = "Radarr",
                                        Description = message,
                                        Event = title,
                                        Priority = priority,
