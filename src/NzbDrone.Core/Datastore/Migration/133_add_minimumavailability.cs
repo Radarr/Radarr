@@ -12,12 +12,12 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             if (!this.Schema.Schema("dbo").Table("NetImport").Column("Minimumavailability").Exists())
             {
-                Alter.Table("NetImport").AddColumn("Minimumavailability").AsString().Nullable();
+                Alter.Table("NetImport").AddColumn("Minimumavailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
             }
-	    if (!this.Schema.Schema("dbo").Table("Movies").Column("Minimumavailability").Exists())
-	    {
-		Alter.Table("Movies").AddColumn("Minimumavailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
-	    }
+	        if (!this.Schema.Schema("dbo").Table("Movies").Column("Minimumavailability").Exists())
+	        {
+		        Alter.Table("Movies").AddColumn("Minimumavailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
+	        }
         }
     }
 }
