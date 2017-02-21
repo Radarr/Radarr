@@ -31,9 +31,5 @@ module.exports = Backbone.Model.extend({
       if (status === 'released') {
           return "released";
       }
-
-      if (numOfMonths > 3) {
-        return "released";//TODO: Update for PreDB.me
-      }
     }
 });

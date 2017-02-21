@@ -90,12 +90,7 @@ Handlebars.registerHelper('GetStatus', function() {
   if (status ==="inCinemas") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
   }
-  //if (numOfMonths < 3) {
-  //  return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
-  //}
-  //if (numOfMonths > 3) {
-  //  return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
-  //}
+  
   if (status === 'released') {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
@@ -124,14 +119,6 @@ Handlebars.registerHelper('GetBannerStatus', function() {
   if (status === 'released') {
       return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
   }
-
-  //if (numOfMonths > 3) {
-  //  return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
-  //}
-
-
-
-
   else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
   }
@@ -153,7 +140,9 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
       tBA : 0, 
       announced : 1,
       inCinemas : 2,
-      released : 3
+      released : 3,
+      //TODO: preDB needs to be implemented but until then, treat preDB like released
+      preDB    : 3 //4
     };
   if (MovieStatusType[this.status] < MovieStatusType[this.minimumAvailability]) {
     return "primary";
@@ -164,18 +153,12 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
 
 Handlebars.registerHelper('DownloadedStatus', function() {
 
-  //if (this.allFlicksUrl) {
-  //  return "On Netflix";
-  //}
   if (this.downloaded) {
     return "Downloaded";
   }
   if (!this.monitored) {
     return "Not Monitored";
   }
-  //if (this.allFlicksUrl) {
-  //  return "On Netflix";
-  //}
   return "Missing";
 });
 

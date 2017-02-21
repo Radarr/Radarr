@@ -72,7 +72,7 @@ var view = Marionette.ItemView.extend({
 
         this.ui.seasonFolder.prop('checked', useSeasonFolder);
         this.ui.monitor.val(defaultMonitorEpisodes);
-	this.ui.minimumAvailability.val("released");
+	this.ui.minimumAvailability.val("preDB");
 
         //TODO: make this work via onRender, FM?
         //works with onShow, but stops working after the first render

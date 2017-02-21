@@ -198,10 +198,12 @@ namespace NzbDrone.Core.Tv
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
                              //this needs to handle the cases from src\nzbdrone.core\tv\moviestatustype.cs
+			                 //TODO: will need to update for preDB for now treat PreDB like Released
                              .AndWhere(m => 
                              (m.MinimumAvailability==MovieStatusType.Released && m.Status >=MovieStatusType.Released) ||
                              (m.MinimumAvailability==MovieStatusType.InCinemas && m.Status >= MovieStatusType.InCinemas) ||
-                             (m.MinimumAvailability==MovieStatusType.Announced && m.Status >=MovieStatusType.Announced))
+                             (m.MinimumAvailability==MovieStatusType.Announced && m.Status >=MovieStatusType.Announced) ||
+                             (m.MinimumAvailability==MovieStatusType.PreDB && m.Status >= MovieStatusType.Released))
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
