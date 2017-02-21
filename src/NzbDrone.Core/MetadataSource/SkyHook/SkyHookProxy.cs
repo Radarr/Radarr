@@ -229,7 +229,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Status = MovieStatusType.Announced;
             }
             //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
-            if (movie.Status == MovieStatusType.InCinemas && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds > 60*60*24*30*3))
+            if (!movie.PhysicalRelease.HasValue && (movie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds > 60*60*24*30*3))
             {
                 movie.Status = MovieStatusType.Released;
             }
