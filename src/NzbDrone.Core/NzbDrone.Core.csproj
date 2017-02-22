@@ -350,6 +350,7 @@
     </Compile>
     <Compile Include="Datastore\Migration\110_add_physical_release_to_table.cs" />
     <Compile Include="Datastore\Migration\109_add_movie_formats_to_naming_config.cs" />
+    <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
