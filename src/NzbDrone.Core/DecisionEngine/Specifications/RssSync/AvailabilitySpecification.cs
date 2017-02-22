@@ -28,8 +28,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     return Decision.Accept();
                 }
             }
-            //TODO: will need to handle the case for PreDB but for now, treat PreDB the same as Released
-            if (subject.Movie.Status < subject.Movie.MinimumAvailability || (subject.Movie.MinimumAvailability == MovieStatusType.PreDB && subject.Movie.Status < MovieStatusType.Released))
+            if (!subject.Movie.IsAvailable())
             {
                 return Decision.Reject("Movie is not available");
             }

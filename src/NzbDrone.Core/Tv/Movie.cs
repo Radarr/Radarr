@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Tv
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
-	public MovieStatusType MinimumAvailability { get; set; }
+	    public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
@@ -53,6 +53,12 @@ namespace NzbDrone.Core.Tv
         public string Studio { get; set; }
 
         public bool HasFile => MovieFileId > 0;
+
+        public bool IsAvailable()
+        {
+            //TODO might need to update this for preDB.
+            return (Status >= MinimumAvailability || (MinimumAvailability==MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+        }
 
         public override string ToString()
         {

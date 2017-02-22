@@ -135,16 +135,8 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
     if (this.downloaded) {
       return "success";
     }
-  //should match cases from: src\NzbDrone.Core\Tv\MovieStatusType.cs
-  var MovieStatusType = {
-      tBA : 0, 
-      announced : 1,
-      inCinemas : 2,
-      released : 3,
-      //TODO: preDB needs to be implemented but until then, treat preDB like released
-      preDB    : 3 //4
-    };
-  if (MovieStatusType[this.status] < MovieStatusType[this.minimumAvailability]) {
+
+  if (!this.isAvailable){
     return "primary";
   }
 

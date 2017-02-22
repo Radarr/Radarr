@@ -14,10 +14,10 @@ module.exports = Backbone.Model.extend({
     getStatus : function() {
       var monitored = this.get("monitored");
       var status = this.get("status");
-      var inCinemas = this.get("inCinemas");
-      var date = new Date(inCinemas);
-      var timeSince = new Date().getTime() - date.getTime();
-      var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+      //var inCinemas = this.get("inCinemas");
+      //var date = new Date(inCinemas);
+      //var timeSince = new Date().getTime() - date.getTime();
+      //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
       if (status === "announced") {
         return "announced"
