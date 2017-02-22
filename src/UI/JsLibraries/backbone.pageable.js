@@ -324,9 +324,11 @@
         if (comparator && options.full) {
           this.comparator = null;
           fullCollection.comparator = comparator;
+        } else if (options.full){
+          fullCollection.comparator = this.comparator;
         }
 
-        if (options.full) fullCollection.sort();
+        //if (options.full) fullCollection.sort();
 
         // make sure the models in the current page and full collection have the
         // same references

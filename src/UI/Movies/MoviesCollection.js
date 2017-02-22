@@ -181,6 +181,10 @@ var Collection = PageableCollection.extend({
                 return path.toLowerCase();
             }
         }
+    },
+
+    comparator: function (model) {
+      return model.get('sortTitle');
     }
 });
 
