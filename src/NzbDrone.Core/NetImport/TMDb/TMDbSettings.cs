@@ -42,7 +42,7 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(4, Label = "Minimum Number of Votes", HelpText = "Filter movies by number of votes")]
         public int MinVotes { get; set; }
 
-        [FieldDefinition(5, Label = "Rating", HelpText = "Filter movies by a rating (NR,G,PG,PG-13,R,NC-17)")]
+        [FieldDefinition(5, Label = "Ceritification", HelpText = "Filter movies by a ceritification (NR,G,PG,PG-13,R,NC-17)")]
         public string Ceritification { get; set; }
 
         [FieldDefinition(6, Label = "Include Genre Ids", HelpText = "Filter movies by TMDb Genre Ids (Comma Separated)")]
