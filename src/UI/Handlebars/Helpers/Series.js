@@ -76,10 +76,10 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
 Handlebars.registerHelper('GetStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
-  var inCinemas = this.inCinemas;
-  var date = new Date(inCinemas);
-  var timeSince = new Date().getTime() - date.getTime();
-  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  //var inCinemas = this.inCinemas;
+  //var date = new Date(inCinemas);
+  //var timeSince = new Date().getTime() - date.getTime();
+  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
 
   if (status === "announced") {
@@ -103,10 +103,10 @@ Handlebars.registerHelper('GetStatus', function() {
 Handlebars.registerHelper('GetBannerStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
-  var inCinemas = this.inCinemas;
-  var date = new Date(inCinemas);
-  var timeSince = new Date().getTime() - date.getTime();
-  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  //var inCinemas = this.inCinemas;
+  //var date = new Date(inCinemas);
+  //var timeSince = new Date().getTime() - date.getTime();
+  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
   if (status === "announced") {
     return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
