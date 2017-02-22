@@ -339,9 +339,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Callback(PrepareClientToReturnQueuedItem);
         }
 
-        protected override RemoteEpisode CreateRemoteEpisode()
+        protected override RemoteMovie CreateRemoteMovie()
         {
-            var episode = base.CreateRemoteEpisode();
+            var episode = base.CreateRemoteMovie();
 
             episode.Release.DownloadUrl = DownloadURL;
 
@@ -366,7 +366,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -383,7 +383,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -399,7 +399,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -452,7 +452,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_torrent_if_cannot_get_serial_number()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))
