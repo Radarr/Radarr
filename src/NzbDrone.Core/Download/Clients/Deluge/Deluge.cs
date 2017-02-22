@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             return actualHash.ToUpper();
         }
 
-        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             var actualHash = _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
@@ -61,12 +61,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
-            throw new NotImplementedException("Episodes are not working with Radarr");
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
         {
-            throw new NotImplementedException("Episodes are not working with Radarr");
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         public override string Name => "Deluge";

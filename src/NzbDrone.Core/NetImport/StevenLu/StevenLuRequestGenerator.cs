@@ -1,8 +1,5 @@
 ﻿using NzbDrone.Common.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.NetImport.StevenLu
 {
@@ -13,9 +10,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
-
             pageableRequests.Add(GetMovies(null));
-
             return pageableRequests;
         }
 

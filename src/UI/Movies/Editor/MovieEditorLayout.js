@@ -4,6 +4,7 @@ var Backgrid = require('backgrid');
 var EmptyView = require('../Index/EmptyView');
 var MoviesCollection = require('../MoviesCollection');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var ProfileCell = require('../../Cells/ProfileCell');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
@@ -42,6 +43,11 @@ module.exports = Marionette.Layout.extend({
             label     : 'Title',
             cell      : MovieTitleCell,
             cellValue : 'this'
+        },
+        {
+            name: "downloadedQuality",
+            label: "Downloaded",
+            cell: DownloadedQualityCell,
         },
         {
             name  : 'profileId',

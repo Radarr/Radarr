@@ -12,13 +12,13 @@ namespace NzbDrone.Core.NetImport.Trakt
         UserCustomList = 2,
 
         [EnumMember(Value = "Trending Movies")]
-        TrendingMovies = 3,
+        Trending = 3,
         [EnumMember(Value = "Popular Movies")]
-        PopularMovies = 4,
+        Popular = 4,
         [EnumMember(Value = "Top Anticipated Movies")]
-        AnticipatedMovies = 5,
+        Anticipated = 5,
         [EnumMember(Value = "Top Box Office Movies")]
-        BoxOfficeMovies = 6,
+        BoxOffice = 6,
 
         [EnumMember(Value = "Top Watched Movies By Week")]
         TopWatchedByWeek = 7,

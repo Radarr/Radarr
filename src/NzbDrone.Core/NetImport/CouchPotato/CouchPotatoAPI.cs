@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Xml.Serialization;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
 {

@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
                            {
                                Name = title,
                                Description = message,
-                               ImageUrl = "https://raw.github.com/NzbDrone/NzbDrone/develop/Logo/64.png"
+                               ImageUrl = "https://raw.github.com/Radarr/Radarr/develop/Logo/64.png"
                            }.ToJson());
 
             ProcessRequest(request, settings);
