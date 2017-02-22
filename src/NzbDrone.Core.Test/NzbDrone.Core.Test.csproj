@@ -384,6 +384,7 @@
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />
+    <Compile Include="BulkImport\AddMultiMoviesFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj">
@@ -575,6 +576,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProviderTests\UpdateProviderTests\" />
+    <Folder Include="BulkImport\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
