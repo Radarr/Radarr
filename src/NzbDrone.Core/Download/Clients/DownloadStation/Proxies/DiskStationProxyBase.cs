@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
                         _authenticated = false;
                         return ProcessRequest<T>(api, arguments, settings, operation, method, retries++);
                     }
-
+                    
                     var msg = $"Failed to {operation}. Reason: {responseContent.Error.GetMessage(api)}";
                     _logger.Error(msg);
 
