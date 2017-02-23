@@ -4,15 +4,18 @@ using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
     public class AvailabilitySpecification : IDecisionEngineSpecification
     {
+        private readonly IConfigService _settingsService;
         private readonly Logger _logger;
 
-        public AvailabilitySpecification(Logger logger)
+        public AvailabilitySpecification(IConfigService settingsService, Logger logger)
         {
+            _settingsService = settingsService;
             _logger = logger;
         }
 
@@ -28,9 +31,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     return Decision.Accept();
                 }
             }
-            if (!subject.Movie.IsAvailable())
+            if (!subject.Movie.IsAvailable(_settingsService.AvailabilityDelay))
             {
-                return Decision.Reject("Movie is not available");
+                return Decision.Reject("Movie {0} will only be considered available {1} days after {2}", subject.Movie, _settingsService.AvailabilityDelay, subject.Movie.MinimumAvailability.ToString());
             }
 
             return Decision.Accept();

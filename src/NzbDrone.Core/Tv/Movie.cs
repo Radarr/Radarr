@@ -56,6 +56,10 @@ namespace NzbDrone.Core.Tv
 
         public bool IsAvailable(int delay = 0)
         {
+            //the below line is what was used before delay was implemented, could still be used for cases when delay==0
+            //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+
+            //This more complex sequence handles the delay 
             DateTime MinimumAvailabilityDate;
             switch (MinimumAvailability)
             {
