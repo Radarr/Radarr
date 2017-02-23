@@ -34,9 +34,30 @@ namespace NzbDrone.Api.Wanted
             {
                 pagingSpec.FilterExpression = v => v.Monitored == false;
             }
-            else
+            else if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "true")
             {
                 pagingSpec.FilterExpression = v => v.Monitored == true;
+            }
+            else if (pagingResource.FilterKey == "moviestatus"  && pagingResource.FilterValue == "available")
+            {
+                //TODO: might need to handle PreDB here
+                pagingSpec.FilterExpression = v =>
+                             (v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
+                             (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
+                             (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
+                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released);
+            }
+            else if (pagingResource.FilterKey == "moviestatus" && pagingResource.FilterValue == "announced")
+            {
+                pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Announced;
+            }
+            else if (pagingResource.FilterKey == "moviestatus" && pagingResource.FilterValue == "incinemas")
+            {
+                pagingSpec.FilterExpression = v => v.Status == MovieStatusType.InCinemas;
+            }
+            else if (pagingResource.FilterKey == "moviestatus" && pagingResource.FilterValue == "released")
+            {
+                pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
             }
 
             var resource = ApplyToPage(_movieService.MoviesWithoutFiles, pagingSpec, v => MapToResource(v, true));

@@ -128,6 +128,7 @@
     <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
     <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
+    <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
     <Compile Include="NetImport\TMDb\TMDbListType.cs" />
@@ -394,6 +395,7 @@
     <Compile Include="DecisionEngine\Specifications\RssSync\DelaySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\HistorySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredEpisodeSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\RssSync\AvailabilitySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\DailyEpisodeMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\EpisodeRequestedSpecification.cs" />

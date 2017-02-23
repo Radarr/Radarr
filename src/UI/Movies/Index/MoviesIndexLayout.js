@@ -328,6 +328,7 @@ module.exports = Marionette.Layout.extend({
         var episodeFiles = 0;
         var announced = 0;
         var released = 0;
+	var incinemas = 0;
         var monitored = 0;
 
         _.each(MoviesCollection.models, function(model) {
@@ -336,6 +337,8 @@ module.exports = Marionette.Layout.extend({
 
             if (model.get('status').toLowerCase() === 'released') {
                 released++;
+	    } else if (model.get('status').toLowerCase() === 'incinemas') {
+                incinemas++;
             } else {
                 announced++;
             }
@@ -348,6 +351,7 @@ module.exports = Marionette.Layout.extend({
         footerModel.set({
             series       : series,
             released   : released,
+	    incinemas    : incinemas,
             announced    : announced,
             monitored : monitored,
             unmonitored  : series - monitored,

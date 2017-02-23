@@ -54,6 +54,9 @@ Handlebars.registerHelper('tmdbUrl', function() {
 Handlebars.registerHelper('youTubeTrailerUrl', function() {
     return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
 });
+Handlebars.registerHelper('allFlicksUrl', function() {
+    return this.allFlicksUrl;
+});
 
 Handlebars.registerHelper('homepage', function() {
     return this.website;
@@ -73,25 +76,21 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
 Handlebars.registerHelper('GetStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
-  var inCinemas = this.inCinemas;
-  var date = new Date(inCinemas);
-  var timeSince = new Date().getTime() - date.getTime();
-  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  //var inCinemas = this.inCinemas;
+  //var date = new Date(inCinemas);
+  //var timeSince = new Date().getTime() - date.getTime();
+  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
 
   if (status === "announced") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
   }
+  
 
-  if (numOfMonths < 3) {
-
+  if (status ==="inCinemas") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
   }
-
-  if (numOfMonths > 3) {
-    return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
-  }
-
+  
   if (status === 'released') {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
@@ -104,30 +103,22 @@ Handlebars.registerHelper('GetStatus', function() {
 Handlebars.registerHelper('GetBannerStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
-  var inCinemas = this.inCinemas;
-  var date = new Date(inCinemas);
-  var timeSince = new Date().getTime() - date.getTime();
-  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  //var inCinemas = this.inCinemas;
+  //var date = new Date(inCinemas);
+  //var timeSince = new Date().getTime() - date.getTime();
+  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
   if (status === "announced") {
     return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
 
-  if (numOfMonths < 3) {
+  if (status === "inCinemas") {
     return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
   if (status === 'released') {
       return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
   }
-
-  if (numOfMonths > 3) {
-    return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
-  }
-
-
-
-
   else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
   }
@@ -145,7 +136,7 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
       return "success";
     }
 
-  if (this.status != "released") {
+  if (!this.isAvailable){
     return "primary";
   }
 
@@ -160,8 +151,6 @@ Handlebars.registerHelper('DownloadedStatus', function() {
   if (!this.monitored) {
     return "Not Monitored";
   }
-
-
   return "Missing";
 });
 

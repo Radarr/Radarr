@@ -17,12 +17,7 @@ module.exports = NzbDroneCell.extend({
             this._setStatusWeight(3);
         }
 
-        if (numOfMonths > 3) {
-          this.$el.html('<i class="icon-sonarr-movie-released grid-icon" title="Released"></i>');//TODO: Update for PreDB.me
-          this._setStatusWeight(2);
-        }
-
-        if (numOfMonths < 3) {
+        if (status === 'inCinemas') {
           this.$el.html('<i class="icon-sonarr-movie-cinemas grid-icon" title="In Cinemas"></i>');
           this._setStatusWeight(2);
         }
@@ -32,11 +27,6 @@ module.exports = NzbDroneCell.extend({
           this._setStatusWeight(1);
         }
 
-        // else if (!monitored) {
-        //     this.$el.html('<i class="icon-sonarr-series-unmonitored grid-icon" title="Not Monitored"></i>');
-        //     this._setStatusWeight(0);
-        // }
-        
         return this;
     },
 
