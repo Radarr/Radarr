@@ -107,7 +107,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
                 if (parsedInfo != null)
                 {
-                    var movie = _movieService.FindByTitle(parsedInfo.MovieTitle);
+                    var movie = _movieService.FindByTitle(parsedInfo.MovieTitle, parsedInfo.Year);
 
                     if (movie != null)
                     {
@@ -139,9 +139,9 @@ namespace NzbDrone.Core.MetadataSource.PreDB
             
             foreach (Movie movie in haveNewReleases)
             {
-                if (movie.Status != MovieStatusType.Released)
+                if (!movie.HasPreDBEntry)
                 {
-                    movie.Status = MovieStatusType.Released;
+					movie.HasPreDBEntry = true;
                     _movieService.UpdateMovie(movie);
                 }
 
@@ -160,9 +160,14 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
             foreach (PreDBResult result in results)
             {
-                var match = _parsingService.Map(new Parser.Model.ParsedMovieInfo { MovieTitle = result.Title }, "", new MovieSearchCriteria { Movie = movie });
+				var parsed = Parser.Parser.ParseMovieTitle(result.Title);
+				if (parsed == null)
+				{
+					parsed = new Parser.Model.ParsedMovieInfo { MovieTitle = result.Title, Year = 0 };
+				}
+				var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
 
-                if (match != null)
+                if (match.Movie.Id == movie.Id)
                 {
                     return true;
                 }

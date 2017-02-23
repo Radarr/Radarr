@@ -47,6 +47,7 @@ namespace NzbDrone.Core.Tv
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public LazyLoaded<MovieFile> MovieFile { get; set; }
+		public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
         public List<string> AlternativeTitles { get; set; }
         public string YouTubeTrailerId{ get; set; }

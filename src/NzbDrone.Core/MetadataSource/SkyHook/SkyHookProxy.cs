@@ -231,11 +231,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 if (_predbService.HasReleases(movie))
                 {
-                    movie.Status = MovieStatusType.Released;
+					movie.HasPreDBEntry = true;
                 }
                 else
                 {
-                    movie.Status = MovieStatusType.Announced;
+					movie.HasPreDBEntry = false;
                 }
             }
             //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
