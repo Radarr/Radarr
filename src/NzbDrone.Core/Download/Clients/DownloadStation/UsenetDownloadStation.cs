@@ -1,41 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
-using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation
 {
-    public class TorrentDownloadStation : TorrentClientBase<DownloadStationSettings>
+    public class UsenetDownloadStation : UsenetClientBase<DownloadStationSettings>
     {
         protected readonly IDownloadStationProxy _proxy;
         protected readonly ISharedFolderResolver _sharedFolderResolver;
         protected readonly ISerialNumberProvider _serialNumberProvider;
         protected readonly IFileStationProxy _fileStationProxy;
 
-        public TorrentDownloadStation(ISharedFolderResolver sharedFolderResolver,
-                                      ISerialNumberProvider serialNumberProvider,
-                                      IFileStationProxy fileStationProxy,
-                                      IDownloadStationProxy proxy,
-                                      ITorrentFileInfoReader torrentFileInfoReader,
-                                      IHttpClient httpClient,
-                                      IConfigService configService,
-                                      IDiskProvider diskProvider,
-                                      IRemotePathMappingService remotePathMappingService,
-                                      Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+        public UsenetDownloadStation(ISharedFolderResolver sharedFolderResolver,
+                                     ISerialNumberProvider serialNumberProvider,
+                                     IFileStationProxy fileStationProxy,
+                                     IDownloadStationProxy proxy,
+                                     IHttpClient httpClient,
+                                     IConfigService configService,
+                                     IDiskProvider diskProvider,
+                                     IRemotePathMappingService remotePathMappingService,
+                                     Logger logger
+                                     )
+            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
             _fileStationProxy = fileStationProxy;
@@ -47,19 +44,31 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         protected IEnumerable<DownloadStationTask> GetTasks()
         {
-            return _proxy.GetTasks(Settings).Where(v => v.Type == DownloadStationTaskType.BT.ToString());
+            return _proxy.GetTasks(Settings).Where(v => v.Type == DownloadStationTaskType.NZB.ToString());
         }
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            var torrents = GetTasks();
+            var nzbTasks = GetTasks();
             var serialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
             var items = new List<DownloadClientItem>();
 
-            foreach (var torrent in torrents)
+            long totalRemainingSize = 0;
+            long globalSpeed = nzbTasks.Where(t => t.Status == DownloadStationTaskStatus.Downloading)
+                                       .Select(GetDownloadSpeed)
+                                       .Sum();
+
+            foreach (var nzb in nzbTasks)
             {
-                var outputPath = new OsPath($"/{torrent.Additional.Detail["destination"]}");
+                var outputPath = new OsPath($"/{nzb.Additional.Detail["destination"]}");
+
+                var taskRemainingSize = GetRemainingSize(nzb);
+
+                if (nzb.Status != DownloadStationTaskStatus.Paused)
+                {
+                    totalRemainingSize += taskRemainingSize;
+                }
 
                 if (Settings.TvDirectory.IsNotNullOrWhiteSpace())
                 {
@@ -81,25 +90,40 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 {
                     Category = Settings.TvCategory,
                     DownloadClient = Definition.Name,
-                    DownloadId = CreateDownloadId(torrent.Id, serialNumber),
-                    Title = torrent.Title,
-                    TotalSize = torrent.Size,
-                    RemainingSize = GetRemainingSize(torrent),
-                    RemainingTime = GetRemainingTime(torrent),
-                    Status = GetStatus(torrent),
-                    Message = GetMessage(torrent),
-                    IsReadOnly = !IsFinished(torrent)
+                    DownloadId = CreateDownloadId(nzb.Id, serialNumber),
+                    Title = nzb.Title,
+                    TotalSize = nzb.Size,
+                    RemainingSize = taskRemainingSize,
+                    Status = GetStatus(nzb),
+                    Message = GetMessage(nzb),
+                    IsReadOnly = !IsFinished(nzb)
                 };
+
+                if (item.Status != DownloadItemStatus.Paused)
+                {
+                    item.RemainingTime = GetRemainingTime(totalRemainingSize, globalSpeed);
+                }
 
                 if (item.Status == DownloadItemStatus.Completed || item.Status == DownloadItemStatus.Failed)
                 {
-                    item.OutputPath = GetOutputPath(outputPath, torrent, serialNumber);
+                    item.OutputPath = GetOutputPath(outputPath, nzb, serialNumber);
                 }
 
                 items.Add(item);
             }
 
             return items;
+        }
+
+        protected OsPath GetOutputPath(OsPath outputPath, DownloadStationTask task, string serialNumber)
+        {
+            var fullPath = _sharedFolderResolver.RemapToFullPath(outputPath, Settings, serialNumber);
+
+            var remotePath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, fullPath);
+
+            var finalPath = remotePath + task.Title;
+
+            return finalPath;
         }
 
         public override DownloadClientStatus GetStatus()
@@ -133,53 +157,18 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             _logger.Debug("{0} removed correctly", downloadId);
         }
 
-        protected OsPath GetOutputPath(OsPath outputPath, DownloadStationTask torrent, string serialNumber)
-        {
-            var fullPath = _sharedFolderResolver.RemapToFullPath(outputPath, Settings, serialNumber);
-
-            var remotePath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, fullPath);
-
-            var finalPath = remotePath + torrent.Title;
-
-            return finalPath;
-        }
-
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
         {
             throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
-        protected override string AddFromMagnetLink(RemoteMovie remoteEpisode, string hash, string magnetLink)
-        {
-            var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
-
-            _proxy.AddTaskFromUrl(magnetLink, GetDownloadDirectory(), Settings);
-
-            var item = GetTasks().SingleOrDefault(t => t.Additional.Detail["uri"] == magnetLink);
-
-            if (item != null)
-            {
-                _logger.Debug("{0} added correctly", remoteEpisode);
-                return CreateDownloadId(item.Id, hashedSerialNumber);
-            }
-
-            _logger.Debug("No such task {0} in Download Station", magnetLink);
-
-            throw new DownloadClientException("Failed to add magnet task to Download Station");
-        }
-
-        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteMovie remoteEpisode, string filename, byte[] fileContent)
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
             _proxy.AddTaskFromData(fileContent, filename, GetDownloadDirectory(), Settings);
 
-            var items = GetTasks().Where(t => t.Additional.Detail["uri"] == Path.GetFileNameWithoutExtension(filename));
+            var items = GetTasks().Where(t => t.Additional.Detail["uri"] == filename);
 
             var item = items.SingleOrDefault();
 
@@ -191,7 +180,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             _logger.Debug("No such task {0} in Download Station", filename);
 
-            throw new DownloadClientException("Failed to add torrent task to Download Station");
+            throw new DownloadClientException("Failed to add NZB task to Download Station");
         }
 
         protected override void Test(List<ValidationFailure> failures)
@@ -199,83 +188,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             failures.AddIfNotNull(TestConnection());
             if (failures.Any()) return;
             failures.AddIfNotNull(TestOutputPath());
-            failures.AddIfNotNull(TestGetTorrents());
-        }
-
-        protected bool IsFinished(DownloadStationTask torrent)
-        {
-            return torrent.Status == DownloadStationTaskStatus.Finished;
-        }
-
-        protected string GetMessage(DownloadStationTask torrent)
-        {
-            if (torrent.StatusExtra != null)
-            {
-                if (torrent.Status == DownloadStationTaskStatus.Extracting)
-                {
-                    return $"Extracting: {int.Parse(torrent.StatusExtra["unzip_progress"])}%";
-                }
-
-                if (torrent.Status == DownloadStationTaskStatus.Error)
-                {
-                    return torrent.StatusExtra["error_detail"];
-                }
-            }
-
-            return null;
-        }
-
-        protected DownloadItemStatus GetStatus(DownloadStationTask torrent)
-        {
-            switch (torrent.Status)
-            {
-                case DownloadStationTaskStatus.Waiting:
-                    return torrent.Size == 0 || GetRemainingSize(torrent) > 0 ? DownloadItemStatus.Queued : DownloadItemStatus.Completed;
-                case DownloadStationTaskStatus.Paused:
-                    return DownloadItemStatus.Paused;
-                case DownloadStationTaskStatus.Finished:
-                case DownloadStationTaskStatus.Seeding:
-                    return DownloadItemStatus.Completed;
-                case DownloadStationTaskStatus.Error:
-                    return DownloadItemStatus.Failed;
-            }
-
-            return DownloadItemStatus.Downloading;
-        }
-
-        protected long GetRemainingSize(DownloadStationTask torrent)
-        {
-            var downloadedString = torrent.Additional.Transfer["size_downloaded"];
-            long downloadedSize;
-
-            if (downloadedString.IsNullOrWhiteSpace() || !long.TryParse(downloadedString, out downloadedSize))
-            {
-                _logger.Debug("Torrent {0} has invalid size_downloaded: {1}", torrent.Title, downloadedString);
-                downloadedSize = 0;
-            }
-
-            return torrent.Size - Math.Max(0, downloadedSize);
-        }
-
-        protected TimeSpan? GetRemainingTime(DownloadStationTask torrent)
-        {
-            var speedString = torrent.Additional.Transfer["speed_download"];
-            long downloadSpeed;
-
-            if (speedString.IsNullOrWhiteSpace() || !long.TryParse(speedString, out downloadSpeed))
-            {
-                _logger.Debug("Torrent {0} has invalid speed_download: {1}", torrent.Title, speedString);
-                downloadSpeed = 0;
-            }
-
-            if (downloadSpeed <= 0)
-            {
-                return null;
-            }
-
-            var remainingSize = GetRemainingSize(torrent);
-
-            return TimeSpan.FromSeconds(remainingSize / downloadSpeed);
+            failures.AddIfNotNull(TestGetNZB());
         }
 
         protected ValidationFailure TestOutputPath()
@@ -342,12 +255,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                         DetailedDescription = "Please verify the hostname and port."
                     };
                 }
-                return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
+                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.Error(ex);
-                return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
+                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
         }
 
@@ -365,7 +278,88 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return null;
         }
 
-        protected ValidationFailure TestGetTorrents()
+        protected bool IsFinished(DownloadStationTask task)
+        {
+            return task.Status == DownloadStationTaskStatus.Finished;
+        }
+
+        protected string GetMessage(DownloadStationTask task)
+        {
+            if (task.StatusExtra != null)
+            {
+                if (task.Status == DownloadStationTaskStatus.Extracting)
+                {
+                    return $"Extracting: {int.Parse(task.StatusExtra["unzip_progress"])}%";
+                }
+
+                if (task.Status == DownloadStationTaskStatus.Error)
+                {
+                    return task.StatusExtra["error_detail"];
+                }
+            }
+
+            return null;
+        }
+
+        protected DownloadItemStatus GetStatus(DownloadStationTask task)
+        {
+            switch (task.Status)
+            {
+                case DownloadStationTaskStatus.Waiting:
+                    return task.Size == 0 || GetRemainingSize(task) > 0 ? DownloadItemStatus.Queued : DownloadItemStatus.Completed;
+                case DownloadStationTaskStatus.Paused:
+                    return DownloadItemStatus.Paused;
+                case DownloadStationTaskStatus.Finished:
+                case DownloadStationTaskStatus.Seeding:
+                    return DownloadItemStatus.Completed;
+                case DownloadStationTaskStatus.Error:
+                    return DownloadItemStatus.Failed;
+            }
+
+            return DownloadItemStatus.Downloading;
+        }
+
+        protected long GetRemainingSize(DownloadStationTask task)
+        {
+            var downloadedString = task.Additional.Transfer["size_downloaded"];
+            long downloadedSize;
+
+            if (downloadedString.IsNullOrWhiteSpace() || !long.TryParse(downloadedString, out downloadedSize))
+            {
+                _logger.Debug("Task {0} has invalid size_downloaded: {1}", task.Title, downloadedString);
+                downloadedSize = 0;
+            }
+
+            return task.Size - Math.Max(0, downloadedSize);
+        }
+
+        protected long GetDownloadSpeed(DownloadStationTask task)
+        {
+            var speedString = task.Additional.Transfer["speed_download"];
+            long downloadSpeed;
+
+            if (speedString.IsNullOrWhiteSpace() || !long.TryParse(speedString, out downloadSpeed))
+            {
+                _logger.Debug("Task {0} has invalid speed_download: {1}", task.Title, speedString);
+                downloadSpeed = 0;
+            }
+
+            return Math.Max(downloadSpeed, 0);
+        }
+
+        protected TimeSpan? GetRemainingTime(long remainingSize, long downloadSpeed)
+        {
+            if (downloadSpeed > 0)
+            {
+                return TimeSpan.FromSeconds(remainingSize / downloadSpeed);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected ValidationFailure TestGetNZB()
         {
             try
             {
@@ -374,7 +368,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (Exception ex)
             {
-                return new NzbDroneValidationFailure(string.Empty, $"Failed to get the list of torrents: {ex.Message}");
+                return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of NZBs: " + ex.Message);
             }
         }
 

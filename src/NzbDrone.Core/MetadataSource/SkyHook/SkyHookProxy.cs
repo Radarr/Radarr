@@ -185,14 +185,71 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Genres.Add(genre.name);
             }
 
-            if (resource.status == "Released")
+            //this is the way it should be handled
+            //but unfortunately it seems
+            //tmdb lacks alot of release date info
+            //omdbapi is actually quite good for this info
+            //except omdbapi has been having problems recently
+            //so i will just leave this in as a comment
+            //and use the 3 month logic that we were using before           
+            /*var now = DateTime.Now;
+            if (now < movie.InCinemas)
+                movie.Status = MovieStatusType.Announced;
+            if (now >= movie.InCinemas) 
+                movie.Status = MovieStatusType.InCinemas;
+            if (now >= movie.PhysicalRelease)
+                movie.Status = MovieStatusType.Released;
+            */
+
+            
+            var now = DateTime.Now;
+            //handle the case when we have both theatrical and physical release dates
+            if (movie.InCinemas.HasValue && movie.PhysicalRelease.HasValue)
+            {
+                if (now < movie.InCinemas)
+                    movie.Status = MovieStatusType.Announced;
+                else if (now >= movie.InCinemas)
+                    movie.Status = MovieStatusType.InCinemas;
+                if (now >= movie.PhysicalRelease)
+                    movie.Status = MovieStatusType.Released;
+            }
+            //handle the case when we have theatrical release dates but we dont know the physical release date
+            else if (movie.InCinemas.HasValue && (now >= movie.InCinemas))
+            {
+                movie.Status = MovieStatusType.InCinemas;
+            }
+            //handle the case where we only have a physical release date
+            else if (movie.PhysicalRelease.HasValue && (now >= movie.PhysicalRelease))
             {
                 movie.Status = MovieStatusType.Released;
             }
+            //otherwise the title has only been announced
             else
             {
                 movie.Status = MovieStatusType.Announced;
             }
+            //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
+            if (!movie.PhysicalRelease.HasValue && (movie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds > 60*60*24*30*3))
+            {
+                movie.Status = MovieStatusType.Released;
+            }
+
+            //this matches with the old behavior before the creation of the MovieStatusType.InCinemas
+            /*if (resource.status == "Released")
+            {
+                if (movie.InCinemas.HasValue && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds <= 60 * 60 * 24 * 30 * 3))
+                {
+                    movie.Status = MovieStatusType.InCinemas;
+                }
+                else
+                {
+                    movie.Status = MovieStatusType.Released;
+                }
+            }
+            else
+            {
+                movie.Status = MovieStatusType.Announced;
+            }*/
 
             if (resource.videos != null)
             {
@@ -650,6 +707,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             newMovie.ProfileId = movie.ProfileId;
             newMovie.Monitored = movie.Monitored;
             newMovie.MovieFile = movie.MovieFile;
+            newMovie.MinimumAvailability = movie.MinimumAvailability;
 
             return newMovie;
         }

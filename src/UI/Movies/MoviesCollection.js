@@ -153,11 +153,14 @@ var Collection = PageableCollection.extend({
         statusWeight : {
           sortValue : function(model, attr) {
             if (model.getStatus() == "released") {
-              return 1;
+              return 3;
             }
             if (model.getStatus() == "inCinemas") {
-              return 0;
+              return 2;
             }
+            if (mode.getStatus() == "announced") {
+	      return 1;
+	    }
             return -1;
           }
         },

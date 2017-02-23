@@ -81,5 +81,11 @@ namespace NzbDrone.Core.Test.ParserTests
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
 		}
+
+		[TestCase("The Danish Girl 2015")]
+		public void should_not_parse_language_in_movie_title(string postTitle)
+		{
+			Parser.Parser.ParseMovieTitle(postTitle).Language.Should().Be(Language.English);
+		}
     }
 }

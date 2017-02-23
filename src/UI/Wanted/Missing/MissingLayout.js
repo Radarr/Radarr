@@ -134,8 +134,15 @@ module.exports = Marionette.Layout.extend({
             type          : 'radio',
             storeState    : false,
             menuKey       : 'wanted.filterMode',
-            defaultAction : 'monitored',
+            defaultAction : 'available',
             items         : [
+		{
+	            key      : 'available',
+		    title    : '',
+		    tooltip  : 'Available & Monitored',
+		    icon     : 'icon-sonarr-available',
+		    callback : this._setFilter
+		},
                 {
                     key      : 'monitored',
                     title    : '',
@@ -149,9 +156,30 @@ module.exports = Marionette.Layout.extend({
                     tooltip  : 'Unmonitored Only',
                     icon     : 'icon-sonarr-unmonitored',
                     callback : this._setFilter
-                }
-            ]
-        };
+                },
+		    {
+			    key      : 'announced',
+			    title    : '',
+			    tooltip  : 'Announced Only',
+			    icon     : 'icon-sonarr-movie-announced',
+			    callback : this._setFilter
+		    },
+	            {     
+			    key      : 'incinemas',
+			    title    : '',
+			    tooltip  : 'In Cinemas Only',
+			    icon     : 'icon-sonarr-movie-cinemas',
+			    callback : this._setFilter
+		    },
+		    {
+			    key      : 'released',
+			    title    : '',
+			    tooltip  : 'Released Only',
+			    icon     : 'icon-sonarr-movie-released',
+			    callback : this._setFilter
+		    }
+		]
+	};
         this.toolbar.show(new ToolbarLayout({
             left    : [leftSideButtons],
             right   : [filterOptions],

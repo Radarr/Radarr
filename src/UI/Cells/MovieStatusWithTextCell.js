@@ -18,12 +18,7 @@ module.exports = NzbDroneCell.extend({
             this._setStatusWeight(3);
         }
 
-        if (numOfMonths > 3) {
-            this.$el.html('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
-            this._setStatusWeight(2);
-        }
-
-        if (numOfMonths < 3) {
+        if (status ==='inCinemas') {
             this.$el.html('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
             this._setStatusWeight(2);
         }

@@ -196,7 +196,6 @@ namespace NzbDrone.Core.Tv
         {
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
-                             .AndWhere(m => m.Status == MovieStatusType.Released)
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
