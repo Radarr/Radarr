@@ -323,40 +323,75 @@ module.exports = Marionette.Layout.extend({
 
     _showFooter : function() {
         var footerModel = new FooterModel();
-        var series = MoviesCollection.models.length;
-        var episodes = 0;
-        var episodeFiles = 0;
+        var movies = MoviesCollection.models.length;
+
         var announced = 0;
-        var released = 0;
 	var incinemas = 0;
-        var monitored = 0;
+	var released = 0;
+
+    	var monitored = 0;
+	
+	var downloaded =0;
+	var missingMonitored=0;
+	var missingNotMonitored=0;
+	var missingNotAvailable=0;
+	var missingMonitoredAvailable=0;   
+
+	var downloadedNotMonitored=0;
 
         _.each(MoviesCollection.models, function(model) {
-            episodes += model.get('episodeCount');
-            episodeFiles += model.get('episodeFileCount');
 
             if (model.get('status').toLowerCase() === 'released') {
                 released++;
-	    } else if (model.get('status').toLowerCase() === 'incinemas') {
+	    }
+	    else if (model.get('status').toLowerCase() === 'incinemas') {
                 incinemas++;
-            } else {
+            }
+	    else if (model.get('status').toLowerCase() === 'announced') {
                 announced++;
             }
 
             if (model.get('monitored')) {
                 monitored++;
+	    }
+	    else { //not monitored
+		if (model.get('downloaded')) {
+			downloadedNotMonitored++;
+		}
+		else { //missing
+			missingNotMonitored++;
+		}
+	    }
+
+	    if (model.get('downloaded')) {
+		downloaded++;
+	    }
+            else { //missing
+		if (!model.get('isAvailable')) {
+			missingNotAvailable++;
+		}
+
+		if (model.get('monitored')) {
+		    missingMonitored++;
+		    if (model.get('isAvailable')) {
+		        missingMonitoredAvailable++;
+		    }
+		}
             }
         });
 
         footerModel.set({
-            series       : series,
-            released   : released,
-	    incinemas    : incinemas,
-            announced    : announced,
-            monitored : monitored,
-            unmonitored  : series - monitored,
-            episodes     : episodes,
-            episodeFiles : episodeFiles
+            movies      : movies,
+            announced   : announced,
+	    incinemas   : incinemas,
+	    released     : released,
+            monitored   : monitored,
+            downloaded  : downloaded,
+	    downloadedNotMonitored : downloadedNotMonitored,
+	    missingMonitored : missingMonitored,
+            missingMonitoredAvailable   : missingMonitoredAvailable,
+	    missingNotAvailable : missingNotAvailable,
+	    missingNotMonitored : missingNotMonitored
         });
 
         this.footer.show(new FooterView({ model : footerModel }));
