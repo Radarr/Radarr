@@ -125,6 +125,17 @@
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
+    <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
+    <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
+    <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
+    <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
+    <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
+    <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
+    <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
+    <Compile Include="NetImport\TMDb\TMDbListType.cs" />
+    <Compile Include="NetImport\TMDb\TMDbImport.cs" />
+    <Compile Include="NetImport\TMDb\TMDbParser.cs" />
+    <Compile Include="NetImport\TMDb\TMDbRequestGenerator.cs" />
     <Compile Include="NetImport\Trakt\TraktAPI.cs" />
     <Compile Include="NetImport\Trakt\TraktImport.cs" />
     <Compile Include="NetImport\Trakt\TraktListType.cs" />
@@ -385,6 +396,7 @@
     <Compile Include="DecisionEngine\Specifications\RssSync\DelaySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\HistorySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredEpisodeSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\RssSync\AvailabilitySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\DailyEpisodeMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\EpisodeRequestedSpecification.cs" />
@@ -397,6 +409,29 @@
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
+    <Compile Include="Download\Clients\DownloadStation\TorrentDownloadStation.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationProxy.cs" />
+    <Compile Include="Download\Clients\DownloadStation\DownloadStationSettings.cs" />
+    <Compile Include="Download\Clients\DownloadStation\DownloadStationTask.cs" />
+    <Compile Include="Download\Clients\DownloadStation\DownloadStationTaskAdditional.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\DSMInfoProxy.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\FileStationProxy.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\DiskStationProxyBase.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\DiskStationAuthResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\DownloadStationTaskFile.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\DSMInfoResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\FileStationListFileInfoResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\FileStationListResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\DiskStationError.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\DiskStationInfoResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\DiskStationResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Responses\DownloadStationTaskInfoResponse.cs" />
+    <Compile Include="Download\Clients\DownloadStation\DiskStationApiInfo.cs" />
+    <Compile Include="Download\Clients\DownloadStation\SerialNumberProvider.cs" />
+    <Compile Include="Download\Clients\DownloadStation\SharedFolderMapping.cs" />
+    <Compile Include="Download\Clients\DownloadStation\SharedFolderResolver.cs" />
+    <Compile Include="Download\Clients\DownloadStation\DiskStationApi.cs" />
+    <Compile Include="Download\Clients\DownloadStation\UsenetDownloadStation.cs" />
     <Compile Include="Download\CheckForFinishedDownloadCommand.cs" />
     <Compile Include="Download\Clients\Blackhole\ScanWatchFolder.cs" />
     <Compile Include="Download\Clients\Blackhole\WatchFolderItem.cs" />
@@ -636,7 +671,6 @@
     <Compile Include="Indexers\EzrssTorrentRssParser.cs" />
     <Compile Include="Indexers\FetchAndParseRssService.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHD.cs" />
-    <Compile Include="Indexers\AwesomeHD\AwesomeHDApi.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHDRequestGenerator.cs" />
     <Compile Include="Indexers\AwesomeHD\AwesomeHDSettings.cs" />
     <Compile Include="Indexers\PassThePopcorn\PassThePopcorn.cs" />
@@ -668,10 +702,6 @@
     <Compile Include="Indexers\IPTorrents\IPTorrentsRequestGenerator.cs" />
     <Compile Include="Indexers\IPTorrents\IPTorrents.cs" />
     <Compile Include="Indexers\IPTorrents\IPTorrentsSettings.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrents.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrentsRssParser.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrentsSettings.cs" />
-    <Compile Include="Indexers\KickassTorrents\KickassTorrentsRequestGenerator.cs" />
     <Compile Include="Indexers\Newznab\Newznab.cs" />
     <Compile Include="Indexers\Newznab\NewznabCapabilities.cs" />
     <Compile Include="Indexers\Newznab\NewznabCapabilitiesProvider.cs" />
@@ -715,8 +745,6 @@
     <Compile Include="Indexers\Torznab\TorznabException.cs" />
     <Compile Include="Indexers\Torznab\TorznabRssParser.cs" />
     <Compile Include="Indexers\Torznab\TorznabSettings.cs" />
-    <Compile Include="Indexers\Wombles\Wombles.cs" />
-    <Compile Include="Indexers\Wombles\WomblesRssParser.cs" />
     <Compile Include="Indexers\XElementExtensions.cs" />
     <Compile Include="IndexerSearch\Definitions\AnimeEpisodeSearchCriteria.cs" />
     <Compile Include="IndexerSearch\Definitions\DailyEpisodeSearchCriteria.cs" />
@@ -1171,6 +1199,7 @@
     <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
     <Compile Include="Tv\MonitoringOptions.cs" />
     <Compile Include="Tv\MoveSeriesService.cs" />
+    <Compile Include="Tv\MovieCutoffService.cs" />
     <Compile Include="Tv\Ratings.cs" />
     <Compile Include="Tv\RefreshEpisodeService.cs" />
     <Compile Include="Tv\RefreshMovieService.cs" />
@@ -1233,6 +1262,7 @@
     <Compile Include="Validation\ProfileExistsValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />
+    <Compile Include="Datastore\Migration\131_make_parsed_episode_info_nullable.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

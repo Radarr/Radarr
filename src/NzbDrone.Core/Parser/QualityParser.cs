@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Parser
                                                                 )\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUB)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -215,6 +215,12 @@ namespace NzbDrone.Core.Parser
                         case Resolution.R1080p:
                             result.Quality = Quality.Bluray1080p;
                             return result;
+						case Resolution.R576p:
+							result.Quality = Quality.Bluray576p;
+							return result;
+						case Resolution.R480P:
+							result.Quality = Quality.Bluray480p;
+							return result;
                         default:
                             result.Quality = Quality.DVD;
                             return result;

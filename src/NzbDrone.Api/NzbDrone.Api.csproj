@@ -118,8 +118,10 @@
     <Compile Include="Frontend\Mappers\RobotsTxtMapper.cs" />
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
     <Compile Include="Indexers\ReleasePushModule.cs" />
+    <Compile Include="Movies\MovieModuleWithSignalR.cs" />
+    <Compile Include="Movies\MovieBulkImportModule.cs" />
     <Compile Include="Movies\MovieFileModule.cs" />
-    <Compile Include="Movies\MovieModule.cs" />
+    <Compile Include="Series\MovieModule.cs" />
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />
     <Compile Include="Movies\MovieEditorModule.cs" />
@@ -245,7 +247,6 @@
     <Compile Include="Series\SeriesEditorModule.cs" />
     <Compile Include="Series\MovieLookupModule.cs" />
     <Compile Include="Series\SeriesLookupModule.cs" />
-    <Compile Include="Series\MovieModule.cs" />
     <Compile Include="Series\SeriesModule.cs" />
     <Compile Include="Series\MovieResource.cs" />
     <Compile Include="Series\SeriesResource.cs" />
@@ -267,6 +268,7 @@
     <Compile Include="Wanted\CutoffModule.cs" />
     <Compile Include="Wanted\LegacyMissingModule.cs" />
     <Compile Include="Wanted\MissingModule.cs" />
+    <Compile Include="Wanted\MovieCutoffModule.cs" />
     <Compile Include="Wanted\MovieMissingModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -295,11 +297,11 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+			 Other similar extension points exist, see Microsoft.Common.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
 </Project>

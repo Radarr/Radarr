@@ -151,12 +151,22 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
+            throw new DownloadClientException("Episodes are not working with Radarr");
+        }
+
+        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        {
+            throw new DownloadClientException("Episodes are not working with Radarr");
+        }
+
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
+        {
             _proxy.AddTorrentUri(Settings, magnetLink);
 
             return hash.ToUpper();
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             return _proxy.AddTorrentFile(Settings, fileContent).ToUpper();
         }

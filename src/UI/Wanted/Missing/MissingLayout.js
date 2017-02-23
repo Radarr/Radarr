@@ -38,10 +38,10 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name     : 'this',
-            label    : 'Movie Title',
-            cell     : MovieTitleCell,
-            sortable : false
+            name      : 'title',
+            label     : 'Title',
+            cell      : MovieTitleCell,
+            cellValue : 'this',
         },
         {
             name  : 'inCinemas',
@@ -50,14 +50,13 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'physicalRelease',
-            label : 'PhysicalRelease',
+            label : 'Physical Release',
             cell  : RelativeDateCell
         },
         {
             name     : 'status',
             label    : 'Status',
             cell     : MovieStatusWithTextCell,
-            sortable : false
         },
 
     ],
@@ -118,11 +117,6 @@ module.exports = Marionette.Layout.extend({
                     className    : 'x-unmonitor-selected'
                 },
                 {
-                    title : 'Season Pass',
-                    icon  : 'icon-sonarr-monitored',
-                    route : 'seasonpass'
-                },
-                {
                     title      : 'Rescan Drone Factory Folder',
                     icon       : 'icon-sonarr-refresh',
                     command    : 'downloadedMovieScan',
@@ -140,8 +134,15 @@ module.exports = Marionette.Layout.extend({
             type          : 'radio',
             storeState    : false,
             menuKey       : 'wanted.filterMode',
-            defaultAction : 'monitored',
+            defaultAction : 'available',
             items         : [
+		{
+	            key      : 'available',
+		    title    : '',
+		    tooltip  : 'Available & Monitored',
+		    icon     : 'icon-sonarr-available',
+		    callback : this._setFilter
+		},
                 {
                     key      : 'monitored',
                     title    : '',
@@ -155,9 +156,30 @@ module.exports = Marionette.Layout.extend({
                     tooltip  : 'Unmonitored Only',
                     icon     : 'icon-sonarr-unmonitored',
                     callback : this._setFilter
-                }
-            ]
-        };
+                },
+		    {
+			    key      : 'announced',
+			    title    : '',
+			    tooltip  : 'Announced Only',
+			    icon     : 'icon-sonarr-movie-announced',
+			    callback : this._setFilter
+		    },
+	            {     
+			    key      : 'incinemas',
+			    title    : '',
+			    tooltip  : 'In Cinemas Only',
+			    icon     : 'icon-sonarr-movie-cinemas',
+			    callback : this._setFilter
+		    },
+		    {
+			    key      : 'released',
+			    title    : '',
+			    tooltip  : 'Released Only',
+			    icon     : 'icon-sonarr-movie-released',
+			    callback : this._setFilter
+		    }
+		]
+	};
         this.toolbar.show(new ToolbarLayout({
             left    : [leftSideButtons],
             right   : [filterOptions],

@@ -40,12 +40,23 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
+            throw new DownloadClientException("Episodes are not working with Radarr");
+        }
+
+        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        {
+            throw new DownloadClientException("Episodes are not working with Radarr");
+        }
+
+
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
+        {
             if (!Settings.SaveMagnetFiles)
             {
                 throw new NotSupportedException("Blackhole does not support magnet links.");
             }
 
-            var title = remoteEpisode.Release.Title;
+            var title = remoteMovie.Release.Title;
 
             title = FileNameBuilder.CleanFileName(title);
 
@@ -62,9 +73,9 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             return null;
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            var title = remoteEpisode.Release.Title;
+            var title = remoteMovie.Release.Title;
 
             title = FileNameBuilder.CleanFileName(title);
 
@@ -93,7 +104,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
                 {
                     DownloadClient = Definition.Name,
                     DownloadId = Definition.Name + "_" + item.DownloadId,
-                    Category = "sonarr",
+                    Category = "radarr",
                     Title = item.Title,
 
                     TotalSize = item.TotalSize,

@@ -6,6 +6,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Datastore.Extensions;
 using Marr.Data.QGen;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Tv
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Tv
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
         void SetFileId(int fileId, int movieId);
+        PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
     }
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
@@ -194,10 +196,44 @@ namespace NzbDrone.Core.Tv
         {
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
-                             .AndWhere(m => m.Status == MovieStatusType.Released)
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
+        }
+
+        public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        {
+
+            pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
+            pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+
+            return pagingSpec;
+        }
+
+        private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        {
+            return Query.Join<Movie, MovieFile>(JoinType.Left, e => e.MovieFile, (e, s) => e.MovieFileId == s.Id)
+                 .Where(pagingSpec.FilterExpression)
+                 .AndWhere(m => m.MovieFileId != 0)
+                 .AndWhere(BuildQualityCutoffWhereClause(qualitiesBelowCutoff))
+                 .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                 .Skip(pagingSpec.PagingOffset())
+                 .Take(pagingSpec.PageSize);
+        }
+
+        private string BuildQualityCutoffWhereClause(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        {
+            var clauses = new List<string>();
+
+            foreach (var profile in qualitiesBelowCutoff)
+            {
+                foreach (var belowCutoff in profile.QualityIds)
+                {
+                    clauses.Add(string.Format("([t0].[ProfileId] = {0} AND [t1].[Quality] LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+                }
+            }
+
+            return string.Format("({0})", string.Join(" OR ", clauses));
         }
 
         public Movie FindByTmdbId(int tmdbid)

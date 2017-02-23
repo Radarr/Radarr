@@ -14,6 +14,7 @@ using NzbDrone.Core.Tv;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 
@@ -86,8 +87,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             request.SuppressHttpError = true;
 
             var response = _httpClient.Get<MovieResourceRoot>(request);
-            var resource = response.Resource;
 
+            // The dude abides, so should us, Lets be nice to TMDb
+            // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
+            // var reset = long.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()); // get time when it resets
+            var remaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First());
+            if (remaining <= 5)
+            {
+                _logger.Trace("Waiting 5 seconds to get information for the next 35 movies");
+                Thread.Sleep(5000);
+            }
+
+            var resource = response.Resource;
             if (resource.status_message != null)
             {
                 if (resource.status_code == 34)
@@ -133,7 +144,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Year = movie.InCinemas.Value.Year;
             }
 
-            movie.TitleSlug += "-" + movie.Year.ToString();
+            movie.TitleSlug += "-" + movie.TmdbId.ToString();
 
             movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
             movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
@@ -174,14 +185,71 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 movie.Genres.Add(genre.name);
             }
 
-            if (resource.status == "Released")
+            //this is the way it should be handled
+            //but unfortunately it seems
+            //tmdb lacks alot of release date info
+            //omdbapi is actually quite good for this info
+            //except omdbapi has been having problems recently
+            //so i will just leave this in as a comment
+            //and use the 3 month logic that we were using before           
+            /*var now = DateTime.Now;
+            if (now < movie.InCinemas)
+                movie.Status = MovieStatusType.Announced;
+            if (now >= movie.InCinemas) 
+                movie.Status = MovieStatusType.InCinemas;
+            if (now >= movie.PhysicalRelease)
+                movie.Status = MovieStatusType.Released;
+            */
+
+            
+            var now = DateTime.Now;
+            //handle the case when we have both theatrical and physical release dates
+            if (movie.InCinemas.HasValue && movie.PhysicalRelease.HasValue)
+            {
+                if (now < movie.InCinemas)
+                    movie.Status = MovieStatusType.Announced;
+                else if (now >= movie.InCinemas)
+                    movie.Status = MovieStatusType.InCinemas;
+                if (now >= movie.PhysicalRelease)
+                    movie.Status = MovieStatusType.Released;
+            }
+            //handle the case when we have theatrical release dates but we dont know the physical release date
+            else if (movie.InCinemas.HasValue && (now >= movie.InCinemas))
+            {
+                movie.Status = MovieStatusType.InCinemas;
+            }
+            //handle the case where we only have a physical release date
+            else if (movie.PhysicalRelease.HasValue && (now >= movie.PhysicalRelease))
             {
                 movie.Status = MovieStatusType.Released;
             }
+            //otherwise the title has only been announced
             else
             {
                 movie.Status = MovieStatusType.Announced;
             }
+            //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
+            if (!movie.PhysicalRelease.HasValue && (movie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds > 60*60*24*30*3))
+            {
+                movie.Status = MovieStatusType.Released;
+            }
+
+            //this matches with the old behavior before the creation of the MovieStatusType.InCinemas
+            /*if (resource.status == "Released")
+            {
+                if (movie.InCinemas.HasValue && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds <= 60 * 60 * 24 * 30 * 3))
+                {
+                    movie.Status = MovieStatusType.InCinemas;
+                }
+                else
+                {
+                    movie.Status = MovieStatusType.Released;
+                }
+            }
+            else
+            {
+                movie.Status = MovieStatusType.Announced;
+            }*/
 
             if (resource.videos != null)
             {
@@ -221,7 +289,19 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             request.AllowAutoRedirect = true;
             request.SuppressHttpError = true;
 
-            var resources = _httpClient.Get<FindRoot>(request).Resource;
+            var response = _httpClient.Get<FindRoot>(request);
+
+            // The dude abides, so should us, Lets be nice to TMDb
+            // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
+            // var reset = long.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()); // get time when it resets
+            var remaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First());
+            if (remaining <= 5)
+            {
+                _logger.Trace("Waiting 5 seconds to get information for the next 35 movies");
+                Thread.Sleep(5000);
+            }
+
+            var resources = response.Resource;
 
             return resources.movie_results.SelectList(MapMovie).FirstOrDefault();
         }
@@ -391,7 +471,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     imdbMovie.Year = DateTime.Parse(result.release_date).Year;
                 }
 
-                imdbMovie.TitleSlug += "-" + imdbMovie.Year;
+                imdbMovie.TitleSlug += "-" + imdbMovie.TmdbId;
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
@@ -577,7 +657,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             value = value.ToLowerInvariant();
 
             //Remove all accents
-            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
+            var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
             value = Encoding.ASCII.GetString(bytes);
 
             //Replace spaces
@@ -626,6 +706,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             newMovie.RootFolderPath = movie.RootFolderPath;
             newMovie.ProfileId = movie.ProfileId;
             newMovie.Monitored = movie.Monitored;
+            newMovie.MovieFile = movie.MovieFile;
+            newMovie.MinimumAvailability = movie.MinimumAvailability;
 
             return newMovie;
         }

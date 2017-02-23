@@ -17,14 +17,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public IHttpClient HttpClient { get; set; }
         public Logger Logger { get; set; }
 
-        //public PassThePopcornRequestGenerator(ICacheManager cacheManager, IHttpClient httpClient, Logger logger)
-        //{
-        //    _httpClient = httpClient;
-        //    _logger = logger;
-
-        //    _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
-        //}
-
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -41,38 +33,22 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
         private IEnumerable<IndexerRequest> GetRequest(string searchParameters)
         {
             Authenticate();
 
+            var filter = "";
+            if (searchParameters == null)
+            {
+                if (Settings.RequireGolden)
+                {
+                    filter = "&scene=2";
+                }
+            }
+
             var request =
                 new IndexerRequest(
-                    $"{Settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php?json=noredirect&searchstr={searchParameters}",
+                    $"{Settings.BaseUrl.Trim().TrimEnd('/')}/torrents.php?action=advanced&json=noredirect&searchstr={searchParameters}{filter}",
                     HttpAccept.Json);
 
             var cookies = AuthCookieCache.Find(Settings.BaseUrl.Trim().TrimEnd('/'));
@@ -111,8 +87,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     .Accept(HttpAccept.Json)
                     .Build();
 
-                // authLoginRequest.Method = HttpMethod.POST;
-
                 var response = HttpClient.Execute(authLoginRequest);
                 var result = Json.Deserialize<PassThePopcornAuthResponse>(response.Content);
 
@@ -133,5 +107,32 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 requestBuilder.SetCookies(cookies);
             }
         }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        
     }
 }

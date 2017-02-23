@@ -1,8 +1,5 @@
 ﻿using NzbDrone.Common.Http;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -23,6 +20,8 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             var link = Settings.Link.Trim();
 
+            var filters = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Ceritification.ToLower()}";
+
             switch (Settings.ListType)
             {
                 case (int)TraktListType.UserCustomList:
@@ -34,29 +33,29 @@ namespace NzbDrone.Core.NetImport.Trakt
                 case (int)TraktListType.UserWatchedList:
                     link = link + $"/users/{Settings.Username.Trim()}/watched/movies";
                     break;
-                case (int)TraktListType.TrendingMovies:
-                    link = link + "/movies/trending";
+                case (int)TraktListType.Trending:
+                    link = link + "/movies/trending" + filters;
                     break;
-                case (int)TraktListType.PopularMovies:
-                    link = link + "/movies/popular";
+                case (int)TraktListType.Popular:
+                    link = link + "/movies/popular" + filters;
                     break;
-                case (int)TraktListType.AnticipatedMovies:
-                    link = link + "/movies/anticipated";
+                case (int)TraktListType.Anticipated:
+                    link = link + "/movies/anticipated" + filters;
                     break;
-                case (int)TraktListType.BoxOfficeMovies:
-                    link = link + "/movies/boxoffice";
+                case (int)TraktListType.BoxOffice:
+                    link = link + "/movies/boxoffice" + filters;
                     break;
                 case (int)TraktListType.TopWatchedByWeek:
-                    link = link + "/movies/watched/weekly";
+                    link = link + "/movies/watched/weekly" + filters;
                     break;
                 case (int)TraktListType.TopWatchedByMonth:
-                    link = link + "/movies/watched/monthly";
+                    link = link + "/movies/watched/monthly" + filters;
                     break;
                 case (int)TraktListType.TopWatchedByYear:
-                    link = link + "/movies/watched/yearly";
+                    link = link + "/movies/watched/yearly" + filters;
                     break;
                 case (int)TraktListType.TopWatchedByAllTime:
-                    link = link + "/movies/watched/all";
+                    link = link + "/movies/watched/all" + filters;
                     break;
             }
 

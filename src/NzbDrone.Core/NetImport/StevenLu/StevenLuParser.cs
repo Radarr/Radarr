@@ -1,22 +1,9 @@
 ﻿using Newtonsoft.Json;
 using NzbDrone.Core.NetImport.Exceptions;
-using NzbDrone.Core.Tv;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.NetImport.StevenLu
 {

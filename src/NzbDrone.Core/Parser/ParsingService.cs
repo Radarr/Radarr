@@ -359,6 +359,8 @@ namespace NzbDrone.Core.Parser
             {
                 var possibleTitles = new List<string>();
 
+				Movie possibleMovie = null;
+
                 possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
                 foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
@@ -370,7 +372,7 @@ namespace NzbDrone.Core.Parser
                 {
                     if (title == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        return searchCriteria.Movie;
+                        possibleMovie = searchCriteria.Movie;
                     }
 
                     foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
@@ -380,15 +382,21 @@ namespace NzbDrone.Core.Parser
 
                         if (title.Replace(num, roman) == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
                         {
-                            return searchCriteria.Movie;
+                            possibleMovie = searchCriteria.Movie;
                         }
 
                         if (title.Replace(roman, num) == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
                         {
-                            return searchCriteria.Movie;
+                            possibleMovie = searchCriteria.Movie;
                         }
                     }
                 }
+
+				if (possibleMovie != null && (parsedEpisodeInfo.Year < 1800 || possibleMovie.Year == parsedEpisodeInfo.Year))
+				{
+					return possibleMovie;
+				}
+
                     
             }
 
@@ -399,11 +407,16 @@ namespace NzbDrone.Core.Parser
                 if (parsedEpisodeInfo.Year > 1900)
                 {
                     movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
-                        //Todo: same as above!
+                    
                 }
                 else
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                }
+
+                if (movie == null)
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
                 }
                 return movie;
             }
@@ -412,7 +425,6 @@ namespace NzbDrone.Core.Parser
 
             if (movie == null && imdbId.IsNotNullOrWhiteSpace())
             {
-                //TODO: If series is found by TvdbId, we should report it as a scene naming exception, since it will fail to import
                 movie = _movieService.FindByImdbId(imdbId);
             }
 

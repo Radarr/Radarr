@@ -1,6 +1,17 @@
 ﻿@import "../Shared/Styles/card.less";
 @import "../Shared/Styles/clickable.less";
 
+.inline {
+  display: inline-block;
+}
+
+.page-size {
+  display: inline-block; 
+  width: 200px; 
+  float: right; 
+  margin-top: 8px;
+}
+
 #add-movies-screen {
   .existing-movies {
 
@@ -106,6 +117,9 @@
     .monitor-tooltip {
       margin-left : 5px;
     }
+    .minimumavailability-tooltip {
+      margin-left : 5px;
+    }
   }
 
   .loading-folders {
@@ -123,6 +137,13 @@
 
     dd {
       padding-bottom : 8px;
+    }
+  }
+  .minimumavailability-tooltip-contents {
+    padding-bottom : 0px;
+
+    dd {
+      padding-bottom :8px;
     }
   }
 }

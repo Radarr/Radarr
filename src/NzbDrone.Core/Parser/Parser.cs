@@ -33,6 +33,11 @@ namespace NzbDrone.Core.Parser
              //That did not work? Maybe some tool uses [] for years. Who would do that?
               new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+			//As a last resort for movies that have ( or [ in their title.
+			new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+						  RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
         };
 
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
@@ -296,6 +301,7 @@ namespace NzbDrone.Core.Parser
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|\|)+", RegexOptions.Compiled);
+        private static readonly Regex SpecialCharRegex = new Regex(@"(\&|\:|\\|\/)+", RegexOptions.Compiled);
         private static readonly Regex PunctuationRegex = new Regex(@"[^\w\s]", RegexOptions.Compiled);
         private static readonly Regex CommonWordRegex = new Regex(@"\b(a|an|the|and|or|of)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SpecialEpisodeWordRegex = new Regex(@"\b(part|special|edition|christmas)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -356,7 +362,7 @@ namespace NzbDrone.Core.Parser
             {
                 if (!ValidateBeforeParsing(title)) return null;
 
-                title = title.Replace(" ", "."); //TODO: Determine if this breaks something. However, it shouldn't.
+                //title = title.Replace(" ", "."); //TODO: Determine if this breaks something. However, it shouldn't.
 
                 Logger.Debug("Parsing string '{0}'", title);
 
@@ -400,7 +406,7 @@ namespace NzbDrone.Core.Parser
                             if (result != null)
                             {
 
-                                result.Language = LanguageParser.ParseLanguage(title);
+								result.Language = LanguageParser.ParseLanguage(simpleTitle.Replace(result.MovieTitle, "A Movie"));
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
                                 result.Quality = QualityParser.ParseQuality(title);
@@ -621,6 +627,7 @@ namespace NzbDrone.Core.Parser
             title = PunctuationRegex.Replace(title, string.Empty);
             title = CommonWordRegex.Replace(title, string.Empty);
             title = DuplicateSpacesRegex.Replace(title, " ");
+            title = SpecialCharRegex.Replace(title, string.Empty);
 
             return title.Trim().ToLower();
         }
@@ -702,8 +709,33 @@ namespace NzbDrone.Core.Parser
             }
             
             
-            var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');
+            var seriesName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
             seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
+
+			var parts = seriesName.Split('.');
+			seriesName = "";
+			int n;
+			bool previousAcronym = false;
+			foreach (var part in parts)
+			{
+				if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
+				{
+					seriesName += part + ".";
+					previousAcronym = true;
+				}
+				else
+				{
+					if (previousAcronym)
+					{
+						seriesName += " ";
+						previousAcronym = false;
+					}
+					seriesName += part + " ";
+				}
+
+			}
+
+			seriesName = seriesName.Trim(' ');
 
             int airYear;
             int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);

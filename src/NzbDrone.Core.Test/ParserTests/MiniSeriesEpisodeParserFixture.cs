@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Test.ParserTests
 {
 
     [TestFixture]
+	[Ignore("Series")]
     public class MiniSeriesEpisodeParserFixture : CoreTest
     {
         [TestCase("The.Kennedys.Part.2.DSR.XviD-SYS", "The Kennedys", 2)]

@@ -12,7 +12,7 @@ var Collection = PagableCollection.extend({
 
     state : {
         pageSize : 15,
-        sortKey  : 'inCinemas',
+        sortKey  : 'title',
         order    : -1
     },
 
@@ -36,7 +36,23 @@ var Collection = PagableCollection.extend({
         'unmonitored' : [
             'monitored',
             'false'
-        ]
+        ],
+	'announced' : [
+		'moviestatus',
+		'announced'
+	],
+	'incinemas' : [
+		'moviestatus',
+		'incinemas'
+	],
+	'released' : [
+		'moviestatus',
+		'released'
+	],
+	'available' : [
+		'moviestatus',
+		'available',
+	]
     },
 
     parseState : function(resp) {

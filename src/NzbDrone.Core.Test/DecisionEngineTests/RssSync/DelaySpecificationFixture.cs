@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     {
         private Profile _profile;
         private DelayProfile _delayProfile;
-        private RemoteEpisode _remoteEpisode;
+        private RemoteMovie _remoteEpisode;
 
         [SetUp]
         public void Setup()
@@ -38,12 +38,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                  .With(d => d.PreferredProtocol = DownloadProtocol.Usenet)
                                                  .Build();
 
-            var series = Builder<Series>.CreateNew()
+            var series = Builder<Movie>.CreateNew()
                                         .With(s => s.Profile = _profile)
                                         .Build();
 
-            _remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                   .With(r => r.Series = series)
+            _remoteEpisode = Builder<RemoteMovie>.CreateNew()
+                                                   .With(r => r.Movie = series)
                                                    .Build();
 
             _profile.Items = new List<ProfileQualityItem>();
@@ -53,30 +53,30 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _profile.Cutoff = Quality.WEBDL720p;
 
-            _remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
+            _remoteEpisode.ParsedMovieInfo = new ParsedMovieInfo();
             _remoteEpisode.Release = new ReleaseInfo();
             _remoteEpisode.Release.DownloadProtocol = DownloadProtocol.Usenet;
 
-            _remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
-            _remoteEpisode.Episodes.First().EpisodeFileId = 0;
+            //_remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
+            //_remoteEpisode.Episodes.First().EpisodeFileId = 0;
 
-            Mocker.GetMock<IDelayProfileService>()
-                  .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
-                  .Returns(_delayProfile);
+            //Mocker.GetMock<IDelayProfileService>()
+            //      .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
+            //      .Returns(_delayProfile);
 
-            Mocker.GetMock<IPendingReleaseService>()
-                  .Setup(s => s.GetPendingRemoteEpisodes(It.IsAny<int>()))
-                  .Returns(new List<RemoteEpisode>());
+            //Mocker.GetMock<IPendingReleaseService>()
+            //      .Setup(s => s.GetPendingRemoteEpisodes(It.IsAny<int>()))
+            //      .Returns(new List<RemoteEpisode>());
         }
 
         private void GivenExistingFile(QualityModel quality)
         {
-            _remoteEpisode.Episodes.First().EpisodeFileId = 1;
+            //_remoteEpisode.Episodes.First().EpisodeFileId = 1;
 
-            _remoteEpisode.Episodes.First().EpisodeFile = new LazyLoaded<EpisodeFile>(new EpisodeFile
-                                                                                 {
-                                                                                     Quality = quality
-                                                                                 });
+            //_remoteEpisode.Episodes.First().EpisodeFile = new LazyLoaded<EpisodeFile>(new EpisodeFile
+            //                                                                     {
+            //                                                                         Quality = quality
+            //                                                                     });
         }
 
         private void GivenUpgradeForExistingFile()

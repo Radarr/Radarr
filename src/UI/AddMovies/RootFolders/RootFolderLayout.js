@@ -24,9 +24,9 @@ var Layout = Marionette.Layout.extend({
 
     initialize : function() {
         this.collection = RootFolderCollection;
-        this.rootfolderListView = new RootFolderCollectionView({ collection : RootFolderCollection });
+        this.rootfolderListView = null;
 
-        this.listenTo(this.rootfolderListView, 'itemview:folderSelected', this._onFolderSelected);
+        
     },
 
     onShow : function() {
@@ -60,7 +60,12 @@ var Layout = Marionette.Layout.extend({
     },
 
     _showCurrentDirs : function() {
-        this.currentDirs.show(this.rootfolderListView);
+        if(!this.rootfolderListView)
+        {
+            this.rootfolderListView = new RootFolderCollectionView({ collection : RootFolderCollection });
+            this.currentDirs.show(this.rootfolderListView);
+            this.listenTo(this.rootfolderListView, 'itemview:folderSelected', this._onFolderSelected);
+        }
     },
 
     _keydown : function(e) {

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using FluentValidation.Results;
+﻿using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Indexers.PassThePopcorn;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
@@ -33,12 +27,21 @@ namespace NzbDrone.Core.NetImport.RSSImport
                 }
                 yield return new NetImportDefinition
                 {
-                    Name = "IMDb Watchlist",
+                    Name = "IMDb List",
                     Enabled = Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = new RSSImportSettings { Link = "http://rss.imdb.com/list/YOURLISTID" },
+                };
+                yield return new NetImportDefinition
+                {
+                    Name = "IMDb Watchlist",
+                    Enabled = Enabled,
+                    EnableAuto = true,
+                    ProfileId = 1,
+                    Implementation = GetType().Name,
+                    Settings = new RSSImportSettings { Link = "http://rss.imdb.com/user/IMDBUSERID/watchlist" },
                 };
             }
         }

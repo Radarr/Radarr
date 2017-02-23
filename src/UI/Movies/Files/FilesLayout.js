@@ -42,9 +42,9 @@ module.exports = Marionette.Layout.extend({
 						cell  : FileTitleCell
 				},
 				{
-					name : "mediaInfo",
-					label : "Media Info",
-					cell : MediaInfoCell
+						name : "mediaInfo",
+						label : "Media Info",
+						cell : MediaInfoCell
 				},
 				{
 						name  : 'edition',
@@ -82,15 +82,26 @@ module.exports = Marionette.Layout.extend({
 				this.filesCollection.add(file);
 				//this.listenTo(this.releaseCollection, 'sync', this._showSearchResults);
 				this.listenTo(this.model, 'change', function(model, options) {
-					if (options && options.changeSource === 'signalr') {
-							this._refresh();
-					}
+						if (options && options.changeSource === 'signalr') {
+								this._refresh(model);
+						}
 				});
 
 				vent.on(vent.Commands.MovieFileEdited, this._showGrid, this);
 		},
 
-		_refresh : function() {
+		_refresh : function(model) {
+			this.filesCollection = new FilesCollection();
+
+			if(model.get('hasFile')) {
+				var file = model.get("movieFile");
+				this.filesCollection.add(file);
+			}
+
+			this.onShow();
+		},
+
+		_refreshClose : function(options) {
 			this.filesCollection = new FilesCollection();
 			var file = this.movie.model.get("movieFile");
 			this.filesCollection.add(file);
@@ -99,10 +110,10 @@ module.exports = Marionette.Layout.extend({
 
 		onShow : function() {
 			this.grid.show(new Backgrid.Grid({
-				row        : Backgrid.Row,
-				columns    : this.columns,
-				collection : this.filesCollection,
-				className  : 'table table-hover'
+					row        : Backgrid.Row,
+					columns    : this.columns,
+					collection : this.filesCollection,
+					className  : 'table table-hover'
 			}));
 		},
 
