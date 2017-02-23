@@ -4,6 +4,7 @@
     {
         TBA = 0, //Nothing yet announced, only rumors, but still IMDb page
         Announced = 1, //AirDate is announced
-        Released = 2 //Has at least one PreDB release
+        InCinemas = 2,
+        Released = 3 //Has at least one PreDB release
     }
 }

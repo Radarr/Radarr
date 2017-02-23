@@ -54,6 +54,9 @@ Handlebars.registerHelper('tmdbUrl', function() {
 Handlebars.registerHelper('youTubeTrailerUrl', function() {
     return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
 });
+Handlebars.registerHelper('allFlicksUrl', function() {
+    return this.allFlicksUrl;
+});
 
 Handlebars.registerHelper('homepage', function() {
     return this.website;
@@ -82,16 +85,17 @@ Handlebars.registerHelper('GetStatus', function() {
   if (status === "announced") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
   }
+  
 
-  if (numOfMonths < 3) {
-
+  if (status ==="inCinemas") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
   }
-
-  if (numOfMonths > 3) {
-    return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
-  }
-
+  //if (numOfMonths < 3) {
+  //  return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+  //}
+  //if (numOfMonths > 3) {
+  //  return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');//TODO: Update for PreDB.me
+  //}
   if (status === 'released') {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
@@ -113,7 +117,7 @@ Handlebars.registerHelper('GetBannerStatus', function() {
     return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
 
-  if (numOfMonths < 3) {
+  if (status === "inCinemas") {
     return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
@@ -121,9 +125,9 @@ Handlebars.registerHelper('GetBannerStatus', function() {
       return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
   }
 
-  if (numOfMonths > 3) {
-    return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
-  }
+  //if (numOfMonths > 3) {
+  //  return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');//TODO: Update for PreDB.me
+  //}
 
 
 
@@ -154,14 +158,18 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
 
 Handlebars.registerHelper('DownloadedStatus', function() {
 
+  //if (this.allFlicksUrl) {
+  //  return "On Netflix";
+  //}
   if (this.downloaded) {
     return "Downloaded";
   }
   if (!this.monitored) {
     return "Not Monitored";
   }
-
-
+  //if (this.allFlicksUrl) {
+  //  return "On Netflix";
+  //}
   return "Missing";
 });
 
