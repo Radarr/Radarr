@@ -21,7 +21,7 @@ module.exports = Marionette.AppRouter.extend({
         'system'                     : 'system',
         'system/:action'             : 'system',
         'seasonpass'                 : 'seasonPass',
-        'serieseditor'               : 'seriesEditor',
+        'movieeditor'                : 'movieEditor',
         ':whatever'                  : 'showNotFound'
     }
 });

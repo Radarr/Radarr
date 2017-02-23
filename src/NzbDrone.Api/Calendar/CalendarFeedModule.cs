@@ -27,6 +27,7 @@ namespace NzbDrone.Api.Calendar
 
             Get["/NzbDrone.ics"] = options => GetCalendarFeed();
             Get["/Sonarr.ics"] = options => GetCalendarFeed();
+            Get["/Radarr.ics"] = options => GetCalendarFeed();
         }
 
         private Response GetCalendarFeed()

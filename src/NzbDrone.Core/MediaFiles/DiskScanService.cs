@@ -38,6 +38,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedEpisodes _importApprovedEpisodes;
+        private readonly IImportApprovedMovie _importApprovedMovies;
         private readonly IConfigService _configService;
         private readonly ISeriesService _seriesService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
@@ -48,6 +49,7 @@ namespace NzbDrone.Core.MediaFiles
         public DiskScanService(IDiskProvider diskProvider,
                                IMakeImportDecision importDecisionMaker,
                                IImportApprovedEpisodes importApprovedEpisodes,
+                               IImportApprovedMovie importApprovedMovies,
                                IConfigService configService,
                                ISeriesService seriesService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
@@ -58,6 +60,7 @@ namespace NzbDrone.Core.MediaFiles
             _diskProvider = diskProvider;
             _importDecisionMaker = importDecisionMaker;
             _importApprovedEpisodes = importApprovedEpisodes;
+            _importApprovedMovies = importApprovedMovies;
             _configService = configService;
             _seriesService = seriesService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
@@ -175,11 +178,12 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileTableCleanupService.Clean(movie, mediaFileList);
 
             var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie);
+            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie, true);
             decisionsStopwatch.Stop();
             _logger.Trace("Import decisions complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
 
-            _importApprovedEpisodes.Import(decisions, false);
+            //_importApprovedEpisodes.Import(decisions, false);
+            _importApprovedMovies.Import(decisions, false);
 
             _logger.Info("Completed scanning disk for {0}", movie.Title);
             _eventAggregator.PublishEvent(new MovieScannedEvent(movie));
@@ -262,7 +266,8 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (message.MovieId.HasValue)
             {
-                var series = _movieService.GetMovie(message.MovieId.Value);
+                var movie = _movieService.GetMovie(message.MovieId.Value);
+                Scan(movie);
             }
             else
             {

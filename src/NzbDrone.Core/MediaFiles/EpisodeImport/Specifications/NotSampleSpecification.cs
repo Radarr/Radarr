@@ -40,12 +40,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
 
         public Decision IsSatisfiedBy(LocalMovie localEpisode)
         {
-            if (localEpisode.ExistingFile)
-            {
-                _logger.Debug("Existing file, skipping sample check");
-                return Decision.Accept();
-            }
-
             var sample = _detectSample.IsSample(localEpisode.Movie,
                                                 localEpisode.Quality,
                                                 localEpisode.Path,

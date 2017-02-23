@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Parser.Model
 
         public string Path { get; set; }
         public long Size { get; set; }
-        public ParsedEpisodeInfo ParsedEpisodeInfo { get; set; }
+        public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public Movie Movie { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }

@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Configuration
         [Test]
         public void Get_value_should_return_default_when_no_value()
         {
-            Subject.RssSyncInterval.Should().Be(15);
+            Subject.RssSyncInterval.Should().Be(60);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.Configuration
         public void get_value_with_out_persist_should_not_store_default_value()
         {
             var interval = Subject.RssSyncInterval;
-            interval.Should().Be(15);
+            interval.Should().Be(60);
             Mocker.GetMock<IConfigRepository>().Verify(c => c.Insert(It.IsAny<Config>()), Times.Never());
         }
 

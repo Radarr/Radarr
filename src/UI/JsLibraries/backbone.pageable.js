@@ -572,7 +572,7 @@
 
         if (mode == "infinite") {
           if (!links[currentPage + '']) {
-            throw new RangeError("No link found for page " + currentPage);
+            //throw new RangeError("No link found for page " + currentPage);
           }
         }
         else if (currentPage < firstPage ||
@@ -756,7 +756,7 @@
     hasNext: function () {
       var state = this.state;
       var currentPage = this.state.currentPage;
-      if (this.mode != "infinite") return currentPage < state.lastPage;
+      if (true/*this.mode != "infinite"*/) return currentPage < state.lastPage;
       return !!this.links[currentPage + 1];
     },
 
@@ -1207,9 +1207,16 @@
           if (_isUndefined(options.silent)) delete opts.silent;
           else opts.silent = options.silent;
 
+          //console.log(_extend({at: fullCol.length}, opts));
+
           var models = col.models;
-          if (mode == "client") fullCol.reset(models, opts);
-          else fullCol.add(models, _extend({at: fullCol.length}, opts));
+          if (mode == "client") {
+            fullCol.reset(models, opts);
+          } else {
+            opts.remove = false;
+            fullCol.add(models, _extend({at: fullCol.length}, opts));
+            opts.remove = true;
+          }
 
           if (success) success(col, resp, opts);
         };

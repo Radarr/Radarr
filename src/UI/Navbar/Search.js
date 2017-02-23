@@ -25,7 +25,9 @@ $.fn.bindSearch = function() {
         minLength : 1
     }, {
         name       : 'series',
-        displayKey : 'title',
+        displayKey : function(series) {
+           return series.title + ' (' + series.year + ')';
+        },
         source     : substringMatcher()
     });
 

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json.Linq;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Api.ClientSchema
 {
@@ -73,14 +76,14 @@ namespace NzbDrone.Api.ClientSchema
 
                     if (propertyInfo.PropertyType == typeof(int))
                     {
-                        var value = Convert.ToInt32(field.Value);
-                        propertyInfo.SetValue(target, value, null);
+                        var value = field.Value.ToString().ParseInt32();
+                        propertyInfo.SetValue(target, value ?? 0, null);
                     }
 
                     else if (propertyInfo.PropertyType == typeof(long))
                     {
-                        var value = Convert.ToInt64(field.Value);
-                        propertyInfo.SetValue(target, value, null);
+                        var value = field.Value.ToString().ParseInt64();
+                        propertyInfo.SetValue(target, value ?? 0, null);
                     }
 
                     else if (propertyInfo.PropertyType == typeof(int?))
@@ -147,6 +150,18 @@ namespace NzbDrone.Api.ClientSchema
 
         private static List<SelectOption> GetSelectOptions(Type selectOptions)
         {
+            if (selectOptions == typeof(Profile))
+            {
+                return new List<SelectOption>();
+            }
+
+            if (selectOptions == typeof(Quality))
+            {
+                var qOptions = from Quality q in selectOptions.GetProperties(BindingFlags.Static | BindingFlags.Public)
+                    select new SelectOption {Name = q.Name, Value = q.Id};
+                return qOptions.OrderBy(o => o.Value).ToList();
+            }
+
             var options = from Enum e in Enum.GetValues(selectOptions)
                           select new SelectOption { Value = Convert.ToInt32(e), Name = e.ToString() };
 

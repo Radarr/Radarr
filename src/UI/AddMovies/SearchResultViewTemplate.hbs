@@ -1,7 +1,7 @@
 <div class="search-item {{#unless isExisting}}search-item-new{{/unless}}">
     <div class="row">
         <div class="col-md-2">
-            <a href="{{imdbUrl}}" target="_blank">
+            <a href="{{tmdbUrl}}" target="_blank">
               {{#if remotePoster}}
                 {{remotePoster}}
               {{else}}
@@ -41,18 +41,28 @@
                     <div class="form-group col-md-2">
                         <label>Monitor <i class="icon-sonarr-form-info monitor-tooltip x-monitor-tooltip"></i></label>
                         <select class="form-control col-md-2 x-monitor">
-                            <option value="all">All</option>
-                            <option value="missing">Missing</option>
-                            <option value="none">None</option>
+                            <option value="all">Yes</option>
+                            <!-- <option value="missing">Missing</option> -->
+                            <option value="none">No</option>
                         </select>
                     </div>
+
+		    <div class="form-group col-md-2">
+		        <label>Min Availability <i class="icon-sonarr-form-info minimumavailability-tooltip x-minimumavailability-tooltip"></i></label>
+			<select class="form-control col-md-2 x-minimumavailability">
+			    <option value="announced">Announced</option>
+			    <option value="inCinemas">In Cinemas</option>
+			    <option value="released">Physical/Web</option>
+			    <option value="preDB">PreDB</option>
+			</select>
+	            </div>
 
                     <div class="form-group col-md-2">
                         <label>Profile</label>
                         {{> ProfileSelectionPartial profiles}}
                     </div>
 
-                    <div class="form-group col-md-2">
+                    {{!--<div class="form-group col-md-2">
                         <label>Season Folders</label>
 
                         <div class="input-group">
@@ -65,7 +75,7 @@
                                 <div class="btn btn-primary slide-button"/>
                             </label>
                         </div>
-                    </div>
+                    </div>--}}
                 {{/unless}}
 
                 {{#unless existing}}

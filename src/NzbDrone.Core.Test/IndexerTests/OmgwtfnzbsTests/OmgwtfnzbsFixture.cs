@@ -42,14 +42,14 @@ namespace NzbDrone.Core.Test.IndexerTests.OmgwtfnzbsTests
 
             var releaseInfo = releases.First();
 
-            releaseInfo.Title.Should().Be("Stephen.Fry.Gadget.Man.S01E05.HDTV.x264-C4TV");
+            releaseInfo.Title.Should().Be("Un.Petit.Boulot.2016.FRENCH.720p.BluRay.DTS.x264-LOST");
             releaseInfo.DownloadProtocol.Should().Be(DownloadProtocol.Usenet);
-            releaseInfo.DownloadUrl.Should().Be("http://api.omgwtfnzbs.org/sn.php?id=OAl4g&user=nzbdrone&api=nzbdrone");
-            releaseInfo.InfoUrl.Should().Be("http://omgwtfnzbs.org/details.php?id=OAl4g");
+            releaseInfo.DownloadUrl.Should().Be("https://api.omgwtfnzbs.me/nzb/?id=8a2Bw&user=nzbdrone&api=nzbdrone");
+            releaseInfo.InfoUrl.Should().Be("https://omgwtfnzbs.me/details.php?id=8a2Bw");
             releaseInfo.CommentUrl.Should().BeNullOrEmpty();
             releaseInfo.Indexer.Should().Be(Subject.Definition.Name);
-            releaseInfo.PublishDate.Should().Be(DateTime.Parse("2012/12/17 23:30:13"));
-            releaseInfo.Size.Should().Be(236822906);
+            releaseInfo.PublishDate.Should().Be(DateTime.Parse("2017/01/09 00:16:54"));
+            releaseInfo.Size.Should().Be(5354909355);
         }
     }
 }

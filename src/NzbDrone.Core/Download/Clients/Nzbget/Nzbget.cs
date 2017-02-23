@@ -31,25 +31,18 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContents)
         {
-            var category = Settings.TvCategory;
-            var priority = remoteEpisode.IsRecentEpisode() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
-
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
-
-            if (response == null)
-            {
-                throw new DownloadClientException("Failed to add nzb {0}", filename);
-            }
-
-            return response;
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
             var category = Settings.TvCategory; // TODO: Update this to MovieCategory?
+
             var priority = Settings.RecentTvPriority;
 
-            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
+            var addpaused = Settings.AddPaused;
+
+            var response = _proxy.DownloadNzb(fileContents, filename, category, priority, addpaused, Settings);
 
             if(response == null)
             {
@@ -337,7 +330,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be greater than 0")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
-                    DetailedDescription = "NzbGet setting KeepHistory is set to 0. Which prevents Sonarr from seeing completed downloads."
+                    DetailedDescription = "NzbGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
                 };
             }
 

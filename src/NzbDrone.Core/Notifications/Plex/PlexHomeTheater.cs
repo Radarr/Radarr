@@ -23,18 +23,22 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string header = "Sonarr - Grabbed";
+            const string header = "Radarr - Grabbed";
 
             Notify(Settings, header, grabMessage.Message);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string header = "Sonarr - Downloaded";
+            const string header = "Radarr - Downloaded";
 
             Notify(Settings, header, message.Message);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+        }
+		
         public override void OnRename(Series series)
         {
             

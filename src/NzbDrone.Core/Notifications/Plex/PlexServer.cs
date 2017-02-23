@@ -22,19 +22,24 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnDownload(DownloadMessage message)
         {
-            UpdateIfEnabled(message.Series);
+            UpdateIfEnabled(message.Movie);
         }
 
+        public override void OnMovieRename(Movie movie)
+        {
+            UpdateIfEnabled(movie);
+        }
+		
         public override void OnRename(Series series)
         {
-            UpdateIfEnabled(series);
+            //UpdateIfEnabled(movie);
         }
 
-        private void UpdateIfEnabled(Series series)
+        private void UpdateIfEnabled(Movie movie)
         {
             if (Settings.UpdateLibrary)
             {
-                _plexServerService.UpdateLibrary(series, Settings);
+                _plexServerService.UpdateMovieSections(movie, Settings);
             }
         }
 

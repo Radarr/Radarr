@@ -32,7 +32,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> GetRssDecision(List<ReleaseInfo> reports)
         {
-            return GetDecisions(reports).ToList();
+            return GetMovieDecisions(reports).ToList();
         }
 
         public List<DownloadDecision> GetSearchDecision(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteriaBase)
@@ -257,7 +257,7 @@ namespace NzbDrone.Core.DecisionEngine
             }
             catch (NotImplementedException e)
             {
-                _logger.Info("Spec " + spec.GetType().Name + " does not care about movies.");
+                _logger.Trace("Spec " + spec.GetType().Name + " does not care about movies.");
             }
             catch (Exception e)
             {
@@ -265,7 +265,6 @@ namespace NzbDrone.Core.DecisionEngine
                 e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
                 _logger.Error(e, "Couldn't evaluate decision on " + remoteEpisode.Release.Title + ", with spec: " + spec.GetType().Name);
                 return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
-                return null;
             }
 
             return null;

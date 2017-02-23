@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Download
         public ProcessedDecisions ProcessDecisions(List<DownloadDecision> decisions)
         {
             //var qualifiedReports = GetQualifiedReports(decisions);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
+            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
 
@@ -48,6 +48,12 @@ namespace NzbDrone.Core.Download
                     {
                         _pendingReleaseService.Add(report);
                         pending.Add(report);
+                        continue;
+                    }
+
+                    if (report.Rejections.Any())
+                    {
+                        _logger.Debug("Rejecting release {0} because {1}", report.ToString(), report.Rejections.First().Reason);
                         continue;
                     }
 

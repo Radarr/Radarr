@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Download.Pending
         public string Title { get; set; }
         public DateTime Added { get; set; }
         public ParsedEpisodeInfo ParsedEpisodeInfo { get; set; }
+        public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public ReleaseInfo Release { get; set; }
 
         //Not persisted

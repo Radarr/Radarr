@@ -100,7 +100,7 @@
                     </label>
 
                     <span class="help-inline-checkbox">
-                        <i class="icon-sonarr-form-info" title="Open a web browser and navigate to Sonarr homepage on app start. Has no effect if installed as a windows service"/>
+                        <i class="icon-sonarr-form-info" title="Open a web browser and navigate to Radarr homepage on app start. Has no effect if installed as a windows service"/>
                     </span>
                 </div>
             </div>
@@ -114,7 +114,7 @@
 
             <div class="col-sm-1 col-sm-push-4 help-inline">
                 <i class="icon-sonarr-form-warning" title="Requires restart to take effect"/>
-                <i class="icon-sonarr-form-info" title="Require Username and Password to access Sonarr"/>
+                <i class="icon-sonarr-form-info" title="Require Username and Password to access Radarr"/>
             </div>
 
             <div class="col-sm-4 col-sm-pull-1">
@@ -308,7 +308,7 @@
                     </label>
 
                     <span class="help-inline-checkbox">
-                        <i class="icon-sonarr-form-info" title="Send anonymous information about your browser and which parts of the web interface you use to Sonarr servers. We use this information to prioritize features and browser support. We will NEVER include any personal information or any information that could identify you."/>
+                        <i class="icon-sonarr-form-info" title="Send anonymous information about your browser and which parts of the web interface you use to Radarr servers. We use this information to prioritize features and browser support. We will NEVER include any personal information or any information that could identify you."/>
                         <i class="icon-sonarr-form-warning" title="Requires restart to take effect"/>
                     </span>
                 </div>
@@ -322,13 +322,17 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Branch</label>
 
-            <div class="col-sm-4">
+            <div class="col-sm-1 col-sm-push-2 help-inline">
+                <i class="icon-sonarr-form-warning" title="If using Docker, do not use 'develop' or 'nightly' branches"/>
+            </div>
+
+            <div class="col-sm-2 col-sm-pull-1">
                 <input type="text" placeholder="master" name="branch" class="form-control"/>
             </div>
         </div>
 
         {{#if_mono}}
-        <div class="alert alert-warning">Please see: <a href="https://github.com/NzbDrone/NzbDrone/wiki/Updating">the wiki</a> for more information</div>
+        <div class="alert alert-warning">Please see: <a href="https://github.com/Radarr/Radarr/wiki">the wiki</a> for more information</div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">Automatic</label>

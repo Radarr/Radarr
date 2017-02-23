@@ -37,7 +37,7 @@ module.exports = Marionette.Layout.extend({
             name  : 'edition',
             label : 'Edition',
             cell  : EditionCell,
-            title : "Edition"
+            title : "Edition",
         },
         {
             name  : 'indexer',
@@ -57,7 +57,7 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'quality',
             label : 'Quality',
-            cell  : QualityCell
+            cell  : QualityCell,
         },
         {
             name      : 'rejections',

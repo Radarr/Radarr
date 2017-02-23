@@ -12,14 +12,14 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         public TransmissionSettingsValidator()
         {
             RuleFor(c => c.Host).ValidHost();
-            RuleFor(c => c.Port).GreaterThan(0);
+            RuleFor(c => c.Port).InclusiveBetween(1, 65535);
 
             RuleFor(c => c.UrlBase).ValidUrlBase();
 
-            RuleFor(c => c.TvCategory).Matches(@"^\.?[-a-z]*$", RegexOptions.IgnoreCase).WithMessage("Allowed characters a-z and -");
+            RuleFor(c => c.MovieCategory).Matches(@"^\.?[-a-z]*$", RegexOptions.IgnoreCase).WithMessage("Allowed characters a-z and -");
 
-            RuleFor(c => c.TvCategory).Empty()
-                .When(c => c.TvDirectory.IsNotNullOrWhiteSpace())
+            RuleFor(c => c.MovieCategory).Empty()
+                .When(c => c.MovieDirectory.IsNotNullOrWhiteSpace())
                 .WithMessage("Cannot use Category and Directory");
         }
     }
@@ -33,6 +33,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             Host = "localhost";
             Port = 9091;
             UrlBase = "/transmission/";
+            MovieCategory = "radarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -50,19 +51,13 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         [FieldDefinition(4, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Sonarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
-        public string TvCategory { get; set; }
+        [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
+        public string MovieCategory { get; set; }
 
         [FieldDefinition(6, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default Transmission location")]
-        public string TvDirectory { get; set; }
+        public string MovieDirectory { get; set; }
 
-        [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
-        public int RecentTvPriority { get; set; }
-
-        [FieldDefinition(8, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
-        public int OlderTvPriority { get; set; }
-
-        [FieldDefinition(9, Label = "Use SSL", Type = FieldType.Checkbox)]
+        [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
 
         public NzbDroneValidationResult Validate()

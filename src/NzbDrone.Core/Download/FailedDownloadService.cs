@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Download
 
                 if (grabbedItems.Empty())
                 {
-                    trackedDownload.Warn("Download wasn't grabbed by sonarr, skipping");
+                    trackedDownload.Warn("Download wasn't grabbed by Radarr, skipping");
                     return;
                 }
             
@@ -88,6 +88,7 @@ namespace NzbDrone.Core.Download
             var downloadFailedEvent = new DownloadFailedEvent
             {
                 SeriesId = historyItem.SeriesId,
+                MovieId = historyItem.MovieId,
                 EpisodeIds = historyItems.Select(h => h.EpisodeId).ToList(),
                 Quality = historyItem.Quality,
                 SourceTitle = historyItem.SourceTitle,

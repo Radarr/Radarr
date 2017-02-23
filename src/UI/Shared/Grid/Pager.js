@@ -83,7 +83,7 @@ module.exports = Paginator.extend({
         var windowStart = Math.floor(currentPage / this.windowSize) * this.windowSize;
         var windowEnd = Math.min(lastPage + 1, windowStart + this.windowSize);
 
-        if (collection.mode !== 'infinite') {
+        if (true/*collection.mode !== 'infinite'*/) {
             for (var i = windowStart; i < windowEnd; i++) {
                 handles.push({
                     label      : i + 1,

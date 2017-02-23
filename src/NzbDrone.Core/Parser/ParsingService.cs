@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Parser
         LocalEpisode GetLocalEpisode(string filename, Series series);
         LocalEpisode GetLocalEpisode(string filename, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
         LocalMovie GetLocalMovie(string filename, Movie movie);
-        LocalMovie GetLocalMovie(string filename, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource);
+        LocalMovie GetLocalMovie(string filename, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource);
         Series GetSeries(string title);
         Movie GetMovie(string title);
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
@@ -120,26 +120,26 @@ namespace NzbDrone.Core.Parser
             return GetLocalMovie(filename, movie, null, false);
         }
 
-        public LocalMovie GetLocalMovie(string filename, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        public LocalMovie GetLocalMovie(string filename, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
         {
-            ParsedEpisodeInfo parsedEpisodeInfo;
+            ParsedMovieInfo parsedMovieInfo;
 
             if (folderInfo != null)
             {
-                parsedEpisodeInfo = folderInfo.JsonClone();
-                parsedEpisodeInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
+                parsedMovieInfo = folderInfo.JsonClone();
+                parsedMovieInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
             }
 
             else
             {
-                parsedEpisodeInfo = Parser.ParsePath(filename);
+                parsedMovieInfo = Parser.ParseMoviePath(filename);
             }
 
-            if (parsedEpisodeInfo == null)
+            if (parsedMovieInfo == null)
             {
                 if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
                 {
-                    _logger.Warn("Unable to parse episode info from path {0}", filename);
+                    _logger.Warn("Unable to parse movie info from path {0}", filename);
                 }
 
                 return null;
@@ -148,9 +148,9 @@ namespace NzbDrone.Core.Parser
             return new LocalMovie
             {
                 Movie = movie,
-                Quality = parsedEpisodeInfo.Quality,
+                Quality = parsedMovieInfo.Quality,
                 Path = filename,
-                ParsedEpisodeInfo = parsedEpisodeInfo,
+                ParsedMovieInfo = parsedMovieInfo,
                 ExistingFile = movie.Path.IsParentPath(filename)
             };
         }
@@ -190,6 +190,11 @@ namespace NzbDrone.Core.Parser
             {
                 series = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitleInfo.TitleWithoutYear,
                                                     parsedEpisodeInfo.MovieTitleInfo.Year);
+            }
+
+            if (series == null)
+            {
+                series = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle.Replace("DC", "").Trim());
             }
 
             return series;
@@ -354,6 +359,8 @@ namespace NzbDrone.Core.Parser
             {
                 var possibleTitles = new List<string>();
 
+				Movie possibleMovie = null;
+
                 possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
                 foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
@@ -365,7 +372,7 @@ namespace NzbDrone.Core.Parser
                 {
                     if (title == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        return searchCriteria.Movie;
+                        possibleMovie = searchCriteria.Movie;
                     }
 
                     foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
@@ -375,15 +382,21 @@ namespace NzbDrone.Core.Parser
 
                         if (title.Replace(num, roman) == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
                         {
-                            return searchCriteria.Movie;
+                            possibleMovie = searchCriteria.Movie;
                         }
 
                         if (title.Replace(roman, num) == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
                         {
-                            return searchCriteria.Movie;
+                            possibleMovie = searchCriteria.Movie;
                         }
                     }
                 }
+
+				if (possibleMovie != null && (parsedEpisodeInfo.Year < 1800 || possibleMovie.Year == parsedEpisodeInfo.Year))
+				{
+					return possibleMovie;
+				}
+
                     
             }
 
@@ -391,9 +404,20 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria == null)
             {
+                if (parsedEpisodeInfo.Year > 1900)
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
+                    
+                }
+                else
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                }
 
-                movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle); //Todo: same as above!
-
+                if (movie == null)
+                {
+                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                }
                 return movie;
             }
 
@@ -401,7 +425,6 @@ namespace NzbDrone.Core.Parser
 
             if (movie == null && imdbId.IsNotNullOrWhiteSpace())
             {
-                //TODO: If series is found by TvdbId, we should report it as a scene naming exception, since it will fail to import
                 movie = _movieService.FindByImdbId(imdbId);
             }
 

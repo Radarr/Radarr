@@ -34,7 +34,18 @@
         </div>
 
         <div class="col-sm-2 col-sm-pull-1">
-            <input type="number" name="rssSyncInterval" class="form-control" min="0" max="120"/>
+            <input type="number" name="rssSyncInterval" class="form-control" min="0" max="720"/>
+        </div>
+    </div>
+    <legend>Availability Options</legend>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Availability Delay</label>
+	<div class="col-sm-1 col-sm-push-2 help-inline">
+	    <i class="icon-sonarr-form-info" title="A movie will be considered available during RssSync this many days after(or before) the Min Availability has been satisfied. (can be negative)"/>
+	    <i class="icon-sonarr-form-info" title="This only effects RssSyncs, It does not effect how movies are displayed or what is shown in the Wanted/Missing View"/>
+	</div>
+	<div class="col-sm-2 col-sm-pull-1">
+	    <input type="number" name="availabilityDelay" class="form-control" min="-365" max="365"/>
         </div>
     </div>
 </fieldset>

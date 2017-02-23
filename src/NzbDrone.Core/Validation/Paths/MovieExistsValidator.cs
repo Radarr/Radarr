@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IMovieService _seriesService;
 
         public MovieExistsValidator(IMovieService seriesService)
-            : base("This series has already been added")
+            : base("This movie has already been added")
         {
             _seriesService = seriesService;
         }

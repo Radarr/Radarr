@@ -23,9 +23,9 @@ namespace NzbDrone.Core.Indexers
             return pageableRequests;
         }
 
-        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
-            throw new NotImplementedException();
+            return new IndexerPageableRequestChain();
         }
 
         public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)

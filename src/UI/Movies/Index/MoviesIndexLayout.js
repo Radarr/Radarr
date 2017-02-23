@@ -6,12 +6,14 @@ var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
-var MovieTitleCell = require('../../Cells/MovieTitleCell2');
+var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
 var MovieLinksCell = require('../../Cells/MovieLinksCell');
 var MovieActionCell = require('../../Cells/MovieActionCell');
 var MovieStatusCell = require('../../Cells/MovieStatusCell');
+var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
+var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var FooterView = require('./FooterView');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
@@ -38,7 +40,11 @@ module.exports = Marionette.Layout.extend({
             label     : 'Title',
             cell      : MovieTitleCell,
             cellValue : 'this',
-            sortValue : 'sortTitle'
+        },
+        {
+          name : "downloadedQuality",
+          label : "Downloaded",
+          cell : DownloadedQualityCell,
         },
         {
             name  : 'profileId',
@@ -54,7 +60,19 @@ module.exports = Marionette.Layout.extend({
             name      : 'this',
             label     : 'Links',
             cell      : MovieLinksCell,
-            className : "movie-links-cell"
+            className : "movie-links-cell",
+            sortable : false,
+        },
+        {
+          name        : "this",
+          label       : "Status",
+          cell        : MovieDownloadStatusCell,
+          sortValue : function(m, k) {
+            if (m.get("downloaded")) {
+              return -1;
+            }
+            return 0;
+          }
         },
         {
             name     : 'this',
@@ -75,14 +93,9 @@ module.exports = Marionette.Layout.extend({
                 route : 'addmovies'
             },
             {
-                title : 'Season Pass',
-                icon  : 'icon-sonarr-monitored',
-                route : 'seasonpass'
-            },
-            {
-                title : 'Series Editor',
+                title : 'Movie Editor',
                 icon  : 'icon-sonarr-edit',
-                route : 'serieseditor'
+                route : 'movieeditor'
             },
             {
                 title        : 'RSS Sync',
@@ -132,27 +145,23 @@ module.exports = Marionette.Layout.extend({
             items          : [
                 {
                     title : 'Title',
-                    name  : 'title'
+                    name  : 'sortTitle'
                 },
                 {
-                    title : 'Seasons',
-                    name  : 'seasonCount'
+                    title: 'Downloaded',
+                    name: 'downloadedQuality'
                 },
                 {
-                    title : 'Quality',
+                    title : 'Profile',
                     name  : 'profileId'
                 },
                 {
-                    title : 'Network',
-                    name  : 'network'
+                    title : 'In Cinemas',
+                    name  : 'inCinemas'
                 },
                 {
-                    title : 'Next Airing',
-                    name  : 'nextAiring'
-                },
-                {
-                    title : 'Episodes',
-                    name  : 'percentOfEpisodes'
+                  title : "Status",
+                  name : "status",
                 }
             ]
         };
@@ -178,24 +187,31 @@ module.exports = Marionette.Layout.extend({
                     callback : this._setFilter
                 },
                 {
-                    key      : 'continuing',
-                    title    : '',
-                    tooltip  : 'Continuing Only',
-                    icon     : 'icon-sonarr-series-continuing',
-                    callback : this._setFilter
-                },
-                {
-                    key      : 'ended',
-                    title    : '',
-                    tooltip  : 'Ended Only',
-                    icon     : 'icon-sonarr-series-ended',
-                    callback : this._setFilter
-                },
-                {
                     key      : 'missing',
                     title    : '',
-                    tooltip  : 'Missing',
+                    tooltip  : 'Missing Only',
                     icon     : 'icon-sonarr-missing',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'released',
+                    title    : '',
+                    tooltip  : 'Released',
+                    icon     : 'icon-sonarr-movie-released',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'announced',
+                    title    : '',
+                    tooltip  : 'Announced',
+                    icon     : 'icon-sonarr-movie-announced',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'cinemas',
+                    title    : '',
+                    tooltip  : 'In Cinemas',
+                    icon     : 'icon-sonarr-movie-cinemas',
                     callback : this._setFilter
                 }
             ]
@@ -316,18 +332,21 @@ module.exports = Marionette.Layout.extend({
         var series = MoviesCollection.models.length;
         var episodes = 0;
         var episodeFiles = 0;
-        var ended = 0;
-        var continuing = 0;
+        var announced = 0;
+        var released = 0;
+	var incinemas = 0;
         var monitored = 0;
 
         _.each(MoviesCollection.models, function(model) {
             episodes += model.get('episodeCount');
             episodeFiles += model.get('episodeFileCount');
 
-            if (model.get('status').toLowerCase() === 'ended') {
-                ended++;
+            if (model.get('status').toLowerCase() === 'released') {
+                released++;
+	    } else if (model.get('status').toLowerCase() === 'incinemas') {
+                incinemas++;
             } else {
-                continuing++;
+                announced++;
             }
 
             if (model.get('monitored')) {
@@ -337,9 +356,10 @@ module.exports = Marionette.Layout.extend({
 
         footerModel.set({
             series       : series,
-            ended        : ended,
-            continuing   : continuing,
-            monitored    : monitored,
+            released   : released,
+	    incinemas    : incinemas,
+            announced    : announced,
+            monitored : monitored,
             unmonitored  : series - monitored,
             episodes     : episodes,
             episodeFiles : episodeFiles

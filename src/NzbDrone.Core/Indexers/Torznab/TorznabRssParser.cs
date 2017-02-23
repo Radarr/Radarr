@@ -39,10 +39,13 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             var torrentInfo = base.ProcessItem(item, releaseInfo) as TorrentInfo;
-
-            torrentInfo.TvdbId = GetTvdbId(item);
-            torrentInfo.TvRageId = GetTvRageId(item);
-
+            if (GetImdbId(item) != null)
+            {
+                if (torrentInfo != null)
+                {
+                    torrentInfo.ImdbId = int.Parse(GetImdbId(item).Substring(2));
+                }
+            }
             return torrentInfo;
         }
 
@@ -100,31 +103,12 @@ namespace NzbDrone.Core.Indexers.Torznab
             return url;
         }
 
-        protected virtual int GetTvdbId(XElement item)
+        protected virtual string GetImdbId(XElement item)
         {
-            var tvdbIdString = TryGetTorznabAttribute(item, "tvdbid");
-            int tvdbId;
-
-            if (!tvdbIdString.IsNullOrWhiteSpace() && int.TryParse(tvdbIdString, out tvdbId))
-            {
-                return tvdbId;
-            }
-
-            return 0;
+            var imdbIdString = TryGetTorznabAttribute(item, "imdbid");
+            return (!imdbIdString.IsNullOrWhiteSpace() ? imdbIdString.Substring(2) : null);
         }
 
-        protected virtual int GetTvRageId(XElement item)
-        {
-            var tvRageIdString = TryGetTorznabAttribute(item, "rageid");
-            int tvRageId;
-
-            if (!tvRageIdString.IsNullOrWhiteSpace() && int.TryParse(tvRageIdString, out tvRageId))
-            {
-                return tvRageId;
-            }
-
-            return 0;
-        }
         protected override string GetInfoHash(XElement item)
         {
             return TryGetTorznabAttribute(item, "infohash");

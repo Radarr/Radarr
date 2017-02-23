@@ -16,7 +16,7 @@ var Collection = PagableCollection.extend({
 
     sortMappings : {
         'quality'    : {
-            sortKey : 'qualityWeight'
+            sortKey : "qualityWeight"
         },
         'rejections' : {
             sortValue : function(model) {
@@ -29,6 +29,9 @@ var Collection = PagableCollection.extend({
 
                 return releaseWeight;
             }
+        },
+        "edition" : {
+          sortKey : "edition"
         },
         'download'   : {
             sortKey : 'releaseWeight'

@@ -17,5 +17,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
         public QualityModel Quality { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
+        public Movie Movie { get; set; }
     }
 }

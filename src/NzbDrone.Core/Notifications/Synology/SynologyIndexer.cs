@@ -27,18 +27,26 @@ namespace NzbDrone.Core.Notifications.Synology
         {
             if (Settings.UpdateLibrary)
             {
-                foreach (var oldFile in message.OldFiles)
+                foreach (var oldFile in message.OldMovieFiles)
                 {
-                    var fullPath = Path.Combine(message.Series.Path, oldFile.RelativePath);
+                    var fullPath = Path.Combine(message.Movie.Path, oldFile.RelativePath);
 
                     _indexerProxy.DeleteFile(fullPath);
                 }
 
                 {
-                    var fullPath = Path.Combine(message.Series.Path, message.EpisodeFile.RelativePath);
+                    var fullPath = Path.Combine(message.Movie.Path, message.MovieFile.RelativePath);
 
                     _indexerProxy.AddFile(fullPath);
                 }
+            }
+        }
+
+        public override void OnMovieRename(Movie movie)
+        {
+            if (Settings.UpdateLibrary)
+            {
+                _indexerProxy.UpdateFolder(movie.Path);
             }
         }
 

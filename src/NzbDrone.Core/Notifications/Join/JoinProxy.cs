@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Notifications.Join
         public ValidationFailure Test(JoinSettings settings)
         {
             const string title = "Test Notification";
-            const string body = "This is a test message from Sonarr.";
+            const string body = "This is a test message from Radarr.";
 
             try
             {
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Notifications.Join
             request.AddParameter("apikey", settings.ApiKey);
             request.AddParameter("title", title);
             request.AddParameter("text", message);
-            request.AddParameter("icon", "https://cdn.rawgit.com/Sonarr/Sonarr/develop/Logo/256.png"); // Use the Sonarr logo.
+            request.AddParameter("icon", "https://cdn.rawgit.com/Radarr/Radarr/develop/Logo/256.png"); // Use the Radarr logo.
 
             var response = client.ExecuteAndValidate(request);
             var res = Json.Deserialize<JoinResponseModel>(response.Content);

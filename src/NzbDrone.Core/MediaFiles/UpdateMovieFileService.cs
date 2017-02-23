@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
     }
 
     public class UpdateMovieFileService : IUpdateMovieFileService,
-                                            IHandle<SeriesScannedEvent>
+                                            IHandle<MovieScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
@@ -47,17 +47,67 @@ namespace NzbDrone.Core.MediaFiles
         {
             var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
+            switch (_configService.FileDate)
+            {
+                case FileDateType.Release:
+                    {
+                        var airDate = movie.PhysicalRelease;
+
+                        if (airDate == null)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, airDate.Value);
+                    }
+
+                case FileDateType.Cinemas:
+                    {
+                        var airDate = movie.InCinemas;
+
+                        if (airDate == null)
+                        {
+                            return false;
+                        }
+
+                        return ChangeFileDate(movieFilePath, airDate.Value);
+                    }
+            }
+
             return false;
         }
 
-        public void Handle(SeriesScannedEvent message)
+        private bool ChangeFileDate(string filePath, DateTime date)
+        {
+            DateTime oldDateTime = _diskProvider.FileGetLastWrite(filePath);
+
+            if (!DateTime.Equals(date, oldDateTime))
+            {
+                try
+                {
+                    _diskProvider.FileSetLastWriteTime(filePath, date);
+                    _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", filePath, oldDateTime, date);
+
+                    return true;
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
+                }
+            }
+
+            return false;
+        }
+
+        public void Handle(MovieScannedEvent message)
         {
             if (_configService.FileDate == FileDateType.None)
             {
                 return;
             }
 
-           /* var movies = _movieService.MoviesWithFiles(message.Series.Id);
+            var movies = _movieService.MoviesWithFiles(message.Movie.Id);
 
             var movieFiles = new List<MovieFile>();
             var updated = new List<MovieFile>();
@@ -69,7 +119,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 movieFiles.Add(movieFile);
 
-                if (ChangeFileDate(movieFile, message.Series, moviesInFile))
+                if (ChangeFileDate(movieFile, message.Movie))
                 {
                     updated.Add(movieFile);
                 }
@@ -77,13 +127,13 @@ namespace NzbDrone.Core.MediaFiles
 
             if (updated.Any())
             {
-                _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, movieFiles.Count, message.Series.Title);
+                _logger.ProgressDebug("Changed file date for {0} files of {1} in {2}", updated.Count, movieFiles.Count, message.Movie.Title);
             }
 
             else
             {
-                _logger.ProgressDebug("No file dates changed for {0}", message.Series.Title);
-            }*/
+                _logger.ProgressDebug("No file dates changed for {0}", message.Movie.Title);
+            }
         }
 
         private bool ChangeFileDateToLocalAirDate(string filePath, string fileDate, string fileTime)

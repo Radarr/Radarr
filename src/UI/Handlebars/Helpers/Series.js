@@ -36,7 +36,7 @@ Handlebars.registerHelper('remotePoster', function() {
 });
 
 Handlebars.registerHelper('traktUrl', function() {
-    return 'http://trakt.tv/search/tvdb/' + this.tvdbId + '?id_type=show';
+    return 'http://trakt.tv/search/tmdb/' + this.tmdbId + '?id_type=movie';
 });
 
 Handlebars.registerHelper('imdbUrl', function() {
@@ -49,6 +49,13 @@ Handlebars.registerHelper('tvdbUrl', function() {
 
 Handlebars.registerHelper('tmdbUrl', function() {
     return 'https://www.themoviedb.org/movie/' + this.tmdbId;
+});
+
+Handlebars.registerHelper('youTubeTrailerUrl', function() {
+    return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
+});
+Handlebars.registerHelper('allFlicksUrl', function() {
+    return this.allFlicksUrl;
 });
 
 Handlebars.registerHelper('homepage', function() {
@@ -69,25 +76,24 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
 Handlebars.registerHelper('GetStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
-  var inCinemas = this.inCinemas;
-  var date = new Date(inCinemas);
-  var timeSince = new Date().getTime() - date.getTime();
-  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  //var inCinemas = this.inCinemas;
+  //var date = new Date(inCinemas);
+  //var timeSince = new Date().getTime() - date.getTime();
+  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
-
-    if (status === 'released') {
-        return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
-    }
-
-  if (numOfMonths > 0) {
-
-    return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
-  }
 
   if (status === "announced") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
   }
+  
 
+  if (status ==="inCinemas") {
+    return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+  }
+  
+  if (status === 'released') {
+      return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
+  }
 
   if (!monitored) {
       return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
@@ -97,27 +103,60 @@ Handlebars.registerHelper('GetStatus', function() {
 Handlebars.registerHelper('GetBannerStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
-  var inCinemas = this.inCinemas;
-  var date = new Date(inCinemas);
-  var timeSince = new Date().getTime() - date.getTime();
-  var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  //var inCinemas = this.inCinemas;
+  //var date = new Date(inCinemas);
+  //var timeSince = new Date().getTime() - date.getTime();
+  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
 
-    if (status === 'released') {
-        return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
-    }
-
-  if (numOfMonths > 0) {
+  if (status === "inCinemas") {
     return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
   if (status === "announced") {
     return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
-
-  if (!monitored) {
+  else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
   }
+});
+
+Handlebars.registerHelper('DownloadedStatusColor', function() {
+  if (!this.monitored) {
+    if (this.downloaded) {
+      return "default";
+    }
+    return "warning";
+  }
+
+    if (this.downloaded) {
+      return "success";
+    }
+
+  if (!this.isAvailable){
+    return "primary";
+  }
+
+  return "danger";
+})
+
+Handlebars.registerHelper('DownloadedStatus', function() {
+
+  if (this.downloaded) {
+    return "Downloaded";
+  }
+  if (!this.monitored) {
+    return "Not Monitored";
+  }
+  return "Missing";
+});
+
+Handlebars.registerHelper("DownloadedQuality", function() {
+  if (this.movieFile) {
+    return this.movieFile.quality.quality.name;
+  }
+
+  return "";
 })
 
 
@@ -125,10 +164,20 @@ Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
-  var cinemasDate = new Date(this.inCinemas);
-  var year = cinemasDate.getFullYear();
-  var month = monthNames[cinemasDate.getMonth()];
-  return "In Cinemas " + month + " " + year;
+  if (this.physicalRelease) {
+    var d = new Date(this.physicalRelease);
+    var day = d.getDate();
+    var month = monthNames[d.getMonth()];
+    var year = d.getFullYear();
+    return "Available: " + day + ". " + month + " " + year;
+  }
+  if (this.inCinemas) {
+    var cinemasDate = new Date(this.inCinemas);
+    var year = cinemasDate.getFullYear();
+    var month = monthNames[cinemasDate.getMonth()];
+    return "In Cinemas: " + month + " " + year;
+  }
+  return "To be announced";
 });
 
 Handlebars.registerHelper('tvRageUrl', function() {

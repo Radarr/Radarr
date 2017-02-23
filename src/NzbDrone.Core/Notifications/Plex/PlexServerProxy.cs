@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Notifications.Plex
     public interface IPlexServerProxy
     {
         List<PlexSection> GetTvSections(PlexServerSettings settings);
+        List<PlexSection> GetMovieSections(PlexServerSettings settings);
         void Update(int sectionId, PlexServerSettings settings);
         void UpdateSeries(int metadataId, PlexServerSettings settings);
         string Version(PlexServerSettings settings);
@@ -48,7 +49,7 @@ namespace NzbDrone.Core.Notifications.Plex
             {
                 return Json.Deserialize<PlexMediaContainerLegacy>(response.Content)
                     .Sections
-                    .Where(d => d.Type == "show")
+                    .Where(d => d.Type == "movie")
                     .Select(s => new PlexSection
                                  {
                                      Id = s.Id,
@@ -62,7 +63,38 @@ namespace NzbDrone.Core.Notifications.Plex
             return Json.Deserialize<PlexResponse<PlexSectionsContainer>>(response.Content)
                        .MediaContainer
                        .Sections
-                       .Where(d => d.Type == "show")
+                       .Where(d => d.Type == "movie")
+                       .ToList();
+        }
+
+        public List<PlexSection> GetMovieSections(PlexServerSettings settings)
+        {
+            var request = GetPlexServerRequest("library/sections", Method.GET, settings);
+            var client = GetPlexServerClient(settings);
+            var response = client.Execute(request);
+
+            _logger.Trace("Sections response: {0}", response.Content);
+            CheckForError(response, settings);
+
+            if (response.Content.Contains("_children"))
+            {
+                return Json.Deserialize<PlexMediaContainerLegacy>(response.Content)
+                    .Sections
+                    .Where(d => d.Type == "movie")
+                    .Select(s => new PlexSection
+                    {
+                        Id = s.Id,
+                        Language = s.Language,
+                        Locations = s.Locations,
+                        Type = s.Type
+                    })
+                    .ToList();
+            }
+
+            return Json.Deserialize<PlexResponse<PlexSectionsContainer>>(response.Content)
+                       .MediaContainer
+                       .Sections
+                       .Where(d => d.Type == "movie")
                        .ToList();
         }
 

@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Tv
             
             try
             {
-                movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId);
+                movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile);
             }
             catch (MovieNotFoundException)
             {
@@ -83,6 +83,9 @@ namespace NzbDrone.Core.Tv
             movie.Website = movieInfo.Website;
             movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
+            movie.PhysicalRelease = movieInfo.PhysicalRelease;
+            movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
+            movie.Studio = movieInfo.Studio;
 
             try
             {

@@ -18,7 +18,7 @@ namespace NzbDrone.Api.Movie
         //Todo: Sorters should be done completely on the client
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
-
+         
         //View Only
         public string Title { get; set; }
         public List<AlternateTitleResource> AlternateTitles { get; set; }
@@ -27,11 +27,15 @@ namespace NzbDrone.Api.Movie
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public DateTime? InCinemas { get; set; }
+        public DateTime? PhysicalRelease { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
-
+        public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
+        public bool HasFile { get; set; }
+        public string YouTubeTrailerId { get; set; }
+        public string Studio { get; set; }
 
         //View & Edit
         public string Path { get; set; }
@@ -39,6 +43,9 @@ namespace NzbDrone.Api.Movie
 
         //Editing Only
         public bool Monitored { get; set; }
+	    public MovieStatusType MinimumAvailability { get; set; }
+        public bool IsAvailable { get; set; }
+
         public int Runtime { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public string CleanTitle { get; set; }
@@ -53,6 +60,7 @@ namespace NzbDrone.Api.Movie
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public List<string> AlternativeTitles { get; set; }
+        public MovieFileResource MovieFile { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
 
@@ -79,6 +87,24 @@ namespace NzbDrone.Api.Movie
         {
             if (model == null) return null;
 
+
+            long size = 0;
+            bool downloaded = false;
+            MovieFileResource movieFile = null;
+
+            
+            if(model.MovieFile != null)
+            {
+                model.MovieFile.LazyLoad();
+            }
+
+            if (model.MovieFile != null && model.MovieFile.IsLoaded && model.MovieFile.Value != null)
+            {
+                size = model.MovieFile.Value.Size;
+                downloaded = true;
+                movieFile = model.MovieFile.Value.ToResource();
+            }
+
             return new MovieResource
             {
                 Id = model.Id,
@@ -87,6 +113,9 @@ namespace NzbDrone.Api.Movie
                 //AlternateTitles
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
+                PhysicalRelease = model.PhysicalRelease,
+                HasFile = model.HasFile,
+                Downloaded = downloaded,
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount
@@ -103,6 +132,11 @@ namespace NzbDrone.Api.Movie
                 ProfileId = model.ProfileId,
                 
                 Monitored = model.Monitored,
+                MinimumAvailability = model.MinimumAvailability,
+		
+                IsAvailable = model.IsAvailable(),
+
+                SizeOnDisk = size,
 
                 Runtime = model.Runtime,
                 LastInfoSync = model.LastInfoSync,
@@ -117,7 +151,10 @@ namespace NzbDrone.Api.Movie
                 Added = model.Added,
                 AddOptions = model.AddOptions,
                 AlternativeTitles = model.AlternativeTitles,
-                Ratings = model.Ratings
+                Ratings = model.Ratings,
+                MovieFile = movieFile,
+                YouTubeTrailerId = model.YouTubeTrailerId,
+                Studio = model.Studio
             };
         }
 
@@ -134,6 +171,7 @@ namespace NzbDrone.Api.Movie
                 //AlternateTitles
                 SortTitle = resource.SortTitle,
                 InCinemas = resource.InCinemas,
+                PhysicalRelease = resource.PhysicalRelease,
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount
@@ -149,7 +187,8 @@ namespace NzbDrone.Api.Movie
                 ProfileId = resource.ProfileId,
 
                 Monitored = resource.Monitored,
-
+                MinimumAvailability = resource.MinimumAvailability,
+		
                 Runtime = resource.Runtime,
                 LastInfoSync = resource.LastInfoSync,
                 CleanTitle = resource.CleanTitle,
@@ -163,7 +202,9 @@ namespace NzbDrone.Api.Movie
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
                 AlternativeTitles = resource.AlternativeTitles,
-                Ratings = resource.Ratings
+                Ratings = resource.Ratings,
+                YouTubeTrailerId = resource.YouTubeTrailerId,
+                Studio = resource.Studio
             };
         }
 
@@ -176,7 +217,8 @@ namespace NzbDrone.Api.Movie
             movie.ProfileId = resource.ProfileId;
 
             movie.Monitored = resource.Monitored;
-
+	        movie.MinimumAvailability = resource.MinimumAvailability;
+	   
             movie.RootFolderPath = resource.RootFolderPath;
             movie.Tags = resource.Tags;
             movie.AddOptions = resource.AddOptions;

@@ -2,7 +2,7 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var HistoryCollection = require('./HistoryCollection');
 var EventTypeCell = require('../../Cells/EventTypeCell');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var MovieTitleCell = require('../../Cells/MovieTitleHistoryCell');
 var EpisodeNumberCell = require('../../Cells/EpisodeNumberCell');
 var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
 var HistoryQualityCell = require('./HistoryQualityCell');
@@ -31,7 +31,7 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'movies',
             label : 'Movie Title',
-            cell  : MovieTitleCell
+            cell  : MovieTitleCell,
         },
         /*{
             name     : 'episode',

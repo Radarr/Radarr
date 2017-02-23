@@ -125,7 +125,7 @@ namespace NzbDrone.Core.Notifications.Twitter
         {
             try
             {
-                var body = "Sonarr: Test Message @ " + DateTime.Now;
+                var body = "Radarr: Test Message @ " + DateTime.Now;
 
                 SendNotification(body, settings);
             }

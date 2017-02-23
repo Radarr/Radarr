@@ -25,6 +25,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("699aed1b-015e-4f0d-9c81-d5557b05d260")]
 
-[assembly: AssemblyVersion("10.0.0.*")]
-
 [assembly: InternalsVisibleTo("NzbDrone.Core")]

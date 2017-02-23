@@ -5,6 +5,7 @@ using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Download
 {
@@ -31,6 +32,15 @@ namespace NzbDrone.Core.Download
             if (!_configService.AutoRedownloadFailed)
             {
                 _logger.Debug("Auto redownloading failed episodes is disabled");
+                return;
+            }
+
+            if (message.MovieId != 0)
+            {
+                _logger.Debug("Failed download contains a movie, searching again.");
+
+                _commandQueueManager.Push(new MoviesSearchCommand { MovieIds = new List<int> { message.MovieId } });
+
                 return;
             }
 

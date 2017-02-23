@@ -25,7 +25,7 @@ namespace NzbDrone.Api.Frontend.Mappers
 
         public override bool CanHandle(string resourceUrl)
         {
-            return resourceUrl.StartsWith("/backup/") && resourceUrl.ContainsIgnoreCase("nzbdrone_backup_")  && resourceUrl.EndsWith(".zip");
+            return resourceUrl.StartsWith("/backup/") && resourceUrl.ContainsIgnoreCase("radarr_backup_")  && resourceUrl.EndsWith(".zip");
         }
     }
 }

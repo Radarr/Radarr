@@ -183,6 +183,10 @@
     <Compile Include="Download\DownloadClientTests\TransmissionTests\TransmissionFixtureBase.cs" />
     <Compile Include="Download\DownloadClientTests\UTorrentTests\UTorrentFixture.cs" />
     <Compile Include="Download\DownloadClientTests\VuzeTests\VuzeFixture.cs" />
+    <Compile Include="Download\DownloadClientTests\DownloadStationTests\TorrentDownloadStationFixture.cs" />
+    <Compile Include="Download\DownloadClientTests\DownloadStationTests\SerialNumberProviderFixture.cs" />
+    <Compile Include="Download\DownloadClientTests\DownloadStationTests\SharedFolderResolverFixture.cs" />
+    <Compile Include="Download\DownloadClientTests\DownloadStationTests\UsenetDownloadStationFixture.cs" />
     <Compile Include="Download\DownloadServiceFixture.cs" />
     <Compile Include="Download\FailedDownloadServiceFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\PendingReleaseServiceFixture.cs" />
@@ -190,6 +194,9 @@
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveRejectedFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveGrabbedFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\AddFixture.cs" />
+    <None Include="Files\couchpotato_movie_list.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Files\Indexers\Rarbg\RecentFeed_v1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -237,8 +244,6 @@
     <Compile Include="IndexerSearchTests\NzbSearchServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\SearchDefinitionFixture.cs" />
     <Compile Include="IndexerTests\BasicRssParserFixture.cs" />
-    <Compile Include="IndexerTests\BitMeTvTests\BitMeTvFixture.cs" />
-    <Compile Include="IndexerTests\BroadcastheNetTests\BroadcastheNetFixture.cs" />
     <Compile Include="IndexerTests\HDBitsTests\HDBitsFixture.cs" />
     <Compile Include="IndexerTests\IndexerServiceFixture.cs" />
     <Compile Include="IndexerTests\IndexerStatusServiceFixture.cs" />
@@ -251,18 +256,14 @@
     <Compile Include="IndexerTests\NewznabTests\NewznabFixture.cs" />
     <Compile Include="IndexerTests\NewznabTests\NewznabRequestGeneratorFixture.cs" />
     <Compile Include="IndexerTests\NewznabTests\NewznabSettingFixture.cs" />
-    <Compile Include="IndexerTests\FanzubTests\FanzubFixture.cs" />
     <Compile Include="IndexerTests\OmgwtfnzbsTests\OmgwtfnzbsFixture.cs" />
     <Compile Include="IndexerTests\SeasonSearchFixture.cs" />
     <Compile Include="IndexerTests\TestIndexer.cs" />
     <Compile Include="IndexerTests\TestIndexerSettings.cs" />
     <Compile Include="IndexerTests\IPTorrentsTests\IPTorrentsFixture.cs" />
-    <Compile Include="IndexerTests\KickassTorrentsTests\KickassTorrentsFixture.cs" />
     <Compile Include="IndexerTests\NyaaTests\NyaaFixture.cs" />
-    <Compile Include="IndexerTests\TorrentleechTests\TorrentleechFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TorrentRssIndexerFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TestTorrentRssIndexer.cs" />
-    <Compile Include="IndexerTests\WomblesTests\WomblesFixture.cs" />
     <Compile Include="IndexerTests\XElementExtensionsFixture.cs" />
     <Compile Include="InstrumentationTests\DatabaseTargetFixture.cs" />
     <Compile Include="JobTests\JobRepositoryFixture.cs" />
@@ -288,6 +289,9 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
+    <Compile Include="NetImport\CouchPotato\CouchPotatoParserFixture.cs" />
+    <Compile Include="NetImport\RSSImportFixture.cs" />
+    <Compile Include="NetImport\RSSImportParserFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\EpisodeTitleCollapseFixture.cs" />
@@ -381,6 +385,7 @@
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />
+    <Compile Include="BulkImport\AddMultiMoviesFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj">
@@ -411,6 +416,9 @@
     </Content>
     <Content Include="..\Libraries\Sqlite\sqlite3.dll">
       <Link>sqlite3.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\imdb_watchlist.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="License.txt" />
@@ -569,6 +577,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProviderTests\UpdateProviderTests\" />
+    <Folder Include="BulkImport\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

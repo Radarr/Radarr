@@ -47,6 +47,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         public List<ImportResult> Import(List<ImportDecision> decisions, bool newDownload, DownloadClientItem downloadClientItem = null, ImportMode importMode = ImportMode.Auto)
         {
+            _logger.Debug("Decisions: {0}", decisions.Count);
+
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalMovie.Movie.Id, (i, s) => s
                    .OrderByDescending(c => c.LocalMovie.Quality, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
@@ -66,21 +68,22 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                 {
                     //check if already imported
                     if (importResults.Select(r => r.ImportDecision.LocalMovie.Movie)
-                                         .Select(e => e.Id).Contains(localMovie.Movie.Id))
+                                         .Select(m => m.Id).Contains(localMovie.Movie.Id))
                     {
                         importResults.Add(new ImportResult(importDecision, "Movie has already been imported"));
                         continue;
                     }
 
-                    var episodeFile = new MovieFile();
-                    episodeFile.DateAdded = DateTime.UtcNow;
-                    episodeFile.MovieId = localMovie.Movie.Id;
-                    episodeFile.Path = localMovie.Path.CleanFilePath();
-                    episodeFile.Size = _diskProvider.GetFileSize(localMovie.Path);
-                    episodeFile.Quality = localMovie.Quality;
-                    episodeFile.MediaInfo = localMovie.MediaInfo;
-                    episodeFile.Movie = localMovie.Movie;
-                    episodeFile.ReleaseGroup = localMovie.ParsedEpisodeInfo.ReleaseGroup;
+                    var movieFile = new MovieFile();
+                    movieFile.DateAdded = DateTime.UtcNow;
+                    movieFile.MovieId = localMovie.Movie.Id;
+                    movieFile.Path = localMovie.Path.CleanFilePath();
+                    movieFile.Size = _diskProvider.GetFileSize(localMovie.Path);
+                    movieFile.Quality = localMovie.Quality;
+                    movieFile.MediaInfo = localMovie.MediaInfo;
+                    movieFile.Movie = localMovie.Movie;
+                    movieFile.ReleaseGroup = localMovie.ParsedMovieInfo.ReleaseGroup;
+                    movieFile.Edition = localMovie.ParsedMovieInfo.Edition;
 
                     bool copyOnly;
                     switch (importMode)
@@ -99,17 +102,17 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                     if (newDownload)
                     {
-                        episodeFile.SceneName = GetSceneName(downloadClientItem, localMovie);
+                        movieFile.SceneName = GetSceneName(downloadClientItem, localMovie);
 
-                        var moveResult = _episodeFileUpgrader.UpgradeMovieFile(episodeFile, localMovie, copyOnly);
+                        var moveResult = _episodeFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); //TODO: Check if this works
                         oldFiles = moveResult.OldFiles;
                     }
                     else
                     {
-                        episodeFile.RelativePath = localMovie.Movie.Path.GetRelativePath(episodeFile.Path);
+                        movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
                     }
 
-                    _mediaFileService.Add(episodeFile);
+                    _mediaFileService.Add(movieFile);
                     importResults.Add(new ImportResult(importDecision));
 
                     if (newDownload)
@@ -119,22 +122,22 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                     if (downloadClientItem != null)
                     {
-                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, episodeFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId, downloadClientItem.IsReadOnly));
+                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId, downloadClientItem.IsReadOnly));
                     }
                     else
                     {
-                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, episodeFile, newDownload));
+                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, newDownload));
                     }
 
                     if (newDownload)
                     {
-                        _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, episodeFile, oldFiles));
+                        _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, movieFile, oldFiles));
                     }
                 }
                 catch (Exception e)
                 {
-                    _logger.Warn(e, "Couldn't import episode " + localMovie);
-                    importResults.Add(new ImportResult(importDecision, "Failed to import episode"));
+                    _logger.Warn(e, "Couldn't import movie " + localMovie);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import movie"));
                 }
             }
 

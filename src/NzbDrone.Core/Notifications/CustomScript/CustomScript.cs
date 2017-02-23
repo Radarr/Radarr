@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -24,75 +25,66 @@ namespace NzbDrone.Core.Notifications.CustomScript
             _logger = logger;
         }
 
-        public override string Link => "https://github.com/Sonarr/Sonarr/wiki/Custom-Post-Processing-Scripts";
+        public override string Link => "https://github.com/Radarr/Radarr/wiki/Custom-Post-Processing-Scripts";
 
         public override void OnGrab(GrabMessage message)
         {
-            var series = message.Series;
-            var remoteEpisode = message.Episode;
-            var releaseGroup = remoteEpisode.ParsedEpisodeInfo.ReleaseGroup;
+            var movie = message.Movie;
+            var remoteMovie = message.RemoteMovie;
+            var releaseGroup = remoteMovie.ParsedMovieInfo.ReleaseGroup;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Sonarr_EventType", "Grab");
-            environmentVariables.Add("Sonarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Sonarr_Series_Title", series.Title);
-            environmentVariables.Add("Sonarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Sonarr_Series_Type", series.SeriesType.ToString());
-            environmentVariables.Add("Sonarr_Release_EpisodeCount", remoteEpisode.Episodes.Count.ToString());
-            environmentVariables.Add("Sonarr_Release_SeasonNumber", remoteEpisode.ParsedEpisodeInfo.SeasonNumber.ToString());
-            environmentVariables.Add("Sonarr_Release_EpisodeNumbers", string.Join(",", remoteEpisode.Episodes.Select(e => e.EpisodeNumber)));
-            environmentVariables.Add("Sonarr_Release_Title", remoteEpisode.Release.Title);
-            environmentVariables.Add("Sonarr_Release_Indexer", remoteEpisode.Release.Indexer);
-            environmentVariables.Add("Sonarr_Release_Size", remoteEpisode.Release.Size.ToString());
-            environmentVariables.Add("Sonarr_Release_ReleaseGroup", releaseGroup);
+            environmentVariables.Add("Radarr_EventType", "Grab");
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId.ToString());
+            environmentVariables.Add("Radarr_Release_Title", remoteMovie.Release.Title);
+            environmentVariables.Add("Radarr_Release_Indexer", remoteMovie.Release.Indexer);
+            environmentVariables.Add("Radarr_Release_Size", remoteMovie.Release.Size.ToString());
+            environmentVariables.Add("Radarr_Release_ReleaseGroup", releaseGroup);
 
             ExecuteScript(environmentVariables);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            var series = message.Series;
-            var episodeFile = message.EpisodeFile;
+            var movie = message.Movie;
+            var movieFile = message.MovieFile;
             var sourcePath = message.SourcePath;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Sonarr_EventType", "Download");
-            environmentVariables.Add("Sonarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Sonarr_Series_Title", series.Title);
-            environmentVariables.Add("Sonarr_Series_Path", series.Path);
-            environmentVariables.Add("Sonarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Sonarr_Series_Type", series.SeriesType.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_Id", episodeFile.Id.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeCount", episodeFile.Episodes.Value.Count.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_RelativePath", episodeFile.RelativePath);
-            environmentVariables.Add("Sonarr_EpisodeFile_Path", Path.Combine(series.Path, episodeFile.RelativePath));
-            environmentVariables.Add("Sonarr_EpisodeFile_SeasonNumber", episodeFile.SeasonNumber.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeNumbers", string.Join(",", episodeFile.Episodes.Value.Select(e => e.EpisodeNumber)));
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeAirDates", string.Join(",", episodeFile.Episodes.Value.Select(e => e.AirDate)));
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeAirDatesUtc", string.Join(",", episodeFile.Episodes.Value.Select(e => e.AirDateUtc)));
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeTitles", string.Join("|", episodeFile.Episodes.Value.Select(e => e.Title)));
-            environmentVariables.Add("Sonarr_EpisodeFile_Quality", episodeFile.Quality.Quality.Name);
-            environmentVariables.Add("Sonarr_EpisodeFile_QualityVersion", episodeFile.Quality.Revision.Version.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_ReleaseGroup", episodeFile.ReleaseGroup ?? string.Empty);
-            environmentVariables.Add("Sonarr_EpisodeFile_SceneName", episodeFile.SceneName ?? string.Empty);
-            environmentVariables.Add("Sonarr_EpisodeFile_SourcePath", sourcePath);
-            environmentVariables.Add("Sonarr_EpisodeFile_SourceFolder", Path.GetDirectoryName(sourcePath));
+            environmentVariables.Add("Radarr_EventType", "Download");
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Path", movie.Path);
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId.ToString());
+            environmentVariables.Add("Radarr_MovieFile_Id", movieFile.Id.ToString());
+            environmentVariables.Add("Radarr_MovieFile_RelativePath", movieFile.RelativePath);
+            environmentVariables.Add("Radarr_MovieFile_Path", Path.Combine(movie.Path, movieFile.RelativePath));
+            environmentVariables.Add("Radarr_MovieFile_Quality", movieFile.Quality.Quality.Name);
+            environmentVariables.Add("Radarr_MovieFile_QualityVersion", movieFile.Quality.Revision.Version.ToString());
+            environmentVariables.Add("Radarr_MovieFile_ReleaseGroup", movieFile.ReleaseGroup ?? string.Empty);
+            environmentVariables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
+            environmentVariables.Add("Radarr_MovieFile_SourcePath", sourcePath);
+            environmentVariables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
 
+            ExecuteScript(environmentVariables);
+        }
+
+        public override void OnMovieRename(Movie movie)
+        {
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Radarr_EventType", "Rename");
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Path", movie.Path);
+            environmentVariables.Add("Radarr_Movie_TvdbId", movie.ImdbId.ToString());
             ExecuteScript(environmentVariables);
         }
 
         public override void OnRename(Series series)
         {
-            var environmentVariables = new StringDictionary();
-
-            environmentVariables.Add("Sonarr_EventType", "Rename");
-            environmentVariables.Add("Sonarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Sonarr_Series_Title", series.Title);
-            environmentVariables.Add("Sonarr_Series_Path", series.Path);
-            environmentVariables.Add("Sonarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Sonarr_Series_Type", series.SeriesType.ToString());
-
-            ExecuteScript(environmentVariables);
         }
 
         public override string Name => "Custom Script";

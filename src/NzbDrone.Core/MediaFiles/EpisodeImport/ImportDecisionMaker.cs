@@ -19,7 +19,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
     {
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource); //TODO: Needs changing to ParsedMovieInfo!!
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, bool shouldCheckQuality);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality); //TODO: Needs changing to ParsedMovieInfo!!
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
     }
 
@@ -31,6 +32,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         private readonly IDiskProvider _diskProvider;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IDetectSample _detectSample;
+        private readonly IQualityDefinitionService _qualitiesService;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -39,6 +41,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                                    IDiskProvider diskProvider,
                                    IVideoFileInfoReader videoFileInfoReader,
                                    IDetectSample detectSample,
+                                   IQualityDefinitionService qualitiesService,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -47,6 +50,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             _diskProvider = diskProvider;
             _videoFileInfoReader = videoFileInfoReader;
             _detectSample = detectSample;
+            _qualitiesService = qualitiesService;
             _logger = logger;
         }
 
@@ -57,7 +61,12 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie)
         {
-            return GetImportDecisions(videoFiles, movie, null, false);
+            return GetImportDecisions(videoFiles, movie, null, true, false);
+        }
+
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, bool shouldCheckQuality = false)
+        {
+            return GetImportDecisions(videoFiles, movie, null, true, shouldCheckQuality);
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource)
@@ -77,7 +86,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decisions;
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality = false)
         {
             var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
 
@@ -88,13 +97,13 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
             foreach (var file in newFiles)
             {
-                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName));
+                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName, shouldCheckQuality));
             }
 
             return decisions;
         }
 
-        private ImportDecision GetDecision(string file, Movie movie, ParsedEpisodeInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
+        private ImportDecision GetDecision(string file, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldUseFolderName, bool shouldCheckQuality = false)
         {
             ImportDecision decision = null;
 
@@ -113,6 +122,146 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     if (sceneSource)
                     {
                         localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
+                        if (shouldCheckQuality)
+                        {
+                            var width = localMovie.MediaInfo.Width;
+                            var current = localMovie.Quality;
+                            var qualityName = current.Quality.Name.ToLower();
+                            QualityModel updated = null;
+                            if (width > 2000)
+                            {
+                                if (qualityName.Contains("bluray"))
+                                {
+                                    updated = new QualityModel(Quality.Bluray2160p);
+                                }
+
+                                else if (qualityName.Contains("webdl"))
+                                {
+                                    updated = new QualityModel(Quality.WEBDL2160p);
+                                }
+
+                                else if (qualityName.Contains("hdtv"))
+                                {
+                                    updated = new QualityModel(Quality.HDTV2160p);
+                                }
+
+                                else
+                                {
+                                    var def = _qualitiesService.Get(Quality.HDTV2160p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.HDTV2160p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.WEBDL2160p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.WEBDL2160p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.Bluray2160p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray2160p);
+                                    }
+                                    if (updated == null)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray2160p);
+                                    }
+                                }
+
+                            }
+                            else if (width > 1400)
+                            {
+                                if (qualityName.Contains("bluray"))
+                                {
+                                    updated = new QualityModel(Quality.Bluray1080p);
+                                }
+
+                                else if (qualityName.Contains("webdl"))
+                                {
+                                    updated = new QualityModel(Quality.WEBDL1080p);
+                                }
+
+                                else if (qualityName.Contains("hdtv"))
+                                {
+                                    updated = new QualityModel(Quality.HDTV1080p);
+                                }
+
+                                else
+                                {
+                                    var def = _qualitiesService.Get(Quality.HDTV1080p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.HDTV1080p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.WEBDL1080p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.WEBDL1080p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.Bluray1080p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray1080p);
+                                    }
+                                    if (updated == null)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray1080p);
+                                    }
+                                }
+
+                            }
+                            else
+                            if (width > 900)
+                            {
+                                if (qualityName.Contains("bluray"))
+                                {
+                                    updated = new QualityModel(Quality.Bluray720p);
+                                }
+
+                                else if (qualityName.Contains("webdl"))
+                                {
+                                    updated = new QualityModel(Quality.WEBDL720p);
+                                }
+
+                                else if (qualityName.Contains("hdtv"))
+                                {
+                                    updated = new QualityModel(Quality.HDTV720p);
+                                }
+
+                                else
+                                {
+
+                                    var def = _qualitiesService.Get(Quality.HDTV720p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.HDTV720p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.WEBDL720p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.WEBDL720p);
+                                    }
+                                    def = _qualitiesService.Get(Quality.Bluray720p);
+                                    if (localMovie.Size > def.MinSize && def.MaxSize > localMovie.Size)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray720p);
+                                    }
+                                    if (updated == null)
+                                    {
+                                        updated = new QualityModel(Quality.Bluray720p);
+                                    }
+
+                                }
+                            }
+                            if (updated != null && updated != current)
+                            {
+                                updated.QualitySource = QualitySource.MediaInfo;
+                                localMovie.Quality = updated;
+                            }
+                        }
+
+
+
                         decision = GetDecision(localMovie);
                     }
                     else
@@ -123,18 +272,18 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                 else
                 {
-                    var localEpisode = new LocalEpisode();
-                    localEpisode.Path = file;
+                    localMovie = new LocalMovie();
+                    localMovie.Path = file;
 
-                    decision = new ImportDecision(localEpisode, new Rejection("Unable to parse file"));
+                    decision = new ImportDecision(localMovie, new Rejection("Unable to parse file"));
                 }
             }
             catch (Exception e)
             {
                 _logger.Error(e, "Couldn't import file. " + file);
 
-                var localEpisode = new LocalEpisode { Path = file };
-                decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
+                var localMovie = new LocalMovie { Path = file };
+                decision = new ImportDecision(localMovie, new Rejection("Unexpected error processing file"));
             }
 
             //LocalMovie nullMovie = null;
@@ -291,17 +440,17 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }) == 1;
         }
 
-        private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedEpisodeInfo folderInfo)
+        private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo)
         {
             if (folderInfo == null)
             {
                 return false;
             }
 
-            if (folderInfo.FullSeason)
-            {
-                return false;
-            }
+            //if (folderInfo.FullSeason)
+            //{
+            //    return false;
+            //}
 
             return videoFiles.Count(file =>
             {
@@ -325,7 +474,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }) == 1;
         }
 
-        private QualityModel GetQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Movie movie)
+        private QualityModel GetQuality(ParsedMovieInfo folderInfo, QualityModel fileQuality, Movie movie)
         {
             if (UseFolderQuality(folderInfo, fileQuality, movie))
             {
@@ -347,7 +496,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return fileQuality;
         }
 
-        private bool UseFolderQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Movie movie)
+        private bool UseFolderQuality(ParsedMovieInfo folderInfo, QualityModel fileQuality, Movie movie)
         {
             if (folderInfo == null)
             {

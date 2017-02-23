@@ -8,6 +8,7 @@ namespace NzbDrone.Api.Config
         public int MinimumAge { get; set; }
         public int Retention { get; set; }
         public int RssSyncInterval { get; set; }
+	public int AvailabilityDelay { get; set; }
     }
 
     public static class IndexerConfigResourceMapper
@@ -19,6 +20,7 @@ namespace NzbDrone.Api.Config
                 MinimumAge = model.MinimumAge,
                 Retention = model.Retention,
                 RssSyncInterval = model.RssSyncInterval,
+		AvailabilityDelay = model.AvailabilityDelay,
             };
         }
     }

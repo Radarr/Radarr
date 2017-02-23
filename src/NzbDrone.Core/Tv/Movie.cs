@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Tv
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
+	    public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
@@ -41,12 +42,47 @@ namespace NzbDrone.Core.Tv
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
         public DateTime? InCinemas { get; set; }
+        public DateTime? PhysicalRelease { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public LazyLoaded<MovieFile> MovieFile { get; set; }
         public int MovieFileId { get; set; }
         public List<string> AlternativeTitles { get; set; }
+        public string YouTubeTrailerId{ get; set; }
+        public string Studio { get; set; }
+
+        public bool HasFile => MovieFileId > 0;
+
+        public bool IsAvailable(int delay = 0)
+        {
+            //the below line is what was used before delay was implemented, could still be used for cases when delay==0
+            //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+
+            //This more complex sequence handles the delay 
+            DateTime MinimumAvailabilityDate;
+            switch (MinimumAvailability)
+            {
+                case MovieStatusType.TBA:
+                case MovieStatusType.Announced:
+                    MinimumAvailabilityDate = DateTime.MinValue;
+                    break;
+                case MovieStatusType.InCinemas:
+                    if (InCinemas.HasValue)
+                        MinimumAvailabilityDate = InCinemas.Value;
+                    else
+                        MinimumAvailabilityDate = DateTime.MaxValue;
+                    break;
+                //TODO: might need to handle PreDB but for now treat the same as Released
+                case MovieStatusType.Released:
+                case MovieStatusType.PreDB:
+                default:
+                    MinimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
+                    break;
+            }
+            return DateTime.Now >= MinimumAvailabilityDate.AddDays(delay);
+        }
+
         public override string ToString()
         {
             return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());

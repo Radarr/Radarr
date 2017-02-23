@@ -36,7 +36,7 @@ namespace NzbDrone.Update
                 var startupArgument = new StartupContext(args);
                 NzbDroneLogger.Register(startupArgument, true, true);
 
-                Logger.Info("Starting Sonarr Update Client");
+                Logger.Info("Starting Radarr Update Client");
 
                 _container = UpdateContainerBuilder.Build(startupArgument);
 
@@ -66,9 +66,9 @@ namespace NzbDrone.Update
             }
 
             var startupContext = new UpdateStartupContext
-                                 {
-                                     ProcessId = ParseProcessId(args[0])
-                                 };
+            {
+                ProcessId = ParseProcessId(args[0])
+            };
 
             if (OsInfo.IsNotWindows)
             {

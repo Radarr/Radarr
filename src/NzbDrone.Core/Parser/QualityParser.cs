@@ -14,21 +14,41 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(QualityParser));
 
+        //private static readonly Regex SourceRegex = new Regex(@"\b(?:
+        //                                                        (?<bluray>BluRay|Blu-Ray|HDDVD|BD)|
+        //                                                        (?<webdl>WEB[-_. ]DL|WEBDL|WebRip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
+        //                                                        (?<hdtv>HDTV)|
+        //                                                        (?<bdrip>BDRip)|
+        //                                                        (?<brrip>BRRip)|
+        //                                                        (?<dvd>DVD|DVDRip|NTSC|PAL|xvidvd)|
+        //                                                        (?<dsr>WS[-_. ]DSR|DSR)|
+        //                                                        (?<pdtv>PDTV)|
+        //                                                        (?<sdtv>SDTV)|
+        //                                                        (?<tvrip>TVRip)
+        //                                                        )\b",
+        //                                                        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
                                                                 (?<bluray>BluRay|Blu-Ray|HDDVD|BD)|
-                                                                (?<webdl>WEB[-_. ]DL|WEBDL|WebRip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
+                                                                (?<webdl>WEB[-_. ]DL|HDRIP|WEBDL|WebRip|Web-Rip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
                                                                 (?<hdtv>HDTV)|
-                                                                (?<bdrip>BDRip)|
-                                                                (?<brrip>BRRip)|
+                                                                (?<bdrip>BDRip)|(?<brrip>BRRip)|
+                                                                (?<dvdr>DVD-R|DVDR)|
                                                                 (?<dvd>DVD|DVDRip|NTSC|PAL|xvidvd)|
                                                                 (?<dsr>WS[-_. ]DSR|DSR)|
+                                                                (?<regional>R[0-9]{1})|
+                                                                (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
+                                                                (?<ts>TS|TELESYNC|HD-TS|HDTS|PDVD)|
+                                                                (?<tc>TC|TELECINE|HD-TC|HDTC)|
+                                                                (?<cam>CAMRIP|CAM|HDCAM|HD-CAM)|
+                                                                (?<wp>WORKPRINT|WP)|
                                                                 (?<pdtv>PDTV)|
                                                                 (?<sdtv>SDTV)|
                                                                 (?<tvrip>TVRip)
                                                                 )\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUB))|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -75,11 +95,11 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (RawHDRegex.IsMatch(normalizedName))
-            {
-                result.Quality = Quality.RAWHD;
-                return result;
-            }
+            //if (RawHDRegex.IsMatch(normalizedName))
+            //{
+            //    result.Quality = Quality.RAWHD;
+            //    return result;
+            //}
 
             var sourceMatch = SourceRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
             var resolution = ParseResolution(normalizedName);
@@ -108,7 +128,13 @@ namespace NzbDrone.Core.Parser
                         return result;
                     }
 
-                    if (resolution == Resolution.R480P || resolution == Resolution.R576p)
+                    if (resolution == Resolution.R576p)
+                    {
+                        result.Quality = Quality.Bluray576p;
+                        return result;
+                    }
+
+                    if (resolution == Resolution.R480P)
                     {
                         result.Quality = Quality.DVD;
                         return result;
@@ -189,15 +215,63 @@ namespace NzbDrone.Core.Parser
                         case Resolution.R1080p:
                             result.Quality = Quality.Bluray1080p;
                             return result;
+						case Resolution.R576p:
+							result.Quality = Quality.Bluray576p;
+							return result;
+						case Resolution.R480P:
+							result.Quality = Quality.Bluray480p;
+							return result;
                         default:
                             result.Quality = Quality.DVD;
                             return result;
                     }
                 }
 
+                if (sourceMatch.Groups["wp"].Success)
+                {
+                    result.Quality = Quality.WORKPRINT;
+                    return result;
+                }
+
                 if (sourceMatch.Groups["dvd"].Success)
                 {
                     result.Quality = Quality.DVD;
+                    return result;
+                }
+
+                if (sourceMatch.Groups["dvdr"].Success)
+                {
+                    result.Quality = Quality.DVDR;
+                    return result;
+                }
+
+                if (sourceMatch.Groups["scr"].Success)
+                {
+                    result.Quality = Quality.DVDSCR;
+                    return result;
+                }
+
+                if (sourceMatch.Groups["regional"].Success)
+                {
+                    result.Quality = Quality.REGIONAL;
+                    return result;
+                }
+
+                if (sourceMatch.Groups["cam"].Success)
+                {
+                    result.Quality = Quality.CAM;
+                    return result;
+                }
+
+                if (sourceMatch.Groups["ts"].Success)
+                {
+                    result.Quality = Quality.TELESYNC;
+                    return result;
+                }
+
+                if (sourceMatch.Groups["tc"].Success)
+                {
+                    result.Quality = Quality.TELECINE;
                     return result;
                 }
 

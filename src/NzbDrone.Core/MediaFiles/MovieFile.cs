@@ -19,6 +19,7 @@ namespace NzbDrone.Core.MediaFiles
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
+        public string Edition { get; set; }
         public LazyLoaded<Movie> Movie { get; set; }
 
         public override string ToString()

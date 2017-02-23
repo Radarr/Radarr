@@ -33,7 +33,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
 
-            throw new NotImplementedException();
+            if (_blacklistService.Blacklisted(subject.Movie.Id, subject.Release))
+            {
+                _logger.Debug("{0} is blacklisted, rejecting.", subject.Release.Title);
+                return Decision.Reject("Release is blacklisted");
+            }
 
             return Decision.Accept();
         }

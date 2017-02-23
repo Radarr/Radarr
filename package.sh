@@ -4,6 +4,18 @@ if [ $# -eq 0 ]; then
   fi
 fi
 
+# Use mono or .net depending on OS
+case "$(uname -s)" in
+    CYGWIN*|MINGW32*|MINGW64*|MSYS*)
+        # on windows, use dotnet
+        runtime="dotnet"
+        ;;
+    *)
+        # otherwise use mono
+        runtime="mono"
+        ;;
+esac
+
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
   VERSION="`date +%H:%M:%S`"
   YEAR="`date +%Y`"
@@ -26,10 +38,16 @@ cp -r $outputFolder/ Radarr_Windows_$VERSION
 cp -r $outputFolderMono/ Radarr_Mono_$VERSION
 cp -r $outputFolderOsxApp/ Radarr_OSX_$VERSION
 
-zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION >& /dev/null
-zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION >& /dev/null
-zip -r Radarr_OSX_$VERSION.zip Radarr_OSX_$VERSION >& /dev/null
-
+if [ $runtime = "dotnet" ] ; then
+  ./7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*
+  ./7za.exe a -ttar -so Radarr_Mono_$VERSION.tar ./Radarr_Mono_$VERSION/* | ./7za.exe a -si Radarr_Mono_$VERSION.tar.gz
+  ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./_output_osx/* | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
+  ./7za.exe a -ttar -so Radarr_OSX_App_$VERSION.tar ./_output_osx_app/* | ./7za.exe a -si Radarr_OSX_App_$VERSION.tar.gz
+else
+zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/* >& /dev/null
+zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION/* >& /dev/null #TODO update for tar.gz
+zip -r Radarr_OSX_$VERSION_App.zip Radarr_OSX_$VERSION/* >& /dev/null
+fi
 ftp -n ftp.leonardogalli.ch << END_SCRIPT
 passive
 quote USER $FTP_USER

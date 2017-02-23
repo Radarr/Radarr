@@ -38,32 +38,42 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
-
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
-            {
-                _proxy.MoveTorrentToTopInQueue(hash, Settings);
-            }
-
-            return hash;
+            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
         {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
+            throw new DownloadClientException("Episodes are not working with Radarr");
+        }
+
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
+        {
+            _proxy.AddTorrentFromUrl(magnetLink, Settings);
             _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
-            }
+            }*/
+
+            return hash;
+        }
+
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
+        {
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+
+            /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+
+            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }*/
 
             return hash;
         }

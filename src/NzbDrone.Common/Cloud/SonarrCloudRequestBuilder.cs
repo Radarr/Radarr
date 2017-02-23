@@ -14,7 +14,7 @@ namespace NzbDrone.Common.Cloud
     {
         public SonarrCloudRequestBuilder()
         {
-            Services = new HttpRequestBuilder("http://services.sonarr.tv/v1/")
+            Services = new HttpRequestBuilder("http://radarr.aeonlucid.com/v1/")
                 .CreateFactory();
 
             SkyHookTvdb = new HttpRequestBuilder("http://skyhook.sonarr.tv/v1/tvdb/{route}/{language}/")
@@ -26,12 +26,11 @@ namespace NzbDrone.Common.Cloud
                 .CreateFactory();
 
             TMDBSingle = new HttpRequestBuilder("https://api.themoviedb.org/3/{route}")
-    .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
-    .CreateFactory();
+                .AddQueryParam("api_key", "1a7373301961d03f97f853a876dd1212")
+                .CreateFactory();
         }
 
         public IHttpRequestBuilderFactory Services { get; private set; }
-
         public IHttpRequestBuilderFactory SkyHookTvdb { get; private set; }
         public IHttpRequestBuilderFactory TMDB { get; private set; }
         public IHttpRequestBuilderFactory TMDBSingle { get; private set; }

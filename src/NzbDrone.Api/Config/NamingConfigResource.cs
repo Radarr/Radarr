@@ -7,6 +7,8 @@ namespace NzbDrone.Api.Config
     {
         public bool RenameEpisodes { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
+        public string StandardMovieFormat { get; set; }
+        public string MovieFolderFormat { get; set; }
         public int MultiEpisodeStyle { get; set; }
         public string StandardEpisodeFormat { get; set; }
         public string DailyEpisodeFormat { get; set; }
@@ -36,7 +38,9 @@ namespace NzbDrone.Api.Config
                 DailyEpisodeFormat = model.DailyEpisodeFormat,
                 AnimeEpisodeFormat = model.AnimeEpisodeFormat,
                 SeriesFolderFormat = model.SeriesFolderFormat,
-                SeasonFolderFormat = model.SeasonFolderFormat
+                SeasonFolderFormat = model.SeasonFolderFormat,
+                StandardMovieFormat = model.StandardMovieFormat,
+                MovieFolderFormat = model.MovieFolderFormat
                 //IncludeSeriesTitle
                 //IncludeEpisodeTitle
                 //IncludeQuality
@@ -64,12 +68,14 @@ namespace NzbDrone.Api.Config
 
                 RenameEpisodes = resource.RenameEpisodes,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
-                MultiEpisodeStyle = resource.MultiEpisodeStyle,
-                StandardEpisodeFormat = resource.StandardEpisodeFormat,
-                DailyEpisodeFormat = resource.DailyEpisodeFormat,
-                AnimeEpisodeFormat = resource.AnimeEpisodeFormat,
-                SeriesFolderFormat = resource.SeriesFolderFormat,
-                SeasonFolderFormat = resource.SeasonFolderFormat
+                //MultiEpisodeStyle = resource.MultiEpisodeStyle,
+                //StandardEpisodeFormat = resource.StandardEpisodeFormat,
+                //DailyEpisodeFormat = resource.DailyEpisodeFormat,
+                //AnimeEpisodeFormat = resource.AnimeEpisodeFormat,
+                //SeriesFolderFormat = resource.SeriesFolderFormat,
+                //SeasonFolderFormat = resource.SeasonFolderFormat,
+                StandardMovieFormat = resource.StandardMovieFormat,
+                MovieFolderFormat = resource.MovieFolderFormat
             };
         }
     }

@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Notifications.Growl
                 Register(settings.Host, settings.Port, settings.Password);
 
                 const string title = "Test Notification";
-                const string body = "This is a test message from Sonarr";
+                const string body = "This is a test message from Radarr";
 
                 SendNotification(title, body, "TEST", settings.Host, settings.Port, settings.Password);
             }

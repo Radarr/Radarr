@@ -11,8 +11,8 @@ module.exports = Marionette.ItemView.extend({
     },
 
     initialize : function() {
-        var start = this.model.get('airDateUtc');
-        var runtime = this.model.get('series').runtime;
+        var start = this.model.get('inCinemas');
+        var runtime = this.model.get('runtime');
         var end = moment(start).add('minutes', runtime);
 
         this.model.set({

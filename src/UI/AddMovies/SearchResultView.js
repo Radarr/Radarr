@@ -22,6 +22,8 @@ var view = Marionette.ItemView.extend({
         rootFolder      : '.x-root-folder',
         seasonFolder    : '.x-season-folder',
         monitor         : '.x-monitor',
+	minimumAvailability : '.x-minimumavailability',
+	minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
         monitorTooltip  : '.x-monitor-tooltip',
         addButton       : '.x-add',
         addSearchButton : '.x-add-search',
@@ -43,7 +45,7 @@ var view = Marionette.ItemView.extend({
             throw 'model is required';
         }
 
-        console.log(this.route);
+        //console.log(this.route);
 
         this.templateHelpers = {};
         this._configureTemplateHelpers();
@@ -58,7 +60,7 @@ var view = Marionette.ItemView.extend({
         var defaultProfile = Config.getValue(Config.Keys.DefaultProfileId);
         var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
         var useSeasonFolder = Config.getValueBoolean(Config.Keys.UseSeasonFolder, true);
-        var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'missing');
+        var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'all');
 
         if (Profiles.get(defaultProfile)) {
             this.ui.profile.val(defaultProfile);
@@ -70,6 +72,7 @@ var view = Marionette.ItemView.extend({
 
         this.ui.seasonFolder.prop('checked', useSeasonFolder);
         this.ui.monitor.val(defaultMonitorEpisodes);
+	this.ui.minimumAvailability.val("preDB");
 
         //TODO: make this work via onRender, FM?
         //works with onShow, but stops working after the first render
@@ -84,22 +87,32 @@ var view = Marionette.ItemView.extend({
             content   : content,
             html      : true,
             trigger   : 'hover',
-            title     : 'Episode Monitoring Options',
+            title     : 'Movie Monitoring Options',
             placement : 'right',
             container : this.$el
         });
+
+	this.templateFunction = Marionette.TemplateCache.get('AddMovies/MinimumAvailabilityTooltipTemplate');
+	var content1 = this.templateFunction();
+	
+	this.ui.minimumAvailabilityTooltip.popover({
+		content : content1,
+		html :true,
+		trigger : 'hover',
+		title : 'When to Consider a Movie Available',
+		placement : 'right',
+		container : this.$el
+	});
     },
 
     _configureTemplateHelpers : function() {
         var existingMovies = MoviesCollection.where({ tmdbId : this.model.get('tmdbId') });
-        console.log(existingMovies)
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();
         }
 
         this.templateHelpers.profiles = Profiles.toJSON();
-        console.log(this.model)
-        console.log(this.templateHelpers.existing)
+        //console.log(this.templateHelpers.isExisting);
         if (!this.model.get('isExisting')) {
             this.templateHelpers.rootFolders = RootFolders.toJSON();
         }
@@ -169,6 +182,8 @@ var view = Marionette.ItemView.extend({
 
         var profile = this.ui.profile.val();
         var rootFolderPath = this.ui.rootFolder.children(':selected').text();
+        var monitor = this.ui.monitor.val();
+        var minAvail = this.ui.minimumAvailability.val();
 
         var options = this._getAddMoviesOptions();
         options.searchForMovie = searchForMovie;
@@ -178,14 +193,15 @@ var view = Marionette.ItemView.extend({
             profileId      : profile,
             rootFolderPath : rootFolderPath,
             addOptions     : options,
-            monitored      : true
+	    minimumAvailability : minAvail,
+            monitored      : (monitor === 'all' ? true : false)
         }, { silent : true });
 
         var self = this;
         var promise = this.model.save();
 
-        console.log(this.model.save);
-        console.log(promise);
+        //console.log(this.model.save);
+        //console.log(promise);
 
         if (searchForMovie) {
             this.ui.addSearchButton.spinForPromise(promise);
@@ -229,44 +245,10 @@ var view = Marionette.ItemView.extend({
     },
 
     _getAddMoviesOptions : function() {
-        var monitor = this.ui.monitor.val();
-
-        var options = {
+        return {
             ignoreEpisodesWithFiles    : false,
             ignoreEpisodesWithoutFiles : false
         };
-
-        if (monitor === 'all') {
-            return options;
-        }
-
-        else if (monitor === 'future') {
-            options.ignoreEpisodesWithFiles = true;
-            options.ignoreEpisodesWithoutFiles = true;
-        }
-
-        else if (monitor === 'latest') {
-            this.model.setSeasonPass(lastSeason.seasonNumber);
-        }
-
-        else if (monitor === 'first') {
-            this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-            this.model.setSeasonMonitored(firstSeason.seasonNumber);
-        }
-
-        else if (monitor === 'missing') {
-            options.ignoreEpisodesWithFiles = true;
-        }
-
-        else if (monitor === 'existing') {
-            options.ignoreEpisodesWithoutFiles = true;
-        }
-
-        else if (monitor === 'none') {
-            this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-        }
-
-        return options;
     }
 });
 

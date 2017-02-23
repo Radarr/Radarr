@@ -33,7 +33,7 @@ module.exports = NzbDroneCell.extend({
     },
 
     _editSeries : function() {
-        vent.trigger(vent.Commands.EditSeriesCommand, { series : this.model });
+        vent.trigger(vent.Commands.EditMovieCommand, { movie : this.model });
     },
 
     _refreshSeries : function() {

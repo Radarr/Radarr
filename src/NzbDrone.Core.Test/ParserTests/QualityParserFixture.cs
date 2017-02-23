@@ -79,7 +79,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("the.shield.1x13.circles.ws.xvidvd-tns", false)]
         [TestCase("the_x-files.9x18.sunshine_days.ac3.ws_dvdrip_xvid-fov.avi", false)]
         [TestCase("[FroZen] Miyuki - 23 [DVD][7F6170E6]", false)]
-        [TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD", false)]
         [TestCase("Hannibal.S01E05.480p.BluRay.DD5.1.x264-HiSD", false)]
         [TestCase("Heidi Girl of the Alps (BD)(640x480(RAW) (BATCH 1) (1-13)", false)]
         [TestCase("[Doki] Clannad - 02 (848x480 XviD BD MP3) [95360783]", false)]
@@ -215,19 +214,26 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Quality.Bluray1080p, proper);
         }
 
-        [TestCase("POI S02E11 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
-        [TestCase("How I Met Your Mother S01E18 Nothing Good Happens After 2 A.M. 720p HDTV DD5.1 MPEG2-TrollHD", false)]
-        [TestCase("The Voice S01E11 The Finals 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
-        [TestCase("Californication.S07E11.1080i.HDTV.DD5.1.MPEG2-NTb.ts", false)]
-        [TestCase("Game of Thrones S04E10 1080i HDTV MPEG2 DD5.1-CtrlHD.ts", false)]
-        [TestCase("VICE.S02E05.1080i.HDTV.DD2.0.MPEG2-NTb.ts", false)]
-        [TestCase("Show - S03E01 - Episode Title Raw-HD.ts", false)]
-        [TestCase("Saturday.Night.Live.Vintage.S10E09.Eddie.Murphy.The.Honeydrippers.1080i.UPSCALE.HDTV.DD5.1.MPEG2-zebra", false)]
-        [TestCase("The.Colbert.Report.2011-08-04.1080i.HDTV.MPEG-2-CtrlHD", false)]
-        public void should_parse_raw_quality(string title, bool proper)
-        {
-            ParseAndVerifyQuality(title, Quality.RAWHD, proper);
-        }
+		[TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
+		[TestCase("Hannibal.S01E05.576p.BluRay.DD5.1.x264-HiSD")]
+		public void should_parse_bluray576p_quality(string title)
+		{
+			ParseAndVerifyQuality(title, Quality.Bluray576p, false);
+		}
+
+        //[TestCase("POI S02E11 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
+        //[TestCase("How I Met Your Mother S01E18 Nothing Good Happens After 2 A.M. 720p HDTV DD5.1 MPEG2-TrollHD", false)]
+        //[TestCase("The Voice S01E11 The Finals 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
+        //[TestCase("Californication.S07E11.1080i.HDTV.DD5.1.MPEG2-NTb.ts", false)]
+        //[TestCase("Game of Thrones S04E10 1080i HDTV MPEG2 DD5.1-CtrlHD.ts", false)]
+        //[TestCase("VICE.S02E05.1080i.HDTV.DD2.0.MPEG2-NTb.ts", false)]
+        //[TestCase("Show - S03E01 - Episode Title Raw-HD.ts", false)]
+        //[TestCase("Saturday.Night.Live.Vintage.S10E09.Eddie.Murphy.The.Honeydrippers.1080i.UPSCALE.HDTV.DD5.1.MPEG2-zebra", false)]
+        //[TestCase("The.Colbert.Report.2011-08-04.1080i.HDTV.MPEG-2-CtrlHD", false)]
+        //public void should_parse_raw_quality(string title, bool proper)
+        //{
+        //    ParseAndVerifyQuality(title, Quality.RAWHD, proper);
+        //}
 
         [TestCase("Sonny.With.a.Chance.S02E15", false)]
         [TestCase("Law & Order: Special Victims Unit - 11x11 - Quickie", false)]
@@ -273,6 +279,15 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_quality_from_extension(string title)
         {
             QualityParser.ParseQuality(title).QualitySource.Should().Be(QualitySource.Extension);
+        }
+
+        [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "korsub")]
+        [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "korsubs")]
+        [TestCase("Movie.Title.2016.1080p.DKSUB.WEBRip.x264.AAC2.0-RADARR", "dksub")]
+        [TestCase("Movie.Title.2016.1080p.DKSUBS.WEBRip.x264.AAC2.0-RADARR", "dksubs")]
+        public void should_parse_hardcoded_subs(string postTitle, string sub)
+        {
+            QualityParser.ParseQuality(postTitle).HardcodedSubs.Should().Be(sub);
         }
 
         private void ParseAndVerifyQuality(string title, Quality quality, bool proper)
