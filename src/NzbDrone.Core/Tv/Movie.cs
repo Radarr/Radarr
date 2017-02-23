@@ -54,10 +54,29 @@ namespace NzbDrone.Core.Tv
 
         public bool HasFile => MovieFileId > 0;
 
-        public bool IsAvailable()
+        public bool IsAvailable(int delay = 0)
         {
-            //TODO might need to update this for preDB.
-            return (Status >= MinimumAvailability || (MinimumAvailability==MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+            DateTime MinimumAvailabilityDate;
+            switch (MinimumAvailability)
+            {
+                case MovieStatusType.TBA:
+                case MovieStatusType.Announced:
+                    MinimumAvailabilityDate = DateTime.MinValue;
+                    break;
+                case MovieStatusType.InCinemas:
+                    if (InCinemas.HasValue)
+                        MinimumAvailabilityDate = InCinemas.Value;
+                    else
+                        MinimumAvailabilityDate = DateTime.MaxValue;
+                    break;
+                //TODO: might need to handle PreDB but for now treat the same as Released
+                case MovieStatusType.Released:
+                case MovieStatusType.PreDB:
+                default:
+                    MinimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
+                    break;
+            }
+            return DateTime.Now >= MinimumAvailabilityDate.AddDays(delay);
         }
 
         public override string ToString()

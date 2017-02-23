@@ -194,12 +194,13 @@ namespace NzbDrone.Core.Tv
 
         public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
         {
-            
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
-                             //this needs to handle the cases from src\nzbdrone.core\tv\moviestatustype.cs
+                             //note: this doesnt respect the availability delay that is used for RssSync
+                             //should be .AndWhere (m=> m.IsAvailable(delay)) where delay corresponds to AvailabilityDelay on Indexers Settings page
+                             //but that doesnt seem to work
 			                 //TODO: will need to update for preDB for now treat PreDB like Released
-                             .AndWhere(m => 
+                             .AndWhere(m=> 
                              (m.MinimumAvailability==MovieStatusType.Released && m.Status >=MovieStatusType.Released) ||
                              (m.MinimumAvailability==MovieStatusType.InCinemas && m.Status >= MovieStatusType.InCinemas) ||
                              (m.MinimumAvailability==MovieStatusType.Announced && m.Status >=MovieStatusType.Announced) ||
