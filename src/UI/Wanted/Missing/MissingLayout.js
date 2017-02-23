@@ -132,10 +132,17 @@ module.exports = Marionette.Layout.extend({
         };
         var filterOptions = {
             type          : 'radio',
-            storeState    : true,
+            storeState    : false,
             menuKey       : 'wanted.filterMode',
-            defaultAction : 'monitored',
+            defaultAction : 'available',
             items         : [
+		{
+	            key      : 'available',
+		    title    : '',
+		    tooltip  : 'Available & Monitored',
+		    icon     : 'icon-sonarr-available',
+		    callback : this._setFilter
+		},
                 {
                     key      : 'monitored',
                     title    : '',
@@ -169,13 +176,6 @@ module.exports = Marionette.Layout.extend({
 			    title    : '',
 			    tooltip  : 'Released Only',
 			    icon     : 'icon-sonarr-movie-released',
-			    callback : this._setFilter
-		    },
-		    {
-			    key      : 'available',
-			    title    : '',
-			    tooltip  : 'Available Only',
-			    icon     : 'icon-sonarr-available',
 			    callback : this._setFilter
 		    }
 		]
