@@ -9,20 +9,60 @@ var AsPersistedStateCollection = require('../Mixins/AsPersistedStateCollection')
 var moment = require('moment');
 require('../Mixins/backbone.signalr.mixin');
 
+var pageSize = 100;
+
 var Collection = PageableCollection.extend({
     url       : window.NzbDrone.ApiRoot + '/movie',
     model     : MovieModel,
     tableName : 'movie',
 
+    origSetSorting : PageableCollection.prototype.setSorting,
+
     state : {
         sortKey            : 'sortTitle',
         order              : -1,
-        pageSize           : 4,
+        pageSize           : pageSize,
         secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
     },
 
-    mode : 'infinite',
+    queryParams : {
+        totalPages   : null,
+        totalRecords : null,
+        pageSize     : 'pageSize',
+        sortKey      : 'sortKey',
+        order        : 'sortDir',
+        directions   : {
+            '-1' : 'asc',
+            '1'  : 'desc'
+        }
+    },
+
+    sortMappings : {
+        'movie' : { sortKey : 'series.sortTitle' }
+    },
+
+    parseState : function(resp) {
+      var direction = -1;
+      if (resp.sortDirection == "descending") {
+        direction = 1;
+      }
+        return { totalRecords : resp.totalRecords, order : direction, currentPage : resp.page };
+    },
+
+    parseRecords : function(resp) {
+        if (resp) {
+            return resp.records;
+        }
+
+        return resp;
+    },
+
+    mode : 'server',
+
+    setSorting : function(sortKey, order, options) {
+        return this.origSetSorting.call(this, sortKey, order, options);
+    },
 
     save : function() {
         var self = this;
@@ -192,6 +232,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('movie');
+var data = ApiData.get('movie?page=1&pageSize='+pageSize+'&sortKey=sortTitle&sortDir=asc');
 
-module.exports = new Collection(data, { full : true }).bindSignalR();
+module.exports = new Collection(data.records, { full : false, state : { totalRecords : data.totalRecords} }).bindSignalR();

@@ -28,7 +28,8 @@ module.exports = Marionette.Layout.extend({
         toolbar      : '#x-toolbar',
         toolbar2     : '#x-toolbar2',
         footer       : '#x-series-footer',
-        pager : "#x-movie-pager"
+        pager : "#x-movie-pager",
+        pagerTop : "#x-movie-pager-top"
     },
 
     columns : [
@@ -117,21 +118,30 @@ module.exports = Marionette.Layout.extend({
 
     initialize : function() {
         this.seriesCollection = MoviesCollection.clone();
-        this.seriesCollection.shadowCollection.bindSignalR();
+        this.seriesCollection.bindSignalR();
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'sync', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
+
+
+        this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
+            //this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'add', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
-            this._renderView();
+        this.listenTo(MoviesCollection, "sync", function(eventName) {
+          debugger;
+          this.seriesCollection = MoviesCollection.clone();
+          debugger;
+          this._showTable();
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'remove', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
-            this._renderView();
+        this.listenTo(this.seriesCollection, 'add', function(model, collection, options) {
+            //this.seriesCollection.fullCollection.resetFiltered();
+            //this._renderView();
+        });
+
+        this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
+            //this.seriesCollection.fullCollection.resetFiltered();
+            //this._showTable();
         });
 
         this.sortingOptions = {
@@ -284,8 +294,12 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             this.toolbar2.close();
         } else {
-            this.seriesRegion.show(this.currentView);
 
+            this.seriesRegion.show(this.currentView);
+            this.listenTo(this.currentView.collection, "sync", function(eventName){
+              this._showPager();
+              //debugger;
+            });
             this._showToolbar();
             this._showFooter();
         }
@@ -326,10 +340,16 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showPager : function() {
-      this.pager.show(new GridPager({
+      var pager = new GridPager({
           columns    : this.columns,
-          collection : MoviesCollection,
-      }));
+          collection : this.seriesCollection,
+      });
+      var pagerTop = new GridPager({
+          columns    : this.columns,
+          collection : this.seriesCollection,
+      });
+      this.pager.show(pager);
+      this.pagerTop.show(pagerTop);
     },
 
     _showFooter : function() {

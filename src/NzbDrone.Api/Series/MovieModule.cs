@@ -15,6 +15,7 @@ using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Validation;
 using NzbDrone.SignalR;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Api.Movie
 {
@@ -52,6 +53,7 @@ namespace NzbDrone.Api.Movie
             _coverMapper = coverMapper;
 
             GetResourceAll = AllMovie;
+			GetResourcePaged = GetMoviePaged;
             GetResourceById = GetMovie;
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
@@ -103,6 +105,13 @@ namespace NzbDrone.Api.Movie
             var movies = _moviesService.GetMovie(id);
             return MapToResource(movies);
         }
+
+		private PagingResource<MovieResource> GetMoviePaged(PagingResource<MovieResource> pagingResource)
+		{
+			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>();
+
+			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
+		}
 
         protected MovieResource MapToResource(Core.Tv.Movie movies)
         {
