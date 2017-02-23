@@ -41,11 +41,11 @@ namespace NzbDrone.Api.Wanted
             else if (pagingResource.FilterKey == "moviestatus"  && pagingResource.FilterValue == "available")
             {
                 //TODO: might need to handle PreDB here
-                pagingSpec.FilterExpression = v =>
-                             (v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
+                pagingSpec.FilterExpression = v => v.Monitored == true &&
+                             ((v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
                              (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
                              (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
-                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released);
+                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released));
             }
             else if (pagingResource.FilterKey == "moviestatus" && pagingResource.FilterValue == "announced")
             {
