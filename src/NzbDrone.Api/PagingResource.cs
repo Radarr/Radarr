@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Api
@@ -38,5 +40,14 @@ namespace NzbDrone.Api
 
             return pagingSpec;
         }
+
+		/*public static Expression<Func<TModel, object>> CreateFilterExpression<TModel>(string filterKey, string filterValue)
+		{
+			Type type = typeof(TModel);
+			ParameterExpression parameterExpression = Expression.Parameter(type, "x");
+			Expression expressionBody = parameterExpression;
+
+			return expressionBody;
+		}*/
     }
 }

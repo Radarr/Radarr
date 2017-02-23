@@ -223,6 +223,13 @@ var Collection = PageableCollection.extend({
         }
     },
 
+    setFilterMode : function(mode){
+      var arr = this.filterModes[mode];
+      this.state.filterKey = arr[0];
+      this.state.filterValue = arr[1];
+      this.fetch();
+    },
+
     comparator: function (model) {
       return model.get('sortTitle');
     }

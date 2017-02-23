@@ -311,7 +311,6 @@ module.exports = Marionette.Layout.extend({
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
-
         this.seriesCollection.setFilterMode(mode);
     },
 

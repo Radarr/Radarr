@@ -110,6 +110,15 @@ namespace NzbDrone.Api.Movie
 		{
 			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>();
 
+			if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
+			{
+				pagingSpec.FilterExpression = v => v.Monitored == false;
+			}
+			else if (pagingResource.FilterKey == "monitored")
+			{
+				pagingSpec.FilterExpression = v => v.Monitored == true;
+			}
+
 			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
 		}
 
