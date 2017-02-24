@@ -7,9 +7,12 @@ var AsFilteredCollection = require('../Mixins/AsFilteredCollection');
 var AsSortedCollection = require('../Mixins/AsSortedCollection');
 var AsPersistedStateCollection = require('../Mixins/AsPersistedStateCollection');
 var moment = require('moment');
+var UiSettings = require('../Shared/UiSettingsModel');
 require('../Mixins/backbone.signalr.mixin');
+var Config = require('../Config');
 
-var pageSize = 100;
+var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
+debugger;
 
 var Collection = PageableCollection.extend({
     url       : window.NzbDrone.ApiRoot + '/movie',
