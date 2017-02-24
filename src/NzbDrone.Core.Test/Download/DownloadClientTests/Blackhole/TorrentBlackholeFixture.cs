@@ -74,9 +74,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
                 .Returns(1000000);
         }
 
-        protected override RemoteEpisode CreateRemoteEpisode()
+        protected override RemoteMovie CreateRemoteMovie()
         {
-            var remoteEpisode = base.CreateRemoteEpisode();
+            var remoteEpisode = base.CreateRemoteMovie();
             var torrentInfo = new TorrentInfo();
 
             torrentInfo.Title = remoteEpisode.Release.Title;
@@ -125,7 +125,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_download_file_if_it_doesnt_exist()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             Subject.Download(remoteEpisode);
 
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         {
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.DownloadUrl = null;
 
             Subject.Download(remoteEpisode);
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_not_save_magnet_if_disabled()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.DownloadUrl = null;
 
             Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteEpisode));
@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         {
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             Subject.Download(remoteEpisode);
 
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var illegalTitle = "Saturday Night Live - S38E08 - Jeremy Renner/Maroon 5 [SDTV]";
             var expectedFilename = Path.Combine(_blackholeFolder, "Saturday Night Live - S38E08 - Jeremy Renner+Maroon 5 [SDTV]" + Path.GetExtension(_filePath));
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.Title = illegalTitle;
 
             Subject.Download(remoteEpisode);
@@ -198,7 +198,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_throw_if_magnet_and_torrent_url_does_not_exist()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.DownloadUrl = null;
 
             Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteEpisode));
@@ -273,7 +273,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void should_return_null_hash()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             Subject.Download(remoteEpisode).Should().BeNull();
         }

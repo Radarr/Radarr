@@ -38,7 +38,8 @@ namespace NzbDrone.Core.RootFolders
                                                                      ".appledb",
                                                                      ".appledesktop",
                                                                      ".appledouble",
-                                                                     "@eadir"
+                                                                     "@eadir",
+                                                                     ".grab"
                                                                  };
 
 
@@ -170,7 +171,9 @@ namespace NzbDrone.Core.RootFolders
         {
             _logger.Debug("Generating list of unmapped folders");
             if (string.IsNullOrEmpty(path))
+            {
                 throw new ArgumentException("Invalid path provided", "path");
+            }
 
             var results = new List<UnmappedFolder>();
             var movies = _movieRepository.All().ToList();
@@ -181,8 +184,11 @@ namespace NzbDrone.Core.RootFolders
                 return results;
             }
 
-            var movieFolders = _diskProvider.GetDirectories(path).ToList();
-            var unmappedFolders = movieFolders.Except(movies.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
+            //var movieFolders = _diskProvider.GetDirectories(path).ToList();
+            //var unmappedFolders = movieFolders.Except(movies.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
+
+            var possibleMovieFolders = _diskProvider.GetDirectories(path).ToList();
+            var unmappedFolders = possibleMovieFolders.Except(movies.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
 
             foreach (string unmappedFolder in unmappedFolders)
             {

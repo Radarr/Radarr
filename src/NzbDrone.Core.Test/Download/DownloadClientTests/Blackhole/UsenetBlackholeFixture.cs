@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_download_file_if_it_doesnt_exist()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             Subject.Download(remoteEpisode);
 
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var illegalTitle = "Saturday Night Live - S38E08 - Jeremy Renner/Maroon 5 [SDTV]";
             var expectedFilename = Path.Combine(_blackholeFolder, "Saturday Night Live - S38E08 - Jeremy Renner+Maroon 5 [SDTV]" + Path.GetExtension(_filePath));
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.Title = illegalTitle;
 
             Subject.Download(remoteEpisode);
