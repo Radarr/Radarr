@@ -102,7 +102,7 @@ module.exports = Marionette.Layout.extend({
                     className    : 'x-search-selected'
                 },
                 {
-                    title        : 'Search All Missing',
+                    title        : 'Search All',
                     icon         : 'icon-sonarr-search',
                     callback     : this._searchMissing,
                     ownerContext : this,
@@ -136,6 +136,13 @@ module.exports = Marionette.Layout.extend({
             menuKey       : 'wanted.filterMode',
             defaultAction : 'available',
             items         : [
+		{
+	 	    key      : 'all',
+		    title    : '',
+		    tooltip  : 'All',
+		    icon     : 'icon-sonarr-all',
+		    callback : this._setFilter
+		},
 		{
 	            key      : 'available',
 		    title    : '',
@@ -220,9 +227,11 @@ module.exports = Marionette.Layout.extend({
         });
     },
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} missing movies? '.format(this.collection.state.totalRecords) +
+        if (window.confirm('Are you sure you want to search for {0} filtered missing movies?'.format(this.collection.state.totalRecords) +
                            'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
-            CommandController.Execute('missingMoviesSearch', { name : 'missingMoviesSearch' });
+            CommandController.Execute('missingMoviesSearch', { name : 'missingMoviesSearch',
+	                                                       filterKey : this.collection.state.filterKey,
+	   						       filterValue : this.collection.state.filterValue });
         }
     },
     _toggleMonitoredOfSelected : function() {

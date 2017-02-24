@@ -39,6 +39,7 @@ namespace NzbDrone.Core.Tv
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
         List<Movie> MoviesWithFiles(int movieId);
+        System.Linq.Expressions.Expression<Func<Core.Tv.Movie, bool>> ConstructFilterExpression(string FilterKey, string FilterValue);
     }
 
     public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
@@ -60,6 +61,45 @@ namespace NzbDrone.Core.Tv
             _eventAggregator = eventAggregator;
             _fileNameBuilder = fileNameBuilder;
             _logger = logger;
+        }
+
+
+        public System.Linq.Expressions.Expression<Func<Core.Tv.Movie, bool>> ConstructFilterExpression(string FilterKey, string FilterValue)
+        {
+            if (FilterKey == "all" && FilterValue == "all")
+            {
+                return v => v.Monitored == true || v.Monitored == false;
+            }
+            else if (FilterKey == "monitored" && FilterValue == "false")
+            {
+                return v => v.Monitored == false;
+            }
+            else if (FilterKey == "monitored" && FilterValue == "true")
+            {
+                return v => v.Monitored == true;
+            }
+            else if (FilterKey == "moviestatus" && FilterValue == "available")
+            {
+                //TODO: might need to handle PreDB here
+                return v => v.Monitored == true &&
+                             ((v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
+                             (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
+                             (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
+                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released));
+            }
+            else if (FilterKey == "moviestatus" && FilterValue == "announced")
+            {
+                return v => v.Status == MovieStatusType.Announced;
+            }
+            else if (FilterKey == "moviestatus" && FilterValue == "incinemas")
+            {
+                return v => v.Status == MovieStatusType.InCinemas;
+            }
+            else if (FilterKey == "moviestatus" && FilterValue == "released")
+            {
+                return v => v.Status == MovieStatusType.Released;
+            }
+            return v => v.Monitored == true;
         }
 
         public Movie GetMovie(int movieId)

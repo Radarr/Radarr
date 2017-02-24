@@ -90,9 +90,7 @@ namespace NzbDrone.Core.IndexerSearch
                                                                 PageSize = 100000,
                                                                 SortDirection = SortDirection.Ascending,
                                                                 SortKey = "Id",
-                                                                FilterExpression =
-                                                                    v =>
-                                                                    v.Monitored == true
+                                                                FilterExpression = _movieService.ConstructFilterExpression(message.FilterKey, message.FilterValue)
                                                             }).Records.ToList();
         
 
