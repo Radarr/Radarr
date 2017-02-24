@@ -127,7 +127,7 @@ namespace NzbDrone.Api.Movie
 						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
 						break;
 					case "inCinemas":
-						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.InCinemas;
 						break;
 					case "announced":
 						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Announced;
@@ -137,7 +137,7 @@ namespace NzbDrone.Api.Movie
 
 			if (pagingResource.FilterKey == "downloaded")
 			{
-				pagingSpec.FilterExpression = v => v.HasFile == false;
+				pagingSpec.FilterExpression = v => v.MovieFileId != 0;
 			}
 
 			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
