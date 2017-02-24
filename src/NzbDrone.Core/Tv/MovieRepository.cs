@@ -231,31 +231,6 @@ namespace NzbDrone.Core.Tv
 			return pagingSpec;
 		}
 
-		protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
-		{
-			if (pagingSpec.SortKey == "downloadedQuality")
-			{
-				var q = query.QueryText("SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id" +
-									   " AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0" +
-									   " ORDER BY QualityDefinitions.Title DESC" +
-									   " LIMIT 0,10;");
-				var ok = q.BuildQuery();
-
-				var why = " my " + ok;
-
-				return q.ThenBy(m => m.SortTitle);
-				   /*.Skip(pagingSpec.PagingOffset())
-						.Take(pagingSpec.PageSize);  */
-				//var ok = query.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, f) => m.MovieFileId == f.Id);
-				/*return query.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, f) => m.MovieFileId == f.Id)
-					.Join<Movie, Quality>(JoinType.Inner, m => m.MovieFile.Value.Quality.Quality, (m, f) => ExpressionVisitor. == f.Id)
-					.OrderBy(m => m.MovieFile.Value.Quality.Quality.Name, pagingSpec.ToSortDirection())
-						.Skip(pagingSpec.PagingOffset())
-						.Take(pagingSpec.PageSize);*/
-			}
-			return base.GetPagedQuery(query, pagingSpec);
-		}
-
         public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
         {
             return Query.Where(pagingSpec.FilterExpression)

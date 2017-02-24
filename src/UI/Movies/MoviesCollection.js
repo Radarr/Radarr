@@ -11,7 +11,7 @@ var UiSettings = require('../Shared/UiSettingsModel');
 require('../Mixins/backbone.signalr.mixin');
 var Config = require('../Config');
 
-var pageSize = 5;//parseInt(Config.getValue("pageSize")) || 1000;
+var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
 
 
 var Collection = PageableCollection.extend({
