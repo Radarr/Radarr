@@ -10,7 +10,7 @@ using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
-    public class UpdateMediaInfoService : IHandle<SeriesScannedEvent>
+    public class UpdateMediaInfoService : IHandle<MovieScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             _logger = logger;
         }
 
-        private void UpdateMediaInfo(Series series, List<EpisodeFile> mediaFiles)
+        private void UpdateMediaInfo(Movie series, List<MovieFile> mediaFiles)
         {
             foreach (var mediaFile in mediaFiles)
             {
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
         }
 
-        public void Handle(SeriesScannedEvent message)
+        public void Handle(MovieScannedEvent message)
         {
             if (!_configService.EnableMediaInfo)
             {
@@ -64,10 +64,10 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return;
             }
 
-            var allMediaFiles = _mediaFileService.GetFilesBySeries(message.Series.Id);
+            var allMediaFiles = _mediaFileService.GetFilesByMovie(message.Movie.Id);
             var filteredMediaFiles = allMediaFiles.Where(c => c.MediaInfo == null || c.MediaInfo.SchemaRevision < CURRENT_MEDIA_INFO_SCHEMA_REVISION).ToList();
 
-            UpdateMediaInfo(message.Series, filteredMediaFiles);
+            UpdateMediaInfo(message.Movie, filteredMediaFiles);
         }
     }
 }
