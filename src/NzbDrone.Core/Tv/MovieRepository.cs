@@ -215,10 +215,20 @@ namespace NzbDrone.Core.Tv
 				pagingSpec.Records = q.ToList();
 				pagingSpec.TotalRecords = q2.Count();
 
-				return pagingSpec;
-
 			}
-			return base.GetPaged(pagingSpec);
+			else
+			{
+				pagingSpec = base.GetPaged(pagingSpec);
+			}
+
+			if (pagingSpec.Records.Count == 0 && pagingSpec.PageSize != 1)
+			{
+				var lastPossiblePage = pagingSpec.TotalRecords / pagingSpec.PageSize + 1;
+				pagingSpec.Page = lastPossiblePage;
+				return GetPaged(pagingSpec);
+			}
+
+			return pagingSpec;
 		}
 
 		protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
