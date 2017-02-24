@@ -119,6 +119,27 @@ namespace NzbDrone.Api.Movie
 				pagingSpec.FilterExpression = v => v.Monitored == true;
 			}
 
+			if (pagingResource.FilterKey == "status")
+			{
+				switch (pagingResource.FilterValue)
+				{
+					case "released":
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
+						break;
+					case "inCinemas":
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
+						break;
+					case "announced":
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Announced;
+						break;
+				}
+			}
+
+			if (pagingResource.FilterKey == "downloaded")
+			{
+				pagingSpec.FilterExpression = v => v.HasFile == false;
+			}
+
 			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
 		}
 

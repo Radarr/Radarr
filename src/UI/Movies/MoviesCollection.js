@@ -130,18 +130,18 @@ var Collection = PageableCollection.extend({
             false
         ],
         'released'  : [
-            null,
-            null,
+            "status",
+            "released",
             function(model) { return model.getStatus() == "released"; }
         ],
         'announced'  : [
-            null,
-            null,
+            "status",
+            "announced",
             function(model) { return model.getStatus() == "announced"; }
         ],
         'cinemas'  : [
-            null,
-            null,
+            "status",
+            "inCinemas",
             function(model) { return model.getStatus() == "inCinemas"; }
         ]
     },

@@ -34,7 +34,7 @@ module.exports = Marionette.Layout.extend({
 
     columns : [
         {
-            name  : 'statusWeight',
+            name  : 'status',
             label : '',
             cell  : MovieStatusCell
         },
@@ -48,6 +48,7 @@ module.exports = Marionette.Layout.extend({
           name : "downloadedQuality",
           label : "Downloaded",
           cell : DownloadedQualityCell,
+          sortable : false
         },
         {
             name  : 'profileId',
@@ -128,10 +129,9 @@ module.exports = Marionette.Layout.extend({
         });
 
         this.listenTo(MoviesCollection, "sync", function(eventName) {
-          debugger;
           this.seriesCollection = MoviesCollection.clone();
-          debugger;
-          this._showTable();
+          //this._showTable();
+          this._renderView();
         });
 
         this.listenTo(this.seriesCollection, 'add', function(model, collection, options) {
@@ -272,6 +272,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showList : function() {
+        //this.current = "list";
         this.currentView = new ListCollectionView({
             collection : this.seriesCollection
         });
@@ -360,12 +361,12 @@ module.exports = Marionette.Layout.extend({
 	var released = 0;
 
     	var monitored = 0;
-	
+
 	var downloaded =0;
 	var missingMonitored=0;
 	var missingNotMonitored=0;
 	var missingNotAvailable=0;
-	var missingMonitoredAvailable=0;   
+	var missingMonitoredAvailable=0;
 
 	var downloadedNotMonitored=0;
 
