@@ -48,7 +48,7 @@ module.exports = Marionette.Layout.extend({
           name : "downloadedQuality",
           label : "Downloaded",
           cell : DownloadedQualityCell,
-          sortable : false
+          sortable : true
         },
         {
             name  : 'profileId',

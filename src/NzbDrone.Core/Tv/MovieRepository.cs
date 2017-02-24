@@ -192,6 +192,19 @@ namespace NzbDrone.Core.Tv
             return pagingSpec;
         }
 
+		protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
+		{
+			if (pagingSpec.SortKey == "downloadedQuality")
+			{
+				var ok = query.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, f) => m.MovieFileId == f.Id);
+				return query.Join<Movie, MovieFile>(JoinType.Inner, m => m.MovieFile, (m, f) => m.MovieFileId == f.Id).Where(pagingSpec.FilterExpression)
+					        .OrderBy(m => m.MovieFile.Quality.Quality.Name, pagingSpec.ToSortDirection())
+						.Skip(pagingSpec.PagingOffset())
+						.Take(pagingSpec.PageSize);
+			}
+			return base.GetPagedQuery(query, pagingSpec);
+		}
+
         public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
         {
             return Query.Where(pagingSpec.FilterExpression)
