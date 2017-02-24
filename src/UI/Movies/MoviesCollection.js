@@ -11,8 +11,8 @@ var UiSettings = require('../Shared/UiSettingsModel');
 require('../Mixins/backbone.signalr.mixin');
 var Config = require('../Config');
 
-var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
-debugger;
+var pageSize = 5;//parseInt(Config.getValue("pageSize")) || 1000;
+
 
 var Collection = PageableCollection.extend({
     url       : window.NzbDrone.ApiRoot + '/movie',
@@ -20,6 +20,7 @@ var Collection = PageableCollection.extend({
     tableName : 'movie',
 
     origSetSorting : PageableCollection.prototype.setSorting,
+    origAdd : PageableCollection.prototype.add,
 
     state : {
         sortKey            : 'sortTitle',
@@ -227,6 +228,13 @@ var Collection = PageableCollection.extend({
                 return path.toLowerCase();
             }
         }
+    },
+
+    add : function(model, options) {
+      if (this.length >= this.state.pageSize) {
+        return;
+      }
+      this.origAdd.call(this, model, options);
     },
 
     setFilterMode : function(mode){
