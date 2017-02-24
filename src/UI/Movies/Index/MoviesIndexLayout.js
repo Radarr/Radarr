@@ -71,6 +71,7 @@ module.exports = Marionette.Layout.extend({
           name        : "this",
           label       : "Status",
           cell        : MovieDownloadStatusCell,
+          sortable : false,
           sortValue : function(m, k) {
             if (m.get("downloaded")) {
               return -1;
@@ -148,10 +149,11 @@ module.exports = Marionette.Layout.extend({
             type           : 'sorting',
             storeState     : false,
             viewCollection : this.seriesCollection,
+            callback : this._sort,
             items          : [
                 {
                     title : 'Title',
-                    name  : 'sortTitle'
+                    name  : 'title'
                 },
                 {
                     title: 'Downloaded',
@@ -165,10 +167,10 @@ module.exports = Marionette.Layout.extend({
                     title : 'In Cinemas',
                     name  : 'inCinemas'
                 },
-                {
+                /*{
                   title : "Status",
                   name : "status",
-                }
+                }*/
             ]
         };
 
@@ -286,6 +288,10 @@ module.exports = Marionette.Layout.extend({
         });
 
         this._renderView();
+    },
+
+    _sort : function() {
+      console.warn("Sorting");
     },
 
     _renderView : function() {
