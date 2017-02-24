@@ -43,9 +43,12 @@ namespace NzbDrone.Core.Tv
 
         }; //If a movie has more than 10 parts fuck 'em.
 
+		protected IMainDatabase _database;
+
         public MovieRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
+			_database = database;
         }
 
         public bool MoviePathExists(string path)
@@ -191,6 +194,42 @@ namespace NzbDrone.Core.Tv
 
             return pagingSpec;
         }
+
+		public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
+		{
+			if (pagingSpec.SortKey == "downloadedQuality")
+			{
+				var mapper = _database.GetDataMapper();
+				var offset = pagingSpec.PagingOffset();
+				var limit = pagingSpec.PageSize;
+				var direction = "ASC";
+				if (pagingSpec.SortDirection == NzbDrone.Core.Datastore.SortDirection.Descending)
+				{
+					direction = "DESC";
+				}
+				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
+				var q2 = mapper.Query<Movie>("SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title ASC;");
+
+				//var ok = q.BuildQuery();
+
+				pagingSpec.Records = q.ToList();
+				pagingSpec.TotalRecords = q2.Count();
+
+			}
+			else
+			{
+				pagingSpec = base.GetPaged(pagingSpec);
+			}
+
+			if (pagingSpec.Records.Count == 0 && pagingSpec.PageSize != 1)
+			{
+				var lastPossiblePage = pagingSpec.TotalRecords / pagingSpec.PageSize + 1;
+				pagingSpec.Page = lastPossiblePage;
+				return GetPaged(pagingSpec);
+			}
+
+			return pagingSpec;
+		}
 
         public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
         {

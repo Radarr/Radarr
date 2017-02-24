@@ -15,6 +15,7 @@ using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Validation;
 using NzbDrone.SignalR;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Api.Movie
 {
@@ -52,6 +53,7 @@ namespace NzbDrone.Api.Movie
             _coverMapper = coverMapper;
 
             GetResourceAll = AllMovie;
+			GetResourcePaged = GetMoviePaged;
             GetResourceById = GetMovie;
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
@@ -103,6 +105,43 @@ namespace NzbDrone.Api.Movie
             var movies = _moviesService.GetMovie(id);
             return MapToResource(movies);
         }
+
+		private PagingResource<MovieResource> GetMoviePaged(PagingResource<MovieResource> pagingResource)
+		{
+			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>();
+
+			if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
+			{
+				pagingSpec.FilterExpression = v => v.Monitored == false;
+			}
+			else if (pagingResource.FilterKey == "monitored")
+			{
+				pagingSpec.FilterExpression = v => v.Monitored == true;
+			}
+
+			if (pagingResource.FilterKey == "status")
+			{
+				switch (pagingResource.FilterValue)
+				{
+					case "released":
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
+						break;
+					case "inCinemas":
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.InCinemas;
+						break;
+					case "announced":
+						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Announced;
+						break;
+				}
+			}
+
+			if (pagingResource.FilterKey == "downloaded")
+			{
+				pagingSpec.FilterExpression = v => v.MovieFileId != 0;
+			}
+
+			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
+		}
 
         protected MovieResource MapToResource(Core.Tv.Movie movies)
         {

@@ -7,22 +7,70 @@ var AsFilteredCollection = require('../Mixins/AsFilteredCollection');
 var AsSortedCollection = require('../Mixins/AsSortedCollection');
 var AsPersistedStateCollection = require('../Mixins/AsPersistedStateCollection');
 var moment = require('moment');
+var UiSettings = require('../Shared/UiSettingsModel');
 require('../Mixins/backbone.signalr.mixin');
+var Config = require('../Config');
+
+var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
+
 
 var Collection = PageableCollection.extend({
     url       : window.NzbDrone.ApiRoot + '/movie',
     model     : MovieModel,
     tableName : 'movie',
 
+    origSetSorting : PageableCollection.prototype.setSorting,
+    origAdd : PageableCollection.prototype.add,
+
     state : {
         sortKey            : 'sortTitle',
         order              : -1,
-        pageSize           : 100000,
+        pageSize           : pageSize,
         secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
     },
 
-    mode : 'client',
+    queryParams : {
+        totalPages   : null,
+        totalRecords : null,
+        pageSize     : 'pageSize',
+        sortKey      : 'sortKey',
+        order        : 'sortDir',
+        directions   : {
+            '-1' : 'asc',
+            '1'  : 'desc'
+        }
+    },
+
+    sortMappings : {
+        'movie' : { sortKey : 'series.sortTitle' }
+    },
+
+    parseState : function(resp) {
+      var direction = -1;
+      if (resp.sortDirection == "descending") {
+        direction = 1;
+      }
+        return { totalRecords : resp.totalRecords, order : direction, currentPage : resp.page };
+    },
+
+    parseRecords : function(resp) {
+        if (resp) {
+            return resp.records;
+        }
+
+        return resp;
+    },
+
+    mode : 'server',
+
+    setSorting : function(sortKey, order, options) {
+        return this.origSetSorting.call(this, sortKey, order, options);
+    },
+
+    sort : function(options){
+      //debugger;
+    },
 
     save : function() {
         var self = this;
@@ -90,18 +138,18 @@ var Collection = PageableCollection.extend({
             false
         ],
         'released'  : [
-            null,
-            null,
+            "status",
+            "released",
             function(model) { return model.getStatus() == "released"; }
         ],
         'announced'  : [
-            null,
-            null,
+            "status",
+            "announced",
             function(model) { return model.getStatus() == "announced"; }
         ],
         'cinemas'  : [
-            null,
-            null,
+            "status",
+            "inCinemas",
             function(model) { return model.getStatus() == "inCinemas"; }
         ]
     },
@@ -127,10 +175,10 @@ var Collection = PageableCollection.extend({
         downloadedQuality : {
           sortValue : function(model, attr) {
             if (model.get("movieFile")) {
-              return 1000-model.get("movieFile").quality.quality.id;
+              return model.get("movieFile").quality.quality.name;
             }
 
-            return -1;
+            return "";
           }
         },
         nextAiring : {
@@ -184,6 +232,24 @@ var Collection = PageableCollection.extend({
                 return path.toLowerCase();
             }
         }
+    },
+
+    add : function(model, options) {
+      if (this.length >= this.state.pageSize) {
+        return;
+      }
+      this.origAdd.call(this, model, options);
+    },
+
+    setFilterMode : function(mode){
+      var arr = this.filterModes[mode];
+      this.state.filterKey = arr[0];
+      this.state.filterValue = arr[1];
+      this.fetch();
+    },
+
+    comparator: function (model) {
+      return model.get('sortTitle');
     }
 });
 
@@ -191,6 +257,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('movie');
+var data = ApiData.get('movie?page=1&pageSize='+pageSize+'&sortKey=sortTitle&sortDir=asc');
 
-module.exports = new Collection(data, { full : true }).bindSignalR();
+module.exports = new Collection(data.records, { full : false, state : { totalRecords : data.totalRecords} }).bindSignalR();
