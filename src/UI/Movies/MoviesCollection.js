@@ -68,6 +68,10 @@ var Collection = PageableCollection.extend({
         return this.origSetSorting.call(this, sortKey, order, options);
     },
 
+    sort : function(options){
+      //debugger;
+    },
+
     save : function() {
         var self = this;
 
@@ -171,10 +175,10 @@ var Collection = PageableCollection.extend({
         downloadedQuality : {
           sortValue : function(model, attr) {
             if (model.get("movieFile")) {
-              return 1000-model.get("movieFile").quality.quality.id;
+              return model.get("movieFile").quality.quality.name;
             }
 
-            return -1;
+            return "";
           }
         },
         nextAiring : {
