@@ -137,7 +137,7 @@ namespace NzbDrone.Api.Movie
 
 			if (pagingResource.FilterKey == "downloaded")
 			{
-				pagingSpec.FilterExpression = v => v.MovieFileId != 0;
+				pagingSpec.FilterExpression = v => v.MovieFileId == 0;
 			}
 
 			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
