@@ -196,7 +196,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -208,7 +208,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.DownloadUrl = magnetUrl;
 
             var id = Subject.Download(remoteEpisode);

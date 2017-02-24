@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
             remoteEpisode.Release.Title = title;
 
             var id = Subject.Download(remoteEpisode);
@@ -274,7 +274,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteMovie();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -315,12 +315,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                     .Setup(s => s.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()))
                     .Returns(new SabnzbdAddResponse());
 
-            var remoteEpisode = CreateRemoteEpisode();
-            remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1)
-                                                      .All()
-                                                      .With(e => e.AirDate = DateTime.Today.ToString(Episode.AIR_DATE_FORMAT))
-                                                      .Build()
-                                                      .ToList();
+            var remoteEpisode = CreateRemoteMovie();
+            //remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1)
+            //                                          .All()
+            //                                          .With(e => e.AirDate = DateTime.Today.ToString(Episode.AIR_DATE_FORMAT))
+            //                                          .Build()
+            //                                          .ToList();
 
             Subject.Download(remoteEpisode);
 
