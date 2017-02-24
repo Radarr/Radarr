@@ -51,7 +51,11 @@ var Collection = PagableCollection.extend({
 	],
 	'available' : [
 		'moviestatus',
-		'available',
+		'available'
+	],
+	'all' : [
+		'all',
+		'all'
 	]
     },
 
