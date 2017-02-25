@@ -39,12 +39,15 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
         private readonly IMovieFileRepository _movieFileRepository;
+		private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
-        public MediaFileService(IMediaFileRepository mediaFileRepository, IMovieFileRepository movieFileRepository, IEventAggregator eventAggregator, Logger logger)
+        public MediaFileService(IMediaFileRepository mediaFileRepository, IMovieFileRepository movieFileRepository, IMovieService movieService,
+		                        IEventAggregator eventAggregator, Logger logger)
         {
             _mediaFileRepository = mediaFileRepository;
             _eventAggregator = eventAggregator;
+			_movieService = movieService;
             _movieFileRepository = movieFileRepository;
             _logger = logger;
         }
@@ -143,7 +146,9 @@ namespace NzbDrone.Core.MediaFiles
         public MovieFile Add(MovieFile episodeFile)
         {
             var addedFile = _movieFileRepository.Insert(episodeFile);
+			_movieService.SetFileId(episodeFile.Movie.Value, episodeFile); //Should not be necessary, but sometimes below fails?
             _eventAggregator.PublishEvent(new MovieFileAddedEvent(addedFile));
+
             return addedFile;
         }
 

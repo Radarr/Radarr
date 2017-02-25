@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Tv
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         void DeleteMovie(int movieId, bool deleteFiles);
+		void SetFileId(Movie movie, MovieFile movieFile);
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie);
@@ -298,6 +299,12 @@ namespace NzbDrone.Core.Tv
             _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
             _logger.Debug("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
         }
+
+		public void SetFileId(Movie movie, MovieFile movieFile)
+		{
+			_movieRepository.SetFileId(movieFile.Id, movie.Id);
+			_logger.Debug("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
+		}
 
         public void Handle(MovieFileDeletedEvent message)
         {

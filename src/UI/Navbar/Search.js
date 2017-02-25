@@ -2,7 +2,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var Backbone = require('backbone');
-var SeriesCollection = require('../Movies/FullMovieCollection');
+var FullMovieCollection = require('../Movies/FullMovieCollection');
 require('typeahead');
 
 vent.on(vent.Hotkeys.NavbarSearch, function() {
@@ -11,7 +11,7 @@ vent.on(vent.Hotkeys.NavbarSearch, function() {
 
 var substringMatcher = function() {
     return function findMatches (q, cb) {
-        var matches = _.select(SeriesCollection.toJSON(), function(series) {
+        var matches = _.select(FullMovieCollection.toJSON(), function(series) {
             return series.title.toLowerCase().indexOf(q.toLowerCase()) > -1;
         });
         cb(matches);
