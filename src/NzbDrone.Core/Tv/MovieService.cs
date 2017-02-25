@@ -13,6 +13,7 @@ using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Tv
 {
@@ -46,6 +47,7 @@ namespace NzbDrone.Core.Tv
                                                IHandle<MovieFileDeletedEvent>
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly Logger _logger;
@@ -55,11 +57,13 @@ namespace NzbDrone.Core.Tv
                              ISceneMappingService sceneMappingService,
                              IEpisodeService episodeService,
                              IBuildFileNames fileNameBuilder,
+                             IConfigService configService,
                              Logger logger)
         {
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
             _fileNameBuilder = fileNameBuilder;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -297,8 +301,15 @@ namespace NzbDrone.Core.Tv
 
         public void Handle(MovieFileDeletedEvent message)
         {
+            
             var movie = _movieRepository.GetMoviesByFileId(message.MovieFile.Id).First();
             movie.MovieFileId = 0;
+            _logger.Debug("Detaching movie {0} from file.", movie.Id);
+
+            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedEpisodes)
+            {
+                movie.Monitored = false;
+            }
 
             UpdateMovie(movie);
         }
