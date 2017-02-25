@@ -42,7 +42,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             RuleFor(c => c.Years)
                 .Matches(@"^\d+(\-\d+)?$", RegexOptions.IgnoreCase)
                 .When(c => c.Years.IsNotNullOrWhiteSpace())
-                .WithMessage("Not a valid rating");
+                .WithMessage("Not a valid year or range of years");
         }
     }
 
