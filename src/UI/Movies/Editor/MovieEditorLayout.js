@@ -71,7 +71,7 @@ module.exports = Marionette.Layout.extend({
             {
                 title          : 'Update Library',
                 icon           : 'icon-sonarr-refresh',
-                command        : 'refreshseries',
+                command        : 'refreshmovie',
                 successMessage : 'Library was updated!',
                 errorMessage   : 'Library update failed!'
             }
