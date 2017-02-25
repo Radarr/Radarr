@@ -30,6 +30,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskTransferService _diskTransferService;
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileAttributeService _mediaFileAttributeService;
+        private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
@@ -40,6 +41,7 @@ namespace NzbDrone.Core.MediaFiles
                                 IDiskTransferService diskTransferService,
                                 IDiskProvider diskProvider,
                                 IMediaFileAttributeService mediaFileAttributeService,
+                                IRecycleBinProvider recycleBinProvider,
                                 IEventAggregator eventAggregator,
                                 IConfigService configService,
                                 Logger logger)
@@ -50,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles
             _diskTransferService = diskTransferService;
             _diskProvider = diskProvider;
             _mediaFileAttributeService = mediaFileAttributeService;
+            _recycleBinProvider = recycleBinProvider;
             _eventAggregator = eventAggregator;
             _configService = configService;
             _logger = logger;
@@ -139,7 +142,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if(oldMoviePath != newMoviePath)
             {
-                _diskProvider.DeleteFolder(oldMoviePath, true);
+                _recycleBinProvider.DeleteFolder(oldMoviePath);
             }
 
             return movieFile;
