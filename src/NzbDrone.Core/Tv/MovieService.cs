@@ -51,7 +51,6 @@ namespace NzbDrone.Core.Tv
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _fileNameBuilder;
-        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public MovieService(IMovieRepository movieRepository,
@@ -63,7 +62,7 @@ namespace NzbDrone.Core.Tv
                              Logger logger)
         {
             _movieRepository = movieRepository;
-             _eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator;
             _fileNameBuilder = fileNameBuilder;
             _configService = configService;
             _logger = logger;
@@ -252,33 +251,6 @@ namespace NzbDrone.Core.Tv
                     _configService.ImportExclusions += ',' + movie.ImdbId;
                 }
             }
-            /*//this next block was added in order to implement listsynccleaning
-            //start of block   -- this comment block can probably deleted in the future. just leaving here for reference
-            if (deleteFiles)
-            {
-                List<MovieFile> movieFilesList = _mediaFileService.GetFilesByMovie(movieId);
-                //string dirPath = null;
-                foreach (var movieFile in movieFilesList)
-                {
-                    var series = GetMovie(movieFile.MovieId);
-                    var fullPath = Path.Combine(series.Path, movieFile.RelativePath);
-                    //dirPath = series.Path;
-                    _logger.Info("Deleting episode file: {0}", fullPath);
-                    _recycleBinProvider.DeleteFile(fullPath);
-                    _mediaFileService.Delete(movieFile, DeleteMediaFileReason.NotInList);
-                    //TODO: files are being deleted, but empty directory left behind??
-                    //perhaps need to delete the series path too?
-                }
-                //if (dirPath != null)
-                //{
-                //    _logger.Info("Deleting Movie folder: {0}", dirPath);
-                //    _recycleBinProvider.DeleteFolder(dirPath);
-                //    _movieFileRepository.Delete(dirPath);                    
-                //}
-            }
-            //end of block
-            */
-            
             _movieRepository.Delete(movieId);
             _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));
         }
