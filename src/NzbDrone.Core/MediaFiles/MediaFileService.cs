@@ -146,6 +146,7 @@ namespace NzbDrone.Core.MediaFiles
         public MovieFile Add(MovieFile episodeFile)
         {
             var addedFile = _movieFileRepository.Insert(episodeFile);
+			episodeFile.Movie.LazyLoad();
 			_movieService.SetFileId(episodeFile.Movie.Value, episodeFile); //Should not be necessary, but sometimes below fails?
             _eventAggregator.PublishEvent(new MovieFileAddedEvent(addedFile));
 
