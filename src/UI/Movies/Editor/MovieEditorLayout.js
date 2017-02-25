@@ -77,7 +77,7 @@ module.exports = Marionette.Layout.extend({
 
     initialize : function() {
         this.movieCollection = MoviesCollection.clone();
-        this.movieCollection.shadowCollection.bindSignalR();
+        this.movieCollection.bindSignalR();
         this.listenTo(this.movieCollection, 'save', this.render);
 
         this.filteringOptions = {
@@ -114,7 +114,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showTable : function() {
-        if (this.movieCollection.shadowCollection.length === 0) {
+        if (this.movieCollection.length === 0) {
             this.seriesRegion.show(new EmptyView());
             this.toolbar.close();
             return;

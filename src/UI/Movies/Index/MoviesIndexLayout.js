@@ -5,6 +5,7 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
+var FullMovieCollection = require('../FullMovieCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
@@ -121,6 +122,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
+        this.fullCollection = FullMovieCollection;
 
 
 
