@@ -2,7 +2,7 @@ var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var Backbone = require('backbone');
-var SeriesCollection = require('../Movies/MoviesCollection');
+var SeriesCollection = require('../Movies/FullMovieCollection');
 require('typeahead');
 
 vent.on(vent.Hotkeys.NavbarSearch, function() {

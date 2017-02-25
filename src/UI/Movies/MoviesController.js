@@ -1,6 +1,7 @@
 var NzbDroneController = require('../Shared/NzbDroneController');
 var AppLayout = require('../AppLayout');
 var MoviesCollection = require('./MoviesCollection');
+var FullMovieCollection = require("./FullMovieCollection");
 var MoviesIndexLayout = require('./Index/MoviesIndexLayout');
 var MoviesDetailsLayout = require('./Details/MoviesDetailsLayout');
 var SeriesDetailsLayout = require('../Series/Details/SeriesDetailsLayout');
@@ -22,7 +23,7 @@ module.exports = NzbDroneController.extend({
 		},
 
 		seriesDetails : function(query) {
-				var series = MoviesCollection.where({ titleSlug : query });
+				var series = FullMovieCollection.where({ titleSlug : query });
 				if (series.length !== 0) {
 						var targetMovie = series[0];
 						console.log(AppLayout.mainRegion);
