@@ -1,6 +1,9 @@
 ﻿using FluentValidation;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
+using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -10,26 +13,57 @@ namespace NzbDrone.Core.NetImport.Trakt
         public TraktSettingsValidator()
         {
             RuleFor(c => c.Link).ValidRootUrl();
+
+            // List name required for UserCustomList
+            RuleFor(c => c.Listname)
+                .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
+                .When(c => c.ListType == (int)TraktListType.UserCustomList)
+                .WithMessage("List name is required when using Custom Trakt Lists");
+
+            // Username required for UserWatchedList/UserWatchList
+            RuleFor(c => c.Username)
+                .Matches(@"^[A-Za-z0-9\-_]+$", RegexOptions.IgnoreCase)
+                .When(c => c.ListType == (int)TraktListType.UserWatchedList || c.ListType == (int)TraktListType.UserWatchList)
+                .WithMessage("Username is required when using User Trakt Lists");
+
+            // Loose validation @TODO
+            RuleFor(c => c.Rating)
+                .Matches(@"^\d+\-\d+$", RegexOptions.IgnoreCase)
+                .When(c => c.Rating.IsNotNullOrWhiteSpace())
+                .WithMessage("Not a valid rating");
+
+            // Any valid certification
+            RuleFor(c => c.Ceritification)
+                .Matches(@"^\bNR\b|\bG\b|\bPG\b|\bPG\-13\b|\bR\b|\bNC\-17\b$", RegexOptions.IgnoreCase)
+                .When(c => c.Ceritification.IsNotNullOrWhiteSpace())
+                .WithMessage("Not a valid cerification");
+
+            // Loose validation @TODO
+            RuleFor(c => c.Years)
+                .Matches(@"^\d+(\-\d+)?$", RegexOptions.IgnoreCase)
+                .When(c => c.Years.IsNotNullOrWhiteSpace())
+                .WithMessage("Not a valid year or range of years");
         }
     }
 
-    public class TraktSettings : NetImportBaseSettings
+    public class TraktSettings : IProviderConfig
     {
-
         private static readonly TraktSettingsValidator Validator = new TraktSettingsValidator();
+
         public TraktSettings()
         {
             Link = "https://api.trakt.tv";
+            ListType = (int)TraktListType.Popular;
             Username = "";
             Listname = "";
             Rating = "0-100";
             Ceritification = "NR,G,PG,PG-13,R,NC-17";
             Genres = "";
-            Years = "2011-2017";
+            Years = "";
         }
 
         [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
-        public new string Link { get; set; }
+        public string Link { get; set; }
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TraktListType), HelpText = "Trakt list type")]
         public int ListType { get; set; }
@@ -53,7 +87,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         public string Years { get; set; }
 
 
-        public new NzbDroneValidationResult Validate()
+        public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
