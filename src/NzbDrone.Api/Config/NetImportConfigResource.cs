@@ -5,7 +5,10 @@ namespace NzbDrone.Api.Config
 {
     public class NetImportConfigResource : RestResource
     {
-        public int NetImportSyncInterval { get; set; }
+    public int NetImportSyncInterval { get; set; }
+	public string TraktAuthToken { get; set; }
+	public string TraktRefreshToken { get; set; }
+	public int TraktTokenExpiry { get; set; }
     }
 
     public static class NetImportConfigResourceMapper
@@ -14,7 +17,10 @@ namespace NzbDrone.Api.Config
         {
             return new NetImportConfigResource
             {
-                NetImportSyncInterval = model.NetImportSyncInterval
+                NetImportSyncInterval = model.NetImportSyncInterval,
+		        TraktAuthToken = model.TraktAuthToken,
+		        TraktRefreshToken = model.TraktRefreshToken,
+		        TraktTokenExpiry = model.TraktTokenExpiry,
             };
         }
     }
