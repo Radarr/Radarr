@@ -186,14 +186,20 @@ namespace NzbDrone.Api.Movie
         private void DeleteMovie(int id)
         {
             var deleteFiles = false;
+            var addExclusion = false;
             var deleteFilesQuery = Request.Query.deleteFiles;
+            var addExclusionQuery = Request.Query.addExclusion;
 
             if (deleteFilesQuery.HasValue)
             {
                 deleteFiles = Convert.ToBoolean(deleteFilesQuery.Value);
             }
+            if (addExclusionQuery.HasValue)
+            {
+                addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
+            }
 
-            _moviesService.DeleteMovie(id, deleteFiles);
+            _moviesService.DeleteMovie(id, deleteFiles, addExclusion);
         }
 
         private void MapCoversToLocal(params MovieResource[] movies)
