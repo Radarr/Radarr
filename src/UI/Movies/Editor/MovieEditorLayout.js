@@ -9,6 +9,7 @@ var ProfileCell = require('../../Cells/ProfileCell');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./MovieEditorFooterView');
+var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
 
 module.exports = Marionette.Layout.extend({
@@ -16,7 +17,9 @@ module.exports = Marionette.Layout.extend({
 
     regions : {
         seriesRegion : '#x-series-editor',
-        toolbar      : '#x-toolbar'
+        toolbar      : '#x-toolbar',
+        pagerTop : "#x-movie-pager-top",
+        pager : "#x-movie-pager"
     },
 
     ui : {
@@ -77,7 +80,9 @@ module.exports = Marionette.Layout.extend({
 
     initialize : function() {
         this.movieCollection = MoviesCollection.clone();
+        this.movieCollection.state = MoviesCollection.state;
         this.movieCollection.bindSignalR();
+        //debugger;
         this.listenTo(this.movieCollection, 'save', this.render);
 
         this.filteringOptions = {
@@ -107,10 +112,24 @@ module.exports = Marionette.Layout.extend({
     onRender : function() {
         this._showToolbar();
         this._showTable();
+        this._showPager();
     },
 
     onClose : function() {
         vent.trigger(vent.Commands.CloseControlPanelCommand);
+    },
+
+    _showPager : function(){
+      var pager = new GridPager({
+          columns    : this.columns,
+          collection : this.movieCollection,
+      });
+      var pagerTop = new GridPager({
+          columns    : this.columns,
+          collection : this.movieCollection,
+      });
+      this.pager.show(pager);
+      this.pagerTop.show(pagerTop);
     },
 
     _showTable : function() {
