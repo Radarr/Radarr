@@ -122,9 +122,13 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
-        this.fullCollection = FullMovieCollection;
+        //this.fullCollection = FullMovieCollection;
 
-
+		//need to add this so the footer gets refreshed
+        this.listenTo(FullMovieCollection, 'sync', function(model, collection, options) {
+		   //this._renderView();
+           this._showFooter();
+		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
             //this.seriesCollection.fullCollection.resetFiltered();
@@ -310,7 +314,7 @@ module.exports = Marionette.Layout.extend({
               //debugger;
             });
             this._showToolbar();
-            this._showFooter();
+            //this._showFooter();
         }
     },
 
@@ -362,75 +366,78 @@ module.exports = Marionette.Layout.extend({
 
     _showFooter : function() {
         var footerModel = new FooterModel();
-        var movies = MoviesCollection.models.length;
+        var movies = FullMovieCollection.models.length;
+        //instead of all the counters could do something like this with different query in the where...
+        //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
+        //    releasedMovies.length 
 
         var announced = 0;
-	var incinemas = 0;
-	var released = 0;
+		var incinemas = 0;
+		var released = 0;
 
     	var monitored = 0;
 
-	var downloaded =0;
-	var missingMonitored=0;
-	var missingNotMonitored=0;
-	var missingNotAvailable=0;
-	var missingMonitoredAvailable=0;
+		var downloaded =0;
+		var missingMonitored=0;
+		var missingNotMonitored=0;
+		var missingNotAvailable=0;
+		var missingMonitoredAvailable=0;
 
-	var downloadedNotMonitored=0;
+		var downloadedNotMonitored=0;
 
-        _.each(MoviesCollection.models, function(model) {
+        _.each(FullMovieCollection.models, function(model) {
 
-            if (model.get('status').toLowerCase() === 'released') {
-                released++;
-	    }
-	    else if (model.get('status').toLowerCase() === 'incinemas') {
-                incinemas++;
-            }
-	    else if (model.get('status').toLowerCase() === 'announced') {
-                announced++;
-            }
+        	if (model.get('status').toLowerCase() === 'released') {
+        		released++;
+	    	}
+	    	else if (model.get('status').toLowerCase() === 'incinemas') {
+            	incinemas++;
+        	}
+	    	else if (model.get('status').toLowerCase() === 'announced') {
+            	announced++;
+        	}
 
-            if (model.get('monitored')) {
-                monitored++;
-	    }
-	    else { //not monitored
-		if (model.get('downloaded')) {
-			downloadedNotMonitored++;
-		}
-		else { //missing
-			missingNotMonitored++;
-		}
-	    }
+        	if (model.get('monitored')) {
+            	monitored++;
+	    	}
+	    	else { //not monitored
+				if (model.get('downloaded')) {
+					downloadedNotMonitored++;
+				}
+				else { //missing
+					missingNotMonitored++;
+				}
+	    	}
 
-	    if (model.get('downloaded')) {
-		downloaded++;
-	    }
-            else { //missing
-		if (!model.get('isAvailable')) {
-			missingNotAvailable++;
-		}
+	    	if (model.get('downloaded')) {
+				downloaded++;
+	    	}
+        	else { //missing
+				if (!model.get('isAvailable')) {
+					missingNotAvailable++;
+				}
 
-		if (model.get('monitored')) {
-		    missingMonitored++;
-		    if (model.get('isAvailable')) {
-		        missingMonitoredAvailable++;
-		    }
-		}
-            }
-        });
+				if (model.get('monitored')) {
+		    		missingMonitored++;
+		    		if (model.get('isAvailable')) {
+		        		missingMonitoredAvailable++;
+		    		}
+				}
+        	}
+    	});
 
         footerModel.set({
-            movies      : movies,
-            announced   : announced,
-	    incinemas   : incinemas,
-	    released     : released,
-            monitored   : monitored,
-            downloaded  : downloaded,
-	    downloadedNotMonitored : downloadedNotMonitored,
-	    missingMonitored : missingMonitored,
+            movies      				: movies,
+            announced   				: announced,
+	    	incinemas   				: incinemas,
+	    	released     				: released,
+            monitored   				: monitored,
+            downloaded  				: downloaded,
+	    	downloadedNotMonitored 		: downloadedNotMonitored,
+	    	missingMonitored 			: missingMonitored,
             missingMonitoredAvailable   : missingMonitoredAvailable,
-	    missingNotAvailable : missingNotAvailable,
-	    missingNotMonitored : missingNotMonitored
+	    	missingNotAvailable 		: missingNotAvailable,
+	    	missingNotMonitored 		: missingNotMonitored
         });
 
         this.footer.show(new FooterView({ model : footerModel }));
