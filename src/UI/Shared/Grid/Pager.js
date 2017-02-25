@@ -72,6 +72,8 @@ module.exports = Paginator.extend({
         var handles = [];
 
         var collection = this.collection;
+
+        
         var state = collection.state;
 
         // convert all indices to 0-based here

@@ -6,7 +6,7 @@ var Marionette = require('marionette');
 var Profiles = require('../Profile/ProfileCollection');
 var RootFolders = require('./RootFolders/RootFolderCollection');
 var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var MoviesCollection = require('../Movies/MoviesCollection');
+var FullMovieCollection = require('../Movies/FullMovieCollection');
 var Config = require('../Config');
 var Messenger = require('../Shared/Messenger');
 var AsValidatedView = require('../Mixins/AsValidatedView');
@@ -94,7 +94,7 @@ var view = Marionette.ItemView.extend({
 
 	this.templateFunction = Marionette.TemplateCache.get('AddMovies/MinimumAvailabilityTooltipTemplate');
 	var content1 = this.templateFunction();
-	
+
 	this.ui.minimumAvailabilityTooltip.popover({
 		content : content1,
 		html :true,
@@ -106,7 +106,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _configureTemplateHelpers : function() {
-        var existingMovies = MoviesCollection.where({ tmdbId : this.model.get('tmdbId') });
+        var existingMovies = FullMovieCollection.where({ tmdbId : this.model.get('tmdbId') });
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();
         }
@@ -217,7 +217,7 @@ var view = Marionette.ItemView.extend({
         });
 
         promise.done(function() {
-            MoviesCollection.add(self.model);
+            FullMovieCollection.add(self.model);
 
             self.close();
 

@@ -32,6 +32,12 @@ namespace NzbDrone.Core.Indexers.HDBits
         [FieldDefinition(2, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
         public string BaseUrl { get; set; }
 
+        [FieldDefinition(3, Label = "Prefer Internal", Type = FieldType.Checkbox, HelpText = "Favors Internal releases over all other releases.")]
+        public bool PreferInternal { get; set; }
+
+        [FieldDefinition(4, Label = "Require Internal", Type = FieldType.Checkbox, HelpText = "Require Internal releases for release to be accepted.")]
+        public bool RequireInternal { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

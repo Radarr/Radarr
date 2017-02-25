@@ -130,6 +130,7 @@
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
     <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
+    <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
     <Compile Include="NetImport\TMDb\TMDbListType.cs" />
@@ -198,11 +199,6 @@
     <Compile Include="DataAugmentation\Scene\SceneMappingsUpdatedEvent.cs" />
     <Compile Include="DataAugmentation\Scene\ServicesProvider.cs" />
     <Compile Include="DataAugmentation\Scene\UpdateSceneMappingCommand.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemResult.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemSceneTvdbMapping.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemValues.cs" />
-    <Compile Include="DataAugmentation\Xem\XemProxy.cs" />
-    <Compile Include="DataAugmentation\Xem\XemService.cs" />
     <Compile Include="Datastore\BasicRepository.cs" />
     <Compile Include="Datastore\ConnectionStringFactory.cs" />
     <Compile Include="Datastore\Converters\BooleanIntConverter.cs" />

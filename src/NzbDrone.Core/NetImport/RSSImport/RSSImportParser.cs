@@ -135,7 +135,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             var title = GetTitle(item);
 
             // Loosely allow movies (will work with IMDB)
-            if (title.ContainsIgnoreCase("TV Series") || title.ContainsIgnoreCase("Mini-Series"))
+            if (title.ContainsIgnoreCase("TV Series") || title.ContainsIgnoreCase("Mini-Series") || title.ContainsIgnoreCase("TV Episode"))
             {
                 return null;
             }
