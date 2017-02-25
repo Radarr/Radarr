@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Tv
 				pagingSpec = base.GetPaged(pagingSpec);
 			}
 
-			if (pagingSpec.Records.Count == 0 && pagingSpec.PageSize != 1)
+			if (pagingSpec.Records.Count == 0 && pagingSpec.Page != 1)
 			{
 				var lastPossiblePage = pagingSpec.TotalRecords / pagingSpec.PageSize + 1;
 				pagingSpec.Page = lastPossiblePage;
