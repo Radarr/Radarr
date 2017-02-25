@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
+using System.Linq;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {
@@ -50,7 +51,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             foreach (var result in queryResults)
             {
                 var id = result.Id;
-                torrentInfos.Add(new TorrentInfo()
+                torrentInfos.Add(new HDBitsInfo()
                 {
                     Guid = string.Format("HDBits-{0}", id),
                     Title = result.Name,
@@ -60,11 +61,25 @@ namespace NzbDrone.Core.Indexers.HDBits
                     InfoUrl = GetInfoUrl(id),
                     Seeders = result.Seeders,
                     Peers = result.Leechers + result.Seeders,
-                    PublishDate = result.Added.ToUniversalTime()
+                    PublishDate = result.Added.ToUniversalTime(),
+                    Internal = (result.TypeOrigin == 1 ? true : false)
                 });
             }
 
-            return torrentInfos.ToArray();
+            // order by internal
+            if (_settings.PreferInternal)
+            {
+                return
+                    torrentInfos.OrderByDescending(o => o.PublishDate)
+                        .ThenBy(o => ((dynamic)o).Internal ? 0 : 1)
+                        .ToArray();
+            }
+
+            // order by date
+            return
+                torrentInfos
+                    .OrderByDescending(o => o.PublishDate)
+                    .ToArray();
         }
 
         private string GetDownloadUrl(string torrentId)
