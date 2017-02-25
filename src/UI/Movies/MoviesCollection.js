@@ -35,8 +35,8 @@ var filterModes = {
         false
     ],
  	'netflix'   : [
-         null,
-         null,
+         'other',
+         'netflix',
         //function(model) { return model.getStatus() == "netflix"; }
         function(model) { return model.get('allFlicksUrl'); }
     ],
