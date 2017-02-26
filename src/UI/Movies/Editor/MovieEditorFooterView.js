@@ -52,15 +52,10 @@ module.exports = Marionette.ItemView.extend({
 
     _updateAndSave : function() {
         var ps = this.moviesCollection.state.pageSize;
-        //window.alert('changing the pageSize');
-        this.moviesCollection.setPageSize(1000);
-        //window.alert('done changing');
+        this.moviesCollection.setPageSize(100000);
         var selected = this.editorGrid.getSelectedModels();
-        //window.alert('got elements, changing pageSize back');
-        //this.moviesCollection.setPageSize(25, { first : true } );
-        //window.alert('dont setting pageSize back');
         var monitored = this.ui.monitored.val();
-	var minAvail = this.ui.minimumAvailability.val();
+		var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();

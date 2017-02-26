@@ -257,6 +257,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('movie?page=1&pageSize=900&sortKey=sortTitle&sortDir=asc');
+var data = ApiData.get('movie?page=1&pageSize=100000&sortKey=sortTitle&sortDir=asc');
 //window.alert(data.totalRecords);
 module.exports = new Collection(data.records, { state : { totalRecords : data.totalRecords} }).bindSignalR();

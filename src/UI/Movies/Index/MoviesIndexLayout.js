@@ -122,41 +122,18 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.seriesCollection = MoviesCollection;
         this.seriesCollection.bindSignalR();
-        this.fullCollection = MoviesCollection.fullCollection; //MoviesCollection.fullCollection;
+        this.fullCollection = MoviesCollection.fullCollection;
         this.seriesCollection.setPageSize(this.seriesCollection.state.pageSize, { first : true });
-		//need to add this so the footer gets refreshed
         this.listenTo(this.fullCollection, 'add', function(model, collection, options) {
-		   //this._renderView();
            this._showFooter();
            this._renderView();
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
-
-        //this.listenTo(this.fullCollection, 'sync', function(model, collection, options) {
-		//	this._showFooter();
-		//});
-
-
-        /*this.listenTo(MoviesCollection, "sync", function(eventName) {
-          this.seriesCollection = MoviesCollection.clone();
-          //this._showTable();
-          this._renderView();
-        });*/
-
-        //this.listenTo(this.fullCollection, 'add', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
-            //this._renderView();
-            //this._showFooter();
-        //});
-
         this.listenTo(this.fullCollection, 'remove', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
-            //this._showTable()
             this._showFooter();
             this._renderView();
         });
