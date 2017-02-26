@@ -5,7 +5,7 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
-var FullMovieCollection = require('../FullMovieCollection');
+//var FullMovieCollection = require('../FullMovieCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
@@ -120,14 +120,15 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-        this.seriesCollection = MoviesCollection.clone();
+        this.seriesCollection = MoviesCollection;
         this.seriesCollection.bindSignalR();
-        //this.fullCollection = FullMovieCollection;
-
+        this.fullCollection = MoviesCollection.fullCollection; //MoviesCollection.fullCollection;
+        this.seriesCollection.setPageSize(this.seriesCollection.state.pageSize, { first : true });
 		//need to add this so the footer gets refreshed
-        this.listenTo(FullMovieCollection, 'sync', function(model, collection, options) {
+        this.listenTo(this.fullCollection, 'add', function(model, collection, options) {
 		   //this._renderView();
            this._showFooter();
+           this._renderView();
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
@@ -135,20 +136,29 @@ module.exports = Marionette.Layout.extend({
             this._renderView();
         });
 
-        this.listenTo(MoviesCollection, "sync", function(eventName) {
+
+        //this.listenTo(this.fullCollection, 'sync', function(model, collection, options) {
+		//	this._showFooter();
+		//});
+
+
+        /*this.listenTo(MoviesCollection, "sync", function(eventName) {
           this.seriesCollection = MoviesCollection.clone();
           //this._showTable();
           this._renderView();
-        });
+        });*/
 
-        this.listenTo(this.seriesCollection, 'add', function(model, collection, options) {
+        //this.listenTo(this.fullCollection, 'add', function(model, collection, options) {
             //this.seriesCollection.fullCollection.resetFiltered();
             //this._renderView();
-        });
+            //this._showFooter();
+        //});
 
-        this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
+        this.listenTo(this.fullCollection, 'remove', function(model, collection, options) {
             //this.seriesCollection.fullCollection.resetFiltered();
-            //this._showTable();
+            //this._showTable()
+            this._showFooter();
+            this._renderView();
         });
 
         this.sortingOptions = {
@@ -264,7 +274,8 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showToolbar();
-        this._fetchCollection();
+        this._showFooter();
+        //this._fetchCollection();
     },
 
     _showTable : function() {
@@ -301,7 +312,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _renderView : function() {
-        if (MoviesCollection.length === 0) {
+        if (this.seriesCollection.length === 0) {
             this.seriesRegion.show(new EmptyView());
 
             this.toolbar.close();
@@ -325,6 +336,7 @@ module.exports = Marionette.Layout.extend({
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
         this.seriesCollection.setFilterMode(mode);
+        this._showFooter();
     },
 
     _showToolbar : function() {
@@ -366,7 +378,7 @@ module.exports = Marionette.Layout.extend({
 
     _showFooter : function() {
         var footerModel = new FooterModel();
-        var movies = FullMovieCollection.models.length;
+        var movies = this.fullCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
         //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
         //    releasedMovies.length 
@@ -385,7 +397,7 @@ module.exports = Marionette.Layout.extend({
 
 		var downloadedNotMonitored=0;
 
-        _.each(FullMovieCollection.models, function(model) {
+        _.each(this.fullCollection.models, function(model) {
 
         	if (model.get('status').toLowerCase() === 'released') {
         		released++;

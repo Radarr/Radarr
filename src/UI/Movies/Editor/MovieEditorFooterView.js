@@ -51,8 +51,14 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _updateAndSave : function() {
+        var ps = this.moviesCollection.state.pageSize;
+        //window.alert('changing the pageSize');
+        this.moviesCollection.setPageSize(1000);
+        //window.alert('done changing');
         var selected = this.editorGrid.getSelectedModels();
-
+        //window.alert('got elements, changing pageSize back');
+        //this.moviesCollection.setPageSize(25, { first : true } );
+        //window.alert('dont setting pageSize back');
         var monitored = this.ui.monitored.val();
 	var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
@@ -65,15 +71,13 @@ module.exports = Marionette.ItemView.extend({
             } else if (monitored === 'false') {
                 model.set('monitored', false);
             }
-
+            
             if (minAvail !=='noChange') {
 		model.set('minimumAvailability', minAvail);
 	    }
-
             if (profile !== 'noChange') {
                 model.set('profileId', parseInt(profile, 10));
             }
-
             if (seasonFolder === 'true') {
                 model.set('seasonFolder', true);
             } else if (seasonFolder === 'false') {
@@ -88,8 +92,8 @@ module.exports = Marionette.ItemView.extend({
 
             model.edited = true;
         });
-
         this.moviesCollection.save();
+        this.moviesCollection.setPageSize(ps, { first : true } );
     },
 
     _updateInfo : function() {

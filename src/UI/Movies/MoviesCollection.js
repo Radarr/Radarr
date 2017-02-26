@@ -62,7 +62,7 @@ var Collection = PageableCollection.extend({
         return resp;
     },
 
-    mode : 'server',
+    mode : 'client',
 
     setSorting : function(sortKey, order, options) {
         return this.origSetSorting.call(this, sortKey, order, options);
@@ -166,7 +166,7 @@ var Collection = PageableCollection.extend({
             if (model.getStatus() == "inCinemas") {
               return 2;
             }
-            if (mode.getStatus() == "announced") {
+            if (model.getStatus() == "announced") {
 	      return 1;
 	    }
             return -1;
@@ -257,6 +257,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('movie?page=1&pageSize='+pageSize+'&sortKey=sortTitle&sortDir=asc');
-
-module.exports = new Collection(data.records, { full : false, state : { totalRecords : data.totalRecords} }).bindSignalR();
+var data = ApiData.get('movie?page=1&pageSize=900&sortKey=sortTitle&sortDir=asc');
+//window.alert(data.totalRecords);
+module.exports = new Collection(data.records, { state : { totalRecords : data.totalRecords} }).bindSignalR();
