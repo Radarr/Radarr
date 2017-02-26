@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -11,6 +11,9 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         [TestCase("Castle.2009.S01E14.English.HDTV.XviD-LOL", Language.English)]
         [TestCase("Castle.2009.S01E14.French.HDTV.XviD-LOL", Language.French)]
+        [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French)]
+        [TestCase("Everest.2015.FRENCH.VFQ.BDRiP.x264-CNF30", Language.French)]
+        [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French)]
         [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL", Language.Spanish)]
         [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL", Language.German)]
         [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
