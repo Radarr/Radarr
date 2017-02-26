@@ -124,6 +124,7 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\134_add_remux_qualities_for_the_wankers.cs" />
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
     <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />

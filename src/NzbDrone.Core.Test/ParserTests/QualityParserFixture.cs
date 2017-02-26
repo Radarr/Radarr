@@ -24,6 +24,8 @@ namespace NzbDrone.Core.Test.ParserTests
             new object[] { Quality.Bluray720p },
             new object[] { Quality.Bluray1080p },
             new object[] { Quality.Bluray2160p },
+            new object[] { Quality.Remux1080p },
+            new object[] { Quality.Remux2160p },
         };
 
         public static object[] OtherSourceQualityParserCases =
@@ -40,6 +42,8 @@ namespace NzbDrone.Core.Test.ParserTests
             new object[] { "720p BluRay", Quality.Bluray720p },
             new object[] { "1080p BluRay", Quality.Bluray1080p },
             new object[] { "2160p BluRay", Quality.Bluray2160p },
+            new object[] { "1080p Remux", Quality.Remux1080p },
+            new object[] { "2160p Remux", Quality.Remux2160p },
         };
 
         [TestCase("S07E23 .avi ", false)]
@@ -220,6 +224,20 @@ namespace NzbDrone.Core.Test.ParserTests
 		{
 			ParseAndVerifyQuality(title, Quality.Bluray576p, false);
 		}
+
+        [TestCase("Contract.to.Kill.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
+        [TestCase("27.Dresses.2008.REMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
+        public void should_parse_remux1080p_quality(string title)
+        {
+            ParseAndVerifyQuality(title, Quality.Remux1080p, false);
+        }
+
+        [TestCase("Contract.to.Kill.2016.REMUX.2160p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
+        [TestCase("27.Dresses.2008.REMUX.2160p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
+        public void should_parse_remux2160p_quality(string title)
+        {
+            ParseAndVerifyQuality(title, Quality.Remux2160p, false);
+        }
 
         //[TestCase("POI S02E11 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
         //[TestCase("How I Met Your Mother S01E18 Nothing Good Happens After 2 A.M. 720p HDTV DD5.1 MPEG2-TrollHD", false)]
