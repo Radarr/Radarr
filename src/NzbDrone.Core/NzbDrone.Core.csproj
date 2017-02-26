@@ -973,6 +973,8 @@
     <Compile Include="Notifications\Webhook\WebhookMethod.cs" />
     <Compile Include="Notifications\Webhook\WebhookPayload.cs" />
     <Compile Include="Notifications\Webhook\WebhookSeries.cs" />
+    <Compile Include="Notifications\Webhook\WebhookMovie.cs" />
+    <Compile Include="Notifications\Webhook\WebhookRemoteMovie.cs" />
     <Compile Include="Notifications\Webhook\WebhookService.cs" />
     <Compile Include="Notifications\Webhook\WebhookSettings.cs" />
     <Compile Include="Notifications\Webhook\Webhook.cs" />
