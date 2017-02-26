@@ -13,77 +13,60 @@ using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.EpisodeFiles
 {
-    public class MovieFileModule : NzbDroneRestModuleWithSignalR<MovieFileResource, MovieFile>
-                                 //IHandle<EpisodeFileAddedEvent>
+    public class MovieFileModule : NzbDroneRestModuleWithSignalR<MovieFileResource, MovieFile>, IHandle<MovieFileAddedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;
-        private readonly IMovieService _seriesService;
+        private readonly IMovieService _movieService;
         private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
         private readonly Logger _logger;
 
         public MovieFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                              IMediaFileService mediaFileService,
                              IRecycleBinProvider recycleBinProvider,
-                             IMovieService seriesService,
+                             IMovieService movieService,
                              IQualityUpgradableSpecification qualityUpgradableSpecification,
                              Logger logger)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
             _recycleBinProvider = recycleBinProvider;
-            _seriesService = seriesService;
+            _movieService = movieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;
             GetResourceById = GetMovieFile;
-            /*GetResourceAll = GetEpisodeFiles;
-            UpdateResource = SetQuality;*/
             UpdateResource = SetQuality;
-            DeleteResource = DeleteEpisodeFile;
+            DeleteResource = DeleteMovieFile;
         }
 
         private MovieFileResource GetMovieFile(int id)
         {
-            var episodeFile = _mediaFileService.GetMovie(id);
+            var movie = _mediaFileService.GetMovie(id);
 
-            return episodeFile.ToResource();
+            return movie.ToResource();
         }
 
-        /*private List<EpisodeFileResource> GetEpisodeFiles()
+        private void SetQuality(MovieFileResource movieFileResource)
         {
-            if (!Request.Query.SeriesId.HasValue)
-            {
-                throw new BadRequestException("seriesId is missing");
-            }
-
-            var seriesId = (int)Request.Query.SeriesId;
-
-            var series = _seriesService.GetSeries(seriesId);
-
-            return _mediaFileService.GetFilesBySeries(seriesId).ConvertAll(f => f.ToResource(series, _qualityUpgradableSpecification));
-        }
-        */
-        private void SetQuality(MovieFileResource episodeFileResource)
-        {
-            var episodeFile = _mediaFileService.GetMovie(episodeFileResource.Id);
-            episodeFile.Quality = episodeFileResource.Quality;
-            _mediaFileService.Update(episodeFile);
+            var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
+            movieFile.Quality = movieFileResource.Quality;
+            _mediaFileService.Update(movieFile);
         }
 
-        private void DeleteEpisodeFile(int id)
+        private void DeleteMovieFile(int id)
         {
-            var episodeFile = _mediaFileService.GetMovie(id);
-            var series = _seriesService.GetMovie(episodeFile.MovieId);
-            var fullPath = Path.Combine(series.Path, episodeFile.RelativePath);
+            var movieFile = _mediaFileService.GetMovie(id);
+            var movie = _movieService.GetMovie(movieFile.MovieId);
+            var fullPath = Path.Combine(movie.Path, movieFile.RelativePath);
 
-            _logger.Info("Deleting episode file: {0}", fullPath);
+            _logger.Info("Deleting movie file: {0}", fullPath);
             _recycleBinProvider.DeleteFile(fullPath);
-            _mediaFileService.Delete(episodeFile, DeleteMediaFileReason.Manual);
+            _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
         }
 
-        public void Handle(EpisodeFileAddedEvent message)
+        public void Handle(MovieFileAddedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.EpisodeFile.Id);
+            BroadcastResourceChange(ModelAction.Updated, message.MovieFile.Id);
         }
     }
 }
