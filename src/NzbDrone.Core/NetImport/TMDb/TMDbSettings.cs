@@ -1,6 +1,9 @@
 ﻿using FluentValidation;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
+using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.NetImport.TMDb
 {
@@ -10,25 +13,61 @@ namespace NzbDrone.Core.NetImport.TMDb
         public TMDbSettingsValidator()
         {
             RuleFor(c => c.Link).ValidRootUrl();
-            RuleFor(c => double.Parse(c.MinVoteAverage)).InclusiveBetween(0, 10);
-            RuleFor(c => c.MinVotes).GreaterThan(0);
+
+            // Greater than 0
+            RuleFor(c => c.ListId)
+                .Matches(@"^[1-9][0-9]*$", RegexOptions.IgnoreCase)
+                .When(c => c.ListType == (int)TMDbListType.List)
+                .WithMessage("List Id is required when using TMDb Lists");
+
+            // Range 0.0 - 10.0
+            RuleFor(c => c.MinVoteAverage)
+                .Matches(@"^(?!0\d)\d*(\.\d{1})?$", RegexOptions.IgnoreCase)
+                .When(c => c.MinVoteAverage.IsNotNullOrWhiteSpace())
+                .WithMessage("Minimum vote average must be between 0 and 10");
+
+            // Greater than 0
+            RuleFor(c => c.MinVotes)
+                .Matches(@"^[1-9][0-9]*$", RegexOptions.IgnoreCase)
+                .When(c => c.MinVotes.IsNotNullOrWhiteSpace())
+                .WithMessage("Minimum votes must be greater than 0");
+
+            // Any valid certification
+            RuleFor(c => c.Ceritification)
+                .Matches(@"^\bNR\b|\bG\b|\bPG\b|\bPG\-13\b|\bR\b|\bNC\-17\b$", RegexOptions.IgnoreCase)
+                .When(c => c.Ceritification.IsNotNullOrWhiteSpace())
+                .WithMessage("Not a valid cerification");
+
+            // CSV of numbers
+            RuleFor(c => c.IncludeGenreIds)
+                .Matches(@"^\d+([,]\d+)*$", RegexOptions.IgnoreCase)
+                .When(c => c.IncludeGenreIds.IsNotNullOrWhiteSpace())
+                .WithMessage("Genre Ids must be comma separated number ids");
+
+            // CSV of numbers
+            RuleFor(c => c.ExcludeGenreIds)
+                .Matches(@"^\d+([,]\d+)*$", RegexOptions.IgnoreCase)
+                .When(c => c.ExcludeGenreIds.IsNotNullOrWhiteSpace())
+                .WithMessage("Genre Ids must be comma separated number ids");
+
         }
     }
 
-    public class TMDbSettings : NetImportBaseSettings
+    public class TMDbSettings : IProviderConfig
     {
         private static readonly TMDbSettingsValidator Validator = new TMDbSettingsValidator();
 
         public TMDbSettings()
         {
             Link = "https://api.themoviedb.org";
+            ListType = (int)TMDbListType.Popular;
             MinVoteAverage = "5";
-            MinVotes = 1;
+            MinVotes = "1";
             LanguageCode = (int)TMDbLanguageCodes.en;
         }
 
         [FieldDefinition(0, Label = "TMDb API URL", HelpText = "Link to to TMDb API URL, do not change unless you know what you are doing.")]
-        public new string Link { get; set; }
+        public string Link { get; set; }
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TMDbListType), HelpText = "Type of list your seeking to import from")]
         public int ListType { get; set; }
@@ -40,9 +79,9 @@ namespace NzbDrone.Core.NetImport.TMDb
         public string MinVoteAverage { get; set; }
 
         [FieldDefinition(4, Label = "Minimum Number of Votes", HelpText = "Filter movies by number of votes")]
-        public int MinVotes { get; set; }
+        public string MinVotes { get; set; }
 
-        [FieldDefinition(5, Label = "Rating", HelpText = "Filter movies by a rating (NR,G,PG,PG-13,R,NC-17)")]
+        [FieldDefinition(5, Label = "Ceritification", HelpText = "Filter movies by a single ceritification (NR,G,PG,PG-13,R,NC-17)")]
         public string Ceritification { get; set; }
 
         [FieldDefinition(6, Label = "Include Genre Ids", HelpText = "Filter movies by TMDb Genre Ids (Comma Separated)")]
@@ -54,7 +93,7 @@ namespace NzbDrone.Core.NetImport.TMDb
         [FieldDefinition(8, Label = "Original Language", Type = FieldType.Select, SelectOptions = typeof(TMDbLanguageCodes), HelpText = "Filter by Language")]
         public int LanguageCode { get; set; }
 
-        public new NzbDroneValidationResult Validate()
+        public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }

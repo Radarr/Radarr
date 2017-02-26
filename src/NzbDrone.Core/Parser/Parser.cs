@@ -406,7 +406,7 @@ namespace NzbDrone.Core.Parser
                             if (result != null)
                             {
 
-                                result.Language = LanguageParser.ParseLanguage(title);
+								result.Language = LanguageParser.ParseLanguage(simpleTitle.Replace(result.MovieTitle, "A Movie"));
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
                                 result.Quality = QualityParser.ParseQuality(title);

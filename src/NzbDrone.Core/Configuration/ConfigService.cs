@@ -105,12 +105,30 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RssSyncInterval", value); }
         }
 
+	public int AvailabilityDelay
+	{
+	    get { return GetValueInt("AvailabilityDelay",0); }
+	    set { SetValue("AvailabilityDelay", value); }
+	}
+
         public int NetImportSyncInterval
         {
             get { return GetValueInt("NetImportSyncInterval", 60); }
 
             set { SetValue("NetImportSyncInterval", value); }
         }
+
+	public string ListSyncLevel
+	{
+	    get { return GetValue("ListSyncLevel", "disabled"); }
+	    set { SetValue("ListSyncLevel", value); }
+	}
+
+	public string ImportExclusions
+	{
+	    get { return GetValue("ImportExclusions", string.Empty); }
+	    set { SetValue("ImportExclusions", value); }
+	}
 
         public int MinimumAge
         {

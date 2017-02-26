@@ -6,7 +6,7 @@ var Marionette = require('marionette');
 var Profiles = require('../Profile/ProfileCollection');
 var RootFolders = require('./RootFolders/RootFolderCollection');
 var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var MoviesCollection = require('../Movies/MoviesCollection');
+var FullMovieCollection = require('../Movies/FullMovieCollection');
 var Config = require('../Config');
 var Messenger = require('../Shared/Messenger');
 var AsValidatedView = require('../Mixins/AsValidatedView');
@@ -22,6 +22,8 @@ var view = Marionette.ItemView.extend({
         rootFolder      : '.x-root-folder',
         seasonFolder    : '.x-season-folder',
         monitor         : '.x-monitor',
+	minimumAvailability : '.x-minimumavailability',
+	minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
         monitorTooltip  : '.x-monitor-tooltip',
         addButton       : '.x-add',
         addSearchButton : '.x-add-search',
@@ -70,6 +72,7 @@ var view = Marionette.ItemView.extend({
 
         this.ui.seasonFolder.prop('checked', useSeasonFolder);
         this.ui.monitor.val(defaultMonitorEpisodes);
+	this.ui.minimumAvailability.val("preDB");
 
         //TODO: make this work via onRender, FM?
         //works with onShow, but stops working after the first render
@@ -88,10 +91,22 @@ var view = Marionette.ItemView.extend({
             placement : 'right',
             container : this.$el
         });
+
+	this.templateFunction = Marionette.TemplateCache.get('AddMovies/MinimumAvailabilityTooltipTemplate');
+	var content1 = this.templateFunction();
+
+	this.ui.minimumAvailabilityTooltip.popover({
+		content : content1,
+		html :true,
+		trigger : 'hover',
+		title : 'When to Consider a Movie Available',
+		placement : 'right',
+		container : this.$el
+	});
     },
 
     _configureTemplateHelpers : function() {
-        var existingMovies = MoviesCollection.where({ tmdbId : this.model.get('tmdbId') });
+        var existingMovies = FullMovieCollection.where({ tmdbId : this.model.get('tmdbId') });
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();
         }
@@ -168,6 +183,7 @@ var view = Marionette.ItemView.extend({
         var profile = this.ui.profile.val();
         var rootFolderPath = this.ui.rootFolder.children(':selected').text();
         var monitor = this.ui.monitor.val();
+        var minAvail = this.ui.minimumAvailability.val();
 
         var options = this._getAddMoviesOptions();
         options.searchForMovie = searchForMovie;
@@ -177,6 +193,7 @@ var view = Marionette.ItemView.extend({
             profileId      : profile,
             rootFolderPath : rootFolderPath,
             addOptions     : options,
+	    minimumAvailability : minAvail,
             monitored      : (monitor === 'all' ? true : false)
         }, { silent : true });
 
@@ -200,7 +217,7 @@ var view = Marionette.ItemView.extend({
         });
 
         promise.done(function() {
-            MoviesCollection.add(self.model);
+            FullMovieCollection.add(self.model);
 
             self.close();
 

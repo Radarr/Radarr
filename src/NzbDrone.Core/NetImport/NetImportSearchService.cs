@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -21,15 +24,18 @@ namespace NzbDrone.Core.NetImport
         private readonly IMovieService _movieService;
         private readonly ISearchForNewMovie _movieSearch;
         private readonly IRootFolderService _rootFolder;
+        private readonly IConfigService _configService;
+        
 
         public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
-            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, Logger logger)
+            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, IConfigService configService, Logger logger)
         {
             _netImportFactory = netImportFactory;
             _movieService = movieService;
             _movieSearch = movieSearch;
             _rootFolder = rootFolder;
             _logger = logger;
+            _configService = configService;
         }
 
 
@@ -70,15 +76,84 @@ namespace NzbDrone.Core.NetImport
 
         public void Execute(NetImportSyncCommand message)
         {
-            var movies = FetchAndFilter(0, true);
+            //if there are no lists that are enabled for automatic import then dont do anything
+            if((_netImportFactory.GetAvailableProviders()).Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
+            {
+		        _logger.Info("No lists are enabled for auto-import.");
+                return;
+            }
+
+            var listedMovies = Fetch(0, true);
+            if (_configService.ListSyncLevel != "disabled")
+            {
+                var moviesInLibrary = _movieService.GetAllMovies();
+                foreach (var movie in moviesInLibrary)
+                    {
+                    bool foundMatch = false;
+                    foreach (var listedMovie in listedMovies)
+                    {
+                        if (movie.ImdbId == listedMovie.ImdbId)
+                        {
+                            foundMatch = true;
+                            break;
+                        }
+
+                    }
+                    if (!foundMatch)
+                    {
+                        switch(_configService.ListSyncLevel)
+                        {
+                            case "logOnly":
+                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                                break;
+                            case "keepAndUnmonitor":
+                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                                movie.Monitored = false;
+                                break;
+                            case "removeAndKeep":
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
+                                _movieService.DeleteMovie(movie.Id, false);
+                                break;
+                            case "removeAndDelete":
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
+                                _movieService.DeleteMovie(movie.Id, true);
+                                //TODO: for some reason the files are not deleted in this case... any idea why?
+                                break;
+                            default:
+                                break; 
+                        }
+                    }
+                }
+            }
+
+            List<string> importExclusions = null;
+            if (_configService.ImportExclusions != String.Empty)
+            {
+                importExclusions = _configService.ImportExclusions.Split(',').ToList();
+            }
+
+            var movies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
 
             _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
 
             foreach (var movie in movies)
             {
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                bool shouldAdd = true;
+                if (importExclusions != null)
+                {
+                    foreach (var exclusion in importExclusions)
+                    {
+                        if (exclusion == movie.ImdbId || exclusion == movie.TmdbId.ToString())
+                        {
+                            _logger.Info("Movie: {0} was found but will not be added because it {exclusion} was found on your exclusion list", exclusion);
+                            shouldAdd = false;
+                            break;
+                        }
+                    }
+                }
 
-                if (mapped != null)
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                if ((mapped != null) && shouldAdd)
                 {
                     _movieService.AddMovie(mapped);
                 }

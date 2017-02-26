@@ -1,4 +1,5 @@
 ﻿using NzbDrone.Core.NetImport;
+using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Api.NetImport
 {
@@ -9,5 +10,6 @@ namespace NzbDrone.Api.NetImport
         public bool ShouldMonitor { get; set; }
         public string RootFolderPath { get; set; }
         public int ProfileId { get; set; }
+        public MovieStatusType MinimumAvailability { get; set; }
     }
 }

@@ -2,7 +2,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var Backgrid = require('backgrid');
-var MoviesCollection = require('../../Movies/MoviesCollection');
+var FullMovieCollection = require('../../Movies/FullMovieCollection');
 
 module.exports = SelectAllCell.extend({
     _originalRender : SelectAllCell.prototype.render,
@@ -13,7 +13,7 @@ module.exports = SelectAllCell.extend({
         this._originalInit.apply(this, arguments);
 
         var tmdbId = this.model.get('tmdbId');
-        var existingMovie = MoviesCollection.where({ tmdbId: tmdbId });
+        var existingMovie = FullMovieCollection.where({ tmdbId: tmdbId });
         this.isDuplicate = existingMovie.length > 0 ? true : false;
 
         this.listenTo(this.model, 'change', this._refresh);

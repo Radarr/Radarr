@@ -21,6 +21,7 @@ namespace NzbDrone.Api.Movie
             _searchProxy = searchProxy;
             Get["/"] = x => Search();
             Get["/tmdb"] = x => SearchByTmdbId();
+            Get["/imdb"] = x => SearchByImdbId();
         }
 
         private Response SearchByTmdbId()
@@ -35,6 +36,12 @@ namespace NzbDrone.Api.Movie
             throw new BadRequestException("Tmdb Id was not valid");
         }
 
+        private Response SearchByImdbId()
+        {
+            string imdbId = Request.Query.imdbId;
+            var result = _movieInfo.GetMovieInfo(imdbId);
+            return result.ToResource().AsResponse();
+        }
 
         private Response Search()
         {

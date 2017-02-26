@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -11,6 +11,9 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         [TestCase("Castle.2009.S01E14.English.HDTV.XviD-LOL", Language.English)]
         [TestCase("Castle.2009.S01E14.French.HDTV.XviD-LOL", Language.French)]
+        [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French)]
+        [TestCase("Everest.2015.FRENCH.VFQ.BDRiP.x264-CNF30", Language.French)]
+        [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French)]
         [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL", Language.Spanish)]
         [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL", Language.German)]
         [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
@@ -46,10 +49,16 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUNDUB-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.ENG.HUN-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUN-LOL", Language.Hungarian)]
+		[TestCase("The Danish Girl 2015", Language.English)]
         public void should_parse_language(string postTitle, Language language)
         {
-            var result = LanguageParser.ParseLanguage(postTitle);
-            result.Should().Be(language);
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+			if (result == null)
+			{
+				Parser.Parser.ParseTitle(postTitle).Language.Should().Be(language);
+				return;
+			}
+            result.Language.Should().Be(language);
         }
 
         [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English)]

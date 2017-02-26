@@ -88,6 +88,10 @@ namespace NzbDrone.Core.Qualities
         public static Quality Bluray720p => new Quality(6, "Bluray-720p");
         public static Quality Bluray1080p => new Quality(7, "Bluray-1080p");
         public static Quality Bluray2160p => new Quality(19, "Bluray-2160p");
+
+        public static Quality Remux1080p => new Quality(30, "Remux-1080p");
+        public static Quality Remux2160p => new Quality(31, "Remux-2160p");
+
         public static Quality BRDISK => new Quality(22, "BR-DISK"); // new
 
         // Others
@@ -119,6 +123,8 @@ namespace NzbDrone.Core.Qualities
                 Bluray720p,
                 Bluray1080p,
                 Bluray2160p,
+                Remux1080p,
+                Remux2160p,
                 BRDISK,
                 RAWHD
             };
@@ -153,13 +159,15 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.HDTV1080p)   { Weight = 17, MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null },
 
-                new QualityDefinition(Quality.HDTV2160p)   { Weight = 20, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 21, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.Bluray2160p) { Weight = 22, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.HDTV2160p)   { Weight = 21, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 22, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.Bluray2160p) { Weight = 23, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null },
 
-                new QualityDefinition(Quality.BRDISK)      { Weight = 23, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.RAWHD)       { Weight = 24, MinSize = 0, MaxSize = null }
+                new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null }
             };
         }
 

@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
         public int[] Medium { get; set; }
 
-        public int[] Origin { get; set; }
+        public int? Origin { get; set; }
 
         [JsonProperty(PropertyName = "imdb")]
         public ImdbInfo ImdbInfo { get; set; }

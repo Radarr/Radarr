@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
                 requestBuilder.AddQueryParam("user", "");
             }
 
-            requestBuilder.AddQueryParam("search", "the");
+            requestBuilder.AddQueryParam("search", "-");
 
             yield return new IndexerRequest(requestBuilder.Build());
         }

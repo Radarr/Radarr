@@ -36,7 +36,27 @@ var Collection = PagableCollection.extend({
         'unmonitored' : [
             'monitored',
             'false'
-        ]
+        ],
+	'announced' : [
+		'moviestatus',
+		'announced'
+	],
+	'incinemas' : [
+		'moviestatus',
+		'incinemas'
+	],
+	'released' : [
+		'moviestatus',
+		'released'
+	],
+	'available' : [
+		'moviestatus',
+		'available'
+	],
+	'all' : [
+		'all',
+		'all'
+	]
     },
 
     parseState : function(resp) {

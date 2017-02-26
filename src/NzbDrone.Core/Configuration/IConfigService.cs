@@ -46,7 +46,11 @@ namespace NzbDrone.Core.Configuration
         int RssSyncInterval { get; set; }
         int MinimumAge { get; set; }
 
+	int AvailabilityDelay { get; set; }
+
         int NetImportSyncInterval { get; set; }
+	string ListSyncLevel { get; set; }
+	string ImportExclusions { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }

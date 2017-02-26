@@ -57,7 +57,7 @@ module.exports = Marionette.Layout.extend({
 
 		initialize : function() {
 				this.moviesCollection = MoviesCollection.clone();
-				this.moviesCollection.shadowCollection.bindSignalR();
+				this.moviesCollection.bindSignalR();
 
 				this.listenTo(this.model, 'change:monitored', this._setMonitoredState);
 				this.listenTo(this.model, 'remove', this._moviesRemoved);
