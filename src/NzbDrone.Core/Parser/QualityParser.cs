@@ -116,21 +116,6 @@ namespace NzbDrone.Core.Parser
 
             if (sourceMatch != null && sourceMatch.Success)
             {
-                if (sourceMatch.Groups["remux"].Success)
-                {
-                    if (resolution == Resolution.R2160p)
-                    {
-                        result.Quality = Quality.Remux2160p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R1080p)
-                    {
-                        result.Quality = Quality.Remux1080p;
-                        return result;
-                    }
-                }
-
                 if (sourceMatch.Groups["bluray"].Success)
                 {
                     if (codecRegex.Groups["xvid"].Success || codecRegex.Groups["divx"].Success)
