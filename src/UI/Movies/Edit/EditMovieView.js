@@ -38,6 +38,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _onAfterSave : function() {
+		this.model.set('saved', true);
         this.trigger('saved');
         vent.trigger(vent.Commands.CloseModalCommand);
     },

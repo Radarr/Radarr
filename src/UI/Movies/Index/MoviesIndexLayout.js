@@ -126,62 +126,68 @@ module.exports = Marionette.Layout.extend({
         this.renderedOnce = false;
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
-        //these variables enable us to determine if the reason we are fetching seriesCollection
-	//is because of sorting/filtering or some other reason
-	//if it is because of sorting and filtering
-	//we dont have to fetch FullMovieCollection
+     /*   //these variables enable us to determine if the reason we are fetching seriesCollection
+		//is because of sorting/filtering/page traversing - in those cases, we dont want to fetch FullMovieCollection
         this.filterKey = this.seriesCollection.state.filterKey;
         this.filterValue = this.seriesCollection.state.filterValue;
         this.sortKey = this.seriesCollection.state.sortKey;
         this.order = this.seriesCollection.state.order;
-
+		this.currentPage = this.seriesCollection.state.currentPage;
+*/
         if (shownOnce) {
 		FullMovieCollection.fetch({reset : true});
 	}
 
         this.listenTo(FullMovieCollection, 'sync', function(eventName) {
-        	this.filterKey = this.seriesCollection.state.filterKey;
-        	this.filterValue = this.seriesCollection.state.filterValue;
-        	this.sortKey = this.seriesCollection.state.sortKey;
-        	this.order = this.seriesCollection.state.order;
-			//everytime FullMovieCollection is updated we have to show the Footer
+			//window.alert('detected FullMovieCollection sync');
             this._showFooter();
             shownOnce = true;
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
+			//window.alert('detected seriesCollection sync');
             this._renderView();
+	    	this.renderedOnce = true;
 
-	    //see comment above where these variables are initialized
-            if (this.filterKey === this.seriesCollection.state.filterKey &&
-	      this.filterValue === this.seriesCollection.state.filterValue &&
-	      this.sortKey === this.seriesCollection.state.sortKey &&
-	      this.order === this.seriesCollection.state.order && this.renderedOnce) {
-	    	FullMovieCollection.fetch({reset : true});
-	    } else {
-            	this.filterKey = this.seriesCollection.state.filterKey;
-        	this.filterValue = this.seriesCollection.state.filterValue;
-        	this.sortKey = this.seriesCollection.state.sortKey;
-        	this.order = this.seriesCollection.state.order;
-	    }
-	    this.renderedOnce = true;
+        	//these variables enable us to determine if the reason we are fetching seriesCollection
+        	//is because of sorting/filtering/page traversing - in those cases, we dont want to fetch FullMovieCollection
+        	//this.filterKey = this.seriesCollection.state.filterKey;
+        	//this.filterValue = this.seriesCollection.state.filterValue;
+        	//this.sortKey = this.seriesCollection.state.sortKey;
+        	//this.order = this.seriesCollection.state.order;
+        	//this.currentPage = this.seriesCollection.state.currentPage;
+			
         });
 
-        this.listenTo(MoviesCollection, "sync", function(eventName) {
-          this.seriesCollection = MoviesCollection.clone();
-        });
+		this.listenTo(MoviesCollection, 'save', function(model, collection, options) {
+			//window.alert('detected MoviesCollection save');
+		});
 
-        this.listenTo(this.seriesCollection, 'add', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
-            //this._renderView();
-        });
+        this.listenTo(this.seriesCollection, "change", function(model) {
+			if (model.get('saved'))	{
+				//window.alert('detected an item being saved');
+				model.set('saved', false);
+				this.seriesCollection.fetch();
+				FullMovieCollection.fetch({reset : true });
+			}
+		});
+
+        //this.listenTo(MoviesCollection, "sync", function(eventName) {
+		//	//window.alert('detected MoviesCollection sync');	
+        //	//this.seriesCollection = MoviesCollection.clone(); //this screws up the 'total records' field -- and not sure what it accomplishes 
+		//	FullMovieCollection.fetch({reset : true});
+        //});
 
         this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
-            if (this.filterKey === this.seriesCollection.state.filterKey &&
+            /*if (this.filterKey === this.seriesCollection.state.filterKey &&
               this.filterValue === this.seriesCollection.state.filterValue &&
               this.sortKey === this.seriesCollection.state.sortKey &&
-              this.order === this.seriesCollection.state.order && this.renderedOnce) {
-				this.seriesCollection.fetch();
+              this.order === this.seriesCollection.state.order && this.renderedOnce && this.currentPage === this.seriesCollection.state.currentPage) {
+				//window.alert('detected seriesCollection remove but not first load, not sorting, not filtering and not traversing pages');*/
+			if (model.get('deleted')) {
+				//window.alert('detected an item being deleted');
+				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
+				FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
 			}
 
         });
@@ -393,6 +399,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showFooter : function() {
+		//window.alert('showing footer');
         var footerModel = new FooterModel();
         var movies = FullMovieCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
