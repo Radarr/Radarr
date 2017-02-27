@@ -44,18 +44,17 @@ namespace NzbDrone.Core.NetImport.TMDb
                 foreach (var movie in jsonResponse.results)
                 {
                     // Movies with no Year Fix
-                    var year = 0;
-                    if (movie.release_date != null)
+                    if (string.IsNullOrWhiteSpace(movie.release_date))
                     {
-                        year = DateTime.Parse(movie.release_date).Year;
+                        continue;
                     }
-                   
+
                     movies.AddIfNotNull(new Tv.Movie()
                     {
                         Title = movie.title,
                         TmdbId = movie.id,
                         ImdbId = null,
-                        Year = year
+                        Year = DateTime.Parse(movie.release_date).Year
                     });
                 }
             }
@@ -78,10 +77,9 @@ namespace NzbDrone.Core.NetImport.TMDb
                     }
 
                     // Movies with no Year Fix
-                    var year = 0;
-                    if (movie.release_date != null)
+                    if (string.IsNullOrWhiteSpace(movie.release_date))
                     {
-                        year = DateTime.Parse(movie.release_date).Year;
+                        continue;
                     }
 
                     movies.AddIfNotNull(new Tv.Movie()
@@ -89,7 +87,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                         Title = movie.title,
                         TmdbId = movie.id,
                         ImdbId = null,
-                        Year = year
+                        Year = DateTime.Parse(movie.release_date).Year
                     });
                 }
             }
