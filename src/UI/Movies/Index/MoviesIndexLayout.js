@@ -126,17 +126,9 @@ module.exports = Marionette.Layout.extend({
         this.renderedOnce = false;
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
-     /*   //these variables enable us to determine if the reason we are fetching seriesCollection
-		//is because of sorting/filtering/page traversing - in those cases, we dont want to fetch FullMovieCollection
-        this.filterKey = this.seriesCollection.state.filterKey;
-        this.filterValue = this.seriesCollection.state.filterValue;
-        this.sortKey = this.seriesCollection.state.sortKey;
-        this.order = this.seriesCollection.state.order;
-		this.currentPage = this.seriesCollection.state.currentPage;
-*/
         if (shownOnce) {
-		FullMovieCollection.fetch({reset : true});
-	}
+			FullMovieCollection.fetch({reset : true});
+		}
 
         this.listenTo(FullMovieCollection, 'sync', function(eventName) {
 			//window.alert('detected FullMovieCollection sync');
@@ -148,20 +140,7 @@ module.exports = Marionette.Layout.extend({
 			//window.alert('detected seriesCollection sync');
             this._renderView();
 	    	this.renderedOnce = true;
-
-        	//these variables enable us to determine if the reason we are fetching seriesCollection
-        	//is because of sorting/filtering/page traversing - in those cases, we dont want to fetch FullMovieCollection
-        	//this.filterKey = this.seriesCollection.state.filterKey;
-        	//this.filterValue = this.seriesCollection.state.filterValue;
-        	//this.sortKey = this.seriesCollection.state.sortKey;
-        	//this.order = this.seriesCollection.state.order;
-        	//this.currentPage = this.seriesCollection.state.currentPage;
-			
         });
-
-		this.listenTo(MoviesCollection, 'save', function(model, collection, options) {
-			//window.alert('detected MoviesCollection save');
-		});
 
         this.listenTo(this.seriesCollection, "change", function(model) {
 			if (model.get('saved'))	{
@@ -172,18 +151,8 @@ module.exports = Marionette.Layout.extend({
 			}
 		});
 
-        //this.listenTo(MoviesCollection, "sync", function(eventName) {
-		//	//window.alert('detected MoviesCollection sync');	
-        //	//this.seriesCollection = MoviesCollection.clone(); //this screws up the 'total records' field -- and not sure what it accomplishes 
-		//	FullMovieCollection.fetch({reset : true});
-        //});
 
         this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
-            /*if (this.filterKey === this.seriesCollection.state.filterKey &&
-              this.filterValue === this.seriesCollection.state.filterValue &&
-              this.sortKey === this.seriesCollection.state.sortKey &&
-              this.order === this.seriesCollection.state.order && this.renderedOnce && this.currentPage === this.seriesCollection.state.currentPage) {
-				//window.alert('detected seriesCollection remove but not first load, not sorting, not filtering and not traversing pages');*/
 			if (model.get('deleted')) {
 				//window.alert('detected an item being deleted');
 				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
