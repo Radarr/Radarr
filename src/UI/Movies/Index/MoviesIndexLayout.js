@@ -21,6 +21,8 @@ var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 require('../../Mixins/backbone.signalr.mixin');
 
+//this variable prevents double fetching the FullMovieCollection on first load
+var shownOnce = false;
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Index/MoviesIndexLayoutTemplate',
 
@@ -120,25 +122,53 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
+    	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
+        this.renderedOnce = false;
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
-        //this.fullCollection = FullMovieCollection;
+        //these variables enable us to determine if the reason we are fetching seriesCollection
+	//is because of sorting/filtering or some other reason
+	//if it is because of sorting and filtering
+	//we dont have to fetch FullMovieCollection
+        this.filterKey = this.seriesCollection.state.filterKey;
+        this.filterValue = this.seriesCollection.state.filterValue;
+        this.sortKey = this.seriesCollection.state.sortKey;
+        this.order = this.seriesCollection.state.order;
 
-		//need to add this so the footer gets refreshed
-        this.listenTo(FullMovieCollection, 'sync', function(model, collection, options) {
-		   //this._renderView();
-           this._showFooter();
+        if (shownOnce) {
+		FullMovieCollection.fetch({reset : true});
+	}
+
+        this.listenTo(FullMovieCollection, 'sync', function(eventName) {
+        	this.filterKey = this.seriesCollection.state.filterKey;
+        	this.filterValue = this.seriesCollection.state.filterValue;
+        	this.sortKey = this.seriesCollection.state.sortKey;
+        	this.order = this.seriesCollection.state.order;
+			//everytime FullMovieCollection is updated we have to show the Footer
+            this._showFooter();
+            shownOnce = true;
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
+
+	    //see comment above where these variables are initialized
+            if (this.filterKey === this.seriesCollection.state.filterKey &&
+	      this.filterValue === this.seriesCollection.state.filterValue &&
+	      this.sortKey === this.seriesCollection.state.sortKey &&
+	      this.order === this.seriesCollection.state.order && this.renderedOnce) {
+	    	FullMovieCollection.fetch({reset : true});
+	    } else {
+            	this.filterKey = this.seriesCollection.state.filterKey;
+        	this.filterValue = this.seriesCollection.state.filterValue;
+        	this.sortKey = this.seriesCollection.state.sortKey;
+        	this.order = this.seriesCollection.state.order;
+	    }
+	    this.renderedOnce = true;
         });
 
         this.listenTo(MoviesCollection, "sync", function(eventName) {
           this.seriesCollection = MoviesCollection.clone();
-          //this._showTable();
-          this._renderView();
         });
 
         this.listenTo(this.seriesCollection, 'add', function(model, collection, options) {
@@ -147,8 +177,13 @@ module.exports = Marionette.Layout.extend({
         });
 
         this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
-            //this._showTable();
+            if (this.filterKey === this.seriesCollection.state.filterKey &&
+              this.filterValue === this.seriesCollection.state.filterValue &&
+              this.sortKey === this.seriesCollection.state.sortKey &&
+              this.order === this.seriesCollection.state.order && this.renderedOnce) {
+				this.seriesCollection.fetch();
+			}
+
         });
 
         this.sortingOptions = {
@@ -264,7 +299,7 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showToolbar();
-        this._fetchCollection();
+        //this._fetchCollection();
     },
 
     _showTable : function() {
@@ -274,9 +309,10 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
-        this._showPager();
-
-        this._renderView();
+        //this._showPager();
+        if (this.renderedOnce) {
+      		this._renderView();
+        }
     },
 
     _showList : function() {
@@ -309,17 +345,9 @@ module.exports = Marionette.Layout.extend({
         } else {
 
             this.seriesRegion.show(this.currentView);
-            this.listenTo(this.currentView.collection, "sync", function(eventName){
-              this._showPager();
-              //debugger;
-            });
             this._showToolbar();
-            //this._showFooter();
+            this._showPager();
         }
-    },
-
-    _fetchCollection : function() {
-        this.seriesCollection.fetch();
     },
 
     _setFilter : function(buttonContext) {
@@ -380,9 +408,10 @@ module.exports = Marionette.Layout.extend({
 		var downloaded =0;
 		var missingMonitored=0;
 		var missingNotMonitored=0;
-		var missingNotAvailable=0;
+		var missingMonitoredNotAvailable=0;
 		var missingMonitoredAvailable=0;
 
+        	var downloadedMonitored=0;
 		var downloadedNotMonitored=0;
 
         _.each(FullMovieCollection.models, function(model) {
@@ -398,7 +427,10 @@ module.exports = Marionette.Layout.extend({
         	}
 
         	if (model.get('monitored')) {
-            	monitored++;
+            		monitored++;
+  			if (model.get('downloaded')) {
+				downloadedMonitored++;
+			}
 	    	}
 	    	else { //not monitored
 				if (model.get('downloaded')) {
@@ -414,7 +446,9 @@ module.exports = Marionette.Layout.extend({
 	    	}
         	else { //missing
 				if (!model.get('isAvailable')) {
-					missingNotAvailable++;
+   					if (model.get('monitored')) {
+						missingMonitoredNotAvailable++;
+					}
 				}
 
 				if (model.get('monitored')) {
@@ -433,10 +467,11 @@ module.exports = Marionette.Layout.extend({
 	    	released     				: released,
             monitored   				: monitored,
             downloaded  				: downloaded,
+			downloadedMonitored			: downloadedMonitored,
 	    	downloadedNotMonitored 		: downloadedNotMonitored,
 	    	missingMonitored 			: missingMonitored,
             missingMonitoredAvailable   : missingMonitoredAvailable,
-	    	missingNotAvailable 		: missingNotAvailable,
+	    	missingMonitoredNotAvailable 		: missingMonitoredNotAvailable,
 	    	missingNotMonitored 		: missingNotMonitored
         });
 
