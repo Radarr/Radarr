@@ -209,10 +209,16 @@ namespace NzbDrone.Core.Organizer
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddImdbIdTokens(tokenHandlers, movie.ImdbId);
-            AddQualityTokens(tokenHandlers, movie, movieFile);
-            AddMediaInfoTokens(tokenHandlers, movieFile);
-            AddMovieFileTokens(tokenHandlers, movieFile);
-            AddTagsTokens(tokenHandlers, movieFile);
+
+            if(movie.MovieFileId != 0)
+            {
+                movieFile.LazyLoad();
+                AddQualityTokens(tokenHandlers, movie, movieFile);
+                AddMediaInfoTokens(tokenHandlers, movieFile);
+                AddMovieFileTokens(tokenHandlers, movieFile);
+                AddTagsTokens(tokenHandlers, movieFile);
+            }
+
 
             var directoryName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
             directoryName = FileNameCleanupRegex.Replace(directoryName, match => match.Captures[0].Value[0].ToString());
