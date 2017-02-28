@@ -1,20 +1,17 @@
 var TemplatedCell = require('./TemplatedCell');
+var moment = require('moment');
+var FormatHelpers = require('../Shared/FormatHelpers');
+var UiSettingsModel = require('../Shared/UiSettingsModel');
 
 module.exports = TemplatedCell.extend({
     className : 'in-cinemas-cell',
 
     render : function() {
-      var monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
-    ];
-
       this.$el.html("");
 
       if (this.model.get("inCinemas")) {
-        var cinemasDate = new Date(this.model.get("inCinemas"));
-        var year = cinemasDate.getFullYear();
-        var month = monthNames[cinemasDate.getMonth()];
-          this.$el.html(month + " " + year); //Hack, but somehow handlebar helper does not work.
+        var cinemasDate = this.model.get("inCinemas");
+        this.$el.html(moment(cinemasDate).format(UiSettingsModel.shortDate()));
       }
 
       return this;

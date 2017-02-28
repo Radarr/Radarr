@@ -8,6 +8,10 @@ var UiSettings = Backbone.Model.extend({
         return this.get('shortDateFormat') + ' ' + this.time(true, includeSeconds);
     },
 
+    shortDate : function() {
+        return this.get('shortDateFormat');
+    },
+
     longDateTime : function(includeSeconds) {
         return this.get('longDateFormat') + ' ' + this.time(true, includeSeconds);
     },
