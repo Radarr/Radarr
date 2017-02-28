@@ -15,24 +15,6 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             : base(httpClient, configService, parsingService, logger)
         { }
 
-        /*public new virtual IEnumerable<ProviderDefinition> DefaultDefinitions
-        {
-            get
-            {
-                var config = (CouchPotatoSettings)new CouchPotatoSettings();
-                config.Link = "http://localhost";
-                config.Port = "5050";
-
-                yield return new NetImportDefinition
-                {
-                    Name = "Localhost",
-                    Enabled = config.Validate().IsValid && Enabled,
-                    Implementation = GetType().Name,
-                    Settings = config
-                };
-            }
-        }*/
-
         public override INetImportRequestGenerator GetRequestGenerator()
         {
             return new CouchPotatoRequestGenerator() { Settings = Settings };

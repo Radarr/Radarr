@@ -15,8 +15,6 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         private NetImportResponse _importResponse;
         private readonly Logger _logger;
 
-        private static readonly Regex ReplaceEntities = new Regex("&[a-z]+;", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         public CouchPotatoParser(CouchPotatoSettings settings)
         {
             _settings = settings;
