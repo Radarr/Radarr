@@ -22,7 +22,7 @@ module.exports = Backbone.Model.extend({
       //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
       if (status === "announced") {
-        return "announced"
+        return "announced";
       }
 
       if (status === "inCinemas") {

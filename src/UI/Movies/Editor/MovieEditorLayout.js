@@ -93,6 +93,10 @@ module.exports = Marionette.Layout.extend({
 			}
 		});
 
+		this.listenTo(this.movieCollection, 'save', function() {
+			window.alert('Save Complete');
+		});
+
         this.filteringOptions = {
             type          : 'radio',
             storeState    : true,
