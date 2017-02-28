@@ -79,8 +79,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-        this.movieCollection = MoviesCollection.clone();
-        this.movieCollection.state = MoviesCollection.state;
+        this.movieCollection = MoviesCollection; 
         this.movieCollection.bindSignalR();
         //debugger;
         this.listenTo(this.movieCollection, 'save', this.render);
