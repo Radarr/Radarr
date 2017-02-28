@@ -2,7 +2,7 @@ var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var EmptyView = require('../Index/EmptyView');
-var MoviesCollection = require('../MoviesCollection');
+var MoviesCollection = require('../MoviesCollectionClient');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var ProfileCell = require('../../Cells/ProfileCell');
@@ -12,6 +12,8 @@ var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
 
+//require('../Globals');
+window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Editor/MovieEditorLayoutTemplate',
 
@@ -79,11 +81,19 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-		this.tableShown = false;
-		this.movieCollection = MoviesCollection.clone(); 
+		this.tableShown = window.shownOnce; //false;
+		this.movieCollection = MoviesCollection; 
         this.movieCollection.bindSignalR();
-		this.movieCollection.switchMode('client');
+		//this.movieCollection.switchMode('client');
 		this.movieCollection.fullCollection.bindSignalR();
+
+		var selected = this.movieCollection.fullCollection.where( { selected : true });
+		window.alert('we are here');
+
+		_.each(selected, function(model) {
+	     	model.set('selected', false);
+		});
+		window.alert('done resetting');
 
 		this.listenTo(this.movieCollection, 'sync', function() {
 			this._showToolbar();
@@ -119,12 +129,14 @@ module.exports = Marionette.Layout.extend({
                 }
             ]
         };
+		window.shownOnce = true;
     },
 
     onRender : function() {
-        //this._showToolbar();
-        //this._showTable();
-        //this._showPager();
+		if (this.tableShown) {
+        this._showToolbar();
+        this._showTable();
+        this._showPager(); }
     },
 
     onClose : function() {
