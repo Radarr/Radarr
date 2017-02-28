@@ -2,7 +2,7 @@ var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var EmptyView = require('../Index/EmptyView');
-var MoviesCollection = require('../MoviesCollectionClient');
+var MoviesCollection = require('../MoviesCollection');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var ProfileCell = require('../../Cells/ProfileCell');
@@ -11,8 +11,6 @@ var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
-
-var FullMovieCollection = require('../FullMovieCollection');
 
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Editor/MovieEditorLayoutTemplate',
@@ -81,45 +79,19 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-        //this.movieCollection = FullMovieCollection; //MoviesCollection;//MoviesCollection.clone();
-        //this.movieCollection.state = MoviesCollection.state;
-
-		//var items = FullCollection.where( { selected : true } );
-		//for (item in items) {
-		//	item.set('selected', false);
-		//}
-		//FullMovieCollection.fetch();
-		this.movieCollection = MoviesCollection; //MoviesCollection.clone();
+		this.tableShown = false;
+		this.movieCollection = MoviesCollection.clone(); 
         this.movieCollection.bindSignalR();
-		this.movieCollection.fetch();
-		this.fullMovieCollection = FullMovieCollection.clone();
-		this.fullMovieCollection.bindSignalR();
-        //debugger;
-        /*this.listenTo(FullMovieCollection, 'save', function() {
-			this.movieCollection.fetch();
-			//this._showToolbar();
-			//this._showTable();
-			//this._showPager();
-			//FullMovieCollection.fetch();
-			window.alert('Done Saving - the table will refresh in a moment');
-		});*/
-
-		this.listenTo(this.fullMovieCollection, 'save', function() {
-			this.movieCollection.fetch();
-			window.alert('Done saving cloned - table will refresh');
-		});
+		this.movieCollection.switchMode('client');
+		this.movieCollection.fullCollection.bindSignalR();
 
 		this.listenTo(this.movieCollection, 'sync', function() {
-			//window.alert('Done Saving');
-			//this._showToolbar();
-			//this._showTable();
-			//this._showPager();
+			this._showToolbar();
+			if (!this.tableShown) {
+				this._showTable();
+				this._showPager();
+			}
 		});
-
-
-/*
-		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
-		});*/
 
         this.filteringOptions = {
             type          : 'radio',
@@ -146,9 +118,9 @@ module.exports = Marionette.Layout.extend({
     },
 
     onRender : function() {
-        this._showToolbar();
-        this._showTable();
-        this._showPager();
+        //this._showToolbar();
+        //this._showTable();
+        //this._showPager();
     },
 
     onClose : function() {
@@ -174,7 +146,7 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             return;
         }
-
+        this.tableShown = true;
         this.columns[0].sortedCollection = this.movieCollection;
 
         this.editorGrid = new Backgrid.Grid({
@@ -184,7 +156,8 @@ module.exports = Marionette.Layout.extend({
         });
 
         this.seriesRegion.show(this.editorGrid);
-        this._showFooter();
+       	this._showFooter();
+		
     },
 
     _showToolbar : function() {
@@ -202,8 +175,7 @@ module.exports = Marionette.Layout.extend({
     _showFooter : function() {
         vent.trigger(vent.Commands.OpenControlPanelCommand, new FooterView({
             editorGrid : this.editorGrid,
-            collection : this.movieCollection,
-			c2         : this.fullMovieCollection
+            collection : this.movieCollection
         }));
     },
 
