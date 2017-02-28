@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Notifications.Email
 
         public EmailSettings()
         {
-            Port = 25;
+            Port = 587;
         }
 
         [FieldDefinition(0, Label = "Server", HelpText = "Hostname or IP of Email server")]
