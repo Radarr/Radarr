@@ -129,11 +129,11 @@ module.exports = Marionette.Layout.extend({
         if (shownOnce) {
 			FullMovieCollection.fetch({reset : true});
 		}
-
+        shownOnce = true;
         this.listenTo(FullMovieCollection, 'sync', function(eventName) {
 			//window.alert('detected FullMovieCollection sync');
             this._showFooter();
-            shownOnce = true;
+        //   shownOnce = true;
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
@@ -147,16 +147,24 @@ module.exports = Marionette.Layout.extend({
 				//window.alert('detected an item being saved');
 				model.set('saved', false);
 				this.seriesCollection.fetch();
-				FullMovieCollection.fetch({reset : true });
+				//FullMovieCollection.fetch({reset : true });
+				//this._showFooter();
+				var m = FullMovieCollection.findWhere( { tmdbId : parseInt(model.get('tmdbId'),10) });
+				m.set('monitored', model.get('monitored'));
+				m.set('minimumAvailability', model.get('minimumAvailability'));
+				m.set( {profileId : model.get('profileId') } );
+				this._showFooter();
 			}
 		});
 
 
         this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
 			if (model.get('deleted')) {
-				//window.alert('detected an item being deleted');
+				window.alert('detected an item being deleted');
 				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
-				FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
+				//FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
+				FullMovieCollection.remove(model);
+				this._showFooter();
 			}
 
         });
@@ -274,6 +282,7 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showToolbar();
+		this._showFooter();
         //this._fetchCollection();
     },
 
