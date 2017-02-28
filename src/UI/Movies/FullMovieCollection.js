@@ -9,4 +9,4 @@ module.exports = fullCollection;*/
 var movieCollection = require('./MoviesCollectionClient');
 
 movieCollection.bindSignalR();
-module.exports = movieCollection;
+module.exports = movieCollection.fullCollection;
