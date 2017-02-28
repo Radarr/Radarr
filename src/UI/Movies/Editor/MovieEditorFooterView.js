@@ -6,6 +6,7 @@ var RootFolders = require('../../AddMovies/RootFolders/RootFolderCollection');
 var RootFolderLayout = require('../../AddMovies/RootFolders/RootFolderLayout');
 var UpdateFilesMoviesView = require('./Organize/OrganizeFilesView');
 var Config = require('../../Config');
+//var FullMovieCollection = require('../FullMovieCollection');
 
 module.exports = Marionette.ItemView.extend({
     template : 'Movies/Editor/MovieEditorFooterViewTemplate',
@@ -36,13 +37,32 @@ module.exports = Marionette.ItemView.extend({
 
     initialize : function(options) {
         this.moviesCollection = options.collection;
+		this.fullMovieCollection = options.c2;
 
         RootFolders.fetch().done(function() {
             RootFolders.synced = true;
         });
 
         this.editorGrid = options.editorGrid;
-        this.listenTo(this.moviesCollection, 'backgrid:selected', this._updateInfo);
+        //this.listenTo(this.moviesCollection, 'backgrid:selected', this._updateInfo);
+
+
+        this.listenTo(this.moviesCollection, 'backgrid:selected', function(model, selected) {
+            //window.alert(selected);
+            var m =  this.fullMovieCollection.findWhere({ tmdbId : parseInt(model.get('tmdbId'),10) });
+			//window.alert('we are here');
+			//window.alert(selected);
+            m.set('selected', selected);
+            /*if (selected) {
+                this.selectedCount++;
+            } else {
+                this.selectedCount--;
+            }*/
+            this._updateInfo();
+        });
+
+
+
         this.listenTo(RootFolders, 'all', this.render);
     },
 
@@ -51,15 +71,26 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _updateAndSave : function() {
-        var selected = this.editorGrid.getSelectedModels();
+        //var selected = this.editorGrid.getSelectedModels();
 
+		var selected = this.fullMovieCollection.where({ selected : true });
         var monitored = this.ui.monitored.val();
-	var minAvail = this.ui.minimumAvailability.val();
+		var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();
 
+		
+
+
         _.each(selected, function(model) {
+  			//window.alert(' we are here');
+			//window.alert('reseting selection');
+			//var m = this.moviesCollection.findWhere({ tmdbId : parseInt(model.get('tmdbId'),10) });
+			//m.trigger('backgrid:select', model, false);
+            //window.alert('done triggering');
+
+
             if (monitored === 'true') {
                 model.set('monitored', true);
             } else if (monitored === 'false') {
@@ -67,8 +98,8 @@ module.exports = Marionette.ItemView.extend({
             }
 
             if (minAvail !=='noChange') {
-		model.set('minimumAvailability', minAvail);
-	    }
+				model.set('minimumAvailability', minAvail);
+	    	}
 
             if (profile !== 'noChange') {
                 model.set('profileId', parseInt(profile, 10));
@@ -85,11 +116,12 @@ module.exports = Marionette.ItemView.extend({
 
                 model.set('rootFolderPath', rootFolderPath.get('path'));
             }
-
             model.edited = true;
         });
-
-        this.moviesCollection.save();
+ 		//window.alert('about to save');
+        this.fullMovieCollection.save();
+		this.moviesCollection.save();
+		//window.alert('done saving');
     },
 
     _updateInfo : function() {
