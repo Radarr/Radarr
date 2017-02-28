@@ -88,12 +88,10 @@ module.exports = Marionette.Layout.extend({
 		this.movieCollection.fullCollection.bindSignalR();
 
 		var selected = this.movieCollection.fullCollection.where( { selected : true });
-		window.alert('we are here');
 
 		_.each(selected, function(model) {
 	     	model.set('selected', false);
 		});
-		window.alert('done resetting');
 
 		this.listenTo(this.movieCollection, 'sync', function() {
 			this._showToolbar();

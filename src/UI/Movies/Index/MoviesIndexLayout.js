@@ -180,7 +180,6 @@ module.exports = Marionette.Layout.extend({
 
         this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
 			if (model.get('deleted')) {
-				window.alert('detected an item being deleted');
 				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
 				//FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
 				MoviesCollectionClient.fullCollection.remove(model);
