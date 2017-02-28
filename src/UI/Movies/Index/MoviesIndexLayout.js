@@ -149,7 +149,7 @@ module.exports = Marionette.Layout.extend({
 				this.seriesCollection.fetch();
 				//FullMovieCollection.fetch({reset : true });
 				//this._showFooter();
-				var m = FullMovieCollection.findWhere( { tmdbId : parseInt(model.get('tmdbId'),10) });
+				var m = FullMovieCollection.findWhere( { tmdbId : model.get('tmdbId') });
 				m.set('monitored', model.get('monitored'));
 				m.set('minimumAvailability', model.get('minimumAvailability'));
 				m.set( {profileId : model.get('profileId') } );

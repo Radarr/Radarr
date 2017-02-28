@@ -45,7 +45,7 @@ module.exports = Marionette.ItemView.extend({
 
 
         this.listenTo(this.moviesCollection, 'backgrid:selected', function(model, selected) {
-            var m =  this.moviesCollection.fullCollection.findWhere({ tmdbId : parseInt(model.get('tmdbId'),10) });
+            var m =  this.moviesCollection.fullCollection.findWhere({ tmdbId : model.get('tmdbId') });
             m.set('selected', selected);
             this._updateInfo();
         });
