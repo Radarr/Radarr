@@ -36,42 +36,37 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public MovieFileMoveResult UpgradeMovieFile(MovieFile episodeFile, LocalMovie localEpisode, bool copyOnly = false)
+        public MovieFileMoveResult UpgradeMovieFile(MovieFile movieFile, LocalMovie localMovie, bool copyOnly = false)
         {
             _logger.Trace("Upgrading existing episode file.");
             var moveFileResult = new MovieFileMoveResult();
-            localEpisode.Movie.MovieFile.LazyLoad();
-            var existingFile = localEpisode.Movie.MovieFile;
-            existingFile.LazyLoad();
+            //localEpisode.Movie.MovieFile.LazyLoad();
+            var existingFile = localMovie.Movie.MovieFile;
+            //existingFile.LazyLoad();
 
-            if (existingFile.IsLoaded && existingFile.Value != null)
+            //if (existingFile.IsLoaded && existingFile.Value != null)
+            if (existingFile != null)
             {
                 var file = existingFile.Value;
-                var episodeFilePath = Path.Combine(localEpisode.Movie.Path, file.RelativePath);
+                var movieFilePath = Path.Combine(localMovie.Movie.Path, file.RelativePath);
 
-                if (_diskProvider.FileExists(episodeFilePath))
+                if (_diskProvider.FileExists(movieFilePath))
                 {
-                    _logger.Debug("Removing existing episode file: {0}", file);
-                    _recycleBinProvider.DeleteFile(episodeFilePath);
+                    _logger.Debug("Removing existing movie file: {0}", file);
+                    _recycleBinProvider.DeleteFile(movieFilePath);
                 }
 
                 moveFileResult.OldFiles.Add(file);
                 _mediaFileService.Delete(file, DeleteMediaFileReason.Upgrade);
             }
-            else
-            {
-                //_logger.Warn("The existing movie file was not lazy loaded.");
-            }
-
-            
 
             if (copyOnly)
             {
-                moveFileResult.MovieFile = _movieFileMover.CopyMovieFile(episodeFile, localEpisode);
+                moveFileResult.MovieFile = _movieFileMover.CopyMovieFile(movieFile, localMovie);
             }
             else
             {
-                moveFileResult.MovieFile= _movieFileMover.MoveMovieFile(episodeFile, localEpisode);
+                moveFileResult.MovieFile= _movieFileMover.MoveMovieFile(movieFile, localMovie);
             }
 
             return moveFileResult;
