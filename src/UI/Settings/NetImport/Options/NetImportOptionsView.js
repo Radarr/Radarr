@@ -17,7 +17,7 @@ var view = Marionette.ItemView.extend({
 		this.ui.importExclusions.tagsinput({
 			trimValue : true,
 			tagClass  : 'label label-danger',
-			itemText : function(item) {
+			/*itemText : function(item) {
 				var uri;
                 var text;
             	if (item.startsWith('tt')) {
@@ -39,7 +39,7 @@ var view = Marionette.ItemView.extend({
                      text=item;
             	});
                 return text;
-			}
+			}*/
 		});
 		this.ui.importExclusions.on('beforeItemAdd', function(event) {
             var uri;
