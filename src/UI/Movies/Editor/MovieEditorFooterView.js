@@ -68,9 +68,6 @@ module.exports = Marionette.ItemView.extend({
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();
 
-		
-
-
         _.each(selected, function(model) {
             if (monitored === 'true') {
                 model.set('monitored', true);

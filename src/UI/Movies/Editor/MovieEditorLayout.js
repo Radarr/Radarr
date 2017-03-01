@@ -104,6 +104,7 @@ module.exports = Marionette.Layout.extend({
 			});
 
 		this.listenTo(this.movieCollection, 'save', function() {
+			window.alert('Done Saving');
 		});
 
         this.filteringOptions = {
@@ -133,10 +134,10 @@ module.exports = Marionette.Layout.extend({
 
     onRender : function() {
 		if (this.tableShown) {
-
-        this._showToolbar();
-        this._showTable();
-        this._showPager(); }
+        	this._showToolbar();
+        	this._showTable();
+        	this._showPager(); 
+			}
     },
 
     onClose : function() {
