@@ -6,7 +6,8 @@ var Marionette = require('marionette');
 var Profiles = require('../Profile/ProfileCollection');
 var RootFolders = require('./RootFolders/RootFolderCollection');
 var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var FullMovieCollection = require('../Movies/FullMovieCollection');
+//var FullMovieCollection = require('../Movies/FullMovieCollection');
+var MoviesCollectionClient = require('../Movies/MoviesCollectionClient');
 var Config = require('../Config');
 var Messenger = require('../Shared/Messenger');
 var AsValidatedView = require('../Mixins/AsValidatedView');
@@ -106,7 +107,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _configureTemplateHelpers : function() {
-        var existingMovies = FullMovieCollection.where({ tmdbId : this.model.get('tmdbId') });
+        var existingMovies = MoviesCollectionClient.fullCollection.where({ tmdbId : this.model.get('tmdbId') });
         if (existingMovies.length > 0) {
             this.templateHelpers.existing = existingMovies[0].toJSON();
         }
@@ -217,7 +218,7 @@ var view = Marionette.ItemView.extend({
         });
 
         promise.done(function() {
-            FullMovieCollection.add(self.model);
+            MoviesCollectionClient.fullCollection.add(self.model);
 
             self.close();
 
