@@ -154,9 +154,9 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             {
                 var title = Parser.Parser.RemoveFileExtension(downloadClientItem.Title);
 
-                var parsedTitle = Parser.Parser.ParseTitle(title);
+                var parsedTitle = Parser.Parser.ParseMovieTitle(title);
 
-                if (parsedTitle != null && !parsedTitle.FullSeason)
+                if (parsedTitle != null)
                 {
                     return title;
                 }
