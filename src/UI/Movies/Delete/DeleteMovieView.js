@@ -21,7 +21,7 @@ module.exports = Marionette.ItemView.extend({
         var deleteFiles = this.ui.deleteFiles.prop('checked');
         var addExclusion = this.ui.addExclusion.prop('checked');
         this.ui.indicator.show();
-        
+        this.model.set('deleted', true); 
         this.model.destroy({
             data : { 'deleteFiles' : deleteFiles,
                      'addExclusion' : addExclusion },

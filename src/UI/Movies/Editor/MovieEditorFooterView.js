@@ -36,13 +36,21 @@ module.exports = Marionette.ItemView.extend({
 
     initialize : function(options) {
         this.moviesCollection = options.collection;
-
         RootFolders.fetch().done(function() {
             RootFolders.synced = true;
         });
 
         this.editorGrid = options.editorGrid;
-        this.listenTo(this.moviesCollection, 'backgrid:selected', this._updateInfo);
+
+
+        this.listenTo(this.moviesCollection, 'backgrid:selected', function(model, selected) {
+            var m =  this.moviesCollection.fullCollection.findWhere({ tmdbId : model.get('tmdbId') });
+            m.set('selected', selected);
+            this._updateInfo();
+        });
+
+
+
         this.listenTo(RootFolders, 'all', this.render);
     },
 
@@ -51,10 +59,11 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _updateAndSave : function() {
-        var selected = this.editorGrid.getSelectedModels();
+        //var selected = this.editorGrid.getSelectedModels();
 
+		var selected = this.moviesCollection.fullCollection.where({ selected : true });
         var monitored = this.ui.monitored.val();
-	var minAvail = this.ui.minimumAvailability.val();
+		var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();
@@ -67,8 +76,8 @@ module.exports = Marionette.ItemView.extend({
             }
 
             if (minAvail !=='noChange') {
-		model.set('minimumAvailability', minAvail);
-	    }
+				model.set('minimumAvailability', minAvail);
+	    	}
 
             if (profile !== 'noChange') {
                 model.set('profileId', parseInt(profile, 10));
@@ -85,11 +94,9 @@ module.exports = Marionette.ItemView.extend({
 
                 model.set('rootFolderPath', rootFolderPath.get('path'));
             }
-
             model.edited = true;
         });
-
-        this.moviesCollection.save();
+		this.moviesCollection.save();
     },
 
     _updateInfo : function() {
