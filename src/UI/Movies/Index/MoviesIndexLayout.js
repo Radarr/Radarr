@@ -6,6 +6,7 @@ var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
 //var FullMovieCollection = require('../FullMovieCollection');
+var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var InCinemasCell = require('../../Cells/InCinemasCell');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
@@ -67,6 +68,11 @@ module.exports = Marionette.Layout.extend({
             name  : 'inCinemas',
             label : 'In Cinemas',
             cell  : InCinemasCell
+        },
+        {
+            name  : 'added',
+            label : 'Date Added',
+            cell  : RelativeDateCell
         },
         {
             name      : 'this',
@@ -206,7 +212,11 @@ module.exports = Marionette.Layout.extend({
                     title : 'In Cinemas',
                     name  : 'inCinemas'
                 },
-                /*{
+                {
+                    title : 'Date Added',
+                    name  : 'added'
+                }
+                /*,{
                   title : "Status",
                   name : "status",
                 }*/
@@ -398,7 +408,7 @@ module.exports = Marionette.Layout.extend({
         var movies = MoviesCollectionClient.fullCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
         //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
-        //    releasedMovies.length 
+        //    releasedMovies.length
 
         var announced = 0;
 		var incinemas = 0;
