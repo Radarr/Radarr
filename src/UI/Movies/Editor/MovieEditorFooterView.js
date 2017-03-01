@@ -36,7 +36,6 @@ module.exports = Marionette.ItemView.extend({
 
     initialize : function(options) {
         this.moviesCollection = options.collection;
-
         RootFolders.fetch().done(function() {
             RootFolders.synced = true;
         });

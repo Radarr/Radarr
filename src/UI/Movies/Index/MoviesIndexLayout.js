@@ -129,13 +129,12 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
     	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
         this.renderedOnce = false;
-        this.seriesCollection = MoviesCollection.clone();
+        this.seriesCollection = MoviesCollection;//.clone();
         this.seriesCollection.bindSignalR();
 
 
 
 		/*var selected = MoviesCollectionClient.fullCollection.where( { saved : true });
-        window.alert('we are here');
 
 	    _.each(selected, function(model) {
 	    	model.set('saved', false);
@@ -148,13 +147,11 @@ module.exports = Marionette.Layout.extend({
 		//}
 
         this.listenTo(MoviesCollectionClient, 'sync', function(eventName) {
-			//window.alert('detected FullMovieCollection sync');
             this._showFooter();
             window.shownOnce = true;
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
-			//window.alert('detected seriesCollection sync');
             this._renderView();
 			//MoviesCollectionClient.fetch();
 	    	this.renderedOnce = true;
@@ -162,7 +159,6 @@ module.exports = Marionette.Layout.extend({
 
         this.listenTo(this.seriesCollection, "change", function(model) {
 			if (model.get('saved'))	{
-				//window.alert('detected an item being saved');
 				model.set('saved', false);
 				this.seriesCollection.fetch();
 				//FullMovieCollection.fetch({reset : true });
@@ -398,7 +394,6 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showFooter : function() {
-		//window.alert('showing footer');
         var footerModel = new FooterModel();
         var movies = MoviesCollectionClient.fullCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...

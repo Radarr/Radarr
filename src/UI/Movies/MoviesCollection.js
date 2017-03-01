@@ -255,7 +255,7 @@ var Collection = PageableCollection.extend({
     },
 
     comparator: function (model) {
-      return model.get('sortTitle');
+		return model.get('sortTitle');
     }
 });
 

@@ -86,7 +86,6 @@ module.exports = Marionette.Layout.extend({
         this.movieCollection.bindSignalR();
 		//this.movieCollection.switchMode('client');
 		this.movieCollection.fullCollection.bindSignalR();
-
 		var selected = this.movieCollection.fullCollection.where( { selected : true });
 
 		_.each(selected, function(model) {
@@ -101,13 +100,15 @@ module.exports = Marionette.Layout.extend({
 			}
 		});
 
+		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
+			});
+
 		this.listenTo(this.movieCollection, 'save', function() {
-			window.alert('Save Complete');
 		});
 
         this.filteringOptions = {
             type          : 'radio',
-            storeState    : true,
+            storeState    : false,
             menuKey       : 'serieseditor.filterMode',
             defaultAction : 'all',
             items         : [
@@ -132,6 +133,7 @@ module.exports = Marionette.Layout.extend({
 
     onRender : function() {
 		if (this.tableShown) {
+
         this._showToolbar();
         this._showTable();
         this._showPager(); }
@@ -195,7 +197,6 @@ module.exports = Marionette.Layout.extend({
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
-
-        this.movieCollection.setFilterMode(mode);
+        this.movieCollection.setFilterMode(mode, { reset : false });
     }
 });
