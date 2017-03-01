@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Notifications.Email
 
         public EmailSettings()
         {
+            Server = "stmp.google.com";
             Port = 587;
             Ssl = true;
         }
