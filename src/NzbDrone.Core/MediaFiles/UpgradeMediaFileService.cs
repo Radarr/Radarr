@@ -40,24 +40,27 @@ namespace NzbDrone.Core.MediaFiles
         {
             _logger.Trace("Upgrading existing episode file.");
             var moveFileResult = new MovieFileMoveResult();
-            //localEpisode.Movie.MovieFile.LazyLoad();
-            var existingFile = localMovie.Movie.MovieFile;
-            //existingFile.LazyLoad();
+            localMovie.Movie.MovieFile.LazyLoad();
 
-            //if (existingFile.IsLoaded && existingFile.Value != null)
-            if (existingFile != null)
+            if (localMovie.Movie.MovieFile.IsLoaded)
             {
-                var file = existingFile.Value;
-                var movieFilePath = Path.Combine(localMovie.Movie.Path, file.RelativePath);
+                var existingFile = localMovie.Movie.MovieFile;
+                existingFile.LazyLoad();
 
-                if (_diskProvider.FileExists(movieFilePath))
+                if (existingFile.IsLoaded && existingFile.Value != null)
                 {
-                    _logger.Debug("Removing existing movie file: {0}", file);
-                    _recycleBinProvider.DeleteFile(movieFilePath);
-                }
+                    var file = existingFile.Value;
+                    var movieFilePath = Path.Combine(localMovie.Movie.Path, file.RelativePath);
 
-                moveFileResult.OldFiles.Add(file);
-                _mediaFileService.Delete(file, DeleteMediaFileReason.Upgrade);
+                    if (_diskProvider.FileExists(movieFilePath))
+                    {
+                        _logger.Debug("Removing existing movie file: {0}", file);
+                        _recycleBinProvider.DeleteFile(movieFilePath);
+                    }
+
+                    moveFileResult.OldFiles.Add(file);
+                    _mediaFileService.Delete(file, DeleteMediaFileReason.Upgrade);
+                }
             }
 
             if (copyOnly)
@@ -66,7 +69,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             else
             {
-                moveFileResult.MovieFile= _movieFileMover.MoveMovieFile(movieFile, localMovie);
+                moveFileResult.MovieFile = _movieFileMover.MoveMovieFile(movieFile, localMovie);
             }
 
             return moveFileResult;
