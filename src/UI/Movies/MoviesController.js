@@ -5,7 +5,6 @@ var MoviesCollection = require('./MoviesCollection');
 var MoviesCollectionClient = require('./MoviesCollectionClient');
 var MoviesIndexLayout = require('./Index/MoviesIndexLayout');
 var MoviesDetailsLayout = require('./Details/MoviesDetailsLayout');
-var SeriesDetailsLayout = require('../Series/Details/SeriesDetailsLayout');
 
 module.exports = NzbDroneController.extend({
 		_originalInit : NzbDroneController.prototype.initialize,
@@ -24,17 +23,25 @@ module.exports = NzbDroneController.extend({
 		},
 
 		seriesDetails : function(query) {
-				var series = MoviesCollectionClient.fullCollection.where({ titleSlug : query });
-				if (series.length !== 0) {
-						var targetMovie = series[0];
-						console.log(AppLayout.mainRegion);
+			if(MoviesCollectionClient.fullCollection.length > 0) {
+				this._renderMovieDetails(query);
+			} else {
+				this.listenTo(MoviesCollectionClient, 'sync', function(model, options) {
+					this._renderMovieDetails(query);
+				});
+			}
+		},
 
-						this.setTitle(targetMovie.get('title'));
-						//this.showNotFound();
-						//this.showMainRegion(new SeriesDetailsLayout({model : targetMovie}));
-						this.showMainRegion(new MoviesDetailsLayout({ model : targetMovie }));
-				} else {
-						this.showNotFound();
-				}
+
+		_renderMovieDetails: function(query) {
+			var movies = MoviesCollectionClient.fullCollection.where({ titleSlug : query });
+			if (movies.length !== 0) {
+					var targetMovie = movies[0];
+
+					this.setTitle(targetMovie.get('title'));
+					this.showMainRegion(new MoviesDetailsLayout({ model : targetMovie }));
+			} else {
+					this.showNotFound();
+			}
 		}
 });
