@@ -140,6 +140,24 @@ namespace NzbDrone.Api.Movie
 				pagingSpec.FilterExpression = v => v.MovieFileId == 0;
 			}
 
+            if (pagingResource.FilterKey == "title")
+            {
+                if (pagingResource.FilterType == "contains")
+                {
+                    if (pagingResource.FilterValue == string.Empty || pagingResource.FilterValue == null)
+                    {
+                        pagingSpec.FilterExpression = v => true;
+                    }
+                    else
+                    {
+                        pagingSpec.FilterExpression = v => v.CleanTitle.Contains(pagingResource.FilterValue);
+                    }
+                } else
+                {
+                    pagingSpec.FilterExpression = v => v.CleanTitle == pagingResource.FilterValue;
+                }
+            }
+
 			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
 		}
 

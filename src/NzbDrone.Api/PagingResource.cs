@@ -13,6 +13,7 @@ namespace NzbDrone.Api
         public SortDirection SortDirection { get; set; }
         public string FilterKey { get; set; }
         public string FilterValue { get; set; }
+        public string FilterType { get; set;  }
         public int TotalRecords { get; set; }
         public List<TResource> Records { get; set; }
     }
