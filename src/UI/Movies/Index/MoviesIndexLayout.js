@@ -5,7 +5,7 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
-//var FullMovieCollection = require('../FullMovieCollection');
+var FullMovieCollection = require('../FullMovieCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
@@ -21,7 +21,7 @@ var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 require('../../Mixins/backbone.signalr.mixin');
 
-var MoviesCollectionClient = require('../MoviesCollectionClient');
+//var MoviesCollectionClient = require('../MoviesCollectionClient');
 
 
 //this variable prevents double fetching the FullMovieCollection on first load
@@ -128,46 +128,27 @@ module.exports = Marionette.Layout.extend({
 
     initialize : function() {
     	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
-        this.renderedOnce = false;
         this.seriesCollection = MoviesCollection;//.clone();
         this.seriesCollection.bindSignalR();
 
-
-
-		/*var selected = MoviesCollectionClient.fullCollection.where( { saved : true });
-
-	    _.each(selected, function(model) {
-	    	model.set('saved', false);
-	    });*/
-
-
-
-        //if (window.shownOnce) {
-		//	FullMovieCollection.fetch({reset : true});
-		//}
-
-        this.listenTo(MoviesCollectionClient, 'sync', function(eventName) {
-            this._showFooter();
-            window.shownOnce = true;
+	    this.listenTo(FullMovieCollection, 'sync', function() {
+			this._showFooter();
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
             this._renderView();
 			//MoviesCollectionClient.fetch();
-	    	this.renderedOnce = true;
         });
-
         this.listenTo(this.seriesCollection, "change", function(model) {
 			if (model.get('saved'))	{
 				model.set('saved', false);
 				this.seriesCollection.fetch();
 				//FullMovieCollection.fetch({reset : true });
 				//this._showFooter();
-				var m = MoviesCollectionClient.fullCollection.findWhere( { tmdbId : model.get('tmdbId') });
+				var m = FullMovieCollection.findWhere( { tmdbId : model.get('tmdbId') });
 				m.set('monitored', model.get('monitored'));
 				m.set('minimumAvailability', model.get('minimumAvailability'));
 				m.set( {profileId : model.get('profileId') } );
-
 
 				this._showFooter();
 			}
@@ -178,7 +159,7 @@ module.exports = Marionette.Layout.extend({
 			if (model.get('deleted')) {
 				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
 				//FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
-				MoviesCollectionClient.fullCollection.remove(model);
+				FullMovieCollection.remove(model);
 				this._showFooter();
 			}
 
@@ -297,10 +278,11 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showToolbar();
-		//if (window.shownOnce) {
+		this._fetchCollection();
+		if (window.shownOnce) {
 			this._showFooter();
-		//}
-        //this._fetchCollection();
+		}
+		window.shownOnce = true;
     },
 
     _showTable : function() {
@@ -310,10 +292,8 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
-        //this._showPager();
-        if (this.renderedOnce) {
-      		this._renderView();
-        }
+        this._showPager();
+    	this._renderView();
     },
 
     _showList : function() {
@@ -344,12 +324,18 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             this.toolbar2.close();
         } else {
-
+            this.renderedOnce = true;
             this.seriesRegion.show(this.currentView);
+			this.listenTo(this.currentView.collection, 'sync', function(eventName){
+				this._showPager();
+			});
             this._showToolbar();
-            this._showPager();
         }
     },
+
+	_fetchCollection : function() {
+		this.seriesCollection.fetch();
+	},
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
@@ -395,7 +381,7 @@ module.exports = Marionette.Layout.extend({
 
     _showFooter : function() {
         var footerModel = new FooterModel();
-        var movies = MoviesCollectionClient.fullCollection.models.length;
+        var movies = FullMovieCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
         //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
         //    releasedMovies.length 
@@ -412,10 +398,10 @@ module.exports = Marionette.Layout.extend({
 		var missingMonitoredNotAvailable=0;
 		var missingMonitoredAvailable=0;
 
-        	var downloadedMonitored=0;
+        var downloadedMonitored=0;
 		var downloadedNotMonitored=0;
 
-        _.each(MoviesCollectionClient.fullCollection.models, function(model) {
+        _.each(FullMovieCollection.models, function(model) {
 
         	if (model.get('status').toLowerCase() === 'released') {
         		released++;
