@@ -5,8 +5,12 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
+
 var FullMovieCollection = require('../FullMovieCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
+
+var RelativeDateCell = require('../../Cells/RelativeDateCell');
+
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
@@ -53,6 +57,11 @@ module.exports = Marionette.Layout.extend({
             cellValue : 'this',
         },
         {
+            name  : 'added',
+            label : 'Date Added',
+            cell  : RelativeDateCell
+        },        
+        {
           name : "downloadedQuality",
           label : "Downloaded",
           cell : DownloadedQualityCell,
@@ -66,7 +75,7 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'inCinemas',
             label : 'In Cinemas',
-            cell  : InCinemasCell
+            cell  : RelativeDateCell
         },
         {
             name      : 'this',
