@@ -6,6 +6,7 @@ var RootFolders = require('../../AddMovies/RootFolders/RootFolderCollection');
 var RootFolderLayout = require('../../AddMovies/RootFolders/RootFolderLayout');
 var UpdateFilesMoviesView = require('./Organize/OrganizeFilesView');
 var Config = require('../../Config');
+var FullMovieCollection = require('../FullMovieCollection');
 
 module.exports = Marionette.ItemView.extend({
     template : 'Movies/Editor/MovieEditorFooterViewTemplate',
@@ -44,11 +45,16 @@ module.exports = Marionette.ItemView.extend({
 
 
         this.listenTo(this.moviesCollection, 'backgrid:selected', function(model, selected) {
-            var m =  this.moviesCollection.fullCollection.findWhere({ tmdbId : model.get('tmdbId') });
+            var m =  FullMovieCollection.findWhere({ tmdbId : model.get('tmdbId') });
             m.set('selected', selected);
             this._updateInfo();
         });
 
+        this.listenTo(FullMovieCollection, 'save', function() {
+			window.alert(' Done Saving');
+			
+			var selected = FullMovieCollection.where({ selected : true });
+		});
 
 
         this.listenTo(RootFolders, 'all', this.render);
@@ -61,14 +67,19 @@ module.exports = Marionette.ItemView.extend({
     _updateAndSave : function() {
         //var selected = this.editorGrid.getSelectedModels();
 
-		var selected = this.moviesCollection.fullCollection.where({ selected : true });
+		var selected = FullMovieCollection.where({ selected : true });
         var monitored = this.ui.monitored.val();
 		var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();
 
+		var i = 0;
+		var b = [];
         _.each(selected, function(model) {
+
+            b[i] = model.get('tmdbId');
+						i++;
             if (monitored === 'true') {
                 model.set('monitored', true);
             } else if (monitored === 'false') {
@@ -96,7 +107,38 @@ module.exports = Marionette.ItemView.extend({
             }
             model.edited = true;
         });
-		this.moviesCollection.save();
+		for (var j=0; j<i; j++) {
+				var m = this.moviesCollection.fullCollection.findWhere({ tmdbId : b[j] });
+				if (m!== undefined) {
+      			if (monitored === 'true') {
+          			m.set('monitored', true);
+                } else if (monitored === 'false') {
+                    m.set('monitored', false);
+                }
+
+                if (minAvail !=='noChange') {
+                    m.set('minimumAvailability', minAvail);
+                }
+
+                if (profile !== 'noChange') {
+                    m.set('profileId', parseInt(profile, 10));
+                }
+
+                if (seasonFolder === 'true') {
+                    m.set('seasonFolder', true);
+                } else if (seasonFolder === 'false') {
+                    m.set('seasonFolder', false);
+                }
+
+                if (rootFolder !== 'noChange') {
+                	var rootFolderPath = RootFolders.get(parseInt(rootFolder, 10));
+                	m.set('rootFolderPath', rootFolderPath.get('path'));
+            	}
+			}
+		}	
+
+
+		FullMovieCollection.save();
     },
 
     _updateInfo : function() {

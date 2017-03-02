@@ -1,8 +1,7 @@
 var NzbDroneController = require('../Shared/NzbDroneController');
 var AppLayout = require('../AppLayout');
 var MoviesCollection = require('./MoviesCollection');
-//var FullMovieCollection = require("./FullMovieCollection");
-var MoviesCollectionClient = require('./MoviesCollectionClient');
+var FullMovieCollection = require("./FullMovieCollection");
 var MoviesIndexLayout = require('./Index/MoviesIndexLayout');
 var MoviesDetailsLayout = require('./Details/MoviesDetailsLayout');
 
@@ -23,10 +22,11 @@ module.exports = NzbDroneController.extend({
 		},
 
 		seriesDetails : function(query) {
-			if(MoviesCollectionClient.fullCollection.length > 0) {
+
+			if(FullMovieCollection.length > 0) {
 				this._renderMovieDetails(query);
 			} else {
-				this.listenTo(MoviesCollectionClient, 'sync', function(model, options) {
+				this.listenTo(FullMovieCollection, 'sync', function(model, options) {
 					this._renderMovieDetails(query);
 				});
 			}
@@ -34,7 +34,7 @@ module.exports = NzbDroneController.extend({
 
 
 		_renderMovieDetails: function(query) {
-			var movies = MoviesCollectionClient.fullCollection.where({ titleSlug : query });
+			var movies = FullMovieCollection.where({ titleSlug : query });
 			if (movies.length !== 0) {
 					var targetMovie = movies[0];
 

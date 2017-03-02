@@ -2,6 +2,7 @@ var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var EmptyView = require('../Index/EmptyView');
+var FullMovieCollection = require ('../FullMovieCollection');
 var MoviesCollection = require('../MoviesCollectionClient');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
@@ -12,7 +13,6 @@ var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
 
-//require('../Globals');
 window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Editor/MovieEditorLayoutTemplate',
@@ -81,31 +81,27 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-		this.tableShown = window.shownOnce; //false;
 		this.movieCollection = MoviesCollection; 
         this.movieCollection.bindSignalR();
-		//this.movieCollection.switchMode('client');
 		this.movieCollection.fullCollection.bindSignalR();
-		var selected = this.movieCollection.fullCollection.where( { selected : true });
 
+		var selected = FullMovieCollection.where( { selected : true });
 		_.each(selected, function(model) {
 	     	model.set('selected', false);
 		});
 
 		this.listenTo(this.movieCollection, 'sync', function() {
 			this._showToolbar();
-			if (!this.tableShown) {
-				this._showTable();
-				this._showPager();
-			}
+			this._showTable();
+			this._showPager();
 		});
 
 		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
 			});
 
-		this.listenTo(this.movieCollection, 'save', function() {
-			window.alert('Done Saving');
-		});
+		//this.listenTo(FullMovieCollection, 'save', function() {
+		//	window.alert('Done Saving');
+		//});
 
         this.filteringOptions = {
             type          : 'radio',
@@ -157,15 +153,16 @@ module.exports = Marionette.Layout.extend({
                 }
             ]
         };
-		window.shownOnce = true;
     },
 
     onRender : function() {
-		if (this.tableShown) {
-        	this._showToolbar();
-        	this._showTable();
-        	this._showPager(); 
-			}
+      	this._showToolbar();
+       	this._showTable();
+       	this._showPager(); 
+		if (window.shownOnce){
+			this.movieCollection.fetch();
+		}
+		window.shownOnce = true;
     },
 
     onClose : function() {
@@ -191,7 +188,6 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             return;
         }
-        this.tableShown = true;
         this.columns[0].sortedCollection = this.movieCollection;
 
         this.editorGrid = new Backgrid.Grid({
@@ -226,6 +222,6 @@ module.exports = Marionette.Layout.extend({
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
-        this.movieCollection.setFilterMode(mode, { reset : false });
+        this.movieCollection.setFilterMode(mode);
     }
 });

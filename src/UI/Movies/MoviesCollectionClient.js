@@ -1,7 +1,6 @@
 var movieCollection = require('./MoviesCollection');
 
-var GCCollection = movieCollection.clone();
-GCCollection.bindSignalR();
-GCCollection.switchMode('client'); //state.pageSize = 100000;
-//CCollection.fetch();
-module.exports = GCCollection;
+var ClientCollection = movieCollection.clone();
+ClientCollection.bindSignalR();
+ClientCollection.switchMode('client'); //state.pageSize = 100000;
+module.exports = ClientCollection;
