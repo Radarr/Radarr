@@ -252,7 +252,14 @@ namespace NzbDrone.Api.REST
                 {
                     pagingResource.FilterValue = Request.Query.FilterValue.ToString();
                 }
+
+                if (Request.Query.FilterType != null)
+                {
+                    pagingResource.FilterType = Request.Query.FilterType.ToString();
+                }
             }
+
+
 
             return pagingResource;
         }
