@@ -42,16 +42,21 @@ namespace NzbDrone.Core.MediaFiles
             var moveFileResult = new MovieFileMoveResult();
 
             var existingFile = localMovie.Movie.MovieFile.Value;
-            var movieFilePath = Path.Combine(localMovie.Movie.Path, existingFile.RelativePath);
 
-            if (_diskProvider.FileExists(movieFilePath))
+            if (existingFile != null)
             {
-                _logger.Debug("Removing existing movie file: {0}", existingFile);
-                _recycleBinProvider.DeleteFile(movieFilePath);
+                var movieFilePath = Path.Combine(localMovie.Movie.Path, existingFile.RelativePath);
+
+                if (_diskProvider.FileExists(movieFilePath))
+                {
+                    _logger.Debug("Removing existing movie file: {0}", existingFile);
+                    _recycleBinProvider.DeleteFile(movieFilePath);
+                }
+
+                moveFileResult.OldFiles.Add(existingFile);
+                _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             }
 
-            moveFileResult.OldFiles.Add(existingFile);
-            _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             if (copyOnly)
             {
                 moveFileResult.MovieFile = _movieFileMover.CopyMovieFile(movieFile, localMovie);
