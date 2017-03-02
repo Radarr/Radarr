@@ -97,7 +97,14 @@ module.exports = Marionette.Layout.extend({
                     callback     : this._searchSelected,
                     ownerContext : this,
                     className    : 'x-search-selected'
-                }
+                },
+                {
+                    title        : 'Search All',
+                    icon         : 'icon-sonarr-search',
+                    callback     : this._searchMissing,
+                    ownerContext : this,
+                    className    : 'x-search-missing'
+                },
             ]
         };
 
@@ -107,6 +114,20 @@ module.exports = Marionette.Layout.extend({
             menuKey       : 'wanted.filterMode',
             defaultAction : 'monitored',
             items         : [
+                {
+                    key      : 'all',
+                    title    : '',
+                    tooltip  : 'All',
+                    icon     : 'icon-sonarr-all',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'available',
+                    title    : '',
+                    tooltip  : 'Available & Monitored',
+                    icon     : 'icon-sonarr-available',
+                    callback : this._setFilter
+                },
                 {
                     key      : 'monitored',
                     title    : '',
@@ -120,8 +141,29 @@ module.exports = Marionette.Layout.extend({
                     tooltip  : 'Unmonitored Only',
                     icon     : 'icon-sonarr-unmonitored',
                     callback : this._setFilter
+                },
+                {
+                    key      : 'announced',
+                    title    : '',
+                    tooltip  : 'Announced Only',
+                    icon     : 'icon-sonarr-movie-announced',
+                    callback : this._setFilter
+                },
+                {     
+                    key      : 'incinemas',
+                    title    : '',
+                    tooltip  : 'In Cinemas Only',
+                    icon     : 'icon-sonarr-movie-cinemas',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'released',
+                    title    : '',
+                    tooltip  : 'Released Only',
+                    icon     : 'icon-sonarr-movie-released',
+                    callback : this._setFilter
                 }
-            ]
+        ]
         };
 
         this.toolbar.show(new ToolbarLayout({
@@ -171,5 +213,14 @@ module.exports = Marionette.Layout.extend({
             name       : 'moviesSearch',
             movieIds : ids
         });
-    }
+    },
+
+    _searchMissing  : function() {
+        if (window.confirm('Are you sure you want to search for {0} filtered missing movies?'.format(this.collection.state.totalRecords) +
+                           'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
+            CommandController.Execute('missingMoviesSearch', { name : 'missingMoviesSearch',
+                                                           filterKey : this.collection.state.filterKey,
+                                   filterValue : this.collection.state.filterValue });
+        }
+    },
 });
