@@ -292,8 +292,9 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showToolbar();
-		this._fetchCollection();
+		//this._fetchCollection();
 		if (window.shownOnce) {
+			this._fetchCollection();
 			this._showFooter();
 		}
 		window.shownOnce = true;
