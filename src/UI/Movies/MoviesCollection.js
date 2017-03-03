@@ -38,7 +38,6 @@ var filterModes = {
          'other',
          'netflix',
         //function(model) { return model.getStatus() == "netflix"; }
-        function(model) { return model.get('allFlicksUrl'); }
     ],
     'released'  : [
         "status",
