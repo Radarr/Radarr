@@ -137,8 +137,13 @@ module.exports = Marionette.Layout.extend({
 
     initialize : function() {
     	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
-        this.seriesCollection = MoviesCollection;//.clone();
+        this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
+
+
+        //this.listenTo(MoviesCollection, 'sync', function() {
+		//	this.seriesCollection.fetch();
+		//});
 
 	    this.listenTo(FullMovieCollection, 'sync', function() {
 			this._showFooter();
