@@ -134,7 +134,10 @@ namespace NzbDrone.Core.NetImport
 
             var movies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
 
-            _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
+            if (movies.Count > 0)
+            {
+                _logger.Info("Found {0} movies on your auto enabled lists not in your library", movies.Count);
+            }
 
             foreach (var movie in movies)
             {
@@ -145,7 +148,7 @@ namespace NzbDrone.Core.NetImport
                     {
                         if (exclusion == movie.ImdbId || exclusion == movie.TmdbId.ToString())
                         {
-                            _logger.Info("Movie: {0} was found but will not be added because it {exclusion} was found on your exclusion list", exclusion);
+                            _logger.Info("Movie: {0} was found but will not be added because {1} was found on your exclusion list",movie, exclusion);
                             shouldAdd = false;
                             break;
                         }
