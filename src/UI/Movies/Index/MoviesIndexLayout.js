@@ -24,6 +24,7 @@ var GridPager = require('../../Shared/Grid/Pager');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 require('../../Mixins/backbone.signalr.mixin');
+var Config = require('../../Config');
 
 //var MoviesCollectionClient = require('../MoviesCollectionClient');
 
@@ -139,8 +140,8 @@ module.exports = Marionette.Layout.extend({
     	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
-
-
+		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
+        this.seriesCollection.setPageSize(pageSize);
         //this.listenTo(MoviesCollection, 'sync', function() {
 		//	this.seriesCollection.fetch();
 		//});
