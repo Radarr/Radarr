@@ -107,11 +107,11 @@ module.exports = Marionette.ItemView.extend({
             }
             model.edited = true;
         });
+        var filterKey = this.moviesCollection.state.filterKey;
+        var filterValue = this.moviesCollection.state.filterValue;
+        this.moviesCollection.setFilterMode('all');
+		//this.moviesCollection.fullCollection.resetFiltered();
 		for (var j=0; j<i; j++) {
-				var filterKey = this.moviesCollection.state.filterKey;
-				var filterValue = this.moviesCollection.state.filterValue;
-				this.moviesCollection.setFilterMode('all');
-				//this.moviesCollection.fullCollection.resetFiltered();
 				var m = this.moviesCollection.fullCollection.findWhere({ tmdbId : b[j] });
 				if (m!== undefined) {
       			if (monitored === 'true') {
@@ -138,12 +138,11 @@ module.exports = Marionette.ItemView.extend({
                 	var rootFolderPath = RootFolders.get(parseInt(rootFolder, 10));
                 	m.set('rootFolderPath', rootFolderPath.get('path'));
             	}
-				this.moviesCollection.state.filterKey = filterKey;
-				this.moviesCollection.state.filterValue = filterValue;
-				this.moviesCollection.fullCollection.resetFiltered();
 			}
-		}	
-
+		}
+		this.moviesCollection.state.filterKey = filterKey;
+        this.moviesCollection.state.filterValue = filterValue;
+        this.moviesCollection.fullCollection.resetFiltered();
 
 		FullMovieCollection.save();
     },
