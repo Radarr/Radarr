@@ -146,17 +146,17 @@ var Collection = PageableCollection.extend({
         'released'  : [
             "status",
             "released",
-            function(model) { return model.getStatus() == "released"; }
+            //function(model) { return model.getStatus() == "released"; }
         ],
         'announced'  : [
             "status",
             "announced",
-            function(model) { return model.getStatus() == "announced"; }
+            //function(model) { return model.getStatus() == "announced"; }
         ],
         'cinemas'  : [
             "status",
             "inCinemas",
-            function(model) { return model.getStatus() == "inCinemas"; }
+            //function(model) { return model.getStatus() == "inCinemas"; }
         ]
     },
 
