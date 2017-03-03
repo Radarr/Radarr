@@ -41,6 +41,9 @@ module.exports = function() {
             else if (self.state.filterType === 'contains') {
                 return model.get(self.state.filterKey).toLowerCase().indexOf(self.state.filterValue.toLowerCase()) > -1;
             }
+			else if (self.state.filterType === 'hasValue') {
+				return model.get(self.state.filterKey);
+			}
             else {
                 return model.get(self.state.filterKey) === self.state.filterValue;
             }
