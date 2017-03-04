@@ -94,7 +94,7 @@ namespace NzbDrone.Core.NetImport
                     bool foundMatch = false;
                     foreach (var listedMovie in listedMovies)
                     {
-                        if (movie.ImdbId == listedMovie.ImdbId)
+                        if (movie.TmdbId == listedMovie.TmdbId)
                         {
                             foundMatch = true;
                             break;
