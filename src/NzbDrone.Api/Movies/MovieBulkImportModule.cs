@@ -112,7 +112,7 @@ namespace NzbDrone.Api.Movie
 
 				var files = _diskScanService.GetVideoFiles(f.Path);
 
-				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m, true, true);
+				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m, true);
 
 				var decision = decisions.Where(d => d.Approved && !d.Rejections.Any()).FirstOrDefault();
 
