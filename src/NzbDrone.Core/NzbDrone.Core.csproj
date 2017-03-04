@@ -130,6 +130,7 @@
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
     <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
+    <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
