@@ -195,7 +195,7 @@ namespace NzbDrone.Core.Tv
             return pagingSpec;
         }
 
-		public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
+        public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
 		{
 			if (pagingSpec.SortKey == "downloadedQuality")
 			{
