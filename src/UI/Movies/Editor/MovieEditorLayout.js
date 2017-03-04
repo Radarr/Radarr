@@ -12,6 +12,7 @@ var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
+var Config = require('../../Config');
 
 window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
@@ -81,8 +82,10 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-		this.movieCollection = MoviesCollection.clone(); 
+		this.movieCollection = MoviesCollection.clone();
+		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
 		this.movieCollection.switchMode('client');
+		this.movieCollection.setPageSize(pageSize);
         this.movieCollection.bindSignalR();
 		this.movieCollection.fullCollection.bindSignalR();
 
