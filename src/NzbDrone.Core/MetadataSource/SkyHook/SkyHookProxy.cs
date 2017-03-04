@@ -656,6 +656,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             //First to lower case
             value = value.ToLowerInvariant();
 
+            value = value.RemoveAccent().ToLower();
+
             //Remove all accents
             var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
             value = Encoding.ASCII.GetString(bytes);
