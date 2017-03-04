@@ -103,7 +103,7 @@ module.exports = Marionette.Layout.extend({
                     icon         : 'icon-sonarr-search',
                     callback     : this._searchMissing,
                     ownerContext : this,
-                    className    : 'x-search-missing'
+                    className    : 'x-search-cutoff'
                 },
             ]
         };
@@ -181,6 +181,11 @@ module.exports = Marionette.Layout.extend({
             command  : {
                 name : 'moviesSearch'
             }
+        });
+
+        CommandController.bindToCommand({
+            element : this.$('.x-search-cutoff'),
+            command : { name : 'missingMoviesSearch' }
         });
     },
 

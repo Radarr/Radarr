@@ -1,16 +1,17 @@
-﻿using NzbDrone.Api.ClientSchema;
+﻿using FluentValidation;
+using NzbDrone.Api.ClientSchema;
 using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Validation.Paths;
 
 namespace NzbDrone.Api.NetImport
 {
     public class NetImportModule : ProviderModuleBase<NetImportResource, INetImport, NetImportDefinition>
     {
-        private readonly IProfileService _profileService;
-        public NetImportModule(NetImportFactory indexerFactory, IProfileService profileService)
-            : base(indexerFactory, "netimport")
+        public NetImportModule(NetImportFactory netImportFactory) : base(netImportFactory, "netimport")
         {
-            _profileService = profileService;
+            PostValidator.RuleFor(c => c.RootFolderPath).NotNull();
+            PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
+            PostValidator.RuleFor(c => c.ProfileId).NotNull();
         }
 
         protected override void MapToResource(NetImportResource resource, NetImportDefinition definition)
