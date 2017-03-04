@@ -4,6 +4,7 @@ var Backgrid = require('backgrid');
 var CutoffUnmetCollection = require('./CutoffUnmetCollection');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var MovieStatusWithTextCell = require('../../Cells/MovieStatusWithTextCell');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var GridPager = require('../../Shared/Grid/Pager');
@@ -40,6 +41,12 @@ module.exports = Marionette.Layout.extend({
             label     : 'Title',
             cell      : MovieTitleCell,
             cellValue : 'this',
+        },
+        {
+          name : "downloadedQuality",
+          label : "Downloaded",
+          cell : DownloadedQualityCell,
+          sortable : true
         },
         {
             name      : 'inCinemas',
