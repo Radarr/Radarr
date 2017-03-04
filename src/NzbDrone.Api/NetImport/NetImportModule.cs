@@ -9,9 +9,9 @@ namespace NzbDrone.Api.NetImport
     {
         public NetImportModule(NetImportFactory netImportFactory) : base(netImportFactory, "netimport")
         {
-            //SharedValidator.RuleFor(c => c.RootFolderPath).NotNull(); // doesn't work for null or not null :/
-            //PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
-            //PostValidator.RuleFor(c => c.ProfileId).NotNull();
+            PostValidator.RuleFor(c => c.RootFolderPath).NotNull();
+            PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
+            PostValidator.RuleFor(c => c.ProfileId).NotNull();
         }
 
         protected override void MapToResource(NetImportResource resource, NetImportDefinition definition)
