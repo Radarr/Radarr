@@ -137,9 +137,9 @@ namespace NzbDrone.Core.Test.RootFolderTests
                   .Setup(s => s.Get(It.IsAny<int>()))
                   .Returns(rootFolder);
 
-            Mocker.GetMock<ISeriesService>()
-                  .Setup(s => s.GetAllSeries())
-                  .Returns(new List<Series>());
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.GetAllMovies())
+                  .Returns(new List<Movie>());
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetDirectories(rootFolder.Path))

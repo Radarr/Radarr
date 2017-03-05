@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.IndexerTests.HDBitsTests
             var torrents = Subject.FetchRecent();
 
             torrents.Should().HaveCount(2);
-            torrents.First().Should().BeOfType<TorrentInfo>();
+            torrents.First().Should().BeOfType<HDBitsInfo>();
 
             var first = torrents.First() as TorrentInfo;
 
