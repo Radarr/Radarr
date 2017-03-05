@@ -27,7 +27,7 @@ var view = Marionette.ItemView.extend({
 	
 	onShow : function() {
 		var params = new URLSearchParams(window.location.search);
-                var oauth = params.get('oauth');
+                var oauth = params.get('access');
 		var refresh=params.get('refresh');
 		if (oauth && refresh){
 		history.pushState('object', 'title', callback_url);
@@ -111,8 +111,7 @@ var view = Marionette.ItemView.extend({
 
 	_resetTraktTokens : function() {
 		if (window.confirm("Proceed to trakt.tv for authentication?\nYou will then be redirected back here.")){
-		window.location='https://api.couchpota.to/authorize/trakt/?target='+callback_url;  //this eventually can be removed and replaced with the line below
-		//window.location='https://radarr.aeonlucid.com/authorize/trakt?target='+callback_url;
+		window.location='http://radarr.aeonlucid.com/v1/trakt/redirect?target='+callback_url;
 		//this.ui.resetTokensButton.hide();
 		}
 	},

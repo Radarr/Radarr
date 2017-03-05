@@ -11,16 +11,11 @@ namespace NzbDrone.Core.NetImport.Trakt
 {
     public class refreshRequestResponse
     {
-	//the next 3 lines can eventually be removed and replaced with the ones marked below
-        public bool success { get; set; }
-        public string oauth { get; set; }
-        public string refresh { get; set; }
-	/*//replace with the lines below when radarrAPI changes have been merged
-	public string access_token { get; set; }
+		public string access_token { get; set; }
         public string token_type { get; set; }
         public int expires_in { get; set; }
         public string refresh_token { get; set; }
-        public string scope { get; set; }*/
+        public string scope { get; set; }
     }
 
     public class TraktRequestGenerator : INetImportRequestGenerator
@@ -94,9 +89,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
                 if ( unixTime > _configService.TraktTokenExpiry)
                 {
-		            //the next line should eventually be removed and replaced with the one commented out below it
-                    var url = "https://api.couchpota.to/authorize/trakt_refresh?token="+_configService.TraktRefreshToken;
-                    //var url = "https://radarr.aeonlucid.com/authorize/trakt_refresh?token="+_configService.TraktRefreshToken; 
+                    var url = "http://radarr.aeonlucid.com/v1/trakt/refresh?refresh="+_configService.TraktRefreshToken;
 
                     HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
                     string rsponseString = string.Empty;
@@ -107,8 +100,8 @@ namespace NzbDrone.Core.NetImport.Trakt
                         rsponseString = reader.ReadToEnd();
                     }
                     refreshRequestResponse j1 = Newtonsoft.Json.JsonConvert.DeserializeObject<refreshRequestResponse>(rsponseString);
-                    _configService.TraktAuthToken = j1.oauth; //eventually replace with j1.access_token
-                    _configService.TraktRefreshToken = j1.refresh; //eventually replace with j1.refresh_token
+                    _configService.TraktAuthToken = j1.access_token; 
+                    _configService.TraktRefreshToken = j1.refresh_token; 
 
                     //lets have it expire in 8 weeks (4838400 seconds)
                     _configService.TraktTokenExpiry = unixTime + 4838400;
@@ -122,9 +115,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            //request.HttpRequest.Headers.Add("trakt-api-key", "657bb899dcb81ec8ee838ff09f6e013ff7c740bf0ccfa54dd41e791b9a70b2f0"); //radarr
-            //the line below should eventually be replaced with the one commented out above
-	        request.HttpRequest.Headers.Add("trakt-api-key", "8a54ed7b5e1b56d874642770ad2e8b73e2d09d6e993c3a92b1e89690bb1c9014"); //couchpotato
+            request.HttpRequest.Headers.Add("trakt-api-key", "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6"); //aeon
             if (_configService.TraktAuthToken != null)
             {
                 request.HttpRequest.Headers.Add("Authorization", "Bearer " + _configService.TraktAuthToken);
