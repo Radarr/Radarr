@@ -90,12 +90,19 @@ var view = Marionette.ItemView.extend({
             });
             promise.success(function(response) {
                 event.cancel=false;
+
+				//var newText = response['tmdbId']+'-';
+				//if (event.item.startsWith('tt')) {
+				//	newText = newText+'['+event.item+']';
+				//}
+				event.item = response['titleSlug'];//+' ('+response['year']+')-'+response['tmdbId'];
             });
 
             promise.error(function(request, status, error) {
                 event.cancel = true;
                 window.alert(event.item+' is not a valid! Must be valid tt#### IMDB ID or #### TMDB ID');
-            });
+			});
+			return event;
         });
     },
 

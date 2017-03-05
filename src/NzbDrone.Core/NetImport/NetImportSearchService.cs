@@ -25,13 +25,11 @@ namespace NzbDrone.Core.NetImport
         private readonly ISearchForNewMovie _movieSearch;
         private readonly IRootFolderService _rootFolder;
         private readonly IConfigService _configService;
-        private readonly IProvideMovieInfo _movieInfo;
-
+        
 
         public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
-            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, IConfigService configService, IProvideMovieInfo movieInfo, Logger logger)
+            ISearchForNewMovie movieSearch, IRootFolderService rootFolder, IConfigService configService, Logger logger)
         {
-            _movieInfo = movieInfo;
             _netImportFactory = netImportFactory;
             _movieService = movieService;
             _movieSearch = movieSearch;
@@ -144,24 +142,15 @@ namespace NzbDrone.Core.NetImport
             foreach (var movie in movies)
             {
                 bool shouldAdd = true;
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null)
+                if (importExclusions != null)
                 {
-                    if (importExclusions != null)
+                    foreach (var exclusion in importExclusions)
                     {
-                        foreach (var exclusion in importExclusions)
+                        //var excludedTmdbId = exclusion.Substring(exclusion.LastIndexOf('-')+1);
+                        int excludedTmdbId;
+                        if (Int32.TryParse(exclusion.Substring(exclusion.LastIndexOf('-') + 1), out excludedTmdbId))
                         {
-                            int tmdbId;
-                            if (exclusion.StartsWith("tt"))
-                            {
-                                var result = _movieInfo.GetMovieInfo(exclusion);
-                                tmdbId = result.TmdbId;
-                            }
-                            else
-                            {
-                                tmdbId = Int32.Parse(exclusion);
-                            }
-                            if (tmdbId == movie.TmdbId)
+                            if (excludedTmdbId == movie.TmdbId)
                             {
                                 _logger.Info("Movie: {0} was found but will not be added because {1} was found on your exclusion list", movie, exclusion);
                                 shouldAdd = false;
@@ -169,10 +158,12 @@ namespace NzbDrone.Core.NetImport
                             }
                         }
                     }
-                    if (shouldAdd)
-                    {
-                        _movieService.AddMovie(mapped);
-                    }
+                }
+
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                if ((mapped != null) && shouldAdd)
+                {
+                    _movieService.AddMovie(mapped);
                 }
             }
         }
