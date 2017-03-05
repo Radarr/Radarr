@@ -74,21 +74,27 @@ var Collection = PageableCollection.extend({
 
     save : function() {
         var self = this;
-
+		var t= self;
+		if (self.mode === 'client') {
+			t = self.fullCollection;
+			}
         var proxy = _.extend(new Backbone.Model(), {
             id : '',
 
             url : self.url + '/editor',
 
             toJSON : function() {
-                return self.filter(function(model) {
+                return t.filter(function(model) {
                     return model.edited;
                 });
             }
         });
-
         this.listenTo(proxy, 'sync', function(proxyModel, models) {
-            this.add(models, { merge : true });
+			if (self.mode === 'client') {
+            	this.fullCollection.add(models, { merge : true });
+			} else {
+				this.add(models, { merge : true });
+			}
             this.trigger('save', this);
         });
 
@@ -140,17 +146,17 @@ var Collection = PageableCollection.extend({
         'released'  : [
             "status",
             "released",
-            function(model) { return model.getStatus() == "released"; }
+            //function(model) { return model.getStatus() == "released"; }
         ],
         'announced'  : [
             "status",
             "announced",
-            function(model) { return model.getStatus() == "announced"; }
+            //function(model) { return model.getStatus() == "announced"; }
         ],
         'cinemas'  : [
             "status",
             "inCinemas",
-            function(model) { return model.getStatus() == "inCinemas"; }
+            //function(model) { return model.getStatus() == "inCinemas"; }
         ]
     },
 
@@ -166,7 +172,7 @@ var Collection = PageableCollection.extend({
             if (model.getStatus() == "inCinemas") {
               return 2;
             }
-            if (mode.getStatus() == "announced") {
+            if (model.getStatus() == "announced") {
 	      return 1;
 	    }
             return -1;
@@ -249,7 +255,7 @@ var Collection = PageableCollection.extend({
     },
 
     comparator: function (model) {
-      return model.get('sortTitle');
+		return model.get('sortTitle');
     }
 });
 

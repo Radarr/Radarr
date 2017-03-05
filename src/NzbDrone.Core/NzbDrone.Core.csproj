@@ -130,6 +130,7 @@
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
     <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
+    <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
@@ -614,8 +615,9 @@
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
     <Compile Include="HealthCheck\Checks\DroneFactoryCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
+    <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheck.cs" />
-    <Compile Include="HealthCheck\Checks\IndexerCheck.cs" />
+    <Compile Include="HealthCheck\Checks\IndexerSearchCheck.cs" />
     <Compile Include="HealthCheck\Checks\MediaInfoDllCheck.cs" />
     <Compile Include="HealthCheck\Checks\MonoVersionCheck.cs" />
     <Compile Include="HealthCheck\Checks\ProxyCheck.cs" />
@@ -725,6 +727,7 @@
     <Compile Include="Indexers\Rarbg\RarbgSettings.cs" />
     <Compile Include="Indexers\Rarbg\RarbgParser.cs" />
     <Compile Include="Indexers\Rarbg\RarbgTokenProvider.cs" />
+    <Compile Include="Indexers\XmlCleaner.cs" />
     <Compile Include="Indexers\RssIndexerRequestGenerator.cs" />
     <Compile Include="Indexers\RssParser.cs" />
     <Compile Include="Indexers\RssSyncCommand.cs" />
@@ -973,6 +976,8 @@
     <Compile Include="Notifications\Webhook\WebhookMethod.cs" />
     <Compile Include="Notifications\Webhook\WebhookPayload.cs" />
     <Compile Include="Notifications\Webhook\WebhookSeries.cs" />
+    <Compile Include="Notifications\Webhook\WebhookMovie.cs" />
+    <Compile Include="Notifications\Webhook\WebhookRemoteMovie.cs" />
     <Compile Include="Notifications\Webhook\WebhookService.cs" />
     <Compile Include="Notifications\Webhook\WebhookSettings.cs" />
     <Compile Include="Notifications\Webhook\Webhook.cs" />

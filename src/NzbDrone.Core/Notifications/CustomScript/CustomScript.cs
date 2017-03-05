@@ -31,17 +31,17 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var movie = message.Movie;
             var remoteMovie = message.RemoteMovie;
-            var releaseGroup = remoteMovie.ParsedMovieInfo.ReleaseGroup;
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Grab");
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
-            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId.ToString());
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Release_Title", remoteMovie.Release.Title);
             environmentVariables.Add("Radarr_Release_Indexer", remoteMovie.Release.Indexer);
             environmentVariables.Add("Radarr_Release_Size", remoteMovie.Release.Size.ToString());
-            environmentVariables.Add("Radarr_Release_ReleaseGroup", releaseGroup);
+            environmentVariables.Add("Radarr_Release_ReleaseGroup", remoteMovie.ParsedMovieInfo.ReleaseGroup ?? string.Empty);
 
             ExecuteScript(environmentVariables);
         }
@@ -57,7 +57,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
             environmentVariables.Add("Radarr_Movie_Path", movie.Path);
-            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId.ToString());
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_MovieFile_Id", movieFile.Id.ToString());
             environmentVariables.Add("Radarr_MovieFile_RelativePath", movieFile.RelativePath);
             environmentVariables.Add("Radarr_MovieFile_Path", Path.Combine(movie.Path, movieFile.RelativePath));
@@ -79,7 +80,9 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
             environmentVariables.Add("Radarr_Movie_Path", movie.Path);
-            environmentVariables.Add("Radarr_Movie_TvdbId", movie.ImdbId.ToString());
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
+
             ExecuteScript(environmentVariables);
         }
 

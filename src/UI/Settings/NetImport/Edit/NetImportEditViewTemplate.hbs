@@ -89,7 +89,15 @@
 							<label class="col-sm-3 control-label">Folder</label>
 
 							<div class="col-sm-5">
-								{{> RootFolderSelectionPartial rootFolders}}
+								<select class="col-md-4 form-control x-root-folder" name="RootFolderPath">
+								    {{#if rootFolders}}
+									    {{#each rootFolders}}
+									    	<option value="{{id}}">{{path}}</option>
+									    {{/each}}
+									{{else}}
+									    <option value="">Select Path</option>
+								    {{/if}}
+								</select>
 							</div>
 						</div>
 

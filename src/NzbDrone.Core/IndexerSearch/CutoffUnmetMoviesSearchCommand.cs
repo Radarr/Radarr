@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Core.IndexerSearch
 {
-    public class MissingMoviesSearchCommand : Command
+    public class CutoffUnmetMoviesSearchCommand : Command
     {
         public override bool SendUpdatesToClient => true;
         public string FilterKey { get; set; }

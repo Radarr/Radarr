@@ -92,7 +92,7 @@ namespace NzbDrone.Core.NetImport
                     bool foundMatch = false;
                     foreach (var listedMovie in listedMovies)
                     {
-                        if (movie.ImdbId == listedMovie.ImdbId)
+                        if (movie.TmdbId == listedMovie.TmdbId)
                         {
                             foundMatch = true;
                             break;
@@ -134,7 +134,10 @@ namespace NzbDrone.Core.NetImport
 
             var movies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
 
-            _logger.Debug("Found {0} movies on your auto enabled lists not in your library", movies.Count);
+            if (movies.Count > 0)
+            {
+                _logger.Info("Found {0} movies on your auto enabled lists not in your library", movies.Count);
+            }
 
             foreach (var movie in movies)
             {
@@ -143,11 +146,16 @@ namespace NzbDrone.Core.NetImport
                 {
                     foreach (var exclusion in importExclusions)
                     {
-                        if (exclusion == movie.ImdbId || exclusion == movie.TmdbId.ToString())
+                        //var excludedTmdbId = exclusion.Substring(exclusion.LastIndexOf('-')+1);
+                        int excludedTmdbId;
+                        if (Int32.TryParse(exclusion.Substring(exclusion.LastIndexOf('-') + 1), out excludedTmdbId))
                         {
-                            _logger.Info("Movie: {0} was found but will not be added because it {exclusion} was found on your exclusion list", exclusion);
-                            shouldAdd = false;
-                            break;
+                            if (excludedTmdbId == movie.TmdbId)
+                            {
+                                _logger.Info("Movie: {0} was found but will not be added because {1} was found on your exclusion list", movie, exclusion);
+                                shouldAdd = false;
+                                break;
+                            }
                         }
                     }
                 }

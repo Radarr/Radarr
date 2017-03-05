@@ -43,6 +43,12 @@ namespace NzbDrone.Core.NetImport.TMDb
 
                 foreach (var movie in jsonResponse.results)
                 {
+                    // Movies with no Year Fix
+                    if (string.IsNullOrWhiteSpace(movie.release_date))
+                    {
+                        continue;
+                    }
+
                     movies.AddIfNotNull(new Tv.Movie()
                     {
                         Title = movie.title,
@@ -66,6 +72,12 @@ namespace NzbDrone.Core.NetImport.TMDb
                 {
                     // Skip non-movie things
                     if (movie.media_type != "movie")
+                    {
+                        continue;
+                    }
+
+                    // Movies with no Year Fix
+                    if (string.IsNullOrWhiteSpace(movie.release_date))
                     {
                         continue;
                     }

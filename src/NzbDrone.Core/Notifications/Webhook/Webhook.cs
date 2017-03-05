@@ -19,21 +19,21 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnGrab(GrabMessage message)
         {
-            _service.OnGrab(message.Series, message.Episode, message.Quality, Settings);
+            _service.OnGrab(message.Movie, message.RemoteMovie, message.Quality, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _service.OnDownload(message.Series, message.EpisodeFile, Settings);
+            _service.OnDownload(message.Movie, message.MovieFile, Settings);
         }
 
         public override void OnMovieRename(Movie movie)
         {
+            _service.OnRename(movie, Settings);
         }
-		
+
         public override void OnRename(Series series)
         {
-            _service.OnRename(series, Settings);
         }
 
         public override string Name => "Webhook";

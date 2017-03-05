@@ -2,6 +2,7 @@ var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var EmptyView = require('../Index/EmptyView');
+var FullMovieCollection = require ('../FullMovieCollection');
 var MoviesCollection = require('../MoviesCollection');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
@@ -11,7 +12,9 @@ var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
+var Config = require('../../Config');
 
+window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Editor/MovieEditorLayoutTemplate',
 
@@ -79,15 +82,35 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-        this.movieCollection = MoviesCollection.clone();
-        this.movieCollection.state = MoviesCollection.state;
+		this.movieCollection = MoviesCollection.clone();
+		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
+		this.movieCollection.switchMode('client');
+		this.movieCollection.setPageSize(pageSize);
         this.movieCollection.bindSignalR();
-        //debugger;
-        this.listenTo(this.movieCollection, 'save', this.render);
+		this.movieCollection.fullCollection.bindSignalR();
+
+		var selected = FullMovieCollection.where( { selected : true });
+		_.each(selected, function(model) {
+	     	model.set('selected', false);
+		});
+
+		this.listenTo(this.movieCollection, 'sync', function() {
+			this._showToolbar();
+			this._showTable();
+			this._showPager();
+			window.shownOnce = true;
+		});
+
+		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
+			});
+
+		//this.listenTo(FullMovieCollection, 'save', function() {
+		//	window.alert('Done Saving');
+		//});
 
         this.filteringOptions = {
             type          : 'radio',
-            storeState    : true,
+            storeState    : false,
             menuKey       : 'serieseditor.filterMode',
             defaultAction : 'all',
             items         : [
@@ -104,15 +127,47 @@ module.exports = Marionette.Layout.extend({
                     tooltip  : 'Monitored Only',
                     icon     : 'icon-sonarr-monitored',
                     callback : this._setFilter
+                },
+		                {
+                    key      : 'missing',
+                    title    : '',
+                    tooltip  : 'Missing Only',
+                    icon     : 'icon-sonarr-missing',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'released',
+                    title    : '',
+                    tooltip  : 'Released',
+                    icon     : 'icon-sonarr-movie-released',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'announced',
+                    title    : '',
+                    tooltip  : 'Announced',
+                    icon     : 'icon-sonarr-movie-announced',
+                    callback : this._setFilter
+                },
+                {
+                    key      : 'cinemas',
+                    title    : '',
+                    tooltip  : 'In Cinemas',
+                    icon     : 'icon-sonarr-movie-cinemas',
+                    callback : this._setFilter
                 }
             ]
         };
     },
 
     onRender : function() {
-        this._showToolbar();
-        this._showTable();
-        this._showPager();
+      	//this._showToolbar();
+       	//this._showTable();
+       	//this._showPager(); 
+		//if (window.shownOnce){
+		//	this.movieCollection.fetch();
+		//}
+		//window.shownOnce = true;
     },
 
     onClose : function() {
@@ -122,7 +177,7 @@ module.exports = Marionette.Layout.extend({
     _showPager : function(){
       var pager = new GridPager({
           columns    : this.columns,
-          collection : this.movieCollection,
+          collection : this.movieCollection
       });
       var pagerTop = new GridPager({
           columns    : this.columns,
@@ -138,7 +193,6 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             return;
         }
-
         this.columns[0].sortedCollection = this.movieCollection;
 
         this.editorGrid = new Backgrid.Grid({
@@ -148,7 +202,8 @@ module.exports = Marionette.Layout.extend({
         });
 
         this.seriesRegion.show(this.editorGrid);
-        this._showFooter();
+       	this._showFooter();
+		
     },
 
     _showToolbar : function() {
@@ -172,7 +227,6 @@ module.exports = Marionette.Layout.extend({
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
-
         this.movieCollection.setFilterMode(mode);
     }
 });

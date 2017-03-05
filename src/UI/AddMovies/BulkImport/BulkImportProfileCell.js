@@ -15,6 +15,8 @@ module.exports = Backgrid.SelectCell.extend({
         if(ProfileCollection.get(this.defaultProfile))
         {
             this.profile = this.defaultProfile;
+        } else {
+            this.profile = ProfileCollection.get(1);
         }
 
         this.render();

@@ -5,8 +5,12 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
+
 var FullMovieCollection = require('../FullMovieCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
+
+var RelativeDateCell = require('../../Cells/RelativeDateCell');
+
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
@@ -20,7 +24,15 @@ var GridPager = require('../../Shared/Grid/Pager');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 require('../../Mixins/backbone.signalr.mixin');
+var Config = require('../../Config');
 
+//var MoviesCollectionClient = require('../MoviesCollectionClient');
+
+
+//this variable prevents double fetching the FullMovieCollection on first load
+//var shownOnce = false;
+//require('../Globals');
+window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Index/MoviesIndexLayoutTemplate',
 
@@ -46,6 +58,11 @@ module.exports = Marionette.Layout.extend({
             cellValue : 'this',
         },
         {
+            name  : 'added',
+            label : 'Date Added',
+            cell  : RelativeDateCell
+        },        
+        {
           name : "downloadedQuality",
           label : "Downloaded",
           cell : DownloadedQualityCell,
@@ -59,7 +76,7 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'inCinemas',
             label : 'In Cinemas',
-            cell  : InCinemasCell
+            cell  : RelativeDateCell
         },
         {
             name      : 'this',
@@ -120,35 +137,47 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
+    	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
-        //this.fullCollection = FullMovieCollection;
+		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
+        this.seriesCollection.setPageSize(pageSize);
+        //this.listenTo(MoviesCollection, 'sync', function() {
+		//	this.seriesCollection.fetch();
+		//});
 
-		//need to add this so the footer gets refreshed
-        this.listenTo(FullMovieCollection, 'sync', function(model, collection, options) {
-		   //this._renderView();
-           this._showFooter();
+	    this.listenTo(FullMovieCollection, 'sync', function() {
+			this._showFooter();
 		});
 
         this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
+			//MoviesCollectionClient.fetch();
         });
+        this.listenTo(this.seriesCollection, "change", function(model) {
+			if (model.get('saved'))	{
+				model.set('saved', false);
+				this.seriesCollection.fetch();
+				//FullMovieCollection.fetch({reset : true });
+				//this._showFooter();
+				var m = FullMovieCollection.findWhere( { tmdbId : model.get('tmdbId') });
+				m.set('monitored', model.get('monitored'));
+				m.set('minimumAvailability', model.get('minimumAvailability'));
+				m.set( {profileId : model.get('profileId') } );
 
-        this.listenTo(MoviesCollection, "sync", function(eventName) {
-          this.seriesCollection = MoviesCollection.clone();
-          //this._showTable();
-          this._renderView();
-        });
+				this._showFooter();
+			}
+		});
 
-        this.listenTo(this.seriesCollection, 'add', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
-            //this._renderView();
-        });
 
         this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
-            //this.seriesCollection.fullCollection.resetFiltered();
-            //this._showTable();
+			if (model.get('deleted')) {
+				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
+				//FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
+				FullMovieCollection.remove(model);
+				this._showFooter();
+			}
+
         });
 
         this.sortingOptions = {
@@ -264,7 +293,12 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showToolbar();
-        this._fetchCollection();
+		//this._fetchCollection();
+		if (window.shownOnce) {
+			this._fetchCollection();
+			this._showFooter();
+		}
+		window.shownOnce = true;
     },
 
     _showTable : function() {
@@ -275,8 +309,7 @@ module.exports = Marionette.Layout.extend({
         });
 
         this._showPager();
-
-        this._renderView();
+    	this._renderView();
     },
 
     _showList : function() {
@@ -307,20 +340,18 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             this.toolbar2.close();
         } else {
-
+            this.renderedOnce = true;
             this.seriesRegion.show(this.currentView);
-            this.listenTo(this.currentView.collection, "sync", function(eventName){
-              this._showPager();
-              //debugger;
-            });
+			this.listenTo(this.currentView.collection, 'sync', function(eventName){
+				this._showPager();
+			});
             this._showToolbar();
-            //this._showFooter();
         }
     },
 
-    _fetchCollection : function() {
-        this.seriesCollection.fetch();
-    },
+	_fetchCollection : function() {
+		this.seriesCollection.fetch();
+	},
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
@@ -380,9 +411,10 @@ module.exports = Marionette.Layout.extend({
 		var downloaded =0;
 		var missingMonitored=0;
 		var missingNotMonitored=0;
-		var missingNotAvailable=0;
+		var missingMonitoredNotAvailable=0;
 		var missingMonitoredAvailable=0;
 
+        var downloadedMonitored=0;
 		var downloadedNotMonitored=0;
 
         _.each(FullMovieCollection.models, function(model) {
@@ -398,7 +430,10 @@ module.exports = Marionette.Layout.extend({
         	}
 
         	if (model.get('monitored')) {
-            	monitored++;
+            		monitored++;
+  			if (model.get('downloaded')) {
+				downloadedMonitored++;
+			}
 	    	}
 	    	else { //not monitored
 				if (model.get('downloaded')) {
@@ -414,7 +449,9 @@ module.exports = Marionette.Layout.extend({
 	    	}
         	else { //missing
 				if (!model.get('isAvailable')) {
-					missingNotAvailable++;
+   					if (model.get('monitored')) {
+						missingMonitoredNotAvailable++;
+					}
 				}
 
 				if (model.get('monitored')) {
@@ -433,10 +470,11 @@ module.exports = Marionette.Layout.extend({
 	    	released     				: released,
             monitored   				: monitored,
             downloaded  				: downloaded,
+			downloadedMonitored			: downloadedMonitored,
 	    	downloadedNotMonitored 		: downloadedNotMonitored,
 	    	missingMonitored 			: missingMonitored,
             missingMonitoredAvailable   : missingMonitoredAvailable,
-	    	missingNotAvailable 		: missingNotAvailable,
+	    	missingMonitoredNotAvailable 		: missingMonitoredNotAvailable,
 	    	missingNotMonitored 		: missingNotMonitored
         });
 

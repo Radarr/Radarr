@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -57,35 +58,10 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             else
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", $"&q={System.Web.HttpUtility.UrlPathEncode(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title))}%20{searchCriteria.Movie.Year}"));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", $"&q={Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title)}%20{searchCriteria.Movie.Year}"));
             }
 
             return pageableRequests;
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
         }
 
         private IEnumerable<IndexerRequest> GetPagedRequests(int maxPages, IEnumerable<int> categories, string searchType, string parameters)
@@ -117,9 +93,30 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
-        private static string NewsnabifyTitle(string title)
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
         {
-            return title.Replace("+", "%20");
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
         }
     }
 }
