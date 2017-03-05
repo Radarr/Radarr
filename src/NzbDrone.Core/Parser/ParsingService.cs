@@ -355,14 +355,11 @@ namespace NzbDrone.Core.Parser
 
         private Movie GetMovie(ParsedMovieInfo parsedEpisodeInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
+            Movie possibleMovie = null;
             if (searchCriteria != null)
             {
                 var possibleTitles = new List<string>();
-
-				Movie possibleMovie = null;
-
                 possibleTitles.Add(searchCriteria.Movie.CleanTitle);
-
                 foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
                 {
                     possibleTitles.Add(altTitle.CleanSeriesTitle());
@@ -392,49 +389,50 @@ namespace NzbDrone.Core.Parser
                     }
                 }
 
-				if (possibleMovie != null && (parsedEpisodeInfo.Year < 1800 || possibleMovie.Year == parsedEpisodeInfo.Year))
-				{
-					return possibleMovie;
-				}
-
-                    
+                if (possibleMovie != null && (parsedEpisodeInfo.Year < 1800 || possibleMovie.Year == parsedEpisodeInfo.Year))
+                {
+                    return possibleMovie;
+                }
             }
-
-            Movie movie = null;
-
-            if (searchCriteria == null)
+            else
             {
+                // search by title and year
                 if (parsedEpisodeInfo.Year > 1900)
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
-                    
+                    possibleMovie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
                 }
                 else
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                    // search by title
+                    possibleMovie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
                 }
 
-                if (movie == null)
+                // search by title
+                if (possibleMovie == null)
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                    possibleMovie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
                 }
-                return movie;
+
+                // search by alternative titles
+                if (possibleMovie == null)
+                {
+                    possibleMovie = _movieService.FindByAlternativeTitle(parsedEpisodeInfo.MovieTitle);
+                }
             }
 
 
-
-            if (movie == null && imdbId.IsNotNullOrWhiteSpace())
+            if (possibleMovie == null && imdbId.IsNotNullOrWhiteSpace())
             {
-                movie = _movieService.FindByImdbId(imdbId);
+                possibleMovie = _movieService.FindByImdbId(imdbId);
             }
 
-            if (movie == null)
+            if (possibleMovie == null)
             {
-                _logger.Debug("No matching movie {0}", parsedEpisodeInfo.MovieTitle);
+                _logger.Error($"Unable to match movie {parsedEpisodeInfo.MovieTitle}, try adding a alternative title to themoviedb.org for this movie.");
                 return null;
             }
 
-            return movie;
+            return possibleMovie;
         }
 
         private Series GetSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria)

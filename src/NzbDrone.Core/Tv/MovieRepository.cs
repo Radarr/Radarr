@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Tv
     public interface IMovieRepository : IBasicRepository<Movie>
     {
         bool MoviePathExists(string path);
+        Movie FindByAlternativeTitle(string cleanTitle);
         Movie FindByTitle(string cleanTitle);
         Movie FindByTitle(string cleanTitle, int year);
         Movie FindByImdbId(string imdbid);
@@ -61,16 +62,13 @@ namespace NzbDrone.Core.Tv
             cleanTitle = cleanTitle.ToLowerInvariant();
 
             var cleanRoman = cleanTitle;
-
             var cleanNum = cleanTitle;
 
             foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
             {
                 string num = entry.Key;
                 string roman = entry.Value.ToLower();
-
                 cleanRoman = cleanRoman.Replace(num, roman);
-
                 cleanNum = cleanNum.Replace(roman, num);
             }
 
@@ -100,6 +98,33 @@ namespace NzbDrone.Core.Tv
             {
                 return result;
             }
+        }
+
+        public Movie FindByAlternativeTitle(string cleanTitle)
+        {
+            cleanTitle = cleanTitle.ToLowerInvariant();
+
+            var cleanRoman = cleanTitle;
+
+            var cleanNum = cleanTitle;
+
+            foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
+            {
+                string num = entry.Key;
+                string roman = entry.Value.ToLower();
+
+                cleanRoman = cleanRoman.Replace(num, roman);
+
+                cleanNum = cleanNum.Replace(roman, num);
+            }
+
+            var result = Query.Where(m => m.AlternativeTitles.Any(t => 
+            Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanTitle ||
+            Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanRoman ||
+            Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanNum))
+            .FirstOrDefault();
+
+            return result;
         }
 
         public Movie FindByTitle(string cleanTitle, int year)
