@@ -250,11 +250,11 @@ namespace NzbDrone.Core.Tv
             {
                 if (_configService.ImportExclusions.Empty())
                 {
-                    _configService.ImportExclusions = movie.ImdbId;
+                    _configService.ImportExclusions = movie.TitleSlug;
                 }
-                else if (!_configService.ImportExclusions.Contains(movie.ImdbId) && !_configService.ImportExclusions.Contains(movie.TmdbId.ToString()))
+                else if (!_configService.ImportExclusions.Contains(movie.TitleSlug))
                 {
-                    _configService.ImportExclusions += ',' + movie.ImdbId;
+                    _configService.ImportExclusions += ',' + movie.TitleSlug;
                 }
             }
             _movieRepository.Delete(movieId);
