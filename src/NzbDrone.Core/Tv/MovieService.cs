@@ -25,7 +25,6 @@ namespace NzbDrone.Core.Tv
         Movie AddMovie(Movie newMovie);
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
-        Movie FindByAlternativeTitle(string title);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
         Movie FindByTitleInexact(string title);
@@ -184,11 +183,6 @@ namespace NzbDrone.Core.Tv
         public Movie FindByTitle(string title)
         {
             return _movieRepository.FindByTitle(title.CleanSeriesTitle());
-        }
-
-        public Movie FindByAlternativeTitle(string title)
-        {
-            return _movieRepository.FindByAlternativeTitle(title.CleanSeriesTitle());
         }
 
         public Movie FindByImdbId(string imdbid)
