@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
+using RestSharp.Extensions;
 
 namespace NzbDrone.Core.Indexers.Newznab
 {
@@ -11,9 +12,12 @@ namespace NzbDrone.Core.Indexers.Newznab
     {
         public const string ns = "{http://www.newznab.com/DTD/2010/feeds/attributes/}";
 
-        public NewznabRssParser()
+        private readonly NewznabSettings _settings;
+
+        public NewznabRssParser(NewznabSettings settings)
         {
             PreferredEnclosureMimeType = "application/x-nzb";
+            _settings = settings;
         }
 
         protected override bool PreProcess(IndexerResponse indexerResponse)
@@ -49,6 +53,20 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
             releaseInfo.ImdbId = GetImdbId(item);
+
+            // Fun, lets try to add year to the releaseTitle for our foriegn friends :)
+            if (!releaseInfo.Title.Contains(GetImdbTitle(item) + "." + GetImdbYear(item)))
+            {
+                if (GetImdbYear(item) != 1900)
+                {
+                    releaseInfo.Title = releaseInfo.Title.Replace(GetImdbTitle(item), GetImdbTitle(item) + "." + GetImdbYear(item));
+                }
+            }
+            
+            //if (_settings.Url == "https://newz-complex.org/www/")
+            //{
+            //    releaseInfo.Title = releaseInfo.Title.Replace(GetImdbTitle(item), GetImdbTitle(item) + "." + GetImdbYear(item));
+            //}
 
             return releaseInfo;
         }
@@ -123,6 +141,30 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
 
             return 0;
+        }
+
+        protected virtual string GetImdbTitle(XElement item)
+        {
+            var imdbTitle = TryGetNewznabAttribute(item, "imdbtitle");
+            if (!imdbTitle.IsNullOrWhiteSpace())
+            {
+                return imdbTitle;
+            }
+
+            return string.Empty;
+        }
+
+        protected virtual int GetImdbYear(XElement item)
+        {
+            var imdbYearString = TryGetNewznabAttribute(item, "imdbyear");
+            int imdbYear;
+
+            if (!imdbYearString.IsNullOrWhiteSpace() && int.TryParse(imdbYearString, out imdbYear))
+            {
+                return imdbYear;
+            }
+
+            return 1900;
         }
 
         protected string TryGetNewznabAttribute(XElement item, string key, string defaultValue = "")
