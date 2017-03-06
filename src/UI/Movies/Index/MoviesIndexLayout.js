@@ -150,10 +150,10 @@ module.exports = Marionette.Layout.extend({
 			this._showFooter();
 		});
 
-        this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
+        /*this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
             this._renderView();
 			//MoviesCollectionClient.fetch();
-        });
+        });*/
         this.listenTo(this.seriesCollection, "change", function(model) {
 			if (model.get('saved'))	{
 				model.set('saved', false);
@@ -292,13 +292,15 @@ module.exports = Marionette.Layout.extend({
     },
 
     onShow : function() {
-        this._showToolbar();
-		//this._fetchCollection();
-		if (window.shownOnce) {
-			this._fetchCollection();
-			this._showFooter();
-		}
-		window.shownOnce = true;
+		this.listenToOnce(this.seriesCollection, 'sync', function() {
+        	this._showToolbar();
+			//this._fetchCollection();
+			if (window.shownOnce) {
+				//this._fetchCollection();
+				this._showFooter();
+			}
+			window.shownOnce = true;
+		});
     },
 
     _showTable : function() {
