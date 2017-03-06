@@ -61,7 +61,7 @@ module.exports = Marionette.Layout.extend({
             name  : 'added',
             label : 'Date Added',
             cell  : RelativeDateCell
-        },        
+        },
         {
           name : "downloadedQuality",
           label : "Downloaded",
@@ -139,21 +139,34 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
     	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
         this.seriesCollection = MoviesCollection.clone();
+        //debugger;
         this.seriesCollection.bindSignalR();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
-        this.seriesCollection.setPageSize(pageSize);
+       // this.seriesCollection.setPageSize(pageSize);
         //this.listenTo(MoviesCollection, 'sync', function() {
 		//	this.seriesCollection.fetch();
 		//});
+
+ 		this.listenToOnce(this.seriesCollection, 'sync', function() {
+            this._showToolbar();
+            //this._fetchCollection();
+            if (window.shownOnce) {
+                //this._fetchCollection();
+                this._showFooter();
+            }
+            window.shownOnce = true;
+        });
+
+
 
 	    this.listenTo(FullMovieCollection, 'sync', function() {
 			this._showFooter();
 		});
 
-        this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
+        /*this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
             this._renderView();
 			//MoviesCollectionClient.fetch();
-        });
+        });*/
         this.listenTo(this.seriesCollection, "change", function(model) {
 			if (model.get('saved'))	{
 				model.set('saved', false);
@@ -179,6 +192,8 @@ module.exports = Marionette.Layout.extend({
 			}
 
         });
+		//this.seriesCollection.setPageSize(pageSize);
+
 
         this.sortingOptions = {
             type           : 'sorting',
@@ -289,17 +304,25 @@ module.exports = Marionette.Layout.extend({
                 }
             ]
         };
+
+            //this._showToolbar();
+            //debugger;
+            self = this;
+            setTimeout(function(){self._showToolbar();}, 0);//wtf???
+            //this._renderView();
     },
 
     onShow : function() {
-        this._showToolbar();
-		//this._fetchCollection();
-		if (window.shownOnce) {
-			this._fetchCollection();
-			this._showFooter();
-		}
-		window.shownOnce = true;
-    },
+/*		this.listenToOnce(this.seriesCollection, 'sync', function() {
+        	this._showToolbar();
+			//this._fetchCollection();
+			if (window.shownOnce) {
+				//this._fetchCollection();
+				this._showFooter();
+			}
+			window.shownOnce = true;
+		});
+  */  },
 
     _showTable : function() {
         this.currentView = new Backgrid.Grid({
@@ -308,7 +331,7 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
-        this._showPager();
+        //this._showPager();
     	this._renderView();
     },
 
@@ -359,6 +382,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showToolbar : function() {
+      //debugger;
         if (this.toolbar.currentView) {
             return;
         }
@@ -400,7 +424,7 @@ module.exports = Marionette.Layout.extend({
         var movies = FullMovieCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
         //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
-        //    releasedMovies.length 
+        //    releasedMovies.length
 
         var announced = 0;
 		var incinemas = 0;

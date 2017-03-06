@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
-                Logger.Debug("Parsing language from subtitlte file: {0}", fileName);
+                Logger.Debug("Parsing language from subtitle file: {0}", fileName);
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
                 var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);

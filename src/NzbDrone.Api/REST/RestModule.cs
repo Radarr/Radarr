@@ -123,7 +123,13 @@ namespace NzbDrone.Api.REST
 
                 Get[ROOT_ROUTE] = options =>
                 {
-                    var resource = GetResourcePaged(ReadPagingResourceFromRequest());
+					var pagingSpec = ReadPagingResourceFromRequest();
+					if (pagingSpec.Page == 0 && pagingSpec.PageSize == 0)
+					{
+						var all = GetResourceAll();
+						return all.AsResponse();
+					}
+                    var resource = GetResourcePaged(pagingSpec);
                     return resource.AsResponse();
                 };
             }
@@ -214,12 +220,12 @@ namespace NzbDrone.Api.REST
         private PagingResource<TResource> ReadPagingResourceFromRequest()
         {
             int pageSize;
-			int.TryParse(Request.Query.PageSize.ToString(), out pageSize);
-            if (pageSize == 0) pageSize = 10;
+			      int.TryParse(Request.Query.PageSize.ToString(), out pageSize);
+            if (pageSize == 0) pageSize = 0;
 
             int page;
             int.TryParse(Request.Query.Page.ToString(), out page);
-            if (page == 0) page = 1;
+            if (page == 0) page = 0;
 
 
 
