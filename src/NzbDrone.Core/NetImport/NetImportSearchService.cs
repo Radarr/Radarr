@@ -163,6 +163,7 @@ namespace NzbDrone.Core.NetImport
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
                 if ((mapped != null) && shouldAdd)
                 {
+                    mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
                     _movieService.AddMovie(mapped);
                 }
             }

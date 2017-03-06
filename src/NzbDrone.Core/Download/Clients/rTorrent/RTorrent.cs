@@ -52,15 +52,19 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
 
             // Download the magnet to the appropriate directory.
-            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
-            SetDownloadDirectory(hash);
-            _proxy.StartTorrent(hash, Settings);
+            //_proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+            //SetDownloadDirectory(hash);
+            //_proxy.StartTorrent(hash, Settings);
 
             // Wait for the magnet to be resolved.
             var tries = 10;
             var retryDelay = 500;
             if (WaitForTorrent(hash, tries, retryDelay))
             {
+                _logger.Info("Resolved magnet for {0}", remoteMovie.Movie.CleanTitle);
+                SetDownloadDirectory(hash);
+                _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+                _proxy.StartTorrent(hash, Settings);
                 return hash;
             }
             else
