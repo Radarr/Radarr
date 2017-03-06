@@ -6,14 +6,15 @@ require('../../../Mixins/TagInput');
 require('bootstrap');
 require('bootstrap.tagsinput');
 
+var Config = require('../../../Config');
+
+
 //if ('searchParams' in HTMLAnchorElement.prototype) {
 //	var URLSearchParams = require('url-search-params-polyfill');
 //}
 
 var URLSearchParams = require('url-search-params');
 
-var q = window.location;
-var callback_url = q.protocol+'//'+q.hostname+(q.port ? ':' + q.port : '')+'/settings/netimport';
 var view = Marionette.ItemView.extend({
 	template : 'Settings/NetImport/Options/NetImportOptionsViewTemplate',
 	events : {
@@ -30,12 +31,17 @@ var view = Marionette.ItemView.extend({
                 var oauth = params.get('access');
 		var refresh=params.get('refresh');
 		if (oauth && refresh){
-		history.pushState('object', 'title', callback_url);
+			//var callback_url = window.location.href;
+			history.pushState('object', 'title', (window.location.href).replace(window.location.search, ''));
 	        this.ui.authToken.val(oauth).trigger('change');
-		this.ui.refreshToken.val(refresh).trigger('change');
-		this.ui.tokenExpiry.val(Math.floor(Date.now() / 1000) + 4838400).trigger('change');  // this means the token will expire in 8 weeks (4838400 seconds)
-	        //this.model.isSaved = false;
-	        window.alert("Trakt Authentication Complete - Click Save to make the change take effect");
+			this.ui.refreshToken.val(refresh).trigger('change');
+			//Config.setValue("traktAuthToken", oauth);
+			//Config.setValue("traktRefreshToken", refresh);
+			var tokenExpiry = Math.floor(Date.now() / 1000) + 4838400;
+			this.ui.tokenExpiry.val(tokenExpiry).trigger('change');  // this means the token will expire in 8 weeks (4838400 seconds)
+			//Config.setValue("traktTokenExpiry",tokenExpiry); 
+			//this.model.isSaved = false;
+	        //window.alert("Trakt Authentication Complete - Click Save to make the change take effect");
 		}
 		if (this.ui.authToken.val() && this.ui.refreshToken.val()){
                 this.ui.resetTokensButton.hide();
@@ -118,7 +124,7 @@ var view = Marionette.ItemView.extend({
 
 	_resetTraktTokens : function() {
 		if (window.confirm("Proceed to trakt.tv for authentication?\nYou will then be redirected back here.")){
-		window.location='http://radarr.aeonlucid.com/v1/trakt/redirect?target='+callback_url;
+		window.location='http://radarr.aeonlucid.com/v1/trakt/redirect?target='+window.location.href;
 		//this.ui.resetTokensButton.hide();
 		}
 	},
