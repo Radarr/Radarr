@@ -59,6 +59,7 @@ var Collection = PageableCollection.extend({
 
     origSetSorting : PageableCollection.prototype.setSorting,
     origAdd : PageableCollection.prototype.add,
+    origSort : PageableCollection.prototype.sort,
 
     state : {
         sortKey            : 'sortTitle',
@@ -107,7 +108,9 @@ var Collection = PageableCollection.extend({
     },
 
     sort : function(options){
-      //debugger;
+    	if (this.mode == 'server' && this.state.order == '-1'){
+            this.origSort(options);
+        }
     },
 
     save : function() {
