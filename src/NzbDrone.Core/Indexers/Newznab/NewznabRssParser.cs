@@ -1,5 +1,8 @@
-﻿using System;
+using System;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers.Exceptions;
@@ -54,19 +57,20 @@ namespace NzbDrone.Core.Indexers.Newznab
             releaseInfo = base.ProcessItem(item, releaseInfo);
             releaseInfo.ImdbId = GetImdbId(item);
 
+            var imdbMovieTitle = GetImdbTitle(item);
+            var imdbYear = GetImdbYear(item);
+
             // Fun, lets try to add year to the releaseTitle for our foriegn friends :)
-            if (!releaseInfo.Title.Contains(GetImdbTitle(item) + "." + GetImdbYear(item)))
+            // if (!releaseInfo.Title.ContainsIgnoreCase(imdbMovieTitle + "." + imdbYear))
+            var isMatch = Regex.IsMatch(releaseInfo.Title, $@"^{imdbMovieTitle}.*{imdbYear}", RegexOptions.IgnoreCase);
+            if (!isMatch)
             {
-                if (GetImdbYear(item) != 1900)
+                if (imdbYear != 1900 && imdbMovieTitle != string.Empty)
                 {
-                    releaseInfo.Title = releaseInfo.Title.Replace(GetImdbTitle(item), GetImdbTitle(item) + "." + GetImdbYear(item));
+                    // releaseInfo.Title = releaseInfo.Title.Replace(imdbMovieTitle, imdbMovieTitle + "." + imdbYear);
+                    releaseInfo.Title = Regex.Replace(releaseInfo.Title, imdbMovieTitle, imdbMovieTitle + "." + imdbYear, RegexOptions.IgnoreCase);
                 }
             }
-            
-            //if (_settings.Url == "https://newz-complex.org/www/")
-            //{
-            //    releaseInfo.Title = releaseInfo.Title.Replace(GetImdbTitle(item), GetImdbTitle(item) + "." + GetImdbYear(item));
-            //}
 
             return releaseInfo;
         }
@@ -148,7 +152,11 @@ namespace NzbDrone.Core.Indexers.Newznab
             var imdbTitle = TryGetNewznabAttribute(item, "imdbtitle");
             if (!imdbTitle.IsNullOrWhiteSpace())
             {
-                return imdbTitle;
+                return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(
+                    Parser.Parser.ReplaceGermanUmlauts(
+                        Parser.Parser.NormalizeTitle(imdbTitle).Replace(" ", ".")
+                    )
+                 );
             }
 
             return string.Empty;
