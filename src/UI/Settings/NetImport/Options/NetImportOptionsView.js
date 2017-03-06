@@ -160,9 +160,12 @@ var view = Marionette.ItemView.extend({
 
     var obj;
 	var options = {
+		"method": "POST",
   		"host": "api.themoviedb.org",
 		"withCredentials": false,
-  		"path": "/3/authentication/token/new?api_key=1a7373301961d03f97f853a876dd1212"
+  		"path": "/4/auth/request_token",
+		"headers": {"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlODM4OTY2NTA2NGJlYTA5NzZjOWJiNzU2OTJlYmM2OCIsInN1YiI6IjU4MTdhZmY3YzNhMzY4NzY2OTAxZmRjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zOg1vwB-fVfqhmfuiz352TidSNEiJi3Ze7UHJcIGZ4w",
+					"Content-Type": "application/json;charset=utf-8"}
 	};
 
 
@@ -190,8 +193,12 @@ var view = Marionette.ItemView.extend({
 		});
 	}
 
+
+
 	var req = https.request(options,callback);
-	req.write("{}");
+	//req.write('{\"redirect_to\": \"'+window.location.href+'\"}');
+	var postData = '{\"redirect_to\":\"http://www.themoviedb.org/\"}';
+	req.write(postData);
 	req.end();
 
 	}
