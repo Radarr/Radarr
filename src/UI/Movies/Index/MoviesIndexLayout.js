@@ -141,10 +141,22 @@ module.exports = Marionette.Layout.extend({
         this.seriesCollection = MoviesCollection.clone();
         this.seriesCollection.bindSignalR();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
-        this.seriesCollection.setPageSize(pageSize);
+       // this.seriesCollection.setPageSize(pageSize);
         //this.listenTo(MoviesCollection, 'sync', function() {
 		//	this.seriesCollection.fetch();
 		//});
+
+ 		this.listenToOnce(this.seriesCollection, 'sync', function() {
+            this._showToolbar();
+            //this._fetchCollection();
+            if (window.shownOnce) {
+                //this._fetchCollection();
+                this._showFooter();
+            }
+            window.shownOnce = true;
+        });
+
+
 
 	    this.listenTo(FullMovieCollection, 'sync', function() {
 			this._showFooter();
@@ -179,6 +191,8 @@ module.exports = Marionette.Layout.extend({
 			}
 
         });
+		this.seriesCollection.setPageSize(pageSize);
+
 
         this.sortingOptions = {
             type           : 'sorting',
@@ -292,7 +306,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     onShow : function() {
-		this.listenToOnce(this.seriesCollection, 'sync', function() {
+/*		this.listenToOnce(this.seriesCollection, 'sync', function() {
         	this._showToolbar();
 			//this._fetchCollection();
 			if (window.shownOnce) {
@@ -301,7 +315,7 @@ module.exports = Marionette.Layout.extend({
 			}
 			window.shownOnce = true;
 		});
-    },
+  */  },
 
     _showTable : function() {
         this.currentView = new Backgrid.Grid({
@@ -310,7 +324,7 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
-        this._showPager();
+        //this._showPager();
     	this._renderView();
     },
 
