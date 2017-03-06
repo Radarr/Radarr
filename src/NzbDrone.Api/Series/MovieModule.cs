@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Api.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
@@ -33,6 +34,8 @@ namespace NzbDrone.Api.Movie
         private readonly IMovieStatisticsService _moviesStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
 
+		private const string TITLE_SLUG_ROUTE = "/titleslug/(?<slug>[^/]+)";
+
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IMovieService moviesService,
                             IMovieStatisticsService moviesStatisticsService,
@@ -55,6 +58,9 @@ namespace NzbDrone.Api.Movie
             GetResourceAll = AllMovie;
 			GetResourcePaged = GetMoviePaged;
             GetResourceById = GetMovie;
+			Get[TITLE_SLUG_ROUTE] = (options) => {
+				return ReqResExtensions.AsResponse(GetByTitleSlug(options.slug));
+			};
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
             DeleteResource = DeleteMovie;
@@ -185,6 +191,11 @@ namespace NzbDrone.Api.Movie
 
             return moviesResources;
         }
+
+		private MovieResource GetByTitleSlug(string slug)
+		{
+			return MapToResource(_moviesService.FindByTitleSlug(slug));
+		}
 
         private int AddMovie(MovieResource moviesResource)
         {
