@@ -61,7 +61,7 @@ module.exports = Marionette.Layout.extend({
             name  : 'added',
             label : 'Date Added',
             cell  : RelativeDateCell
-        },        
+        },
         {
           name : "downloadedQuality",
           label : "Downloaded",
@@ -139,6 +139,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
     	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
         this.seriesCollection = MoviesCollection.clone();
+        //debugger;
         this.seriesCollection.bindSignalR();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
        // this.seriesCollection.setPageSize(pageSize);
@@ -191,7 +192,7 @@ module.exports = Marionette.Layout.extend({
 			}
 
         });
-		this.seriesCollection.setPageSize(pageSize);
+		//this.seriesCollection.setPageSize(pageSize);
 
 
         this.sortingOptions = {
@@ -303,6 +304,12 @@ module.exports = Marionette.Layout.extend({
                 }
             ]
         };
+
+            //this._showToolbar();
+            //debugger;
+            self = this;
+            setTimeout(function(){self._showToolbar();}, 0);//wtf???
+            //this._renderView();
     },
 
     onShow : function() {
@@ -375,6 +382,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showToolbar : function() {
+      //debugger;
         if (this.toolbar.currentView) {
             return;
         }
@@ -416,7 +424,7 @@ module.exports = Marionette.Layout.extend({
         var movies = FullMovieCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
         //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
-        //    releasedMovies.length 
+        //    releasedMovies.length
 
         var announced = 0;
 		var incinemas = 0;
