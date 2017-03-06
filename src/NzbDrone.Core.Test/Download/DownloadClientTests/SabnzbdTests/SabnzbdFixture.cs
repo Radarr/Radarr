@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Timeleft = TimeSpan.FromSeconds(10),
                             Category = "tv",
                             Id = "sabnzbd_nzb12345",
-                            Title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE"
+                            Title = "Droned.1998.1080p.WEB-DL-DRONE"
                         }
                     }
                 };
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Size = 1000,
                             Category = "tv", 
                             Id = "sabnzbd_nzb12345",
-                            Title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE"
+                            Title = "Droned.1998.1080p.WEB-DL-DRONE"
                         }
                     }
                 };
@@ -82,8 +82,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Size = 1000,
                             Category = "tv", 
                             Id = "sabnzbd_nzb12345",
-                            Title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
-                            Storage = "/remote/mount/vv/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE"
+                            Title = "Droned.1998.1080p.WEB-DL-DRONE",
+                            Storage = "/remote/mount/vv/Droned.1998.1080p.WEB-DL-DRONE"
                         }
                     }
                 };
@@ -255,15 +255,15 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             Subject.GetItems().Should().BeEmpty();
         }
 
-        [TestCase("[ TOWN ]-[ http://www.town.ag ]-[ ANIME ]-[Usenet Provider >> http://www.ssl- <<] - [Commie] Aldnoah Zero 18 [234C8FC7]", "[ TOWN ]-[ http-++www.town.ag ]-[ ANIME ]-[Usenet Provider  http-++www.ssl- ] - [Commie] Aldnoah Zero 18 [234C8FC7].nzb")]
+        [TestCase("[ TOWN ]-[ http://www.town.ag ]-[ ANIME ]-[Usenet Provider >> http://www.ssl- <<] - [Commie] Aldnoah Zero 18 [234C8FC7]", "[ TOWN ]-[ http++www.town.ag ]-[ ANIME ]-[Usenet Provider  http++www.ssl- ] - [Commie] Aldnoah Zero 18 [234C8FC7].nzb")]
         public void Download_should_use_clean_title(string title, string filename)
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteMovie();
-            remoteEpisode.Release.Title = title;
+            var remoteMovie = CreateRemoteMovie();
+            remoteMovie.Release.Title = title;
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteMovie);
 
             Mocker.GetMock<ISabnzbdProxy>()
                 .Verify(v => v.DownloadNzb(It.IsAny<byte[]>(), filename, It.IsAny<string>(), It.IsAny<int>(), It.IsAny<SabnzbdSettings>()), Times.Once());
@@ -274,9 +274,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteMovie();
+            var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteEpisode);
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -309,29 +309,30 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         }
 
         [Test]
+		[Ignore("Series")]
         public void Download_should_use_sabRecentTvPriority_when_recentEpisode_is_true()
         {
             Mocker.GetMock<ISabnzbdProxy>()
                     .Setup(s => s.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()))
                     .Returns(new SabnzbdAddResponse());
 
-            var remoteEpisode = CreateRemoteMovie();
-            //remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1)
-            //                                          .All()
-            //                                          .With(e => e.AirDate = DateTime.Today.ToString(Episode.AIR_DATE_FORMAT))
-            //                                          .Build()
-            //                                          .ToList();
+            var remoteMovie = CreateRemoteMovie();
+            /*remoteMovie.Episodes = Builder<Episode>.CreateListOfSize(1)
+                                                      .All()
+                                                      .With(e => e.AirDate = DateTime.Today.ToString(Episode.AIR_DATE_FORMAT))
+                                                      .Build()
+                                                      .ToList();*/
 
-            Subject.Download(remoteEpisode);
+            Subject.Download(remoteMovie);
 
             Mocker.GetMock<ISabnzbdProxy>()
                   .Verify(v => v.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()), Times.Once());
         }
 
-        [TestCase(@"Droned.S01E01.Pilot.1080p.WEB-DL-DRONE", @"Droned.S01E01_Pilot_1080p_WEB-DL-DRONE.mkv")]
-        [TestCase(@"Droned.S01E01.Pilot.1080p.WEB-DL-DRONE", @"SubDir\Droned.S01E01_Pilot_1080p_WEB-DL-DRONE.mkv")]
-        [TestCase(@"Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.mkv", @"SubDir\Droned.S01E01_Pilot_1080p_WEB-DL-DRONE.mkv")]
-        [TestCase(@"Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.mkv", @"SubDir\SubDir\Droned.S01E01_Pilot_1080p_WEB-DL-DRONE.mkv")]
+        [TestCase(@"Droned.1998.1080p.WEB-DL-DRONE", @"Droned.1998_1080p_WEB-DL-DRONE.mkv")]
+        [TestCase(@"Droned.1998.1080p.WEB-DL-DRONE", @"SubDir\Droned.1998_1080p_WEB-DL-DRONE.mkv")]
+        [TestCase(@"Droned.1998.1080p.WEB-DL-DRONE.mkv", @"SubDir\Droned.1998_1080p_WEB-DL-DRONE.mkv")]
+        [TestCase(@"Droned.1998.1080p.WEB-DL-DRONE.mkv", @"SubDir\SubDir\Droned.1998_1080p_WEB-DL-DRONE.mkv")]
         public void should_return_path_to_jobfolder(string title, string storage)
         {
             _completed.Items.First().Title = title;
@@ -350,14 +351,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             Mocker.GetMock<IRemotePathMappingService>()
                 .Setup(v => v.RemapRemoteToLocal("127.0.0.1", It.IsAny<OsPath>()))
-                .Returns(new OsPath(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".AsOsAgnostic()));
+                .Returns(new OsPath(@"O:\mymount\Droned.1998.1080p.WEB-DL-DRONE".AsOsAgnostic()));
 
             GivenQueue(null);
             GivenHistory(_completed);
 
             var result = Subject.GetItems().Single();
 
-            result.OutputPath.Should().Be(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".AsOsAgnostic());
+            result.OutputPath.Should().Be(@"O:\mymount\Droned.1998.1080p.WEB-DL-DRONE".AsOsAgnostic());
         }
 
         [Test]

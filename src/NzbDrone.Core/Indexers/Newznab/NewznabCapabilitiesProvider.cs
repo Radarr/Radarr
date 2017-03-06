@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         public NewznabCapabilities GetCapabilities(NewznabSettings indexerSettings)
         {
             var key = indexerSettings.ToJson();
-            _capabilitiesCache.Clear();
+            //_capabilitiesCache.Clear(); I am an idiot, i think
             var capabilities = _capabilitiesCache.Get(key, () => FetchCapabilities(indexerSettings), TimeSpan.FromDays(7));
 
             return capabilities;

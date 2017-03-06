@@ -26,7 +26,8 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                      DownloadId = "35238",
                      SourceTitle = "TV Series S01",
                      SeriesId = 5,
-                     EpisodeId = 4
+                     EpisodeId = 4,
+					 MovieId = 3,
                  }
                 });
         }
@@ -36,19 +37,19 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             GivenDownloadHistory();
 
-            var remoteEpisode = new RemoteEpisode
+            var remoteEpisode = new RemoteMovie
             {
-                Series = new Series() { Id = 5 },
-                Episodes = new List<Episode> { new Episode { Id = 4 } },
-                ParsedEpisodeInfo = new ParsedEpisodeInfo()
+                Movie = new Movie() { Id = 3 },
+           
+                ParsedMovieInfo = new ParsedMovieInfo()
                 {
-                    SeriesTitle = "TV Series",
-                    SeasonNumber = 1
+                    MovieTitle = "A Movie",
+                    Year = 1998
                 }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedEpisodeInfo>(i => i.SeasonNumber == 1 && i.SeriesTitle == "TV Series"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                  .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.MovieTitle == "A Movie"), It.IsAny<string>(), null))
                   .Returns(remoteEpisode);
 
             var client = new DownloadClientDefinition()
@@ -59,74 +60,18 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             var item = new DownloadClientItem()
             {
-                Title = "The torrent release folder",
+                Title = "A Movie 1998",
                 DownloadId = "35238",
             };
 
             var trackedDownload = Subject.TrackDownload(client, item);
 
             trackedDownload.Should().NotBeNull();
-            trackedDownload.RemoteEpisode.Should().NotBeNull();
-            trackedDownload.RemoteEpisode.Series.Should().NotBeNull();
-            trackedDownload.RemoteEpisode.Series.Id.Should().Be(5);
-            trackedDownload.RemoteEpisode.Episodes.First().Id.Should().Be(4);
-            trackedDownload.RemoteEpisode.ParsedEpisodeInfo.SeasonNumber.Should().Be(1);
+            trackedDownload.RemoteMovie.Should().NotBeNull();
+            trackedDownload.RemoteMovie.Movie.Should().NotBeNull();
+			trackedDownload.RemoteMovie.Movie.Id.Should().Be(3);
         }
 
-        [Test]
-        public void should_parse_as_special_when_source_title_parsing_fails()
-        {
-            var remoteEpisode = new RemoteEpisode
-            {
-                Series = new Series() { Id = 5 },
-                Episodes = new List<Episode> { new Episode { Id = 4 } },
-                ParsedEpisodeInfo = new ParsedEpisodeInfo()
-                {
-                    SeriesTitle = "TV Series",
-                    SeasonNumber = 0,
-                    EpisodeNumbers = new []{ 1 }
-                }
-            };
-
-            Mocker.GetMock<IHistoryService>()
-                .Setup(s => s.FindByDownloadId(It.Is<string>(sr => sr == "35238")))
-                .Returns(new List<History.History>(){
-                 new History.History(){
-                     DownloadId = "35238",
-                     SourceTitle = "TV Series Special",
-                     SeriesId = 5,
-                     EpisodeId = 4
-                 }
-                });
-
-            Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedEpisodeInfo>(i => i.SeasonNumber == 0 && i.SeriesTitle == "TV Series"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
-                  .Returns(remoteEpisode);
-
-            Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.ParseSpecialEpisodeTitle(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), null))
-                  .Returns(remoteEpisode.ParsedEpisodeInfo);
-
-            var client = new DownloadClientDefinition()
-            {
-                Id = 1,
-                Protocol = DownloadProtocol.Torrent
-            };
-
-            var item = new DownloadClientItem()
-            {
-                Title = "The torrent release folder",
-                DownloadId = "35238",
-            };
-
-            var trackedDownload = Subject.TrackDownload(client, item);
-
-            trackedDownload.Should().NotBeNull();
-            trackedDownload.RemoteEpisode.Should().NotBeNull();
-            trackedDownload.RemoteEpisode.Series.Should().NotBeNull();
-            trackedDownload.RemoteEpisode.Series.Id.Should().Be(5);
-            trackedDownload.RemoteEpisode.Episodes.First().Id.Should().Be(4);
-            trackedDownload.RemoteEpisode.ParsedEpisodeInfo.SeasonNumber.Should().Be(0);
-        }
+        
     }
 }

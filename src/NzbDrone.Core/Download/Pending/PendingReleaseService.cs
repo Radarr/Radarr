@@ -254,37 +254,35 @@ namespace NzbDrone.Core.Download.Pending
             return new[] { delay, minimumAge }.Max();
         }
 
-        //private void RemoveGrabbed(RemoteEpisode remoteEpisode)
-        //{
-        //    var pendingReleases = GetPendingReleases();
-        //    var episodeIds = remoteEpisode.Episodes.Select(e => e.Id);
+        private void RemoveGrabbed(RemoteMovie remoteEpisode)
+        {
+            var pendingReleases = GetPendingReleases();
+            
 
-        //    var existingReports = pendingReleases.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
-        //                                                     .Intersect(episodeIds)
-        //                                                     .Any())
-        //                                                     .ToList();
+			var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteEpisode.Movie.Id)
+                                                             .ToList();
 
-        //    if (existingReports.Empty())
-        //    {
-        //        return;
-        //    }
+            if (existingReports.Empty())
+            {
+                return;
+            }
 
-        //    var profile = remoteEpisode.Series.Profile.Value;
+            var profile = remoteEpisode.Movie.Profile.Value;
 
-        //    foreach (var existingReport in existingReports)
-        //    {
-        //        var compare = new QualityModelComparer(profile).Compare(remoteEpisode.ParsedEpisodeInfo.Quality,
-        //                                                                existingReport.RemoteEpisode.ParsedEpisodeInfo.Quality);
+            foreach (var existingReport in existingReports)
+            {
+                var compare = new QualityModelComparer(profile).Compare(remoteEpisode.ParsedMovieInfo.Quality,
+                                                                        existingReport.RemoteMovie.ParsedMovieInfo.Quality);
 
-        //        //Only remove lower/equal quality pending releases
-        //        //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
-        //        if (compare >= 0)
-        //        {
-        //            _logger.Debug("Removing previously pending release, as it was grabbed.");
-        //            Delete(existingReport);
-        //        }
-        //    }
-        //}
+                //Only remove lower/equal quality pending releases
+                //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
+                if (compare >= 0)
+                {
+                    _logger.Debug("Removing previously pending release, as it was grabbed.");
+                    Delete(existingReport);
+                }
+            }
+        }
 
         private void RemoveRejected(List<DownloadDecision> rejected)
         {
@@ -332,7 +330,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public void Handle(MovieGrabbedEvent message)
         {
-            //RemoveGrabbed(message.Movie);
+            RemoveGrabbed(message.Movie);
         }
 
         public void Handle(RssSyncCompleteEvent message)
