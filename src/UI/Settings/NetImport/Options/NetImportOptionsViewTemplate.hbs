@@ -63,5 +63,20 @@
                 </div>
             </div>
         </div>
-    </div>
+        <div class="input-group-btn">
+            <button class="btn btn-danger btn-icon-only x-reset-trakt-tokens" title="Reset Trakt Tokens"><i class="icon-sonarr-refresh"></i></button>
+	          <button class="btn btn-danger btn-icon-only x-revoke-trakt-tokens" title="Revoke Trakt Tokens"><i class="icon-sonarr-logout"></i></button>
+			  </div >
+    </div>	
+        <legend>TheMovieDB.org Authentication</legend>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">Session ID</label>
+                <div class="col-sm-4">
+                    <input type="text" readonly="readonly" name="tmdbSessionId" class="form-control x-tmdb-session-id"/>
+        </div>
+        <div class="input-group-btn">
+            <button class="btn btn-danger btn-icon-only x-reset-tmdb-session-id" title="Reset TMDB Session"><i class="icon-sonarr-refresh"></i></button>
+              <button class="btn btn-danger btn-icon-only x-revoke-tmdb-session-id" title="Revoke TMDB Session"><i class="icon-sonarr-logout"></i></button>
+              </div >
+    </div>        
 </fieldset>

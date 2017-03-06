@@ -58,8 +58,9 @@ namespace NzbDrone.Core.Configuration
         ParsingLeniencyType ParsingLeniency { get; set; }
 
         int NetImportSyncInterval { get; set; }
-		string ListSyncLevel { get; set; }
-		string ImportExclusions { get; set; }
+	string ListSyncLevel { get; set; }
+	string ImportExclusions { get; set; }
+		string TmdbSessionId { get; set; }
         string TraktAuthToken { get; set; }
         string TraktRefreshToken { get; set; }
         int TraktTokenExpiry { get; set; }

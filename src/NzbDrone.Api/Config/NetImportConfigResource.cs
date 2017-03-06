@@ -11,6 +11,7 @@ namespace NzbDrone.Api.Config
 	public string TraktAuthToken { get; set; }
 	public string TraktRefreshToken { get; set; }
 	public int TraktTokenExpiry { get; set; }
+	public string TmdbSessionId { get; set; }
     }
 
     public static class NetImportConfigResourceMapper
@@ -25,6 +26,7 @@ namespace NzbDrone.Api.Config
 	        TraktAuthToken = model.TraktAuthToken,
 	        TraktRefreshToken = model.TraktRefreshToken,
 	        TraktTokenExpiry = model.TraktTokenExpiry,
+			TmdbSessionId = model.TmdbSessionId,
             };
         }
     }
