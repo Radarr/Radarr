@@ -84,8 +84,8 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
 		this.movieCollection = MoviesCollection.clone();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
-		this.movieCollection.switchMode('client');
-		this.movieCollection.setPageSize(pageSize);
+		this.movieCollection.switchMode('client', {fetch: false});
+		this.movieCollection.setPageSize(pageSize, {fetch: true});
         this.movieCollection.bindSignalR();
 		this.movieCollection.fullCollection.bindSignalR();
 
