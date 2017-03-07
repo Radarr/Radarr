@@ -10,6 +10,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         public override string Name => "Trakt List";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
+
         private readonly IHttpClient _httpClient;
         public IConfigService _configService;
 

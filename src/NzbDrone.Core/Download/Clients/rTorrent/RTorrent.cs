@@ -61,6 +61,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             var retryDelay = 500;
             if (WaitForTorrent(hash, tries, retryDelay))
             {
+                _logger.Info("Resolved magnet for {0}", remoteMovie.Movie.CleanTitle);
+                SetDownloadDirectory(hash);
+                _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
+                _proxy.StartTorrent(hash, Settings);
                 return hash;
             }
             else
