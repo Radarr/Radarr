@@ -18,25 +18,24 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
-             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\.?((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final|Extended|Rogue|Special|Despecialized).(Cut|Edition|Version)|Extended|Uncensored|Remastered|Unrated|Uncut|IMAX)))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<edition>(\.?((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final|Extended|Rogue|Special|Despecialized).(Cut|Edition|Version)|Extended|Uncensored|Remastered|Unrated|Uncut|IMAX)))\.(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
-             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
-             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final|Extended|Rogue|Special|Despecialized).(Cut|Edition|Version)|Extended|Uncensored|Remastered|Unrated|Uncut|IMAX))",
+            
+            //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)(?<edition>((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final|Extended|Rogue|Special|Despecialized).(Cut|Edition|Version)|Extended|Uncensored|Remastered|Unrated|Uncut|IMAX))",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
              
-             //Normal movie format, e.g: Mission.Impossible.3.2011
-             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-        //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
-             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
-             //That did not work? Maybe some tool uses [] for years. Who would do that?
-              new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Normal movie format, e.g: Mission.Impossible.3.2011
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            
+            //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
+            new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //That did not work? Maybe some tool uses [] for years. Who would do that?
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
 			//As a last resort for movies that have ( or [ in their title.
-			new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
-						  RegexOptions.IgnoreCase | RegexOptions.Compiled),
+			new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
         };
 
@@ -598,7 +597,17 @@ namespace NzbDrone.Core.Parser
             t = t.Replace("ß", "ss");
             return t;
         }
-        
+
+        public static string NormalizeImdbId(string imdbId)
+        {
+            if (imdbId.Length > 2)
+            {
+                return (imdbId.Substring(2) != "tt" ? $"tt{imdbId}" : imdbId);
+            }
+
+            return null;
+        }
+
         public static string ParseSeriesName(string title)
         {
             Logger.Debug("Parsing string '{0}'", title);

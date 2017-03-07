@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.ParserTests
 		}
 
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
-		public void should_parse_movie_year(string postTitle, int year)
+        public void should_parse_movie_year(string postTitle, int year)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
 		}

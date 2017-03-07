@@ -150,7 +150,8 @@ namespace NzbDrone.Core.Tv
 
         public Movie FindByImdbId(string imdbid)
         {
-            return Query.Where(s => s.ImdbId == imdbid).SingleOrDefault();
+            var imdbIdWithPrefix = Parser.Parser.NormalizeImdbId(imdbid);
+            return Query.Where(s => s.ImdbId == imdbIdWithPrefix).SingleOrDefault();
         }
 
         public List<Movie> GetMoviesByFileId(int fileId)
