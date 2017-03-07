@@ -32,8 +32,8 @@ namespace NzbDrone.Core.Download
 
         public ProcessedDecisions ProcessDecisions(List<DownloadDecision> decisions)
         {
-            //var qualifiedReports = GetQualifiedReports(decisions);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
+            var qualifiedReports = GetQualifiedReports(decisions);
+            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(qualifiedReports);
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
 
@@ -43,6 +43,24 @@ namespace NzbDrone.Core.Download
                 if (report.IsForMovie)
                 {
                     var remoteMovie = report.RemoteMovie;
+
+					if (remoteMovie == null || remoteMovie.Movie == null)
+					{
+						continue;
+					}
+
+					List<int> movieIds = new List<int> { remoteMovie.Movie.Id };
+
+
+					//Skip if already grabbed
+					if (grabbed.Select(r => r.RemoteMovie.Movie)
+									.Select(e => e.Id)
+									.ToList()
+									.Intersect(movieIds)
+									.Any())
+					{
+						continue;
+					}
 
                     if (report.TemporarilyRejected)
                     {
@@ -57,23 +75,7 @@ namespace NzbDrone.Core.Download
                         continue;
                     }
 
-                    if (remoteMovie == null || remoteMovie.Movie == null)
-                    {
-                        continue;
-                    }
-
-                    List<int> movieIds = new List<int> { remoteMovie.Movie.Id };
-
-
-                    //Skip if already grabbed
-                    if (grabbed.Select(r => r.RemoteMovie.Movie)
-                                    .Select(e => e.Id)
-                                    .ToList()
-                                    .Intersect(movieIds)
-                                    .Any())
-                    {
-                        continue;
-                    }
+                   
 
                     if (pending.Select(r => r.RemoteMovie.Movie)
                             .Select(e => e.Id)
@@ -153,7 +155,7 @@ namespace NzbDrone.Core.Download
         internal List<DownloadDecision> GetQualifiedReports(IEnumerable<DownloadDecision> decisions)
         {
             //Process both approved and temporarily rejected
-            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteEpisode.Episodes.Any()).ToList();
+            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && (c.RemoteMovie.Movie != null)).ToList();
         }
     }
 }

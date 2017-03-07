@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaFiles;
 namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
 {
     [TestFixture]
+	[Ignore("For now. We need to update this whole part for movies and all other TvTest.")]
     public class EpisodesWhereCutoffUnmetFixture : DbTest<EpisodeRepository, Episode>
     {
         private Series _monitoredSeries;

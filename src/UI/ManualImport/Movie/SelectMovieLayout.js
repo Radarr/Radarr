@@ -4,6 +4,7 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var MoviesCollection = require('../../Movies/MoviesCollection');
 var SelectRow = require('./SelectMovieRow');
+var FullMovieCollection = require('../../Movies/FullMovieCollection');
 
 module.exports = Marionette.Layout.extend({
     template  : 'ManualImport/Movie/SelectMovieLayoutTemplate',
@@ -32,7 +33,7 @@ module.exports = Marionette.Layout.extend({
     ],
 
     initialize : function() {
-        this.movieCollection = MoviesCollection.clone();
+        this.movieCollection = FullMovieCollection;
         this._setModelCollection();
 
         this.listenTo(this.movieCollection, 'row:selected', this._onSelected);

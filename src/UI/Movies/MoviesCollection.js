@@ -13,6 +13,44 @@ var Config = require('../Config');
 
 var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
 
+var filterModes = {
+    'all'        : [
+        null,
+        null
+    ],
+    'continuing' : [
+        'status',
+        'continuing'
+    ],
+    'ended'      : [
+        'status',
+        'ended'
+    ],
+    'monitored'  : [
+        'monitored',
+        true
+    ],
+    'missing'  : [
+        'downloaded',
+        false
+    ],
+    'released'  : [
+        "status",
+        "released",
+        //function(model) { return model.getStatus() == "released"; }
+    ],
+    'announced'  : [
+        "status",
+        "announced",
+        //function(model) { return model.getStatus() == "announced"; }
+    ],
+    'cinemas'  : [
+        "status",
+        "inCinemas",
+        //function(model) { return model.getStatus() == "inCinemas"; }
+    ]
+}//Hacky, I know
+
 
 var Collection = PageableCollection.extend({
     url       : window.NzbDrone.ApiRoot + '/movie',
@@ -21,6 +59,7 @@ var Collection = PageableCollection.extend({
 
     origSetSorting : PageableCollection.prototype.setSorting,
     origAdd : PageableCollection.prototype.add,
+    origSort : PageableCollection.prototype.sort,
 
     state : {
         sortKey            : 'sortTitle',
@@ -65,7 +104,9 @@ var Collection = PageableCollection.extend({
     },
 
     sort : function(options){
-      //debugger;
+    	if (this.mode == 'server' && this.state.order == '-1'){
+            this.origSort(options);
+        }
     },
 
     save : function() {
@@ -118,44 +159,8 @@ var Collection = PageableCollection.extend({
         return proxy.save();
     },
 
-    filterModes : {
-        'all'        : [
-            null,
-            null
-        ],
-        'continuing' : [
-            'status',
-            'continuing'
-        ],
-        'ended'      : [
-            'status',
-            'ended'
-        ],
-        'monitored'  : [
-            'monitored',
-            true
-        ],
-        'missing'  : [
-            'downloaded',
-            false
-        ],
-        'released'  : [
-            "status",
-            "released",
-            function(model) { return model.getStatus().toLowerCase() === "released"; }
-        ],
-        'announced'  : [
-            "status",
-            "announced",
-            function(model) { return model.getStatus().toLowerCase() === "announced"; }
-        ],
-        'cinemas'  : [
-            "status",
-            "inCinemas",
-            function(model) { return model.getStatus().toLowerCase() === "incinemas"; }
-        ]
-    },
-
+    filterModes : filterModes,
+  
     sortMappings : {
         movie : {
             sortKey : 'series.sortTitle'
@@ -261,6 +266,16 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('movie?page=1&pageSize='+pageSize+'&sortKey=sortTitle&sortDir=asc');
+var filterMode = Config.getValue("series.filterMode", "all");
+var sortKey = Config.getValue("movie.sortKey", "sortTitle");
+var sortDir = Config.getValue("movie.sortDirection", -1);
+var sortD = "asc";
+if (sortDir == 1) {
+  sortD = "desc";
+}
+
+var values = filterModes[filterMode];
+
+var data = ApiData.get("movie?page=1&pageSize={0}&sortKey={3}&sortDir={4}&filterKey={1}&filterValue={2}".format(pageSize, values[0], values[1], sortKey, sortD));
 
 module.exports = new Collection(data.records, { full : false, state : { totalRecords : data.totalRecords} }).bindSignalR();

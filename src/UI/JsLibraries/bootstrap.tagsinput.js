@@ -95,6 +95,37 @@
         }
       }
 
+	  /*
+      var itemValue = self.options.itemValue(item),
+          itemText = self.options.itemText(item),
+          tagClass = self.options.tagClass(item);
+
+      // Ignore items allready added
+      var existing = $.grep(self.itemsArray, function(item) { return self.options.itemValue(item) === itemValue; } )[0];
+      if (existing && !self.options.allowDuplicates) {
+        // Invoke onTagExists
+        if (self.options.onTagExists) {
+          var $existingTag = $(".tag", self.$container).filter(function() { return $(this).data("item") === existing; });
+          self.options.onTagExists(item, $existingTag);
+        }
+        return;
+      }
+
+      // if length greater than limit
+      if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
+        return;
+	  */
+      // raise beforeItemAdd arg
+      var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false });
+      self.$element.trigger(beforeItemAddEvent);
+      if (beforeItemAddEvent.cancel)
+        return;
+
+      // register item in internal array and map
+      //self.itemsArray.push(item);
+
+	  // read var beforeItemAddEvent with new value
+	  var item = beforeItemAddEvent.item; // Get text from event (BeforeItemAddEvent)	  
       var itemValue = self.options.itemValue(item),
           itemText = self.options.itemText(item),
           tagClass = self.options.tagClass(item);
@@ -114,14 +145,22 @@
       if (self.items().toString().length + item.length + 1 > self.options.maxInputLength)
         return;
 
-      // raise beforeItemAdd arg
-      var beforeItemAddEvent = $.Event('beforeItemAdd', { item: item, cancel: false });
-      self.$element.trigger(beforeItemAddEvent);
-      if (beforeItemAddEvent.cancel)
-        return;
 
-      // register item in internal array and map
+	  // register item in internal array and map
       self.itemsArray.push(item);
+    	  
+	  if (beforeItemAddEvent.tagClass !== undefined){ var tagClass = beforeItemAddEvent.tagClass; }
+	  if (item != undefined){
+	  	var items = item.toString().split(',');	  
+  	  	if (items.length > 1) {			  
+   	  		for (var i = 0; i < items.length; i++) {							
+	  			this.add(items[i], true);
+ 	  		}
+	  		if (!dontPushVal)
+  	  			self.pushVal(self.options.triggerChange);
+      			return;
+	  		}	  
+	  }
 
       // add a tag element
       var $tag = $('<span class="tag ' + htmlEncode(tagClass) + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');

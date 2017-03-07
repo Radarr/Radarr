@@ -74,14 +74,14 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator.PublishEvent(new EpisodeFileDeletedEvent(episodeFile, reason));
         }
 
-        public void Delete(MovieFile episodeFile, DeleteMediaFileReason reason)
+        public void Delete(MovieFile movieFile, DeleteMediaFileReason reason)
         {
             //Little hack so we have the episodes and series attached for the event consumers
-            episodeFile.Movie.LazyLoad();
-            episodeFile.Path = Path.Combine(episodeFile.Movie.Value.Path, episodeFile.RelativePath);
+            movieFile.Movie.LazyLoad();
+            movieFile.Path = Path.Combine(movieFile.Movie.Value.Path, movieFile.RelativePath);
 
-            _movieFileRepository.Delete(episodeFile);
-            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(episodeFile, reason));
+            _movieFileRepository.Delete(movieFile);
+            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));
         }
 
         public List<EpisodeFile> GetFilesBySeries(int seriesId)
@@ -153,9 +153,9 @@ namespace NzbDrone.Core.MediaFiles
             return addedFile;
         }
 
-        public void Update(MovieFile episodeFile)
+        public void Update(MovieFile movieFile)
         {
-            _movieFileRepository.Update(episodeFile);
+            _movieFileRepository.Update(movieFile);
         }
 
         public MovieFile GetMovie(int id)

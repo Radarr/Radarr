@@ -586,6 +586,19 @@ namespace NzbDrone.Core.Parser
             return realResult;
         }
 
+        public static string ReplaceGermanUmlauts(string s)
+        {
+            var t = s;
+            t = t.Replace("ä", "ae");
+            t = t.Replace("ö", "oe");
+            t = t.Replace("ü", "ue");
+            t = t.Replace("Ä", "Ae");
+            t = t.Replace("Ö", "Oe");
+            t = t.Replace("Ü", "Ue");
+            t = t.Replace("ß", "ss");
+            return t;
+        }
+        
         public static string ParseSeriesName(string title)
         {
             Logger.Debug("Parsing string '{0}'", title);

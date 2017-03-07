@@ -11,7 +11,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
     {
         public override string Name => "RSSList";
         public override bool Enabled => true;
-        public override bool EnableAuto => true;
+        public override bool EnableAuto => false;
 
         public RSSImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)

@@ -124,6 +124,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                         localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
                         if (shouldCheckQuality)
                         {
+							_logger.Debug("Checking quality for this video file to make sure nothing mismatched.");
                             var width = localMovie.MediaInfo.Width;
                             var current = localMovie.Quality;
                             var qualityName = current.Quality.Name.ToLower();
@@ -255,6 +256,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                             }
                             if (updated != null && updated != current)
                             {
+								_logger.Debug("Quality ({0}) of the file is different than the one we have ({1})", updated, current);
                                 updated.QualitySource = QualitySource.MediaInfo;
                                 localMovie.Quality = updated;
                             }

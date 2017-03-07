@@ -58,7 +58,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             else
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", $"&q={Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title)}%20{searchCriteria.Movie.Year}"));
+                var searchTitle = Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
             }
 
             return pageableRequests;

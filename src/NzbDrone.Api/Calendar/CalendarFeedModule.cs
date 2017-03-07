@@ -16,13 +16,13 @@ namespace NzbDrone.Api.Calendar
 {
     public class CalendarFeedModule : NzbDroneFeedModule
     {
-        private readonly IEpisodeService _episodeService;
+        private readonly IMovieService _movieService;
         private readonly ITagService _tagService;
 
-        public CalendarFeedModule(IEpisodeService episodeService, ITagService tagService)
+        public CalendarFeedModule(IMovieService movieService, ITagService tagService)
             : base("calendar")
         {
-            _episodeService = episodeService;
+            _movieService = movieService;
             _tagService = tagService;
 
             Get["/NzbDrone.ics"] = options => GetCalendarFeed();
@@ -37,7 +37,7 @@ namespace NzbDrone.Api.Calendar
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var unmonitored = false;
-            var premiersOnly = false;
+            //var premiersOnly = false;
             var tags = new List<int>();
 
             // TODO: Remove start/end parameters in v3, they don't work well for iCal
@@ -46,7 +46,7 @@ namespace NzbDrone.Api.Calendar
             var queryPastDays = Request.Query.PastDays;
             var queryFutureDays = Request.Query.FutureDays;
             var queryUnmonitored = Request.Query.Unmonitored;
-            var queryPremiersOnly = Request.Query.PremiersOnly;
+            // var queryPremiersOnly = Request.Query.PremiersOnly;
             var queryTags = Request.Query.Tags;
 
             if (queryStart.HasValue) start = DateTime.Parse(queryStart.Value);
@@ -69,10 +69,10 @@ namespace NzbDrone.Api.Calendar
                 unmonitored = bool.Parse(queryUnmonitored.Value);
             }
 
-            if (queryPremiersOnly.HasValue)
-            {
-                premiersOnly = bool.Parse(queryPremiersOnly.Value);
-            }
+            //if (queryPremiersOnly.HasValue)
+            //{
+            //    premiersOnly = bool.Parse(queryPremiersOnly.Value);
+            //}
 
             if (queryTags.HasValue)
             {
@@ -80,43 +80,56 @@ namespace NzbDrone.Api.Calendar
                 tags.AddRange(tagInput.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
             }
 
-            var episodes = _episodeService.EpisodesBetweenDates(start, end, unmonitored);
+            var movies = _movieService.GetMoviesBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
-                ProductId = "-//sonarr.tv//Sonarr//EN"
+                ProductId = "-//radarr.video//Radarr//EN"
             };
 
-
-
-            foreach (var episode in episodes.OrderBy(v => v.AirDateUtc.Value))
+            foreach (var movie in movies.OrderBy(v => v.Added))
             {
-                if (premiersOnly && (episode.SeasonNumber == 0 || episode.EpisodeNumber != 1))
-                {
-                    continue;
-                }
-
-                if (tags.Any() && tags.None(episode.Series.Tags.Contains))
+                if (tags.Any() && tags.None(movie.Tags.Contains))
                 {
                     continue;
                 }
 
                 var occurrence = calendar.Create<Event>();
-                occurrence.Uid = "NzbDrone_episode_" + episode.Id;
-                occurrence.Status = episode.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
-                occurrence.Start = new CalDateTime(episode.AirDateUtc.Value) { HasTime = true };
-                occurrence.End = new CalDateTime(episode.AirDateUtc.Value.AddMinutes(episode.Series.Runtime)) { HasTime = true };
-                occurrence.Description = episode.Overview;
-                occurrence.Categories = new List<string>() { episode.Series.Network };
+                occurrence.Uid = "NzbDrone_movie_" + movie.Id;
+                occurrence.Status = movie.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
 
-                switch (episode.Series.SeriesType)
+                switch (movie.Status)
                 {
-                    case SeriesTypes.Daily:
-                        occurrence.Summary = $"{episode.Series.Title} - {episode.Title}";
+                    case MovieStatusType.PreDB:
+                        if (movie.PhysicalRelease != null)
+                        {
+                            occurrence.Start = new CalDateTime(movie.PhysicalRelease.Value) { HasTime = true };
+                            occurrence.End = new CalDateTime(movie.PhysicalRelease.Value.AddMinutes(movie.Runtime)) { HasTime = true };
+                        }
                         break;
+
+                    case MovieStatusType.InCinemas:
+                        if (movie.InCinemas != null)
+                        {
+                            occurrence.Start = new CalDateTime(movie.InCinemas.Value) { HasTime = true };
+                            occurrence.End = new CalDateTime(movie.InCinemas.Value.AddMinutes(movie.Runtime)) { HasTime = true };
+                        }
+                        break;
+                    case MovieStatusType.Announced:
+                        continue; // no date
                     default:
-                        occurrence.Summary =$"{episode.Series.Title} - {episode.SeasonNumber}x{episode.EpisodeNumber:00} - {episode.Title}";
+                        if (movie.PhysicalRelease != null)
+                        {
+                            occurrence.Start = new CalDateTime(movie.PhysicalRelease.Value) { HasTime = true };
+                            occurrence.End = new CalDateTime(movie.PhysicalRelease.Value.AddMinutes(movie.Runtime)) { HasTime = true };
+                        }
                         break;
                 }
+
+                occurrence.Description = movie.Overview;
+                occurrence.Categories = new List<string>() { movie.Studio };
+
+                occurrence.Summary = $"{movie.Title}";
+
             }
 
             var serializer = (IStringSerializer) new SerializerFactory().Build(calendar.GetType(), new SerializationContext());

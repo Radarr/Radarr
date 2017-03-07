@@ -4,7 +4,7 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var EmptyView = require('../Index/EmptyView');
 var FullMovieCollection = require ('../FullMovieCollection');
-var MoviesCollection = require('../MoviesCollectionClient');
+var MoviesCollection = require('../MoviesCollection');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var ProfileCell = require('../../Cells/ProfileCell');
@@ -13,6 +13,7 @@ var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
+var Config = require('../../Config');
 
 window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
@@ -82,8 +83,12 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-		this.movieCollection = MoviesCollection;
-        this.movieCollection.bindSignalR();
+
+		this.movieCollection = MoviesCollection.clone();
+		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
+		this.movieCollection.switchMode('client');
+		this.movieCollection.setPageSize(pageSize);
+    this.movieCollection.bindSignalR();
 		this.movieCollection.fullCollection.bindSignalR();
 
 		var selected = FullMovieCollection.where( { selected : true });
@@ -95,6 +100,7 @@ module.exports = Marionette.Layout.extend({
 			this._showToolbar();
 			this._showTable();
 			this._showPager();
+			window.shownOnce = true;
 		});
 
 		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
@@ -157,13 +163,13 @@ module.exports = Marionette.Layout.extend({
     },
 
     onRender : function() {
-      	this._showToolbar();
-       	this._showTable();
-       	this._showPager();
-		if (window.shownOnce){
-			this.movieCollection.fetch();
-		}
-		window.shownOnce = true;
+      	//this._showToolbar();
+       	//this._showTable();
+       	//this._showPager(); 
+		    //if (window.shownOnce){
+		    //	this.movieCollection.fetch();
+		    //}
+		    //window.shownOnce = true;
     },
 
     onClose : function() {

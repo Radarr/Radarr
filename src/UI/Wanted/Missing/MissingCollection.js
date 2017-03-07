@@ -11,7 +11,7 @@ var Collection = PagableCollection.extend({
     tableName : 'wanted.missing',
 
     state : {
-        pageSize : 15,
+        pageSize : 50,
         sortKey  : 'title',
         order    : -1
     },
@@ -37,26 +37,26 @@ var Collection = PagableCollection.extend({
             'monitored',
             'false'
         ],
-	'announced' : [
-		'moviestatus',
-		'announced'
-	],
-	'incinemas' : [
-		'moviestatus',
-		'incinemas'
-	],
-	'released' : [
-		'moviestatus',
-		'released'
-	],
-	'available' : [
-		'moviestatus',
-		'available'
-	],
-	'all' : [
-		'all',
-		'all'
-	]
+    	'announced' : [
+    		'moviestatus',
+    		'announced'
+    	],
+    	'incinemas' : [
+    		'moviestatus',
+    		'incinemas'
+    	],
+    	'released' : [
+    		'moviestatus',
+    		'released'
+    	],
+    	'available' : [
+    		'moviestatus',
+    		'available'
+    	],
+    	'all' : [
+    		'all',
+    		'all'
+    	]
     },
 
     parseState : function(resp) {
