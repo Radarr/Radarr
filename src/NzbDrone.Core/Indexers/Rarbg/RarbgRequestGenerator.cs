@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -20,60 +19,18 @@ namespace NzbDrone.Core.Indexers.Rarbg
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();
-
             pageableRequests.Add(GetPagedRequests("list", null, null));
-
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, "S{0:00}E{1:00}", searchCriteria.SeasonNumber, searchCriteria.EpisodeNumber));
-
+            pageableRequests.Add(GetMovieRequest(searchCriteria));
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, "S{0:00}", searchCriteria.SeasonNumber));
-
-            return pageableRequests;
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, "\"{0:yyyy MM dd}\"", searchCriteria.AirDate));
-
-            return pageableRequests;
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            foreach (var queryTitle in searchCriteria.EpisodeQueryTitles)
-            {
-                var query = queryTitle.Replace('+', ' ');
-                query = System.Web.HttpUtility.UrlEncode(query);
-
-                pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, query));
-            }
-
-            return pageableRequests;
-        }
-
-        private IEnumerable<IndexerRequest> GetPagedRequests(string mode, int? tvdbId, string query, params object[] args)
+        private IEnumerable<IndexerRequest> GetPagedRequests(string mode, int? imdbId, string query, params object[] args)
         {
             var requestBuilder = new HttpRequestBuilder(Settings.BaseUrl)
                 .Resource("/pubapi_v2.php")
@@ -87,9 +44,9 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             requestBuilder.AddQueryParam("mode", mode);
 
-            if (tvdbId.HasValue)
+            if (imdbId.HasValue)
             {
-                requestBuilder.AddQueryParam("search_tvdb", tvdbId.Value);
+                requestBuilder.AddQueryParam("search_imdb", imdbId.Value);
             }
 
             if (query.IsNotNullOrWhiteSpace())
@@ -102,11 +59,11 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "tv");
+            requestBuilder.AddQueryParam("category", "movies");
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");
-            requestBuilder.AddQueryParam("app_id", "Sonarr");
+            requestBuilder.AddQueryParam("app_id", "Radarr");
 
             yield return new IndexerRequest(requestBuilder.Build());
         }
@@ -141,17 +98,29 @@ namespace NzbDrone.Core.Indexers.Rarbg
             yield return new IndexerRequest(requestBuilder.Build());
         }
 
-        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
         {
-            
+            return new IndexerPageableRequestChain();
+        }
 
-            var pageableRequests = new IndexerPageableRequestChain();
+        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
 
-            pageableRequests.Add(GetMovieRequest(searchCriteria));
+        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
 
-            return pageableRequests;
+        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
+        }
 
-            
+        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
+        {
+            return new IndexerPageableRequestChain();
         }
     }
 }

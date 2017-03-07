@@ -84,6 +84,8 @@ namespace NzbDrone.Core.NetImport
             return movies;
         }
 
+
+
         public void Execute(NetImportSyncCommand message)
         {
             //if there are no lists that are enabled for automatic import then dont do anything
@@ -94,60 +96,20 @@ namespace NzbDrone.Core.NetImport
             }
 
             var listedMovies = Fetch(0, true);
-            if (_configService.ListSyncLevel != "disabled")
-            {
-                var moviesInLibrary = _movieService.GetAllMovies();
-                foreach (var movie in moviesInLibrary)
-                {
-                    bool foundMatch = false;
-                    foreach (var listedMovie in listedMovies)
-                    {
-                        if (movie.TmdbId == listedMovie.TmdbId)
-                        {
-                            foundMatch = true;
-                            break;
-                        }
 
-                    }
-                    if (!foundMatch)
-                    {
-                        switch(_configService.ListSyncLevel)
-                        {
-                            case "logOnly":
-                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
-                                break;
-                            case "keepAndUnmonitor":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
-                                movie.Monitored = false;
-                                break;
-                            case "removeAndKeep":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
-                                _movieService.DeleteMovie(movie.Id, false);
-                                break;
-                            case "removeAndDelete":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
-                                _movieService.DeleteMovie(movie.Id, true);
-                                //TODO: for some reason the files are not deleted in this case... any idea why?
-                                break;
-                            default:
-                                break; 
-                        }
-                    }
-                }
-            }
+            CleanLibrary(listedMovies);
 
             listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
+            if (listedMovies.Any())
+            {
+                _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
+            }
 
             if (_configService.ImportExclusions != null)
             {
                 // Replace `movie-title-tmdbid` with just tmdbid in exclusions
                 var importExclusions = _configService.ImportExclusions.Split(',').Select(x => Regex.Replace(x, @"^.*\-(.*)$", "$1")).ToList();
                 listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
-            }
-
-            if (listedMovies.Any())
-            {
-                _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
             }
 
             var downloadedCount = 0;
@@ -178,6 +140,51 @@ namespace NzbDrone.Core.NetImport
             }
 
             _logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
+        }
+
+        private void CleanLibrary(List<Movie> movies)
+        {
+            if (_configService.ListSyncLevel != "disabled")
+            {
+                var moviesInLibrary = _movieService.GetAllMovies();
+                foreach (var movie in moviesInLibrary)
+                {
+                    bool foundMatch = false;
+                    foreach (var listedMovie in movies)
+                    {
+                        if (movie.TmdbId == listedMovie.TmdbId)
+                        {
+                            foundMatch = true;
+                            break;
+                        }
+
+                    }
+                    if (!foundMatch)
+                    {
+                        switch (_configService.ListSyncLevel)
+                        {
+                            case "logOnly":
+                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                                break;
+                            case "keepAndUnmonitor":
+                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                                movie.Monitored = false;
+                                break;
+                            case "removeAndKeep":
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
+                                _movieService.DeleteMovie(movie.Id, false);
+                                break;
+                            case "removeAndDelete":
+                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
+                                _movieService.DeleteMovie(movie.Id, true);
+                                //TODO: for some reason the files are not deleted in this case... any idea why?
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
