@@ -406,7 +406,6 @@ namespace NzbDrone.Core.Parser
                 if (parsedMovieInfo.Year > 1900)
                 {
                     movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-                    
                 }
                 else
                 {
@@ -417,7 +416,7 @@ namespace NzbDrone.Core.Parser
                 {
                     movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
-                return movie;
+                // return movie;
             }
 
 
