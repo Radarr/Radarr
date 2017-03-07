@@ -105,22 +105,23 @@ namespace NzbDrone.Core.NetImport
                 _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
             }
 
+
+            var importExclusions = new List<string>();
             if (_configService.ImportExclusions != null)
             {
                 // Replace `movie-title-tmdbid` with just tmdbid in exclusions
-                var importExclusions = _configService.ImportExclusions.Split(',').Select(x => Regex.Replace(x, @"^.*\-(.*)$", "$1")).ToList();
-                listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
+                importExclusions = _configService.ImportExclusions.Split(',').Select(x => Regex.Replace(x, @"^.*\-(.*)$", "$1")).ToList();
+                // listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
             }
 
             var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null)
+                if (mapped != null && !importExclusions.Any(x => x == mapped.TmdbId.ToString()))
                 {
                     List<DownloadDecision> decisions;
-                    mapped.AddOptions = new AddMovieOptions();
-                    mapped.AddOptions.SearchForMovie = true;
+                    mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
                     _movieService.AddMovie(mapped);
 
                     // Search for movie
@@ -136,6 +137,13 @@ namespace NzbDrone.Core.NetImport
 
                     var processed = _processDownloadDecisions.ProcessDecisions(decisions);
                     downloadedCount += processed.Grabbed.Count;
+                }
+                else
+                {
+                    if (mapped != null)
+                    {
+                        _logger.Info($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                    }
                 }
             }
 
