@@ -33,12 +33,12 @@ namespace NzbDrone.Api.Authentication
         {
             if (_configFileProvider.AuthenticationMethod == AuthenticationType.Forms)
             {
-                RegisterFormsAuth(pipelines);                
+                RegisterFormsAuth(pipelines);
             }
 
             else if (_configFileProvider.AuthenticationMethod == AuthenticationType.Basic)
             {
-                pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(_authenticationService, "Sonarr"));                
+                pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(_authenticationService, "Radarr"));
             }
 
             pipelines.BeforeRequest.AddItemToEndOfPipeline((Func<NancyContext, Response>) RequiresAuthentication);
