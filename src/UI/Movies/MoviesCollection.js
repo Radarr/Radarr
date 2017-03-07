@@ -42,13 +42,9 @@ var Collection = PageableCollection.extend({
         }
     },
 
-    sortMappings : {
-        'movie' : { sortKey : 'series.sortTitle' }
-    },
-
     parseState : function(resp) {
       var direction = -1;
-      if (resp.sortDirection == "descending") {
+      if (resp.sortDirection.toLowerCase() === "descending") {
         direction = 1;
       }
         return { totalRecords : resp.totalRecords, order : direction, currentPage : resp.page };
@@ -146,33 +142,36 @@ var Collection = PageableCollection.extend({
         'released'  : [
             "status",
             "released",
-            function(model) { return model.getStatus() == "released"; }
+            function(model) { return model.getStatus().toLowerCase() === "released"; }
         ],
         'announced'  : [
             "status",
             "announced",
-            function(model) { return model.getStatus() == "announced"; }
+            function(model) { return model.getStatus().toLowerCase() === "announced"; }
         ],
         'cinemas'  : [
             "status",
             "inCinemas",
-            function(model) { return model.getStatus() == "inCinemas"; }
+            function(model) { return model.getStatus().toLowerCase() === "incinemas"; }
         ]
     },
 
     sortMappings : {
+        movie : {
+            sortKey : 'series.sortTitle'
+        },
         title : {
             sortKey : 'sortTitle'
         },
         statusWeight : {
           sortValue : function(model, attr) {
-            if (model.getStatus() == "released") {
+            if (model.getStatus().toLowerCase() === "released") {
               return 3;
             }
-            if (model.getStatus() == "inCinemas") {
+            if (model.getStatus().toLowerCase() === "incinemas") {
               return 2;
             }
-            if (model.getStatus() == "announced") {
+            if (model.getStatus().toLowerCase() === "announced") {
 	      return 1;
 	    }
             return -1;
@@ -204,7 +203,6 @@ var Collection = PageableCollection.extend({
         },
         status: {
           sortValue : function(model, attr) {
-            debugger;
             if (model.get("downloaded")) {
               return -1;
             }

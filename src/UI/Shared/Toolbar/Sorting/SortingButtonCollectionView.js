@@ -31,12 +31,11 @@ module.exports = Marionette.CompositeView.extend({
         }
 
         collection.setSorting(sortModel.get('name'), order);
-        if (collection.mode == "server"){
+        if (collection.mode.toLowerCase() === "server"){
           collection.fetch({reset: true});
         } else {
           collection.fullCollection.sort();
         }
-
 
         return this;
     }

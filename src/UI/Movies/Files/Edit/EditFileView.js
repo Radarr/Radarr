@@ -24,17 +24,17 @@ var view = Marionette.ItemView.extend({
 			this.qualities = new Qualities();
 			var self = this;
 			this.listenTo(this.qualities, 'all', this._qualitiesUpdated);
-			this.qualities.fetch()
+			this.qualities.fetch();
 
 		},
 
 		onRender : function() {
-			this.ui.quality.val(this.model.get("quality").quality.id)
+			this.ui.quality.val(this.model.get("quality").quality.id);
 		},
 
 		_onBeforeSave : function() {
 				var qualityId = this.ui.quality.val();
-				var quality = this.qualities.find(function(m){return m.get("quality").id == qualityId}).get("quality");
+				var quality = this.qualities.find(function(m){return m.get("quality").id === qualityId;}).get("quality");
 				var mQuality = this.model.get("quality");
 				mQuality.quality = quality;
 				this.model.set({ quality : mQuality });

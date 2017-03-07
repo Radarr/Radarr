@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
@@ -81,7 +82,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-		this.movieCollection = MoviesCollection; 
+		this.movieCollection = MoviesCollection;
         this.movieCollection.bindSignalR();
 		this.movieCollection.fullCollection.bindSignalR();
 
@@ -158,7 +159,7 @@ module.exports = Marionette.Layout.extend({
     onRender : function() {
       	this._showToolbar();
        	this._showTable();
-       	this._showPager(); 
+       	this._showPager();
 		if (window.shownOnce){
 			this.movieCollection.fetch();
 		}
@@ -198,7 +199,7 @@ module.exports = Marionette.Layout.extend({
 
         this.seriesRegion.show(this.editorGrid);
        	this._showFooter();
-		
+
     },
 
     _showToolbar : function() {

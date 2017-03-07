@@ -5,6 +5,7 @@ var _ = require('underscore');
 var vent = require("vent");
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var NzbDroneCell = require("../../Cells/NzbDroneCell");
+var Marionette = require('marionette');
 
 module.exports = TemplatedCell.extend({
     className : 'profile-cell',
@@ -29,7 +30,7 @@ module.exports = TemplatedCell.extend({
         {
             this.profile = this.defaultProfile;
             this.$(".x-profile").val(this.defaultProfile);//this.ui.profile.val(this.defaultProfile);
-            this.model.set("profileId", this.defaultProfile)
+            this.model.set("profileId", this.defaultProfile);
         }
 
         this.cellValue = ProfileCollection;

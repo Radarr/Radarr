@@ -175,7 +175,7 @@ module.exports = Marionette.ItemView.extend({
 				var downloading = QueueCollection.findMovie(element.get('id')) || element.get('grabbed');
 				var currentTime = moment();
 				var start = moment(element.get('inCinemas'));
-				var status = element.getStatus();
+				var status = element.getStatus().toLowerCase();
 				var end = moment(endTime);
 				var monitored = element.get('monitored');
 
@@ -193,15 +193,15 @@ module.exports = Marionette.ItemView.extend({
 						statusLevel = 'unmonitored';
 				}
 
-				else if (status == "inCinemas") {
+				else if (status === "incinemas") {
 						statusLevel = 'premiere';
 				}
 
-				else if (status == "released") {
+				else if (status === "released") {
 						statusLevel = 'danger';
 				}
 
-				else if (status == "announced") {
+				else if (status === "announced") {
 						statusLevel = 'primary';
 				}
 
@@ -258,7 +258,7 @@ module.exports = Marionette.ItemView.extend({
 
 				options.titleFormat = "L";
 
-				options.columnFormat = "L"/*{
+				options.columnFormat = "L"; /*{
 						month : 'ddd',
 						week  : UiSettings.get('calendarWeekColumnHeader'),
 						day   : 'dddd'

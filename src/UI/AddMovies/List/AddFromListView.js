@@ -75,7 +75,7 @@ module.exports = Marionette.Layout.extend({
         this.isExisting = options.isExisting;
         //this.collection = new AddFromListCollection();
 
-        this.templateHelpers = {}
+        this.templateHelpers = {};
         this.listCollection = new ListCollection();
         this.templateHelpers.lists = this.listCollection.toJSON();
 
@@ -155,7 +155,7 @@ module.exports = Marionette.Layout.extend({
         if (rootFolderValue === 'addNew') {
             //var rootFolderLayout = new SchemaModal(this.listCollection);
             //AppLayout.modalRegion.show(rootFolderLayout);
-            SchemaModal.open(this.listCollection)
+            SchemaModal.open(this.listCollection);
         }
     },
 
@@ -165,7 +165,7 @@ module.exports = Marionette.Layout.extend({
 
         this.fetchResult.show(new LoadingView());
 
-        this.currentFetchPromise = this.collection.fetch({ data: { listId: listId } })
+        this.currentFetchPromise = this.collection.fetch({ data: { listId: listId } });
         this.currentFetchPromise.fail(function() {
             self._showError();
         });

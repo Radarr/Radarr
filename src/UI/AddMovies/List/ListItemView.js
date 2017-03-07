@@ -14,7 +14,7 @@ var view = Marionette.ItemView.extend({
 		template : 'AddMovies/SearchResultViewTemplate',
 
 
-})
+});
 
 
 AsValidatedView.apply(view);
