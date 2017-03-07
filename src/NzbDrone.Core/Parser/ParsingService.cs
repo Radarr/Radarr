@@ -177,27 +177,26 @@ namespace NzbDrone.Core.Parser
 
         public Movie GetMovie(string title)
         {
-            var parsedEpisodeInfo = Parser.ParseMovieTitle(title);
+            var parsedMovieInfo = Parser.ParseMovieTitle(title);
 
-            if (parsedEpisodeInfo == null)
+            if (parsedMovieInfo == null)
             {
                 return _movieService.FindByTitle(title);
             }
 
-            var series = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+            var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
 
-            if (series == null)
+            if (movies == null)
             {
-                series = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitleInfo.TitleWithoutYear,
-                                                    parsedEpisodeInfo.MovieTitleInfo.Year);
+                movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitleInfo.TitleWithoutYear, parsedMovieInfo.MovieTitleInfo.Year);
             }
 
-            if (series == null)
+            if (movies == null)
             {
-                series = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle.Replace("DC", "").Trim());
+                movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle.Replace("DC", "").Trim());
             }
 
-            return series;
+            return movies;
         }
 
         public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
@@ -220,23 +219,23 @@ namespace NzbDrone.Core.Parser
             return remoteEpisode;
         }
 
-        public RemoteMovie Map(ParsedMovieInfo parsedEpisodeInfo, string imdbId, SearchCriteriaBase searchCriteria = null)
+        public RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null)
         {
-            var remoteEpisode = new RemoteMovie
+            var remoteMovie = new RemoteMovie
             {
-                ParsedMovieInfo = parsedEpisodeInfo,
+                ParsedMovieInfo = parsedMovieInfo,
             };
 
-            var movie = GetMovie(parsedEpisodeInfo, imdbId, searchCriteria);
+            var movie = GetMovie(parsedMovieInfo, imdbId, searchCriteria);
 
             if (movie == null)
             {
-                return remoteEpisode;
+                return remoteMovie;
             }
 
-            remoteEpisode.Movie = movie;
+            remoteMovie.Movie = movie;
 
-            return remoteEpisode;
+            return remoteMovie;
         }
 
         public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int seriesId, IEnumerable<int> episodeIds)
@@ -353,7 +352,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        private Movie GetMovie(ParsedMovieInfo parsedEpisodeInfo, string imdbId, SearchCriteriaBase searchCriteria)
+        private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null)
             {
@@ -370,7 +369,7 @@ namespace NzbDrone.Core.Parser
 
                 foreach (string title in possibleTitles)
                 {
-                    if (title == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
+                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
@@ -380,19 +379,19 @@ namespace NzbDrone.Core.Parser
                         string num = entry.Key;
                         string roman = entry.Value.ToLower();
 
-                        if (title.Replace(num, roman) == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
+                        if (title.Replace(num, roman) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                         {
                             possibleMovie = searchCriteria.Movie;
                         }
 
-                        if (title.Replace(roman, num) == parsedEpisodeInfo.MovieTitle.CleanSeriesTitle())
+                        if (title.Replace(roman, num) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                         {
                             possibleMovie = searchCriteria.Movie;
                         }
                     }
                 }
 
-				if (possibleMovie != null && (parsedEpisodeInfo.Year < 1800 || possibleMovie.Year == parsedEpisodeInfo.Year))
+				if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
 				{
 					return possibleMovie;
 				}
@@ -404,19 +403,19 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria == null)
             {
-                if (parsedEpisodeInfo.Year > 1900)
+                if (parsedMovieInfo.Year > 1900)
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle, parsedEpisodeInfo.Year);
+                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
                     
                 }
                 else
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
 
                 if (movie == null)
                 {
-                    movie = _movieService.FindByTitle(parsedEpisodeInfo.MovieTitle);
+                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
                 return movie;
             }
@@ -430,7 +429,7 @@ namespace NzbDrone.Core.Parser
 
             if (movie == null)
             {
-                _logger.Debug("No matching movie {0}", parsedEpisodeInfo.MovieTitle);
+                _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
                 return null;
             }
 

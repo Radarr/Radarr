@@ -71,13 +71,15 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("This Is A Movie (1999) [IMDB #] <Genre, Genre, Genre> {ACTORS} !DIRECTOR +MORE_SILLY_STUFF_NO_ONE_NEEDS ?", "This Is A Movie")]
 		[TestCase("We Are the Best!.2013.720p.H264.mkv", "We Are the Best!")]
 		[TestCase("(500).Days.Of.Summer.(2009).DTS.1080p.BluRay.x264.NLsubs", "(500) Days Of Summer")]
+        [TestCase("To.Live.and.Die.in.L.A.1985.REMASTERED.1080p.BluRay.x264-HD4U", "To Live and Die in L.A.")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
 		}
 
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
-		public void should_parse_movie_year(string postTitle, int year)
+        [TestCase("To.Live.and.Die.in.L.A.1985.REMASTERED.1080p.BluRay.x264-HD4U", 1985)]
+        public void should_parse_movie_year(string postTitle, int year)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
 		}
