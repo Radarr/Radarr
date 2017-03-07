@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             else
             {
-                var searchTitle = Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title));
+                var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title)));
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
             }
 
