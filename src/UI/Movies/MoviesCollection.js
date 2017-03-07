@@ -82,6 +82,9 @@ var Collection = PageableCollection.extend({
     },
 
     parseState : function(resp) {
+	  if (this.mode === 'client') {
+	  	return {};
+	  }
       var direction = -1;
       if (resp.sortDirection.toLowerCase() === "descending") {
         direction = 1;
@@ -90,7 +93,7 @@ var Collection = PageableCollection.extend({
     },
 
     parseRecords : function(resp) {
-        if (resp) {
+        if (resp && this.mode !== 'client') {
             return resp.records;
         }
 

@@ -142,7 +142,9 @@ module.exports = Marionette.Layout.extend({
         //debugger;
         this.seriesCollection.bindSignalR();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
-       // this.seriesCollection.setPageSize(pageSize);
+		if (this.seriesCollection.state.pageSize !== pageSize) {
+        	this.seriesCollection.setPageSize(pageSize);
+		}
         //this.listenTo(MoviesCollection, 'sync', function() {
 		//	this.seriesCollection.fetch();
 		//});

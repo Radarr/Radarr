@@ -220,14 +220,10 @@ namespace NzbDrone.Api.REST
         private PagingResource<TResource> ReadPagingResourceFromRequest()
         {
             int pageSize;
-			      int.TryParse(Request.Query.PageSize.ToString(), out pageSize);
-            if (pageSize == 0) pageSize = 0;
+	      	int.TryParse(Request.Query.PageSize.ToString(), out pageSize);
 
             int page;
             int.TryParse(Request.Query.Page.ToString(), out page);
-            if (page == 0) page = 0;
-
-
 
 
             var pagingResource = new PagingResource<TResource>
