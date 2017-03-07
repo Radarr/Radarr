@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Test.Download
         public void should_not_process_if_storage_directory_in_drone_factory()
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedEpisodesFolder)
+                  .SetupGet(v => v.DownloadedMoviesFolder)
                   .Returns(@"C:\DropFolder".AsOsAgnostic());
 
             _trackedDownload.DownloadItem.OutputPath = new OsPath(@"C:\DropFolder\SomeOtherFolder".AsOsAgnostic());
@@ -372,8 +372,8 @@ namespace NzbDrone.Core.Test.Download
 
         private void AssertNoAttemptedImport()
         {
-            Mocker.GetMock<IDownloadedEpisodesImportService>()
-                .Verify(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Series>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            Mocker.GetMock<IDownloadedMovieImportService>()
+                .Verify(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()), Times.Never());
 
             AssertNoCompletedDownload();
         }

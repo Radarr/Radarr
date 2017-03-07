@@ -5,9 +5,9 @@ namespace NzbDrone.Api.Config
 {
     public class DownloadClientConfigResource : RestResource
     {
-        public string DownloadedEpisodesFolder { get; set; }
+        public string DownloadedMoviesFolder { get; set; }
         public string DownloadClientWorkingFolders { get; set; }
-        public int DownloadedEpisodesScanInterval { get; set; }
+        public int DownloadedMoviesScanInterval { get; set; }
 
         public bool EnableCompletedDownloadHandling { get; set; }
         public bool RemoveCompletedDownloads { get; set; }
@@ -22,9 +22,9 @@ namespace NzbDrone.Api.Config
         {
             return new DownloadClientConfigResource
             {
-                DownloadedEpisodesFolder = model.DownloadedEpisodesFolder,
+                DownloadedMoviesFolder = model.DownloadedMoviesFolder,
                 DownloadClientWorkingFolders = model.DownloadClientWorkingFolders,
-                DownloadedEpisodesScanInterval = model.DownloadedEpisodesScanInterval,
+                DownloadedMoviesScanInterval = model.DownloadedMoviesScanInterval,
 
                 EnableCompletedDownloadHandling = model.EnableCompletedDownloadHandling,
                 RemoveCompletedDownloads = model.RemoveCompletedDownloads,
