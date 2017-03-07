@@ -111,9 +111,9 @@ var Collection = PageableCollection.extend({
     },
 
     sort : function(options){
-    	if (this.mode == 'server' && this.state.order == '-1'){
-            this.origSort(options);
-        }
+    	//if (this.mode == 'server' && this.state.order == '-1' && this.state.sortKey === 'sortTitle'){
+        //    this.origSort(options);
+        //}
     },
 
     save : function() {
