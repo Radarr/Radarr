@@ -30,9 +30,9 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 
 ## Install
 
-[![Installation](https://img.shields.io/badge/wiki-installation-e5e5e5.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation) 
-[![Docker](https://img.shields.io/badge/wiki-docker-e5e5e5.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker)
-[![Setup Guide](https://img.shields.io/badge/wiki-setup_guide-e5e5e5.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Setup-Guide)
+[![Installation](https://img.shields.io/badge/wiki-installation-b7b7b7.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation) 
+[![Docker](https://img.shields.io/badge/wiki-docker-b7b7b7.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker)
+[![Setup Guide](https://img.shields.io/badge/wiki-setup_guide-b7b7b7.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Setup-Guide)
 
 ## Support
 
@@ -40,7 +40,7 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
 [![Feathub](https://img.shields.io/badge/feathub-requests-lightgrey.svg?maxAge=60&style=flat-square)](http://feathub.com/Radarr/Radarr)
 [![GitHub](https://img.shields.io/badge/github-issues-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
-[![GitHub Wiki](https://img.shields.io/badge/github-wiki-e5e5e5.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki)
+[![GitHub Wiki](https://img.shields.io/badge/github-wiki-b7b7b7.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki)
 
 ## Features
 
