@@ -71,6 +71,9 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("This Is A Movie (1999) [IMDB #] <Genre, Genre, Genre> {ACTORS} !DIRECTOR +MORE_SILLY_STUFF_NO_ONE_NEEDS ?", "This Is A Movie")]
 		[TestCase("We Are the Best!.2013.720p.H264.mkv", "We Are the Best!")]
 		[TestCase("(500).Days.Of.Summer.(2009).DTS.1080p.BluRay.x264.NLsubs", "(500) Days Of Summer")]
+		[TestCase("To.Live.and.Die.in.L.A.1985.1080p.BluRay", "To Live and Die in L.A.")]
+		[TestCase("A.I.Artificial.Intelligence.(2001)", "A.I. Artificial Intelligence")]
+		[TestCase("A.Movie.Name.(1998)", "A Movie Name")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);

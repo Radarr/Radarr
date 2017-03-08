@@ -736,11 +736,21 @@ namespace NzbDrone.Core.Parser
 
 			var parts = seriesName.Split('.');
 			seriesName = "";
-			int n;
+			int n = 0;
 			bool previousAcronym = false;
+			string nextPart = "";
 			foreach (var part in parts)
 			{
+				if (parts.Length >= n+2)
+				{
+					nextPart = parts[n+1];
+				}
 				if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
+				{
+					seriesName += part + ".";
+					previousAcronym = true;
+				}
+				else if (part.ToLower() == "a" && (previousAcronym == true || nextPart.Length == 1))
 				{
 					seriesName += part + ".";
 					previousAcronym = true;
@@ -754,7 +764,7 @@ namespace NzbDrone.Core.Parser
 					}
 					seriesName += part + " ";
 				}
-
+				n++;
 			}
 
 			seriesName = seriesName.Trim(' ');
