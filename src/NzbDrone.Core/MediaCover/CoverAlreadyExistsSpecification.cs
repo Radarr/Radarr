@@ -31,7 +31,7 @@ namespace NzbDrone.Core.MediaCover
                 return false;
             }
 
-            if (!_diskProvider.IsValidGDIPlusImage(path))
+            if (!IsValidGDIPlusImage(path))
             {
                 _diskProvider.DeleteFile(path);
                 return false;
@@ -40,6 +40,29 @@ namespace NzbDrone.Core.MediaCover
             var headers = _httpClient.Head(new HttpRequest(url)).Headers;
             var fileSize = _diskProvider.GetFileSize(path);
             return fileSize == headers.ContentLength;
+        }
+
+        private bool IsValidGDIPlusImage(string filename)
+        {
+            try
+            {
+                GdiPlusInterop.CheckGdiPlus();
+
+                using (var bmp = new Bitmap(filename))
+                {
+                }
+                return true;
+            }
+            catch (DllNotFoundException ex)
+            {
+                _logger.Error(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Corrupted image found at: {0}. Redownloading...", filename);
+                return false;
+            }
         }
     }
 }
