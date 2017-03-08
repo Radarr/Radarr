@@ -109,25 +109,32 @@ namespace NzbDrone.Common.Disk
             }
         }
         
-        public bool CheckGdiPlus()
-        {
-            return GdiPlusInterop.CheckGdiPlus();
-        }
-
-        public bool IsValidGDIPlusImage(string filename)
+        public bool CanUseGDIPlus()
         {
             try
             {
-                CheckGdiPlus();
-                
-                using (var bmp = new Bitmap(filename))
-                {
-                }
+                GdiPlusInterop.CheckGdiPlus();
                 return true;
             }
             catch (DllNotFoundException ex)
             {
-                Logger.Debug(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
+                Logger.Trace(ex, "System does not have libgdiplus.");
+                return false;
+            }
+        }
+
+        public bool IsValidGDIPlusImage(string filename)
+        {
+            if (!CanUseGDIPlus())
+            {
+                return true;
+            }
+            
+            try
+            {
+                using (var bmp = new Bitmap(filename))
+                {
+                }
                 return true;
             }
             catch (Exception ex)
