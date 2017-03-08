@@ -28,7 +28,7 @@ A fork of [Sonarr](https://github.com/Sonarr/Sonarr) to work with movies à la C
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
 
-## Installation
+## Getting Started
 
 [![Installation](https://img.shields.io/badge/wiki-installation-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation) 
 [![Docker](https://img.shields.io/badge/wiki-docker-1488C6.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker)
