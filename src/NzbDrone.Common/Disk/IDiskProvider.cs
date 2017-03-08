@@ -19,6 +19,7 @@ namespace NzbDrone.Common.Disk
         bool FolderExists(string path);
         bool FileExists(string path);
         bool FileExists(string path, StringComparison stringComparison);
+        bool CheckGdiPlus();
         bool IsValidGDIPlusImage(string path);
         bool FolderWritable(string path);
         string[] GetDirectories(string path);
