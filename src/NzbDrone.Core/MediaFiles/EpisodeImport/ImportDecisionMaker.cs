@@ -20,7 +20,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, bool shouldCheckQuality);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality); //TODO: Needs changing to ParsedMovieInfo!!
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
     }
 
@@ -81,6 +82,23 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             foreach (var file in newFiles)
             {
                 decisions.AddIfNotNull(GetDecision(file, series, folderInfo, sceneSource, shouldUseFolderName));
+            }
+
+            return decisions;
+        }
+
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
+        {
+            var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
+
+            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
+
+            var shouldUseFolderName = ShouldUseFolderName(videoFiles, movie, folderInfo);
+            var decisions = new List<ImportDecision>();
+
+            foreach (var file in newFiles)
+            {
+                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName));
             }
 
             return decisions;

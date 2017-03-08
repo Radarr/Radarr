@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Configuration
 {
     public enum ConfigKey
     {
-        DownloadedEpisodesFolder
+        DownloadedMoviesFolder
     }
 
     public class ConfigService : IConfigService
@@ -73,11 +73,11 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public string DownloadedEpisodesFolder
+        public string DownloadedMoviesFolder
         {
-            get { return GetValue(ConfigKey.DownloadedEpisodesFolder.ToString()); }
+            get { return GetValue(ConfigKey.DownloadedMoviesFolder.ToString()); }
 
-            set { SetValue(ConfigKey.DownloadedEpisodesFolder.ToString(), value); }
+            set { SetValue(ConfigKey.DownloadedMoviesFolder.ToString(), value); }
         }
 
         public bool AutoUnmonitorPreviouslyDownloadedEpisodes
@@ -231,11 +231,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("DownloadClientWorkingFolders", value); }
         }
 
-        public int DownloadedEpisodesScanInterval
+        public int DownloadedMoviesScanInterval
         {
-            get { return GetValueInt("DownloadedEpisodesScanInterval", 0); }
+            get { return GetValueInt("DownloadedMoviesScanInterval", 0); }
 
-            set { SetValue("DownloadedEpisodesScanInterval", value); }
+            set { SetValue("DownloadedMoviesScanInterval", value); }
         }
 
         public int DownloadClientHistoryLimit

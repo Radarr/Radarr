@@ -3,7 +3,7 @@ using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.MediaFiles.Commands
 {
-    public class DownloadedMovieScanCommand : Command
+    public class DownloadedMoviesScanCommand : Command
     {
         public override bool SendUpdatesToClient => SendUpdates;
 

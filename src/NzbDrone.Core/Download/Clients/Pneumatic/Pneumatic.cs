@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
             if (Settings.StrmFolder.IsNullOrWhiteSpace())
             {
-                folder = _configService.DownloadedEpisodesFolder;
+                folder = _configService.DownloadedMoviesFolder;
 
                 if (folder.IsNullOrWhiteSpace())
                 {

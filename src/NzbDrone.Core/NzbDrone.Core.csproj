@@ -787,7 +787,6 @@
     <Compile Include="MediaCover\MediaCoversUpdatedEvent.cs" />
     <Compile Include="MediaFiles\Commands\BackendCommandAttribute.cs" />
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
-    <Compile Include="MediaFiles\Commands\DownloadedEpisodesScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedMovieScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameMovieCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameMovieFilesCommand.cs" />
@@ -812,10 +811,6 @@
     <Compile Include="MediaFiles\DiskScanService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MediaFiles\DownloadedEpisodesImportService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MediaFiles\DownloadedEpisodesCommandService.cs" />
     <Compile Include="MediaFiles\EpisodeFile.cs" />
     <Compile Include="MediaFiles\EpisodeFileMoveResult.cs" />
     <Compile Include="MediaFiles\EpisodeFileMovingService.cs" />

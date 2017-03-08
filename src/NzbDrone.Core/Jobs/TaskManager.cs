@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -94,9 +94,9 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     { 
-                        Interval = _configService.DownloadedEpisodesScanInterval,
-                        TypeName = typeof(DownloadedEpisodesScanCommand).FullName
-                        //TypeName = typeof(DownloadedMovieScanCommand).FullName
+                        Interval = _configService.DownloadedMoviesScanInterval,
+                        //TypeName = typeof(DownloadedEpisodesScanCommand).FullName
+                        TypeName = typeof(DownloadedMoviesScanCommand).FullName
                     },
                 };
 
@@ -178,13 +178,13 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var downloadedEpisodes = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
-            downloadedEpisodes.Interval = _configService.DownloadedEpisodesScanInterval;
+            var downloadedMovies = _scheduledTaskRepository.GetDefinition(typeof(DownloadedMoviesScanCommand));
+            downloadedMovies.Interval = _configService.DownloadedMoviesScanInterval;
 
             var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
             netImport.Interval = _configService.NetImportSyncInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes, netImport });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport });
         }
     }
 }

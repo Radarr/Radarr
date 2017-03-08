@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using Moq;
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _nzbPath = Path.Combine(_pneumaticFolder, _title + ".nzb").AsOsAgnostic();
             _sabDrop = @"d:\unsorted tv\".AsOsAgnostic();
 
-            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedEpisodesFolder).Returns(_sabDrop);
+            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedMoviesFolder).Returns(_sabDrop);
 
             _remoteMovie = new RemoteMovie();
             _remoteMovie.Release = new ReleaseInfo();

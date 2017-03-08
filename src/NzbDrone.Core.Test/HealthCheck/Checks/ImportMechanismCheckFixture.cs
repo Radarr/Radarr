@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         private void GivenDroneFactoryFolder(bool exists = false)
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(s => s.DownloadedEpisodesFolder)
+                  .SetupGet(s => s.DownloadedMoviesFolder)
                   .Returns(DRONE_FACTORY_FOLDER.AsOsAgnostic());
 
             Mocker.GetMock<IDiskProvider>()
