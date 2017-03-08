@@ -43,6 +43,11 @@ namespace NzbDrone.Core.NetImport.Trakt
                 .Matches(@"^\d+(\-\d+)?$", RegexOptions.IgnoreCase)
                 .When(c => c.Years.IsNotNullOrWhiteSpace())
                 .WithMessage("Not a valid year or range of years");
+
+            // Limit not smaller than 1 and not larger than 100
+            RuleFor(c => c.Limit)
+                .InclusiveBetween(1, 500)
+                .WithMessage("Must be 1 thru 500");
         }
     }
 
@@ -60,6 +65,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             Ceritification = "NR,G,PG,PG-13,R,NC-17";
             Genres = "";
             Years = "";
+            Limit = 100;
         }
 
         [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
@@ -85,6 +91,9 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         [FieldDefinition(7, Label = "Years", HelpText = "Filter movies by year or year range")]
         public string Years { get; set; }
+
+        [FieldDefinition(8, Label = "Limit", HelpText = "Limit the number of movies to get")]
+        public int Limit { get; set; }
 
 
         public NzbDroneValidationResult Validate()

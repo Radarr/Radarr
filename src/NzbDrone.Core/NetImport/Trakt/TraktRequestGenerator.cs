@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 
@@ -88,43 +89,43 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             var link = Settings.Link.Trim();
 
-            var filters = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Ceritification.ToLower()}";
+            var filtersAndLimit = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Ceritification.ToLower()}&limit={Settings.Limit}";
 
             switch (Settings.ListType)
             {
                 case (int)TraktListType.UserCustomList:
                     var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());
-                    link = link + $"/users/{Settings.Username.Trim()}/lists/{listName}/items/movies";
+                    link = link + $"/users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktListType.UserWatchList:
-                    link = link + $"/users/{Settings.Username.Trim()}/watchlist/movies";
+                    link = link + $"/users/{Settings.Username.Trim()}/watchlist/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktListType.UserWatchedList:
-                    link = link + $"/users/{Settings.Username.Trim()}/watched/movies";
+                    link = link + $"/users/{Settings.Username.Trim()}/watched/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktListType.Trending:
-                    link = link + "/movies/trending" + filters;
+                    link = link + "/movies/trending" + filtersAndLimit;
                     break;
                 case (int)TraktListType.Popular:
-                    link = link + "/movies/popular" + filters;
+                    link = link + "/movies/popular" + filtersAndLimit;
                     break;
                 case (int)TraktListType.Anticipated:
-                    link = link + "/movies/anticipated" + filters;
+                    link = link + "/movies/anticipated" + filtersAndLimit;
                     break;
                 case (int)TraktListType.BoxOffice:
-                    link = link + "/movies/boxoffice" + filters;
+                    link = link + "/movies/boxoffice" + filtersAndLimit;
                     break;
                 case (int)TraktListType.TopWatchedByWeek:
-                    link = link + "/movies/watched/weekly" + filters;
+                    link = link + "/movies/watched/weekly" + filtersAndLimit;
                     break;
                 case (int)TraktListType.TopWatchedByMonth:
-                    link = link + "/movies/watched/monthly" + filters;
+                    link = link + "/movies/watched/monthly" + filtersAndLimit;
                     break;
                 case (int)TraktListType.TopWatchedByYear:
-                    link = link + "/movies/watched/yearly" + filters;
+                    link = link + "/movies/watched/yearly" + filtersAndLimit;
                     break;
                 case (int)TraktListType.TopWatchedByAllTime:
-                    link = link + "/movies/watched/all" + filters;
+                    link = link + "/movies/watched/all" + filtersAndLimit;
                     break;
             }
 
@@ -133,7 +134,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
             request.HttpRequest.Headers.Add("trakt-api-key", "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6"); //aeon
-            if (_configService.TraktAuthToken != null)
+            if (_configService.TraktAuthToken.IsNotNullOrWhiteSpace())
             {
                 request.HttpRequest.Headers.Add("Authorization", "Bearer " + _configService.TraktAuthToken);
             }
