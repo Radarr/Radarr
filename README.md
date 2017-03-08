@@ -28,11 +28,17 @@ A fork of [Sonarr](https://github.com/Sonarr/Sonarr) to work with movies à la C
 
 To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
 
+## Installation
+
+[Installation](https://github.com/Radarr/Radarr/wiki/Installation) [Docker](https://github.com/Radarr/Radarr/wiki/Docker) [Setup Guide](https://github.com/Radarr/Radarr/wiki/Setup-Guide)
+
 ## Support
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
+[![GitHub](https://img.shields.io/badge/feathub-requests-gray.svg?maxAge=60&style=flat-square)](http://feathub.com/Radarr/Radarr)
 [![GitHub](https://img.shields.io/badge/github-issues-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
+[![GitHub](https://img.shields.io/badge/github-wiki-white.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki)
 
 ## Features
 
