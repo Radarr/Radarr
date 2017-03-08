@@ -1,6 +1,7 @@
 ﻿using NzbDrone.Common.Http;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 
@@ -92,7 +93,8 @@ namespace NzbDrone.Core.NetImport.Trakt
             switch (Settings.ListType)
             {
                 case (int)TraktListType.UserCustomList:
-                    link = link + $"/users/{Settings.Username.Trim()}/lists/{Settings.Listname.Trim()}/items/movies";
+                    var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());
+                    link = link + $"/users/{Settings.Username.Trim()}/lists/{listName}/items/movies";
                     break;
                 case (int)TraktListType.UserWatchList:
                     link = link + $"/users/{Settings.Username.Trim()}/watchlist/movies";

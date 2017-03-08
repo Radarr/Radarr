@@ -9,11 +9,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv;
-using Newtonsoft.Json;
-using System.Text.RegularExpressions;
-using System.Text;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
@@ -133,7 +129,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
             movie.Title = resource.title;
-            movie.TitleSlug = ToUrlSlug(resource.title);
+            movie.TitleSlug = Parser.Parser.ToUrlSlug(resource.title);
             movie.CleanTitle = Parser.Parser.CleanSeriesTitle(resource.title);
             movie.SortTitle = Parser.Parser.NormalizeTitle(resource.title);
             movie.Overview = resource.overview;
@@ -475,7 +471,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 imdbMovie.SortTitle = Parser.Parser.NormalizeTitle(result.title);
                 imdbMovie.Title = result.title;
-                imdbMovie.TitleSlug = ToUrlSlug(result.title);
+                imdbMovie.TitleSlug = Parser.Parser.ToUrlSlug(result.title);
 
                 if (result.release_date.IsNotNullOrWhiteSpace())
                 {
@@ -660,30 +656,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 default:
                     return MediaCoverTypes.Unknown;
             }
-        }
-
-        public static string ToUrlSlug(string value)
-        {
-            //First to lower case
-            value = value.ToLowerInvariant();
-
-            //Remove all accents
-            var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
-            value = Encoding.ASCII.GetString(bytes);
-
-            //Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
-
-            //Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
-
-            //Trim dashes from end
-            value = value.Trim('-', '_');
-
-            //Replace double occurences of - or _
-            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
-
-            return value;
         }
 
         public Movie MapMovieToTmdbMovie(Movie movie)
