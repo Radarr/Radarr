@@ -30,14 +30,12 @@ namespace NzbDrone.Core.Download
         private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
-        private readonly ISeriesService _seriesService;
 
         public CompletedDownloadService(IConfigService configService,
                                         IEventAggregator eventAggregator,
                                         IHistoryService historyService,
                                         IDownloadedMovieImportService downloadedMovieImportService,
                                         IParsingService parsingService,
-                                        ISeriesService seriesService,
                                         IMovieService movieService,
                                         Logger logger)
         {
@@ -48,7 +46,6 @@ namespace NzbDrone.Core.Download
             _parsingService = parsingService;
             _movieService = movieService;
             _logger = logger;
-            _seriesService = seriesService;
         }
 
         public void Process(TrackedDownload trackedDownload, bool ignoreWarnings = false)
