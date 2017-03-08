@@ -122,12 +122,12 @@ namespace NzbDrone.Common.Disk
             }
             catch (DllNotFoundException ex)
             {
-                _logger.Debug(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
+                Logger.Debug(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.Debug(ex, "Corrupted image found at: {0}.", filename);
+                Logger.Debug(ex, "Corrupted image found at: {0}.", filename);
                 return false;
             }
         }
