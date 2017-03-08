@@ -108,12 +108,17 @@ namespace NzbDrone.Common.Disk
                 }
             }
         }
+        
+        public bool CheckGdiPlus()
+        {
+            return GdiPlusInterop.CheckGdiPlus();
+        }
 
         public bool IsValidGDIPlusImage(string filename)
         {
             try
             {
-                GdiPlusInterop.CheckGdiPlus();
+                CheckGdiPlus();
                 
                 using (var bmp = new Bitmap(filename))
                 {
