@@ -25,7 +25,10 @@ module.exports = Marionette.ItemView.extend({
     events : {
         'click .x-save'           : '_updateAndSave',
         'change .x-root-folder'   : '_rootFolderChanged',
-        'click .x-organize-files' : '_organizeFiles'
+        'click .x-organize-files' : '_organizeFiles',
+		'click .x-select-all'     : '_selectAll',
+		'click .x-unselect-all'   : '_unselectAll',
+		'click .x-delete-selected': '_deleteSelected'
     },
 
     templateHelpers : function() {
@@ -45,7 +48,7 @@ module.exports = Marionette.ItemView.extend({
 
 
         this.listenTo(this.moviesCollection, 'backgrid:selected', function(model, selected) {
-            var m =  FullMovieCollection.findWhere({ tmdbId : model.get('tmdbId') });
+			var m =  FullMovieCollection.findWhere({ tmdbId : model.get('tmdbId') });
             m.set('selected', selected);
             this._updateInfo();
         });
@@ -62,6 +65,32 @@ module.exports = Marionette.ItemView.extend({
     onRender : function() {
         this._updateInfo();
     },
+
+	_selectAll : function() {
+		var pageSize = this.moviesCollection.state.pageSize;
+		var currentPage = this.moviesCollection.state.currentPage;
+		this.moviesCollection.setPageSize(this.moviesCollection.fullCollection.length, { fetch: false});
+		this.moviesCollection.each(function(model) {
+			model.trigger('backgrid:selected', model, true);	
+		});
+		this.moviesCollection.setPageSize(pageSize, {fetch: false});
+		this.moviesCollection.getPage(currentPage, {fetch: false});
+	},
+
+	_unselectAll : function() {
+		var pageSize = this.moviesCollection.state.pageSize;
+		var currentPage = this.moviesCollection.state.currentPage;
+		this.moviesCollection.setPageSize(this.moviesCollection.fullCollection.length, { fetch: false});
+		this.moviesCollection.each(function(model) {
+			model.trigger('backgrid:selected', model, false);
+	    });
+		this.moviesCollection.setPageSize(pageSize, {fetch: false});
+		this.moviesCollection.getPage(currentPage, {fetch: false});
+	},
+
+	_deleteSelected : function() {
+		window.alert('Sorry the Delete Selected function is not yet implemented');
+	},
 
     _updateAndSave : function() {
         //var selected = this.editorGrid.getSelectedModels();
