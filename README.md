@@ -33,6 +33,7 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 [![Installation](https://img.shields.io/badge/wiki-installation-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation) 
 [![Docker](https://img.shields.io/badge/wiki-docker-1488C6.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker)
 [![Setup Guide](https://img.shields.io/badge/wiki-setup_guide-orange.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Setup-Guide)
+[![FAQ](https://img.shields.io/badge/wiki-FAQ-BF55EC.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/FAQ)
 
 ## Support
 
