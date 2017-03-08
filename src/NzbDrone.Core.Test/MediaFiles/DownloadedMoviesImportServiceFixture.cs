@@ -229,7 +229,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), null, true))
                   .Returns(imported);
 
-            Mocker.GetMock<IImportApprovedEpisodes>()
+            Mocker.GetMock<IImportApprovedMovie>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
                   .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
@@ -280,7 +280,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessPath(fileName);
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<ParsedMovieInfo>(), true), Times.Once());
+                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<ParsedMovieInfo>(), true, false), Times.Once());
         }
 
         [Test]
@@ -304,7 +304,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var result = Subject.ProcessPath(fileName);
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), null, true), Times.Once());
+                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), null, true, false), Times.Once());
         }
 
         [Test]
