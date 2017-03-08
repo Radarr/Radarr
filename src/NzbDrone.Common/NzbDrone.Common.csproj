@@ -90,6 +90,7 @@
     <Compile Include="Disk\FileSystemModel.cs" />
     <Compile Include="Disk\FileSystemResult.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Disk\GdiPlusInterop.cs" />
     <Compile Include="Disk\OsPath.cs" />
     <Compile Include="Disk\DiskProviderBase.cs" />
     <Compile Include="Disk\IDiskProvider.cs" />
