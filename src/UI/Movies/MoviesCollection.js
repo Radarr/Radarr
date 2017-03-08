@@ -81,16 +81,12 @@ var Collection = PageableCollection.extend({
         }
     },
 
-    sortMappings : {
-        'movie' : { sortKey : 'series.sortTitle' }
-    },
-
     parseState : function(resp) {
 	  if (this.mode === 'client') {
 	  	return {};
 	  }
       var direction = -1;
-      if (resp.sortDirection == "descending") {
+      if (resp.sortDirection.toLowerCase() === "descending") {
         direction = 1;
       }
         return { totalRecords : resp.totalRecords, order : direction, currentPage : resp.page };
@@ -167,20 +163,23 @@ var Collection = PageableCollection.extend({
     },
 
     filterModes : filterModes,
-
+  
     sortMappings : {
+        movie : {
+            sortKey : 'series.sortTitle'
+        },
         title : {
             sortKey : 'sortTitle'
         },
         statusWeight : {
           sortValue : function(model, attr) {
-            if (model.getStatus() == "released") {
+            if (model.getStatus().toLowerCase() === "released") {
               return 3;
             }
-            if (model.getStatus() == "inCinemas") {
+            if (model.getStatus().toLowerCase() === "incinemas") {
               return 2;
             }
-            if (model.getStatus() == "announced") {
+            if (model.getStatus().toLowerCase() === "announced") {
 	      return 1;
 	    }
             return -1;
@@ -212,7 +211,6 @@ var Collection = PageableCollection.extend({
         },
         status: {
           sortValue : function(model, attr) {
-            debugger;
             if (model.get("downloaded")) {
               return -1;
             }
