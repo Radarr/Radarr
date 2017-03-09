@@ -137,16 +137,16 @@ namespace NzbDrone.Core.Download
                 throw;
             }
 
-            var episodeGrabbedEvent = new MovieGrabbedEvent(remoteMovie);
-            episodeGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
+            var movieGrabbedEvent = new MovieGrabbedEvent(remoteMovie);
+            movieGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
 
             if (!string.IsNullOrWhiteSpace(downloadClientId))
             {
-                episodeGrabbedEvent.DownloadId = downloadClientId;
+                movieGrabbedEvent.DownloadId = downloadClientId;
             }
 
             _logger.ProgressInfo("Report sent to {0}. {1}", downloadClient.Definition.Name, downloadTitle);
-            _eventAggregator.PublishEvent(episodeGrabbedEvent);
+            _eventAggregator.PublishEvent(movieGrabbedEvent);
         }
     }
 }

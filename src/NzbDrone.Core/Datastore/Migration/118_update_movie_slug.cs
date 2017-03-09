@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (IDbCommand getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
-                getSeriesCmd.CommandText = @"SELECT Id, Title, Year FROM Movies";
+                getSeriesCmd.CommandText = @"SELECT Id, Title, Year, TmdbId FROM Movies";
                 using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (seriesReader.Read())
@@ -27,8 +27,9 @@ namespace NzbDrone.Core.Datastore.Migration
                         var id = seriesReader.GetInt32(0);
                         var title = seriesReader.GetString(1);
                         var year = seriesReader.GetInt32(2);
+                        var tmdbId = seriesReader.GetInt32(3);
 
-                        var titleSlug = ToUrlSlug(title + "-" + year);
+                        var titleSlug = Parser.Parser.ToUrlSlug(title + "-" + tmdbId);
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
@@ -42,30 +43,6 @@ namespace NzbDrone.Core.Datastore.Migration
                     }
                 }
             }
-        }
-
-        public static string ToUrlSlug(string value)
-        {
-            //First to lower case
-            value = value.ToLowerInvariant();
-
-            //Remove all accents
-            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
-            value = Encoding.ASCII.GetString(bytes);
-
-            //Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
-
-            //Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
-
-            //Trim dashes from end
-            value = value.Trim('-', '_');
-
-            //Replace double occurences of - or _
-            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
-
-            return value;
         }
     }
 }
