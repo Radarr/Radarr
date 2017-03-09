@@ -35,6 +35,7 @@ namespace NzbDrone.Core.History
                                   IHandle<EpisodeImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<EpisodeFileDeletedEvent>,
+                                  IHandle<MovieFileDeletedEvent>,
                                   IHandle<SeriesDeletedEvent>
     {
         private readonly IHistoryRepository _historyRepository;
