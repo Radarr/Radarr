@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using FluentAssertions;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
@@ -38,8 +37,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             GivenFileExistsOnDisk();
             Mocker.GetMock<CoverAlreadyExistsSpecification>()
-                  .Protected()
-                  .Setup<bool>("IsValidGDIPlusImage", ItExpr.IsAny<string>())
+                  .Setup(c => c.IsValidGDIPlusImage(It.IsAny<string>()))
                   .Returns(!corrupt);
         }
 
