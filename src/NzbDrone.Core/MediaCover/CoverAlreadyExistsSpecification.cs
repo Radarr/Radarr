@@ -60,7 +60,7 @@ namespace NzbDrone.Core.MediaCover
             }
             catch (DllNotFoundException ex)
             {
-                _logger.Error(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
+                _logger.Debug(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
                 return true;
             }
             catch (Exception ex)
