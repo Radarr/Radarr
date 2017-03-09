@@ -49,22 +49,14 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             GivenExistingFileSize(100);
             _httpResponse.Headers.ContentLength = 200;
-
             Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_if_file_exists_and_same_size()
+        public void should_return_false_if_file_exists_and_same_size_but_image_corrupt()
         {
             GivenExistingFileSize(100);
             _httpResponse.Headers.ContentLength = 100;
-            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_true_if_there_is_no_size_header_and_file_exist()
-        {
-            GivenExistingFileSize(100);
             Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
         }
     }
