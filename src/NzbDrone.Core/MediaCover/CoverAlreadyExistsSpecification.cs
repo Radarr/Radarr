@@ -31,15 +31,20 @@ namespace NzbDrone.Core.MediaCover
                 return false;
             }
 
+            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
+            var fileSize = _diskProvider.GetFileSize(path);
+            if (fileSize != headers.ContentLength)
+            {
+                return false;
+            }
+            
             if (!IsValidGDIPlusImage(path))
             {
                 _diskProvider.DeleteFile(path);
                 return false;
             }
-
-            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
-            var fileSize = _diskProvider.GetFileSize(path);
-            return fileSize == headers.ContentLength;
+            
+            return true;
         }
 
         private bool IsValidGDIPlusImage(string filename)
