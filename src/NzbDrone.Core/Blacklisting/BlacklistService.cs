@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Blacklisting
             var blacklist = new Blacklist
                             {
                                 SeriesId = 0,
-                                EpisodeIds = message.EpisodeIds,
+                                EpisodeIds = null,
                                 MovieId = message.MovieId,
                                 SourceTitle = message.SourceTitle,
                                 Quality = message.Quality,

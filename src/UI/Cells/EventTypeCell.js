@@ -31,6 +31,10 @@ module.exports = NzbDroneCell.extend({
                     icon = 'icon-sonarr-deleted';
                     toolTip = 'Movie file deleted';
                     break;
+                case 'movieFileDeleted':
+                    icon = 'icon-sonarr-deleted';
+                    toolTip = 'Movie file deleted';
+                    break;
                 default:
                     icon = 'icon-sonarr-unknown';
                     toolTip = 'unknown event';

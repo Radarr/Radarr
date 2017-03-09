@@ -35,9 +35,11 @@ namespace NzbDrone.Core.History
     {
         Unknown = 0,
         Grabbed = 1,
-        SeriesFolderImported = 2,
+        SeriesFolderImported = 2, // to be deprecate
         DownloadFolderImported = 3,
         DownloadFailed = 4,
-        EpisodeFileDeleted = 5
+        EpisodeFileDeleted = 5, // deprecated
+        MovieFileDeleted = 6,
+        MovieFolderImported = 7, // not used yet
     }
 }
