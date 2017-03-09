@@ -603,7 +603,7 @@ namespace NzbDrone.Core.Parser
         {
             if (imdbId.Length > 2)
             {
-                return (imdbId.Substring(2) != "tt" ? $"tt{imdbId}" : imdbId);
+                return (imdbId.Substring(0,2) != "tt" ? $"tt{imdbId}" : imdbId);
             }
 
             return null;
