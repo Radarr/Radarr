@@ -25,14 +25,7 @@ namespace NzbDrone.Api.Wanted
         {
             var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>("title", SortDirection.Ascending);
 
-            if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
-            {
-                pagingSpec.FilterExpression = v => v.Monitored == false;
-            }
-            else
-            {
-                pagingSpec.FilterExpression = v => v.Monitored == true;
-            }
+            pagingSpec.FilterExpression = _movieService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue);
 
             var resource = ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, true));
 
