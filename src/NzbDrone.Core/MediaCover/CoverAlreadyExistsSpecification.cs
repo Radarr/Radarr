@@ -9,6 +9,7 @@ namespace NzbDrone.Core.MediaCover
     public interface ICoverExistsSpecification
     {
         bool AlreadyExists(string url, string path);
+        bool IsValidGDIPlusImage(string filename);
     }
 
     public class CoverAlreadyExistsSpecification : ICoverExistsSpecification
@@ -47,7 +48,7 @@ namespace NzbDrone.Core.MediaCover
             return true;
         }
 
-        protected virtual bool IsValidGDIPlusImage(string filename)
+        public bool IsValidGDIPlusImage(string filename)
         {
             try
             {
