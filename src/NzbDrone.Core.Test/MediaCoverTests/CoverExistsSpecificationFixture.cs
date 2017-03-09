@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using FluentAssertions;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
