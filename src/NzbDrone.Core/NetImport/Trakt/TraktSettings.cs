@@ -46,8 +46,9 @@ namespace NzbDrone.Core.NetImport.Trakt
 
             // Limit not smaller than 1 and not larger than 100
             RuleFor(c => c.Limit)
-                .InclusiveBetween(1, 500)
-                .WithMessage("Must be 1 thru 500");
+                .GreaterThan(0)
+            //    .InclusiveBetween(1, 500)
+                .WithMessage("Must be integer greater than 0");
         }
     }
 
