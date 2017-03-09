@@ -47,7 +47,7 @@ namespace NzbDrone.Core.MediaCover
             return true;
         }
 
-        private bool IsValidGDIPlusImage(string filename)
+        protected virtual bool IsValidGDIPlusImage(string filename)
         {
             try
             {
