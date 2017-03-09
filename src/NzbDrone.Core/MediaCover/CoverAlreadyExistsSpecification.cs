@@ -9,6 +9,7 @@ namespace NzbDrone.Core.MediaCover
     public interface ICoverExistsSpecification
     {
         bool AlreadyExists(string url, string path);
+        bool IsValidGDIPlusImage(string filename);
     }
 
     public class CoverAlreadyExistsSpecification : ICoverExistsSpecification
@@ -31,15 +32,43 @@ namespace NzbDrone.Core.MediaCover
                 return false;
             }
 
-            if (!_diskProvider.IsValidGDIPlusImage(path))
+            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
+            var fileSize = _diskProvider.GetFileSize(path);
+            if (fileSize != headers.ContentLength)
+            {
+                return false;
+            }
+            
+            if (!IsValidGDIPlusImage(path))
             {
                 _diskProvider.DeleteFile(path);
                 return false;
             }
+            
+            return true;
+        }
 
-            var headers = _httpClient.Head(new HttpRequest(url)).Headers;
-            var fileSize = _diskProvider.GetFileSize(path);
-            return fileSize == headers.ContentLength;
+        public bool IsValidGDIPlusImage(string filename)
+        {
+            try
+            {
+                GdiPlusInterop.CheckGdiPlus();
+
+                using (var bmp = new Bitmap(filename))
+                {
+                }
+                return true;
+            }
+            catch (DllNotFoundException ex)
+            {
+                _logger.Debug(ex, "Could not find libgdiplus. Cannot test if image is corrupt.");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Corrupted image found at: {0}. Redownloading...", filename);
+                return false;
+            }
         }
     }
 }

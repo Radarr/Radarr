@@ -9,7 +9,6 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
-using System.Drawing;
 
 namespace NzbDrone.Common.Disk
 {
@@ -106,22 +105,6 @@ namespace NzbDrone.Common.Disk
                 {
                      return File.Exists(path);
                 }
-            }
-        }
-
-        public bool IsValidGDIPlusImage(string filename)
-        {
-            try
-            {
-                using (var bmp = new Bitmap(filename))
-                {
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                //_logger.Debug(ex, "Corrupted image found at: {0}. Redownloading...", filename);
-                return false;
             }
         }
 
