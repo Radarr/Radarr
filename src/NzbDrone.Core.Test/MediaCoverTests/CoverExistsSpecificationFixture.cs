@@ -13,22 +13,15 @@ namespace NzbDrone.Core.Test.MediaCoverTests
     public class CoverAlreadyExistsSpecificationFixture : CoreTest<CoverAlreadyExistsSpecification>
     {
         private HttpResponse _httpResponse;
-        private bool _isCorrupt;
 
         [SetUp]
         public void Setup()
         {
             _httpResponse = new HttpResponse(null, new HttpHeader(), "", HttpStatusCode.OK);
-            _isCorrupt = false;
             Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFileSize(It.IsAny<string>())).Returns(100);
             Mocker.GetMock<IHttpClient>().Setup(c => c.Head(It.IsAny<HttpRequest>())).Returns(_httpResponse);
         }
-         
-        protected override bool IsValidGDIPlusImage(string filename)
-        {
-            return _isCorrupt;
-        }
-        
+
         private void GivenFileExistsOnDisk()
         {
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>())).Returns(true);
@@ -42,7 +35,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         
         private void GivenImageFileCorrupt(bool corrupt)
         {
-            _isCorrupt = corrupt;
+            Subject.Protected().Setup(c => c.IsValidGDIPlusImage(It.IsAny<string>())).Returns(corrupt);
         }
 
         [Test]
