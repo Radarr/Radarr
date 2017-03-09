@@ -116,56 +116,9 @@ namespace NzbDrone.Api.Movie
 		{
 			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>();
 
-			if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
-			{
-				pagingSpec.FilterExpression = v => v.Monitored == false;
-			}
-			else if (pagingResource.FilterKey == "monitored")
-			{
-				pagingSpec.FilterExpression = v => v.Monitored == true;
-			}
+            pagingSpec.FilterExpression = _moviesService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue, pagingResource.FilterType);
 
-			if (pagingResource.FilterKey == "status")
-			{
-				switch (pagingResource.FilterValue)
-				{
-					case "released":
-						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Released;
-						break;
-					case "inCinemas":
-						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.InCinemas;
-						break;
-					case "announced":
-						pagingSpec.FilterExpression = v => v.Status == MovieStatusType.Announced;
-						break;
-				}
-			}
-
-			if (pagingResource.FilterKey == "downloaded")
-			{
-				pagingSpec.FilterExpression = v => v.MovieFileId == 0;
-			}
-
-           if (pagingResource.FilterKey == "title")
-            {
-                if (pagingResource.FilterValue == string.Empty || pagingResource.FilterValue == null)
-                {
-                    pagingSpec.FilterExpression = v => true;
-                }
-                else
-                {
-                    if (pagingResource.FilterType == "contains")
-                    {
-                        pagingSpec.FilterExpression = v => v.CleanTitle.Contains(pagingResource.FilterValue);
-                    }
-                    else
-                    {
-                        pagingSpec.FilterExpression = v => v.CleanTitle == pagingResource.FilterValue;
-                    }
-                }
-            }
-
-			return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
+            return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
 		}
 
         protected MovieResource MapToResource(Core.Tv.Movie movies)
