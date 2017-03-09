@@ -19,33 +19,33 @@ var filterModes = {
         null
     ],
     'continuing' : [
-        'status',
+        'moviestatus',
         'continuing'
     ],
     'ended'      : [
-        'status',
+        'moviestatus',
         'ended'
     ],
     'monitored'  : [
-        'monitored',
+        'moviemonitored',
         true
     ],
     'missing'  : [
-        'downloaded',
+        'moviedownloaded',
         false
     ],
     'released'  : [
-        "status",
+        "moviestatus",
         "released",
         //function(model) { return model.getStatus() == "released"; }
     ],
     'announced'  : [
-        "status",
+        "moviestatus",
         "announced",
         //function(model) { return model.getStatus() == "announced"; }
     ],
     'cinemas'  : [
-        "status",
+        "moviestatus",
         "inCinemas",
         //function(model) { return model.getStatus() == "inCinemas"; }
     ]
