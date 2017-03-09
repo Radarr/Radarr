@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         
         private void GivenImageFileCorrupt(bool corrupt)
         {
-            Subject.Protected().Setup(c => c.IsValidGDIPlusImage(It.IsAny<string>())).Returns(corrupt);
+            Subject.Protected().Setup<bool>("IsValidGDIPlusImage", ItExpr.IsAny<string>()).Returns(corrupt);
         }
 
         [Test]
