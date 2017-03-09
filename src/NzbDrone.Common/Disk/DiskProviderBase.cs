@@ -108,9 +108,28 @@ namespace NzbDrone.Common.Disk
                 }
             }
         }
+        
+        public bool CanUseGDIPlus()
+        {
+            try
+            {
+                GdiPlusInterop.CheckGdiPlus();
+                return true;
+            }
+            catch (DllNotFoundException ex)
+            {
+                Logger.Trace(ex, "System does not have libgdiplus.");
+                return false;
+            }
+        }
 
         public bool IsValidGDIPlusImage(string filename)
         {
+            if (!CanUseGDIPlus())
+            {
+                return true;
+            }
+            
             try
             {
                 using (var bmp = new Bitmap(filename))
@@ -120,7 +139,7 @@ namespace NzbDrone.Common.Disk
             }
             catch (Exception ex)
             {
-                //_logger.Debug(ex, "Corrupted image found at: {0}. Redownloading...", filename);
+                Logger.Debug(ex, "Corrupted image found at: {0}.", filename);
                 return false;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using ImageResizer;
+using System;
 using NzbDrone.Common.Disk;
 
 namespace NzbDrone.Core.MediaCover
@@ -21,7 +22,10 @@ namespace NzbDrone.Core.MediaCover
         {
             try
             {
-                GdiPlusInterop.CheckGdiPlus();
+                if (!_diskProvider.CanUseGDIPlus())
+                {
+                    throw new Exception("Can't resize without libgdiplus.");
+                }
 
                 using (var sourceStream = _diskProvider.OpenReadStream(source))
                 {

@@ -30,6 +30,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.DeleteFile(It.IsAny<string>()))
                   .Callback<string>(s => File.Delete(s));
+                  
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(v => v.CanUseGDIPlus())
+                  .Returns(true);
         }
 
         [Test]
