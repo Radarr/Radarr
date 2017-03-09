@@ -21,6 +21,7 @@ module.exports = Backbone.Model.extend({
       //var timeSince = new Date().getTime() - date.getTime();
       //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
+      // lol could return status
       if (status === "announced") {
         return "announced";
       }
