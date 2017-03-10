@@ -75,15 +75,15 @@ namespace NzbDrone.Core.Tv
             //{
             //    return v => v.Monitored == true || v.Monitored == false;
             //}
-            if (FilterKey == "moviemonitored" && FilterValue == "false")
+            if (FilterKey == "monitored" && FilterValue == "false")
             {
                 return v => v.Monitored == false;
             }
-            else if (FilterKey == "moviemonitored" && FilterValue == "true")
+            else if (FilterKey == "monitored" && FilterValue == "true")
             {
                 return v => v.Monitored == true;
             }
-            else if (FilterKey == "moviestatus")
+            else if (FilterKey == "status")
             {
                 switch (FilterValue)
                 {
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.Tv
                         break;
                 }
             }
-            else if (FilterKey == "moviedownloaded")
+            else if (FilterKey == "downloaded")
             {
                 return v => v.MovieFileId == 0;
             }
