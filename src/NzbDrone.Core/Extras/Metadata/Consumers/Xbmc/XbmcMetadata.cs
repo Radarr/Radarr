@@ -27,146 +27,120 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _logger = logger;
         }
 
-        private static readonly Regex SeriesImagesRegex = new Regex(@"^(?<type>poster|banner|fanart)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex SeasonImagesRegex = new Regex(@"^season(?<season>\d{2,}|-all|-specials)-(?<type>poster|banner|fanart)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex EpisodeImageRegex = new Regex(@"-thumb\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override string Name => "Kodi (XBMC) / Emby";
 
-        public override string GetFilenameAfterMove(Series series, EpisodeFile episodeFile, MetadataFile metadataFile)
+        public override string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
         {
-            var episodeFilePath = Path.Combine(series.Path, episodeFile.RelativePath);
+            var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
-            if (metadataFile.Type == MetadataType.EpisodeImage)
+            if (metadataFile.Type == MetadataType.MovieImage)
             {
-                return GetEpisodeImageFilename(episodeFilePath);
+                return GetMovieImageFilename(movieFilePath);
             }
 
-            if (metadataFile.Type == MetadataType.EpisodeMetadata)
+            if (metadataFile.Type == MetadataType.MovieMetadata)
             {
-                return GetEpisodeMetadataFilename(episodeFilePath);
+                return GetMovieMetadataFilename(movieFilePath);
             }
 
-            _logger.Debug("Unknown episode file metadata: {0}", metadataFile.RelativePath);
-            return Path.Combine(series.Path, metadataFile.RelativePath);
+            _logger.Debug("Unknown movie file metadata: {0}", metadataFile.RelativePath);
+            return Path.Combine(movie.Path, metadataFile.RelativePath);
         }
 
-        public override MetadataFile FindMetadataFile(Series series, string path)
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
         {
             var filename = Path.GetFileName(path);
 
             if (filename == null) return null;
 
             var metadata = new MetadataFile
-                           {
-                               SeriesId = series.Id,
-                               Consumer = GetType().Name,
-                               RelativePath = series.Path.GetRelativePath(path)
-                           };
-
-            if (SeriesImagesRegex.IsMatch(filename))
             {
-                metadata.Type = MetadataType.SeriesImage;
+                MovieId = movie.Id,
+                Consumer = GetType().Name,
+                RelativePath = movie.Path.GetRelativePath(path)
+            };
+
+            if (MovieImagesRegex.IsMatch(filename))
+            {
+                metadata.Type = MetadataType.MovieImage;
                 return metadata;
             }
 
-            var seasonMatch = SeasonImagesRegex.Match(filename);
-
-            if (seasonMatch.Success)
+            if (filename.Equals("movie.nfo", StringComparison.InvariantCultureIgnoreCase))
             {
-                metadata.Type = MetadataType.SeasonImage;
-
-                var seasonNumberMatch = seasonMatch.Groups["season"].Value;
-                int seasonNumber;
-
-                if (seasonNumberMatch.Contains("specials"))
-                {
-                    metadata.SeasonNumber = 0;
-                }
-
-                else if (int.TryParse(seasonNumberMatch, out seasonNumber))
-                {
-                    metadata.SeasonNumber = seasonNumber;
-                }
-
-                else
-                {
-                    return null;
-                }
-                
+                metadata.Type = MetadataType.MovieMetadata;
                 return metadata;
             }
 
-            if (EpisodeImageRegex.IsMatch(filename))
-            {
-                metadata.Type = MetadataType.EpisodeImage;
-                return metadata;
-            }
+            var parseResult = Parser.Parser.ParseMovieTitle(filename);
 
-            if (filename.Equals("tvshow.nfo", StringComparison.InvariantCultureIgnoreCase))
+            if (parseResult != null && Path.GetExtension(filename) == ".nfo")
             {
-                metadata.Type = MetadataType.SeriesMetadata;
-                return metadata;
-            }
-
-            var parseResult = Parser.Parser.ParseTitle(filename);
-
-            if (parseResult != null &&
-                !parseResult.FullSeason &&
-                Path.GetExtension(filename) == ".nfo")
-            {
-                metadata.Type = MetadataType.EpisodeMetadata;
+                metadata.Type = MetadataType.MovieMetadata;
                 return metadata;
             }
 
             return null;
         }
 
-        public override MetadataFileResult SeriesMetadata(Series series)
+        public override MetadataFileResult MovieMetadata(Movie movie)
         {
-            if (!Settings.SeriesMetadata)
+            if (!Settings.MovieMetadata)
             {
                 return null;
             }
 
-            _logger.Debug("Generating tvshow.nfo for: {0}", series.Title);
+            _logger.Debug("Generating movie.nfo for: {0}", movie.Title);
             var sb = new StringBuilder();
             var xws = new XmlWriterSettings();
             xws.OmitXmlDeclaration = true;
             xws.Indent = false;
 
-            var episodeGuideUrl = string.Format("http://www.thetvdb.com/api/1D62F2F90030C444/series/{0}/all/en.zip", series.TvdbId);
-
             using (var xw = XmlWriter.Create(sb, xws))
             {
-                var tvShow = new XElement("tvshow");
+                var movieNfo = new XElement("movie");
 
-                tvShow.Add(new XElement("title", series.Title));
+                movieNfo.Add(new XElement("title", movie.Title));
 
-                if (series.Ratings != null && series.Ratings.Votes > 0)
+                if (movie.Ratings != null && movie.Ratings.Votes > 0)
                 {
-                    tvShow.Add(new XElement("rating", series.Ratings.Value));
+                    movieNfo.Add(new XElement("rating", movie.Ratings.Value));
                 }
 
-                tvShow.Add(new XElement("plot", series.Overview));
-                tvShow.Add(new XElement("episodeguide", new XElement("url", episodeGuideUrl)));
-                tvShow.Add(new XElement("episodeguideurl", episodeGuideUrl));
-                tvShow.Add(new XElement("mpaa", series.Certification));
-                tvShow.Add(new XElement("id", series.TvdbId));
+                movieNfo.Add(new XElement("plot", movie.Overview));
+                //tvShow.Add(new XElement("episodeguide", new XElement("url", episodeGuideUrl)));
+                //tvShow.Add(new XElement("episodeguideurl", episodeGuideUrl));
+                movieNfo.Add(new XElement("mpaa", movie.Certification));
+                movieNfo.Add(new XElement("id", movie.ImdbId));
 
-                foreach (var genre in series.Genres)
+                foreach (var genre in movie.Genres)
                 {
-                    tvShow.Add(new XElement("genre", genre));
+                    movieNfo.Add(new XElement("genre", genre));
                 }
 
-                if (series.FirstAired.HasValue)
+                //if (series.FirstAired.HasValue)
+                //{
+                //    movieNfo.Add(new XElement("premiered", series.FirstAired.Value.ToString("yyyy-MM-dd")));
+                //}
+
+                movieNfo.Add(new XElement("sorttitle", movie.SortTitle));
+
+                if (movie.Studio != null)
                 {
-                    tvShow.Add(new XElement("premiered", series.FirstAired.Value.ToString("yyyy-MM-dd")));
+                    movieNfo.Add(new XElement("studio", movie.Studio));
+                }
+                
+
+                movieNfo.Add(new XElement("runtime", movie.Runtime));
+
+                if (movie.YouTubeTrailerId != null)
+                {
+                    movieNfo.Add(new XElement("trailer", movie.YouTubeTrailerId));
                 }
 
-                tvShow.Add(new XElement("studio", series.Network));
-
-                foreach (var actor in series.Actors)
+                foreach (var actor in movie.Actors)
                 {
                     var xmlActor = new XElement("actor",
                         new XElement("name", actor.Name),
@@ -177,207 +151,47 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         xmlActor.Add(new XElement("thumb", actor.Images.First().Url));
                     }
 
-                    tvShow.Add(xmlActor);
+                    movieNfo.Add(xmlActor);
                 }
 
-                var doc = new XDocument(tvShow);
+                var doc = new XDocument(movieNfo);
                 doc.Save(xw);
 
-                _logger.Debug("Saving tvshow.nfo for {0}", series.Title);
+                _logger.Debug("Saving movie.nfo for {0}", movie.Title);
 
-                return new MetadataFileResult("tvshow.nfo", doc.ToString());
+                return new MetadataFileResult("movie.nfo", doc.ToString());
             }
         }
 
-        public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
+        public override List<ImageFileResult> MovieImages(Movie movie)
         {
-            if (!Settings.EpisodeMetadata)
-            {
-                return null;
-            }
-
-            _logger.Debug("Generating Episode Metadata for: {0}", Path.Combine(series.Path, episodeFile.RelativePath));
-
-            var xmlResult = string.Empty;
-            foreach (var episode in episodeFile.Episodes.Value)
-            {
-                var sb = new StringBuilder();
-                var xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                xws.Indent = false;
-
-                using (var xw = XmlWriter.Create(sb, xws))
-                {
-                    var doc = new XDocument();
-                    var image = episode.Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
-
-                    var details = new XElement("episodedetails");
-                    details.Add(new XElement("title", episode.Title));
-                    details.Add(new XElement("season", episode.SeasonNumber));
-                    details.Add(new XElement("episode", episode.EpisodeNumber));
-                    details.Add(new XElement("aired", episode.AirDate));
-                    details.Add(new XElement("plot", episode.Overview));
-
-                    //If trakt ever gets airs before information for specials we should add set it
-                    details.Add(new XElement("displayseason"));
-                    details.Add(new XElement("displayepisode"));
-
-                    if (image == null)
-                    {
-                        details.Add(new XElement("thumb"));
-                    }
-
-                    else
-                    {
-                        details.Add(new XElement("thumb", image.Url));
-                    }
-
-                    details.Add(new XElement("watched", "false"));
-
-                    if (episode.Ratings != null && episode.Ratings.Votes > 0)
-                    {
-                        details.Add(new XElement("rating", episode.Ratings.Value));
-                    }
-
-                    if (episodeFile.MediaInfo != null)
-                    {
-                        var fileInfo = new XElement("fileinfo");
-                        var streamDetails = new XElement("streamdetails");
-
-                        var video = new XElement("video");
-                        video.Add(new XElement("aspect", (float) episodeFile.MediaInfo.Width / (float) episodeFile.MediaInfo.Height));
-                        video.Add(new XElement("bitrate", episodeFile.MediaInfo.VideoBitrate));
-                        video.Add(new XElement("codec", episodeFile.MediaInfo.VideoCodec));
-                        video.Add(new XElement("framerate", episodeFile.MediaInfo.VideoFps));
-                        video.Add(new XElement("height", episodeFile.MediaInfo.Height));
-                        video.Add(new XElement("scantype", episodeFile.MediaInfo.ScanType));
-                        video.Add(new XElement("width", episodeFile.MediaInfo.Height));
-
-                        if (episodeFile.MediaInfo.RunTime != null)
-                        {
-                            video.Add(new XElement("duration", episodeFile.MediaInfo.RunTime.TotalMinutes));
-                            video.Add(new XElement("durationinseconds", episodeFile.MediaInfo.RunTime.TotalSeconds));
-                        }
-
-                        streamDetails.Add(video);
-
-                        var audio = new XElement("audio");
-                        audio.Add(new XElement("bitrate", episodeFile.MediaInfo.AudioBitrate));
-                        audio.Add(new XElement("channels", episodeFile.MediaInfo.AudioChannels));
-                        audio.Add(new XElement("codec", GetAudioCodec(episodeFile.MediaInfo.AudioFormat)));
-                        audio.Add(new XElement("language", episodeFile.MediaInfo.AudioLanguages));
-                        streamDetails.Add(audio);
-
-                        if (episodeFile.MediaInfo.Subtitles != null && episodeFile.MediaInfo.Subtitles.Length > 0)
-                        {
-                            var subtitle = new XElement("subtitle");
-                            subtitle.Add(new XElement("language", episodeFile.MediaInfo.Subtitles));
-                            streamDetails.Add(subtitle);
-                        }
-
-                        fileInfo.Add(streamDetails);
-                        details.Add(fileInfo);
-                    }
-
-                    //Todo: get guest stars, writer and director
-                    //details.Add(new XElement("credits", tvdbEpisode.Writer.FirstOrDefault()));
-                    //details.Add(new XElement("director", tvdbEpisode.Directors.FirstOrDefault()));
-
-                    doc.Add(details);
-                    doc.Save(xw);
-
-                    xmlResult += doc.ToString();
-                    xmlResult += Environment.NewLine;
-                }
-            }
-
-            return new MetadataFileResult(GetEpisodeMetadataFilename(episodeFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
-        }
-
-        public override List<ImageFileResult> SeriesImages(Series series)
-        {
-            if (!Settings.SeriesImages)
+            if (!Settings.MovieImages)
             {
                 return new List<ImageFileResult>();
             }
 
-            return ProcessSeriesImages(series).ToList();
+            return ProcessMovieImages(movie).ToList();
         }
 
-        public override List<ImageFileResult> SeasonImages(Series series, Season season)
+        private IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie)
         {
-            if (!Settings.SeasonImages)
+            foreach (var image in movie.Images)
             {
-                return new List<ImageFileResult>();
-            }
-
-            return ProcessSeasonImages(series, season).ToList();
-        }
-
-        public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
-        {
-            if (!Settings.EpisodeImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            try
-            {
-                var screenshot = episodeFile.Episodes.Value.First().Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
-
-                if (screenshot == null)
-                {
-                    _logger.Debug("Episode screenshot not available");
-                    return new List<ImageFileResult>();
-                }
-
-                return new List<ImageFileResult>
-                   {
-                       new ImageFileResult(GetEpisodeImageFilename(episodeFile.RelativePath), screenshot.Url)
-                   };
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Unable to process episode image for file: " + Path.Combine(series.Path, episodeFile.RelativePath));
-                
-                return new List<ImageFileResult>();
-            }
-        }
-
-        private IEnumerable<ImageFileResult> ProcessSeriesImages(Series series)
-        {
-            foreach (var image in series.Images)
-            {
-                var source = _mediaCoverService.GetCoverPath(series.Id, image.CoverType);
+                var source = _mediaCoverService.GetCoverPath(movie.Id, image.CoverType);
                 var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(source);
 
                 yield return new ImageFileResult(destination, source);
             }
         }
 
-        private IEnumerable<ImageFileResult> ProcessSeasonImages(Series series, Season season)
+        private string GetMovieMetadataFilename(string movieFilePath)
         {
-            foreach (var image in season.Images)
-            {
-                var filename = string.Format("season{0:00}-{1}.jpg", season.SeasonNumber, image.CoverType.ToString().ToLower());
-
-                if (season.SeasonNumber == 0)
-                {
-                    filename = string.Format("season-specials-{0}.jpg", image.CoverType.ToString().ToLower());
-                }
-
-                yield return new ImageFileResult(filename, image.Url);
-            }
+            return Path.ChangeExtension(movieFilePath, "nfo");
         }
 
-        private string GetEpisodeMetadataFilename(string episodeFilePath)
+        private string GetMovieImageFilename(string movieFilePath)
         {
-            return Path.ChangeExtension(episodeFilePath, "nfo");
-        }
-
-        private string GetEpisodeImageFilename(string episodeFilePath)
-        {
-            return Path.ChangeExtension(episodeFilePath, "").Trim('.') + "-thumb.jpg";
+            return Path.ChangeExtension(movieFilePath, "").Trim('.') + "-thumb.jpg";
         }
 
         private string GetAudioCodec(string audioCodec)
@@ -389,5 +203,44 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
             return audioCodec;
         }
+
+        // Series Deprecation Below
+
+        public override string GetFilenameAfterMove(Series series, EpisodeFile episodeFile, MetadataFile metadataFile)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+        public override MetadataFile FindMetadataFile(Series series, string path)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+        public override MetadataFileResult SeriesMetadata(Series series)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+        public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+        public override List<ImageFileResult> SeriesImages(Series series)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+        public override List<ImageFileResult> SeasonImages(Series series, Season season)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+        public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
+        {
+            throw new Exception("Metadata not enabled for movies");
+        }
+
+
     }
 }

@@ -12,5 +12,8 @@ namespace NzbDrone.Core.Extras.Files
         public DateTime Added { get; set; }
         public DateTime LastUpdated { get; set; }
         public string Extension { get; set; }
+
+        public int MovieId { get; set; }
+        public int? MovieFileId { get; set; }
     }
 }

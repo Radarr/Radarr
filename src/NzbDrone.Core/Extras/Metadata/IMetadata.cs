@@ -15,5 +15,12 @@ namespace NzbDrone.Core.Extras.Metadata
         List<ImageFileResult> SeriesImages(Series series);
         List<ImageFileResult> SeasonImages(Series series, Season season);
         List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile);
+
+        // Movies
+        string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile);
+        MetadataFile FindMetadataFile(Movie movie, string path);
+        MetadataFileResult MovieMetadata(Movie movie);
+        List<ImageFileResult> MovieImages(Movie movie);
+
     }
 }

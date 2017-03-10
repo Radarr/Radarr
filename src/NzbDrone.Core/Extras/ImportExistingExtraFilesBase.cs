@@ -21,6 +21,9 @@ namespace NzbDrone.Core.Extras
         public abstract int Order { get; }
         public abstract IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles);
 
+        // Movie
+        public abstract IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles);
+
         public virtual ImportExistingExtraFileFilterResult<TExtraFile> FilterAndClean(Series series, List<string> filesOnDisk, List<string> importedFiles)
         {
             var seriesFiles = _extraFileService.GetFilesBySeries(series.Id);

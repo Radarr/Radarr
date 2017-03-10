@@ -5,19 +5,19 @@ using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(133)]
-    public class add_minimumavailability : NzbDroneMigrationBase
+    [Migration(135)]
+    public class update_metadata_files : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()
         {
-            if (!this.Schema.Schema("dbo").Table("NetImport").Column("MinimumAvailability").Exists())
+            if (!Schema.Schema("dbo").Table("MetadataFiles").Column("MovieId").Exists())
             {
-                Alter.Table("NetImport").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
+                Alter.Table("MetadataFiles").AddColumn("MovieId").AsInt32();
             }
-	        if (!this.Schema.Schema("dbo").Table("Movies").Column("MinimumAvailability").Exists())
-	        {
-		        Alter.Table("Movies").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
-	        }
+            if (!Schema.Schema("dbo").Table("MetadataFiles").Column("MovieFileId").Exists())
+            {
+                Alter.Table("MetadataFiles").AddColumn("MovieFileId").AsInt32();
+            }
         }
     }
 }
