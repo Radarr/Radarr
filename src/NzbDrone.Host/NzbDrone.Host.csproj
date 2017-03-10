@@ -93,7 +93,7 @@
     <Reference Include="System.ServiceProcess" />
     <Reference Include="Interop.NetFwTypeLib">
       <HintPath>..\Libraries\Interop.NetFwTypeLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -201,7 +201,7 @@
         cp -rv $(SolutionDir)Libraries\Sqlite\*.* $(TargetDir)
     </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
