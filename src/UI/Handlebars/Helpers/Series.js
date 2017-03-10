@@ -92,7 +92,7 @@ Handlebars.registerHelper('GetStatus', function() {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
 
-  else if (!monitored) {
+  if (!monitored) {
       return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
   }
 });
@@ -105,16 +105,13 @@ Handlebars.registerHelper('GetBannerStatus', function() {
   //var timeSince = new Date().getTime() - date.getTime();
   //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
-  if (status === "announced") {
-    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
-  }
 
   if (status === "inCinemas") {
     return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
-  if (status === 'released') {
-      return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
+  if (status === "announced") {
+    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
   else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');

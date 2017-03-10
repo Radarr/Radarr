@@ -9,6 +9,8 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Tv;
 using System.Threading;
 using NzbDrone.Core.Parser;
@@ -25,14 +27,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
         private readonly IMovieService _movieService;
+        private readonly IPreDBService _predbService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, IPreDBService predbService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
             _configService = configService;
             _movieService = movieService;
+            _predbService = predbService;
             _logger = logger;
         }
 
@@ -66,7 +70,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new Tuple<Series, List<Episode>>(series, episodes.ToList());
         }
 
-        public Movie GetMovieInfo(int TmdbId, Profile profile = null)
+        public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
             var langCode = profile != null ? IsoLanguages.Get(profile.Language).TwoLetterCode : "us";
 
@@ -233,13 +237,26 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             //otherwise the title has only been announced
             else
             {
-                movie.Status = MovieStatusType.Announced;
+				movie.Status = MovieStatusType.Announced;
             }
+
             //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
             if (!movie.PhysicalRelease.HasValue && (movie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds > 60*60*24*30*3))
             {
                 movie.Status = MovieStatusType.Released;
             }
+
+			if (!hasPreDBEntry)
+			{ 
+				if (_predbService.HasReleases(movie))
+				{
+					movie.HasPreDBEntry = true;
+				}
+				else
+				{
+					movie.HasPreDBEntry = false;
+				}
+			}
 
             //this matches with the old behavior before the creation of the MovieStatusType.InCinemas
             /*if (resource.status == "Released")

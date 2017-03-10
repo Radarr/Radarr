@@ -127,6 +127,12 @@ module.exports = Marionette.Layout.extend({
                 errorMessage : 'RSS Sync Failed!'
             },
             {
+              title : "PreDB Sync",
+              icon : "icon-sonarr-refresh",
+              command : "predbsync",
+              errorMessage : "PreDB Sync Failed!"
+            },
+            {
                 title          : 'Update Library',
                 icon           : 'icon-sonarr-refresh',
                 command        : 'refreshmovie',
