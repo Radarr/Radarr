@@ -70,7 +70,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new Tuple<Series, List<Episode>>(series, episodes.ToList());
         }
 
-        public Movie GetMovieInfo(int TmdbId, Profile profile = null)
+        public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
             var langCode = profile != null ? IsoLanguages.Get(profile.Language).TwoLetterCode : "us";
 
@@ -237,20 +237,26 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             //otherwise the title has only been announced
             else
             {
-                if (_predbService.HasReleases(movie))
-                {
-					movie.HasPreDBEntry = true;
-                }
-                else
-                {
-					movie.HasPreDBEntry = false;
-                }
+				movie.Status = MovieStatusType.Announced;
             }
+
             //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
             if (!movie.PhysicalRelease.HasValue && (movie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(movie.InCinemas.Value)).TotalSeconds > 60*60*24*30*3))
             {
                 movie.Status = MovieStatusType.Released;
             }
+
+			if (!hasPreDBEntry)
+			{ 
+				if (_predbService.HasReleases(movie))
+				{
+					movie.HasPreDBEntry = true;
+				}
+				else
+				{
+					movie.HasPreDBEntry = false;
+				}
+			}
 
             //this matches with the old behavior before the creation of the MovieStatusType.InCinemas
             /*if (resource.status == "Released")

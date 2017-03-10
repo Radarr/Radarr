@@ -74,13 +74,19 @@ namespace NzbDrone.Core.Tv
                     else
                         MinimumAvailabilityDate = DateTime.MaxValue;
                     break;
-                //TODO: might need to handle PreDB but for now treat the same as Released
+                
                 case MovieStatusType.Released:
                 case MovieStatusType.PreDB:
                 default:
                     MinimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
                     break;
             }
+
+			if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
+			{
+				return true;
+			}
+
             return DateTime.Now >= MinimumAvailabilityDate.AddDays(delay);
         }
 

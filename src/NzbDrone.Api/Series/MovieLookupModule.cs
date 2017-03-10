@@ -29,7 +29,7 @@ namespace NzbDrone.Api.Movie
             int tmdbId = -1;
             if(Int32.TryParse(Request.Query.tmdbId, out tmdbId))
             {
-                var result = _movieInfo.GetMovieInfo(tmdbId, null);
+                var result = _movieInfo.GetMovieInfo(tmdbId, null, true);
                 return result.ToResource().AsResponse();
             }
 

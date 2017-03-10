@@ -167,7 +167,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 				}
 				var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
 
-                if (match.Movie.Id == movie.Id)
+                if (match != null && match.Movie != null && match.Movie.Id == movie.Id)
                 {
                     return true;
                 }
