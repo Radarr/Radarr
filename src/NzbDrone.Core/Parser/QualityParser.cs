@@ -50,8 +50,8 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
-                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>Remux)\b",
+                                                        RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper|repack|rerip)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -95,16 +95,24 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            //if (RawHDRegex.IsMatch(normalizedName))
-            //{
-            //    result.Quality = Quality.RAWHD;
-            //    return result;
-            //}
-
             var sourceMatch = SourceRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
-           
+
+            if (RemuxRegex.IsMatch(normalizedName))
+            {
+                if (resolution == Resolution.R2160p)
+                {
+                    result.Quality = Quality.Remux2160p;
+                    return result;
+                }
+
+                if (resolution == Resolution.R1080p)
+                {
+                    result.Quality = Quality.Remux1080p;
+                    return result;
+                }
+            }
 
             if (sourceMatch != null && sourceMatch.Success)
             {

@@ -79,7 +79,7 @@ var BulkImportCollection = PageableCollection.extend({
 				first : this.url,
 				next: this.url,
 				last : this.url
-			}
+			};
 		}
 });
 

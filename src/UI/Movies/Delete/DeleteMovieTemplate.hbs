@@ -38,6 +38,30 @@
                     <div class="col-md-offset-1 col-md-5 delete-files-info x-delete-files-info">
                         {{#if hasFile}}1{{else}}0{{/if}} movie file(s) will be deleted
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Exclude movie from Auto List Import?</label>
+
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <label class="checkbox toggle well">
+                                    <input type="checkbox" class="x-add-exclusion"/>
+                                    <p>
+                                        <span>Yes</span>
+                                        <span>No</span>
+                                    </p>
+
+                                    <div class="btn slide-button btn-danger"/>
+                                </label>
+
+                                    <span class="help-inline-checkbox">
+                                        <i class="icon-sonarr-form-info" title="Do you want to prevent this movie from being readded during Automatic List syncing?"/>
+                                        <i class="icon-sonarr-form-info" title="Movies can be removed from the exclusions list via Lists tab in Settings"/>
+                                    </span>
+                                </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

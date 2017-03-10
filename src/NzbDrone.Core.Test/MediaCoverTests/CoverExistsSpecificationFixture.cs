@@ -37,6 +37,14 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
         }
 
+        private void GivenImageFileCorrupt(bool corrupt)
+        {
+            GivenFileExistsOnDisk();
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(c => c.IsValidGDIPlusImage(It.IsAny<string>()))
+                .Returns(!corrupt);
+        }
+
 
         [Test]
         public void should_return_false_if_file_not_exists()
@@ -53,11 +61,21 @@ namespace NzbDrone.Core.Test.MediaCoverTests
             Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
         }
 
-
         [Test]
-        public void should_return_ture_if_file_exists_and_same_size()
+        public void should_return_false_if_file_exists_and_same_size_and_corrupt()
         {
             GivenExistingFileSize(100);
+            GivenImageFileCorrupt(true);
+            _httpResponse.Headers.ContentLength = 100;
+            Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeFalse();
+        }
+
+
+        [Test]
+        public void should_return_true_if_file_exists_and_same_size_and_not_corrupt()
+        {
+            GivenExistingFileSize(100);
+            GivenImageFileCorrupt(false);
             _httpResponse.Headers.ContentLength = 100;
             Subject.AlreadyExists("http://url", "c:\\file.exe").Should().BeTrue();
         }

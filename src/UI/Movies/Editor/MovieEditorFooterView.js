@@ -6,6 +6,7 @@ var RootFolders = require('../../AddMovies/RootFolders/RootFolderCollection');
 var RootFolderLayout = require('../../AddMovies/RootFolders/RootFolderLayout');
 var UpdateFilesMoviesView = require('./Organize/OrganizeFilesView');
 var Config = require('../../Config');
+var FullMovieCollection = require('../FullMovieCollection');
 
 module.exports = Marionette.ItemView.extend({
     template : 'Movies/Editor/MovieEditorFooterViewTemplate',
@@ -36,13 +37,26 @@ module.exports = Marionette.ItemView.extend({
 
     initialize : function(options) {
         this.moviesCollection = options.collection;
-
         RootFolders.fetch().done(function() {
             RootFolders.synced = true;
         });
 
         this.editorGrid = options.editorGrid;
-        this.listenTo(this.moviesCollection, 'backgrid:selected', this._updateInfo);
+
+
+        this.listenTo(this.moviesCollection, 'backgrid:selected', function(model, selected) {
+            var m =  FullMovieCollection.findWhere({ tmdbId : model.get('tmdbId') });
+            m.set('selected', selected);
+            this._updateInfo();
+        });
+
+        this.listenTo(FullMovieCollection, 'save', function() {
+			window.alert(' Done Saving');
+			
+			var selected = FullMovieCollection.where({ selected : true });
+		});
+
+
         this.listenTo(RootFolders, 'all', this.render);
     },
 
@@ -51,15 +65,21 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _updateAndSave : function() {
-        var selected = this.editorGrid.getSelectedModels();
+        //var selected = this.editorGrid.getSelectedModels();
 
+		var selected = FullMovieCollection.where({ selected : true });
         var monitored = this.ui.monitored.val();
-	var minAvail = this.ui.minimumAvailability.val();
+		var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
         var seasonFolder = this.ui.seasonFolder.val();
         var rootFolder = this.ui.rootFolder.val();
 
+		var i = 0;
+		var b = [];
         _.each(selected, function(model) {
+
+            b[i] = model.get('tmdbId');
+						i++;
             if (monitored === 'true') {
                 model.set('monitored', true);
             } else if (monitored === 'false') {
@@ -67,8 +87,8 @@ module.exports = Marionette.ItemView.extend({
             }
 
             if (minAvail !=='noChange') {
-		model.set('minimumAvailability', minAvail);
-	    }
+				model.set('minimumAvailability', minAvail);
+	    	}
 
             if (profile !== 'noChange') {
                 model.set('profileId', parseInt(profile, 10));
@@ -85,11 +105,46 @@ module.exports = Marionette.ItemView.extend({
 
                 model.set('rootFolderPath', rootFolderPath.get('path'));
             }
-
             model.edited = true;
         });
+        var filterKey = this.moviesCollection.state.filterKey;
+        var filterValue = this.moviesCollection.state.filterValue;
+        this.moviesCollection.setFilterMode('all');
+		//this.moviesCollection.fullCollection.resetFiltered();
+		for (var j=0; j<i; j++) {
+				var m = this.moviesCollection.fullCollection.findWhere({ tmdbId : b[j] });
+				if (m!== undefined) {
+      			if (monitored === 'true') {
+          			m.set('monitored', true);
+                } else if (monitored === 'false') {
+                    m.set('monitored', false);
+                }
 
-        this.moviesCollection.save();
+                if (minAvail !=='noChange') {
+                    m.set('minimumAvailability', minAvail);
+                }
+
+                if (profile !== 'noChange') {
+                    m.set('profileId', parseInt(profile, 10));
+                }
+
+                if (seasonFolder === 'true') {
+                    m.set('seasonFolder', true);
+                } else if (seasonFolder === 'false') {
+                    m.set('seasonFolder', false);
+                }
+
+                if (rootFolder !== 'noChange') {
+                	var rootFolderPath = RootFolders.get(parseInt(rootFolder, 10));
+                	m.set('rootFolderPath', rootFolderPath.get('path'));
+            	}
+			}
+		}
+		this.moviesCollection.state.filterKey = filterKey;
+        this.moviesCollection.state.filterValue = filterValue;
+        this.moviesCollection.fullCollection.resetFiltered();
+
+		FullMovieCollection.save();
     },
 
     _updateInfo : function() {

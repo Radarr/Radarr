@@ -8,9 +8,11 @@ module.exports = Backbone.Model.extend({
         episodeFileCount : 0,
         episodeCount     : 0,
         isExisting       : false,
-        status           : 0
+        status           : 0,
+		saved			 : false,
+		deleted			 : false
     },
-
+    
     getStatus : function() {
       var monitored = this.get("monitored");
       var status = this.get("status");
@@ -19,8 +21,9 @@ module.exports = Backbone.Model.extend({
       //var timeSince = new Date().getTime() - date.getTime();
       //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
+      // lol could return status
       if (status === "announced") {
-        return "announced"
+        return "announced";
       }
 
       if (status === "inCinemas") {

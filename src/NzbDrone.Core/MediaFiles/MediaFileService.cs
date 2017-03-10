@@ -39,12 +39,15 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
         private readonly IMovieFileRepository _movieFileRepository;
+		private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
-        public MediaFileService(IMediaFileRepository mediaFileRepository, IMovieFileRepository movieFileRepository, IEventAggregator eventAggregator, Logger logger)
+        public MediaFileService(IMediaFileRepository mediaFileRepository, IMovieFileRepository movieFileRepository, IMovieService movieService,
+		                        IEventAggregator eventAggregator, Logger logger)
         {
             _mediaFileRepository = mediaFileRepository;
             _eventAggregator = eventAggregator;
+			_movieService = movieService;
             _movieFileRepository = movieFileRepository;
             _logger = logger;
         }
@@ -71,14 +74,14 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator.PublishEvent(new EpisodeFileDeletedEvent(episodeFile, reason));
         }
 
-        public void Delete(MovieFile episodeFile, DeleteMediaFileReason reason)
+        public void Delete(MovieFile movieFile, DeleteMediaFileReason reason)
         {
             //Little hack so we have the episodes and series attached for the event consumers
-            episodeFile.Movie.LazyLoad();
-            episodeFile.Path = Path.Combine(episodeFile.Movie.Value.Path, episodeFile.RelativePath);
+            movieFile.Movie.LazyLoad();
+            movieFile.Path = Path.Combine(movieFile.Movie.Value.Path, movieFile.RelativePath);
 
-            _movieFileRepository.Delete(episodeFile);
-            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(episodeFile, reason));
+            _movieFileRepository.Delete(movieFile);
+            _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movieFile, reason));
         }
 
         public List<EpisodeFile> GetFilesBySeries(int seriesId)
@@ -143,13 +146,20 @@ namespace NzbDrone.Core.MediaFiles
         public MovieFile Add(MovieFile episodeFile)
         {
             var addedFile = _movieFileRepository.Insert(episodeFile);
+			addedFile.Movie.LazyLoad();
+			if (addedFile.Movie == null || addedFile.Movie.Value == null)
+			{
+				_logger.Error("Movie is null for the file {0}. Please run the houskeeping command to ensure movies and files are linked correctly.");
+			}
+			_movieService.SetFileId(addedFile.Movie.Value, addedFile); //Should not be necessary, but sometimes below fails?
             _eventAggregator.PublishEvent(new MovieFileAddedEvent(addedFile));
+
             return addedFile;
         }
 
-        public void Update(MovieFile episodeFile)
+        public void Update(MovieFile movieFile)
         {
-            _movieFileRepository.Update(episodeFile);
+            _movieFileRepository.Update(movieFile);
         }
 
         public MovieFile GetMovie(int id)

@@ -17,9 +17,10 @@ namespace NzbDrone.Core.NetImport
         protected readonly Logger _logger;
 
         public abstract string Name { get; }
-
         public abstract bool Enabled { get; }
         public abstract bool EnableAuto { get; }
+
+        public abstract IList<Movie> Fetch();
 
         public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {
@@ -31,7 +32,6 @@ namespace NzbDrone.Core.NetImport
         public Type ConfigContract => typeof(TSettings);
 
         public virtual ProviderMessage Message => null;
-
         public virtual IEnumerable<ProviderDefinition> DefaultDefinitions
         {
             get
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.NetImport
                     Enabled = config.Validate().IsValid && Enabled,
                     EnableAuto = true,
                     ProfileId = 1,
-		    MinimumAvailability = MovieStatusType.PreDB,
+		            MinimumAvailability = MovieStatusType.Announced,
                     Implementation = GetType().Name,
                     Settings = config
                 };
@@ -56,8 +56,6 @@ namespace NzbDrone.Core.NetImport
         public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
 
         protected TSettings Settings => (TSettings)Definition.Settings;
-
-        public abstract IList<Movie> Fetch();
 
         public ValidationResult Test()
         {

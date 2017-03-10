@@ -45,7 +45,7 @@ var Collection = PageableCollection.extend({
         ],
         'deleted'  : [
             'eventType',
-            '5'
+            '6'
         ]
     },
 

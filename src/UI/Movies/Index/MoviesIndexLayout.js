@@ -5,7 +5,12 @@ var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
 var MoviesCollection = require('../MoviesCollection');
+
+var FullMovieCollection = require('../FullMovieCollection');
 var InCinemasCell = require('../../Cells/InCinemasCell');
+
+var RelativeDateCell = require('../../Cells/RelativeDateCell');
+
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
@@ -15,10 +20,19 @@ var MovieStatusCell = require('../../Cells/MovieStatusCell');
 var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var FooterView = require('./FooterView');
+var GridPager = require('../../Shared/Grid/Pager');
 var FooterModel = require('./FooterModel');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 require('../../Mixins/backbone.signalr.mixin');
+var Config = require('../../Config');
 
+//var MoviesCollectionClient = require('../MoviesCollectionClient');
+
+
+//this variable prevents double fetching the FullMovieCollection on first load
+//var shownOnce = false;
+//require('../Globals');
+window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Index/MoviesIndexLayoutTemplate',
 
@@ -26,12 +40,14 @@ module.exports = Marionette.Layout.extend({
         seriesRegion : '#x-series',
         toolbar      : '#x-toolbar',
         toolbar2     : '#x-toolbar2',
-        footer       : '#x-series-footer'
+        footer       : '#x-series-footer',
+        pager : "#x-movie-pager",
+        pagerTop : "#x-movie-pager-top"
     },
 
     columns : [
         {
-            name  : 'statusWeight',
+            name  : 'status',
             label : '',
             cell  : MovieStatusCell
         },
@@ -42,9 +58,15 @@ module.exports = Marionette.Layout.extend({
             cellValue : 'this',
         },
         {
+            name  : 'added',
+            label : 'Date Added',
+            cell  : RelativeDateCell
+        },
+        {
           name : "downloadedQuality",
           label : "Downloaded",
           cell : DownloadedQualityCell,
+          sortable : true
         },
         {
             name  : 'profileId',
@@ -54,7 +76,7 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'inCinemas',
             label : 'In Cinemas',
-            cell  : InCinemasCell
+            cell  : RelativeDateCell
         },
         {
             name      : 'this',
@@ -67,6 +89,7 @@ module.exports = Marionette.Layout.extend({
           name        : "this",
           label       : "Status",
           cell        : MovieDownloadStatusCell,
+          sortable : false,
           sortValue : function(m, k) {
             if (m.get("downloaded")) {
               return -1;
@@ -120,32 +143,75 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
+    	//this variable prevents us from showing the list before seriesCollection has been fetched the first time
         this.seriesCollection = MoviesCollection.clone();
-        this.seriesCollection.shadowCollection.bindSignalR();
+        //debugger;
+        this.seriesCollection.bindSignalR();
+		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
+		if (this.seriesCollection.state.pageSize !== pageSize) {
+        	this.seriesCollection.setPageSize(pageSize);
+		}
+        //this.listenTo(MoviesCollection, 'sync', function() {
+		//	this.seriesCollection.fetch();
+		//});
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'sync', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
-            this._renderView();
+ 		this.listenToOnce(this.seriesCollection, 'sync', function() {
+            this._showToolbar();
+            //this._fetchCollection();
+            if (window.shownOnce) {
+                //this._fetchCollection();
+                this._showFooter();
+            }
+            window.shownOnce = true;
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'add', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
-            this._renderView();
-        });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'remove', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
+
+	    this.listenTo(FullMovieCollection, 'sync', function() {
+			this._showFooter();
+		});
+
+        /*this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
             this._renderView();
+			//MoviesCollectionClient.fetch();
+        });*/
+        this.listenTo(this.seriesCollection, "change", function(model) {
+			if (model.get('saved'))	{
+				model.set('saved', false);
+				this.seriesCollection.fetch();
+				//FullMovieCollection.fetch({reset : true });
+				//this._showFooter();
+				var m = FullMovieCollection.findWhere( { tmdbId : model.get('tmdbId') });
+				m.set('monitored', model.get('monitored'));
+				m.set('minimumAvailability', model.get('minimumAvailability'));
+				m.set( {profileId : model.get('profileId') } );
+
+				this._showFooter();
+			}
+		});
+
+
+        this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
+			if (model.get('deleted')) {
+				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
+				//FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
+				FullMovieCollection.remove(model);
+				this._showFooter();
+			}
+
         });
+		//this.seriesCollection.setPageSize(pageSize);
+
 
         this.sortingOptions = {
             type           : 'sorting',
             storeState     : false,
             viewCollection : this.seriesCollection,
+            callback : this._sort,
             items          : [
                 {
                     title : 'Title',
-                    name  : 'sortTitle'
+                    name  : 'title'
                 },
                 {
                     title: 'Downloaded',
@@ -159,10 +225,10 @@ module.exports = Marionette.Layout.extend({
                     title : 'In Cinemas',
                     name  : 'inCinemas'
                 },
-                {
+                /*{
                   title : "Status",
                   name : "status",
-                }
+                }*/
             ]
         };
 
@@ -246,12 +312,25 @@ module.exports = Marionette.Layout.extend({
                 }
             ]
         };
+
+            //this._showToolbar();
+            //debugger;
+            self = this;
+            setTimeout(function(){self._showToolbar();}, 0);//wtf???
+            //this._renderView();
     },
 
     onShow : function() {
-        this._showToolbar();
-        this._fetchCollection();
-    },
+/*		this.listenToOnce(this.seriesCollection, 'sync', function() {
+        	this._showToolbar();
+			//this._fetchCollection();
+			if (window.shownOnce) {
+				//this._fetchCollection();
+				this._showFooter();
+			}
+			window.shownOnce = true;
+		});
+  */  },
 
     _showTable : function() {
         this.currentView = new Backgrid.Grid({
@@ -260,10 +339,12 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
-        this._renderView();
+        //this._showPager();
+    	this._renderView();
     },
 
     _showList : function() {
+        //this.current = "list";
         this.currentView = new ListCollectionView({
             collection : this.seriesCollection
         });
@@ -279,6 +360,10 @@ module.exports = Marionette.Layout.extend({
         this._renderView();
     },
 
+    _sort : function() {
+      console.warn("Sorting");
+    },
+
     _renderView : function() {
         if (MoviesCollection.length === 0) {
             this.seriesRegion.show(new EmptyView());
@@ -286,24 +371,26 @@ module.exports = Marionette.Layout.extend({
             this.toolbar.close();
             this.toolbar2.close();
         } else {
+            this.renderedOnce = true;
             this.seriesRegion.show(this.currentView);
-
+			this.listenTo(this.currentView.collection, 'sync', function(eventName){
+				this._showPager();
+			});
             this._showToolbar();
-            this._showFooter();
         }
     },
 
-    _fetchCollection : function() {
-        this.seriesCollection.fetch();
-    },
+	_fetchCollection : function() {
+		this.seriesCollection.fetch();
+	},
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
-
         this.seriesCollection.setFilterMode(mode);
     },
 
     _showToolbar : function() {
+      //debugger;
         if (this.toolbar.currentView) {
             return;
         }
@@ -327,42 +414,100 @@ module.exports = Marionette.Layout.extend({
         }));
     },
 
+    _showPager : function() {
+      var pager = new GridPager({
+          columns    : this.columns,
+          collection : this.seriesCollection,
+      });
+      var pagerTop = new GridPager({
+          columns    : this.columns,
+          collection : this.seriesCollection,
+      });
+      this.pager.show(pager);
+      this.pagerTop.show(pagerTop);
+    },
+
     _showFooter : function() {
         var footerModel = new FooterModel();
-        var series = MoviesCollection.models.length;
-        var episodes = 0;
-        var episodeFiles = 0;
+        var movies = FullMovieCollection.models.length;
+        //instead of all the counters could do something like this with different query in the where...
+        //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
+        //    releasedMovies.length
+
         var announced = 0;
-        var released = 0;
-	var incinemas = 0;
-        var monitored = 0;
+		var incinemas = 0;
+		var released = 0;
 
-        _.each(MoviesCollection.models, function(model) {
-            episodes += model.get('episodeCount');
-            episodeFiles += model.get('episodeFileCount');
+    	var monitored = 0;
 
-            if (model.get('status').toLowerCase() === 'released') {
-                released++;
-	    } else if (model.get('status').toLowerCase() === 'incinemas') {
-                incinemas++;
-            } else {
-                announced++;
-            }
+		var downloaded =0;
+		var missingMonitored=0;
+		var missingNotMonitored=0;
+		var missingMonitoredNotAvailable=0;
+		var missingMonitoredAvailable=0;
 
-            if (model.get('monitored')) {
-                monitored++;
-            }
-        });
+        var downloadedMonitored=0;
+		var downloadedNotMonitored=0;
+
+        _.each(FullMovieCollection.models, function(model) {
+
+        	if (model.get('status').toLowerCase() === 'released') {
+        		released++;
+	    	}
+	    	else if (model.get('status').toLowerCase() === 'incinemas') {
+            	incinemas++;
+        	}
+	    	else if (model.get('status').toLowerCase() === 'announced') {
+            	announced++;
+        	}
+
+        	if (model.get('monitored')) {
+            		monitored++;
+  			if (model.get('downloaded')) {
+				downloadedMonitored++;
+			}
+	    	}
+	    	else { //not monitored
+				if (model.get('downloaded')) {
+					downloadedNotMonitored++;
+				}
+				else { //missing
+					missingNotMonitored++;
+				}
+	    	}
+
+	    	if (model.get('downloaded')) {
+				downloaded++;
+	    	}
+        	else { //missing
+				if (!model.get('isAvailable')) {
+   					if (model.get('monitored')) {
+						missingMonitoredNotAvailable++;
+					}
+				}
+
+				if (model.get('monitored')) {
+		    		missingMonitored++;
+		    		if (model.get('isAvailable')) {
+		        		missingMonitoredAvailable++;
+		    		}
+				}
+        	}
+    	});
 
         footerModel.set({
-            series       : series,
-            released   : released,
-	    incinemas    : incinemas,
-            announced    : announced,
-            monitored : monitored,
-            unmonitored  : series - monitored,
-            episodes     : episodes,
-            episodeFiles : episodeFiles
+            movies      				: movies,
+            announced   				: announced,
+	    	incinemas   				: incinemas,
+	    	released     				: released,
+            monitored   				: monitored,
+            downloaded  				: downloaded,
+			downloadedMonitored			: downloadedMonitored,
+	    	downloadedNotMonitored 		: downloadedNotMonitored,
+	    	missingMonitored 			: missingMonitored,
+            missingMonitoredAvailable   : missingMonitoredAvailable,
+	    	missingMonitoredNotAvailable 		: missingMonitoredNotAvailable,
+	    	missingNotMonitored 		: missingNotMonitored
         });
 
         this.footer.show(new FooterView({ model : footerModel }));

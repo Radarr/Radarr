@@ -17,6 +17,7 @@ namespace NzbDrone.Core.History
         List<History> FindByDownloadId(string downloadId);
         List<History> FindDownloadHistory(int idSeriesId, QualityModel quality);
         void DeleteForSeries(int seriesId);
+        void DeleteForMovie(int movieId);
         History MostRecentForMovie(int movieId);
     }
 
@@ -69,6 +70,11 @@ namespace NzbDrone.Core.History
         public void DeleteForSeries(int seriesId)
         {
             Delete(c => c.SeriesId == seriesId);
+        }
+
+        public void DeleteForMovie(int movieId)
+        {
+            Delete(c => c.MovieId == movieId);
         }
 
         protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)

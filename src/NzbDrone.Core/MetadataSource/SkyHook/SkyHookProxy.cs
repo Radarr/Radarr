@@ -12,9 +12,6 @@ using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Tv;
-using Newtonsoft.Json;
-using System.Text.RegularExpressions;
-using System.Text;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
@@ -136,15 +133,26 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
             movie.Title = resource.title;
-            movie.TitleSlug = ToUrlSlug(resource.title);
+            movie.TitleSlug = Parser.Parser.ToUrlSlug(resource.title);
             movie.CleanTitle = Parser.Parser.CleanSeriesTitle(resource.title);
             movie.SortTitle = Parser.Parser.NormalizeTitle(resource.title);
             movie.Overview = resource.overview;
             movie.Website = resource.homepage;
+
             if (resource.release_date.IsNotNullOrWhiteSpace())
             {
                 movie.InCinemas = DateTime.Parse(resource.release_date);
-                movie.Year = movie.InCinemas.Value.Year;
+
+                // get the lowest year in all release date
+                var lowestYear = new List<int>();
+                foreach (ReleaseDates releaseDates in resource.release_dates.results)
+                {
+                    foreach (ReleaseDate releaseDate in releaseDates.release_dates)
+                    {
+                        lowestYear.Add(DateTime.Parse(releaseDate.release_date).Year);
+                    }
+                }
+                movie.Year = lowestYear.Min();
             }
 
             movie.TitleSlug += "-" + movie.TmdbId.ToString();
@@ -474,7 +482,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 imdbMovie.SortTitle = Parser.Parser.NormalizeTitle(result.title);
                 imdbMovie.Title = result.title;
-                imdbMovie.TitleSlug = ToUrlSlug(result.title);
+                imdbMovie.TitleSlug = Parser.Parser.ToUrlSlug(result.title);
 
                 if (result.release_date.IsNotNullOrWhiteSpace())
                 {
@@ -659,30 +667,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 default:
                     return MediaCoverTypes.Unknown;
             }
-        }
-
-        public static string ToUrlSlug(string value)
-        {
-            //First to lower case
-            value = value.ToLowerInvariant();
-
-            //Remove all accents
-            var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
-            value = Encoding.ASCII.GetString(bytes);
-
-            //Replace spaces
-            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
-
-            //Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
-
-            //Trim dashes from end
-            value = value.Trim('-', '_');
-
-            //Replace double occurences of - or _
-            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
-
-            return value;
         }
 
         public Movie MapMovieToTmdbMovie(Movie movie)

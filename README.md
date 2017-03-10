@@ -1,3 +1,41 @@
+<p align="center">
+	<img src="/Logo/text256.png" alt="Radarr">
+</p>
+
+Radarr is an __independent__ fork of [Sonarr](https://github.com/Sonarr/Sonarr) reworked for automatically downloading movies via Usenet and BitTorrent.
+
+The project was inspired by other Usenet/BitTorrent movie downloaders such as CouchPotato.
+
+## Getting Started
+
+[![Installation](https://img.shields.io/badge/wiki-installation-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation)
+[![Docker](https://img.shields.io/badge/wiki-docker-1488C6.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker)
+[![Setup Guide](https://img.shields.io/badge/wiki-setup_guide-orange.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Setup-Guide)
+[![FAQ](https://img.shields.io/badge/wiki-FAQ-BF55EC.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/FAQ)
+
+* [Install Radarr for your desired OS](https://github.com/Radarr/Radarr/wiki/Installation) *or* use [Docker](https://github.com/Radarr/Radarr/wiki/Docker)
+* *For Linux users*, run `radarr` and *optionally* have [Radarr start automatically](https://github.com/Radarr/Radarr/wiki/Autostart-on-Linux)
+* Connect to the UI through <http://localhost:7878> or <http://your-ip:7878> in your web browser
+* See the [Setup Guide](https://github.com/Radarr/Radarr/wiki/Setup-Guide) for further configuration
+
+## Downloads
+
+[![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)
+[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
+
+[![Docker release](https://img.shields.io/badge/docker-release-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
+[![Docker nightly](https://img.shields.io/badge/docker-nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/hotio/radarr)
+[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
+[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
+
+## Support
+
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
+[![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
+[![Feathub](https://img.shields.io/badge/feathub-requests-lightgrey.svg?maxAge=60&style=flat-square)](http://feathub.com/Radarr/Radarr)
+[![GitHub](https://img.shields.io/badge/github-issues-red.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
+[![GitHub Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki)
+
 ## Status
 
 [![GitHub issues](https://img.shields.io/github/issues/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
@@ -12,27 +50,9 @@
 | AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1) |
 | Travis   | [![Travis](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) | [![Travis](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) |
 
-A fork of [Sonarr](https://github.com/Sonarr/Sonarr) to work with movies à la Couchpotato.
+**This project works independently of Sonarr and will not interfere with it.**
 
-**This fork works independently of Sonarr and will not interfere with it.**
-
-## Downloads
-
-[![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)
-
-[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
-
-[![Docker x64](https://img.shields.io/badge/docker-x64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
-[![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
-[![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
-
-To connect to the UI, fire up your browser and open <http://localhost:7878> or <http://your-ip:7878>.
-
-## Support
-
-[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
-[![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
-[![GitHub](https://img.shields.io/badge/github-issues-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
+Radarr is currently undergoing rapid development and pull requests are actively added into the repository.
 
 ## Features
 
@@ -61,10 +81,9 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 * Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
 * Full integration with Kodi, Plex (notification, library update, metadata)
 
-##Feature Requests
-[![Feature Requests](http://feathub.com/Radarr/Radarr?format=svg)](http://feathub.com/Radarr/Radarr)
+#### [Feature Requests](http://feathub.com/Radarr/Radarr)
 
-## Configuring Development Environment
+## Configuring the Development Environment
 
 ### Requirements
 
@@ -90,7 +109,7 @@ To connect to the UI, fire up your browser and open <http://localhost:7878> or <
 
 ## Sponsors
 
-[JetBrains](http://www.jetbrains.com) for providing us with free licenses to their great tools:
+Thanks to [JetBrains](http://www.jetbrains.com) for providing us with free licenses to their great tools:
 * [ReSharper](http://www.jetbrains.com/resharper)
 * [WebStorm](http://www.jetbrains.com/webstorm)
 * [TeamCity](http://www.jetbrains.com/teamcity)

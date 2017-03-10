@@ -7,40 +7,134 @@ var AsFilteredCollection = require('../Mixins/AsFilteredCollection');
 var AsSortedCollection = require('../Mixins/AsSortedCollection');
 var AsPersistedStateCollection = require('../Mixins/AsPersistedStateCollection');
 var moment = require('moment');
+var UiSettings = require('../Shared/UiSettingsModel');
 require('../Mixins/backbone.signalr.mixin');
+var Config = require('../Config');
+
+var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
+
+var filterModes = {
+    'all'        : [
+        null,
+        null
+    ],
+    'continuing' : [
+        'status',
+        'continuing'
+    ],
+    'ended'      : [
+        'status',
+        'ended'
+    ],
+    'monitored'  : [
+        'monitored',
+        true
+    ],
+    'missing'  : [
+        'downloaded',
+        false
+    ],
+    'released'  : [
+        "status",
+        "released",
+        //function(model) { return model.getStatus() == "released"; }
+    ],
+    'announced'  : [
+        "status",
+        "announced",
+        //function(model) { return model.getStatus() == "announced"; }
+    ],
+    'cinemas'  : [
+        "status",
+        "inCinemas",
+        //function(model) { return model.getStatus() == "inCinemas"; }
+    ]
+}//Hacky, I know
+
 
 var Collection = PageableCollection.extend({
     url       : window.NzbDrone.ApiRoot + '/movie',
     model     : MovieModel,
     tableName : 'movie',
 
+    origSetSorting : PageableCollection.prototype.setSorting,
+    origAdd : PageableCollection.prototype.add,
+    origSort : PageableCollection.prototype.sort,
+
     state : {
         sortKey            : 'sortTitle',
         order              : -1,
-        pageSize           : 100000,
+        pageSize           : pageSize,
         secondarySortKey   : 'sortTitle',
         secondarySortOrder : -1
     },
 
-    mode : 'client',
+    queryParams : {
+        totalPages   : null,
+        totalRecords : null,
+        pageSize     : 'pageSize',
+        sortKey      : 'sortKey',
+        order        : 'sortDir',
+        directions   : {
+            '-1' : 'asc',
+            '1'  : 'desc'
+        }
+    },
+
+    parseState : function(resp) {
+	  if (this.mode === 'client') {
+	  	return {};
+	  }
+      var direction = -1;
+      if (resp.sortDirection.toLowerCase() === "descending") {
+        direction = 1;
+      }
+        return { totalRecords : resp.totalRecords, order : direction, currentPage : resp.page };
+    },
+
+    parseRecords : function(resp) {
+        if (resp && this.mode !== 'client') {
+            return resp.records;
+        }
+
+        return resp;
+    },
+
+    mode : 'server',
+
+    setSorting : function(sortKey, order, options) {
+        return this.origSetSorting.call(this, sortKey, order, options);
+    },
+
+    sort : function(options){
+    	//if (this.mode == 'server' && this.state.order == '-1' && this.state.sortKey === 'sortTitle'){
+        //    this.origSort(options);
+        //}
+    },
 
     save : function() {
         var self = this;
-
+		var t= self;
+		if (self.mode === 'client') {
+			t = self.fullCollection;
+			}
         var proxy = _.extend(new Backbone.Model(), {
             id : '',
 
             url : self.url + '/editor',
 
             toJSON : function() {
-                return self.filter(function(model) {
+                return t.filter(function(model) {
                     return model.edited;
                 });
             }
         });
-
         this.listenTo(proxy, 'sync', function(proxyModel, models) {
-            this.add(models, { merge : true });
+			if (self.mode === 'client') {
+            	this.fullCollection.add(models, { merge : true });
+			} else {
+				this.add(models, { merge : true });
+			}
             this.trigger('save', this);
         });
 
@@ -68,57 +162,24 @@ var Collection = PageableCollection.extend({
         return proxy.save();
     },
 
-    filterModes : {
-        'all'        : [
-            null,
-            null
-        ],
-        'continuing' : [
-            'status',
-            'continuing'
-        ],
-        'ended'      : [
-            'status',
-            'ended'
-        ],
-        'monitored'  : [
-            'monitored',
-            true
-        ],
-        'missing'  : [
-            'downloaded',
-            false
-        ],
-        'released'  : [
-            null,
-            null,
-            function(model) { return model.getStatus() == "released"; }
-        ],
-        'announced'  : [
-            null,
-            null,
-            function(model) { return model.getStatus() == "announced"; }
-        ],
-        'cinemas'  : [
-            null,
-            null,
-            function(model) { return model.getStatus() == "inCinemas"; }
-        ]
-    },
-
+    filterModes : filterModes,
+  
     sortMappings : {
+        movie : {
+            sortKey : 'series.sortTitle'
+        },
         title : {
             sortKey : 'sortTitle'
         },
         statusWeight : {
           sortValue : function(model, attr) {
-            if (model.getStatus() == "released") {
+            if (model.getStatus().toLowerCase() === "released") {
               return 3;
             }
-            if (model.getStatus() == "inCinemas") {
+            if (model.getStatus().toLowerCase() === "incinemas") {
               return 2;
             }
-            if (mode.getStatus() == "announced") {
+            if (model.getStatus().toLowerCase() === "announced") {
 	      return 1;
 	    }
             return -1;
@@ -127,10 +188,10 @@ var Collection = PageableCollection.extend({
         downloadedQuality : {
           sortValue : function(model, attr) {
             if (model.get("movieFile")) {
-              return 1000-model.get("movieFile").quality.quality.id;
+              return model.get("movieFile").quality.quality.name;
             }
 
-            return -1;
+            return "";
           }
         },
         nextAiring : {
@@ -150,7 +211,6 @@ var Collection = PageableCollection.extend({
         },
         status: {
           sortValue : function(model, attr) {
-            debugger;
             if (model.get("downloaded")) {
               return -1;
             }
@@ -184,6 +244,24 @@ var Collection = PageableCollection.extend({
                 return path.toLowerCase();
             }
         }
+    },
+
+    add : function(model, options) {
+      if (this.length >= this.state.pageSize) {
+        return;
+      }
+      this.origAdd.call(this, model, options);
+    },
+
+    setFilterMode : function(mode){
+      var arr = this.filterModes[mode];
+      this.state.filterKey = arr[0];
+      this.state.filterValue = arr[1];
+      this.fetch();
+    },
+
+    comparator: function (model) {
+		return model.get('sortTitle');
     }
 });
 
@@ -191,6 +269,16 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('movie');
+var filterMode = Config.getValue("series.filterMode", "all");
+var sortKey = Config.getValue("movie.sortKey", "sortTitle");
+var sortDir = Config.getValue("movie.sortDirection", -1);
+var sortD = "asc";
+if (sortDir == 1) {
+  sortD = "desc";
+}
 
-module.exports = new Collection(data, { full : true }).bindSignalR();
+var values = filterModes[filterMode];
+
+var data = ApiData.get("movie?page=1&pageSize={0}&sortKey={3}&sortDir={4}&filterKey={1}&filterValue={2}".format(pageSize, values[0], values[1], sortKey, sortD));
+
+module.exports = new Collection(data.records, { full : false, state : { totalRecords : data.totalRecords} }).bindSignalR();

@@ -708,7 +708,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardEpisodeFormat = "{Release Group}";
 
             Subject.BuildFileName(new List<Episode> { _episode1 }, _series, _episodeFile)
-                   .Should().Be("Sonarr");
+                   .Should().Be("Radarr");
         }
 
         [TestCase("{Episode Title}{-Release Group}", "City Sushi")]

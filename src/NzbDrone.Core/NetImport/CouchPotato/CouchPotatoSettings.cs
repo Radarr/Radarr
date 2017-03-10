@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
@@ -15,8 +16,10 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         }
     }
 
-    public class CouchPotatoSettings : NetImportBaseSettings
+    public class CouchPotatoSettings : IProviderConfig
     {
+        private static readonly CouchPotatoSettingsValidator Validator = new CouchPotatoSettingsValidator();
+
         public CouchPotatoSettings()
         {
             Link = "http://localhost";
@@ -26,13 +29,12 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         }
 
         [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "Link to your CoouchPootato.")]
-        public new string Link { get; set; }
+        public string Link { get; set; }
 
         [FieldDefinition(1, Label = "CouchPotato Port", HelpText = "Port your CoouchPootato uses.")]
         public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "CouchPotato Url Base",
-            HelpText = "UrlBase your CoouchPootato uses, leave blank for none")]
+        [FieldDefinition(2, Label = "CouchPotato Url Base", HelpText = "UrlBase your CoouchPootato uses, leave blank for none")]
         public string UrlBase { get; set; }
 
         [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
@@ -41,6 +43,10 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         [FieldDefinition(4, Label = "Only Wanted", HelpText = "Only add wanted movies.", Type = FieldType.Checkbox)]
         public bool OnlyActive { get; set; }
 
+        public NzbDroneValidationResult Validate()
+        {
+            return new NzbDroneValidationResult(Validator.Validate(this));
+        }
     }
 
 }

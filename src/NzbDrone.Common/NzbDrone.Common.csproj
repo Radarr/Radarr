@@ -60,6 +60,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="ICSharpCode.SharpZipLib">
@@ -89,6 +90,7 @@
     <Compile Include="Disk\FileSystemModel.cs" />
     <Compile Include="Disk\FileSystemResult.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Disk\GdiPlusInterop.cs" />
     <Compile Include="Disk\OsPath.cs" />
     <Compile Include="Disk\DiskProviderBase.cs" />
     <Compile Include="Disk\IDiskProvider.cs" />
@@ -145,14 +147,14 @@
     <Compile Include="Expansive\Tree.cs" />
     <Compile Include="Expansive\TreeNode.cs" />
     <Compile Include="Expansive\TreeNodeList.cs" />
-    <Compile Include="Extensions\Base64Extentions.cs" />
+    <Compile Include="Extensions\Base64Extensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Crypto\HashConverter.cs" />
     <Compile Include="Extensions\Int64Extensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\UrlExtensions.cs" />
-    <Compile Include="Extensions\XmlExtentions.cs" />
+    <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="HashUtil.cs" />
     <Compile Include="Http\Dispatchers\CurlHttpDispatcher.cs" />
     <Compile Include="Http\Dispatchers\FallbackHttpDispatcher.cs" />

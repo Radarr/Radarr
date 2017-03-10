@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Configuration
 {
     public enum ConfigKey
     {
-        DownloadedEpisodesFolder
+        DownloadedMoviesFolder
     }
 
     public class ConfigService : IConfigService
@@ -73,11 +73,11 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public string DownloadedEpisodesFolder
+        public string DownloadedMoviesFolder
         {
-            get { return GetValue(ConfigKey.DownloadedEpisodesFolder.ToString()); }
+            get { return GetValue(ConfigKey.DownloadedMoviesFolder.ToString()); }
 
-            set { SetValue(ConfigKey.DownloadedEpisodesFolder.ToString(), value); }
+            set { SetValue(ConfigKey.DownloadedMoviesFolder.ToString(), value); }
         }
 
         public bool AutoUnmonitorPreviouslyDownloadedEpisodes
@@ -117,6 +117,57 @@ namespace NzbDrone.Core.Configuration
 
             set { SetValue("NetImportSyncInterval", value); }
         }
+        
+        public string TraktAuthToken
+	      {
+            get { return GetValue("TraktAuthToken", string.Empty); }
+
+            set { SetValue("TraktAuthToken", value); }
+	      }
+
+	      public string TraktRefreshToken
+	      {
+	          get { return GetValue("TraktRefreshToken", string.Empty); }
+        
+	          set {SetValue("TraktRefreshToken", value); }
+	      }
+        
+	      public int TraktTokenExpiry
+	      {
+	      	  get { return GetValueInt("TraktTokenExpiry", 0); }
+        
+	          set { SetValue("TraktTokenExpiry", value); }
+	      }
+
+	public string NewTraktAuthToken
+	{
+		get {return GetValue("NewTraktAuthToken", string.Empty); }
+		set { SetValue("NewTraktAuthToken", value); }
+	}
+
+	public string NewTraktRefreshToken
+	{
+		get {return GetValue("NewTraktRefreshToken", string.Empty); }
+		set { SetValue("NewTraktRefreshToken", value); }
+	}
+
+	public int NewTraktTokenExpiry
+	{
+		get {return GetValueInt("NewTraktTokenExpiry", 0); }
+		set { SetValue("NewTraktTokenExpiry", value); }
+	}
+
+	public string ListSyncLevel
+	{
+	    get { return GetValue("ListSyncLevel", "disabled"); }
+	    set { SetValue("ListSyncLevel", value); }
+	}
+
+	public string ImportExclusions
+	{
+	    get { return GetValue("ImportExclusions", string.Empty); }
+	    set { SetValue("ImportExclusions", value); }
+	}
 
         public int MinimumAge
         {
@@ -180,11 +231,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("DownloadClientWorkingFolders", value); }
         }
 
-        public int DownloadedEpisodesScanInterval
+        public int DownloadedMoviesScanInterval
         {
-            get { return GetValueInt("DownloadedEpisodesScanInterval", 0); }
+            get { return GetValueInt("DownloadedMoviesScanInterval", 0); }
 
-            set { SetValue("DownloadedEpisodesScanInterval", value); }
+            set { SetValue("DownloadedMoviesScanInterval", value); }
         }
 
         public int DownloadClientHistoryLimit

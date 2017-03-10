@@ -9,12 +9,12 @@
             if (!title.Contains(".")) return false;
             if (title.Contains(" ")) return false;
 
-            var parsedTitle = Parser.ParseTitle(title);
+            var parsedTitle = Parser.ParseMovieTitle(title);
 
             if (parsedTitle == null ||
                 parsedTitle.ReleaseGroup == null ||
                 parsedTitle.Quality.Quality == Qualities.Quality.Unknown ||
-                string.IsNullOrWhiteSpace(parsedTitle.SeriesTitle))
+                string.IsNullOrWhiteSpace(parsedTitle.MovieTitle))
             {
                 return false;
             }

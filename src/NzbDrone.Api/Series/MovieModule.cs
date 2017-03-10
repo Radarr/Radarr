@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Api.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
@@ -15,6 +16,7 @@ using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Validation;
 using NzbDrone.SignalR;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Api.Movie
 {
@@ -31,6 +33,8 @@ namespace NzbDrone.Api.Movie
         protected readonly IMovieService _moviesService;
         private readonly IMovieStatisticsService _moviesStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
+
+		private const string TITLE_SLUG_ROUTE = "/titleslug/(?<slug>[^/]+)";
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IMovieService moviesService,
@@ -52,7 +56,11 @@ namespace NzbDrone.Api.Movie
             _coverMapper = coverMapper;
 
             GetResourceAll = AllMovie;
+			GetResourcePaged = GetMoviePaged;
             GetResourceById = GetMovie;
+			Get[TITLE_SLUG_ROUTE] = (options) => {
+				return ReqResExtensions.AsResponse(GetByTitleSlug(options.slug));
+			};
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
             DeleteResource = DeleteMovie;
@@ -104,6 +112,15 @@ namespace NzbDrone.Api.Movie
             return MapToResource(movies);
         }
 
+		private PagingResource<MovieResource> GetMoviePaged(PagingResource<MovieResource> pagingResource)
+		{
+			var pagingSpec = pagingResource.MapToPagingSpec<MovieResource, Core.Tv.Movie>();
+
+            pagingSpec.FilterExpression = _moviesService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue, pagingResource.FilterType);
+
+            return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
+		}
+
         protected MovieResource MapToResource(Core.Tv.Movie movies)
         {
             if (movies == null) return null;
@@ -128,6 +145,11 @@ namespace NzbDrone.Api.Movie
             return moviesResources;
         }
 
+		private MovieResource GetByTitleSlug(string slug)
+		{
+			return MapToResource(_moviesService.FindByTitleSlug(slug));
+		}
+
         private int AddMovie(MovieResource moviesResource)
         {
             var model = moviesResource.ToModel();
@@ -147,14 +169,20 @@ namespace NzbDrone.Api.Movie
         private void DeleteMovie(int id)
         {
             var deleteFiles = false;
+            var addExclusion = false;
             var deleteFilesQuery = Request.Query.deleteFiles;
+            var addExclusionQuery = Request.Query.addExclusion;
 
             if (deleteFilesQuery.HasValue)
             {
                 deleteFiles = Convert.ToBoolean(deleteFilesQuery.Value);
             }
+            if (addExclusionQuery.HasValue)
+            {
+                addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
+            }
 
-            _moviesService.DeleteMovie(id, deleteFiles);
+            _moviesService.DeleteMovie(id, deleteFiles, addExclusion);
         }
 
         private void MapCoversToLocal(params MovieResource[] movies)

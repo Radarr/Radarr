@@ -38,7 +38,8 @@ namespace NzbDrone.Core.RootFolders
                                                                      ".appledb",
                                                                      ".appledesktop",
                                                                      ".appledouble",
-                                                                     "@eadir"
+                                                                     "@eadir",
+                                                                     ".grab"
                                                                  };
 
 
@@ -109,7 +110,7 @@ namespace NzbDrone.Core.RootFolders
                 throw new InvalidOperationException("Recent directory already exists.");
             }
 
-            if (_configService.DownloadedEpisodesFolder.IsNotNullOrWhiteSpace() && _configService.DownloadedEpisodesFolder.PathEquals(rootFolder.Path))
+            if (_configService.DownloadedMoviesFolder.IsNotNullOrWhiteSpace() && _configService.DownloadedMoviesFolder.PathEquals(rootFolder.Path))
             {
                 throw new InvalidOperationException("Drone Factory folder cannot be used.");
             }
@@ -170,7 +171,9 @@ namespace NzbDrone.Core.RootFolders
         {
             _logger.Debug("Generating list of unmapped folders");
             if (string.IsNullOrEmpty(path))
+            {
                 throw new ArgumentException("Invalid path provided", "path");
+            }
 
             var results = new List<UnmappedFolder>();
             var movies = _movieRepository.All().ToList();
@@ -181,13 +184,16 @@ namespace NzbDrone.Core.RootFolders
                 return results;
             }
 
-            var movieFolders = _diskProvider.GetDirectories(path).ToList();
-            var unmappedFolders = movieFolders.Except(movies.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
+            //var movieFolders = _diskProvider.GetDirectories(path).ToList();
+            //var unmappedFolders = movieFolders.Except(movies.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
+
+            var possibleMovieFolders = _diskProvider.GetDirectories(path).ToList();
+            var unmappedFolders = possibleMovieFolders.Except(movies.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
 
             foreach (string unmappedFolder in unmappedFolders)
             {
                 var di = new DirectoryInfo(unmappedFolder.Normalize());
-                if (!di.Attributes.HasFlag(FileAttributes.System) && !di.Attributes.HasFlag(FileAttributes.Hidden))
+				if ((!di.Attributes.HasFlag(FileAttributes.System) && !di.Attributes.HasFlag(FileAttributes.Hidden)) || di.Attributes.ToString() == "-1")
                 {
                     results.Add(new UnmappedFolder { Name = di.Name, Path = di.FullName });
                 }

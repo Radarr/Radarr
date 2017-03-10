@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
     public abstract class DownloadClientFixtureBase<TSubject> : CoreTest<TSubject>
         where TSubject : class, IDownloadClient
     {
-        protected readonly string _title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE";
-        protected readonly string _downloadUrl = "http://somewhere.com/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.ext";
+        protected readonly string _title = "Droned.1998.1080p.WEB-DL-DRONE";
+        protected readonly string _downloadUrl = "http://somewhere.com/Droned.1998.1080p.WEB-DL-DRONE.ext";
 
         [SetUp]
         public void SetupBase()
@@ -30,8 +30,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns(30);
 
             Mocker.GetMock<IParsingService>()
-                .Setup(s => s.Map(It.IsAny<ParsedEpisodeInfo>(), It.IsAny<int>(), It.IsAny<int>(), (SearchCriteriaBase)null))
-                .Returns(() => CreateRemoteEpisode());
+                .Setup(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), (SearchCriteriaBase)null))
+                .Returns(() => CreateRemoteMovie());
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
@@ -42,22 +42,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns<string, OsPath>((h, r) => r);
         }
 
-        protected virtual RemoteEpisode CreateRemoteEpisode()
+        protected virtual RemoteMovie CreateRemoteMovie()
         {
-            var remoteEpisode = new RemoteEpisode();
-            remoteEpisode.Release = new ReleaseInfo();
-            remoteEpisode.Release.Title = _title;
-            remoteEpisode.Release.DownloadUrl = _downloadUrl;
-            remoteEpisode.Release.DownloadProtocol = Subject.Protocol;
+            var remoteMovie = new RemoteMovie();
+            remoteMovie.Release = new ReleaseInfo();
+            remoteMovie.Release.Title = _title;
+            remoteMovie.Release.DownloadUrl = _downloadUrl;
+            remoteMovie.Release.DownloadProtocol = Subject.Protocol;
 
-            remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            remoteEpisode.ParsedEpisodeInfo.FullSeason = false;
+            remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
 
-            remoteEpisode.Episodes = new List<Episode>();
+            remoteMovie.Movie = new Movie();
 
-            remoteEpisode.Series = new Series();
-
-            return remoteEpisode;
+            return remoteMovie;
         }
 
         protected void VerifyIdentifiable(DownloadClientItem downloadClientItem)

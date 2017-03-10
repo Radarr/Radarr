@@ -113,7 +113,6 @@
     <Compile Include="Blacklisting\BlacklistServiceFixture.cs" />
     <Compile Include="Configuration\ConfigCachingFixture.cs" />
     <Compile Include="Configuration\ConfigServiceFixture.cs" />
-    <Compile Include="DataAugmentation\SceneNumbering\XemServiceFixture.cs" />
     <Compile Include="DataAugmentation\Scene\SceneMappingProxyFixture.cs" />
     <Compile Include="DataAugmentation\Scene\SceneMappingServiceFixture.cs" />
     <Compile Include="DataAugmentation\DailySeries\DailySeriesDataProxyFixture.cs" />
@@ -215,9 +214,10 @@
     <Compile Include="HealthCheck\Checks\AppDataLocationFixture.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\DroneFactoryCheckFixture.cs" />
-    <Compile Include="HealthCheck\Checks\HealthCheckFixtureExtentions.cs" />
+    <Compile Include="HealthCheck\Checks\HealthCheckFixtureExtensions.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheckFixture.cs" />
-    <Compile Include="HealthCheck\Checks\IndexerCheckFixture.cs" />
+    <Compile Include="HealthCheck\Checks\IndexerSearchCheckFixture.cs" />
+    <Compile Include="HealthCheck\Checks\IndexerRssCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\MonoVersionCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\RootFolderCheckFixture.cs" />
@@ -272,8 +272,8 @@
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
     <Compile Include="MediaFiles\DiskScanServiceTests\ScanFixture.cs" />
-    <Compile Include="MediaFiles\DownloadedEpisodesCommandServiceFixture.cs" />
-    <Compile Include="MediaFiles\DownloadedEpisodesImportServiceFixture.cs" />
+    <Compile Include="MediaFiles\DownloadedMoviesCommandServiceFixture.cs" />
+    <Compile Include="MediaFiles\DownloadedMoviesImportServiceFixture.cs" />
     <Compile Include="MediaFiles\EpisodeFileMovingServiceTests\MoveEpisodeFileFixture.cs" />
     <Compile Include="MediaFiles\EpisodeImport\ImportDecisionMakerFixture.cs" />
     <Compile Include="MediaFiles\EpisodeImport\SampleServiceFixture.cs" />
@@ -349,7 +349,6 @@
     <Compile Include="Profiles\ProfileRepositoryFixture.cs" />
     <Compile Include="Profiles\ProfileServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\XemProxyFixture.cs" />
     <Compile Include="ProviderTests\DiskProviderTests\ArchiveProviderFixture.cs" />
     <Compile Include="ProviderTests\DiskScanProviderTests\GetVideoFilesFixture.cs" />
     <Compile Include="ProviderTests\RecycleBinProviderTests\CleanupFixture.cs" />
@@ -420,6 +419,10 @@
     </Content>
     <Content Include="Files\imdb_watchlist.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Indexers\TorrentRss\AlphaRatio.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="License.txt" />
     <None Include="Files\Indexers\BroadcastheNet\RecentFeed.json">
@@ -561,23 +564,12 @@
     <None Include="Files\TestArchive.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Files\Xem\Failure.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Files\Xem\Ids.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Files\Xem\Mappings.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Files\Xem\Names.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DataAugmentation\SceneNumbering\" />
+    <Folder Include="Providers\" />
     <Folder Include="ProviderTests\UpdateProviderTests\" />
-    <Folder Include="BulkImport\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -591,7 +583,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

@@ -57,7 +57,7 @@ module.exports = Marionette.Layout.extend({
 
 		initialize : function() {
 				this.moviesCollection = MoviesCollection.clone();
-				this.moviesCollection.shadowCollection.bindSignalR();
+				this.moviesCollection.bindSignalR();
 
 				this.listenTo(this.model, 'change:monitored', this._setMonitoredState);
 				this.listenTo(this.model, 'remove', this._moviesRemoved);
@@ -89,7 +89,7 @@ module.exports = Marionette.Layout.extend({
 				this._setMonitoredState();
 				this._showInfo();
 				if (this.model.get("movieFile")) {
-					this._showFiles()
+					this._showFiles();
 				} else {
 					this._showHistory();
 				}
@@ -223,37 +223,6 @@ module.exports = Marionette.Layout.extend({
 				var self = this;
 
 				return;
-
-				reqres.setHandler(reqres.Requests.GetEpisodeFileById, function(episodeFileId) {
-						return self.episodeFileCollection.get(episodeFileId);
-				});
-
-				reqres.setHandler(reqres.Requests.GetAlternateNameBySeasonNumber, function(moviesId, seasonNumber, sceneSeasonNumber) {
-						if (self.model.get('id') !== moviesId) {
-								return [];
-						}
-
-						if (sceneSeasonNumber === undefined) {
-								sceneSeasonNumber = seasonNumber;
-						}
-
-						return _.where(self.model.get('alternateTitles'),
-								function(alt) {
-										return alt.sceneSeasonNumber === sceneSeasonNumber || alt.seasonNumber === seasonNumber;
-								});
-				});
-
-				$.when(this.episodeCollection.fetch(), this.episodeFileCollection.fetch()).done(function() {
-						var seasonCollectionView = new SeasonCollectionView({
-								collection        : self.seasonCollection,
-								episodeCollection : self.episodeCollection,
-								movies            : self.model
-						});
-
-						if (!self.isClosed) {
-								self.seasons.show(seasonCollectionView);
-						}
-				});
 		},
 
 		_showInfo : function() {
@@ -311,7 +280,7 @@ module.exports = Marionette.Layout.extend({
 		_manualSearchM : function() {
 				console.warn("Manual Search started");
 				console.warn(this.model.id);
-				console.warn(this.model)
+				console.warn(this.model);
 				console.warn(this.episodeCollection);
 				vent.trigger(vent.Commands.ShowEpisodeDetails, {
 						episode        : this.model,

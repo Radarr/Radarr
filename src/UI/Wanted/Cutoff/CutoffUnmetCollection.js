@@ -11,7 +11,7 @@ var Collection = PagableCollection.extend({
     tableName : 'wanted.cutoff',
 
     state : {
-        pageSize : 15,
+        pageSize : 50,
         sortKey  : 'title',
         order    : -1
     },
@@ -28,7 +28,7 @@ var Collection = PagableCollection.extend({
         }
     },
 
-    // Filter Modes
+
     filterModes : {
         'monitored'   : [
             'monitored',
@@ -38,11 +38,28 @@ var Collection = PagableCollection.extend({
             'monitored',
             'false'
         ],
+        'announced' : [
+            'status',
+            'announced'
+        ],
+        'incinemas' : [
+            'status',
+            'inCinemas'
+        ],
+        'released' : [
+            'status',
+            'released'
+        ],
+        'available' : [
+            'status',
+            'available'
+        ],
+        'all' : [
+            'all',
+            'all'
+        ]
     },
 
-    // sortMappings : {
-    //     'this' : { sortKey : 'this.sortTitle' }
-    // },
 
     parseState : function(resp) {
         return { totalRecords : resp.totalRecords };

@@ -13,6 +13,7 @@ using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.Tv
 {
@@ -20,6 +21,7 @@ namespace NzbDrone.Core.Tv
     {
         Movie GetMovie(int movieId);
         List<Movie> GetMovies(IEnumerable<int> movieIds);
+		PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec);
         Movie AddMovie(Movie newMovie);
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
@@ -31,19 +33,22 @@ namespace NzbDrone.Core.Tv
         Movie GetMovieByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
-        void DeleteMovie(int movieId, bool deleteFiles);
+		void SetFileId(Movie movie, MovieFile movieFile);
+        void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie);
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
         List<Movie> MoviesWithFiles(int movieId);
+        System.Linq.Expressions.Expression<Func<Core.Tv.Movie, bool>> ConstructFilterExpression(string FilterKey, string FilterValue, string filterType = null);
     }
 
     public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
                                                IHandle<MovieFileDeletedEvent>
     {
         private readonly IMovieRepository _movieRepository;
+        private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly Logger _logger;
@@ -53,12 +58,76 @@ namespace NzbDrone.Core.Tv
                              ISceneMappingService sceneMappingService,
                              IEpisodeService episodeService,
                              IBuildFileNames fileNameBuilder,
+                             IConfigService configService,
                              Logger logger)
         {
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
             _fileNameBuilder = fileNameBuilder;
+            _configService = configService;
             _logger = logger;
+        }
+
+
+        public System.Linq.Expressions.Expression<Func<Core.Tv.Movie, bool>> ConstructFilterExpression(string FilterKey, string FilterValue, string FilterType = null)
+        {
+            //if (FilterKey == "all" && FilterValue == "all")
+            //{
+            //    return v => v.Monitored == true || v.Monitored == false;
+            //}
+            if (FilterKey == "monitored" && FilterValue == "false")
+            {
+                return v => v.Monitored == false;
+            }
+            else if (FilterKey == "monitored" && FilterValue == "true")
+            {
+                return v => v.Monitored == true;
+            }
+            else if (FilterKey == "status")
+            {
+                switch (FilterValue)
+                {
+                    case "released":
+                        return v => v.Status == MovieStatusType.Released;
+                        break;
+                    case "inCinemas":
+                        return v => v.Status == MovieStatusType.InCinemas;
+                        break;
+                    case "announced":
+                        return v => v.Status == MovieStatusType.Announced;
+                        break;
+                    case "available":
+                        return v => v.Monitored == true &&
+                             ((v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
+                             (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
+                             (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
+                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released));
+                        break;
+                }
+            }
+            else if (FilterKey == "downloaded")
+            {
+                return v => v.MovieFileId == 0;
+            }
+            else if (FilterKey == "title")
+            {
+                if (FilterValue == string.Empty || FilterValue == null)
+                {
+                    return v => true;
+                }
+                else
+                {
+                    if (FilterType == "contains")
+                    {
+                        return v => v.CleanTitle.Contains(FilterValue);
+                    }
+                    else
+                    {
+                        return v => v.CleanTitle == FilterValue;
+                    }
+                }
+            }
+            return v => true;
         }
 
         public Movie GetMovie(int movieId)
@@ -70,6 +139,11 @@ namespace NzbDrone.Core.Tv
         {
             return _movieRepository.Get(movieIds).ToList();
         }
+
+		public PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec)
+		{
+			return _movieRepository.GetPaged(pagingSpec);
+		}
 
         public Movie AddMovie(Movie newMovie)
         {
@@ -186,9 +260,20 @@ namespace NzbDrone.Core.Tv
             return _movieRepository.FindByTitle(title.CleanSeriesTitle(), year);
         }
 
-        public void DeleteMovie(int movieId, bool deleteFiles)
+        public void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false)
         {
             var movie = _movieRepository.Get(movieId);
+            if (addExclusion)
+            {
+                if (_configService.ImportExclusions.Empty())
+                {
+                    _configService.ImportExclusions = movie.TitleSlug;
+                }
+                else if (!_configService.ImportExclusions.Contains(movie.TitleSlug))
+                {
+                    _configService.ImportExclusions += ',' + movie.TitleSlug;
+                }
+            }
             _movieRepository.Delete(movieId);
             _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));
         }
@@ -246,13 +331,26 @@ namespace NzbDrone.Core.Tv
         public void Handle(MovieFileAddedEvent message)
         {
             _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
-            _logger.Debug("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
+            _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
         }
+
+		public void SetFileId(Movie movie, MovieFile movieFile)
+		{
+			_movieRepository.SetFileId(movieFile.Id, movie.Id);
+			_logger.Info("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
+		}
 
         public void Handle(MovieFileDeletedEvent message)
         {
+            
             var movie = _movieRepository.GetMoviesByFileId(message.MovieFile.Id).First();
             movie.MovieFileId = 0;
+            _logger.Debug("Detaching movie {0} from file.", movie.Id);
+
+            if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedEpisodes)
+            {
+                movie.Monitored = false;
+            }
 
             UpdateMovie(movie);
         }

@@ -9,6 +9,7 @@ using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using System.Drawing;
 
 namespace NzbDrone.Common.Disk
 {
@@ -105,6 +106,41 @@ namespace NzbDrone.Common.Disk
                 {
                      return File.Exists(path);
                 }
+            }
+        }
+        
+        public bool CanUseGDIPlus()
+        {
+            try
+            {
+                GdiPlusInterop.CheckGdiPlus();
+                return true;
+            }
+            catch (DllNotFoundException ex)
+            {
+                Logger.Trace(ex, "System does not have libgdiplus.");
+                return false;
+            }
+        }
+
+        public bool IsValidGDIPlusImage(string filename)
+        {
+            if (!CanUseGDIPlus())
+            {
+                return true;
+            }
+            
+            try
+            {
+                using (var bmp = new Bitmap(filename))
+                {
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Debug(ex, "Corrupted image found at: {0}.", filename);
+                return false;
             }
         }
 

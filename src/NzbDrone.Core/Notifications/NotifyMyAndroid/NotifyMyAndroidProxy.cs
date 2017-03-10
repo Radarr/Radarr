@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
             var request = new RestRequest("notify", Method.POST);
             request.RequestFormat = DataFormat.Xml;
             request.AddParameter("apikey", apiKey);
-            request.AddParameter("application", "Sonarr");
+            request.AddParameter("application", "Radarr");
             request.AddParameter("event", title);
             request.AddParameter("description", message);
             request.AddParameter("priority", (int)priority);

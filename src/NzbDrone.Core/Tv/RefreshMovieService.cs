@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Tv
             if (message.MovieId.HasValue)
             {
                 var movie = _movieService.GetMovie(message.MovieId.Value);
-                RefreshMovieInfo(movie);
+				RefreshMovieInfo(movie);
             }
             else
             {

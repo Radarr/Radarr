@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Test.DataAugmentation.DailySeries
         }
 
         [Test]
+        [Ignore("Series")]
         public void should_get_list_of_daily_series()
         {
             var list = Subject.GetDailySeriesIds();

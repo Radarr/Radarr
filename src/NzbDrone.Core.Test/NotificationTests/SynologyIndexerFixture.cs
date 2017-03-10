@@ -13,33 +13,33 @@ namespace NzbDrone.Core.Test.NotificationTests
     [TestFixture]
     public class SynologyIndexerFixture : CoreTest<SynologyIndexer>
     {
-        private Series _series;
+        private Movie _movie;
         private DownloadMessage _upgrade;
 
         [SetUp]
         public void SetUp()
         {
-            _series = new Series()
+            _movie = new Movie()
             {
                 Path = @"C:\Test\".AsOsAgnostic()
             };
 
             _upgrade = new DownloadMessage()
             {
-                Series = _series,
+                Movie = _movie,
 
-                EpisodeFile = new EpisodeFile
+                MovieFile = new MovieFile
                 {
                     RelativePath = "file1.S01E01E02.mkv"
                 },
 
-                OldFiles = new List<EpisodeFile>
+                OldMovieFiles = new List<MovieFile>
                 {
-                    new EpisodeFile
+                    new MovieFile
                     {
                         RelativePath = "file1.S01E01.mkv"
                     },
-                    new EpisodeFile
+                    new MovieFile
                     {
                         RelativePath = "file1.S01E02.mkv"
                     }
@@ -60,10 +60,10 @@ namespace NzbDrone.Core.Test.NotificationTests
         {
             (Subject.Definition.Settings as SynologyIndexerSettings).UpdateLibrary = false;
 
-            Subject.OnRename(_series);
+            Subject.OnMovieRename(_movie);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.UpdateFolder(_series.Path), Times.Never());
+                .Verify(v => v.UpdateFolder(_movie.Path), Times.Never());
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_update_entire_series_folder_on_rename()
         {
-            Subject.OnRename(_series);
+            Subject.OnMovieRename(_movie);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.UpdateFolder(@"C:\Test\".AsOsAgnostic()), Times.Once());

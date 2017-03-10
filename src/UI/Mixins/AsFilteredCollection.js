@@ -67,12 +67,14 @@ module.exports = function() {
 
     _.extend(this.prototype.state, {
         filterKey   : null,
-        filterValue : null
+        filterValue : null,
+		filterType  : null
     });
 
     _.extend(this.prototype.queryParams, {
         filterKey   : 'filterKey',
-        filterValue : 'filterValue'
+        filterValue : 'filterValue',
+		filterType  : 'filterType'
     });
 
     return this;

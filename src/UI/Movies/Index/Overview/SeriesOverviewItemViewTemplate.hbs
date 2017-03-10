@@ -37,7 +37,9 @@
                 <div class="col-md-8 col-xs-8">
                     <span class="label label-default">{{GetStatus}}</span>
 
-                    <span class="label label-default">{{inCinemas}}</span>
+                    {{#if inCinemas}}
+                      <span class="label label-default">{{RelativeDate inCinemas}}</span>
+                    {{/if}}
 
                     {{profile profileId}}
 

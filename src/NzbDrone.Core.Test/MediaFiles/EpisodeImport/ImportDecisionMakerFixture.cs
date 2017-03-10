@@ -18,6 +18,7 @@ using FizzWare.NBuilder;
 namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
 {
     [TestFixture]
+	//TODO: Update all of this for movies.
     public class ImportDecisionMakerFixture : CoreTest<ImportDecisionMaker>
     {
         private List<string> _videoFiles;
@@ -346,6 +347,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
         }
 
         [Test]
+		[Ignore("Series")]
         public void should_not_use_folder_name_if_file_name_is_scene_name()
         {
             var videoFiles = new[]

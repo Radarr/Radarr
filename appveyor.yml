@@ -1,9 +1,5 @@
 version: '0.2.0.{build}'
 
-branches:
-  only:
-  - develop
-
 assembly_info:
   patch: true
   file: 'src\NzbDrone.Common\Properties\SharedAssemblyInfo.cs'
@@ -20,14 +16,14 @@ install:
 build_script:
   - ps: ./build-appveyor.ps1
 
-test: off
-# test:
-#   assemblies:
-#     - '_tests\*Test.dll'
-#   categories:
-#     except:
-#       - IntegrationTest
-#       - AutomationTest
+# test: off
+test:
+  assemblies:
+    - '_tests\*Test.dll'
+  categories:
+    except:
+      - IntegrationTest
+      - AutomationTest
 
 artifacts:
   - path: '_artifacts\*.zip'
