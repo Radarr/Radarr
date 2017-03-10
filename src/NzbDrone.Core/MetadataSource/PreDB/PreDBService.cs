@@ -80,21 +80,36 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
             var response = _httpClient.Get(request);
 
-            var reader = XmlReader.Create(new StringReader(response.Content));
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				_logger.Warn("Non 200 StatusCode {0} encountered while searching PreDB.", response.StatusCode);
+				return new List<PreDBResult>();
+			}
 
-            var items = SyndicationFeed.Load(reader);
+			try
+			{
+				var reader = XmlReader.Create(new StringReader(response.Content));
 
-            var results = new List<PreDBResult>();
+				var items = SyndicationFeed.Load(reader);
 
-            foreach (SyndicationItem item in items.Items)
-            {
-                var result = new PreDBResult();
-                result.Title = item.Title.Text;
-                result.Link = item.Links[0].Uri.ToString();
-                results.Add(result);
-            }
+				var results = new List<PreDBResult>();
 
-            return results;
+				foreach (SyndicationItem item in items.Items)
+				{
+					var result = new PreDBResult();
+					result.Title = item.Title.Text;
+					result.Link = item.Links[0].Uri.ToString();
+					results.Add(result);
+				}
+
+				return results;
+			}
+			catch (Exception ex)
+			{
+				_logger.Error(ex, "Error while searching PreDB.");
+			}
+
+			return new List<PreDBResult>();
         }
 
         private List<Movie> FindMatchesToResults(List<PreDBResult> results)
