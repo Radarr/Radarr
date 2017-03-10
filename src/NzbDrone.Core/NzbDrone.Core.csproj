@@ -1259,6 +1259,7 @@
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />
     <Compile Include="Datastore\Migration\131_make_parsed_episode_info_nullable.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixWronglyMatchedMovieFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

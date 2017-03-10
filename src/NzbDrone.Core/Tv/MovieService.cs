@@ -331,13 +331,13 @@ namespace NzbDrone.Core.Tv
         public void Handle(MovieFileAddedEvent message)
         {
             _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
-            _logger.Debug("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
+            _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie.Value);
         }
 
 		public void SetFileId(Movie movie, MovieFile movieFile)
 		{
 			_movieRepository.SetFileId(movieFile.Id, movie.Id);
-			_logger.Debug("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
+			_logger.Info("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
 		}
 
         public void Handle(MovieFileDeletedEvent message)
