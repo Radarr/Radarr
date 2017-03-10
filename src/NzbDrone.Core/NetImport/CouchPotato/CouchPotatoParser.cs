@@ -45,30 +45,34 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             {
                 int tmdbid = item.info.tmdb_id ?? 0;
 
-                // if there are no releases at all the movie wasn't found on CP, so return movies
-                if (!item.releases.Any() && item.type == "movie")
+                // Fix weird error reported by Madmanali93
+                if (item.type != null && item.releases != null)
                 {
-                    movies.AddIfNotNull(new Tv.Movie()
-                    {
-                        Title = item.title,
-                        ImdbId = item.info.imdb,
-                        TmdbId = tmdbid
-                    });
-                }
-                else
-                {
-                    // snatched,missing,available,downloaded
-                    // done,seeding
-                    bool isCompleted = item.releases.Any(rel => (rel.status == "done" || rel.status == "seeding"));
-                    if (!isCompleted)
+                    // if there are no releases at all the movie wasn't found on CP, so return movies
+                    if (!item.releases.Any() && item.type == "movie")
                     {
                         movies.AddIfNotNull(new Tv.Movie()
                         {
                             Title = item.title,
                             ImdbId = item.info.imdb,
-                            TmdbId = tmdbid,
-                            Monitored = false
+                            TmdbId = tmdbid
                         });
+                    }
+                    else
+                    {
+                        // snatched,missing,available,downloaded
+                        // done,seeding
+                        bool isCompleted = item.releases.Any(rel => (rel.status == "done" || rel.status == "seeding"));
+                        if (!isCompleted)
+                        {
+                            movies.AddIfNotNull(new Tv.Movie()
+                            {
+                                Title = item.title,
+                                ImdbId = item.info.imdb,
+                                TmdbId = tmdbid,
+                                Monitored = false
+                            });
+                        }
                     }
                 }
             }
