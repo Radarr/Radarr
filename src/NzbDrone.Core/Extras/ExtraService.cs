@@ -19,12 +19,15 @@ namespace NzbDrone.Core.Extras
     public interface IExtraService
     {
         void ImportExtraFiles(LocalEpisode localEpisode, EpisodeFile episodeFile, bool isReadOnly);
+        //void ImportExtraFiles(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
                                 IHandle<MediaCoversUpdatedEvent>,
                                 IHandle<EpisodeFolderCreatedEvent>,
-                                IHandle<SeriesRenamedEvent>
+                                IHandle<SeriesRenamedEvent>/*,
+                                IHandle<MovieFolderCreatedEvent>,
+                                IHandle<MovieRenamedEvent>*/
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IEpisodeService _episodeService;

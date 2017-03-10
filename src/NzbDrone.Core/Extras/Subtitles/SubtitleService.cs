@@ -39,7 +39,17 @@ namespace NzbDrone.Core.Extras.Subtitles
             return Enumerable.Empty<SubtitleFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie/*, List<EpisodeFile> episodeFiles*/)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
         public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie/*, MovieFile episodeFile*/)
         {
             return Enumerable.Empty<SubtitleFile>();
         }
@@ -110,6 +120,21 @@ namespace NzbDrone.Core.Extras.Subtitles
             if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
                 var subtitleFile = ImportFile(series, episodeFile, path, extension, readOnly);
+                subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
+
+                _subtitleFileService.Upsert(subtitleFile);
+
+                return subtitleFile;
+            }
+
+            return null;
+        }
+
+        public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
+        {
+            if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
+            {
+                var subtitleFile = ImportFile(movie, movieFile, path, extension, readOnly);
                 subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
 
                 _subtitleFileService.Upsert(subtitleFile);

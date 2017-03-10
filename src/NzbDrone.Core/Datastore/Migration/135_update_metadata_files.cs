@@ -18,6 +18,10 @@ namespace NzbDrone.Core.Datastore.Migration
             {
                 Alter.Table("MetadataFiles").AddColumn("MovieFileId").AsInt32();
             }
+
+            Delete.FromTable("Metadata").Row(new { Implementation = "WdtvMetadata" });
+            Delete.FromTable("Metadata").Row(new { Implementation = "RoksboxMetadata" });
+            Delete.FromTable("Metadata").Row(new { Implementation = "MediaBrowserMetadata" });
         }
     }
 }

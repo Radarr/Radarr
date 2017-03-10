@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Extras.Subtitles
             _fileExtensions = new HashSet<string>
                               {
                                   ".aqt",
-                                  ".ass",
+                                  ".ass", // LOL
                                   ".idx",
                                   ".jss",
                                   ".psb",
