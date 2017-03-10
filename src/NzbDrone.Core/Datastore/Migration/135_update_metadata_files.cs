@@ -10,15 +10,17 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            if (!Schema.Schema("dbo").Table("MetadataFiles").Column("MovieId").Exists())
-            {
-                Alter.Table("MetadataFiles").AddColumn("MovieId").AsInt32();
-            }
-            if (!Schema.Schema("dbo").Table("MetadataFiles").Column("MovieFileId").Exists())
-            {
-                Alter.Table("MetadataFiles").AddColumn("MovieFileId").AsInt32();
-            }
 
+            Alter.Table("MetadataFiles").AddColumn("MovieId").AsInt32();
+            Alter.Table("MetadataFiles").AddColumn("MovieFileId").AsInt32();
+
+            Alter.Table("ExtraFiles").AddColumn("MovieId").AsInt32();
+            Alter.Table("ExtraFiles").AddColumn("MovieFileId").AsInt32();
+
+            Alter.Table("SubtitleFiles").AddColumn("MovieId").AsInt32();
+            Alter.Table("SubtitleFiles").AddColumn("MovieFileId").AsInt32();
+
+            // We can migrate these back in over time
             Delete.FromTable("Metadata").Row(new { Implementation = "WdtvMetadata" });
             Delete.FromTable("Metadata").Row(new { Implementation = "RoksboxMetadata" });
             Delete.FromTable("Metadata").Row(new { Implementation = "MediaBrowserMetadata" });
