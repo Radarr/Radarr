@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Tv
                              ((v.MinimumAvailability == MovieStatusType.Released && v.Status >= MovieStatusType.Released) ||
                              (v.MinimumAvailability == MovieStatusType.InCinemas && v.Status >= MovieStatusType.InCinemas) ||
                              (v.MinimumAvailability == MovieStatusType.Announced && v.Status >= MovieStatusType.Announced) ||
-                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released));
+                             (v.MinimumAvailability == MovieStatusType.PreDB && v.Status >= MovieStatusType.Released || v.HasPreDBEntry));
                         break;
                 }
             }
