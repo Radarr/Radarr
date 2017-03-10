@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 Logger.Debug("PassThePopcorn authentication succeeded.");
 
                 cookies = response.GetCookies();
-                AuthCookieCache.Set(authKey, cookies);
+                AuthCookieCache.Set(authKey, cookies, new TimeSpan(7, 0, 0, 0, 0)); // re-auth every 7 days
                 requestBuilder.SetCookies(cookies);
             }
             else

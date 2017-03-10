@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
-using System;
 using System.Linq;
+using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.PassThePopcorn
 {
     public class PassThePopcornParser : IParseIndexerResponse
     {
         private readonly PassThePopcornSettings _settings;
+        public ICached<Dictionary<string, string>> AuthCookieCache { get; set; }
 
         public PassThePopcornParser(PassThePopcornSettings settings)
         {
@@ -25,21 +26,30 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
-                throw new IndexerException(indexerResponse,
-                    "Unexpected response status {0} code from API request",
-                    indexerResponse.HttpResponse.StatusCode);
+                // Remove cookie cache
+                AuthCookieCache.Remove(_settings.BaseUrl.Trim().TrimEnd('/'));
+
+                throw new IndexerException(indexerResponse, $"Unexpected response status {indexerResponse.HttpResponse.StatusCode} code from API request");
+            }
+
+            if (indexerResponse.HttpResponse.Headers.ContentType != HttpAccept.Json.Value)
+            {
+                // Remove cookie cache
+                AuthCookieCache.Remove(_settings.BaseUrl.Trim().TrimEnd('/'));
+
+                throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }
 
             var jsonResponse = JsonConvert.DeserializeObject<PassThePopcornResponse>(indexerResponse.Content);
-
-            var responseData = jsonResponse.Movies;
-            if (responseData == null)
+            if (jsonResponse.TotalResults == "0" || 
+                jsonResponse.TotalResults.IsNullOrWhiteSpace() || 
+                jsonResponse.Movies == null)
             {
-                throw new IndexerException(indexerResponse,
-                    "Indexer API call response missing result data");
+                throw new IndexerException(indexerResponse, "No results were found");
             }
 
-            foreach (var result in responseData)
+
+            foreach (var result in jsonResponse.Movies)
             {
                 foreach (var torrent in result.Torrents)
                 {
@@ -155,10 +165,5 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             return url.FullUri;
         }
-
-        //public static bool IsPropertyExist(dynamic torrents, string name)
-        //{
-        //    return torrents.GetType().GetProperty(name) != null;
-        //}
     }
 }
