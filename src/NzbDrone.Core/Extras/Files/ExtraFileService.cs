@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Extras.Files
             }
 
             _logger.Debug("Deleting Extra from database for episode file: {0}", movieFile);
-            _repository.DeleteForEpisodeFile(movieFile.Id);
+            _repository.DeleteForMovieFile(movieFile.Id);
         }
     }
 }
