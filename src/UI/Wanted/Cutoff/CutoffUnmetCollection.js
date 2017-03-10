@@ -31,27 +31,27 @@ var Collection = PagableCollection.extend({
 
     filterModes : {
         'monitored'   : [
-            'moviemonitored',
+            'monitored',
             'true'
         ],
         'unmonitored' : [
-            'moviemonitored',
+            'monitored',
             'false'
         ],
         'announced' : [
-            'moviestatus',
+            'status',
             'announced'
         ],
         'incinemas' : [
-            'moviestatus',
+            'status',
             'inCinemas'
         ],
         'released' : [
-            'moviestatus',
+            'status',
             'released'
         ],
         'available' : [
-            'moviestatus',
+            'status',
             'available'
         ],
         'all' : [
