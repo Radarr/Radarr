@@ -105,11 +105,11 @@ namespace NzbDrone.Core.Tv
                         break;
                 }
             }
-			else if (pagingResource.FilterKey == "allFlicksUrl")
+			else if (FilterKey == "allFlicksUrl")
             {
-                if (pagingResource.FilterType == "hasValue")
+                if (FilterType == "hasValue")
                 {
-                    pagingSpec.FilterExpression = v => v.AllFlicksUrl != null;
+                    return v => v.AllFlicksUrl != null;
                 }
             }
             else if (FilterKey == "downloaded")
