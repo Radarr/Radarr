@@ -100,17 +100,18 @@ namespace NzbDrone.Core.Extras.Others
 
         public override ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
         {
+            throw new Exception("not working with series");
             // If the extension is .nfo we need to change it to .nfo-orig
-            if (Path.GetExtension(path).Equals(".nfo"))
-            {
-                extension += "-orig";
-            }
+            //if (Path.GetExtension(path).Equals(".nfo"))
+            //{
+            //    extension += "-orig";
+            //}
 
-            var extraFile = ImportFile(series, episodeFile, path, extension, readOnly);
+            //var extraFile = ImportFile(series, episodeFile, path, extension, readOnly);
 
-            _otherExtraFileService.Upsert(extraFile);
+            //_otherExtraFileService.Upsert(extraFile);
 
-            return extraFile;
+            //return extraFile;
         }
 
         public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)

@@ -117,17 +117,18 @@ namespace NzbDrone.Core.Extras.Subtitles
 
         public override ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
         {
-            if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
-            {
-                var subtitleFile = ImportFile(series, episodeFile, path, extension, readOnly);
-                subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
+            throw new Exception("not working with series");
+            //if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
+            //{
+            //    var subtitleFile = ImportFile(series, episodeFile, path, extension, readOnly);
+            //    subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
 
-                _subtitleFileService.Upsert(subtitleFile);
+            //    _subtitleFileService.Upsert(subtitleFile);
 
-                return subtitleFile;
-            }
+            //    return subtitleFile;
+            //}
 
-            return null;
+            //return null;
         }
 
         public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)

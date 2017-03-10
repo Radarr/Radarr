@@ -57,8 +57,8 @@ namespace NzbDrone.Core.Extras.Metadata
                         continue;
                     }
 
-                    if (metadata.Type == MetadataType.EpisodeImage ||
-                        metadata.Type == MetadataType.EpisodeMetadata)
+                    if (metadata.Type == MetadataType.MovieImage ||
+                        metadata.Type == MetadataType.MovieMetadata)
                     {
                         var localMovie = _parsingService.GetLocalMovie(possibleMetadataFile, movie);
 

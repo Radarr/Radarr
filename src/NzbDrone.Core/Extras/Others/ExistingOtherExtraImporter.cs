@@ -36,9 +36,9 @@ namespace NzbDrone.Core.Extras.Others
 
             foreach (var possibleExtraFile in filterResult.FilesOnDisk)
             {
-                var localEpisode = _parsingService.GetLocalMovie(possibleExtraFile, movie);
+                var localMovie = _parsingService.GetLocalMovie(possibleExtraFile, movie);
 
-                if (localEpisode == null)
+                if (localMovie == null)
                 {
                     _logger.Debug("Unable to parse extra file: {0}", possibleExtraFile);
                     continue;
@@ -58,9 +58,9 @@ namespace NzbDrone.Core.Extras.Others
 
                 var extraFile = new OtherExtraFile
                 {
-                    SeriesId = movie.Id,
+                    MovieId = movie.Id,
                     //SeasonNumber = localEpisode.SeasonNumber,
-                    //EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
+                    MovieFileId = localMovie.Movie.MovieFileId,
                     RelativePath = movie.Path.GetRelativePath(possibleExtraFile),
                     Extension = Path.GetExtension(possibleExtraFile)
                 };

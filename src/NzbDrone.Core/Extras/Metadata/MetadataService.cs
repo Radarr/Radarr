@@ -229,9 +229,9 @@ namespace NzbDrone.Core.Extras.Metadata
             return null;
         }
 
-        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> seriesMetadata)
+        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> movieMetadata)
         {
-            return seriesMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
+            return movieMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
         }
 
         private MetadataFile ProcessSeriesMetadata(IMetadata consumer, Series series, List<MetadataFile> existingMetadataFiles)

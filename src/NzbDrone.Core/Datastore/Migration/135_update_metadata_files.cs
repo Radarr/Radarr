@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             // ExtraFiles SeriesId, SeasonNumber, EpisodeFileId -> nullable
             Alter.Table("ExtraFiles").AddColumn("MovieId").AsInt32().NotNullable();
-            Alter.Table("ExtraFiles").AddColumn("MovieFileId").AsInt32().NotNullable();
+            Alter.Table("ExtraFiles").AddColumn("MovieFileId").AsInt32().Nullable();
 
             // update series
             Alter.Table("ExtraFiles").AlterColumn("SeriesId").AsInt32().Nullable();
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("MetadataFiles").AlterColumn("EpisodeFileId").AsInt32().Nullable();
 
             Alter.Table("SubtitleFiles").AddColumn("MovieId").AsInt32().NotNullable();
-            Alter.Table("SubtitleFiles").AddColumn("MovieFileId").AsInt32().NotNullable();
+            Alter.Table("SubtitleFiles").AddColumn("MovieFileId").AsInt32().Nullable();
 
             // update series
             Alter.Table("SubtitleFiles").AlterColumn("SeriesId").AsInt32().Nullable();

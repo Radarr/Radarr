@@ -40,9 +40,9 @@ namespace NzbDrone.Core.Extras.Subtitles
 
                 if (SubtitleFileExtensions.Extensions.Contains(extension))
                 {
-                    var localEpisode = _parsingService.GetLocalMovie(possibleSubtitleFile, movie);
+                    var localMovie = _parsingService.GetLocalMovie(possibleSubtitleFile, movie);
 
-                    if (localEpisode == null)
+                    if (localMovie == null)
                     {
                         _logger.Debug("Unable to parse subtitle file: {0}", possibleSubtitleFile);
                         continue;
@@ -63,8 +63,7 @@ namespace NzbDrone.Core.Extras.Subtitles
                     var subtitleFile = new SubtitleFile
                     {
                         MovieId = movie.Id,
-                        //SeasonNumber = localEpisode.SeasonNumber,
-                        //EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
+                        MovieFileId = localMovie.Movie.MovieFileId,
                         RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
                         Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
                         Extension = extension
