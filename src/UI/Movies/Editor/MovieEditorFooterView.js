@@ -109,6 +109,7 @@ module.exports = Marionette.ItemView.extend({
         });
         var filterKey = this.moviesCollection.state.filterKey;
         var filterValue = this.moviesCollection.state.filterValue;
+		var currentPage = this.moviesCollection.state.currentPage;
         this.moviesCollection.setFilterMode('all');
 		//this.moviesCollection.fullCollection.resetFiltered();
 		for (var j=0; j<i; j++) {
@@ -136,13 +137,15 @@ module.exports = Marionette.ItemView.extend({
 
                 if (rootFolder !== 'noChange') {
                 	var rootFolderPath = RootFolders.get(parseInt(rootFolder, 10));
-                	m.set('rootFolderPath', rootFolderPath.get('path'));
+					var folderName = m.get('folderName');
+                	m.set('path', rootFolderPath.get('path')+ folderName);
             	}
 			}
 		}
 		this.moviesCollection.state.filterKey = filterKey;
         this.moviesCollection.state.filterValue = filterValue;
         this.moviesCollection.fullCollection.resetFiltered();
+		this.moviesCollection.getPage(currentPage, { fetch: false});
 
 		FullMovieCollection.save();
     },
