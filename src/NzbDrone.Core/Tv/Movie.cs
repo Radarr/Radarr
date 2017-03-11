@@ -58,6 +58,11 @@ namespace NzbDrone.Core.Tv
 
         public string FolderName()
         {
+			if (Path.IsNullOrWhiteSpace())
+			{
+				return "";
+			}
+			//Well what about Path = Null?
             return new DirectoryInfo(Path).Name;
         }
 
@@ -93,7 +98,7 @@ namespace NzbDrone.Core.Tv
 				return true;
 			}
 
-            return DateTime.Now >= MinimumAvailabilityDate.AddDays(delay);
+			return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
         }
 
         public override string ToString()
