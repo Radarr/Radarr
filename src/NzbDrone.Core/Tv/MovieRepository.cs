@@ -243,15 +243,42 @@ namespace NzbDrone.Core.Tv
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
+			//I know this is bad, but if you have a better Idea please tell me.
+			if (pagingSpec.SortKey == "downloadedQuality")
+			{
+				var mapper = _database.GetDataMapper();
+				var offset = pagingSpec.PagingOffset();
+				var limit = pagingSpec.PageSize;
+				var direction = "ASC";
+				if (pagingSpec.SortDirection == NzbDrone.Core.Datastore.SortDirection.Descending)
+				{
+					direction = "DESC";
+				}
 
-            pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
-            pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+				var whereClause = BuildQualityCutoffWhereClauseSpecial(qualitiesBelowCutoff);
+
+				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
+				var q2 = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title ASC;");
+
+				//var ok = q.BuildQuery();
+
+				pagingSpec.Records = q.ToList();
+				pagingSpec.TotalRecords = q2.Count();
+
+			}
+			else
+			{
+
+				pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
+				pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+
+			}
 
             return pagingSpec;
         }
 
         private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
-        {
+		{
             return Query.Join<Movie, MovieFile>(JoinType.Left, e => e.MovieFile, (e, s) => e.MovieFileId == s.Id)
                  .Where(pagingSpec.FilterExpression)
                  .AndWhere(m => m.MovieFileId != 0)
@@ -275,6 +302,21 @@ namespace NzbDrone.Core.Tv
 
             return string.Format("({0})", string.Join(" OR ", clauses));
         }
+
+		private string BuildQualityCutoffWhereClauseSpecial(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+		{
+			var clauses = new List<string>();
+
+			foreach (var profile in qualitiesBelowCutoff)
+			{
+				foreach (var belowCutoff in profile.QualityIds)
+				{
+					clauses.Add(string.Format("(Movies.ProfileId = {0} AND MovieFiles.Quality LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+				}
+			}
+
+			return string.Format("({0})", string.Join(" OR ", clauses));
+		}
 
         public Movie FindByTmdbId(int tmdbid)
         {
