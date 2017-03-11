@@ -17,9 +17,15 @@
 
                         <span class="labels">
                             <span class="label label-default">{{network}}</span>
-                            {{#unless_eq status compare="announced"}}
-                                <span class="label label-danger">Released</span> <!-- TODO: Better handling of cases here! -->
-                            {{/unless_eq}}
+                            {{#if_eq status compare="announced"}}
+                                <span class="label label-default">Announced</span>
+                            {{/if_eq}}
+                            {{#if_eq status compare="released"}}
+                                <span class="label label-success">Released</span>
+                            {{/if_eq}}
+                            {{#if_eq status compare="inCinemas"}}
+                                <span class="label label-warning">In Cinemas</span>
+                            {{/if_eq}}
                         </span>
                     </h2>
                 </div>

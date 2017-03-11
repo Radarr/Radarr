@@ -492,8 +492,42 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 if (result.release_date.IsNotNullOrWhiteSpace())
                 {
-                    imdbMovie.Year = DateTime.Parse(result.release_date).Year;
+					imdbMovie.InCinemas = DateTime.Parse(result.release_date);
+                    imdbMovie.Year = imdbMovie.InCinemas.Value.Year;
                 }
+
+				var now = DateTime.Now;
+				//handle the case when we have both theatrical and physical release dates
+				if (imdbMovie.InCinemas.HasValue && imdbMovie.PhysicalRelease.HasValue)
+				{
+					if (now < imdbMovie.InCinemas)
+						imdbMovie.Status = MovieStatusType.Announced;
+					else if (now >= imdbMovie.InCinemas)
+						imdbMovie.Status = MovieStatusType.InCinemas;
+					if (now >= imdbMovie.PhysicalRelease)
+						imdbMovie.Status = MovieStatusType.Released;
+				}
+				//handle the case when we have theatrical release dates but we dont know the physical release date
+				else if (imdbMovie.InCinemas.HasValue && (now >= imdbMovie.InCinemas))
+				{
+					imdbMovie.Status = MovieStatusType.InCinemas;
+				}
+				//handle the case where we only have a physical release date
+				else if (imdbMovie.PhysicalRelease.HasValue && (now >= imdbMovie.PhysicalRelease))
+				{
+					imdbMovie.Status = MovieStatusType.Released;
+				}
+				//otherwise the title has only been announced
+				else
+				{
+					imdbMovie.Status = MovieStatusType.Announced;
+				}
+
+				//since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
+				if (!imdbMovie.PhysicalRelease.HasValue && (imdbMovie.Status == MovieStatusType.InCinemas) && (((DateTime.Now).Subtract(imdbMovie.InCinemas.Value)).TotalSeconds > 60 * 60 * 24 * 30 * 3))
+				{
+					imdbMovie.Status = MovieStatusType.Released;
+				}
 
                 imdbMovie.TitleSlug += "-" + imdbMovie.TmdbId;
 
