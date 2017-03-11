@@ -45,6 +45,7 @@ namespace NzbDrone.Api.Movie
         public bool Monitored { get; set; }
 	    public MovieStatusType MinimumAvailability { get; set; }
         public bool IsAvailable { get; set; }
+        public string FolderName { get; set; }
 
         public int Runtime { get; set; }
         public DateTime? LastInfoSync { get; set; }
@@ -135,6 +136,7 @@ namespace NzbDrone.Api.Movie
                 MinimumAvailability = model.MinimumAvailability,
 		
                 IsAvailable = model.IsAvailable(),
+                FolderName = model.FolderName(),
 
                 SizeOnDisk = size,
 

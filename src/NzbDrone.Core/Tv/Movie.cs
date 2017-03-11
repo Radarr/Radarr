@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.MediaFiles;
+using System.IO;
 
 namespace NzbDrone.Core.Tv
 {
@@ -53,6 +54,11 @@ namespace NzbDrone.Core.Tv
         public string Studio { get; set; }
 
         public bool HasFile => MovieFileId > 0;
+
+        public string FolderName()
+        {
+            return new DirectoryInfo(Path).Name;
+        }
 
         public bool IsAvailable(int delay = 0)
         {
