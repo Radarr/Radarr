@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -28,16 +28,16 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             OnlyActive = true;
         }
 
-        [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "Link to your CoouchPootato.")]
+        [FieldDefinition(0, Label = "CouchPotato URL", HelpText = "URL to access your CouchPotato instance.")]
         public string Link { get; set; }
 
-        [FieldDefinition(1, Label = "CouchPotato Port", HelpText = "Port your CoouchPootato uses.")]
+        [FieldDefinition(1, Label = "CouchPotato Port", HelpText = "Port your CouchPotato instance uses.")]
         public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "CouchPotato Url Base", HelpText = "UrlBase your CoouchPootato uses, leave blank for none")]
+        [FieldDefinition(2, Label = "CouchPotato Url Base", HelpText = "If you have CouchPotato configured via reverse proxy put the base path here. e.g. couchpotato. Leave blank for no base URL.")]
         public string UrlBase { get; set; }
 
-        [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CoouchPootato API Key.")]
+        [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CouchPotato API Key. This can found within Settings > General")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(4, Label = "Only Wanted", HelpText = "Only add wanted movies.", Type = FieldType.Checkbox)]
