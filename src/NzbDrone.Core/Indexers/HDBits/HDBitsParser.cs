@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Indexers.HDBits
                     Peers = result.Leechers + result.Seeders,
                     PublishDate = result.Added.ToUniversalTime(),
                     Internal = internalRelease,
-                    ImdbId = result.ImdbInfo.Id ?? 0
+                    ImdbId = result.ImdbInfo.Id
                 });
             }
 

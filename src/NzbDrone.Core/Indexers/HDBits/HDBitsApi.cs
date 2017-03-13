@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Indexers.HDBits
 
     public class ImdbInfo
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string EnglishTitle { get; set; }
         public string OriginalTitle { get; set; }
         public int? Year { get; set; }
