@@ -1,10 +1,8 @@
 **Description:**
 
 Check first that your problem is not listed in our wiki section:
-
-https://github.com/Radarr/Radarr/wiki/Common-Problems
-
-https://github.com/Radarr/Radarr/wiki/FAQ
+* https://github.com/Radarr/Radarr/wiki/Common-Problems
+* https://github.com/Radarr/Radarr/wiki/FAQ
 
 Provide a description of the feature request or bug here, the more details the better. 
 Please also try to include the following if you are reporting a bug
