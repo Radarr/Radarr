@@ -81,7 +81,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             PublishDate = torrent.UploadTime.ToUniversalTime(),
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
-                            Approved = torrent.Checked
+                            Approved = torrent.Checked,
+                            ImdbId = int.Parse(result.ImdbId)
                         });
                     }
                     // Add all torrents
@@ -99,7 +100,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             PublishDate = torrent.UploadTime.ToUniversalTime(),
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
-                            Approved = torrent.Checked
+                            Approved = torrent.Checked,
+                            ImdbId = int.Parse(result.ImdbId)
                         });
                     }
                     // Don't add any torrents
