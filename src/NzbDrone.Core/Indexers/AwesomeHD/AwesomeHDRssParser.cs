@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
@@ -64,6 +62,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                     Subtitles = x.Element("subtitles").Value,
                     EncodeStatus = x.Element("encodestatus").Value,
                     Freeleech = x.Element("freeleech").Value,
+                    ImdbId = x.Element("imdb").Value
                 }).ToList();
 
                 foreach (var torrent in torrents)
@@ -80,7 +79,8 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                         InfoUrl = GetInfoUrl(torrent.GroupId, id),
                         Seeders = int.Parse(torrent.Seeders),
                         Peers = int.Parse(torrent.Leechers) + int.Parse(torrent.Seeders),
-                        PublishDate = torrent.Time.ToUniversalTime()
+                        PublishDate = torrent.Time.ToUniversalTime(),
+                        ImdbId = int.Parse(torrent.ImdbId.Substring(2))
                     });
                 }
             }
