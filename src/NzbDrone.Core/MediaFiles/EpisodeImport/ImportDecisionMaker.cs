@@ -135,16 +135,16 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     localMovie.Size = _diskProvider.GetFileSize(file);
 
                     _logger.Debug("Size: {0}", localMovie.Size);
-
+					var current = localMovie.Quality;
                     //TODO: make it so media info doesn't ruin the import process of a new series
-                    if (sceneSource)
+					if (sceneSource && ShouldCheckQualityForParsedQuality(current.Quality))
                     {
                         localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
                         if (shouldCheckQuality)
                         {
 							_logger.Debug("Checking quality for this video file to make sure nothing mismatched.");
                             var width = localMovie.MediaInfo.Width;
-                            var current = localMovie.Quality;
+                            
                             var qualityName = current.Quality.Name.ToLower();
                             QualityModel updated = null;
                             if (width > 2000)
@@ -565,5 +565,20 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
             return false;
         }
+
+		private bool ShouldCheckQualityForParsedQuality(Quality quality)
+		{
+			List<Quality> shouldNotCheck = new List<Quality> { Quality.WORKPRINT, Quality.TELECINE, Quality.TELESYNC,
+			Quality.DVDSCR, Quality.DVD, Quality.CAM, Quality.DVDR, Quality.Remux1080p, Quality.Remux2160p, Quality.REGIONAL
+			};
+
+			if (shouldNotCheck.Contains(quality))
+			{
+				return false;
+
+			}
+
+			return true;
+		}
     }
 }
