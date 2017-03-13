@@ -84,9 +84,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                .Build();
 
             request.AllowAutoRedirect = true;
-            request.SuppressHttpError = true;
+            // request.SuppressHttpError = true;
 
             var response = _httpClient.Get<MovieResourceRoot>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException(request, response);
+            }
+
+            if (response.Headers.ContentType != HttpAccept.JsonCharset.Value)
+            {
+                throw new HttpException(request, response);
+            }
 
             // The dude abides, so should us, Lets be nice to TMDb
             // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
@@ -301,19 +310,28 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return movie;
         }
 
-        public Movie GetMovieInfo(string ImdbId)
+        public Movie GetMovieInfo(string imdbId)
         {
             var request = _movieBuilder.Create()
                 .SetSegment("route", "find")
-                .SetSegment("id", ImdbId)
+                .SetSegment("id", imdbId)
                 .SetSegment("secondaryRoute", "")
                 .AddQueryParam("external_source", "imdb_id")
                 .Build();
 
             request.AllowAutoRedirect = true;
-            request.SuppressHttpError = true;
+            // request.SuppressHttpError = true;
 
             var response = _httpClient.Get<FindRoot>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException(request, response);
+            }
+
+            if (response.Headers.ContentType != HttpAccept.JsonCharset.Value)
+            {
+                throw new HttpException(request, response);
+            }
 
             // The dude abides, so should us, Lets be nice to TMDb
             // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
