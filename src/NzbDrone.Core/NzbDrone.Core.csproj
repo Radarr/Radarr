@@ -146,6 +146,12 @@
     <Compile Include="NetImport\Trakt\TraktParser.cs" />
     <Compile Include="NetImport\Trakt\TraktRequestGenerator.cs" />
     <Compile Include="NetImport\Trakt\TraktSettings.cs" />
+    <Compile Include="NetImport\Kitsu\KitsuAPI.cs" />
+    <Compile Include="NetImport\Kitsu\KitsuImport.cs" />
+    <Compile Include="NetImport\Kitsu\KitsuListType.cs" />
+    <Compile Include="NetImport\Kitsu\KitsuParser.cs" />
+    <Compile Include="NetImport\Kitsu\KitsuRequestGenerator.cs" />
+    <Compile Include="NetImport\Kitsu\KitsuSettings.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoAPI.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoParser.cs" />
     <Compile Include="NetImport\CouchPotato\CouchPotatoRequestGenerator.cs" />
@@ -1340,7 +1346,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
