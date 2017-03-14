@@ -34,7 +34,7 @@ var view = Marionette.ItemView.extend({
 
 		_onBeforeSave : function() {
 				var qualityId = this.ui.quality.val();
-				var quality = this.qualities.find(function(m){return m.get("quality").id === qualityId;}).get("quality");
+				var quality = this.qualities.find(function(m){return m.get("quality").id === parseInt(qualityId);}).get("quality");
 				var mQuality = this.model.get("quality");
 				mQuality.quality = quality;
 				this.model.set({ quality : mQuality });
