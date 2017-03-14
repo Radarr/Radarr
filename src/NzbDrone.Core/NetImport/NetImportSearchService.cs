@@ -81,7 +81,7 @@ namespace NzbDrone.Core.NetImport
 
             _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", lists.Select(l => l.Definition.Name)));
 
-            return movies;
+            return movies.DistinctBy(x => x.TmdbId).ToList();
         }
 
 
@@ -114,29 +114,29 @@ namespace NzbDrone.Core.NetImport
                 // listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
             }
 
-            var downloadedCount = 0;
+            //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
                 if (mapped != null && !importExclusions.Any(x => x == mapped.TmdbId.ToString()))
                 {
-                    List<DownloadDecision> decisions;
-                    mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
+                    //List<DownloadDecision> decisions;
+                    //mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
                     _movieService.AddMovie(mapped);
 
-                    // Search for movie
-                    try
-                    {
-                        decisions = _nzbSearchService.MovieSearch(mapped.Id, false);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Error(ex, $"Unable to search in list for movie {mapped.Id}");
-                        continue;
-                    }
+                    //// Search for movie
+                    //try
+                    //{
+                    //    decisions = _nzbSearchService.MovieSearch(mapped.Id, false);
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    _logger.Error(ex, $"Unable to search in list for movie {mapped.Id}");
+                    //    continue;
+                    //}
 
-                    var processed = _processDownloadDecisions.ProcessDecisions(decisions);
-                    downloadedCount += processed.Grabbed.Count;
+                    //var processed = _processDownloadDecisions.ProcessDecisions(decisions);
+                    //downloadedCount += processed.Grabbed.Count;
                 }
                 else
                 {
@@ -147,7 +147,7 @@ namespace NzbDrone.Core.NetImport
                 }
             }
 
-            _logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
+            //_logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
         }
 
         private void CleanLibrary(List<Movie> movies)
