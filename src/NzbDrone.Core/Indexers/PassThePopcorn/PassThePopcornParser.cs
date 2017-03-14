@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Http;
@@ -41,8 +41,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             }
 
             var jsonResponse = JsonConvert.DeserializeObject<PassThePopcornResponse>(indexerResponse.Content);
-            if (jsonResponse.TotalResults == "0" || 
-                jsonResponse.TotalResults.IsNullOrWhiteSpace() || 
+            if (jsonResponse.TotalResults == "0" ||
+                jsonResponse.TotalResults.IsNullOrWhiteSpace() ||
                 jsonResponse.Movies == null)
             {
                 throw new IndexerException(indexerResponse, "No results were found");
@@ -51,30 +51,20 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             foreach (var result in jsonResponse.Movies)
             {
-				foreach (var torrent in result.Torrents)
-				{
-					var id = torrent.Id;
-					var title = torrent.ReleaseName;
+                foreach (var torrent in result.Torrents)
+                {
+                    var id = torrent.Id;
+                    var title = torrent.ReleaseName;
 
-					if (torrent.GoldenPopcorn)
-					{
-						title = $"{title} 🍿";
-					}
+                    if (torrent.GoldenPopcorn)
+                    {
+                        title = $"{title} 🍿";
+                    }
 
-					if (torrent.Checked)
-					{
-						title = $"{title} ✔";
-					}
-
-					var imdbId = 0;
-
-					int.TryParse(result.ImdbId, out imdbId);
-
-					if (imdbId == 0 && result.ImdbId.Substring(0, 2) == "tt")
-					{
-						int.TryParse(result.ImdbId.Substring(2), out imdbId);
-					}
-
+                    if (torrent.Checked)
+                    {
+                        title = $"{title} ✔";
+                    }
 
                     // Only add approved torrents
                     if (_settings.RequireApproved && torrent.Checked)
@@ -92,7 +82,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
-                            ImdbId = imdbId
+                            ImdbId = (result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0)
                         });
                     }
                     // Add all torrents
@@ -111,7 +101,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
-                            ImdbId = imdbId
+                            ImdbId = (result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0)
                         });
                     }
                     // Don't add any torrents
@@ -130,10 +120,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     return
                         torrentInfos.OrderByDescending(o => o.PublishDate)
                             .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
-                            .ThenBy(o => ((dynamic) o).Scene ? 0 : 1)
+                            .ThenBy(o => ((dynamic)o).Scene ? 0 : 1)
                             .ToArray();
                 }
-                return 
+                return
                     torrentInfos.OrderByDescending(o => o.PublishDate)
                         .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
                         .ToArray();
@@ -142,14 +132,14 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             // prefer scene
             if (_settings.Scene)
             {
-                return 
+                return
                     torrentInfos.OrderByDescending(o => o.PublishDate)
                         .ThenBy(o => ((dynamic)o).Scene ? 0 : 1)
                         .ToArray();
             }
 
             // order by date
-            return 
+            return
                 torrentInfos
                     .OrderByDescending(o => o.PublishDate)
                     .ToArray();
