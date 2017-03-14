@@ -51,20 +51,30 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             foreach (var result in jsonResponse.Movies)
             {
-                foreach (var torrent in result.Torrents)
-                {
-                    var id = torrent.Id;
-                    var title = torrent.ReleaseName;
+				foreach (var torrent in result.Torrents)
+				{
+					var id = torrent.Id;
+					var title = torrent.ReleaseName;
 
-                    if (torrent.GoldenPopcorn)
-                    {
-                        title = $"{title} 🍿";
-                    }
+					if (torrent.GoldenPopcorn)
+					{
+						title = $"{title} 🍿";
+					}
 
-                    if (torrent.Checked)
-                    {
-                        title = $"{title} ✔";
-                    }
+					if (torrent.Checked)
+					{
+						title = $"{title} ✔";
+					}
+
+					var imdbId = 0;
+
+					int.TryParse(result.ImdbId, out imdbId);
+
+					if (imdbId == 0 && result.ImdbId.Substring(0, 2) == "tt")
+					{
+						int.TryParse(result.ImdbId.Substring(2), out imdbId);
+					}
+
 
                     // Only add approved torrents
                     if (_settings.RequireApproved && torrent.Checked)
@@ -82,7 +92,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
-                            ImdbId = int.Parse(result.ImdbId)
+                            ImdbId = imdbId
                         });
                     }
                     // Add all torrents
@@ -101,7 +111,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
-                            ImdbId = int.Parse(result.ImdbId)
+                            ImdbId = imdbId
                         });
                     }
                     // Don't add any torrents
