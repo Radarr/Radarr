@@ -71,7 +71,7 @@ namespace NzbDrone.Core.NetImport
 
             if (onlyEnableAuto)
             {
-                lists = lists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
+                lists = importLists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
             }
 
             foreach (var list in lists)
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.NetImport
                 if (mapped != null && !importExclusions.Any(x => x == mapped.TmdbId.ToString()))
                 {
                     //List<DownloadDecision> decisions;
-                    mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
+                    //mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
                     _movieService.AddMovie(mapped);
 
                     //// Search for movie
