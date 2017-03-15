@@ -18,7 +18,7 @@ using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie
+    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie, IProvideMovieIdService
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -68,6 +68,83 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var series = MapSeries(httpResponse.Resource);
 
             return new Tuple<Series, List<Episode>>(series, episodes.ToList());
+        }
+
+        public dynamic GetImdbIdByTmdbId(int tmdbId, bool includeTT = false)
+        {
+            var request = _movieBuilder.Create()
+              .SetSegment("route", "movie")
+              .SetSegment("id", tmdbId.ToString())
+              .SetSegment("secondaryRoute", "")
+              .AddQueryParam("append_to_response", "external_ids")
+              .Build();
+
+            request.AllowAutoRedirect = true;
+
+            var response = _httpClient.Get<MovieResourceRoot>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException(request, response);
+            }
+
+            if (response.Headers.ContentType != HttpAccept.JsonCharset.Value)
+            {
+                throw new HttpException(request, response);
+            }
+
+            // The dude abides, so should us, Lets be nice to TMDb
+            // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
+            // var reset = long.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()); // get time when it resets
+            var remaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First());
+            if (remaining <= 5)
+            {
+                _logger.Trace("Waiting 5 seconds to get information for the next 35 movies");
+                Thread.Sleep(5000);
+            }
+
+            var resource = response.Resource;
+            if (includeTT)
+            {
+                return resource.imdb_id;
+            }
+
+            return int.Parse(resource.imdb_id.Substring(2));
+        }
+
+        public int GetTmdbIdByImdbId(string imdbId)
+        {
+            var request = _movieBuilder.Create()
+              .SetSegment("route", "movie")
+              .SetSegment("id", imdbId)
+              .SetSegment("secondaryRoute", "")
+              .AddQueryParam("append_to_response", "external_ids")
+              .Build();
+
+            request.AllowAutoRedirect = true;
+
+            var response = _httpClient.Get<MovieResourceRoot>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException(request, response);
+            }
+
+            if (response.Headers.ContentType != HttpAccept.JsonCharset.Value)
+            {
+                throw new HttpException(request, response);
+            }
+
+            // The dude abides, so should us, Lets be nice to TMDb
+            // var allowed = int.Parse(response.Headers.GetValues("X-RateLimit-Limit").First()); // get allowed
+            // var reset = long.Parse(response.Headers.GetValues("X-RateLimit-Reset").First()); // get time when it resets
+            var remaining = int.Parse(response.Headers.GetValues("X-RateLimit-Remaining").First());
+            if (remaining <= 5)
+            {
+                _logger.Trace("Waiting 5 seconds to get information for the next 35 movies");
+                Thread.Sleep(5000);
+            }
+
+            var resource = response.Resource;
+            return resource.id;
         }
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)

@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
@@ -11,8 +12,8 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        public CouchPotatoImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(httpClient, configService, parsingService, logger)
+        public CouchPotatoImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, IProvideMovieIdService movieIdService, Logger logger)
+            : base(httpClient, configService, parsingService, movieIdService, logger)
         { }
 
         public override INetImportRequestGenerator GetRequestGenerator()

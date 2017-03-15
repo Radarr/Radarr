@@ -2,6 +2,7 @@
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 
@@ -13,9 +14,12 @@ namespace NzbDrone.Core.NetImport.RSSImport
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
-        public RSSImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(httpClient, configService, parsingService, logger)
-        { }
+        public RSSImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService,
+            IProvideMovieIdService movieIdService, Logger logger)
+            : base(httpClient, configService, parsingService, movieIdService, logger)
+        {
+            //_movieIdService = movieIdService;
+        }
 
         public override IEnumerable<ProviderDefinition> DefaultDefinitions
         {
@@ -53,7 +57,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
         public override IParseNetImportResponse GetParser()
         {
-            return new RSSImportParser(Settings);
+            return new RSSImportParser(Settings, _movieIdService);
         }
     }
 }

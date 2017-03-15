@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.NetImport.StevenLu
 {
@@ -12,10 +13,12 @@ namespace NzbDrone.Core.NetImport.StevenLu
         private readonly StevenLuSettings _settings;
         private NetImportResponse _importResponse;
         private readonly Logger _logger;
+        private readonly IProvideMovieIdService _movieIdService;
 
-        public StevenLuParser(StevenLuSettings settings)
+        public StevenLuParser(StevenLuSettings settings, IProvideMovieIdService movieIdService)
         {
             _settings = settings;
+            _movieIdService = movieIdService;
         }
 
         public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
@@ -42,8 +45,9 @@ namespace NzbDrone.Core.NetImport.StevenLu
                 movies.AddIfNotNull(new Tv.Movie()
                 {
                     Title = item.title,
-                    ImdbId = item.imdb_id
-                });
+                    ImdbId = item.imdb_id,
+                    TmdbId = _movieIdService.GetTmdbIdByImdbId(item.imdb_id)
+            });
             }
 
             return movies;

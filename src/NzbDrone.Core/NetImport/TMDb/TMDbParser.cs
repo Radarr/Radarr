@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 
 namespace NzbDrone.Core.NetImport.TMDb
@@ -14,9 +15,11 @@ namespace NzbDrone.Core.NetImport.TMDb
         private readonly TMDbSettings _settings;
         private NetImportResponse _importResponse;
         private readonly Logger _logger;
+        private readonly IProvideMovieIdService _movieIdService;
 
-        public TMDbParser(TMDbSettings settings)
+        public TMDbParser(TMDbSettings settings, IProvideMovieIdService movieIdService)
         {
+            _movieIdService = movieIdService;
             _settings = settings;
         }
 
@@ -49,11 +52,13 @@ namespace NzbDrone.Core.NetImport.TMDb
                         continue;
                     }
 
+                    var imdbId = _movieIdService.GetImdbIdByTmdbId(movie.id, true).ToString();
+
                     movies.AddIfNotNull(new Tv.Movie()
                     {
                         Title = movie.title,
                         TmdbId = movie.id,
-                        ImdbId = null,
+                        ImdbId = imdbId,
                         Year = DateTime.Parse(movie.release_date).Year
                     });
                 }
