@@ -14,7 +14,7 @@ var substringMatcher = function() {
         var matches = _.select(FullMovieCollection.toJSON(), function(series) {
             return series.title.toLowerCase().indexOf(q.toLowerCase()) > -1;
         });
-        cb(matches);
+        cb(matches);    
     };
 };
 
@@ -27,6 +27,11 @@ $.fn.bindSearch = function() {
         name       : 'series',
         displayKey : function(series) {
            return series.title + ' (' + series.year + ')';
+        },
+        templates  : {
+          empty : function(input) {
+            return '<div class="tt-dataset-series">"' + input.query + '" was not found in your library <a href="/addmovies" class="button no-movies-found label label-info">Search for movie</a></div>';
+          },
         },
         source     : substringMatcher()
     });
