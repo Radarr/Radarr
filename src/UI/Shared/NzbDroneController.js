@@ -55,6 +55,10 @@ module.exports = Marionette.AppRouter.extend({
         });
 
         this.pendingUpdate = true;
+
+        // Development
+        window.localStorage.clear();
+
     },
 
     showMainRegion : function(view) {
