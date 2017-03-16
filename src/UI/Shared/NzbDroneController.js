@@ -3,6 +3,7 @@ var AppLayout = require('../AppLayout');
 var Marionette = require('marionette');
 var NotFoundView = require('./NotFoundView');
 var Messenger = require('./Messenger');
+var Config = require('../Config');
 
 module.exports = Marionette.AppRouter.extend({
     initialize : function() {
@@ -41,7 +42,7 @@ module.exports = Marionette.AppRouter.extend({
         var label = window.location.pathname === window.NzbDrone.UrlBase + '/system/updates' ? 'Reload' : 'View Changes';
 
         Messenger.show({
-            message   : 'Radarr has been updated',
+            message   : 'Radarr has been updated, some UI configuration has been reset',
             hideAfter : 0,
             id        : 'sonarrUpdated',
             actions   : {
@@ -54,6 +55,12 @@ module.exports = Marionette.AppRouter.extend({
             }
         });
 
+        // Only for pre-release development
+        var pageSize = Config.getValue("pageSize");
+        window.localStorage.clear();
+        Config.setValue("pageSize", pageSize);
+        // Remove above when out of pre-release :)
+        
         this.pendingUpdate = true;
     },
 
