@@ -30,7 +30,7 @@ $.fn.bindSearch = function() {
         },
         templates  : {
           empty : function(input) {
-            return '<div class="tt-dataset-series">"' + input.query + '" was not found in your library <a href="/addmovies" class="button no-movies-found label label-info">Search for movie</a></div>';
+            return '<div class="tt-dataset-series"><span class="tt-suggestions" style="display: block;"><div class="tt-suggestion"><p style="white-space: normal;"><a class="no-movies-found" href="/addmovies/search/' + input.query + '">Search for "' + input.query + '"</a></p></div></span></div>'
           },
         },
         source     : substringMatcher()
