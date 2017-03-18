@@ -2,29 +2,24 @@
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
-    public class CleanupOrphanedHistoryItems : IHousekeepingTask
+    public class CleanupOrphanedMovieFiles : IHousekeepingTask
     {
         private readonly IMainDatabase _database;
 
-        public CleanupOrphanedHistoryItems(IMainDatabase database)
+        public CleanupOrphanedMovieFiles(IMainDatabase database)
         {
             _database = database;
         }
 
         public void Clean()
         {
-            CleanupOrphanedByMovie();
-        }
-
-        private void CleanupOrphanedByMovie()
-        {
             var mapper = _database.GetDataMapper();
 
-            mapper.ExecuteNonQuery(@"DELETE FROM History
+            mapper.ExecuteNonQuery(@"DELETE FROM MovieFiles
                                      WHERE Id IN (
-                                     SELECT History.Id FROM History
+                                     SELECT MovieFiles.Id FROM MovieFiles
                                      LEFT OUTER JOIN Movies
-                                     ON History.MovieId = Movies.Id
+                                     ON MovieFiles.Id = Movies.MovieFileId
                                      WHERE Movies.Id IS NULL)");
         }
     }
