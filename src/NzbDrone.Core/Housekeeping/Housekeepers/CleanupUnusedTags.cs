@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             var mapper = _database.GetDataMapper();
 
-            var usedTags = new[] { "Series", "Notifications", "DelayProfiles", "Restrictions" }
+            var usedTags = new[] { "Movies", "Series", "Notifications", "DelayProfiles", "Restrictions" }
                 .SelectMany(v => GetUsedTags(v, mapper))
                 .Distinct()
                 .ToArray();
