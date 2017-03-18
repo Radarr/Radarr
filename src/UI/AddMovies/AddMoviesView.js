@@ -26,7 +26,6 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		initialize : function(options) {
-
 				this.isExisting = options.isExisting;
 				this.collection = new AddMoviesCollection();
 
@@ -49,6 +48,11 @@ module.exports = Marionette.Layout.extend({
 				});
 
 				this.throttledSearch = _.debounce(this.search, 1000, { trailing : true }).bind(this);
+
+				if (options.action == "search") {
+					this.search({term: options.query});
+				}
+
 		},
 
 		onRender : function() {

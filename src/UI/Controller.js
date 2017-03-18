@@ -19,9 +19,9 @@ module.exports = NzbDroneController.extend({
         this.showMainRegion(new AddSeriesLayout({ action : action }));
     },
 
-    addMovies : function(action) {
+    addMovies : function(action, query) {
       this.setTitle("Add Movie");
-      this.showMainRegion(new AddMoviesLayout({action : action}));
+      this.showMainRegion(new AddMoviesLayout({ action : action, query : query }));
     },
 
     calendar : function() {
