@@ -60,6 +60,7 @@ namespace NzbDrone.Core.Datastore
             return DataMapper.Query<TModel>().ToList();
         }
 
+
         public int Count()
         {
             return DataMapper.Query<TModel>().GetRowCount();
