@@ -49,7 +49,7 @@ module.exports = Marionette.Layout.extend({
 
 				this.throttledSearch = _.debounce(this.search, 1000, { trailing : true }).bind(this);
 
-				if (options.action == "search") {
+				if (options.action === "search") {
 					this.search({term: options.query});
 				}
 
