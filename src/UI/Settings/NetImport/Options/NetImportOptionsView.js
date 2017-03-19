@@ -32,7 +32,7 @@ var view = Marionette.ItemView.extend({
 		var refresh=params.get('refresh');
 		if (oauth && refresh){
 			//var callback_url = window.location.href;
-			history.pushState('object', 'title', (window.location.href).replace(window.location.search, ''));
+			history.pushState('object', 'title', (window.location.href).replace(window.location.search, '')); // jshint ignore:line
 	        this.ui.authToken.val(oauth).trigger('change');
 			this.ui.refreshToken.val(refresh).trigger('change');
 			//Config.setValue("traktAuthToken", oauth);
@@ -101,7 +101,7 @@ var view = Marionette.ItemView.extend({
 				//if (event.item.startsWith('tt')) {
 				//	newText = newText+'['+event.item+']';
 				//}
-				event.item = response['titleSlug'];//+' ('+response['year']+')-'+response['tmdbId'];
+				event.item = response.titleSlug;//+' ('+response['year']+')-'+response['tmdbId'];
             });
 
             promise.error(function(request, status, error) {

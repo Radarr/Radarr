@@ -28,9 +28,9 @@ module.exports = NzbDroneController.extend({
 				this._renderMovieDetails(query);
 				//debugger;
 			} else {
-				self = this;
+				var self = this;
 				$.getJSON(window.NzbDrone.ApiRoot + '/movie/titleslug/'+query, { }, function(data) {
-						FullMovieCollection.add(data)
+						FullMovieCollection.add(data);
 						self._renderMovieDetails(query);
 					});
 				this.listenTo(FullMovieCollection, 'sync', function(model, options) {
