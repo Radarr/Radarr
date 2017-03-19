@@ -39,7 +39,7 @@ module.exports = Marionette.Layout.extend({
 						RootFolderCollection.synced = true;
 				});
 
-				if (options.action == "search") {
+				if (options.action === "search") {
 					this._addMovies(options);
 				}
 		},
