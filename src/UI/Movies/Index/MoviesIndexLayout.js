@@ -315,8 +315,8 @@ module.exports = Marionette.Layout.extend({
 
             //this._showToolbar();
             //debugger;
-            self = this;
-            setTimeout(function(){self._showToolbar();}, 0);//wtf???
+            var self = this;
+            setTimeout(function(){self._showToolbar();}, 0); // jshint ignore:line
             //this._renderView();
     },
 

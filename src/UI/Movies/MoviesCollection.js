@@ -49,7 +49,7 @@ var filterModes = {
         "inCinemas",
         //function(model) { return model.getStatus() == "inCinemas"; }
     ]
-}//Hacky, I know
+}; //Hacky, I know
 
 
 var Collection = PageableCollection.extend({
@@ -273,7 +273,7 @@ var filterMode = Config.getValue("series.filterMode", "all");
 var sortKey = Config.getValue("movie.sortKey", "sortTitle");
 var sortDir = Config.getValue("movie.sortDirection", -1);
 var sortD = "asc";
-if (sortDir == 1) {
+if (sortDir === 1) {
   sortD = "desc";
 }
 
