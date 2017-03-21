@@ -354,17 +354,12 @@ namespace NzbDrone.Core.Parser
 
         private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
-            // IMDbID is present, movie this logic up
-            if (imdbId.IsNotNullOrWhiteSpace())
-            {
-                return _movieService.FindByImdbId(imdbId);
-            }
-
-            Movie possibleMovie = null;
-
             if (searchCriteria != null)
             {
                 var possibleTitles = new List<string>();
+
+				Movie possibleMovie = null;
+
                 possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
                 foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
@@ -396,35 +391,48 @@ namespace NzbDrone.Core.Parser
                     }
                 }
 
-                if (possibleMovie != null && (parsedMovieInfo.Year < 1900 || possibleMovie.Year == parsedMovieInfo.Year))
-                {
-                    return possibleMovie;
-                }
+				if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
+				{
+					return possibleMovie;
+				}
+
+                    
             }
-            else
+
+            Movie movie = null;
+
+            if (searchCriteria == null)
             {
                 if (parsedMovieInfo.Year > 1900)
                 {
-                    possibleMovie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
+                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
                 }
                 else
                 {
-                    possibleMovie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
+                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
 
-                if (possibleMovie == null)
+                if (movie == null)
                 {
-                    possibleMovie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
+                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
+                // return movie;
             }
 
-            if (possibleMovie == null)
+
+
+            if (movie == null && imdbId.IsNotNullOrWhiteSpace())
+            {
+                movie = _movieService.FindByImdbId(imdbId);
+            }
+
+            if (movie == null)
             {
                 _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
                 return null;
             }
 
-            return possibleMovie;
+            return movie;
         }
 
         private Series GetSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria)
