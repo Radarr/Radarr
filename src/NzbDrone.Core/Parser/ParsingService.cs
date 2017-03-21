@@ -442,10 +442,11 @@ namespace NzbDrone.Core.Parser
 
             if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
             {
-             
-            	return possibleMovie;
+                _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
+                return null;
             }
-			return null;
+
+            return movie;
         }
 
         private Series GetSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria)
