@@ -397,13 +397,10 @@ namespace NzbDrone.Core.Parser
                 }
 
 				if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
-				{
-					return possibleMovie;
-				}
-
-                    
+                {
+                    return possibleMovie;
+                }
             }
-
             Movie movie = null;
 
             if (searchCriteria == null)
@@ -417,16 +414,7 @@ namespace NzbDrone.Core.Parser
                     movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
 
-                if (movie == null)
-                {
-                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
-                }
-                // return movie;
             }
-
-
-
-            
 
             if (movie == null)
             {
