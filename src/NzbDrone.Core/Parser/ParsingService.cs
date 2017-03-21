@@ -354,12 +354,17 @@ namespace NzbDrone.Core.Parser
 
         private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
+            // IMDbID is present, movie this logic up
+            if (imdbId.IsNotNullOrWhiteSpace())
+            {
+                return _movieService.FindByImdbId(imdbId);
+            }
+
+            Movie possibleMovie = null;
+
             if (searchCriteria != null)
             {
                 var possibleTitles = new List<string>();
-
-				Movie possibleMovie = null;
-
                 possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
                 foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
@@ -421,16 +426,7 @@ namespace NzbDrone.Core.Parser
 
 
 
-            if (movie == null && imdbId.IsNotNullOrWhiteSpace())
-            {
-                movie = _movieService.FindByImdbId(imdbId);
-
-				//Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-				if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
-				{
-					movie = null;
-				}
-            }
+            
 
             if (movie == null)
             {
