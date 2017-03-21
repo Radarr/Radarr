@@ -354,6 +354,14 @@ namespace NzbDrone.Core.Parser
 
         private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
+            // IMDbID is present, movie this logic up
+            if (imdbId.IsNotNullOrWhiteSpace())
+            {
+                return _movieService.FindByImdbId(imdbId);
+            }
+
+            Movie possibleMovie = null;
+
             if (searchCriteria != null)
             {
                 var possibleTitles = new List<string>();
@@ -418,8 +426,6 @@ namespace NzbDrone.Core.Parser
                 }
                 // return movie;
             }
-
-
 
             if (movie == null && imdbId.IsNotNullOrWhiteSpace())
             {
