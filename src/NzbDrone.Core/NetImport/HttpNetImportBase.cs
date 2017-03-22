@@ -7,6 +7,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
@@ -28,8 +29,8 @@ namespace NzbDrone.Core.NetImport
         public abstract INetImportRequestGenerator GetRequestGenerator();
         public abstract IParseNetImportResponse GetParser();
 
-        public HttpNetImportBase(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(configService, parsingService, logger)
+        public HttpNetImportBase(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, IProvideMovieIdService movieIdService, Logger logger)
+            : base(configService, parsingService, movieIdService, logger)
         {
             _httpClient = httpClient;
         }

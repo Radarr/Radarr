@@ -13,6 +13,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Exceptions;
+using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
@@ -21,11 +22,13 @@ namespace NzbDrone.Core.NetImport.RSSImport
         private readonly RSSImportSettings _settings;
         private NetImportResponse _importResponse;
         private readonly Logger _logger;
+        private readonly IProvideMovieIdService _movieIdService;
 
         private static readonly Regex ReplaceEntities = new Regex("&[a-z]+;", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public RSSImportParser(RSSImportSettings settings)
+        public RSSImportParser(RSSImportSettings settings, IProvideMovieIdService movieIdService)
         {
+            _movieIdService = movieIdService;
             _settings = settings;
         }
 
@@ -143,6 +146,8 @@ namespace NzbDrone.Core.NetImport.RSSImport
             releaseInfo.Title = title;
             var result = Parser.Parser.ParseMovieTitle(title);
 
+            
+
             if (result != null)
             {
                 releaseInfo.Title = result.MovieTitle;
@@ -154,7 +159,10 @@ namespace NzbDrone.Core.NetImport.RSSImport
             {
                 if (releaseInfo.ImdbId.IsNullOrWhiteSpace())
                 {
-                    releaseInfo.ImdbId = GetImdbId(item);
+                    var imdbId = GetImdbId(item);
+                    releaseInfo.ImdbId = imdbId;
+                    releaseInfo.TmdbId = _movieIdService.GetTmdbIdByImdbId(imdbId);
+
                 }
 
             }

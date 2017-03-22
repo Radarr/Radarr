@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.NetImport.Trakt
@@ -13,9 +14,10 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         private readonly IHttpClient _httpClient;
         public IConfigService _configService;
+        public IProvideMovieIdService movieIdService;
 
-        public TraktImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
-            : base(httpClient, configService, parsingService, logger)
+        public TraktImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, IProvideMovieIdService movieIdService, Logger logger)
+            : base(httpClient, configService, parsingService, movieIdService, logger)
         {
             _configService = configService;
             _httpClient = httpClient;

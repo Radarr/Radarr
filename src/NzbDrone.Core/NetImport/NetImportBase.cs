@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Tv;
@@ -14,6 +15,7 @@ namespace NzbDrone.Core.NetImport
     {
         protected readonly IConfigService _configService;
         protected readonly IParsingService _parsingService;
+        protected readonly IProvideMovieIdService _movieIdService;
         protected readonly Logger _logger;
 
         public abstract string Name { get; }
@@ -22,10 +24,11 @@ namespace NzbDrone.Core.NetImport
 
         public abstract IList<Movie> Fetch();
 
-        public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
+        public NetImportBase(IConfigService configService, IParsingService parsingService, IProvideMovieIdService movieIdService, Logger logger)
         {
             _configService = configService;
             _parsingService = parsingService;
+            _movieIdService = movieIdService;
             _logger = logger;
         }
 

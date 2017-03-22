@@ -71,7 +71,7 @@ namespace NzbDrone.Core.NetImport
 
             if (onlyEnableAuto)
             {
-                lists = importLists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
+                lists = lists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
             }
 
             foreach (var list in lists)
@@ -105,23 +105,21 @@ namespace NzbDrone.Core.NetImport
                 _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
             }
 
-
-            var importExclusions = new List<string>();
             if (_configService.ImportExclusions != null)
             {
                 // Replace `movie-title-tmdbid` with just tmdbid in exclusions
-                importExclusions = _configService.ImportExclusions.Split(',').Select(x => Regex.Replace(x, @"^.*\-(.*)$", "$1")).ToList();
-                // listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
+                var importExclusions = _configService.ImportExclusions.Split(',').Select(x => Regex.Replace(x, @"^.*\-(.*)$", "$1")).ToList();
+                listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
             }
 
             //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null && !importExclusions.Any(x => x == mapped.TmdbId.ToString()))
+                if (mapped != null)
                 {
                     //List<DownloadDecision> decisions;
-                    //mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
+                    //mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
                     _movieService.AddMovie(mapped);
 
                     //// Search for movie
