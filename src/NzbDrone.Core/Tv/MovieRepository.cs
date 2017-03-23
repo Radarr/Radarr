@@ -6,8 +6,8 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Datastore.Extensions;
 using Marr.Data.QGen;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
-using RomanNumerals.NET4;
 using CoreParser = NzbDrone.Core.Parser.Parser;
 
 namespace NzbDrone.Core.Tv
@@ -32,8 +32,6 @@ namespace NzbDrone.Core.Tv
     {
         private int _supportedNumberOfMovieParts = 20;
 
-        private static Dictionary<string, string> _arabicRomanNumeralMap;
-
         private static readonly object InitLock = new object();
 
 		protected IMainDatabase _database;
@@ -42,23 +40,6 @@ namespace NzbDrone.Core.Tv
             : base(database, eventAggregator)
         {
 			_database = database;
-            InitializeArabicToRomanNumeralsMap();
-        }
-
-        private void InitializeArabicToRomanNumeralsMap()
-        {
-            lock (InitLock)
-            {
-                if (_arabicRomanNumeralMap != null) return;
-                _arabicRomanNumeralMap = new Dictionary<string, string>();
-                for (int moviePartNumber = 1; moviePartNumber < _supportedNumberOfMovieParts + 1; moviePartNumber++)
-                {
-                    RomanNumeral romanNumeral = new RomanNumeral(moviePartNumber);
-                    string arabicNumeralAsKey = Convert.ToString(moviePartNumber);
-                    string romanNumeralAsValue = romanNumeral.ToString().ToLower();
-                    _arabicRomanNumeralMap.Add(arabicNumeralAsKey, romanNumeralAsValue);
-                }
-            }
         }
 
         public bool MoviePathExists(string path)
@@ -212,7 +193,8 @@ namespace NzbDrone.Core.Tv
             string cleanTitleWithRomanNumbers = cleanTitle;
             string cleanTitleWithArabicNumbers = cleanTitle;
 
-            foreach (KeyValuePair<string, string> kvp in _arabicRomanNumeralMap)
+            throw new NotImplementedException("Complete work on branch 1217_PR_merge-romans-internal_add-romans-test_add-parsing-service");
+            foreach (KeyValuePair<string, string> kvp in new Dictionary<string,string>())
             {
                 string arabicNumber = kvp.Key;
                 string romanNumber = kvp.Value;
