@@ -75,7 +75,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                         if (remoteMovie.Movie == null)
                         {
-                            decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Cannot parse release name."));
+                            decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Movie found does not match wanted movie."));
                         }
                         else
                         {
