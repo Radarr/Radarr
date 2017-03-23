@@ -985,12 +985,16 @@
     <Compile Include="Notifications\Twitter\Twitter.cs" />
     <Compile Include="Notifications\Twitter\TwitterService.cs" />
     <Compile Include="Notifications\Twitter\TwitterSettings.cs" />
+    <Compile Include="Parser\IRomanNumeral.cs" />
     <Compile Include="Parser\IsoLanguage.cs" />
     <Compile Include="Parser\IsoLanguages.cs" />
     <Compile Include="Parser\LanguageParser.cs" />
     <Compile Include="Parser\Model\LocalMovie.cs" />
     <Compile Include="Parser\Model\ParsedMovieInfo.cs" />
     <Compile Include="Parser\Model\RemoteMovie.cs" />
+    <Compile Include="Parser\RomanArabicNumeralMappingBuilder.cs" />
+    <Compile Include="Parser\RomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumeralBuilder.cs" />
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />

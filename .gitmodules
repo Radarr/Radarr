@@ -2,6 +2,3 @@
 	path = src/ExternalModules/CurlSharp
 	url = https://github.com/Sonarr/CurlSharp.git
 	branch = master
-[submodule "src/ExternalModules/RomanNumeral"]
-	path = src/ExternalModules/RomanNumeral
-	url = https://github.com/Rusk85/RomanNumeral.git
