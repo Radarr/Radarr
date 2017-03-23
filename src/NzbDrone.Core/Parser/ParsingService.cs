@@ -403,7 +403,7 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria == null)
             {
-                if (parsedMovieInfo.Year > 1900)
+                if (parsedMovieInfo.Year > 1800)
                 {
                     movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
                 }
@@ -424,6 +424,12 @@ namespace NzbDrone.Core.Parser
             if (movie == null && imdbId.IsNotNullOrWhiteSpace())
             {
                 movie = _movieService.FindByImdbId(imdbId);
+
+				//Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
+				if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
+				{
+					movie = null;
+				}
             }
 
             if (movie == null)
