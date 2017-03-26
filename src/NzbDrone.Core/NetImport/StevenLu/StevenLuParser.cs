@@ -42,7 +42,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
                 movies.AddIfNotNull(new Tv.Movie()
                 {
                     Title = item.title,
-                    ImdbId = item.imdb_id
+                    ImdbId = item.imdb_id,
                 });
             }
 
