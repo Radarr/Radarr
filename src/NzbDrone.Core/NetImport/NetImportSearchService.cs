@@ -81,19 +81,7 @@ namespace NzbDrone.Core.NetImport
 
             _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", lists.Select(l => l.Definition.Name)));
 
-			return movies.DistinctBy(x => {
-				if (x.TmdbId != 0)
-				{
-					return x.TmdbId.ToString();
-				}
-
-				if (x.ImdbId.IsNotNullOrWhiteSpace())
-				{
-					return x.ImdbId;
-				}
-
-				return x.Title;
-			}).ToList();
+            return movies.DistinctBy(x => x.TmdbId).ToList();
         }
 
 

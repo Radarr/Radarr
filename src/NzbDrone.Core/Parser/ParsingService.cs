@@ -426,7 +426,7 @@ namespace NzbDrone.Core.Parser
                 movie = _movieService.FindByImdbId(imdbId);
 
 				//Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-				if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
+				if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
 				{
 					movie = null;
 				}

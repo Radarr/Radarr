@@ -408,9 +408,8 @@
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
-    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationInfoProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\TorrentDownloadStation.cs" />
-    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationTaskProxy.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationSettings.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationTask.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationTaskAdditional.cs" />
