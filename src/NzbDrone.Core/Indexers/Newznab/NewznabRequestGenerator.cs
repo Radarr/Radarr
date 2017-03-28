@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (SupportsMovieSearch && searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
+            if (SupportsMovieSearch)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie", $"&imdbid={searchCriteria.Movie.ImdbId.Substring(2)}"));
             }

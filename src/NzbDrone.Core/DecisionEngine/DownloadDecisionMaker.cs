@@ -95,7 +95,7 @@ namespace NzbDrone.Core.DecisionEngine
 					else
 					{
 						_logger.Trace("{0} could not be parsed :(.", report.Title);
-                    }
+					}
                 }
                 catch (Exception e)
                 {

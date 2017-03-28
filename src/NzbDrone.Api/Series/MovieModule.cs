@@ -118,7 +118,7 @@ namespace NzbDrone.Api.Movie
 
             pagingSpec.FilterExpression = _moviesService.ConstructFilterExpression(pagingResource.FilterKey, pagingResource.FilterValue, pagingResource.FilterType);
 
-            return ApplyToPage(_moviesService.Paged, pagingSpec, MapToResource);
+            return ApplyToPage(_moviesService.Paged, pagingSpec, MovieResourceMapper.ToResource);
 		}
 
         protected MovieResource MapToResource(Core.Tv.Movie movies)
