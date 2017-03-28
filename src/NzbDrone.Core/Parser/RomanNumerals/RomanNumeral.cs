@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace NzbDrone.Core.Parser
+namespace NzbDrone.Core.Parser.RomanNumerals
 {
     /// <summary>
     /// Represents the numeric system used in ancient Rome, employing combinations of letters from the Latin alphabet to signify values.
@@ -196,6 +196,16 @@ namespace NzbDrone.Core.Parser
         }
 
         /// <summary>
+        /// Returns the Roman numeral that was passed in as either an Arabic numeral
+        /// or a Roman numeral.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> representing a Roman Numeral</returns>
+        public string ToRomanNumeral()
+        {
+            return ToString();
+        }
+
+        /// <summary>
         /// Determines whether a given number is within the valid range of values for a roman numeral.
         /// </summary>
         /// <param name="number">The number to validate.</param>
@@ -330,10 +340,11 @@ namespace NzbDrone.Core.Parser
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns the Roman Numeral which was passed to this Instance
+        /// during creation.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        /// A <see cref="System.String" /> that represents a Roman Numeral.
         /// </returns>
         public override string ToString()
         {

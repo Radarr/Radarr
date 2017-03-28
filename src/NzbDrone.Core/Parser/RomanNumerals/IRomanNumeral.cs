@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Parser
+﻿namespace NzbDrone.Core.Parser.RomanNumerals
 {
     public interface IRomanNumeral
     {
