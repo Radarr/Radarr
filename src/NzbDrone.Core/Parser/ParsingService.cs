@@ -7,6 +7,7 @@ using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Parser
@@ -33,20 +34,6 @@ namespace NzbDrone.Core.Parser
         private readonly ISceneMappingService _sceneMappingService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
-        private readonly Dictionary<string, string> romanNumeralsMapper = new Dictionary<string, string>
-        {
-            { "1", "I"},
-            { "2", "II"},
-            { "3", "III"},
-            { "4", "IV"},
-            { "5", "V"},
-            { "6", "VI"},
-            { "7", "VII"},
-            { "8", "VII"},
-            { "9", "IX"},
-            { "10", "X"},
-
-        }; //If a movie has more than 10 parts fuck 'em.
 
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
@@ -354,50 +341,46 @@ namespace NzbDrone.Core.Parser
 
         private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
-            if (searchCriteria != null)
+            Movie movieByCriteria;
+            if ((movieByCriteria = TryFindMovieBySearchCriteria(parsedMovieInfo, searchCriteria)) != null)
             {
-                var possibleTitles = new List<string>();
-
-				Movie possibleMovie = null;
-
-                possibleTitles.Add(searchCriteria.Movie.CleanTitle);
-
-                foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
-                {
-                    possibleTitles.Add(altTitle.CleanSeriesTitle());
-                }
-
-                foreach (string title in possibleTitles)
-                {
-                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                    {
-                        possibleMovie = searchCriteria.Movie;
-                    }
-
-                    foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
-                    {
-                        string num = entry.Key;
-                        string roman = entry.Value.ToLower();
-
-                        if (title.Replace(num, roman) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                        {
-                            possibleMovie = searchCriteria.Movie;
-                        }
-
-                        if (title.Replace(roman, num) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                        {
-                            possibleMovie = searchCriteria.Movie;
-                        }
-                    }
-                }
-
-				if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
-				{
-					return possibleMovie;
-				}
-
-                    
+                return movieByCriteria;
             }
+
+            Movie movieByTitle;
+            if ((movieByTitle = TryFindMovieByTitle(parsedMovieInfo, searchCriteria)) != null)
+            {
+                return movieByTitle;
+            }
+
+            Movie movieByImdbId;
+            if ((movieByImdbId = TryFindMovieByImDbId(parsedMovieInfo, imdbId)) != null)
+            {
+                return movieByImdbId;
+            }
+
+            _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
+            return null;
+        }
+
+        private Movie TryFindMovieByImDbId(ParsedMovieInfo parsedMovieInfo, string imdbId)
+        {
+            Movie movieByImdbId = null;
+
+            if (imdbId.IsNotNullOrWhiteSpace())
+            {
+                movieByImdbId = _movieService.FindByImdbId(imdbId);
+
+                if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movieByImdbId.Year)
+                {
+                    movieByImdbId = null;
+                }
+            }
+            return movieByImdbId;
+        }
+
+        private Movie TryFindMovieByTitle(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria)
+		{
 
             Movie movie = null;
 
@@ -411,26 +394,58 @@ namespace NzbDrone.Core.Parser
                 {
                     movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
-			}
 
-            if (movie == null && imdbId.IsNotNullOrWhiteSpace())
-            {
-                movie = _movieService.FindByImdbId(imdbId);
-
-				//Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-				if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
-				{
-					movie = null;
-				}
             }
-
-            if (movie == null)
-            {
-                _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
-                return null;
-            }
-
             return movie;
+        }
+
+
+        private static Movie TryFindMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria)
+        {
+            if (searchCriteria != null)
+            {
+                var possibleTitles = new List<string>();
+
+                Movie possibleMovie = null;
+
+                possibleTitles.Add(searchCriteria.Movie.CleanTitle);
+
+                foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
+            	{
+                    possibleTitles.Add(altTitle.CleanSeriesTitle());
+                }
+
+                foreach (string title in possibleTitles)
+                {
+                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    {
+                        possibleMovie = searchCriteria.Movie;
+                    }
+				}
+				//Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
+                foreach (ArabicRomanNumeral arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
+				{
+                    string arabicNumeralAsString = arabicRomanNumeral.ArabicNumeralAsString;
+                    string romanNumeral = arabicRomanNumeral.RomanNumeralLowerCase;
+
+                    if (title.Replace(arabicNumeralAsString, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    {
+                        possibleMovie = searchCriteria.Movie;
+                    }
+
+                    if (title.Replace(romanNumeral, arabicNumeralAsString) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    {
+                        possibleMovie = searchCriteria.Movie;
+                    }
+				}
+        	}
+
+            if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
+            {
+             
+            	return possibleMovie;
+            }
+			return null;
         }
 
         private Series GetSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria)
