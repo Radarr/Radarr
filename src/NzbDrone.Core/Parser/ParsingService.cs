@@ -366,8 +366,6 @@ namespace NzbDrone.Core.Parser
             {
                 var possibleTitles = new List<string>();
 
-				Movie possibleMovie = null;
-
                 possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
                 foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
