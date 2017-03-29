@@ -399,7 +399,6 @@ namespace NzbDrone.Core.Parser
             return movie;
         }
 
-
         private static Movie TryFindMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null)
