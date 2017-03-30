@@ -377,12 +377,12 @@ namespace NzbDrone.Core.Parser
                     movieByImdbId = null;
                 }
             }
-
             return movieByImdbId;
         }
 
         private Movie TryFindMovieByTitle(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria)
-        {
+		{
+
             Movie movie = null;
 
             if (searchCriteria == null)
@@ -396,13 +396,7 @@ namespace NzbDrone.Core.Parser
                     movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 }
 
-                if (movie == null)
-                {
-                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
-                }
-                // return movie;
             }
-
             return movie;
         }
 
@@ -427,31 +421,31 @@ namespace NzbDrone.Core.Parser
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
+				}
 
-                    foreach (ArabicRomanNumeral arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
-                    {
-                        string arabicNumeralAsString = arabicRomanNumeral.ArabicNumeralAsString;
-                        string romanNumeral = arabicRomanNumeral.RomanNumeralLowerCase;
-
-                        if (title.Replace(arabicNumeralAsString, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                        {
-                            possibleMovie = searchCriteria.Movie;
-                        }
-
-                        if (title.Replace(romanNumeral, arabicNumeralAsString) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                        {
-                            possibleMovie = searchCriteria.Movie;
-                        }
-                    }
-                }
-
-                if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
+                foreach (ArabicRomanNumeral arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
                 {
+                    string arabicNumeralAsString = arabicRomanNumeral.ArabicNumeralAsString;
+                    string romanNumeral = arabicRomanNumeral.RomanNumeralLowerCase;
+
+                    if (title.Replace(arabicNumeralAsString, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        return possibleMovie;
+                        possibleMovie = searchCriteria.Movie;
                     }
-                }
+
+                    if (title.Replace(romanNumeral, arabicNumeralAsString) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    {
+                        possibleMovie = searchCriteria.Movie;
+                    }
+				}
+        	}
+
+            if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
+            {
+                _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
+                return null;
             }
+
             return null;
         }
 
