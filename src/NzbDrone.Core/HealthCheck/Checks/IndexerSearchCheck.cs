@@ -19,7 +19,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (enabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Search enabled, Sonarr will not provide any search results");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Search enabled, Lidarr will not provide any search results");
             }
 
             var active = _indexerFactory.SearchEnabled(true);

@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private readonly IHttpRequestBuilderFactory _requestBuilder;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;

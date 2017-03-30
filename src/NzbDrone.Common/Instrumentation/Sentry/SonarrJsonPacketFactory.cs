@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using SharpRaven.Data;
 
 namespace NzbDrone.Common.Instrumentation.Sentry
 {
-    public class SonarrJsonPacketFactory : IJsonPacketFactory
+    public class LidarrJsonPacketFactory : IJsonPacketFactory
     {
         private static string ShortenPath(string path)
         {
@@ -26,7 +26,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
         public JsonPacket Create(string project, SentryEvent @event)
         {
-            var packet = new SonarrSentryPacket(project, @event);
+            var packet = new LidarrSentryPacket(project, @event);
 
             try
             {

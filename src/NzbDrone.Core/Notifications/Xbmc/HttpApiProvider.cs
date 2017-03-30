@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         public void Notify(XbmcSettings settings, string title, string message)
         {
-            var notification = string.Format("Notification({0},{1},{2},{3})", title, message, settings.DisplayTime * 1000, "https://raw.github.com/Sonarr/Sonarr/develop/Logo/64.png");
+            var notification = string.Format("Notification({0},{1},{2},{3})", title, message, settings.DisplayTime * 1000, "https://raw.github.com/Lidarr/Lidarr/develop/Logo/64.png");
             var command = BuildExecBuiltInCommand(notification);
 
             SendCommand(settings, command);

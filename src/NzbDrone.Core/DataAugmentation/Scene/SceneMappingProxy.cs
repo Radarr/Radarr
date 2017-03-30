@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.DataAugmentation.Scene
         private readonly IHttpClient _httpClient;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
 
-        public SceneMappingProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder)
+        public SceneMappingProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder)
         {
             _httpClient = httpClient;
             _requestBuilder = requestBuilder.Services;

@@ -1,13 +1,13 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SharpRaven.Data;
 
 namespace NzbDrone.Common.Instrumentation.Sentry
 {
-    public class SonarrSentryPacket : JsonPacket
+    public class LidarrSentryPacket : JsonPacket
     {
         private readonly JsonSerializerSettings _setting;
 
-        public SonarrSentryPacket(string project, SentryEvent @event) :
+        public LidarrSentryPacket(string project, SentryEvent @event) :
             base(project, @event)
         {
             _setting = new JsonSerializerSettings

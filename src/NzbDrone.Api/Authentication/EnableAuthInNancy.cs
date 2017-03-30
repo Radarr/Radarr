@@ -38,7 +38,7 @@ namespace NzbDrone.Api.Authentication
 
             else if (_configFileProvider.AuthenticationMethod == AuthenticationType.Basic)
             {
-                pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(_authenticationService, "Sonarr"));                
+                pipelines.EnableBasicAuthentication(new BasicAuthenticationConfiguration(_authenticationService, "Lidarr"));                
             }
 
             pipelines.BeforeRequest.AddItemToEndOfPipeline((Func<NancyContext, Response>) RequiresAuthentication);

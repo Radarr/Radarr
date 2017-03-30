@@ -33,7 +33,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
         public SentryTarget(string dsn)
         {
-            _client = new RavenClient(new Dsn(dsn), new SonarrJsonPacketFactory(), new SentryRequestFactory(), new MachineNameUserFactory())
+            _client = new RavenClient(new Dsn(dsn), new LidarrJsonPacketFactory(), new SentryRequestFactory(), new MachineNameUserFactory())
             {
                 Compression = true,
                 Environment = RuntimeInfo.IsProduction ? "production" : "development",

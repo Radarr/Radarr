@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Rest
         {
             var restClient = new RestClient(baseUrl)
             {
-                UserAgent = $"Sonarr/{BuildInfo.Version} ({OsInfo.Os})"
+                UserAgent = $"Lidarr/{BuildInfo.Version} ({OsInfo.Os})"
             };
 
 

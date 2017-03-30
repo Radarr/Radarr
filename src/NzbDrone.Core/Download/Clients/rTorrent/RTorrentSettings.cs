@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             Host = "localhost";
             Port = 8080;
             UrlBase = "RPC2";
-            TvCategory = "tv-sonarr";
+            TvCategory = "tv-Lidarr";
             OlderTvPriority = (int)RTorrentPriority.Normal;
             RecentTvPriority = (int)RTorrentPriority.Normal;
         }
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [FieldDefinition(5, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Sonarr avoids conflicts with unrelated downloads, but it's optional.")]
+        [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional.")]
         public string TvCategory { get; set; }
 
         [FieldDefinition(7, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default rTorrent location")]

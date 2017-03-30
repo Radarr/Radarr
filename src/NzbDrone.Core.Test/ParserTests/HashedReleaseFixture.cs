@@ -41,14 +41,14 @@ namespace NzbDrone.Core.Test.ParserTests
             },
             new object[]
             {
-                @"C:\Test\Weeds.S01E10.DVDRip.XviD-SONARR\AHFMZXGHEWD660.mkv".AsOsAgnostic(),
+                @"C:\Test\Weeds.S01E10.DVDRip.XviD-Lidarr\AHFMZXGHEWD660.mkv".AsOsAgnostic(),
                 "Weeds",
                 Quality.DVD,
-                "SONARR"
+                "Lidarr"
             },
             new object[]
             {
-                @"C:\Test\Deadwood.S02E12.1080p.BluRay.x264-SONARR\Backup_72023S02-12.mkv".AsOsAgnostic(),
+                @"C:\Test\Deadwood.S02E12.1080p.BluRay.x264-Lidarr\Backup_72023S02-12.mkv".AsOsAgnostic(),
                 "Deadwood",
                 Quality.Bluray1080p,
                 null

@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<CurlHttpDispatcher>(new CurlHttpDispatcher(Mocker.Resolve<IHttpProxySettingsProvider>(), Mocker.Resolve<UserAgentBuilder>(), Mocker.Resolve<NLog.Logger>()));
             Mocker.SetConstant<IHttpProvider>(new HttpProvider(TestLogger));
             Mocker.SetConstant<IHttpClient>(new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<CacheManager>(), Mocker.Resolve<RateLimitService>(), Mocker.Resolve<FallbackHttpDispatcher>(), Mocker.Resolve<UserAgentBuilder>(), TestLogger));
-            Mocker.SetConstant<ISonarrCloudRequestBuilder>(new SonarrCloudRequestBuilder());
+            Mocker.SetConstant<ILidarrCloudRequestBuilder>(new LidarrCloudRequestBuilder());
         }
     }
 

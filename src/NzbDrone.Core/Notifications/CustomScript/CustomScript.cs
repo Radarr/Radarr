@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
         public override string Name => "Custom Script";
 
-        public override string Link => "https://github.com/Sonarr/Sonarr/wiki/Custom-Post-Processing-Scripts";
+        public override string Link => "https://github.com/Lidarr/Lidarr/wiki/Custom-Post-Processing-Scripts";
 
         public override void OnGrab(GrabMessage message)
         {
@@ -35,18 +35,18 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var releaseGroup = remoteEpisode.ParsedEpisodeInfo.ReleaseGroup;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Sonarr_EventType", "Grab");
-            environmentVariables.Add("Sonarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Sonarr_Series_Title", series.Title);
-            environmentVariables.Add("Sonarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Sonarr_Series_Type", series.SeriesType.ToString());
-            environmentVariables.Add("Sonarr_Release_EpisodeCount", remoteEpisode.Episodes.Count.ToString());
-            environmentVariables.Add("Sonarr_Release_SeasonNumber", remoteEpisode.ParsedEpisodeInfo.SeasonNumber.ToString());
-            environmentVariables.Add("Sonarr_Release_EpisodeNumbers", string.Join(",", remoteEpisode.Episodes.Select(e => e.EpisodeNumber)));
-            environmentVariables.Add("Sonarr_Release_Title", remoteEpisode.Release.Title);
-            environmentVariables.Add("Sonarr_Release_Indexer", remoteEpisode.Release.Indexer);
-            environmentVariables.Add("Sonarr_Release_Size", remoteEpisode.Release.Size.ToString());
-            environmentVariables.Add("Sonarr_Release_ReleaseGroup", releaseGroup);
+            environmentVariables.Add("Lidarr_EventType", "Grab");
+            environmentVariables.Add("Lidarr_Series_Id", series.Id.ToString());
+            environmentVariables.Add("Lidarr_Series_Title", series.Title);
+            environmentVariables.Add("Lidarr_Series_TvdbId", series.TvdbId.ToString());
+            environmentVariables.Add("Lidarr_Series_Type", series.SeriesType.ToString());
+            environmentVariables.Add("Lidarr_Release_EpisodeCount", remoteEpisode.Episodes.Count.ToString());
+            environmentVariables.Add("Lidarr_Release_SeasonNumber", remoteEpisode.ParsedEpisodeInfo.SeasonNumber.ToString());
+            environmentVariables.Add("Lidarr_Release_EpisodeNumbers", string.Join(",", remoteEpisode.Episodes.Select(e => e.EpisodeNumber)));
+            environmentVariables.Add("Lidarr_Release_Title", remoteEpisode.Release.Title);
+            environmentVariables.Add("Lidarr_Release_Indexer", remoteEpisode.Release.Indexer);
+            environmentVariables.Add("Lidarr_Release_Size", remoteEpisode.Release.Size.ToString());
+            environmentVariables.Add("Lidarr_Release_ReleaseGroup", releaseGroup);
 
             ExecuteScript(environmentVariables);
         }
@@ -58,27 +58,27 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var sourcePath = message.SourcePath;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Sonarr_EventType", "Download");
-            environmentVariables.Add("Sonarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Sonarr_Series_Title", series.Title);
-            environmentVariables.Add("Sonarr_Series_Path", series.Path);
-            environmentVariables.Add("Sonarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Sonarr_Series_Type", series.SeriesType.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_Id", episodeFile.Id.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeCount", episodeFile.Episodes.Value.Count.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_RelativePath", episodeFile.RelativePath);
-            environmentVariables.Add("Sonarr_EpisodeFile_Path", Path.Combine(series.Path, episodeFile.RelativePath));
-            environmentVariables.Add("Sonarr_EpisodeFile_SeasonNumber", episodeFile.SeasonNumber.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeNumbers", string.Join(",", episodeFile.Episodes.Value.Select(e => e.EpisodeNumber)));
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeAirDates", string.Join(",", episodeFile.Episodes.Value.Select(e => e.AirDate)));
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeAirDatesUtc", string.Join(",", episodeFile.Episodes.Value.Select(e => e.AirDateUtc)));
-            environmentVariables.Add("Sonarr_EpisodeFile_EpisodeTitles", string.Join("|", episodeFile.Episodes.Value.Select(e => e.Title)));
-            environmentVariables.Add("Sonarr_EpisodeFile_Quality", episodeFile.Quality.Quality.Name);
-            environmentVariables.Add("Sonarr_EpisodeFile_QualityVersion", episodeFile.Quality.Revision.Version.ToString());
-            environmentVariables.Add("Sonarr_EpisodeFile_ReleaseGroup", episodeFile.ReleaseGroup ?? string.Empty);
-            environmentVariables.Add("Sonarr_EpisodeFile_SceneName", episodeFile.SceneName ?? string.Empty);
-            environmentVariables.Add("Sonarr_EpisodeFile_SourcePath", sourcePath);
-            environmentVariables.Add("Sonarr_EpisodeFile_SourceFolder", Path.GetDirectoryName(sourcePath));
+            environmentVariables.Add("Lidarr_EventType", "Download");
+            environmentVariables.Add("Lidarr_Series_Id", series.Id.ToString());
+            environmentVariables.Add("Lidarr_Series_Title", series.Title);
+            environmentVariables.Add("Lidarr_Series_Path", series.Path);
+            environmentVariables.Add("Lidarr_Series_TvdbId", series.TvdbId.ToString());
+            environmentVariables.Add("Lidarr_Series_Type", series.SeriesType.ToString());
+            environmentVariables.Add("Lidarr_EpisodeFile_Id", episodeFile.Id.ToString());
+            environmentVariables.Add("Lidarr_EpisodeFile_EpisodeCount", episodeFile.Episodes.Value.Count.ToString());
+            environmentVariables.Add("Lidarr_EpisodeFile_RelativePath", episodeFile.RelativePath);
+            environmentVariables.Add("Lidarr_EpisodeFile_Path", Path.Combine(series.Path, episodeFile.RelativePath));
+            environmentVariables.Add("Lidarr_EpisodeFile_SeasonNumber", episodeFile.SeasonNumber.ToString());
+            environmentVariables.Add("Lidarr_EpisodeFile_EpisodeNumbers", string.Join(",", episodeFile.Episodes.Value.Select(e => e.EpisodeNumber)));
+            environmentVariables.Add("Lidarr_EpisodeFile_EpisodeAirDates", string.Join(",", episodeFile.Episodes.Value.Select(e => e.AirDate)));
+            environmentVariables.Add("Lidarr_EpisodeFile_EpisodeAirDatesUtc", string.Join(",", episodeFile.Episodes.Value.Select(e => e.AirDateUtc)));
+            environmentVariables.Add("Lidarr_EpisodeFile_EpisodeTitles", string.Join("|", episodeFile.Episodes.Value.Select(e => e.Title)));
+            environmentVariables.Add("Lidarr_EpisodeFile_Quality", episodeFile.Quality.Quality.Name);
+            environmentVariables.Add("Lidarr_EpisodeFile_QualityVersion", episodeFile.Quality.Revision.Version.ToString());
+            environmentVariables.Add("Lidarr_EpisodeFile_ReleaseGroup", episodeFile.ReleaseGroup ?? string.Empty);
+            environmentVariables.Add("Lidarr_EpisodeFile_SceneName", episodeFile.SceneName ?? string.Empty);
+            environmentVariables.Add("Lidarr_EpisodeFile_SourcePath", sourcePath);
+            environmentVariables.Add("Lidarr_EpisodeFile_SourceFolder", Path.GetDirectoryName(sourcePath));
 
             ExecuteScript(environmentVariables);
         }
@@ -87,12 +87,12 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Sonarr_EventType", "Rename");
-            environmentVariables.Add("Sonarr_Series_Id", series.Id.ToString());
-            environmentVariables.Add("Sonarr_Series_Title", series.Title);
-            environmentVariables.Add("Sonarr_Series_Path", series.Path);
-            environmentVariables.Add("Sonarr_Series_TvdbId", series.TvdbId.ToString());
-            environmentVariables.Add("Sonarr_Series_Type", series.SeriesType.ToString());
+            environmentVariables.Add("Lidarr_EventType", "Rename");
+            environmentVariables.Add("Lidarr_Series_Id", series.Id.ToString());
+            environmentVariables.Add("Lidarr_Series_Title", series.Title);
+            environmentVariables.Add("Lidarr_Series_Path", series.Path);
+            environmentVariables.Add("Lidarr_Series_TvdbId", series.TvdbId.ToString());
+            environmentVariables.Add("Lidarr_Series_Type", series.SeriesType.ToString());
 
             ExecuteScript(environmentVariables);
         }

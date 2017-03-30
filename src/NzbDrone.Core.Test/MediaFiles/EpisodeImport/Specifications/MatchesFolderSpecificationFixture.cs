@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
         public void Setup()
         {
             _localEpisode = Builder<LocalEpisode>.CreateNew()
-                                                 .With(l => l.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic())
+                                                 .With(l => l.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Lidarr\S01E05.mkv".AsOsAgnostic())
                                                  .With(l => l.ParsedEpisodeInfo =
                                                      Builder<ParsedEpisodeInfo>.CreateNew()
                                                                                .With(p => p.EpisodeNumbers = new[] {5})
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
         public void should_be_accepted_if_file_and_folder_have_the_same_episode()
         {
             _localEpisode.ParsedEpisodeInfo.EpisodeNumbers = new[] { 1 };
-            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E01.mkv".AsOsAgnostic();
+            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Lidarr\S01E01.mkv".AsOsAgnostic();
             Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
         }
 
@@ -62,14 +62,14 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
         public void should_be_accepted_if_file_is_one_episode_in_folder()
         {
             _localEpisode.ParsedEpisodeInfo.EpisodeNumbers = new[] { 1 };
-            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01E02.720p.HDTV-Sonarr\S01E01.mkv".AsOsAgnostic();
+            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01E02.720p.HDTV-Lidarr\S01E01.mkv".AsOsAgnostic();
             Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();            
         }
 
         [Test]
         public void should_be_rejected_if_file_and_folder_do_not_have_same_episode()
         {
-            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic();
+            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Lidarr\S01E05.mkv".AsOsAgnostic();
             Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeFalse();            
         }
 
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
         public void should_be_rejected_if_file_and_folder_do_not_have_same_episodes()
         {
             _localEpisode.ParsedEpisodeInfo.EpisodeNumbers = new[] { 5, 6 };
-            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01E02.720p.HDTV-Sonarr\S01E05E06.mkv".AsOsAgnostic();
+            _localEpisode.Path = @"C:\Test\Unsorted\Series.Title.S01E01E02.720p.HDTV-Lidarr\S01E05E06.mkv".AsOsAgnostic();
             Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeFalse();
         }
     }

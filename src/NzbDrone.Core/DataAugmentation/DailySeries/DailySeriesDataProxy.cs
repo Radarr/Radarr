@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.DataAugmentation.DailySeries
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly Logger _logger;
 
-        public DailySeriesDataProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, Logger logger)
+        public DailySeriesDataProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, Logger logger)
         {
             _httpClient = httpClient;
             _requestBuilder = requestBuilder.Services;

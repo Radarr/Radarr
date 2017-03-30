@@ -92,15 +92,15 @@ namespace NzbDrone.Common.Instrumentation
             if (updateClient)
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://b85aa82c65b84b0e99e3b7c281438357:392b5bc007974147a922c5d841c47cf9@sentry.sonarr.tv/11"
-                    : "https://6168f0946aba4e60ac23e469ac08eac5:bd59e8454ccc454ea27a90cff1f814ca@sentry.sonarr.tv/9";
+                    ? "https://b85aa82c65b84b0e99e3b7c281438357:392b5bc007974147a922c5d841c47cf9@sentry.Lidarr.tv/11"
+                    : "https://6168f0946aba4e60ac23e469ac08eac5:bd59e8454ccc454ea27a90cff1f814ca@sentry.Lidarr.tv/9";
 
             }
             else
             {
                 dsn = RuntimeInfo.IsProduction
-                    ? "https://3e8a38b1a4df4de8b0453a724f5a1139:5a708dd75c724b32ae5128b6a895650f@sentry.sonarr.tv/8"
-                    : "https://4ee3580e01d8407c96a7430fbc953512:5f2d07227a0b4fde99dea07041a3ff93@sentry.sonarr.tv/10";
+                    ? "https://3e8a38b1a4df4de8b0453a724f5a1139:5a708dd75c724b32ae5128b6a895650f@sentry.Lidarr.tv/8"
+                    : "https://4ee3580e01d8407c96a7430fbc953512:5f2d07227a0b4fde99dea07041a3ff93@sentry.Lidarr.tv/10";
             }
 
             var target = new SentryTarget(dsn)
@@ -144,9 +144,9 @@ namespace NzbDrone.Common.Instrumentation
 
         private static void RegisterAppFile(IAppFolderInfo appFolderInfo)
         {
-            RegisterAppFile(appFolderInfo, "appFileInfo", "sonarr.txt", 5, LogLevel.Info);
-            RegisterAppFile(appFolderInfo, "appFileDebug", "sonarr.debug.txt", 50, LogLevel.Off);
-            RegisterAppFile(appFolderInfo, "appFileTrace", "sonarr.trace.txt", 50, LogLevel.Off);
+            RegisterAppFile(appFolderInfo, "appFileInfo", "Lidarr.txt", 5, LogLevel.Info);
+            RegisterAppFile(appFolderInfo, "appFileDebug", "Lidarr.debug.txt", 50, LogLevel.Off);
+            RegisterAppFile(appFolderInfo, "appFileTrace", "Lidarr.trace.txt", 50, LogLevel.Off);
         }
 
         private static void RegisterAppFile(IAppFolderInfo appFolderInfo, string name, string fileName, int maxArchiveFiles, LogLevel minLogLevel)

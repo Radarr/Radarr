@@ -1,9 +1,9 @@
-using System.Threading;
+﻿using System.Threading;
 using Microsoft.AspNet.SignalR.Infrastructure;
 
 namespace NzbDrone.SignalR
 {
-    public class SonarrPerformanceCounterManager : IPerformanceCounterManager
+    public class LidarrPerformanceCounterManager : IPerformanceCounterManager
     {
         private readonly IPerformanceCounter _counter = new NoOpPerformanceCounter();
 

@@ -155,7 +155,7 @@ namespace NzbDrone.Common.Test.Http
 
             var userAgent = response.Resource.Headers["User-Agent"].ToString();
 
-            userAgent.Should().Contain("Sonarr");
+            userAgent.Should().Contain("Lidarr");
         }
 
         [TestCase("Accept", "text/xml, text/rss+xml, application/rss+xml")]
@@ -174,7 +174,7 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.sonarr.tv/wrongpath", file));
+            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.Lidarr.tv/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
 

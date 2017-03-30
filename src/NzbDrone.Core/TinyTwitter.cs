@@ -47,7 +47,7 @@ namespace TinyTwitter
         /**
          * 
          * As of June 26th 2015 Direct Messaging is not part of TinyTwitter.
-         * I have added it to Sonarr's copy to make our implementation easier
+         * I have added it to Lidarr's copy to make our implementation easier
          * and added this banner so it's not blindly updated.
          * 
          **/

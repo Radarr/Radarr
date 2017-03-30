@@ -23,14 +23,14 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            const string header = "Sonarr - Grabbed";
+            const string header = "Lidarr - Grabbed";
 
             Notify(Settings, header, grabMessage.Message);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            const string header = "Sonarr - Downloaded";
+            const string header = "Lidarr - Downloaded";
 
             Notify(Settings, header, message.Message);
             UpdateAndClean(message.Series, message.OldFiles.Any());

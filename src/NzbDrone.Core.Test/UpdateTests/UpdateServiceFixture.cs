@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.UpdateTests
                 _updatePackage = new UpdatePackage
                 {
                     FileName = "NzbDrone.develop.2.0.0.0.tar.gz",
-                    Url = "http://download.sonarr.tv/v2/develop/mono/NzbDrone.develop.tar.gz",
+                    Url = "http://download.Lidarr.tv/v2/develop/mono/NzbDrone.develop.tar.gz",
                     Version = new Version("2.0.0.0")
                 };
             }
@@ -46,14 +46,14 @@ namespace NzbDrone.Core.Test.UpdateTests
                 _updatePackage = new UpdatePackage
                 {
                     FileName = "NzbDrone.develop.2.0.0.0.zip",
-                    Url = "http://download.sonarr.tv/v2/develop/windows/NzbDrone.develop.zip",
+                    Url = "http://download.Lidarr.tv/v2/develop/windows/NzbDrone.develop.zip",
                     Version = new Version("2.0.0.0")
                 };
             }
 
             Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.TempFolder).Returns(TempFolder);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\NzbDrone".AsOsAgnostic);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\ProgramData\NzbDrone".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Lidarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\ProgramData\Lidarr".AsOsAgnostic);
 
             Mocker.GetMock<ICheckUpdateService>().Setup(c => c.AvailableUpdate()).Returns(_updatePackage);
             Mocker.GetMock<IVerifyUpdates>().Setup(c => c.Verify(It.IsAny<UpdatePackage>(), It.IsAny<string>())).Returns(true);

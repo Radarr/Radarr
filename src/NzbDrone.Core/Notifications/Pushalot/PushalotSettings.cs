@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Notifications.Pushalot
         [FieldDefinition(1, Label = "Priority", Type = FieldType.Select, SelectOptions = typeof(PushalotPriority))]
         public int Priority { get; set; }
 
-        [FieldDefinition(2, Label = "Image", Type = FieldType.Checkbox, HelpText = "Include Sonarr logo with notifications")]
+        [FieldDefinition(2, Label = "Image", Type = FieldType.Checkbox, HelpText = "Include Lidarr logo with notifications")]
         public bool Image { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(AuthToken);

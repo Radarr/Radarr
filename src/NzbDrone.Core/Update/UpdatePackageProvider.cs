@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Update
         private readonly IPlatformInfo _platformInfo;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
 
-        public UpdatePackageProvider(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, IPlatformInfo platformInfo)
+        public UpdatePackageProvider(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IPlatformInfo platformInfo)
         {
             _httpClient = httpClient;
             _platformInfo = platformInfo;

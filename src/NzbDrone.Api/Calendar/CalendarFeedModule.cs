@@ -26,7 +26,7 @@ namespace NzbDrone.Api.Calendar
             _tagService = tagService;
 
             Get["/NzbDrone.ics"] = options => GetCalendarFeed();
-            Get["/Sonarr.ics"] = options => GetCalendarFeed();
+            Get["/Lidarr.ics"] = options => GetCalendarFeed();
         }
 
         private Response GetCalendarFeed()
@@ -89,7 +89,7 @@ namespace NzbDrone.Api.Calendar
             var episodes = _episodeService.EpisodesBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
-                ProductId = "-//sonarr.tv//Sonarr//EN"
+                ProductId = "-//Lidarr.tv//Lidarr//EN"
             };
 
 

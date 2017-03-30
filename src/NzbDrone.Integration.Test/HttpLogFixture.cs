@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -15,7 +15,7 @@ namespace NzbDrone.Integration.Test
             config.LogLevel = "Trace";
             HostConfig.Put(config);
 
-            var logFile = Path.Combine(_runner.AppData, "logs", "sonarr.trace.txt");
+            var logFile = Path.Combine(_runner.AppData, "logs", "Lidarr.trace.txt");
             var logLines = File.ReadAllLines(logFile);
 
             var result = Series.InvalidPost(new Api.Series.SeriesResource());

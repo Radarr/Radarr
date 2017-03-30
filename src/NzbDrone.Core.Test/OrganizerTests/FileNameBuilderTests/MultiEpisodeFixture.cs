@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                             .With(e => e.AbsoluteEpisodeNumber = 102)
                             .Build();
 
-            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
+            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "LidarrTest" };
             
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(Moq.It.IsAny<Quality>()))
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.MultiEpisodeStyle = (int) MultiEpisodeStyle.Duplicate;
 
             Subject.BuildFileName(new List<Episode> { _episode1, _episode2 }, _series, _episodeFile)
-                   .Should().Be("South Park - S15E06 - S15E07 - (HDTV-720p, , SonarrTest) - City Sushi");
+                   .Should().Be("South Park - S15E06 - S15E07 - (HDTV-720p, , LidarrTest) - City Sushi");
         }
 
         [Test]

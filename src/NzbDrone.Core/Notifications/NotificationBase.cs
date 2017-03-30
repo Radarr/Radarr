@@ -11,8 +11,8 @@ namespace NzbDrone.Core.Notifications
         protected const string EPISODE_GRABBED_TITLE = "Episode Grabbed";
         protected const string EPISODE_DOWNLOADED_TITLE = "Episode Downloaded";
 
-        protected const string EPISODE_GRABBED_TITLE_BRANDED = "Sonarr - " + EPISODE_GRABBED_TITLE;
-        protected const string EPISODE_DOWNLOADED_TITLE_BRANDED = "Sonarr - " + EPISODE_DOWNLOADED_TITLE;
+        protected const string EPISODE_GRABBED_TITLE_BRANDED = "Lidarr - " + EPISODE_GRABBED_TITLE;
+        protected const string EPISODE_DOWNLOADED_TITLE_BRANDED = "Lidarr - " + EPISODE_DOWNLOADED_TITLE;
 
         public abstract string Name { get; }
 

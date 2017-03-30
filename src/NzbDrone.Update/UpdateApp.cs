@@ -36,7 +36,7 @@ namespace NzbDrone.Update
                 var startupContext = new StartupContext(args);
                 NzbDroneLogger.Register(startupContext, true, true);
 
-                Logger.Info("Starting Sonarr Update Client");
+                Logger.Info("Starting Lidarr Update Client");
 
                 _container = UpdateContainerBuilder.Build(startupContext);
 

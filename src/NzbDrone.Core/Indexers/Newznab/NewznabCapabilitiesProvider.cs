@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Sonarr restarts.", indexerSettings.Url);
+                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Lidarr restarts.", indexerSettings.Url);
             }
 
             return capabilities;

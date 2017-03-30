@@ -94,7 +94,7 @@ namespace NzbDrone.Core.MediaFiles
                 return ProcessFile(fileInfo, importMode, series, downloadClientItem);
             }
 
-            _logger.Error("Import failed, path does not exist or is not accessible by Sonarr: {0}", path);
+            _logger.Error("Import failed, path does not exist or is not accessible by Lidarr: {0}", path);
             return new List<ImportResult>();
         }
 

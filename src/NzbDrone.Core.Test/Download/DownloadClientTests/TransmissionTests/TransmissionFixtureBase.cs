@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
@@ -112,12 +112,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         protected void GivenTvCategory()
         {
-            _settings.TvCategory = "sonarr";
+            _settings.TvCategory = "Lidarr";
         }
 
         protected void GivenTvDirectory()
         {
-            _settings.TvDirectory = @"C:/Downloads/Finished/sonarr";
+            _settings.TvDirectory = @"C:/Downloads/Finished/Lidarr";
         }
 
         protected void GivenFailedDownload()

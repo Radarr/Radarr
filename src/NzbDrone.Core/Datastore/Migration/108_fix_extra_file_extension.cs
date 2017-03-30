@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            // Delete extraneous files without extensions that Sonarr found previously,
+            // Delete extraneous files without extensions that Lidarr found previously,
             // these will be blocked from importing as well.
             Execute.Sql("DELETE FROM ExtraFiles WHERE TRIM(Extension) = ''");
 

@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         {
             Host = "localhost";
             Port = 9091;
-            TvCategory = "tv-sonarr";
+            TvCategory = "tv-Lidarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         [FieldDefinition(3, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Sonarr avoids conflicts with unrelated downloads, but it's optional")]
+        [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
         public string TvCategory { get; set; }
 
         [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(UTorrentPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
