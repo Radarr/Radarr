@@ -32,7 +32,7 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 * Install the required Node Packages `npm install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
 
-*Please note gulp must be running at all times while you are working with Sonarr client source files.*
+*Please note gulp must be running at all times while you are working with Lidarr client source files.*
 
 ### Development
 
