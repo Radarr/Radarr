@@ -18,6 +18,10 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 
 ## Configuring Development Environment:
 
+## Feature Requests
+
+[![Feature Requests](http://feathub.com/mattman86/Lidarr?format=svg)](http://feathub.com/mattman86/Lidarr)
+
 ### Requirements
 
 * Visual Studio 2015 (https://www.visualstudio.com/vs/)
