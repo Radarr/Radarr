@@ -16,11 +16,11 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 * Full support for specials and multi-episode releases
 * And a beautiful UI
 
-## Configuring Development Environment:
-
 ## Feature Requests
 
 [![Feature Requests](http://feathub.com/mattman86/Lidarr?format=svg)](http://feathub.com/mattman86/Lidarr)
+
+## Configuring Development Environment:
 
 ### Requirements
 
