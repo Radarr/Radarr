@@ -5,9 +5,9 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 ## Major Features Include:
 
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
-* Automatically detects new episodes
-* Can scan your existing library and download any missing episodes
-* Can watch for better quality of the episodes you already have and do an automatic upgrade. *eg. from DVD to Blu-Ray*
+* Automatically detects new tracks.
+* Can scan your existing library and download any missing tracks.
+* Can watch for better quality of the tracks you already have and do an automatic upgrade.
 * Automatic failed download handling will try another release if one fails
 * Manual search so you can pick any release or to see why a release was not downloaded automatically
 * Fully configurable episode renaming
@@ -15,6 +15,10 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 * Full integration with Kodi, Plex (notification, library update, metadata)
 * Full support for specials and multi-episode releases
 * And a beautiful UI
+
+## Feature Requests
+
+[![Feature Requests](http://feathub.com/mattman86/Lidarr?format=svg)](http://feathub.com/mattman86/Lidarr)
 
 ## Configuring Development Environment:
 
@@ -32,7 +36,7 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 * Install the required Node Packages `npm install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
 
-*Please note gulp must be running at all times while you are working with Sonarr client source files.*
+*Please note gulp must be running at all times while you are working with Lidarr client source files.*
 
 ### Development
 
