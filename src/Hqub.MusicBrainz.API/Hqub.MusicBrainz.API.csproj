@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hqub.MusicBrainz.API</RootNamespace>
+    <AssemblyName>Hqub.MusicBrainz.API</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Travis|AnyCPU'">
+    <OutputPath>bin\Travis\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Entities\Artist.cs" />
+    <Compile Include="Entities\Collections\ArtistList.cs" />
+    <Compile Include="Entities\Collections\BaseList.cs" />
+    <Compile Include="Entities\Collections\MediumList.cs" />
+    <Compile Include="Entities\Collections\RecordingList.cs" />
+    <Compile Include="Entities\Collections\ReleaseGroupList.cs" />
+    <Compile Include="Entities\Collections\RelationList.cs" />
+    <Compile Include="Entities\Collections\ReleaseList.cs" />
+    <Compile Include="Entities\Collections\TagList.cs" />
+    <Compile Include="Entities\Collections\TrackList.cs" />
+    <Compile Include="Entities\Collections\WorkList.cs" />
+    <Compile Include="Entities\CoverArtArchive.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Include\ArtistIncludeEntityHelper.cs" />
+    <Compile Include="Entities\Label.cs" />
+    <Compile Include="Entities\LabelInfo.cs" />
+    <Compile Include="Entities\Medium.cs" />
+    <Compile Include="Entities\Metadata.cs" />
+    <Compile Include="Entities\Metadata\ArtistMetadata.cs" />
+    <Compile Include="Entities\Metadata\RecordingMetadata.cs" />
+    <Compile Include="Entities\Metadata\ReleaseGroupMetadata.cs" />
+    <Compile Include="Entities\Metadata\ReleaseMetadata.cs" />
+    <Compile Include="Entities\NameCredit.cs" />
+    <Compile Include="Entities\Rating.cs" />
+    <Compile Include="Entities\Recording.cs" />
+    <Compile Include="Entities\Relation.cs" />
+    <Compile Include="Entities\Release.cs" />
+    <Compile Include="Entities\ReleaseGroup.cs" />
+    <Compile Include="Entities\Tag.cs" />
+    <Compile Include="Entities\Track.cs" />
+    <Compile Include="Entities\Work.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryParameters.cs" />
+    <Compile Include="Resources\Constants.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Constants.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WebRequestHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Constants.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Constants.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
