@@ -5,9 +5,9 @@ Lidarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS fee
 ## Major Features Include:
 
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
-* Automatically detects new episodes
-* Can scan your existing library and download any missing episodes
-* Can watch for better quality of the episodes you already have and do an automatic upgrade. *eg. from DVD to Blu-Ray*
+* Automatically detects new tracks.
+* Can scan your existing library and download any missing tracks.
+* Can watch for better quality of the tracks you already have and do an automatic upgrade.
 * Automatic failed download handling will try another release if one fails
 * Manual search so you can pick any release or to see why a release was not downloaded automatically
 * Fully configurable episode renaming
