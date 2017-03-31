@@ -11,7 +11,7 @@ namespace NzbDrone.Integration.Test
 
         public override string SeriesRootFolder => GetTempDirectory("SeriesRootFolder");
 
-        protected override string RootUrl => "http://localhost:8989/";
+        protected override string RootUrl => "http://localhost:8686/";
 
         protected override string ApiKey => _runner.ApiKey;
 
