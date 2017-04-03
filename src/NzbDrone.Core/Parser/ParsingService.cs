@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -7,6 +8,7 @@ using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Parser
@@ -33,20 +35,6 @@ namespace NzbDrone.Core.Parser
         private readonly ISceneMappingService _sceneMappingService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
-        private readonly Dictionary<string, string> romanNumeralsMapper = new Dictionary<string, string>
-        {
-            { "1", "I"},
-            { "2", "II"},
-            { "3", "III"},
-            { "4", "IV"},
-            { "5", "V"},
-            { "6", "VI"},
-            { "7", "VII"},
-            { "8", "VII"},
-            { "9", "IX"},
-            { "10", "X"},
-
-        }; //If a movie has more than 10 parts fuck 'em.
 
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
@@ -354,91 +342,113 @@ namespace NzbDrone.Core.Parser
 
         private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
+            // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
+            if (!String.IsNullOrWhiteSpace(imdbId))
+            {
+                Movie movieByImDb;
+                if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out movieByImDb))
+                {
+                    return movieByImDb;
+                }
+            }
+
             if (searchCriteria != null)
             {
-                var possibleTitles = new List<string>();
-
-				Movie possibleMovie = null;
-
-                possibleTitles.Add(searchCriteria.Movie.CleanTitle);
-
-                foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
+                Movie movieBySearchCriteria;
+                if (TryGetMovieBySearchCriteria(parsedMovieInfo, searchCriteria, out movieBySearchCriteria))
                 {
-                    possibleTitles.Add(altTitle.CleanSeriesTitle());
+                    return movieBySearchCriteria;
+                }
+            }
+
+            Movie movieByTitleAndOrYear;
+            if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out movieByTitleAndOrYear))
+            {
+                return movieByTitleAndOrYear;
+            }
+
+            // nothing found up to here => logging that and returning null
+            _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
+            return null;
+        }
+
+        private bool TryGetMovieByImDbId(ParsedMovieInfo parsedMovieInfo, string imdbId, out Movie movie)
+        {
+            movie = _movieService.FindByImdbId(imdbId);
+            //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
+            if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
+            {
+                movie = null;
+                return false;
+            }
+            return movie != null;
+        }
+
+        private bool TryGetMovieByTitleAndOrYear(ParsedMovieInfo parsedMovieInfo, out Movie movieByTitleAndOrYear)
+        {
+            Func<Movie, bool> isNotNull = movie => movie != null;
+            if (parsedMovieInfo.Year > 1800)
+            {
+                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
+                if (isNotNull(movieByTitleAndOrYear))
+                {
+                    return true;
+                }
+            }
+            movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
+            if (isNotNull(movieByTitleAndOrYear))
+            {
+                return true;
+            }
+            movieByTitleAndOrYear = null;
+            return false;
+        }
+
+        private static bool TryGetMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria, out Movie possibleMovie)
+        {
+            possibleMovie = null;
+            var possibleTitles = new List<string>();
+            Movie possibleMovieBySearchCriteria = null;
+
+            possibleTitles.Add(searchCriteria.Movie.CleanTitle);
+            var arabicRomanNumeralMappings = RomanNumeralParser.GetArabicRomanNumeralsMapping();
+
+            foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
+            {
+                possibleTitles.Add(altTitle.CleanSeriesTitle());
+            }
+
+            foreach (string title in possibleTitles)
+            {
+                if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                {
+                    possibleMovieBySearchCriteria = searchCriteria.Movie;
                 }
 
-                foreach (string title in possibleTitles)
+                foreach (ArabicRomanNumeral numeralMapping in arabicRomanNumeralMappings)
                 {
-                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    string arabicNumeral = numeralMapping.ArabicNumeralAsString;
+                    string romanNumeral = numeralMapping.RomanNumeralLowerCase;
+
+                    if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        possibleMovie = searchCriteria.Movie;
+                        possibleMovieBySearchCriteria = searchCriteria.Movie;
                     }
 
-                    foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
+                    if (title.Replace(romanNumeral, arabicNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        string num = entry.Key;
-                        string roman = entry.Value.ToLower();
-
-                        if (title.Replace(num, roman) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                        {
-                            possibleMovie = searchCriteria.Movie;
-                        }
-
-                        if (title.Replace(roman, num) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
-                        {
-                            possibleMovie = searchCriteria.Movie;
-                        }
+                        possibleMovieBySearchCriteria = searchCriteria.Movie;
                     }
+
                 }
-
-				if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
-				{
-					return possibleMovie;
-				}
-
-                    
             }
 
-            Movie movie = null;
-
-            if (searchCriteria == null)
+            if (possibleMovieBySearchCriteria != null && (parsedMovieInfo.Year < 1800 || possibleMovieBySearchCriteria.Year == parsedMovieInfo.Year))
             {
-                if (parsedMovieInfo.Year > 1800)
-                {
-                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-                }
-                else
-                {
-                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
-                }
-
-                if (movie == null)
-                {
-                    movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
-                }
-                // return movie;
+                possibleMovie = possibleMovieBySearchCriteria;
+                return true;
             }
-
-
-
-            if (movie == null && imdbId.IsNotNullOrWhiteSpace())
-            {
-                movie = _movieService.FindByImdbId(imdbId);
-
-				//Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-				if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
-				{
-					movie = null;
-				}
-            }
-
-            if (movie == null)
-            {
-                _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
-                return null;
-            }
-
-            return movie;
+            return false;
         }
 
         private Series GetSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria)
