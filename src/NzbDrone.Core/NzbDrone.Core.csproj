@@ -992,6 +992,12 @@
     <Compile Include="Parser\Model\LocalMovie.cs" />
     <Compile Include="Parser\Model\ParsedMovieInfo.cs" />
     <Compile Include="Parser\Model\RemoteMovie.cs" />
+    <Compile Include="Parser\RomanNumerals\ArabicRomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\IRomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\RomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\RomanNumeralParser.cs" />
+    <Compile Include="Parser\RomanNumerals\SimpleArabicNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\SimpleRomanNumeral.cs" />
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
