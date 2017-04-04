@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Parser
         private readonly ISceneMappingService _sceneMappingService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
+        private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
 
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
@@ -47,6 +48,11 @@ namespace NzbDrone.Core.Parser
             _sceneMappingService = sceneMappingService;
             _movieService = movieService;
             _logger = logger;
+
+            if (_arabicRomanNumeralMappings == null)
+            {
+                _arabicRomanNumeralMappings = RomanNumeralParser.GetArabicRomanNumeralsMapping();
+            }
         }
 
         public LocalEpisode GetLocalEpisode(string filename, Series series)
@@ -360,11 +366,13 @@ namespace NzbDrone.Core.Parser
                     return movieBySearchCriteria;
                 }
             }
-
-            Movie movieByTitleAndOrYear;
-            if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out movieByTitleAndOrYear))
+            else
             {
-                return movieByTitleAndOrYear;
+                Movie movieByTitleAndOrYear;
+                if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out movieByTitleAndOrYear))
+                {
+                    return movieByTitleAndOrYear;
+                }
             }
 
             // nothing found up to here => logging that and returning null
@@ -408,10 +416,8 @@ namespace NzbDrone.Core.Parser
         {
             possibleMovie = null;
             var possibleTitles = new List<string>();
-            Movie possibleMovieBySearchCriteria = null;
 
             possibleTitles.Add(searchCriteria.Movie.CleanTitle);
-            var arabicRomanNumeralMappings = RomanNumeralParser.GetArabicRomanNumeralsMapping();
 
             foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
             {
@@ -422,32 +428,32 @@ namespace NzbDrone.Core.Parser
             {
                 if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                 {
-                    possibleMovieBySearchCriteria = searchCriteria.Movie;
+                    possibleMovie = searchCriteria.Movie;
                 }
 
-                foreach (ArabicRomanNumeral numeralMapping in arabicRomanNumeralMappings)
+                foreach (ArabicRomanNumeral numeralMapping in _arabicRomanNumeralMappings)
                 {
                     string arabicNumeral = numeralMapping.ArabicNumeralAsString;
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        possibleMovieBySearchCriteria = searchCriteria.Movie;
+                        possibleMovie = searchCriteria.Movie;
                     }
 
                     if (title.Replace(romanNumeral, arabicNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
-                        possibleMovieBySearchCriteria = searchCriteria.Movie;
+                        possibleMovie = searchCriteria.Movie;
                     }
 
                 }
             }
 
-            if (possibleMovieBySearchCriteria != null && (parsedMovieInfo.Year < 1800 || possibleMovieBySearchCriteria.Year == parsedMovieInfo.Year))
+            if (possibleMovie != null && (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year))
             {
-                possibleMovie = possibleMovieBySearchCriteria;
                 return true;
             }
+            possibleMovie = null;
             return false;
         }
 
