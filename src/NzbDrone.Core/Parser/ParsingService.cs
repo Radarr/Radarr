@@ -415,7 +415,7 @@ namespace NzbDrone.Core.Parser
         private static bool TryGetMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria, out Movie possibleMovie)
         {
             possibleMovie = null;
-            var possibleTitles = new List<string>();
+            List<string> possibleTitles = new List<string>();
 
             possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
