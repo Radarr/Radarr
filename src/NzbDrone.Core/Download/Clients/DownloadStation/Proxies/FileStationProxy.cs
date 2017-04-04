@@ -2,27 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Download.Clients.DownloadStation.Responses;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
 {
-    public interface IFileStationProxy : IDiskStationProxy
+    public interface IFileStationProxy
     {
         SharedFolderMapping GetSharedFolderMapping(string sharedFolder, DownloadStationSettings settings);
-
+        IEnumerable<int> GetApiVersion(DownloadStationSettings settings);
         FileStationListFileInfoResponse GetInfoFileOrDirectory(string path, DownloadStationSettings settings);
     }
 
     public class FileStationProxy : DiskStationProxyBase, IFileStationProxy
     {
-        public FileStationProxy(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
-            : base(DiskStationApi.FileStationList, "SYNO.FileStation.List", httpClient, cacheManager, logger)
+        public FileStationProxy(IHttpClient httpClient, Logger logger)
+            : base(httpClient, logger)
         {
         }
-        
+
+        public IEnumerable<int> GetApiVersion(DownloadStationSettings settings)
+        {
+            return base.GetApiVersion(settings, DiskStationApi.FileStationList);
+        }
+
         public SharedFolderMapping GetSharedFolderMapping(string sharedFolder, DownloadStationSettings settings)
         {
             var info = GetInfoFileOrDirectory(sharedFolder, settings);
@@ -34,11 +38,16 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
 
         public FileStationListFileInfoResponse GetInfoFileOrDirectory(string path, DownloadStationSettings settings)
         {
-            var requestBuilder = BuildRequest(settings, "getinfo", 2);
-            requestBuilder.AddQueryParam("path", new[] { path }.ToJson());
-            requestBuilder.AddQueryParam("additional", "[\"real_path\"]");
+            var arguments = new Dictionary<string, object>
+            {
+                { "api", "SYNO.FileStation.List" },
+                { "version", "2" },
+                { "method", "getinfo" },
+                { "path", new [] { path }.ToJson() },
+                { "additional", $"[\"real_path\"]" }
+            };
 
-            var response = ProcessRequest<FileStationListResponse>(requestBuilder, $"get info of {path}", settings);
+            var response = ProcessRequest<FileStationListResponse>(DiskStationApi.FileStationList, arguments, settings, $"get info of {path}");
 
             return response.Data.Files.First();
         }

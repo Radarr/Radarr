@@ -68,30 +68,30 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title);
 
-					if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
-					{
-						RemoteMovie remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
-						remoteMovie.Release = report;
+                    if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
+                    {
+                        RemoteMovie remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                        remoteMovie.Release = report;
 
-						if (remoteMovie.Movie == null)
-						{
-							decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Movie found does not match wanted movie."));
-						}
-						else
-						{
-							if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
-							{
-								remoteMovie.DownloadAllowed = true;
-								decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
-							}
-							else
-							{
-								remoteMovie.DownloadAllowed = true;
-								decision = GetDecisionForReport(remoteMovie, searchCriteria);
-							}
-
-						}
-					}
+                        if (remoteMovie.Movie == null)
+                        {
+                            decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Movie found does not match wanted movie."));
+                        }
+                        else
+                        {
+                            if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
+                            {
+                                remoteMovie.DownloadAllowed = true;
+                                decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+                            }
+                            else
+                            {
+                                remoteMovie.DownloadAllowed = true;
+                                decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            }
+                            
+                        }
+                    }
 					else
 					{
 						_logger.Trace("{0} could not be parsed :(.", report.Title);
