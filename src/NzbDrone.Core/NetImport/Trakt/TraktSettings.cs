@@ -96,6 +96,9 @@ namespace NzbDrone.Core.NetImport.Trakt
         [FieldDefinition(8, Label = "Limit", HelpText = "Limit the number of movies to get")]
         public int Limit { get; set; }
 
+        [FieldDefinition(9, Label = "Additional Parameters", HelpText = "Additional Trakt API parameters", Advanced = true)]
+        public string TraktAdditionalParameters { get; set; }
+
 
         public NzbDroneValidationResult Validate()
         {

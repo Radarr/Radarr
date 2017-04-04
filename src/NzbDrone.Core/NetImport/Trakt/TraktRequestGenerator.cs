@@ -89,7 +89,7 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             var link = Settings.Link.Trim();
 
-            var filtersAndLimit = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Ceritification.ToLower()}&limit={Settings.Limit}";
+            var filtersAndLimit = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Ceritification.ToLower()}&limit={Settings.Limit}{Settings.TraktAdditionalParameters}";
 
             switch (Settings.ListType)
             {
@@ -129,7 +129,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                     break;
             }
 
-            Authenticate();            
+            Authenticate();
 
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
