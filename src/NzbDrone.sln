@@ -90,8 +90,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogentriesNLog", "Logentrie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurlSharp", "ExternalModules\CurlSharp\CurlSharp\CurlSharp.csproj", "{74420A79-CC16-442C-8B1E-7C1B913844F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hqub.MusicBrainz.API", "Hqub.MusicBrainz.API\Hqub.MusicBrainz.API.csproj", "{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -545,22 +543,6 @@ Global
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Travis|Any CPU.Build.0 = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Travis|x86.ActiveCfg = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Travis|x86.Build.0 = Release|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Debug|x86.Build.0 = Debug|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Mono|Any CPU.ActiveCfg = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Mono|Any CPU.Build.0 = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Mono|x86.ActiveCfg = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Mono|x86.Build.0 = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Release|x86.ActiveCfg = Release|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Release|x86.Build.0 = Release|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Travis|Any CPU.ActiveCfg = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Travis|Any CPU.Build.0 = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Travis|x86.ActiveCfg = Travis|Any CPU
-		{77832DED-EEFE-4DB9-94AF-B0BE02CEC356}.Travis|x86.Build.0 = Travis|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
