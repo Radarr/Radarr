@@ -89,6 +89,8 @@ namespace NzbDrone.Api.Calendar
             var episodes = _episodeService.EpisodesBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
+                // This will need to point to the hosted web site
+                // TODO
                 ProductId = "-//Lidarr.tv//Lidarr//EN"
             };
 
@@ -107,7 +109,7 @@ namespace NzbDrone.Api.Calendar
                 }
 
                 var occurrence = calendar.Create<Event>();
-                occurrence.Uid = "NzbDrone_episode_" + episode.Id;
+                occurrence.Uid = "NzbDrone_album_" + episode.Id;
                 occurrence.Status = episode.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
                 occurrence.Description = episode.Overview;
                 occurrence.Categories = new List<string>() { episode.Series.Network };
