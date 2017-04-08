@@ -66,9 +66,9 @@ namespace NzbDrone.Update
             }
 
             var startupContext = new UpdateStartupContext
-                                 {
-                                     ProcessId = ParseProcessId(args[0])
-                                 };
+            {
+                ProcessId = ParseProcessId(args[0])
+            };
 
             if (OsInfo.IsNotWindows)
             {
@@ -104,7 +104,7 @@ namespace NzbDrone.Update
                 throw new ArgumentOutOfRangeException(nameof(arg), "Invalid process ID");
             }
 
-            Logger.Debug("NzbDrone process ID: {0}", id);
+            Logger.Debug("Lidarr process ID: {0}", id);
             return id;
         }
 

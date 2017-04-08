@@ -25,7 +25,7 @@ namespace NzbDrone.Common
 
     public class ServiceProvider : IServiceProvider
     {
-        public const string NZBDRONE_SERVICE_NAME = "NzbDrone";
+        public const string NZBDRONE_SERVICE_NAME = "Lidarr";
 
         private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;
@@ -78,7 +78,7 @@ namespace NzbDrone.Common
             serviceInstaller.Context = context;
             serviceInstaller.DisplayName = serviceName;
             serviceInstaller.ServiceName = serviceName;
-            serviceInstaller.Description = "NzbDrone Application Server";
+            serviceInstaller.Description = "Lidarr Application Server";
             serviceInstaller.StartType = ServiceStartMode.Automatic;
             serviceInstaller.ServicesDependedOn = new[] { "EventLog", "Tcpip", "http" };
 

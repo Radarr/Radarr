@@ -17,7 +17,8 @@ namespace NzbDrone.Update
         {
             var assemblies = new List<string>
                              {
-                                 "NzbDrone.Update"
+                                 "Lidarr.Update",
+                                 "NzbDrone.Common"
                              };
 
             return new UpdateContainerBuilder(startupContext, assemblies).Container;

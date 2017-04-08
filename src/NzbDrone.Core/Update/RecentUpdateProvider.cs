@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Update
 
         public List<UpdatePackage> GetRecentUpdatePackages()
         {
-            var branch = _configFileProvider.Branch;
+            var branch = "develop";//_configFileProvider.Branch;
             return _updatePackageProvider.GetRecentUpdates(branch, BuildInfo.Version);
         }
     }
