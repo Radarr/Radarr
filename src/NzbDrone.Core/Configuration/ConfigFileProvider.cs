@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Configuration
 
         public int Port => GetValueInt("Port", 8686);
 
-        public int SslPort => GetValueInt("SslPort", 9898);
+        public int SslPort => GetValueInt("SslPort", 6868);
 
         public bool EnableSsl => GetValueBoolean("EnableSsl", false);
 
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Configuration
 
         public bool AnalyticsEnabled => GetValueBoolean("AnalyticsEnabled", true, persist: false);
 
-        public string Branch => GetValue("Branch", "master").ToLowerInvariant();
+        public string Branch => GetValue("Branch", "develop").ToLowerInvariant();
 
         public string LogLevel => GetValue("LogLevel", "Info");
 
