@@ -729,39 +729,47 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie MapMovieToTmdbMovie(Movie movie)
         {
-            Movie newMovie = movie;
-            if (movie.TmdbId > 0)
-            {
-                newMovie = GetMovieInfo(movie.TmdbId);
-            }
-            else if (movie.ImdbId.IsNotNullOrWhiteSpace())
-            {
-                newMovie = GetMovieInfo(movie.ImdbId);
-            }
-            else
-            {
-                var yearStr = "";
-                if (movie.Year > 1900)
-                {
-                    yearStr = $" {movie.Year}";
-                }
-                newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
-            }
+			try
+			{
+				 Movie newMovie = movie;
+	            if (movie.TmdbId > 0)
+	            {
+	                newMovie = GetMovieInfo(movie.TmdbId);
+	            }
+	            else if (movie.ImdbId.IsNotNullOrWhiteSpace())
+	            {
+	                newMovie = GetMovieInfo(movie.ImdbId);
+	            }
+	            else
+	            {
+	                var yearStr = "";
+	                if (movie.Year > 1900)
+	                {
+	                    yearStr = $" {movie.Year}";
+	                }
+	                newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault();
+	            }
 
-            if (newMovie == null)
-            {
-                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
-                return null;
-            }
+	            if (newMovie == null)
+	            {
+	                _logger.Warn("Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
+	                return null;
+	            }
 
-            newMovie.Path = movie.Path;
-            newMovie.RootFolderPath = movie.RootFolderPath;
-            newMovie.ProfileId = movie.ProfileId;
-            newMovie.Monitored = movie.Monitored;
-            newMovie.MovieFile = movie.MovieFile;
-            newMovie.MinimumAvailability = movie.MinimumAvailability;
+	            newMovie.Path = movie.Path;
+	            newMovie.RootFolderPath = movie.RootFolderPath;
+	            newMovie.ProfileId = movie.ProfileId;
+	            newMovie.Monitored = movie.Monitored;
+	            newMovie.MovieFile = movie.MovieFile;
+	            newMovie.MinimumAvailability = movie.MinimumAvailability;
 
-            return newMovie;
+	            return newMovie;
+			}
+			catch (Exception ex)
+			{
+				_logger.Warn(ex, "Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
+	                return null;
+			}
         }
     }
 }
