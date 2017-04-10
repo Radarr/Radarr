@@ -43,5 +43,6 @@ only_commits:
     - osx/
     - gulp/
     - logo/
+    - setup/
     - appveyor.yml
     - build-appveyor.cake
