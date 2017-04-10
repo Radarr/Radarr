@@ -9,6 +9,7 @@ namespace NzbDrone.Api.Config
         public int Retention { get; set; }
         public int RssSyncInterval { get; set; }
 	public int AvailabilityDelay { get; set; }
+	public bool AllowHardcodedSubs { get; set; }
     }
 
     public static class IndexerConfigResourceMapper
@@ -21,6 +22,7 @@ namespace NzbDrone.Api.Config
                 Retention = model.Retention,
                 RssSyncInterval = model.RssSyncInterval,
 		AvailabilityDelay = model.AvailabilityDelay,
+		AllowHardcodedSubs = model.AllowHardcodedSubs,
             };
         }
     }

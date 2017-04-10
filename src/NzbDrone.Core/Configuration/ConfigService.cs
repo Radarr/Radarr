@@ -190,6 +190,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableCompletedDownloadHandling", value); }
         }
 
+	public bool AllowHardcodedSubs
+	{
+		get { return GetValueBoolean("AllowHardcodedSubs", false); }
+
+		set { SetValue("AllowHardcodedSubs", value); }
+	}
+
         public bool RemoveCompletedDownloads
         {
             get { return GetValueBoolean("RemoveCompletedDownloads", false); }

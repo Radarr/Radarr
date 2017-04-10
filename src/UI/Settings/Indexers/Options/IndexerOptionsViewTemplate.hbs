@@ -37,6 +37,28 @@
             <input type="number" name="rssSyncInterval" class="form-control" min="0" max="720"/>
         </div>
     </div>
+
+    <div class="form-group advanced-setting">
+        <label class="col-sm-3 control-label">Allow Hardcoded Subs</label>
+        <div class="col-sm-1 col-sm-push-2 help-inline">
+            <i class="icon-sonarr-form-info" title="If set to yes, all detected hardcoded subs will be downloaded automatically."/>
+        </div>
+        <div class="col-sm-2 col-sm-pull-1">
+            <div class="input-group">
+              <label class="checkbox toggle well">
+                <input type="checkbox" name="allowHardcodedSubs" class="x-completed-download-handling"/>
+                <p>
+                    <span>Yes</span>
+                    <span>No</span>
+                </p>
+
+                <div class="btn btn-primary slide-button"/>
+            </label>
+          </div>
+        </div>
+
+    </div>
+
     <legend>Availability Options</legend>
     <div class="form-group">
         <label class="col-sm-3 control-label">Availability Delay</label>

@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
@@ -21,12 +22,14 @@ namespace NzbDrone.Core.DecisionEngine
     {
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
+	private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications, IParsingService parsingService, Logger logger)
+        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications, IParsingService parsingService, IConfigService configService, Logger logger)
         {
             _specifications = specifications;
             _parsingService = parsingService;
+		_configService = configService;
             _logger = logger;
         }
 
@@ -82,7 +85,14 @@ namespace NzbDrone.Core.DecisionEngine
 							if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
 							{
 								remoteMovie.DownloadAllowed = true;
-								decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+								if (_configService.AllowHardcodedSubs)
+								{
+									decision = GetDecisionForReport(remoteMovie, searchCriteria);
+								}
+								else
+								{
+									decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+								}
 							}
 							else
 							{
