@@ -264,6 +264,12 @@ Task("ArtifactsWindows").Does(() => {
 	CopyDirectory(outputFolder, artifactsFolderWindows + "/Radarr");
 });
 
+Task("ArtifactsWindowsInstaller").Does(() => {
+	InnoSetup("./setup/nzbdrone.iss", new InnoSetupSettings {
+    OutputDir = artifactsFolderWindows + "/Radarr"
+    })
+});
+
 Task("ArtifactsLinux").Does(() => {
 	CopyDirectory(outputFolderMono, artifactsFolderLinux + "/Radarr");
 });
@@ -293,6 +299,7 @@ Task("CompressArtifacts").Does(() => {
 Task("Artifacts")
 	.IsDependentOn("CleanArtifacts")
 	.IsDependentOn("ArtifactsWindows")
+	.IsDependentOn("ArtifactsWindowsInstaller")
 	.IsDependentOn("ArtifactsLinux")
 	.IsDependentOn("ArtifactsOsx")
 	.IsDependentOn("ArtifactsOsxApp")
