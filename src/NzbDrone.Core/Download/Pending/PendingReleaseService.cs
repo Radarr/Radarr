@@ -218,14 +218,15 @@ namespace NzbDrone.Core.Download.Pending
 
         private void Insert(DownloadDecision decision)
         {
-            _repository.Insert(new PendingRelease
-            {
-                MovieId = decision.RemoteMovie.Movie.Id,
-                ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
-                Release = decision.RemoteMovie.Release,
-                Title = decision.RemoteMovie.Release.Title,
-                Added = DateTime.UtcNow
-            });
+		var release = new PendingRelease
+            	{
+	                MovieId = decision.RemoteMovie.Movie.Id,
+	                ParsedMovieInfo = decision.RemoteMovie.ParsedMovieInfo,
+	                Release = decision.RemoteMovie.Release,
+	                Title = decision.RemoteMovie.Release.Title,
+	                Added = DateTime.UtcNow
+		};
+            _repository.Insert(release);
 
             _eventAggregator.PublishEvent(new PendingReleasesUpdatedEvent());
         }
