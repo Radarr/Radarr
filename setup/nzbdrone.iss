@@ -44,8 +44,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "windowsService"; Description: "Install as a Windows Service"
 
 [Files]
-Source: "..\_output\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion  
-Source: "..\_output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "_output\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion  
+Source: "_output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
