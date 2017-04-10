@@ -2,7 +2,7 @@
 using System.Drawing;
 using NzbDrone.Common.EnvironmentInfo;
 
-namespace NzbDrone.Core.MediaCover
+namespace NzbDrone.Common.Disk
 {
     public static class GdiPlusInterop
     {

@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
+var AppLayout = require('../../../AppLayout');
 var Marionette = require('marionette');
 var DeleteView = require('../Delete/IndexerDeleteView');
 var Profiles = require('../../../Profile/ProfileCollection');
@@ -55,7 +56,7 @@ var view = Marionette.ItemView.extend({
 				profileId : profile,
 				rootFolderPath : rootFolderPath,
 				minimumAvailability : minAvail,
-			})
+			});
 		},
 
 		_onAfterSave : function() {
@@ -95,7 +96,6 @@ var view = Marionette.ItemView.extend({
 
 		_rootFoldersUpdated : function() {
 				this._configureTemplateHelpers();
-				debugger;
 				this.render();
 		},
 

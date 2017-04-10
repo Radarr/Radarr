@@ -12,16 +12,19 @@ module.exports = Marionette.ItemView.extend({
     ui : {
         deleteFiles     : '.x-delete-files',
         deleteFilesInfo : '.x-delete-files-info',
-        indicator       : '.x-indicator'
+        indicator       : '.x-indicator',
+        addExclusion    : '.x-add-exclusion'
     },
 
     removeSeries : function() {
         var self = this;
         var deleteFiles = this.ui.deleteFiles.prop('checked');
+        var addExclusion = this.ui.addExclusion.prop('checked');
         this.ui.indicator.show();
-
+        this.model.set('deleted', true); 
         this.model.destroy({
-            data : { 'deleteFiles' : deleteFiles },
+            data : { 'deleteFiles' : deleteFiles,
+                     'addExclusion' : addExclusion },
             wait : true
         }).done(function() {
             vent.trigger(vent.Events.SeriesDeleted, { series : self.model });

@@ -258,7 +258,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private ImportResult UnknownMovieResult(string message, string videoFile = null)
         {
-            var localEpisode = videoFile == null ? null : new LocalEpisode { Path = videoFile };
+            var localEpisode = videoFile == null ? null : new LocalMovie { Path = videoFile };
 
             return new ImportResult(new ImportDecision(localEpisode, new Rejection("Unknown Movie")), message);
         }

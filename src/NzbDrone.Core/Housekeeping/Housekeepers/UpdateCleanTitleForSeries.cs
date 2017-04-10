@@ -6,21 +6,21 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
     public class UpdateCleanTitleForSeries : IHousekeepingTask
     {
-        private readonly ISeriesRepository _seriesRepository;
+        private readonly IMovieRepository _movieRepository;
 
-        public UpdateCleanTitleForSeries(ISeriesRepository seriesRepository)
+        public UpdateCleanTitleForSeries(IMovieRepository movieRepository)
         {
-            _seriesRepository = seriesRepository;
+            _movieRepository = movieRepository;
         }
 
         public void Clean()
         {
-            var series = _seriesRepository.All().ToList();
+            var movies = _movieRepository.All().ToList();
 
-            series.ForEach(s =>
+            movies.ForEach(m =>
             {
-                s.CleanTitle = s.CleanTitle.CleanSeriesTitle();
-                _seriesRepository.Update(s);
+                m.CleanTitle = m.CleanTitle.CleanSeriesTitle();
+                _movieRepository.Update(m);
             });
         }
     }

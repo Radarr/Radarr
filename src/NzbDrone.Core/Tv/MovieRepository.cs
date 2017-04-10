@@ -6,7 +6,9 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Datastore.Extensions;
 using Marr.Data.QGen;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
+using CoreParser = NzbDrone.Core.Parser.Parser;
 
 namespace NzbDrone.Core.Tv
 {
@@ -28,21 +30,6 @@ namespace NzbDrone.Core.Tv
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
     {
-        private readonly Dictionary<string, string> romanNumeralsMapper = new Dictionary<string, string>
-        {
-            { "1", "I"},
-            { "2", "II"},
-            { "3", "III"},
-            { "4", "IV"},
-            { "5", "V"},
-            { "6", "VI"},
-            { "7", "VII"},
-            { "8", "VII"},
-            { "9", "IX"},
-            { "10", "X"},
-
-        }; //If a movie has more than 10 parts fuck 'em.
-
 		protected IMainDatabase _database;
 
         public MovieRepository(IMainDatabase database, IEventAggregator eventAggregator)
@@ -58,99 +45,18 @@ namespace NzbDrone.Core.Tv
 
         public Movie FindByTitle(string cleanTitle)
         {
-            cleanTitle = cleanTitle.ToLowerInvariant();
-
-            var cleanRoman = cleanTitle;
-
-            var cleanNum = cleanTitle;
-
-            foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
-            {
-                string num = entry.Key;
-                string roman = entry.Value.ToLower();
-
-                cleanRoman = cleanRoman.Replace(num, roman);
-
-                cleanNum = cleanNum.Replace(roman, num);
-            }
-
-            var result = Query.Where(s => s.CleanTitle == cleanTitle).FirstOrDefault();
-
-            if (result == null)
-            {
-                result = Query.Where(s => s.CleanTitle == cleanNum).OrWhere(s => s.CleanTitle == cleanRoman).FirstOrDefault();
-
-                if (result == null)
-                {
-                    var movies = this.All();
-
-                    result = movies.Where(m => m.AlternativeTitles.Any(t => Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanTitle ||
-                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanRoman ||
-                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanNum)).FirstOrDefault();
-
-                    return result;
-                }
-                else
-                {
-                    return result;
-                }
-
-            }
-            else
-            {
-                return result;
-            }
+            return FindByTitle(cleanTitle, null);
         }
 
         public Movie FindByTitle(string cleanTitle, int year)
         {
-            cleanTitle = cleanTitle.ToLowerInvariant();
-
-            var cleanRoman = cleanTitle;
-
-            var cleanNum = cleanTitle;
-
-            foreach (KeyValuePair<string, string> entry in romanNumeralsMapper)
-            {
-                string num = entry.Key;
-                string roman = entry.Value.ToLower();
-
-                cleanRoman = cleanRoman.Replace(num, roman);
-
-                cleanNum = cleanNum.Replace(roman, num);
-            }
-
-            var results = Query.Where(s => s.CleanTitle == cleanTitle);
-
-            if (results == null)
-            {
-                results = Query.Where(s => s.CleanTitle == cleanNum).OrWhere(s => s.CleanTitle == cleanRoman);
-
-                if (results == null)
-                {
-                    var movies = this.All();
-
-                    var listResults = movies.Where(m => m.AlternativeTitles.Any(t => Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanTitle ||
-                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanRoman ||
-                    Parser.Parser.CleanSeriesTitle(t.ToLower()) == cleanNum));
-
-                    return listResults.Where(m => m.Year == year).FirstOrDefault();
-                }
-                else
-                {
-                    return results.Where(m => m.Year == year).FirstOrDefault();
-                }
-
-            }
-            else
-            {
-                return results.Where(m => m.Year == year).FirstOrDefault();
-            }
+            return FindByTitle(cleanTitle, year as int?);
         }
 
         public Movie FindByImdbId(string imdbid)
         {
-            return Query.Where(s => s.ImdbId == imdbid).SingleOrDefault();
+            var imdbIdWithPrefix = Parser.Parser.NormalizeImdbId(imdbid);
+            return Query.Where(s => s.ImdbId == imdbIdWithPrefix).SingleOrDefault();
         }
 
         public List<Movie> GetMoviesByFileId(int fileId)
@@ -195,7 +101,7 @@ namespace NzbDrone.Core.Tv
             return pagingSpec;
         }
 
-		public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
+        public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
 		{
 			if (pagingSpec.SortKey == "downloadedQuality")
 			{
@@ -242,15 +148,42 @@ namespace NzbDrone.Core.Tv
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
+			//I know this is bad, but if you have a better Idea please tell me.
+			if (pagingSpec.SortKey == "downloadedQuality")
+			{
+				var mapper = _database.GetDataMapper();
+				var offset = pagingSpec.PagingOffset();
+				var limit = pagingSpec.PageSize;
+				var direction = "ASC";
+				if (pagingSpec.SortDirection == NzbDrone.Core.Datastore.SortDirection.Descending)
+				{
+					direction = "DESC";
+				}
 
-            pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
-            pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+				var whereClause = BuildQualityCutoffWhereClauseSpecial(qualitiesBelowCutoff);
+
+				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
+				var q2 = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title ASC;");
+
+				//var ok = q.BuildQuery();
+
+				pagingSpec.Records = q.ToList();
+				pagingSpec.TotalRecords = q2.Count();
+
+			}
+			else
+			{
+
+				pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
+				pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+
+			}
 
             return pagingSpec;
         }
 
         private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
-        {
+		{
             return Query.Join<Movie, MovieFile>(JoinType.Left, e => e.MovieFile, (e, s) => e.MovieFileId == s.Id)
                  .Where(pagingSpec.FilterExpression)
                  .AndWhere(m => m.MovieFileId != 0)
@@ -273,6 +206,61 @@ namespace NzbDrone.Core.Tv
             }
 
             return string.Format("({0})", string.Join(" OR ", clauses));
+        }
+
+		private string BuildQualityCutoffWhereClauseSpecial(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+		{
+			var clauses = new List<string>();
+
+			foreach (var profile in qualitiesBelowCutoff)
+			{
+				foreach (var belowCutoff in profile.QualityIds)
+				{
+					clauses.Add(string.Format("(Movies.ProfileId = {0} AND MovieFiles.Quality LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+				}
+			}
+
+			return string.Format("({0})", string.Join(" OR ", clauses));
+		}
+
+        private Movie FindByTitle(string cleanTitle, int? year)
+        {
+            cleanTitle = cleanTitle.ToLowerInvariant();
+            string cleanTitleWithRomanNumbers = cleanTitle;
+            string cleanTitleWithArabicNumbers = cleanTitle;
+
+
+            foreach (ArabicRomanNumeral arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
+            {
+                string arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
+                string romanNumber = arabicRomanNumeral.RomanNumeral;
+                cleanTitleWithRomanNumbers = cleanTitleWithRomanNumbers.Replace(arabicNumber, romanNumber);
+                cleanTitleWithArabicNumbers = cleanTitleWithArabicNumbers.Replace(romanNumber, arabicNumber);
+            }
+
+            IEnumerable<Movie> results = Query.Where(s => s.CleanTitle == cleanTitle);
+
+            if (results == null)
+            {
+                results = Query.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers) ??
+                         Query.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers);
+
+                if (results == null)
+                {
+                    IEnumerable<Movie> movies = All();
+                    Func<string, string> titleCleaner = title => CoreParser.CleanSeriesTitle(title.ToLower());
+                    Func<IEnumerable<string>, string, bool> altTitleComparer =
+                        (alternativeTitles, atitle) =>
+                            alternativeTitles.Any(altTitle => altTitle == titleCleaner(atitle));
+
+                    results = movies.Where(m => altTitleComparer(m.AlternativeTitles, cleanTitle) ||
+                                                altTitleComparer(m.AlternativeTitles, cleanTitleWithRomanNumbers) ||
+                                                altTitleComparer(m.AlternativeTitles, cleanTitleWithArabicNumbers));
+                }
+            }
+            return year.HasValue
+                ? results?.FirstOrDefault(movie => movie.Year == year.Value)
+                : results?.FirstOrDefault();
         }
 
         public Movie FindByTmdbId(int tmdbid)

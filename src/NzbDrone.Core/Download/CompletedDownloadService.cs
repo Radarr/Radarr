@@ -26,32 +26,26 @@ namespace NzbDrone.Core.Download
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IHistoryService _historyService;
-        private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
-        private readonly ISeriesService _seriesService;
 
         public CompletedDownloadService(IConfigService configService,
                                         IEventAggregator eventAggregator,
                                         IHistoryService historyService,
-                                        IDownloadedEpisodesImportService downloadedEpisodesImportService,
                                         IDownloadedMovieImportService downloadedMovieImportService,
                                         IParsingService parsingService,
-                                        ISeriesService seriesService,
                                         IMovieService movieService,
                                         Logger logger)
         {
             _configService = configService;
             _eventAggregator = eventAggregator;
             _historyService = historyService;
-            _downloadedEpisodesImportService = downloadedEpisodesImportService;
             _downloadedMovieImportService = downloadedMovieImportService;
             _parsingService = parsingService;
             _movieService = movieService;
             _logger = logger;
-            _seriesService = seriesService;
         }
 
         public void Process(TrackedDownload trackedDownload, bool ignoreWarnings = false)
@@ -86,9 +80,9 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
-                var downloadedEpisodesFolder = new OsPath(_configService.DownloadedEpisodesFolder);
+                var downloadedMoviesFolder = new OsPath(_configService.DownloadedMoviesFolder);
 
-                if (downloadedEpisodesFolder.Contains(downloadItemOutputPath))
+                if (downloadedMoviesFolder.Contains(downloadItemOutputPath))
                 {
                     trackedDownload.Warn("Intermediate Download path inside drone factory, Skipping.");
                     return;

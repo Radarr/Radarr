@@ -30,7 +30,8 @@ namespace NzbDrone.Core.NetImport
 
         protected override List<NetImportDefinition> Active()
         {
-            return base.Active().Where(c => c.Enabled).ToList();
+            // return base.Active().Where(c => c.Enabled).ToList(); // use this for when/if we add a setting to enable/disable lists
+            return base.Active().ToList();
         }
 
         public override void SetProviderCharacteristics(INetImport provider, NetImportDefinition definition)

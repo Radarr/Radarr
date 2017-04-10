@@ -13,27 +13,27 @@ namespace NzbDrone.Api.Movies
         IHandle<MovieGrabbedEvent>,
         IHandle<MovieDownloadedEvent>
     {
-        protected readonly IMovieService _episodeService;
+        protected readonly IMovieService _movieService;
         protected readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
 
-        protected MovieModuleWithSignalR(IMovieService episodeService,
+        protected MovieModuleWithSignalR(IMovieService movieService,
                                            IQualityUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
-            _episodeService = episodeService;
+            _movieService = movieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
             GetResourceById = GetMovie;
         }
 
-        protected MovieModuleWithSignalR(IMovieService episodeService,
+        protected MovieModuleWithSignalR(IMovieService movieService,
                                            IQualityUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
             : base(signalRBroadcaster, resource)
         {
-            _episodeService = episodeService;
+            _movieService = movieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
             GetResourceById = GetMovie;
@@ -41,8 +41,8 @@ namespace NzbDrone.Api.Movies
 
         protected MovieResource GetMovie(int id)
         {
-            var episode = _episodeService.GetMovie(id);
-            var resource = MapToResource(episode, true);
+            var movie = _movieService.GetMovie(id);
+            var resource = MapToResource(movie, true);
             return resource;
         }
 
@@ -52,7 +52,7 @@ namespace NzbDrone.Api.Movies
 
             if (includeSeries)
             {
-                var series = episode ?? _episodeService.GetMovie(episode.Id);
+                var series = episode ?? _movieService.GetMovie(episode.Id);
                 resource = series.ToResource();
             }
 

@@ -49,48 +49,36 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings);
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, RTorrentPriority.Normal, Settings.MovieDirectory, Settings);
 
-            // Download the magnet to the appropriate directory.
-            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
-            SetDownloadDirectory(hash);
-            _proxy.StartTorrent(hash, Settings);
-
-            // Wait for the magnet to be resolved.
             var tries = 10;
             var retryDelay = 500;
-            if (WaitForTorrent(hash, tries, retryDelay))
-            {
-                return hash;
-            }
-            else
+
+            // Wait a bit for the magnet to be resolved.
+            if (!WaitForTorrent(hash, tries, retryDelay))
             {
                 _logger.Warn("rTorrent could not resolve magnet within {0} seconds, download may remain stuck: {1}.", tries * retryDelay / 1000, magnetLink);
 
                 return hash;
             }
+
+            return hash;
         }
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings);
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, RTorrentPriority.Normal, Settings.MovieDirectory, Settings);
 
-            var tries = 5;
-            var retryDelay = 200;
-            if (WaitForTorrent(hash, tries, retryDelay))
+            var tries = 10;
+            var retryDelay = 500;
+            if (!WaitForTorrent(hash, tries, retryDelay))
             {
-                _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
-                SetDownloadDirectory(hash);
-                _proxy.StartTorrent(hash, Settings);
-                return hash;
-            }
-            else
-            {
-                _logger.Debug("rTorrent could not add file");
+                _logger.Debug("rTorrent didn't add the torrent within {0} seconds: {1}.", tries * retryDelay / 1000, filename);
 
-                RemoveItem(hash, true);
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading torrent failed");
             }
+
+            return hash;
         }
 
         public override string Name => "rTorrent";
@@ -227,14 +215,6 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
 
             return result.Errors.First();
-        }
-
-        private void SetDownloadDirectory(string hash)
-        {
-            if (Settings.MovieDirectory.IsNotNullOrWhiteSpace())
-            {
-                _proxy.SetTorrentDownloadDirectory(hash, Settings.MovieDirectory, Settings);
-            }
         }
 
         private bool WaitForTorrent(string hash, int tries, int retryDelay)

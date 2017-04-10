@@ -1,8 +1,6 @@
 ﻿using System;
 using Nancy;
-using NzbDrone.Api.Episodes;
 using NzbDrone.Api.Extensions;
-using NzbDrone.Api.Series;
 using NzbDrone.Api.Movie;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
@@ -32,15 +30,7 @@ namespace NzbDrone.Api.History
         protected HistoryResource MapToResource(Core.History.History model)
         {
             var resource = model.ToResource();
-
-            resource.Series = model.Series.ToResource();
-            resource.Episode = model.Episode.ToResource();
             resource.Movie = model.Movie.ToResource();
-
-            if (model.Series != null)
-            {
-                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Series.Profile.Value, model.Quality);
-            }
 
             if (model.Movie != null)
             {
@@ -52,8 +42,6 @@ namespace NzbDrone.Api.History
 
         private PagingResource<HistoryResource> GetHistory(PagingResource<HistoryResource> pagingResource)
         {
-            var episodeId = Request.Query.EpisodeId;
-
             var movieId = Request.Query.MovieId;
 
             var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, Core.History.History>("date", SortDirection.Descending);
@@ -62,12 +50,6 @@ namespace NzbDrone.Api.History
             {
                 var filterValue = (HistoryEventType)Convert.ToInt32(pagingResource.FilterValue);
                 pagingSpec.FilterExpression = v => v.EventType == filterValue;
-            }
-
-            if (episodeId.HasValue)
-            {
-                int i = (int)episodeId;
-                pagingSpec.FilterExpression = h => h.EpisodeId == i;
             }
 
             if (movieId.HasValue)

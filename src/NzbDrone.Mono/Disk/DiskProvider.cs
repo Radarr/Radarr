@@ -17,13 +17,13 @@ namespace NzbDrone.Mono.Disk
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(DiskProvider));
 
         private readonly IProcMountProvider _procMountProvider;
-        private readonly ISymbolicLinkResolver _symLinkResolver;
+        private readonly NzbDrone.Mono.Disk.ISymbolicLinkResolver _symLinkResolver;
 
         // Mono supports sending -1 for a uint to indicate that the owner or group should not be set
         // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
         private const uint UNCHANGED_ID = uint.MaxValue;
 
-        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver)
+        public DiskProvider(IProcMountProvider procMountProvider, NzbDrone.Mono.Disk.ISymbolicLinkResolver symLinkResolver)
         {
             _procMountProvider = procMountProvider;
             _symLinkResolver = symLinkResolver;
@@ -86,11 +86,21 @@ namespace NzbDrone.Mono.Disk
 
         public override List<IMount> GetMounts()
         {
-            return GetDriveInfoMounts().Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
-                                       .Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Network || d.DriveType == DriveType.Removable)
-                                       .Concat(_procMountProvider.GetMounts())
-                                       .DistinctBy(v => v.RootDirectory)
-                                       .ToList();
+			var mounts = GetDriveInfoMounts().Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
+											 .Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Network || d.DriveType == DriveType.Removable);
+
+
+
+			var procMounts = _procMountProvider.GetMounts();
+
+			if (procMounts != null)
+			{
+				return mounts.Concat(procMounts).DistinctBy(v => v.RootDirectory)
+									   .ToList();
+			}
+
+			return mounts.Cast<IMount>().DistinctBy(v => v.RootDirectory)
+									   .ToList();
         }
 
         public override long? GetTotalSize(string path)

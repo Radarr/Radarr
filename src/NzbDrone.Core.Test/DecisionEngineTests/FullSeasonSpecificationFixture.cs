@@ -14,6 +14,7 @@ using System.Collections.Generic;
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
+    [Ignore("Series")]
     public class FullSeasonSpecificationFixture : CoreTest<FullSeasonSpecification>
     {
         private RemoteEpisode _remoteEpisode;

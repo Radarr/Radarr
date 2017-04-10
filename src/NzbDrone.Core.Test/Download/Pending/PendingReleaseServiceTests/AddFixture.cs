@@ -20,22 +20,18 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class AddFixture : CoreTest<PendingReleaseService>
     {
         private DownloadDecision _temporarilyRejected;
-        private Series _series;
-        private Episode _episode;
+        private Movie _movie;
         private Profile _profile;
         private ReleaseInfo _release;
-        private ParsedEpisodeInfo _parsedEpisodeInfo;
-        private RemoteEpisode _remoteEpisode;
+		private ParsedMovieInfo _parsedMovieInfo;
+        private RemoteMovie _remoteMovie;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
+            _movie = Builder<Movie>.CreateNew()
                                      .Build();
-
-            _episode = Builder<Episode>.CreateNew()
-                                       .Build();
-
+			
             _profile = new Profile
                        {
                            Name = "Test",
@@ -48,32 +44,27 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                    },
                        };
 
-            _series.Profile = new LazyLoaded<Profile>(_profile);
+            _movie.Profile = new LazyLoaded<Profile>(_profile);
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
-            _parsedEpisodeInfo = Builder<ParsedEpisodeInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _parsedMovieInfo = Builder<ParsedMovieInfo>.CreateNew().Build();
+            _parsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
 
-            _remoteEpisode = new RemoteEpisode();
-            _remoteEpisode.Episodes = new List<Episode>{ _episode };
-            _remoteEpisode.Series = _series;
-            _remoteEpisode.ParsedEpisodeInfo = _parsedEpisodeInfo;
-            _remoteEpisode.Release = _release;
+            _remoteMovie = new RemoteMovie();
+			_remoteMovie.Movie = _movie;
+            _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
+            _remoteMovie.Release = _release;
             
-            _temporarilyRejected = new DownloadDecision(_remoteEpisode, new Rejection("Temp Rejected", RejectionType.Temporary));
+            _temporarilyRejected = new DownloadDecision(_remoteMovie, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
                   .Returns(new List<PendingRelease>());
 
-            Mocker.GetMock<ISeriesService>()
-                  .Setup(s => s.GetSeries(It.IsAny<int>()))
-                  .Returns(_series);
-
-            Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetEpisodes(It.IsAny<ParsedEpisodeInfo>(), _series, true, null))
-                  .Returns(new List<Episode> {_episode});
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.GetMovie(It.IsAny<int>()))
+                  .Returns(_movie);
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisions(It.IsAny<List<DownloadDecision>>()))
@@ -89,7 +80,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()
-                                                   .With(h => h.SeriesId = _series.Id)
+                                                   .With(h => h.MovieId = _movie.Id)
                                                    .With(h => h.Title = title)
                                                    .With(h => h.Release = release)
                                                    .Build();

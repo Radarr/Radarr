@@ -61,10 +61,10 @@ Handlebars.registerHelper('homepage', function() {
 
 Handlebars.registerHelper('alternativeTitlesString', function() {
   var titles = this.alternativeTitles;
-  if (titles.length == 0) {
+  if (titles.length === 0) {
     return "";
   }
-  if (titles.length == 1) {
+  if (titles.length === 1) {
     return titles[0];
   }
   return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
@@ -82,20 +82,20 @@ Handlebars.registerHelper('GetStatus', function() {
   if (status === "announced") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
   }
-  
+
 
   if (status ==="inCinemas") {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
   }
-  
+
   if (status === 'released') {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
 
-  else if (!monitored) {
+  if (!monitored) {
       return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
   }
-})
+});
 
 Handlebars.registerHelper('GetBannerStatus', function() {
   var monitored = this.monitored;
@@ -105,16 +105,13 @@ Handlebars.registerHelper('GetBannerStatus', function() {
   //var timeSince = new Date().getTime() - date.getTime();
   //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
-  if (status === "announced") {
-    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
-  }
 
   if (status === "inCinemas") {
     return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
-  if (status === 'released') {
-      return new Handlebars.SafeString('<div class="released-banner"><i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released</div>');
+  if (status === "announced") {
+    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
   else if (!monitored) {
       return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
@@ -138,7 +135,7 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
   }
 
   return "danger";
-})
+});
 
 Handlebars.registerHelper('DownloadedStatus', function() {
 
@@ -157,24 +154,26 @@ Handlebars.registerHelper("DownloadedQuality", function() {
   }
 
   return "";
-})
+});
 
 
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
+  var year, month;
+
   if (this.physicalRelease) {
     var d = new Date(this.physicalRelease);
     var day = d.getDate();
-    var month = monthNames[d.getMonth()];
-    var year = d.getFullYear();
+    month = monthNames[d.getMonth()];
+    year = d.getFullYear();
     return "Available: " + day + ". " + month + " " + year;
   }
   if (this.inCinemas) {
     var cinemasDate = new Date(this.inCinemas);
-    var year = cinemasDate.getFullYear();
-    var month = monthNames[cinemasDate.getMonth()];
+    year = cinemasDate.getFullYear();
+    month = monthNames[cinemasDate.getMonth()];
     return "In Cinemas: " + month + " " + year;
   }
   return "To be announced";

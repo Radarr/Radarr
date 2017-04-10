@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -17,6 +17,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Update.Commands;
+using NzbDrone.Core.MetadataSource.PreDB;
 
 namespace NzbDrone.Core.Jobs
 {
@@ -72,6 +73,7 @@ namespace NzbDrone.Core.Jobs
             var defaultTasks = new[]
                 {
                     new ScheduledTask{ Interval = 0.25f, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
+                    new ScheduledTask{ Interval = 1*60, TypeName = typeof(PreDBSyncCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = updateInterval, TypeName = typeof(ApplicationUpdateCommand).FullName},
                     // new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
@@ -94,9 +96,9 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     { 
-                        Interval = _configService.DownloadedEpisodesScanInterval,
-                        TypeName = typeof(DownloadedEpisodesScanCommand).FullName
-                        //TypeName = typeof(DownloadedMovieScanCommand).FullName
+                        Interval = _configService.DownloadedMoviesScanInterval,
+                        //TypeName = typeof(DownloadedEpisodesScanCommand).FullName
+                        TypeName = typeof(DownloadedMoviesScanCommand).FullName
                     },
                 };
 
@@ -178,13 +180,13 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var downloadedEpisodes = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
-            downloadedEpisodes.Interval = _configService.DownloadedEpisodesScanInterval;
+            var downloadedMovies = _scheduledTaskRepository.GetDefinition(typeof(DownloadedMoviesScanCommand));
+            downloadedMovies.Interval = _configService.DownloadedMoviesScanInterval;
 
             var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
             netImport.Interval = _configService.NetImportSyncInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes, netImport });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedMovies, netImport });
         }
     }
 }

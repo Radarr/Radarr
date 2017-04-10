@@ -44,6 +44,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IMovieService _movieService;
+        private readonly IMovieFileRepository _movieFileRepository;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
@@ -55,6 +56,7 @@ namespace NzbDrone.Core.MediaFiles
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IEventAggregator eventAggregator,
                                IMovieService movieService,
+                               IMovieFileRepository movieFileRepository,
                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -66,6 +68,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _eventAggregator = eventAggregator;
             _movieService = movieService;
+            _movieFileRepository = movieFileRepository;
             _logger = logger;
         }
 
@@ -136,14 +139,14 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
-                _logger.Warn("Series' root folder ({0}) doesn't exist.", rootFolder);
+                _logger.Warn("Movies' root folder ({0}) doesn't exist.", rootFolder);
                 _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
                 return;
             }
 
             if (_diskProvider.GetDirectories(rootFolder).Empty())
             {
-                _logger.Warn("Series' root folder ({0}) is empty.", rootFolder);
+                _logger.Warn("Movies' root folder ({0}) is empty.", rootFolder);
                 _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
                 return;
             }
@@ -155,13 +158,20 @@ namespace NzbDrone.Core.MediaFiles
                 if (_configService.CreateEmptySeriesFolders &&
                     _diskProvider.FolderExists(rootFolder))
                 {
-                    _logger.Debug("Creating missing series folder: {0}", movie.Path);
+                    _logger.Debug("Creating missing movies folder: {0}", movie.Path);
                     _diskProvider.CreateFolder(movie.Path);
                     SetPermissions(movie.Path);
                 }
                 else
                 {
-                    _logger.Debug("Series folder doesn't exist: {0}", movie.Path);
+                    // Delete Movie from MovieFiles
+                    _movieFileRepository.Delete(movie.MovieFileId);
+
+                    // Update Movie
+                    movie.MovieFileId = 0;
+                    _movieService.UpdateMovie(movie);
+
+                    _logger.Debug("Movies folder doesn't exist: {0}", movie.Path);
                 }
 
                 _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.MovieFolderDoesNotExist));

@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
     public abstract class DownloadClientFixtureBase<TSubject> : CoreTest<TSubject>
         where TSubject : class, IDownloadClient
     {
-        protected readonly string _title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE";
-        protected readonly string _downloadUrl = "http://somewhere.com/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE.ext";
+        protected readonly string _title = "Droned.1998.1080p.WEB-DL-DRONE";
+        protected readonly string _downloadUrl = "http://somewhere.com/Droned.1998.1080p.WEB-DL-DRONE.ext";
 
         [SetUp]
         public void SetupBase()
@@ -44,20 +44,17 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
         protected virtual RemoteMovie CreateRemoteMovie()
         {
-            var remoteEpisode = new RemoteMovie();
-            remoteEpisode.Release = new ReleaseInfo();
-            remoteEpisode.Release.Title = _title;
-            remoteEpisode.Release.DownloadUrl = _downloadUrl;
-            remoteEpisode.Release.DownloadProtocol = Subject.Protocol;
+            var remoteMovie = new RemoteMovie();
+            remoteMovie.Release = new ReleaseInfo();
+            remoteMovie.Release.Title = _title;
+            remoteMovie.Release.DownloadUrl = _downloadUrl;
+            remoteMovie.Release.DownloadProtocol = Subject.Protocol;
 
-            remoteEpisode.ParsedMovieInfo = new ParsedMovieInfo();
-            //remoteEpisode.ParsedEpisodeInfo.FullSeason = false;
+            remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
 
-            //remoteEpisode.Episodes = new List<Episode>();
+            remoteMovie.Movie = new Movie();
 
-            remoteEpisode.Movie = new Movie();
-
-            return remoteEpisode;
+            return remoteMovie;
         }
 
         protected void VerifyIdentifiable(DownloadClientItem downloadClientItem)

@@ -4,6 +4,7 @@ var SelectAllCell = require('../../Cells/SelectAllCell');
 var Backgrid = require('backgrid');
 var FullMovieCollection = require('../../Movies/FullMovieCollection');
 
+
 module.exports = SelectAllCell.extend({
     _originalRender : SelectAllCell.prototype.render,
 

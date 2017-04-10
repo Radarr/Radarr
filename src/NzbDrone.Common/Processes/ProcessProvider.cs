@@ -315,6 +315,7 @@ namespace NzbDrone.Common.Processes
 
             var monoProcesses = Process.GetProcessesByName("mono")
                                        .Union(Process.GetProcessesByName("mono-sgen"))
+			                           .Union(Process.GetProcessesByName("mono-sgen32"))
                                        .Where(process =>
                                               process.Modules.Cast<ProcessModule>()
                                                      .Any(module =>

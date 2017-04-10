@@ -14,7 +14,7 @@ using System.Text;
 
 namespace NzbDrone.Core.MediaFiles
 {
-    public class DownloadedMovieCommandService : IExecute<DownloadedMovieScanCommand>
+    public class DownloadedMovieCommandService : IExecute<DownloadedMoviesScanCommand>
     {
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly ITrackedDownloadService _trackedDownloadService;
@@ -37,24 +37,24 @@ namespace NzbDrone.Core.MediaFiles
 
         private List<ImportResult> ProcessDroneFactoryFolder()
         {
-            var downloadedEpisodesFolder = _configService.DownloadedEpisodesFolder;
+            var downloadedMoviesFolder = _configService.DownloadedMoviesFolder;
 
-            if (string.IsNullOrEmpty(downloadedEpisodesFolder))
+            if (string.IsNullOrEmpty(downloadedMoviesFolder))
             {
                 _logger.Trace("Drone Factory folder is not configured");
                 return new List<ImportResult>();
             }
 
-            if (!_diskProvider.FolderExists(downloadedEpisodesFolder))
+            if (!_diskProvider.FolderExists(downloadedMoviesFolder))
             {
-                _logger.Warn("Drone Factory folder [{0}] doesn't exist.", downloadedEpisodesFolder);
+                _logger.Warn("Drone Factory folder [{0}] doesn't exist.", downloadedMoviesFolder);
                 return new List<ImportResult>();
             }
 
-            return _downloadedMovieImportService.ProcessRootFolder(new DirectoryInfo(downloadedEpisodesFolder));
+            return _downloadedMovieImportService.ProcessRootFolder(new DirectoryInfo(downloadedMoviesFolder));
         }
 
-        private List<ImportResult> ProcessPath(DownloadedMovieScanCommand message)
+        private List<ImportResult> ProcessPath(DownloadedMoviesScanCommand message)
         {
             if (!_diskProvider.FolderExists(message.Path) && !_diskProvider.FileExists(message.Path))
             {
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.MediaFiles
             return _downloadedMovieImportService.ProcessPath(message.Path, message.ImportMode);
         }
 
-        public void Execute(DownloadedMovieScanCommand message)
+        public void Execute(DownloadedMoviesScanCommand message)
         {
             List<ImportResult> importResults;
 

@@ -33,11 +33,15 @@ module.exports = Marionette.Layout.extend({
 				id : 'add-movies-screen'
 		},
 
-		initialize : function() {
+		initialize : function(options) {
 				ProfileCollection.fetch();
 				RootFolderCollection.fetch().done(function() {
 						RootFolderCollection.synced = true;
 				});
+
+				if (options.action === "search") {
+					this._addMovies(options);
+				}
 		},
 
 		_toggleExisting : function(e) {
@@ -50,7 +54,7 @@ module.exports = Marionette.Layout.extend({
 
 		onShow : function() {
 
-				this.workspace.show(new AddMoviesView());
+				this.workspace.show(new AddMoviesView(this.options));
 				this.ui.$existing.hide();
 		},
 
@@ -72,8 +76,8 @@ module.exports = Marionette.Layout.extend({
 				AppLayout.modalRegion.show(this.rootFolderLayout);
 		},
 
-		_addMovies : function() {
-				this.workspace.show(new AddMoviesView());
+		_addMovies : function(options) {
+				this.workspace.show(new AddMoviesView(options));
 		},
 
 		_addFromList : function() {

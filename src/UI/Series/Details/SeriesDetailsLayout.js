@@ -261,7 +261,7 @@ module.exports = Marionette.Layout.extend({
     _manualSearchM : function() {
         console.warn("Manual Search started");
         console.warn(this.model.get("seriesId"));
-        console.warn(this.model)
+        console.warn(this.model);
         console.warn(this.episodeCollection);
         vent.trigger(vent.Commands.ShowEpisodeDetails, {
             episode        : this.episodeCollection.models[0],

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
@@ -21,12 +22,14 @@ namespace NzbDrone.Core.DecisionEngine
     {
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
+	private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications, IParsingService parsingService, Logger logger)
+        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications, IParsingService parsingService, IConfigService configService, Logger logger)
         {
             _specifications = specifications;
             _parsingService = parsingService;
+		_configService = configService;
             _logger = logger;
         }
 
@@ -66,42 +69,59 @@ namespace NzbDrone.Core.DecisionEngine
 
                 try
                 {
-                    var parsedEpisodeInfo = Parser.Parser.ParseMovieTitle(report.Title);
+                    var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title);
 
-                    if (parsedEpisodeInfo != null && !parsedEpisodeInfo.MovieTitle.IsNullOrWhiteSpace())
-                    {
-                        RemoteMovie remoteEpisode = _parsingService.Map(parsedEpisodeInfo, "", searchCriteria);
-                        remoteEpisode.Release = report;
+					if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
+					{
+						RemoteMovie remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+						remoteMovie.Release = report;
 
-                        if (remoteEpisode.Movie == null)
-                        {
-                            //remoteEpisode.DownloadAllowed = true; //Fuck you :)
-                            //decision = GetDecisionForReport(remoteEpisode, searchCriteria);
-                            decision = new DownloadDecision(remoteEpisode, new Rejection("Unknown release. Movie not Found."));
-                        }
-                        else
-                        {
-                            if (parsedEpisodeInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
-                            {
-                                remoteEpisode.DownloadAllowed = true;
-                                decision = new DownloadDecision(remoteEpisode, new Rejection("Hardcoded subs found: " + parsedEpisodeInfo.Quality.HardcodedSubs));
-                            }
-                            else
-                            {
-                                remoteEpisode.DownloadAllowed = true;
-                                decision = GetDecisionForReport(remoteEpisode, searchCriteria);
-                                //decision = new DownloadDecision(remoteEpisode);
-                            }
-                            
-                        }
-                    }
+						if (remoteMovie.Movie == null)
+						{
+							decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Movie found does not match wanted movie."));
+						}
+						else
+						{
+							if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
+							{
+								remoteMovie.DownloadAllowed = true;
+								if (_configService.AllowHardcodedSubs)
+								{
+									decision = GetDecisionForReport(remoteMovie, searchCriteria);
+								}
+								else
+								{
+									var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
+									_logger.Debug("Testing: {0}", whitelisted);
+									if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
+									{
+										decision = GetDecisionForReport(remoteMovie, searchCriteria);
+									}
+									else
+									{
+										decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+									}
+								}
+							}
+							else
+							{
+								remoteMovie.DownloadAllowed = true;
+								decision = GetDecisionForReport(remoteMovie, searchCriteria);
+							}
+
+						}
+					}
+					else
+					{
+						_logger.Trace("{0} could not be parsed :(.", report.Title);
+					}
                 }
                 catch (Exception e)
                 {
                     _logger.Error(e, "Couldn't process release.");
 
-                    var remoteEpisode = new RemoteEpisode { Release = report };
-                    decision = new DownloadDecision(remoteEpisode, new Rejection("Unexpected error processing release"));
+                    var remoteMovie = new RemoteMovie { Release = report };
+                    decision = new DownloadDecision(remoteMovie, new Rejection("Unexpected error processing release"));
                 }
 
                 reportNumber++;
@@ -244,11 +264,11 @@ namespace NzbDrone.Core.DecisionEngine
             return null;
         }
 
-        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteEpisode, SearchCriteriaBase searchCriteriaBase = null)
+        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)
         {
             try
             {
-                var result = spec.IsSatisfiedBy(remoteEpisode, searchCriteriaBase);
+                var result = spec.IsSatisfiedBy(remoteMovie, searchCriteriaBase);
 
                 if (!result.Accepted)
                 {
@@ -261,9 +281,9 @@ namespace NzbDrone.Core.DecisionEngine
             }
             catch (Exception e)
             {
-                e.Data.Add("report", remoteEpisode.Release.ToJson());
-                e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on " + remoteEpisode.Release.Title + ", with spec: " + spec.GetType().Name);
+                e.Data.Add("report", remoteMovie.Release.ToJson());
+                e.Data.Add("parsed", remoteMovie.ParsedMovieInfo.ToJson());
+                _logger.Error(e, "Couldn't evaluate decision on " + remoteMovie.Release.Title + ", with spec: " + spec.GetType().Name);
                 return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
             }
 

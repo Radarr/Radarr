@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.MediaFiles;
+using System.IO;
 
 namespace NzbDrone.Core.Tv
 {
@@ -47,12 +48,23 @@ namespace NzbDrone.Core.Tv
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public LazyLoaded<MovieFile> MovieFile { get; set; }
+		public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
         public List<string> AlternativeTitles { get; set; }
         public string YouTubeTrailerId{ get; set; }
         public string Studio { get; set; }
 
         public bool HasFile => MovieFileId > 0;
+
+        public string FolderName()
+        {
+			if (Path.IsNullOrWhiteSpace())
+			{
+				return "";
+			}
+			//Well what about Path = Null?
+            return new DirectoryInfo(Path).Name;
+        }
 
         public bool IsAvailable(int delay = 0)
         {
@@ -73,14 +85,20 @@ namespace NzbDrone.Core.Tv
                     else
                         MinimumAvailabilityDate = DateTime.MaxValue;
                     break;
-                //TODO: might need to handle PreDB but for now treat the same as Released
+                
                 case MovieStatusType.Released:
                 case MovieStatusType.PreDB:
                 default:
                     MinimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
                     break;
             }
-            return DateTime.Now >= MinimumAvailabilityDate.AddDays(delay);
+
+			if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
+			{
+				return true;
+			}
+
+			return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
         }
 
         public override string ToString()

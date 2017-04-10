@@ -12,11 +12,11 @@ module.exports = NzbDroneCell.extend({
         var timeSince = new Date().getTime() - date.getTime();
         var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
-        if (status === 'released') {
-            this.$el.html('<i class="icon-sonarr-movie-released grid-icon" title="Released"></i>');
-            this._setStatusWeight(3);
-        }
 
+        if (status === 'released') {
+		  this.$el.html('<i class="icon-sonarr-movie-released grid-icon" title="Released"></i>');
+		  this._setStatusWeight(3);
+		}
         if (status === 'inCinemas') {
           this.$el.html('<i class="icon-sonarr-movie-cinemas grid-icon" title="In Cinemas"></i>');
           this._setStatusWeight(2);

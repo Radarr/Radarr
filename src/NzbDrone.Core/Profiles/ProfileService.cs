@@ -107,6 +107,8 @@ namespace NzbDrone.Core.Profiles
                 Quality.Bluray720p,
                 Quality.Bluray1080p,
                 Quality.Bluray2160p,
+                Quality.Remux1080p,
+                Quality.Remux2160p,
                 Quality.BRDISK);
 
             AddDefaultProfile("SD", Quality.Bluray480p,
@@ -130,12 +132,14 @@ namespace NzbDrone.Core.Profiles
             AddDefaultProfile("HD-1080p", Quality.Bluray1080p,
                 Quality.HDTV1080p,
                 Quality.WEBDL1080p,
-                Quality.Bluray1080p);
+                Quality.Bluray1080p,
+                Quality.Remux1080p);
 
-            AddDefaultProfile("Ultra-HD", Quality.Bluray2160p,
+            AddDefaultProfile("Ultra-HD", Quality.Remux2160p,
                 Quality.HDTV2160p,
                 Quality.WEBDL2160p,
-                Quality.Bluray2160p);
+                Quality.Bluray2160p,
+                Quality.Remux2160p);
 
             AddDefaultProfile("HD - 720p/1080p", Quality.Bluray720p,
                 Quality.HDTV720p,
@@ -143,7 +147,10 @@ namespace NzbDrone.Core.Profiles
                 Quality.WEBDL720p,
                 Quality.WEBDL1080p,
                 Quality.Bluray720p,
-                Quality.Bluray1080p);
+                Quality.Bluray1080p,
+                Quality.Remux1080p,
+                Quality.Remux2160p
+                );
         }
     }
 }

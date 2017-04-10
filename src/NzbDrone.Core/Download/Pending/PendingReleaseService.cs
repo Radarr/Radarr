@@ -117,45 +117,43 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var pendingRelease in GetPendingReleases())
             {
-                //foreach (var episode in pendingRelease.RemoteEpisode.Episodes)
-                //{
-                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
+                var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
 
-                    if (ect < nextRssSync.Value)
-                    {
-                        ect = nextRssSync.Value;
-                    }
-                    else
-                    {
-                        ect = ect.AddMinutes(_configService.RssSyncInterval);
-                    }
+                if (ect < nextRssSync.Value)
+                {
+                    ect = nextRssSync.Value;
+                }
+                else
+                {
+                    ect = ect.AddMinutes(_configService.RssSyncInterval);
+                }
 
-                    var queue = new Queue.Queue
-                                {
-                                    Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
-                                    Series = null,
-                                    Episode = null,
-                                    Movie = pendingRelease.RemoteMovie.Movie,
-                                    Quality = pendingRelease.RemoteMovie.ParsedMovieInfo.Quality,
-                                    Title = pendingRelease.Title,
-                                    Size = pendingRelease.RemoteMovie.Release.Size,
-                                    Sizeleft = pendingRelease.RemoteMovie.Release.Size,
-                                    RemoteMovie = pendingRelease.RemoteMovie,
-                                    Timeleft = ect.Subtract(DateTime.UtcNow),
-                                    EstimatedCompletionTime = ect,
-                                    Status = "Pending",
-                                    Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol
-                                };
-                    queued.Add(queue);
-                //}
+                var queue = new Queue.Queue
+                {
+                    Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
+                    Series = null,
+                    Episode = null,
+                    Movie = pendingRelease.RemoteMovie.Movie,
+                    Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
+                    Title = pendingRelease.Title,
+                    Size = pendingRelease.RemoteMovie.Release.Size,
+                    Sizeleft = pendingRelease.RemoteMovie.Release.Size,
+                    RemoteMovie = pendingRelease.RemoteMovie,
+                    Timeleft = ect.Subtract(DateTime.UtcNow),
+                    EstimatedCompletionTime = ect,
+                    Status = "Pending",
+                    Protocol = pendingRelease.RemoteMovie.Release.DownloadProtocol
+                };
+
+                queued.Add(queue);
             }
 
             //Return best quality release for each episode
-            var deduped = queued.GroupBy(q => q.Episode.Id).Select(g =>
+            var deduped = queued.GroupBy(q => q.Movie.Id).Select(g =>
             {
-                var series = g.First().Series;
+                var movies = g.First().Movie;
 
-                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(series.Profile))
+                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(movies.Profile))
                         .ThenBy(q => PrioritizeDownloadProtocol(q.Movie, q.Protocol))
                         .First();
             });
@@ -254,37 +252,35 @@ namespace NzbDrone.Core.Download.Pending
             return new[] { delay, minimumAge }.Max();
         }
 
-        //private void RemoveGrabbed(RemoteEpisode remoteEpisode)
-        //{
-        //    var pendingReleases = GetPendingReleases();
-        //    var episodeIds = remoteEpisode.Episodes.Select(e => e.Id);
+        private void RemoveGrabbed(RemoteMovie remoteMovie)
+        {
+            var pendingReleases = GetPendingReleases();
+            
 
-        //    var existingReports = pendingReleases.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
-        //                                                     .Intersect(episodeIds)
-        //                                                     .Any())
-        //                                                     .ToList();
+			var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
+                                                             .ToList();
 
-        //    if (existingReports.Empty())
-        //    {
-        //        return;
-        //    }
+            if (existingReports.Empty())
+            {
+                return;
+            }
 
-        //    var profile = remoteEpisode.Series.Profile.Value;
+            var profile = remoteMovie.Movie.Profile.Value;
 
-        //    foreach (var existingReport in existingReports)
-        //    {
-        //        var compare = new QualityModelComparer(profile).Compare(remoteEpisode.ParsedEpisodeInfo.Quality,
-        //                                                                existingReport.RemoteEpisode.ParsedEpisodeInfo.Quality);
+            foreach (var existingReport in existingReports)
+            {
+                var compare = new QualityModelComparer(profile).Compare(remoteMovie.ParsedMovieInfo.Quality,
+                                                                        existingReport.RemoteMovie.ParsedMovieInfo.Quality);
 
-        //        //Only remove lower/equal quality pending releases
-        //        //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
-        //        if (compare >= 0)
-        //        {
-        //            _logger.Debug("Removing previously pending release, as it was grabbed.");
-        //            Delete(existingReport);
-        //        }
-        //    }
-        //}
+                //Only remove lower/equal quality pending releases
+                //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
+                if (compare >= 0)
+                {
+                    _logger.Debug("Removing previously pending release, as it was grabbed.");
+                    Delete(existingReport);
+                }
+            }
+        }
 
         private void RemoveRejected(List<DownloadDecision> rejected)
         {
@@ -332,7 +328,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public void Handle(MovieGrabbedEvent message)
         {
-            //RemoveGrabbed(message.Movie);
+            RemoveGrabbed(message.Movie);
         }
 
         public void Handle(RssSyncCompleteEvent message)

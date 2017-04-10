@@ -21,6 +21,7 @@ namespace NzbDrone.Api.Movie
             _searchProxy = searchProxy;
             Get["/"] = x => Search();
             Get["/tmdb"] = x => SearchByTmdbId();
+            Get["/imdb"] = x => SearchByImdbId();
         }
 
         private Response SearchByTmdbId()
@@ -28,13 +29,19 @@ namespace NzbDrone.Api.Movie
             int tmdbId = -1;
             if(Int32.TryParse(Request.Query.tmdbId, out tmdbId))
             {
-                var result = _movieInfo.GetMovieInfo(tmdbId, null);
+                var result = _movieInfo.GetMovieInfo(tmdbId, null, true);
                 return result.ToResource().AsResponse();
             }
 
             throw new BadRequestException("Tmdb Id was not valid");
         }
 
+        private Response SearchByImdbId()
+        {
+            string imdbId = Request.Query.imdbId;
+            var result = _movieInfo.GetMovieInfo(imdbId);
+            return result.ToResource().AsResponse();
+        }
 
         private Response Search()
         {

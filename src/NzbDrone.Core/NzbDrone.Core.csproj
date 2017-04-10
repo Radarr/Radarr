@@ -99,6 +99,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -125,12 +126,15 @@
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
+    <Compile Include="Datastore\Migration\134_add_remux_qualities_for_the_wankers.cs" />
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
     <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
     <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
+    <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
+    <Compile Include="NetImport\NetImportListLevels.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
     <Compile Include="NetImport\TMDb\TMDbListType.cs" />
@@ -405,8 +409,9 @@
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationInfoProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\TorrentDownloadStation.cs" />
-    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationProxy.cs" />
+    <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationTaskProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationSettings.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationTask.cs" />
     <Compile Include="Download\Clients\DownloadStation\DownloadStationTaskAdditional.cs" />
@@ -502,6 +507,7 @@
     <Compile Include="Download\Clients\Sabnzbd\JsonConverters\SabnzbdPriorityTypeConverter.cs" />
     <Compile Include="Download\Clients\Sabnzbd\JsonConverters\SabnzbdStringArrayConverter.cs" />
     <Compile Include="Download\Clients\Sabnzbd\JsonConverters\SabnzbdQueueTimeConverter.cs" />
+    <Compile Include="Download\Clients\Sabnzbd\Responses\SabnzbdFullStatusResponse.cs" />
     <Compile Include="Download\Clients\Sabnzbd\Responses\SabnzbdRetryResponse.cs" />
     <Compile Include="Download\Clients\Sabnzbd\Responses\SabnzbdAddResponse.cs" />
     <Compile Include="Download\Clients\Sabnzbd\Responses\SabnzbdCategoryResponse.cs" />
@@ -510,6 +516,7 @@
     <Compile Include="Download\Clients\Sabnzbd\Sabnzbd.cs" />
     <Compile Include="Download\Clients\Sabnzbd\SabnzbdCategory.cs" />
     <Compile Include="Download\Clients\Sabnzbd\SabnzbdDownloadStatus.cs" />
+    <Compile Include="Download\Clients\Sabnzbd\SabnzbdFullStatus.cs" />
     <Compile Include="Download\Clients\Sabnzbd\SabnzbdHistory.cs" />
     <Compile Include="Download\Clients\Sabnzbd\SabnzbdHistoryItem.cs" />
     <Compile Include="Download\Clients\Sabnzbd\SabnzbdJsonError.cs" />
@@ -614,8 +621,9 @@
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
     <Compile Include="HealthCheck\Checks\DroneFactoryCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
+    <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheck.cs" />
-    <Compile Include="HealthCheck\Checks\IndexerCheck.cs" />
+    <Compile Include="HealthCheck\Checks\IndexerSearchCheck.cs" />
     <Compile Include="HealthCheck\Checks\MediaInfoDllCheck.cs" />
     <Compile Include="HealthCheck\Checks\MonoVersionCheck.cs" />
     <Compile Include="HealthCheck\Checks\ProxyCheck.cs" />
@@ -725,6 +733,7 @@
     <Compile Include="Indexers\Rarbg\RarbgSettings.cs" />
     <Compile Include="Indexers\Rarbg\RarbgParser.cs" />
     <Compile Include="Indexers\Rarbg\RarbgTokenProvider.cs" />
+    <Compile Include="Indexers\XmlCleaner.cs" />
     <Compile Include="Indexers\RssIndexerRequestGenerator.cs" />
     <Compile Include="Indexers\RssParser.cs" />
     <Compile Include="Indexers\RssSyncCommand.cs" />
@@ -776,14 +785,12 @@
     <Compile Include="Lifecycle\Commands\ShutdownCommand.cs" />
     <Compile Include="Lifecycle\LifecycleService.cs" />
     <Compile Include="MediaCover\CoverAlreadyExistsSpecification.cs" />
-    <Compile Include="MediaCover\GdiPlusInterop.cs" />
     <Compile Include="MediaCover\MediaCover.cs" />
     <Compile Include="MediaCover\ImageResizer.cs" />
     <Compile Include="MediaCover\MediaCoverService.cs" />
     <Compile Include="MediaCover\MediaCoversUpdatedEvent.cs" />
     <Compile Include="MediaFiles\Commands\BackendCommandAttribute.cs" />
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
-    <Compile Include="MediaFiles\Commands\DownloadedEpisodesScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedMovieScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameMovieCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameMovieFilesCommand.cs" />
@@ -808,10 +815,6 @@
     <Compile Include="MediaFiles\DiskScanService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MediaFiles\DownloadedEpisodesImportService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MediaFiles\DownloadedEpisodesCommandService.cs" />
     <Compile Include="MediaFiles\EpisodeFile.cs" />
     <Compile Include="MediaFiles\EpisodeFileMoveResult.cs" />
     <Compile Include="MediaFiles\EpisodeFileMovingService.cs" />
@@ -892,6 +895,10 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideMovieInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewMovie.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBResult.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBSyncCommand.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBSyncEvent.cs" />
+    <Compile Include="MetadataSource\PreDB\PreDBService.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ConfigurationResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
@@ -973,6 +980,8 @@
     <Compile Include="Notifications\Webhook\WebhookMethod.cs" />
     <Compile Include="Notifications\Webhook\WebhookPayload.cs" />
     <Compile Include="Notifications\Webhook\WebhookSeries.cs" />
+    <Compile Include="Notifications\Webhook\WebhookMovie.cs" />
+    <Compile Include="Notifications\Webhook\WebhookRemoteMovie.cs" />
     <Compile Include="Notifications\Webhook\WebhookService.cs" />
     <Compile Include="Notifications\Webhook\WebhookSettings.cs" />
     <Compile Include="Notifications\Webhook\Webhook.cs" />
@@ -986,6 +995,12 @@
     <Compile Include="Parser\Model\LocalMovie.cs" />
     <Compile Include="Parser\Model\ParsedMovieInfo.cs" />
     <Compile Include="Parser\Model\RemoteMovie.cs" />
+    <Compile Include="Parser\RomanNumerals\ArabicRomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\IRomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\RomanNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\RomanNumeralParser.cs" />
+    <Compile Include="Parser\RomanNumerals\SimpleArabicNumeral.cs" />
+    <Compile Include="Parser\RomanNumerals\SimpleRomanNumeral.cs" />
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
@@ -1259,6 +1274,8 @@
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />
     <Compile Include="Datastore\Migration\131_make_parsed_episode_info_nullable.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixWronglyMatchedMovieFiles.cs" />
+    <Compile Include="Datastore\Migration\135_add_haspredbentry_to_movies.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

@@ -20,7 +20,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, bool shouldCheckQuality);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality); //TODO: Needs changing to ParsedMovieInfo!!
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
     }
 
@@ -86,6 +87,23 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decisions;
         }
 
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
+        {
+            var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
+
+            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
+
+            var shouldUseFolderName = ShouldUseFolderName(videoFiles, movie, folderInfo);
+            var decisions = new List<ImportDecision>();
+
+            foreach (var file in newFiles)
+            {
+                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName));
+            }
+
+            return decisions;
+        }
+
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality = false)
         {
             var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
@@ -117,15 +135,16 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                     localMovie.Size = _diskProvider.GetFileSize(file);
 
                     _logger.Debug("Size: {0}", localMovie.Size);
-
+					var current = localMovie.Quality;
                     //TODO: make it so media info doesn't ruin the import process of a new series
-                    if (sceneSource)
+					if (sceneSource && ShouldCheckQualityForParsedQuality(current.Quality))
                     {
                         localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
                         if (shouldCheckQuality)
                         {
+							_logger.Debug("Checking quality for this video file to make sure nothing mismatched.");
                             var width = localMovie.MediaInfo.Width;
-                            var current = localMovie.Quality;
+                            
                             var qualityName = current.Quality.Name.ToLower();
                             QualityModel updated = null;
                             if (width > 2000)
@@ -255,6 +274,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                             }
                             if (updated != null && updated != current)
                             {
+								_logger.Debug("Quality ({0}) of the file is different than the one we have ({1})", updated, current);
                                 updated.QualitySource = QualitySource.MediaInfo;
                                 localMovie.Quality = updated;
                             }
@@ -545,5 +565,20 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
             return false;
         }
+
+		private bool ShouldCheckQualityForParsedQuality(Quality quality)
+		{
+			List<Quality> shouldNotCheck = new List<Quality> { Quality.WORKPRINT, Quality.TELECINE, Quality.TELESYNC,
+			Quality.DVDSCR, Quality.DVD, Quality.CAM, Quality.DVDR, Quality.Remux1080p, Quality.Remux2160p, Quality.REGIONAL
+			};
+
+			if (shouldNotCheck.Contains(quality))
+			{
+				return false;
+
+			}
+
+			return true;
+		}
     }
 }

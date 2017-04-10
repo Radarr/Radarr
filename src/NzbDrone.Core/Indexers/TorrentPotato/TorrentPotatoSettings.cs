@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         [FieldDefinition(1, Label = "Username", HelpText = "The username you use at your indexer.")]
         public string User { get; set; }
 
-        [FieldDefinition(2, Label = "Passkey", HelpText = "The password you use at your Indexer,")]
+        [FieldDefinition(2, Label = "Passkey", HelpText = "The password you use at your Indexer (or your API key if you're using Jackett).")]
         public string Passkey { get; set; }
         public NzbDroneValidationResult Validate()
         {

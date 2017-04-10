@@ -36,7 +36,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
         private readonly IImportApprovedEpisodes _importApprovedEpisodes;
         private readonly IImportApprovedMovie _importApprovedMovie;
         private readonly ITrackedDownloadService _trackedDownloadService;
-        private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
@@ -52,7 +51,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
                                    IImportApprovedEpisodes importApprovedEpisodes,
                                    IImportApprovedMovie importApprovedMovie,
                                    ITrackedDownloadService trackedDownloadService,
-                                   IDownloadedEpisodesImportService downloadedEpisodesImportService,
                                    IDownloadedMovieImportService downloadedMovieImportService,
                                    IEventAggregator eventAggregator,
                                    Logger logger)
@@ -68,7 +66,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
             _importApprovedEpisodes = importApprovedEpisodes;
             _importApprovedMovie = importApprovedMovie;
             _trackedDownloadService = trackedDownloadService;
-            _downloadedEpisodesImportService = downloadedEpisodesImportService;
             _downloadedMovieImportService = downloadedMovieImportService;
             _eventAggregator = eventAggregator;
             _logger = logger;

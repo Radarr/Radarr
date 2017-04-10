@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
 
@@ -11,9 +11,9 @@ namespace NzbDrone.Core.Configuration
         bool IsDefined(string key);
 
         //Download Client
-        string DownloadedEpisodesFolder { get; set; }
+        string DownloadedMoviesFolder { get; set; }
         string DownloadClientWorkingFolders { get; set; }
-        int DownloadedEpisodesScanInterval { get; set; }
+        int DownloadedMoviesScanInterval { get; set; }
         int DownloadClientHistoryLimit { get; set; }
 
         //Completed/Failed Download Handling (Download client)
@@ -48,7 +48,18 @@ namespace NzbDrone.Core.Configuration
 
 	int AvailabilityDelay { get; set; }
 
+	bool AllowHardcodedSubs { get; set; }
+	string WhitelistedHardcodedSubs { get; set; }
+
         int NetImportSyncInterval { get; set; }
+	string ListSyncLevel { get; set; }
+	string ImportExclusions { get; set; }
+        string TraktAuthToken { get; set; }
+        string TraktRefreshToken { get; set; }
+        int TraktTokenExpiry { get; set; }
+	string NewTraktAuthToken { get; set; }
+	string NewTraktRefreshToken {get; set; }
+	int NewTraktTokenExpiry { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }
@@ -58,6 +69,7 @@ namespace NzbDrone.Core.Configuration
         string LongDateFormat { get; set; }
         string TimeFormat { get; set; }
         bool ShowRelativeDates { get; set; }
+
         bool EnableColorImpairedMode { get; set; }
 
         //Internal

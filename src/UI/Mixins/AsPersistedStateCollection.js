@@ -4,6 +4,7 @@ var Config = require('../Config');
 module.exports = function() {
 
     var originalInit = this.prototype.initialize;
+    var _setInitialState, _storeStateFromBackgrid, _storeState, _convertDirectionToInt;
     this.prototype.initialize = function(options) {
 
         options = options || {};
@@ -35,7 +36,7 @@ module.exports = function() {
         };
     }
 
-    var _setInitialState = function() {
+    _setInitialState = function() {
         var key = Config.getValue('{0}.sortKey'.format(this.tableName), this.state.sortKey);
         var direction = Config.getValue('{0}.sortDirection'.format(this.tableName), this.state.order);
         var order = parseInt(direction, 10);
@@ -44,7 +45,7 @@ module.exports = function() {
         this.state.order = order;
     };
 
-    var _storeStateFromBackgrid = function(column, sortDirection) {
+    _storeStateFromBackgrid = function(column, sortDirection) {
         var order = _convertDirectionToInt(sortDirection);
         var sortKey = this._getSortMapping(column.get('name')).sortKey;
 
@@ -52,7 +53,7 @@ module.exports = function() {
         Config.setValue('{0}.sortDirection'.format(this.tableName), order);
     };
 
-    var _storeState = function(sortModel, sortDirection) {
+    _storeState = function(sortModel, sortDirection) {
         var order = _convertDirectionToInt(sortDirection);
         var sortKey = this._getSortMapping(sortModel.get('name')).sortKey;
 
@@ -60,7 +61,7 @@ module.exports = function() {
         Config.setValue('{0}.sortDirection'.format(this.tableName), order);
     };
 
-    var _convertDirectionToInt = function(dir) {
+    _convertDirectionToInt = function(dir) {
         if (dir === 'ascending') {
             return '-1';
         }

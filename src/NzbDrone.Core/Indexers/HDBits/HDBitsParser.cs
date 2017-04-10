@@ -51,6 +51,8 @@ namespace NzbDrone.Core.Indexers.HDBits
             foreach (var result in queryResults)
             {
                 var id = result.Id;
+                var internalRelease = (result.TypeOrigin == 1 ? true : false);
+
                 torrentInfos.Add(new HDBitsInfo()
                 {
                     Guid = string.Format("HDBits-{0}", id),
@@ -62,7 +64,8 @@ namespace NzbDrone.Core.Indexers.HDBits
                     Seeders = result.Seeders,
                     Peers = result.Leechers + result.Seeders,
                     PublishDate = result.Added.ToUniversalTime(),
-                    Internal = (result.TypeOrigin == 1 ? true : false)
+                    Internal = internalRelease,
+                    ImdbId = result.ImdbInfo?.Id ?? 0
                 });
             }
 
@@ -75,11 +78,7 @@ namespace NzbDrone.Core.Indexers.HDBits
                         .ToArray();
             }
 
-            // order by date
-            return
-                torrentInfos
-                    .OrderByDescending(o => o.PublishDate)
-                    .ToArray();
+            return torrentInfos.ToArray();
         }
 
         private string GetDownloadUrl(string torrentId)

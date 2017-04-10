@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public override IParseIndexerResponse GetParser()
         {
-            return new NewznabRssParser();
+            return new NewznabRssParser(Settings);
         }
 
         public override IEnumerable<ProviderDefinition> DefaultDefinitions
