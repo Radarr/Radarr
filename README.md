@@ -72,14 +72,21 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * New PassThePopcorn Indexer
 * QBittorrent, Deluge, rTorrent, Transmission and uTorrent download client (Other clients are coming)
 * New TorrentPotato Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
+* Scanning PreDB to know when a new release is available
+* Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
+* Full integration with Kodi, Plex (notification, library update)
 * And a beautiful UI
 
 ### Planned Features
 
-* Scanning PreDB to know when a new release is available
-* Fixing the other Indexers and download clients
-* Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
-* Full integration with Kodi, Plex (notification, library update, metadata)
+* Downloading Metadata such as trailers or subtitles (\*)
+* Adding metadata such as posters and information for Kodi and others to use (\*)
+* Dynamically renaming folders with quality info, etc. (\*)
+* Supporting custom folder structures, such as all movie files in one folder (\*)
+* Supporting multiple editions per movies (waiting on The Movie Database to finish their implementation)
+* Supporting collections of movies, such as James Bond
+
+**Note:** All features marked with (\*) are set to be in the first release of Radarr.
 
 #### [Feature Requests](http://feathub.com/Radarr/Radarr)
 

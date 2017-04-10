@@ -27,6 +27,7 @@ test:
 
 artifacts:
   - path: '_artifacts\*.zip'
+  - path: '_artifacts\*.exe'
   - path: '_artifacts\*.tar.gz'
 
 cache:
@@ -42,3 +43,6 @@ only_commits:
     - osx/
     - gulp/
     - logo/
+    - setup/
+    - appveyor.yml
+    - build-appveyor.cake
