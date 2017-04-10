@@ -10,6 +10,7 @@ namespace NzbDrone.Api.Config
         public int RssSyncInterval { get; set; }
 	public int AvailabilityDelay { get; set; }
 	public bool AllowHardcodedSubs { get; set; }
+	public string WhitelistedHardcodedSubs { get; set; }
     }
 
     public static class IndexerConfigResourceMapper
@@ -23,6 +24,8 @@ namespace NzbDrone.Api.Config
                 RssSyncInterval = model.RssSyncInterval,
 		AvailabilityDelay = model.AvailabilityDelay,
 		AllowHardcodedSubs = model.AllowHardcodedSubs,
+		WhitelistedHardcodedSubs = model.WhitelistedHardcodedSubs,
+
             };
         }
     }

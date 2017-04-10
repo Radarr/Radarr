@@ -197,6 +197,13 @@ namespace NzbDrone.Core.Configuration
 		set { SetValue("AllowHardcodedSubs", value); }
 	}
 
+	public string WhitelistedHardcodedSubs
+	{
+		get { return GetValue("WhitelistedHardcodedSubs", ""); }
+
+		set { SetValue("WhitelistedHardcodedSubs", value); }
+	}
+
         public bool RemoveCompletedDownloads
         {
             get { return GetValueBoolean("RemoveCompletedDownloads", false); }

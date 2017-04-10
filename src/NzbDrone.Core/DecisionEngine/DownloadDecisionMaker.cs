@@ -91,7 +91,16 @@ namespace NzbDrone.Core.DecisionEngine
 								}
 								else
 								{
-									decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+									var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
+									_logger.Debug("Testing: {0}", whitelisted);
+									if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
+									{
+										decision = GetDecisionForReport(remoteMovie, searchCriteria);
+									}
+									else
+									{
+										decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+									}
 								}
 							}
 							else

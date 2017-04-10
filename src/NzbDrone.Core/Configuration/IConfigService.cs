@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Configuration
 	int AvailabilityDelay { get; set; }
 
 	bool AllowHardcodedSubs { get; set; }
+	string WhitelistedHardcodedSubs { get; set; }
 
         int NetImportSyncInterval { get; set; }
 	string ListSyncLevel { get; set; }
