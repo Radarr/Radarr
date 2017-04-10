@@ -133,7 +133,7 @@ namespace NzbDrone.Core.NetImport
                 if (mapped != null && !importExclusions.Any(x => x == mapped.TmdbId.ToString()))
                 {
                     //List<DownloadDecision> decisions;
-                    //mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
+                    mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
                     _movieService.AddMovie(mapped);
 
                     //// Search for movie
