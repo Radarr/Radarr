@@ -266,7 +266,8 @@ Task("ArtifactsWindows").Does(() => {
 
 Task("ArtifactsWindowsInstaller").Does(() => {
 	InnoSetup("./setup/nzbdrone.iss", new InnoSetupSettings {
-    		OutputDirectory = artifactsFolderWindows + "/Radarr"
+    		OutputDirectory = artifactsFolderWindows + "/Radarr",
+		ToolPath = "./setup/inno/ISCC.exe"
     	});
 });
 
