@@ -13,6 +13,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.MediaFiles.Commands;
 
 namespace NzbDrone.Core.Tv
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Tv
         private readonly IMovieService _movieService;
         private readonly IRefreshEpisodeService _refreshEpisodeService;
         private readonly IEventAggregator _eventAggregator;
+	private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
         private readonly Logger _logger;
@@ -32,12 +34,14 @@ namespace NzbDrone.Core.Tv
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
+		                   IManageCommandQueue commandQueue,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
             _movieService = movieService;
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
+		_commandQueueManager = commandQueue;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _logger = logger;
@@ -136,6 +140,7 @@ namespace NzbDrone.Core.Tv
                         try
                         {
                             _logger.Info("Skipping refresh of movie: {0}", movie.Title);
+				_commandQueueManager.Push(new RenameMovieFolderCommand(new List<int>{movie.Id}));
                             _diskScanService.Scan(movie);
                         }
                         catch (Exception e)

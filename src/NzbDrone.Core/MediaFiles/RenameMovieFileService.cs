@@ -19,11 +19,13 @@ namespace NzbDrone.Core.MediaFiles
     public interface IRenameMovieFileService
     {
         List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
+	void RenameMoviePath(Movie movie);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
                                           IExecute<RenameMovieFilesCommand>,
-                                          IExecute<RenameMovieCommand>
+                                          IExecute<RenameMovieCommand>,
+					IExecute<RenameMovieFolderCommand>
     {
         private readonly IMovieService _movieService;
         private readonly IMediaFileService _mediaFileService;
@@ -112,6 +114,26 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
+	public void RenameMoviePath(Movie movie)
+	{
+		var root = movie.RootFolderPath;
+		if (root == null)
+		{
+			root = new DirectoryInfo(movie.Path).Parent.FullName;
+		}
+		var newFolder = Path.Combine(root, _filenameBuilder.GetMovieFolder(movie));
+		if (newFolder != movie.Path)
+		{
+			_logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
+			movie.Path = newFolder;
+			_movieService.UpdateMovie(movie);
+			var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+                	_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
+                	RenameFiles(movieFiles, movie);
+                	_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
+		}
+	}
+
         public void Execute(RenameMovieFilesCommand message)
         {
             var movie = _movieService.GetMovie(message.MovieId);
@@ -136,5 +158,17 @@ namespace NzbDrone.Core.MediaFiles
             }
             
         }
+
+	public void Execute(RenameMovieFolderCommand message)
+	{
+		_logger.Debug("Renaming movie folder for selected movie if necessary");
+            	var moviesToRename = _movieService.GetMovies(message.MovieIds);
+		foreach(var movie in moviesToRename)
+		{
+		        var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+		        _logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
+		        RenameMoviePath(movie);
+	   	}
+	}
     }
 }
