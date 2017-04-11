@@ -116,21 +116,16 @@ namespace NzbDrone.Core.MediaFiles
 
 	public void RenameMoviePath(Movie movie)
 	{
-		var root = movie.RootFolderPath;
-		if (root == null)
-		{
-			root = new DirectoryInfo(movie.Path).Parent.FullName;
-		}
-		var newFolder = Path.Combine(root, _filenameBuilder.GetMovieFolder(movie));
+		var newFolder = _filenameBuilder.BuildMoviePath(movie);
 		if (newFolder != movie.Path)
 		{
 			_logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
-			movie.Path = newFolder;
-			_movieService.UpdateMovie(movie);
 			var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
                 	_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
                 	RenameFiles(movieFiles, movie);
                 	_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
+			movie.Path = newFolder;
+			_movieService.UpdateMovie(movie);
 		}
 	}
 

@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Organizer
         string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null);
         string BuildFilePath(Movie movie, string fileName, string extension);
         string BuildFilePath(Series series, int seasonNumber, string fileName, string extension);
+	string BuildMoviePath(Movie movie);
         string BuildSeasonPath(Series series, int seasonNumber);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetSeriesFolder(Series series, NamingConfig namingConfig = null);
