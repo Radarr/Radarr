@@ -19,7 +19,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IRenameMovieFileService
     {
         List<RenameMovieFilePreview> GetRenamePreviews(int movieId);
-	void RenameMoviePath(Movie movie);
+	void RenameMoviePath(Movie movie, bool shouldRenameFiles);
     }
 
     public class RenameMovieFileService : IRenameMovieFileService,
@@ -114,16 +114,19 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-	public void RenameMoviePath(Movie movie)
+	public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
 	{
 		var newFolder = _filenameBuilder.BuildMoviePath(movie);
 		if (newFolder != movie.Path)
 		{
 			_logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
-			var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-                	_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-                	RenameFiles(movieFiles, movie);
-                	_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
+			if (shouldRenameFiles)
+			{
+				var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+				_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
+				RenameFiles(movieFiles, movie);
+				_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);	
+			}
 			movie.Path = newFolder;
 			_movieService.UpdateMovie(movie);
 		}
