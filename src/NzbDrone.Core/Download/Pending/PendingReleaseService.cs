@@ -226,7 +226,12 @@ namespace NzbDrone.Core.Download.Pending
 	                Title = decision.RemoteMovie.Release.Title,
 	                Added = DateTime.UtcNow
 		};
-            _repository.Insert(release);
+		if (release.ParsedMovieInfo == null)
+		{
+			_logger.Warn("Pending release {0} does not have ParsedMovieInfo, will cause issues.", release.Title);
+		}
+
+	    _repository.Insert(release);
 
             _eventAggregator.PublishEvent(new PendingReleasesUpdatedEvent());
         }
