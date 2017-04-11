@@ -123,6 +123,7 @@ namespace NzbDrone.Core.MediaFiles
 
             var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
             movie.Path = newMoviePath;
+		_movieService.UpdateMovie(movie);
 
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
 
@@ -156,6 +157,7 @@ namespace NzbDrone.Core.MediaFiles
         private void EnsureMovieFolder(MovieFile movieFile, Movie movie, string filePath)
         {
             var movieFolder = Path.GetDirectoryName(filePath);
+		movie.Path = movieFolder;
             var rootFolder = new OsPath(movieFolder).Directory.FullPath;
             var fileName = Path.GetFileName(filePath);
 

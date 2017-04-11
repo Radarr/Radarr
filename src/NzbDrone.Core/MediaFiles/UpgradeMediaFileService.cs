@@ -60,6 +60,10 @@ namespace NzbDrone.Core.MediaFiles
                 _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             }
 
+		//Temporary for correctly getting path
+		localMovie.Movie.MovieFileId = 1;
+		localMovie.Movie.MovieFile = movieFile;
+
             if (copyOnly)
             {
                 moveFileResult.MovieFile = _movieFileMover.CopyMovieFile(movieFile, localMovie);
@@ -69,7 +73,7 @@ namespace NzbDrone.Core.MediaFiles
                 moveFileResult.MovieFile = _movieFileMover.MoveMovieFile(movieFile, localMovie);
             }
 
-		_movieFileRenamer.RenameMoviePath(movieFile.Movie, false);
+		//_movieFileRenamer.RenameMoviePath(localMovie.Movie, false);
 
             return moveFileResult;
         }

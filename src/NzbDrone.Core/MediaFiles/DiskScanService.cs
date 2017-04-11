@@ -139,7 +139,7 @@ namespace NzbDrone.Core.MediaFiles
         public void Scan(Movie movie)
         {
 		//Try renaming the movie path in case anything changed such as year, title or something else.
-		_renameMovieFiles.RenameMoviePath(movie);
+		_renameMovieFiles.RenameMoviePath(movie, true);
 
             var rootFolder = _diskProvider.GetParentFolder(movie.Path);
 
