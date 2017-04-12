@@ -60,6 +60,29 @@
 										</div>
 								</div>
 						</div>
+
+                        <div class="form-group">
+                                <label class="col-sm-3 control-label">Remove Movies from this List after Successful Download/Import</label>
+
+                                <div class="col-sm-5">
+                                        <div class="input-group">
+                                                <label class="checkbox toggle well">
+                                                        <input type="checkbox" name="shouldClean" {{#if shouldClean}} checked="checked" {{/if}}  />
+                                                        <p>
+                                                                <span>Yes</span>
+                                                                <span>No</span>
+                                                        </p>
+
+                                                        <div class="btn btn-primary slide-button"></div>
+                                                </label>
+
+                                                <span class="help-inline-checkbox">
+                                                        <i class="icon-sonarr-form-info" title="" data-original-title="If enabled, movies will be removed from this list upon successful Download/Import (Only works for Trakt Custom List)"></i>
+                                                </span>
+                                        </div>
+                                </div>
+                        </div>
+
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Minimum Availability</label>
 

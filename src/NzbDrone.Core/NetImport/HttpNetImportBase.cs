@@ -35,6 +35,13 @@ namespace NzbDrone.Core.NetImport
         }
 
         public override NetImportFetchResult Fetch()
+        public override void Clean(Movie movie)
+        {
+            var generator = GetRequestGenerator();
+            generator.Clean(movie);
+        }
+
+        public override IList<Movie> Fetch()
         {
             var generator = GetRequestGenerator();
             return FetchMovies(generator.GetMovies());

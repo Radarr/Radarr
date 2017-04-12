@@ -12,6 +12,7 @@ namespace NzbDrone.Core.NetImport.TMDb
         public override string Name => "TMDb Lists";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
+		public override bool ShouldClean => false;
 
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;

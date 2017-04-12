@@ -7,6 +7,11 @@ namespace NzbDrone.Core.NetImport.RSSImport
     {
         public RSSImportSettings Settings { get; set; }
 
+        public virtual void Clean(NzbDrone.Core.Tv.Movie movie)
+        {
+            ;
+        }
+
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();

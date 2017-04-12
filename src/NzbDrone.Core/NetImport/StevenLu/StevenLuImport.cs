@@ -10,6 +10,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
         public override string Name => "StevenLu";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
+		public override bool ShouldClean => false;
 
         public StevenLuImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)

@@ -9,6 +9,7 @@ namespace NzbDrone.Core.NetImport
     {
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
+		public bool ShouldClean { get; set; }
         public bool ShouldMonitor { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }

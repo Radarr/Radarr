@@ -9,6 +9,11 @@ using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
+    public class RemoveFromListRequestData
+    {
+        public List<Movie> movies { get; set; }
+    }
+
     public class RefreshRequestResponse
     {
 		public string access_token { get; set; }
@@ -30,6 +35,65 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             RadarrTraktUrl = "http://radarr.aeonlucid.com/v1/trakt/refresh?refresh=";
         }
+
+        public virtual void Clean(NzbDrone.Core.Tv.Movie movie)
+        {
+            if (_configService.TraktRefreshToken != string.Empty)
+            {
+                var link = Settings.Link.Trim();
+                bool continueRemoval = false;
+                switch (Settings.ListType)
+                {
+                    case (int)TraktListType.UserCustomList:
+                        //https://api.trakt.tv/users/id/lists/list_id/items/remove
+                        var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());
+                        link = link + $"/users/{Settings.Username.Trim()}/lists/{listName}/items/remove";
+                        continueRemoval = true;
+                        break;
+                    case (int)TraktListType.UserWatchList:
+                        //https://api.trakt.tv/sync/watchlist/remove
+                        link = link + $"/sync/watchlist/remove";
+                        if (true) { continueRemoval = true; } //should check if more global option to remove from watchlist is enabled
+                        break;
+
+                }
+                if (continueRemoval)
+                {
+
+                    Authenticate();
+
+                    var requestBuilder = new HttpRequestBuilder($"{link}")
+                    {
+                        LogResponseContent = true
+                    };
+
+                    requestBuilder.Method = HttpMethod.POST;
+
+                    var listRemovalRequest = requestBuilder
+                               .SetHeader("Content-Type", "application/json")
+                               .Accept(HttpAccept.Json)
+                               .SetHeader("trakt-api-version", "2")
+                               .SetHeader("trakt-api-key", "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6")
+                               .SetHeader("Authorization", "Bearer " + _configService.TraktAuthToken)
+                               .Build();
+
+                    var postData = new RemoveFromListRequestData();
+                    var moviesList = new List<Movie>();
+                    var mov = new Movie();
+                    var ids = new Ids();
+
+                    ids.imdb = movie.ImdbId;
+                    mov.ids = ids;
+                    postData.movies = moviesList;
+                    postData.movies.Add(mov);
+
+
+                    listRemovalRequest.SetContent(Json.ToJson(postData));
+                    HttpClient.Execute(listRemovalRequest);
+                }
+            }
+        }
+        
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();

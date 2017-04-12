@@ -7,6 +7,11 @@ namespace NzbDrone.Core.NetImport.CouchPotato
     {
         public CouchPotatoSettings Settings { get; set; }
 
+        public virtual void Clean(NzbDrone.Core.Tv.Movie movie)
+        {
+            ;
+        }
+
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
