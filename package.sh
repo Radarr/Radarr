@@ -48,21 +48,21 @@ zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/* >& /dev/null
 zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION/* >& /dev/null #TODO update for tar.gz
 zip -r Radarr_OSX_$VERSION_App.zip Radarr_OSX_$VERSION/* >& /dev/null
 fi
-ftp -n ftp.leonardogalli.ch << END_SCRIPT
-passive
-quote USER $FTP_USER
-quote PASS $FTP_PASS
-mkdir builds
-cd builds
-mkdir $YEAR
-cd $YEAR
-mkdir $MONTH
-cd $MONTH
-mkdir $DAY
-cd $DAY
-binary
-put Radarr_Windows_$VERSION.zip
-put Radarr_Mono_$VERSION.zip
-put Radarr_OSX_$VERSION.zip
-quit
-END_SCRIPT
+# ftp -n ftp.leonardogalli.ch << END_SCRIPT
+# passive
+# quote USER $FTP_USER
+# quote PASS $FTP_PASS
+# mkdir builds
+# cd builds
+# mkdir $YEAR
+# cd $YEAR
+# mkdir $MONTH
+# cd $MONTH
+# mkdir $DAY
+# cd $DAY
+# binary
+# put Radarr_Windows_$VERSION.zip
+# put Radarr_Mono_$VERSION.zip
+# put Radarr_OSX_$VERSION.zip
+# quit
+# END_SCRIPT
