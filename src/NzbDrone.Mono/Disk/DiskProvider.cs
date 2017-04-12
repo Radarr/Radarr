@@ -37,6 +37,7 @@ namespace NzbDrone.Mono.Disk
 
 		_logger.Warn("Testing 123: {0}, {1}", _symLinkResolver, _symLinkResolver.GetType());
 			_logger.Debug("Testing");
+		Console.WriteLine($"Testing 123: {_symLinkResolver}, {_symLinkResolver.GetType()}");
             return base.GetMount(path);
         }
 
