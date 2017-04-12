@@ -24,6 +24,8 @@ if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
 else
   VERSION=$1
   BRANCH=$2
+  BRANCH=${BRANCH#refs\/heads\/}
+  BRANCH=${BRANCH//\//-}
 fi
 outputFolder='./_output'
 outputFolderMono='./_output_mono'
