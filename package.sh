@@ -23,6 +23,7 @@ if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
   DAY="`date +%d`"
 else
   VERSION=$1
+  BRANCH=$2
 fi
 outputFolder='./_output'
 outputFolderMono='./_output_mono'
@@ -40,10 +41,18 @@ if [ $runtime = "dotnet" ] ; then
   ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./_output_osx/* | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
   ./7za.exe a -ttar -so Radarr_OSX_App_$VERSION.tar ./_output_osx_app/* | ./7za.exe a -si Radarr_OSX_App_$VERSION.tar.gz
 else
-zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/*
-tar -zcvf Radarr_Mono_$VERSION.tar.gz Radarr_Mono_$VERSION  #TODO update for tar.gz
-tar -zcvf Radarr_OSX_$VERSION.tar.gz _output_osx
-zip -r Radarr_OSX_APP_$VERSION.zip _output_osx_app/*
+  cp -r $outputFolder/ Radarr
+  zip -r Radarr.$BRANCH.$VERSION.windows.zip Radarr
+  rm -rf Radarr
+  cp -r $outputFolderMono/ Radarr
+  tar -zcvf Radarr.$BRANCH.$VERSION.linux.tar.gz Radarr
+  rm -rf Radarr
+  cp -r $outputFolderOsx/ Radarr
+  tar -zcvf Radarr.$BRANCH.$VERSION.osx.tar.gz Radarr
+  rm -rf Radarr
+  #TODO update for tar.gz
+
+  zip -r Radarr.$BRANCH.$VERSION.osx-app.zip _output_osx_app/*
 fi
 # ftp -n ftp.leonardogalli.ch << END_SCRIPT
 # passive
