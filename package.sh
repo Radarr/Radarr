@@ -54,7 +54,8 @@ else
   rm -rf Radarr
   #TODO update for tar.gz
 
-  zip -r Radarr.$BRANCH.$VERSION.osx-app.zip _output_osx_app/*
+  cd _output_osx_app/
+  zip -r ../Radarr.$BRANCH.$VERSION.osx-app.zip *
 fi
 # ftp -n ftp.leonardogalli.ch << END_SCRIPT
 # passive
