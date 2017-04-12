@@ -27,7 +27,7 @@ test:
 
 artifacts:
   - path: '_artifacts\*.zip'
-#  - path: '_artifacts\*.exe'
+  - path: '_artifacts\*.exe'
   - path: '_artifacts\*.tar.gz'
 
 cache:
