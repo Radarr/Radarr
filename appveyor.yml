@@ -11,9 +11,6 @@ environment:
 install:
   - git submodule update --init --recursive
 
-build_script:
-  - ps: ./build-appveyor.ps1
-
 # test: off
 test:
   assemblies:
