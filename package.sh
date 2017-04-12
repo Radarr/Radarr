@@ -36,7 +36,7 @@ mv $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2 $outputFolderOsxApp/Rad
 
 cp -r $outputFolder/ Radarr_Windows_$VERSION
 cp -r $outputFolderMono/ Radarr_Mono_$VERSION
-cp -r $outputFolderOsxApp/ Radarr_OSX_$VERSION
+cp -r $outputFolderOsx/ Radarr_OSX_$VERSION
 
 if [ $runtime = "dotnet" ] ; then
   ./7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*
@@ -44,9 +44,9 @@ if [ $runtime = "dotnet" ] ; then
   ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./_output_osx/* | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
   ./7za.exe a -ttar -so Radarr_OSX_App_$VERSION.tar ./_output_osx_app/* | ./7za.exe a -si Radarr_OSX_App_$VERSION.tar.gz
 else
-zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/* >& /dev/null
-zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION/* >& /dev/null #TODO update for tar.gz
-zip -r Radarr_OSX_$VERSION_App.zip Radarr_OSX_$VERSION/* >& /dev/null
+zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/*
+tar -zcvf Radarr_Mono_$VERSION.tar.gz Radarr_Mono_$VERSION  #TODO update for tar.gz
+tar -zcvf Radarr_OSX_$VERSION.tar.gz Radarr_OSX_$VERSION
 fi
 # ftp -n ftp.leonardogalli.ch << END_SCRIPT
 # passive
