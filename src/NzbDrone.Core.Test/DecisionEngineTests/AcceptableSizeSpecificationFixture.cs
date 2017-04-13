@@ -20,6 +20,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private RemoteEpisode parseResultMulti;
         private RemoteEpisode parseResultSingle;
         private Series series;
+	private Movie movie;
+	private RemoteMovie remoteMovie;
         private QualityDefinition qualityType;
 
         [SetUp]
@@ -27,6 +29,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             series = Builder<Series>.CreateNew()
                 .Build();
+
+		movie = Builder<Movie>.CreateNew().Build();
+
+		remoteMovie = new RemoteMovie
+		{
+			Movie = movie,
+			Release = new ReleaseInfo(),
+			ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.SDTV, new Revision(version: 2)) },
+
+		};
 
             parseResultMultiSet = new RemoteEpisode
                                     {
@@ -216,5 +228,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.IsSatisfiedBy(parseResultSingle, null).Accepted.Should().BeTrue();
         }
+
+	[Test]
+	public void should_use_110_minutes_if_runtime_is_0()
+	{
+		movie.Runtime = 0;
+		remoteMovie.Movie = movie;
+		remoteMovie.Release.Size = 1095.Megabytes();
+
+		Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(true);
+		remoteMovie.Release.Size = 1105.Megabytes();
+		Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(false);
+	}
     }
 }
