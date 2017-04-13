@@ -69,8 +69,6 @@ namespace NzbDrone.Core.Indexers.Rarbg
                     }
                 }
 
-		torrentInfo.IndexerFlags |= IndexerFlags.PTP_Approved;
-
                 results.Add(torrentInfo);
             }
 
