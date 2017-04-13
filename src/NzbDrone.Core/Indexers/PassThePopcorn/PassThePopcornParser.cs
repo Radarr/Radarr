@@ -58,12 +58,12 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
                     if (torrent.GoldenPopcorn)
                     {
-                        title = $"{title} 🍿";
+                        title = $"{title} (Golden)";
                     }
 
                     if (torrent.Checked)
                     {
-                        title = $"{title} ✔";
+                        title = $"{title} (Approved)";
                     }
 
                     // Only add approved torrents
