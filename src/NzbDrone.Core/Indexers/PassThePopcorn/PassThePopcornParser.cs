@@ -87,6 +87,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 				IndexerFlags = flags
                         });
                     }
+
                     // Add all torrents
                     else if (!_settings.RequireApproved)
                     {
