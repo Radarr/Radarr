@@ -31,14 +31,14 @@ namespace NzbDrone.Api.Series
         private readonly ISeriesService _seriesService;
         private readonly IAddSeriesService _addSeriesService;
         private readonly ISeriesStatisticsService _seriesStatisticsService;
-        private readonly ISceneMappingService _sceneMappingService;
+        // private readonly ISceneMappingService _sceneMappingService;
         private readonly IMapCoversToLocal _coverMapper;
 
         public SeriesModule(IBroadcastSignalRMessage signalRBroadcaster,
                             ISeriesService seriesService,
                             IAddSeriesService addSeriesService,
                             ISeriesStatisticsService seriesStatisticsService,
-                            ISceneMappingService sceneMappingService,
+                            // ISceneMappingService sceneMappingService,
                             IMapCoversToLocal coverMapper,
                             RootFolderValidator rootFolderValidator,
                             SeriesPathValidator seriesPathValidator,
@@ -52,7 +52,7 @@ namespace NzbDrone.Api.Series
             _seriesService = seriesService;
             _addSeriesService = addSeriesService;
             _seriesStatisticsService = seriesStatisticsService;
-            _sceneMappingService = sceneMappingService;
+            // _sceneMappingService = sceneMappingService;
 
             _coverMapper = coverMapper;
 
@@ -197,11 +197,11 @@ namespace NzbDrone.Api.Series
 
         private void PopulateAlternateTitles(SeriesResource resource)
         {
-            var mappings = _sceneMappingService.FindByTvdbId(resource.TvdbId);
+            //var mappings = null //_sceneMappingService.FindByTvdbId(resource.TvdbId);
 
-            if (mappings == null) return;
-
-            resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
+            //if (mappings == null) return;
+            return;
+            // resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
         }
 
         public void Handle(EpisodeImportedEvent message)

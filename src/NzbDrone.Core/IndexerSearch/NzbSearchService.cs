@@ -25,21 +25,21 @@ namespace NzbDrone.Core.IndexerSearch
     public class NzbSearchService : ISearchForNzb
     {
         private readonly IIndexerFactory _indexerFactory;
-        private readonly ISceneMappingService _sceneMapping;
+        // private readonly ISceneMappingService _sceneMapping;
         private readonly ISeriesService _seriesService;
         private readonly IEpisodeService _episodeService;
         private readonly IMakeDownloadDecision _makeDownloadDecision;
         private readonly Logger _logger;
 
         public NzbSearchService(IIndexerFactory indexerFactory,
-                                ISceneMappingService sceneMapping,
+                                // ISceneMappingService sceneMapping,
                                 ISeriesService seriesService,
                                 IEpisodeService episodeService,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 Logger logger)
         {
             _indexerFactory = indexerFactory;
-            _sceneMapping = sceneMapping;
+            //_sceneMapping = sceneMapping;
             _seriesService = seriesService;
             _episodeService = episodeService;
             _makeDownloadDecision = makeDownloadDecision;
@@ -233,9 +233,9 @@ namespace NzbDrone.Core.IndexerSearch
             var spec = new TSpec();
 
             spec.Series = series;
-            spec.SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
-                                                           episodes.Select(e => e.SeasonNumber).Distinct().ToList(),
-                                                           episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList());
+            // spec.SceneTitles = _sceneMapping.GetSceneNames(series.TvdbId,
+            //                                               episodes.Select(e => e.SeasonNumber).Distinct().ToList(),
+            //                                               episodes.Select(e => e.SceneSeasonNumber ?? e.SeasonNumber).Distinct().ToList());
 
             spec.Episodes = episodes;
 

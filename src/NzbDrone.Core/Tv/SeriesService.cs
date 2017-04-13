@@ -35,21 +35,21 @@ namespace NzbDrone.Core.Tv
     {
         private readonly ISeriesRepository _seriesRepository;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ISceneMappingService _sceneMappingService;
+        // private readonly ISceneMappingService _sceneMappingService;
         private readonly IEpisodeService _episodeService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly Logger _logger;
 
         public SeriesService(ISeriesRepository seriesRepository,
                              IEventAggregator eventAggregator,
-                             ISceneMappingService sceneMappingService,
+                             // ISceneMappingService sceneMappingService,
                              IEpisodeService episodeService,
                              IBuildFileNames fileNameBuilder,
                              Logger logger)
         {
             _seriesRepository = seriesRepository;
             _eventAggregator = eventAggregator;
-            _sceneMappingService = sceneMappingService;
+            //_sceneMappingService = sceneMappingService;
             _episodeService = episodeService;
             _fileNameBuilder = fileNameBuilder;
             _logger = logger;
@@ -85,12 +85,12 @@ namespace NzbDrone.Core.Tv
 
         public Series FindByTitle(string title)
         {
-            var tvdbId = _sceneMappingService.FindTvdbId(title);
+            //var tvdbId = _sceneMappingService.FindTvdbId(title);
 
-            if (tvdbId.HasValue)
-            {
-                return _seriesRepository.FindByTvdbId(tvdbId.Value);
-            }
+            //if (tvdbId.HasValue)
+            //{
+            //    return _seriesRepository.FindByTvdbId(tvdbId.Value);
+            //}
 
             return _seriesRepository.FindByTitle(title.CleanSeriesTitle());
         }

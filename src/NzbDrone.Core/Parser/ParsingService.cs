@@ -26,17 +26,17 @@ namespace NzbDrone.Core.Parser
     {
         private readonly IEpisodeService _episodeService;
         private readonly ISeriesService _seriesService;
-        private readonly ISceneMappingService _sceneMappingService;
+        // private readonly ISceneMappingService _sceneMappingService;
         private readonly Logger _logger;
 
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
-                              ISceneMappingService sceneMappingService,
+                              // ISceneMappingService sceneMappingService,
                               Logger logger)
         {
             _episodeService = episodeService;
             _seriesService = seriesService;
-            _sceneMappingService = sceneMappingService;
+            // _sceneMappingService = sceneMappingService;
             _logger = logger;
         }
 
@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Parser
             if (searchCriteria != null)
             {
                 if (tvdbId == 0)
-                    tvdbId = _sceneMappingService.FindTvdbId(title) ?? 0;
+                    tvdbId = 0; // _sceneMappingService.FindTvdbId(title) ?? 0;
 
                 if (tvdbId != 0 && tvdbId == searchCriteria.Series.TvdbId)
                 {
@@ -252,24 +252,24 @@ namespace NzbDrone.Core.Parser
         {
             Series series = null;
 
-            var sceneMappingTvdbId = _sceneMappingService.FindTvdbId(parsedEpisodeInfo.SeriesTitle);
-            if (sceneMappingTvdbId.HasValue)
-            {
-                if (searchCriteria != null && searchCriteria.Series.TvdbId == sceneMappingTvdbId.Value)
-                {
-                    return searchCriteria.Series;
-                }
+            //var sceneMappingTvdbId = _sceneMappingService.FindTvdbId(parsedEpisodeInfo.SeriesTitle);
+            //if (sceneMappingTvdbId.HasValue)
+            //{
+            //    if (searchCriteria != null && searchCriteria.Series.TvdbId == sceneMappingTvdbId.Value)
+            //    {
+            //        return searchCriteria.Series;
+            //    }
 
-                series = _seriesService.FindByTvdbId(sceneMappingTvdbId.Value);
+            //    series = _seriesService.FindByTvdbId(sceneMappingTvdbId.Value);
 
-                if (series == null)
-                {
-                    _logger.Debug("No matching series {0}", parsedEpisodeInfo.SeriesTitle);
-                    return null;
-                }
+            //    if (series == null)
+            //    {
+            //        _logger.Debug("No matching series {0}", parsedEpisodeInfo.SeriesTitle);
+            //        return null;
+            //    }
 
-                return series;
-            }
+            //    return series;
+            //}
 
             if (searchCriteria != null)
             {
@@ -341,7 +341,7 @@ namespace NzbDrone.Core.Parser
         {
             var result = new List<Episode>();
 
-            var sceneSeasonNumber = _sceneMappingService.GetSceneSeasonNumber(parsedEpisodeInfo.SeriesTitle);
+//            var sceneSeasonNumber = _sceneMappingService.GetSceneSeasonNumber(parsedEpisodeInfo.SeriesTitle);
 
             foreach (var absoluteEpisodeNumber in parsedEpisodeInfo.AbsoluteEpisodeNumbers)
             {
@@ -352,31 +352,31 @@ namespace NzbDrone.Core.Parser
                     episode = _episodeService.FindEpisode(series.Id, 0, absoluteEpisodeNumber);
                 }
 
-                else if (sceneSource)
-                {
-                    // Is there a reason why we excluded season 1 from this handling before?
-                    // Might have something to do with the scene name to season number check
-                    // If this needs to be reverted tests will need to be added
-                    if (sceneSeasonNumber.HasValue)
-                    {
-                        var episodes = _episodeService.FindEpisodesBySceneNumbering(series.Id, sceneSeasonNumber.Value, absoluteEpisodeNumber);
+                //else if (sceneSource)
+                //{
+                //    // Is there a reason why we excluded season 1 from this handling before?
+                //    // Might have something to do with the scene name to season number check
+                //    // If this needs to be reverted tests will need to be added
+                //    if (sceneSeasonNumber.HasValue)
+                //    {
+                //        var episodes = _episodeService.FindEpisodesBySceneNumbering(series.Id, sceneSeasonNumber.Value, absoluteEpisodeNumber);
 
-                        if (episodes.Count == 1)
-                        {
-                            episode = episodes.First();
-                        }
+                //        if (episodes.Count == 1)
+                //        {
+                //            episode = episodes.First();
+                //        }
 
-                        if (episode == null)
-                        {
-                            episode = _episodeService.FindEpisode(series.Id, sceneSeasonNumber.Value, absoluteEpisodeNumber);
-                        }
-                    }
+                //        if (episode == null)
+                //        {
+                //            episode = _episodeService.FindEpisode(series.Id, sceneSeasonNumber.Value, absoluteEpisodeNumber);
+                //        }
+                //    }
 
-                    else
-                    {
-                        episode = _episodeService.FindEpisodeBySceneNumbering(series.Id, absoluteEpisodeNumber);
-                    }
-                }
+                //    else
+                //    {
+                //        episode = _episodeService.FindEpisodeBySceneNumbering(series.Id, absoluteEpisodeNumber);
+                //    }
+                //}
 
                 if (episode == null)
                 {
@@ -403,16 +403,16 @@ namespace NzbDrone.Core.Parser
             var result = new List<Episode>();
             var seasonNumber = parsedEpisodeInfo.SeasonNumber;
 
-            if (sceneSource)
-            {
-                var sceneMapping = _sceneMappingService.FindSceneMapping(parsedEpisodeInfo.SeriesTitle);
+            //if (sceneSource)
+            //{
+            //    var sceneMapping = _sceneMappingService.FindSceneMapping(parsedEpisodeInfo.SeriesTitle);
 
-                if (sceneMapping != null && sceneMapping.SeasonNumber.HasValue && sceneMapping.SeasonNumber.Value >= 0 &&
-                    sceneMapping.SceneSeasonNumber == seasonNumber)
-                {
-                    seasonNumber = sceneMapping.SeasonNumber.Value;
-                }
-            }
+            //    if (sceneMapping != null && sceneMapping.SeasonNumber.HasValue && sceneMapping.SeasonNumber.Value >= 0 &&
+            //        sceneMapping.SceneSeasonNumber == seasonNumber)
+            //    {
+            //        seasonNumber = sceneMapping.SeasonNumber.Value;
+            //    }
+            //}
 
             if (parsedEpisodeInfo.EpisodeNumbers == null)
             {
