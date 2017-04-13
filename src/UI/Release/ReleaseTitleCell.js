@@ -1,19 +1,19 @@
-var NzbDroneCell = require('./NzbDroneCell');
+var _ = require('underscore');
+var Backgrid = require('backgrid');
 
-module.exports = NzbDroneCell.extend({
-    className : 'release-title-cell',
+var FormatHelpers = require('../Shared/FormatHelpers');
+
+module.exports = Backgrid.Cell.extend({
+    className : 'title-cell',
 
     render : function() {
-        this.$el.empty();
-
+      debugger;
         var title = this.model.get('title');
-        var infoUrl = this.model.get('infoUrl');
-
         var flags = this.model.get("indexerFlags");
         if (flags) {
           _.each(flags, function(flag){
             var addon = "";
-
+            debugger;
             switch (flag) {
               case "PTP_Golden":
               addon = "🍿";
@@ -26,12 +26,7 @@ module.exports = NzbDroneCell.extend({
             title += addon;
           });
         }
-
-        if (infoUrl) {
-            this.$el.html('<a href="{0}">{1}</a>'.format(infoUrl, title));
-        } else {
-            this.$el.html(title);
-        }
+        this.$el.html(title);
 
         return this;
     }
