@@ -133,7 +133,7 @@ namespace NzbDrone.Api.Indexers
                     Seeders = torrentInfo.Seeders,
                     Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                     Protocol = releaseInfo.DownloadProtocol,
-		IndexerFlags = torrentInfo.IndexerFlags.ToString().Split(','),
+		IndexerFlags = torrentInfo.IndexerFlags.ToString().Split(new string[] { ", " }, StringSplitOptions.None),
                     Edition = parsedMovieInfo.Edition,
 
                     IsDaily = false,
