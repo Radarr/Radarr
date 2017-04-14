@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using NzbDrone.Core.Indexers;
 
@@ -25,6 +25,8 @@ namespace NzbDrone.Core.Parser.Model
         public string Container { get; set; }
         public string Codec { get; set; }
         public string Resolution { get; set; }
+
+	public IndexerFlags IndexerFlags { get; set; }
 
         public int Age
         {
@@ -91,4 +93,11 @@ namespace NzbDrone.Core.Parser.Model
             }
         }
     }
+
+	[Flags]
+	public enum IndexerFlags
+	{
+		PTP_Golden = 1, //PTP
+		PTP_Approved = 2, //PTP
+	}
 }

@@ -46,6 +46,7 @@ namespace NzbDrone.Api.Indexers
         public bool DownloadAllowed { get; set; }
         public int ReleaseWeight { get; set; }
 
+	public IEnumerable<string> IndexerFlags { get; set; }
 
         public string MagnetUrl { get; set; }
         public string InfoHash { get; set; }
@@ -132,7 +133,7 @@ namespace NzbDrone.Api.Indexers
                     Seeders = torrentInfo.Seeders,
                     Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                     Protocol = releaseInfo.DownloadProtocol,
-
+		IndexerFlags = torrentInfo.IndexerFlags.ToString().Split(new string[] { ", " }, StringSplitOptions.None),
                     Edition = parsedMovieInfo.Edition,
 
                     IsDaily = false,

@@ -8,6 +8,7 @@ var QualityCell = require('../Cells/QualityCell');
 var ApprovalStatusCell = require('../Cells/ApprovalStatusCell');
 var LoadingView = require('../Shared/LoadingView');
 var EditionCell = require('../Cells/EditionCell');
+var ReleaseTitleCell = require("./ReleaseTitleCell");
 
 module.exports = Marionette.Layout.extend({
     template : 'Release/ReleaseLayoutTemplate',
@@ -34,7 +35,7 @@ module.exports = Marionette.Layout.extend({
             name     : 'title',
             label    : 'Title',
             sortable : true,
-            cell     : Backgrid.StringCell
+            cell     : ReleaseTitleCell
         },
         /*{
             name     : 'episodeNumbers',
