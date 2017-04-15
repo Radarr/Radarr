@@ -240,18 +240,18 @@ namespace NzbDrone.Core.Tv
 
             IEnumerable<Movie> results = Query.Where(s => s.CleanTitle == cleanTitle);
 
-            if (results == null)
+            if (results == null || results.Count() == 0)
             {
                 results = Query.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers) ??
                          Query.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers);
 
-                if (results == null)
+                if (results == null || results.Count() == 0)
                 {
                     IEnumerable<Movie> movies = All();
                     Func<string, string> titleCleaner = title => CoreParser.CleanSeriesTitle(title.ToLower());
                     Func<IEnumerable<string>, string, bool> altTitleComparer =
                         (alternativeTitles, atitle) =>
-                            alternativeTitles.Any(altTitle => altTitle == titleCleaner(atitle));
+                        alternativeTitles.Any(altTitle => titleCleaner(altTitle) == atitle);
 
                     results = movies.Where(m => altTitleComparer(m.AlternativeTitles, cleanTitle) ||
                                                 altTitleComparer(m.AlternativeTitles, cleanTitleWithRomanNumbers) ||

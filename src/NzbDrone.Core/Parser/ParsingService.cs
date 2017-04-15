@@ -178,7 +178,7 @@ namespace NzbDrone.Core.Parser
                 return _movieService.FindByTitle(title);
             }
 
-            var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
+            var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
 
             if (movies == null)
             {
