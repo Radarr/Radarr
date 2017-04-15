@@ -97,7 +97,11 @@ namespace NzbDrone.Core.Parser.Model
 	[Flags]
 	public enum IndexerFlags
 	{
-		PTP_Golden = 1, //PTP
-		PTP_Approved = 2, //PTP
+		G_Freeleech = 1, //General
+		G_Halfleech = 2, //General, only 1/2 of download counted
+		G_DoubleUpload = 4, //General
+		PTP_Golden = 8, //PTP
+		PTP_Approved = 16, //PTP
+
 	}
 }
