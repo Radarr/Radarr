@@ -102,6 +102,5 @@ namespace NzbDrone.Core.Parser.Model
 		G_DoubleUpload = 4, //General
 		PTP_Golden = 8, //PTP
 		PTP_Approved = 16, //PTP
-
 	}
 }
