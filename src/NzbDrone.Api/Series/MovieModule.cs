@@ -213,7 +213,7 @@ namespace NzbDrone.Api.Movie
 
         private void LinkMovieStatistics(MovieResource resource, MovieStatistics moviesStatistics)
         {
-            resource.SizeOnDisk = moviesStatistics.SizeOnDisk;
+            //resource.SizeOnDisk = 0;//TODO: incorporate movie statistics moviesStatistics.SizeOnDisk;
         }
 
         private void PopulateAlternateTitles(List<MovieResource> resources)
