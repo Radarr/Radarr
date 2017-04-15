@@ -105,11 +105,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RssSyncInterval", value); }
         }
 
-	public int AvailabilityDelay
-	{
-	    get { return GetValueInt("AvailabilityDelay",0); }
-	    set { SetValue("AvailabilityDelay", value); }
-	}
+		public int AvailabilityDelay
+		{
+		    get { return GetValueInt("AvailabilityDelay",0); }
+		    set { SetValue("AvailabilityDelay", value); }
+		}
 
         public int NetImportSyncInterval
         {
@@ -190,19 +190,26 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableCompletedDownloadHandling", value); }
         }
 
-	public bool AllowHardcodedSubs
-	{
-		get { return GetValueBoolean("AllowHardcodedSubs", false); }
+        public bool PreferIndexerFlags
+        {
+            get { return GetValueBoolean("PreferIndexerFlags", false); }
 
-		set { SetValue("AllowHardcodedSubs", value); }
-	}
+            set {SetValue("PreferIndexerFlags", value);}
+        }
 
-	public string WhitelistedHardcodedSubs
-	{
-		get { return GetValue("WhitelistedHardcodedSubs", ""); }
+		public bool AllowHardcodedSubs
+		{
+			get { return GetValueBoolean("AllowHardcodedSubs", false); }
 
-		set { SetValue("WhitelistedHardcodedSubs", value); }
-	}
+			set { SetValue("AllowHardcodedSubs", value); }
+		}
+
+		public string WhitelistedHardcodedSubs
+		{
+			get { return GetValue("WhitelistedHardcodedSubs", ""); }
+
+			set { SetValue("WhitelistedHardcodedSubs", value); }
+		}
 
         public bool RemoveCompletedDownloads
         {
