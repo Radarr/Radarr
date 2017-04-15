@@ -22,15 +22,15 @@ module.exports = Backgrid.Cell.extend({
 
             switch (flag) {
               case "G_Freeleech":
-              addon = "✦";
+              addon = "⬇";
               title = "Freeleech";
               break;
               case "G_Halfleech":
-              addon = "✧";
+              addon = "⇩";
               title = "50% Freeleech";
               break;
               case "G_DoubleUpload":
-              addon = "★";
+              addon = "⬆";
               title = "Double upload";
               break;
               case "PTP_Golden":
