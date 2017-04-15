@@ -8,7 +8,7 @@ var QualityCell = require('../Cells/QualityCell');
 var ApprovalStatusCell = require('../Cells/ApprovalStatusCell');
 var LoadingView = require('../Shared/LoadingView');
 var EditionCell = require('../Cells/EditionCell');
-var ReleaseTitleCell = require("./ReleaseTitleCell");
+var ReleaseTitleCell = require("../Cells/ReleaseTitleCell");
 
 module.exports = Marionette.Layout.extend({
     template : 'Release/ReleaseLayoutTemplate',

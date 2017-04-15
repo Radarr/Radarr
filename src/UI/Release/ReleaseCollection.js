@@ -33,6 +33,32 @@ var Collection = PagableCollection.extend({
         "edition" : {
           sortKey : "edition"
         },
+        "flags" : {
+          sortValue : function(model) {
+            var flags = model.get("indexerFlags");
+            var weight = 0;
+            if (flags) {
+              _.each(flags, function(flag){
+                var addon = "";
+                var title = "";
+
+                switch (flag) {
+                  case "G_Halfleech":
+                  weight += 1;
+                  break;
+                  case "G_Freeleech":
+                  case "G_DoubleUpload":
+                  case "PTP_Approved":
+                  case "PTP_Golden":
+                  weight += 2;
+                  break;
+                }
+              });
+            }
+
+            return weight;
+          }
+        },
         'download'   : {
             sortKey : 'releaseWeight'
         },
