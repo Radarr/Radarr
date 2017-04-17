@@ -98,7 +98,13 @@ namespace NzbDrone.Core.Tv
 				return true;
 			}
 
-			return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
+            if (MinimumAvailabilityDate == DateTime.MinValue || MinimumAvailabilityDate == DateTime.MaxValue)
+            {
+                return DateTime.Now >= MinimumAvailabilityDate;
+            }
+
+
+            return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
         }
 
         public override string ToString()
