@@ -53,6 +53,7 @@ namespace NzbDrone.Core.Tv
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly Logger _logger;
 
+
         public MovieService(IMovieRepository movieRepository,
                              IEventAggregator eventAggregator,
                              ISceneMappingService sceneMappingService,

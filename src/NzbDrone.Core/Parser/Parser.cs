@@ -310,6 +310,12 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RequestInfoRegex = new Regex(@"\[.+?\]", RegexOptions.Compiled);
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+               private static Dictionary<String, String> _umlautMappings = new Dictionary<string, string>
+        {
+            {"ö", "oe"},
+            {"ä", "ae"},
+            {"ü", "ue"},
+        };
 
         public static ParsedEpisodeInfo ParsePath(string path)
         {
@@ -660,7 +666,7 @@ namespace NzbDrone.Core.Parser
             if (long.TryParse(title, out number))
                 return title;
 
-            return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
+            return ReplaceGermanUmlauts(NormalizeRegex.Replace(title, string.Empty).ToLower()).RemoveAccent();
         }
 
         public static string NormalizeEpisodeTitle(string title)

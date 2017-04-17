@@ -23,6 +23,8 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 		private ParsedMovieInfo _wrongYearInfo;
 		private ParsedMovieInfo _romanTitleInfo;
 		private ParsedMovieInfo _alternativeTitleInfo;
+        private ParsedMovieInfo _umlautInfo;
+        private ParsedMovieInfo _umlautAltInfo;
 		private MovieSearchCriteria _movieSearchCriteria;
         private List<Episode> _episodes;
         private ParsedEpisodeInfo _parsedEpisodeInfo;
@@ -37,10 +39,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 .Build();
 
 			_movie = Builder<Movie>.CreateNew()
-								   .With(m => m.Title = "Mission Impossible 3")
-								   .With(m => m.CleanTitle = "missionimpossible3")
-			                       .With(m => m.Year = 2006)
-			                       .With(m => m.AlternativeTitles = new List<string> { "Mission Impossible 3: Same same" })
+								   .With(m => m.Title = "Fack Ju Göthe 2")
+								   .With(m => m.CleanTitle = "fackjugoethe2")
+			                       .With(m => m.Year = 2015)
+			                       .With(m => m.AlternativeTitles = new List<string> { "Fack Ju Göthe 2: Same same" })
 								   .Build();
 
             _episodes = Builder<Episode>.CreateListOfSize(1)
@@ -77,9 +79,21 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
 			_romanTitleInfo = new ParsedMovieInfo
 			{
-				MovieTitle = "Mission Impossible III",
+				MovieTitle = "Fack Ju Göthe II",
 				Year = _movie.Year,
 			};
+
+            _umlautInfo = new ParsedMovieInfo
+            {
+                MovieTitle = "Fack Ju Goethe 2",
+                Year = _movie.Year
+            };
+
+            _umlautAltInfo = new ParsedMovieInfo
+            {
+                MovieTitle = "Fack Ju Goethe 2: Same same",
+                Year = _movie.Year
+            };
 
             _singleEpisodeSearchCriteria = new SingleEpisodeSearchCriteria
             {
@@ -147,6 +161,13 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 		{
 			Subject.Map(_romanTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
 		}
+
+        [Test]
+        public void should_match_umlauts()
+        {
+            Subject.Map(_umlautInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+            Subject.Map(_umlautAltInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+        }
 
     }
 }
