@@ -4,18 +4,21 @@ using System.Linq;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.DecisionEngine
 {
     public class DownloadDecisionComparer : IComparer<DownloadDecision>
     {
         private readonly IDelayProfileService _delayProfileService;
+        private readonly IConfigService _configService;
         public delegate int CompareDelegate(DownloadDecision x, DownloadDecision y);
         public delegate int CompareDelegate<TSubject, TValue>(DownloadDecision x, DownloadDecision y);
 
-        public DownloadDecisionComparer(IDelayProfileService delayProfileService)
+        public DownloadDecisionComparer(IDelayProfileService delayProfileService, IConfigService configService)
         {
             _delayProfileService = delayProfileService;
+            _configService = configService;
         }
 
         public int Compare(DownloadDecision x, DownloadDecision y)
@@ -24,6 +27,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 CompareQuality,
                 ComparePreferredWords,
+                CompareIndexerFlags,
                 CompareProtocol,
                 ComparePeersIfTorrent,
                 CompareAgeIfUsenet,
@@ -84,7 +88,22 @@ namespace NzbDrone.Core.DecisionEngine
                 return num;
 
             });
-;        }
+        }
+        
+        private int CompareIndexerFlags(DownloadDecision x, DownloadDecision y)
+        {
+            var releaseX = x.RemoteMovie.Release;
+            var releaseY = y.RemoteMovie.Release;
+
+            if (_configService.PreferIndexerFlags)
+            {
+                return CompareBy(x.RemoteMovie.Release, y.RemoteMovie.Release, release => ScoreFlags(release.IndexerFlags));
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)
         {
@@ -184,6 +203,35 @@ namespace NzbDrone.Core.DecisionEngine
             // TODO: Is smaller better? Smaller for usenet could mean no par2 files.
 
             return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode => remoteEpisode.Release.Size.Round(200.Megabytes()));
+        }
+
+        private int ScoreFlags(IndexerFlags flags)
+        {
+            var flagValues = Enum.GetValues(typeof(IndexerFlags));
+
+            var score = 0;
+
+            foreach (IndexerFlags value in flagValues)
+            {
+                if ((flags & value) == value)
+                {
+                    switch (value)
+                    {
+                        case IndexerFlags.G_DoubleUpload:
+                        case IndexerFlags.G_Freeleech:
+                        case IndexerFlags.PTP_Approved:
+                        case IndexerFlags.PTP_Golden:
+                        case IndexerFlags.HDB_Internal:
+                            score += 2;
+                            break;
+                        case IndexerFlags.G_Halfleech:
+                            score += 1;
+                            break;
+                    }
+                }
+            }
+
+            return score;
         }
     }
 }

@@ -10,22 +10,7 @@ module.exports = NzbDroneCell.extend({
         var infoUrl = this.model.get('infoUrl');
 
         var flags = this.model.get("indexerFlags");
-        if (flags) {
-          _.each(flags, function(flag){
-            var addon = "";
-
-            switch (flag) {
-              case "PTP_Golden":
-              addon = "🍿";
-              break;
-              case "PTP_Approved":
-              addon = "✔";
-              break;
-            }
-
-            title += addon;
-          });
-        }
+        
 
         if (infoUrl) {
             this.$el.html('<a href="{0}">{1}</a>'.format(infoUrl, title));

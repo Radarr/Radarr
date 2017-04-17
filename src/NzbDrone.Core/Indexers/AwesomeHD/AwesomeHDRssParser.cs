@@ -69,6 +69,12 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                 {
                     var id = torrent.Id;
                     var title = $"{torrent.Name}.{torrent.Year}.{torrent.Resolution}.{torrent.Media}.{torrent.Encoding}.{torrent.AudioFormat}-{torrent.ReleaseGroup}";
+                    IndexerFlags flags = 0;
+
+                    if (torrent.Freeleech == "1.00")
+                    {
+                        flags |= IndexerFlags.G_Freeleech;
+                    }
 
                     torrentInfos.Add(new TorrentInfo()
                     {
@@ -80,7 +86,8 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                         Seeders = int.Parse(torrent.Seeders),
                         Peers = int.Parse(torrent.Leechers) + int.Parse(torrent.Seeders),
                         PublishDate = torrent.Time.ToUniversalTime(),
-                        ImdbId = int.Parse(torrent.ImdbId.Substring(2))
+                        ImdbId = int.Parse(torrent.ImdbId.Substring(2)),
+                        IndexerFlags = flags,
                     });
                 }
             }

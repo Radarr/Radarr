@@ -46,20 +46,22 @@ namespace NzbDrone.Core.Configuration
         int RssSyncInterval { get; set; }
         int MinimumAge { get; set; }
 
-	int AvailabilityDelay { get; set; }
+        bool PreferIndexerFlags { get; set; }
 
-	bool AllowHardcodedSubs { get; set; }
-	string WhitelistedHardcodedSubs { get; set; }
+		int AvailabilityDelay { get; set; }
+
+		bool AllowHardcodedSubs { get; set; }
+		string WhitelistedHardcodedSubs { get; set; }
 
         int NetImportSyncInterval { get; set; }
-	string ListSyncLevel { get; set; }
-	string ImportExclusions { get; set; }
+		string ListSyncLevel { get; set; }
+		string ImportExclusions { get; set; }
         string TraktAuthToken { get; set; }
         string TraktRefreshToken { get; set; }
         int TraktTokenExpiry { get; set; }
-	string NewTraktAuthToken { get; set; }
-	string NewTraktRefreshToken {get; set; }
-	int NewTraktTokenExpiry { get; set; }
+		string NewTraktAuthToken { get; set; }
+		string NewTraktRefreshToken {get; set; }
+		int NewTraktTokenExpiry { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }
