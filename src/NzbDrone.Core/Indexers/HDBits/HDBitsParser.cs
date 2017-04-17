@@ -53,6 +53,18 @@ namespace NzbDrone.Core.Indexers.HDBits
                 var id = result.Id;
                 var internalRelease = (result.TypeOrigin == 1 ? true : false);
 
+                IndexerFlags flags = 0;
+
+                if (result.FreeLeech == "yes")
+                {
+                    flags |= IndexerFlags.G_Freeleech;
+                }
+
+                if (internalRelease)
+                {
+                    flags |= IndexerFlags.HDB_Internal;
+                }
+
                 torrentInfos.Add(new HDBitsInfo()
                 {
                     Guid = string.Format("HDBits-{0}", id),
@@ -65,7 +77,8 @@ namespace NzbDrone.Core.Indexers.HDBits
                     Peers = result.Leechers + result.Seeders,
                     PublishDate = result.Added.ToUniversalTime(),
                     Internal = internalRelease,
-                    ImdbId = result.ImdbInfo?.Id ?? 0
+                    ImdbId = result.ImdbInfo?.Id ?? 0,
+                    IndexerFlags = flags
                 });
             }
 

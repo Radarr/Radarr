@@ -50,6 +50,7 @@ var Collection = PagableCollection.extend({
                   case "G_DoubleUpload":
                   case "PTP_Approved":
                   case "PTP_Golden":
+                  case "HDB_Internal":
                   weight += 2;
                   break;
                 }

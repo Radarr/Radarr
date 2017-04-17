@@ -221,6 +221,7 @@ namespace NzbDrone.Core.DecisionEngine
                         case IndexerFlags.G_Freeleech:
                         case IndexerFlags.PTP_Approved:
                         case IndexerFlags.PTP_Golden:
+                        case IndexerFlags.HDB_Internal:
                             score += 2;
                             break;
                         case IndexerFlags.G_Halfleech:
