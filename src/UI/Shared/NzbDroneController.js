@@ -25,7 +25,7 @@ module.exports = Marionette.AppRouter.extend({
 
         if (window.NzbDrone.Analytics && window.Piwik) {
             try {
-                var piwik = window.Piwik.getTracker(window.location.protocol + '//piwik.nzbdrone.com/piwik.php', 1);
+                var piwik = window.Piwik.getTracker(window.location.protocol + '//radarr.video/piwik/piwik.php', 1);
                 piwik.setReferrerUrl('');
                 piwik.setCustomUrl('http://local' + window.location.pathname);
                 piwik.setCustomVariable(1, 'version', window.NzbDrone.Version, 'page');
@@ -60,7 +60,7 @@ module.exports = Marionette.AppRouter.extend({
         window.localStorage.clear();
         Config.setValue("pageSize", pageSize);
         // Remove above when out of pre-release :)
-        
+
         this.pendingUpdate = true;
     },
 
