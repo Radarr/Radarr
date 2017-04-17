@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public string ReleaseName { get; set; }
         public bool Checked { get; set; }
         public bool GoldenPopcorn { get; set; }
+        public string FreeleechType { get; set; }
     }
 
     public class Movie
