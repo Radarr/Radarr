@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Tv
 
         public override string ToString()
         {
-            return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());
+            return string.Format("[{0}][{1} ({2})]", ImdbId, Title.NullSafe(), Year.NullSafe());
         }
     }
 
