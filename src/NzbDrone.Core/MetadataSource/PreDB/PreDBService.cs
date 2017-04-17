@@ -62,6 +62,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
         private List<PreDBResult> GetResults(string category = "", string search = "")
         {
+            return new List<PreDBResult>();
             var builder = new HttpRequestBuilder("http://predb.me").AddQueryParam("rss", "1");
             if (category.IsNotNullOrWhiteSpace())
             {
