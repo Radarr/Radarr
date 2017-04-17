@@ -62,6 +62,7 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
         private List<PreDBResult> GetResults(string category = "", string search = "")
         {
+            return new List<PreDBResult>();
             var builder = new HttpRequestBuilder("http://predb.me").AddQueryParam("rss", "1");
             if (category.IsNotNullOrWhiteSpace())
             {
@@ -171,10 +172,12 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 
         public bool HasReleases(Movie movie)
         {
-            var results = GetResults("movies", movie.Title);
+		try
+		{
+			var results = GetResults("movies", movie.Title);
 
-            foreach (PreDBResult result in results)
-            {
+			foreach (PreDBResult result in results)
+			{
 				var parsed = Parser.Parser.ParseMovieTitle(result.Title);
 				if (parsed == null)
 				{
@@ -182,13 +185,20 @@ namespace NzbDrone.Core.MetadataSource.PreDB
 				}
 				var match = _parsingService.Map(parsed, "", new MovieSearchCriteria { Movie = movie });
 
-                if (match != null && match.Movie != null && match.Movie.Id == movie.Id)
-                {
-                    return true;
-                }
-            }
+				if (match != null && match.Movie != null && match.Movie.Id == movie.Id)
+				{
+					return true;
+				}
+			}
 
-            return false;
+			return false;	
+		}
+		catch (Exception ex)
+		{
+			_logger.Warn(ex, "Error while looking on predb.me.");
+			return false;
+		}
+            
         }
     }
 }

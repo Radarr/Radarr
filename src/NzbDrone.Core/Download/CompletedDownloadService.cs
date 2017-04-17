@@ -129,7 +129,14 @@ namespace NzbDrone.Core.Download
             {
                 var statusMessages = importResults
                     .Where(v => v.Result != ImportResultType.Imported)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors))
+                    .Select(v =>
+                    {
+                        if (v.ImportDecision.LocalMovie == null)
+	                    {
+                            return new TrackedDownloadStatusMessage("", v.Errors);
+	                    }
+                        return new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors);
+                    })
                     .ToArray();
 
                 trackedDownload.Warn(statusMessages);

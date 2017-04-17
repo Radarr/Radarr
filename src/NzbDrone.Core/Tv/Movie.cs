@@ -98,12 +98,18 @@ namespace NzbDrone.Core.Tv
 				return true;
 			}
 
-			return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
+            if (MinimumAvailabilityDate == DateTime.MinValue || MinimumAvailabilityDate == DateTime.MaxValue)
+            {
+                return DateTime.Now >= MinimumAvailabilityDate;
+            }
+
+
+            return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
         }
 
         public override string ToString()
         {
-            return string.Format("[{0}][{1}]", ImdbId, Title.NullSafe());
+            return string.Format("[{0}][{1} ({2})]", ImdbId, Title.NullSafe(), Year.NullSafe());
         }
     }
 

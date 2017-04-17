@@ -23,6 +23,9 @@ if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
   DAY="`date +%d`"
 else
   VERSION=$1
+  BRANCH=$2
+  BRANCH=${BRANCH#refs\/heads\/}
+  BRANCH=${BRANCH//\//-}
 fi
 outputFolder='./_output'
 outputFolderMono='./_output_mono'
@@ -34,35 +37,41 @@ rm $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr
 chmod +x $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2
 mv $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2 $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr >& error.log
 
-cp -r $outputFolder/ Radarr_Windows_$VERSION
-cp -r $outputFolderMono/ Radarr_Mono_$VERSION
-cp -r $outputFolderOsxApp/ Radarr_OSX_$VERSION
-
 if [ $runtime = "dotnet" ] ; then
   ./7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*
   ./7za.exe a -ttar -so Radarr_Mono_$VERSION.tar ./Radarr_Mono_$VERSION/* | ./7za.exe a -si Radarr_Mono_$VERSION.tar.gz
   ./7za.exe a -ttar -so Radarr_OSX_$VERSION.tar ./_output_osx/* | ./7za.exe a -si Radarr_OSX_$VERSION.tar.gz
   ./7za.exe a -ttar -so Radarr_OSX_App_$VERSION.tar ./_output_osx_app/* | ./7za.exe a -si Radarr_OSX_App_$VERSION.tar.gz
 else
-zip -r Radarr_Windows_$VERSION.zip Radarr_Windows_$VERSION/* >& /dev/null
-zip -r Radarr_Mono_$VERSION.zip Radarr_Mono_$VERSION/* >& /dev/null #TODO update for tar.gz
-zip -r Radarr_OSX_$VERSION_App.zip Radarr_OSX_$VERSION/* >& /dev/null
+  cp -r $outputFolder/ Radarr
+  zip -r Radarr.$BRANCH.$VERSION.windows.zip Radarr
+  rm -rf Radarr
+  cp -r $outputFolderMono/ Radarr
+  tar -zcvf Radarr.$BRANCH.$VERSION.linux.tar.gz Radarr
+  rm -rf Radarr
+  cp -r $outputFolderOsx/ Radarr
+  tar -zcvf Radarr.$BRANCH.$VERSION.osx.tar.gz Radarr
+  rm -rf Radarr
+  #TODO update for tar.gz
+
+  cd _output_osx_app/
+  zip -r ../Radarr.$BRANCH.$VERSION.osx-app.zip *
 fi
-ftp -n ftp.leonardogalli.ch << END_SCRIPT
-passive
-quote USER $FTP_USER
-quote PASS $FTP_PASS
-mkdir builds
-cd builds
-mkdir $YEAR
-cd $YEAR
-mkdir $MONTH
-cd $MONTH
-mkdir $DAY
-cd $DAY
-binary
-put Radarr_Windows_$VERSION.zip
-put Radarr_Mono_$VERSION.zip
-put Radarr_OSX_$VERSION.zip
-quit
-END_SCRIPT
+# ftp -n ftp.leonardogalli.ch << END_SCRIPT
+# passive
+# quote USER $FTP_USER
+# quote PASS $FTP_PASS
+# mkdir builds
+# cd builds
+# mkdir $YEAR
+# cd $YEAR
+# mkdir $MONTH
+# cd $MONTH
+# mkdir $DAY
+# cd $DAY
+# binary
+# put Radarr_Windows_$VERSION.zip
+# put Radarr_Mono_$VERSION.zip
+# put Radarr_OSX_$VERSION.zip
+# quit
+# END_SCRIPT

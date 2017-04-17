@@ -9,6 +9,9 @@ module.exports = NzbDroneCell.extend({
         var title = this.model.get('title');
         var infoUrl = this.model.get('infoUrl');
 
+        var flags = this.model.get("indexerFlags");
+        
+
         if (infoUrl) {
             this.$el.html('<a href="{0}">{1}</a>'.format(infoUrl, title));
         } else {

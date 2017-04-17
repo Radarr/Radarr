@@ -1277,6 +1277,7 @@
     <Compile Include="Housekeeping\Housekeepers\FixWronglyMatchedMovieFiles.cs" />
     <Compile Include="Datastore\Migration\135_add_haspredbentry_to_movies.cs" />
     <Compile Include="MediaFiles\Commands\RenameMovieFolderCommand.cs" />
+    <Compile Include="Tv\QueryExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

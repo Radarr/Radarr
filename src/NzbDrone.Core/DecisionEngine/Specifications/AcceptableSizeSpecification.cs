@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -121,6 +121,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             var qualityDefinition = _qualityDefinitionService.Get(quality);
+		if (subject.Movie.Runtime == 0)
+		{
+			_logger.Info("{0} has no runtime information using median movie runtime of 110 minutes.", subject.Movie);
+			subject.Movie.Runtime = 110;
+		}
             if (qualityDefinition.MinSize.HasValue)
             {
                 var minSize = qualityDefinition.MinSize.Value.Megabytes();

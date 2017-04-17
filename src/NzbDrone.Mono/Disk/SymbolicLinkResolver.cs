@@ -6,23 +6,23 @@ using NLog;
 
 namespace NzbDrone.Mono.Disk
 {
-    public interface ISymbolicLinkResolver
+    public interface ISymbLinkResolver
     {
-        string GetCompleteRealPath(string path);
+        string GetCompletePath(string path);
     }
 
     // Mono's own implementation doesn't handle exceptions very well.
     // All of this code was copied from mono with minor changes.
-    public class SymbolicLinkResolver : ISymbolicLinkResolver
+    public class SymbLinkResolver : ISymbLinkResolver
     {
         private readonly Logger _logger;
 
-        public SymbolicLinkResolver(Logger logger)
+        public SymbLinkResolver(Logger logger)
         {
             _logger = logger;
         }
 
-        public string GetCompleteRealPath(string path)
+        public string GetCompletePath(string path)
         {
             if (path == null) return null;
 

@@ -27,6 +27,7 @@ test:
 
 artifacts:
   - path: '_artifacts\*.zip'
+  - path: '_artifacts\*.exe'
   - path: '_artifacts\*.tar.gz'
 
 cache:
@@ -36,9 +37,17 @@ cache:
 pull_requests:
   do_not_increment_build_number: true
 
+on_failure:
+  - ps: Get-ChildItem .\_artifacts\*.zip | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+  - ps: Get-ChildItem .\_artifacts\*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+  - ps: Get-ChildItem .\_artifacts\*.tar.gz | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+
 only_commits:
   files:
     - src/
     - osx/
     - gulp/
     - logo/
+    - setup/
+    - appveyor.yml
+    - build-appveyor.cake

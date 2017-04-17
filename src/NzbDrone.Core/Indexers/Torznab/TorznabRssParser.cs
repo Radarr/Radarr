@@ -46,6 +46,9 @@ namespace NzbDrone.Core.Indexers.Torznab
                     torrentInfo.ImdbId = int.Parse(GetImdbId(item).Substring(2));
                 }
             }
+
+            torrentInfo.IndexerFlags = GetFlags(item);
+
             return torrentInfo;
         }
 
@@ -151,6 +154,32 @@ namespace NzbDrone.Core.Indexers.Torznab
             return base.GetPeers(item);
         }
 
+		protected IndexerFlags GetFlags(XElement item)
+		{
+			IndexerFlags flags = 0;
+
+			var downloadFactor = TryGetFloatTorznabAttribute(item, "downloadvolumefactor", 1);
+
+            var uploadFactor = TryGetFloatTorznabAttribute(item, "uploadvolumefactor", 1);
+
+            if (uploadFactor == 2)
+            {
+                flags |= IndexerFlags.G_DoubleUpload;
+            }
+
+            if (downloadFactor == 0.5)
+            {
+                flags |= IndexerFlags.G_Halfleech;
+            }
+
+            if (downloadFactor == 0.0)
+            {
+                flags |= IndexerFlags.G_Freeleech;
+            }
+
+            return flags;
+		}
+
         protected string TryGetTorznabAttribute(XElement item, string key, string defaultValue = "")
         {
             var attr = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.CurrentCultureIgnoreCase));
@@ -158,6 +187,20 @@ namespace NzbDrone.Core.Indexers.Torznab
             if (attr != null)
             {
                 return attr.Attribute("value").Value;
+            }
+
+            return defaultValue;
+        }
+
+		protected float TryGetFloatTorznabAttribute(XElement item, string key, float defaultValue = 0)
+        {
+            var attr = TryGetTorznabAttribute(item, key, defaultValue.ToString());
+
+            float result = 0;
+
+            if (float.TryParse(attr, out result))
+            {
+                return result;
             }
 
             return defaultValue;

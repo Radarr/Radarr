@@ -120,7 +120,7 @@ namespace NzbDrone.Api.Movie
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount
-                //SizeOnDisk
+                SizeOnDisk = size,
                 Status = model.Status,
                 Overview = model.Overview,
                 //NextAiring
@@ -138,7 +138,7 @@ namespace NzbDrone.Api.Movie
                 IsAvailable = model.IsAvailable(),
                 FolderName = model.FolderName(),
 
-                SizeOnDisk = size,
+                //SizeOnDisk = size,
 
                 Runtime = model.Runtime,
                 LastInfoSync = model.LastInfoSync,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 using NzbDrone.Core.Indexers;
 
@@ -25,6 +25,8 @@ namespace NzbDrone.Core.Parser.Model
         public string Container { get; set; }
         public string Codec { get; set; }
         public string Resolution { get; set; }
+
+	public IndexerFlags IndexerFlags { get; set; }
 
         public int Age
         {
@@ -91,4 +93,15 @@ namespace NzbDrone.Core.Parser.Model
             }
         }
     }
+
+	[Flags]
+	public enum IndexerFlags
+	{
+		G_Freeleech = 1, //General
+		G_Halfleech = 2, //General, only 1/2 of download counted
+		G_DoubleUpload = 4, //General
+		PTP_Golden = 8, //PTP
+		PTP_Approved = 16, //PTP
+        HDB_Internal = 32 //HDBits
+	}
 }
