@@ -93,10 +93,9 @@ namespace NzbDrone.Core.MediaFiles
         public void Clean(Movie movie, List<string> filesOnDisk)
         {
             var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-
             var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
 
-            foreach(var movieFile in movieFiles)
+            foreach (var movieFile in movieFiles)
             {
                 var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
@@ -108,15 +107,6 @@ namespace NzbDrone.Core.MediaFiles
                         _mediaFileService.Delete(movieFile, DeleteMediaFileReason.MissingFromDisk);
                         continue;
                     }
-
-                    //var localMovie = _parsingService.GetLocalMovie(movieFile.Path, movie);
-
-                    //if (localMovie == null)
-                    //{
-                    //    _logger.Debug("File [{0}] parsed episodes has changed, removing from db", localMovie.Path);
-                    //    _mediaFileService.Delete(localMovie);
-                    //    continue;
-                    //}
                 }
 
                 catch (Exception ex)
