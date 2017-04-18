@@ -40,6 +40,7 @@ module.exports = Backgrid.Cell.extend({
               case "PTP_Approved":
               addon = "✔";
               title = "Approved by PTP"
+              break;
               case "HDB_Internal":
               addon = "⭐️";
               title = "HDBits Internal";
