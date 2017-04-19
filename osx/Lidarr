@@ -4,8 +4,8 @@
 DIR=$(cd "$(dirname "$0")"; pwd)
 
 #change these values to match your app
-EXE_PATH="$DIR/NzbDrone.exe"
-APPNAME="Sonarr"
+EXE_PATH="$DIR/Lidarr.exe"
+APPNAME="Lidarr"
  
 #set up environment
 if [[ -x '/opt/local/bin/mono' ]]; then
