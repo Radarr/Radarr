@@ -287,6 +287,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
+    <Compile Include="Datastore\Migration\111_setup_music.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -781,6 +782,7 @@
     <Compile Include="MediaFiles\RenameEpisodeFilePreview.cs" />
     <Compile Include="MediaFiles\RenameEpisodeFileService.cs" />
     <Compile Include="MediaFiles\SameFilenameException.cs" />
+    <Compile Include="MediaFiles\TrackFile.cs" />
     <Compile Include="MediaFiles\UpdateEpisodeFileService.cs" />
     <Compile Include="MediaFiles\UpgradeMediaFileService.cs" />
     <Compile Include="Messaging\Commands\BackendCommandAttribute.cs" />
@@ -837,6 +839,9 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewSeries.cs" />
+    <Compile Include="Music\Album.cs" />
+    <Compile Include="Music\Artist.cs" />
+    <Compile Include="Music\Track.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />

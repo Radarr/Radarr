@@ -34,6 +34,7 @@ using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -90,6 +91,29 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(e => e.HasFile)
                   .Relationship()
                   .HasOne(episode => episode.EpisodeFile, episode => episode.EpisodeFileId);
+
+            Mapper.Entity<Artist>().RegisterModel("Artist")
+                  .Ignore(s => s.RootFolderPath)
+                  .Relationship()
+                  .HasOne(s => s.Profile, s => s.ProfileId);
+
+            Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
+                  .Ignore(f => f.Path)
+                  .Relationships.AutoMapICollectionOrComplexProperties()
+                  .For("Tracks")
+                  .LazyLoad(condition: parent => parent.Id > 0,
+                            query: (db, parent) => db.Query<Track>().Where(c => c.ItunesTrackId == parent.Id).ToList())
+                  .HasOne(file => file.Artist, file => file.AlbumId);
+
+            Mapper.Entity<Track>().RegisterModel("Tracks")
+                  //.Ignore(e => e.SeriesTitle)
+                  .Ignore(e => e.Album)
+                  .Ignore(e => e.HasFile)
+                  .Relationship()
+                  .HasOne(track => track.TrackFile, track => track.TrackFileId);
+
+            Mapper.Entity<Compilation>().RegisterModel("Compilation")
+                   .Relationships.AutoMapICollectionOrComplexProperties(); //TODO: Figure out how to map this Table
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.Weight);
