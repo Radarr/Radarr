@@ -44,13 +44,6 @@ namespace NzbDrone.Core.Organizer
         {
             _buildFileNames = buildFileNames;
 
-            _movie = new Movie
-            {
-                Title = "The Movie Title",
-                Year = 2010,
-                ImdbId = "tt0066921"
-            };
-
             _standardSeries = new Series
             {
                 SeriesType = SeriesTypes.Standard,
@@ -122,11 +115,20 @@ namespace NzbDrone.Core.Organizer
             _movieFile = new MovieFile
             {
                 Quality = new QualityModel(Quality.Bluray1080p, new Revision(2)),
-                RelativePath = "Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE.mkv",
-                SceneName = "Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE",
-                ReleaseGroup = "RlsGrp",
+                RelativePath = "The.Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE.mkv",
+                SceneName = "The.Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE",
+                ReleaseGroup = "EVOLVE",
                 MediaInfo = mediaInfo,
                 Edition = "Ultimate extended edition",
+            };
+
+            _movie = new Movie
+            {
+                Title = "The Movie: Title",
+                Year = 2010,
+                ImdbId = "tt0066921",
+                MovieFile = _movieFile,
+                MovieFileId = 1,
             };
 
             _singleEpisodeFile = new EpisodeFile

@@ -119,11 +119,14 @@ namespace NzbDrone.Core.MediaFiles
 
             _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
 
-            var oldMoviePath = new OsPath(movieFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
+            var oldMoviePath = movie.Path;
 
-            var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
+            var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.GetParentPath();
             movie.Path = newMoviePath;
-		_movieService.UpdateMovie(movie);
+            if (oldMoviePath != newMoviePath)
+            {
+                _movieService.UpdateMovie(movie);
+            }
 
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
 
@@ -143,7 +146,10 @@ namespace NzbDrone.Core.MediaFiles
 
             if(oldMoviePath != newMoviePath)
             {
-                _recycleBinProvider.DeleteFolder(oldMoviePath);
+                if (_diskProvider.GetFiles(oldMoviePath, SearchOption.AllDirectories).Count() == 0)
+                {
+                    _recycleBinProvider.DeleteFolder(oldMoviePath);
+                }
             }
 
             return movieFile;

@@ -13,6 +13,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -32,6 +33,9 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMoveMovieFiles _movieFileMover;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _filenameBuilder;
+        private readonly IConfigService _configService;
+        private readonly IDiskProvider _diskProvider;
+        private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
     
         public RenameMovieFileService(IMovieService movieService,
@@ -39,6 +43,9 @@ namespace NzbDrone.Core.MediaFiles
                                       IMoveMovieFiles movieFileMover,
                                       IEventAggregator eventAggregator,
                                       IBuildFileNames filenameBuilder,
+                                      IConfigService configService,
+                                      IRecycleBinProvider recycleBinProvider,
+                                      IDiskProvider diskProvider,
                                       Logger logger)
         {
             _movieService = movieService;
@@ -46,6 +53,9 @@ namespace NzbDrone.Core.MediaFiles
             _movieFileMover = movieFileMover;
             _eventAggregator = eventAggregator;
             _filenameBuilder = filenameBuilder;
+            _configService = configService;
+            _recycleBinProvider = recycleBinProvider;
+            _diskProvider = diskProvider;
             _logger = logger;
         }
 
@@ -114,23 +124,43 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-	public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
-	{
-		var newFolder = _filenameBuilder.BuildMoviePath(movie);
-		if (newFolder != movie.Path)
+		public void RenameMoviePath(Movie movie, bool shouldRenameFiles = true)
 		{
-			_logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
-			if (shouldRenameFiles)
-			{
-				var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-				_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-				RenameFiles(movieFiles, movie);
-				_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);	
+			var newFolder = _filenameBuilder.BuildMoviePath(movie);
+	        if (newFolder != movie.Path && movie.PathState == MoviePathState.Dynamic)
+	        {
+	                
+	            if (!_configService.AutoRenameFolders)
+	            {
+	                _logger.Info("{0}'s movie should be {1} according to your naming config.", movie, newFolder);
+	                return;
+	            }
+	    
+	             _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
+				if (shouldRenameFiles)
+				{
+					var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+					_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
+					RenameFiles(movieFiles, movie);
+					_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);	
+				}
+                var oldFolder = movie.Path;
+				movie.Path = newFolder;
+				_movieService.UpdateMovie(movie);
+
+                if (_diskProvider.GetFiles(oldFolder, SearchOption.AllDirectories).Count() == 0)
+                {
+                    _recycleBinProvider.DeleteFolder(oldFolder);
+                }
+
+                
 			}
-			movie.Path = newFolder;
-			_movieService.UpdateMovie(movie);
+
+            if (movie.PathState == MoviePathState.StaticOnce)
+            {
+                movie.PathState = MoviePathState.Dynamic;
+            }
 		}
-	}
 
         public void Execute(RenameMovieFilesCommand message)
         {
