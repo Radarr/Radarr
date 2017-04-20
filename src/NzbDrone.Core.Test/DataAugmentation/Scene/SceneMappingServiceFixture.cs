@@ -9,6 +9,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 using FluentAssertions;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.DataAugmentation;
 
 namespace NzbDrone.Core.Test.DataAugmentation.Scene
 {
