@@ -93,13 +93,19 @@ namespace NzbDrone.Core.MediaFiles
             
         }
 
-        private void RenameFiles(List<MovieFile> movieFiles, Movie movie)
+        private void RenameFiles(List<MovieFile> movieFiles, Movie movie, string oldMoviePath = null)
         {
             var renamed = new List<MovieFile>();
 
-            foreach(var movieFile in movieFiles)
+            if (oldMoviePath == null)
             {
-                var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
+                oldMoviePath = movie.Path;
+            }
+
+            foreach (var movieFile in movieFiles)
+            {
+                var oldMovieFilePath = Path.Combine(oldMoviePath, movieFile.RelativePath);
+                movieFile.Path = oldMovieFilePath;
 
                 try
                 {
@@ -113,13 +119,13 @@ namespace NzbDrone.Core.MediaFiles
                     _logger.Debug("Renamed movie file: {0}", movieFile);
 
                 }
-                catch(SameFilenameException ex)
+                catch (SameFilenameException ex)
                 {
                     _logger.Debug("File not renamed, source and destination are the same: {0}", ex.Filename);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    _logger.Error(ex, "Failed to rename file: " + movieFilePath);
+                    _logger.Error(ex, "Failed to rename file: " + oldMovieFilePath);
                 }
             }
         }
@@ -137,15 +143,17 @@ namespace NzbDrone.Core.MediaFiles
 	            }
 	    
 	             _logger.Info("{0}'s movie folder changed to: {1}", movie, newFolder);
+                var oldFolder = movie.Path;
+                movie.Path = newFolder;
+
 				if (shouldRenameFiles)
 				{
 					var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
 					_logger.ProgressInfo("Renaming movie files for {0}", movie.Title);
-					RenameFiles(movieFiles, movie);
+					RenameFiles(movieFiles, movie, oldFolder);
 					_logger.ProgressInfo("All movie files renamed for {0}", movie.Title);	
 				}
-                var oldFolder = movie.Path;
-				movie.Path = newFolder;
+
 				_movieService.UpdateMovie(movie);
 
                 if (_diskProvider.GetFiles(oldFolder, SearchOption.AllDirectories).Count() == 0)

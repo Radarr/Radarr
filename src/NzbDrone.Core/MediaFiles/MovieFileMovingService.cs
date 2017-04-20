@@ -121,7 +121,7 @@ namespace NzbDrone.Core.MediaFiles
 
             var oldMoviePath = movie.Path;
 
-            var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.GetParentPath();
+            var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
             movie.Path = newMoviePath;
             if (oldMoviePath != newMoviePath)
             {

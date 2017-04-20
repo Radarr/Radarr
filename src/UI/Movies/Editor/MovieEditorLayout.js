@@ -165,7 +165,7 @@ module.exports = Marionette.Layout.extend({
     onRender : function() {
       	//this._showToolbar();
        	//this._showTable();
-       	//this._showPager(); 
+       	//this._showPager();
 		    //if (window.shownOnce){
 		    //	this.movieCollection.fetch();
 		    //}
