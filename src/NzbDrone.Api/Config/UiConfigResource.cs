@@ -15,7 +15,14 @@ namespace NzbDrone.Api.Config
         public string TimeFormat { get; set; }
         public bool ShowRelativeDates { get; set; }
 
+        //AllFlicks
+	public string NetflixCountryCode{ get; set; }
+	public string EnableAllFlicks { get; set; }
+	public string IgnoreNetflixTitles { get; set; }
+	public string MonitorLeaveNetflix { get; set; }
+
         public bool EnableColorImpairedMode { get; set; }
+
     }
 
     public static class UiConfigResourceMapper
@@ -31,6 +38,11 @@ namespace NzbDrone.Api.Config
                 LongDateFormat = model.LongDateFormat,
                 TimeFormat = model.TimeFormat,
                 ShowRelativeDates = model.ShowRelativeDates,
+
+		NetflixCountryCode = model.NetflixCountryCode,
+		EnableAllFlicks = model.EnableAllFlicks,
+		IgnoreNetflixTitles = model.IgnoreNetflixTitles,
+		MonitorLeaveNetflix = model.MonitorLeaveNetflix,
 
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
             };

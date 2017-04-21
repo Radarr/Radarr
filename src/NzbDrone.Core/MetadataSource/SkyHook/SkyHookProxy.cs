@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.IO;
 using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
@@ -11,13 +12,40 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.PreDB;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Tv;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
+using System.Text;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
+    public class Rootobject
+    {
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public Datum[] data { get; set; }
+    }
+
+    public class Datum
+    {
+        public string box_art { get; set; }
+        public string title { get; set; }
+        public string year { get; set; }
+        public string genre { get; set; }
+        public string rating { get; set; }
+        public string available { get; set; }
+        public string cast { get; set; }
+        public string director { get; set; }
+        public string genre2 { get; set; }
+        public string genre3 { get; set; }
+        public string slug { get; set; }
+    }
+
     public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie
     {
         private readonly IHttpClient _httpClient;
@@ -26,15 +54,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly ITmdbConfigService _configService;
+        private readonly IConfigService _settingsService;
         private readonly IMovieService _movieService;
         private readonly IPreDBService _predbService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, IPreDBService predbService, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, IConfigService settingsService, IPreDBService predbService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
             _movieBuilder = requestBuilder.TMDB;
             _configService = configService;
+            _settingsService = settingsService;
             _movieService = movieService;
             _predbService = predbService;
             _logger = logger;
@@ -138,6 +168,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     movie.AlternativeTitles.Add(alternativeTitle.title);
                 }
             }
+            movie.AlternativeTitles.Add(resource.title);
+            movie.AlternativeTitles = movie.AlternativeTitles.Distinct().ToList();
 
             movie.TmdbId = TmdbId;
             movie.ImdbId = resource.imdb_id;
@@ -307,6 +339,113 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
+            string enableAllFlicks = _settingsService.EnableAllFlicks;
+            if (enableAllFlicks=="disabledKeep")
+	        {
+	            enableAllFlicks="disabled";
+	        }
+            if ((enableAllFlicks!="disabled")&&((enableAllFlicks=="simple")||(enableAllFlicks=="complex")))
+            {
+                string countryCode = _settingsService.NetflixCountryCode;
+                string referer;
+                switch (countryCode)
+                {
+                    case "ca":
+                        {
+                            referer = "https://www.allflicks.net/canada/";
+                            break;
+                        }
+                    case "us":
+                    default:
+                        {
+                            referer = "https://www.allflicks.net/";
+                            break;
+                        }
+                }
+                if (enableAllFlicks=="simple")
+                {
+                    foreach (var title in movie.AlternativeTitles)
+                    {
+                        //using (WebClient client = new WebClient())
+                        //{
+                        string tempTitle = referer + "title/" + ToUrlSlug(title, true);
+                        for (int i = -1; i < 2; i++)
+                        {
+                            int tempYear = movie.Year + i;
+                            movie.AllFlicksUrl = tempTitle + "-" + tempYear.ToString();
+                            string r1;
+                            using (WebClient client = new WebClient())
+                            {
+                                r1 = client.DownloadString(movie.AllFlicksUrl);
+                            }
+                            if (r1.Contains("Nothing here..."))
+                                movie.AllFlicksUrl = null;
+                            else
+                                break;
+                            }
+                        //}
+                        if (movie.AllFlicksUrl != null)
+                            break;
+                    }
+                }
+                else
+                {
+                    int now_year = DateTime.Now.Year;
+                    string url = "https://www.allflicks.net/wp-content/themes/responsive/processing/processing_" + countryCode + ".php";
+                    string cookIdent;
+                    using (WebClient client = new WebClient())
+                    {
+                        string htmlCode = client.DownloadString("https://allflicks.net");
+                        htmlCode = htmlCode.Replace(" ", String.Empty);
+                        cookIdent = "identifier=" + getBetween(htmlCode, "document.cookie=\"identifier=", "\"+expires+\";path=/;domain=.allflicks.net\"");
+                    }
+                    int length = 100;
+                    int start = 0;
+                    foreach (var title in movie.AlternativeTitles)
+                    {
+                        string titleForNetflix = title;
+                        int numFound = 1;
+                        while (start < numFound && !(movie.Year > now_year))
+                        {
+                            string postData = "draw=4&columns[0][data]=box_art&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=title&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=true&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=year&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=true&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=genre&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=true&columns[3][search][value]=&columns[3][search][regex]=false&columns[4][data]=rating&columns[4][name]=&columns[4][searchable]=true&columns[4][orderable]=true&columns[4][search][value]=&columns[4][search][regex]=false&columns[5][data]=available&columns[5][name]=&columns[5][searchable]=true&columns[5][orderable]=true&columns[5][search][value]=&columns[5][search][regex]=false&columns[6][data]=director&columns[6][name]=&columns[6][searchable]=true&columns[6][orderable]=true&columns[6][search][value]=&columns[6][search][regex]=false&columns[7][data]=cast&columns[7][name]=&columns[7][searchable]=true&columns[7][orderable]=true&columns[7][search][value]=&columns[7][search][regex]=false&order[0][column]=5&order[0][dir]=desc&start=" + start.ToString() + "&length=" + length.ToString() + "&search[value]=" + titleForNetflix + "&search[regex]=false&movies=true&shows=false&documentaries=true&rating=netflix&min=1900&max=" + now_year.ToString();
+                            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+                            HttpWebRequest rquest = (HttpWebRequest)WebRequest.Create(url);
+                            rquest.Method = "POST";
+                            rquest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                            rquest.Headers.Add("Cookie", cookIdent);
+                            rquest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+                            using (var st = rquest.GetRequestStream())
+                                st.Write(byteArray, 0, byteArray.Length);
+                            var rsponse = (HttpWebResponse)rquest.GetResponse();
+                            var rsponseString = new StreamReader(rsponse.GetResponseStream()).ReadToEnd();
+                            rsponse.Close();
+                            Rootobject j1 = Newtonsoft.Json.JsonConvert.DeserializeObject<Rootobject>(rsponseString);
+                            numFound = j1.recordsFiltered;
+                            if (!(numFound > 0))
+                                break;
+                            foreach (var result in j1.data)
+                            {
+                                if (result.title.ToString().ToUpper() == titleForNetflix.ToUpper())
+                                {
+                                    if ((Convert.ToInt32(result.year) <= movie.Year + 1) && (Convert.ToInt32(result.year) >= movie.Year - 1))
+                                    {
+                                        movie.AllFlicksUrl = referer + "title/" + result.slug;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        movie.AllFlicksUrl = null;
+                                    }
+                                }
+                            }
+                            start = start + length;
+                        }
+                        if (movie.AllFlicksUrl != null)
+                            break;
+                    }
+                }
+            }
             return movie;
         }
 
@@ -725,6 +864,57 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 default:
                     return MediaCoverTypes.Unknown;
             }
+        }
+
+        public static string getBetween(string strSource, string strStart, string strEnd)
+        {
+            int Start, End;
+            if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+            {
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd, Start);
+                return strSource.Substring(Start, End - Start);
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public static string ToUrlSlug(string value, bool allflicks = false)
+        {
+            //First to lower case
+            value = value.ToLowerInvariant();
+
+            //Remove all accents
+            var bytes = Encoding.GetEncoding("ISO-8859-8").GetBytes(value);
+            value = Encoding.ASCII.GetString(bytes);
+
+            //Replace spaces
+            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
+
+            if (allflicks)
+            {
+                //Replace & with and
+                value = Regex.Replace(value, @"&", "and", RegexOptions.Compiled);
+
+                //Replace / with -
+                value = Regex.Replace(value, @"/", "-", RegexOptions.Compiled);
+
+                //Replace ' with -
+                value = Regex.Replace(value, @"'", "-", RegexOptions.Compiled);
+            }
+
+            //Remove invalid chars
+            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
+
+            //Trim dashes from end
+            value = value.Trim('-', '_');
+
+            //Replace double occurences of - or _
+            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
+
+            return value;
         }
 
         public Movie MapMovieToTmdbMovie(Movie movie)

@@ -11,6 +11,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Tv.Events;
 
@@ -25,6 +26,7 @@ namespace NzbDrone.Core.Tv
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
         private readonly Logger _logger;
+        private readonly IConfigService _settingsService;
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
@@ -32,6 +34,7 @@ namespace NzbDrone.Core.Tv
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
+                                    IConfigService settingsService,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
@@ -39,6 +42,7 @@ namespace NzbDrone.Core.Tv
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
             _diskScanService = diskScanService;
+            _settingsService = settingsService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _logger = logger;
         }
@@ -48,7 +52,7 @@ namespace NzbDrone.Core.Tv
             _logger.ProgressInfo("Updating Info for {0}", movie.Title);
 
             Movie movieInfo;
-            
+
             try
             {
                 movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
@@ -87,6 +91,45 @@ namespace NzbDrone.Core.Tv
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
 			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
+
+            if (_settingsService.EnableAllFlicks == "disabledKeep")
+            {
+                movieInfo.AllFlicksUrl = movie.AllFlicksUrl;
+            }
+
+            // it is anticipated that this could conflict
+            // with things that were unmonitored when files were deleted
+            // and we dont want to inadvertantly remonitor them when
+            // a title leaves netflix. right now this would be considered a user error = because they should disable one or the other
+            if (movie.Monitored) // maybe only do this for downloaded items too?
+            {
+                if (_settingsService.IgnoreNetflixTitles == "onAdd")
+                {
+                    if ((movieInfo.AllFlicksUrl != null) && (movie.AllFlicksUrl == null))
+                    {
+                        movie.Monitored = false;
+                    }
+                }
+                else if ((_settingsService.IgnoreNetflixTitles == "onEveryRefresh") && (movieInfo.AllFlicksUrl != null))
+                {
+                    movie.Monitored = false;
+                }
+            }
+            else if (!movie.Monitored)
+            {
+                if (_settingsService.MonitorLeaveNetflix == "onRemoval")
+                {
+                    if ((movieInfo.AllFlicksUrl == null) && (movie.AllFlicksUrl != null)) 
+                    {
+                        movie.Monitored = true;
+                    }
+                }
+                else if ((_settingsService.MonitorLeaveNetflix == "onEveryRefresh") && (movieInfo.AllFlicksUrl == null))
+                {
+                    movie.Monitored = true;
+                }
+            }
+            movie.AllFlicksUrl = movieInfo.AllFlicksUrl;
 
             try
             {

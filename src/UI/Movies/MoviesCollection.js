@@ -34,6 +34,12 @@ var filterModes = {
         'downloaded',
         false
     ],
+ 	'netflix'   : [
+         'allFlicksUrl',
+		 null,
+         'hasValue',
+        //function(model) { return model.getStatus() == "netflix"; }
+    ],
     'released'  : [
         "status",
         "released",

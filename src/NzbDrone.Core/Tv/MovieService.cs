@@ -106,6 +106,13 @@ namespace NzbDrone.Core.Tv
                         break;
                 }
             }
+			else if (FilterKey == "allFlicksUrl")
+            {
+                if (FilterType == "hasValue")
+                {
+                    return v => v.AllFlicksUrl != null;
+                }
+            }
             else if (FilterKey == "downloaded")
             {
                 return v => v.MovieFileId == 0;

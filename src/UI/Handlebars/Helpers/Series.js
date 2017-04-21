@@ -54,6 +54,9 @@ Handlebars.registerHelper('tmdbUrl', function() {
 Handlebars.registerHelper('youTubeTrailerUrl', function() {
     return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
 });
+Handlebars.registerHelper('allFlicksUrl', function() {
+    return this.allFlicksUrl;
+});
 
 Handlebars.registerHelper('homepage', function() {
     return this.website;

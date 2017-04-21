@@ -119,6 +119,66 @@
     </fieldset>
 
     <fieldset>
+        <legend>AllFlicks</legend>
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">Netflix Region</label>
+	              <div class="col-sm-4">
+	                  <select name="netflixCountryCode" class="form-control">
+	                      <option value="ca">Canada</option>
+		                    <option value="us">United States</option>
+                    </select>
+	              </div>
+	          </div>
+
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">AllFlicks Support Level</label>
+	              <div class="col-sm-1 col-sm-push-4 help-inline">
+                    <i class="icon-sonarr-form-info" title="If/how netflix data is obtained and set (on refresh)"/>
+                </div>
+
+	              <div class="col-sm-4 col-sm-pull-1">
+	                  <select name="enableAllFlicks" class="form-control">
+		                    <option value="disabled">Disabled-Clear existing data</option>
+				    <option value="disabledKeep">Disabled-Keep existing data</option>
+		                    <option value="simple">Simple</option>
+		                    <option value="complex">Complex</option>
+	                  </select>
+	              </div>
+	          </div>
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">Ignore Netflix Titles</label>
+	              <div class="col-sm-1 col-sm-push-4 help-inline">
+                    <i class="icon-sonarr-form-info" title="If/when titles are unmonitored based on netflix status (on refresh)"/>
+                </div>
+
+	              <div class="col-sm-4 col-sm-pull-1">
+	                  <select name="ignoreNetflixTitles" class="form-control">
+		                    <option value="disabled">Disabled</option>
+		                    <option value="onAdd">On Add Detected Only</option>
+		                    <option value="onEveryRefresh">On Every Refresh </option>
+	                  </select>
+	              </div>
+	          </div>
+	          
+	          <div class="form-group">
+	              <label class="col-sm-3 control-label">Monitor on Netflix Removal</label>
+	              <div class="col-sm-1 col-sm-push-4 help-inline">
+                    <i class="icon-sonarr-form-info" title="If/when titles are monitored based on netflix status (on refresh)"/>
+                </div>
+
+	              <div class="col-sm-4 col-sm-pull-1">
+	                  <select name="monitorLeaveNetflix" class="form-control">
+		                    <option value="disabled">Disabled</option>
+		                    <option value="onRemoval">On Removal Detected Only</option>
+		                    <option value="onEveryRefresh">On Every Refresh </option>
+	                  </select>
+	              </div>
+	          </div>
+	          
+	      </div>
+    </fieldset>
+
+    <fieldset>
         <legend>Style</legend>
 
         <div class="form-group">

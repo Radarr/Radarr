@@ -371,6 +371,33 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ShowRelativeDates", value); }
         }
 
+	public string NetflixCountryCode
+	{
+	    get { return GetValue("NetflixCountryCode","ca"); }
+
+	    set { SetValue("NetflixCountryCode", value); }
+	}
+
+	public string EnableAllFlicks
+	{
+	    get { return GetValue("EnableAllFlicks", "disabled"); }
+	    set { SetValue("EnableAllFlicks", value); }
+	}
+
+	public string IgnoreNetflixTitles
+	{
+	    get { return GetValue("IgnoreNetflixTitles", "disabled"); }
+
+	    set { SetValue("IgnoreNetflixTitles", value); }
+	}
+
+	public string MonitorLeaveNetflix
+	{
+	    get { return GetValue("MonitorLeaveNetflix", "disabled"); }
+
+	    set { SetValue("MonitorLeaveNetflix", value); }
+	}
+
         public bool EnableColorImpairedMode
         {
             get { return GetValueBoolean("EnableColorImpairedMode", false); }
