@@ -182,6 +182,9 @@ module.exports = Marionette.ItemView.extend({
 
     _organizeFiles : function() {
         var selected = this.editorGrid.getSelectedModels();
+        selected.sort(function(movie1, movie2){
+            return movie1.attributes.sortTitle.localeCompare(movie2.attributes.sortTitle)
+        })
         var updateFilesMoviesView = new UpdateFilesMoviesView({ movies : selected });
         this.listenToOnce(updateFilesMoviesView, 'updatingFiles', this._afterSave);
 
