@@ -19,6 +19,8 @@ namespace NzbDrone.Core.Music
 
         public int ItunesTrackId { get; set; }
         public int AlbumId { get; set; }
+        public int CompilationId { get; set; }
+        public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
         public string Title { get; set; }
         public bool Ignored { get; set; }

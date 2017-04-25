@@ -112,6 +112,9 @@ namespace NzbDrone.Core.Datastore
                   .Relationship()
                   .HasOne(track => track.TrackFile, track => track.TrackFileId);
 
+            Mapper.Entity<Compilation>().RegisterModel("Compilation")
+                   .Relationships.AutoMapICollectionOrComplexProperties(); //TODO: Figure out how to map this Table
+
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.Weight);
 
