@@ -294,6 +294,20 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ExtraFileExtensions", value); }
         }
 
+        public bool AutoRenameFolders
+        {
+            get { return GetValueBoolean("AutoRenameFolders", false); }
+
+            set { SetValue("AutoRenameFolders", value); }
+        }
+
+        public bool PathsDefaultStatic
+        {
+            get { return GetValueBoolean("PathsDefaultStatic", true); }
+
+            set { SetValue("PathsDefaultStatic", value); }
+        }
+
         public bool SetPermissionsLinux
         {
             get { return GetValueBoolean("SetPermissionsLinux", false); }

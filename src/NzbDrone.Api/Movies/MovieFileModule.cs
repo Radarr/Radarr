@@ -46,11 +46,14 @@ namespace NzbDrone.Api.EpisodeFiles
             return movie.ToResource();
         }
 
+
         private void SetQuality(MovieFileResource movieFileResource)
-        {
+        {  
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
             movieFile.Quality = movieFileResource.Quality;
             _mediaFileService.Update(movieFile);
+
+            BroadcastResourceChange(ModelAction.Updated, movieFile.Id);
         }
 
         private void DeleteMovieFile(int id)
