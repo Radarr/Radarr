@@ -10,7 +10,7 @@ module.exports = SettingsModelBase.extend({
     origInit : SettingsModelBase.prototype.initialize,
 
     initialize : function() {
-      this.set("pageSize", Config.getValue("pageSize", 1000));
+      this.set("pageSize", Config.getValue("pageSize", 250));
       this.origInit.call(this);
     },
 
