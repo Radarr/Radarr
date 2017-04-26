@@ -167,7 +167,7 @@ Task("PackageOsx").Does(() => {
 	CopyFiles(sourceFolder + "/Libraries/MediaInfo/*.dylib", outputFolderOsx);
 
 	// Adding Startup script
-	CopyFile("./osx/Sonarr", outputFolderOsx + "/Sonarr");
+	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
 });
 
 Task("PackageOsxApp").Does(() => {

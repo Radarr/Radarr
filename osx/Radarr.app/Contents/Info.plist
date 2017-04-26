@@ -11,7 +11,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Sonarr</string>
+	<string>Radarr</string>
 	<key>CFBundleIconFile</key>
 	<string>radarr.icns</string>
 	<key>CFBundleIdentifier</key>
