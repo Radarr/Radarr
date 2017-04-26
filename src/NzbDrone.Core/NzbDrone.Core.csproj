@@ -125,6 +125,7 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
     <Compile Include="Datastore\Migration\134_add_remux_qualities_for_the_wankers.cs" />
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
     <Compile Include="Datastore\Migration\128_remove_kickass.cs" />
@@ -1275,7 +1276,9 @@
     <Compile Include="Datastore\Migration\131_make_parsed_episode_info_nullable.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixWronglyMatchedMovieFiles.cs" />
     <Compile Include="Datastore\Migration\135_add_haspredbentry_to_movies.cs" />
+    <Compile Include="MediaFiles\Commands\RenameMovieFolderCommand.cs" />
     <Compile Include="Tv\QueryExtensions.cs" />
+    <Compile Include="Datastore\Migration\136_add_pathstate_to_movies.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
