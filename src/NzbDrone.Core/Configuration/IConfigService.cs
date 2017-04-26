@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Configuration
         bool EnableMediaInfo { get; set; }
         string ExtraFileExtensions { get; set; }
         bool AutoRenameFolders { get; set; }
+        bool PathsDefaultStatic { get; set; }
 
         //Permissions (Media Management)
         bool SetPermissionsLinux { get; set; }

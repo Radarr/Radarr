@@ -301,6 +301,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AutoRenameFolders", value); }
         }
 
+        public bool PathsDefaultStatic
+        {
+            get { return GetValueBoolean("PathsDefaultStatic", true); }
+
+            set { SetValue("PathsDefaultStatic", value); }
+        }
+
         public bool SetPermissionsLinux
         {
             get { return GetValueBoolean("SetPermissionsLinux", false); }

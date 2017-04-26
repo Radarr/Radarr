@@ -167,6 +167,7 @@ namespace NzbDrone.Core.MediaFiles
             if (movie.PathState == MoviePathState.StaticOnce)
             {
                 movie.PathState = MoviePathState.Dynamic;
+                _movieService.UpdateMovie(movie);
             }
 		}
 

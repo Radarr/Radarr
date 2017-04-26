@@ -150,15 +150,20 @@ namespace NzbDrone.Core.Tv
         {
             Ensure.That(newMovie, () => newMovie).IsNotNull();
 
+            MoviePathState defaultState = MoviePathState.Static;
+            if (!_configService.PathsDefaultStatic)
+            {
+                defaultState = MoviePathState.Dynamic;
+            }
             if (string.IsNullOrWhiteSpace(newMovie.Path))
             {
                 var folderName = _fileNameBuilder.GetMovieFolder(newMovie);
                 newMovie.Path = Path.Combine(newMovie.RootFolderPath, folderName);
-                newMovie.PathState = MoviePathState.Static;
+                newMovie.PathState = defaultState;
             }
             else
             {
-                newMovie.PathState = MoviePathState.StaticOnce;
+                newMovie.PathState = defaultState == MoviePathState.Dynamic ? MoviePathState.StaticOnce : MoviePathState.Static;
             }
 
                 _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
@@ -179,15 +184,20 @@ namespace NzbDrone.Core.Tv
 
             newMovies.ForEach(m =>
             {
+                 MoviePathState defaultState = MoviePathState.Static;
+	            if (!_configService.PathsDefaultStatic)
+	            {
+	                defaultState = MoviePathState.Dynamic;
+	            }
                 if (string.IsNullOrWhiteSpace(m.Path))
                 {
                     var folderName = _fileNameBuilder.GetMovieFolder(m);
                     m.Path = Path.Combine(m.RootFolderPath, folderName);
-                    m.PathState = MoviePathState.Static;
+                    m.PathState = defaultState;
                 }
                 else
                 {
-                    m.PathState = MoviePathState.StaticOnce;
+                    m.PathState = defaultState == MoviePathState.Dynamic ? MoviePathState.StaticOnce : MoviePathState.Static;
                 }
 
                 m.CleanTitle = m.Title.CleanSeriesTitle();
