@@ -103,17 +103,14 @@ namespace NzbDrone.Core.Datastore
                   .For("Tracks")
                   .LazyLoad(condition: parent => parent.Id > 0,
                             query: (db, parent) => db.Query<Track>().Where(c => c.ItunesTrackId == parent.Id).ToList())
-                  .HasOne(file => file.Artist, file => file.AlbumId);
+                  .HasOne(file => file.Artist, file => file.AlbumId); 
 
             Mapper.Entity<Track>().RegisterModel("Tracks")
                   //.Ignore(e => e.SeriesTitle)
                   .Ignore(e => e.Album)
                   .Ignore(e => e.HasFile)
                   .Relationship()
-                  .HasOne(track => track.TrackFile, track => track.TrackFileId);
-
-            Mapper.Entity<Compilation>().RegisterModel("Compilation")
-                   .Relationships.AutoMapICollectionOrComplexProperties(); //TODO: Figure out how to map this Table
+                  .HasOne(track => track.TrackFile, track => track.TrackFileId); // TODO: Check lazy load for artists
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.Weight);

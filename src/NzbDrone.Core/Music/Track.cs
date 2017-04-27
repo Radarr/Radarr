@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Music
 
         public int ItunesTrackId { get; set; }
         public int AlbumId { get; set; }
+        public LazyLoaded<Artist> ArtistsId { get; set; }
         public int CompilationId { get; set; }
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
