@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var $ = require('jquery');
 var vent = require('vent');
 var Marionette = require('marionette');
 var AddMoviesCollection = require('./AddMoviesCollection');
@@ -7,6 +8,7 @@ var EmptyView = require('./EmptyView');
 var NotFoundView = require('./NotFoundView');
 var ErrorView = require('./ErrorView');
 var LoadingView = require('../Shared/LoadingView');
+var FullMovieCollection = require("../Movies/FullMovieCollection");
 
 module.exports = Marionette.Layout.extend({
 		template : 'AddMovies/AddMoviesViewTemplate',
@@ -18,7 +20,8 @@ module.exports = Marionette.Layout.extend({
 		ui : {
 				moviesSearch : '.x-movies-search',
 				searchBar    : '.x-search-bar',
-				loadMore     : '.x-load-more'
+				loadMore     : '.x-load-more',
+				discoverHeader : ".x-discover-header"
 		},
 
 		events : {
@@ -27,7 +30,7 @@ module.exports = Marionette.Layout.extend({
 
 		initialize : function(options) {
 				this.isExisting = options.isExisting;
-				this.collection = new AddMoviesCollection();
+				this.collection = options.collection || new AddMoviesCollection();
 
 				if (this.isExisting) {
 						this.collection.unmappedFolderModel = this.model;
@@ -51,12 +54,21 @@ module.exports = Marionette.Layout.extend({
 
 				if (options.action === "search") {
 					this.search({term: options.query});
+				} else if (options.action == "discover") {
+					this.isDiscover = true;
+					if (FullMovieCollection.length > 0) {
+						this._discover();
+					} else {
+						this.listenTo(FullMovieCollection, "sync", this._discover);
+					}
 				}
 
 		},
 
 		onRender : function() {
 				var self = this;
+
+
 
 				this.$el.addClass(this.className);
 
@@ -95,10 +107,21 @@ module.exports = Marionette.Layout.extend({
 				if (this.isExisting) {
 						this.ui.searchBar.hide();
 				}
+
+				if (this.isDiscover) {
+						this.ui.searchBar.hide();
+						if (this.collection.length == 0) {
+							this.searchResult.show(new LoadingView());
+						}
+				}
 		},
 
 		onShow : function() {
+				this.ui.discoverHeader.hide();
 				this.ui.moviesSearch.focus();
+				if (this.isDiscover) {
+						this.ui.discoverHeader.show();
+				}
 		},
 
 		search : function(options) {
@@ -140,7 +163,10 @@ module.exports = Marionette.Layout.extend({
 
 		_onLoadMore : function() {
 				var showingAll = this.resultCollectionView.showMore();
-				this.ui.searchBar.show();
+				if (!this.isDiscover) {
+					this.ui.searchBar.show();
+				}
+
 
 				if (showingAll) {
 						this.ui.loadMore.hide();
@@ -185,5 +211,14 @@ module.exports = Marionette.Layout.extend({
 						this.searchResult.show(new ErrorView({ term : this.collection.term }));
 						this.collection.term = '';
 				}
+		},
+
+		_discover : function() {
+			var ids = [];
+			_.each(FullMovieCollection.models, function(model){
+				ids.push(model.get("tmdbId"));
+			})
+
+			this.collection.fetch({ data: $.param({ tmdbids: ids.join(",")}) })
 		}
 });

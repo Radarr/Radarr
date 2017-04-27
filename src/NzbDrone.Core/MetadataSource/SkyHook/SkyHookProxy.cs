@@ -551,6 +551,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
+                imdbMovie.Ratings = new Ratings { Value = (decimal)result.vote_average, Votes = result.vote_count};
+
                 try
                 {
                     var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
