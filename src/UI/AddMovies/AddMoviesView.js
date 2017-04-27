@@ -214,11 +214,6 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_discover : function() {
-			var ids = [];
-			_.each(FullMovieCollection.models, function(model){
-				ids.push(model.get("tmdbId"));
-			})
-
-			this.collection.fetch({ data: $.param({ tmdbids: ids.join(",")}) })
+			this.collection.fetch()
 		}
 });
