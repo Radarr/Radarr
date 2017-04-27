@@ -30,12 +30,11 @@ namespace NzbDrone.Core.Datastore.Migration
                 ;
 
             Create.TableForModel("Albums")
-                .WithColumn("AlbumId").AsInt32() // Does this map to collectionId?
-                .WithColumn("CompilationId").AsInt32()
-                .WithColumn("Compilation").AsBoolean()
+                .WithColumn("AlbumId").AsInt32()
+                .WithColumn("ArtistId").AsInt32()
                 .WithColumn("Title").AsString()
                 .WithColumn("Year").AsInt32()
-                .WithColumn("Image").AsInt32() // Is this needed?
+                .WithColumn("Image").AsInt32()
                 .WithColumn("TrackCount").AsInt32()
                 .WithColumn("DiscCount").AsInt32()
                 .WithColumn("Monitored").AsBoolean();
@@ -43,8 +42,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.TableForModel("Tracks")
                 .WithColumn("ItunesTrackId").AsInt32().Unique()
                 .WithColumn("AlbumId").AsInt32()
-                .WithColumn("CompilationId").AsInt32().Nullable()
-                .WithColumn("Compilation").AsBoolean().WithDefaultValue("False")
+                .WithColumn("ArtistsId").AsString().Nullable()
                 .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Ignored").AsBoolean().Nullable()
@@ -53,10 +51,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("TrackCensoredName").AsString().Nullable()
                 .WithColumn("TrackFileId").AsInt32().Nullable()
                 .WithColumn("ReleaseDate").AsDateTime().Nullable();
-            //.WithColumn("AbsoluteEpisodeNumber").AsInt32().Nullable()
-            //.WithColumn("SceneAbsoluteEpisodeNumber").AsInt32().Nullable()
-            //.WithColumn("SceneSeasonNumber").AsInt32().Nullable()
-            //.WithColumn("SceneEpisodeNumber").AsInt32().Nullable();
+
 
             Create.TableForModel("TrackFiles")
                   .WithColumn("ArtistId").AsInt32()
@@ -66,9 +61,6 @@ namespace NzbDrone.Core.Datastore.Migration
                   .WithColumn("DateAdded").AsDateTime()
                   .WithColumn("AlbumId").AsInt32(); // How does this impact stand alone tracks?
 
-            Create.TableForModel("Compilation")
-                   .WithColumn("CompilationId").AsInt32().Unique()
-                   .WithColumn("ArtistId").AsString().Nullable();
         }
 
     }
