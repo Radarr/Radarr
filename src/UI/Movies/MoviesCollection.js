@@ -11,7 +11,7 @@ var UiSettings = require('../Shared/UiSettingsModel');
 require('../Mixins/backbone.signalr.mixin');
 var Config = require('../Config');
 
-var pageSize = parseInt(Config.getValue("pageSize")) || 1000;
+var pageSize = parseInt(Config.getValue("pageSize")) || 250;
 
 var filterModes = {
     'all'        : [
@@ -163,7 +163,7 @@ var Collection = PageableCollection.extend({
     },
 
     filterModes : filterModes,
-  
+
     sortMappings : {
         movie : {
             sortKey : 'series.sortTitle'

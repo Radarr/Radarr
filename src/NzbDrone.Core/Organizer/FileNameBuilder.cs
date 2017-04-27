@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Organizer
         string BuildFileName(Movie movie, MovieFile movieFile, NamingConfig namingConfig = null);
         string BuildFilePath(Movie movie, string fileName, string extension);
         string BuildFilePath(Series series, int seasonNumber, string fileName, string extension);
+	    string BuildMoviePath(Movie movie, NamingConfig namingConfig = null);
         string BuildSeasonPath(Series series, int seasonNumber);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetSeriesFolder(Series series, NamingConfig namingConfig = null);
@@ -158,12 +159,11 @@ namespace NzbDrone.Core.Organizer
                 return GetOriginalTitle(movieFile);
             }
 
-            //TODO: Update namingConfig for Movies!
             var pattern = namingConfig.StandardMovieFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
-            AddReleaseDateTokens(tokenHandlers, movie.Year); //In case we want to separate the year
+            AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddImdbIdTokens(tokenHandlers, movie.ImdbId);
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
@@ -190,9 +190,59 @@ namespace NzbDrone.Core.Organizer
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
-            var path = movie.Path;
+            var path = "";
+
+            if (movie.PathState > 0)
+            {
+                path = movie.Path;
+            }
+            else
+            {
+                path = BuildMoviePath(movie);
+            }
 
             return Path.Combine(path, fileName + extension);
+        }
+
+        public string BuildMoviePath(Movie movie, NamingConfig namingConfig = null)
+        {
+            if (namingConfig == null)
+            {
+                namingConfig = _namingConfigService.GetConfig();
+            }
+
+            var path = movie.Path;
+            var directory = new DirectoryInfo(path).Name;
+            var parentDirectoryPath = new DirectoryInfo(path).Parent.FullName;
+
+            var movieFile = movie.MovieFile;
+
+            var pattern = namingConfig.MovieFolderFormat;
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            AddMovieTokens(tokenHandlers, movie);
+            AddReleaseDateTokens(tokenHandlers, movie.Year);
+            AddImdbIdTokens(tokenHandlers, movie.ImdbId);
+
+            if(movie.MovieFileId != 0)
+            {
+                movieFile.LazyLoad();
+                AddQualityTokens(tokenHandlers, movie, movieFile);
+                AddMediaInfoTokens(tokenHandlers, movieFile);
+                AddMovieFileTokens(tokenHandlers, movieFile);
+                AddTagsTokens(tokenHandlers, movieFile);
+            }
+            else
+            {
+                AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}" });
+            }
+
+
+            var directoryName = ReplaceTokens(pattern, tokenHandlers, namingConfig).Trim();
+            directoryName = FileNameCleanupRegex.Replace(directoryName, match => match.Captures[0].Value[0].ToString());
+            directoryName = TrimSeparatorsRegex.Replace(directoryName, string.Empty);
+
+            return Path.Combine(parentDirectoryPath, directoryName);
         }
 
         public string BuildSeasonPath(Series series, int seasonNumber)
@@ -302,12 +352,28 @@ namespace NzbDrone.Core.Organizer
                 namingConfig = _namingConfigService.GetConfig();
             }
 
+            var movieFile = movie.MovieFile;
+
+            var pattern = namingConfig.MovieFolderFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddImdbIdTokens(tokenHandlers, movie.ImdbId);
 
+            if (movie.MovieFileId != 0)
+            {
+                movieFile.LazyLoad();
+                AddQualityTokens(tokenHandlers, movie, movieFile);
+                AddMediaInfoTokens(tokenHandlers, movieFile);
+                AddMovieFileTokens(tokenHandlers, movieFile);
+                AddTagsTokens(tokenHandlers, movieFile);
+            }
+            else
+            {
+                AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}"});
+            }
+                
             return CleanFolderName(ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig));
         }
 

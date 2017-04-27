@@ -32,10 +32,10 @@ outputFolderMono='./_output_mono'
 outputFolderOsx='./_output_osx'
 outputFolderOsxApp='./_output_osx_app'
 
-tr -d "\r" < $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr > $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2
-rm $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr
-chmod +x $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2
-mv $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr2 $outputFolderOsxApp/Radarr.app/Contents/MacOS/Sonarr >& error.log
+tr -d "\r" < $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr > $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr2
+rm $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr
+chmod +x $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr2
+mv $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr2 $outputFolderOsxApp/Radarr.app/Contents/MacOS/Radarr >& error.log
 
 if [ $runtime = "dotnet" ] ; then
   ./7za.exe a Radarr_Windows_$VERSION.zip ./Radarr_Windows_$VERSION/*

@@ -15,7 +15,7 @@ module.exports = Marionette.ItemView.extend({
         monitored           : '.x-monitored',
         profile             : '.x-profiles',
 	minimumAvailability : '.x-minimumavailability',
-        seasonFolder        : '.x-season-folder',
+        staticPath        : '.x-static-path',
         rootFolder          : '.x-root-folder',
         selectedCount       : '.x-selected-count',
         container           : '.series-editor-footer',
@@ -52,7 +52,8 @@ module.exports = Marionette.ItemView.extend({
 
         this.listenTo(FullMovieCollection, 'save', function() {
 			window.alert(' Done Saving');
-        });
+			var selected = FullMovieCollection.where({ selected : true });
+		});
 
 
         this.listenTo(RootFolders, 'all', this.render);
@@ -69,7 +70,7 @@ module.exports = Marionette.ItemView.extend({
         var monitored = this.ui.monitored.val();
 		var minAvail = this.ui.minimumAvailability.val();
         var profile = this.ui.profile.val();
-        var seasonFolder = this.ui.seasonFolder.val();
+        var staticPath = this.ui.staticPath.val();
         var rootFolder = this.ui.rootFolder.val();
 
 		var i = 0;
@@ -92,10 +93,8 @@ module.exports = Marionette.ItemView.extend({
                 model.set('profileId', parseInt(profile, 10));
             }
 
-            if (seasonFolder === 'true') {
-                model.set('seasonFolder', true);
-            } else if (seasonFolder === 'false') {
-                model.set('seasonFolder', false);
+            if (staticPath !== 'noChange') {
+                model.set('pathState', staticPath);
             }
 
             if (rootFolder !== 'noChange') {
@@ -127,10 +126,8 @@ module.exports = Marionette.ItemView.extend({
                     m.set('profileId', parseInt(profile, 10));
                 }
 
-                if (seasonFolder === 'true') {
-                    m.set('seasonFolder', true);
-                } else if (seasonFolder === 'false') {
-                    m.set('seasonFolder', false);
+                if (staticPath !== 'noChange') {
+                    m.set('pathState', staticPath);
                 }
 
                 if (rootFolder !== 'noChange') {

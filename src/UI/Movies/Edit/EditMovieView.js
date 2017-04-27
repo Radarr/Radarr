@@ -22,6 +22,12 @@ var view = Marionette.ItemView.extend({
 
     initialize : function() {
         this.model.set('profiles', Profiles);
+        var pathState = this.model.get("pathState");
+        if (pathState == "static") {
+          this.model.set("pathState", true);
+        } else {
+          this.model.set("pathState", false);
+        }
     },
 
     onRender : function() {
@@ -30,11 +36,18 @@ var view = Marionette.ItemView.extend({
             model    : this.model,
             property : 'tags'
         });
+
     },
 
     _onBeforeSave : function() {
         var profileId = this.ui.profile.val();
         this.model.set({ profileId : profileId });
+        var pathState = this.model.get("pathState");
+        if (pathState === true) {
+          this.model.set("pathState", "static");
+        } else {
+          this.model.set("pathState", "dynamic");
+        }
     },
 
     _onAfterSave : function() {
