@@ -591,6 +591,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     _logger.Debug(result);
                 }
 
+                if (result.trailer_key.IsNotNullOrWhiteSpace() && result.trailer_site.IsNotNullOrWhiteSpace())
+                {
+                    if (result.trailer_site == "youtube")
+                    {
+                        imdbMovie.YouTubeTrailerId = result.trailer_key;
+                    }
+
+                }
+
                 return imdbMovie;
             }
             catch (Exception e)
