@@ -1,4 +1,4 @@
-var _ = require('underscore');
+﻿var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var Marionette = require('marionette');
@@ -9,9 +9,14 @@ var AsEditModalView = require('../../../Mixins/AsEditModalView');
 require('../../../Form/FormBuilder');
 require('../../../Mixins/AutoComplete');
 require('bootstrap');
+require('typeahead');
 
 var view = Marionette.ItemView.extend({
     template : 'Settings/Indexers/Edit/IndexerEditViewTemplate',
+
+    ui: {
+        tags : '.x-form-tag'
+    },
 
     events : {
         'click .x-back'            : '_back',
@@ -22,6 +27,65 @@ var view = Marionette.ItemView.extend({
 
     initialize : function(options) {
         this.targetCollection = options.targetCollection;
+    },
+
+    tagMatcher: function (tagCollection) {
+        return function findMatches(q, cb) {
+            q = q.replace(/[^-_a-z0-9]/gi, '').toLowerCase();
+            var matches = _.select(tagCollection, function (tag) {
+                return tag.name.toLowerCase().indexOf(q) > -1;
+            });
+            cb(matches);
+        };
+    },
+
+    onRender: function () {
+
+        var that = this;
+
+        this.ui.tags.each(function (index, tagEl) {
+
+            var tagCollection = JSON.parse(tagEl.getAttribute('tag-source'));
+            var opts = {
+                trimValue: true,                
+                tagClass: 'label label-success'                
+            };
+
+            if (tagCollection && tagCollection.length) {
+                opts.freeInput = false;
+                opts.allowNew = false;
+                opts.allowDuplicates = false;
+                opts.itemValue = 'value';
+                opts.itemText = 'name';
+                opts.typeaheadjs = {
+                    displayKey: 'name',
+                    source: that.tagMatcher(tagCollection)
+                };                
+            } 
+
+            var tag = $(tagEl);
+            tag.tagsinput(opts);
+
+            if (tagCollection && tagCollection.length && tagEl.value) {
+
+                var origValue = tagEl.value;
+                tag.tagsinput('removeAll');
+
+                _.each(origValue.split(','), function (v) {
+
+                    var parsed = parseInt(v);
+                    var found = _.find(tagCollection, function (t) {
+                        return t.value === parsed;
+                    });
+                    
+                    if (found) {
+                        tag.tagsinput('add', found);
+                    }
+                });
+            }
+
+        });
+
     },
 
     _onAfterSave : function() {

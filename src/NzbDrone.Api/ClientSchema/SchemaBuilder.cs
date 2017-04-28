@@ -46,7 +46,7 @@ namespace NzbDrone.Api.ClientSchema
                         field.Value = value;
                     }
 
-                    if (fieldAttribute.Type == FieldType.Select)
+                    if (fieldAttribute.Type == FieldType.Select || fieldAttribute.Type == FieldType.Tag)
                     {
                         field.SelectOptions = GetSelectOptions(fieldAttribute.SelectOptions);
                     }
@@ -150,7 +150,7 @@ namespace NzbDrone.Api.ClientSchema
 
         private static List<SelectOption> GetSelectOptions(Type selectOptions)
         {
-            if (selectOptions == typeof(Profile))
+            if (selectOptions == null || selectOptions == typeof(Profile))
             {
                 return new List<SelectOption>();
             }
