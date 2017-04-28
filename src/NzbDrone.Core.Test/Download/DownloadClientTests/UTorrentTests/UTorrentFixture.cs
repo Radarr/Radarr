@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         protected void GivenRedirectToTorrent()
         {
             var httpHeader = new HttpHeader();
-            httpHeader["Location"] = "http://test.Lidarr.tv/not-a-real-torrent.torrent";
+            httpHeader["Location"] = "http://test.lidarr.audio/not-a-real-torrent.torrent";
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.Is<HttpRequest>(h => h.Url.ToString() == _downloadUrl)))

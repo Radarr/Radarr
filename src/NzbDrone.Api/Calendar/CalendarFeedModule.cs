@@ -91,7 +91,7 @@ namespace NzbDrone.Api.Calendar
             {
                 // This will need to point to the hosted web site
                 // TODO
-                ProductId = "-//Lidarr.tv//Lidarr//EN"
+                ProductId = "-//lidarr.audio//Lidarr//EN"
             };
 
 

@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.UpdateTests
                 _updatePackage = new UpdatePackage
                 {
                     FileName = "NzbDrone.develop.2.0.0.0.tar.gz",
-                    Url = "http://download.Lidarr.tv/v2/develop/mono/NzbDrone.develop.tar.gz",
+                    Url = "http://download.lidarr.audio/v2/develop/mono/NzbDrone.develop.tar.gz",
                     Version = new Version("2.0.0.0")
                 };
             }
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.UpdateTests
                 _updatePackage = new UpdatePackage
                 {
                     FileName = "NzbDrone.develop.2.0.0.0.zip",
-                    Url = "http://download.Lidarr.tv/v2/develop/windows/NzbDrone.develop.zip",
+                    Url = "http://download.lidarr.audio/v2/develop/windows/NzbDrone.develop.zip",
                     Version = new Version("2.0.0.0")
                 };
             }
