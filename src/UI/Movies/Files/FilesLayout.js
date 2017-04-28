@@ -87,7 +87,7 @@ module.exports = Marionette.Layout.extend({
 						}
 				});
 
-				vent.on(vent.Commands.CloseModalCommand, this._refreshClose, this);
+				vent.on(vent.Commands.MovieFileEdited, this._showGrid, this);
 		},
 
 		_refresh : function(model) {
@@ -105,7 +105,7 @@ module.exports = Marionette.Layout.extend({
 			this.filesCollection = new FilesCollection();
 			var file = this.movie.model.get("movieFile");
 			this.filesCollection.add(file);
-			this.onShow();
+			this._showGrid();
 		},
 
 		onShow : function() {
@@ -114,6 +114,15 @@ module.exports = Marionette.Layout.extend({
 					columns    : this.columns,
 					collection : this.filesCollection,
 					className  : 'table table-hover'
+			}));
+		},
+
+		_showGrid : function() {
+			this.regionManager.get('grid').show(new Backgrid.Grid({
+				row        : Backgrid.Row,
+				columns    : this.columns,
+				collection : this.filesCollection,
+				className  : 'table table-hover'
 			}));
 		},
 

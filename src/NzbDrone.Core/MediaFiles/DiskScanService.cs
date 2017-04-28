@@ -45,6 +45,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IEventAggregator _eventAggregator;
         private readonly IMovieService _movieService;
         private readonly IMovieFileRepository _movieFileRepository;
+	private readonly IRenameMovieFileService _renameMovieFiles;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
@@ -57,6 +58,7 @@ namespace NzbDrone.Core.MediaFiles
                                IEventAggregator eventAggregator,
                                IMovieService movieService,
                                IMovieFileRepository movieFileRepository,
+		               IRenameMovieFileService renameMovieFiles,
                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -69,6 +71,7 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator = eventAggregator;
             _movieService = movieService;
             _movieFileRepository = movieFileRepository;
+		_renameMovieFiles = renameMovieFiles;
             _logger = logger;
         }
 
@@ -135,6 +138,9 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Scan(Movie movie)
         {
+		//Try renaming the movie path in case anything changed such as year, title or something else.
+		_renameMovieFiles.RenameMoviePath(movie, true);
+
             var rootFolder = _diskProvider.GetParentFolder(movie.Path);
 
             if (!_diskProvider.FolderExists(rootFolder))

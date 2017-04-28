@@ -18,6 +18,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMediaFileService _mediaFileService;
         private readonly IMoveEpisodeFiles _episodeFileMover;
         private readonly IMoveMovieFiles _movieFileMover;
+	private readonly IRenameMovieFileService _movieFileRenamer;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.MediaFiles
                                        IMoveEpisodeFiles episodeFileMover,
                                        IMoveMovieFiles movieFileMover,
                                        IDiskProvider diskProvider,
+		                       IRenameMovieFileService movieFileRenamer,
                                        Logger logger)
         {
             _recycleBinProvider = recycleBinProvider;
@@ -33,6 +35,7 @@ namespace NzbDrone.Core.MediaFiles
             _episodeFileMover = episodeFileMover;
             _movieFileMover = movieFileMover;
             _diskProvider = diskProvider;
+		_movieFileRenamer = movieFileRenamer;
             _logger = logger;
         }
 
@@ -57,6 +60,10 @@ namespace NzbDrone.Core.MediaFiles
                 _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             }
 
+		//Temporary for correctly getting path
+		localMovie.Movie.MovieFileId = 1;
+		localMovie.Movie.MovieFile = movieFile;
+
             if (copyOnly)
             {
                 moveFileResult.MovieFile = _movieFileMover.CopyMovieFile(movieFile, localMovie);
@@ -65,6 +72,8 @@ namespace NzbDrone.Core.MediaFiles
             {
                 moveFileResult.MovieFile = _movieFileMover.MoveMovieFile(movieFile, localMovie);
             }
+
+		//_movieFileRenamer.RenameMoviePath(localMovie.Movie, false);
 
             return moveFileResult;
         }

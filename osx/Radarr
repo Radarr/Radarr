@@ -5,7 +5,7 @@ DIR=$(cd "$(dirname "$0")"; pwd)
 
 #change these values to match your app
 EXE_PATH="$DIR/Radarr.exe"
-APPNAME="Sonarr"
+APPNAME="Radarr"
 
 #set up environment
 if [[ -x '/opt/local/bin/mono' ]]; then

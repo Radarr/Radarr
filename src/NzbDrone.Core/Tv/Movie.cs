@@ -41,6 +41,7 @@ namespace NzbDrone.Core.Tv
         public List<Actor> Actors { get; set; }
         public string Certification { get; set; }
         public string RootFolderPath { get; set; }
+        public MoviePathState PathState { get; set; }
         public DateTime Added { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
@@ -116,5 +117,12 @@ namespace NzbDrone.Core.Tv
     public class AddMovieOptions : MonitoringOptions
     {
         public bool SearchForMovie { get; set; }
+    }
+
+    public enum MoviePathState
+    {
+        Dynamic,
+        StaticOnce,
+        Static,
     }
 }

@@ -2,6 +2,7 @@ var Marionette = require('marionette');
 var SearchResultView = require('./SearchResultView');
 var FullMovieCollection = require('../Movies/FullMovieCollection');
 var vent = require('vent');
+var $ = require("jquery");
 
 module.exports = Marionette.CollectionView.extend({
 		itemView : SearchResultView,
@@ -28,9 +29,10 @@ module.exports = Marionette.CollectionView.extend({
 		},
 
 		showMore : function() {
+				var pos = $(window).scrollTop();
 				this.showing += 5;
 				this.render();
-
+				$(window).scrollTop(pos);
 				return this.showing >= this.collection.length;
 		},
 

@@ -15,10 +15,11 @@ using NzbDrone.Core.Tv;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie
+    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie, IDiscoverNewMovies
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -348,6 +349,33 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return resources.movie_results.SelectList(MapMovie).FirstOrDefault();
         }
 
+        public List<Movie> DiscoverNewMovies()
+        {
+            string allIds = string.Join(",", _movieService.GetAllMovies().Select(m => m.TmdbId));
+            var request = new HttpRequestBuilder("https://radarr.video/recommendations/api.php").Build();
+
+            request.AllowAutoRedirect = true;
+            request.Method = HttpMethod.POST;
+            request.Headers.ContentType = "application/x-www-form-urlencoded";
+            request.SetContent($"tmdbids={allIds}");
+
+
+            var response = _httpClient.Post<List<MovieResult>>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException(request, response);
+            }
+
+            if (response.Headers.ContentType != HttpAccept.Json.Value)
+            {
+                throw new HttpException(request, response);
+            }
+
+            var movieResults = response.Resource;
+
+            return movieResults.SelectList(MapMovie);
+        }
+
         private string StripTrailingTheFromTitle(string title)
         {
             if(title.EndsWith(",the"))
@@ -551,6 +579,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
+                imdbMovie.Ratings = new Ratings { Value = (decimal)result.vote_average, Votes = result.vote_count};
+
                 try
                 {
                     var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);
@@ -559,6 +589,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 catch (Exception e)
                 {
                     _logger.Debug(result);
+                }
+
+                if (result.trailer_key.IsNotNullOrWhiteSpace() && result.trailer_site.IsNotNullOrWhiteSpace())
+                {
+                    if (result.trailer_site == "youtube")
+                    {
+                        imdbMovie.YouTubeTrailerId = result.trailer_key;
+                    }
+
                 }
 
                 return imdbMovie;

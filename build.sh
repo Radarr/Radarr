@@ -181,7 +181,7 @@ PackageOsx()
     cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderOsx
 
     echo "Adding Startup script"
-    cp  ./osx/Sonarr $outputFolderOsx
+    cp  ./osx/Radarr $outputFolderOsx
 
     echo "##teamcity[progressFinish 'Creating OS X Package']"
 }

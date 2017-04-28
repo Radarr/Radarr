@@ -40,6 +40,7 @@ namespace NzbDrone.Api.Movie
         //View & Edit
         public string Path { get; set; }
         public int ProfileId { get; set; }
+        public MoviePathState PathState { get; set; }
 
         //Editing Only
         public bool Monitored { get; set; }
@@ -131,6 +132,7 @@ namespace NzbDrone.Api.Movie
                 
                 Path = model.Path,
                 ProfileId = model.ProfileId,
+                PathState = model.PathState,
                 
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
@@ -187,6 +189,7 @@ namespace NzbDrone.Api.Movie
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,
+                PathState = resource.PathState,
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,
@@ -217,6 +220,7 @@ namespace NzbDrone.Api.Movie
 
             movie.Path = resource.Path;
             movie.ProfileId = resource.ProfileId;
+            movie.PathState = resource.PathState;
 
             movie.Monitored = resource.Monitored;
 	        movie.MinimumAvailability = resource.MinimumAvailability;

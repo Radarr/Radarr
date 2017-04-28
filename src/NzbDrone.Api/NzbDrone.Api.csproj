@@ -270,6 +270,7 @@
     <Compile Include="Wanted\MissingModule.cs" />
     <Compile Include="Wanted\MovieCutoffModule.cs" />
     <Compile Include="Wanted\MovieMissingModule.cs" />
+    <Compile Include="Series\MovieDiscoverModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

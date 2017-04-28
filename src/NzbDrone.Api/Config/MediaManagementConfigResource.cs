@@ -11,6 +11,8 @@ namespace NzbDrone.Api.Config
         public bool AutoDownloadPropers { get; set; }
         public bool CreateEmptySeriesFolders { get; set; }
         public FileDateType FileDate { get; set; }
+        public bool AutoRenameFolders { get; set; }
+        public bool PathsDefaultStatic { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
         public string FileChmod { get; set; }
@@ -35,6 +37,8 @@ namespace NzbDrone.Api.Config
                 AutoDownloadPropers = model.AutoDownloadPropers,
                 CreateEmptySeriesFolders = model.CreateEmptySeriesFolders,
                 FileDate = model.FileDate,
+                AutoRenameFolders = model.AutoRenameFolders,
+                PathsDefaultStatic = model.PathsDefaultStatic,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 FileChmod = model.FileChmod,

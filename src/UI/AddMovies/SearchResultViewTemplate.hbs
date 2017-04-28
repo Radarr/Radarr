@@ -26,7 +26,16 @@
                             {{#if_eq status compare="inCinemas"}}
                                 <span class="label label-warning">In Cinemas</span>
                             {{/if_eq}}
+                            <span class="label label-default" title="{{ratings.votes}} Vote(s)">{{ratings.value}}</span>
+
+                            {{#if youTubeTrailerId}}
+                            <span class="label label-info">
+                                <a href="{{youTubeTrailerUrl}}" style="color: white;">Trailer</a>
+                              </span>
+                            {{/if}}
                         </span>
+
+
                     </h2>
                 </div>
             </div>
