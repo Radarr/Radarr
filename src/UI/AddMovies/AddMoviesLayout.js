@@ -8,6 +8,7 @@ var ProfileCollection = require('../Profile/ProfileCollection');
 var AddFromListView = require("./List/AddFromListView");
 var RootFolderCollection = require('./RootFolders/RootFolderCollection');
 var BulkImportView = require("./BulkImport/BulkImportView");
+var DiscoverMoviesCollection = require("./DiscoverMoviesCollection");
 require('../Movies/MoviesCollection');
 
 module.exports = Marionette.Layout.extend({
@@ -22,7 +23,7 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		events : {
-				'click .x-import'  : '_importMovies',
+				'click .x-discover'  : '_discoverMovies',
 				'click .x-bulk-import' : '_bulkImport',
 				'click .x-add-new' : '_addMovies',
 				"click .x-add-lists" : "_addFromList",
@@ -70,10 +71,11 @@ module.exports = Marionette.Layout.extend({
 			this.workspace.show(new BulkImportView({ model : options.model}));
 		},
 
-		_importMovies : function() {
-				this.rootFolderLayout = new RootFolderLayout();
-				this.listenTo(this.rootFolderLayout, 'folderSelected', this._folderSelected);
-				AppLayout.modalRegion.show(this.rootFolderLayout);
+		_discoverMovies : function(options) {
+			options = options || {};
+			options.action = "discover";
+			options.collection = new DiscoverMoviesCollection();
+			this.workspace.show(new AddMoviesView(options));
 		},
 
 		_addMovies : function(options) {

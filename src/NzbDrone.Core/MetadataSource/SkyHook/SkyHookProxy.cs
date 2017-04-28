@@ -18,7 +18,7 @@ using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie
+    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie, IDiscoverNewMovies
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -348,6 +348,29 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return resources.movie_results.SelectList(MapMovie).FirstOrDefault();
         }
 
+        public List<Movie> DiscoverNewMovies()
+        {
+            string allIds = string.Join(",", _movieService.GetAllMovies().Select(m => m.TmdbId));
+            var request = new HttpRequestBuilder("https://radarr.video/recommendations/api.php").AddQueryParam("tmdbids", allIds).Build();
+
+            request.AllowAutoRedirect = true;
+
+            var response = _httpClient.Get<List<MovieResult>>(request);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new HttpException(request, response);
+            }
+
+            if (response.Headers.ContentType != HttpAccept.Json.Value)
+            {
+                throw new HttpException(request, response);
+            }
+
+            var movieResults = response.Resource;
+
+            return movieResults.SelectList(MapMovie);
+        }
+
         private string StripTrailingTheFromTitle(string title)
         {
             if(title.EndsWith(",the"))
@@ -551,6 +574,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 imdbMovie.Images = new List<MediaCover.MediaCover>();
                 imdbMovie.Overview = result.overview;
+                imdbMovie.Ratings = new Ratings { Value = (decimal)result.vote_average, Votes = result.vote_count};
+
                 try
                 {
                     var imdbPoster = _configService.GetCoverForURL(result.poster_path, MediaCoverTypes.Poster);

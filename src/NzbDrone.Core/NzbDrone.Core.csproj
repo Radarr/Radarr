@@ -1279,6 +1279,7 @@
     <Compile Include="MediaFiles\Commands\RenameMovieFolderCommand.cs" />
     <Compile Include="Tv\QueryExtensions.cs" />
     <Compile Include="Datastore\Migration\136_add_pathstate_to_movies.cs" />
+    <Compile Include="MetadataSource\IDiscoverNewMovies.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
