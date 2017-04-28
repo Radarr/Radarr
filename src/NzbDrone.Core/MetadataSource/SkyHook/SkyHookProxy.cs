@@ -15,6 +15,7 @@ using NzbDrone.Core.Tv;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -351,11 +352,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public List<Movie> DiscoverNewMovies()
         {
             string allIds = string.Join(",", _movieService.GetAllMovies().Select(m => m.TmdbId));
-            var request = new HttpRequestBuilder("https://radarr.video/recommendations/api.php").AddQueryParam("tmdbids", allIds).Build();
+            var request = new HttpRequestBuilder("https://radarr.video/recommendations/api.php").Build();
 
             request.AllowAutoRedirect = true;
+            request.Method = HttpMethod.POST;
+            request.Headers.ContentType = "application/x-www-form-urlencoded";
+            request.SetContent($"tmdbids={allIds}");
 
-            var response = _httpClient.Get<List<MovieResult>>(request);
+
+            var response = _httpClient.Post<List<MovieResult>>(request);
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new HttpException(request, response);
