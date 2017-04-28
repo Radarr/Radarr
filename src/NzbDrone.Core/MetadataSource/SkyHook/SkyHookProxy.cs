@@ -10,6 +10,9 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Tv;
+using Newtonsoft.Json.Linq;
+using NzbDrone.Core.Music;
+using Newtonsoft.Json;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -23,12 +26,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, Logger logger)
         {
             _httpClient = httpClient;
-             _requestBuilder = requestBuilder.SkyHookTvdb;
+             _requestBuilder = requestBuilder.Search;
             _logger = logger;
         }
 
         public Tuple<Series, List<Episode>> GetSeriesInfo(int tvdbSeriesId)
         {
+            Console.WriteLine("[GetSeriesInfo] id:" + tvdbSeriesId);
             var httpRequest = _requestBuilder.Create()
                                              .SetSegment("route", "shows")
                                              .Resource(tvdbSeriesId.ToString())
@@ -62,36 +66,52 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             try
             {
                 var lowerTitle = title.ToLowerInvariant();
+                Console.WriteLine("Searching for " + lowerTitle);
 
-                if (lowerTitle.StartsWith("tvdb:") || lowerTitle.StartsWith("tvdbid:"))
-                {
-                    var slug = lowerTitle.Split(':')[1].Trim();
+                //if (lowerTitle.StartsWith("tvdb:") || lowerTitle.StartsWith("tvdbid:"))
+                //{
+                //    var slug = lowerTitle.Split(':')[1].Trim();
 
-                    int tvdbId;
+                //    int tvdbId;
 
-                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out tvdbId) || tvdbId <= 0)
-                    {
-                        return new List<Series>();
-                    }
+                //    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out tvdbId) || tvdbId <= 0)
+                //    {
+                //        return new List<Series>();
+                //    }
 
-                    try
-                    {
-                        return new List<Series> { GetSeriesInfo(tvdbId).Item1 };
-                    }
-                    catch (SeriesNotFoundException)
-                    {
-                        return new List<Series>();
-                    }
-                }
+                //    try
+                //    {
+                //        return new List<Series> { GetSeriesInfo(tvdbId).Item1 };
+                //    }
+                //    catch (SeriesNotFoundException)
+                //    {
+                //        return new List<Series>();
+                //    }
+                //}
 
+                // Majora: Temporarily, use iTunes to test.
                 var httpRequest = _requestBuilder.Create()
-                                                 .SetSegment("route", "search")
-                                                 .AddQueryParam("term", title.ToLower().Trim())
-                                                 .Build();
+                                    .AddQueryParam("entity", "album")
+                                    .AddQueryParam("term", title.ToLower().Trim())
+                                    .Build();
 
-                var httpResponse = _httpClient.Get<List<ShowResource>>(httpRequest);
 
-                return httpResponse.Resource.SelectList(MapSeries);
+
+                Console.WriteLine("httpRequest: ", httpRequest);
+
+                var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
+
+                //Console.WriteLine("Response: ", httpResponse.GetType());
+                //_logger.Info("Response: ", httpResponse.Resource.ResultCount);
+
+                //_logger.Info("HTTP Response: ", httpResponse.Resource.ResultCount);
+                var tempList = new List<Series>();
+                var tempSeries = new Series();
+                tempSeries.Title = "AFI";
+                tempList.Add(tempSeries);
+                return tempList;
+                
+                //return httpResponse.Resource.Results.SelectList(MapArtist);
             }
             catch (HttpException)
             {
@@ -102,6 +122,79 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Warn(ex, ex.Message);
                 throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
             }
+        }
+
+        public List<Artist> SearchForNewArtist(string title)
+        {
+            try
+            {
+                var lowerTitle = title.ToLowerInvariant();
+                Console.WriteLine("Searching for " + lowerTitle);
+
+                //if (lowerTitle.StartsWith("tvdb:") || lowerTitle.StartsWith("tvdbid:"))
+                //{
+                //    var slug = lowerTitle.Split(':')[1].Trim();
+
+                //    int tvdbId;
+
+                //    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out tvdbId) || tvdbId <= 0)
+                //    {
+                //        return new List<Series>();
+                //    }
+
+                //    try
+                //    {
+                //        return new List<Series> { GetSeriesInfo(tvdbId).Item1 };
+                //    }
+                //    catch (SeriesNotFoundException)
+                //    {
+                //        return new List<Series>();
+                //    }
+                //}
+
+                var httpRequest = _requestBuilder.Create()
+                                    .AddQueryParam("entity", "album")
+                                    .AddQueryParam("term", title.ToLower().Trim())
+                                    .Build();
+
+
+
+                Console.WriteLine("httpRequest: ", httpRequest);
+
+                var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
+
+                //Console.WriteLine("Response: ", httpResponse.GetType());
+                //_logger.Info("Response: ", httpResponse.Resource.ResultCount);
+
+                //_logger.Info("HTTP Response: ", httpResponse.Resource.ResultCount);
+                var tempList = new List<Artist>();
+                var tempSeries = new Artist();
+                tempSeries.ArtistName = "AFI";
+                tempList.Add(tempSeries);
+                return tempList;
+
+                //return httpResponse.Resource.Results.SelectList(MapArtist);
+            }
+            catch (HttpException)
+            {
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with SkyHook.", title);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, ex.Message);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
+            }
+        }
+
+        private static Artist MapArtist(ArtistResource artistQuery)
+        {
+            var artist = new Artist();
+            //artist.ItunesId = artistQuery.artistId;
+
+           // artist.ArtistName = artistQuery.ArtistName;
+
+
+            return artist;
         }
 
         private static Series MapSeries(ShowResource show)

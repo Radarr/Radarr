@@ -5,6 +5,7 @@ namespace NzbDrone.Common.Cloud
     public interface ILidarrCloudRequestBuilder
     {
         IHttpRequestBuilderFactory Services { get; }
+        IHttpRequestBuilderFactory Search { get; }
         IHttpRequestBuilderFactory SkyHookTvdb { get; }
     }
 
@@ -12,15 +13,21 @@ namespace NzbDrone.Common.Cloud
     {
         public LidarrCloudRequestBuilder()
         {
-            Services = new HttpRequestBuilder("http://services.Lidarr.tv/v1/")
+            
+            Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            SkyHookTvdb = new HttpRequestBuilder("http://skyhook.Lidarr.tv/v1/tvdb/{route}/{language}/")
+            Search = new HttpRequestBuilder("https://itunes.apple.com/search/")
+                .CreateFactory();
+
+            SkyHookTvdb = new HttpRequestBuilder("http://skyhook.lidarr.tv/v1/tvdb/{route}/{language}/")
                 .SetSegment("language", "en")
                 .CreateFactory();
         }
 
         public IHttpRequestBuilderFactory Services { get; }
+
+        public IHttpRequestBuilderFactory Search { get; }
 
         public IHttpRequestBuilderFactory SkyHookTvdb { get; }
     }

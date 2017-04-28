@@ -55,6 +55,8 @@ namespace NzbDrone.Core.Music
 
         public List<Album> Albums { get; set; }
         public HashSet<int> Tags { get; set; }
+        public bool ArtistFolder { get; set; }
+
         //public AddSeriesOptions AddOptions { get; set; } // TODO: Learn what this does
 
         public override string ToString()

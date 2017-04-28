@@ -4,7 +4,7 @@ var vent = require('vent');
 var reqres = require('../../reqres');
 var Marionette = require('marionette');
 var Backbone = require('backbone');
-var SeriesCollection = require('../SeriesCollection');
+var ArtistCollection = require('../../Artist/ArtistCollection');
 var EpisodeCollection = require('../EpisodeCollection');
 var EpisodeFileCollection = require('../EpisodeFileCollection');
 var SeasonCollection = require('../SeasonCollection');
@@ -45,7 +45,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-        this.seriesCollection = SeriesCollection.clone();
+        this.seriesCollection = ArtistCollection.clone();
         this.seriesCollection.shadowCollection.bindSignalR();
 
         this.listenTo(this.model, 'change:monitored', this._setMonitoredState);
@@ -155,6 +155,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _seriesSearch : function() {
+        console.log('_seriesSearch:', this.model);
         CommandController.Execute('seriesSearch', {
             name     : 'seriesSearch',
             seriesId : this.model.id

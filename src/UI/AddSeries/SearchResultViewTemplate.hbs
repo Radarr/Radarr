@@ -10,6 +10,7 @@
                 <div class="col-md-12">
                     <h2 class="series-title">
                         {{titleWithYear}}
+                        {{artistName}}
 
                         <span class="labels">
                             <span class="label label-default">{{network}}</span>
@@ -41,8 +42,6 @@
                             <option value="future">Future</option>
                             <option value="missing">Missing</option>
                             <option value="existing">Existing</option>
-                            <option value="first">First Season</option>
-                            <option value="latest">Latest Season</option>
                             <option value="none">None</option>
                         </select>
                     </div>
@@ -52,10 +51,9 @@
                         {{> ProfileSelectionPartial profiles}}
                     </div>
 
-                    <div class="form-group col-md-2">
-                        <label>Series Type</label>
-                        {{> SeriesTypeSelectionPartial}}
-                    </div>
+                    <!--<div class="form-group col-md-2">
+                        
+                    </div>-->
 
                     <div class="form-group col-md-2">
                         <label>Season Folders</label>

@@ -809,6 +809,7 @@
     <Compile Include="Messaging\Events\IHandle.cs" />
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
@@ -841,7 +842,10 @@
     <Compile Include="MetadataSource\ISearchForNewSeries.cs" />
     <Compile Include="Music\Album.cs" />
     <Compile Include="Music\Artist.cs" />
+    <Compile Include="Music\ArtistRepository.cs" />
+    <Compile Include="Music\ArtistService.cs" />
     <Compile Include="Music\Track.cs" />
+    <Compile Include="Music\TrackService.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />
@@ -897,6 +901,8 @@
     <Compile Include="Parser\IsoLanguage.cs" />
     <Compile Include="Parser\IsoLanguages.cs" />
     <Compile Include="Parser\LanguageParser.cs" />
+    <Compile Include="Parser\Model\LocalTrack.cs" />
+    <Compile Include="Parser\Model\ParsedTrackInfo.cs" />
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />

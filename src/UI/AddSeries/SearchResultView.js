@@ -6,7 +6,8 @@ var Marionette = require('marionette');
 var Profiles = require('../Profile/ProfileCollection');
 var RootFolders = require('./RootFolders/RootFolderCollection');
 var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var SeriesCollection = require('../Series/SeriesCollection');
+//var SeriesCollection = require('../Series/SeriesCollection');
+var SeriesCollection = require('../Artist/ArtistCollection');
 var Config = require('../Config');
 var Messenger = require('../Shared/Messenger');
 var AsValidatedView = require('../Mixins/AsValidatedView');
@@ -210,6 +211,7 @@ var view = Marionette.ItemView.extend({
         });
 
         promise.done(function() {
+            console.log('[SearchResultView] _addSeries promise resolve:', self.model);
             SeriesCollection.add(self.model);
 
             self.close();

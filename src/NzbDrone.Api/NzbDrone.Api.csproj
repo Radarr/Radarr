@@ -111,6 +111,9 @@
     <Compile Include="Frontend\Mappers\RobotsTxtMapper.cs" />
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
     <Compile Include="Indexers\ReleasePushModule.cs" />
+    <Compile Include="Music\AlbumResource.cs" />
+    <Compile Include="Music\ArtistLookupModule.cs" />
+    <Compile Include="Music\ArtistResource.cs" />
     <Compile Include="Parse\ParseModule.cs" />
     <Compile Include="Parse\ParseResource.cs" />
     <Compile Include="ManualImport\ManualImportModule.cs" />
