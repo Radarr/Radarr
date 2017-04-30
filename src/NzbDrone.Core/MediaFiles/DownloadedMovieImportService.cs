@@ -186,7 +186,7 @@ namespace NzbDrone.Core.MediaFiles
             var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, folderInfo, true, false);
             var importResults = _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
 
-            if ((downloadClientItem == null || !downloadClientItem.IsReadOnly) &&
+            if ((downloadClientItem == null || downloadClientItem.CanMoveFiles) &&
                 importResults.Any(i => i.Result == ImportResultType.Imported) &&
                 ShouldDeleteFolder(directoryInfo, movie))
             {
