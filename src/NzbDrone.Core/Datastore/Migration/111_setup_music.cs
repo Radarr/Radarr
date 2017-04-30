@@ -12,21 +12,23 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Create.TableForModel("Artists")
+            Create.TableForModel("Artist")
                 .WithColumn("ItunesId").AsInt32().Unique()
                 .WithColumn("ArtistName").AsString().Unique()
                 .WithColumn("ArtistSlug").AsString().Unique()
-                .WithColumn("CleanTitle").AsString()
+                .WithColumn("CleanTitle").AsString() // Do we need this?
                 .WithColumn("Monitored").AsBoolean()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
                 .WithColumn("LastDiskSync").AsDateTime().Nullable()
-                .WithColumn("Overview").AsString()
                 .WithColumn("Status").AsInt32()
                 .WithColumn("Path").AsString()
                 .WithColumn("Images").AsString()
                 .WithColumn("QualityProfileId").AsInt32()
-                .WithColumn("AirTime").AsString().Nullable() // JVM: This might be DropDate instead
-                //.WithColumn("BacklogSetting").AsInt32()
+                .WithColumn("Added").AsDateTime()
+                .WithColumn("AddOptions").AsString()
+                .WithColumn("AlbumFolder").AsInt32()
+                .WithColumn("Genre").AsString()
+                .WithColumn("Albums").AsString()
                 ;
 
             Create.TableForModel("Albums")
@@ -37,7 +39,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Image").AsInt32()
                 .WithColumn("TrackCount").AsInt32()
                 .WithColumn("DiscCount").AsInt32()
-                .WithColumn("Monitored").AsBoolean();
+                .WithColumn("Monitored").AsBoolean()
+                .WithColumn("Overview").AsString();
 
             Create.TableForModel("Tracks")
                 .WithColumn("ItunesTrackId").AsInt32().Unique()

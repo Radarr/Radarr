@@ -2,6 +2,7 @@
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Tv;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace NzbDrone.Core.Music
         public HashSet<int> Tags { get; set; }
         public bool ArtistFolder { get; set; }
 
-        //public AddSeriesOptions AddOptions { get; set; } // TODO: Learn what this does
+        public AddSeriesOptions AddOptions { get; set; } // TODO: Learn what this does
 
         public override string ToString()
         {
@@ -78,7 +79,7 @@ namespace NzbDrone.Core.Music
             //SeriesType = otherArtist.SeriesType;
             RootFolderPath = otherArtist.RootFolderPath;
             Tags = otherArtist.Tags;
-            //AddOptions = otherArtist.AddOptions;
+            AddOptions = otherArtist.AddOptions;
         }
     }
 }

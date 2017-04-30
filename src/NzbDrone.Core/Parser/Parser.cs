@@ -564,6 +564,17 @@ namespace NzbDrone.Core.Parser
             return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
         }
 
+        public static string CleanArtistTitle(this string title)
+        {
+            long number = 0;
+
+            //If Title only contains numbers return it as is.
+            if (long.TryParse(title, out number))
+                return title;
+
+            return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
+        }
+
         public static string NormalizeEpisodeTitle(string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);

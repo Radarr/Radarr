@@ -114,7 +114,7 @@ namespace NzbDrone.Api.Music
                 Genres = model.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
-                //AddOptions = resource.AddOptions,
+                AddOptions = model.AddOptions,
                 //Ratings = resource.Ratings
             };
         }
@@ -168,7 +168,7 @@ namespace NzbDrone.Api.Music
                 Genres = resource.Genres,
                 Tags = resource.Tags,
                 Added = resource.Added,
-                //AddOptions = resource.AddOptions,
+                AddOptions = resource.AddOptions,
                 //Ratings = resource.Ratings
             };
         }

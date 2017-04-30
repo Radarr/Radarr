@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries
+    public class SkyHookProxy : IProvideSeriesInfo, IProvideArtistInfo, ISearchForNewSeries
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -124,6 +124,39 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
+        public Tuple<Artist, List<Track>> GetArtistInfo(int itunesId)
+        {
+            Console.WriteLine("[GetArtistInfo] id:" + itunesId);
+            //https://itunes.apple.com/lookup?id=909253
+            var httpRequest = _requestBuilder.Create()
+                                             .SetSegment("route", "lookup")
+                                             .AddQueryParam("id", itunesId.ToString())
+                                             .Build();
+
+            httpRequest.AllowAutoRedirect = true;
+            httpRequest.SuppressHttpError = true;
+
+            var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
+
+            if (httpResponse.HasHttpError)
+            {
+                if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new ArtistNotFoundException(itunesId);
+                }
+                else
+                {
+                    throw new HttpException(httpRequest, httpResponse);
+                }
+            }
+
+            Console.WriteLine("GetArtistInfo, GetArtistInfo");
+            //var tracks = httpResponse.Resource.Episodes.Select(MapEpisode);
+            //var artist = MapArtist(httpResponse.Resource);
+            // I don't know how we are getting tracks from iTunes yet. 
+            return new Tuple<Artist, List<Track>>(MapArtists(httpResponse.Resource)[0], new List<Track>());
+            //return new Tuple<Artist, List<Track>>(artist, tracks.ToList());
+        }
         public List<Artist> SearchForNewArtist(string title)
         {
             try
@@ -142,52 +175,27 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         return new List<Artist>();
                     }
 
-                    //try
-                    //{
-                    //    return new List<Artist> { GetArtistInfo(itunesId).Item1 };
-                    //}
-                    //catch (ArtistNotFoundException)
-                    //{
-                    //    return new List<Artist>();
-                    //}
+                    try
+                    {
+                        return new List<Artist> { GetArtistInfo(itunesId).Item1 };
+                    }
+                    catch (ArtistNotFoundException)
+                    {
+                        return new List<Artist>();
+                    }
                 }
 
                 var httpRequest = _requestBuilder.Create()
+                                    .SetSegment("route", "search")
                                     .AddQueryParam("entity", "album")
                                     .AddQueryParam("term", title.ToLower().Trim())
                                     .Build();
 
 
 
-                Console.WriteLine("httpRequest: ", httpRequest);
-
                 var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
 
-                Album tempAlbum;
-                List<Artist> artists = new List<Artist>();
-                foreach (var album in httpResponse.Resource.Results)
-                {
-                    int index = artists.FindIndex(a => a.ItunesId == album.ArtistId);
-                    tempAlbum = MapAlbum(album);
-
-                    if (index >= 0)
-                    {
-                        artists[index].Albums.Add(tempAlbum);
-                    }
-                    else
-                    {
-                        Artist tempArtist = new Artist();
-                        // TODO: Perform the MapArtist call here
-                        tempArtist.ItunesId = album.ArtistId;
-                        tempArtist.ArtistName = album.ArtistName;
-                        tempArtist.Genres.Add(album.PrimaryGenreName);
-                        tempArtist.Albums.Add(tempAlbum);
-                        artists.Add(tempArtist);
-                    }
-
-                }
-
-                return artists;
+                return MapArtists(httpResponse.Resource);
             }
             catch (HttpException)
             {
@@ -198,6 +206,34 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Warn(ex, ex.Message);
                 throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
             }
+        }
+
+        private List<Artist> MapArtists(ArtistResource resource)
+        {
+            Album tempAlbum;
+            List<Artist> artists = new List<Artist>();
+            foreach (var album in resource.Results)
+            {
+                int index = artists.FindIndex(a => a.ItunesId == album.ArtistId);
+                tempAlbum = MapAlbum(album);
+
+                if (index >= 0)
+                {
+                    artists[index].Albums.Add(tempAlbum);
+                }
+                else
+                {
+                    Artist tempArtist = new Artist();
+                    tempArtist.ItunesId = album.ArtistId;
+                    tempArtist.ArtistName = album.ArtistName;
+                    tempArtist.Genres.Add(album.PrimaryGenreName);
+                    tempArtist.Albums.Add(tempAlbum);
+                    artists.Add(tempArtist);
+                }
+
+            }
+
+            return artists;
         }
 
         private Album MapAlbum(AlbumResource albumQuery)

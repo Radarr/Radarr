@@ -11,9 +11,9 @@ module.exports = Backbone.Model.extend({
         status           : 0
     },
 
-    setAlbumsMonitored : function(seasonNumber) {
+    setAlbumsMonitored : function(albumName) {
         _.each(this.get('albums'), function(album) {
-            if (season.seasonNumber === seasonNumber) {
+            if (season.albumName === albumName) {
                 album.monitored = !album.monitored;
             }
         });

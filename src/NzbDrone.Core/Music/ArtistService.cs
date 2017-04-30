@@ -1,10 +1,14 @@
 ﻿using NLog;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Organizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Parser;
 using System.Text;
+using System.IO;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -14,7 +18,7 @@ namespace NzbDrone.Core.Music
         List<Artist> GetArtists(IEnumerable<int> artistIds);
         Artist AddArtist(Artist newArtist);
         Artist FindByItunesId(int itunesId);
-        Artist FindByTitle(string title);
+        Artist FindByName(string title);
         Artist FindByTitleInexact(string title);
         void DeleteArtist(int artistId, bool deleteFiles);
         List<Artist> GetAllArtists();
@@ -32,29 +36,47 @@ namespace NzbDrone.Core.Music
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly Logger _logger;
 
+        public ArtistService(IArtistRepository artistRepository,
+                            IEventAggregator eventAggregator,
+                            ITrackService trackService,
+                            IBuildFileNames fileNameBuilder,
+                            Logger logger)
+        {
+            _artistRepository = artistRepository;
+            _eventAggregator = eventAggregator;
+            _trackService = trackService;
+            _fileNameBuilder = fileNameBuilder;
+            _logger = logger;
+        }
+
         public Artist AddArtist(Artist newArtist)
         {
-            throw new NotImplementedException();
+            _artistRepository.Insert(newArtist);
+            _eventAggregator.PublishEvent(new ArtistAddedEvent(GetArtist(newArtist.Id)));
+
+            return newArtist;
         }
 
         public bool ArtistPathExists(string folder)
         {
-            throw new NotImplementedException();
+            return _artistRepository.ArtistPathExists(folder);
         }
 
         public void DeleteArtist(int artistId, bool deleteFiles)
         {
-            throw new NotImplementedException();
+            var artist = _artistRepository.Get(artistId);
+            _artistRepository.Delete(artistId);
+            _eventAggregator.PublishEvent(new ArtistDeletedEvent(artist, deleteFiles));
         }
 
         public Artist FindByItunesId(int itunesId)
         {
-            throw new NotImplementedException();
+            return _artistRepository.FindByItunesId(itunesId);
         }
 
-        public Artist FindByTitle(string title)
+        public Artist FindByName(string title)
         {
-            throw new NotImplementedException();
+            return _artistRepository.FindByName(title.CleanArtistTitle());
         }
 
         public Artist FindByTitleInexact(string title)
@@ -64,32 +86,70 @@ namespace NzbDrone.Core.Music
 
         public List<Artist> GetAllArtists()
         {
-            throw new NotImplementedException();
+            _logger.Debug("Count of repository: " + _artistRepository.Count());
+            // TEMP: Return empty list while we debug the DB error
+            return new List<Artist>();
+            //return _artistRepository.All().ToList();
         }
 
         public Artist GetArtist(int artistId)
         {
-            throw new NotImplementedException();
+            return _artistRepository.Get(artistId);
         }
 
         public List<Artist> GetArtists(IEnumerable<int> artistIds)
         {
-            throw new NotImplementedException();
+            return _artistRepository.Get(artistIds).ToList();
         }
 
         public void RemoveAddOptions(Artist artist)
         {
-            throw new NotImplementedException();
+            _artistRepository.SetFields(artist, s => s.AddOptions);
         }
 
         public Artist UpdateArtist(Artist artist)
         {
-            throw new NotImplementedException();
+            var storedArtist = GetArtist(artist.Id); // Is it Id or iTunesId? 
+
+            foreach (var album in artist.Albums)
+            {
+                var storedAlbum = storedArtist.Albums.SingleOrDefault(s => s.AlbumId == album.AlbumId);
+
+                if (storedAlbum != null && album.Monitored != storedAlbum.Monitored)
+                {
+                    _trackService.SetTrackMonitoredByAlbum(artist.Id, album.AlbumId, album.Monitored);
+                }
+            }
+
+            var updatedArtist = _artistRepository.Update(artist);
+            _eventAggregator.PublishEvent(new ArtistEditedEvent(updatedArtist, storedArtist));
+
+            return updatedArtist;
         }
 
         public List<Artist> UpdateArtists(List<Artist> artist)
         {
-            throw new NotImplementedException();
+            _logger.Debug("Updating {0} artist", artist.Count);
+            foreach (var s in artist)
+            {
+                _logger.Trace("Updating: {0}", s.ArtistName);
+                if (!s.RootFolderPath.IsNullOrWhiteSpace())
+                {
+                    var folderName = new DirectoryInfo(s.Path).Name;
+                    s.Path = Path.Combine(s.RootFolderPath, folderName);
+                    _logger.Trace("Changing path for {0} to {1}", s.ArtistName, s.Path);
+                }
+
+                else
+                {
+                    _logger.Trace("Not changing path for: {0}", s.ArtistName);
+                }
+            }
+
+            _artistRepository.UpdateMany(artist);
+            _logger.Debug("{0} artists updated", artist.Count);
+
+            return artist;
         }
     }
 }

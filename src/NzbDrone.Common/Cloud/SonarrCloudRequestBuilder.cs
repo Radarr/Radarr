@@ -17,7 +17,7 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            Search = new HttpRequestBuilder("https://itunes.apple.com/search/")
+            Search = new HttpRequestBuilder("https://itunes.apple.com/{route}/")
                 .CreateFactory();
 
             SkyHookTvdb = new HttpRequestBuilder("http://skyhook.lidarr.tv/v1/tvdb/{route}/{language}/")

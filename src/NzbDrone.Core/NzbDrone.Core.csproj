@@ -518,6 +518,7 @@
     <Compile Include="Download\ProcessDownloadDecisions.cs" />
     <Compile Include="Download\ProcessedDecisions.cs" />
     <Compile Include="Download\RedownloadFailedDownloadService.cs" />
+    <Compile Include="Exceptions\ArtistNotFoundException.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\DownstreamException.cs" />
     <Compile Include="Exceptions\NzbDroneClientException.cs" />
@@ -758,6 +759,7 @@
     <Compile Include="MediaFiles\EpisodeImport\Specifications\SameEpisodesImportSpecification.cs" />
     <Compile Include="MediaFiles\EpisodeImport\Specifications\UnverifiedSceneNumberingSpecification.cs" />
     <Compile Include="MediaFiles\EpisodeImport\Specifications\UpgradeSpecification.cs" />
+    <Compile Include="MediaFiles\Events\ArtistRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeDownloadedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeFileAddedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeFileDeletedEvent.cs" />
@@ -766,6 +768,8 @@
     <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScanSkippedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScannedEvent.cs" />
+    <Compile Include="MediaFiles\Events\TrackFileDeletedEvent.cs" />
+    <Compile Include="MediaFiles\Events\TrackImportedEvent.cs" />
     <Compile Include="MediaFiles\FileDateType.cs" />
     <Compile Include="MediaFiles\MediaFileAttributeService.cs" />
     <Compile Include="MediaFiles\MediaFileExtensions.cs" />
@@ -808,6 +812,7 @@
     <Compile Include="Messaging\Events\IEventAggregator.cs" />
     <Compile Include="Messaging\Events\IHandle.cs" />
     <Compile Include="Messaging\IProcessMessage.cs" />
+    <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
@@ -840,10 +845,19 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewSeries.cs" />
+    <Compile Include="Music\AddArtistOptions.cs" />
+    <Compile Include="Music\AddArtistService.cs" />
+    <Compile Include="Music\AddArtistValidator.cs" />
     <Compile Include="Music\Album.cs" />
     <Compile Include="Music\Artist.cs" />
+    <Compile Include="Music\ArtistNameNormalizer.cs" />
+    <Compile Include="Music\ArtistSlugValidator.cs" />
     <Compile Include="Music\ArtistRepository.cs" />
     <Compile Include="Music\ArtistService.cs" />
+    <Compile Include="Music\Events\ArtistAddedEvent.cs" />
+    <Compile Include="Music\Events\ArtistDeletedEvent.cs" />
+    <Compile Include="Music\Events\ArtistEditedEvent.cs" />
+    <Compile Include="Music\Events\ArtistUpdatedEvent.cs" />
     <Compile Include="Music\Track.cs" />
     <Compile Include="Music\TrackService.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
@@ -1141,6 +1155,8 @@
     <Compile Include="Validation\NzbDroneValidationFailure.cs" />
     <Compile Include="Validation\NzbDroneValidationResult.cs" />
     <Compile Include="Validation\NzbDroneValidationState.cs" />
+    <Compile Include="Validation\Paths\ArtistExistsValidator.cs" />
+    <Compile Include="Validation\Paths\ArtistPathValidator.cs" />
     <Compile Include="Validation\Paths\MappedNetworkDriveValidator.cs" />
     <Compile Include="Validation\Paths\DroneFactoryValidator.cs" />
     <Compile Include="Validation\Paths\FolderWritableValidator.cs" />

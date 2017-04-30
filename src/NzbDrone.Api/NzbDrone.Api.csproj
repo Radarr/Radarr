@@ -113,6 +113,7 @@
     <Compile Include="Indexers\ReleasePushModule.cs" />
     <Compile Include="Music\AlbumResource.cs" />
     <Compile Include="Music\ArtistLookupModule.cs" />
+    <Compile Include="Music\ArtistModule.cs" />
     <Compile Include="Music\ArtistResource.cs" />
     <Compile Include="Parse\ParseModule.cs" />
     <Compile Include="Parse\ParseResource.cs" />
