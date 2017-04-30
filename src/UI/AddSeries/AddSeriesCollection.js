@@ -15,9 +15,8 @@ module.exports = Backbone.Collection.extend({
             if (self.unmappedFolderModel) {
                 model.path = self.unmappedFolderModel.get('folder').path;
             }
-            console.log('model: ', model);
         });
-        console.log('response: ', response); // Note: this gets called after api responds with artist model
+        console.log('response: ', response); 
 
         return response;
     }

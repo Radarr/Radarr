@@ -1,31 +1,26 @@
 <div class="search-item {{#unless isExisting}}search-item-new{{/unless}}">
     <div class="row">
-        <div class="col-md-2">
-            <a href="{{tvdbUrl}}" target="_blank">
-                {{poster}}
-            </a>
-        </div>
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-12">
                     <h2 class="series-title">
-                        {{titleWithYear}}
+                        <!--{{titleWithYear}}-->
                         {{artistName}}
 
-                        <span class="labels">
+                        <!--<span class="labels">
                             <span class="label label-default">{{network}}</span>
                             {{#unless_eq status compare="continuing"}}
                                 <span class="label label-danger">Ended</span>
                             {{/unless_eq}}
-                        </span>
+                        </span>-->
                     </h2>
                 </div>
             </div>
-            <div class="row new-series-overview x-overview">
+<!--             <div class="row new-series-overview x-overview">
                 <div class="col-md-12 overview-internal">
                     {{overview}}
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 {{#unless existing}}
                     {{#unless path}}
@@ -56,7 +51,7 @@
                     </div>-->
 
                     <div class="form-group col-md-2">
-                        <label>Season Folders</label>
+                        <label>Album Folders</label>
 
                         <div class="input-group">
                             <label class="checkbox toggle well">
@@ -73,7 +68,7 @@
             </div>
             <div class="row">
                 {{#unless existing}}
-                    {{#if title}}
+                    {{#if artistName}}
                     <div class="form-group col-md-2 col-md-offset-10">
                         <!--Uncomment if we need to add even more controls to add series-->
                         <!--<label style="visibility: hidden">Add</label>-->
@@ -82,13 +77,13 @@
                                 <i class="icon-sonarr-add"></i>
                             </button>
 
-                            <button class="btn btn-success add x-add-search" title="Add and Search for missing episodes">
+                            <button class="btn btn-success add x-add-search" title="Add and Search for missing tracks">
                                 <i class="icon-sonarr-search"></i>
                             </button>
                         </div>
                     </div>
                     {{else}}
-                        <div class="col-md-2 col-md-offset-10" title="Series requires an English title">
+                        <div class="col-md-2 col-md-offset-10">
                             <button class="btn add-series disabled">
                                 Add
                             </button>
@@ -103,5 +98,49 @@
                 {{/unless}}
             </div>
         </div>
+    </div>
+    <div class="row">
+        {{#each albums}}
+        <div class="col-md-12" style="border:1px dashed black;">
+            <div class="col-md-2">
+                <a href="{{artworkUrl}}" target="_blank">
+                    <!-- {{poster}} -->
+                    <img class="album-poster" src="{{artworkUrl}}">
+                </a>
+            </div>
+            <div class="col-md-8">
+                <h2>{{albumName}} ({{year}})</h2>
+                {{#unless existing}}
+                    {{#if albumName}}
+                    <div class="form-group col-md-offset-10">
+                        <!--Uncomment if we need to add even more controls to add series-->
+                        <!--<label style="visibility: hidden">Add</label>-->
+                        <div class="btn-group">
+                            <button class="btn btn-success add x-add" title="Add">
+                                <i class="icon-sonarr-add"></i>
+                            </button>
+
+                            <button class="btn btn-success add x-add-search" title="Add and Search for missing tracks">
+                                <i class="icon-sonarr-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{else}}
+                        <div class="col-md-2 col-md-offset-10">
+                            <button class="btn add-series disabled">
+                                Add
+                            </button>
+                        </div>
+                    {{/if}}
+                {{else}}
+                    <div class="col-md-2 col-md-offset-10">
+                        <a class="btn btn-default" href="{{route}}">
+                            Already Exists
+                        </a>
+                    </div>
+                {{/unless}}
+            </div>
+        </div>
+        {{/each}}
     </div>
 </div>

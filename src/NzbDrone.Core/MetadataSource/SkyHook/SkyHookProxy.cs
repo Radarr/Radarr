@@ -163,32 +163,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
 
-
-                //Console.WriteLine("Response: ", httpResponse.GetType());
-                //_logger.Info("Response: ", httpResponse.Resource.ResultCount);
-
-                //_logger.Info("HTTP Response: ", httpResponse.Resource.ResultCount);
-                //var tempList = new List<Artist>();
-                //var tempSeries = new Artist();
-                //tempSeries.ArtistName = "AFI";
-                //tempList.Add(tempSeries);
-                //return tempList;
-
-
-
                 Album tempAlbum;
                 List<Artist> artists = new List<Artist>();
-                ArtistComparer artistComparer = new ArtistComparer();
                 foreach (var album in httpResponse.Resource.Results)
                 {
-                    tempAlbum = new Album();
-                    // TODO: Perform MapAlbum call here
-                    tempAlbum.AlbumId = album.CollectionId;
-                    tempAlbum.Title = album.CollectionName;
-
-
                     int index = artists.FindIndex(a => a.ItunesId == album.ArtistId);
-
+                    tempAlbum = MapAlbum(album);
 
                     if (index >= 0)
                     {
@@ -200,6 +180,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         // TODO: Perform the MapArtist call here
                         tempArtist.ItunesId = album.ArtistId;
                         tempArtist.ArtistName = album.ArtistName;
+                        tempArtist.Genres.Add(album.PrimaryGenreName);
                         tempArtist.Albums.Add(tempAlbum);
                         artists.Add(tempArtist);
                     }
@@ -207,10 +188,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
 
                 return artists;
-
-                // I need to return a list of mapped artists. 
-
-                //return httpResponse.Resource.Results.SelectList(MapArtist);
             }
             catch (HttpException)
             {
@@ -223,15 +200,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private static Artist MapArtist(ArtistResource artistQuery)
+        private Album MapAlbum(AlbumResource albumQuery)
         {
-            var artist = new Artist();
-            //artist.ItunesId = artistQuery.ItunesId; ;
+            Album album = new Album();
 
-           // artist.ArtistName = artistQuery.ArtistName;
-
-
-            return artist;
+            album.AlbumId = albumQuery.CollectionId;
+            album.Title = albumQuery.CollectionName;
+            album.Year = albumQuery.ReleaseDate.Year;
+            album.ArtworkUrl = albumQuery.ArtworkUrl100;
+            album.Explicitness = albumQuery.CollectionExplicitness;
+            return album;
         }
 
         private static Series MapSeries(ShowResource show)

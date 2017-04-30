@@ -12,7 +12,9 @@ namespace NzbDrone.Api.Music
         public string AlbumName { get; set; }
         public bool Monitored { get; set; }
         public int Year { get; set; }
-        public List<string> Genre { get; set; }
+        public List<string> Genres { get; set; }
+        public string ArtworkUrl { get; set; }
+
     }
 
     public static class AlbumResourceMapper
@@ -26,7 +28,9 @@ namespace NzbDrone.Api.Music
                 AlbumId = model.AlbumId,
                 Monitored = model.Monitored,
                 Year = model.Year,
-                AlbumName = model.Title
+                AlbumName = model.Title,
+                Genres = model.Genres,
+                ArtworkUrl = model.ArtworkUrl
             };
         }
 
@@ -39,7 +43,9 @@ namespace NzbDrone.Api.Music
                 AlbumId = resource.AlbumId,
                 Monitored = resource.Monitored,
                 Year = resource.Year,
-                Title = resource.AlbumName
+                Title = resource.AlbumName,
+                Genres = resource.Genres,
+                ArtworkUrl = resource.ArtworkUrl
             };
         }
 

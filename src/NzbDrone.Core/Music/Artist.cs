@@ -9,20 +9,6 @@ using System.Text;
 
 namespace NzbDrone.Core.Music
 {
-
-    public class ArtistComparer : IEqualityComparer<Artist>
-    {
-        public bool Equals(Artist x, Artist y)
-        {
-            return x.ItunesId == y.ItunesId;
-        }
-
-        public int GetHashCode(Artist obj)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class Artist : ModelBase
     {
         public Artist()
@@ -46,7 +32,6 @@ namespace NzbDrone.Core.Music
         //public SeriesStatusType Status { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
-        //public int ProfileId { get; set; }
         public bool AlbumFolder { get; set; }
         public DateTime? LastInfoSync { get; set; }
         //public int Runtime { get; set; }

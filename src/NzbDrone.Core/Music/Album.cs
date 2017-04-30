@@ -22,5 +22,8 @@ namespace NzbDrone.Core.Music
         public bool Monitored { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<Actor> Actors { get; set; } // These are band members. TODO: Refactor
+        public List<string> Genres { get; set; }
+        public string ArtworkUrl { get; set; }
+        public string Explicitness { get; set; }
     }
 }
