@@ -70,6 +70,7 @@ namespace NzbDrone.Api.Authentication
             {
                 RedirectUrl = _configFileProvider.UrlBase + "/login",
                 UserMapper = _authenticationService,
+                Path = _configFileProvider.UrlBase,
                 CryptographyConfiguration = cryptographyConfiguration
             });
         }
