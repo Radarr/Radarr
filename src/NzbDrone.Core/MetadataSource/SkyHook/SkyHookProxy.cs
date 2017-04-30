@@ -175,23 +175,38 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 //return tempList;
 
 
+
                 Album tempAlbum;
-                // TODO: This needs to handle multiple artists.
-                Artist artist = new Artist();
-                artist.ArtistName = httpResponse.Resource.Results[0].ArtistName;
-                artist.ItunesId = httpResponse.Resource.Results[0].ArtistId;
+                List<Artist> artists = new List<Artist>();
+                ArtistComparer artistComparer = new ArtistComparer();
                 foreach (var album in httpResponse.Resource.Results)
                 {
                     tempAlbum = new Album();
+                    // TODO: Perform MapAlbum call here
                     tempAlbum.AlbumId = album.CollectionId;
                     tempAlbum.Title = album.CollectionName;
 
-                    artist.Albums.Add(tempAlbum);
+
+                    int index = artists.FindIndex(a => a.ItunesId == album.ArtistId);
+
+
+                    if (index >= 0)
+                    {
+                        artists[index].Albums.Add(tempAlbum);
+                    }
+                    else
+                    {
+                        Artist tempArtist = new Artist();
+                        // TODO: Perform the MapArtist call here
+                        tempArtist.ItunesId = album.ArtistId;
+                        tempArtist.ArtistName = album.ArtistName;
+                        tempArtist.Albums.Add(tempAlbum);
+                        artists.Add(tempArtist);
+                    }
+
                 }
 
-                var temp = new List<Artist>();
-                temp.Add(artist);
-                return temp;
+                return artists;
 
                 // I need to return a list of mapped artists. 
 
