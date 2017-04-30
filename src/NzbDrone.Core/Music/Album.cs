@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Music
         }
 
         public int AlbumId { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } // NOTE: This should be CollectionName in API
         public int Year { get; set; }
         public int TrackCount { get; set; }
         public int DiscCount { get; set; }

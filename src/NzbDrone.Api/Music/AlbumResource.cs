@@ -9,10 +9,10 @@ namespace NzbDrone.Api.Music
     public class AlbumResource
     {
         public int AlbumId { get; set; }
+        public string AlbumName { get; set; }
         public bool Monitored { get; set; }
-        //public string Overview { get; set; }
         public int Year { get; set; }
-        //public SeasonStatisticsResource Statistics { get; set; }
+        public List<string> Genre { get; set; }
     }
 
     public static class AlbumResourceMapper
@@ -25,8 +25,8 @@ namespace NzbDrone.Api.Music
             {
                 AlbumId = model.AlbumId,
                 Monitored = model.Monitored,
-                //Overview = model.Overview; //TODO: Inspect if Album needs an overview
-                Year = model.Year
+                Year = model.Year,
+                AlbumName = model.Title
             };
         }
 
@@ -38,7 +38,8 @@ namespace NzbDrone.Api.Music
             {
                 AlbumId = resource.AlbumId,
                 Monitored = resource.Monitored,
-                Year = resource.Year
+                Year = resource.Year,
+                Title = resource.AlbumName
             };
         }
 

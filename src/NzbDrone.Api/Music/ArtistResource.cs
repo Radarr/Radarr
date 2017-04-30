@@ -16,12 +16,10 @@ namespace NzbDrone.Api.Music
             Monitored = true;
         }
 
-        //Todo: Sorters should be done completely on the client
-        //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
-        //Todo: We should get the entire Profile instead of ID and Name separately
 
         //View Only
         public string ArtistName { get; set; }
+        public int ItunesId { get; set; }
         //public List<AlternateTitleResource> AlternateTitles { get; set; }
         //public string SortTitle { get; set; }
 
@@ -55,17 +53,6 @@ namespace NzbDrone.Api.Music
         public bool ArtistFolder { get; set; }
         public bool Monitored { get; set; }
 
-        //public bool UseSceneNumbering { get; set; }
-        //public int Runtime { get; set; }
-        //public int TvdbId { get; set; }
-        //public int TvRageId { get; set; }
-        //public int TvMazeId { get; set; }
-        //public DateTime? FirstAired { get; set; }
-        //public DateTime? LastInfoSync { get; set; }
-        //public SeriesTypes SeriesType { get; set; }
-        public string CleanTitle { get; set; }
-        public int ItunesId { get; set; }
-        //public string TitleSlug { get; set; }
         public string RootFolderPath { get; set; }
         public string Certification { get; set; }
         public List<string> Genres { get; set; }
@@ -119,7 +106,6 @@ namespace NzbDrone.Api.Music
                 //FirstAired = resource.FirstAired,
                 //LastInfoSync = resource.LastInfoSync,
                 //SeriesType = resource.SeriesType,
-                CleanTitle = model.CleanTitle,
                 ItunesId = model.ItunesId,
                 ArtistSlug = model.ArtistSlug,
 
@@ -174,7 +160,6 @@ namespace NzbDrone.Api.Music
                 //FirstAired = resource.FirstAired,
                 //LastInfoSync = resource.LastInfoSync,
                 //SeriesType = resource.SeriesType,
-                CleanTitle = resource.CleanTitle,
                 ItunesId = resource.ItunesId,
                 ArtistSlug = resource.ArtistSlug,
                 

@@ -99,7 +99,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 Console.WriteLine("httpRequest: ", httpRequest);
 
-                var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
+                var httpResponse = _httpClient.Get<List<ShowResource>>(httpRequest);
 
                 //Console.WriteLine("Response: ", httpResponse.GetType());
                 //_logger.Info("Response: ", httpResponse.Resource.ResultCount);
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 tempList.Add(tempSeries);
                 return tempList;
                 
-                //return httpResponse.Resource.Results.SelectList(MapArtist);
+                return httpResponse.Resource.SelectList(MapSeries);
             }
             catch (HttpException)
             {
@@ -131,26 +131,26 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 var lowerTitle = title.ToLowerInvariant();
                 Console.WriteLine("Searching for " + lowerTitle);
 
-                //if (lowerTitle.StartsWith("tvdb:") || lowerTitle.StartsWith("tvdbid:"))
-                //{
-                //    var slug = lowerTitle.Split(':')[1].Trim();
+                if (lowerTitle.StartsWith("itunes:") || lowerTitle.StartsWith("itunesid:"))
+                {
+                    var slug = lowerTitle.Split(':')[1].Trim();
 
-                //    int tvdbId;
+                    int itunesId;
 
-                //    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out tvdbId) || tvdbId <= 0)
-                //    {
-                //        return new List<Series>();
-                //    }
+                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out itunesId) || itunesId <= 0)
+                    {
+                        return new List<Artist>();
+                    }
 
-                //    try
-                //    {
-                //        return new List<Series> { GetSeriesInfo(tvdbId).Item1 };
-                //    }
-                //    catch (SeriesNotFoundException)
-                //    {
-                //        return new List<Series>();
-                //    }
-                //}
+                    //try
+                    //{
+                    //    return new List<Artist> { GetArtistInfo(itunesId).Item1 };
+                    //}
+                    //catch (ArtistNotFoundException)
+                    //{
+                    //    return new List<Artist>();
+                    //}
+                }
 
                 var httpRequest = _requestBuilder.Create()
                                     .AddQueryParam("entity", "album")
@@ -163,15 +163,37 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
 
+
                 //Console.WriteLine("Response: ", httpResponse.GetType());
                 //_logger.Info("Response: ", httpResponse.Resource.ResultCount);
 
                 //_logger.Info("HTTP Response: ", httpResponse.Resource.ResultCount);
-                var tempList = new List<Artist>();
-                var tempSeries = new Artist();
-                tempSeries.ArtistName = "AFI";
-                tempList.Add(tempSeries);
-                return tempList;
+                //var tempList = new List<Artist>();
+                //var tempSeries = new Artist();
+                //tempSeries.ArtistName = "AFI";
+                //tempList.Add(tempSeries);
+                //return tempList;
+
+
+                Album tempAlbum;
+                // TODO: This needs to handle multiple artists.
+                Artist artist = new Artist();
+                artist.ArtistName = httpResponse.Resource.Results[0].ArtistName;
+                artist.ItunesId = httpResponse.Resource.Results[0].ArtistId;
+                foreach (var album in httpResponse.Resource.Results)
+                {
+                    tempAlbum = new Album();
+                    tempAlbum.AlbumId = album.CollectionId;
+                    tempAlbum.Title = album.CollectionName;
+
+                    artist.Albums.Add(tempAlbum);
+                }
+
+                var temp = new List<Artist>();
+                temp.Add(artist);
+                return temp;
+
+                // I need to return a list of mapped artists. 
 
                 //return httpResponse.Resource.Results.SelectList(MapArtist);
             }
@@ -189,7 +211,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private static Artist MapArtist(ArtistResource artistQuery)
         {
             var artist = new Artist();
-            //artist.ItunesId = artistQuery.artistId;
+            //artist.ItunesId = artistQuery.ItunesId; ;
 
            // artist.ArtistName = artistQuery.ArtistName;
 

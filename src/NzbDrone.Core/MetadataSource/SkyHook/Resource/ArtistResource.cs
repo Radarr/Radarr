@@ -15,6 +15,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string ArtistName { get; set; }
         public int ArtistId { get; set; }
         public string CollectionName { get; set; }
+        public int CollectionId { get; set; }
     }
 
     public class ArtistResource
