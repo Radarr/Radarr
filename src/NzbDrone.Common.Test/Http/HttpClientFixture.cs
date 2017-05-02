@@ -174,7 +174,7 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.Lidarr.tv/wrongpath", file));
+            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.lidarr.audio/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
 
