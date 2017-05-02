@@ -110,7 +110,6 @@ namespace NzbDrone.Api.Music
                 ArtistSlug = model.ArtistSlug,
 
                 RootFolderPath = model.RootFolderPath,
-                Certification = model.Certification,
                 Genres = model.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
@@ -164,7 +163,6 @@ namespace NzbDrone.Api.Music
                 ArtistSlug = resource.ArtistSlug,
                 
                 RootFolderPath = resource.RootFolderPath,
-                Certification = resource.Certification,
                 Genres = resource.Genres,
                 Tags = resource.Tags,
                 Added = resource.Added,

@@ -23,41 +23,42 @@ namespace NzbDrone.Core.Music
         }
 
         public int ItunesId { get; set; }
-        //public int TvRageId { get; set; }
-        //public int TvMazeId { get; set; }
-        //public string ImdbId { get; set; }
         public string ArtistName { get; set; }
         public string ArtistSlug { get; set; }
         public string CleanTitle { get; set; }
-        public string SortTitle { get; set; }
-        //public SeriesStatusType Status { get; set; }
-        public string Overview { get; set; }
         public bool Monitored { get; set; }
         public bool AlbumFolder { get; set; }
+        public bool ArtistFolder { get; set; }
         public DateTime? LastInfoSync { get; set; }
-        //public int Runtime { get; set; }
+        public DateTime? LastDiskSync { get; set; }
+        
+        public int Status { get; set; } // TODO: Figure out what this is, do we need it? 
+        public string Path { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
+        public List<string> Genres { get; set; }
+        public int QualityProfileId { get; set; }
+
+        public string RootFolderPath { get; set; }
+        public DateTime Added { get; set; }
+        public LazyLoaded<Profile> Profile { get; set; }
+        public int ProfileId { get; set; }
+        public List<Album> Albums { get; set; }
+        public HashSet<int> Tags { get; set; }
+        
+        public AddSeriesOptions AddOptions { get; set; }
+
+        //public string SortTitle { get; set; }
+        //public SeriesStatusType Status { get; set; }
+        //public int Runtime { get; set; }
         //public SeriesTypes SeriesType { get; set; }
         //public string Network { get; set; }
         //public bool UseSceneNumbering { get; set; }
         //public string TitleSlug { get; set; }
-        public string Path { get; set; }
         //public int Year { get; set; }
         //public Ratings Ratings { get; set; }
-        public List<string> Genres { get; set; }
         //public List<Actor> Actors { get; set; } // MOve to album?
-        public string Certification { get; set; }
-        public string RootFolderPath { get; set; }
-        public DateTime Added { get; set; }
-        public DateTime? FirstAired { get; set; }
-        public LazyLoaded<Profile> Profile { get; set; }
-        public int ProfileId { get; set; }
-
-        public List<Album> Albums { get; set; }
-        public HashSet<int> Tags { get; set; }
-        public bool ArtistFolder { get; set; }
-
-        public AddSeriesOptions AddOptions { get; set; } // TODO: Learn what this does
+        //public string Certification { get; set; }
+        //public DateTime? FirstAired { get; set; }
 
         public override string ToString()
         {
@@ -66,8 +67,29 @@ namespace NzbDrone.Core.Music
 
         public void ApplyChanges(Artist otherArtist)
         {
-            //TODO: Implement
+
             ItunesId = otherArtist.ItunesId;
+            ArtistName = otherArtist.ArtistName;
+            ArtistSlug = otherArtist.ArtistSlug;
+            CleanTitle = otherArtist.CleanTitle;
+            Monitored = otherArtist.Monitored;
+            AlbumFolder = otherArtist.AlbumFolder;
+            LastInfoSync = otherArtist.LastInfoSync;
+            Images = otherArtist.Images;
+            Path = otherArtist.Path;
+            Genres = otherArtist.Genres;
+            RootFolderPath = otherArtist.RootFolderPath;
+            Added = otherArtist.Added;
+            Profile = otherArtist.Profile;
+            ProfileId = otherArtist.ProfileId;
+            Albums = otherArtist.Albums;
+            Tags = otherArtist.Tags;
+            ArtistFolder = otherArtist.ArtistFolder;
+            AddOptions = otherArtist.AddOptions;
+
+
+        //TODO: Implement
+        ItunesId = otherArtist.ItunesId;
 
             Albums = otherArtist.Albums;
             Path = otherArtist.Path;
@@ -80,6 +102,7 @@ namespace NzbDrone.Core.Music
             RootFolderPath = otherArtist.RootFolderPath;
             Tags = otherArtist.Tags;
             AddOptions = otherArtist.AddOptions;
+
         }
     }
 }

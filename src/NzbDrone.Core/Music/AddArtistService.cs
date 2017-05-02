@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Music
             }
 
             newArtist.CleanTitle = newArtist.ArtistName.CleanSeriesTitle();
-            newArtist.SortTitle = ArtistNameNormalizer.Normalize(newArtist.ArtistName, newArtist.ItunesId);
+            //newArtist.SortTitle = ArtistNameNormalizer.Normalize(newArtist.ArtistName, newArtist.ItunesId); // There is no Sort Title
             newArtist.Added = DateTime.UtcNow;
 
             var validationResult = _addArtistValidator.Validate(newArtist);

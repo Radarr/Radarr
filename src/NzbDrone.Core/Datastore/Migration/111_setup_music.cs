@@ -18,17 +18,22 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("ArtistSlug").AsString().Unique()
                 .WithColumn("CleanTitle").AsString() // Do we need this?
                 .WithColumn("Monitored").AsBoolean()
+                .WithColumn("AlbumFolder").AsBoolean()
+                .WithColumn("ArtistFolder").AsBoolean()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
                 .WithColumn("LastDiskSync").AsDateTime().Nullable()
                 .WithColumn("Status").AsInt32()
                 .WithColumn("Path").AsString()
                 .WithColumn("Images").AsString()
                 .WithColumn("QualityProfileId").AsInt32()
+                .WithColumn("RootFolderPath").AsString()
                 .WithColumn("Added").AsDateTime()
-                .WithColumn("AddOptions").AsString()
-                .WithColumn("AlbumFolder").AsInt32()
-                .WithColumn("Genre").AsString()
+                .WithColumn("ProfileId").AsInt32() // This is either ProfileId or Profile
+                .WithColumn("Genres").AsString()
                 .WithColumn("Albums").AsString()
+                .WithColumn("Tags").AsString()
+                .WithColumn("AddOptions").AsString()
+
                 ;
 
             Create.TableForModel("Albums")
