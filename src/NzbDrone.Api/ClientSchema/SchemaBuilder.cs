@@ -165,7 +165,7 @@ namespace NzbDrone.Api.ClientSchema
             var options = from Enum e in Enum.GetValues(selectOptions)
                           select new SelectOption { Value = Convert.ToInt32(e), Name = e.ToString() };
 
-            return options.OrderBy(o => o.Value).ToList();
+            return options.OrderBy(o => o.Name).ToList();
         }
     }
 }

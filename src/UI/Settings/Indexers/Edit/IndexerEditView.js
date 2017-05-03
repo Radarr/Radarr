@@ -7,7 +7,7 @@ var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
 require('../../../Form/FormBuilder');
-require('../../../Mixins/AutoComplete');
+require('../../../Mixins/TagInput');
 require('bootstrap');
 require('typeahead');
 
@@ -29,63 +29,8 @@ var view = Marionette.ItemView.extend({
         this.targetCollection = options.targetCollection;
     },
 
-    tagMatcher: function (tagCollection) {
-        return function findMatches(q, cb) {
-            q = q.replace(/[^-_a-z0-9]/gi, '').toLowerCase();
-            var matches = _.select(tagCollection, function (tag) {
-                return tag.name.toLowerCase().indexOf(q) > -1;
-            });
-            cb(matches);
-        };
-    },
-
     onRender: function () {
-
-        var that = this;
-
-        this.ui.tags.each(function (index, tagEl) {
-
-            var tagCollection = JSON.parse(tagEl.getAttribute('tag-source'));
-            var opts = {
-                trimValue: true,                
-                tagClass: 'label label-success'                
-            };
-
-            if (tagCollection && tagCollection.length) {
-                opts.freeInput = false;
-                opts.allowNew = false;
-                opts.allowDuplicates = false;
-                opts.itemValue = 'value';
-                opts.itemText = 'name';
-                opts.typeaheadjs = {
-                    displayKey: 'name',
-                    source: that.tagMatcher(tagCollection)
-                };                
-            } 
-
-            var tag = $(tagEl);
-            tag.tagsinput(opts);
-
-            if (tagCollection && tagCollection.length && tagEl.value) {
-
-                var origValue = tagEl.value;
-                tag.tagsinput('removeAll');
-
-                _.each(origValue.split(','), function (v) {
-
-                    var parsed = parseInt(v);
-                    var found = _.find(tagCollection, function (t) {
-                        return t.value === parsed;
-                    });
-                    
-                    if (found) {
-                        tag.tagsinput('add', found);
-                    }
-                });
-            }
-
-        });
-
+        this.ui.tags.tagInput({});
     },
 
     _onAfterSave : function() {
