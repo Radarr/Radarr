@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<Artist>().RegisterModel("Artist")
                   .Ignore(s => s.RootFolderPath)
                   .Relationship()
-                  .HasOne(s => s.Profile, s => s.ProfileId);
+                  .HasOne(a => a.Profile, a => a.ProfileId);
 
             Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
                   .Ignore(f => f.Path)

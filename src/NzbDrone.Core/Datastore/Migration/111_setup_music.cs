@@ -15,25 +15,24 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.TableForModel("Artist")
                 .WithColumn("ItunesId").AsInt32().Unique()
                 .WithColumn("ArtistName").AsString().Unique()
-                .WithColumn("ArtistSlug").AsString().Unique()
-                .WithColumn("CleanTitle").AsString() // Do we need this?
+                .WithColumn("ArtistSlug").AsString().Nullable() //.Unique()
+                .WithColumn("CleanTitle").AsString().Nullable() // Do we need this?
                 .WithColumn("Monitored").AsBoolean()
-                .WithColumn("AlbumFolder").AsBoolean()
-                .WithColumn("ArtistFolder").AsBoolean()
+                .WithColumn("AlbumFolder").AsBoolean().Nullable()
+                .WithColumn("ArtistFolder").AsBoolean().Nullable()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
                 .WithColumn("LastDiskSync").AsDateTime().Nullable()
-                .WithColumn("Status").AsInt32()
+                .WithColumn("Status").AsInt32().Nullable()
                 .WithColumn("Path").AsString()
-                .WithColumn("Images").AsString()
-                .WithColumn("QualityProfileId").AsInt32()
-                .WithColumn("RootFolderPath").AsString()
-                .WithColumn("Added").AsDateTime()
-                .WithColumn("ProfileId").AsInt32() // This is either ProfileId or Profile
-                .WithColumn("Genres").AsString()
-                .WithColumn("Albums").AsString()
-                .WithColumn("Tags").AsString()
-                .WithColumn("AddOptions").AsString()
-
+                .WithColumn("Images").AsString().Nullable()
+                .WithColumn("QualityProfileId").AsInt32().Nullable()
+                .WithColumn("RootFolderPath").AsString().Nullable()
+                .WithColumn("Added").AsDateTime().Nullable()
+                .WithColumn("ProfileId").AsInt32().Nullable() // This is either ProfileId or Profile
+                .WithColumn("Genres").AsString().Nullable()
+                .WithColumn("Albums").AsString().Nullable()
+                .WithColumn("Tags").AsString().Nullable()
+                .WithColumn("AddOptions").AsString().Nullable()
                 ;
 
             Create.TableForModel("Albums")
