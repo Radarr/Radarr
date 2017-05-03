@@ -16,10 +16,10 @@ module.exports = Marionette.AppRouter.extend({
 
     setTitle : function(title) {
         title = title;
-        if (title === 'Sonarr') {
-            document.title = 'Sonarr';
+        if (title === 'Lidarr') {
+            document.title = 'Lidarr';
         } else {
-            document.title = title + ' - Sonarr';
+            document.title = title + ' - Lidarr';
         }
 
         if (window.NzbDrone.Analytics && window.Piwik) {
@@ -41,9 +41,9 @@ module.exports = Marionette.AppRouter.extend({
         var label = window.location.pathname === window.NzbDrone.UrlBase + '/system/updates' ? 'Reload' : 'View Changes';
 
         Messenger.show({
-            message   : 'Sonarr has been updated',
+            message   : 'Lidarr has been updated',
             hideAfter : 0,
-            id        : 'sonarrUpdated',
+            id        : 'lidarrUpdated',
             actions   : {
                 viewChanges : {
                     label  : label,

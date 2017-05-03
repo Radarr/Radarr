@@ -13,7 +13,7 @@ backgrid.Column.prototype.defaults = {
     renderable : true,
     formatter  : undefined,
     cell       : undefined,
-    headerCell : 'Sonarr',
+    headerCell : 'Lidarr',
     sortType   : 'toggle'
 };
 module.exports = backgrid;

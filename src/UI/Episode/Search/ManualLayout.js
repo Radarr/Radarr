@@ -54,7 +54,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name      : 'rejections',
-            label     : '<i class="icon-sonarr-header-rejections" />',
+            label     : '<i class="icon-lidarr-header-rejections" />',
             tooltip   : 'Rejections',
             cell      : ApprovalStatusCell,
             sortable  : true,
@@ -64,7 +64,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name      : 'download',
-            label     : '<i class="icon-sonarr-download" />',
+            label     : '<i class="icon-lidarr-download" />',
             tooltip   : 'Auto-Search Prioritization',
             cell      : DownloadReportCell,
             sortable  : true,

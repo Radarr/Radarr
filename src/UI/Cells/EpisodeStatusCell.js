@@ -69,7 +69,7 @@ module.exports = NzbDroneCell.extend({
                     var progress = 100 - (downloading.get('sizeleft') / downloading.get('size') * 100);
 
                     if (progress === 0) {
-                        icon = 'icon-sonarr-downloading';
+                        icon = 'icon-lidarr-downloading';
                         tooltip = 'Episode is downloading';
                     }
 
@@ -81,20 +81,20 @@ module.exports = NzbDroneCell.extend({
                 }
 
                 else if (this.model.get('grabbed')) {
-                    icon = 'icon-sonarr-downloading';
+                    icon = 'icon-lidarr-downloading';
                     tooltip = 'Episode is downloading';
                 }
 
                 else if (!this.model.get('airDateUtc')) {
-                    icon = 'icon-sonarr-tba';
+                    icon = 'icon-lidarr-tba';
                     tooltip = 'TBA';
                 }
 
                 else if (hasAired) {
-                    icon = 'icon-sonarr-missing';
+                    icon = 'icon-lidarr-missing';
                     tooltip = 'Episode missing from disk';
                 } else {
-                    icon = 'icon-sonarr-not-aired';
+                    icon = 'icon-lidarr-not-aired';
                     tooltip = 'Episode has not aired';
                 }
             }

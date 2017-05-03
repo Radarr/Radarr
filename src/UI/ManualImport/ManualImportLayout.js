@@ -81,7 +81,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name       : 'rejections',
-            label      : '<i class="icon-sonarr-header-rejections" />',
+            label      : '<i class="icon-lidarr-header-rejections" />',
             tooltip    : 'Rejections',
             cell       : ApprovalStatusCell,
             sortable   : false,

@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var PageableCollection = require('backbone.pageable');
-//var PageableCollection = require('../../Shared/Grid/SonarrPageableCollection');
+//var PageableCollection = require('../../Shared/Grid/LidarrPageableCollection');
 var QueueModel = require('./QueueModel');
 var FormatHelpers = require('../../Shared/FormatHelpers');
 var AsSortedCollection = require('../../Mixins/AsSortedCollection');

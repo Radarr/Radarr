@@ -29,7 +29,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     ui : {
-        searchSelectedButton : '.btn i.icon-sonarr-search'
+        searchSelectedButton : '.btn i.icon-lidarr-search'
     },
 
     columns : [
@@ -41,25 +41,25 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name      : 'series',
-            label     : 'Series Title',
+            label     : 'Artist',
             cell      : SeriesTitleCell,
             sortValue : 'series.sortTitle'
         },
+//        {
+//            name     : 'this',
+//            label    : 'Ttack Number',
+//            cell     : EpisodeNumberCell,
+//            sortable : false
+//        },
         {
             name     : 'this',
-            label    : 'Episode',
-            cell     : EpisodeNumberCell,
-            sortable : false
-        },
-        {
-            name     : 'this',
-            label    : 'Episode Title',
+            label    : 'Track Title',
             cell     : EpisodeTitleCell,
             sortable : false
         },
         {
             name  : 'airDateUtc',
-            label : 'Air Date',
+            label : 'Release Date',
             cell  : RelativeDateCell
         },
         {
@@ -105,21 +105,21 @@ module.exports = Marionette.Layout.extend({
             items      : [
                 {
                     title        : 'Search Selected',
-                    icon         : 'icon-sonarr-search',
+                    icon         : 'icon-lidarr-search',
                     callback     : this._searchSelected,
                     ownerContext : this,
                     className    : 'x-search-selected'
                 },
                 {
                     title        : 'Search All Missing',
-                    icon         : 'icon-sonarr-search',
+                    icon         : 'icon-lidarr-search',
                     callback     : this._searchMissing,
                     ownerContext : this,
                     className    : 'x-search-missing'
                 },
                 {
                     title        : 'Toggle Selected',
-                    icon         : 'icon-sonarr-monitored',
+                    icon         : 'icon-lidarr-monitored',
                     tooltip      : 'Toggle monitored status of selected',
                     callback     : this._toggleMonitoredOfSelected,
                     ownerContext : this,
@@ -127,18 +127,18 @@ module.exports = Marionette.Layout.extend({
                 },
                 {
                     title : 'Season Pass',
-                    icon  : 'icon-sonarr-monitored',
+                    icon  : 'icon-lidarr-monitored',
                     route : 'seasonpass'
                 },
                 {
                     title      : 'Rescan Drone Factory Folder',
-                    icon       : 'icon-sonarr-refresh',
+                    icon       : 'icon-lidarr-refresh',
                     command    : 'downloadedepisodesscan',
                     properties : { sendUpdates : true }
                 },
                 {
                     title        : 'Manual Import',
-                    icon         : 'icon-sonarr-search-manual',
+                    icon         : 'icon-lidarr-search-manual',
                     callback     : this._manualImport,
                     ownerContext : this
                 }
@@ -154,14 +154,14 @@ module.exports = Marionette.Layout.extend({
                     key      : 'monitored',
                     title    : '',
                     tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    icon     : 'icon-lidarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'unmonitored',
                     title    : '',
                     tooltip  : 'Unmonitored Only',
-                    icon     : 'icon-sonarr-unmonitored',
+                    icon     : 'icon-lidarr-unmonitored',
                     callback : this._setFilter
                 }
             ]

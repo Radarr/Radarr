@@ -6,16 +6,16 @@ module.exports = NzbDroneCell.extend({
     render : function() {
         this.$el.empty();
 
-        var icon = 'icon-sonarr-backup-scheduled';
+        var icon = 'icon-lidarr-backup-scheduled';
         var title = 'Scheduled';
 
         var type = this.model.get(this.column.get('name'));
 
         if (type === 'manual') {
-            icon = 'icon-sonarr-backup-manual';
+            icon = 'icon-lidarr-backup-manual';
             title = 'Manual';
         } else if (type === 'update') {
-            icon = 'icon-sonarr-backup-update';
+            icon = 'icon-lidarr-backup-update';
             title = 'Before update';
         }
 

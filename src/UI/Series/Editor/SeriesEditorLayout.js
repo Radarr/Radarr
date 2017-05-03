@@ -73,12 +73,12 @@ module.exports = Marionette.Layout.extend({
         items      : [
             {
                 title : 'Season Pass',
-                icon  : 'icon-sonarr-monitored',
+                icon  : 'icon-lidarr-monitored',
                 route : 'seasonpass'
             },
             {
                 title          : 'Update Library',
-                icon           : 'icon-sonarr-refresh',
+                icon           : 'icon-lidarr-refresh',
                 command        : 'refreshseries',
                 successMessage : 'Library was updated!',
                 errorMessage   : 'Library update failed!'
@@ -101,28 +101,28 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-lidarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
                     tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    icon     : 'icon-lidarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'continuing',
                     title    : '',
                     tooltip  : 'Continuing Only',
-                    icon     : 'icon-sonarr-series-continuing',
+                    icon     : 'icon-lidarr-series-continuing',
                     callback : this._setFilter
                 },
                 {
                     key      : 'ended',
                     title    : '',
                     tooltip  : 'Ended Only',
-                    icon     : 'icon-sonarr-series-ended',
+                    icon     : 'icon-lidarr-series-ended',
                     callback : this._setFilter
                 }
             ]

@@ -99,35 +99,35 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-lidarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'grabbed',
                     title    : '',
                     tooltip  : 'Grabbed',
-                    icon     : 'icon-sonarr-downloading',
+                    icon     : 'icon-lidarr-downloading',
                     callback : this._setFilter
                 },
                 {
                     key      : 'imported',
                     title    : '',
                     tooltip  : 'Imported',
-                    icon     : 'icon-sonarr-imported',
+                    icon     : 'icon-lidarr-imported',
                     callback : this._setFilter
                 },
                 {
                     key      : 'failed',
                     title    : '',
                     tooltip  : 'Failed',
-                    icon     : 'icon-sonarr-download-failed',
+                    icon     : 'icon-lidarr-download-failed',
                     callback : this._setFilter
                 },
                 {
                     key      : 'deleted',
                     title    : '',
                     tooltip  : 'Deleted',
-                    icon     : 'icon-sonarr-deleted',
+                    icon     : 'icon-lidarr-deleted',
                     callback : this._setFilter
                 }
             ]

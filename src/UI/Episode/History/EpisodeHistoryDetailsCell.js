@@ -10,7 +10,7 @@ module.exports = NzbDroneCell.extend({
 
     render : function() {
         this.$el.empty();
-        this.$el.html('<i class="icon-sonarr-form-info"></i>');
+        this.$el.html('<i class="icon-lidarr-form-info"></i>');
 
         var html = new HistoryDetailsView({ model : this.model }).render().$el;
 

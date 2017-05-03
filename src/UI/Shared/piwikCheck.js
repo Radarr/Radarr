@@ -7,6 +7,6 @@ if(window.NzbDrone.Analytics) {
     g.type = 'text/javascript';
     g.async = true;
     g.defer = true;
-    g.src = '//piwik.sonarr.tv/piwik.js';
+    g.src = '//piwik.lidarr.tv/piwik.js';
     s.parentNode.insertBefore(g, s);
 }

@@ -14,7 +14,7 @@ module.exports = Backgrid.Cell.extend({
 
         var self = this;
 
-        this.$el.html('<i class="icon-sonarr-spinner fa-spin" title="Adding to download queue" />');
+        this.$el.html('<i class="icon-lidarr-spinner fa-spin" title="Adding to download queue" />');
 
         //Using success callback instead of promise so it
         //gets called before the sync event is triggered
@@ -26,9 +26,9 @@ module.exports = Backgrid.Cell.extend({
 
         promise.fail(function (xhr) {
             if (xhr.responseJSON && xhr.responseJSON.message) {
-                self.$el.html('<i class="icon-sonarr-download-failed" title="{0}" />'.format(xhr.responseJSON.message));
+                self.$el.html('<i class="icon-lidarr-download-failed" title="{0}" />'.format(xhr.responseJSON.message));
             } else {
-                self.$el.html('<i class="icon-sonarr-download-failed" title="Failed to add to download queue" />');
+                self.$el.html('<i class="icon-lidarr-download-failed" title="Failed to add to download queue" />');
             }
         });
     },
@@ -37,9 +37,9 @@ module.exports = Backgrid.Cell.extend({
         this.$el.empty();
 
         if (this.model.get('queued')) {
-            this.$el.html('<i class="icon-sonarr-downloading" title="Added to downloaded queue" />');
+            this.$el.html('<i class="icon-lidarr-downloading" title="Added to downloaded queue" />');
         } else if (this.model.get('downloadAllowed')) {
-            this.$el.html('<i class="icon-sonarr-download" title="Add to download queue" />');
+            this.$el.html('<i class="icon-lidarr-download" title="Add to download queue" />');
         } else {
             this.className = 'no-download-report-cell';
         }

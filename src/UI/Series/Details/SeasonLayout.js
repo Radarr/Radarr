@@ -41,8 +41,8 @@ module.exports = Marionette.Layout.extend({
             name       : 'monitored',
             label      : '',
             cell       : ToggleCell,
-            trueClass  : 'icon-sonarr-monitored',
-            falseClass : 'icon-sonarr-unmonitored',
+            trueClass  : 'icon-lidarr-monitored',
+            falseClass : 'icon-lidarr-unmonitored',
             tooltip    : 'Toggle monitored status',
             sortable   : false
         },
@@ -194,14 +194,14 @@ module.exports = Marionette.Layout.extend({
     },
 
     _setSeasonMonitoredState : function() {
-        this.ui.seasonMonitored.removeClass('icon-sonarr-spinner fa-spin');
+        this.ui.seasonMonitored.removeClass('icon-lidarr-spinner fa-spin');
 
         if (this.model.get('monitored')) {
-            this.ui.seasonMonitored.addClass('icon-sonarr-monitored');
-            this.ui.seasonMonitored.removeClass('icon-sonarr-unmonitored');
+            this.ui.seasonMonitored.addClass('icon-lidarr-monitored');
+            this.ui.seasonMonitored.removeClass('icon-lidarr-unmonitored');
         } else {
-            this.ui.seasonMonitored.addClass('icon-sonarr-unmonitored');
-            this.ui.seasonMonitored.removeClass('icon-sonarr-monitored');
+            this.ui.seasonMonitored.addClass('icon-lidarr-unmonitored');
+            this.ui.seasonMonitored.removeClass('icon-lidarr-monitored');
         }
     },
 

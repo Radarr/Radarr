@@ -1,7 +1,7 @@
 module.exports = function() {
     var Backgrid = this;
 
-    Backgrid.SonarrHeaderCell = Backgrid.HeaderCell.extend({
+    Backgrid.LidarrHeaderCell = Backgrid.HeaderCell.extend({
         events : {
             'click' : 'onClick'
         },
@@ -57,7 +57,7 @@ module.exports = function() {
         },
 
         direction : function(dir) {
-            this.$el.children('i.sort-direction-icon').removeClass('icon-sonarr-sort-asc icon-sonarr-sort-desc');
+            this.$el.children('i.sort-direction-icon').removeClass('icon-lidarr-sort-asc icon-lidarr-sort-desc');
 
             if (arguments.length) {
                 if (dir) {
@@ -103,7 +103,7 @@ module.exports = function() {
             var column = this.column;
             var sortable = Backgrid.callByNeed(column.sortable(), column, collection);
             if (sortable) {
-                var isSorted = this.$el.children('.icon-sonarr-sort-asc,.icon-sonarr-sort-desc').length !== 0;
+                var isSorted = this.$el.children('.icon-lidarr-sort-asc,.icon-lidarr-sort-desc').length !== 0;
                 var direction = collection.state.order;
                 if (column.get('sortType') === 'fixed' || !isSorted) {
                     direction = column.get('direction') || 'ascending';
@@ -135,10 +135,10 @@ module.exports = function() {
 
         _convertDirectionToIcon : function(dir) {
             if (dir === 'ascending' || dir === -1) {
-                return 'icon-sonarr-sort-asc';
+                return 'icon-lidarr-sort-asc';
             }
 
-            return 'icon-sonarr-sort-desc';
+            return 'icon-lidarr-sort-desc';
         },
 
         _setSortIcon : function(dir) {
@@ -147,9 +147,9 @@ module.exports = function() {
         },
 
         _removeSortIcon : function() {
-            this.$el.children('i.sort-direction-icon').removeClass('icon-sonarr-sort-asc icon-sonarr-sort-desc');
+            this.$el.children('i.sort-direction-icon').removeClass('icon-lidarr-sort-asc icon-lidarr-sort-desc');
         }
     });
 
-    return Backgrid.SonarrHeaderCell;
+    return Backgrid.LidarrHeaderCell;
 };

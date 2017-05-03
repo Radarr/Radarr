@@ -6,7 +6,7 @@ module.exports = function() {
 
         var errorMessage = this.formatErrorMessage(error);
 
-        this.find('.validation-errors').addClass('alert alert-danger').append('<div><i class="icon-sonarr-form-danger"></i>' + errorMessage + '</div>');
+        this.find('.validation-errors').addClass('alert alert-danger').append('<div><i class="icon-lidarr-form-danger"></i>' + errorMessage + '</div>');
 
         if (!validationName || validationName === '') {
             this.addFormError(error);
@@ -92,12 +92,12 @@ module.exports = function() {
 
         if (error.infoLink) {
             if (error.detailedDescription) {
-                errorMessage += ' <a class="no-router" target="_blank" href="' + error.infoLink + '"><i class="icon-sonarr-external-link" title="' + error.detailedDescription + '"></i></a>';
+                errorMessage += ' <a class="no-router" target="_blank" href="' + error.infoLink + '"><i class="icon-lidarr-external-link" title="' + error.detailedDescription + '"></i></a>';
             } else {
-                errorMessage += ' <a class="no-router" target="_blank" href="' + error.infoLink + '"><i class="icon-sonarr-external-link"></i></a>';
+                errorMessage += ' <a class="no-router" target="_blank" href="' + error.infoLink + '"><i class="icon-lidarr-external-link"></i></a>';
             }
         } else if (error.detailedDescription) {
-            errorMessage += ' <i class="icon-sonarr-form-info" title="' + error.detailedDescription + '"></i>';
+            errorMessage += ' <i class="icon-lidarr-form-info" title="' + error.detailedDescription + '"></i>';
         }
 
         return errorMessage;

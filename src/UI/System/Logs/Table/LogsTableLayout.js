@@ -93,28 +93,28 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-lidarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'info',
                     title    : '',
                     tooltip  : 'Info',
-                    icon     : 'icon-sonarr-log-info',
+                    icon     : 'icon-lidarr-log-info',
                     callback : this._setFilter
                 },
                 {
                     key      : 'warn',
                     title    : '',
                     tooltip  : 'Warn',
-                    icon     : 'icon-sonarr-log-warn',
+                    icon     : 'icon-lidarr-log-warn',
                     callback : this._setFilter
                 },
                 {
                     key      : 'error',
                     title    : '',
                     tooltip  : 'Error',
-                    icon     : 'icon-sonarr-log-error',
+                    icon     : 'icon-lidarr-log-error',
                     callback : this._setFilter
                 }
             ]
@@ -126,13 +126,13 @@ module.exports = Marionette.Layout.extend({
             items      : [
                 {
                     title        : 'Refresh',
-                    icon         : 'icon-sonarr-refresh',
+                    icon         : 'icon-lidarr-refresh',
                     ownerContext : this,
                     callback     : this._refreshTable
                 },
                 {
                     title   : 'Clear Logs',
-                    icon    : 'icon-sonarr-clear',
+                    icon    : 'icon-lidarr-clear',
                     command : 'clearLog'
                 }
             ]

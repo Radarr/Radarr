@@ -43,8 +43,8 @@ module.exports = Marionette.Layout.extend({
             name       : 'monitored',
             label      : '',
             cell       : SeriesMonitoredCell,
-            trueClass  : 'icon-sonarr-monitored',
-            falseClass : 'icon-sonarr-unmonitored',
+            trueClass  : 'icon-lidarr-monitored',
+            falseClass : 'icon-lidarr-unmonitored',
             tooltip    : 'Toggle series monitored status',
             sortable   : false
         },
@@ -73,28 +73,28 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-lidarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
                     tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    icon     : 'icon-lidarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'continuing',
                     title    : '',
                     tooltip  : 'Continuing Only',
-                    icon     : 'icon-sonarr-series-continuing',
+                    icon     : 'icon-lidarr-series-continuing',
                     callback : this._setFilter
                 },
                 {
                     key      : 'ended',
                     title    : '',
                     tooltip  : 'Ended Only',
-                    icon     : 'icon-sonarr-series-ended',
+                    icon     : 'icon-lidarr-series-ended',
                     callback : this._setFilter
                 }
             ]

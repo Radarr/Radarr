@@ -135,3 +135,5 @@ _start
 _temp_*/**/*
 
 src/.idea/
+/npm_start.bat
+/npm_start.bat
