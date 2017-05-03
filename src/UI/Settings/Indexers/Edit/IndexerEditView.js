@@ -7,9 +7,9 @@ var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
 require('../../../Form/FormBuilder');
+require('../../../Mixins/AutoComplete');
 require('../../../Mixins/TagInput');
 require('bootstrap');
-require('typeahead');
 
 var view = Marionette.ItemView.extend({
     template : 'Settings/Indexers/Edit/IndexerEditViewTemplate',
