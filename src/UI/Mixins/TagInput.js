@@ -3,7 +3,6 @@ var _ = require('underscore');
 var TagCollection = require('../Tags/TagCollection');
 var TagModel = require('../Tags/TagModel');
 require('bootstrap.tagsinput');
-//require('./AutoComplete');
 
 var substringMatcher = function(tags, selector) {
     return function findMatches (q, cb) {
