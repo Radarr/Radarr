@@ -13,7 +13,6 @@ namespace NzbDrone.Common.Cloud
     {
         public LidarrCloudRequestBuilder()
         {
-            
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
