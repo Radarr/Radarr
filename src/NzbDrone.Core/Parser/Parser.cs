@@ -277,6 +277,27 @@ namespace NzbDrone.Core.Parser
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
+        public static ParsedTrackInfo ParseMusicPath(string path)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var result = ParseMusicTitle(fileInfo.Name);
+
+            if (result == null)
+            {
+                Logger.Debug("Attempting to parse track info using directory and file names. {0}", fileInfo.Directory.Name);
+                result = ParseMusicTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
+            }
+
+            if (result == null)
+            {
+                Logger.Debug("Attempting to parse track info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMusicTitle(fileInfo.Directory.Name + fileInfo.Extension);
+            }
+
+            return result;
+        }
+
         public static ParsedEpisodeInfo ParsePath(string path)
         {
             var fileInfo = new FileInfo(path);
@@ -296,6 +317,116 @@ namespace NzbDrone.Core.Parser
             }
 
             return result;
+        }
+
+        public static ParsedTrackInfo ParseMusicTitle(string title)
+        {
+            try
+            {
+                if (!ValidateBeforeParsing(title)) return null;
+
+                Logger.Debug("Parsing string '{0}'", title);
+
+                if (ReversedTitleRegex.IsMatch(title))
+                {
+                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
+                    Array.Reverse(titleWithoutExtension);
+
+                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
+
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                }
+
+                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+
+                simpleTitle = RemoveFileExtension(simpleTitle);
+
+                // TODO: Quick fix stripping [url] - prefixes.
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+
+                var airDateMatch = AirDateRegex.Match(simpleTitle);
+                if (airDateMatch.Success)
+                {
+                    simpleTitle = airDateMatch.Groups[1].Value + airDateMatch.Groups["airyear"].Value + "." + airDateMatch.Groups["airmonth"].Value + "." + airDateMatch.Groups["airday"].Value;
+                }
+
+                var sixDigitAirDateMatch = SixDigitAirDateRegex.Match(simpleTitle);
+                if (sixDigitAirDateMatch.Success)
+                {
+                    var airYear = sixDigitAirDateMatch.Groups["airyear"].Value;
+                    var airMonth = sixDigitAirDateMatch.Groups["airmonth"].Value;
+                    var airDay = sixDigitAirDateMatch.Groups["airday"].Value;
+
+                    if (airMonth != "00" || airDay != "00")
+                    {
+                        var fixedDate = string.Format("20{0}.{1}.{2}", airYear, airMonth, airDay);
+
+                        simpleTitle = simpleTitle.Replace(sixDigitAirDateMatch.Groups["airdate"].Value, fixedDate);
+                    }
+                }
+
+                foreach (var regex in ReportTitleRegex)
+                {
+                    var match = regex.Matches(simpleTitle);
+
+                    if (match.Count != 0)
+                    {
+                        Logger.Trace(regex);
+                        try
+                        {
+                            var result = ParseMatchMusicCollection(match);
+
+                            if (result != null)
+                            {
+                                if (result.FullSeason && title.ContainsIgnoreCase("Special"))
+                                {
+                                    result.FullSeason = false;
+                                    result.Special = true;
+                                }
+
+                                result.Language = LanguageParser.ParseLanguage(title);
+                                Logger.Debug("Language parsed: {0}", result.Language);
+
+                                result.Quality = QualityParser.ParseQuality(title);
+                                Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                                result.ReleaseGroup = ParseReleaseGroup(title);
+
+                                var subGroup = GetSubGroup(match);
+                                if (!subGroup.IsNullOrWhiteSpace())
+                                {
+                                    result.ReleaseGroup = subGroup;
+                                }
+
+                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                                result.ReleaseHash = GetReleaseHash(match);
+                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                                {
+                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                                }
+
+                                return result;
+                            }
+                        }
+                        catch (InvalidDateException ex)
+                        {
+                            Logger.Debug(ex, ex.Message);
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return null;
         }
 
         public static ParsedEpisodeInfo ParseTitle(string title)
@@ -433,6 +564,17 @@ namespace NzbDrone.Core.Parser
             return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
         }
 
+        public static string CleanArtistTitle(this string title)
+        {
+            long number = 0;
+
+            //If Title only contains numbers return it as is.
+            if (long.TryParse(title, out number))
+                return title;
+
+            return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
+        }
+
         public static string NormalizeEpisodeTitle(string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);
@@ -522,6 +664,10 @@ namespace NzbDrone.Core.Parser
             return seriesTitleInfo;
         }
 
+        private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)
+        {
+            throw new NotImplementedException();
+        }
         private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)
         {
             var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');

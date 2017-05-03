@@ -13,7 +13,9 @@ namespace NzbDrone.Core.Organizer
             DailyEpisodeFormat = "{Series Title} - {Air-Date} - {Episode Title} {Quality Full}",
             AnimeEpisodeFormat = "{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}",
             SeriesFolderFormat = "{Series Title}",
-            SeasonFolderFormat = "Season {season}"
+            SeasonFolderFormat = "Season {season}",
+            ArtistFolderFormat = "{Artist Name}",
+            AlbumFolderFormat = "{Album Name} ({Year})"
         };
 
         public bool RenameEpisodes { get; set; }
@@ -24,5 +26,7 @@ namespace NzbDrone.Core.Organizer
         public string AnimeEpisodeFormat { get; set; }
         public string SeriesFolderFormat { get; set; }
         public string SeasonFolderFormat { get; set; }
+        public string ArtistFolderFormat { get; set; }
+        public string AlbumFolderFormat { get; set; }
     }
 }

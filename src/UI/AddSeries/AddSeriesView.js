@@ -28,6 +28,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function(options) {
         this.isExisting = options.isExisting;
         this.collection = new AddSeriesCollection();
+        console.log('this.collection:', this.collection);
 
         if (this.isExisting) {
             this.collection.unmappedFolderModel = this.model;

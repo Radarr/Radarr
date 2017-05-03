@@ -6,7 +6,7 @@ var Marionette = require('marionette');
 var Profiles = require('../Profile/ProfileCollection');
 var RootFolders = require('./RootFolders/RootFolderCollection');
 var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var SeriesCollection = require('../Series/SeriesCollection');
+var ArtistCollection = require('../Artist/ArtistCollection');
 var Config = require('../Config');
 var Messenger = require('../Shared/Messenger');
 var AsValidatedView = require('../Mixins/AsValidatedView');
@@ -18,25 +18,29 @@ var view = Marionette.ItemView.extend({
     template : 'AddSeries/SearchResultViewTemplate',
 
     ui : {
-        profile         : '.x-profile',
-        rootFolder      : '.x-root-folder',
-        seasonFolder    : '.x-season-folder',
-        seriesType      : '.x-series-type',
-        monitor         : '.x-monitor',
-        monitorTooltip  : '.x-monitor-tooltip',
-        addButton       : '.x-add',
-        addSearchButton : '.x-add-search',
-        overview        : '.x-overview'
+        profile               : '.x-profile',
+        rootFolder            : '.x-root-folder',
+        seasonFolder          : '.x-season-folder',
+        seriesType            : '.x-series-type',
+        monitor               : '.x-monitor',
+        monitorTooltip        : '.x-monitor-tooltip',
+        addButton             : '.x-add',
+        addAlbumButton        : '.x-add-album',
+        addSearchButton       : '.x-add-search',
+        addAlbumSearchButton  : '.x-add-album-search',
+        overview              : '.x-overview'
     },
 
     events : {
-        'click .x-add'            : '_addWithoutSearch',
-        'click .x-add-search'     : '_addAndSearch',
-        'change .x-profile'       : '_profileChanged',
-        'change .x-root-folder'   : '_rootFolderChanged',
-        'change .x-season-folder' : '_seasonFolderChanged',
-        'change .x-series-type'   : '_seriesTypeChanged',
-        'change .x-monitor'       : '_monitorChanged'
+        'click .x-add'                  : '_addWithoutSearch',
+        'click .x-add-album'            : '_addWithoutSearch',
+        'click .x-add-search'           : '_addAndSearch',
+        'click .x-add-album-search'     : '_addAndSearch',
+        'change .x-profile'             : '_profileChanged',
+        'change .x-root-folder'         : '_rootFolderChanged',
+        'change .x-season-folder'       : '_seasonFolderChanged',
+        'change .x-series-type'         : '_seriesTypeChanged',
+        'change .x-monitor'             : '_monitorChanged'
     },
 
     initialize : function() {
@@ -93,7 +97,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _configureTemplateHelpers : function() {
-        var existingSeries = SeriesCollection.where({ tvdbId : this.model.get('tvdbId') });
+        var existingSeries = ArtistCollection.where({ iTunesId : this.model.get('itunesId') });
 
         if (existingSeries.length > 0) {
             this.templateHelpers.existing = existingSeries[0].toJSON();
@@ -161,7 +165,8 @@ var view = Marionette.ItemView.extend({
         this._rootFolderChanged();
     },
 
-    _addWithoutSearch : function() {
+    _addWithoutSearch : function(evt) {
+        console.log(evt);
         this._addSeries(false);
     },
 
@@ -169,20 +174,22 @@ var view = Marionette.ItemView.extend({
         this._addSeries(true);
     },
 
-    _addSeries : function(searchForMissingEpisodes) {
+    _addSeries : function(searchForMissing) {
+        // TODO: Refactor to handle multiple add buttons/albums
         var addButton = this.ui.addButton;
         var addSearchButton = this.ui.addSearchButton;
+        console.log('_addSeries, searchForMissing=', searchForMissing);
 
         addButton.addClass('disabled');
         addSearchButton.addClass('disabled');
 
         var profile = this.ui.profile.val();
         var rootFolderPath = this.ui.rootFolder.children(':selected').text();
-        var seriesType = this.ui.seriesType.val();
+        var seriesType = this.ui.seriesType.val(); // Perhaps make this a differnitator between artist or Album? 
         var seasonFolder = this.ui.seasonFolder.prop('checked');
 
         var options = this._getAddSeriesOptions();
-        options.searchForMissingEpisodes = searchForMissingEpisodes;
+        options.searchForMissing = searchForMissing;
 
         this.model.set({
             profileId      : profile,
@@ -196,7 +203,7 @@ var view = Marionette.ItemView.extend({
         var self = this;
         var promise = this.model.save();
 
-        if (searchForMissingEpisodes) {
+        if (searchForMissing) {
             this.ui.addSearchButton.spinForPromise(promise);
         }
 
@@ -210,7 +217,8 @@ var view = Marionette.ItemView.extend({
         });
 
         promise.done(function() {
-            SeriesCollection.add(self.model);
+            console.log('[SearchResultView] _addSeries promise resolve:', self.model);
+            ArtistCollection.add(self.model);
 
             self.close();
 
@@ -218,9 +226,9 @@ var view = Marionette.ItemView.extend({
                 message        : 'Added: ' + self.model.get('title'),
                 actions        : {
                     goToSeries : {
-                        label  : 'Go to Series',
+                        label  : 'Go to Artist',
                         action : function() {
-                            Backbone.history.navigate('/series/' + self.model.get('titleSlug'), { trigger : true });
+                            Backbone.history.navigate('/artist/' + self.model.get('titleSlug'), { trigger : true });
                         }
                     }
                 },
@@ -239,10 +247,11 @@ var view = Marionette.ItemView.extend({
 
     _getAddSeriesOptions : function() {
         var monitor = this.ui.monitor.val();
+        //[TODO]: Refactor for albums
         var lastSeason = _.max(this.model.get('seasons'), 'seasonNumber');
         var firstSeason = _.min(_.reject(this.model.get('seasons'), { seasonNumber : 0 }), 'seasonNumber');
 
-        this.model.setSeasonPass(firstSeason.seasonNumber);
+        //this.model.setSeasonPass(firstSeason.seasonNumber); // TODO
 
         var options = {
             ignoreEpisodesWithFiles    : false,
@@ -258,14 +267,14 @@ var view = Marionette.ItemView.extend({
             options.ignoreEpisodesWithoutFiles = true;
         }
 
-        else if (monitor === 'latest') {
+        /*else if (monitor === 'latest') {
             this.model.setSeasonPass(lastSeason.seasonNumber);
         }
 
         else if (monitor === 'first') {
             this.model.setSeasonPass(lastSeason.seasonNumber + 1);
             this.model.setSeasonMonitored(firstSeason.seasonNumber);
-        }
+        }*/
 
         else if (monitor === 'missing') {
             options.ignoreEpisodesWithFiles = true;
@@ -275,9 +284,9 @@ var view = Marionette.ItemView.extend({
             options.ignoreEpisodesWithoutFiles = true;
         }
 
-        else if (monitor === 'none') {
+        /*else if (monitor === 'none') {
             this.model.setSeasonPass(lastSeason.seasonNumber + 1);
-        }
+        }*/
 
         return options;
     }

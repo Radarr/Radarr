@@ -33,58 +33,58 @@ namespace NzbDrone.Core.DataAugmentation.Xem
         {
             _logger.Debug("Updating scene numbering mapping for: {0}", series);
 
-            try
-            {
-                var mappings = _xemProxy.GetSceneTvdbMappings(series.TvdbId);
+            //try
+            //{
+            //    var mappings = _xemProxy.GetSceneTvdbMappings(series.TvdbId);
 
-                if (!mappings.Any() && !series.UseSceneNumbering)
-                {
-                    _logger.Debug("Mappings for: {0} are empty, skipping", series);
-                    return;
-                }
+            //    if (!mappings.Any() && !series.UseSceneNumbering)
+            //    {
+            //        _logger.Debug("Mappings for: {0} are empty, skipping", series);
+            //        return;
+            //    }
 
-                var episodes = _episodeService.GetEpisodeBySeries(series.Id);
+            //    var episodes = _episodeService.GetEpisodeBySeries(series.Id);
 
-                foreach (var episode in episodes)
-                {
-                    episode.SceneAbsoluteEpisodeNumber = null;
-                    episode.SceneSeasonNumber = null;
-                    episode.SceneEpisodeNumber = null;
-                    episode.UnverifiedSceneNumbering = false;
-                }
+            //    foreach (var episode in episodes)
+            //    {
+            //        episode.SceneAbsoluteEpisodeNumber = null;
+            //        episode.SceneSeasonNumber = null;
+            //        episode.SceneEpisodeNumber = null;
+            //        episode.UnverifiedSceneNumbering = false;
+            //    }
 
-                foreach (var mapping in mappings)
-                {
-                    _logger.Debug("Setting scene numbering mappings for {0} S{1:00}E{2:00}", series, mapping.Tvdb.Season, mapping.Tvdb.Episode);
+            //    foreach (var mapping in mappings)
+            //    {
+            //        _logger.Debug("Setting scene numbering mappings for {0} S{1:00}E{2:00}", series, mapping.Tvdb.Season, mapping.Tvdb.Episode);
 
-                    var episode = episodes.SingleOrDefault(e => e.SeasonNumber == mapping.Tvdb.Season && e.EpisodeNumber == mapping.Tvdb.Episode);
+            //        var episode = episodes.SingleOrDefault(e => e.SeasonNumber == mapping.Tvdb.Season && e.EpisodeNumber == mapping.Tvdb.Episode);
 
-                    if (episode == null)
-                    {
-                        _logger.Debug("Information hasn't been added to TheTVDB yet, skipping.");
-                        continue;
-                    }
+            //        if (episode == null)
+            //        {
+            //            _logger.Debug("Information hasn't been added to TheTVDB yet, skipping.");
+            //            continue;
+            //        }
 
-                    episode.SceneAbsoluteEpisodeNumber = mapping.Scene.Absolute;
-                    episode.SceneSeasonNumber = mapping.Scene.Season;
-                    episode.SceneEpisodeNumber = mapping.Scene.Episode;
-                }
+            //        episode.SceneAbsoluteEpisodeNumber = mapping.Scene.Absolute;
+            //        episode.SceneSeasonNumber = mapping.Scene.Season;
+            //        episode.SceneEpisodeNumber = mapping.Scene.Episode;
+            //    }
 
-                if (episodes.Any(v => v.SceneEpisodeNumber.HasValue && v.SceneSeasonNumber != 0))
-                {
-                    ExtrapolateMappings(series, episodes, mappings);
-                }
+            //    if (episodes.Any(v => v.SceneEpisodeNumber.HasValue && v.SceneSeasonNumber != 0))
+            //    {
+            //        ExtrapolateMappings(series, episodes, mappings);
+            //    }
 
-                _episodeService.UpdateEpisodes(episodes);
-                series.UseSceneNumbering = mappings.Any();
-                _seriesService.UpdateSeries(series);
+            //    _episodeService.UpdateEpisodes(episodes);
+            //    series.UseSceneNumbering = mappings.Any();
+            //    _seriesService.UpdateSeries(series);
 
-                _logger.Debug("XEM mapping updated for {0}", series);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Error updating scene numbering mappings for {0}", series);
-            }
+            //    _logger.Debug("XEM mapping updated for {0}", series);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.Error(ex, "Error updating scene numbering mappings for {0}", series);
+            //}
         }
 
         private void ExtrapolateMappings(Series series, List<Episode> episodes, List<Model.XemSceneTvdbMapping> mappings)
@@ -212,32 +212,32 @@ namespace NzbDrone.Core.DataAugmentation.Xem
 
         public void Handle(SeriesUpdatedEvent message)
         {
-            if (_cache.IsExpired(TimeSpan.FromHours(3)))
-            {
-                UpdateXemSeriesIds();
-            }
+            //if (_cache.IsExpired(TimeSpan.FromHours(3)))
+            //{
+            //    UpdateXemSeriesIds();
+            //}
 
-            if (_cache.Count == 0)
-            {
-                _logger.Debug("Scene numbering is not available");
-                return;
-            }
+            //if (_cache.Count == 0)
+            //{
+            //    _logger.Debug("Scene numbering is not available");
+            //    return;
+            //}
 
-            if (!_cache.Find(message.Series.TvdbId.ToString()) && !message.Series.UseSceneNumbering)
-            {
-                _logger.Debug("Scene numbering is not available for {0} [{1}]", message.Series.Title, message.Series.TvdbId);
-                return;
-            }
+            //if (!_cache.Find(message.Series.TvdbId.ToString()) && !message.Series.UseSceneNumbering)
+            //{
+            //    _logger.Debug("Scene numbering is not available for {0} [{1}]", message.Series.Title, message.Series.TvdbId);
+            //    return;
+            //}
 
-            PerformUpdate(message.Series);
+            //PerformUpdate(message.Series);
         }
 
         public void Handle(SeriesRefreshStartingEvent message)
         {
-            if (message.ManualTrigger && _cache.IsExpired(TimeSpan.FromMinutes(1)))
-            {
-                UpdateXemSeriesIds();
-            }
+            //if (message.ManualTrigger && _cache.IsExpired(TimeSpan.FromMinutes(1)))
+            //{
+            //    UpdateXemSeriesIds();
+            //}
         }
     }
 }

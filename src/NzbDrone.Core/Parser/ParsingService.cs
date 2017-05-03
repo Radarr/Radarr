@@ -8,6 +8,8 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using System;
 
 namespace NzbDrone.Core.Parser
 {
@@ -20,13 +22,20 @@ namespace NzbDrone.Core.Parser
         RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int seriesId, IEnumerable<int> episodeIds);
         List<Episode> GetEpisodes(ParsedEpisodeInfo parsedEpisodeInfo, Series series, bool sceneSource, SearchCriteriaBase searchCriteria = null);
         ParsedEpisodeInfo ParseSpecialEpisodeTitle(string title, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null);
+
+        // Music stuff here
+        LocalTrack GetLocalTrack(string filename, Artist artist);
+        LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo, bool sceneSource);
+
     }
 
     public class ParsingService : IParsingService
     {
         private readonly IEpisodeService _episodeService;
         private readonly ISeriesService _seriesService;
-        // private readonly ISceneMappingService _sceneMappingService;
+
+        private readonly IArtistService _artistService;
+        private readonly ITrackService _trackService;
         private readonly Logger _logger;
 
         public ParsingService(IEpisodeService episodeService,
@@ -473,6 +482,90 @@ namespace NzbDrone.Core.Parser
             }
 
             return result;
+        }
+
+        public LocalTrack GetLocalTrack(string filename, Artist artist)
+        {
+            return GetLocalTrack(filename, artist, null, false);
+        }
+
+        public LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo, bool sceneSource)
+        {
+            ParsedTrackInfo parsedTrackInfo;
+
+            if (folderInfo != null)
+            {
+                parsedTrackInfo = folderInfo.JsonClone();
+                parsedTrackInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
+            }
+
+            else
+            {
+                parsedTrackInfo = Parser.ParseMusicPath(filename);
+            }
+
+            if (parsedTrackInfo == null || parsedTrackInfo.IsPossibleSpecialEpisode)
+            {
+                var title = Path.GetFileNameWithoutExtension(filename);
+                //var specialEpisodeInfo = ParseSpecialEpisodeTitle(title, series);
+
+                //if (specialEpisodeInfo != null)
+                //{
+                //    parsedTrackInfo = specialEpisodeInfo;
+                //}
+            }
+
+            if (parsedTrackInfo == null)
+            {
+                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
+                {
+                    _logger.Warn("Unable to parse track info from path {0}", filename);
+                }
+
+                return null;
+            }
+
+            var tracks = GetTracks(parsedTrackInfo, artist, sceneSource);
+
+            return new LocalTrack
+            {
+                Artist = artist,
+                Quality = parsedTrackInfo.Quality,
+                Tracks = tracks,
+                Path = filename,
+                ParsedTrackInfo = parsedTrackInfo,
+                ExistingFile = artist.Path.IsParentPath(filename)
+            };
+        }
+
+        private List<Track> GetTracks(ParsedTrackInfo parsedTrackInfo, Artist artist, bool sceneSource)
+        {
+            throw new NotImplementedException();
+
+            /*if (parsedTrackInfo.FullSeason) // IF Album
+            {
+                return _trackService.GetTracksByAlbumTitle(artist.Id, parsedTrackInfo.AlbumTitle);
+            }
+
+            if (parsedTrackInfo.IsDaily)
+            {
+                if (artist.SeriesType == SeriesTypes.Standard)
+                {
+                    _logger.Warn("Found daily-style episode for non-daily series: {0}.", series);
+                    return new List<Episode>();
+                }
+
+                var episodeInfo = GetDailyEpisode(artist, parsedTrackInfo.AirDate, searchCriteria);
+
+                if (episodeInfo != null)
+                {
+                    return new List<Episode> { episodeInfo };
+                }
+
+                return new List<Track>();
+            }
+
+            return GetStandardEpisodes(artist, parsedTrackInfo, sceneSource, searchCriteria);*/
         }
     }
 }

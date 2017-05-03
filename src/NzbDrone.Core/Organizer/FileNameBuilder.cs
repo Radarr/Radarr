@@ -11,6 +11,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Organizer
 {
@@ -22,6 +23,9 @@ namespace NzbDrone.Core.Organizer
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetSeriesFolder(Series series, NamingConfig namingConfig = null);
         string GetSeasonFolder(Series series, int seasonNumber, NamingConfig namingConfig = null);
+
+        // TODO: Implement Music functions
+        //string GetArtistFolder(Artist artist, NamingConfig namingConfig = null);
     }
 
     public class FileNameBuilder : IBuildFileNames
@@ -276,6 +280,12 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Series Title}"] = m => series.Title;
             tokenHandlers["{Series CleanTitle}"] = m => CleanTitle(series.Title);
+        }
+
+        private void AddArtistTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist)
+        {
+            tokenHandlers["{Artist Name}"] = m => artist.ArtistName;
+            tokenHandlers["{Artist CleanTitle}"] = m => CleanTitle(artist.ArtistName);
         }
 
         private string AddSeasonEpisodeNumberingTokens(string pattern, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, List<Episode> episodes, NamingConfig namingConfig)
@@ -768,6 +778,36 @@ namespace NzbDrone.Core.Organizer
 
             return Path.GetFileNameWithoutExtension(episodeFile.RelativePath);
         }
+
+        //public string GetArtistFolder(Artist artist, NamingConfig namingConfig = null)
+        //{
+        //    if (namingConfig == null)
+        //    {
+        //        namingConfig = _namingConfigService.GetConfig();
+        //    }
+
+        //    var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+        //    AddArtistTokens(tokenHandlers, artist);
+
+        //    return CleanFolderName(ReplaceTokens("{Artist Name}",  tokenHandlers, namingConfig)); //namingConfig.ArtistFolderFormat,
+        //}
+
+        //public string GetAlbumFolder(Artist artist, string albumName, NamingConfig namingConfig = null)
+        //{
+        //    throw new NotImplementedException();
+        //    //if (namingConfig == null)
+        //    //{
+        //    //    namingConfig = _namingConfigService.GetConfig();
+        //    //}
+
+        //    //var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+        //    //AddSeriesTokens(tokenHandlers, artist);
+        //    //AddSeasonTokens(tokenHandlers, seasonNumber);
+
+        //    //return CleanFolderName(ReplaceTokens(namingConfig.SeasonFolderFormat, tokenHandlers, namingConfig));
+        //}
     }
 
     internal sealed class TokenMatch
