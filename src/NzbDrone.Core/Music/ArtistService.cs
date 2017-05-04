@@ -86,10 +86,7 @@ namespace NzbDrone.Core.Music
 
         public List<Artist> GetAllArtists()
         {
-            _logger.Debug("Count of repository: " + _artistRepository.Count());
-            // TEMP: Return empty list while we debug the DB error
-            return new List<Artist>();
-            //return _artistRepository.All().ToList();
+            return _artistRepository.All().ToList();
         }
 
         public Artist GetArtist(int artistId)
