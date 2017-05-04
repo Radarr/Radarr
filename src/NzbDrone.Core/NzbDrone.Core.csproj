@@ -288,6 +288,7 @@
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\111_setup_music.cs" />
+    <Compile Include="Datastore\Migration\112_add_music_fields_to_namingconfig.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
