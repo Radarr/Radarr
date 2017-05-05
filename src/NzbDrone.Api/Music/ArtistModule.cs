@@ -98,7 +98,6 @@ namespace NzbDrone.Api.Music
         {
             //var seriesStats = _seriesStatisticsService.SeriesStatistics();
             var artistResources = _artistService.GetAllArtists().ToResource();
-            Console.WriteLine("[DEBUG] Returning {0} Artists", artistResources.Count);
             MapCoversToLocal(artistResources.ToArray());
             //LinkSeriesStatistics(seriesResources, seriesStats);
             //PopulateAlternateTitles(seriesResources);
@@ -106,9 +105,9 @@ namespace NzbDrone.Api.Music
             return artistResources;
         }
 
-        private int AddArtist(ArtistResource seriesResource)
+        private int AddArtist(ArtistResource artistResource)
         {
-            var model = seriesResource.ToModel();
+            var model = artistResource.ToModel();
 
             return _addSeriesService.AddArtist(model).Id;
         }
@@ -174,16 +173,6 @@ namespace NzbDrone.Api.Music
         {
             BroadcastResourceChange(ModelAction.Updated, message.Artist.Id);
         }
-
-        //public void Handle(ArtistDeletedEvent message)
-        //{
-        //    BroadcastResourceChange(ModelAction.Deleted, message.Artist.ToResource());
-        //}
-
-        //public void Handle(ArtistRenamedEvent message)
-        //{
-        //    BroadcastResourceChange(ModelAction.Updated, message.Artist.Id);
-        //}
 
         //public void Handle(MediaCoversUpdatedEvent message)
         //{

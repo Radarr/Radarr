@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Music
         public string ArtistName { get; set; }
         public string ArtistSlug { get; set; }
         public string CleanTitle { get; set; }
+        public string Overview { get; set; }
         public bool Monitored { get; set; }
         public bool AlbumFolder { get; set; }
         public bool ArtistFolder { get; set; }

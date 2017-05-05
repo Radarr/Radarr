@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("ArtistSlug").AsString().Nullable() //.Unique()
                 .WithColumn("CleanTitle").AsString().Nullable() // Do we need this?
                 .WithColumn("Monitored").AsBoolean()
+                .WithColumn("Overview").AsString().Nullable()
                 .WithColumn("AlbumFolder").AsBoolean().Nullable()
                 .WithColumn("ArtistFolder").AsBoolean().Nullable()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
