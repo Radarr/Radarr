@@ -79,18 +79,17 @@ namespace NzbDrone.Core.Music
             }
             catch (SeriesNotFoundException)
             {
-                _logger.Error("tvdbid {1} was not found, it may have been removed from TheTVDB.", newArtist.ItunesId);
+                _logger.Error("iTunesId {1} was not found, it may have been removed from iTunes.", newArtist.ItunesId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
-                                                  new ValidationFailure("TvdbId", "A series with this ID was not found", newArtist.ItunesId)
+                                                  new ValidationFailure("iTunesId", "An artist with this ID was not found", newArtist.ItunesId)
                                               });
             }
 
             var artist = tuple.Item1;
 
-            // If seasons were passed in on the new series use them, otherwise use the seasons from Skyhook
-            // TODO: Refactor for albums
+            // If albums were passed in on the new artist use them, otherwise use the albums from Skyhook
             newArtist.Albums = newArtist.Albums != null && newArtist.Albums.Any() ? newArtist.Albums : artist.Albums;
 
             artist.ApplyChanges(newArtist);

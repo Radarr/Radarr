@@ -182,7 +182,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest1.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<ArtistResource>(httpRequest1);
-            var httpResponse2 = _httpClient.Get<ArtistResource>(httpRequest2);
+            
 
             if (httpResponse.HasHttpError)
             {
@@ -197,18 +197,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             List<Artist> artists = MapArtists(httpResponse.Resource);
-
-            if (httpResponse2.HasHttpError)
+            List<Artist> newArtists = new List<Artist>(artists.Count);
+            int count = 0;
+            foreach (var artist in artists)
             {
-                if (artists.Count == 1)
-                {
-                    artists[0].Overview = httpResponse2.Resource.StorePlatformData.Artist.Results[itunesId].artistBio;
-                }
+                newArtists.Add(AddOverview(artist));
+                count++;
             }
 
             // I don't know how we are getting tracks from iTunes yet. 
-            return new Tuple<Artist, List<Track>>(artists[0], new List<Track>());
+            return new Tuple<Artist, List<Track>>(newArtists[0], new List<Track>());
         }
+        
         public List<Artist> SearchForNewArtist(string title)
         {
             try
@@ -247,7 +247,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
 
-                return MapArtists(httpResponse.Resource);
+
+                List<Artist> artists = MapArtists(httpResponse.Resource);
+                List<Artist> newArtists = new List<Artist>(artists.Count);
+                int count = 0;
+                foreach (var artist in artists)
+                {
+                    newArtists.Add(AddOverview(artist));
+                    count++;
+                }
+
+
+                return newArtists;
             }
             catch (HttpException)
             {
@@ -258,6 +269,24 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Warn(ex, ex.Message);
                 throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
             }
+        }
+
+        private Artist AddOverview(Artist artist)
+        {
+            var httpRequest = _internalRequestBuilder.Create()
+                                             .SetSegment("route", "viewArtist")
+                                             .AddQueryParam("id", artist.ItunesId.ToString())
+                                             .Build();
+            httpRequest.Headers.Add("X-Apple-Store-Front", "143459-2,32 t:music3");
+            httpRequest.Headers.ContentType = "application/json";
+            var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
+
+            if (!httpResponse.HasHttpError)
+            {
+                artist.Overview = httpResponse.Resource.StorePlatformData.Artist.Results[artist.ItunesId].artistBio;
+            }
+
+            return artist;
         }
 
         private Artist MapArtistInfo(ArtistInfoResource resource)
