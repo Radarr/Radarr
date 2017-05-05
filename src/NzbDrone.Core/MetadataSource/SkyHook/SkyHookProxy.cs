@@ -165,25 +165,24 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Tuple<Artist, List<Track>> GetArtistInfo(int itunesId)
         {
-            Console.WriteLine("[GetArtistInfo] id:" + itunesId);
-            //https://itunes.apple.com/lookup?id=909253
-            //var httpRequest = _requestBuilder.Create()
-            //                                 .SetSegment("route", "lookup")
-            //                                 .AddQueryParam("id", itunesId.ToString())
-            //                                 .Build();
+            _logger.Debug("Getting Artist with iTunesID of {0}", itunesId);
+            var httpRequest1 = _requestBuilder.Create()
+                                             .SetSegment("route", "lookup")
+                                             .AddQueryParam("id", itunesId.ToString())
+                                             .Build();
 
-            // TODO: Add special header, add Overview to Artist model
-            var httpRequest = _internalRequestBuilder.Create()
+            var httpRequest2 = _internalRequestBuilder.Create()
                                              .SetSegment("route", "viewArtist")
                                              .AddQueryParam("id", itunesId.ToString())
                                              .Build();
-            httpRequest.Headers.Add("X-Apple-Store-Front", "143459-2,32 t:music3");
-            httpRequest.Headers.ContentType = "application/json";
+            httpRequest2.Headers.Add("X-Apple-Store-Front", "143459-2,32 t:music3");
+            httpRequest2.Headers.ContentType = "application/json";
 
-            httpRequest.AllowAutoRedirect = true;
-            httpRequest.SuppressHttpError = true;
+            httpRequest1.AllowAutoRedirect = true;
+            httpRequest1.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
+            var httpResponse = _httpClient.Get<ArtistResource>(httpRequest1);
+            var httpResponse2 = _httpClient.Get<ArtistResource>(httpRequest2);
 
             if (httpResponse.HasHttpError)
             {
@@ -193,16 +192,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
                 else
                 {
-                    throw new HttpException(httpRequest, httpResponse);
+                    throw new HttpException(httpRequest1, httpResponse);
                 }
             }
 
-            Console.WriteLine("GetArtistInfo, GetArtistInfo");
-            //var tracks = httpResponse.Resource.Episodes.Select(MapEpisode);
-            //var artist = MapArtist(httpResponse.Resource);
+            List<Artist> artists = MapArtists(httpResponse.Resource);
+
+            if (httpResponse2.HasHttpError)
+            {
+                if (artists.Count == 1)
+                {
+                    artists[0].Overview = httpResponse2.Resource.StorePlatformData.Artist.Results[itunesId].artistBio;
+                }
+            }
+
             // I don't know how we are getting tracks from iTunes yet. 
-            return new Tuple<Artist, List<Track>>(MapArtistInfo(httpResponse.Resource.StorePlatformData.Artist.Results[0]), new List<Track>());
-            //return new Tuple<Artist, List<Track>>(artist, tracks.ToList());
+            return new Tuple<Artist, List<Track>>(artists[0], new List<Track>());
         }
         public List<Artist> SearchForNewArtist(string title)
         {
