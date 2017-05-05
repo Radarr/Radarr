@@ -5,6 +5,8 @@ var vent = new Wreqr.EventAggregator();
 vent.Events = {
     SeriesAdded        : 'series:added',
     SeriesDeleted      : 'series:deleted',
+    ArtistAdded        : 'artist:added',
+    ArtistDeleted      : 'artist:deleted',
     CommandComplete    : 'command:complete',
     ServerUpdated      : 'server:updated',
     EpisodeFileDeleted : 'episodefile:deleted'

@@ -98,7 +98,7 @@ namespace NzbDrone.Api.Music
         {
             //var seriesStats = _seriesStatisticsService.SeriesStatistics();
             var artistResources = _artistService.GetAllArtists().ToResource();
-
+            Console.WriteLine("[DEBUG] Returning {0} Artists", artistResources.Count);
             MapCoversToLocal(artistResources.ToArray());
             //LinkSeriesStatistics(seriesResources, seriesStats);
             //PopulateAlternateTitles(seriesResources);

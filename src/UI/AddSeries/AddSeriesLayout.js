@@ -6,7 +6,7 @@ var ExistingSeriesCollectionView = require('./Existing/AddExistingSeriesCollecti
 var AddSeriesView = require('./AddSeriesView');
 var ProfileCollection = require('../Profile/ProfileCollection');
 var RootFolderCollection = require('./RootFolders/RootFolderCollection');
-require('../Series/SeriesCollection');
+require('../Artist/ArtistCollection');
 
 module.exports = Marionette.Layout.extend({
     template : 'AddSeries/AddSeriesLayoutTemplate',
