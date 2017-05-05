@@ -20,6 +20,7 @@ require('../../Mixins/backbone.signalr.mixin');
 module.exports = Marionette.Layout.extend({
     template : 'Series/Index/SeriesIndexLayoutTemplate',
 
+
     regions : {
         seriesRegion : '#x-series',
         toolbar      : '#x-toolbar',

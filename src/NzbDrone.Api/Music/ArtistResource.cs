@@ -22,6 +22,7 @@ namespace NzbDrone.Api.Music
         public int ItunesId { get; set; }
         //public List<AlternateTitleResource> AlternateTitles { get; set; }
         //public string SortTitle { get; set; }
+        public string Overview { get; set; }
 
         public int AlbumCount
         {
@@ -82,7 +83,7 @@ namespace NzbDrone.Api.Music
                 //EpisodeFileCount
                 //SizeOnDisk
                 //Status = resource.Status,
-                //Overview = resource.Overview,
+                Overview = model.Overview,
                 //NextAiring
                 //PreviousAiring
                 //Network = resource.Network,
@@ -135,7 +136,7 @@ namespace NzbDrone.Api.Music
                 //EpisodeFileCount
                 //SizeOnDisk
                 //Status = resource.Status,
-                //Overview = resource.Overview,
+                Overview = resource.Overview,
                 //NextAiring
                 //PreviousAiring
                 //Network = resource.Network,
