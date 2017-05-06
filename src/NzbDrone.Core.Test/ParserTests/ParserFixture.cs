@@ -88,6 +88,7 @@ namespace NzbDrone.Core.Test.ParserTests
 		}
 
 		[TestCase("The Danish Girl 2015")]
+        [TestCase("The.Danish.Girl.2015.1080p.BluRay.x264.DTS-HD.MA.5.1-RARBG")]
 		public void should_not_parse_language_in_movie_title(string postTitle)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).Language.Should().Be(Language.English);

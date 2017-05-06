@@ -412,9 +412,9 @@ namespace NzbDrone.Core.Parser
                             if (result != null)
                             {
                                 var languageTitle = simpleTitle;
-                                if (result.MovieTitle.IsNotNullOrWhiteSpace() )
+                                if (match[0].Groups["title"].Success && match[0].Groups["title"].Value.IsNotNullOrWhiteSpace())
                                 {
-                                    languageTitle = simpleTitle.Replace(result.MovieTitle, "A Movie");
+                                    languageTitle = simpleTitle.Replace(match[0].Groups["title"].Value, "A Movie");
                                 }
 
                                 result.Language = LanguageParser.ParseLanguage(languageTitle);
