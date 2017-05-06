@@ -1,7 +1,7 @@
 {
-  "name": "Sonarr",
-  "version": "2.0.0",
-  "description": "Sonarr",
+  "name": "Lidarr",
+  "version": "1.0.0",
+  "description": "Lidarr",
   "main": "main.js",
   "scripts": {
     "build": "gulp build",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Sonarr/Sonarr.git"
+    "url": "git://github.com/lidarr/Lidarr.git"
   },
   "author": "",
   "license": "GPL-3.0",

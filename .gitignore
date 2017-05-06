@@ -101,7 +101,7 @@ App_Data/*.ldf
 _NCrunch_*
 _TeamCity*
 
-# Sonarr
+# Lidarr
 config.xml
 nzbdrone.log*txt
 UpdateLogs/
