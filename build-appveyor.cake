@@ -141,11 +141,11 @@ Task("PackageMono").Does(() => {
 	// Adding CurlSharp.dll.config (for dllmap)
 	CopyFile(sourceFolder + "/NzbDrone.Common/CurlSharp.dll.config", outputFolderMono + "/CurlSharp.dll.config");
 
-	// Renaming Lidarr.Console.exe to Radarr.exe
-	DeleteFiles(outputFolderMono + "/Radarr.exe*");
-	MoveFile(outputFolderMono + "/Lidarr.Console.exe", outputFolderMono + "/Radarr.exe");
-	MoveFile(outputFolderMono + "/Lidarr.Console.exe.config", outputFolderMono + "/Radarr.exe.config");
-	MoveFile(outputFolderMono + "/Lidarr.Console.exe.mdb", outputFolderMono + "/Radarr.exe.mdb");
+	// Renaming Lidarr.Console.exe to Lidarr.exe
+	DeleteFiles(outputFolderMono + "/Lidarr.exe*");
+	MoveFile(outputFolderMono + "/Lidarr.Console.exe", outputFolderMono + "/Lidarr.exe");
+	MoveFile(outputFolderMono + "/Lidarr.Console.exe.config", outputFolderMono + "/Lidarr.exe.config");
+	MoveFile(outputFolderMono + "/Lidarr.Console.exe.mdb", outputFolderMono + "/Lidarr.exe.mdb");
 
 	// Remove NzbDrone.Windows.*
 	DeleteFiles(outputFolderMono + "/NzbDrone.Windows.*");
@@ -169,7 +169,7 @@ Task("PackageOsx").Does(() => {
 	CopyFiles(sourceFolder + "/Libraries/MediaInfo/*.dylib", outputFolderOsx);
 
 	// Adding Startup script
-	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
+	CopyFile("./osx/Lidarr", outputFolderOsx + "/Lidarr");
 });
 
 Task("PackageOsxApp").Does(() => {
@@ -181,8 +181,8 @@ Task("PackageOsxApp").Does(() => {
 	CreateDirectory(outputFolderOsxApp);
 
 	// Copy osx package files
-	CopyDirectory("./osx/Radarr.app", outputFolderOsxApp + "/Radarr.app");
-	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Radarr.app/Contents/MacOS");
+	CopyDirectory("./osx/Lidarr.app", outputFolderOsxApp + "/Lidarr.app");
+	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Lidarr.app/Contents/MacOS");
 });
 
 Task("PackageTests").Does(() => {
@@ -263,7 +263,7 @@ Task("CleanArtifacts").Does(() => {
 });
 
 Task("ArtifactsWindows").Does(() => {
-	CopyDirectory(outputFolder, artifactsFolderWindows + "/Radarr");
+	CopyDirectory(outputFolder, artifactsFolderWindows + "/Lidarr");
 });
 
 Task("ArtifactsWindowsInstaller").Does(() => {
@@ -274,11 +274,11 @@ Task("ArtifactsWindowsInstaller").Does(() => {
 });
 
 Task("ArtifactsLinux").Does(() => {
-	CopyDirectory(outputFolderMono, artifactsFolderLinux + "/Radarr");
+	CopyDirectory(outputFolderMono, artifactsFolderLinux + "/Lidarr");
 });
 
 Task("ArtifactsOsx").Does(() => {
-	CopyDirectory(outputFolderOsx, artifactsFolderOsx + "/Radarr");
+	CopyDirectory(outputFolderOsx, artifactsFolderOsx + "/Lidarr");
 });
 
 Task("ArtifactsOsxApp").Does(() => {
@@ -293,10 +293,10 @@ Task("CompressArtifacts").Does(() => {
 		prefix += AppVeyor.Environment.Build.Version + ".";
 	}
 
-	Zip(artifactsFolderWindows, artifactsFolder + "/Radarr." + prefix + "windows.zip");
-	GZipCompress(artifactsFolderLinux, artifactsFolder + "/Radarr." + prefix + "linux.tar.gz");
-	GZipCompress(artifactsFolderOsx, artifactsFolder + "/Radarr." + prefix + "osx.tar.gz");
-	Zip(artifactsFolderOsxApp, artifactsFolder + "/Radarr." + prefix + "osx-app.zip");
+	Zip(artifactsFolderWindows, artifactsFolder + "/Lidarr." + prefix + "windows.zip");
+	GZipCompress(artifactsFolderLinux, artifactsFolder + "/Lidarr." + prefix + "linux.tar.gz");
+	GZipCompress(artifactsFolderOsx, artifactsFolder + "/Lidarr." + prefix + "osx.tar.gz");
+	Zip(artifactsFolderOsxApp, artifactsFolder + "/Lidarr." + prefix + "osx-app.zip");
 });
 
 Task("Artifacts")
