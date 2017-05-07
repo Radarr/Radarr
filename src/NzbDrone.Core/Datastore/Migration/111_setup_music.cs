@@ -48,16 +48,16 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Overview").AsString();
 
             Create.TableForModel("Tracks")
-                .WithColumn("ItunesTrackId").AsInt32().Unique()
+                .WithColumn("SpotifyTrackId").AsString().Nullable() // This shouldn't be nullable, but TrackRepository won't behave. Someone please fix this.
                 .WithColumn("AlbumId").AsString()
-                .WithColumn("ArtistsId").AsString().Nullable()
+                .WithColumn("ArtistId").AsString() // This may be a list of Ids in future for compilations
+                .WithColumn("ArtistSpotifyId").AsString()
+                .WithColumn("Compilation").AsBoolean()
                 .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Ignored").AsBoolean().Nullable()
                 .WithColumn("Explict").AsBoolean()
                 .WithColumn("Monitored").AsBoolean()
-                .WithColumn("TrackExplicitName").AsString().Nullable()
-                .WithColumn("TrackCensoredName").AsString().Nullable()
                 .WithColumn("TrackFileId").AsInt32().Nullable()
                 .WithColumn("ReleaseDate").AsDateTime().Nullable();
 

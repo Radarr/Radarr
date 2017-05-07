@@ -17,18 +17,17 @@ namespace NzbDrone.Core.Music
 
         public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
 
-        public int SpotifyTrackId { get; set; }
+        public string SpotifyTrackId { get; set; }
         public string AlbumId { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }
-        public string ArtistId { get; set; }
-        public int CompilationId { get; set; }
+        public string ArtistSpotifyId { get; set; }
+        public int ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
+        //public int CompilationId { get; set; }
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
         public string Title { get; set; }
         public bool Ignored { get; set; }
         public bool Explict { get; set; }
-        public string TrackExplicitName { get; set; }
-        public string TrackCensoredName { get; set; }
         public bool Monitored { get; set; }
         public int TrackFileId { get; set; } 
         public DateTime? ReleaseDate { get; set; }
