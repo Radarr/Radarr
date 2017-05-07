@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Music
         Artist GetArtist(int artistId);
         List<Artist> GetArtists(IEnumerable<int> artistIds);
         Artist AddArtist(Artist newArtist);
-        Artist FindByItunesId(int itunesId);
+        Artist FindById(string spotifyId);
         Artist FindByName(string title);
         Artist FindByTitleInexact(string title);
         void DeleteArtist(int artistId, bool deleteFiles);
@@ -69,9 +69,9 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new ArtistDeletedEvent(artist, deleteFiles));
         }
 
-        public Artist FindByItunesId(int itunesId)
+        public Artist FindById(string spotifyId)
         {
-            return _artistRepository.FindByItunesId(itunesId);
+            return _artistRepository.FindById(spotifyId);
         }
 
         public Artist FindByName(string title)
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Music
 
                 if (storedAlbum != null && album.Monitored != storedAlbum.Monitored)
                 {
-                    _trackService.SetTrackMonitoredByAlbum(artist.Id, album.AlbumId, album.Monitored);
+                    _trackService.SetTrackMonitoredByAlbum(artist.SpotifyId, album.AlbumId, album.Monitored);
                 }
             }
 

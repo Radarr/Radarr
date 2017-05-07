@@ -4,7 +4,7 @@ var Backgrid = require('backgrid');
 var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
 var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
 var EmptyView = require('./EmptyView');
-var SeriesCollection = require('../SeriesCollection');
+var ArtistCollection = require('../../Artist/ArtistCollection');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var SeriesTitleCell = require('../../Cells/SeriesTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
@@ -19,6 +19,7 @@ require('../../Mixins/backbone.signalr.mixin');
 
 module.exports = Marionette.Layout.extend({
     template : 'Series/Index/SeriesIndexLayoutTemplate',
+
 
     regions : {
         seriesRegion : '#x-series',
@@ -111,28 +112,28 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function() {
-        this.seriesCollection = SeriesCollection.clone();
-        this.seriesCollection.shadowCollection.bindSignalR();
+        this.artistCollection = ArtistCollection.clone();
+        this.artistCollection.shadowCollection.bindSignalR();
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'sync', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
+        this.listenTo(this.artistCollection, 'sync', function(model, collection, options) {
+            this.artistCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'add', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
+        this.listenTo(this.artistCollection, 'add', function(model, collection, options) {
+            this.artistCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'remove', function(model, collection, options) {
-            this.seriesCollection.fullCollection.resetFiltered();
+        this.listenTo(this.artistCollection, 'remove', function(model, collection, options) {
+            this.artistCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
         this.sortingOptions = {
             type           : 'sorting',
             storeState     : false,
-            viewCollection : this.seriesCollection,
+            viewCollection : this.artistCollection,
             items          : [
                 {
                     title : 'Title',
@@ -243,7 +244,7 @@ module.exports = Marionette.Layout.extend({
 
     _showTable : function() {
         this.currentView = new Backgrid.Grid({
-            collection : this.seriesCollection,
+            collection : this.artistCollection,
             columns    : this.columns,
             className  : 'table table-hover'
         });
@@ -253,7 +254,7 @@ module.exports = Marionette.Layout.extend({
 
     _showList : function() {
         this.currentView = new ListCollectionView({
-            collection : this.seriesCollection
+            collection : this.artistCollection
         });
 
         this._renderView();
@@ -261,14 +262,15 @@ module.exports = Marionette.Layout.extend({
 
     _showPosters : function() {
         this.currentView = new PosterCollectionView({
-            collection : this.seriesCollection
+            collection : this.artistCollection
         });
 
         this._renderView();
     },
 
     _renderView : function() {
-        if (SeriesCollection.length === 0) {
+        // Problem is this is calling before artistCollection has updated. Where are the promises with backbone?
+        if (this.artistCollection.length === 0) {
             this.seriesRegion.show(new EmptyView());
 
             this.toolbar.close();
@@ -282,13 +284,14 @@ module.exports = Marionette.Layout.extend({
     },
 
     _fetchCollection : function() {
-        this.seriesCollection.fetch();
+        this.artistCollection.fetch();
+        console.log('index page, collection: ', this.artistCollection);
     },
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
 
-        this.seriesCollection.setFilterMode(mode);
+        this.artistCollection.setFilterMode(mode);
     },
 
     _showToolbar : function() {
@@ -317,22 +320,22 @@ module.exports = Marionette.Layout.extend({
 
     _showFooter : function() {
         var footerModel = new FooterModel();
-        var series = SeriesCollection.models.length;
+        var series = this.artistCollection.models.length;
         var episodes = 0;
         var episodeFiles = 0;
         var ended = 0;
         var continuing = 0;
         var monitored = 0;
 
-        _.each(SeriesCollection.models, function(model) {
-            episodes += model.get('episodeCount');
+        _.each(this.artistCollection.models, function(model) {
+            episodes += model.get('episodeCount'); // TODO: Refactor to Seasons and Tracks
             episodeFiles += model.get('episodeFileCount');
 
-            if (model.get('status').toLowerCase() === 'ended') {
+            /*if (model.get('status').toLowerCase() === 'ended') {
                 ended++;
             } else {
                 continuing++;
-            }
+            }*/
 
             if (model.get('monitored')) {
                 monitored++;

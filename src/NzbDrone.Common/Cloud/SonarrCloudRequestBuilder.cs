@@ -6,6 +6,7 @@ namespace NzbDrone.Common.Cloud
     {
         IHttpRequestBuilderFactory Services { get; }
         IHttpRequestBuilderFactory Search { get; }
+        IHttpRequestBuilderFactory InternalSearch { get; }
         IHttpRequestBuilderFactory SkyHookTvdb { get; }
     }
 
@@ -16,7 +17,11 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            Search = new HttpRequestBuilder("https://itunes.apple.com/{route}/")
+            Search = new HttpRequestBuilder("https://api.spotify.com/{version}/{route}/") // TODO: maybe use {version} 
+                .SetSegment("version", "v1")
+                .CreateFactory();
+
+            InternalSearch = new HttpRequestBuilder("https://itunes.apple.com/WebObjects/MZStore.woa/wa/{route}") //viewArtist or search
                 .CreateFactory();
 
             SkyHookTvdb = new HttpRequestBuilder("http://skyhook.lidarr.tv/v1/tvdb/{route}/{language}/")
@@ -27,6 +32,8 @@ namespace NzbDrone.Common.Cloud
         public IHttpRequestBuilderFactory Services { get; }
 
         public IHttpRequestBuilderFactory Search { get; }
+
+        public IHttpRequestBuilderFactory InternalSearch { get; }
 
         public IHttpRequestBuilderFactory SkyHookTvdb { get; }
     }

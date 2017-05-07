@@ -1,4 +1,4 @@
-// will download and run sonarr (server) in a non-windows enviroment
+// will download and run Lidarr (server) in a non-windows enviroment
 // you can use this if you don't care about the server code and just want to work
 // with the web code.
 
@@ -31,7 +31,7 @@ function getLatest(cb) {
     }
   });
 
-  var url = 'http://services.sonarr.tv/v1/update/' + branch + '?os=osx';
+  var url = 'http://services.lidarr.audio/v1/update/' + branch + '?os=osx';
 
   console.log('Checking for latest version:', url);
 

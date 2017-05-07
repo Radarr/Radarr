@@ -19,9 +19,8 @@ namespace NzbDrone.Api.Music
 
         //View Only
         public string ArtistName { get; set; }
-        public int ItunesId { get; set; }
-        //public List<AlternateTitleResource> AlternateTitles { get; set; }
-        //public string SortTitle { get; set; }
+        public string SpotifyId { get; set; }
+        public string Overview { get; set; }
 
         public int AlbumCount
         {
@@ -29,7 +28,7 @@ namespace NzbDrone.Api.Music
             {
                 if (Albums == null) return 0;
 
-                return Albums.Where(s => s.AlbumId > 0).Count(); // TODO: CHeck this condition
+                return Albums.Where(s => s.AlbumId != "").Count(); // TODO: CHeck this condition
             }
         }
 
@@ -82,7 +81,7 @@ namespace NzbDrone.Api.Music
                 //EpisodeFileCount
                 //SizeOnDisk
                 //Status = resource.Status,
-                //Overview = resource.Overview,
+                Overview = model.Overview,
                 //NextAiring
                 //PreviousAiring
                 //Network = resource.Network,
@@ -106,7 +105,7 @@ namespace NzbDrone.Api.Music
                 //FirstAired = resource.FirstAired,
                 //LastInfoSync = resource.LastInfoSync,
                 //SeriesType = resource.SeriesType,
-                ItunesId = model.ItunesId,
+                SpotifyId = model.SpotifyId,
                 ArtistSlug = model.ArtistSlug,
 
                 RootFolderPath = model.RootFolderPath,
@@ -135,7 +134,7 @@ namespace NzbDrone.Api.Music
                 //EpisodeFileCount
                 //SizeOnDisk
                 //Status = resource.Status,
-                //Overview = resource.Overview,
+                Overview = resource.Overview,
                 //NextAiring
                 //PreviousAiring
                 //Network = resource.Network,
@@ -150,16 +149,8 @@ namespace NzbDrone.Api.Music
 
                 ArtistFolder = resource.ArtistFolder,
                 Monitored = resource.Monitored,
-
-                //UseSceneNumbering = resource.UseSceneNumbering,
-                //Runtime = resource.Runtime,
-                //TvdbId = resource.TvdbId,
-                //TvRageId = resource.TvRageId,
-                //TvMazeId = resource.TvMazeId,
-                //FirstAired = resource.FirstAired,
                 //LastInfoSync = resource.LastInfoSync,
-                //SeriesType = resource.SeriesType,
-                ItunesId = resource.ItunesId,
+                SpotifyId = resource.SpotifyId,
                 ArtistSlug = resource.ArtistSlug,
                 
                 RootFolderPath = resource.RootFolderPath,

@@ -5,7 +5,7 @@ var RouteBinder = require('./jQuery/RouteBinder');
 var SignalRBroadcaster = require('./Shared/SignalRBroadcaster');
 var NavbarLayout = require('./Navbar/NavbarLayout');
 var AppLayout = require('./AppLayout');
-var SeriesController = require('./Series/SeriesController');
+var ArtistController = require('./Artist/ArtistController');
 var Router = require('./Router');
 var ModalController = require('./Shared/Modal/ModalController');
 var ControlPanelController = require('./Shared/ControlPanel/ControlPanelController');
@@ -20,7 +20,7 @@ require('./Hotkeys/Hotkeys');
 require('./Shared/piwikCheck');
 require('./Shared/VersionChangeMonitor');
 
-new SeriesController();
+new ArtistController();
 new ModalController();
 new ControlPanelController();
 new Router();

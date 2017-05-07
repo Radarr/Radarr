@@ -13,11 +13,12 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Create.TableForModel("Artist")
-                .WithColumn("ItunesId").AsInt32().Unique()
+                .WithColumn("SpotifyId").AsString().Nullable().Unique()
                 .WithColumn("ArtistName").AsString().Unique()
                 .WithColumn("ArtistSlug").AsString().Nullable() //.Unique()
                 .WithColumn("CleanTitle").AsString().Nullable() // Do we need this?
                 .WithColumn("Monitored").AsBoolean()
+                .WithColumn("Overview").AsString().Nullable()
                 .WithColumn("AlbumFolder").AsBoolean().Nullable()
                 .WithColumn("ArtistFolder").AsBoolean().Nullable()
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
@@ -36,8 +37,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 ;
 
             Create.TableForModel("Albums")
-                .WithColumn("AlbumId").AsInt32()
-                .WithColumn("ArtistId").AsInt32()
+                .WithColumn("AlbumId").AsString().Unique()
+                .WithColumn("ArtistId").AsInt32() // Should this be artistId (string)
                 .WithColumn("Title").AsString()
                 .WithColumn("Year").AsInt32()
                 .WithColumn("Image").AsInt32()
@@ -48,12 +49,13 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Create.TableForModel("Tracks")
                 .WithColumn("ItunesTrackId").AsInt32().Unique()
-                .WithColumn("AlbumId").AsInt32()
+                .WithColumn("AlbumId").AsString()
                 .WithColumn("ArtistsId").AsString().Nullable()
                 .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Ignored").AsBoolean().Nullable()
                 .WithColumn("Explict").AsBoolean()
+                .WithColumn("Monitored").AsBoolean()
                 .WithColumn("TrackExplicitName").AsString().Nullable()
                 .WithColumn("TrackCensoredName").AsString().Nullable()
                 .WithColumn("TrackFileId").AsInt32().Nullable()

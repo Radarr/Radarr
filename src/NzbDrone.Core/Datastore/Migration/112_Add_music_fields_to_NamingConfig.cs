@@ -8,8 +8,8 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("NamingConfig").AddColumn("ArtistFolderFormat").AsAnsiString();
-            Alter.Table("NamingConfig").AddColumn("AlbumFolderFormat").AsAnsiString();
+            Alter.Table("NamingConfig").AddColumn("ArtistFolderFormat").AsAnsiString().Nullable();
+            Alter.Table("NamingConfig").AddColumn("AlbumFolderFormat").AsAnsiString().Nullable();
         }
     }
 }

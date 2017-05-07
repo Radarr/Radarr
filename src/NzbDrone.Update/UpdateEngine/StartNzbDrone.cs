@@ -40,7 +40,7 @@ namespace NzbDrone.Update.UpdateEngine
                 }
                 catch (InvalidOperationException e)
                 {
-                    _logger.Warn(e, "Couldn't start Lidarr Service (Most likely due to permission issues). falling back to console.");
+                    _logger.Warn(e, "Couldn't start Lidarr Service (Most likely due to permission issues). Falling back to console.");
                     StartConsole(installationFolder);
                 }
             }

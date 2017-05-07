@@ -18,13 +18,13 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 
 ## Feature Requests
 
-[![Feature Requests](http://feathub.com/mattman86/Lidarr?format=svg)](http://feathub.com/mattman86/Lidarr)
+[![Feature Requests](http://feathub.com/lidarr/Lidarr?format=svg)](http://feathub.com/lidarr/Lidarr)
 
 ## Configuring Development Environment:
 
 ### Requirements
 
-* Visual Studio 2015 (https://www.visualstudio.com/vs/)
+* Visual Studio 2015 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
 * [Git](https://git-scm.com/downloads)
 * [NodeJS](https://nodejs.org/en/download/)
 
@@ -35,6 +35,8 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 * Grab the submodules `git submodule init && git submodule update`
 * Install the required Node Packages `npm install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
+* Run the project in Visual Studio
+* Open http://localhost:8686
 
 *Please note gulp must be running at all times while you are working with Lidarr client source files.*
 
