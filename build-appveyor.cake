@@ -104,7 +104,7 @@ Task("Compile").Does(() => {
 });
 
 Task("Gulp").Does(() => {
-	cake.Npm
+	Cake.Npm
 		.WithLogLevel(NpmLogLevel.Silent)
 		.FromPath(".")
 			.Install()
