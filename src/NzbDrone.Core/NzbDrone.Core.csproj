@@ -824,6 +824,7 @@
     <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\TrackInfoResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />

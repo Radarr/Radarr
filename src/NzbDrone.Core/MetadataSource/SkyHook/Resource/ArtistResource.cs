@@ -26,6 +26,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<AlbumInfoResource> Items { get; set; }
     }
 
+    public class TrackResultResource
+    {
+        public TrackResultResource()
+        {
+
+        }
+
+        public List<TrackInfoResource> Items { get; set; }
+    }
     public class ArtistResource
     {
         public ArtistResource()

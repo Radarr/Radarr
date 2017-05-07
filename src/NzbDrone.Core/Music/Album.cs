@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Music
         public string Title { get; set; } // NOTE: This should be CollectionName in API
         public int Year { get; set; }
         public int TrackCount { get; set; }
+        public List<Track> Tracks { get; set; }
         public int DiscCount { get; set; }
         public bool Monitored { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }

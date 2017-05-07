@@ -114,7 +114,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.ArtistName = httpResponse.Resource.Name;
             artist.SpotifyId = httpResponse.Resource.Id;
             artist.Genres = httpResponse.Resource.Genres;
-            //Artist artist = MapArtists(httpResponse.Resource)[0];
 
 
             artist = MapAlbums(artist);
@@ -149,6 +148,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 album.AlbumId = albumResource.Id;
                 album.Title = albumResource.Name;
                 album.ArtworkUrl = albumResource.Images[0].Url;
+                album.Tracks = MapTracksToAlbum(album);
                 albums.Add(album);
             }
 
@@ -157,7 +157,44 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.Albums = albums;
             return artist;
         }
-        
+
+        private List<Track> MapTracksToAlbum(Album album)
+        {
+            var httpRequest = _requestBuilder.Create()
+                                            .SetSegment("route", "albums/" + album.AlbumId + "/tracks")
+                                            .Build();
+
+            httpRequest.AllowAutoRedirect = true;
+            httpRequest.SuppressHttpError = true;
+
+            var httpResponse = _httpClient.Get<TrackResultResource>(httpRequest);
+
+            if (httpResponse.HasHttpError)
+            {
+                throw new HttpException(httpRequest, httpResponse);
+            }
+
+            List<Track> tracks = new List<Track>();
+            foreach(var trackResource in httpResponse.Resource.Items)
+            {
+                Track track = new Track();
+                track.AlbumId = album.AlbumId;
+                //track.Album = album; // This will cause infinite loop when trying to serialize. 
+                // TODO: Implement more track mapping
+                //track.Artist = trackResource.Artists
+                //track.ArtistId = album.
+                track.Explict = trackResource.Explicit;
+                track.Compilation = trackResource.Artists.Count > 1;
+                track.TrackNumber = trackResource.TrackNumber;
+                track.TrackExplicitName = trackResource.Name;
+                track.TrackCensoredName = trackResource.Name;
+                tracks.Add(track);
+            }
+
+            return tracks;
+        }
+
+
         public List<Artist> SearchForNewArtist(string title)
         {
             try
