@@ -19,7 +19,8 @@ namespace NzbDrone.Core.Music
 
         public int ItunesTrackId { get; set; }
         public int AlbumId { get; set; }
-        public LazyLoaded<Artist> ArtistsId { get; set; }
+        public LazyLoaded<Artist> Artist { get; set; }
+        public int ArtistId { get; set; }
         public int CompilationId { get; set; }
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
@@ -28,11 +29,10 @@ namespace NzbDrone.Core.Music
         public bool Explict { get; set; }
         public string TrackExplicitName { get; set; }
         public string TrackCensoredName { get; set; }
-        public string Monitored { get; set; }
-        public int TrackFileId { get; set; } // JVM: Is this needed with TrackFile reference?
+        public bool Monitored { get; set; }
+        public int TrackFileId { get; set; } 
         public DateTime? ReleaseDate { get; set; }
-        /*public int? SceneEpisodeNumber { get; set; }
-        public bool UnverifiedSceneNumbering { get; set; }
+        /*
         public Ratings Ratings { get; set; } // This might be aplicable as can be pulled from IDv3 tags
         public List<MediaCover.MediaCover> Images { get; set; }*/
 

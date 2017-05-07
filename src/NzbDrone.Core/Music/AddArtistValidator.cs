@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
                                   SeriesPathValidator seriesPathValidator,
                                   DroneFactoryValidator droneFactoryValidator,
                                   SeriesAncestorValidator seriesAncestorValidator,
-                                  ArtistSlugValidator seriesTitleSlugValidator)
+                                  ArtistSlugValidator artistTitleSlugValidator)
         {
             RuleFor(c => c.Path).Cascade(CascadeMode.StopOnFirstFailure)
                                 .IsValidPath()
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Music
                                 .SetValidator(droneFactoryValidator)
                                 .SetValidator(seriesAncestorValidator);
 
-            RuleFor(c => c.ArtistSlug).SetValidator(seriesTitleSlugValidator);// TODO: Check if we are going to use a slug or artistName
+            RuleFor(c => c.ArtistSlug).SetValidator(artistTitleSlugValidator);// TODO: Check if we are going to use a slug or artistName
         }
     }
 }

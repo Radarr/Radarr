@@ -55,6 +55,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Ignored").AsBoolean().Nullable()
                 .WithColumn("Explict").AsBoolean()
+                .WithColumn("Monitored").AsBoolean()
                 .WithColumn("TrackExplicitName").AsString().Nullable()
                 .WithColumn("TrackCensoredName").AsString().Nullable()
                 .WithColumn("TrackFileId").AsInt32().Nullable()

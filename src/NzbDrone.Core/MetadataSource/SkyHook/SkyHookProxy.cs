@@ -32,6 +32,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger = logger;
         }
 
+       
+
         public Tuple<Series, List<Episode>> GetSeriesInfo(int tvdbSeriesId)
         {
             Console.WriteLine("[GetSeriesInfo] id:" + tvdbSeriesId);
@@ -165,6 +167,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Tuple<Artist, List<Track>> GetArtistInfo(int itunesId)
         {
+            // TODO: [GetArtistInfo]: This needs to return a set of tracks from iTunes.
+            // This call is expected to return information about an artist and the tracks that make up said artist. 
+            // To do this, we need 2-3 API calls. 1st is to gather information about the artist and the albums the artist has. This is https://itunes.apple.com/search?entity=album&id=itunesId
+            // Next call is to populate the overview field and calls the internal API
+            // Finally, we need to, for each album, get all tracks, which means calling this N times: https://itunes.apple.com/search?entity=musicTrack&term=artistName (id will not work)
             _logger.Debug("Getting Artist with iTunesID of {0}", itunesId);
             var httpRequest1 = _requestBuilder.Create()
                                              .SetSegment("route", "lookup")
