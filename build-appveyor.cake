@@ -139,11 +139,11 @@ Task("PackageMono").Does(() => {
 	// Adding CurlSharp.dll.config (for dllmap)
 	CopyFile(sourceFolder + "/NzbDrone.Common/CurlSharp.dll.config", outputFolderMono + "/CurlSharp.dll.config");
 
-	// Renaming Radarr.Console.exe to Radarr.exe
+	// Renaming Lidarr.Console.exe to Radarr.exe
 	DeleteFiles(outputFolderMono + "/Radarr.exe*");
-	MoveFile(outputFolderMono + "/Radarr.Console.exe", outputFolderMono + "/Radarr.exe");
-	MoveFile(outputFolderMono + "/Radarr.Console.exe.config", outputFolderMono + "/Radarr.exe.config");
-	MoveFile(outputFolderMono + "/Radarr.Console.exe.mdb", outputFolderMono + "/Radarr.exe.mdb");
+	MoveFile(outputFolderMono + "/Lidarr.Console.exe", outputFolderMono + "/Radarr.exe");
+	MoveFile(outputFolderMono + "/Lidarr.Console.exe.config", outputFolderMono + "/Radarr.exe.config");
+	MoveFile(outputFolderMono + "/Lidarr.Console.exe.mdb", outputFolderMono + "/Radarr.exe.mdb");
 
 	// Remove NzbDrone.Windows.*
 	DeleteFiles(outputFolderMono + "/NzbDrone.Windows.*");
