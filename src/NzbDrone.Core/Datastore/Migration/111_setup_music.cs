@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Create.TableForModel("Artist")
-                .WithColumn("ItunesId").AsInt32().Unique()
+                .WithColumn("SpotifyId").AsString().Nullable().Unique()
                 .WithColumn("ArtistName").AsString().Unique()
                 .WithColumn("ArtistSlug").AsString().Nullable() //.Unique()
                 .WithColumn("CleanTitle").AsString().Nullable() // Do we need this?
@@ -37,8 +37,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 ;
 
             Create.TableForModel("Albums")
-                .WithColumn("AlbumId").AsInt32()
-                .WithColumn("ArtistId").AsInt32()
+                .WithColumn("AlbumId").AsString().Unique()
+                .WithColumn("ArtistId").AsInt32() // Should this be artistId (string)
                 .WithColumn("Title").AsString()
                 .WithColumn("Year").AsInt32()
                 .WithColumn("Image").AsInt32()
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Create.TableForModel("Tracks")
                 .WithColumn("ItunesTrackId").AsInt32().Unique()
-                .WithColumn("AlbumId").AsInt32()
+                .WithColumn("AlbumId").AsString()
                 .WithColumn("ArtistsId").AsString().Nullable()
                 .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()

@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Music
             var successCount = 0;
             var failCount = 0;
 
-            var existingTracks = _trackService.GetTrackByArtist(artist.ItunesId);
+            var existingTracks = _trackService.GetTrackByArtist(artist.SpotifyId);
             var albums = artist.Albums;
 
             var updateList = new List<Track>();
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Music
                         trackToUpdate.Monitored = GetMonitoredStatus(track, albums);
                         newList.Add(trackToUpdate);
                     }
-                    trackToUpdate.ArtistId = artist.ItunesId; // TODO: Ensure LazyLoaded<Artist> field gets updated.
+                    trackToUpdate.ArtistId = artist.SpotifyId; // TODO: Ensure LazyLoaded<Artist> field gets updated.
                     trackToUpdate.TrackNumber = track.TrackNumber;
                     trackToUpdate.Title = track.Title ?? "Unknown";
                     

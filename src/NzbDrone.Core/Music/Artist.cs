@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Music
 
         }
 
-        public int ItunesId { get; set; }
+        public string SpotifyId { get; set; }
         public string ArtistName { get; set; }
         public string ArtistSlug { get; set; }
         public string CleanTitle { get; set; }
@@ -47,13 +47,13 @@ namespace NzbDrone.Core.Music
 
         public override string ToString()
         {
-            return string.Format("[{0}][{1}]", ItunesId, ArtistName.NullSafe());
+            return string.Format("[{0}][{1}]", SpotifyId, ArtistName.NullSafe());
         }
 
         public void ApplyChanges(Artist otherArtist)
         {
 
-            ItunesId = otherArtist.ItunesId;
+            SpotifyId = otherArtist.SpotifyId;
             ArtistName = otherArtist.ArtistName;
             ArtistSlug = otherArtist.ArtistSlug;
             CleanTitle = otherArtist.CleanTitle;

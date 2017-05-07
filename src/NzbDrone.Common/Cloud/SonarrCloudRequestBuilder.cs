@@ -17,7 +17,7 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            Search = new HttpRequestBuilder("https://itunes.apple.com/{route}/")
+            Search = new HttpRequestBuilder("https://api.spotify.com/v1/{route}/") // TODO: maybe use {version} 
                 .CreateFactory();
 
             InternalSearch = new HttpRequestBuilder("https://itunes.apple.com/WebObjects/MZStore.woa/wa/{route}") //viewArtist or search

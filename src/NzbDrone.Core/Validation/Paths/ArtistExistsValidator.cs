@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IArtistService _artistService;
 
         public ArtistExistsValidator(IArtistService artistService)
-            : base("This artist has already been added")
+            : base("This artist has already been added.")
         {
             _artistService = artistService;
         }
@@ -21,9 +21,7 @@ namespace NzbDrone.Core.Validation.Paths
         {
             if (context.PropertyValue == null) return true;
 
-            var itunesId = Convert.ToInt32(context.PropertyValue.ToString());
-
-            return (!_artistService.GetAllArtists().Exists(s => s.ItunesId == itunesId));
+            return (!_artistService.GetAllArtists().Exists(s => s.SpotifyId == context.PropertyValue.ToString()));
         }
     }
 }

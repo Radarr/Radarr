@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Music
             Images = new List<MediaCover.MediaCover>();
         }
 
-        public int AlbumId { get; set; }
+        public string AlbumId { get; set; }
         public string Title { get; set; } // NOTE: This should be CollectionName in API
         public int Year { get; set; }
         public int TrackCount { get; set; }

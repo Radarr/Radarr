@@ -52,20 +52,20 @@ namespace NzbDrone.Core.Music
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(artist.ItunesId);
+                tuple = _artistInfo.GetArtistInfo(artist.SpotifyId);
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("Artist '{0}' (itunesid {1}) was not found, it may have been removed from iTunes.", artist.ArtistName, artist.ItunesId);
+                _logger.Error("Artist '{0}' (SpotifyId {1}) was not found, it may have been removed from Spotify.", artist.ArtistName, artist.SpotifyId);
                 return;
             }
 
             var artistInfo = tuple.Item1;
 
-            if (artist.ItunesId != artistInfo.ItunesId)
+            if (artist.SpotifyId != artistInfo.SpotifyId)
             {
-                _logger.Warn("Artist '{0}' (itunes {1}) was replaced with '{2}' (itunes {3}), because the original was a duplicate.", artist.ArtistName, artist.ItunesId, artistInfo.ArtistName, artistInfo.ItunesId);
-                artist.ItunesId = artistInfo.ItunesId;
+                _logger.Warn("Artist '{0}' (SpotifyId {1}) was replaced with '{2}' (SpotifyId {3}), because the original was a duplicate.", artist.ArtistName, artist.SpotifyId, artistInfo.ArtistName, artistInfo.SpotifyId);
+                artist.SpotifyId = artistInfo.SpotifyId;
             }
 
             artist.ArtistName = artistInfo.ArtistName;
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Music
                     //    continue;
                     //}
 
-                    _logger.Debug("New album ({0}) for artist: [{1}] {2}, setting monitored to true", album.Title, artist.ItunesId, artist.ArtistName);
+                    _logger.Debug("New album ({0}) for artist: [{1}] {2}, setting monitored to true", album.Title, artist.SpotifyId, artist.ArtistName);
                     album.Monitored = true;
                 }
 

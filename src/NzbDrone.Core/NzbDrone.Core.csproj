@@ -815,6 +815,8 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\AlbumInfoResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\ArtistInfoResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />

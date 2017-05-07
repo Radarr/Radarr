@@ -17,10 +17,10 @@ namespace NzbDrone.Core.Music
 
         public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
 
-        public int ItunesTrackId { get; set; }
-        public int AlbumId { get; set; }
+        public int SpotifyTrackId { get; set; }
+        public string AlbumId { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }
-        public int ArtistId { get; set; }
+        public string ArtistId { get; set; }
         public int CompilationId { get; set; }
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Music
 
         public override string ToString()
         {
-            return string.Format("[{0}]{1}", ItunesTrackId, Title.NullSafe());
+            return string.Format("[{0}]{1}", SpotifyTrackId, Title.NullSafe());
         }
     }
 }
