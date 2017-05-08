@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void embedded_document_as_json()
         {
-            var quality = new QualityModel { Quality = Quality.Bluray720p, Revision = new Revision(version: 2 )};
+            var quality = new QualityModel { Quality = Quality.MP3320, Revision = new Revision(version: 2 )};
 
             var history = Builder<History.History>.CreateNew()
                             .With(c => c.Id = 0)
@@ -75,15 +75,15 @@ namespace NzbDrone.Core.Test.Datastore
                             .All().With(c => c.Id = 0)
                             .Build().ToList();
 
-            history[0].Quality = new QualityModel(Quality.HDTV1080p, new Revision(version: 2));
-            history[1].Quality = new QualityModel(Quality.Bluray720p, new Revision(version: 2));
+            history[0].Quality = new QualityModel(Quality.MP3512, new Revision(version: 2));
+            history[1].Quality = new QualityModel(Quality.MP3320, new Revision(version: 2));
 
 
             Db.InsertMany(history);
 
             var returnedHistory = Db.All<History.History>();
 
-            returnedHistory[0].Quality.Quality.Should().Be(Quality.HDTV1080p);
+            returnedHistory[0].Quality.Quality.Should().Be(Quality.MP3512);
         }
     }
 }

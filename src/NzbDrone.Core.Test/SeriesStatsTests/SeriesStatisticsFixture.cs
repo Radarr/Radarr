@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.SeriesStatsTests
 
             _episodeFile = Builder<EpisodeFile>.CreateNew()
                                            .With(e => e.SeriesId = _series.Id)
-                                           .With(e => e.Quality = new QualityModel(Quality.HDTV720p))
+                                           .With(e => e.Quality = new QualityModel(Quality.MP3256))
                                            .BuildNew();
 
         }
