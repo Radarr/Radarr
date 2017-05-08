@@ -8,24 +8,24 @@ namespace NzbDrone.Core.Exceptions
 {
     public class ArtistNotFoundException : NzbDroneException
     {
-        public int ItunesId { get; set; }
+        public string SpotifyId { get; set; }
 
-        public ArtistNotFoundException(int itunesId)
-            : base(string.Format("Series with iTunesId {0} was not found, it may have been removed from iTunes.", itunesId))
+        public ArtistNotFoundException(string spotifyId)
+            : base(string.Format("Artist with SpotifyId {0} was not found, it may have been removed from Spotify.", spotifyId))
         {
-            ItunesId = itunesId;
+            SpotifyId = spotifyId;
         }
 
-        public ArtistNotFoundException(int itunesId, string message, params object[] args)
+        public ArtistNotFoundException(string spotifyId, string message, params object[] args)
             : base(message, args)
         {
-            ItunesId = itunesId;
+            SpotifyId = spotifyId;
         }
 
-        public ArtistNotFoundException(int itunesId, string message)
+        public ArtistNotFoundException(string spotifyId, string message)
             : base(message)
         {
-            ItunesId = itunesId;
+            SpotifyId = spotifyId;
         }
     }
 }

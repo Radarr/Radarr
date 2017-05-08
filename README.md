@@ -18,7 +18,7 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 
 ## Feature Requests
 
-[![Feature Requests](http://feathub.com/lidarr/Lidarr?format=svg)](http://feathub.com/lidarr/Lidarr)
+[![Feature Requests](http://feathub.com/mattman86/Lidarr?format=svg)](http://feathub.com/mattman86/Lidarr)
 
 ## Configuring Development Environment:
 

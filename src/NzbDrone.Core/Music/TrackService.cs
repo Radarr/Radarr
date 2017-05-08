@@ -10,12 +10,12 @@ namespace NzbDrone.Core.Music
     {
         Track GetTrack(int id);
         List<Track> GetTracks(IEnumerable<int> ids);
-        Track FindTrack(int artistId, int albumId, int trackNumber);
-        Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
-        List<Track> GetTrackByArtist(int artistId);
-        List<Track> GetTracksByAblum(int artistId, int albumId);
-        List<Track> GetTracksByAblumTitle(int artistId, string albumTitle);
-        List<Track> TracksWithFiles(int artistId);
+        Track FindTrack(string artistId, string albumId, int trackNumber);
+        Track FindTrackByTitle(string artistId, string albumId, string releaseTitle);
+        List<Track> GetTrackByArtist(string artistId);
+        List<Track> GetTracksByAlbum(string artistId, string albumId);
+        List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
+        List<Track> TracksWithFiles(string artistId);
         PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
         List<Track> GeTracksByFileId(int trackFileId);
         void UpdateTrack(Track track);
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Music
         void InsertMany(List<Track> tracks);
         void UpdateMany(List<Track> tracks);
         void DeleteMany(List<Track> tracks);
-        void SetTrackMonitoredByAlbum(int artistId, int albumId, bool monitored);
+        void SetTrackMonitoredByAlbum(string artistId, string albumId, bool monitored);
     }
 
     public class TrackService : ITrackService
@@ -34,12 +34,12 @@ namespace NzbDrone.Core.Music
             throw new NotImplementedException();
         }
 
-        public Track FindTrack(int artistId, int albumId, int trackNumber)
+        public Track FindTrack(string artistId, string albumId, int trackNumber)
         {
             throw new NotImplementedException();
         }
 
-        public Track FindTrackByTitle(int artistId, int albumId, string releaseTitle)
+        public Track FindTrackByTitle(string artistId, string albumId, string releaseTitle)
         {
             throw new NotImplementedException();
         }
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Music
             throw new NotImplementedException();
         }
 
-        public List<Track> GetTrackByArtist(int artistId)
+        public List<Track> GetTrackByArtist(string artistId)
         {
             throw new NotImplementedException();
         }
@@ -64,12 +64,12 @@ namespace NzbDrone.Core.Music
             throw new NotImplementedException();
         }
 
-        public List<Track> GetTracksByAblum(int artistId, int albumId)
+        public List<Track> GetTracksByAlbum(string artistId, string albumId)
         {
             throw new NotImplementedException();
         }
 
-        public List<Track> GetTracksByAblumTitle(int artistId, string albumTitle)
+        public List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle)
         {
             throw new NotImplementedException();
         }
@@ -84,12 +84,12 @@ namespace NzbDrone.Core.Music
             throw new NotImplementedException();
         }
 
-        public void SetTrackMonitoredByAlbum(int artistId, int albumId, bool monitored)
+        public void SetTrackMonitoredByAlbum(string artistId, string albumId, bool monitored)
         {
             throw new NotImplementedException();
         }
 
-        public List<Track> TracksWithFiles(int artistId)
+        public List<Track> TracksWithFiles(string artistId)
         {
             throw new NotImplementedException();
         }

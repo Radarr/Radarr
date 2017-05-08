@@ -71,7 +71,7 @@ namespace NzbDrone.Api.Music
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.ItunesId).GreaterThan(0).SetValidator(artistExistsValidator);
+            PostValidator.RuleFor(s => s.SpotifyId).NotEqual("").SetValidator(artistExistsValidator);
 
             PutValidator.RuleFor(s => s.Path).IsValidPath();
         }

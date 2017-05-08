@@ -181,7 +181,7 @@ PackageOsx()
     cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderOsx
 
     echo "Adding Startup script"
-    cp  ./osx/Sonarr $outputFolderOsx
+    cp  ./osx/Lidarr $outputFolderOsx
 
     echo "##teamcity[progressFinish 'Creating OS X Package']"
 }
@@ -192,8 +192,8 @@ PackageOsxApp()
     rm -rf $outputFolderOsxApp
     mkdir $outputFolderOsxApp
 
-    cp -r ./osx/Sonarr.app $outputFolderOsxApp
-    cp -r $outputFolderOsx $outputFolderOsxApp/Sonarr.app/Contents/MacOS
+    cp -r ./osx/Lidarr.app $outputFolderOsxApp
+    cp -r $outputFolderOsx $outputFolderOsxApp/Lidarr.app/Contents/MacOS
 
     echo "##teamcity[progressFinish 'Creating OS X App Package']"
 }
