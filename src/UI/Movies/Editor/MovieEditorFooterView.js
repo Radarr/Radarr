@@ -52,7 +52,6 @@ module.exports = Marionette.ItemView.extend({
 
         this.listenTo(FullMovieCollection, 'save', function() {
 			window.alert(' Done Saving');
-
 			var selected = FullMovieCollection.where({ selected : true });
 		});
 
@@ -177,7 +176,7 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _organizeFiles : function() {
-        var selected = this.editorGrid.getSelectedModels();
+        var selected = FullMovieCollection.where({ selected : true });
         var updateFilesMoviesView = new UpdateFilesMoviesView({ movies : selected });
         this.listenToOnce(updateFilesMoviesView, 'updatingFiles', this._afterSave);
 
