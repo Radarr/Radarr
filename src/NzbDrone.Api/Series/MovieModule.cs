@@ -17,6 +17,8 @@ using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Validation;
 using NzbDrone.SignalR;
 using NzbDrone.Core.Datastore;
+using Microsoft.CSharp.RuntimeBinder;
+using Nancy;
 
 namespace NzbDrone.Api.Movie
 {
@@ -58,9 +60,12 @@ namespace NzbDrone.Api.Movie
             GetResourceAll = AllMovie;
 			GetResourcePaged = GetMoviePaged;
             GetResourceById = GetMovie;
-			Get[TITLE_SLUG_ROUTE] = (options) => {
-				return ReqResExtensions.AsResponse(GetByTitleSlug(options.slug));
-			};
+            Get[TITLE_SLUG_ROUTE] = GetByTitleSlug; /*(options) => {
+				return ReqResExtensions.AsResponse(GetByTitleSlug(options.slug), Nancy.HttpStatusCode.OK);
+			};*/
+
+
+
             CreateResource = AddMovie;
             UpdateResource = UpdateMovie;
             DeleteResource = DeleteMovie;
@@ -145,9 +150,27 @@ namespace NzbDrone.Api.Movie
             return moviesResources;
         }
 
-		private MovieResource GetByTitleSlug(string slug)
+		private Response GetByTitleSlug(dynamic options)
 		{
-			return MapToResource(_moviesService.FindByTitleSlug(slug));
+            var slug = "";
+            try
+            {
+                slug = options.slug;
+                // do stuff with x
+            }
+            catch (RuntimeBinderException)
+            {
+                return new NotFoundResponse();
+            }
+
+            try
+            {
+                return MapToResource(_moviesService.FindByTitleSlug(slug)).AsResponse(Nancy.HttpStatusCode.OK);
+            }
+            catch (ModelNotFoundException)
+            {
+                return new NotFoundResponse();
+            }
 		}
 
         private int AddMovie(MovieResource moviesResource)
