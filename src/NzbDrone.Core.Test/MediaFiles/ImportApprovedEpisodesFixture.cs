@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                                    Series = series,
                                                    Episodes = new List<Episode> { episode },
                                                    Path = Path.Combine(series.Path, "30 Rock - S01E01 - Pilot.avi"),
-                                                   Quality = new QualityModel(Quality.Bluray720p),
+                                                   Quality = new QualityModel(Quality.MP3256),
                                                    ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                                        {
                                                                            ReleaseGroup = "DRONE"
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                      Series = fileDecision.LocalEpisode.Series,
                      Episodes = new List<Episode> { fileDecision.LocalEpisode.Episodes.First() },
                      Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
-                     Quality = new QualityModel(Quality.Bluray720p),
+                     Quality = new QualityModel(Quality.MP3256),
                      Size = 80.Megabytes()
                  });
 

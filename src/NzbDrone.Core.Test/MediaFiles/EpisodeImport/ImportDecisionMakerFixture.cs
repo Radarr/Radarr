@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
 
-            _quality = new QualityModel(Quality.DVD);
+            _quality = new QualityModel(Quality.MP3256);
 
             _localEpisode = new LocalEpisode
             { 
@@ -184,7 +184,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
             GivenSpecifications(_pass1, _pass2, _pass3);
             var expectedQuality = QualityParser.ParseQuality(_videoFiles.Single());
 
-            var result = Subject.GetImportDecisions(_videoFiles, _series, new ParsedEpisodeInfo{Quality = new QualityModel(Quality.SDTV)}, true);
+            var result = Subject.GetImportDecisions(_videoFiles, _series, new ParsedEpisodeInfo{Quality = new QualityModel(Quality.MP3256) }, true);
 
             result.Single().LocalEpisode.Quality.Should().Be(expectedQuality);
         }
@@ -197,9 +197,9 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
 
             _localEpisode.Path = _videoFiles.Single();
             _localEpisode.Quality.QualitySource = QualitySource.Extension;
-            _localEpisode.Quality.Quality = Quality.HDTV720p;
+            _localEpisode.Quality.Quality = Quality.MP3256;
 
-            var expectedQuality = new QualityModel(Quality.SDTV);
+            var expectedQuality = new QualityModel(Quality.MP3256);
 
             var result = Subject.GetImportDecisions(_videoFiles, _series, new ParsedEpisodeInfo { Quality = expectedQuality }, true);
 
@@ -213,9 +213,9 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
             GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.mkv".AsOsAgnostic() });
 
             _localEpisode.Path = _videoFiles.Single();
-            _localEpisode.Quality.Quality = Quality.HDTV720p;
+            _localEpisode.Quality.Quality = Quality.MP3256;
 
-            var expectedQuality = new QualityModel(Quality.Bluray720p);
+            var expectedQuality = new QualityModel(Quality.MP3256);
 
             var result = Subject.GetImportDecisions(_videoFiles, _series, new ParsedEpisodeInfo { Quality = expectedQuality }, true);
 
@@ -374,7 +374,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
 
             _series.Profile = new Profile
                               {
-                                  Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.Unknown)
+                                  Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3256, Quality.Unknown)
                               };
 
 
