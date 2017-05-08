@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Music
         public string AlbumId { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }
         public string ArtistSpotifyId { get; set; }
-        public int ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
+        public long ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
         //public int CompilationId { get; set; }
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
@@ -31,11 +31,6 @@ namespace NzbDrone.Core.Music
         public bool Monitored { get; set; }
         public int TrackFileId { get; set; } 
         public DateTime? ReleaseDate { get; set; }
-        /*
-        public Ratings Ratings { get; set; } // This might be aplicable as can be pulled from IDv3 tags
-        public List<MediaCover.MediaCover> Images { get; set; }*/
-
-        //public string SeriesTitle { get; private set; }
 
         public LazyLoaded<TrackFile> TrackFile { get; set; }
 
