@@ -123,6 +123,8 @@ module.exports = Marionette.Layout.extend({
 		onShow : function() {
 				this.ui.discoverBefore.hide();
 				this.ui.moviesSearch.focus();
+				this.ui.loadMore.hide();
+
 				if (this.isDiscover) {
 						this.ui.discoverBefore.show();
 				}
@@ -189,6 +191,7 @@ module.exports = Marionette.Layout.extend({
 		_showResults : function() {
 				if (!this.isClosed) {
 						if (this.collection.length === 0) {
+								this.ui.loadMore.hide();
 								if (this.isDiscover) {
 									this.searchResult.show(new DiscoverEmptyView());
 								} else {
