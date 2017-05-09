@@ -104,11 +104,13 @@ Task("Compile").Does(() => {
 });
 
 Task("Gulp").Does(() => {
-	Npm
-		.WithLogLevel(NpmLogLevel.Silent)
-		.FromPath(".")
-			.Install()
-			.RunScript("build");
+	NpmInstall(new NpmInstallSettings {
+		LogLevel = NpmLogLevel.Silent,
+		WorkingDirectory = "./",
+		Production = true
+	});
+	
+	NpmRunScript("build");
 });
 
 Task("PackageMono").Does(() => {
