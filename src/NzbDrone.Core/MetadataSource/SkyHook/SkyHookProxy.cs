@@ -349,31 +349,57 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return resources.movie_results.SelectList(MapMovie).FirstOrDefault();
         }
 
-        public List<Movie> DiscoverNewMovies()
+        public List<Movie> DiscoverNewMovies(string action)
         {
             string allIds = string.Join(",", _movieService.GetAllMovies().Select(m => m.TmdbId));
-            var request = new HttpRequestBuilder("https://radarr.video/recommendations/api.php").Build();
 
-            request.AllowAutoRedirect = true;
-            request.Method = HttpMethod.POST;
-            request.Headers.ContentType = "application/x-www-form-urlencoded";
-            request.SetContent($"tmdbids={allIds}");
+            HttpRequest request;
+            List<MovieResult> results;
 
-
-            var response = _httpClient.Post<List<MovieResult>>(request);
-            if (response.StatusCode != HttpStatusCode.OK)
+            if (action == "upcoming")
             {
-                throw new HttpException(request, response);
+                var lastWeek = DateTime.Now.AddDays(-7);
+                var threeWeeks = DateTime.Now.AddDays(7 * 3);
+
+                request = _movieBuilder.Create().SetSegment("route", "discover")
+                                         .SetSegment("id", "movie")
+                                         .SetSegment("secondaryRoute", "")
+                                         .AddQueryParam("region", "us")
+                                         .AddQueryParam("with_release_type", "5|4|6")
+                                         .AddQueryParam("release_date.gte", lastWeek.ToString("yyyy-MM-dd"))
+                                         .AddQueryParam("sort_by", "popularity.desc")
+                                         .AddQueryParam("release_date.lte", threeWeeks.ToString("yyyy-MM-dd")).Build();
+
+
+                var response = _httpClient.Get<MovieSearchRoot>(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new HttpException(request, response);
+                }
+
+                results = response.Resource.results.ToList();
+            }
+            else
+            {
+                request = new HttpRequestBuilder("https://radarr.video/api/{action}/").SetSegment("action", action).Build();
+
+                request.AllowAutoRedirect = true;
+                request.Method = HttpMethod.POST;
+                request.Headers.ContentType = "application/x-www-form-urlencoded";
+                request.SetContent($"tmdbids={allIds}");
+
+                var response = _httpClient.Post<List<MovieResult>>(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new HttpException(request, response);
+                }
+
+                results = response.Resource;
             }
 
-            if (response.Headers.ContentType != HttpAccept.Json.Value)
-            {
-                throw new HttpException(request, response);
-            }
-
-            var movieResults = response.Resource;
-
-            return movieResults.SelectList(MapMovie);
+            return results.SelectList(MapMovie);
         }
 
         private string StripTrailingTheFromTitle(string title)

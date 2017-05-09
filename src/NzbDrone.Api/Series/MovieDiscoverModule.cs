@@ -17,12 +17,12 @@ namespace NzbDrone.Api.Movie
             : base("/movies/discover")
         {
             _searchProxy = searchProxy;
-            Get["/"] = x => Search();
+            Get["/{action?recommendations}"] = x => Search(x.action);
         }
 
-        private Response Search()
+        private Response Search(string action)
         {
-            var imdbResults = _searchProxy.DiscoverNewMovies();
+            var imdbResults = _searchProxy.DiscoverNewMovies(action);
             return MapToResource(imdbResults).AsResponse();
         }
 
