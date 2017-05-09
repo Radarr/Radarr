@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Api.Validation;
 using NzbDrone.Common;
@@ -17,14 +18,17 @@ namespace NzbDrone.Api.Commands
     {
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IServiceFactory _serviceFactory;
+        private readonly Logger _logger;
 
         public CommandModule(IManageCommandQueue commandQueueManager,
                              IBroadcastSignalRMessage signalRBroadcaster,
-                             IServiceFactory serviceFactory)
+                             IServiceFactory serviceFactory,
+                             Logger logger)
             : base(signalRBroadcaster)
         {
             _commandQueueManager = commandQueueManager;
             _serviceFactory = serviceFactory;
+            _logger = logger;
 
             GetResourceById = GetCommand;
             CreateResource = StartCommand;
@@ -41,7 +45,13 @@ namespace NzbDrone.Api.Commands
         private int StartCommand(CommandResource commandResource)
         {
             var commandType = _serviceFactory.GetImplementations(typeof(Command))
-                                             .Single(c => c.Name.Replace("Command", "").Equals(commandResource.Name, StringComparison.InvariantCultureIgnoreCase));
+                                             .SingleOrDefault(c => c.Name.Replace("Command", "").Equals(commandResource.Name, StringComparison.InvariantCultureIgnoreCase));
+
+            if (commandType == null)
+            {
+                _logger.Error("Found no matching command for {0}", commandResource.Name);
+                return 0;
+            }
 
             dynamic command = Request.Body.FromJson(commandType);
             command.Trigger = CommandTrigger.Manual;

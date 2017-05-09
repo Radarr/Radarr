@@ -75,6 +75,7 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("A.I.Artificial.Intelligence.(2001)", "A.I. Artificial Intelligence")]
 		[TestCase("A.Movie.Name.(1998)", "A Movie Name")]
 		[TestCase("Thor: The Dark World 2013", "Thor The Dark World")]
+        [TestCase("Resident.Evil.The.Final.Chapter.2016", "Resident Evil The Final Chapter")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
@@ -87,6 +88,7 @@ namespace NzbDrone.Core.Test.ParserTests
 		}
 
 		[TestCase("The Danish Girl 2015")]
+        [TestCase("The.Danish.Girl.2015.1080p.BluRay.x264.DTS-HD.MA.5.1-RARBG")]
 		public void should_not_parse_language_in_movie_title(string postTitle)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).Language.Should().Be(Language.English);
@@ -123,6 +125,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Prometheus 50th Anniversary Edition 2012.mkv", "50th Anniversary Edition")]
         [TestCase("Movie 2in1 2012.mkv", "2in1")]
         [TestCase("Movie IMAX 2012.mkv", "IMAX")]
+        [TestCase("Fake Movie Final Cut 2016", "Final Cut")]
+        [TestCase("Fake Movie 2016 Final Cut ", "Final Cut")]
         public void should_parse_edition(string postTitle, string edition)
         {
             Parser.Parser.ParseMovieTitle(postTitle).Edition.Should().Be(edition);

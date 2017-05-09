@@ -5,6 +5,6 @@ namespace NzbDrone.Core.MetadataSource
 {
     public interface IDiscoverNewMovies
     {
-        List<Movie> DiscoverNewMovies();
+        List<Movie> DiscoverNewMovies(string action);
     }
 }

@@ -21,11 +21,18 @@ module.exports = Marionette.Layout.extend({
 				moviesSearch : '.x-movies-search',
 				searchBar    : '.x-search-bar',
 				loadMore     : '.x-load-more',
-				discoverHeader : ".x-discover-header"
+				discoverHeader : ".x-discover-header",
+				discoverBefore : ".x-discover-before",
+				discoverRecos : ".x-recommendations-tab",
+				discoverPopular : ".x-popular-tab" ,
+				discoverUpcoming : ".x-upcoming-tab"
 		},
 
 		events : {
-				'click .x-load-more' : '_onLoadMore'
+				'click .x-load-more' : '_onLoadMore',
+				"click .x-recommendations-tab" : "_discoverRecos",
+				"click .x-popular-tab" : "_discoverPopular",
+				"click .x-upcoming-tab" : "_discoverUpcoming"
 		},
 
 		initialize : function(options) {
@@ -56,11 +63,6 @@ module.exports = Marionette.Layout.extend({
 					this.search({term: options.query});
 				} else if (options.action == "discover") {
 					this.isDiscover = true;
-					if (FullMovieCollection.length > 0) {
-						this._discover();
-					} else {
-						this.listenTo(FullMovieCollection, "sync", this._discover);
-					}
 				}
 
 		},
@@ -110,6 +112,11 @@ module.exports = Marionette.Layout.extend({
 
 				if (this.isDiscover) {
 						this.ui.searchBar.hide();
+						if (FullMovieCollection.length > 0) {
+							this._discoverRecos();
+						} else {
+							this.listenTo(FullMovieCollection, "sync", this._discover);
+						}
 						if (this.collection.length == 0) {
 							this.searchResult.show(new LoadingView());
 						}
@@ -117,10 +124,10 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		onShow : function() {
-				this.ui.discoverHeader.hide();
+				this.ui.discoverBefore.hide();
 				this.ui.moviesSearch.focus();
 				if (this.isDiscover) {
-						this.ui.discoverHeader.show();
+						this.ui.discoverBefore.show();
 				}
 		},
 
@@ -213,7 +220,34 @@ module.exports = Marionette.Layout.extend({
 				}
 		},
 
-		_discover : function() {
-			this.collection.fetch()
-		}
+		_discover : function(action) {
+			if (this.collection.action === action) {
+				return
+			}
+			this.searchResult.show(new LoadingView());
+			this.collection.action = action;
+			this.collection.fetch({
+				data : { action : action }
+			});
+		},
+
+		_discoverRecos : function() {
+			this.ui.discoverRecos.tab("show");
+			this.ui.discoverHeader.html("Recommendations by The Movie Database for you");
+			this._discover("recommendations");
+		},
+
+		_discoverPopular : function() {
+			this.ui.discoverPopular.tab("show");
+			this.ui.discoverHeader.html("Currently Popular Movies");
+			this._discover("popular");
+		},
+
+		_discoverUpcoming : function() {
+			this.ui.discoverUpcoming.tab("show");
+			this.ui.discoverHeader.html("Movies coming to Blu-Ray in the next weeks");
+			this._discover("upcoming");
+		},
+
+
 });
