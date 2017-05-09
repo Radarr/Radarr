@@ -14,6 +14,7 @@ var IndexerCollection = require('./Indexers/IndexerCollection');
 var IndexerSettingsModel = require('./Indexers/IndexerSettingsModel');
 var NetImportSettingsModel = require("./NetImport/NetImportSettingsModel");
 var NetImportCollection = require('./NetImport/NetImportCollection');
+var ImportExclusionsCollection = require('./NetImport/ImportExclusionsCollection');
 var NetImportLayout = require('./NetImport/NetImportLayout');
 var DownloadClientLayout = require('./DownloadClient/DownloadClientLayout');
 var DownloadClientSettingsModel = require('./DownloadClient/DownloadClientSettingsModel');

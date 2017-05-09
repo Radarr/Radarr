@@ -271,6 +271,8 @@
     <Compile Include="Wanted\MovieCutoffModule.cs" />
     <Compile Include="Wanted\MovieMissingModule.cs" />
     <Compile Include="Series\MovieDiscoverModule.cs" />
+    <Compile Include="NetImport\ImportExclusionsModule.cs" />
+    <Compile Include="NetImport\ImportExclusionsResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

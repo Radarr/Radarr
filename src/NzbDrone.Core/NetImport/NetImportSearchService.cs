@@ -13,6 +13,7 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch;
+using NzbDrone.Core.NetImport.ImportExclusions;
 
 namespace NzbDrone.Core.NetImport
 {
@@ -32,11 +33,14 @@ namespace NzbDrone.Core.NetImport
         private readonly IConfigService _configService;
         private readonly ISearchForNzb _nzbSearchService;
         private readonly IProcessDownloadDecisions _processDownloadDecisions;
+        private readonly IImportExclusionsService _exclusionService;
 
 
         public NetImportSearchService(INetImportFactory netImportFactory, IMovieService movieService,
             ISearchForNewMovie movieSearch, IRootFolderService rootFolder, ISearchForNzb nzbSearchService,
-                                   IProcessDownloadDecisions processDownloadDecisions, IConfigService configService, Logger logger)
+                                   IProcessDownloadDecisions processDownloadDecisions, IConfigService configService,
+                                      IImportExclusionsService exclusionService,
+                                      Logger logger)
         {
             _netImportFactory = netImportFactory;
             _movieService = movieService;
@@ -44,6 +48,7 @@ namespace NzbDrone.Core.NetImport
             _nzbSearchService = nzbSearchService;
             _processDownloadDecisions = processDownloadDecisions;
             _rootFolder = rootFolder;
+            _exclusionService = exclusionService;
             _logger = logger;
             _configService = configService;
         }
@@ -119,18 +124,12 @@ namespace NzbDrone.Core.NetImport
 
 
             var importExclusions = new List<string>();
-            if (_configService.ImportExclusions != null)
-            {
-                // Replace `movie-title-tmdbid` with just tmdbid in exclusions
-                importExclusions = _configService.ImportExclusions.Split(',').Select(x => Regex.Replace(x, @"^.*\-(.*)$", "$1")).ToList();
-                // listedMovies = listedMovies.Where(ah => importExclusions.Any(h => ah.TmdbId.ToString() != h)).ToList();
-            }
 
             //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null && !importExclusions.Any(x => x == mapped.TmdbId.ToString()))
+                if (mapped != null && !_exclusionService.IsMovieExcluded(mapped.TmdbId))
                 {
                     //List<DownloadDecision> decisions;
                     mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};

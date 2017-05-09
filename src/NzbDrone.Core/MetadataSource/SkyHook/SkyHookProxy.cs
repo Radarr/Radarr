@@ -16,6 +16,7 @@ using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.NetImport.ImportExclusions;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -29,8 +30,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly ITmdbConfigService _configService;
         private readonly IMovieService _movieService;
         private readonly IPreDBService _predbService;
+        private readonly IImportExclusionsService _exclusionService;
 
-        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService, IPreDBService predbService, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService,
+                            IPreDBService predbService, IImportExclusionsService exclusionService, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
@@ -38,6 +41,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _configService = configService;
             _movieService = movieService;
             _predbService = predbService;
+            _exclusionService = exclusionService;
             _logger = logger;
         }
 
@@ -351,7 +355,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public List<Movie> DiscoverNewMovies(string action)
         {
-            string allIds = string.Join(",", _movieService.GetAllMovies().Select(m => m.TmdbId));
+            var allMovies = _movieService.GetAllMovies();
+            var allExclusions = _exclusionService.GetAllExclusions();
+            string allIds = string.Join(",", allMovies.Select(m => m.TmdbId));
+            string ignoredIds = string.Join(",", allExclusions.Select(ex => ex.TmdbId));
 
             HttpRequest request;
             List<MovieResult> results;
@@ -387,7 +394,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 request.AllowAutoRedirect = true;
                 request.Method = HttpMethod.POST;
                 request.Headers.ContentType = "application/x-www-form-urlencoded";
-                request.SetContent($"tmdbids={allIds}");
+                request.SetContent($"tmdbids={allIds}&ignoredIds={ignoredIds}");
 
                 var response = _httpClient.Post<List<MovieResult>>(request);
 
@@ -398,6 +405,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 results = response.Resource;
             }
+
+            results = results.Where(m => allMovies.None(mo => mo.TmdbId == m.id) && allExclusions.None(ex => ex.TmdbId == m.id)).ToList();
 
             return results.SelectList(MapMovie);
         }
