@@ -245,6 +245,7 @@ var view = Marionette.ItemView.extend({
       var exclusion = new ImportExclusionModel({tmdbId : this.model.get("tmdbId"),
         movieTitle : this.model.get("title"), movieYear : this.model.get("year")});
       exclusion.save();
+      this.model.destroy();
       this.remove();
     },
 
