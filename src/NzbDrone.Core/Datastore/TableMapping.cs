@@ -35,6 +35,7 @@ using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.NetImport;
+using NzbDrone.Core.NetImport.ImportExclusions;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -105,6 +106,8 @@ namespace NzbDrone.Core.Datastore
                 .Relationship()
                 .HasOne(s => s.Profile, s => s.ProfileId)
                 .HasOne(m => m.MovieFile, m => m.MovieFileId);
+
+            Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
        
 
             Mapper.Entity<Episode>().RegisterModel("Episodes")

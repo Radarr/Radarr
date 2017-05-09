@@ -1281,6 +1281,9 @@
     <Compile Include="Datastore\Migration\136_add_pathstate_to_movies.cs" />
     <Compile Include="MetadataSource\IDiscoverNewMovies.cs" />
     <Compile Include="Datastore\Migration\137_add_import_exclusions_table.cs" />
+    <Compile Include="NetImport\ImportExclusions\ImportExclusion.cs" />
+    <Compile Include="NetImport\ImportExclusions\ImportExclusionsRepository.cs" />
+    <Compile Include="NetImport\ImportExclusions\ImportExclusionsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
@@ -1350,6 +1353,9 @@
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="NetImport\ImportExclusions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

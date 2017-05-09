@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.NetImport.ImportExclusions;
 
 namespace NzbDrone.Core.Tv
 {
@@ -51,6 +52,7 @@ namespace NzbDrone.Core.Tv
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IBuildFileNames _fileNameBuilder;
+        private readonly IImportExclusionsService _exclusionService;
         private readonly Logger _logger;
 
 
@@ -60,12 +62,14 @@ namespace NzbDrone.Core.Tv
                              IEpisodeService episodeService,
                              IBuildFileNames fileNameBuilder,
                              IConfigService configService,
+                             IImportExclusionsService exclusionService,
                              Logger logger)
         {
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
             _fileNameBuilder = fileNameBuilder;
             _configService = configService;
+            _exclusionService = exclusionService;
             _logger = logger;
         }
 
@@ -286,14 +290,7 @@ namespace NzbDrone.Core.Tv
             var movie = _movieRepository.Get(movieId);
             if (addExclusion)
             {
-                if (_configService.ImportExclusions.Empty())
-                {
-                    _configService.ImportExclusions = movie.TitleSlug;
-                }
-                else if (!_configService.ImportExclusions.Contains(movie.TitleSlug))
-                {
-                    _configService.ImportExclusions += ',' + movie.TitleSlug;
-                }
+                _exclusionService.AddExclusion(new ImportExclusion {TmdbId = movie.TmdbId, MovieTitle = movie.Title, MovieYear = movie.Year } );
             }
             _movieRepository.Delete(movieId);
             _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));

@@ -7,6 +7,7 @@ var Profiles = require('../Profile/ProfileCollection');
 var RootFolders = require('./RootFolders/RootFolderCollection');
 var RootFolderLayout = require('./RootFolders/RootFolderLayout');
 var FullMovieCollection = require('../Movies/FullMovieCollection');
+var ImportExclusionModel = require("../Settings/NetImport/ImportExclusionModel");
 var Config = require('../Config');
 var Messenger = require('../Shared/Messenger');
 var AsValidatedView = require('../Mixins/AsValidatedView');
@@ -33,6 +34,7 @@ var view = Marionette.ItemView.extend({
     events : {
         'click .x-add'            : '_addWithoutSearch',
         'click .x-add-search'     : '_addAndSearch',
+        "click .x-ignore"         : "_ignoreMovie",
         'change .x-profile'       : '_profileChanged',
         'change .x-root-folder'   : '_rootFolderChanged',
         'change .x-season-folder' : '_seasonFolderChanged',
@@ -237,6 +239,13 @@ var view = Marionette.ItemView.extend({
 
             vent.trigger(vent.Events.MoviesAdded, { movie : self.model });
         });
+    },
+
+    _ignoreMovie : function() {
+      var exclusion = new ImportExclusionModel({tmdbId : this.model.get("tmdbId"),
+        movieTitle : this.model.get("title"), movieYear : this.model.get("year")});
+      exclusion.save();
+      this.remove();
     },
 
     _rootFoldersUpdated : function() {

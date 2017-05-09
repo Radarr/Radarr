@@ -1,6 +1,11 @@
 var Marionette = require('marionette');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 var AsValidatedView = require('../../../Mixins/AsValidatedView');
+var ImportExclusionsCollection = require('./../ImportExclusionsCollection');
+var SelectAllCell = require('../../../Cells/SelectAllCell');
+var _ = require('underscore');
+var vent = require('vent');
+var Backgrid = require('backgrid');
 var $ = require('jquery');
 require('../../../Mixins/TagInput');
 require('bootstrap');
@@ -22,10 +27,10 @@ var view = Marionette.ItemView.extend({
 		'click .x-revoke-trakt-tokens' : '_revokeTraktTokens'
 	},
 
-        initialize : function() {
+  initialize : function() {
 
 	},
-	
+
 	onShow : function() {
 		var params = new URLSearchParams(window.location.search);
                 var oauth = params.get('access');
@@ -39,78 +44,25 @@ var view = Marionette.ItemView.extend({
 			//Config.setValue("traktRefreshToken", refresh);
 			var tokenExpiry = Math.floor(Date.now() / 1000) + 4838400;
 			this.ui.tokenExpiry.val(tokenExpiry).trigger('change');  // this means the token will expire in 8 weeks (4838400 seconds)
-			//Config.setValue("traktTokenExpiry",tokenExpiry); 
+			//Config.setValue("traktTokenExpiry",tokenExpiry);
 			//this.model.isSaved = false;
 	        //window.alert("Trakt Authentication Complete - Click Save to make the change take effect");
 		}
 		if (this.ui.authToken.val() && this.ui.refreshToken.val()){
-                this.ui.resetTokensButton.hide();
-		this.ui.revokeTokensButton.show();
+      this.ui.resetTokensButton.hide();
+			this.ui.revokeTokensButton.show();
 		} else {
-		this.ui.resetTokensButton.show();
-		this.ui.revokeTokensButton.hide();
+			this.ui.resetTokensButton.show();
+			this.ui.revokeTokensButton.hide();
 		}
-	        
+
+
+
 	},
 
 	onRender : function() {
-		this.ui.importExclusions.tagsinput({
-			trimValue : true,
-			tagClass  : 'label label-danger',
-			/*itemText : function(item) {
-				var uri;
-                var text;
-                if (item.startsWith('tt')) {
-                    uri = window.NzbDrone.ApiRoot + '/movies/lookup/imdb?imdbId='+item;
-                }
-                else {
-                    uri = window.NzbDrone.ApiRoot + '/movies/lookup/tmdb?tmdbId='+item;
-                }
-                var promise = $.ajax({
-                    url     : uri,
-                    type    : 'GET',
-                    async   : false,
-                });
-                promise.success(function(response) {
-                     text=response['title']+' ('+response['year']+')';
-                });
 
-                promise.error(function(request, status, error) {
-                     text=item;
-                });
-                return text;
-			}*/
-        });
-        this.ui.importExclusions.on('beforeItemAdd', function(event) {
-            var uri;
-            if (event.item.startsWith('tt')) {
-                uri = window.NzbDrone.ApiRoot + '/movies/lookup/imdb?imdbId='+event.item;
-            }
-            else {
-                uri = window.NzbDrone.ApiRoot + '/movies/lookup/tmdb?tmdbId='+event.item;
-            }
-            var promise = $.ajax({
-                url     : uri,
-                type    : 'GET',
-                async   : false,
-            });
-            promise.success(function(response) {
-                event.cancel=false;
-
-				//var newText = response['tmdbId']+'-';
-				//if (event.item.startsWith('tt')) {
-				//	newText = newText+'['+event.item+']';
-				//}
-				event.item = response.titleSlug;//+' ('+response['year']+')-'+response['tmdbId'];
-            });
-
-            promise.error(function(request, status, error) {
-                event.cancel = true;
-                window.alert(event.item+' is not a valid! Must be valid tt#### IMDB ID or #### TMDB ID');
-			});
-			return event;
-        });
-    },
+  },
 
 	ui : {
 		resetTraktTokens : '.x-reset-trakt-tokens',
@@ -118,7 +70,7 @@ var view = Marionette.ItemView.extend({
 		refreshToken : '.x-trakt-refresh-token',
 		resetTokensButton : '.x-reset-trakt-tokens',
 		revokeTokensButton : '.x-revoke-trakt-tokens',
-        tokenExpiry : '.x-trakt-token-expiry',
+    tokenExpiry : '.x-trakt-token-expiry',
 		importExclusions : '.x-import-exclusions'
 	},
 
@@ -131,15 +83,16 @@ var view = Marionette.ItemView.extend({
 
 	_revokeTraktTokens : function() {
 		if (window.confirm("Log out of trakt.tv?")){
-                //TODO: need to implement this: http://docs.trakt.apiary.io/#reference/authentication-oauth/revoke-token/revoke-an-access_token
+          //TODO: need to implement this: http://docs.trakt.apiary.io/#reference/authentication-oauth/revoke-token/revoke-an-access_token
 	        this.ui.authToken.val('').trigger('change');
-		this.ui.refreshToken.val('').trigger('change');
-		this.ui.tokenExpiry.val(0).trigger('change');
+					this.ui.refreshToken.val('').trigger('change');
+					this.ui.tokenExpiry.val(0).trigger('change');
 	        this.ui.resetTokensButton.show();
-		this.ui.revokeTokensButton.hide();
-		window.alert("Logged out of Trakt.tv - Click Save to make the change take effect");
+					this.ui.revokeTokensButton.hide();
+					window.alert("Logged out of Trakt.tv - Click Save to make the change take effect");
 		}
-	}
+	},
+
 });
 
 

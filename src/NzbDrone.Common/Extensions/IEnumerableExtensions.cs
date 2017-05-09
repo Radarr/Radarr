@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -79,6 +79,31 @@ namespace NzbDrone.Common.Extensions
         public static List<TResult> SelectList<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> predicate)
         {
             return source.Select(predicate).ToList();
+        }
+
+        public static IEnumerable<T> DropLast<T>(this IEnumerable<T> source, int n)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            if (n < 0)
+                throw new ArgumentOutOfRangeException("n",
+                    "Argument n should be non-negative.");
+
+            return InternalDropLast(source, n);
+        }
+
+        private static IEnumerable<T> InternalDropLast<T>(IEnumerable<T> source, int n)
+        {
+            Queue<T> buffer = new Queue<T>(n + 1);
+
+            foreach (T x in source)
+            {
+                buffer.Enqueue(x);
+
+                if (buffer.Count == n + 1)
+                    yield return buffer.Dequeue();
+            }
         }
     }
 }

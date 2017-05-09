@@ -6,6 +6,7 @@ var AddMoviesCollection = require('./AddMoviesCollection');
 var SearchResultCollectionView = require('./SearchResultCollectionView');
 var EmptyView = require('./EmptyView');
 var NotFoundView = require('./NotFoundView');
+var DiscoverEmptyView = require('./DiscoverEmptyView');
 var ErrorView = require('./ErrorView');
 var LoadingView = require('../Shared/LoadingView');
 var FullMovieCollection = require("../Movies/FullMovieCollection");
@@ -112,14 +113,10 @@ module.exports = Marionette.Layout.extend({
 
 				if (this.isDiscover) {
 						this.ui.searchBar.hide();
-						if (FullMovieCollection.length > 0) {
-							this._discoverRecos();
-						} else {
-							this.listenTo(FullMovieCollection, "sync", this._discover);
-						}
-						if (this.collection.length == 0) {
+						this._discoverRecos();
+						/*if (this.collection.length == 0) {
 							this.searchResult.show(new LoadingView());
-						}
+						}*/
 				}
 		},
 
@@ -192,8 +189,13 @@ module.exports = Marionette.Layout.extend({
 		_showResults : function() {
 				if (!this.isClosed) {
 						if (this.collection.length === 0) {
-								this.ui.searchBar.show();
-								this.searchResult.show(new NotFoundView({ term : this.collection.term }));
+								if (this.isDiscover) {
+									this.searchResult.show(new DiscoverEmptyView());
+								} else {
+									this.ui.searchBar.show();
+									this.searchResult.show(new NotFoundView({ term : this.collection.term }));
+								}
+
 						} else {
 								this.searchResult.show(this.resultCollectionView);
 								if (!this.showingAll) {
@@ -224,11 +226,10 @@ module.exports = Marionette.Layout.extend({
 			if (this.collection.action === action) {
 				return
 			}
+			this.collection.reset();
 			this.searchResult.show(new LoadingView());
 			this.collection.action = action;
-			this.collection.fetch({
-				data : { action : action }
-			});
+			this.currentSearchPromise = this.collection.fetch();
 		},
 
 		_discoverRecos : function() {

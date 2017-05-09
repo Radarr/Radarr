@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Globalization;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -16,7 +18,10 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             if (!this.Schema.Schema("dbo").Table("ImportExclusions").Exists())
             {
-                Create.Table("ImportExclusions").WithColumn("tmdbid").AsInt64().NotNullable().Unique().PrimaryKey();
+                Create.TableForModel("ImportExclusions")
+                      .WithColumn("TmdbId").AsInt64().NotNullable().Unique().PrimaryKey()
+                      .WithColumn("MovieTitle").AsString().Nullable()
+                      .WithColumn("MovieYear").AsInt64().Nullable().WithDefault(0);
             }
             Execute.WithConnection(AddExisting);
         }
@@ -27,18 +32,23 @@ namespace NzbDrone.Core.Datastore.Migration
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT Key, Value FROM Config WHERE Key = 'importexclusions'";
+                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
                 using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (seriesReader.Read())
                     {
                         var Key = seriesReader.GetString(0);
                         var Value = seriesReader.GetString(1);
-                        var importExclusions = Value.Split(',').Select(x => "(\""+Regex.Replace(x, @"^.*\-(.*)$", "$1")+"\")").ToList();
+
+                        var importExclusions = Value.Split(',').Select(x => {
+                            return string.Format("(\"{0}\", \"{1}\")", Regex.Replace(x, @"^.*\-(.*)$", "$1"),
+                                                 textInfo.ToTitleCase(string.Join(" ", x.Split('-').DropLast(1))));
+                        }).ToList();
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
-                            updateCmd.CommandText = "INSERT INTO ImportExclusions (tmdbid) VALUES " + string.Join(", ", importExclusions);
+                            updateCmd.CommandText = "INSERT INTO ImportExclusions (tmdbid, MovieTitle) VALUES " + string.Join(", ", importExclusions);
 
                             updateCmd.ExecuteNonQuery();
                         }
