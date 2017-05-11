@@ -9,14 +9,14 @@ module.exports = Marionette.ItemView.extend({
 
     events : {
         'click .x-edit'    : '_editSeries',
-        'click .x-refresh' : '_refreshSeries'
+        'click .x-refresh' : '_refreshArtist'
     },
 
     onRender : function() {
         CommandController.bindToCommand({
             element : this.ui.refresh,
             command : {
-                name     : 'refreshSeries',
+                name     : 'refreshArtist',
                 seriesId : this.model.get('id')
             }
         });
@@ -26,9 +26,9 @@ module.exports = Marionette.ItemView.extend({
         vent.trigger(vent.Commands.EditSeriesCommand, { series : this.model });
     },
 
-    _refreshSeries : function() {
-        CommandController.Execute('refreshSeries', {
-            name     : 'refreshSeries',
+    _refreshArtist : function() {
+        CommandController.Execute('refreshArtist', {
+            name     : 'refreshArtist',
             seriesId : this.model.id
         });
     }

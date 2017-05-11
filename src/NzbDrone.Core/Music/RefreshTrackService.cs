@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Music
             var successCount = 0;
             var failCount = 0;
 
-            var existingTracks = _trackService.GetTrackByArtist(artist.SpotifyId);
+            var existingTracks = _trackService.GetTracksByArtist(artist.SpotifyId);
             var albums = artist.Albums;
 
             var updateList = new List<Track>();
@@ -57,13 +57,26 @@ namespace NzbDrone.Core.Music
                         trackToUpdate.Monitored = GetMonitoredStatus(track, albums);
                         newList.Add(trackToUpdate);
                     }
-                    trackToUpdate.ArtistId = artist.SpotifyId; // TODO: Ensure LazyLoaded<Artist> field gets updated.
+
+                    trackToUpdate.SpotifyTrackId = track.SpotifyTrackId;
                     trackToUpdate.TrackNumber = track.TrackNumber;
                     trackToUpdate.Title = track.Title ?? "Unknown";
-                    
+                    trackToUpdate.AlbumId = track.AlbumId;
+                    trackToUpdate.Album = track.Album;
+                    trackToUpdate.Explict = track.Explict;
+                    if (track.ArtistSpotifyId.IsNullOrWhiteSpace())
+                    {
+                        trackToUpdate.ArtistSpotifyId = artist.SpotifyId;
+                    } else
+                    {
+                        trackToUpdate.ArtistSpotifyId = track.ArtistSpotifyId;
+                    }
+                    trackToUpdate.ArtistId = track.ArtistId;
+                    trackToUpdate.Compilation = track.Compilation;
+
                     // TODO: Implement rest of [RefreshTrackService] fields
-                    
-                    
+
+
 
                     successCount++;
                 }
