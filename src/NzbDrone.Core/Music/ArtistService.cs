@@ -89,10 +89,11 @@ namespace NzbDrone.Core.Music
             return _artistRepository.All().ToList();
         }
 
-        public Artist GetArtist(int artistId)
+        public Artist GetArtist(int artistDBId)
         {
-            return _artistRepository.Get(artistId);
+            return _artistRepository.Get(artistDBId);
         }
+
 
         public List<Artist> GetArtists(IEnumerable<int> artistIds)
         {

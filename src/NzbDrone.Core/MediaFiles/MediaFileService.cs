@@ -7,24 +7,26 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Common;
+using NzbDrone.Core.Music;
+using System;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileService
     {
-        EpisodeFile Add(EpisodeFile episodeFile);
-        void Update(EpisodeFile episodeFile);
-        void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason);
-        List<EpisodeFile> GetFilesBySeries(int seriesId);
-        List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber);
-        List<EpisodeFile> GetFilesWithoutMediaInfo();
-        List<string> FilterExistingFiles(List<string> files, Series series);
-        EpisodeFile Get(int id);
-        List<EpisodeFile> Get(IEnumerable<int> ids);
+        TrackFile Add(TrackFile trackFile);
+        void Update(TrackFile trackFile);
+        void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
+        List<TrackFile> GetFilesByArtist(string artistId);
+        List<TrackFile> GetFilesWithoutMediaInfo();
+        List<string> FilterExistingFiles(List<string> files, Artist artist);
+        TrackFile Get(int id);
+        List<TrackFile> Get(IEnumerable<int> ids);
 
     }
 
-    public class MediaFileService : IMediaFileService, IHandleAsync<SeriesDeletedEvent>
+    public class MediaFileService : IMediaFileService, IHandleAsync<ArtistDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
@@ -37,66 +39,63 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public EpisodeFile Add(EpisodeFile episodeFile)
+        public TrackFile Add(TrackFile trackFile)
         {
-            var addedFile = _mediaFileRepository.Insert(episodeFile);
-            _eventAggregator.PublishEvent(new EpisodeFileAddedEvent(addedFile));
+            var addedFile = _mediaFileRepository.Insert(trackFile);
+            _eventAggregator.PublishEvent(new TrackFileAddedEvent(addedFile));
             return addedFile;
         }
 
-        public void Update(EpisodeFile episodeFile)
+        public void Update(TrackFile trackFile)
         {
-            _mediaFileRepository.Update(episodeFile);
+            _mediaFileRepository.Update(trackFile);
         }
 
-        public void Delete(EpisodeFile episodeFile, DeleteMediaFileReason reason)
+        public void Delete(TrackFile trackFile, DeleteMediaFileReason reason)
         {
-            //Little hack so we have the episodes and series attached for the event consumers
-            episodeFile.Episodes.LazyLoad();
-            episodeFile.Path = Path.Combine(episodeFile.Series.Value.Path, episodeFile.RelativePath);
+            //Little hack so we have the tracks and artist attached for the event consumers
+            trackFile.Episodes.LazyLoad();
+            trackFile.Path = Path.Combine(trackFile.Artist.Value.Path, trackFile.RelativePath);
 
-            _mediaFileRepository.Delete(episodeFile);
-            _eventAggregator.PublishEvent(new EpisodeFileDeletedEvent(episodeFile, reason));
+            _mediaFileRepository.Delete(trackFile);
+            _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
         }
 
-        public List<EpisodeFile> GetFilesBySeries(int seriesId)
-        {
-            return _mediaFileRepository.GetFilesBySeries(seriesId);
-        }
 
-        public List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber)
-        {
-            return _mediaFileRepository.GetFilesBySeason(seriesId, seasonNumber);
-        }
-
-        public List<EpisodeFile> GetFilesWithoutMediaInfo()
+        public List<TrackFile> GetFilesWithoutMediaInfo()
         {
             return _mediaFileRepository.GetFilesWithoutMediaInfo();
         }
 
-        public List<string> FilterExistingFiles(List<string> files, Series series)
+        public List<string> FilterExistingFiles(List<string> files, Artist artist)
         {
-            var seriesFiles = GetFilesBySeries(series.Id).Select(f => Path.Combine(series.Path, f.RelativePath)).ToList();
+            var artistFiles = GetFilesByArtist(artist.SpotifyId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
 
-            if (!seriesFiles.Any()) return files;
+            if (!artistFiles.Any()) return files;
 
-            return files.Except(seriesFiles, PathEqualityComparer.Instance).ToList();
+            return files.Except(artistFiles, PathEqualityComparer.Instance).ToList();
         }
 
-        public EpisodeFile Get(int id)
+        public TrackFile Get(int id)
         {
+            // TODO: Should this be spotifyID or DB Id?
             return _mediaFileRepository.Get(id);
         }
 
-        public List<EpisodeFile> Get(IEnumerable<int> ids)
+        public List<TrackFile> Get(IEnumerable<int> ids)
         {
             return _mediaFileRepository.Get(ids).ToList();
         }
 
-        public void HandleAsync(SeriesDeletedEvent message)
+        public void HandleAsync(ArtistDeletedEvent message)
         {
-            var files = GetFilesBySeries(message.Series.Id);
+            var files = GetFilesByArtist(message.Artist.SpotifyId);
             _mediaFileRepository.DeleteMany(files);
+        }
+
+        public List<TrackFile> GetFilesByArtist(string artistId)
+        {
+            return _mediaFileRepository.GetFilesByArtist(artistId);
         }
     }
 }

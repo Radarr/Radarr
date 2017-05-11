@@ -157,7 +157,7 @@ namespace NzbDrone.Core.Music
                         try
                         {
                             _logger.Info("Skipping refresh of artist: {0}", artist.ArtistName);
-                            //TODO: _diskScanService.Scan(artist);
+                             _diskScanService.Scan(artist);
                         }
                         catch (Exception e)
                         {

@@ -10,11 +10,17 @@ var ReleaseLayout = require('./Release/ReleaseLayout');
 var SystemLayout = require('./System/SystemLayout');
 var SeasonPassLayout = require('./SeasonPass/SeasonPassLayout');
 var SeriesEditorLayout = require('./Series/Editor/SeriesEditorLayout');
+var SeriesDetailsLayout = require('./Series/Details/SeriesDetailsLayout');
 
 module.exports = NzbDroneController.extend({
     addSeries : function(action) {
         this.setTitle('Add Series');
         this.showMainRegion(new AddSeriesLayout({ action : action }));
+    },
+
+    artistDetails: function(query) {
+        this.setTitle('Artist Detail');
+        this.showMainRegion(new SeriesDetailsLayout());
     },
 
     calendar : function() {

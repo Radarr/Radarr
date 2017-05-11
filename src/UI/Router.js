@@ -18,6 +18,7 @@ module.exports = Marionette.AppRouter.extend({
         'rss'                        : 'rss',
         'system'                     : 'system',
         'system/:action'             : 'system',
+        'artist/:query'              : 'artistDetails',
         'seasonpass'                 : 'seasonPass',
         'serieseditor'               : 'seriesEditor',
         ':whatever'                  : 'showNotFound'
