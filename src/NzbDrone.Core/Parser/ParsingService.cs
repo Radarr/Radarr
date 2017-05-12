@@ -350,7 +350,7 @@ namespace NzbDrone.Core.Parser
         private Movie GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
             // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
-            if (!String.IsNullOrWhiteSpace(imdbId))
+            if (!String.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
                 Movie movieByImDb;
                 if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out movieByImDb))
@@ -403,6 +403,8 @@ namespace NzbDrone.Core.Parser
                 {
                     return true;
                 }
+
+                return false;
             }
             movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
             if (isNotNull(movieByTitleAndOrYear))
@@ -684,6 +686,32 @@ namespace NzbDrone.Core.Parser
             }
 
             return result;
+        }
+    }
+
+    public class MappingException : Exception
+    {
+        public virtual string Reason()
+        {
+            return "Parsed movie does not match wanted movie";
+        }
+    }
+
+    public class YearDoesNotMatchException : MappingException
+    {
+        public int ExpectedYear { get; set; }
+        public int? ParsedYear { get; set; }
+
+        override public string Reason()
+        {
+            if (ParsedYear.HasValue && ParsedYear > 1800)
+            {
+                return $"Expected {ExpectedYear}, but found {ParsedYear} for year";
+            }
+            else
+            {
+                return "Did not find a valid year";
+            }
         }
     }
 }
