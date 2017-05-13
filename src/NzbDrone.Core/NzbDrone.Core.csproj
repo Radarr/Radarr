@@ -769,6 +769,7 @@
     <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScanSkippedEvent.cs" />
     <Compile Include="MediaFiles\Events\SeriesScannedEvent.cs" />
+    <Compile Include="MediaFiles\Events\TrackFileAddedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileDeletedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportedEvent.cs" />
     <Compile Include="MediaFiles\FileDateType.cs" />
@@ -868,7 +869,9 @@
     <Compile Include="Music\Events\TrackInfoRefreshedEvent.cs" />
     <Compile Include="Music\RefreshArtistService.cs" />
     <Compile Include="Music\RefreshTrackService.cs" />
+    <Compile Include="Music\ShouldRefreshArtist.cs" />
     <Compile Include="Music\Track.cs" />
+    <Compile Include="Music\TrackRepository.cs" />
     <Compile Include="Music\TrackService.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />

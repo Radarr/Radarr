@@ -115,15 +115,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.SpotifyId = httpResponse.Resource.Id;
             artist.Genres = httpResponse.Resource.Genres;
 
+            var albumRet = MapAlbums(artist);
+            artist = albumRet.Item1;
 
-            artist = MapAlbums(artist);
-            
 
-            // TODO: implement tracks api call
-            return new Tuple<Artist, List<Track>>(artist, new List<Track>());
+
+            return new Tuple<Artist, List<Track>>(albumRet.Item1, albumRet.Item2);
         }
 
-        private Artist MapAlbums(Artist artist)
+        private Tuple<Artist, List<Track>> MapAlbums(Artist artist)
         {
 
             // Find all albums for the artist and all tracks for said album
@@ -141,21 +141,23 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 throw new HttpException(httpRequest, httpResponse);
             }
 
+            List<Track> masterTracks = new List<Track>();
             List<Album> albums = new List<Album>();
             foreach(var albumResource in httpResponse.Resource.Items)
             {
                 Album album = new Album();
                 album.AlbumId = albumResource.Id;
                 album.Title = albumResource.Name;
-                album.ArtworkUrl = albumResource.Images[0].Url;
+                album.ArtworkUrl = albumResource.Images.Count > 0 ? albumResource.Images[0].Url : "";
                 album.Tracks = MapTracksToAlbum(album);
+                masterTracks.InsertRange(masterTracks.Count, album.Tracks);
                 albums.Add(album);
             }
 
             // TODO: We now need to get all tracks for each album
 
             artist.Albums = albums;
-            return artist;
+            return new Tuple<Artist, List<Track>>(artist, masterTracks);
         }
 
         private List<Track> MapTracksToAlbum(Album album)
@@ -183,11 +185,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 // TODO: Implement more track mapping
                 //track.Artist = trackResource.Artists
                 //track.ArtistId = album.
+                track.SpotifyTrackId = trackResource.Id;
+                track.ArtistSpotifyId = trackResource.Artists.Count > 0 ? trackResource.Artists[0].Id : null;
                 track.Explict = trackResource.Explicit;
                 track.Compilation = trackResource.Artists.Count > 1;
                 track.TrackNumber = trackResource.TrackNumber;
-                track.TrackExplicitName = trackResource.Name;
-                track.TrackCensoredName = trackResource.Name;
+                track.Title = trackResource.Name;
                 tracks.Add(track);
             }
 
@@ -272,7 +275,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 artist.ArtistName = artistResource.Name;
                 artist.SpotifyId = artistResource.Id;
                 artist.Genres = artistResource.Genres;
-                //artist.ArtistSlug = a//TODO implement artistSlug mapping;
+                artist.ArtistSlug = Parser.Parser.CleanArtistTitle(artist.ArtistName);
                 artists.Add(artist);
             }
 

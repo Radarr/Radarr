@@ -22,9 +22,8 @@ namespace NzbDrone.Core.Music
         private readonly IArtistService _artistService;
         private readonly IRefreshTrackService _refreshTrackService;
         private readonly IEventAggregator _eventAggregator;
-        //private readonly IDailySeriesService _dailySeriesService;
         private readonly IDiskScanService _diskScanService;
-        //private readonly ICheckIfArtistShouldBeRefreshed _checkIfArtistShouldBeRefreshed;
+        private readonly ICheckIfArtistShouldBeRefreshed _checkIfArtistShouldBeRefreshed;
         private readonly Logger _logger;
 
         public RefreshArtistService(IProvideArtistInfo artistInfo,
@@ -32,7 +31,7 @@ namespace NzbDrone.Core.Music
                                     IRefreshTrackService refreshTrackService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
-                                    //ICheckIfArtistShouldBeRefreshed checkIfArtistShouldBeRefreshed,
+                                    ICheckIfArtistShouldBeRefreshed checkIfArtistShouldBeRefreshed,
                                     Logger logger)
         {
             _artistInfo = artistInfo;
@@ -40,7 +39,7 @@ namespace NzbDrone.Core.Music
             _refreshTrackService = refreshTrackService;
             _eventAggregator = eventAggregator;
             _diskScanService = diskScanService;
-            //_checkIfArtistShouldBeRefreshed = checkIfArtistShouldBeRefreshed;
+            _checkIfArtistShouldBeRefreshed = checkIfArtistShouldBeRefreshed;
             _logger = logger;
         }
 
@@ -75,7 +74,6 @@ namespace NzbDrone.Core.Music
             artist.CleanTitle = artistInfo.CleanTitle;
             artist.LastInfoSync = DateTime.UtcNow;
             artist.Images = artistInfo.Images;
-            //artist.Actors = artistInfo.Actors;
             artist.Genres = artistInfo.Genres;
 
             try
@@ -142,7 +140,7 @@ namespace NzbDrone.Core.Music
 
                 foreach (var artist in allArtists)
                 {
-                    if (message.Trigger == CommandTrigger.Manual /*|| _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist)*/)
+                    if (message.Trigger == CommandTrigger.Manual || _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist))
                     {
                         try
                         {
