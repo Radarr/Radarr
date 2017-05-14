@@ -63,7 +63,7 @@ namespace NzbDrone.Common.Instrumentation
         {
             var target = new LogentriesTarget();
             target.Name = "logentriesTarget";
-            target.Token = "d3a83ee9-74fb-4045-ad25-a84c1d4d7c81";
+            target.Token = "7688c9ac-015f-45c7-bfee-73f370f5f380";
             target.LogHostname = true;
             target.Debug = false;
 
