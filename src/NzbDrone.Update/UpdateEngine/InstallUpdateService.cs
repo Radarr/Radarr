@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -119,7 +119,7 @@ namespace NzbDrone.Update.UpdateEngine
                     // Set executable flag on Sonarr app
                     if (OsInfo.IsOsx)
                     {
-                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Sonarr"), "0755", null, null);
+                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Radarr"), "0755", null, null);
                     }
                 }
                 catch (Exception e)
