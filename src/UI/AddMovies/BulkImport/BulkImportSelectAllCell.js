@@ -13,9 +13,7 @@ module.exports = SelectAllCell.extend({
     initialize : function() {
         this._originalInit.apply(this, arguments);
 
-        var tmdbId = this.model.get('tmdbId');
-        var existingMovie = FullMovieCollection.where({ tmdbId: tmdbId });
-        this.isDuplicate = existingMovie.length > 0 ? true : false;
+        this._refreshIsDuplicate();
 
         this.listenTo(this.model, 'change', this._refresh);
     },
@@ -39,6 +37,13 @@ module.exports = SelectAllCell.extend({
     },
 
     _refresh: function() {
+        this._refreshIsDuplicate();
         this.render();
+    },
+
+    _refreshIsDuplicate: function() {
+        var tmdbId = this.model.get('tmdbId');
+        var existingMovie = FullMovieCollection.where({ tmdbId: tmdbId });
+        this.isDuplicate = existingMovie.length > 0 ? true : false;
     }
 });
