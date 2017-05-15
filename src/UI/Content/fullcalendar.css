@@ -1354,6 +1354,7 @@ be a descendant of the grid when it is being dragged.
 
 .fc-list-item:hover td {
 	background-color: #f5f5f5;
+	color: #444444;
 }
 
 .fc-list-item-marker,
