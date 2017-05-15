@@ -74,16 +74,18 @@ namespace NzbDrone.Core.Notifications
         private string GetMessage(Movie movie, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
+            var ImdbUrl = "http://www.imdb.com/title/" + movie.ImdbId + "/";
 
             if (quality.Revision.Version > 1)
             {
                     qualityString += " Proper";
             }
 
-            return string.Format("{0} ({1}) [{2}]",
+            return string.Format("{0} ({1}) [{2}] {3}",
                                     movie.Title,
                                     movie.Year,
-                                    qualityString);
+                                    qualityString,
+                                    ImdbUrl);
         }
 
         private bool ShouldHandleMovie(ProviderDefinition definition, Movie movie)
