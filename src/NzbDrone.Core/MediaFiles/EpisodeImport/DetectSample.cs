@@ -19,7 +19,15 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly Logger _logger;
 
-        private static List<Quality> _largeSampleSizeQualities = new List<Quality> { Quality.HDTV1080p, Quality.WEBDL1080p, Quality.Bluray1080p };
+        private static List<Quality> _largeSampleSizeQualities = new List<Quality>
+        {
+            Quality.HDTV1080p,
+            Quality.WEBDL1080p,
+            Quality.Bluray1080p,
+            Quality.Remux1080p,
+            Quality.Remux2160p,
+            Quality.Bluray2160p
+        };
 
         public DetectSample(IVideoFileInfoReader videoFileInfoReader, Logger logger)
         {
