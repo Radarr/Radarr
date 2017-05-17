@@ -168,14 +168,14 @@ Task("PackageOsx").Does(() => {
 	// Adding MediaInfo dylib
 	CopyFiles(sourceFolder + "/Libraries/MediaInfo/*.dylib", outputFolderOsx);
 
-	// Adding Startup script
-	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
-
 	// Chmod as executable
 	StartProcess(@"C:\cygwin64\bin\chmod.exe", new ProcessSettings()
 		.WithArguments(args => args
 			.Append("+x")
 			.Append(outputFolderOsx + "/Radarr")));
+	
+	// Adding Startup script
+	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
 });
 
 Task("PackageOsxApp").Does(() => {
