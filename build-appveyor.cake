@@ -170,6 +170,12 @@ Task("PackageOsx").Does(() => {
 
 	// Adding Startup script
 	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
+
+	// Chmod as executable
+	StartProcess(@"C:\cygwin64\bin\chmod.exe", new ProcessSettings()
+		.WithArguments(args => args
+			.Append("+x")
+			.Append(outputFolderOsx + "/Radarr")));
 });
 
 Task("PackageOsxApp").Does(() => {
@@ -268,9 +274,9 @@ Task("ArtifactsWindows").Does(() => {
 
 Task("ArtifactsWindowsInstaller").Does(() => {
 	InnoSetup("./setup/nzbdrone.iss", new InnoSetupSettings {
-    		OutputDirectory = artifactsFolder,
+		OutputDirectory = artifactsFolder,
 		ToolPath = "./setup/inno/ISCC.exe"
-    	});
+    });
 });
 
 Task("ArtifactsLinux").Does(() => {
