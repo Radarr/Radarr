@@ -185,10 +185,10 @@ Task("PackageOsxApp").Does(() => {
 	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Radarr.app/Contents/MacOS");
 
 	// Chmod as executable
-	StartProcess("C:\\cygwin64\\bin\\chmod.exe", new ProcessSettings()
+	StartProcess("C:/cygwin64/bin/chmod.exe", new ProcessSettings()
 		.WithArguments(args => args
 			.Append("+x")
-			.Append(outputFolderOsxApp + "/Radarr.app/Contents/MacOS")));
+			.Append(outputFolderOsxApp + "/Radarr.app/Contents/MacOS/Radarr")));
 });
 
 Task("PackageTests").Does(() => {
