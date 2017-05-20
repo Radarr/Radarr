@@ -28,6 +28,7 @@ namespace NzbDrone.Api.Movie
         public string Overview { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
+        public string PhysicalReleaseNote { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
         public bool Downloaded { get; set; }
@@ -116,6 +117,7 @@ namespace NzbDrone.Api.Movie
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
+                PhysicalReleaseNote = model.PhysicalReleaseNote,
                 HasFile = model.HasFile,
                 Downloaded = downloaded,
                 //TotalEpisodeCount
@@ -176,6 +178,7 @@ namespace NzbDrone.Api.Movie
                 SortTitle = resource.SortTitle,
                 InCinemas = resource.InCinemas,
                 PhysicalRelease = resource.PhysicalRelease,
+                PhysicalReleaseNote = resource.PhysicalReleaseNote,
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount

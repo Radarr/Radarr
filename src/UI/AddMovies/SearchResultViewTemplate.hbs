@@ -29,9 +29,11 @@
                             <span class="label label-default" title="{{ratings.votes}} Vote(s)">{{ratings.value}}</span>
 
                             {{#if youTubeTrailerId}}
-                            <span class="label label-info">
-                                <a href="{{youTubeTrailerUrl}}" style="color: white;">Trailer</a>
-                              </span>
+                            <span class="label label-info"><a href="{{youTubeTrailerUrl}}" style="color: white;">Trailer</a></span>
+                            {{/if}}
+
+                            {{#if physicalRelease}}
+                            <span class="label label-info" title="{{physicalReleaseNote}}">{{inCinemas}}</span>
                             {{/if}}
                         </span>
 

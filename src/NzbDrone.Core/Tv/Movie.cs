@@ -45,6 +45,7 @@ namespace NzbDrone.Core.Tv
         public DateTime Added { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
+        public String PhysicalReleaseNote { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }

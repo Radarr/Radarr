@@ -20,7 +20,7 @@
 	{{#if_eq status  compare="announced"}}
 	    <span class="label label-default">{{inCinemas}}</span>
 	{{else}}
-            <span class="label label-info">{{inCinemas}}</span>
+            <span class="label label-info" title="{{physicalReleaseNote}}">{{inCinemas}}</span>
 	{{/if_eq}}
         <span class="label label-{{DownloadedStatusColor}}" title="{{DownloadedQuality}}">{{DownloadedStatus}}</span>
     </div>

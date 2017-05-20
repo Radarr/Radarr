@@ -36,6 +36,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public float vote_average { get; set; }
         public string trailer_key { get; set; }
         public string trailer_site { get; set; }
+        public string physical_release { get; set; }
+        public string physical_release_note { get; set; }
     }
 
 

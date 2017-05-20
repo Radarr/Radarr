@@ -191,11 +191,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                             if (movie.PhysicalRelease.Value.After(DateTime.Parse(releaseDate.release_date)))
                             {
                                 movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date); //Use oldest release date available.
+                                movie.PhysicalReleaseNote = releaseDate.note;
                             }
                         }
                         else
                         {
                             movie.PhysicalRelease = DateTime.Parse(releaseDate.release_date);
+                            movie.PhysicalReleaseNote = releaseDate.note;
                         }
                     }
                 }
@@ -363,7 +365,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             HttpRequest request;
             List<MovieResult> results;
 
-            if (action == "upcoming")
+            /*if (action == "upcoming")
             {
                 var lastWeek = DateTime.Now.AddDays(-7);
                 var threeWeeks = DateTime.Now.AddDays(7 * 3);
@@ -388,7 +390,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 results = response.Resource.results.ToList();
             }
             else
-            {
+            {*/
                 request = new HttpRequestBuilder("https://radarr.video/api/{action}/").SetSegment("action", action).Build();
 
                 request.AllowAutoRedirect = true;
@@ -404,7 +406,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
 
                 results = response.Resource;
-            }
+            //}
 
             results = results.Where(m => allMovies.None(mo => mo.TmdbId == m.id) && allExclusions.None(ex => ex.TmdbId == m.id)).ToList();
 
@@ -577,7 +579,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     imdbMovie.Year = imdbMovie.InCinemas.Value.Year;
                 }
 
-				var now = DateTime.Now;
+                if (result.physical_release.IsNotNullOrWhiteSpace())
+                {
+                    imdbMovie.PhysicalRelease = DateTime.Parse(result.physical_release);
+                    if (result.physical_release_note.IsNotNullOrWhiteSpace())
+                    {
+                        imdbMovie.PhysicalReleaseNote = result.physical_release_note;
+                    }
+                }
+
+
+                var now = DateTime.Now;
 				//handle the case when we have both theatrical and physical release dates
 				if (imdbMovie.InCinemas.HasValue && imdbMovie.PhysicalRelease.HasValue)
 				{
