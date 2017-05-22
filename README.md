@@ -71,7 +71,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * All indexers supported by Sonarr also supported
 * New PassThePopcorn Indexer
 * QBittorrent, Deluge, rTorrent, Transmission and uTorrent download client (Other clients are coming)
-* New TorrentPotato Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
+* New Torznab Indexer (Works well with [Jackett](https://github.com/Jackett/Jackett))
 * Scanning PreDB to know when a new release is available
 * Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
 * Full integration with Kodi, Plex (notification, library update)

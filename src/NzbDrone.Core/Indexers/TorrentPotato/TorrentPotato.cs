@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -24,14 +24,6 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
 
-        }
-
-        public override IEnumerable<ProviderDefinition> DefaultDefinitions
-        {
-            get
-            {
-                yield return GetDefinition("Jackett", new TorrentPotatoSettings { BaseUrl = "http://localhost:9117/potato/YOURINDEXER"});
-            }
         }
 
         private IndexerDefinition GetDefinition(string name, TorrentPotatoSettings settings)
