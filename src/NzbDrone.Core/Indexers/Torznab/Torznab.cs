@@ -41,6 +41,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         {
             get
             {
+                yield return GetDefinition("Jackett", GetSettings("http://localhost:9117/potato/YOURINDEXER"));
                 yield return GetDefinition("HD4Free.xyz", GetSettings("http://hd4free.xyz"));
             }
         }
