@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 jsonResponse.TotalResults.IsNullOrWhiteSpace() ||
                 jsonResponse.Movies == null)
             {
-                throw new IndexerException(indexerResponse, "No results were found");
+                return torrentInfos;
             }
 
 
