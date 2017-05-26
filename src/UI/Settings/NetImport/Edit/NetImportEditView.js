@@ -42,9 +42,14 @@ var view = Marionette.ItemView.extend({
 		},
 
 		onRender : function() {
-				var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
-				if (RootFolders.get(defaultRoot)) {
-						this.ui.rootFolder.val(defaultRoot);
+				var rootFolder = this.model.get("rootFolderPath")
+				if (rootFolder != "") {
+					this.ui.rootFolder.val(rootFolder)
+				} else {
+					var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
+					if (RootFolders.get(defaultRoot)) {
+							this.ui.rootFolder.val(defaultRoot);
+					}
 				}
 		},
 
