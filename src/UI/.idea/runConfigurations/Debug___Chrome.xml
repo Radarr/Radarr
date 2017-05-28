@@ -10,7 +10,7 @@
     <mapping url="http://localhost:8686/Quality" local-file="$PROJECT_DIR$/Quality" />
     <mapping url="http://localhost:8686/Config.js" local-file="$PROJECT_DIR$/Config.js" />
     <mapping url="http://localhost:8686/Shared" local-file="$PROJECT_DIR$/Shared" />
-    <mapping url="http://localhost:8686/AddSeries" local-file="$PROJECT_DIR$/AddSeries" />
+    <mapping url="http://localhost:8686/AddArtist" local-file="$PROJECT_DIR$/AddArtist" />
     <mapping url="http://localhost:8686/HeaderView.js" local-file="$PROJECT_DIR$/HeaderView.js" />
     <mapping url="http://localhost:8686" local-file="$PROJECT_DIR$" />
     <mapping url="http://localhost:8686/Routing.js" local-file="$PROJECT_DIR$/Routing.js" />

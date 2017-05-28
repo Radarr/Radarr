@@ -13,8 +13,8 @@ vent.Events = {
 };
 
 vent.Commands = {
-    EditSeriesCommand        : 'EditSeriesCommand',
-    DeleteSeriesCommand      : 'DeleteSeriesCommand',
+    EditArtistCommand        : 'EditArtistCommand',
+    DeleteArtistCommand      : 'DeleteArtistCommand',
     OpenModalCommand         : 'OpenModalCommand',
     CloseModalCommand        : 'CloseModalCommand',
     OpenModal2Command        : 'OpenModal2Command',

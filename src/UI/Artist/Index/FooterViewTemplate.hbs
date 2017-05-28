@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="artist-legend legend col-xs-6 col-sm-4">
+        <ul class='legend-labels'>
+            <li><span class="progress-bar"></span>Continuing (All tracks downloaded)</li>
+            <li><span class="progress-bar-success"></span>Ended (All tracks downloaded)</li>
+            <li><span class="progress-bar-danger"></span>Missing Tracks (Artist monitored)</li>
+            <li><span class="progress-bar-warning"></span>Missing Tracks (Artist not monitored)</li>
+        </ul>
+    </div>
+    <div class="col-xs-5 col-sm-7">
+        <div class="row">
+            <div class="artist-stats col-sm-4">
+                <dl class="dl-horizontal">
+                    <dt>Artists</dt>
+                    <dd>{{artist}}</dd>
+
+                    <dt>Ended</dt>
+                    <dd>{{ended}}</dd>
+
+                    <dt>Continuing</dt>
+                    <dd>{{continuing}}</dd>
+                </dl>
+            </div>
+
+            <div class="artist-stats col-sm-4">
+                <dl class="dl-horizontal">
+                    <dt>Monitored</dt>
+                    <dd>{{monitored}}</dd>
+
+                    <dt>Unmonitored</dt>
+                    <dd>{{unmonitored}}</dd>
+                </dl>
+            </div>
+
+            <div class="artist-stats col-sm-4">
+                <dl class="dl-horizontal">
+                    <dt>Tracks</dt>
+                    <dd>{{episodes}}</dd>
+
+                    <dt>Files</dt>
+                    <dd>{{episodeFiles}}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
