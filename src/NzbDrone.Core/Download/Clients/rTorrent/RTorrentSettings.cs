@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             Host = "localhost";
             Port = 8080;
             UrlBase = "RPC2";
-            TvCategory = "tv-Lidarr";
+            TvCategory = "lidarr";
             OlderTvPriority = (int)RTorrentPriority.Normal;
             RecentTvPriority = (int)RTorrentPriority.Normal;
         }
@@ -55,10 +55,10 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [FieldDefinition(7, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default rTorrent location")]
         public string TvDirectory { get; set; }
 
-        [FieldDefinition(8, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
+        [FieldDefinition(8, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }
 
-        [FieldDefinition(9, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
+        [FieldDefinition(9, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
         public NzbDroneValidationResult Validate()

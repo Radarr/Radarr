@@ -26,7 +26,9 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             Host = "localhost";
             Port = 6789;
-            TvCategory = "tv";
+            TvCategory = "Music";
+            Username = "nzbget";
+            Password = "tegbzn6789";
             RecentTvPriority = (int)NzbgetPriority.Normal;
             OlderTvPriority = (int)NzbgetPriority.Normal;
         }
@@ -46,10 +48,10 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
         public string TvCategory { get; set; }
 
-        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
+        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }
 
-        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
+        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
         [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox)]

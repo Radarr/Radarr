@@ -56,10 +56,10 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         [FieldDefinition(6, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default Transmission location")]
         public string TvDirectory { get; set; }
 
-        [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
+        [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }
 
-        [FieldDefinition(8, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
+        [FieldDefinition(8, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
         [FieldDefinition(9, Label = "Use SSL", Type = FieldType.Checkbox)]
