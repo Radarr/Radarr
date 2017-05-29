@@ -1,4 +1,4 @@
-var _ = require('underscore');
+﻿var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var Marionette = require('marionette');
@@ -8,10 +8,15 @@ var AsValidatedView = require('../../../Mixins/AsValidatedView');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
 require('../../../Form/FormBuilder');
 require('../../../Mixins/AutoComplete');
+require('../../../Mixins/TagInput');
 require('bootstrap');
 
 var view = Marionette.ItemView.extend({
     template : 'Settings/Indexers/Edit/IndexerEditViewTemplate',
+
+    ui: {
+        tags : '.x-form-tag'
+    },
 
     events : {
         'click .x-back'            : '_back',
@@ -22,6 +27,10 @@ var view = Marionette.ItemView.extend({
 
     initialize : function(options) {
         this.targetCollection = options.targetCollection;
+    },
+
+    onRender: function () {
+        this.ui.tags.tagInput({});
     },
 
     _onAfterSave : function() {

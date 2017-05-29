@@ -59,6 +59,10 @@ namespace NzbDrone.Core.Indexers.HDBits
             query.Username = Settings.Username;
             query.Passkey = Settings.ApiKey;
 
+            query.Category = Settings.Categories.ToArray();
+            query.Codec = Settings.Codecs.ToArray();
+            query.Medium = Settings.Mediums.ToArray();
+
             // Require Internal only if came from RSS sync
             if (Settings.RequireInternal && query.ImdbInfo == null)
             {

@@ -1,7 +1,12 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Linq;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
+using System.Linq.Expressions;
+using FluentValidation.Results;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.HDBits
 {
@@ -21,6 +26,10 @@ namespace NzbDrone.Core.Indexers.HDBits
         public HDBitsSettings()
         {
             BaseUrl = "https://hdbits.org";
+
+            Categories = new int[] { (int)HdBitsCategory.Movie };
+            Codecs = new int[0];
+            Mediums = new int[0];
         }
 
         [FieldDefinition(0, Label = "Username")]
@@ -37,6 +46,15 @@ namespace NzbDrone.Core.Indexers.HDBits
 
         [FieldDefinition(4, Label = "Require Internal", Type = FieldType.Checkbox, HelpText = "Require Internal releases for release to be accepted.")]
         public bool RequireInternal { get; set; }
+
+        [FieldDefinition(5, Label = "Categories", Type = FieldType.Tag, SelectOptions = typeof(HdBitsCategory), Advanced = true, HelpText = "Options: Movie, TV, Documentary, Music, Sport, Audio, XXX, MiscDemo. If unspecified, all options are used.")]
+        public IEnumerable<int> Categories { get; set; }
+
+        [FieldDefinition(6, Label = "Codecs", Type = FieldType.Tag, SelectOptions = typeof(HdBitsCodec), Advanced = true, HelpText = "Options: h264, Mpeg2, VC1, Xvid. If unspecified, all options are used.")]
+        public IEnumerable<int> Codecs { get; set; }
+
+        [FieldDefinition(7, Label = "Mediums", Type = FieldType.Tag, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
+        public IEnumerable<int> Mediums { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
