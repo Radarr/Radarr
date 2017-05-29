@@ -32,23 +32,21 @@ namespace NzbDrone.Core.NetImport
         public Type ConfigContract => typeof(TSettings);
 
         public virtual ProviderMessage Message => null;
-        public virtual IEnumerable<ProviderDefinition> DefaultDefinitions
-        {
-            get
-            {
-                var config = (IProviderConfig)new TSettings();
 
-                yield return new NetImportDefinition
-                {
-                    Name = this.Name,
-                    Enabled = config.Validate().IsValid && Enabled,
-                    EnableAuto = true,
-                    ProfileId = 1,
-		            MinimumAvailability = MovieStatusType.Announced,
-                    Implementation = GetType().Name,
-                    Settings = config
-                };
-            }
+        public virtual IEnumerable<ProviderDefinition> GetDefaultDefinitions()
+        {
+            var config = (IProviderConfig)new TSettings();
+
+            yield return new NetImportDefinition
+            {
+                Name = this.Name,
+                Enabled = config.Validate().IsValid && Enabled,
+                EnableAuto = true,
+                ProfileId = 1,
+                MinimumAvailability = MovieStatusType.Announced,
+                Implementation = GetType().Name,
+                Settings = config
+            };
         }
 
         public virtual ProviderDefinition Definition { get; set; }

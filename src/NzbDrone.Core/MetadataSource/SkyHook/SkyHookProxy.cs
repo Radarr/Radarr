@@ -563,7 +563,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private Movie MapMovie(MovieResult result)
+        public Movie MapMovie(MovieResult result)
         {
             var imdbMovie = new Movie();
             imdbMovie.TmdbId = result.id;
