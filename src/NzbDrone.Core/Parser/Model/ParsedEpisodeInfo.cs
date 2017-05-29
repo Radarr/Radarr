@@ -1,9 +1,10 @@
-using System.Linq;
+﻿using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Model
 {
+    // TODO: This model needs to module music, not TV series
     public class ParsedEpisodeInfo
     {
         public string SeriesTitle { get; set; }

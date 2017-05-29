@@ -44,7 +44,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "windowsService"; Description: "Install as a Windows Service"
 
 [Files]
-Source: "..\_output\NzbDrone.exe"; DestDir: "{app}"; Flags: ignoreversion  
+Source: "..\_output\Lidarr.exe"; DestDir: "{app}"; Flags: ignoreversion  
 Source: "..\_output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -53,8 +53,8 @@ Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Parameters: "/icon"
 Name: "{commondesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Parameters: "/icon"
 
 [Run]
-Filename: "{app}\nzbdrone.console.exe"; Parameters: "/u"; Flags: waituntilterminated;
-Filename: "{app}\nzbdrone.console.exe"; Parameters: "/i"; Flags: waituntilterminated; Tasks: windowsService
+Filename: "{app}\lidarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated;
+Filename: "{app}\lidarr.console.exe"; Parameters: "/i"; Flags: waituntilterminated; Tasks: windowsService
 
 [UninstallRun]
-Filename: "{app}\nzbdrone.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist
+Filename: "{app}\lidarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist

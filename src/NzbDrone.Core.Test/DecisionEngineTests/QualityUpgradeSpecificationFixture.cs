@@ -14,13 +14,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     {
         public static object[] IsUpgradeTestCases =
         {
-            new object[] { Quality.SDTV, 1, Quality.SDTV, 2, Quality.SDTV, true },
-            new object[] { Quality.WEBDL720p, 1, Quality.WEBDL720p, 2, Quality.WEBDL720p, true },
-            new object[] { Quality.SDTV, 1, Quality.SDTV, 1, Quality.SDTV, false },
-            new object[] { Quality.WEBDL720p, 1, Quality.HDTV720p, 2, Quality.Bluray720p, false },
-            new object[] { Quality.WEBDL720p, 1, Quality.HDTV720p, 2, Quality.WEBDL720p, false },
-            new object[] { Quality.WEBDL720p, 1, Quality.WEBDL720p, 1, Quality.WEBDL720p, false },
-            new object[] { Quality.WEBDL1080p, 1, Quality.WEBDL1080p, 1, Quality.WEBDL1080p, false }
+            new object[] { Quality.MP3192, 1, Quality.MP3192, 2, Quality.MP3192, true },
+            new object[] { Quality.MP3320, 1, Quality.MP3320, 2, Quality.MP3320, true },
+            new object[] { Quality.MP3192, 1, Quality.MP3192, 1, Quality.MP3192, false },
+            new object[] { Quality.MP3320, 1, Quality.MP3256, 2, Quality.MP3320, false },
+            new object[] { Quality.MP3320, 1, Quality.MP3256, 2, Quality.MP3320, false },
+            new object[] { Quality.MP3320, 1, Quality.MP3320, 1, Quality.MP3320, false },
+            new object[] { Quality.MP3512, 1, Quality.MP3512, 1, Quality.MP3512, false }
         };
         
         [SetUp]
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile, new QualityModel(Quality.DVD, new Revision(version: 2)), new QualityModel(Quality.DVD, new Revision(version: 1)))
+            Subject.IsUpgradable(profile, new QualityModel(Quality.MP3192, new Revision(version: 2)), new QualityModel(Quality.MP3192, new Revision(version: 1)))
                     .Should().BeFalse();
         }
     }

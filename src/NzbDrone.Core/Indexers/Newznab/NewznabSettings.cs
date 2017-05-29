@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public NewznabSettings()
         {
-            Categories = new[] { 5030, 5040 };
+            Categories = new[] { 3000, 3010, 3020, 3030, 3040 };
             AnimeCategories = Enumerable.Empty<int>();
         }
 

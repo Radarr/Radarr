@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Qualities;
@@ -42,9 +42,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void cutoff_should_have_monitored_items()
         {
-            EnsureProfileCutoff(1, Quality.HDTV720p);
+            EnsureProfileCutoff(1, Quality.MP3256);
             var series = EnsureSeries(266189, "The Blacklist", true);
-            EnsureEpisodeFile(series, 1, 1, Quality.SDTV);
+            EnsureEpisodeFile(series, 1, 1, Quality.MP3192);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "airDateUtc", "desc");
 
@@ -64,9 +64,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void cutoff_should_not_have_unmonitored_items()
         {
-            EnsureProfileCutoff(1, Quality.HDTV720p);
+            EnsureProfileCutoff(1, Quality.MP3256);
             var series = EnsureSeries(266189, "The Blacklist", false);
-            EnsureEpisodeFile(series, 1, 1, Quality.SDTV);
+            EnsureEpisodeFile(series, 1, 1, Quality.MP3192);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "airDateUtc", "desc");
 
@@ -76,9 +76,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void cutoff_should_have_series()
         {
-            EnsureProfileCutoff(1, Quality.HDTV720p);
+            EnsureProfileCutoff(1, Quality.MP3256);
             var series = EnsureSeries(266189, "The Blacklist", true);
-            EnsureEpisodeFile(series, 1, 1, Quality.SDTV);
+            EnsureEpisodeFile(series, 1, 1, Quality.MP3192);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "airDateUtc", "desc");
 
@@ -99,9 +99,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void cutoff_should_have_unmonitored_items()
         {
-            EnsureProfileCutoff(1, Quality.HDTV720p);
+            EnsureProfileCutoff(1, Quality.MP3256);
             var series = EnsureSeries(266189, "The Blacklist", false);
-            EnsureEpisodeFile(series, 1, 1, Quality.SDTV);
+            EnsureEpisodeFile(series, 1, 1, Quality.MP3192);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "airDateUtc", "desc", "monitored", "false");
 

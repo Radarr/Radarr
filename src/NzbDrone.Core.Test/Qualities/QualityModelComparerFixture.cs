@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenCustomProfile()
         {
-            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.Bluray720p, Quality.DVD) });
+            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.MP3320, Quality.MP3192) });
         }
 
         [Test]
@@ -26,8 +26,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.Bluray1080p);
-            var second = new QualityModel(Quality.DVD);
+            var first = new QualityModel(Quality.MP3320);
+            var second = new QualityModel(Quality.MP3192);
 
             var compare = Subject.Compare(first, second);
 
@@ -39,8 +39,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.DVD);
-            var second = new QualityModel(Quality.Bluray1080p);
+            var first = new QualityModel(Quality.MP3192);
+            var second = new QualityModel(Quality.MP3320);
 
             var compare = Subject.Compare(first, second);
 
@@ -52,8 +52,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.Bluray1080p, new Revision(version: 2));
-            var second = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
+            var first = new QualityModel(Quality.MP3320, new Revision(version: 2));
+            var second = new QualityModel(Quality.MP3320, new Revision(version: 1));
 
             var compare = Subject.Compare(first, second);
 
@@ -65,8 +65,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenCustomProfile();
 
-            var first = new QualityModel(Quality.DVD);
-            var second = new QualityModel(Quality.Bluray720p);
+            var first = new QualityModel(Quality.MP3192);
+            var second = new QualityModel(Quality.MP3320);
 
             var compare = Subject.Compare(first, second);
 

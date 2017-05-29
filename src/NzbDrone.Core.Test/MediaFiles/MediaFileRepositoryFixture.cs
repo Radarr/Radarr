@@ -1,4 +1,4 @@
-using FizzWare.NBuilder;
+﻿using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var files = Builder<EpisodeFile>.CreateListOfSize(10)
                 .All()
                 .With(c => c.Id = 0)
-                .With(c => c.Quality =new QualityModel(Quality.Bluray720p))
+                .With(c => c.Quality =new QualityModel(Quality.MP3192))
                 .Random(4)
                 .With(s => s.SeriesId = 12)
                 .BuildListOfNew();
