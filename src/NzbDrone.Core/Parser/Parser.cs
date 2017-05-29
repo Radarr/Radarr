@@ -380,33 +380,34 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                if (result.FullSeason && title.ContainsIgnoreCase("Special"))
-                                {
-                                    result.FullSeason = false;
-                                    result.Special = true;
-                                }
+                                //if (result.FullSeason && title.ContainsIgnoreCase("Special"))
+                                //{
+                                //    result.FullSeason = false;
+                                //    result.Special = true;
+                                //}
 
-                                result.Language = LanguageParser.ParseLanguage(title);
-                                Logger.Debug("Language parsed: {0}", result.Language);
+                                //result.Language = LanguageParser.ParseLanguage(title);
+                                //Logger.Debug("Language parsed: {0}", result.Language);
 
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
-                                result.ReleaseGroup = ParseReleaseGroup(title);
+                                // Majora: We don't currently need Release Group for Music. 
+                                //result.ReleaseGroup = ParseReleaseGroup(title);
 
-                                var subGroup = GetSubGroup(match);
-                                if (!subGroup.IsNullOrWhiteSpace())
-                                {
-                                    result.ReleaseGroup = subGroup;
-                                }
+                                //var subGroup = GetSubGroup(match);
+                                //if (!subGroup.IsNullOrWhiteSpace())
+                                //{
+                                //    result.ReleaseGroup = subGroup;
+                                //}
 
-                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+                                //Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
 
-                                result.ReleaseHash = GetReleaseHash(match);
-                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
-                                {
-                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
-                                }
+                                //result.ReleaseHash = GetReleaseHash(match);
+                                //if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                                //{
+                                //    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                                //}
 
                                 return result;
                             }

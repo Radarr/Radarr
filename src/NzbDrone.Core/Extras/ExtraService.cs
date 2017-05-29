@@ -16,6 +16,7 @@ using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Extras
 {
+    // NOTE: Majora: ExtraService can be reserved for Music Videos, lyric files, etc for Plex. TODO: Implement Extras for Music
     public interface IExtraService
     {
         void ImportExtraFiles(LocalEpisode localEpisode, EpisodeFile episodeFile, bool isReadOnly);
@@ -136,16 +137,17 @@ namespace NzbDrone.Core.Extras
 
         private List<EpisodeFile> GetEpisodeFiles(int seriesId)
         {
-            var episodeFiles = _mediaFileService.GetFilesBySeries(seriesId);
-            var episodes = _episodeService.GetEpisodeBySeries(seriesId);
+            //var episodeFiles = _mediaFileService.GetFilesBySeries(seriesId);
+            //var episodes = _episodeService.GetEpisodeBySeries(seriesId);
 
-            foreach (var episodeFile in episodeFiles)
-            {
-                var localEpisodeFile = episodeFile;
-                episodeFile.Episodes = new LazyList<Episode>(episodes.Where(e => e.EpisodeFileId == localEpisodeFile.Id));
-            }
+            //foreach (var episodeFile in episodeFiles)
+            //{
+            //    var localEpisodeFile = episodeFile;
+            //    episodeFile.Episodes = new LazyList<Episode>(episodes.Where(e => e.EpisodeFileId == localEpisodeFile.Id));
+            //}
 
-            return episodeFiles;
+            //return episodeFiles;
+            return new List<EpisodeFile>();
         }
     }
 }

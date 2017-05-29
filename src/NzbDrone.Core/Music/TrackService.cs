@@ -55,10 +55,15 @@ namespace NzbDrone.Core.Music
             return _trackRepository.Get(ids).ToList();
         }
 
-        public Track FindTrack(string artistId, string albumId, int episodeNumber)
+        public Track FindTrack(string artistId, string albumId, int trackNumber)
         {
-            return _trackRepository.Find(artistId, albumId, episodeNumber);
+            return _trackRepository.Find(artistId, albumId, trackNumber);
         }
+
+        //public Track FindTrack(string artistId, int trackNumber)
+        //{
+        //    return _trackRepository.Find(artistId, trackNumber);
+        //}
 
         public List<Track> GetTracksByArtist(string artistId)
         {
@@ -132,7 +137,7 @@ namespace NzbDrone.Core.Music
             _trackRepository.SetMonitoredByAlbum(artistId, albumId, monitored);
         }
 
-        public void UpdateEpisodes(List<Track> tracks)
+        public void UpdateTracks(List<Track> tracks)
         {
             _trackRepository.UpdateMany(tracks);
         }
@@ -181,11 +186,6 @@ namespace NzbDrone.Core.Music
                 _trackRepository.SetFileId(track.Id, message.TrackFile.Id);
                 _logger.Debug("Linking [{0}] > [{1}]", message.TrackFile.RelativePath, track);
             }
-        }
-
-        public void UpdateTracks(List<Track> tracks)
-        {
-            _trackRepository.UpdateMany(tracks);
         }
     }
 }

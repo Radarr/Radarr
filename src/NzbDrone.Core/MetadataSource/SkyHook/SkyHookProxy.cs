@@ -205,7 +205,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 var lowerTitle = title.ToLowerInvariant();
                 Console.WriteLine("Searching for " + lowerTitle);
 
-                if (lowerTitle.StartsWith("itunes:") || lowerTitle.StartsWith("itunesid:"))
+                if (lowerTitle.StartsWith("spotify:") || lowerTitle.StartsWith("spotifyid:"))
                 {
                     var slug = lowerTitle.Split(':')[1].Trim();
 

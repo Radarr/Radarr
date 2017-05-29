@@ -18,12 +18,12 @@ using NzbDrone.Core.Tv;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IDiskScanService
     {
-        void Scan(Series series);
         void Scan(Artist artist);
         string[] GetVideoFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
@@ -32,14 +32,12 @@ namespace NzbDrone.Core.MediaFiles
 
     public class DiskScanService :
         IDiskScanService,
-        IHandle<SeriesUpdatedEvent>,
-        IExecute<RescanSeriesCommand>,
         IHandle<ArtistUpdatedEvent>,
         IExecute<RescanArtistCommand>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMakeImportDecision _importDecisionMaker;
-        private readonly IImportApprovedEpisodes _importApprovedEpisodes;
+        private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly IConfigService _configService;
         private readonly ISeriesService _seriesService;
         private readonly IArtistService _artistService;
@@ -49,7 +47,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public DiskScanService(IDiskProvider diskProvider,
                                IMakeImportDecision importDecisionMaker,
-                               IImportApprovedEpisodes importApprovedEpisodes,
+                               IImportApprovedTracks importApprovedTracks,
                                IConfigService configService,
                                ISeriesService seriesService,
                                IArtistService artistService,
@@ -59,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             _diskProvider = diskProvider;
             _importDecisionMaker = importDecisionMaker;
-            _importApprovedEpisodes = importApprovedEpisodes;
+            _importApprovedTracks = importApprovedTracks;
             _configService = configService;
             _seriesService = seriesService;
             _artistService = artistService;
@@ -123,76 +121,18 @@ namespace NzbDrone.Core.MediaFiles
 
             CompletedScanning(artist);
         }
-        public void Scan(Series series)
-        {
-            var rootFolder = _diskProvider.GetParentFolder(series.Path);
-
-            if (!_diskProvider.FolderExists(rootFolder))
-            {
-                _logger.Warn("Series' root folder ({0}) doesn't exist.", rootFolder);
-                _eventAggregator.PublishEvent(new SeriesScanSkippedEvent(series, SeriesScanSkippedReason.RootFolderDoesNotExist));
-                return;
-            }
-
-            if (_diskProvider.GetDirectories(rootFolder).Empty())
-            {
-                _logger.Warn("Series' root folder ({0}) is empty.", rootFolder);
-                _eventAggregator.PublishEvent(new SeriesScanSkippedEvent(series, SeriesScanSkippedReason.RootFolderIsEmpty));
-                return;
-            }
-
-            _logger.ProgressInfo("Scanning disk for {0}", series.Title);
-
-            if (!_diskProvider.FolderExists(series.Path))
-            {
-                if (_configService.CreateEmptySeriesFolders)
-                {
-                    _logger.Debug("Creating missing series folder: {0}", series.Path);
-                    _diskProvider.CreateFolder(series.Path);
-                    SetPermissions(series.Path);
-                }
-                else
-                {
-                    _logger.Debug("Series folder doesn't exist: {0}", series.Path);
-                }
-                CleanMediaFiles(series, new List<string>());
-                CompletedScanning(series);
-                return;
-            }
-
-            var videoFilesStopwatch = Stopwatch.StartNew();
-            var mediaFileList = FilterFiles(series, GetVideoFiles(series.Path)).ToList();
-            videoFilesStopwatch.Stop();
-            _logger.Trace("Finished getting episode files for: {0} [{1}]", series, videoFilesStopwatch.Elapsed);
-
-            CleanMediaFiles(series, mediaFileList);
-
-            var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, series);
-            decisionsStopwatch.Stop();
-            _logger.Trace("Import decisions complete for: {0} [{1}]", series, decisionsStopwatch.Elapsed);
-            _importApprovedEpisodes.Import(decisions, false);
-
-            CompletedScanning(series);
-        }
-
-        private void CleanMediaFiles(Series series, List<string> mediaFileList)
-        {
-            _logger.Debug("{0} Cleaning up media files in DB", series);
-            _mediaFileTableCleanupService.Clean(series, mediaFileList);
-        }
-
+        
         private void CleanMediaFiles(Artist artist, List<string> mediaFileList)
         {
             _logger.Debug("{0} Cleaning up media files in DB", artist);
             _mediaFileTableCleanupService.Clean(artist, mediaFileList);
         }
 
-        private void CompletedScanning(Series series)
-        {
-            _logger.Info("Completed scanning disk for {0}", series.Title);
-            _eventAggregator.PublishEvent(new SeriesScannedEvent(series));
-        }
+        //private void CompletedScanning(Series series)
+        //{
+        //    _logger.Info("Completed scanning disk for {0}", series.Title);
+        //    _eventAggregator.PublishEvent(new SeriesScannedEvent(series));
+        //}
 
         private void CompletedScanning(Artist artist)
         {
@@ -280,33 +220,9 @@ namespace NzbDrone.Core.MediaFiles
             }
         }       
 
-        public void Handle(SeriesUpdatedEvent message)
-        {
-            Scan(message.Series);
-        }
-
         public void Handle(ArtistUpdatedEvent message)
         {
             Scan(message.Artist);
-        }
-
-        public void Execute(RescanSeriesCommand message)
-        {
-            if (message.SeriesId.HasValue)
-            {
-                var series = _seriesService.GetSeries(message.SeriesId.Value);
-                Scan(series);
-            }
-
-            else
-            {
-                var allSeries = _seriesService.GetAllSeries();
-
-                foreach (var series in allSeries)
-                {
-                    Scan(series);
-                }
-            }
         }
 
         public void Execute(RescanArtistCommand message)

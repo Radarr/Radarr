@@ -55,24 +55,28 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<RenameEpisodeFilePreview> GetRenamePreviews(int seriesId)
         {
-            var series = _seriesService.GetSeries(seriesId);
-            var episodes = _episodeService.GetEpisodeBySeries(seriesId);
-            var files = _mediaFileService.GetFilesBySeries(seriesId);
+            // TODO
+            throw new NotImplementedException();
+            //var series = _seriesService.GetSeries(seriesId);
+            //var episodes = _episodeService.GetEpisodeBySeries(seriesId);
+            //var files = _mediaFileService.GetFilesBySeries(seriesId);
 
-            return GetPreviews(series, episodes, files)
-                .OrderByDescending(e => e.SeasonNumber)
-                .ThenByDescending(e => e.EpisodeNumbers.First())
-                .ToList();
+            //return GetPreviews(series, episodes, files)
+            //    .OrderByDescending(e => e.SeasonNumber)
+            //    .ThenByDescending(e => e.EpisodeNumbers.First())
+            //    .ToList();
         }
 
         public List<RenameEpisodeFilePreview> GetRenamePreviews(int seriesId, int seasonNumber)
         {
-            var series = _seriesService.GetSeries(seriesId);
-            var episodes = _episodeService.GetEpisodesBySeason(seriesId, seasonNumber);
-            var files = _mediaFileService.GetFilesBySeason(seriesId, seasonNumber);
+            // TODO
+            throw new NotImplementedException();
+            //var series = _seriesService.GetSeries(seriesId);
+            //var episodes = _episodeService.GetEpisodesBySeason(seriesId, seasonNumber);
+            //var files = _mediaFileService.GetFilesBySeason(seriesId, seasonNumber);
 
-            return GetPreviews(series, episodes, files)
-                .OrderByDescending(e => e.EpisodeNumbers.First()).ToList();
+            //return GetPreviews(series, episodes, files)
+            //    .OrderByDescending(e => e.EpisodeNumbers.First()).ToList();
         }
 
         private IEnumerable<RenameEpisodeFilePreview> GetPreviews(Series series, List<Episode> episodes, List<EpisodeFile> files)
@@ -110,62 +114,68 @@ namespace NzbDrone.Core.MediaFiles
 
         private void RenameFiles(List<EpisodeFile> episodeFiles, Series series)
         {
-            var renamed = new List<EpisodeFile>();
+            // TODO
+            throw new NotImplementedException();
+            //var renamed = new List<EpisodeFile>();
 
-            foreach (var episodeFile in episodeFiles)
-            {
-                var episodeFilePath = Path.Combine(series.Path, episodeFile.RelativePath);
+            //foreach (var episodeFile in episodeFiles)
+            //{
+            //    var episodeFilePath = Path.Combine(series.Path, episodeFile.RelativePath);
 
-                try
-                {
-                    _logger.Debug("Renaming episode file: {0}", episodeFile);
-                    _episodeFileMover.MoveEpisodeFile(episodeFile, series);
+            //    try
+            //    {
+            //        _logger.Debug("Renaming episode file: {0}", episodeFile);
+            //        _episodeFileMover.MoveEpisodeFile(episodeFile, series);
 
-                    _mediaFileService.Update(episodeFile);
-                    renamed.Add(episodeFile);
+            //        _mediaFileService.Update(episodeFile);
+            //        renamed.Add(episodeFile);
 
-                    _logger.Debug("Renamed episode file: {0}", episodeFile);
-                }
-                catch (SameFilenameException ex)
-                {
-                    _logger.Debug("File not renamed, source and destination are the same: {0}", ex.Filename);
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error(ex, "Failed to rename file {0}", episodeFilePath);
-                }
-            }
+            //        _logger.Debug("Renamed episode file: {0}", episodeFile);
+            //    }
+            //    catch (SameFilenameException ex)
+            //    {
+            //        _logger.Debug("File not renamed, source and destination are the same: {0}", ex.Filename);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logger.Error(ex, "Failed to rename file {0}", episodeFilePath);
+            //    }
+            //}
 
-            if (renamed.Any())
-            {
-                _diskProvider.RemoveEmptySubfolders(series.Path);
+            //if (renamed.Any())
+            //{
+            //    _diskProvider.RemoveEmptySubfolders(series.Path);
 
-                _eventAggregator.PublishEvent(new SeriesRenamedEvent(series));
-            }
+            //    _eventAggregator.PublishEvent(new SeriesRenamedEvent(series));
+            //}
         }
 
         public void Execute(RenameFilesCommand message)
         {
-            var series = _seriesService.GetSeries(message.SeriesId);
-            var episodeFiles = _mediaFileService.Get(message.Files);
+            // TODO
+            throw new NotImplementedException();
+            //var series = _seriesService.GetSeries(message.SeriesId);
+            //var episodeFiles = _mediaFileService.Get(message.Files);
 
-            _logger.ProgressInfo("Renaming {0} files for {1}", episodeFiles.Count, series.Title);
-            RenameFiles(episodeFiles, series);
-            _logger.ProgressInfo("Selected episode files renamed for {0}", series.Title);
+            //_logger.ProgressInfo("Renaming {0} files for {1}", episodeFiles.Count, series.Title);
+            //RenameFiles(episodeFiles, series);
+            //_logger.ProgressInfo("Selected episode files renamed for {0}", series.Title);
         }
 
         public void Execute(RenameSeriesCommand message)
         {
-            _logger.Debug("Renaming all files for selected series");
-            var seriesToRename = _seriesService.GetSeries(message.SeriesIds);
+            // TODO
+            throw new NotImplementedException();
+            //_logger.Debug("Renaming all files for selected series");
+            //var seriesToRename = _seriesService.GetSeries(message.SeriesIds);
 
-            foreach (var series in seriesToRename)
-            {
-                var episodeFiles = _mediaFileService.GetFilesBySeries(series.Id);
-                _logger.ProgressInfo("Renaming all files in series: {0}", series.Title);
-                RenameFiles(episodeFiles, series);
-                _logger.ProgressInfo("All episode files renamed for {0}", series.Title);
-            }
+            //foreach (var series in seriesToRename)
+            //{
+            //    var episodeFiles = _mediaFileService.GetFilesBySeries(series.Id);
+            //    _logger.ProgressInfo("Renaming all files in series: {0}", series.Title);
+            //    RenameFiles(episodeFiles, series);
+            //    _logger.ProgressInfo("All episode files renamed for {0}", series.Title);
+            //}
         }
     }
 }

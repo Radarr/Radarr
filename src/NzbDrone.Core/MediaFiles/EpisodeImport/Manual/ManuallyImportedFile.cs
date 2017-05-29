@@ -1,4 +1,5 @@
 ﻿using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
 {

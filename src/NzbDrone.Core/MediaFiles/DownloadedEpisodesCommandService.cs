@@ -9,6 +9,7 @@ using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles
 {

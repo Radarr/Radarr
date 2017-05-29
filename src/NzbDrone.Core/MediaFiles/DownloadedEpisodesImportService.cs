@@ -9,6 +9,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles
                 results.AddRange(folderResults);
             }
 
-            foreach (var videoFile in _diskScanService.GetVideoFiles(directoryInfo.FullName, false))
+            foreach (var videoFile in _diskScanService.GetNonVideoFiles(directoryInfo.FullName, false))
             {
                 var fileResults = ProcessFile(new FileInfo(videoFile), ImportMode.Auto, null);
                 results.AddRange(fileResults);
@@ -100,7 +101,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Series series)
         {
-            var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
+            var videoFiles = _diskScanService.GetNonVideoFiles(directoryInfo.FullName);
             var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f) == ".rar");
 
             foreach (var videoFile in videoFiles)
@@ -152,48 +153,50 @@ namespace NzbDrone.Core.MediaFiles
 
         private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, Series series, DownloadClientItem downloadClientItem)
         {
-            if (_seriesService.SeriesPathExists(directoryInfo.FullName))
-            {
-                _logger.Warn("Unable to process folder that is mapped to an existing show");
-                return new List<ImportResult>();
-            }
+            throw new System.NotImplementedException("Will be removed");
 
-            var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = Parser.Parser.ParseTitle(directoryInfo.Name);
+            //if (_seriesService.SeriesPathExists(directoryInfo.FullName))
+            //{
+            //    _logger.Warn("Unable to process folder that is mapped to an existing show");
+            //    return new List<ImportResult>();
+            //}
 
-            if (folderInfo != null)
-            {
-                _logger.Debug("{0} folder quality: {1}", cleanedUpName, folderInfo.Quality);
-            }
+            //var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
+            //var folderInfo = Parser.Parser.ParseTitle(directoryInfo.Name);
 
-            var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
+            //if (folderInfo != null)
+            //{
+            //    _logger.Debug("{0} folder quality: {1}", cleanedUpName, folderInfo.Quality);
+            //}
 
-            if (downloadClientItem == null)
-            {
-                foreach (var videoFile in videoFiles)
-                {
-                    if (_diskProvider.IsFileLocked(videoFile))
-                    {
-                        return new List<ImportResult>
-                               {
-                                   FileIsLockedResult(videoFile)
-                               };
-                    }
-                }
-            }
+            //var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
 
-            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), series, folderInfo, true);
-            var importResults = _importApprovedEpisodes.Import(decisions, true, downloadClientItem, importMode);
+            //if (downloadClientItem == null)
+            //{
+            //    foreach (var videoFile in videoFiles)
+            //    {
+            //        if (_diskProvider.IsFileLocked(videoFile))
+            //        {
+            //            return new List<ImportResult>
+            //                   {
+            //                       FileIsLockedResult(videoFile)
+            //                   };
+            //        }
+            //    }
+            //}
 
-            if ((downloadClientItem == null || !downloadClientItem.IsReadOnly) &&
-                importResults.Any(i => i.Result == ImportResultType.Imported) &&
-                ShouldDeleteFolder(directoryInfo, series))
-            {
-                _logger.Debug("Deleting folder after importing valid files");
-                _diskProvider.DeleteFolder(directoryInfo.FullName, true);
-            }
+            //var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), series, folderInfo, true);
+            //var importResults = _importApprovedEpisodes.Import(decisions, true, downloadClientItem, importMode);
 
-            return importResults;
+            //if ((downloadClientItem == null || !downloadClientItem.IsReadOnly) &&
+            //    importResults.Any(i => i.Result == ImportResultType.Imported) &&
+            //    ShouldDeleteFolder(directoryInfo, series))
+            //{
+            //    _logger.Debug("Deleting folder after importing valid files");
+            //    _diskProvider.DeleteFolder(directoryInfo.FullName, true);
+            //}
+
+            //return importResults;
         }
 
         private List<ImportResult> ProcessFile(FileInfo fileInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
@@ -215,30 +218,31 @@ namespace NzbDrone.Core.MediaFiles
 
         private List<ImportResult> ProcessFile(FileInfo fileInfo, ImportMode importMode, Series series, DownloadClientItem downloadClientItem)
         {
-            if (Path.GetFileNameWithoutExtension(fileInfo.Name).StartsWith("._"))
-            {
-                _logger.Debug("[{0}] starts with '._', skipping", fileInfo.FullName);
+            throw new System.NotImplementedException("Will be removed");
+            //if (Path.GetFileNameWithoutExtension(fileInfo.Name).StartsWith("._"))
+            //{
+            //    _logger.Debug("[{0}] starts with '._', skipping", fileInfo.FullName);
 
-                return new List<ImportResult>
-                       {
-                           new ImportResult(new ImportDecision(new LocalEpisode { Path = fileInfo.FullName }, new Rejection("Invalid video file, filename starts with '._'")), "Invalid video file, filename starts with '._'")
-                       };
-            }
+            //    return new List<ImportResult>
+            //           {
+            //               new ImportResult(new ImportDecision(new LocalTrack { Path = fileInfo.FullName }, new Rejection("Invalid music file, filename starts with '._'")), "Invalid music file, filename starts with '._'")
+            //           };
+            //}
 
-            if (downloadClientItem == null)
-            {
-                if (_diskProvider.IsFileLocked(fileInfo.FullName))
-                {
-                    return new List<ImportResult>
-                           {
-                               FileIsLockedResult(fileInfo.FullName)
-                           };
-                }
-            }
+            //if (downloadClientItem == null)
+            //{
+            //    if (_diskProvider.IsFileLocked(fileInfo.FullName))
+            //    {
+            //        return new List<ImportResult>
+            //               {
+            //                   FileIsLockedResult(fileInfo.FullName)
+            //               };
+            //    }
+            //}
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, series, null, true);
+            //var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, series, null, true);
 
-            return _importApprovedEpisodes.Import(decisions, true, downloadClientItem, importMode);
+            //return _importApprovedEpisodes.Import(decisions, true, downloadClientItem, importMode);
         }
 
         private string GetCleanedUpFolderName(string folder)
@@ -251,15 +255,17 @@ namespace NzbDrone.Core.MediaFiles
 
         private ImportResult FileIsLockedResult(string videoFile)
         {
-            _logger.Debug("[{0}] is currently locked by another process, skipping", videoFile);
-            return new ImportResult(new ImportDecision(new LocalEpisode { Path = videoFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
+            throw new System.NotImplementedException("Will be removed");
+            //_logger.Debug("[{0}] is currently locked by another process, skipping", videoFile);
+            //return new ImportResult(new ImportDecision(new LocalEpisode { Path = videoFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
         }
 
         private ImportResult UnknownSeriesResult(string message, string videoFile = null)
         {
-            var localEpisode = videoFile == null ? null : new LocalEpisode { Path = videoFile };
+            throw new System.NotImplementedException("Will be removed");
+            //var localEpisode = videoFile == null ? null : new LocalEpisode { Path = videoFile };
 
-            return new ImportResult(new ImportDecision(localEpisode, new Rejection("Unknown Series")), message);
+            //return new ImportResult(new ImportDecision(localEpisode, new Rejection("Unknown Series")), message);
         }
     }
 }

@@ -12,6 +12,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport
 {
@@ -94,7 +95,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decisions;
         }
 
-        private ImportDecision GetDecision(string file, Artist artist, ParsedTrackInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
+        private ImportDecision GetDecision(string file, Artist artist, ParsedTrackInfo folderInfo, bool shouldUseFolderName)
         {
             ImportDecision decision = null;
 
@@ -109,11 +110,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                     _logger.Debug("Size: {0}", localTrack.Size);
 
-                    //TODO: make it so media info doesn't ruin the import process of a new series
-                    if (sceneSource)
-                    {
-                        localTrack.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
-                    }
+                    //TODO: make it so media info doesn't ruin the import process of a new artist
 
                     if (localTrack.Tracks.Empty())
                     {
@@ -137,19 +134,41 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             {
                 _logger.Error(e, "Couldn't import file. {0}", file);
 
-                var localEpisode = new LocalEpisode { Path = file };
-                decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
+                var localTrack = new LocalTrack { Path = file };
+                decision = new ImportDecision(localTrack, new Rejection("Unexpected error processing file"));
             }
 
             return decision;
         }
 
-        private ImportDecision GetDecision(LocalEpisode localEpisode)
+        private ImportDecision GetDecision(LocalTrack localTrack)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, localEpisode))
+            var reasons = _specifications.Select(c => EvaluateSpec(c, localTrack))
                                          .Where(c => c != null);
 
-            return new ImportDecision(localEpisode, reasons.ToArray());
+            return new ImportDecision(localTrack, reasons.ToArray());
+        }
+
+        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalTrack localTrack)
+        {
+            try
+            {
+                var result = spec.IsSatisfiedBy(localTrack);
+
+                if (!result.Accepted)
+                {
+                    return new Rejection(result.Reason);
+                }
+            }
+            catch (Exception e)
+            {
+                //e.Data.Add("report", remoteEpisode.Report.ToJson());
+                //e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
+                _logger.Error(e, "Couldn't evaluate decision on {0}", localTrack.Path);
+                return new Rejection($"{spec.GetType().Name}: {e.Message}");
+            }
+
+            return null;
         }
 
         private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalEpisode localEpisode)

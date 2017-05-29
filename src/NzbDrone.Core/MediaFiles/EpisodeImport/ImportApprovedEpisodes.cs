@@ -12,7 +12,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Extras;
-
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport
 {
@@ -47,105 +47,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         public List<ImportResult> Import(List<ImportDecision> decisions, bool newDownload, DownloadClientItem downloadClientItem = null, ImportMode importMode = ImportMode.Auto)
         {
-            var qualifiedImports = decisions.Where(c => c.Approved)
-               .GroupBy(c => c.LocalEpisode.Series.Id, (i, s) => s
-                   .OrderByDescending(c => c.LocalEpisode.Quality, new QualityModelComparer(s.First().LocalEpisode.Series.Profile))
-                   .ThenByDescending(c => c.LocalEpisode.Size))
-               .SelectMany(c => c)
-               .ToList();
-
-            var importResults = new List<ImportResult>();
-
-            foreach (var importDecision in qualifiedImports.OrderBy(e => e.LocalEpisode.Episodes.Select(episode => episode.EpisodeNumber).MinOrDefault())
-                                                           .ThenByDescending(e => e.LocalEpisode.Size))
-            {
-                var localEpisode = importDecision.LocalEpisode;
-                var oldFiles = new List<EpisodeFile>();
-
-                try
-                {
-                    //check if already imported
-                    if (importResults.SelectMany(r => r.ImportDecision.LocalEpisode.Episodes)
-                                         .Select(e => e.Id)
-                                         .Intersect(localEpisode.Episodes.Select(e => e.Id))
-                                         .Any())
-                    {
-                        importResults.Add(new ImportResult(importDecision, "Episode has already been imported"));
-                        continue;
-                    }
-
-                    var episodeFile = new EpisodeFile();
-                    episodeFile.DateAdded = DateTime.UtcNow;
-                    episodeFile.SeriesId = localEpisode.Series.Id;
-                    episodeFile.Path = localEpisode.Path.CleanFilePath();
-                    episodeFile.Size = _diskProvider.GetFileSize(localEpisode.Path);
-                    episodeFile.Quality = localEpisode.Quality;
-                    episodeFile.MediaInfo = localEpisode.MediaInfo;
-                    episodeFile.SeasonNumber = localEpisode.SeasonNumber;
-                    episodeFile.Episodes = localEpisode.Episodes;
-                    episodeFile.ReleaseGroup = localEpisode.ParsedEpisodeInfo.ReleaseGroup;
-
-                    bool copyOnly;
-                    switch (importMode)
-                    {
-                        default:
-                        case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && downloadClientItem.IsReadOnly;
-                            break;
-                        case ImportMode.Move:
-                            copyOnly = false;
-                            break;
-                        case ImportMode.Copy:
-                            copyOnly = true;
-                            break;
-                    }
-
-                    if (newDownload)
-                    {
-                        episodeFile.SceneName = GetSceneName(downloadClientItem, localEpisode);
-
-                        var moveResult = _episodeFileUpgrader.UpgradeEpisodeFile(episodeFile, localEpisode, copyOnly);
-                        oldFiles = moveResult.OldFiles;
-                    }
-                    else
-                    {
-                        episodeFile.RelativePath = localEpisode.Series.Path.GetRelativePath(episodeFile.Path);
-                    }
-
-                    _mediaFileService.Add(episodeFile);
-                    importResults.Add(new ImportResult(importDecision));
-
-                    if (newDownload)
-                    {
-                        _extraService.ImportExtraFiles(localEpisode, episodeFile, copyOnly);
-                    }
-
-                    if (downloadClientItem != null)
-                    {
-                        _eventAggregator.PublishEvent(new EpisodeImportedEvent(localEpisode, episodeFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId, downloadClientItem.IsReadOnly));
-                    }
-                    else
-                    {
-                        _eventAggregator.PublishEvent(new EpisodeImportedEvent(localEpisode, episodeFile, newDownload));
-                    }
-
-                    if (newDownload)
-                    {
-                        _eventAggregator.PublishEvent(new EpisodeDownloadedEvent(localEpisode, episodeFile, oldFiles));
-                    }
-                }
-                catch (Exception e)
-                {
-                    _logger.Warn(e, "Couldn't import episode " + localEpisode);
-                    importResults.Add(new ImportResult(importDecision, "Failed to import episode"));
-                }
-            }
-
-            //Adding all the rejected decisions
-            importResults.AddRange(decisions.Where(c => !c.Approved)
-                                            .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));
-
-            return importResults;
+            throw new NotImplementedException("This will be removed");
         }
 
         private string GetSceneName(DownloadClientItem downloadClientItem, LocalEpisode localEpisode)

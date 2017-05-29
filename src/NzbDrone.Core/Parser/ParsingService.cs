@@ -457,7 +457,9 @@ namespace NzbDrone.Core.Parser
 
                 if (trackInfo == null)
                 {
-                    trackInfo = _trackService.FindTrack(artist.SpotifyId, trackNumber);
+                    // TODO: [ParsingService]: FindTrack by artistID and trackNumber (or albumID and trackNumber if we change db schema to album as base)
+                    _logger.Debug("TrackInfo is null, we will not add as FindTrack(artistId, trackNumber) is not implemented");
+                    //trackInfo = _trackService.FindTrack(artist.SpotifyId, trackNumber);
                 }
 
                 if (trackInfo != null)
@@ -467,7 +469,7 @@ namespace NzbDrone.Core.Parser
 
                 else
                 {
-                    _logger.Debug("Unable to find {0}", parsedEpisodeInfo);
+                    _logger.Debug("Unable to find {0}", parsedTrackInfo);
                 }
             }
 
@@ -553,6 +555,7 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
+
         public LocalTrack GetLocalTrack(string filename, Artist artist)
         {
             return GetLocalTrack(filename, artist, null);
@@ -635,7 +638,60 @@ namespace NzbDrone.Core.Parser
             }
 
             return GetStandardEpisodes(artist, parsedTrackInfo, sceneSource, searchCriteria);*/
-            return GetStandardTracks(artist, parsedTrackInfo, searchCriteria);
+            return GetStandardTracks(artist, parsedTrackInfo);
+        }
+
+        private List<Track> GetStandardTracks(Artist artist, ParsedTrackInfo parsedTrackInfo)
+        {
+            var result = new List<Track>();
+            //var seasonNumber = parsedEpisodeInfo.SeasonNumber;
+
+            //if (sceneSource)
+            //{
+            //    var sceneMapping = _sceneMappingService.FindSceneMapping(parsedEpisodeInfo.SeriesTitle);
+
+            //    if (sceneMapping != null && sceneMapping.SeasonNumber.HasValue && sceneMapping.SeasonNumber.Value >= 0 &&
+            //        sceneMapping.SceneSeasonNumber == seasonNumber)
+            //    {
+            //        seasonNumber = sceneMapping.SeasonNumber.Value;
+            //    }
+            //}
+
+            if (parsedTrackInfo.TrackNumbers == null)
+            {
+                return new List<Track>();
+            }
+
+            foreach (var trackNumber in parsedTrackInfo.TrackNumbers)
+            {
+                
+
+                Track trackInfo = null;
+
+                //if (searchCriteria != null)
+                //{
+                //    trackInfo = searchCriteria.Episodes.SingleOrDefault(e => e.SeasonNumber == seasonNumber && e.EpisodeNumber == trackNumber);
+                //}
+
+                if (trackInfo == null)
+                {
+                    // TODO: [ParsingService]: FindTrack by artistID and trackNumber (or albumID and trackNumber if we change db schema to album as base)
+                    _logger.Debug("TrackInfo is null, we will not add as FindTrack(artistId, trackNumber) is not implemented");
+                    //trackInfo = _trackService.FindTrack(artist.SpotifyId, trackNumber); //series.Id, seasonNumber, trackNumber
+                }
+
+                if (trackInfo != null)
+                {
+                    result.Add(trackInfo);
+                }
+
+                else
+                {
+                    _logger.Debug("Unable to find {0}", parsedTrackInfo);
+                }
+            }
+
+            return result;
         }
     }
 }
