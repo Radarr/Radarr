@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Download
 
                 torrentFile = response.ResponseData;
 
-                _logger.Debug("Downloading torrent for episode '{0}' finished ({1} bytes from {2})", remoteEpisode.Release.Title, torrentFile.Length, torrentUrl);
+                _logger.Debug("Downloading torrent for release '{0}' finished ({1} bytes from {2})", remoteEpisode.Release.Title, torrentFile.Length, torrentUrl);
             }
             catch (HttpException ex)
             {
@@ -164,14 +164,14 @@ namespace NzbDrone.Core.Download
                 }
                 else
                 {
-                    _logger.Error(ex, "Downloading torrent file for episode '{0}' failed ({1})", remoteEpisode.Release.Title, torrentUrl);
+                    _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteEpisode.Release.Title, torrentUrl);
                 }
 
                 throw new ReleaseDownloadException(remoteEpisode.Release, "Downloading torrent failed", ex);
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, "Downloading torrent file for episode '{0}' failed ({1})", remoteEpisode.Release.Title, torrentUrl);
+                _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteEpisode.Release.Title, torrentUrl);
 
                 throw new ReleaseDownloadException(remoteEpisode.Release, "Downloading torrent failed", ex);
             }
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Download
             }
             catch (FormatException ex)
             {
-                _logger.Error(ex, "Failed to parse magnetlink for episode '{0}': '{1}'", remoteEpisode.Release.Title, magnetUrl);
+                _logger.Error(ex, "Failed to parse magnetlink for release '{0}': '{1}'", remoteEpisode.Release.Title, magnetUrl);
 
                 return null;
             }
