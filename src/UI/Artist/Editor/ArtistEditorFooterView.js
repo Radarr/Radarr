@@ -121,6 +121,6 @@ module.exports = Marionette.ItemView.extend({
         var updateFilesArtistView = new UpdateFilesArtistView({ artist : selected });
         this.listenToOnce(updateFilesArtistView, 'updatingFiles', this._afterSave);
 
-        vent.trigger(vent.Commands.OpenModalCommand, updateFilesSeriesView);
+        vent.trigger(vent.Commands.OpenModalCommand, updateFilesArtistView);
     }
 });
