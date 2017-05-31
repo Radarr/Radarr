@@ -40,7 +40,7 @@ Handlebars.registerHelper('tvMazeUrl', function() {
 });
 
 Handlebars.registerHelper('route', function() {
-    return StatusModel.get('urlBase') + '/artist/' + this.titleSlug;
+    return StatusModel.get('urlBase') + '/artist/' + this.artistSlug;
 });
 
 Handlebars.registerHelper('percentOfEpisodes', function() {
