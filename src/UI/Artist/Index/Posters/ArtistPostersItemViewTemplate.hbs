@@ -1,0 +1,30 @@
+<div class="artist-posters-item">
+    <div class="center">
+        <div class="artist-poster-container x-artist-poster-container">
+            <div class="artist-controls x-artist-controls">
+                <i class="icon-lidarr-refresh x-refresh" title="Refresh Artist"/>
+                <i class="icon-lidarr-edit x-edit" title="Edit Artist"/>
+            </div>
+            {{#unless_eq status compare="continuing"}}
+                <div class="ended-banner">Ended</div>
+            {{/unless_eq}}
+            <a href="{{route}}">
+                {{poster}}
+                <div class="center title">{{title}}</div>
+            </a>
+            <div class="hidden-title x-title">
+                {{title}}
+            </div>
+        </div>
+    </div>
+
+    <div class="center">
+        <div class="labels">
+            {{> EpisodeProgressPartial }}
+
+            {{#if nextAiring}}
+                <span class="label label-default">{{RelativeDate nextAiring}}</span>
+            {{/if}}
+        </div>
+    </div>
+</div>

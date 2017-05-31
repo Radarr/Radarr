@@ -4,8 +4,8 @@ var Controller = require('./Controller');
 module.exports = Marionette.AppRouter.extend({
     controller : new Controller(),
     appRoutes  : {
-        'addseries'                  : 'addSeries',
-        'addseries/:action(/:query)' : 'addSeries',
+        'addartist'                  : 'addArtist',
+        'addartist/:action(/:query)' : 'addArtist',
         'calendar'                   : 'calendar',
         'settings'                   : 'settings',
         'settings/:action(/:query)'  : 'settings',
@@ -19,7 +19,7 @@ module.exports = Marionette.AppRouter.extend({
         'system'                     : 'system',
         'system/:action'             : 'system',
         'seasonpass'                 : 'seasonPass',
-        'serieseditor'               : 'seriesEditor',
+        'artisteditor'               : 'artistEditor',
         ':whatever'                  : 'showNotFound'
     }
 });
