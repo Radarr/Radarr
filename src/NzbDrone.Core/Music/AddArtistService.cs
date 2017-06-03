@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Music
             {
                 tuple = _artistInfo.GetArtistInfo(newArtist.SpotifyId);
             }
-            catch (SeriesNotFoundException)
+            catch (ArtistNotFoundException)
             {
                 _logger.Error("SpotifyId {1} was not found, it may have been removed from Spotify.", newArtist.SpotifyId);
 

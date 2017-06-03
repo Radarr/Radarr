@@ -79,9 +79,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             _logger.Debug("Getting Artist with SpotifyId of {0}", spotifyId);
 
-            ///v1/albums/{id}
-            //
-
             // We need to perform a direct lookup of the artist
             var httpRequest = _requestBuilder.Create()
                                             .SetSegment("route", "artists/" + spotifyId)
@@ -95,7 +92,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get<ArtistInfoResource>(httpRequest);
+            var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
             
 
             if (httpResponse.HasHttpError)
@@ -110,10 +107,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
+            // It is safe to assume an id will only return one Artist back
             Artist artist = new Artist();
-            artist.ArtistName = httpResponse.Resource.Name;
-            artist.SpotifyId = httpResponse.Resource.Id;
-            artist.Genres = httpResponse.Resource.Genres;
+            artist.ArtistName = httpResponse.Resource.Artists.Items[0].ArtistName;
+            artist.SpotifyId = httpResponse.Resource.Artists.Items[0].Id;
+            artist.Genres = httpResponse.Resource.Artists.Items[0].Genres;
 
             var albumRet = MapAlbums(artist);
             artist = albumRet.Item1;
@@ -147,7 +145,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 Album album = new Album();
                 album.AlbumId = albumResource.Id;
-                album.Title = albumResource.Name;
+                album.Title = albumResource.AlbumName;
                 album.ArtworkUrl = albumResource.Images.Count > 0 ? albumResource.Images[0].Url : "";
                 album.Tracks = MapTracksToAlbum(album);
                 masterTracks.InsertRange(masterTracks.Count, album.Tracks);
@@ -190,7 +188,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 track.Explict = trackResource.Explicit;
                 track.Compilation = trackResource.Artists.Count > 1;
                 track.TrackNumber = trackResource.TrackNumber;
-                track.Title = trackResource.Name;
+                track.Title = trackResource.TrackName;
                 tracks.Add(track);
             }
 
@@ -226,8 +224,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpRequest = _requestBuilder.Create()
                                     .SetSegment("route", "search")
-                                    .AddQueryParam("type", "artist,album")
-                                    .AddQueryParam("q", title.ToLower().Trim())
+                                    .AddQueryParam("type", "artist") // TODO: LidarrAPI.Metadata is getting , encoded. Needs to be raw ,
+                                    .AddQueryParam("query", title.ToLower().Trim())
                                     .Build();
 
 
@@ -250,20 +248,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private Artist MapArtistInfo(ArtistInfoResource resource)
-        {
-            // This expects ArtistInfoResource, thus just need to populate one artist
-            Artist artist = new Artist();
-            //artist.Overview = resource.artistBio;
-            //artist.ArtistName = resource.name;
-            //foreach(var genre in resource.genreNames)
-            //{
-            //    artist.Genres.Add(genre);
-            //}
-
-            return artist;
-        }
-
         private List<Artist> MapArtists(ArtistResource resource)
         {
             
@@ -272,10 +256,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             foreach(var artistResource in resource.Artists.Items)
             {
                 Artist artist = new Artist();
-                artist.ArtistName = artistResource.Name;
-                artist.SpotifyId = artistResource.Id;
+                artist.ArtistName = artistResource.ArtistName;
+                artist.SpotifyId = artistResource.Id; // TODO: Rename spotifyId to LidarrId
                 artist.Genres = artistResource.Genres;
                 artist.ArtistSlug = Parser.Parser.CleanArtistTitle(artist.ArtistName);
+                //artist.Images = artistResource.Images;
+
                 artists.Add(artist);
             }
 

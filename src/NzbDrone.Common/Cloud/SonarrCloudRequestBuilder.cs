@@ -17,8 +17,10 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            Search = new HttpRequestBuilder("https://api.spotify.com/{version}/{route}/") // TODO: maybe use {version} 
-                .SetSegment("version", "v1")
+            //Search = new HttpRequestBuilder("https://api.spotify.com/{version}/{route}/") // TODO: maybe use {version} 
+            //    .SetSegment("version", "v1")
+            //    .CreateFactory();
+            Search = new HttpRequestBuilder("http://localhost:5000/{route}/") // TODO: maybe use {version} 
                 .CreateFactory();
 
             InternalSearch = new HttpRequestBuilder("https://itunes.apple.com/WebObjects/MZStore.woa/wa/{route}") //viewArtist or search
