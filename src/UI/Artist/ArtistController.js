@@ -1,8 +1,8 @@
 var NzbDroneController = require('../Shared/NzbDroneController');
 var AppLayout = require('../AppLayout');
 var ArtistCollection = require('./ArtistCollection');
-var SeriesIndexLayout = require('../Series/Index/SeriesIndexLayout');
-var SeriesDetailsLayout = require('../Series/Details/SeriesDetailsLayout');
+var ArtistIndexLayout = require('./Index/ArtistIndexLayout');
+var ArtistDetailsLayout = require('./Details/ArtistDetailsLayout');
 
 module.exports = NzbDroneController.extend({
     _originalInit : NzbDroneController.prototype.initialize,
@@ -17,18 +17,18 @@ module.exports = NzbDroneController.extend({
 
     artist : function() {
         this.setTitle('Lidarr');
-        this.showMainRegion(new SeriesIndexLayout());
+        this.showMainRegion(new ArtistIndexLayout());
     },
 
     artistDetails : function(query) {
-        var artists = ArtistCollection.where({ artistNameSlug : query });
+        var artists = ArtistCollection.where({ artistSlug : query });
         console.log('artistDetails, artists: ', artists);
         if (artists.length !== 0) {
-            var targetSeries = artists[0];
-            console.log("[ArtistController] targetSeries: ", targetSeries);
-            this.setTitle(targetSeries.get('artistName')); // TODO: Update NzbDroneController
+            var targetArtist = artists[0];
+            console.log("[ArtistController] targetArtist: ", targetArtist);
+            this.setTitle(targetArtist.get('artistName')); // TODO: Update NzbDroneController
             //this.setArtistName(targetSeries.get('artistName'));
-            this.showMainRegion(new SeriesDetailsLayout({ model : targetSeries }));
+            this.showMainRegion(new ArtistDetailsLayout({ model : targetArtist }));
         } else {
             this.showNotFound();
         }

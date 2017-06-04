@@ -3,18 +3,20 @@ var AppLayout = require('./AppLayout');
 var Marionette = require('marionette');
 var ActivityLayout = require('./Activity/ActivityLayout');
 var SettingsLayout = require('./Settings/SettingsLayout');
-var AddSeriesLayout = require('./AddSeries/AddSeriesLayout');
+//var AddSeriesLayout = require('./AddSeries/AddSeriesLayout');
+var AddArtistLayout = require('./AddArtist/AddArtistLayout');
 var WantedLayout = require('./Wanted/WantedLayout');
 var CalendarLayout = require('./Calendar/CalendarLayout');
 var ReleaseLayout = require('./Release/ReleaseLayout');
 var SystemLayout = require('./System/SystemLayout');
 var SeasonPassLayout = require('./SeasonPass/SeasonPassLayout');
-var SeriesEditorLayout = require('./Series/Editor/SeriesEditorLayout');
+//var SeriesEditorLayout = require('./Series/Editor/SeriesEditorLayout');
+var ArtistEditorLayout = require('./Artist/Editor/ArtistEditorLayout');
 
 module.exports = NzbDroneController.extend({
-    addSeries : function(action) {
-        this.setTitle('Add Series');
-        this.showMainRegion(new AddSeriesLayout({ action : action }));
+    addArtist : function(action) {
+        this.setTitle('Add Artist');
+        this.showMainRegion(new AddArtistLayout({ action : action }));
     },
 
     calendar : function() {
@@ -52,8 +54,8 @@ module.exports = NzbDroneController.extend({
         this.showMainRegion(new SeasonPassLayout());
     },
 
-    seriesEditor : function() {
-        this.setTitle('Series Editor');
-        this.showMainRegion(new SeriesEditorLayout());
+    artistEditor : function() {
+        this.setTitle('Artist Editor');
+        this.showMainRegion(new ArtistEditorLayout());
     }
 });

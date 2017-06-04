@@ -119,6 +119,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('series'); // TOOD: Build backend for artist
+var data = ApiData.get('artist'); // TOOD: Build backend for artist
 
 module.exports = new Collection(data, { full : true }).bindSignalR();

@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             Host = "localhost";
             Port = 9091;
-            TvCategory = "tv-Lidarr";
+            TvCategory = "lidarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -40,10 +40,10 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
         public string TvCategory { get; set; }
 
-        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(QBittorrentPriority), HelpText = "Priority to use when grabbing episodes that aired within the last 14 days")]
+        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(QBittorrentPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }
 
-        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(QBittorrentPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
+        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(QBittorrentPriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
         [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Use a secure connection. See Options -> Web UI -> 'Use HTTPS instead of HTTP' in qBittorrent.")]
