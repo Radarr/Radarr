@@ -1,0 +1,13 @@
+<select class="form-control col-md-2 starting-album x-starting-album">
+
+
+    {{#each this}}
+        {{#if_eq seasonNumber compare="0"}}
+            <option value="{{seasonNumber}}">Specials</option>
+        {{else}}
+            <option value="{{seasonNumber}}">Album {{seasonNumber}}</option>
+        {{/if_eq}}
+    {{/each}}
+
+    <option value="5000000">None</option>
+</select>

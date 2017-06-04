@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/37d89txts2vt5j83?svg=true)](https://ci.appveyor.com/project/mattman86/lidarr)
+
 ## Lidarr
 
 Lidarr is a music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from your favorite artists and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
@@ -24,7 +26,7 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 
 ### Requirements
 
-* Visual Studio 2015 (https://www.visualstudio.com/vs/)
+* Visual Studio 2015 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
 * [Git](https://git-scm.com/downloads)
 * [NodeJS](https://nodejs.org/en/download/)
 
@@ -35,6 +37,8 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 * Grab the submodules `git submodule init && git submodule update`
 * Install the required Node Packages `npm install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `npm start` command.
+* Run the project in Visual Studio
+* Open http://localhost:8686
 
 *Please note gulp must be running at all times while you are working with Lidarr client source files.*
 

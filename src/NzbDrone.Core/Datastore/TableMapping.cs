@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Datastore
                   .Relationships.AutoMapICollectionOrComplexProperties()
                   .For("Tracks")
                   .LazyLoad(condition: parent => parent.Id > 0,
-                            query: (db, parent) => db.Query<Track>().Where(c => c.ItunesTrackId == parent.Id).ToList())
+                            query: (db, parent) => db.Query<Track>().Where(c => c.ArtistId == parent.Id).ToList()) // TODO: Figure what the hell to do here
                   .HasOne(file => file.Artist, file => file.AlbumId); 
 
             Mapper.Entity<Track>().RegisterModel("Tracks")
@@ -110,6 +110,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(e => e.Album)
                   .Ignore(e => e.HasFile)
                   .Relationship()
+                  // TODO: Need to implement ArtistId to Artist.Id here
                   .HasOne(track => track.TrackFile, track => track.TrackFileId); // TODO: Check lazy load for artists
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")

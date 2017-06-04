@@ -9,8 +9,8 @@ module.exports = {
     Keys : {
         DefaultProfileId    : 'DefaultProfileId',
         DefaultRootFolderId : 'DefaultRootFolderId',
-        UseSeasonFolder     : 'UseSeasonFolder',
-        DefaultSeriesType   : 'DefaultSeriesType',
+        UseAlbumFolder      : 'UseAlbumFolder',
+        DefaultArtistType   : 'DefaultArtistType',
         MonitorEpisodes     : 'MonitorEpisodes',
         AdvancedSettings    : 'advancedSettings'
     },

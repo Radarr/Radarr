@@ -28,12 +28,12 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
             var profile = new Profile 
             {  
                 Id = 1,
-                Cutoff = Quality.WEBDL480p,
+                Cutoff = Quality.MP3256,
                 Items = new List<ProfileQualityItem> 
                 { 
-                    new ProfileQualityItem { Allowed = true, Quality = Quality.SDTV },
-                    new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL480p },
-                    new ProfileQualityItem { Allowed = true, Quality = Quality.RAWHD }
+                    new ProfileQualityItem { Allowed = true, Quality = Quality.MP3192 },
+                    new ProfileQualityItem { Allowed = true, Quality = Quality.MP3256 },
+                    new ProfileQualityItem { Allowed = true, Quality = Quality.FLAC }
                 }
             };
 
@@ -66,12 +66,12 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
 
             _qualitiesBelowCutoff = new List<QualitiesBelowCutoff>
                                     {
-                                        new QualitiesBelowCutoff(profile.Id, new[] {Quality.SDTV.Id})
+                                        new QualitiesBelowCutoff(profile.Id, new[] {Quality.MP3192.Id})
                                     };
 
-            var qualityMet = new EpisodeFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.WEBDL480p } };
-            var qualityUnmet = new EpisodeFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.SDTV } };
-            var qualityRawHD = new EpisodeFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.RAWHD } };
+            var qualityMet = new EpisodeFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3256 } };
+            var qualityUnmet = new EpisodeFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3192 } };
+            var qualityRawHD = new EpisodeFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.FLAC } };
 
             MediaFileRepository fileRepository = Mocker.Resolve<MediaFileRepository>();
 
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
             var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, false);
 
             spec.Records.Should().HaveCount(1);
-            spec.Records.Should().OnlyContain(e => e.EpisodeFile.Value.Quality.Quality == Quality.SDTV);
+            spec.Records.Should().OnlyContain(e => e.EpisodeFile.Value.Quality.Quality == Quality.MP3192);
         }
 
         [Test]

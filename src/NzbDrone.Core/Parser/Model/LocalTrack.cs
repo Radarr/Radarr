@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Parser.Model
         public MediaInfoModel MediaInfo { get; set; }
         public bool ExistingFile { get; set; }
 
-        public int Album
+        public string Album
         {
             get
             {
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Parser.Model
             }
         }
 
-        public bool IsSpecial => Album == 0;
+        public bool IsSpecial => Album != "";
 
         public override string ToString()
         {

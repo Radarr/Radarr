@@ -8,7 +8,7 @@ namespace NzbDrone.Api.Music
 {
     public class AlbumResource
     {
-        public int AlbumId { get; set; }
+        public string AlbumId { get; set; }
         public string AlbumName { get; set; }
         public bool Monitored { get; set; }
         public int Year { get; set; }

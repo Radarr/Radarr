@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Music
     {
         bool ArtistPathExists(string path);
         Artist FindByName(string cleanTitle);
-        Artist FindByItunesId(int iTunesId);
+        Artist FindById(string spotifyId);
     }
 
     public class ArtistRepository : BasicRepository<Artist>, IArtistRepository
@@ -24,9 +24,9 @@ namespace NzbDrone.Core.Music
             return Query.Where(c => c.Path == path).Any();
         }
 
-        public Artist FindByItunesId(int iTunesId)
+        public Artist FindById(string spotifyId)
         {
-            return Query.Where(s => s.ItunesId == iTunesId).SingleOrDefault();
+            return Query.Where(s => s.SpotifyId == spotifyId).SingleOrDefault();
         }
 
         public Artist FindByName(string cleanName)

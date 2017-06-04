@@ -1,4 +1,4 @@
-using FizzWare.NBuilder;
+﻿using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Profiles;
@@ -17,9 +17,9 @@ namespace NzbDrone.Core.Test.TvTests.SeriesRepositoryTests
         {
             var profile = new Profile
                 {
-                    Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
+                    Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3320, Quality.MP3256, Quality.MP3192),
 
-                    Cutoff = Quality.Bluray1080p,
+                    Cutoff = Quality.MP3320,
                     Name = "TestProfile"
                 };
 

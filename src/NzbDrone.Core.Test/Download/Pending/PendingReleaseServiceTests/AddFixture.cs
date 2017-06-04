@@ -39,12 +39,12 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _profile = new Profile
                        {
                            Name = "Test",
-                           Cutoff = Quality.HDTV720p,
+                           Cutoff = Quality.MP3256,
                            Items = new List<ProfileQualityItem>
                                    {
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3256 },
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3320 },
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3320 }
                                    },
                        };
 
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
             _parsedEpisodeInfo = Builder<ParsedEpisodeInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _parsedEpisodeInfo.Quality = new QualityModel(Quality.MP3256);
 
             _remoteEpisode = new RemoteEpisode();
             _remoteEpisode.Episodes = new List<Episode>{ _episode };

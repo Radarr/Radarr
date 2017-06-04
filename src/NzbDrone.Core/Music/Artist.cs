@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Music
 
         }
 
-        public int ItunesId { get; set; }
+        public string SpotifyId { get; set; }
         public string ArtistName { get; set; }
         public string ArtistSlug { get; set; }
         public string CleanTitle { get; set; }
@@ -32,44 +32,28 @@ namespace NzbDrone.Core.Music
         public bool ArtistFolder { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public DateTime? LastDiskSync { get; set; }
-        
         public int Status { get; set; } // TODO: Figure out what this is, do we need it? 
         public string Path { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<string> Genres { get; set; }
         public int QualityProfileId { get; set; }
-
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public int ProfileId { get; set; }
         public List<Album> Albums { get; set; }
         public HashSet<int> Tags { get; set; }
-        
         public AddSeriesOptions AddOptions { get; set; }
-
-        //public string SortTitle { get; set; }
-        //public SeriesStatusType Status { get; set; }
-        //public int Runtime { get; set; }
-        //public SeriesTypes SeriesType { get; set; }
-        //public string Network { get; set; }
-        //public bool UseSceneNumbering { get; set; }
-        //public string TitleSlug { get; set; }
-        //public int Year { get; set; }
-        //public Ratings Ratings { get; set; }
-        //public List<Actor> Actors { get; set; } // MOve to album?
-        //public string Certification { get; set; }
-        //public DateTime? FirstAired { get; set; }
 
         public override string ToString()
         {
-            return string.Format("[{0}][{1}]", ItunesId, ArtistName.NullSafe());
+            return string.Format("[{0}][{1}]", SpotifyId, ArtistName.NullSafe());
         }
 
         public void ApplyChanges(Artist otherArtist)
         {
 
-            ItunesId = otherArtist.ItunesId;
+            SpotifyId = otherArtist.SpotifyId;
             ArtistName = otherArtist.ArtistName;
             ArtistSlug = otherArtist.ArtistSlug;
             CleanTitle = otherArtist.CleanTitle;
@@ -88,18 +72,11 @@ namespace NzbDrone.Core.Music
             ArtistFolder = otherArtist.ArtistFolder;
             AddOptions = otherArtist.AddOptions;
 
-
-        //TODO: Implement
-        ItunesId = otherArtist.ItunesId;
-
             Albums = otherArtist.Albums;
             Path = otherArtist.Path;
             ProfileId = otherArtist.ProfileId;
-
             AlbumFolder = otherArtist.AlbumFolder;
             Monitored = otherArtist.Monitored;
-
-            //SeriesType = otherArtist.SeriesType;
             RootFolderPath = otherArtist.RootFolderPath;
             Tags = otherArtist.Tags;
             AddOptions = otherArtist.AddOptions;

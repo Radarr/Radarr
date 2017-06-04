@@ -6,6 +6,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 {
     public interface IProvideArtistInfo
     {
-        Tuple<Artist, List<Track>> GetArtistInfo(int itunesId);
+        Tuple<Artist, List<Track>> GetArtistInfo(string spotifyId);
     }
 }

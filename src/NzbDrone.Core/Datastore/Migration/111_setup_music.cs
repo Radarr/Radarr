@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Create.TableForModel("Artist")
-                .WithColumn("ItunesId").AsInt32().Unique()
+                .WithColumn("SpotifyId").AsString().Nullable().Unique()
                 .WithColumn("ArtistName").AsString().Unique()
                 .WithColumn("ArtistSlug").AsString().Nullable() //.Unique()
                 .WithColumn("CleanTitle").AsString().Nullable() // Do we need this?
@@ -37,8 +37,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 ;
 
             Create.TableForModel("Albums")
-                .WithColumn("AlbumId").AsInt32()
-                .WithColumn("ArtistId").AsInt32()
+                .WithColumn("AlbumId").AsString().Unique()
+                .WithColumn("ArtistId").AsInt32() // Should this be artistId (string)
                 .WithColumn("Title").AsString()
                 .WithColumn("Year").AsInt32()
                 .WithColumn("Image").AsInt32()
@@ -48,15 +48,16 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Overview").AsString();
 
             Create.TableForModel("Tracks")
-                .WithColumn("ItunesTrackId").AsInt32().Unique()
-                .WithColumn("AlbumId").AsInt32()
-                .WithColumn("ArtistsId").AsString().Nullable()
+                .WithColumn("SpotifyTrackId").AsString().Nullable() // This shouldn't be nullable, but TrackRepository won't behave. Someone please fix this.
+                .WithColumn("AlbumId").AsString()
+                .WithColumn("ArtistId").AsString() // This may be a list of Ids in future for compilations
+                .WithColumn("ArtistSpotifyId").AsString()
+                .WithColumn("Compilation").AsBoolean()
                 .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Ignored").AsBoolean().Nullable()
                 .WithColumn("Explict").AsBoolean()
-                .WithColumn("TrackExplicitName").AsString().Nullable()
-                .WithColumn("TrackCensoredName").AsString().Nullable()
+                .WithColumn("Monitored").AsBoolean()
                 .WithColumn("TrackFileId").AsInt32().Nullable()
                 .WithColumn("ReleaseDate").AsDateTime().Nullable();
 
