@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
                 if (parsedMovieInfo != null)
                 {
-                    trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null);
+                    trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).remoteMovie;
                 }
 
                 if (historyItems.Any())
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
                         if (parsedMovieInfo != null)
                         {
-                            trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null);
+                            trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).remoteMovie;
                         }
                     }
                 }

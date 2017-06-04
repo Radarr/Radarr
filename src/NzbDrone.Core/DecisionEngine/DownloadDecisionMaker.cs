@@ -73,12 +73,17 @@ namespace NzbDrone.Core.DecisionEngine
 
 					if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
 					{
-						RemoteMovie remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
-						remoteMovie.Release = report;
+						MappingResult result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                        var remoteMovie = result.remoteMovie;
 
-						if (remoteMovie.Movie == null)
+                        remoteMovie.Release = report;
+
+						if (result.GetType() != typeof(MappingResultSuccess))
 						{
-							decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Movie found does not match wanted movie."));
+                            var message = result.message;
+                            remoteMovie.Movie = null; // HACK: For now!
+							decision = new DownloadDecision(remoteMovie, new Rejection(message));
+
 						}
 						else
 						{
