@@ -97,7 +97,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _configureTemplateHelpers : function() {
-        var existingArtist = ArtistCollection.where({ SpotifyId : this.model.get('spotifyId') });
+        var existingArtist = ArtistCollection.where({ spotifyId : this.model.get('spotifyId') });
 
         if (existingArtist.length > 0) {
             this.templateHelpers.existing = existingArtist[0].toJSON();
