@@ -1287,6 +1287,7 @@
     <Compile Include="NetImport\ImportExclusions\ImportExclusionsRepository.cs" />
     <Compile Include="NetImport\ImportExclusions\ImportExclusionsService.cs" />
     <Compile Include="Datastore\Migration\138_add_physical_release_note.cs" />
+    <Compile Include="Indexers\IIndexerSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

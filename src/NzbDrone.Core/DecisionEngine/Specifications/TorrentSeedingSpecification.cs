@@ -17,7 +17,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
             _logger = logger;
         }
 
-        public SpecificationPriority Priority => SpecificationPriority.Default;
+        //public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
 
