@@ -42,8 +42,8 @@ var view = Marionette.ItemView.extend({
         vent.trigger(vent.Commands.CloseModalCommand);
     },
 
-    _removeSeries : function() {
-        vent.trigger(vent.Commands.DeleteSeriesCommand, { series : this.model });
+    _removeArtist : function() {
+        vent.trigger(vent.Commands.DeleteArtistCommand, { artist : this.model });
     }
 });
 
