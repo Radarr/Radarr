@@ -6,6 +6,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Profiles
 {
@@ -22,13 +23,13 @@ namespace NzbDrone.Core.Profiles
     public class ProfileService : IProfileService, IHandle<ApplicationStartedEvent>
     {
         private readonly IProfileRepository _profileRepository;
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, ISeriesService seriesService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IArtistService artistService, Logger logger)
         {
             _profileRepository = profileRepository;
-            _seriesService = seriesService;
+            _artistService = artistService;
             _logger = logger;
         }
 
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.Profiles
 
         public void Delete(int id)
         {
-            if (_seriesService.GetAllSeries().Any(c => c.ProfileId == id))
+            if (_artistService.GetAllArtists().Any(c => c.ProfileId == id))
             {
                 throw new ProfileInUseException(id);
             }

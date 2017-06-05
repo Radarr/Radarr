@@ -14,6 +14,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         }
 
         public List<ArtistInfoResource> Items { get; set; }
+        public int Count { get; set; }
     }
 
     public class AlbumResultResource
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         }
 
         public List<AlbumInfoResource> Items { get; set; }
+        public int Count { get; set; }
     }
 
     public class TrackResultResource
@@ -34,6 +36,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         }
 
         public List<TrackInfoResource> Items { get; set; }
+        public int Count { get; set; }
     }
     public class ArtistResource
     {
