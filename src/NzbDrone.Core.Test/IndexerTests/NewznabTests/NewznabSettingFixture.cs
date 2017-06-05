@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var setting = new NewznabSettings()
             {
                 ApiKey = "",
-                Url = url
+                BaseUrl = url
             };
 
 
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var setting = new NewznabSettings
             {
                 ApiKey = "",
-                Url = url
+                BaseUrl = url
             };
 
 
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var setting = new NewznabSettings()
             {
                 ApiKey = "",
-                Url = url
+                BaseUrl = url
             };
 
 
