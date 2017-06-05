@@ -391,7 +391,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
             else
             {*/
-                request = new HttpRequestBuilder("https://radarr.video/api/{action}/").SetSegment("action", action).Build();
+                request = new HttpRequestBuilder("https://api.radarr.video/{action}/").SetSegment("action", action).Build();
 
                 request.AllowAutoRedirect = true;
                 request.Method = HttpMethod.POST;
