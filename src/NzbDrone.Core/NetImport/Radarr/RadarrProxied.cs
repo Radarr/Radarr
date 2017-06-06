@@ -34,6 +34,7 @@ namespace NzbDrone.Core.NetImport.Radarr
                 {
                     yield return def;
                 }
+
                 yield return new NetImportDefinition
                 {
                     Name = "IMDb Top 250",
