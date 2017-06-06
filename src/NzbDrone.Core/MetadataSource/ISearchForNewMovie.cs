@@ -8,5 +8,7 @@ namespace NzbDrone.Core.MetadataSource
         List<Movie> SearchForNewMovie(string title);
 
         Movie MapMovieToTmdbMovie(Movie movie);
+
+        Movie MapMovie(SkyHook.Resource.MovieResult result);
     }
 }

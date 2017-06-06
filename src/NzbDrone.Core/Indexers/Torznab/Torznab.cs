@@ -37,13 +37,10 @@ namespace NzbDrone.Core.Indexers.Torznab
             return new TorznabRssParser();
         }
 
-        public override IEnumerable<ProviderDefinition> DefaultDefinitions
+        public override IEnumerable<ProviderDefinition> GetDefaultDefinitions()
         {
-            get
-            {
-                yield return GetDefinition("Jackett", GetSettings("http://localhost:9117/torznab/YOURINDEXER"));
-                yield return GetDefinition("HD4Free.xyz", GetSettings("http://hd4free.xyz"));
-            }
+            yield return GetDefinition("Jackett", GetSettings("http://localhost:9117/torznab/YOURINDEXER"));
+            yield return GetDefinition("HD4Free.xyz", GetSettings("http://hd4free.xyz"));
         }
 
         public Torznab(INewznabCapabilitiesProvider capabilitiesProvider, IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)

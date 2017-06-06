@@ -3,7 +3,12 @@ var $ = require('jquery');
 var vent = require('vent');
 var Marionette = require('marionette');
 var AddMoviesCollection = require('./AddMoviesCollection');
+var AddFromListCollection = require('./List/AddFromListCollection');
 var SearchResultCollectionView = require('./SearchResultCollectionView');
+var DiscoverableListDropdownView = require("./DiscoverableListDropdownView");
+var DiscoverableListCollection = require("./DiscoverableListCollection");
+var DiscoverableListCollectionView = require("./DiscoverableListCollectionView");
+var DiscoverMoviesCollection = require("./DiscoverMoviesCollection");
 var EmptyView = require('./EmptyView');
 var NotFoundView = require('./NotFoundView');
 var DiscoverEmptyView = require('./DiscoverEmptyView');
@@ -15,7 +20,8 @@ module.exports = Marionette.Layout.extend({
 		template : 'AddMovies/AddMoviesViewTemplate',
 
 		regions : {
-				searchResult : '#search-result'
+							myRegion : '#my-region',
+				searchResult : '#search-result',
 		},
 
 		ui : {
@@ -26,14 +32,17 @@ module.exports = Marionette.Layout.extend({
 				discoverBefore : ".x-discover-before",
 				discoverRecos : ".x-recommendations-tab",
 				discoverPopular : ".x-popular-tab" ,
-				discoverUpcoming : ".x-upcoming-tab"
+				discoverUpcoming : ".x-upcoming-tab",
+				discoverLists : ".x-lists-tab"
 		},
 
 		events : {
 				'click .x-load-more' : '_onLoadMore',
 				"click .x-recommendations-tab" : "_discoverRecos",
 				"click .x-popular-tab" : "_discoverPopular",
-				"click .x-upcoming-tab" : "_discoverUpcoming"
+				"click .x-upcoming-tab" : "_discoverUpcoming",
+				"click .x-lists-tab" : "_discoverLists",
+				"click .discoverable-list-item" : "_discoverList"
 		},
 
 		initialize : function(options) {
@@ -57,6 +66,15 @@ module.exports = Marionette.Layout.extend({
 						collection : this.collection,
 						isExisting : this.isExisting
 				});
+
+				/*this.listsDropdown = new DiscoverableListCollectionView({
+						collection : DiscoverableListCollection
+				});*/
+
+				this.listenTo(DiscoverableListCollection, 'sync', this._showListDropdown);
+				this.listsDropdown = new DiscoverableListCollectionView({
+						collection : DiscoverableListCollection
+				})
 
 				this.throttledSearch = _.debounce(this.search, 1000, { trailing : true }).bind(this);
 
@@ -124,6 +142,8 @@ module.exports = Marionette.Layout.extend({
 				this.ui.discoverBefore.hide();
 				this.ui.moviesSearch.focus();
 				this.ui.loadMore.hide();
+
+				this._showListDropdown();
 
 				if (this.isDiscover) {
 						this.ui.discoverBefore.show();
@@ -208,6 +228,14 @@ module.exports = Marionette.Layout.extend({
 				}
 		},
 
+		_showListDropdown : function() {
+			this.listsDropdown = new DiscoverableListDropdownView(DiscoverableListCollection.toJSON());
+			this.listsDropdown.render();
+			$("#list-dropdown").html(this.listsDropdown.$el.html());
+			//debugger;
+			//this.myRegion.show(new DiscoverableListDropdownView(DiscoverableListCollection.toJSON()));
+		},
+
 		_abortExistingSearch : function() {
 				if (this.currentSearchPromise && this.currentSearchPromise.readyState > 0 && this.currentSearchPromise.readyState < 4) {
 						console.log('aborting previous pending search request.');
@@ -229,7 +257,14 @@ module.exports = Marionette.Layout.extend({
 			if (this.collection.action === action) {
 				return
 			}
-			this.collection.reset();
+
+			if (this.collection.specialProperty === "special") {
+				this.collection.reset();
+				this.collection = new DiscoverMoviesCollection();
+				this.resultCollectionView.collection = this.collection;
+			}
+			
+			this.listenTo(this.collection, 'sync', this._showResults);
 			this.searchResult.show(new LoadingView());
 			this.collection.action = action;
 			this.currentSearchPromise = this.collection.fetch();
@@ -252,6 +287,23 @@ module.exports = Marionette.Layout.extend({
 			this.ui.discoverHeader.html("Movies coming to Blu-Ray in the next weeks");
 			this._discover("upcoming");
 		},
+
+		_discoverLists : function() {
+			/*this.ui.discoverLists.tab("show");
+			this.ui.discoverHeader.html("");*/
+		},
+
+		_discoverList : function(options) {
+			this.ui.discoverLists.tab("show");
+			this.ui.discoverHeader.html("Showing movies from list: "+options.target.textContent);
+
+			this.collection.reset();
+			this.collection = new AddFromListCollection();
+			this.listenTo(this.collection, 'sync', this._showResults);
+			this.searchResult.show(new LoadingView());
+			this.currentSearchPromise = this.collection.fetch({ data: { listId: options.target.value } });
+			this.resultCollectionView.collection = this.collection;
+		}
 
 
 });

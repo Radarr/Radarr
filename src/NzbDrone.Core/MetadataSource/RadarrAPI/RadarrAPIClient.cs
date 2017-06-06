@@ -11,11 +11,14 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
     {
         IHttpRequestBuilderFactory RadarrAPI { get; }
         List<MovieResult> DiscoverMovies(string action, Func<HttpRequest, HttpRequest> enhanceRequest);
+        string APIURL { get; }
     }
 
     public class RadarrAPIClient : IRadarrAPIClient
     {
         private readonly IHttpClient _httpClient;
+
+        public string APIURL { get; private set; }
 
         public RadarrAPIClient(IConfigFileProvider configFile, IHttpClient httpClient)
         {
@@ -23,15 +26,15 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
             if (configFile.Branch == "nightly")
             {
-                RadarrAPI = new HttpRequestBuilder("https://staging.api.radarr.video/{route}/{action}")
-                .CreateFactory();
+                APIURL = "https://staging.api.radarr.video";
             }
             else
             {
-                RadarrAPI = new HttpRequestBuilder("https://api.radarr.video/v2/{route}/{action}")
-                .CreateFactory();
+                APIURL = "https://api.radarr.video/v2";
             }
 
+            RadarrAPI = new HttpRequestBuilder(APIURL+"/{route}/{action}")
+                                                        .CreateFactory();
         }
 
         private HttpResponse Execute(HttpRequest request)
