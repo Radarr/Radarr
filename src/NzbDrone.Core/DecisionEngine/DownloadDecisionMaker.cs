@@ -86,13 +86,14 @@ namespace NzbDrone.Core.DecisionEngine
                 titleAndGroup[0] = RemoveDiacritics(titleAndGroup[0]);
 
                 //check if there is a year in the movie title
-                string year = @"\d{4}";
-                System.Text.RegularExpressions.Regex r = new System.Text.RegularExpressions.Regex(year);
+                string year = @"\b(18|19|20)\d{2}\b";
+                _logger.ProgressTrace("DEV: Regex: {0}", year);
+                Regex r = new Regex(year);
                 string yearInTitle = r.Match(titleAndGroup[0]).ToString();
                 //if true, get year and put language after year
-                if (yearInTitle != "" || yearInTitle != null)
+                if (yearInTitle != "" && yearInTitle != null)
                 {
-                    _logger.ProgressTrace("DEV: Year found in title: {0}", yearInTitle);
+                    _logger.ProgressTrace("DEV: Year found in title: '{0}'", yearInTitle);
                     //check if wanted language is found in Title String
                     if (titleAndGroup[0].IndexOf(wantedLanguage) != -1)
                     {
@@ -128,7 +129,7 @@ namespace NzbDrone.Core.DecisionEngine
 
 
                 report.Title = titleAndGroup[0] + "-" + titleAndGroup[1];
-                _logger.ProgressTrace("DEV: Title after cleanup: {0}", report.Title);
+                _logger.ProgressTrace("DEV: Title after cleanup: '{0}'\n ...and now go processing:", report.Title);
 
                 //END silv3r23
                 DownloadDecision decision = null;
@@ -137,8 +138,7 @@ namespace NzbDrone.Core.DecisionEngine
                 try
                 {
                     // silv3r23
-                    //var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title);
-
+                     //var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title);
                     //result from indexer
                     var parsedMovieInfo = Parser.Parser.ParseMovieTitle(RemoveDiacritics(Parser.Parser.ReplaceGermanUmlauts(report.Title.Replace(":", " ").Replace(",", ""))));
                     _logger.ProgressTrace("DEV: Looking for: '{0}'", parsedMovieInfo.MovieTitle);
