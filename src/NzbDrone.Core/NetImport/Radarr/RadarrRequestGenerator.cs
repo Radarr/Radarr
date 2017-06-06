@@ -27,7 +27,11 @@ namespace NzbDrone.Core.NetImport.Radarr
 
             var baseUrl = $"{Settings.APIURL.TrimEnd("/")}";
 
-            pageableRequests.Add(new List<NetImportRequest> { new NetImportRequest($"{baseUrl}{Settings.Path}", HttpAccept.Json) });
+            var request = new NetImportRequest($"{baseUrl}{Settings.Path}", HttpAccept.Json);
+
+            request.HttpRequest.SuppressHttpError = true;
+
+            pageableRequests.Add(new List<NetImportRequest> { request });
             return pageableRequests;
         }
     }

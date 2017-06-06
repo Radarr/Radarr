@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿﻿using Newtonsoft.Json;
 using NzbDrone.Core.NetImport.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,8 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.MetadataSource.RadarrAPI;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {
@@ -49,15 +51,24 @@ namespace NzbDrone.Core.NetImport.Radarr
 
         protected virtual bool PreProcess(NetImportResponse indexerResponse)
         {
-            if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
+            try
             {
-                throw new NetImportException(indexerResponse, "List API call resulted in an unexpected StatusCode [{0}]", indexerResponse.HttpResponse.StatusCode);
+                var error = JsonConvert.DeserializeObject<RadarrError>(indexerResponse.HttpResponse.Content);
+
+                if (error != null && error.Errors != null && error.Errors.Count != 0)
+                {
+                    throw new RadarrAPIException(error);
+                }
+            }
+            catch (JsonSerializationException)
+            {
+                //No error!
             }
 
-            if (indexerResponse.HttpResponse.Headers.ContentType != null && indexerResponse.HttpResponse.Headers.ContentType.Contains("text/json") &&
-                indexerResponse.HttpRequest.Headers.Accept != null && !indexerResponse.HttpRequest.Headers.Accept.Contains("text/json"))
+
+            if (indexerResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new NetImportException(indexerResponse, "List responded with html content. Site is likely blocked or unavailable.");
+                throw new HttpException(indexerResponse.HttpRequest, indexerResponse.HttpResponse);
             }
 
             return true;
