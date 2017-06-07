@@ -7,7 +7,6 @@ var AddFromListCollection = require('./List/AddFromListCollection');
 var SearchResultCollectionView = require('./SearchResultCollectionView');
 var DiscoverableListDropdownView = require("./DiscoverableListDropdownView");
 var DiscoverableListCollection = require("./DiscoverableListCollection");
-var DiscoverableListCollectionView = require("./DiscoverableListCollectionView");
 var DiscoverMoviesCollection = require("./DiscoverMoviesCollection");
 var EmptyView = require('./EmptyView');
 var NotFoundView = require('./NotFoundView');
@@ -72,9 +71,9 @@ module.exports = Marionette.Layout.extend({
 				});*/
 
 				this.listenTo(DiscoverableListCollection, 'sync', this._showListDropdown);
-				this.listsDropdown = new DiscoverableListCollectionView({
+				/*this.listsDropdown = new DiscoverableListCollectionView({
 						collection : DiscoverableListCollection
-				})
+				})*/
 
 				this.throttledSearch = _.debounce(this.search, 1000, { trailing : true }).bind(this);
 
@@ -263,7 +262,7 @@ module.exports = Marionette.Layout.extend({
 				this.collection = new DiscoverMoviesCollection();
 				this.resultCollectionView.collection = this.collection;
 			}
-			
+
 			this.listenTo(this.collection, 'sync', this._showResults);
 			this.searchResult.show(new LoadingView());
 			this.collection.action = action;
