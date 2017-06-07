@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Parser
         private readonly IMovieService _movieService;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
- 
+
 
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
@@ -197,9 +197,9 @@ namespace NzbDrone.Core.Parser
         public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
         {
             var remoteEpisode = new RemoteEpisode
-                {
-                    ParsedEpisodeInfo = parsedEpisodeInfo,
-                };
+            {
+                ParsedEpisodeInfo = parsedEpisodeInfo,
+            };
 
             var series = GetSeries(parsedEpisodeInfo, tvdbId, tvRageId, searchCriteria);
 
@@ -236,11 +236,11 @@ namespace NzbDrone.Core.Parser
         public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int seriesId, IEnumerable<int> episodeIds)
         {
             return new RemoteEpisode
-                   {
-                       ParsedEpisodeInfo = parsedEpisodeInfo,
-                       Series = _seriesService.GetSeries(seriesId),
-                       Episodes = _episodeService.GetEpisodes(episodeIds)
-                   };
+            {
+                ParsedEpisodeInfo = parsedEpisodeInfo,
+                Series = _seriesService.GetSeries(seriesId),
+                Episodes = _episodeService.GetEpisodes(episodeIds)
+            };
         }
 
         public List<Episode> GetEpisodes(ParsedEpisodeInfo parsedEpisodeInfo, Series series, bool sceneSource, SearchCriteriaBase searchCriteria = null)
@@ -352,6 +352,7 @@ namespace NzbDrone.Core.Parser
             // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
             if (!String.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
+                _logger.Debug("Try matching by imdbID");
                 Movie movieByImDb;
                 if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out movieByImDb))
                 {
@@ -361,6 +362,7 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria != null)
             {
+                _logger.Debug("Try matching by SearchCriteria");
                 Movie movieBySearchCriteria;
                 if (TryGetMovieBySearchCriteria(parsedMovieInfo, searchCriteria, out movieBySearchCriteria))
                 {
@@ -369,6 +371,7 @@ namespace NzbDrone.Core.Parser
             }
             else
             {
+                _logger.Debug("Try matching by TitleAndOrYear");
                 Movie movieByTitleAndOrYear;
                 if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out movieByTitleAndOrYear))
                 {
@@ -377,13 +380,14 @@ namespace NzbDrone.Core.Parser
             }
 
             // nothing found up to here => logging that and returning null
-            _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
+            _logger.Debug($"No matching movie: {parsedMovieInfo.MovieTitle}");
             return null;
         }
 
         private bool TryGetMovieByImDbId(ParsedMovieInfo parsedMovieInfo, string imdbId, out Movie movie)
         {
             movie = _movieService.FindByImdbId(imdbId);
+            //_logger.Debug("parsedMovieInfo.Year: '{0}'", parsedMovieInfo.Year);
             //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
             if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
             {
@@ -431,6 +435,7 @@ namespace NzbDrone.Core.Parser
 
             foreach (string title in possibleTitles)
             {
+                _logger.Debug("compare '{0}' with '{1}'", title, parsedMovieInfo.MovieTitle.CleanSeriesTitle());
                 if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                 {
                     possibleMovie = searchCriteria.Movie;
@@ -441,7 +446,7 @@ namespace NzbDrone.Core.Parser
                     string arabicNumeral = numeralMapping.ArabicNumeralAsString;
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
-                    _logger.Debug(cleanTitle);
+                    _logger.Debug("cleanTitle: {0}", cleanTitle);
 
                     if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
