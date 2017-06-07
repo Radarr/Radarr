@@ -352,6 +352,7 @@ namespace NzbDrone.Core.Parser
             // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
             if (!String.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
+                _logger.Debug("Try matching by imdbID");
                 Movie movieByImDb;
                 if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out movieByImDb))
                 {
@@ -361,6 +362,7 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria != null)
             {
+                _logger.Debug("Try matching by SearchCriteria");
                 Movie movieBySearchCriteria;
                 if (TryGetMovieBySearchCriteria(parsedMovieInfo, searchCriteria, out movieBySearchCriteria))
                 {
@@ -369,6 +371,7 @@ namespace NzbDrone.Core.Parser
             }
             else
             {
+                _logger.Debug("Try matching by TitleAndOrYear");
                 Movie movieByTitleAndOrYear;
                 if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out movieByTitleAndOrYear))
                 {
@@ -431,6 +434,7 @@ namespace NzbDrone.Core.Parser
 
             foreach (string title in possibleTitles)
             {
+                _logger.Debug("compare '{0}' with '{1}'", title, parsedMovieInfo.MovieTitle.CleanSeriesTitle());
                 if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                 {
                     possibleMovie = searchCriteria.Movie;
@@ -441,7 +445,7 @@ namespace NzbDrone.Core.Parser
                     string arabicNumeral = numeralMapping.ArabicNumeralAsString;
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
-                    _logger.Debug(cleanTitle);
+                    _logger.Debug("cleanTitle: {0}", cleanTitle);
 
                     if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {

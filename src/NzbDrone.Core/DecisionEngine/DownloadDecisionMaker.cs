@@ -9,6 +9,9 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using System.Text;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -64,14 +67,77 @@ namespace NzbDrone.Core.DecisionEngine
 
             foreach (var report in reports)
             {
+                //get wanted Language for this movie
+                var wantedLanguage = searchCriteria.Movie.Profile.Value.Language.ToString();
+                _logger.ProgressTrace("DEV: Wanted Language: {0}", wantedLanguage);
+                _logger.ProgressTrace("DEV: Title before cleanup: {0}", report.Title);
+                //seperate Group from MovieTitle
+                string[] stringSeparators = new string[] { "-" };
+                string[] titleAndGroup = report.Title.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                //prepare MovieTitle for parsing
+                _logger.ProgressTrace("DEV: Title w/o Group: {0}", titleAndGroup[0]);
+                _logger.ProgressTrace("DEV: Group: {0}", String.IsNullOrEmpty(titleAndGroup[1]) ? "EmptyGroup" : titleAndGroup[1]);
+                titleAndGroup[0] = titleAndGroup[0].Replace(" ", ".").Replace(":", ".").Replace("(", ".").Replace(")", ".").Replace("[", ".").Replace("]", ".").Replace("..", ".").Replace("ß", "ss");
+                //Remove RemoveDiacritics
+                titleAndGroup[0] = RemoveDiacritics(titleAndGroup[0]);
+
+                //check if there is a year in the movie title
+                string year = @"\b(18|19|20)\d{2}\b";
+                _logger.ProgressTrace("DEV: Regex: {0}", year);
+                Regex r = new Regex(year);
+                string yearInTitle = r.Match(titleAndGroup[0]).ToString();
+                //if true, get year and put language after year
+                if (yearInTitle != "" && yearInTitle != null)
+                {
+                    _logger.ProgressTrace("DEV: Year found in title: '{0}'", yearInTitle);
+                    //check if wanted language is found in Title String
+                    if (titleAndGroup[0].IndexOf(wantedLanguage) != -1)
+                    {
+                        //remove wanted language from movie title and place language after the year
+                        //titleAndGroup[0] = titleAndGroup[0].ToLower().Replace(wantedLanguage.ToLower(), "").Replace("..", ".");
+
+                        titleAndGroup[0] = Regex.Replace(titleAndGroup[0], wantedLanguage, "", RegexOptions.IgnoreCase);
+                        titleAndGroup[0] = titleAndGroup[0].Replace("..", ".");
+
+                        _logger.ProgressTrace("DEV: Language '{0}' has been removed: {1}", wantedLanguage, titleAndGroup[0]);
+
+                        string[] stringSeparatorsTemp = new string[] { yearInTitle };
+                        string[] titleTemp = titleAndGroup[0].Split(stringSeparatorsTemp, StringSplitOptions.RemoveEmptyEntries);
+                        titleAndGroup[0] = "";
+                        int i = 0;
+                        foreach (string ttemp in titleTemp)
+                        {
+                            _logger.ProgressTrace("DEV-Temp0: Array-Position : {0}", ttemp);
+                            if (i == 1) //because the year is the first seperator
+                            {
+                                titleAndGroup[0] = titleAndGroup[0] + yearInTitle + "." + wantedLanguage + ttemp;
+                                _logger.ProgressTrace("DEV-Temp1: New Title : {0}", titleAndGroup[0]);
+                            }
+                            else titleAndGroup[0] += ttemp;
+                            _logger.ProgressTrace("DEV-Temp2: New Title : {0}", titleAndGroup[0]);
+                            i++;
+                        }
+                        _logger.ProgressTrace("DEV: Language has been placed to the right order: {0}", titleAndGroup[0]);
+                    }
+                    else _logger.ProgressTrace("DEV: No Language found, seems to be an English RLS: {0}", titleAndGroup[0]);
+                }
+                else _logger.ProgressTrace("DEV: NO Year found in title: {0}", titleAndGroup[0]);
+
+
+                report.Title = titleAndGroup[0] + "-" + titleAndGroup[1];
+                _logger.ProgressTrace("DEV: Title after cleanup: '{0}'\n ...and now go processing:", report.Title);
+
                 DownloadDecision decision = null;
                 _logger.ProgressTrace("Processing release {0}/{1}", reportNumber, reports.Count);
 
                 try
                 {
-                    var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title);
+                    //var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title);
+                    //result from indexer
+                    var parsedMovieInfo = Parser.Parser.ParseMovieTitle(RemoveDiacritics(Parser.Parser.ReplaceGermanUmlauts(report.Title.Replace(":", " ").Replace(",", ""))));
+                    _logger.ProgressTrace("DEV: Looking for: '{0}'", parsedMovieInfo.MovieTitle);
 
-					if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
+                    if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
 					{
 						RemoteMovie remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
 						remoteMovie.Release = report;
@@ -141,6 +207,21 @@ namespace NzbDrone.Core.DecisionEngine
                     yield return decision;
                 }
             }
+        }
+
+        public static String RemoveDiacritics(String s)
+        {
+            String normalizedString = s.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < normalizedString.Length; i++)
+            {
+                Char c = normalizedString[i];
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    stringBuilder.Append(c);
+            }
+
+            return stringBuilder.ToString();
         }
 
         private IEnumerable<DownloadDecision> GetDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
