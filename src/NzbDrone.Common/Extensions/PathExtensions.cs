@@ -14,11 +14,11 @@ namespace NzbDrone.Common.Extensions
         private const string NZBDRONE_DB = "lidarr.db";
         private const string NZBDRONE_LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
-        private const string UPDATE_CLIENT_EXE = "lidarr.Update.exe";
+        private const string UPDATE_CLIENT_EXE = "Lidarr.Update.exe";
         private const string BACKUP_FOLDER = "Backups";
 
         private static readonly string UPDATE_SANDBOX_FOLDER_NAME = "lidarr_update" + Path.DirectorySeparatorChar;
-        private static readonly string UPDATE_PACKAGE_FOLDER_NAME = "lidarr" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_PACKAGE_FOLDER_NAME = "Lidarr" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_BACKUP_FOLDER_NAME = "lidarr_backup" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_BACKUP_APPDATA_FOLDER_NAME = "lidarr_appdata_backup" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_CLIENT_FOLDER_NAME = "NzbDrone.Update" + Path.DirectorySeparatorChar;
