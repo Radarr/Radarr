@@ -11,6 +11,7 @@ module.exports = {
     Keys : {
         DefaultProfileId    : 'RadarrDefaultProfileId',
         DefaultRootFolderId : 'RadarrDefaultRootFolderId',
+        DefaultMinAvailability : "RadarrDefaultMinAvailability",
         UseSeasonFolder     : 'RadarrUseSeasonFolder',
         DefaultSeriesType   : 'RadarrDefaultSeriesType',
         MonitorEpisodes     : 'RadarrMonitorEpisodes',
