@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         }
     }
 
-    public class OmgwtfnzbsSettings : IProviderConfig
+    public class OmgwtfnzbsSettings : IIndexerSettings
     {
         private static readonly OmgwtfnzbsSettingsValidator Validator = new OmgwtfnzbsSettingsValidator();
 
