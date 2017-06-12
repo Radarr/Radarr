@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 
 
@@ -14,13 +15,15 @@ namespace NzbDrone.Core.NetImport.TMDb
 
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
+        private readonly ISearchForNewMovie _skyhookProxy;
 
-        public TMDbImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService,
+        public TMDbImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
             Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {
             _logger = logger;
             _httpClient = httpClient;
+            _skyhookProxy = skyhookProxy;
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()
@@ -35,7 +38,7 @@ namespace NzbDrone.Core.NetImport.TMDb
 
         public override IParseNetImportResponse GetParser()
         {
-            return new TMDbParser(Settings);
+            return new TMDbParser(Settings, _skyhookProxy);
         }
     }
 }

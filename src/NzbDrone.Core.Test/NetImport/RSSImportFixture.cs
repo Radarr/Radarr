@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.NetImport
         [SetUp]
         public void Setup()
         {
-            Subject.Definition = Subject.DefaultDefinitions.First();
+            Subject.Definition = Subject.GetDefaultDefinitions().First();
         }
         private void GivenRecentFeedResponse(string rssXmlFile)
         {

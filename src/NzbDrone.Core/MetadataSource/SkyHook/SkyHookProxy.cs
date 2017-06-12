@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -17,6 +17,8 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MetadataSource.RadarrAPI;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -31,9 +33,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IMovieService _movieService;
         private readonly IPreDBService _predbService;
         private readonly IImportExclusionsService _exclusionService;
+        private readonly IRadarrAPIClient _radarrAPI;
+
+        private readonly IHttpRequestBuilderFactory _apiBuilder;
 
         public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService,
-                            IPreDBService predbService, IImportExclusionsService exclusionService, Logger logger)
+                            IPreDBService predbService, IImportExclusionsService exclusionService, IRadarrAPIClient radarrAPI, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
@@ -42,6 +47,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _movieService = movieService;
             _predbService = predbService;
             _exclusionService = exclusionService;
+            _radarrAPI = radarrAPI;
+
             _logger = logger;
         }
 
@@ -362,55 +369,31 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             string allIds = string.Join(",", allMovies.Select(m => m.TmdbId));
             string ignoredIds = string.Join(",", allExclusions.Select(ex => ex.TmdbId));
 
-            HttpRequest request;
-            List<MovieResult> results;
+            List<MovieResult> results = new List<MovieResult>();
 
-            /*if (action == "upcoming")
+            try
             {
-                var lastWeek = DateTime.Now.AddDays(-7);
-                var threeWeeks = DateTime.Now.AddDays(7 * 3);
-
-                request = _movieBuilder.Create().SetSegment("route", "discover")
-                                         .SetSegment("id", "movie")
-                                         .SetSegment("secondaryRoute", "")
-                                         .AddQueryParam("region", "us")
-                                         .AddQueryParam("with_release_type", "5|4|6")
-                                         .AddQueryParam("release_date.gte", lastWeek.ToString("yyyy-MM-dd"))
-                                         .AddQueryParam("sort_by", "popularity.desc")
-                                         .AddQueryParam("release_date.lte", threeWeeks.ToString("yyyy-MM-dd")).Build();
-
-
-                var response = _httpClient.Get<MovieSearchRoot>(request);
-
-                if (response.StatusCode != HttpStatusCode.OK)
+                results = _radarrAPI.DiscoverMovies(action, (request) =>
                 {
-                    throw new HttpException(request, response);
-                }
+                    request.AllowAutoRedirect = true;
+                    request.Method = HttpMethod.POST;
+                    request.Headers.ContentType = "application/x-www-form-urlencoded";
+                    request.SetContent($"tmdbIds={allIds}&ignoredIds={ignoredIds}");
+                    return request;
+                });
 
-                results = response.Resource.results.ToList();
+                results = results.Where(m => allMovies.None(mo => mo.TmdbId == m.id) && allExclusions.None(ex => ex.TmdbId == m.id)).ToList();
             }
-            else
-            {*/
-                request = new HttpRequestBuilder("https://api.radarr.video/{action}/").SetSegment("action", action).Build();
+            catch (RadarrAPIException exception)
+            {
+                _logger.Error(exception, "Failed to discover movies for action {0}!", action);
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception, "Failed to discover movies for action {0}!", action);
+            }
 
-                request.AllowAutoRedirect = true;
-                request.Method = HttpMethod.POST;
-                request.Headers.ContentType = "application/x-www-form-urlencoded";
-                request.SetContent($"tmdbids={allIds}&ignoredIds={ignoredIds}");
-
-                var response = _httpClient.Post<List<MovieResult>>(request);
-
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    throw new HttpException(request, response);
-                }
-
-                results = response.Resource;
-            //}
-
-            results = results.Where(m => allMovies.None(mo => mo.TmdbId == m.id) && allExclusions.None(ex => ex.TmdbId == m.id)).ToList();
-
-            return results.SelectList(MapMovie);
+            return results.SelectList(MapMovie);       
         }
 
         private string StripTrailingTheFromTitle(string title)
@@ -499,7 +482,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             _logger.Warn("Cleaned response: " + responseCleaned);
 
-            ImdbResource json = JsonConvert.DeserializeObject<ImdbResource>(responseCleaned);
+            ImdbResource json =Json Convert.DeserializeObject<ImdbResource>(responseCleaned);
 
             _logger.Warn("Json object: " + json);
 
@@ -563,7 +546,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        private Movie MapMovie(MovieResult result)
+        public Movie MapMovie(MovieResult result)
         {
             var imdbMovie = new Movie();
             imdbMovie.TmdbId = result.id;
@@ -573,20 +556,28 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 imdbMovie.Title = result.title;
                 imdbMovie.TitleSlug = Parser.Parser.ToUrlSlug(result.title);
 
-                if (result.release_date.IsNotNullOrWhiteSpace())
+                try
                 {
-					imdbMovie.InCinemas = DateTime.Parse(result.release_date);
-                    imdbMovie.Year = imdbMovie.InCinemas.Value.Year;
-                }
-
-                if (result.physical_release.IsNotNullOrWhiteSpace())
-                {
-                    imdbMovie.PhysicalRelease = DateTime.Parse(result.physical_release);
-                    if (result.physical_release_note.IsNotNullOrWhiteSpace())
+                    if (result.release_date.IsNotNullOrWhiteSpace())
                     {
-                        imdbMovie.PhysicalReleaseNote = result.physical_release_note;
+                        imdbMovie.InCinemas = DateTime.Parse(result.release_date);
+                        imdbMovie.Year = imdbMovie.InCinemas.Value.Year;
+                    }
+
+                    if (result.physical_release.IsNotNullOrWhiteSpace())
+                    {
+                        imdbMovie.PhysicalRelease = DateTime.Parse(result.physical_release);
+                        if (result.physical_release_note.IsNotNullOrWhiteSpace())
+                        {
+                            imdbMovie.PhysicalReleaseNote = result.physical_release_note;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    _logger.Debug("Not a valid date time.");
+                }
+
 
 
                 var now = DateTime.Now;
