@@ -115,6 +115,11 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * Open `NzbDrone.sln` in Visual Studio or run the build.sh script, if Mono is installed
 * Make sure `NzbDrone.Console` is set as the startup project
 
+### License
+
+* [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
+* Copyright 2010-2017
+
 ## Sponsors
 
 Thanks to [JetBrains](http://www.jetbrains.com) for providing us with free licenses to their great tools:
