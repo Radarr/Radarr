@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.IndexerTests.TorznabTests
                     Name = "Torznab",
                     Settings = new TorznabSettings()
                         {
-                            Url = "http://indexer.local/",
+                            BaseUrl = "http://indexer.local/",
                             Categories = new int[] { 1 }
                         }
                 };

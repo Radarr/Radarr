@@ -14,13 +14,14 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         }
     }
 
-    public class AwesomeHDSettings : IProviderConfig
+    public class AwesomeHDSettings : ITorrentIndexerSettings
     {
         private static readonly AwesomeHDSettingsValidator Validator = new AwesomeHDSettingsValidator();
 
         public AwesomeHDSettings()
         {
             BaseUrl = "https://awesome-hd.me";
+            MinimumSeeders = 0;
         }
 
         [FieldDefinition(0, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since you Passkey will be sent to that host.")]
@@ -31,6 +32,9 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
         [FieldDefinition(2, Type = FieldType.Checkbox, Label = "Require Internal", HelpText = "Will only include internal releases for RSS Sync.")]
         public bool Internal { get; set; }
+
+        [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

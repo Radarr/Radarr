@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         {
             Subject.Settings = new NewznabSettings()
             {
-                 Url = "http://127.0.0.1:1234/",
+                 BaseUrl = "http://127.0.0.1:1234/",
                  Categories = new [] { 1, 2 },
                  AnimeCategories = new [] { 3, 4 },
                  ApiKey = "abcd",
