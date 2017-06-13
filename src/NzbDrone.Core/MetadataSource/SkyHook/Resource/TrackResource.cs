@@ -5,9 +5,9 @@ using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-    public class TrackInfoResource
+    public class TrackResource
     {
-        public TrackInfoResource()
+        public TrackResource()
         {
 
         }

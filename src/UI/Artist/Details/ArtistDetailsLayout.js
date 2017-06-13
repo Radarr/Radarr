@@ -63,7 +63,7 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         this._showBackdrop();
-        this._showSeasons();
+        this._showAlbums();
         this._setMonitoredState();
         this._showInfo();
     },

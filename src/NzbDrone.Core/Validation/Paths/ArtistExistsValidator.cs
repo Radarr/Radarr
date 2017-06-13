@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Validation.Paths
         {
             if (context.PropertyValue == null) return true;
 
-            return (!_artistService.GetAllArtists().Exists(s => s.SpotifyId == context.PropertyValue.ToString()));
+            return (!_artistService.GetAllArtists().Exists(s => s.ForeignArtistId == context.PropertyValue.ToString()));
         }
     }
 }

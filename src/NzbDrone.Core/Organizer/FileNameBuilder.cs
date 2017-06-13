@@ -284,8 +284,8 @@ namespace NzbDrone.Core.Organizer
 
         private void AddArtistTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist)
         {
-            tokenHandlers["{Artist Name}"] = m => artist.ArtistName;
-            tokenHandlers["{Artist CleanTitle}"] = m => CleanTitle(artist.ArtistName);
+            tokenHandlers["{Artist Name}"] = m => artist.Name;
+            tokenHandlers["{Artist CleanTitle}"] = m => CleanTitle(artist.Name);
         }
 
         private string AddSeasonEpisodeNumberingTokens(string pattern, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, List<Episode> episodes, NamingConfig namingConfig)

@@ -45,33 +45,33 @@ namespace NzbDrone.Core.Music
 
         private void RefreshArtistInfo(Artist artist)
         {
-            _logger.ProgressInfo("Updating Info for {0}", artist.ArtistName);
+            _logger.ProgressInfo("Updating Info for {0}", artist.Name);
 
             Tuple<Artist, List<Track>> tuple;
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(artist.SpotifyId);
+                tuple = _artistInfo.GetArtistInfo(artist.ForeignArtistId);
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("Artist '{0}' (SpotifyId {1}) was not found, it may have been removed from Spotify.", artist.ArtistName, artist.SpotifyId);
+                _logger.Error("Artist '{0}' (SpotifyId {1}) was not found, it may have been removed from Spotify.", artist.Name, artist.ForeignArtistId);
                 return;
             }
 
             var artistInfo = tuple.Item1;
 
-            if (artist.SpotifyId != artistInfo.SpotifyId)
+            if (artist.ForeignArtistId != artistInfo.ForeignArtistId)
             {
-                _logger.Warn("Artist '{0}' (SpotifyId {1}) was replaced with '{2}' (SpotifyId {3}), because the original was a duplicate.", artist.ArtistName, artist.SpotifyId, artistInfo.ArtistName, artistInfo.SpotifyId);
-                artist.SpotifyId = artistInfo.SpotifyId;
+                _logger.Warn("Artist '{0}' (SpotifyId {1}) was replaced with '{2}' (SpotifyId {3}), because the original was a duplicate.", artist.Name, artist.ForeignArtistId, artistInfo.Name, artistInfo.ForeignArtistId);
+                artist.ForeignArtistId = artistInfo.ForeignArtistId;
             }
 
-            artist.ArtistName = artistInfo.ArtistName;
-            artist.ArtistSlug = artistInfo.ArtistSlug;
+            artist.Name = artistInfo.Name;
+            artist.NameSlug = artistInfo.NameSlug;
             artist.Overview = artistInfo.Overview;
             artist.Status = artistInfo.Status;
-            artist.CleanTitle = artistInfo.CleanTitle;
+            artist.CleanName = artistInfo.CleanName;
             artist.LastInfoSync = DateTime.UtcNow;
             artist.Images = artistInfo.Images;
             artist.Genres = artistInfo.Genres;
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Music
             _artistService.UpdateArtist(artist);
             _refreshTrackService.RefreshTrackInfo(artist, tuple.Item2);
 
-            _logger.Debug("Finished artist refresh for {0}", artist.ArtistName);
+            _logger.Debug("Finished artist refresh for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
         }
 
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Music
                     //    continue;
                     //}
 
-                    _logger.Debug("New album ({0}) for artist: [{1}] {2}, setting monitored to true", album.Title, artist.SpotifyId, artist.ArtistName);
+                    _logger.Debug("New album ({0}) for artist: [{1}] {2}, setting monitored to true", album.Title, artist.ForeignArtistId, artist.Name);
                     album.Monitored = true;
                 }
 
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Music
             }
             else
             {
-                var allArtists = _artistService.GetAllArtists().OrderBy(c => c.ArtistName).ToList();
+                var allArtists = _artistService.GetAllArtists().OrderBy(c => c.Name).ToList();
 
                 foreach (var artist in allArtists)
                 {
@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Music
                     {
                         try
                         {
-                            _logger.Info("Skipping refresh of artist: {0}", artist.ArtistName);
+                            _logger.Info("Skipping refresh of artist: {0}", artist.Name);
                             //TODO: _diskScanService.Scan(artist);
                         }
                         catch (Exception e)

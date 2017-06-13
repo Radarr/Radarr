@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Music
 
         private SortBuilder<Track> GetMissingEpisodesQuery(PagingSpec<Track> pagingSpec, DateTime currentTime)
         {
-            return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistSpotifyId == s.SpotifyId)
+            return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistSpotifyId == s.ForeignArtistId)
                             .Where(pagingSpec.FilterExpression)
                             .AndWhere(e => e.TrackFileId == 0)
                             .AndWhere(BuildAirDateUtcCutoffWhereClause(currentTime))
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Music
 
         private SortBuilder<Track> EpisodesWhereCutoffUnmetQuery(PagingSpec<Track> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-            return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistSpotifyId == s.SpotifyId)
+            return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistSpotifyId == s.ForeignArtistId)
                              .Join<Track, TrackFile>(JoinType.Left, e => e.TrackFile, (e, s) => e.TrackFileId == s.Id)
                              .Where(pagingSpec.FilterExpression)
                              .AndWhere(e => e.TrackFileId != 0)

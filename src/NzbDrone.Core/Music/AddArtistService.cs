@@ -48,11 +48,11 @@ namespace NzbDrone.Core.Music
 
             if (string.IsNullOrWhiteSpace(newArtist.Path))
             {
-                var folderName = newArtist.ArtistName;// TODO: _fileNameBuilder.GetArtistFolder(newArtist);
+                var folderName = newArtist.Name;// TODO: _fileNameBuilder.GetArtistFolder(newArtist);
                 newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
             }
 
-            newArtist.CleanTitle = newArtist.ArtistName.CleanSeriesTitle();
+            newArtist.CleanName = newArtist.Name.CleanSeriesTitle();
             //newArtist.SortTitle = ArtistNameNormalizer.Normalize(newArtist.ArtistName, newArtist.ItunesId); // There is no Sort Title
             newArtist.Added = DateTime.UtcNow;
 
@@ -75,15 +75,15 @@ namespace NzbDrone.Core.Music
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(newArtist.SpotifyId);
+                tuple = _artistInfo.GetArtistInfo(newArtist.ForeignArtistId);
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("SpotifyId {1} was not found, it may have been removed from Spotify.", newArtist.SpotifyId);
+                _logger.Error("SpotifyId {1} was not found, it may have been removed from Spotify.", newArtist.ForeignArtistId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
-                                                  new ValidationFailure("SpotifyId", "An artist with this ID was not found", newArtist.SpotifyId)
+                                                  new ValidationFailure("SpotifyId", "An artist with this ID was not found", newArtist.ForeignArtistId)
                                               });
             }
 

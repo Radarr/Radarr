@@ -77,7 +77,7 @@ var Collection = PageableCollection.extend({
         },
 
         artistName: {
-        	sortKey : 'artistName'
+        	sortKey : 'name'
         },
  
         nextAiring : {

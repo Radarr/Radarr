@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <h2 class="artist-title">
                         <!--{{titleWithYear}}-->
-                        {{artistName}}
+                        {{name}}
 
                         <!--<span class="labels">
                             <span class="label label-default">{{network}}</span>
@@ -68,16 +68,16 @@
             </div>
             <div class="row">
                 {{#unless existing}}
-                    {{#if artistName}}
+                    {{#if name}}
                     <div class="form-group col-md-2 col-md-offset-10">
                         <!--Uncomment if we need to add even more controls to add artist-->
                         <!--<label style="visibility: hidden">Add</label>-->
                         <div class="btn-group">
-                            <button class="btn btn-success add x-add" title="Add" data-artist="{{artistName}}">
+                            <button class="btn btn-success add x-add" title="Add" data-artist="{{name}}">
                                 <i class="icon-lidarr-add"></i>
                             </button>
 
-                            <button class="btn btn-success add x-add-search" title="Add and Search for missing tracks" data-artist="{{artistName}}">
+                            <button class="btn btn-success add x-add-search" title="Add and Search for missing tracks" data-artist="{{name}}">
                                 <i class="icon-lidarr-search"></i>
                             </button>
                         </div>

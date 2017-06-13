@@ -7,7 +7,7 @@ using System.Text;
 
 namespace NzbDrone.Core.Music
 {
-    public class Album : IEmbeddedDocument
+    public class Album : ModelBase
     {
         public Album()
         {

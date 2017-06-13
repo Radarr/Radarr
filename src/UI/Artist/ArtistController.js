@@ -21,12 +21,12 @@ module.exports = NzbDroneController.extend({
     },
 
     artistDetails : function(query) {
-        var artists = ArtistCollection.where({ artistSlug : query });
+        var artists = ArtistCollection.where({ nameSlug : query });
         console.log('artistDetails, artists: ', artists);
         if (artists.length !== 0) {
             var targetArtist = artists[0];
             console.log("[ArtistController] targetArtist: ", targetArtist);
-            this.setTitle(targetArtist.get('artistName')); // TODO: Update NzbDroneController
+            this.setTitle(targetArtist.get('name')); // TODO: Update NzbDroneController
             //this.setArtistName(targetSeries.get('artistName'));
             this.showMainRegion(new ArtistDetailsLayout({ model : targetArtist }));
         } else {

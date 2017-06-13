@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Music
 
         public void HandleAsync(ArtistDeletedEvent message)
         {
-            var tracks = GetTracksByArtist(message.Artist.SpotifyId);
+            var tracks = GetTracksByArtist(message.Artist.ForeignArtistId);
             _trackRepository.DeleteMany(tracks);
         }
 

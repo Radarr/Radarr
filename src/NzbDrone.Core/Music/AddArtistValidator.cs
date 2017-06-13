@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Music
                                 .SetValidator(droneFactoryValidator)
                                 .SetValidator(seriesAncestorValidator);
 
-            RuleFor(c => c.ArtistSlug).SetValidator(artistTitleSlugValidator);// TODO: Check if we are going to use a slug or artistName
+            RuleFor(c => c.NameSlug).SetValidator(artistTitleSlugValidator);// TODO: Check if we are going to use a slug or artistName
         }
     }
 }

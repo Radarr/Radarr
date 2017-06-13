@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Music
             var successCount = 0;
             var failCount = 0;
 
-            var existingTracks = _trackService.GetTracksByArtist(artist.SpotifyId);
+            var existingTracks = _trackService.GetTracksByArtist(artist.ForeignArtistId);
             var albums = artist.Albums;
 
             var updateList = new List<Track>();
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Music
                     trackToUpdate.Explict = track.Explict;
                     if (track.ArtistSpotifyId.IsNullOrWhiteSpace())
                     {
-                        trackToUpdate.ArtistSpotifyId = artist.SpotifyId;
+                        trackToUpdate.ArtistSpotifyId = artist.ForeignArtistId;
                     } else
                     {
                         trackToUpdate.ArtistSpotifyId = track.ArtistSpotifyId;
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Music
             if (failCount != 0)
             {
                 _logger.Info("Finished track refresh for artist: {0}. Successful: {1} - Failed: {2} ",
-                    artist.ArtistName, successCount, failCount);
+                    artist.Name, successCount, failCount);
             }
             else
             {

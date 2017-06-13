@@ -5,9 +5,9 @@ using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-    public class AlbumInfoResource
+    public class AlbumResource
     {
-        public AlbumInfoResource()
+        public AlbumResource()
         {
 
         }

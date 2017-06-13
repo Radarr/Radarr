@@ -1,18 +1,18 @@
 var Marionette = require('marionette');
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Series/Details/InfoViewTemplate',
+    template : 'Artist/Details/InfoViewTemplate',
 
     initialize : function(options) {
-        this.episodeFileCollection = options.episodeFileCollection;
+        this.trackFileCollection = options.trackFileCollection;
 
         this.listenTo(this.model, 'change', this.render);
-        this.listenTo(this.episodeFileCollection, 'sync', this.render);
+        this.listenTo(this.trackFileCollection, 'sync', this.render);
     },
 
     templateHelpers : function() {
         return {
-            fileCount : this.episodeFileCollection.length
+            fileCount : this.trackFileCollection.length
         };
     }
 });

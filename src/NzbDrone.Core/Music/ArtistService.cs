@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Music
 
                 if (storedAlbum != null && album.Monitored != storedAlbum.Monitored)
                 {
-                    _trackService.SetTrackMonitoredByAlbum(artist.SpotifyId, album.AlbumId, album.Monitored);
+                    _trackService.SetTrackMonitoredByAlbum(artist.ForeignArtistId, album.AlbumId, album.Monitored);
                 }
             }
 
@@ -129,17 +129,17 @@ namespace NzbDrone.Core.Music
             _logger.Debug("Updating {0} artist", artist.Count);
             foreach (var s in artist)
             {
-                _logger.Trace("Updating: {0}", s.ArtistName);
+                _logger.Trace("Updating: {0}", s.Name);
                 if (!s.RootFolderPath.IsNullOrWhiteSpace())
                 {
                     var folderName = new DirectoryInfo(s.Path).Name;
                     s.Path = Path.Combine(s.RootFolderPath, folderName);
-                    _logger.Trace("Changing path for {0} to {1}", s.ArtistName, s.Path);
+                    _logger.Trace("Changing path for {0} to {1}", s.Name, s.Path);
                 }
 
                 else
                 {
-                    _logger.Trace("Not changing path for: {0}", s.ArtistName);
+                    _logger.Trace("Not changing path for: {0}", s.Name);
                 }
             }
 
