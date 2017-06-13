@@ -160,7 +160,17 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
             var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file },
                 movie, null, SceneSource(movie, folder), true);
 
-            return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : null;
+            return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : new ManualImportItem
+                                                                                                  {
+                                                                                                      DownloadId = downloadId,
+                                                                                                      Path = file,
+                                                                                                      RelativePath = folder.GetRelativePath(file),
+                                                                                                      Name = Path.GetFileNameWithoutExtension(file),
+                                                                                                      Rejections = new List<Rejection>
+                                                                                                                   {
+                                                                                                                       new Rejection("Unable to process file")
+                                                                                                                   }
+                                                                                                  };
         }
 
         //private ManualImportItem ProcessFile(string file, string downloadId, string folder = null)

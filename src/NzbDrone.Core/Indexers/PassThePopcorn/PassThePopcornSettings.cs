@@ -17,13 +17,14 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         }
     }
 
-    public class PassThePopcornSettings : IProviderConfig
+    public class PassThePopcornSettings : ITorrentIndexerSettings
     {
         private static readonly PassThePopcornSettingsValidator Validator = new PassThePopcornSettingsValidator();
 
         public PassThePopcornSettings()
         {
             BaseUrl = "https://passthepopcorn.me";
+            MinimumSeeders = 0;
         }
 
         [FieldDefinition(0, Label = "URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your cookie will be sent to that host.")]
@@ -49,6 +50,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
         [FieldDefinition(7, Label = "Require Golden", Type = FieldType.Checkbox, HelpText = "Require Golden Popcorn-releases for releases to be accepted.")]
         public bool RequireGolden { get; set; }
+
+        [FieldDefinition(8, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

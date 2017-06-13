@@ -2,7 +2,6 @@
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 using System.Linq.Expressions;
 using FluentValidation.Results;
@@ -19,13 +18,14 @@ namespace NzbDrone.Core.Indexers.HDBits
         }
     }
 
-    public class HDBitsSettings : IProviderConfig
+    public class HDBitsSettings : ITorrentIndexerSettings
     {
         private static readonly HDBitsSettingsValidator Validator = new HDBitsSettingsValidator();
 
         public HDBitsSettings()
         {
             BaseUrl = "https://hdbits.org";
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
             Categories = new int[] { (int)HdBitsCategory.Movie };
             Codecs = new int[0];
@@ -55,6 +55,9 @@ namespace NzbDrone.Core.Indexers.HDBits
 
         [FieldDefinition(7, Label = "Mediums", Type = FieldType.Tag, SelectOptions = typeof(HdBitsMedium), Advanced = true, HelpText = "Options: BluRay, Encode, Capture, Remux, WebDL. If unspecified, all options are used.")]
         public IEnumerable<int> Mediums { get; set; }
+
+        [FieldDefinition(8, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

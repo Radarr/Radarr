@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         private NewznabSettings GetSettings(string url, params int[] categories)
         {
-            var settings = new NewznabSettings { Url = url };
+            var settings = new NewznabSettings { BaseUrl = url };
 
             if (categories.Any())
             {
