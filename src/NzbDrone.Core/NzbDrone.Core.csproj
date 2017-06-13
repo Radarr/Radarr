@@ -1291,6 +1291,7 @@
     <Compile Include="NetImport\Radarr\RadarrSettings.cs" />
     <Compile Include="MetadataSource\RadarrAPI\RadarrResources.cs" />
     <Compile Include="MetadataSource\RadarrAPI\RadarrAPIClient.cs" />
+    <Compile Include="Datastore\Migration\139_fix_indexer_baseurl.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
