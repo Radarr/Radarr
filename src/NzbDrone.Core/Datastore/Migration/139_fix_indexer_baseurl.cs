@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Data;
 using FluentMigrator;
 using Newtonsoft.Json.Linq;
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "SELECT Id, Settings FROM Indexers WHERE ConfigContract IN ('NewznabSettings', 'TorznabSettings', 'IPTorrentsSettings', 'OmgwtfnzbsSettings', )";
+                cmd.CommandText = "SELECT Id, Settings FROM Indexers WHERE ConfigContract IN ('NewznabSettings', 'TorznabSettings', 'IPTorrentsSettings', 'OmgwtfnzbsSettings')";
 
                 using (var reader = cmd.ExecuteReader())
                 {
