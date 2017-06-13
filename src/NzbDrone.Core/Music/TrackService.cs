@@ -15,12 +15,12 @@ namespace NzbDrone.Core.Music
     {
         Track GetTrack(int id);
         List<Track> GetTracks(IEnumerable<int> ids);
-        Track FindTrack(string artistId, string albumId, int trackNumber);
-        Track FindTrackByTitle(string artistId, string albumId, string releaseTitle);
-        List<Track> GetTracksByArtist(string artistId);
+        Track FindTrack(int artistId, int albumId, int trackNumber);
+        Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
+        List<Track> GetTracksByArtist(int artistId);
         //List<Track> GetTracksByAlbum(string artistId, string albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
-        List<Track> TracksWithFiles(string artistId);
+        List<Track> TracksWithFiles(int artistId);
         //PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
         List<Track> GetTracksByFileId(int trackFileId);
         void UpdateTrack(Track track);
@@ -55,22 +55,22 @@ namespace NzbDrone.Core.Music
             return _trackRepository.Get(ids).ToList();
         }
 
-        public Track FindTrack(string artistId, string albumId, int episodeNumber)
+        public Track FindTrack(int artistId, int albumId, int episodeNumber)
         {
             return _trackRepository.Find(artistId, albumId, episodeNumber);
         }
 
-        public List<Track> GetTracksByArtist(string artistId)
+        public List<Track> GetTracksByArtist(int artistId)
         {
             return _trackRepository.GetTracks(artistId).ToList();
         }
 
-        public List<Track> GetTracksByAlbum(string artistId, string albumId)
+        public List<Track> GetTracksByAlbum(int artistId, int albumId)
         {
             return _trackRepository.GetTracks(artistId, albumId);
         }
 
-        public Track FindTrackByTitle(string artistId, string albumId, string releaseTitle)
+        public Track FindTrackByTitle(int artistId, int albumId, string releaseTitle)
         {
             // TODO: can replace this search mechanism with something smarter/faster/better
             var normalizedReleaseTitle = Parser.Parser.NormalizeEpisodeTitle(releaseTitle).Replace(".", " ");
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Music
             return null;
         }
 
-        public List<Track> TracksWithFiles(string artistId)
+        public List<Track> TracksWithFiles(int artistId)
         {
             return _trackRepository.TracksWithFiles(artistId);
         }
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Music
 
         public void HandleAsync(ArtistDeletedEvent message)
         {
-            var tracks = GetTracksByArtist(message.Artist.ForeignArtistId);
+            var tracks = GetTracksByArtist(message.Artist.Id);
             _trackRepository.DeleteMany(tracks);
         }
 

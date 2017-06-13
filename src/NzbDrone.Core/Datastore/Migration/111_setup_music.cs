@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("AddOptions").AsString().Nullable();
 
             Create.TableForModel("Albums")
-                .WithColumn("ForeignArtistId").AsString().Unique()
+                .WithColumn("ForeignAlbumId").AsString().Unique()
                 .WithColumn("ArtistId").AsInt32()
                 .WithColumn("MBId").AsString().Indexed()
                 .WithColumn("AMId").AsString().Nullable()
@@ -68,12 +68,14 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("AddOptions").AsString().Nullable();
 
             Create.TableForModel("Tracks")
+                .WithColumn("ForeignTrackId").AsString().Unique()
                 .WithColumn("ArtistId").AsInt32().Indexed()
                 .WithColumn("AlbumId").AsInt32()
                 .WithColumn("MBId").AsString().Indexed()
                 .WithColumn("TrackNumber").AsInt32()
                 .WithColumn("Title").AsString().Nullable()
                 .WithColumn("Explicit").AsBoolean()
+                .WithColumn("Compilation").AsBoolean()
                 .WithColumn("DiscNumber").AsInt32().Nullable()
                 .WithColumn("TrackFileId").AsInt32().Nullable().Indexed()
                 .WithColumn("Monitored").AsBoolean()

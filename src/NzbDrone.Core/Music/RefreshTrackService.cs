@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Music
             var successCount = 0;
             var failCount = 0;
 
-            var existingTracks = _trackService.GetTracksByArtist(artist.ForeignArtistId);
+            var existingTracks = _trackService.GetTracksByArtist(artist.Id);
             var albums = artist.Albums;
 
             var updateList = new List<Track>();
@@ -58,20 +58,13 @@ namespace NzbDrone.Core.Music
                         newList.Add(trackToUpdate);
                     }
 
-                    trackToUpdate.SpotifyTrackId = track.SpotifyTrackId;
+                    trackToUpdate.ForeignTrackId = track.ForeignTrackId;
                     trackToUpdate.TrackNumber = track.TrackNumber;
                     trackToUpdate.Title = track.Title ?? "Unknown";
                     trackToUpdate.AlbumId = track.AlbumId;
                     trackToUpdate.Album = track.Album;
-                    trackToUpdate.Explict = track.Explict;
-                    if (track.ArtistSpotifyId.IsNullOrWhiteSpace())
-                    {
-                        trackToUpdate.ArtistSpotifyId = artist.ForeignArtistId;
-                    } else
-                    {
-                        trackToUpdate.ArtistSpotifyId = track.ArtistSpotifyId;
-                    }
-                    trackToUpdate.ArtistId = track.ArtistId;
+                    trackToUpdate.Explicit = track.Explicit;
+                    trackToUpdate.ArtistId = artist.Id;
                     trackToUpdate.Compilation = track.Compilation;
 
                     // TODO: Implement rest of [RefreshTrackService] fields
@@ -119,7 +112,7 @@ namespace NzbDrone.Core.Music
                 return false;
             }
 
-            var album = albums.SingleOrDefault(c => c.AlbumId == track.AlbumId);
+            var album = albums.SingleOrDefault(c => c.Id == track.AlbumId);
             return album == null || album.Monitored;
         }
 
