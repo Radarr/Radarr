@@ -51,6 +51,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUN-LOL", Language.Hungarian)]
 		[TestCase("The Danish Girl 2015", Language.English)]
         [TestCase("Passengers.2016.German.DL.AC3.Dubbed.1080p.WebHD.h264.iNTERNAL-PsO", Language.German)]
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", Language.German)]
+        [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", Language.German)]
+        [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", Language.French)]
         public void should_parse_language(string postTitle, Language language)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle);

@@ -63,6 +63,7 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
         }
 
+        //Note: This assumes extended language parser is activated
 		[TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", "1941")]
 		[TestCase("MY MOVIE (2016) [R][Action, Horror][720p.WEB-DL.AVC.8Bit.6ch.AC3].mkv", "MY MOVIE")]
@@ -76,12 +77,18 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("A.Movie.Name.(1998)", "A Movie Name")]
 		[TestCase("Thor: The Dark World 2013", "Thor The Dark World")]
         [TestCase("Resident.Evil.The.Final.Chapter.2016", "Resident Evil The Final Chapter")]
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James")]
+        [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers")]
+        [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
+        [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
 		}
 
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
+        [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", 2016)]
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
         public void should_parse_movie_year(string postTitle, int year)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
