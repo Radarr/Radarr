@@ -5,6 +5,7 @@ var _ = require('underscore');
 module.exports = Backbone.Collection.extend({
 		url   : window.NzbDrone.ApiRoot + '/netimport/movies',
 		model : MovieModel,
+		specialProperty: "special",
 
 		parse : function(response) {
 				var self = this;

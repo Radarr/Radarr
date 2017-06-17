@@ -13,13 +13,14 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         }
     }
 
-    public class TorrentPotatoSettings : IProviderConfig
+    public class TorrentPotatoSettings : ITorrentIndexerSettings
     {
         private static readonly TorrentPotatoSettingsValidator Validator = new TorrentPotatoSettingsValidator();
 
         public TorrentPotatoSettings()
         {
             BaseUrl = "http://127.0.0.1";
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to TorrentPotato api.")]
@@ -30,6 +31,10 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
         [FieldDefinition(2, Label = "Passkey", HelpText = "The password you use at your Indexer.")]
         public string Passkey { get; set; }
+
+        [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

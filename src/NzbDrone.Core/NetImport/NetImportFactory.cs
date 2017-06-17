@@ -10,6 +10,8 @@ namespace NzbDrone.Core.NetImport
     public interface INetImportFactory : IProviderFactory<INetImport, NetImportDefinition>
     {
         List<INetImport> Enabled();
+
+        List<INetImport> Discoverable();
     }
 
     public class NetImportFactory : ProviderFactory<INetImport, NetImportDefinition>, INetImportFactory
@@ -42,6 +44,13 @@ namespace NzbDrone.Core.NetImport
         public List<INetImport> Enabled()
         {
             var enabledImporters = GetAvailableProviders().Where(n => ((NetImportDefinition)n.Definition).Enabled);
+            var indexers = FilterBlockedIndexers(enabledImporters);
+            return indexers.ToList();
+        }
+
+        public List<INetImport> Discoverable()
+        {
+            var enabledImporters = GetAvailableProviders().Where(n => (n.GetType() == typeof(Radarr.RadarrProxied) || n.GetType() == typeof(TMDb.TMDbImport)));
             var indexers = FilterBlockedIndexers(enabledImporters);
             return indexers.ToList();
         }

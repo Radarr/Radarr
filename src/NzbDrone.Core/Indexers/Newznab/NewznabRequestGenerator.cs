@@ -59,7 +59,18 @@ namespace NzbDrone.Core.Indexers.Newznab
             else
             {
                 var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title)));
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
+                var altTitles = searchCriteria.Movie.AlternativeTitles.DistinctBy(t => Parser.Parser.CleanSeriesTitle(t)).Take(5).ToList();
+
+                var realMaxPages = (int)MaxPages / (altTitles.Count() + 1);
+
+                pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
+
+                //Also use alt titles for searching.
+                foreach (String altTitle in altTitles)
+                {
+                    var searchAltTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(altTitle)));
+                    pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search", $"&q={searchAltTitle}%20{searchCriteria.Movie.Year}"));
+                }
             }
 
             return pageableRequests;
@@ -74,7 +85,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var categoriesQuery = string.Join(",", categories.Distinct());
 
-            var baseUrl = string.Format("{0}/api?t={1}&cat={2}&extended=1{3}", Settings.Url.TrimEnd('/'), searchType, categoriesQuery, Settings.AdditionalParameters);
+            var baseUrl = string.Format("{0}/api?t={1}&cat={2}&extended=1{3}", Settings.BaseUrl.TrimEnd('/'), searchType, categoriesQuery, Settings.AdditionalParameters);
 
             if (Settings.ApiKey.IsNotNullOrWhiteSpace())
             {

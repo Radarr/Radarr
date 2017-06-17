@@ -141,7 +141,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             }
 
             releaseInfo.Title = title;
-            var result = Parser.Parser.ParseMovieTitle(title);
+            var result = Parser.Parser.ParseMovieTitle(title, false);//Depreciated anyways
 
             if (result != null)
             {

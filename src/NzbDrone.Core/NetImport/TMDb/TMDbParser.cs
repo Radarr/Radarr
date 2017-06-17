@@ -6,6 +6,8 @@ using System.Net;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.MetadataSource;
+using TinyIoC;
 
 namespace NzbDrone.Core.NetImport.TMDb
 {
@@ -13,10 +15,12 @@ namespace NzbDrone.Core.NetImport.TMDb
     {
         private readonly TMDbSettings _settings;
         private NetImportResponse _importResponse;
+        private readonly ISearchForNewMovie _skyhookProxy;
         private readonly Logger _logger;
 
-        public TMDbParser(TMDbSettings settings)
+        public TMDbParser(TMDbSettings settings, ISearchForNewMovie skyhookProxy)
         {
+            _skyhookProxy = skyhookProxy;
             _settings = settings;
         }
 
@@ -41,22 +45,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                     return movies;
                 }
 
-                foreach (var movie in jsonResponse.results)
-                {
-                    // Movies with no Year Fix
-                    if (string.IsNullOrWhiteSpace(movie.release_date))
-                    {
-                        continue;
-                    }
-
-                    movies.AddIfNotNull(new Tv.Movie()
-                    {
-                        Title = movie.title,
-                        TmdbId = movie.id,
-                        ImdbId = null,
-                        Year = DateTime.Parse(movie.release_date).Year
-                    });
-                }
+                return jsonResponse.results.SelectList(_skyhookProxy.MapMovie);
             }
             else
             {
@@ -82,13 +71,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                         continue;
                     }
 
-                    movies.AddIfNotNull(new Tv.Movie()
-                    {
-                        Title = movie.title,
-                        TmdbId = movie.id,
-                        ImdbId = null,
-                        Year = DateTime.Parse(movie.release_date).Year
-                    });
+                    movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
                 }
             }
 

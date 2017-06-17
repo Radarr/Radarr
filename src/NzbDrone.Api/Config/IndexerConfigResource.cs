@@ -1,5 +1,6 @@
 ﻿using NzbDrone.Api.REST;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Api.Config
 {
@@ -12,6 +13,7 @@ namespace NzbDrone.Api.Config
 		public int AvailabilityDelay { get; set; }
 		public bool AllowHardcodedSubs { get; set; }
 		public string WhitelistedHardcodedSubs { get; set; }
+        public ParsingLeniencyType ParsingLeniency { get; set; }
     }
 
     public static class IndexerConfigResourceMapper
@@ -27,7 +29,7 @@ namespace NzbDrone.Api.Config
 				AvailabilityDelay = model.AvailabilityDelay,
 				AllowHardcodedSubs = model.AllowHardcodedSubs,
 				WhitelistedHardcodedSubs = model.WhitelistedHardcodedSubs,
-
+                ParsingLeniency = model.ParsingLeniency,
             };
         }
     }

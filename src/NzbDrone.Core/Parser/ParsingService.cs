@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -35,6 +36,7 @@ namespace NzbDrone.Core.Parser
         private readonly ISeriesService _seriesService;
         private readonly ISceneMappingService _sceneMappingService;
         private readonly IMovieService _movieService;
+        private readonly IConfigService _config;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
  
@@ -43,12 +45,14 @@ namespace NzbDrone.Core.Parser
                               ISeriesService seriesService,
                               ISceneMappingService sceneMappingService,
                               IMovieService movieService,
+                              IConfigService configService,
                               Logger logger)
         {
             _episodeService = episodeService;
             _seriesService = seriesService;
             _sceneMappingService = sceneMappingService;
             _movieService = movieService;
+            _config = configService;
             _logger = logger;
 
             if (_arabicRomanNumeralMappings == null)
@@ -128,7 +132,7 @@ namespace NzbDrone.Core.Parser
 
             else
             {
-                parsedMovieInfo = Parser.ParseMoviePath(filename);
+                parsedMovieInfo = Parser.ParseMoviePath(filename, _config.ParsingLeniency > 0);
             }
 
             if (parsedMovieInfo == null)
@@ -173,7 +177,7 @@ namespace NzbDrone.Core.Parser
 
         public Movie GetMovie(string title)
         {
-            var parsedMovieInfo = Parser.ParseMovieTitle(title);
+            var parsedMovieInfo = Parser.ParseMovieTitle(title, _config.ParsingLeniency > 0);
 
             if (parsedMovieInfo == null)
             {

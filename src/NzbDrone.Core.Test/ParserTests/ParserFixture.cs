@@ -63,6 +63,7 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
         }
 
+        //Note: This assumes extended language parser is activated
 		[TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", "1941")]
 		[TestCase("MY MOVIE (2016) [R][Action, Horror][720p.WEB-DL.AVC.8Bit.6ch.AC3].mkv", "MY MOVIE")]
@@ -76,22 +77,29 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("A.Movie.Name.(1998)", "A Movie Name")]
 		[TestCase("Thor: The Dark World 2013", "Thor The Dark World")]
         [TestCase("Resident.Evil.The.Final.Chapter.2016", "Resident Evil The Final Chapter")]
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James")]
+        [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers")]
+        [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
+        [TestCase("Valana la Legende TRUEFRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
+        [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
+			Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
 		}
 
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
+        [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", 2016)]
+        [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
         public void should_parse_movie_year(string postTitle, int year)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
+			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
 		}
 
 		[TestCase("The Danish Girl 2015")]
         [TestCase("The.Danish.Girl.2015.1080p.BluRay.x264.DTS-HD.MA.5.1-RARBG")]
 		public void should_not_parse_language_in_movie_title(string postTitle)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle).Language.Should().Be(Language.English);
+			Parser.Parser.ParseMovieTitle(postTitle, false).Language.Should().Be(Language.English);
 		}
 
         [TestCase("Prometheus 2012 Directors Cut", "Directors Cut")]
@@ -117,9 +125,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Prometheus Extended Directors Cut Fan Edit 2012", "Extended Directors Cut Fan Edit")]
         [TestCase("Prometheus Director's Cut 2012", "Director's Cut")]
         [TestCase("Prometheus Directors Cut 2012", "Directors Cut")]
-        [TestCase("Prometheus.(Extended.Theatrical.Version.IMAX).BluRay.1080p.2012.asdf", "Extended Theatrical Version IMAX")]
+        [TestCase("Prometheus.(Extended.Theatrical.Version.IMAX).2012.BluRay.1080p.asdf", "Extended Theatrical Version IMAX")]
         [TestCase("2001 A Space Odyssey Director's Cut (1968).mkv", "Director's Cut")]
-        [TestCase("2001: A Space Odyssey (Extended Directors Cut FanEdit) Bluray 1080p 1968", "Extended Directors Cut FanEdit")]
+        [TestCase("2001: A Space Odyssey (Extended Directors Cut FanEdit) 1968 Bluray 1080p", "Extended Directors Cut FanEdit")]
         [TestCase("A Fake Movie 2035 Directors 2012.mkv", "Directors")]
         [TestCase("Blade Runner Director's Cut 2049.mkv", "Director's Cut")]
         [TestCase("Prometheus 50th Anniversary Edition 2012.mkv", "50th Anniversary Edition")]
@@ -129,7 +137,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Fake Movie 2016 Final Cut ", "Final Cut")]
         public void should_parse_edition(string postTitle, string edition)
         {
-            Parser.Parser.ParseMovieTitle(postTitle).Edition.Should().Be(edition);
+            Parser.Parser.ParseMovieTitle(postTitle, false).Edition.Should().Be(edition);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Parser;
 
@@ -18,17 +19,20 @@ namespace NzbDrone.Core.Download.TrackedDownloads
     {
         private readonly IParsingService _parsingService;
         private readonly IHistoryService _historyService;
+        private readonly IConfigService _config;
         private readonly Logger _logger;
         private readonly ICached<TrackedDownload> _cache;
 
         public TrackedDownloadService(IParsingService parsingService,
             ICacheManager cacheManager,
             IHistoryService historyService,
+            IConfigService config,
             Logger logger)
         {
             _parsingService = parsingService;
             _historyService = historyService;
             _cache = cacheManager.GetCache<TrackedDownload>(GetType());
+            _config = config;
             _logger = logger;
         }
 
@@ -56,7 +60,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
-                var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
+                var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title, _config.ParsingLeniency > 0);
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
 
                 if (parsedMovieInfo != null)
@@ -73,7 +77,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.RemoteMovie == null ||
                         trackedDownload.RemoteMovie.Movie == null)
                     {
-                        parsedMovieInfo = Parser.Parser.ParseMovieTitle(firstHistoryItem.SourceTitle);
+                        parsedMovieInfo = Parser.Parser.ParseMovieTitle(firstHistoryItem.SourceTitle, _config.ParsingLeniency > 0);
 
                         if (parsedMovieInfo != null)
                         {

@@ -90,7 +90,7 @@ namespace NzbDrone.Api.Movie
 					return mappedMovie;
 				}
 
-				var parsedTitle = Parser.ParseMoviePath(f.Name);
+				var parsedTitle = Parser.ParseMoviePath(f.Name, false);
 				if (parsedTitle == null)
 				{
 					m = new Core.Tv.Movie

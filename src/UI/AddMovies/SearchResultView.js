@@ -23,8 +23,8 @@ var view = Marionette.ItemView.extend({
         rootFolder      : '.x-root-folder',
         seasonFolder    : '.x-season-folder',
         monitor         : '.x-monitor',
-	minimumAvailability : '.x-minimumavailability',
-	minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
+	      minimumAvailability : '.x-minimumavailability',
+	      minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
         monitorTooltip  : '.x-monitor-tooltip',
         addButton       : '.x-add',
         addSearchButton : '.x-add-search',
@@ -38,6 +38,7 @@ var view = Marionette.ItemView.extend({
         'change .x-profile'       : '_profileChanged',
         'change .x-root-folder'   : '_rootFolderChanged',
         'change .x-season-folder' : '_seasonFolderChanged',
+        "change .x-minimumavailability" : "_minAvailabilityChanged",
         'change .x-monitor'       : '_monitorChanged'
     },
 
@@ -61,6 +62,7 @@ var view = Marionette.ItemView.extend({
 
         var defaultProfile = Config.getValue(Config.Keys.DefaultProfileId);
         var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
+        var defaultMinAvailability = Config.getValue(Config.Keys.DefaultMinAvailability, "announced");
         var useSeasonFolder = Config.getValueBoolean(Config.Keys.UseSeasonFolder, true);
         var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'all');
 
@@ -74,7 +76,7 @@ var view = Marionette.ItemView.extend({
 
         this.ui.seasonFolder.prop('checked', useSeasonFolder);
         this.ui.monitor.val(defaultMonitorEpisodes);
-	this.ui.minimumAvailability.val("preDB");
+	      this.ui.minimumAvailability.val(defaultMinAvailability);
 
         //TODO: make this work via onRender, FM?
         //works with onShow, but stops working after the first render
@@ -136,6 +138,10 @@ var view = Marionette.ItemView.extend({
         else if (options.key === Config.Keys.MonitorEpisodes) {
             this.ui.monitor.val(options.value);
         }
+
+        else if (options.key === Config.Keys.DefaultMinAvailability) {
+            this.ui.minimumAvailability.val(options.value);
+        }
     },
 
     _profileChanged : function() {
@@ -159,6 +165,10 @@ var view = Marionette.ItemView.extend({
 
     _monitorChanged : function() {
         Config.setValue(Config.Keys.MonitorEpisodes, this.ui.monitor.val());
+    },
+
+    _minAvailabilityChanged : function() {
+        Config.setValue(Config.Keys.DefaultMinAvailability, this.ui.minimumAvailability.val());
     },
 
     _setRootFolder : function(options) {
