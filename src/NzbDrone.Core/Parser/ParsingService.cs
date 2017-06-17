@@ -415,6 +415,16 @@ namespace NzbDrone.Core.Parser
                     return false;
                 }
 
+                if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
+                {
+                    movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
+                    if (isNotNull(movieByTitleAndOrYear))
+                    {
+                        result = new MappingResult {Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping};
+                        return true;
+                    }
+                }
+
                 result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
                 return false;
             }
@@ -425,6 +435,17 @@ namespace NzbDrone.Core.Parser
                 result = new MappingResult { Movie = movieByTitleAndOrYear };
                 return true;
             }
+            
+            if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
+            {
+                movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, null);
+                if (isNotNull(movieByTitleAndOrYear))
+                {
+                    result = new MappingResult {Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping};
+                    return true;
+                }
+            }
+            
             result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
             return false;
         }
@@ -480,6 +501,29 @@ namespace NzbDrone.Core.Parser
                 }
                 result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                 return false;
+            }
+            
+            if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
+            {
+                if (searchCriteria.Movie.CleanTitle.Contains(cleanTitle) ||
+                    cleanTitle.Contains(searchCriteria.Movie.CleanTitle))
+                {
+                    possibleMovie = searchCriteria.Movie;
+                    if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year)
+                    {
+                        result = new MappingResult {Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping};
+                        return true;
+                    }
+                    
+                    if (parsedMovieInfo.Year < 1800)
+                    {
+                        result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping };
+                        return true;
+                    }
+                    
+                    result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
+                    return false;
+                }
             }
 
             result = new MappingResult { Movie = searchCriteria.Movie, MappingResultType = MappingResultType.WrongTitle };
@@ -736,10 +780,9 @@ namespace NzbDrone.Core.Parser
                     case MappingResultType.WrongYear:
                         return $"Failed to map movie, expected year {RemoteMovie.Movie.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
                     case MappingResultType.WrongTitle:
-                        var altTitles = RemoteMovie.Movie.AlternativeTitles;
-                        altTitles.Add(RemoteMovie.Movie.Title);
-                        var str = string.Join(", ", altTitles);
-                        return $"Failed to map movie, found title {RemoteMovie.ParsedMovieInfo.MovieTitle}, expected one of: {str}";
+                        var comma = RemoteMovie.Movie.AlternativeTitles.Count > 0 ? ", " : "";
+                        return
+                            $"Failed to map movie, found title {RemoteMovie.ParsedMovieInfo.MovieTitle}, expected one of: {RemoteMovie.Movie.Title}{comma}{string.Join(", ", RemoteMovie.Movie.AlternativeTitles)}";
                     default:
                         return $"Failed to map movie for unkown reasons";
                 }

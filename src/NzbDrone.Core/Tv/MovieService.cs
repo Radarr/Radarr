@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Tv
         Movie FindByImdbId(string imdbid);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
-        Movie FindByTitleInexact(string title);
+        Movie FindByTitleInexact(string title, int? year);
         Movie FindByTitleSlug(string slug);
         bool MovieExists(Movie movie);
         Movie GetMovieByFileId(int fileId);
@@ -238,20 +238,16 @@ namespace NzbDrone.Core.Tv
             return _movieRepository.FindByImdbId(imdbid);
         }
 
-        public Movie FindByTitleInexact(string title)
+        private List<Movie> FindByTitleInexactAll(string title)
         {
             // find any movie clean title within the provided release title
             string cleanTitle = title.CleanSeriesTitle();
-            var list = _movieRepository.All().Where(s => cleanTitle.Contains(s.CleanTitle)).ToList();
+            var list = _movieRepository.All().Where(s => cleanTitle.Contains(s.CleanTitle))
+                .Union(_movieRepository.All().Where(s => s.CleanTitle.Contains(cleanTitle))).ToList();
             if (!list.Any())
             {
                 // no movie matched
                 return null;
-            }
-            if (list.Count == 1)
-            {
-                // return the first movie if there is only one 
-                return list.Single();
             }
             // build ordered list of movie by position in the search string
             var query = 
@@ -265,19 +261,32 @@ namespace NzbDrone.Core.Tv
                     .ToList()
                     .OrderBy(s => s.position)
                     .ThenByDescending(s => s.length)
+                    .Select(s => s.movie)
                     .ToList();
 
+
+
+            return query;
+        }
+
+        public Movie FindByTitleInexact(string title)
+        {
+            var query = FindByTitleInexactAll(title);
             // get the leftmost movie that is the longest
             // movie are usually the first thing in release title, so we select the leftmost and longest match
-            var match = query.First().movie;
+            var match = query.First();
 
             _logger.Debug("Multiple movie matched {0} from title {1}", match.Title, title);
-            foreach (var entry in list)
+            foreach (var entry in query)
             {
                 _logger.Debug("Multiple movie match candidate: {0} cleantitle: {1}", entry.Title, entry.CleanTitle);
             }
-
             return match;
+        }
+
+        public Movie FindByTitleInexact(string title, int? year)
+        {
+            return FindByTitleInexactAll(title).FirstWithYear(year);
         }
 
         public Movie FindByTitle(string title, int year)

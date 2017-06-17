@@ -86,9 +86,18 @@ namespace NzbDrone.Core.DecisionEngine
                             MovieTitleInfo = new SeriesTitleInfo {Title = report.Title, Year = 1290}
                         };
 
-                        result = new MappingResult {MappingResultType = MappingResultType.NotParsable};
-                        result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
-                        result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
+                        if (_configService.ParsingLeniency == ParsingLeniencyType.MappingLenient)
+                        {
+                            result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                        }
+
+                        if (result == null || result.MappingResultType != MappingResultType.SuccessLenientMapping)
+                        {
+                            result = new MappingResult {MappingResultType = MappingResultType.NotParsable};
+                            result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
+                            result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
+                        }
+
                     }
                     else
                     {
