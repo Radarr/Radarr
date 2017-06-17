@@ -19,7 +19,7 @@ namespace NzbDrone.Common.Test
         {
             var fakeEnvironment = new Mock<IAppFolderInfo>();
 
-            fakeEnvironment.SetupGet(c => c.AppDataFolder).Returns(@"C:\NzbDrone\".AsOsAgnostic());
+            fakeEnvironment.SetupGet(c => c.AppDataFolder).Returns(@"C:\Lidarr\".AsOsAgnostic());
 
             fakeEnvironment.SetupGet(c => c.TempFolder).Returns(@"C:\Temp\".AsOsAgnostic());
 
@@ -147,8 +147,8 @@ namespace NzbDrone.Common.Test
         [Test]
         public void path_should_return_parent_for_oversized_path()
         {
-            var path       = @"/media/2e168617-f2ae-43fb-b88c-3663af1c8eea/downloads/sabnzbd/nzbdrone/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories";
-            var parentPath = @"/media/2e168617-f2ae-43fb-b88c-3663af1c8eea/downloads/sabnzbd/nzbdrone/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing";
+            var path       = @"/media/2e168617-f2ae-43fb-b88c-3663af1c8eea/downloads/sabnzbd/lidarr/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories";
+            var parentPath = @"/media/2e168617-f2ae-43fb-b88c-3663af1c8eea/downloads/sabnzbd/lidarr/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing/With.Alot.Of.Nested.Directories/Some.Real.Big.Thing";
 
             path.GetParentPath().Should().Be(parentPath);
         }
@@ -233,71 +233,71 @@ namespace NzbDrone.Common.Test
         [Test]
         public void AppDataDirectory_path_test()
         {
-            GetIAppDirectoryInfo().GetAppDataPath().Should().BeEquivalentTo(@"C:\NzbDrone\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetAppDataPath().Should().BeEquivalentTo(@"C:\Lidarr\".AsOsAgnostic());
         }
 
         [Test]
         public void Config_path_test()
         {
-            GetIAppDirectoryInfo().GetConfigPath().Should().BeEquivalentTo(@"C:\NzbDrone\Config.xml".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetConfigPath().Should().BeEquivalentTo(@"C:\Lidarr\Config.xml".AsOsAgnostic());
         }
 
         [Test]
         public void Sandbox()
         {
-            GetIAppDirectoryInfo().GetUpdateSandboxFolder().Should().BeEquivalentTo(@"C:\Temp\nzbdrone_update\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateSandboxFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdatePackageFolder()
         {
-            GetIAppDirectoryInfo().GetUpdatePackageFolder().Should().BeEquivalentTo(@"C:\Temp\nzbdrone_update\NzbDrone\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdatePackageFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr\".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdateClientFolder()
         {
-            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\nzbdrone_update\NzbDrone\NzbDrone.Update\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr\NzbDrone.Update\".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdateClientExePath()
         {
-            GetIAppDirectoryInfo().GetUpdateClientExePath().Should().BeEquivalentTo(@"C:\Temp\nzbdrone_update\NzbDrone.Update.exe".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientExePath().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr.Update.exe".AsOsAgnostic());
         }
 
         [Test]
         public void GetUpdateLogFolder()
         {
-            GetIAppDirectoryInfo().GetUpdateLogFolder().Should().BeEquivalentTo(@"C:\NzbDrone\UpdateLogs\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateLogFolder().Should().BeEquivalentTo(@"C:\Lidarr\UpdateLogs\".AsOsAgnostic());
         }
 
         [Test]
         public void GetAncestorFolders_should_return_all_ancestors_in_path_Windows()
         {
             WindowsOnly();
-            var path = @"C:\Test\TV\Series Title";
+            var path = @"C:\Test\Music\Artist Title";
             var result = path.GetAncestorFolders();
 
             result.Count.Should().Be(4);
             result[0].Should().Be(@"C:\");
             result[1].Should().Be(@"Test");
-            result[2].Should().Be(@"TV");
-            result[3].Should().Be(@"Series Title");
+            result[2].Should().Be(@"Music");
+            result[3].Should().Be(@"Artist Title");
         }
 
         [Test]
         public void GetAncestorFolders_should_return_all_ancestors_in_path_Linux()
         {
             MonoOnly();
-            var path = @"/Test/TV/Series Title";
+            var path = @"/Test/Music/Artist Title";
             var result = path.GetAncestorFolders();
 
             result.Count.Should().Be(4);
             result[0].Should().Be(@"/");
             result[1].Should().Be(@"Test");
-            result[2].Should().Be(@"TV");
-            result[3].Should().Be(@"Series Title");
+            result[2].Should().Be(@"Music");
+            result[3].Should().Be(@"Artist Title");
         }
     }
 }
