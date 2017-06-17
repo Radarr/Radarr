@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -38,6 +39,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IConfigService _config;
         private readonly Logger _logger;
 
         public ManualImportService(IDiskProvider diskProvider,
@@ -53,6 +55,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
                                    ITrackedDownloadService trackedDownloadService,
                                    IDownloadedMovieImportService downloadedMovieImportService,
                                    IEventAggregator eventAggregator,
+                                   IConfigService config,
                                    Logger logger)
         {
             _diskProvider = diskProvider;
@@ -68,6 +71,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
             _trackedDownloadService = trackedDownloadService;
             _downloadedMovieImportService = downloadedMovieImportService;
             _eventAggregator = eventAggregator;
+            _config = config;
             _logger = logger;
         }
 
@@ -116,7 +120,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
                 return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
             }
 
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
+            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, _config.ParsingLeniency > 0);
             var seriesFiles = _diskScanService.GetVideoFiles(folder).ToList();
             var decisions = _importDecisionMaker.GetImportDecisions(seriesFiles, series, folderInfo, SceneSource(series, folder), false);
 
@@ -282,7 +286,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
 
                 var file = message.Files[i];
                 var movie = _movieService.GetMovie(file.MovieId);
-                var parsedMovieInfo = Parser.Parser.ParseMoviePath(file.Path) ?? new ParsedMovieInfo();
+                var parsedMovieInfo = Parser.Parser.ParseMoviePath(file.Path, _config.ParsingLeniency > 0) ?? new ParsedMovieInfo();
                 var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
                 var existingFile = movie.Path.IsParentPath(file.Path);
 

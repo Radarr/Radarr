@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -54,6 +55,7 @@ namespace NzbDrone.Core.Configuration
 
 		bool AllowHardcodedSubs { get; set; }
 		string WhitelistedHardcodedSubs { get; set; }
+        ParsingLeniencyType ParsingLeniency { get; set; }
 
         int NetImportSyncInterval { get; set; }
 		string ListSyncLevel { get; set; }

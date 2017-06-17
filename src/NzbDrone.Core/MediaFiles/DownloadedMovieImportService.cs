@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Parser;
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedMovie _importApprovedMovie;
         private readonly IDetectSample _detectSample;
+        private readonly IConfigService _config;
         private readonly Logger _logger;
 
         public DownloadedMovieImportService(IDiskProvider diskProvider,
@@ -38,6 +40,7 @@ namespace NzbDrone.Core.MediaFiles
                                                IMakeImportDecision importDecisionMaker,
                                                IImportApprovedMovie importApprovedMovie,
                                                IDetectSample detectSample,
+                                               IConfigService config,
                                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -47,6 +50,7 @@ namespace NzbDrone.Core.MediaFiles
             _importDecisionMaker = importDecisionMaker;
             _importApprovedMovie = importApprovedMovie;
             _detectSample = detectSample;
+            _config = config;
             _logger = logger;
         }
 
@@ -160,7 +164,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
+            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, _config.ParsingLeniency > 0);
 
             if (folderInfo != null)
             {

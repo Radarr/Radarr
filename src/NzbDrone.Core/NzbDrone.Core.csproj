@@ -997,6 +997,7 @@
     <Compile Include="Parser\Model\LocalMovie.cs" />
     <Compile Include="Parser\Model\ParsedMovieInfo.cs" />
     <Compile Include="Parser\Model\RemoteMovie.cs" />
+    <Compile Include="Parser\ParsingLeniency.cs" />
     <Compile Include="Parser\RomanNumerals\ArabicRomanNumeral.cs" />
     <Compile Include="Parser\RomanNumerals\IRomanNumeral.cs" />
     <Compile Include="Parser\RomanNumerals\RomanNumeral.cs" />

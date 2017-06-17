@@ -9,7 +9,8 @@ var view = Marionette.ItemView.extend({
     template : 'Settings/Indexers/Options/IndexerOptionsViewTemplate',
 
     ui : {
-          hcwhitelist : '.x-hcwhitelist',
+            hcwhitelist : '.x-hcwhitelist',
+			leniencyTooltip : '.x-leniency-tooltip',
         },
 
     onRender : function() {
@@ -18,6 +19,18 @@ var view = Marionette.ItemView.extend({
 					allowDuplicates: true,
 					tagClass  : 'label label-success'
 			});
+
+            this.templateFunction = Marionette.TemplateCache.get('Settings/Indexers/Options/LeniencyTooltipTemplate');
+            var content = this.templateFunction();
+
+            this.ui.leniencyTooltip.popover({
+                content   : content,
+                html      : true,
+                trigger   : 'hover',
+                title     : 'Parsing Leniency Notes',
+                placement : 'right',
+                container : this.$el
+            });
 		},
 });
 

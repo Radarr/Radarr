@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", Language.French)]
         public void should_parse_language(string postTitle, Language language)
         {
-            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
 			if (result == null)
 			{
 				Parser.Parser.ParseTitle(postTitle).Language.Should().Be(language);

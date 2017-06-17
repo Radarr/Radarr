@@ -80,10 +80,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Soldat James")]
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Passengers")]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
+        [TestCase("Valana la Legende TRUEFRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
         [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
+			Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
 		}
 
 		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
@@ -91,14 +92,14 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
         public void should_parse_movie_year(string postTitle, int year)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
+			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
 		}
 
 		[TestCase("The Danish Girl 2015")]
         [TestCase("The.Danish.Girl.2015.1080p.BluRay.x264.DTS-HD.MA.5.1-RARBG")]
 		public void should_not_parse_language_in_movie_title(string postTitle)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle).Language.Should().Be(Language.English);
+			Parser.Parser.ParseMovieTitle(postTitle, false).Language.Should().Be(Language.English);
 		}
 
         [TestCase("Prometheus 2012 Directors Cut", "Directors Cut")]
@@ -136,7 +137,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Fake Movie 2016 Final Cut ", "Final Cut")]
         public void should_parse_edition(string postTitle, string edition)
         {
-            Parser.Parser.ParseMovieTitle(postTitle).Edition.Should().Be(edition);
+            Parser.Parser.ParseMovieTitle(postTitle, false).Edition.Should().Be(edition);
         }
     }
 }

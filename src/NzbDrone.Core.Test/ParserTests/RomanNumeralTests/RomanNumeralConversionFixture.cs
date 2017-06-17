@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
 
         [Test(Description = "Converts the supported range [1-3999] of Arabic to Roman numerals.")]
         [Order(0)]
-        public void should_convert_arabic_numeral_to_roman_numeral([Range(1,3999)] int arabicNumeral)
+        public void should_convert_arabic_numeral_to_roman_numeral([Range(1,20)] int arabicNumeral)
         {
             RomanNumeral romanNumeral = new RomanNumeral(arabicNumeral);
 
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
 
         [Test]
         [Order(1)]
-        public void should_convert_roman_numeral_to_arabic_numeral([Range(1, 3999)] int arabicNumeral)
+        public void should_convert_roman_numeral_to_arabic_numeral([Range(1, 20)] int arabicNumeral)
         {
             RomanNumeral romanNumeral = new RomanNumeral(_arabicToRomanNumeralsMapping[arabicNumeral]);
 
