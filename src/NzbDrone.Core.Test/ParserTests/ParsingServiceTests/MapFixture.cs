@@ -147,7 +147,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         public void should_not_match_with_wrong_year()
 		{
 			GivenMatchByMovieTitle();
-			Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).Movie.Should().BeNull();
+			Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongYear);
         }
 
 		[Test]

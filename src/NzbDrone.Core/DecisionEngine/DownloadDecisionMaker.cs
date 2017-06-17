@@ -9,6 +9,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -71,55 +72,71 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title, _configService.ParsingLeniency > 0);
 
-					if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
-					{
-						MappingResult result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
-                        var remoteMovie = result.remoteMovie;
+                    MappingResult result = null;
 
-                        remoteMovie.Release = report;
+                    if (parsedMovieInfo == null || parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
+                    {
+                        _logger.Debug("{0} could not be parsed :(.", report.Title);
+                        parsedMovieInfo = new ParsedMovieInfo
+                        {
+                            MovieTitle = report.Title,
+                            Year = 1290,
+                            Language = Language.Unknown,
+                            Quality = new QualityModel(),
+                            MovieTitleInfo = new SeriesTitleInfo {Title = report.Title, Year = 1290}
+                        };
 
-						if (result.GetType() != typeof(MappingResultSuccess))
-						{
-                            var message = result.message;
-                            remoteMovie.Movie = null; // HACK: For now!
-							decision = new DownloadDecision(remoteMovie, new Rejection(message));
+                        result = new MappingResult {MappingResultType = MappingResultType.NotParsable};
+                        result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
+                        result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
+                    }
+                    else
+                    {
+                        result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                    }
+                    
+                    result.ReleaseName = report.Title;
+                    var remoteMovie = result.RemoteMovie;
 
-						}
-						else
-						{
-							if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
-							{
-								remoteMovie.DownloadAllowed = true;
-								if (_configService.AllowHardcodedSubs)
-								{
-									decision = GetDecisionForReport(remoteMovie, searchCriteria);
-								}
-								else
-								{
-									var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
-									_logger.Debug("Testing: {0}", whitelisted);
-									if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
-									{
-										decision = GetDecisionForReport(remoteMovie, searchCriteria);
-									}
-									else
-									{
-										decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
-									}
-								}
-							}
-							else
-							{
-								remoteMovie.DownloadAllowed = true;
-								decision = GetDecisionForReport(remoteMovie, searchCriteria);
-							}
+                    remoteMovie.Release = report;
 
-						}
-					}
-					else
-					{
-						_logger.Trace("{0} could not be parsed :(.", report.Title);
-					}
+                    if (result.MappingResultType != MappingResultType.Success && result.MappingResultType != MappingResultType.SuccessLenientMapping)
+                    {
+                        var rejection = result.ToRejection();
+                        remoteMovie.Movie = null; // HACK: For now!
+                        decision = new DownloadDecision(remoteMovie, rejection);
+
+                    }
+                    else
+                    {
+                        if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
+                        {
+                            remoteMovie.DownloadAllowed = true;
+                            if (_configService.AllowHardcodedSubs)
+                            {
+                                decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            }
+                            else
+                            {
+                                var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
+                                _logger.Debug("Testing: {0}", whitelisted);
+                                if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
+                                {
+                                    decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                                }
+                                else
+                                {
+                                    decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            remoteMovie.DownloadAllowed = true;
+                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                        }
+
+                    }
                 }
                 catch (Exception e)
                 {

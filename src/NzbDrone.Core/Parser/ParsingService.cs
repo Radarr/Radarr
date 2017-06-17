@@ -224,11 +224,11 @@ namespace NzbDrone.Core.Parser
             var result = GetMovie(parsedMovieInfo, imdbId, searchCriteria);
 
             if (result == null) {
-                result = new MappingResultUnknown();
-                result.movie = null;
+                result = new MappingResult {MappingResultType = MappingResultType.Unknown};
+                result.Movie = null;
             }
 
-            result.remoteMovie.ParsedMovieInfo = parsedMovieInfo;
+            result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
 
             return result;
         }
@@ -383,13 +383,13 @@ namespace NzbDrone.Core.Parser
             //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
             if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
             {
-                result = new MappingResultWrongYear { movie = movie };
+                result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.WrongYear};
                 return false;
             }
             if (movie != null) {
-                result = new MappingResultSuccess { movie = movie };
+                result = new MappingResult { Movie = movie };
             } else {
-                result = new MappingResultTitleNotFound { movie = movie };
+                result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.TitleNotFound};
             }
             return movie != null;
         }
@@ -404,28 +404,28 @@ namespace NzbDrone.Core.Parser
                 movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
-                    result = new MappingResultSuccess { movie = movieByTitleAndOrYear };
+                    result = new MappingResult { Movie = movieByTitleAndOrYear };
                     return true;
                 }
 
                 movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
-                    result = new MappingResultWrongYear { movie = movieByTitleAndOrYear };
+                    result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear};
                     return false;
                 }
 
-                result = new MappingResultTitleNotFound { movie = movieByTitleAndOrYear };
+                result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
                 return false;
             }
 
             movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
             if (isNotNull(movieByTitleAndOrYear))
             {
-                result = new MappingResultSuccess { movie = movieByTitleAndOrYear };
+                result = new MappingResult { Movie = movieByTitleAndOrYear };
                 return true;
             }
-            result = new MappingResultTitleNotFound { movie = movieByTitleAndOrYear };
+            result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
             return false;
         }
 
@@ -475,14 +475,14 @@ namespace NzbDrone.Core.Parser
             {
                 if (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year)
                 {
-                    result = new MappingResultSuccess { movie = possibleMovie };
+                    result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.Success };
                     return true;
                 }
-                result = new MappingResultWrongYear { movie = possibleMovie };
+                result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                 return false;
             }
 
-            result = new MappingResultWrongTitle { movie = searchCriteria.Movie };
+            result = new MappingResult { Movie = searchCriteria.Movie, MappingResultType = MappingResultType.WrongTitle };
 
             return false;
         }
@@ -713,94 +713,86 @@ namespace NzbDrone.Core.Parser
     }
 
 
-    public abstract class MappingResult {
-        public abstract string message { get; }
-        public RemoteMovie remoteMovie;
-        public Movie movie {
-            get {
-                return remoteMovie.Movie;
-            }
-            set {
-                remoteMovie = new RemoteMovie
+    public class MappingResult
+    {
+        public string Message
+        {
+            get
+            {
+                switch (MappingResultType)
                 {
-                    Movie = value
+                    case MappingResultType.Success:
+                        return $"Successfully mapped release name {ReleaseName} to movie {Movie}";
+                        break;
+                    case MappingResultType.SuccessLenientMapping:
+                        return $"Successfully mapped parts of the release name {ReleaseName} to movie {Movie}";
+                        break;
+                    case MappingResultType.NotParsable:
+                        return $"Failed to find movie title in release name {ReleaseName}";
+                        break;
+                    case MappingResultType.TitleNotFound:
+                        return $"Could not find {RemoteMovie.ParsedMovieInfo.MovieTitle}";
+                        break;
+                    case MappingResultType.WrongYear:
+                        return $"Failed to map movie, expected year {RemoteMovie.Movie.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
+                    case MappingResultType.WrongTitle:
+                        var altTitles = RemoteMovie.Movie.AlternativeTitles;
+                        altTitles.Add(RemoteMovie.Movie.Title);
+                        var str = string.Join(", ", altTitles);
+                        return $"Failed to map movie, found title {RemoteMovie.ParsedMovieInfo.MovieTitle}, expected one of: {str}";
+                    default:
+                        return $"Failed to map movie for unkown reasons";
+                }
+            }
+        }
+        
+        public RemoteMovie RemoteMovie;
+        public MappingResultType MappingResultType { get; set; } 
+        public Movie Movie {
+            get {
+                return RemoteMovie.Movie;
+            }
+            set
+            {
+                ParsedMovieInfo parsedInfo = null;
+                if (RemoteMovie != null)
+                {
+                    parsedInfo = RemoteMovie.ParsedMovieInfo;
+                }
+                RemoteMovie = new RemoteMovie
+                {
+                    Movie = value,
+                    ParsedMovieInfo = parsedInfo
                 };
             }
         }
+        
+        public string ReleaseName { get; set; }
 
         public override string ToString() {
-            return string.Format(message, remoteMovie.Movie);
+            return string.Format(Message, RemoteMovie.Movie);
         }
 
         public Rejection ToRejection() {
-            return null;
-        }
-    }
-
-    public class MappingResultSuccess : MappingResult {
-        public override string message {
-            get {
-                return "Mapped movie {0} successfully!";
+            switch (MappingResultType)
+            {
+                case MappingResultType.Success:
+                case MappingResultType.SuccessLenientMapping:
+                    return null;
+                default:
+                    return new Rejection(Message);
             }
         }
     }
-
-    public class MappingResultWrongYear : MappingResult {
-        public int expectedYear {
-            get {
-                return remoteMovie.Movie.Year;
-            }
-        }
-        public int givenYear {
-            get {
-                return remoteMovie.ParsedMovieInfo.Year;
-            }
-        }
-        public override string message {
-            get {
-                return string.Format("Failed to map movie, expected year {0}, found year {1}", expectedYear, givenYear);
-            }
-        }
-    }
-
-    public class MappingResultTitleNotFound : MappingResult {
-        public string title {
-            get {
-                return remoteMovie.ParsedMovieInfo.MovieTitle;
-            }
-        }
-        public override string message {
-            get {
-                return $"Could not find {title} in your database. Failed to map movie.";
-            }
-        }
-    }
-
-    public class MappingResultWrongTitle : MappingResult {
-        public List<string> expectedTitles {
-            get {
-                var titles = new List<string>{ remoteMovie.Movie.Title };
-                titles.AddRange(remoteMovie.Movie.AlternativeTitles);
-                return titles;
-            }
-        }
-        public string foundTitle {
-            get {
-                return remoteMovie.ParsedMovieInfo.MovieTitle;
-            }
-        }
-        public override string message {
-            get {
-                return $"Failed to map movie, found {foundTitle}, but expected one of: " + string.Join(", ", expectedTitles);
-            }
-        }
-    }
-
-    public class MappingResultUnknown : MappingResult {
-        public override string message {
-            get {
-                return "Unkown reason for failure while mapping movie.";
-            }
-        }
+    
+    public enum MappingResultType
+    {
+        Unknown = -1,
+        Success = 0,
+        SuccessLenientMapping = 1,
+        WrongYear = 2,
+        WrongTitle = 3,
+        TitleNotFound = 4,
+        NotParsable = 5,
     }
 }

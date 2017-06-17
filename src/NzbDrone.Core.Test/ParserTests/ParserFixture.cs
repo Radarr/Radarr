@@ -82,6 +82,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
         [TestCase("Valana la Legende TRUEFRENCH BluRay 720p 2016 kjhlj", "Valana la Legende")]
         [TestCase("Mission Impossible: Rogue Nation (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Impossible Rogue Nation")]
+		[TestCase("Scary.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Scary Movie")]
+		[TestCase("My Movie 1999 German Bluray", "My Movie")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
 			Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
