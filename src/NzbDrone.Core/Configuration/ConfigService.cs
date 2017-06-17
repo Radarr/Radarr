@@ -8,6 +8,7 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Configuration
 {
@@ -210,6 +211,12 @@ namespace NzbDrone.Core.Configuration
 
 			set { SetValue("WhitelistedHardcodedSubs", value); }
 		}
+
+        public ParsingLeniencyType ParsingLeniency
+        {
+            get { return GetValueEnum<ParsingLeniencyType>("ParsingLeniency", ParsingLeniencyType.Strict); }
+            set { SetValue("ParsingLeniency", value); }
+        }
 
         public bool RemoveCompletedDownloads
         {

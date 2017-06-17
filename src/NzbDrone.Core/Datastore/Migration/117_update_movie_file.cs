@@ -26,13 +26,13 @@ namespace NzbDrone.Core.Datastore.Migration
                         var id = seriesReader.GetInt32(0);
                         var relativePath = seriesReader.GetString(1);
                         
-                        var result = Parser.Parser.ParseMovieTitle(relativePath);
+                        var result = Parser.Parser.ParseMovieTitle(relativePath, false);
                         
                         var edition = "";
                         
                         if (result != null)
                         {
-                            edition = Parser.Parser.ParseMovieTitle(relativePath).Edition;
+                            edition = Parser.Parser.ParseMovieTitle(relativePath, false).Edition;
                         }
 
                         using (IDbCommand updateCmd = conn.CreateCommand())

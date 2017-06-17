@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
@@ -21,7 +22,7 @@ namespace NzbDrone.Core.Organizer
         public ValidationFailure ValidateMovieFilename(SampleResult sampleResult)
         {
             var validationFailure = new ValidationFailure("MovieFormat", ERROR_MESSAGE);
-            var parsedMovieInfo = Parser.Parser.ParseMovieTitle(sampleResult.FileName);
+            var parsedMovieInfo = Parser.Parser.ParseMovieTitle(sampleResult.FileName, false); //We are not lenient when testing naming schemes
 
             if(parsedMovieInfo == null)
             {

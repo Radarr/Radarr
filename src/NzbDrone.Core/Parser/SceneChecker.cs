@@ -9,7 +9,7 @@
             if (!title.Contains(".")) return false;
             if (title.Contains(" ")) return false;
 
-            var parsedTitle = Parser.ParseMovieTitle(title);
+            var parsedTitle = Parser.ParseMovieTitle(title, false); //We are not lenient when it comes to scene checking!
 
             if (parsedTitle == null ||
                 parsedTitle.ReleaseGroup == null ||
