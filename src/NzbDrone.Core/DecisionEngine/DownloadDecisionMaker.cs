@@ -9,6 +9,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -71,50 +72,85 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title, _configService.ParsingLeniency > 0);
 
-					if (parsedMovieInfo != null && !parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
-					{
-						RemoteMovie remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
-						remoteMovie.Release = report;
+                    MappingResult result = null;
 
-						if (remoteMovie.Movie == null)
-						{
-							decision = new DownloadDecision(remoteMovie, new Rejection("Unknown movie. Movie found does not match wanted movie."));
-						}
-						else
-						{
-							if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
-							{
-								remoteMovie.DownloadAllowed = true;
-								if (_configService.AllowHardcodedSubs)
-								{
-									decision = GetDecisionForReport(remoteMovie, searchCriteria);
-								}
-								else
-								{
-									var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
-									_logger.Debug("Testing: {0}", whitelisted);
-									if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
-									{
-										decision = GetDecisionForReport(remoteMovie, searchCriteria);
-									}
-									else
-									{
-										decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
-									}
-								}
-							}
-							else
-							{
-								remoteMovie.DownloadAllowed = true;
-								decision = GetDecisionForReport(remoteMovie, searchCriteria);
-							}
+                    if (parsedMovieInfo == null || parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
+                    {
+                        _logger.Debug("{0} could not be parsed :(.", report.Title);
+                        parsedMovieInfo = new ParsedMovieInfo
+                        {
+                            MovieTitle = report.Title,
+                            Year = 1290,
+                            Language = Language.Unknown,
+                            Quality = new QualityModel(),
+                        };
 
-						}
-					}
-					else
-					{
-						_logger.Trace("{0} could not be parsed :(.", report.Title);
-					}
+                        if (_configService.ParsingLeniency == ParsingLeniencyType.MappingLenient)
+                        {
+                            result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                        }
+
+                        if (result == null || result.MappingResultType != MappingResultType.SuccessLenientMapping)
+                        {
+                            result = new MappingResult {MappingResultType = MappingResultType.NotParsable};
+                            result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
+                            result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
+                        }
+                        else
+                        {
+                            //Enhance Parsed Movie Info!
+                            result.RemoteMovie.ParsedMovieInfo = Parser.Parser.ParseMinimalMovieTitle(parsedMovieInfo.MovieTitle,
+                                result.RemoteMovie.Movie.Title, parsedMovieInfo.Year);
+                        }
+
+                    }
+                    else
+                    {
+                        result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                    }
+                    
+                    result.ReleaseName = report.Title;
+                    var remoteMovie = result.RemoteMovie;
+
+                    remoteMovie.Release = report;
+
+                    if (result.MappingResultType != MappingResultType.Success && result.MappingResultType != MappingResultType.SuccessLenientMapping)
+                    {
+                        var rejection = result.ToRejection();
+                        remoteMovie.Movie = null; // HACK: For now!
+                        decision = new DownloadDecision(remoteMovie, rejection);
+
+                    }
+                    else
+                    {
+                        if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
+                        {
+                            remoteMovie.DownloadAllowed = true;
+                            if (_configService.AllowHardcodedSubs)
+                            {
+                                decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            }
+                            else
+                            {
+                                var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
+                                _logger.Debug("Testing: {0}", whitelisted);
+                                if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
+                                {
+                                    decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                                }
+                                else
+                                {
+                                    decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            remoteMovie.DownloadAllowed = true;
+                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                        }
+
+                    }
                 }
                 catch (Exception e)
                 {

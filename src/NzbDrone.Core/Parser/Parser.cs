@@ -25,11 +25,11 @@ namespace NzbDrone.Core.Parser
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
             
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
-            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            /*new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
             
             //Normal movie format, e.g: Mission.Impossible.3.2011
-            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportMovieTitleLenientRegexBefore = new[]
         {
             //Some german or french tracker formats
-            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(?:(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),  
+            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(?:(?<!(19|20)\d{2}.)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),  
         };
         
         private static readonly Regex[] ReportMovieTitleLenientRegexAfter = new Regex[]
@@ -321,6 +321,10 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex DuplicateSpacesRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
         private static readonly Regex RequestInfoRegex = new Regex(@"\[.+?\]", RegexOptions.Compiled);
+        
+        private static readonly Regex ReportYearRegex = new Regex(@"^.*(?<year>(19|20)\d{2}).*$", RegexOptions.Compiled);
+        
+        private static readonly Regex ReportEditionRegex = new Regex(@"(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
                private static Dictionary<String, String> _umlautMappings = new Dictionary<string, string>
@@ -441,6 +445,11 @@ namespace NzbDrone.Core.Parser
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
+                                if (result.Edition.IsNullOrWhiteSpace())
+                                {
+                                    result.Edition = ParseEdition(languageTitle);
+                                }
+
                                 result.ReleaseGroup = ParseReleaseGroup(title);
 
                                 result.ImdbId = ParseImdbId(title);
@@ -482,6 +491,53 @@ namespace NzbDrone.Core.Parser
             return realResult;
         }
 
+        public static ParsedMovieInfo ParseMinimalMovieTitle(string title, string foundTitle, int foundYear)
+        {
+            var result = new ParsedMovieInfo {MovieTitle = foundTitle};
+
+            var languageTitle = Regex.Replace(title.Replace(".", " "), foundTitle, "A Movie", RegexOptions.IgnoreCase);
+            
+            result.Language = LanguageParser.ParseLanguage(title);
+            Logger.Debug("Language parsed: {0}", result.Language);
+
+            result.Quality = QualityParser.ParseQuality(title);
+            Logger.Debug("Quality parsed: {0}", result.Quality);
+            
+            if (result.Edition.IsNullOrWhiteSpace())
+            {
+                result.Edition = ParseEdition(languageTitle);
+            }
+
+            result.ReleaseGroup = ParseReleaseGroup(title);
+
+            result.ImdbId = ParseImdbId(title);
+
+            Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+            if (foundYear > 1800)
+            {
+                result.Year = foundYear;
+            }
+            else
+            {
+                var match = ReportYearRegex.Match(title);
+                if (match.Success && match.Groups["year"].Value != null)
+                {
+                    int year = 1290;
+                    if (int.TryParse(match.Groups["year"].Value, out year))
+                    {
+                        result.Year = year;
+                    }
+                    else
+                    {
+                        result.Year = year;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static string ParseImdbId(string title)
         {
             var match = ReportImdbId.Match(title);
@@ -494,6 +550,19 @@ namespace NzbDrone.Core.Parser
                         return match.Groups["imdbid"].Value;
                     }
                 }
+            }
+
+            return "";
+        }
+
+        public static string ParseEdition(string languageTitle)
+        {
+            var editionMatch = ReportEditionRegex.Match(languageTitle);
+
+            if (editionMatch.Success && editionMatch.Groups["edition"].Value != null &&
+                editionMatch.Groups["edition"].Value.IsNotNullOrWhiteSpace())
+            {
+                return editionMatch.Groups["edition"].Value.Replace(".", " ");
             }
 
             return "";

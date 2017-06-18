@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 		private Movie _movie;
 		private ParsedMovieInfo _parsedMovieInfo;
 		private ParsedMovieInfo _wrongYearInfo;
+        private ParsedMovieInfo _wrongTitleInfo;
 		private ParsedMovieInfo _romanTitleInfo;
 		private ParsedMovieInfo _alternativeTitleInfo;
         private ParsedMovieInfo _umlautInfo;
@@ -70,6 +71,12 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 				MovieTitle = _movie.Title,
 				Year = 1900,
 			};
+
+            _wrongTitleInfo = new ParsedMovieInfo
+            {
+                MovieTitle = "Other Title",
+                Year = 2015
+            };
 
 			_alternativeTitleInfo = new ParsedMovieInfo
 			{
@@ -139,7 +146,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             Subject.Map(_parsedMovieInfo, "", _movieSearchCriteria);
 
-            Mocker.GetMock<ISeriesService>()
+            Mocker.GetMock<IMovieService>()
                   .Verify(v => v.FindByTitle(It.IsAny<string>()), Times.Never());
         }
 
@@ -147,7 +154,24 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         public void should_not_match_with_wrong_year()
 		{
 			GivenMatchByMovieTitle();
-			Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).Movie.Should().BeNull();
+			Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongYear);
+        }
+
+        [Test]
+        public void should_not_match_wrong_title()
+        {
+            GivenMatchByMovieTitle();
+            Subject.Map(_wrongTitleInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongTitle);
+        }
+
+        [Test]
+        public void should_return_title_not_found_when_all_is_null()
+        {
+            Mocker.GetMock<IMovieService>()
+                .Setup(s => s.FindByTitle(It.IsAny<string>()))
+                .Returns((Movie)null);
+            Subject.Map(_parsedMovieInfo, "", null).MappingResultType.Should()
+                .Be(MappingResultType.TitleNotFound);
         }
 
 		[Test]

@@ -14,6 +14,7 @@ using NzbDrone.Test.Common.Categories;
 namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
 {
     [IntegrationTest]
+    [Ignore("Nyaa is down!")]
     public class IndexerIntegrationTests : CoreTest
     {
         private SingleEpisodeSearchCriteria _singleSearchCriteria;
