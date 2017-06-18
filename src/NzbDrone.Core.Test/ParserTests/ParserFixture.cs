@@ -137,9 +137,20 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie IMAX 2012.mkv", "IMAX")]
         [TestCase("Fake Movie Final Cut 2016", "Final Cut")]
         [TestCase("Fake Movie 2016 Final Cut ", "Final Cut")]
+        [TestCase("My Movie GERMAN Extended Cut 2016", "Extended Cut")]
+        [TestCase("My.Movie.GERMAN.Extended.Cut.2016", "Extended Cut")]
+        [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
+        [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
         public void should_parse_edition(string postTitle, string edition)
         {
-            Parser.Parser.ParseMovieTitle(postTitle, false).Edition.Should().Be(edition);
+            Parser.Parser.ParseMovieTitle(postTitle, true).Edition.Should().Be(edition);
+        }
+
+        [TestCase("The Lord of the Rings The Fellowship of the Ring (Extended Edition) 1080p BD25", "The Lord Of The Rings The Fellowship Of The Ring", "Extended Edition")]
+        [TestCase("The.Lord.of.the.Rings.The.Fellowship.of.the.Ring.(Extended.Edition).1080p.BD25", "The Lord Of The Rings The Fellowship Of The Ring", "Extended Edition")]
+        public void should_parse_edition_lenient_mapping(string postTitle, string foundTitle, string edition)
+        {
+            Parser.Parser.ParseMinimalMovieTitle(postTitle, foundTitle, 1290).Edition.Should().Be(edition);
         }
     }
 }
