@@ -247,7 +247,7 @@ namespace NzbDrone.Core.Tv
             if (!list.Any())
             {
                 // no movie matched
-                return null;
+                return list; 
             }
             // build ordered list of movie by position in the search string
             var query = 
