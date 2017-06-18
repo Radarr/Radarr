@@ -477,7 +477,7 @@ namespace NzbDrone.Core.Parser
                     string arabicNumeral = numeralMapping.ArabicNumeralAsString;
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
-                    _logger.Debug(cleanTitle);
+                    //_logger.Debug(cleanTitle);
 
                     if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
                     {
