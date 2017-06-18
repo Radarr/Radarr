@@ -83,7 +83,6 @@ namespace NzbDrone.Core.DecisionEngine
                             Year = 1290,
                             Language = Language.Unknown,
                             Quality = new QualityModel(),
-                            MovieTitleInfo = new SeriesTitleInfo {Title = report.Title, Year = 1290}
                         };
 
                         if (_configService.ParsingLeniency == ParsingLeniencyType.MappingLenient)
@@ -96,6 +95,12 @@ namespace NzbDrone.Core.DecisionEngine
                             result = new MappingResult {MappingResultType = MappingResultType.NotParsable};
                             result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
                             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
+                        }
+                        else
+                        {
+                            //Enhance Parsed Movie Info!
+                            result.RemoteMovie.ParsedMovieInfo = Parser.Parser.ParseMinimalMovieTitle(parsedMovieInfo.MovieTitle,
+                                result.RemoteMovie.Movie.Title, parsedMovieInfo.Year);
                         }
 
                     }

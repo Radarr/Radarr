@@ -321,6 +321,8 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex DuplicateSpacesRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
         private static readonly Regex RequestInfoRegex = new Regex(@"\[.+?\]", RegexOptions.Compiled);
+        
+        private static readonly Regex ReportYearRegex = new Regex(@"^.*(?<year>(19|20)\d{2}).*$", RegexOptions.Compiled);
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
                private static Dictionary<String, String> _umlautMappings = new Dictionary<string, string>
@@ -480,6 +482,46 @@ namespace NzbDrone.Core.Parser
 
             Logger.Debug("Unable to parse {0}", title);
             return realResult;
+        }
+
+        public static ParsedMovieInfo ParseMinimalMovieTitle(string title, string foundTitle, int foundYear)
+        {
+            var result = new ParsedMovieInfo {MovieTitle = foundTitle};
+            
+            result.Language = LanguageParser.ParseLanguage(title);
+            Logger.Debug("Language parsed: {0}", result.Language);
+
+            result.Quality = QualityParser.ParseQuality(title);
+            Logger.Debug("Quality parsed: {0}", result.Quality);
+
+            result.ReleaseGroup = ParseReleaseGroup(title);
+
+            result.ImdbId = ParseImdbId(title);
+
+            Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+            if (foundYear > 1800)
+            {
+                result.Year = foundYear;
+            }
+            else
+            {
+                var match = ReportYearRegex.Match(title);
+                if (match.Success && match.Groups["year"].Value != null)
+                {
+                    int year = 1290;
+                    if (int.TryParse(match.Groups["year"].Value, out year))
+                    {
+                        result.Year = year;
+                    }
+                    else
+                    {
+                        result.Year = year;
+                    }
+                }
+            }
+
+            return result;
         }
 
         public static string ParseImdbId(string title)
