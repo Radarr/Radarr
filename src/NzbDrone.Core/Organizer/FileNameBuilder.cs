@@ -22,6 +22,8 @@ namespace NzbDrone.Core.Organizer
         string BuildSeasonPath(Series series, int seasonNumber);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetSeriesFolder(Series series, NamingConfig namingConfig = null);
+        string GetArtistFolder(Artist artist, NamingConfig namingConfig = null);
+        string GetAlbumFolder(Album album, NamingConfig namingConfig = null);
         string GetSeasonFolder(Series series, int seasonNumber, NamingConfig namingConfig = null);
 
         // TODO: Implement Music functions
@@ -232,6 +234,20 @@ namespace NzbDrone.Core.Organizer
             return CleanFolderName(ReplaceTokens(namingConfig.SeriesFolderFormat, tokenHandlers, namingConfig));
         }
 
+        public string GetArtistFolder(Artist artist, NamingConfig namingConfig = null)
+        {
+            if (namingConfig == null)
+            {
+                namingConfig = _namingConfigService.GetConfig();
+            }
+
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            AddArtistTokens(tokenHandlers, artist);
+
+            return CleanFolderName(ReplaceTokens(namingConfig.ArtistFolderFormat, tokenHandlers, namingConfig));
+        }
+
         public string GetSeasonFolder(Series series, int seasonNumber, NamingConfig namingConfig = null)
         {
             if (namingConfig == null)
@@ -245,6 +261,20 @@ namespace NzbDrone.Core.Organizer
             AddSeasonTokens(tokenHandlers, seasonNumber);
 
             return CleanFolderName(ReplaceTokens(namingConfig.SeasonFolderFormat, tokenHandlers, namingConfig));
+        }
+
+        public string GetAlbumFolder(Album album, NamingConfig namingConfig = null)
+        {
+            if (namingConfig == null)
+            {
+                namingConfig = _namingConfigService.GetConfig();
+            }
+
+            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+
+            AddAlbumTokens(tokenHandlers, album);
+
+            return CleanFolderName(ReplaceTokens(namingConfig.AlbumFolderFormat, tokenHandlers, namingConfig));
         }
 
         public static string CleanTitle(string title)
@@ -285,7 +315,14 @@ namespace NzbDrone.Core.Organizer
         private void AddArtistTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist)
         {
             tokenHandlers["{Artist Name}"] = m => artist.Name;
-            tokenHandlers["{Artist CleanTitle}"] = m => CleanTitle(artist.Name);
+            tokenHandlers["{Artist CleanName}"] = m => CleanTitle(artist.Name);
+        }
+
+        private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Album album)
+        {
+            tokenHandlers["{Album Title}"] = m => album.Title;
+            tokenHandlers["{Album CleanTitle}"] = m => CleanTitle(album.Title);
+            tokenHandlers["{Album Year}"] = m => album.ReleaseDate.Year.ToString();
         }
 
         private string AddSeasonEpisodeNumberingTokens(string pattern, Dictionary<string, Func<TokenMatch, string>> tokenHandlers, List<Episode> episodes, NamingConfig namingConfig)

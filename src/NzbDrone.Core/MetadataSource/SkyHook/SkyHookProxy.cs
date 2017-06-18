@@ -74,14 +74,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         }
 
 
-        public Tuple<Artist, List<Track>> GetArtistInfo(string spotifyId)
+        public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId)
         {
 
-            _logger.Debug("Getting Artist with SpotifyId of {0}", spotifyId);
+            _logger.Debug("Getting Artist with SpotifyId of {0}", foreignArtistId);
 
             // We need to perform a direct lookup of the artist
             var httpRequest = _requestBuilder.Create()
-                                            .SetSegment("route", "artists/" + spotifyId)
+                                            .SetSegment("route", "artists/" + foreignArtistId)
                                              //.SetSegment("route", "search")
                                              //.AddQueryParam("type", "artist,album")
                                              //.AddQueryParam("q", spotifyId.ToString())
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw new ArtistNotFoundException(spotifyId);
+                    throw new ArtistNotFoundException(foreignArtistId);
                 }
                 else
                 {
@@ -109,18 +109,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             // It is safe to assume an id will only return one Artist back
             var albums = httpResponse.Resource.Albums.Select(MapAlbum);
-            var tracks = httpResponse.Resource.Tracks.Select(MapTrack);
             var artist = MapArtist(httpResponse.Resource);
 
             //artist.Name = httpResponse.Resource.Artists.Items[0].ArtistName;
-            
+
             //artist.ForeignArtistId = httpResponse.Resource.Artists.Items[0].Id;
             //artist.Genres = httpResponse.Resource.Artists.Items[0].Genres;
 
             //var albumRet = MapAlbums(artist);
             //artist = albumRet.Item1;
 
-            return new Tuple<Artist, List<Track>>(artist, tracks.ToList());
+            return new Tuple<Artist, List<Album>>(artist, albums.ToList());
         }
 
 
@@ -179,7 +178,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         //    }
 
         //    List<Track> tracks = new List<Track>();
-        //    foreach(var trackResource in httpResponse.Resource.Items)
+        //    foreach (var trackResource in httpResponse.Resource.Items)
         //    {
         //        Track track = new Track();
         //        track.AlbumId = album.AlbumId;
@@ -269,12 +268,25 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private static Album MapAlbum(AlbumResource resource)
         {
             Album album = new Album();
+            album.Title = resource.Title;
+            album.ForeignAlbumId = resource.Id;
+            album.ReleaseDate = resource.ReleaseDate;
+            album.CleanTitle = Parser.Parser.CleanArtistTitle(album.Title);
+            album.AlbumType = resource.Type;
+
+            var tracks = resource.Tracks.Select(MapTrack);
+            album.Tracks = tracks.ToList();
+            
+
             return album;
         }
 
         private static Track MapTrack(TrackResource resource)
         {
             Track track = new Track();
+            track.Title = resource.TrackName;
+            track.ForeignTrackId = resource.Id;
+            track.TrackNumber = resource.TrackNumber;
             return track;
         }
 

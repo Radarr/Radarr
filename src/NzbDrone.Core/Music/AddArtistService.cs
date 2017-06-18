@@ -48,11 +48,11 @@ namespace NzbDrone.Core.Music
 
             if (string.IsNullOrWhiteSpace(newArtist.Path))
             {
-                var folderName = newArtist.Name;// TODO: _fileNameBuilder.GetArtistFolder(newArtist);
+                var folderName = _fileNameBuilder.GetArtistFolder(newArtist);
                 newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
             }
 
-            newArtist.CleanName = newArtist.Name.CleanSeriesTitle();
+            newArtist.CleanName = newArtist.Name.CleanArtistTitle();
             //newArtist.SortTitle = ArtistNameNormalizer.Normalize(newArtist.ArtistName, newArtist.ItunesId); // There is no Sort Title
             newArtist.Added = DateTime.UtcNow;
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Music
 
         private Artist AddSkyhookData(Artist newArtist)
         {
-            Tuple<Artist, List<Track>> tuple;
+            Tuple<Artist, List<Album>> tuple;
 
             try
             {
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Music
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("SpotifyId {1} was not found, it may have been removed from Spotify.", newArtist.ForeignArtistId);
+                _logger.Error("LidarrId {1} was not found, it may have been removed from Lidarr.", newArtist.ForeignArtistId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {

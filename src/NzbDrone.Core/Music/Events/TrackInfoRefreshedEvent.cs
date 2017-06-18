@@ -9,13 +9,13 @@ namespace NzbDrone.Core.Music.Events
 {
     public class TrackInfoRefreshedEvent : IEvent
     {
-        public Artist Artist { get; set; }
+        public Album Album { get; set; }
         public ReadOnlyCollection<Track> Added { get; private set; }
         public ReadOnlyCollection<Track> Updated { get; private set; }
 
-        public TrackInfoRefreshedEvent(Artist artist, IList<Track> added, IList<Track> updated)
+        public TrackInfoRefreshedEvent(Album album, IList<Track> added, IList<Track> updated)
         {
-            Artist = artist;
+            Album = album;
             Added = new ReadOnlyCollection<Track>(added);
             Updated = new ReadOnlyCollection<Track>(updated);
         }

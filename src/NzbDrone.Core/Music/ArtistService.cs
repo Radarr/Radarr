@@ -110,11 +110,11 @@ namespace NzbDrone.Core.Music
 
             foreach (var album in artist.Albums)
             {
-                var storedAlbum = storedArtist.Albums.SingleOrDefault(s => s.AlbumId == album.AlbumId);
+                var storedAlbum = storedArtist.Albums.SingleOrDefault(s => s.ForeignAlbumId == album.ForeignAlbumId);
 
                 if (storedAlbum != null && album.Monitored != storedAlbum.Monitored)
                 {
-                    _trackService.SetTrackMonitoredByAlbum(artist.ForeignArtistId, album.AlbumId, album.Monitored);
+                    _trackService.SetTrackMonitoredByAlbum(artist.ForeignArtistId, album.ForeignAlbumId, album.Monitored);
                 }
             }
 

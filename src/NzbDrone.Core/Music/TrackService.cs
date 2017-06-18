@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Music
         Track FindTrack(int artistId, int albumId, int trackNumber);
         Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
         List<Track> GetTracksByArtist(int artistId);
-        //List<Track> GetTracksByAlbum(string artistId, string albumId);
+        List<Track> GetTracksByAlbum(int artistId, int albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
         List<Track> TracksWithFiles(int artistId);
         //PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);

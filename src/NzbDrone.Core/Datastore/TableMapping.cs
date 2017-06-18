@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Datastore
                   .Relationship()
                   .HasOne(a => a.Profile, a => a.ProfileId);
 
-            Mapper.Entity<Album>().RegisterModel("Album");
+            Mapper.Entity<Album>().RegisterModel("Albums");
 
             Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
                   .Ignore(f => f.Path)
