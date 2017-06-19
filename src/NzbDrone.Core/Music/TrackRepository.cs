@@ -13,11 +13,11 @@ namespace NzbDrone.Core.Music
 {
     public interface ITrackRepository : IBasicRepository<Track>
     {
-        Track Find(int artistId, int albumId, int trackNumber);
-        List<Track> GetTracks(int artistId);
-        List<Track> GetTracks(int artistId, int albumId);
+        Track Find(string artistId, string albumId, int trackNumber);
+        List<Track> GetTracks(string artistId);
+        List<Track> GetTracks(string artistId, string albumId);
         List<Track> GetTracksByFileId(int fileId);
-        List<Track> TracksWithFiles(int artistId);
+        List<Track> TracksWithFiles(string artistId);
         PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
         PagingSpec<Track> TracksWhereCutoffUnmet(PagingSpec<Track> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
         void SetMonitoredFlat(Track episode, bool monitored);
@@ -37,24 +37,24 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        public Track Find(int artistId, int albumId, int trackNumber)
+        public Track Find(string artistId, string albumId, int trackNumber)
         {
-            return Query.Where(s => s.ArtistId == artistId)
-                               .AndWhere(s => s.AlbumId == albumId)
+            return Query.Where(s => s.ForeignTrackId == artistId)
+                               .AndWhere(s => s.Album.ForeignAlbumId == albumId)
                                .AndWhere(s => s.TrackNumber == trackNumber)
                                .SingleOrDefault();
         }
 
 
-        public List<Track> GetTracks(int artistId)
+        public List<Track> GetTracks(string artistId)
         {
-            return Query.Where(s => s.ArtistId == artistId).ToList();
+            return Query.Where(s => s.ForeignTrackId == artistId).ToList();
         }
 
-        public List<Track> GetTracks(int artistId, int albumId)
+        public List<Track> GetTracks(string artistId, string albumId)
         {
-            return Query.Where(s => s.ArtistId == artistId)
-                        .AndWhere(s => s.AlbumId == albumId)
+            return Query.Where(s => s.ForeignTrackId == artistId)
+                        .AndWhere(s => s.Album.ForeignAlbumId == albumId)
                         .ToList();
         }
 
@@ -63,10 +63,10 @@ namespace NzbDrone.Core.Music
             return Query.Where(e => e.TrackFileId == fileId).ToList();
         }
 
-        public List<Track> TracksWithFiles(int artistId)
+        public List<Track> TracksWithFiles(string artistId)
         {
             return Query.Join<Track, TrackFile>(JoinType.Inner, e => e.TrackFile, (e, ef) => e.TrackFileId == ef.Id)
-                        .Where(e => e.ArtistId == artistId);
+                        .Where(e => e.ForeignTrackId == artistId);
         }
 
         public PagingSpec<Track> TracksWhereCutoffUnmet(PagingSpec<Track> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)

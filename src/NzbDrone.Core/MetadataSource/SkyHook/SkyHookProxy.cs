@@ -77,7 +77,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId)
         {
 
-            _logger.Debug("Getting Artist with SpotifyId of {0}", foreignArtistId);
+            _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
 
             // We need to perform a direct lookup of the artist
             var httpRequest = _requestBuilder.Create()
@@ -296,7 +296,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             Artist artist = new Artist();
 
             artist.Name = resource.ArtistName;
-            artist.ForeignArtistId = resource.Id; // TODO: Rename spotifyId to LidarrId
+            artist.ForeignArtistId = resource.Id;
             artist.Genres = resource.Genres;
             artist.Overview = resource.Overview;
             artist.NameSlug = Parser.Parser.CleanArtistTitle(artist.Name);

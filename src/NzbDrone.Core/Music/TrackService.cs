@@ -15,12 +15,12 @@ namespace NzbDrone.Core.Music
     {
         Track GetTrack(int id);
         List<Track> GetTracks(IEnumerable<int> ids);
-        Track FindTrack(int artistId, int albumId, int trackNumber);
-        Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
-        List<Track> GetTracksByArtist(int artistId);
-        List<Track> GetTracksByAlbum(int artistId, int albumId);
+        Track FindTrack(string artistId, string albumId, int trackNumber);
+        Track FindTrackByTitle(string artistId, string albumId, string releaseTitle);
+        List<Track> GetTracksByArtist(string artistId);
+        List<Track> GetTracksByAlbum(string artistId, string albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
-        List<Track> TracksWithFiles(int artistId);
+        List<Track> TracksWithFiles(string artistId);
         //PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
         List<Track> GetTracksByFileId(int trackFileId);
         void UpdateTrack(Track track);
@@ -65,12 +65,12 @@ namespace NzbDrone.Core.Music
             return _trackRepository.GetTracks(artistId).ToList();
         }
 
-        public List<Track> GetTracksByAlbum(int artistId, int albumId)
+        public List<Track> GetTracksByAlbum(string artistId, string albumId)
         {
             return _trackRepository.GetTracks(artistId, albumId);
         }
 
-        public Track FindTrackByTitle(int artistId, int albumId, string releaseTitle)
+        public Track FindTrackByTitle(string artistId, string albumId, string releaseTitle)
         {
             // TODO: can replace this search mechanism with something smarter/faster/better
             var normalizedReleaseTitle = Parser.Parser.NormalizeEpisodeTitle(releaseTitle).Replace(".", " ");
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Music
             return null;
         }
 
-        public List<Track> TracksWithFiles(int artistId)
+        public List<Track> TracksWithFiles(string artistId)
         {
             return _trackRepository.TracksWithFiles(artistId);
         }
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Music
 
         public void HandleAsync(ArtistDeletedEvent message)
         {
-            var tracks = GetTracksByArtist(message.Artist.Id);
+            var tracks = GetTracksByArtist(message.Artist.ForeignArtistId);
             _trackRepository.DeleteMany(tracks);
         }
 
