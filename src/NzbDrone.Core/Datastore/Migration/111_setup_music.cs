@@ -97,6 +97,8 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Alter.Table("NamingConfig")
                   .AddColumn("ArtistFolderFormat").AsString().Nullable()
+                  .AddColumn("RenameTracks").AsBoolean().Nullable()
+                  .AddColumn("StandardTrackFormat").AsString().Nullable()
                   .AddColumn("AlbumFolderFormat").AsString().Nullable();
         }
 

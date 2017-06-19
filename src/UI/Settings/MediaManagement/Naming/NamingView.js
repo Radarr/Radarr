@@ -10,26 +10,20 @@ module.exports = (function() {
         template                            : 'Settings/MediaManagement/Naming/NamingViewTemplate',
         ui                                  : {
             namingOptions            : '.x-naming-options',
-            renameEpisodesCheckbox   : '.x-rename-episodes',
-            singleEpisodeExample     : '.x-single-episode-example',
-            multiEpisodeExample      : '.x-multi-episode-example',
-            dailyEpisodeExample      : '.x-daily-episode-example',
-            animeEpisodeExample      : '.x-anime-episode-example',
-            animeMultiEpisodeExample : '.x-anime-multi-episode-example',
+            renameTracksCheckbox     : '.x-rename-tracks',
+            singleTrackExample       : '.x-single-track-example',
             namingTokenHelper        : '.x-naming-token-helper',
-            multiEpisodeStyle        : '.x-multi-episode-style',
-            seriesFolderExample      : '.x-series-folder-example',
-            seasonFolderExample      : '.x-season-folder-example'
+            artistFolderExample      : '.x-artist-folder-example',
+            albumFolderExample       : '.x-album-folder-example'
         },
         events                              : {
-            "change .x-rename-episodes"      : '_setFailedDownloadOptionsVisibility',
+            "change .x-rename-tracks"        : '_setFailedDownloadOptionsVisibility',
             "click .x-show-wizard"           : '_showWizard',
-            "click .x-naming-token-helper a" : '_addToken',
-            "change .x-multi-episode-style"  : '_multiEpisodeFomatChanged'
+            "click .x-naming-token-helper a" : '_addToken'
         },
         regions                             : { basicNamingRegion : '.x-basic-naming' },
         onRender                            : function() {
-            if (!this.model.get('renameEpisodes')) {
+            if (!this.model.get('renameTracks')) {
                 this.ui.namingOptions.hide();
             }
             var basicNamingView = new BasicNamingView({ model : this.model });
@@ -40,7 +34,7 @@ module.exports = (function() {
             this._updateSamples();
         },
         _setFailedDownloadOptionsVisibility : function() {
-            var checked = this.ui.renameEpisodesCheckbox.prop('checked');
+            var checked = this.ui.renameTracksCheckbox.prop('checked');
             if (checked) {
                 this.ui.namingOptions.slideDown();
             } else {
@@ -51,13 +45,9 @@ module.exports = (function() {
             this.namingSampleModel.fetch({ data : this.model.toJSON() });
         },
         _showSamples                        : function() {
-            this.ui.singleEpisodeExample.html(this.namingSampleModel.get('singleEpisodeExample'));
-            this.ui.multiEpisodeExample.html(this.namingSampleModel.get('multiEpisodeExample'));
-            this.ui.dailyEpisodeExample.html(this.namingSampleModel.get('dailyEpisodeExample'));
-            this.ui.animeEpisodeExample.html(this.namingSampleModel.get('animeEpisodeExample'));
-            this.ui.animeMultiEpisodeExample.html(this.namingSampleModel.get('animeMultiEpisodeExample'));
-            this.ui.seriesFolderExample.html(this.namingSampleModel.get('seriesFolderExample'));
-            this.ui.seasonFolderExample.html(this.namingSampleModel.get('seasonFolderExample'));
+            this.ui.singleTrackExample.html(this.namingSampleModel.get('singleTrackExample'));
+            this.ui.artistFolderExample.html(this.namingSampleModel.get('artistFolderExample'));
+            this.ui.albumFolderExample.html(this.namingSampleModel.get('albumFolderExample'));
         },
         _addToken                           : function(e) {
             e.preventDefault();
@@ -75,9 +65,6 @@ module.exports = (function() {
             this.ui.namingTokenHelper.removeClass('open');
             input.focus();
         },
-        multiEpisodeFormatChanged           : function() {
-            this.model.set('multiEpisodeStyle', this.ui.multiEpisodeStyle.val());
-        }
     });
     AsModelBoundView.call(view);
     AsValidatedView.call(view);

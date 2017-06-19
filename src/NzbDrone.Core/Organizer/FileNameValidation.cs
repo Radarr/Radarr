@@ -18,6 +18,12 @@ namespace NzbDrone.Core.Organizer
             return ruleBuilder.SetValidator(new ValidStandardEpisodeFormatValidator());
         }
 
+        public static IRuleBuilderOptions<T, string> ValidTrackFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            ruleBuilder.SetValidator(new NotEmptyValidator(null));
+            return ruleBuilder.SetValidator(new ValidStandardTrackFormatValidator());
+        }
+
         public static IRuleBuilderOptions<T, string> ValidDailyEpisodeFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             ruleBuilder.SetValidator(new NotEmptyValidator(null));
@@ -41,6 +47,17 @@ namespace NzbDrone.Core.Organizer
             ruleBuilder.SetValidator(new NotEmptyValidator(null));
             return ruleBuilder.SetValidator(new RegularExpressionValidator(SeasonFolderRegex)).WithMessage("Must contain season number");
         }
+        public static IRuleBuilderOptions<T, string> ValidArtistFolderFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            ruleBuilder.SetValidator(new NotEmptyValidator(null));
+            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.ArtistNameRegex)).WithMessage("Must contain Artist name");
+        }
+
+        public static IRuleBuilderOptions<T, string> ValidAlbumFolderFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            ruleBuilder.SetValidator(new NotEmptyValidator(null));
+            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.AlbumTitleRegex)).WithMessage("Must contain Album name");
+        }
     }
 
     public class ValidStandardEpisodeFormatValidator : PropertyValidator
@@ -62,6 +79,21 @@ namespace NzbDrone.Core.Organizer
             }
 
             return true;
+        }
+    }
+
+    public class ValidStandardTrackFormatValidator : PropertyValidator
+    {
+        public ValidStandardTrackFormatValidator()
+            : base("Must contain Album Title and Track numbers OR Original Title")
+        {
+
+        }
+
+        protected override bool IsValid(PropertyValidatorContext context)
+        {
+
+            return true; //TODO Add Logic here
         }
     }
 
