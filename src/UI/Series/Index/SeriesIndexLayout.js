@@ -81,9 +81,9 @@ module.exports = Marionette.Layout.extend({
         collapse   : true,
         items      : [
             {
-                title : 'Add Series',
+                title : 'Add Artist',
                 icon  : 'icon-lidarr-add',
-                route : 'addseries'
+                route : 'addartist'
             },
             {
                 title : 'Season Pass',

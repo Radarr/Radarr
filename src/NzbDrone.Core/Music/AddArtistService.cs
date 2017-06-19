@@ -48,11 +48,11 @@ namespace NzbDrone.Core.Music
 
             if (string.IsNullOrWhiteSpace(newArtist.Path))
             {
-                var folderName = newArtist.ArtistName;// TODO: _fileNameBuilder.GetArtistFolder(newArtist);
+                var folderName = _fileNameBuilder.GetArtistFolder(newArtist);
                 newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
             }
 
-            newArtist.CleanTitle = newArtist.ArtistName.CleanSeriesTitle();
+            newArtist.CleanName = newArtist.Name.CleanArtistTitle();
             //newArtist.SortTitle = ArtistNameNormalizer.Normalize(newArtist.ArtistName, newArtist.ItunesId); // There is no Sort Title
             newArtist.Added = DateTime.UtcNow;
 
@@ -71,19 +71,19 @@ namespace NzbDrone.Core.Music
 
         private Artist AddSkyhookData(Artist newArtist)
         {
-            Tuple<Artist, List<Track>> tuple;
+            Tuple<Artist, List<Album>> tuple;
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(newArtist.SpotifyId);
+                tuple = _artistInfo.GetArtistInfo(newArtist.ForeignArtistId);
             }
-            catch (SeriesNotFoundException)
+            catch (ArtistNotFoundException)
             {
-                _logger.Error("SpotifyId {1} was not found, it may have been removed from Spotify.", newArtist.SpotifyId);
+                _logger.Error("LidarrId {1} was not found, it may have been removed from Lidarr.", newArtist.ForeignArtistId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
-                                                  new ValidationFailure("SpotifyId", "An artist with this ID was not found", newArtist.SpotifyId)
+                                                  new ValidationFailure("SpotifyId", "An artist with this ID was not found", newArtist.ForeignArtistId)
                                               });
             }
 

@@ -1,8 +1,8 @@
 var vent = require('vent');
 var AppLayout = require('../../AppLayout');
 var Marionette = require('marionette');
-var EditSeriesView = require('../../Series/Edit/EditSeriesView');
-var DeleteSeriesView = require('../../Series/Delete/DeleteSeriesView');
+var EditArtistView = require('../../Artist/Edit/EditArtistView');
+var DeleteArtistView = require('../../Artist/Delete/DeleteArtistView');
 var EpisodeDetailsLayout = require('../../Episode/EpisodeDetailsLayout');
 var HistoryDetailsLayout = require('../../Activity/History/Details/HistoryDetailsLayout');
 var LogDetailsView = require('../../System/Logs/Table/Details/LogDetailsView');
@@ -16,8 +16,8 @@ module.exports = Marionette.AppRouter.extend({
         vent.on(vent.Commands.CloseModalCommand, this._closeModal, this);
         vent.on(vent.Commands.OpenModal2Command, this._openModal2, this);
         vent.on(vent.Commands.CloseModal2Command, this._closeModal2, this);
-        vent.on(vent.Commands.EditSeriesCommand, this._editSeries, this);
-        vent.on(vent.Commands.DeleteSeriesCommand, this._deleteSeries, this);
+        vent.on(vent.Commands.EditArtistCommand, this._editArtist, this);
+        vent.on(vent.Commands.DeleteArtistCommand, this._deleteArtist, this);
         vent.on(vent.Commands.ShowEpisodeDetails, this._showEpisode, this);
         vent.on(vent.Commands.ShowHistoryDetails, this._showHistory, this);
         vent.on(vent.Commands.ShowLogDetails, this._showLogDetails, this);
@@ -43,13 +43,13 @@ module.exports = Marionette.AppRouter.extend({
         AppLayout.modalRegion2.closeModal();
     },
 
-    _editSeries : function(options) {
-        var view = new EditSeriesView({ model : options.series });
+    _editArtist : function(options) {
+        var view = new EditArtistView({ model : options.artist });
         AppLayout.modalRegion.show(view);
     },
 
-    _deleteSeries : function(options) {
-        var view = new DeleteSeriesView({ model : options.series });
+    _deleteArtist : function(options) {
+        var view = new DeleteArtistView({ model : options.artist });
         AppLayout.modalRegion.show(view);
     },
 

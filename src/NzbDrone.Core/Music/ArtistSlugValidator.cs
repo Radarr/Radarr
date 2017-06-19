@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Music
             dynamic instance = context.ParentContext.InstanceToValidate;
             var instanceId = (int)instance.Id;
 
-            return !_artistService.GetAllArtists().Exists(s => s.ArtistSlug.Equals(context.PropertyValue.ToString()) && s.Id != instanceId);
+            return !_artistService.GetAllArtists().Exists(s => s.NameSlug.Equals(context.PropertyValue.ToString()) && s.Id != instanceId);
         }
     }
 }

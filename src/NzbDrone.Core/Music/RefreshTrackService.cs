@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Music
 {
     public interface IRefreshTrackService
     {
-        void RefreshTrackInfo(Artist artist, IEnumerable<Track> remoteTracks);
+        void RefreshTrackInfo(Album album, IEnumerable<Track> remoteTracks);
     }
 
     public class RefreshTrackService : IRefreshTrackService
@@ -27,24 +27,24 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        public void RefreshTrackInfo(Artist artist, IEnumerable<Track> remoteTracks)
+        public void RefreshTrackInfo(Album album, IEnumerable<Track> remoteTracks)
         {
-            _logger.Info("Starting track info refresh for: {0}", artist);
+            _logger.Info("Starting track info refresh for: {0}", album);
             var successCount = 0;
             var failCount = 0;
 
-            var existingTracks = _trackService.GetTracksByArtist(artist.SpotifyId);
-            var albums = artist.Albums;
+            var existingTracks = _trackService.GetTracksByAlbum(album.ArtistId, album.Id);
+            //var albums = artist.Albums;
 
             var updateList = new List<Track>();
             var newList = new List<Track>();
             var dupeFreeRemoteTracks = remoteTracks.DistinctBy(m => new { m.AlbumId, m.TrackNumber }).ToList();
 
-            foreach (var track in OrderTracks(artist, dupeFreeRemoteTracks))
+            foreach (var track in OrderTracks(album, dupeFreeRemoteTracks))
             {
                 try
                 {
-                    var trackToUpdate = GetTrackToUpdate(artist, track, existingTracks);
+                    var trackToUpdate = GetTrackToUpdate(album, track, existingTracks);
 
                     if (trackToUpdate != null)
                     {
@@ -54,24 +54,17 @@ namespace NzbDrone.Core.Music
                     else
                     {
                         trackToUpdate = new Track();
-                        trackToUpdate.Monitored = GetMonitoredStatus(track, albums);
+                        trackToUpdate.Monitored = album.Monitored;
                         newList.Add(trackToUpdate);
                     }
 
-                    trackToUpdate.SpotifyTrackId = track.SpotifyTrackId;
+                    trackToUpdate.ForeignTrackId = track.ForeignTrackId;
                     trackToUpdate.TrackNumber = track.TrackNumber;
                     trackToUpdate.Title = track.Title ?? "Unknown";
-                    trackToUpdate.AlbumId = track.AlbumId;
+                    trackToUpdate.AlbumId = album.Id;
                     trackToUpdate.Album = track.Album;
-                    trackToUpdate.Explict = track.Explict;
-                    if (track.ArtistSpotifyId.IsNullOrWhiteSpace())
-                    {
-                        trackToUpdate.ArtistSpotifyId = artist.SpotifyId;
-                    } else
-                    {
-                        trackToUpdate.ArtistSpotifyId = track.ArtistSpotifyId;
-                    }
-                    trackToUpdate.ArtistId = track.ArtistId;
+                    trackToUpdate.Explicit = track.Explicit;
+                    trackToUpdate.ArtistId = album.ArtistId;
                     trackToUpdate.Compilation = track.Compilation;
 
                     // TODO: Implement rest of [RefreshTrackService] fields
@@ -82,7 +75,7 @@ namespace NzbDrone.Core.Music
                 }
                 catch (Exception e)
                 {
-                    _logger.Fatal(e, "An error has occurred while updating track info for artist {0}. {1}", artist, track);
+                    _logger.Fatal(e, "An error has occurred while updating track info for album {0}. {1}", album, track);
                     failCount++;
                 }
             }
@@ -99,16 +92,16 @@ namespace NzbDrone.Core.Music
             _trackService.UpdateMany(updateList);
             _trackService.InsertMany(newList);
 
-            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(artist, newList, updateList));
+            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(album, newList, updateList));
 
             if (failCount != 0)
             {
-                _logger.Info("Finished track refresh for artist: {0}. Successful: {1} - Failed: {2} ",
-                    artist.ArtistName, successCount, failCount);
+                _logger.Info("Finished track refresh for album: {0}. Successful: {1} - Failed: {2} ",
+                    album.Title, successCount, failCount);
             }
             else
             {
-                _logger.Info("Finished track refresh for artist: {0}.", artist);
+                _logger.Info("Finished track refresh for album: {0}.", album);
             }
         }
 
@@ -119,17 +112,17 @@ namespace NzbDrone.Core.Music
                 return false;
             }
 
-            var album = albums.SingleOrDefault(c => c.AlbumId == track.AlbumId);
+            var album = albums.SingleOrDefault(c => c.Id == track.AlbumId);
             return album == null || album.Monitored;
         }
 
 
-        private Track GetTrackToUpdate(Artist artist, Track track, List<Track> existingTracks)
+        private Track GetTrackToUpdate(Album album, Track track, List<Track> existingTracks)
         {
             return existingTracks.FirstOrDefault(e => e.AlbumId == track.AlbumId && e.TrackNumber == track.TrackNumber);
         }
 
-        private IEnumerable<Track> OrderTracks(Artist artist, List<Track> tracks)
+        private IEnumerable<Track> OrderTracks(Album album, List<Track> tracks)
         {
             return tracks.OrderBy(e => e.AlbumId).ThenBy(e => e.TrackNumber);
         }

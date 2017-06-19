@@ -92,10 +92,12 @@ namespace NzbDrone.Core.Datastore
                   .Relationship()
                   .HasOne(episode => episode.EpisodeFile, episode => episode.EpisodeFileId);
 
-            Mapper.Entity<Artist>().RegisterModel("Artist")
+            Mapper.Entity<Artist>().RegisterModel("Artists")
                   .Ignore(s => s.RootFolderPath)
                   .Relationship()
                   .HasOne(a => a.Profile, a => a.ProfileId);
+
+            Mapper.Entity<Album>().RegisterModel("Albums");
 
             Mapper.Entity<TrackFile>().RegisterModel("TrackFiles")
                   .Ignore(f => f.Path)

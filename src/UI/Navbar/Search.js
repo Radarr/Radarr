@@ -2,17 +2,18 @@ var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var Backbone = require('backbone');
-var SeriesCollection = require('../Series/SeriesCollection');
+var ArtistCollection = require('../Artist/ArtistCollection');
 require('typeahead');
 
 vent.on(vent.Hotkeys.NavbarSearch, function() {
-    $('.x-series-search').focus();
+    $('.x-artist-search').focus();
 });
 
 var substringMatcher = function() {
+
     return function findMatches (q, cb) {
-        var matches = _.select(SeriesCollection.toJSON(), function(series) {
-            return series.title.toLowerCase().indexOf(q.toLowerCase()) > -1;
+        var matches = _.select(ArtistCollection.toJSON(), function(artist) {
+            return artist.artistName.toLowerCase().indexOf(q.toLowerCase()) > -1;
         });
         cb(matches);
     };
@@ -24,14 +25,14 @@ $.fn.bindSearch = function() {
         highlight : true,
         minLength : 1
     }, {
-        name       : 'series',
-        displayKey : 'title',
+        name       : 'artist',
+        displayKey : 'artistName',
         source     : substringMatcher()
     });
 
-    $(this).on('typeahead:selected typeahead:autocompleted', function(e, series) {
+    $(this).on('typeahead:selected typeahead:autocompleted', function(e, artist) {
         this.blur();
         $(this).val('');
-        Backbone.history.navigate('/series/{0}'.format(series.titleSlug), { trigger : true });
+        Backbone.history.navigate('/artist/{0}'.format(artist.artistSlug), { trigger : true });
     });
 };

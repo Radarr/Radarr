@@ -5,44 +5,19 @@ using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-
-    public class AristResultResource
-    {
-        public AristResultResource()
-        {
-
-        }
-
-        public List<ArtistInfoResource> Items { get; set; }
-    }
-
-    public class AlbumResultResource
-    {
-        public AlbumResultResource()
-        {
-
-        }
-
-        public List<AlbumInfoResource> Items { get; set; }
-    }
-
-    public class TrackResultResource
-    {
-        public TrackResultResource()
-        {
-
-        }
-
-        public List<TrackInfoResource> Items { get; set; }
-    }
     public class ArtistResource
     {
-        public ArtistResource()
-        {
-
+        public ArtistResource() {
+            Albums = new List<AlbumResource>();
         }
 
-        public AristResultResource Artists { get; set; }
-        public AristResultResource Albums { get; set; }
+        public List<string> Genres { get; set; }
+        public string AristUrl { get; set; }
+        public string Overview { get; set; }
+        public string Id { get; set; }
+        public List<ImageResource> Images { get; set; }
+        public string ArtistName { get; set; }
+        public List<AlbumResource> Albums { get; set; }
+        
     }
 }

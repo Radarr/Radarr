@@ -11,7 +11,7 @@ namespace NzbDrone.Api.Music
         public string AlbumId { get; set; }
         public string AlbumName { get; set; }
         public bool Monitored { get; set; }
-        public int Year { get; set; }
+        public DateTime ReleaseDate { get; set; }
         public List<string> Genres { get; set; }
         public string ArtworkUrl { get; set; }
 
@@ -25,12 +25,12 @@ namespace NzbDrone.Api.Music
 
             return new AlbumResource
             {
-                AlbumId = model.AlbumId,
+                AlbumId = model.ForeignAlbumId,
                 Monitored = model.Monitored,
-                Year = model.Year,
+                ReleaseDate = model.ReleaseDate,
                 AlbumName = model.Title,
                 Genres = model.Genres,
-                ArtworkUrl = model.ArtworkUrl
+                //ArtworkUrl = model.ArtworkUrl
             };
         }
 
@@ -40,12 +40,12 @@ namespace NzbDrone.Api.Music
 
             return new Album
             {
-                AlbumId = resource.AlbumId,
+                ForeignAlbumId = resource.AlbumId,
                 Monitored = resource.Monitored,
-                Year = resource.Year,
+                ReleaseDate = resource.ReleaseDate,
                 Title = resource.AlbumName,
                 Genres = resource.Genres,
-                ArtworkUrl = resource.ArtworkUrl
+                //ArtworkUrl = resource.ArtworkUrl
             };
         }
 

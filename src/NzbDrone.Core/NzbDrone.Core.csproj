@@ -288,7 +288,6 @@
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\111_setup_music.cs" />
-    <Compile Include="Datastore\Migration\112_add_music_fields_to_namingconfig.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -823,7 +822,7 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\AlbumInfoResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistInfoResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
@@ -832,7 +831,7 @@
     <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\TrackInfoResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\TrackResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />
@@ -864,17 +863,24 @@
     <Compile Include="Music\Artist.cs" />
     <Compile Include="Music\ArtistAddedHandler.cs" />
     <Compile Include="Music\ArtistNameNormalizer.cs" />
+    <Compile Include="Music\AlbumService.cs" />
+    <Compile Include="Music\AlbumRepository.cs" />
     <Compile Include="Music\ArtistSlugValidator.cs" />
     <Compile Include="Music\ArtistRepository.cs" />
     <Compile Include="Music\ArtistService.cs" />
     <Compile Include="Music\Commands\RefreshArtistCommand.cs" />
+    <Compile Include="Music\Events\AlbumAddedEvent.cs" />
     <Compile Include="Music\Events\ArtistAddedEvent.cs" />
+    <Compile Include="Music\Events\AlbumDeletedEvent.cs" />
     <Compile Include="Music\Events\ArtistDeletedEvent.cs" />
+    <Compile Include="Music\Events\AlbumEditedEvent.cs" />
     <Compile Include="Music\Events\ArtistEditedEvent.cs" />
     <Compile Include="Music\Events\ArtistRefreshStartingEvent.cs" />
     <Compile Include="Music\Events\ArtistUpdatedEvent.cs" />
+    <Compile Include="Music\Events\AlbumInfoRefreshedEvent.cs" />
     <Compile Include="Music\Events\TrackInfoRefreshedEvent.cs" />
     <Compile Include="Music\RefreshArtistService.cs" />
+    <Compile Include="Music\RefreshAlbumService.cs" />
     <Compile Include="Music\RefreshTrackService.cs" />
     <Compile Include="Music\ShouldRefreshArtist.cs" />
     <Compile Include="Music\Track.cs" />
