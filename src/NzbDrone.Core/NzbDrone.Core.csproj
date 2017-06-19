@@ -1289,7 +1289,7 @@
     <Compile Include="NetImport\ImportExclusions\ImportExclusionsService.cs" />
     <Compile Include="Datastore\Migration\138_add_physical_release_note.cs" />
     <Compile Include="Indexers\IIndexerSettings.cs" />
-    <Compile Include="NetImport\Radarr\RadarrProxied.cs" />
+    <Compile Include="NetImport\Radarr\RadarrLists.cs" />
     <Compile Include="NetImport\Radarr\RadarrParser.cs" />
     <Compile Include="NetImport\Radarr\RadarrRequestGenerator.cs" />
     <Compile Include="NetImport\Radarr\RadarrSettings.cs" />

@@ -9,9 +9,9 @@ using NzbDrone.Core.MetadataSource;
 
 namespace NzbDrone.Core.NetImport.Radarr
 {
-    public class RadarrProxied : HttpNetImportBase<RadarrSettings>
+    public class RadarrLists : HttpNetImportBase<RadarrSettings>
     {
-        public override string Name => "Radarr Proxied Lists";
+        public override string Name => "Radarr Lists";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.NetImport.Radarr
         private readonly Logger _logger;
         private readonly ISearchForNewMovie _skyhookProxy;
 
-        public RadarrProxied(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
+        public RadarrLists(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, ISearchForNewMovie skyhookProxy,
             Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {
