@@ -69,7 +69,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<string> FilterExistingFiles(List<string> files, Artist artist)
         {
-            var artistFiles = GetFilesByArtist(artist.SpotifyId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
+            var artistFiles = GetFilesByArtist(artist.ForeignArtistId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
 
             if (!artistFiles.Any()) return files;
 
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public void HandleAsync(ArtistDeletedEvent message)
         {
-            var files = GetFilesByArtist(message.Artist.SpotifyId);
+            var files = GetFilesByArtist(message.Artist.ForeignArtistId);
             _mediaFileRepository.DeleteMany(files);
         }
 

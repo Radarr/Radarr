@@ -87,7 +87,7 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            _logger.ProgressInfo("Scanning disk for {0}", artist.ArtistName);
+            _logger.ProgressInfo("Scanning disk for {0}", artist.Name);
 
             if (!_diskProvider.FolderExists(artist.Path))
             {
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private void CompletedScanning(Artist artist)
         {
-            _logger.Info("Completed scanning disk for {0}", artist.ArtistName);
+            _logger.Info("Completed scanning disk for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistScannedEvent(artist));
         }
 

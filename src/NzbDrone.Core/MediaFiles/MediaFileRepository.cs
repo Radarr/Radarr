@@ -27,7 +27,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<TrackFile> GetFilesByArtist(string artistId)
         {
-            return Query.Where(c => c.SpotifyTrackId == artistId).ToList();
+            return Query.Where(c => c.ForeignTrackId == artistId).ToList();
         }
     }
 }

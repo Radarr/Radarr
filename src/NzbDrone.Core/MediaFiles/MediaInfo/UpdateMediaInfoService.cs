@@ -65,7 +65,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return;
             }
 
-            var allMediaFiles = _mediaFileService.GetFilesByArtist(message.Artist.SpotifyId);
+            var allMediaFiles = _mediaFileService.GetFilesByArtist(message.Artist.ForeignArtistId);
             var filteredMediaFiles = allMediaFiles.Where(c => c.MediaInfo == null || c.MediaInfo.SchemaRevision < CURRENT_MEDIA_INFO_SCHEMA_REVISION).ToList();
 
             UpdateMediaInfo(message.Artist, filteredMediaFiles);

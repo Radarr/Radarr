@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                     var trackFile = new TrackFile();
                     trackFile.DateAdded = DateTime.UtcNow;
-                    trackFile.SpotifyTrackId = localTrack.Artist.SpotifyId;
+                    trackFile.ForeignArtistId = localTrack.Artist.ForeignArtistId;
                     trackFile.Path = localTrack.Path.CleanFilePath();
                     trackFile.Size = _diskProvider.GetFileSize(localTrack.Path);
                     trackFile.Quality = localTrack.Quality;

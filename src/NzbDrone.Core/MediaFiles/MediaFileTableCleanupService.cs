@@ -31,8 +31,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Clean(Artist artist, List<string> filesOnDisk)
         {
-            var artistFiles = _mediaFileService.GetFilesByArtist(artist.SpotifyId);
-            var tracks = _trackService.GetTracksByArtist(artist.SpotifyId);
+            var artistFiles = _mediaFileService.GetFilesByArtist(artist.ForeignArtistId);
+            var tracks = _trackService.GetTracksByArtist(artist.ForeignArtistId);
 
             var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
             

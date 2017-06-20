@@ -12,7 +12,8 @@ namespace NzbDrone.Core.MediaFiles
 {
     public class TrackFile : ModelBase
     {
-        public string SpotifyTrackId { get; set; }
+        public string ForeignTrackId { get; set; }
+        public string ForeignArtistId { get; set; }
         public int AlbumId { get; set; }
         public string RelativePath { get; set; }
         public string Path { get; set; }
