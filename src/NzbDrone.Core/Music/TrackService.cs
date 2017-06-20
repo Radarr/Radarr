@@ -15,12 +15,12 @@ namespace NzbDrone.Core.Music
     {
         Track GetTrack(int id);
         List<Track> GetTracks(IEnumerable<int> ids);
-        Track FindTrack(string artistId, string albumId, int trackNumber);
-        Track FindTrackByTitle(string artistId, string albumId, string releaseTitle);
-        List<Track> GetTracksByArtist(string artistId);
-        List<Track> GetTracksByAlbum(string artistId, string albumId);
+        Track FindTrack(int artistId, int albumId, int trackNumber);
+        Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
+        List<Track> GetTracksByArtist(int artistId);
+        List<Track> GetTracksByAlbum(int artistId, int albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
-        List<Track> TracksWithFiles(string artistId);
+        List<Track> TracksWithFiles(int artistId);
         //PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
         List<Track> GetTracksByFileId(int trackFileId);
         void UpdateTrack(Track track);
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Music
         void InsertMany(List<Track> tracks);
         void UpdateMany(List<Track> tracks);
         void DeleteMany(List<Track> tracks);
-        void SetTrackMonitoredByAlbum(string artistId, string albumId, bool monitored);
+        void SetTrackMonitoredByAlbum(int artistId, int albumId, bool monitored);
     }
 
     public class TrackService : ITrackService
@@ -55,22 +55,22 @@ namespace NzbDrone.Core.Music
             return _trackRepository.Get(ids).ToList();
         }
 
-        public Track FindTrack(string artistId, string albumId, int trackNumber)
+        public Track FindTrack(int artistId, int albumId, int trackNumber)
         {
             return _trackRepository.Find(artistId, albumId, trackNumber);
         }
 
-        public List<Track> GetTracksByArtist(string artistId)
+        public List<Track> GetTracksByArtist(int artistId)
         {
             return _trackRepository.GetTracks(artistId).ToList();
         }
 
-        public List<Track> GetTracksByAlbum(string artistId, string albumId)
+        public List<Track> GetTracksByAlbum(int artistId, int albumId)
         {
             return _trackRepository.GetTracks(artistId, albumId);
         }
 
-        public Track FindTrackByTitle(string artistId, string albumId, string releaseTitle)
+        public Track FindTrackByTitle(int artistId, int albumId, string releaseTitle)
         {
             // TODO: can replace this search mechanism with something smarter/faster/better
             var normalizedReleaseTitle = Parser.Parser.NormalizeEpisodeTitle(releaseTitle).Replace(".", " ");
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Music
             return null;
         }
 
-        public List<Track> TracksWithFiles(string artistId)
+        public List<Track> TracksWithFiles(int artistId)
         {
             return _trackRepository.TracksWithFiles(artistId);
         }
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Music
             _logger.Debug("Monitored flag for Track:{0} was set to {1}", trackId, monitored);
         }
 
-        public void SetTrackMonitoredByAlbum(string artistId, string albumId, bool monitored)
+        public void SetTrackMonitoredByAlbum(int artistId, int albumId, bool monitored)
         {
             _trackRepository.SetMonitoredByAlbum(artistId, albumId, monitored);
         }
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Music
 
         public void HandleAsync(ArtistDeletedEvent message)
         {
-            var tracks = GetTracksByArtist(message.Artist.ForeignArtistId);
+            var tracks = GetTracksByArtist(message.Artist.Id);
             _trackRepository.DeleteMany(tracks);
         }
 

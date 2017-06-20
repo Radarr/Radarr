@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -8,7 +8,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileRepository : IBasicRepository<TrackFile>
     {
-        List<TrackFile> GetFilesByArtist(string artistId);
+        List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesWithoutMediaInfo();
     }
 
@@ -25,9 +25,9 @@ namespace NzbDrone.Core.MediaFiles
             return Query.Where(c => c.MediaInfo == null).ToList();
         }
 
-        public List<TrackFile> GetFilesByArtist(string artistId)
+        public List<TrackFile> GetFilesByArtist(int artistId)
         {
-            return Query.Where(c => c.SpotifyTrackId == artistId).ToList();
+            return Query.Where(c => c.ArtistId == artistId).ToList();
         }
     }
 }

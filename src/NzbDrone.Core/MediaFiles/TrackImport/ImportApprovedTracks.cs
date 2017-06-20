@@ -67,18 +67,18 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                                          .Intersect(localTrack.Tracks.Select(e => e.Id))
                                          .Any())
                     {
-                        importResults.Add(new ImportResult(importDecision, "Episode has already been imported"));
+                        importResults.Add(new ImportResult(importDecision, "Track has already been imported"));
                         continue;
                     }
 
                     var trackFile = new TrackFile();
                     trackFile.DateAdded = DateTime.UtcNow;
-                    trackFile.SpotifyTrackId = localTrack.Artist.SpotifyId;
+                    trackFile.ArtistId = localTrack.Artist.Id;
                     trackFile.Path = localTrack.Path.CleanFilePath();
                     trackFile.Size = _diskProvider.GetFileSize(localTrack.Path);
                     trackFile.Quality = localTrack.Quality;
                     trackFile.MediaInfo = localTrack.MediaInfo;
-                    //trackFile.AlbumId = localTrack.Album.ElementAt(0); // TODO: Implement ImportApprovedTracks Album Id
+                    trackFile.AlbumId = localTrack.Album.Id;
                     trackFile.Tracks = localTrack.Tracks;
                     trackFile.ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup;
 

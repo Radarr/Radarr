@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.MediaFiles
         TrackFile Add(TrackFile trackFile);
         void Update(TrackFile trackFile);
         void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
-        List<TrackFile> GetFilesByArtist(string artistId);
+        List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesWithoutMediaInfo();
         List<string> FilterExistingFiles(List<string> files, Artist artist);
         TrackFile Get(int id);
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<string> FilterExistingFiles(List<string> files, Artist artist)
         {
-            var artistFiles = GetFilesByArtist(artist.SpotifyId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
+            var artistFiles = GetFilesByArtist(artist.Id).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
 
             if (!artistFiles.Any()) return files;
 
@@ -89,11 +89,11 @@ namespace NzbDrone.Core.MediaFiles
 
         public void HandleAsync(ArtistDeletedEvent message)
         {
-            var files = GetFilesByArtist(message.Artist.SpotifyId);
+            var files = GetFilesByArtist(message.Artist.Id);
             _mediaFileRepository.DeleteMany(files);
         }
 
-        public List<TrackFile> GetFilesByArtist(string artistId)
+        public List<TrackFile> GetFilesByArtist(int artistId)
         {
             return _mediaFileRepository.GetFilesByArtist(artistId);
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using NLog;
@@ -31,8 +31,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Clean(Artist artist, List<string> filesOnDisk)
         {
-            var artistFiles = _mediaFileService.GetFilesByArtist(artist.SpotifyId);
-            var tracks = _trackService.GetTracksByArtist(artist.SpotifyId);
+            var artistFiles = _mediaFileService.GetFilesByArtist(artist.Id);
+            var tracks = _trackService.GetTracksByArtist(artist.Id);
 
             var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
             
