@@ -147,7 +147,7 @@ subject_process = (strip |
 ##
 ## Tags that will be used for the changelog must match this regexp.
 ##
-tag_filter_regexp = r'^v[0]+\.[0-9]+\.[0-9]+\.[0-9]+$'
+tag_filter_regexp = r'^v[0]+\.[2-9]+\.[0-9]+\.[0-9]+$'
 
 
 ## ``unreleased_version_label`` is a string or a callable that outputs a string
