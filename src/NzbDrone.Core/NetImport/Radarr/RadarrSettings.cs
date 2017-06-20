@@ -23,7 +23,7 @@ namespace NzbDrone.Core.NetImport.Radarr
 
         public RadarrSettings()
         {
-            APIURL = "https://api.radarr.video";
+            APIURL = "https://api.radarr.video/v2";
             Path = "";
         }
 
