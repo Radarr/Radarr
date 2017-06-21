@@ -23,6 +23,10 @@ namespace NzbDrone.Core.Music
         }
 
         public string ForeignArtistId { get; set; }
+        public string MBId { get; set; }
+        public int TADBId { get; set; }
+        public int DiscogsId { get; set; }
+        public string AMId { get; set; }
         public string Name { get; set; }
         public string NameSlug { get; set; }
         public string CleanName { get; set; }
@@ -52,6 +56,10 @@ namespace NzbDrone.Core.Music
         {
 
             ForeignArtistId = otherArtist.ForeignArtistId;
+            MBId = otherArtist.MBId;
+            TADBId = otherArtist.TADBId;
+            DiscogsId = otherArtist.DiscogsId;
+            AMId = otherArtist.AMId;
             Name = otherArtist.Name;
             NameSlug = otherArtist.NameSlug;
             CleanName = otherArtist.CleanName;

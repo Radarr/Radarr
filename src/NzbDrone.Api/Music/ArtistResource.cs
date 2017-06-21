@@ -20,6 +20,10 @@ namespace NzbDrone.Api.Music
         //View Only
         public string Name { get; set; }
         public string ForeignArtistId { get; set; }
+        public string MBId { get; set; }
+        public int TADBId { get; set; }
+        public int DiscogsId { get; set; }
+        public string AMId { get; set; }
         public string Overview { get; set; }
 
         public int AlbumCount
@@ -53,7 +57,7 @@ namespace NzbDrone.Api.Music
         public bool Monitored { get; set; }
 
         public string RootFolderPath { get; set; }
-        public string Certification { get; set; }
+        //public string Certification { get; set; }
         public List<string> Genres { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
@@ -71,7 +75,10 @@ namespace NzbDrone.Api.Music
             return new ArtistResource
             {
                 Id = model.Id,
-
+                MBId = model.MBId,
+                TADBId = model.TADBId,
+                DiscogsId = model.DiscogsId,
+                AMId = model.AMId,
                 Name = model.Name,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
@@ -127,7 +134,10 @@ namespace NzbDrone.Api.Music
                 Name = resource.Name,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
-
+                MBId = resource.MBId,
+                TADBId = resource.TADBId,
+                DiscogsId = resource.DiscogsId,
+                AMId = resource.AMId,
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount

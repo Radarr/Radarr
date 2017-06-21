@@ -19,24 +19,20 @@ Handlebars.registerHelper('poster', function() {
     return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
 });
 
-Handlebars.registerHelper('traktUrl', function() {
-    return 'http://trakt.tv/search/tvdb/' + this.tvdbId + '?id_type=show';
+Handlebars.registerHelper('MBUrl', function() {
+    return 'https://musicbrainz.org/artist/' + this.mbId;
 });
 
-Handlebars.registerHelper('imdbUrl', function() {
-    return 'http://imdb.com/title/' + this.imdbId;
+Handlebars.registerHelper('TADBUrl', function() {
+    return 'http://www.theaudiodb.com/artist/' + this.tadbId;
 });
 
-Handlebars.registerHelper('tvdbUrl', function() {
-    return 'http://www.thetvdb.com/?tab=series&id=' + this.tvdbId;
+Handlebars.registerHelper('discogsUrl', function() {
+    return 'https://www.discogs.com/artist/' + this.discogsId;
 });
 
-Handlebars.registerHelper('tvRageUrl', function() {
-    return 'http://www.tvrage.com/shows/id-' + this.tvRageId;
-});
-
-Handlebars.registerHelper('tvMazeUrl', function() {
-    return 'http://www.tvmaze.com/shows/' + this.tvMazeId + '/_';
+Handlebars.registerHelper('allMusicUrl', function() {
+    return 'http://www.allmusic.com/artist/' + this.amId;
 });
 
 Handlebars.registerHelper('route', function() {
@@ -51,6 +47,19 @@ Handlebars.registerHelper('percentOfEpisodes', function() {
 
     if (episodeCount > 0) {
         percent = episodeFileCount / episodeCount * 100;
+    }
+
+    return percent;
+});
+
+Handlebars.registerHelper('percentOfTracks', function() {
+    var trackCount = this.trackCount;
+    var trackFileCount = this.trackFileCount;
+
+    var percent = 100;
+
+    if (trackCount > 0) {
+        percent = trackFileCount / trackCount * 100;
     }
 
     return percent;
@@ -87,7 +96,7 @@ Handlebars.registerHelper('albumCountHelper', function() {
     var albumCount = this.albumCount;
 
     if (albumCount === 1) {
-        return new Handlebars.SafeString('<span class="label label-info">{0} Albums</span>'.format(albumCount));
+        return new Handlebars.SafeString('<span class="label label-info">{0} Album</span>'.format(albumCount));
     }
 
     return new Handlebars.SafeString('<span class="label label-info">{0} Albums</span>'.format(albumCount));

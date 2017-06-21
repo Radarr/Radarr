@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
 
         public string ForeignTrackId { get; set; }
         public int AlbumId { get; set; }
-        public LazyLoaded<Artist> Artist { get; set; }
+        public Artist Artist { get; set; }
        
         public int ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
         //public int CompilationId { get; set; }
