@@ -15,6 +15,7 @@ namespace NzbDrone.Core.MediaFiles
         public string ForeignTrackId { get; set; }
         public string ForeignArtistId { get; set; }
         public int AlbumId { get; set; }
+        public int ArtistId { get; set; }
         public string RelativePath { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }

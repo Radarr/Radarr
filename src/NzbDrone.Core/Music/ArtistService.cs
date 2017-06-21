@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Music
 
                 if (storedAlbum != null && album.Monitored != storedAlbum.Monitored)
                 {
-                    _trackService.SetTrackMonitoredByAlbum(artist.ForeignArtistId, album.ForeignAlbumId, album.Monitored);
+                    _trackService.SetTrackMonitoredByAlbum(artist.Id, album.Id, album.Monitored);
                 }
             }
 
