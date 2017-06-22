@@ -17,14 +17,9 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            //Search = new HttpRequestBuilder("https://api.spotify.com/{version}/{route}/") // TODO: maybe use {version} 
-            //    .SetSegment("version", "v1")
-            //    .CreateFactory();
-            Search = new HttpRequestBuilder("http://localhost:3000/{route}/") // TODO: maybe use {version} 
+            Search = new HttpRequestBuilder("http://localhost:3000/{route}/") // TODO: Add {version} once LidarrAPI.Metadata is released. 
                 .CreateFactory();
 
-            InternalSearch = new HttpRequestBuilder("https://itunes.apple.com/WebObjects/MZStore.woa/wa/{route}") //viewArtist or search
-                .CreateFactory();
 
             SkyHookTvdb = new HttpRequestBuilder("http://skyhook.lidarr.tv/v1/tvdb/{route}/{language}/")
                 .SetSegment("language", "en")

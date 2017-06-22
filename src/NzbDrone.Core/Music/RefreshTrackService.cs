@@ -33,8 +33,7 @@ namespace NzbDrone.Core.Music
             var successCount = 0;
             var failCount = 0;
 
-            var existingTracks = _trackService.GetTracksByAlbum(album.ForeignAlbumId, album.ForeignAlbumId);
-            //var albums = artist.Albums;
+            var existingTracks = _trackService.GetTracksByAlbum(album.ArtistId, album.Id); // TODO: JOE: I believe this should be string, string
 
             var updateList = new List<Track>();
             var newList = new List<Track>();

@@ -69,11 +69,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<string> FilterExistingFiles(List<string> files, Artist artist)
         {
-<<<<<<< HEAD
-            var artistFiles = GetFilesByArtist(artist.ForeignArtistId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
-=======
+            //var artistFiles = GetFilesByArtist(artist.ForeignArtistId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
             var artistFiles = GetFilesByArtist(artist.Id).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
->>>>>>> fafe4e93f34fea769c9a64d9a98015821738b1e4
 
             if (!artistFiles.Any()) return files;
 

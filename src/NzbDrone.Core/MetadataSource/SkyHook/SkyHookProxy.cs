@@ -81,7 +81,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             // We need to perform a direct lookup of the artist
             var httpRequest = _requestBuilder.Create()
-                                            .SetSegment("route", "artists/" + foreignArtistId)
+                                            .SetSegment("route", "artist/" + foreignArtistId)
                                              //.SetSegment("route", "search")
                                              //.AddQueryParam("type", "artist,album")
                                              //.AddQueryParam("q", spotifyId.ToString())
@@ -227,7 +227,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpRequest = _requestBuilder.Create()
                                     .SetSegment("route", "search")
-                                    .AddQueryParam("type", "artist") // TODO: LidarrAPI.Metadata is getting , encoded. Needs to be raw ,
+                                    .AddQueryParam("type", "artist")
                                     .AddQueryParam("query", title.ToLower().Trim())
                                     .Build();
 
