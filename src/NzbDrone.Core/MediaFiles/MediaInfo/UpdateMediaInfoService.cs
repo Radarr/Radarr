@@ -7,10 +7,11 @@ using NzbDrone.Core.Tv;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
-    public class UpdateMediaInfoService : IHandle<SeriesScannedEvent>
+    public class UpdateMediaInfoService : IHandle<ArtistScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
@@ -33,11 +34,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             _logger = logger;
         }
 
-        private void UpdateMediaInfo(Series series, List<EpisodeFile> mediaFiles)
+        private void UpdateMediaInfo(Artist artist, List<TrackFile> mediaFiles)
         {
             foreach (var mediaFile in mediaFiles)
             {
-                var path = Path.Combine(series.Path, mediaFile.RelativePath);
+                var path = Path.Combine(artist.Path, mediaFile.RelativePath);
 
                 if (!_diskProvider.FileExists(path))
                 {
@@ -56,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
         }
 
-        public void Handle(SeriesScannedEvent message)
+        public void Handle(ArtistScannedEvent message)
         {
             if (!_configService.EnableMediaInfo)
             {
@@ -64,10 +65,10 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return;
             }
 
-            var allMediaFiles = _mediaFileService.GetFilesBySeries(message.Series.Id);
+            var allMediaFiles = _mediaFileService.GetFilesByArtist(message.Artist.Id);
             var filteredMediaFiles = allMediaFiles.Where(c => c.MediaInfo == null || c.MediaInfo.SchemaRevision < CURRENT_MEDIA_INFO_SCHEMA_REVISION).ToList();
 
-            UpdateMediaInfo(message.Series, filteredMediaFiles);
+            UpdateMediaInfo(message.Artist, filteredMediaFiles);
         }
     }
 }

@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -5,36 +6,28 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.MediaFiles
 {
-    public interface IMediaFileRepository : IBasicRepository<EpisodeFile>
+    public interface IMediaFileRepository : IBasicRepository<TrackFile>
     {
-        List<EpisodeFile> GetFilesBySeries(int seriesId);
-        List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber);
-        List<EpisodeFile> GetFilesWithoutMediaInfo();
+        List<TrackFile> GetFilesByArtist(int artistId);
+        List<TrackFile> GetFilesWithoutMediaInfo();
     }
 
 
-    public class MediaFileRepository : BasicRepository<EpisodeFile>, IMediaFileRepository
+    public class MediaFileRepository : BasicRepository<TrackFile>, IMediaFileRepository
     {
         public MediaFileRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
         }
 
-        public List<EpisodeFile> GetFilesBySeries(int seriesId)
-        {
-            return Query.Where(c => c.SeriesId == seriesId).ToList();
-        }
-
-        public List<EpisodeFile> GetFilesBySeason(int seriesId, int seasonNumber)
-        {
-            return Query.Where(c => c.SeriesId == seriesId)
-                        .AndWhere(c => c.SeasonNumber == seasonNumber)
-                        .ToList();
-        }
-
-        public List<EpisodeFile> GetFilesWithoutMediaInfo()
+        public List<TrackFile> GetFilesWithoutMediaInfo()
         {
             return Query.Where(c => c.MediaInfo == null).ToList();
+        }
+
+        public List<TrackFile> GetFilesByArtist(int artistId)
+        {
+            return Query.Where(c => c.ArtistId == artistId).ToList();
         }
     }
 }

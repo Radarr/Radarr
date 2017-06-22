@@ -18,8 +18,12 @@ namespace NzbDrone.Api.Music
 
 
         //View Only
-        public string ArtistName { get; set; }
-        public string SpotifyId { get; set; }
+        public string Name { get; set; }
+        public string ForeignArtistId { get; set; }
+        public string MBId { get; set; }
+        public int TADBId { get; set; }
+        public int DiscogsId { get; set; }
+        public string AMId { get; set; }
         public string Overview { get; set; }
 
         public int AlbumCount
@@ -53,13 +57,13 @@ namespace NzbDrone.Api.Music
         public bool Monitored { get; set; }
 
         public string RootFolderPath { get; set; }
-        public string Certification { get; set; }
+        //public string Certification { get; set; }
         public List<string> Genres { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
         public AddSeriesOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
-        public string ArtistSlug { get; internal set; }
+        public string NameSlug { get; set; }
     }
 
     public static class ArtistResourceMapper
@@ -71,8 +75,11 @@ namespace NzbDrone.Api.Music
             return new ArtistResource
             {
                 Id = model.Id,
-
-                ArtistName = model.ArtistName,
+                MBId = model.MBId,
+                TADBId = model.TADBId,
+                DiscogsId = model.DiscogsId,
+                AMId = model.AMId,
+                Name = model.Name,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
 
@@ -94,7 +101,6 @@ namespace NzbDrone.Api.Music
                 Path = model.Path,
                 ProfileId = model.ProfileId,
 
-                ArtistFolder = model.ArtistFolder,
                 Monitored = model.Monitored,
 
                 //UseSceneNumbering = resource.UseSceneNumbering,
@@ -105,8 +111,8 @@ namespace NzbDrone.Api.Music
                 //FirstAired = resource.FirstAired,
                 //LastInfoSync = resource.LastInfoSync,
                 //SeriesType = resource.SeriesType,
-                SpotifyId = model.SpotifyId,
-                ArtistSlug = model.ArtistSlug,
+                ForeignArtistId = model.ForeignArtistId,
+                NameSlug = model.NameSlug,
 
                 RootFolderPath = model.RootFolderPath,
                 Genres = model.Genres,
@@ -125,10 +131,13 @@ namespace NzbDrone.Api.Music
             {
                 Id = resource.Id,
 
-                ArtistName = resource.ArtistName,
+                Name = resource.Name,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
-
+                MBId = resource.MBId,
+                TADBId = resource.TADBId,
+                DiscogsId = resource.DiscogsId,
+                AMId = resource.AMId,
                 //TotalEpisodeCount
                 //EpisodeCount
                 //EpisodeFileCount
@@ -147,11 +156,10 @@ namespace NzbDrone.Api.Music
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,
 
-                ArtistFolder = resource.ArtistFolder,
                 Monitored = resource.Monitored,
                 //LastInfoSync = resource.LastInfoSync,
-                SpotifyId = resource.SpotifyId,
-                ArtistSlug = resource.ArtistSlug,
+                ForeignArtistId = resource.ForeignArtistId,
+                NameSlug = resource.NameSlug,
                 
                 RootFolderPath = resource.RootFolderPath,
                 Genres = resource.Genres,

@@ -17,20 +17,20 @@ namespace NzbDrone.Core.Music
 
         public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
 
-        public string SpotifyTrackId { get; set; }
-        public string AlbumId { get; set; }
-        public LazyLoaded<Artist> Artist { get; set; }
-        public string ArtistSpotifyId { get; set; }
-        public long ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
+        public string ForeignTrackId { get; set; }
+        public int AlbumId { get; set; }
+        public Artist Artist { get; set; }
+       
+        public int ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
         //public int CompilationId { get; set; }
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
         public string Title { get; set; }
-        public bool Ignored { get; set; }
-        public bool Explict { get; set; }
+        //public bool Ignored { get; set; }
+        public bool Explicit { get; set; }
         public bool Monitored { get; set; }
         public int TrackFileId { get; set; } 
-        public DateTime? ReleaseDate { get; set; }
+        //public DateTime? ReleaseDate { get; set; }
 
         public LazyLoaded<TrackFile> TrackFile { get; set; }
 
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Music
 
         public override string ToString()
         {
-            return string.Format("[{0}]{1}", SpotifyTrackId, Title.NullSafe());
+            return string.Format("[{0}]{1}", ForeignTrackId, Title.NullSafe());
         }
     }
 }

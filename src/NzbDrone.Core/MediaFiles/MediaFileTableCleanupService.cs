@@ -1,85 +1,78 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileTableCleanupService
     {
-        void Clean(Series series, List<string> filesOnDisk);
+        void Clean(Artist artist, List<string> filesOnDisk);
     }
 
     public class MediaFileTableCleanupService : IMediaFileTableCleanupService
     {
         private readonly IMediaFileService _mediaFileService;
-        private readonly IEpisodeService _episodeService;
+        private readonly ITrackService _trackService;
         private readonly Logger _logger;
 
         public MediaFileTableCleanupService(IMediaFileService mediaFileService,
-                                            IEpisodeService episodeService,
+                                            ITrackService trackService,
                                             Logger logger)
         {
             _mediaFileService = mediaFileService;
-            _episodeService = episodeService;
+            _trackService = trackService;
             _logger = logger;
         }
 
-        public void Clean(Series series, List<string> filesOnDisk)
+        public void Clean(Artist artist, List<string> filesOnDisk)
         {
-            var seriesFiles = _mediaFileService.GetFilesBySeries(series.Id);
-            var episodes = _episodeService.GetEpisodeBySeries(series.Id);
+            var artistFiles = _mediaFileService.GetFilesByArtist(artist.Id);
+            var tracks = _trackService.GetTracksByArtist(artist.Id);
+
 
             var filesOnDiskKeys = new HashSet<string>(filesOnDisk, PathEqualityComparer.Instance);
             
-            foreach (var seriesFile in seriesFiles)
+            foreach (var artistFile in artistFiles)
             {
-                var episodeFile = seriesFile;
-                var episodeFilePath = Path.Combine(series.Path, episodeFile.RelativePath);
+                var trackFile = artistFile;
+                var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
 
                 try
                 {
-                    if (!filesOnDiskKeys.Contains(episodeFilePath))
+                    if (!filesOnDiskKeys.Contains(trackFilePath))
                     {
-                        _logger.Debug("File [{0}] no longer exists on disk, removing from db", episodeFilePath);
-                        _mediaFileService.Delete(seriesFile, DeleteMediaFileReason.MissingFromDisk);
+                        _logger.Debug("File [{0}] no longer exists on disk, removing from db", trackFilePath);
+                        _mediaFileService.Delete(artistFile, DeleteMediaFileReason.MissingFromDisk);
                         continue;
                     }
 
-                    if (episodes.None(e => e.EpisodeFileId == episodeFile.Id))
+                    if (tracks.None(e => e.TrackFileId == trackFile.Id))
                     {
-                        _logger.Debug("File [{0}] is not assigned to any episodes, removing from db", episodeFilePath);
-                        _mediaFileService.Delete(episodeFile, DeleteMediaFileReason.NoLinkedEpisodes);
+                        _logger.Debug("File [{0}] is not assigned to any artist, removing from db", trackFilePath);
+                        _mediaFileService.Delete(trackFile, DeleteMediaFileReason.NoLinkedEpisodes);
                         continue;
                     }
-
-//                    var localEpsiode = _parsingService.GetLocalEpisode(episodeFile.Path, series);
-//
-//                    if (localEpsiode == null || episodes.Count != localEpsiode.Episodes.Count)
-//                    {
-//                        _logger.Debug("File [{0}] parsed episodes has changed, removing from db", episodeFile.Path);
-//                        _mediaFileService.Delete(episodeFile);
-//                        continue;
-//                    }
                 }
 
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Unable to cleanup EpisodeFile in DB: {0}", episodeFile.Id);
+                    _logger.Error(ex, "Unable to cleanup EpisodeFile in DB: {0}", trackFile.Id);
                 }
             }
 
-            foreach (var e in episodes)
+            foreach (var t in tracks)
             {
-                var episode = e;
+                var track = t;
 
-                if (episode.EpisodeFileId > 0 && seriesFiles.None(f => f.Id == episode.EpisodeFileId))
+                if (track.TrackFileId > 0 && artistFiles.None(f => f.Id == track.TrackFileId))
                 {
-                    episode.EpisodeFileId = 0;
-                    _episodeService.UpdateEpisode(episode);
+                    track.TrackFileId = 0;
+                    _trackService.UpdateTrack(track);
                 }
             }
         }

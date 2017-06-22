@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.IndexerSearch.Definitions
 {
@@ -18,6 +19,9 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public List<Episode> Episodes { get; set; }
         public virtual bool MonitoredEpisodesOnly { get; set; }
         public virtual bool UserInvokedSearch { get; set; }
+
+        public Artist Artist { get; set; }
+        public List<Track> Tracks { get; set; }
 
         public List<string> QueryTitles => SceneTitles.Select(GetQueryTitle).ToList();
 

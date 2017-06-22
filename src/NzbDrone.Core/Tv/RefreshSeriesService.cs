@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Tv
                         try
                         {
                             _logger.Info("Skipping refresh of series: {0}", series.Title);
-                            _diskScanService.Scan(series);
+                            //_diskScanService.Scan(series);
                         }
                         catch (Exception e)
                         {

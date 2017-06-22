@@ -103,6 +103,10 @@ namespace NzbDrone.Core.Qualities
         public static Quality FindById(int id)
         {
             if (id == 0) return Unknown;
+            else if (id > AllLookup.Length)
+            {
+                throw new ArgumentException("ID does not match a known quality", nameof(id));
+            }
 
             var quality = AllLookup[id];
 

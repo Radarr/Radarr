@@ -1,4 +1,4 @@
-namespace NzbDrone.Core.MediaFiles.EpisodeImport
+namespace NzbDrone.Core.MediaFiles.TrackImport
 {
     public enum ImportMode
     {

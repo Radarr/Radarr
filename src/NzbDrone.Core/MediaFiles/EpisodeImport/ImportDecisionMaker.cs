@@ -11,14 +11,17 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.MediaFiles.MediaInfo;
-
+using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport
 {
     public interface IMakeImportDecision
     {
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
+        //List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
+        List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist);
+        //List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
+        List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
     }
 
     public class ImportDecisionMaker : IMakeImportDecision
@@ -48,84 +51,124 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             _logger = logger;
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series)
+        //public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series)
+        //{
+        //    return GetImportDecisions(videoFiles, series, null, false);
+        //}
+
+        //public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Artist series, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        //{
+        //    var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), series);
+
+        //    _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
+
+        //    var shouldUseFolderName = ShouldUseFolderName(videoFiles, series, folderInfo);
+        //    var decisions = new List<ImportDecision>();
+
+        //    foreach (var file in newFiles)
+        //    {
+        //        decisions.AddIfNotNull(GetDecision(file, series, folderInfo, sceneSource, shouldUseFolderName));
+        //    }
+
+        //    return decisions;
+        //}
+
+        public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist)
         {
-            return GetImportDecisions(videoFiles, series, null, false);
+            return GetImportDecisions(musicFiles, artist, null);
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource)
+        public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo)
         {
-            var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), series);
+            var newFiles = _mediaFileService.FilterExistingFiles(musicFiles.ToList(), artist);
 
-            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
+            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, musicFiles.Count());
 
-            var shouldUseFolderName = ShouldUseFolderName(videoFiles, series, folderInfo);
+            var shouldUseFolderName = ShouldUseFolderName(musicFiles, artist, folderInfo);
             var decisions = new List<ImportDecision>();
 
             foreach (var file in newFiles)
             {
-                decisions.AddIfNotNull(GetDecision(file, series, folderInfo, sceneSource, shouldUseFolderName));
+                decisions.AddIfNotNull(GetDecision(file, artist, folderInfo, shouldUseFolderName));
             }
 
             return decisions;
         }
 
-        private ImportDecision GetDecision(string file, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource, bool shouldUseFolderName)
+        private ImportDecision GetDecision(string file, Artist artist, ParsedTrackInfo folderInfo, bool shouldUseFolderName)
         {
             ImportDecision decision = null;
 
             try
             {
-                var localEpisode = _parsingService.GetLocalEpisode(file, series, shouldUseFolderName ? folderInfo : null, sceneSource);
+                var localTrack = _parsingService.GetLocalTrack(file, artist, shouldUseFolderName ? folderInfo : null);
 
-                if (localEpisode != null)
+                if (localTrack != null)
                 {
-                    localEpisode.Quality = GetQuality(folderInfo, localEpisode.Quality, series);
-                    localEpisode.Size = _diskProvider.GetFileSize(file);
+                    localTrack.Quality = GetQuality(folderInfo, localTrack.Quality, artist);
+                    localTrack.Size = _diskProvider.GetFileSize(file);
 
-                    _logger.Debug("Size: {0}", localEpisode.Size);
+                    _logger.Debug("Size: {0}", localTrack.Size);
 
-                    //TODO: make it so media info doesn't ruin the import process of a new series
-                    if (sceneSource)
+                    //TODO: make it so media info doesn't ruin the import process of a new artist
+
+                    if (localTrack.Tracks.Empty())
                     {
-                        localEpisode.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
-                    }
-
-                    if (localEpisode.Episodes.Empty())
-                    {
-                        decision = new ImportDecision(localEpisode, new Rejection("Invalid season or episode"));
+                        decision = new ImportDecision(localTrack, new Rejection("Invalid album or track"));
                     }
                     else
                     {
-                        decision = GetDecision(localEpisode);
+                        decision = GetDecision(localTrack);
                     }
                 }
 
                 else
                 {
-                    localEpisode = new LocalEpisode();
-                    localEpisode.Path = file;
+                    localTrack = new LocalTrack();
+                    localTrack.Path = file;
 
-                    decision = new ImportDecision(localEpisode, new Rejection("Unable to parse file"));
+                    decision = new ImportDecision(localTrack, new Rejection("Unable to parse file"));
                 }
             }
             catch (Exception e)
             {
                 _logger.Error(e, "Couldn't import file. {0}", file);
 
-                var localEpisode = new LocalEpisode { Path = file };
-                decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
+                var localTrack = new LocalTrack { Path = file };
+                decision = new ImportDecision(localTrack, new Rejection("Unexpected error processing file"));
             }
 
             return decision;
         }
 
-        private ImportDecision GetDecision(LocalEpisode localEpisode)
+        private ImportDecision GetDecision(LocalTrack localTrack)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, localEpisode))
+            var reasons = _specifications.Select(c => EvaluateSpec(c, localTrack))
                                          .Where(c => c != null);
 
-            return new ImportDecision(localEpisode, reasons.ToArray());
+            return new ImportDecision(localTrack, reasons.ToArray());
+        }
+
+        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalTrack localTrack)
+        {
+            try
+            {
+                var result = spec.IsSatisfiedBy(localTrack);
+
+                if (!result.Accepted)
+                {
+                    return new Rejection(result.Reason);
+                }
+            }
+            catch (Exception e)
+            {
+                //e.Data.Add("report", remoteEpisode.Report.ToJson());
+                //e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
+                _logger.Error(e, "Couldn't evaluate decision on {0}", localTrack.Path);
+                return new Rejection($"{spec.GetType().Name}: {e.Message}");
+            }
+
+            return null;
         }
 
         private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalEpisode localEpisode)
@@ -150,28 +193,28 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return null;
         }
 
-        private bool ShouldUseFolderName(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo)
+        private bool ShouldUseFolderName(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo)
         {
             if (folderInfo == null)
             {
                 return false;
             }
 
-            if (folderInfo.FullSeason)
-            {
-                return false;
-            }
+            //if (folderInfo.FullSeason)
+            //{
+            //    return false;
+            //}
 
-            return videoFiles.Count(file =>
+            return musicFiles.Count(file =>
             {
                 var size = _diskProvider.GetFileSize(file);
                 var fileQuality = QualityParser.ParseQuality(file);
-                var sample = _detectSample.IsSample(series, GetQuality(folderInfo, fileQuality, series), file, size, folderInfo.IsPossibleSpecialEpisode);
+                //var sample = _detectSample.IsSample(artist, GetQuality(folderInfo, fileQuality, artist), file, size, folderInfo.IsPossibleSpecialEpisode);
 
-                if (sample)
-                {
-                    return false;
-                }
+                //if (sample)
+                //{
+                //    return false;
+                //}
 
                 if (SceneChecker.IsSceneTitle(Path.GetFileName(file)))
                 {
@@ -182,9 +225,9 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             }) == 1;
         }
 
-        private QualityModel GetQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Series series)
+        private QualityModel GetQuality(ParsedTrackInfo folderInfo, QualityModel fileQuality, Artist artist)
         {
-            if (UseFolderQuality(folderInfo, fileQuality, series))
+            if (UseFolderQuality(folderInfo, fileQuality, artist))
             {
                 _logger.Debug("Using quality from folder: {0}", folderInfo.Quality);
                 return folderInfo.Quality;
@@ -193,7 +236,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return fileQuality;
         }
 
-        private bool UseFolderQuality(ParsedEpisodeInfo folderInfo, QualityModel fileQuality, Series series)
+        private bool UseFolderQuality(ParsedTrackInfo folderInfo, QualityModel fileQuality, Artist artist)
         {
             if (folderInfo == null)
             {
@@ -210,7 +253,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                 return true;
             }
 
-            if (new QualityModelComparer(series.Profile).Compare(folderInfo.Quality, fileQuality) > 0)
+            if (new QualityModelComparer(artist.Profile).Compare(folderInfo.Quality, fileQuality) > 0)
             {
                 return true;
             }

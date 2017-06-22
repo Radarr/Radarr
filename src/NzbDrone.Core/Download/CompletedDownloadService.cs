@@ -13,6 +13,7 @@ using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.Download
 {
@@ -130,7 +131,7 @@ namespace NzbDrone.Core.Download
             {
                 var statusMessages = importResults
                     .Where(v => v.Result != ImportResultType.Imported)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalEpisode.Path), v.Errors))
+                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalTrack.Path), v.Errors))
                     .ToArray();
 
                 trackedDownload.Warn(statusMessages);

@@ -97,7 +97,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _configureTemplateHelpers : function() {
-        var existingArtist = ArtistCollection.where({ spotifyId : this.model.get('spotifyId') });
+        var existingArtist = ArtistCollection.where({ foreignArtistId : this.model.get('foreignArtistId') });
 
         if (existingArtist.length > 0) {
             this.templateHelpers.existing = existingArtist[0].toJSON();
@@ -223,12 +223,12 @@ var view = Marionette.ItemView.extend({
             self.close();
 
             Messenger.show({
-                message        : 'Added: ' + self.model.get('artistName'),
+                message        : 'Added: ' + self.model.get('name'),
                 actions        : {
                     goToArtist : {
                         label  : 'Go to Artist',
                         action : function() {
-                            Backbone.history.navigate('/artist/' + self.model.get('artistSlug'), { trigger : true });
+                            Backbone.history.navigate('/artist/' + self.model.get('nameSlug'), { trigger : true });
                         }
                     }
                 },

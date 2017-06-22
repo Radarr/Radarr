@@ -11,6 +11,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
+using System;
 
 namespace NzbDrone.Api.EpisodeFiles
 {
@@ -47,24 +48,26 @@ namespace NzbDrone.Api.EpisodeFiles
 
         private EpisodeFileResource GetEpisodeFile(int id)
         {
-            var episodeFile = _mediaFileService.Get(id);
-            var series = _seriesService.GetSeries(episodeFile.SeriesId);
+            throw new NotImplementedException();
+            //var episodeFile = _mediaFileService.Get(id);
+            //var series = _seriesService.GetSeries(episodeFile.SeriesId);
 
-            return episodeFile.ToResource(series, _qualityUpgradableSpecification);
+            //return episodeFile.ToResource(series, _qualityUpgradableSpecification);
         }
 
         private List<EpisodeFileResource> GetEpisodeFiles()
         {
-            if (!Request.Query.SeriesId.HasValue)
-            {
-                throw new BadRequestException("seriesId is missing");
-            }
+            throw new NotImplementedException();
+            //if (!Request.Query.SeriesId.HasValue)
+            //{
+            //    throw new BadRequestException("seriesId is missing");
+            //}
 
-            var seriesId = (int)Request.Query.SeriesId;
+            //var seriesId = (int)Request.Query.SeriesId;
 
-            var series = _seriesService.GetSeries(seriesId);
+            //var series = _seriesService.GetSeries(seriesId);
 
-            return _mediaFileService.GetFilesBySeries(seriesId).ConvertAll(f => f.ToResource(series, _qualityUpgradableSpecification));
+            //return _mediaFileService.GetFilesBySeries(seriesId).ConvertAll(f => f.ToResource(series, _qualityUpgradableSpecification));
         }
 
         private void SetQuality(EpisodeFileResource episodeFileResource)
@@ -76,14 +79,15 @@ namespace NzbDrone.Api.EpisodeFiles
 
         private void DeleteEpisodeFile(int id)
         {
-            var episodeFile = _mediaFileService.Get(id);
-            var series = _seriesService.GetSeries(episodeFile.SeriesId);
-            var fullPath = Path.Combine(series.Path, episodeFile.RelativePath);
-            var subfolder = _diskProvider.GetParentFolder(series.Path).GetRelativePath(_diskProvider.GetParentFolder(fullPath));
+            throw new NotImplementedException();
+            //var episodeFile = _mediaFileService.Get(id);
+            //var series = _seriesService.GetSeries(episodeFile.SeriesId);
+            //var fullPath = Path.Combine(series.Path, episodeFile.RelativePath);
+            //var subfolder = _diskProvider.GetParentFolder(series.Path).GetRelativePath(_diskProvider.GetParentFolder(fullPath));
 
-            _logger.Info("Deleting episode file: {0}", fullPath);
-            _recycleBinProvider.DeleteFile(fullPath, subfolder);
-            _mediaFileService.Delete(episodeFile, DeleteMediaFileReason.Manual);
+            //_logger.Info("Deleting episode file: {0}", fullPath);
+            //_recycleBinProvider.DeleteFile(fullPath, subfolder);
+            //_mediaFileService.Delete(episodeFile, DeleteMediaFileReason.Manual);
         }
 
         public void Handle(EpisodeFileAddedEvent message)

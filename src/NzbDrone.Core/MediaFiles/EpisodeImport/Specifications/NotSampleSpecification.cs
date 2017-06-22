@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 
@@ -14,6 +15,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
         {
             _detectSample = detectSample;
             _logger = logger;
+        }
+
+        public Decision IsSatisfiedBy(LocalTrack localTrack)
+        {
+            throw new NotImplementedException();
         }
 
         public Decision IsSatisfiedBy(LocalEpisode localEpisode)

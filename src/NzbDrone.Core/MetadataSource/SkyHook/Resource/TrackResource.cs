@@ -5,9 +5,9 @@ using System.Text;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
-    public class TrackInfoResource
+    public class TrackResource
     {
-        public TrackInfoResource()
+        public TrackResource()
         {
 
         }
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string TrackName { get; set; }
         public int TrackNumber { get; set; }
         public bool Explicit { get; set; }
-        public List<ArtistInfoResource> Artists { get; set; }
+        public List<ArtistResource> Artists { get; set; }
 
     }
 }

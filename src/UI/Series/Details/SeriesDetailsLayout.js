@@ -48,9 +48,10 @@ module.exports = Marionette.Layout.extend({
         this.seriesCollection = ArtistCollection.clone();
         this.seriesCollection.shadowCollection.bindSignalR();
 
+        
         this.listenTo(this.model, 'change:monitored', this._setMonitoredState);
         this.listenTo(this.model, 'remove', this._seriesRemoved);
-        this.listenTo(vent, vent.Events.CommandComplete, this._commandComplete);
+        //this.listenTo(vent, vent.Events.CommandComplete, this._commandComplete);
 
         this.listenTo(this.model, 'change', function(model, options) {
             if (options && options.changeSource === 'signalr') {
@@ -59,6 +60,7 @@ module.exports = Marionette.Layout.extend({
         });
 
         this.listenTo(this.model,  'change:images', this._updateImages);
+
     },
 
     onShow : function() {
@@ -81,15 +83,16 @@ module.exports = Marionette.Layout.extend({
                 name : 'seriesSearch'
             }
         });
+        console.log(this.model);
 
-        CommandController.bindToCommand({
+        /*CommandController.bindToCommand({
             element : this.ui.rename,
             command : {
                 name         : 'renameFiles',
-                seriesId     : this.model.id,
+                seriesId     : this.model.spotifyId,
                 seasonNumber : -1
             }
-        });
+        });*/
     },
 
     onClose : function() {
@@ -164,6 +167,7 @@ module.exports = Marionette.Layout.extend({
 
     _showSeasons : function() {
         var self = this;
+        return;
 
         this.seasons.show(new LoadingView());
 

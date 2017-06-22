@@ -45,7 +45,7 @@ module.exports = Marionette.Layout.extend({
             cell  : ArtistStatusCell
         },
         {
-            name      : 'artistName',
+            name      : 'name',
             label     : 'Artist',
             cell      : ArtistTitleCell,
             cellValue : 'this'

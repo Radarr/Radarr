@@ -71,7 +71,7 @@ namespace NzbDrone.Api.Music
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.SpotifyId).NotEqual("").SetValidator(artistExistsValidator);
+            PostValidator.RuleFor(s => s.ForeignArtistId).NotEqual("").SetValidator(artistExistsValidator);
 
             PutValidator.RuleFor(s => s.Path).IsValidPath();
         }
@@ -144,14 +144,14 @@ namespace NzbDrone.Api.Music
 
         public void Handle(TrackImportedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.ImportedTrack.ItunesTrackId);
+            BroadcastResourceChange(ModelAction.Updated, message.ImportedTrack.Id); // TODO: Ensure we can pass DB ID instead of Metadata ID (SpotifyID)
         }
 
         public void Handle(TrackFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.Upgrade) return;
 
-            BroadcastResourceChange(ModelAction.Updated, message.TrackFile.ItunesTrackId);
+            BroadcastResourceChange(ModelAction.Updated, message.TrackFile.Id); // TODO: Ensure we can pass DB ID instead of Metadata ID (SpotifyID)
         }
 
         public void Handle(ArtistUpdatedEvent message)

@@ -9,7 +9,8 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IUpgradeMediaFiles
     {
-        EpisodeFileMoveResult UpgradeEpisodeFile(EpisodeFile episodeFile, LocalEpisode localEpisode, bool copyOnly = false);
+        //EpisodeFileMoveResult UpgradeEpisodeFile(EpisodeFile episodeFile, LocalEpisode localEpisode, bool copyOnly = false);
+        TrackFileMoveResult UpgradeTrackFile(TrackFile trackFile, LocalTrack localTrack, bool copyOnly = false);
     }
 
     public class UpgradeMediaFileService : IUpgradeMediaFiles
@@ -17,35 +18,36 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
         private readonly IMoveEpisodeFiles _episodeFileMover;
+        private readonly IMoveTrackFiles _trackFileMover;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         public UpgradeMediaFileService(IRecycleBinProvider recycleBinProvider,
                                        IMediaFileService mediaFileService,
-                                       IMoveEpisodeFiles episodeFileMover,
+                                       IMoveTrackFiles trackFileMover,
                                        IDiskProvider diskProvider,
                                        Logger logger)
         {
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
-            _episodeFileMover = episodeFileMover;
+            _trackFileMover = trackFileMover;
             _diskProvider = diskProvider;
             _logger = logger;
         }
 
-        public EpisodeFileMoveResult UpgradeEpisodeFile(EpisodeFile episodeFile, LocalEpisode localEpisode, bool copyOnly = false)
+        public TrackFileMoveResult UpgradeTrackFile(TrackFile trackFile, LocalTrack localTrack, bool copyOnly = false)
         {
-            var moveFileResult = new EpisodeFileMoveResult();
-            var existingFiles = localEpisode.Episodes
-                                            .Where(e => e.EpisodeFileId > 0)
-                                            .Select(e => e.EpisodeFile.Value)
+            var moveFileResult = new TrackFileMoveResult();
+            var existingFiles = localTrack.Tracks
+                                            .Where(e => e.TrackFileId > 0)
+                                            .Select(e => e.TrackFile.Value)
                                             .GroupBy(e => e.Id);
 
             foreach (var existingFile in existingFiles)
             {
                 var file = existingFile.First();
-                var episodeFilePath = Path.Combine(localEpisode.Series.Path, file.RelativePath);
-                var subfolder = _diskProvider.GetParentFolder(localEpisode.Series.Path).GetRelativePath(_diskProvider.GetParentFolder(episodeFilePath));
+                var episodeFilePath = Path.Combine(localTrack.Artist.Path, file.RelativePath);
+                var subfolder = _diskProvider.GetParentFolder(localTrack.Artist.Path).GetRelativePath(_diskProvider.GetParentFolder(episodeFilePath));
 
                 if (_diskProvider.FileExists(episodeFilePath))
                 {
@@ -59,11 +61,11 @@ namespace NzbDrone.Core.MediaFiles
 
             if (copyOnly)
             {
-                moveFileResult.EpisodeFile = _episodeFileMover.CopyEpisodeFile(episodeFile, localEpisode);
+                moveFileResult.TrackFile = _trackFileMover.CopyTrackFile(trackFile, localTrack);
             }
             else
             {
-                moveFileResult.EpisodeFile = _episodeFileMover.MoveEpisodeFile(episodeFile, localEpisode);
+                moveFileResult.TrackFile = _trackFileMover.MoveTrackFile(trackFile, localTrack);
             }
 
             return moveFileResult;

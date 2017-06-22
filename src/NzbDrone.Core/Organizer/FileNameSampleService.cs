@@ -2,6 +2,7 @@
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 
 namespace NzbDrone.Core.Organizer
@@ -9,26 +10,34 @@ namespace NzbDrone.Core.Organizer
     public interface IFilenameSampleService
     {
         SampleResult GetStandardSample(NamingConfig nameSpec);
+        SampleResult GetStandardTrackSample(NamingConfig nameSpec);
         SampleResult GetMultiEpisodeSample(NamingConfig nameSpec);
         SampleResult GetDailySample(NamingConfig nameSpec);
         SampleResult GetAnimeSample(NamingConfig nameSpec);
         SampleResult GetAnimeMultiEpisodeSample(NamingConfig nameSpec);
         string GetSeriesFolderSample(NamingConfig nameSpec);
         string GetSeasonFolderSample(NamingConfig nameSpec);
+        string GetArtistFolderSample(NamingConfig nameSpec);
+        string GetAlbumFolderSample(NamingConfig nameSpec);
     }
 
     public class FileNameSampleService : IFilenameSampleService
     {
         private readonly IBuildFileNames _buildFileNames;
         private static Series _standardSeries;
+        private static Artist _standardArtist;
+        private static Album _standardAlbum;
+        private static Track _track1;
         private static Series _dailySeries;
         private static Series _animeSeries;
         private static Episode _episode1;
         private static Episode _episode2;
         private static Episode _episode3;
         private static List<Episode> _singleEpisode;
+        private static List<Track> _singleTrack;
         private static List<Episode> _multiEpisodes;
         private static EpisodeFile _singleEpisodeFile;
+        private static TrackFile _singleTrackFile;
         private static EpisodeFile _multiEpisodeFile;
         private static EpisodeFile _dailyEpisodeFile;
         private static EpisodeFile _animeEpisodeFile;
@@ -44,6 +53,17 @@ namespace NzbDrone.Core.Organizer
                 Title = "Series Title (2010)"
             };
 
+            _standardArtist = new Artist
+            {
+                Name = "Artist Name"
+            };
+
+            _standardAlbum = new Album
+            {
+                Title = "Album Title",
+                ReleaseDate = System.DateTime.Today
+            };
+
             _dailySeries = new Series
             {
                 SeriesType = SeriesTypes.Daily,
@@ -54,6 +74,14 @@ namespace NzbDrone.Core.Organizer
             {
                 SeriesType = SeriesTypes.Anime,
                 Title = "Series Title (2010)"
+            };
+
+            _track1 = new Track
+            {
+                TrackNumber = 3,
+                
+                Title = "Track Title (1)",
+                
             };
 
             _episode1 = new Episode
@@ -82,6 +110,7 @@ namespace NzbDrone.Core.Organizer
             };
 
             _singleEpisode = new List<Episode> { _episode1 };
+            _singleTrack = new List<Track> { _track1 };
             _multiEpisodes = new List<Episode> { _episode1, _episode2, _episode3 };
 
             var mediaInfo = new MediaInfoModel()
@@ -111,6 +140,15 @@ namespace NzbDrone.Core.Organizer
                 Quality = new QualityModel(Quality.MP3256, new Revision(2)),
                 RelativePath = "Series.Title.S01E01.720p.HDTV.x264-EVOLVE.mkv",
                 SceneName = "Series.Title.S01E01.720p.HDTV.x264-EVOLVE",
+                ReleaseGroup = "RlsGrp",
+                MediaInfo = mediaInfo
+            };
+
+            _singleTrackFile = new TrackFile
+            {
+                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                RelativePath = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256.mp3",
+                SceneName = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256",
                 ReleaseGroup = "RlsGrp",
                 MediaInfo = mediaInfo
             };
@@ -160,6 +198,20 @@ namespace NzbDrone.Core.Organizer
                 Series = _standardSeries,
                 Episodes = _singleEpisode,
                 EpisodeFile = _singleEpisodeFile
+            };
+
+            return result;
+        }
+
+        public SampleResult GetStandardTrackSample(NamingConfig nameSpec)
+        {
+            var result = new SampleResult
+            {
+                FileName = BuildTrackSample(_singleTrack, _standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
+                Artist = _standardArtist,
+                Album = _standardAlbum,
+                Tracks = _singleTrack,
+                TrackFile = _singleTrackFile
             };
 
             return result;
@@ -227,11 +279,33 @@ namespace NzbDrone.Core.Organizer
             return _buildFileNames.GetSeasonFolder(_standardSeries, _episode1.SeasonNumber, nameSpec);
         }
 
+        public string GetArtistFolderSample(NamingConfig nameSpec)
+        {
+            return _buildFileNames.GetArtistFolder(_standardArtist, nameSpec);
+        }
+
+        public string GetAlbumFolderSample(NamingConfig nameSpec)
+        {
+            return _buildFileNames.GetAlbumFolder(_standardArtist, _standardAlbum, nameSpec);
+        }
+
         private string BuildSample(List<Episode> episodes, Series series, EpisodeFile episodeFile, NamingConfig nameSpec)
         {
             try
             {
                 return _buildFileNames.BuildFileName(episodes, series, episodeFile, nameSpec);
+            }
+            catch (NamingFormatException)
+            {
+                return string.Empty;
+            }
+        }
+
+        private string BuildTrackSample(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig nameSpec)
+        {
+            try
+            {
+                return _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile, nameSpec);
             }
             catch (NamingFormatException)
             {

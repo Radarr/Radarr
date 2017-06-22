@@ -2,12 +2,12 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
     defaults : {
-        seasonNumber : 0,
+        albumId      : 0,
         status       : 0
     },
 
     methodUrls : {
-        'update' : window.NzbDrone.ApiRoot + '/episode'
+        'update' : window.NzbDrone.ApiRoot + '/track'
     },
 
     sync : function(method, model, options) {

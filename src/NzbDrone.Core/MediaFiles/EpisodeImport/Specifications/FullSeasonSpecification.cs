@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using System;
+using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 
@@ -11,6 +12,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
         public FullSeasonSpecification(Logger logger)
         {
             _logger = logger;
+        }
+
+        public Decision IsSatisfiedBy(LocalTrack localTrack)
+        {
+            throw new NotImplementedException("Interface will be removed");
         }
 
         public Decision IsSatisfiedBy(LocalEpisode localEpisode)
