@@ -724,7 +724,10 @@
     <Compile Include="MediaFiles\Commands\BackendCommandAttribute.cs" />
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedEpisodesScanCommand.cs" />
+    <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
     <Compile Include="MediaFiles\Events\TrackDownloadedEvent.cs" />
+    <Compile Include="MediaFiles\RenameTrackFilePreview.cs" />
+    <Compile Include="MediaFiles\RenameTrackFileService.cs" />
     <Compile Include="MediaFiles\TrackFileMovingService.cs" />
     <Compile Include="MediaFiles\TrackFileMoveResult.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportMode.cs" />

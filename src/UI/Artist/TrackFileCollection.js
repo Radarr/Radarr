@@ -2,7 +2,7 @@ var Backbone = require('backbone');
 var TrackFileModel = require('./TrackFileModel');
 
 module.exports = Backbone.Collection.extend({
-    url   : window.NzbDrone.ApiRoot + '/episodefile',
+    url   : window.NzbDrone.ApiRoot + '/trackfile',
     model : TrackFileModel,
 
     originalFetch : Backbone.Collection.prototype.fetch,
@@ -21,7 +21,7 @@ module.exports = Backbone.Collection.extend({
             options = {};
         }
 
-        options.data = { seriesId : this.seriesId };
+        options.data = { artistId : this.artistId };
 
         return this.originalFetch.call(this, options);
     }

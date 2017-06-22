@@ -20,7 +20,9 @@ namespace NzbDrone.Core.Organizer
         string BuildFileName(List<Episode> episodes, Series series, EpisodeFile episodeFile, NamingConfig namingConfig = null);
         string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null);
         string BuildFilePath(Series series, int seasonNumber, string fileName, string extension);
+        string BuildTrackFilePath(Artist artist, Album album, string fileName, string extension);
         string BuildSeasonPath(Series series, int seasonNumber);
+        string BuildAlbumPath(Artist artist, Album album);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetSeriesFolder(Series series, NamingConfig namingConfig = null);
         string GetArtistFolder(Artist artist, NamingConfig namingConfig = null);
@@ -202,6 +204,15 @@ namespace NzbDrone.Core.Organizer
             return Path.Combine(path, fileName + extension);
         }
 
+        public string BuildTrackFilePath(Artist artist, Album album, string fileName, string extension)
+        {
+            Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
+
+            var path = BuildAlbumPath(artist, album);
+
+            return Path.Combine(path, fileName + extension);
+        }
+
         public string BuildSeasonPath(Series series, int seasonNumber)
         {
             var path = series.Path;
@@ -220,6 +231,24 @@ namespace NzbDrone.Core.Organizer
 
                     path = Path.Combine(path, seasonFolder);
                 }
+            }
+
+            return path;
+        }
+
+        public string BuildAlbumPath(Artist artist, Album album)
+        {
+            var path = artist.Path;
+
+            if (artist.AlbumFolder)
+            {
+                
+                var albumFolder = GetAlbumFolder(artist, album);
+
+                albumFolder = CleanFileName(albumFolder);
+
+                path = Path.Combine(path, albumFolder);
+                
             }
 
             return path;

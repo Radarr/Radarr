@@ -104,6 +104,13 @@
     <Compile Include="ClientSchema\SelectOption.cs" />
     <Compile Include="Commands\CommandModule.cs" />
     <Compile Include="Commands\CommandResource.cs" />
+    <Compile Include="TrackFiles\TrackFileModule.cs" />
+    <Compile Include="TrackFiles\TrackFileResource.cs" />
+    <Compile Include="Tracks\TrackModule.cs" />
+    <Compile Include="Tracks\TrackModuleWithSignalR.cs" />
+    <Compile Include="Tracks\TrackResource.cs" />
+    <Compile Include="Tracks\RenameTrackModule.cs" />
+    <Compile Include="Tracks\RenameTrackResource.cs" />
     <Compile Include="Extensions\AccessControlHeaders.cs" />
     <Compile Include="Extensions\Pipelines\CorsPipeline.cs" />
     <Compile Include="Extensions\Pipelines\RequestLoggingPipeline.cs" />

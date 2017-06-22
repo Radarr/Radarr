@@ -19,11 +19,6 @@ module.exports = NzbDroneController.extend({
         this.showMainRegion(new AddArtistLayout({ action : action }));
     },
 
-    artistDetails: function(query) {
-        this.setTitle('Artist Detail');
-        this.showMainRegion(new SeriesDetailsLayout());
-    },
-
     calendar : function() {
         this.setTitle('Calendar');
         this.showMainRegion(new CalendarLayout());

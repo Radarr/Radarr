@@ -321,15 +321,17 @@ module.exports = Marionette.Layout.extend({
     _showFooter : function() {
         var footerModel = new FooterModel();
         var artist = this.artistCollection.models.length;
-        var episodes = 0;
-        var episodeFiles = 0;
+        var albums = 0;
+        var tracks = 0;
+        var trackFiles = 0;
         var ended = 0;
         var continuing = 0;
         var monitored = 0;
 
         _.each(this.artistCollection.models, function(model) {
-            episodes += model.get('episodeCount'); // TODO: Refactor to Seasons and Tracks
-            episodeFiles += model.get('episodeFileCount');
+            albums += model.get('albumCount');
+            tracks += model.get('episodeCount'); // TODO: Refactor to Seasons and Tracks
+            trackFiles += model.get('episodeFileCount');
 
             /*if (model.get('status').toLowerCase() === 'ended') {
                 ended++;
@@ -348,8 +350,9 @@ module.exports = Marionette.Layout.extend({
             continuing   : continuing,
             monitored    : monitored,
             unmonitored  : artist - monitored,
-            episodes     : episodes,
-            episodeFiles : episodeFiles
+            albums       : albums,
+            tracks       : tracks,
+            trackFiles   : trackFiles
         });
 
         this.footer.show(new FooterView({ model : footerModel }));
