@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
         Album FindById(string spotifyId);
+        void SetMonitoredFlat(Album album, bool monitored);
     }
 
     public class AlbumRepository : BasicRepository<Album>, IAlbumRepository
@@ -33,6 +34,12 @@ namespace NzbDrone.Core.Music
         public Album FindById(string foreignAlbumId)
         {
             return Query.Where(s => s.ForeignAlbumId == foreignAlbumId).SingleOrDefault();
+        }
+
+        public void SetMonitoredFlat(Album album, bool monitored)
+        {
+            album.Monitored = monitored;
+            SetFields(album, p => p.Monitored);
         }
 
         public Album FindByName(string cleanTitle)

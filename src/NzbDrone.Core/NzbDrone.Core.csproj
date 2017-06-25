@@ -859,6 +859,7 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewSeries.cs" />
+    <Compile Include="Music\Member.cs" />
     <Compile Include="Music\AddArtistOptions.cs" />
     <Compile Include="Music\AddArtistService.cs" />
     <Compile Include="Music\AddArtistValidator.cs" />
@@ -882,6 +883,7 @@
     <Compile Include="Music\Events\ArtistUpdatedEvent.cs" />
     <Compile Include="Music\Events\AlbumInfoRefreshedEvent.cs" />
     <Compile Include="Music\Events\TrackInfoRefreshedEvent.cs" />
+    <Compile Include="Music\Ratings.cs" />
     <Compile Include="Music\RefreshArtistService.cs" />
     <Compile Include="Music\RefreshAlbumService.cs" />
     <Compile Include="Music\RefreshTrackService.cs" />
@@ -1104,6 +1106,10 @@
     </Compile>
     <Compile Include="RootFolders\UnmappedFolder.cs" />
     <Compile Include="Security.cs" />
+    <Compile Include="ArtistStats\AlbumStatistics.cs" />
+    <Compile Include="ArtistStats\ArtistStatistics.cs" />
+    <Compile Include="ArtistStats\ArtistStatisticsRepository.cs" />
+    <Compile Include="ArtistStats\ArtistStatisticsService.cs" />
     <Compile Include="SeriesStats\SeasonStatistics.cs" />
     <Compile Include="SeriesStats\SeriesStatistics.cs" />
     <Compile Include="SeriesStats\SeriesStatisticsRepository.cs" />

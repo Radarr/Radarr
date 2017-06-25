@@ -1,23 +1,25 @@
 var _ = require('underscore');
 var Marionette = require('marionette');
-var SeasonLayout = require('./AlbumLayout');
+var AlbumLayout = require('./AlbumLayout');
 var AsSortedCollectionView = require('../../Mixins/AsSortedCollectionView');
 
 var view = Marionette.CollectionView.extend({
 
-    itemView : SeasonLayout,
+    itemView : AlbumLayout,
 
     initialize : function(options) {
         if (!options.trackCollection) {
             throw 'trackCollection is needed';
         }
-
+        console.log(options);
+        this.albumCollection = options.collection;
         this.trackCollection = options.trackCollection;
         this.artist = options.artist;
     },
 
     itemViewOptions : function() {
         return {
+            albumCollection   : this.albumCollection,
             trackCollection   : this.trackCollection,
             artist            : this.artist
         };

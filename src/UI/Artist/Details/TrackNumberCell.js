@@ -4,18 +4,14 @@ var reqres = require('../../reqres');
 var ArtistCollection = require('../ArtistCollection');
 
 module.exports = NzbDroneCell.extend({
-    className : 'episode-number-cell',
+    className : 'track-number-cell',
     template  : 'Artist/Details/TrackNumberCellTemplate',
 
     render : function() {
         this.$el.empty();
         this.$el.html(this.model.get('trackNumber'));
-
-        var series = ArtistCollection.get(this.model.get('seriesId'));
-
-        if (series.get('seriesType') === 'anime' && this.model.has('absoluteEpisodeNumber')) {
-            this.$el.html('{0} ({1})'.format(this.model.get('episodeNumber'), this.model.get('absoluteEpisodeNumber')));
-        }
+        
+        var artist = ArtistCollection.get(this.model.get('artistId'));
 
         var alternateTitles = [];
 

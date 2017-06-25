@@ -365,7 +365,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             series.TitleSlug = show.Slug;
             series.Status = MapSeriesStatus(show.Status);
-            series.Ratings = MapRatings(show.Rating);
+            //series.Ratings = MapRatings(show.Rating);
             series.Genres = show.Genres;
 
             if (show.ContentRating.IsNotNullOrWhiteSpace())
@@ -412,7 +412,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             episode.AirDate = oracleEpisode.AirDate;
             episode.AirDateUtc = oracleEpisode.AirDateUtc;
 
-            episode.Ratings = MapRatings(oracleEpisode.Rating);
+            //episode.Ratings = MapRatings(oracleEpisode.Rating);
 
             //Don't include series fanart images as episode screenshot
             if (oracleEpisode.Image != null)
@@ -443,14 +443,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return SeriesStatusType.Continuing;
         }
 
-        private static Ratings MapRatings(RatingResource rating)
+        private static Core.Music.Ratings MapRatings(RatingResource rating)
         {
             if (rating == null)
             {
-                return new Ratings();
+                return new Core.Music.Ratings();
             }
 
-            return new Ratings
+            return new Core.Music.Ratings
             {
                 Votes = rating.Count,
                 Value = rating.Value

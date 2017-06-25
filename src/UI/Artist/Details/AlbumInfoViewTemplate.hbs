@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-md-9">
+        {{profile profileId}}
+
+        {{#if label}}
+        <span class="label label-info">{{label}}</span>
+        {{/if}}
+
+        <span class="label label-info">{{path}}</span>
+
+        {{#if ratings}}
+            <span class="label label-info" title="{{ratings.votes}} vote{{#if_gt ratings.votes compare="1"}}s{{/if_gt}}">{{ratings.value}}</span>
+        {{/if}}
+
+    </div>
+    <div class="col-md-9">
+        <span class="album-info-links">
+            <a href="{{MBAlbumUrl}}" class="label label-info">MusicBrainz</a>
+
+            {{#if tadbId}}
+            <a href="{{TADBAlbumUrl}}" class="label label-info">The AudioDB</a>
+            {{/if}}
+
+            {{#if discogsId}}
+                <a href="{{discogsAlbumUrl}}" class="label label-info">Discogs</a>
+            {{/if}}
+
+            {{#if amId}}
+                <a href="{{allMusicAlbumUrl}}" class="label label-info">AllMusic</a>
+            {{/if}}
+        </span>
+    </div>
+</div>
+
+{{#if tags}}
+<div class="row">
+    <div class="col-md-12">
+        {{tagDisplay tags}}
+    </div>
+</div>
+{{/if}}

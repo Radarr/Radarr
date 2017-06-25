@@ -9,15 +9,17 @@ Handlebars.registerHelper('poster', function() {
 
     if (poster[0]) {
         if (!poster[0].url.match(/^https?:\/\//)) {
-            return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster[0].url, 250)));
+            return new Handlebars.SafeString('<img class="artist-poster x-artist-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster[0].url, 250)));
         } else {
             var url = poster[0].url.replace(/^https?\:/, '');
-            return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
+            return new Handlebars.SafeString('<img class="artist-poster x-artist-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
         }
     }
 
-    return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
+    return new Handlebars.SafeString('<img class="artist-poster placeholder-image" src="{0}">'.format(placeholder));
 });
+
+
 
 Handlebars.registerHelper('MBUrl', function() {
     return 'https://musicbrainz.org/artist/' + this.mbId;
@@ -32,25 +34,25 @@ Handlebars.registerHelper('discogsUrl', function() {
 });
 
 Handlebars.registerHelper('allMusicUrl', function() {
-    return 'http://www.allmusic.com/artist/' + this.amId;
+    return 'http://www.allmusic.com/artist/' + this.allMusicId;
 });
 
 Handlebars.registerHelper('route', function() {
     return StatusModel.get('urlBase') + '/artist/' + this.nameSlug;
 });
 
-Handlebars.registerHelper('percentOfEpisodes', function() {
-    var episodeCount = this.episodeCount;
-    var episodeFileCount = this.episodeFileCount;
+// Handlebars.registerHelper('percentOfEpisodes', function() {
+//     var episodeCount = this.episodeCount;
+//     var episodeFileCount = this.episodeFileCount;
 
-    var percent = 100;
+//     var percent = 100;
 
-    if (episodeCount > 0) {
-        percent = episodeFileCount / episodeCount * 100;
-    }
+//     if (episodeCount > 0) {
+//         percent = episodeFileCount / episodeCount * 100;
+//     }
 
-    return percent;
-});
+//     return percent;
+// });
 
 Handlebars.registerHelper('percentOfTracks', function() {
     var trackCount = this.trackCount;

@@ -1,4 +1,4 @@
-using NzbDrone.Core.Datastore;
+﻿using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaCover
 {
@@ -10,7 +10,9 @@ namespace NzbDrone.Core.MediaCover
         Banner = 2,
         Fanart = 3,
         Screenshot = 4,
-        Headshot = 5
+        Headshot = 5,
+        Cover = 6,
+        Disc = 7
     }
 
     public class MediaCover : IEmbeddedDocument

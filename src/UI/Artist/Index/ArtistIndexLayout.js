@@ -9,7 +9,7 @@ var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var ArtistTitleCell = require('../../Cells/ArtistTitleCell');
 var TemplatedCell = require('../../Cells/TemplatedCell');
 var ProfileCell = require('../../Cells/ProfileCell');
-var EpisodeProgressCell = require('../../Cells/EpisodeProgressCell');
+var TrackProgressCell = require('../../Cells/TrackProgressCell');
 var ArtistActionsCell = require('../../Cells/ArtistActionsCell');
 var ArtistStatusCell = require('../../Cells/ArtistStatusCell');
 var FooterView = require('./FooterView');
@@ -62,10 +62,10 @@ module.exports = Marionette.Layout.extend({
             cell  : RelativeDateCell
         },
         {
-            name      : 'percentOfEpisodes',
+            name      : 'percentOfTracks',
             label     : 'Tracks',
-            cell      : EpisodeProgressCell,
-            className : 'episode-progress-cell'
+            cell      : TrackProgressCell,
+            className : 'track-progress-cell'
         },
         {
             name     : 'this',
@@ -157,7 +157,7 @@ module.exports = Marionette.Layout.extend({
                 },
                 {
                     title : 'Tracks',
-                    name  : 'percentOfEpisodes'
+                    name  : 'percentOfTracks'
                 }
             ]
         };
@@ -330,8 +330,8 @@ module.exports = Marionette.Layout.extend({
 
         _.each(this.artistCollection.models, function(model) {
             albums += model.get('albumCount');
-            tracks += model.get('episodeCount'); // TODO: Refactor to Seasons and Tracks
-            trackFiles += model.get('episodeFileCount');
+            tracks += model.get('trackCount'); // TODO: Refactor to Seasons and Tracks
+            trackFiles += model.get('trackFileCount');
 
             /*if (model.get('status').toLowerCase() === 'ended') {
                 ended++;

@@ -6,6 +6,7 @@ require('./Helpers/Numbers');
 require('./Helpers/Episode');
 //require('./Helpers/Series');
 require('./Helpers/Artist');
+require('./Helpers/Album');
 require('./Helpers/Quality');
 require('./Helpers/System');
 require('./Helpers/EachReverse');

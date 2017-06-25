@@ -1,50 +1,68 @@
-<div class="artist-album" id="season-{{seasonNumber}}">
-    <h2>
-        <i class="x-album-monitored album-monitored clickable" title="Toggle album monitored status"/>
-
-        {{#if seasonNumber}}
-        Season {{seasonNumber}}
-        {{else}}
-        Specials
-        {{/if}}
-
-
-        {{#if_eq episodeCount compare=0}}
-            {{#if monitored}}
-                <span class="badge badge-primary album-status" title="No aired episodes">&nbsp;</span>
-            {{else}}
-                <span class="badge badge-warning album-status" title="Album is not monitored">&nbsp;</span>
-            {{/if}}
-        {{else}}
-            {{#if_eq percentOfEpisodes compare=100}}
-                <span class="badge badge-success album-status" title="{{episodeFileCount}}/{{episodeCount}} episodes downloaded">{{episodeFileCount}} / {{episodeCount}}</span>
-            {{else}}
-                <span class="badge badge-danger album-status" title="{{episodeFileCount}}/{{episodeCount}} episodes downloaded">{{episodeFileCount}} / {{episodeCount}}</span>
-            {{/if_eq}}
-        {{/if_eq}}
-
-        <span class="album-actions pull-right">
-            <div class="x-album-episode-file-editor">
-                <i class="icon-lidarr-episode-file" title="Modify episode files for album"/>
-            </div>
-            <div class="x-album-rename">
-                <i class="icon-lidarr-rename" title="Preview rename for album {{seasonNumber}}"/>
-            </div>
-            <div class="x-album-search">
-                <i class="icon-lidarr-search" title="Search for monitored episodes in album {{seasonNumber}}"/>
-            </div>
-        </span>
-    </h2>
-    <div class="show-hide-episodes x-show-hide-episodes">
-        <h4>
-            {{#if showingEpisodes}}
-            <i class="icon-lidarr-panel-hide"/>
-            Hide Episodes
-            {{else}}
-            <i class="icon-lidarr-panel-show"/>
-            Show Episodes
-            {{/if}}
-        </h4>
+<div class="artist-album" id="album-{{title}}">
+    <div class="visible-lg col-lg-2 poster">
+            {{cover}}
     </div>
-    <div class="x-episode-grid table-responsive"></div>
+    <div class="col-md-12 col-lg-10">
+        <h2 class="header-text">
+            <i class="x-album-monitored album-monitored clickable" title="Toggle album monitored status"/>
+
+            {{#if title}}
+            {{title}} ({{albumYear}})
+
+            {{else}}
+            Specials
+            {{/if}}
+
+
+            {{#if_eq trackCount compare=0}}
+                {{#if monitored}}
+                    <span class="badge badge-primary album-status" title="No aired tracks">&nbsp;</span>
+                {{else}}
+                    <span class="badge badge-warning album-status" title="Album is not monitored">&nbsp;</span>
+                {{/if}}
+            {{else}}
+                {{#if_eq percentOfTracks compare=100}}
+                    <span class="badge badge-success album-status" title="{{trackFileCount}}/{{trackCount}} tracks downloaded">{{trackFileCount}} / {{trackCount}} Tracks</span>
+                {{else}}
+                    <span class="badge badge-danger album-status" title="{{trackFileCount}}/{{trackCount}} tracks downloaded">{{trackFileCount}} / {{trackCount}} Tracks</span>
+                {{/if_eq}}
+            {{/if_eq}}
+
+            <span class="album-actions pull-right">
+                <div class="x-track-file-editor">
+                    <i class="icon-lidarr-track-file" title="Modify track files for album"/>
+                </div>
+                <div class="x-album-rename">
+                    <i class="icon-lidarr-rename" title="Preview rename for album {{albumId}}"/>
+                </div>
+                <div class="x-album-search">
+                    <i class="icon-lidarr-search" title="Search for monitored tracks in album {{albumId}}"/>
+                </div>
+            </span>
+
+        </h2>
+
+        <div class="album-detail-release">
+            Release Date: {{albumReleaseDate}}
+        </div>
+        <div class="album-detail-type">
+            Type: Album 
+        </div>
+
+        <div id="album-info" class="album-info"></div>
+    </div>
+
+        <div class="show-hide-tracks x-show-hide-tracks">
+            <h4>
+                {{#if showingTracks}}
+                <i class="icon-lidarr-panel-hide"/>
+                Hide Tracks
+                {{else}}
+                <i class="icon-lidarr-panel-show"/>
+                Show Tracks
+                {{/if}}
+            </h4>
+        </div>
+
+    <div class="x-track-grid table-responsive"></div>
 </div>

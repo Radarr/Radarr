@@ -1,7 +1,8 @@
 ﻿using NzbDrone.Api.REST;
 using NzbDrone.Api.Series;
+using NzbDrone.Api.Albums;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +24,10 @@ namespace NzbDrone.Api.Music
         public string MBId { get; set; }
         public int TADBId { get; set; }
         public int DiscogsId { get; set; }
-        public string AMId { get; set; }
+        public string AllMusicId { get; set; }
         public string Overview { get; set; }
 
-        public int AlbumCount
-        {
-            get
-            {
-                if (Albums == null) return 0;
-
-                return Albums.Where(s => s.AlbumId != "").Count(); // TODO: CHeck this condition
-            }
-        }
-
+        public int? AlbumCount{ get; set; }
         public int? TotalTrackCount { get; set; }
         public int? TrackCount { get; set; }
         public int? TrackFileCount { get; set; }
@@ -43,6 +35,7 @@ namespace NzbDrone.Api.Music
         //public SeriesStatusType Status { get; set; }
         
         public List<MediaCover> Images { get; set; }
+        public List<Member> Members { get; set; }
 
         public string RemotePoster { get; set; }
         public List<AlbumResource> Albums { get; set; }
@@ -61,7 +54,7 @@ namespace NzbDrone.Api.Music
         public List<string> Genres { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
-        public AddSeriesOptions AddOptions { get; set; }
+        public AddArtistOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
         public string NameSlug { get; set; }
     }
@@ -78,14 +71,14 @@ namespace NzbDrone.Api.Music
                 MBId = model.MBId,
                 TADBId = model.TADBId,
                 DiscogsId = model.DiscogsId,
-                AMId = model.AMId,
+                AllMusicId = model.AMId,
                 Name = model.Name,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
 
-                //TotalEpisodeCount
-                //EpisodeCount
-                //EpisodeFileCount
+                //TotalTrackCount
+                //TrackCount
+                //TrackFileCount
                 //SizeOnDisk
                 //Status = resource.Status,
                 Overview = model.Overview,
@@ -94,6 +87,7 @@ namespace NzbDrone.Api.Music
                 //Network = resource.Network,
                 //AirTime = resource.AirTime,
                 Images = model.Images,
+                Members = model.Members,
 
                 Albums = model.Albums.ToResource(),
                 //Year = resource.Year,
@@ -119,7 +113,7 @@ namespace NzbDrone.Api.Music
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
-                //Ratings = resource.Ratings
+                Ratings = model.Ratings,
             };
         }
 
@@ -137,10 +131,10 @@ namespace NzbDrone.Api.Music
                 MBId = resource.MBId,
                 TADBId = resource.TADBId,
                 DiscogsId = resource.DiscogsId,
-                AMId = resource.AMId,
+                AMId = resource.AllMusicId, //TODO change model and DB to AllMusic instead of AM
                 //TotalEpisodeCount
-                //EpisodeCount
-                //EpisodeFileCount
+                //TrackCount
+                //TrackFileCount
                 //SizeOnDisk
                 //Status = resource.Status,
                 Overview = resource.Overview,
@@ -149,6 +143,7 @@ namespace NzbDrone.Api.Music
                 //Network = resource.Network,
                 //AirTime = resource.AirTime,
                 Images = resource.Images,
+                Members = resource.Members,
 
                 Albums = resource.Albums.ToModel(),
                 //Year = resource.Year,
@@ -166,7 +161,7 @@ namespace NzbDrone.Api.Music
                 Tags = resource.Tags,
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
-                //Ratings = resource.Ratings
+                Ratings = resource.Ratings
             };
         }
 

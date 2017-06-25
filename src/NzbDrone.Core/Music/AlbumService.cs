@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAllAlbums();
         Album UpdateAlbum(Album album);
         List<Album> UpdateAlbums(List<Album> album);
+        void SetAlbumMonitored(int albumId, bool monitored);
         void InsertMany(List<Album> albums);
         void UpdateMany(List<Album> albums);
         void DeleteMany(List<Album> albums);
@@ -132,6 +133,14 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new AlbumEditedEvent(updatedAlbum, storedAlbum));
 
             return updatedAlbum;
+        }
+
+        public void SetAlbumMonitored(int albumId, bool monitored)
+        {
+            var album = _albumRepository.Get(albumId);
+            _albumRepository.SetMonitoredFlat(album, monitored);
+
+            _logger.Debug("Monitored flag for Album:{0} was set to {1}", albumId, monitored);
         }
 
         public List<Album> UpdateAlbums(List<Album> album)

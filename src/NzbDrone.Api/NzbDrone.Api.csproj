@@ -88,6 +88,7 @@
     <Compile Include="..\NzbDrone.Common\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Albums\AlbumModuleWithSignalR.cs" />
     <Compile Include="Authentication\AuthenticationService.cs" />
     <Compile Include="Authentication\EnableAuthInNancy.cs" />
     <Compile Include="Authentication\AuthenticationModule.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Commands\CommandResource.cs" />
     <Compile Include="TrackFiles\TrackFileModule.cs" />
     <Compile Include="TrackFiles\TrackFileResource.cs" />
+    <Compile Include="Albums\AlbumModule.cs" />
     <Compile Include="Tracks\TrackModule.cs" />
     <Compile Include="Tracks\TrackModuleWithSignalR.cs" />
     <Compile Include="Tracks\TrackResource.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="Frontend\Mappers\RobotsTxtMapper.cs" />
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
     <Compile Include="Indexers\ReleasePushModule.cs" />
-    <Compile Include="Music\AlbumResource.cs" />
+    <Compile Include="Albums\AlbumResource.cs" />
     <Compile Include="Music\ArtistLookupModule.cs" />
     <Compile Include="Music\ArtistModule.cs" />
     <Compile Include="Music\ArtistResource.cs" />

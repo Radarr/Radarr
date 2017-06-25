@@ -5,14 +5,15 @@ module.exports = Backbone.Model.extend({
     urlRoot : window.NzbDrone.ApiRoot + '/artist',
 
     defaults : {
-        episodeFileCount : 0,
-        episodeCount     : 0,
+        trackFileCount : 0,
+        trackCount     : 0,
         isExisting       : false,
         status           : 0
     },
 
     setAlbumsMonitored : function(albumName) {
         _.each(this.get('albums'), function(album) {
+            console.log(album);
             if (album.albumName === albumName) {
                 album.monitored = !album.monitored;
             }

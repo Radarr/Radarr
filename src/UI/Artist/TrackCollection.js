@@ -21,7 +21,7 @@ module.exports = PageableCollection.extend({
         this.artistId = options.artistId;
     },
 
-    bySeason : function(album) {
+    byAlbum : function(album) {
         var filtered = this.filter(function(track) {
             return track.get('albumId') === album;
         });
@@ -36,11 +36,11 @@ module.exports = PageableCollection.extend({
         var track2 = model2.get('trackNumber');
 
         if (track1 < track2) {
-            return 1;
+            return -1;
         }
 
         if (track1 > track2) {
-            return -1;
+            return 1;
         }
 
         return 0;

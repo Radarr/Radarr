@@ -14,7 +14,8 @@ namespace NzbDrone.Api.Tracks
         public int ArtistId { get; set; }
         public int TrackFileId { get; set; }
         public int AlbumId { get; set; }
-        //public int EpisodeNumber { get; set; }
+        public bool Explicit { get; set; }
+        public int TrackNumber { get; set; }
         public string Title { get; set; }
         //public string AirDate { get; set; }
         //public DateTime? AirDateUtc { get; set; }
@@ -30,6 +31,7 @@ namespace NzbDrone.Api.Tracks
         //public bool UnverifiedSceneNumbering { get; set; }
         //public string SeriesTitle { get; set; }
         public ArtistResource Artist { get; set; }
+        public Ratings Ratings { get; set; }
 
         //Hiding this so people don't think its usable (only used to set the initial state)
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -49,7 +51,8 @@ namespace NzbDrone.Api.Tracks
                 ArtistId = model.ArtistId,
                 TrackFileId = model.TrackFileId,
                 AlbumId = model.AlbumId,
-                //EpisodeNumber = model.EpisodeNumber,
+                Explicit = model.Explicit,
+                TrackNumber = model.TrackNumber,
                 Title = model.Title,
                 //AirDate = model.AirDate,
                 //AirDateUtc = model.AirDateUtc,
@@ -58,6 +61,7 @@ namespace NzbDrone.Api.Tracks
 
                 HasFile = model.HasFile,
                 Monitored = model.Monitored,
+                Ratings = model.Ratings,
                 //AbsoluteEpisodeNumber = model.AbsoluteEpisodeNumber,
                 //SceneAbsoluteEpisodeNumber = model.SceneAbsoluteEpisodeNumber,
                 //SceneEpisodeNumber = model.SceneEpisodeNumber,

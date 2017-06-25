@@ -67,7 +67,7 @@ var Collection = PageableCollection.extend({
         'missing'  : [
             null,
             null,
-            function(model) { return model.get('episodeCount') !== model.get('episodeFileCount'); }
+            function(model) { return model.get('trackCount') !== model.get('trackFileCount'); }
         ]
     },
 
@@ -96,12 +96,12 @@ var Collection = PageableCollection.extend({
             }
         },
 
-        percentOfEpisodes : {
+        percentOfTracks : {
             sortValue : function(model, attr) {
-                var percentOfEpisodes = model.get(attr);
-                var episodeCount = model.get('episodeCount');
+                var percentOfTracks = model.get(attr);
+                var trackCount = model.get('trackCount');
 
-                return percentOfEpisodes + episodeCount / 1000000;
+                return percentOfTracks + trackCount / 1000000;
             }
         },
 

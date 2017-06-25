@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Music
         public bool Explicit { get; set; }
         public bool Monitored { get; set; }
         public int TrackFileId { get; set; } 
+        public Ratings Ratings { get; set; }
         //public DateTime? ReleaseDate { get; set; }
 
         public LazyLoaded<TrackFile> TrackFile { get; set; }

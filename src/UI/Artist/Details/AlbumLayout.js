@@ -1,39 +1,44 @@
 var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
-var ToggleCell = require('../../Cells/EpisodeMonitoredCell');
-var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
+var ToggleCell = require('../../Cells/TrackMonitoredCell');
+var TrackTitleCell = require('../../Cells/TrackTitleCell');
+var TrackExplicitCell = require('../../Cells/TrackExplicitCell');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var EpisodeStatusCell = require('../../Cells/EpisodeStatusCell');
-var EpisodeActionsCell = require('../../Cells/EpisodeActionsCell');
+var TrackStatusCell = require('../../Cells/TrackStatusCell');
+var TrackActionsCell = require('../../Cells/TrackActionsCell');
 var TrackNumberCell = require('./TrackNumberCell');
 var TrackWarningCell = require('./TrackWarningCell');
+var TrackRatingCell = require('./TrackRatingCell');
+var AlbumInfoView = require('./AlbumInfoView');
 var CommandController = require('../../Commands/CommandController');
-var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEditorLayout');
+//var TrackFileEditorLayout = require('../../TrackFile/Editor/TrackFileEditorLayout');
 var moment = require('moment');
 var _ = require('underscore');
 var Messenger = require('../../Shared/Messenger');
 
 module.exports = Marionette.Layout.extend({
-    template : 'Artist/Details/ArtistLayoutTemplate',
+    template : 'Artist/Details/AlbumLayoutTemplate',
 
     ui : {
-        seasonSearch    : '.x-album-search',
-        seasonMonitored : '.x-album-monitored',
-        seasonRename    : '.x-album-rename'
+        albumSearch    : '.x-album-search',
+        albumMonitored : '.x-album-monitored',
+        albumRename    : '.x-album-rename',
+        cover          : '.x-album-cover'
     },
 
     events : {
-        'click .x-album-episode-file-editor' : '_openEpisodeFileEditor',
+        'click .x-track-file-editor'         : '_openTrackFileEditor',
         'click .x-album-monitored'           : '_albumMonitored',
         'click .x-album-search'              : '_albumSearch',
         'click .x-album-rename'              : '_albumRename',
-        'click .x-show-hide-episodes'        : '_showHideEpisodes',
-        'dblclick .artist-album h2'          : '_showHideEpisodes'
+        'click .x-show-hide-tracks'          : '_showHideTracks',
+        'dblclick .artist-album h2'          : '_showHideTracks'
     },
 
     regions : {
-        episodeGrid : '.x-episode-grid'
+        trackGrid : '.x-track-grid',
+        albumInfo      : '#album-info'
     },
 
     columns : [
@@ -61,110 +66,135 @@ module.exports = Marionette.Layout.extend({
         {
             name           : 'this',
             label          : 'Title',
-            hideSeriesLink : true,
-            cell           : EpisodeTitleCell,
+            hideArtistLink : true,
+            cell           : TrackTitleCell,
             sortable       : false
         },
         {
-            name  : 'airDateUtc',
-            label : 'Air Date',
-            cell  : RelativeDateCell
+            name  : 'this',
+            label : 'Rating',
+            cell  : TrackRatingCell
         },
         {
-            name     : 'status',
-            label    : 'Status',
-            cell     : EpisodeStatusCell,
-            sortable : false
+            name  : 'this',
+            label : 'Content',
+            cell  : TrackExplicitCell
         },
-        {
-            name     : 'this',
-            label    : '',
-            cell     : EpisodeActionsCell,
-            sortable : false
-        }
+        //{
+        //    name  : 'airDateUtc',
+        //    label : 'Air Date',
+        //    cell  : RelativeDateCell
+        //},
+         {
+             name     : 'status',
+             label    : 'Status',
+             cell     : TrackStatusCell,
+             sortable : false
+         },
+        //{
+        //   name     : 'this',
+        //    label    : '',
+        //    cell     : TrackActionsCell,
+        //    sortable : false
+        //} 
     ],
 
     templateHelpers : function() {
-        var episodeCount = this.episodeCollection.filter(function(episode) {
-            return episode.get('hasFile') || episode.get('monitored') && moment(episode.get('airDateUtc')).isBefore(moment());
+        var trackCount = this.trackCollection.filter(function(track) {
+            return track.get('hasFile') || track.get('monitored');
         }).length;
 
-        var episodeFileCount = this.episodeCollection.where({ hasFile : true }).length;
-        var percentOfEpisodes = 100;
+        var trackFileCount = this.trackCollection.where({ hasFile : true }).length;
+        var percentOfTracks = 100;
 
-        if (episodeCount > 0) {
-            percentOfEpisodes = episodeFileCount / episodeCount * 100;
+        if (trackCount > 0) {
+            percentOfTracks = trackFileCount / trackCount * 100;
         }
 
         return {
-            showingEpisodes   : this.showingEpisodes,
-            episodeCount      : episodeCount,
-            episodeFileCount  : episodeFileCount,
-            percentOfEpisodes : percentOfEpisodes
+            showingTracks   : this.showingTracks,
+            trackCount      : trackCount,
+            trackFileCount  : trackFileCount,
+            percentOfTracks : percentOfTracks
         };
     },
 
     initialize : function(options) {
-        if (!options.episodeCollection) {
-            throw 'episodeCollection is required';
+        if (!options.trackCollection) {
+            throw 'trackCollection is required';
         }
+        
+        this.artist = options.artist;
+        this.fullTrackCollection = options.trackCollection;
+        
+        this.trackCollection = this.fullTrackCollection.byAlbum(this.model.get('id'));
+        this._updateTrackCollection();
 
-        this.series = options.series;
-        this.fullEpisodeCollection = options.episodeCollection;
-        this.episodeCollection = this.fullEpisodeCollection.bySeason(this.model.get('seasonNumber'));
-        this._updateEpisodeCollection();
+        console.log(options);
 
-        this.showingEpisodes = this._shouldShowEpisodes();
+        this.showingTracks = this._shouldShowTracks();
 
         this.listenTo(this.model, 'sync', this._afterSeasonMonitored);
-        this.listenTo(this.episodeCollection, 'sync', this.render);
-
-        this.listenTo(this.fullEpisodeCollection, 'sync', this._refreshEpisodes);
+        this.listenTo(this.trackCollection, 'sync', this.render);
+        this.listenTo(this.fullTrackCollection, 'sync', this._refreshTracks);
+        this.listenTo(this.model,  'change:images', this._updateImages);
     },
 
     onRender : function() {
-        if (this.showingEpisodes) {
-            this._showEpisodes();
+        if (this.showingTracks) {
+            this._showTracks();
         }
 
-        this._setSeasonMonitoredState();
+        this._showAlbumInfo();
+
+        this._setAlbumMonitoredState();
 
         CommandController.bindToCommand({
-            element : this.ui.seasonSearch,
+            element : this.ui.albumSearch,
             command : {
-                name         : 'seasonSearch',
-                seriesId     : this.series.id,
-                seasonNumber : this.model.get('seasonNumber')
+                name         : 'albumSearch',
+                artistId     : this.artist.id,
+                albumId : this.model.get('albumId')
             }
         });
 
         CommandController.bindToCommand({
-            element : this.ui.seasonRename,
+            element : this.ui.albumRename,
             command : {
                 name         : 'renameFiles',
-                seriesId     : this.series.id,
-                seasonNumber : this.model.get('seasonNumber')
+                artistId     : this.artist.id,
+                albumId : this.model.get('albumId')
             }
         });
     },
 
-    _seasonSearch : function() {
-        CommandController.Execute('seasonSearch', {
-            name         : 'seasonSearch',
-            seriesId     : this.series.id,
-            seasonNumber : this.model.get('seasonNumber')
+    _getImage : function(type) {
+        var image = _.where(this.model.get('images'), { coverType : type });
+
+        if (image && image[0]) {
+            return image[0].url;
+        }
+
+        return undefined;
+    },
+
+    _albumSearch : function() {
+        CommandController.Execute('albumSearch', {
+            name         : 'albumSearch',
+            artistId     : this.artist.id,
+            albumId : this.model.get('albumId')
         });
     },
 
-    _seasonRename : function() {
+    _albumRename : function() {
         vent.trigger(vent.Commands.ShowRenamePreview, {
-            series       : this.series,
-            seasonNumber : this.model.get('seasonNumber')
+            artist       : this.artist,
+            albumId : this.model.get('albumId')
         });
     },
 
-    _seasonMonitored : function() {
-        if (!this.series.get('monitored')) {
+    _albumMonitored : function() {
+        if (!this.artist.get('monitored')) {
 
             Messenger.show({
                 message : 'Unable to change monitored state when series is not monitored',
@@ -176,80 +206,86 @@ module.exports = Marionette.Layout.extend({
 
         var name = 'monitored';
         this.model.set(name, !this.model.get(name));
-        this.series.setSeasonMonitored(this.model.get('seasonNumber'));
+        this.artist.setSeasonMonitored(this.model.get('albumId'));
 
-        var savePromise = this.series.save().always(this._afterSeasonMonitored.bind(this));
+        var savePromise = this.artist.save().always(this._afterSeasonMonitored.bind(this));
 
-        this.ui.seasonMonitored.spinForPromise(savePromise);
+        this.ui.albumMonitored.spinForPromise(savePromise);
     },
 
     _afterSeasonMonitored : function() {
         var self = this;
 
-        _.each(this.episodeCollection.models, function(episode) {
-            episode.set({ monitored : self.model.get('monitored') });
+        _.each(this.trackCollection.models, function(track) {
+            track.set({ monitored : self.model.get('monitored') });
         });
 
         this.render();
     },
 
-    _setSeasonMonitoredState : function() {
-        this.ui.seasonMonitored.removeClass('icon-lidarr-spinner fa-spin');
+    _setAlbumMonitoredState : function() {
+        this.ui.albumMonitored.removeClass('icon-lidarr-spinner fa-spin');
 
         if (this.model.get('monitored')) {
-            this.ui.seasonMonitored.addClass('icon-lidarr-monitored');
-            this.ui.seasonMonitored.removeClass('icon-lidarr-unmonitored');
+            this.ui.albumMonitored.addClass('icon-lidarr-monitored');
+            this.ui.albumMonitored.removeClass('icon-lidarr-unmonitored');
         } else {
-            this.ui.seasonMonitored.addClass('icon-lidarr-unmonitored');
-            this.ui.seasonMonitored.removeClass('icon-lidarr-monitored');
+            this.ui.albumMonitored.addClass('icon-lidarr-unmonitored');
+            this.ui.albumMonitored.removeClass('icon-lidarr-monitored');
         }
     },
 
-    _showEpisodes : function() {
-        this.episodeGrid.show(new Backgrid.Grid({
+    _showTracks : function() {
+        this.trackGrid.show(new Backgrid.Grid({
             columns    : this.columns,
-            collection : this.episodeCollection,
-            className  : 'table table-hover season-grid'
+            collection : this.trackCollection,
+            className  : 'table table-hover track-grid'
         }));
     },
 
-    _shouldShowEpisodes : function() {
-        var startDate = moment().add('month', -1);
-        var endDate = moment().add('year', 1);
-
-        return this.episodeCollection.some(function(episode) {
-            var airDate = episode.get('airDateUtc');
-
-            if (airDate) {
-                var airDateMoment = moment(airDate);
-
-                if (airDateMoment.isAfter(startDate) && airDateMoment.isBefore(endDate)) {
-                    return true;
-                }
-            }
-
-            return false;
-        });
+    _showAlbumInfo : function() {
+        this.albumInfo.show(new AlbumInfoView({
+            model                 : this.model
+        }));
     },
 
-    _showHideEpisodes : function() {
-        if (this.showingEpisodes) {
-            this.showingEpisodes = false;
-            this.episodeGrid.close();
+    _shouldShowTracks : function() {
+        var startDate = moment().add('month', -1);
+        var endDate = moment().add('year', 1);
+        return true;
+        //return this.trackCollection.some(function(track) {
+        //    var airDate = track.get('releasedDate');
+
+        //    if (airDate) {
+        //        var airDateMoment = moment(airDate);
+
+        //        if (airDateMoment.isAfter(startDate) && airDateMoment.isBefore(endDate)) {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //});
+    },
+
+    _showHideTracks : function() {
+        if (this.showingTracks) {
+            this.showingTracks = false;
+            this.trackGrid.close();
         } else {
-            this.showingEpisodes = true;
-            this._showEpisodes();
+            this.showingTracks = true;
+            this._showTracks();
         }
 
-        this.templateHelpers.showingEpisodes = this.showingEpisodes;
+        this.templateHelpers.showingTracks = this.showingTracks;
         this.render();
     },
 
-    _episodeMonitoredToggled : function(options) {
+    _trackMonitoredToggled : function(options) {
         var model = options.model;
         var shiftKey = options.shiftKey;
 
-        if (!this.episodeCollection.get(model.get('id'))) {
+        if (!this.trackCollection.get(model.get('id'))) {
             return;
         }
 
@@ -257,45 +293,53 @@ module.exports = Marionette.Layout.extend({
             return;
         }
 
-        var lastToggled = this.episodeCollection.lastToggled;
+        var lastToggled = this.trackCollection.lastToggled;
 
         if (!lastToggled) {
             return;
         }
 
-        var currentIndex = this.episodeCollection.indexOf(model);
-        var lastIndex = this.episodeCollection.indexOf(lastToggled);
+        var currentIndex = this.trackCollection.indexOf(model);
+        var lastIndex = this.trackCollection.indexOf(lastToggled);
 
         var low = Math.min(currentIndex, lastIndex);
         var high = Math.max(currentIndex, lastIndex);
         var range = _.range(low + 1, high);
 
-        this.episodeCollection.lastToggled = model;
+        this.trackCollection.lastToggled = model;
     },
 
-    _updateEpisodeCollection : function() {
+    _updateTrackCollection : function() {
         var self = this;
 
-        this.episodeCollection.add(this.fullEpisodeCollection.bySeason(this.model.get('seasonNumber')).models, { merge : true });
+        this.trackCollection.add(this.fullTrackCollection.byAlbum(this.model.get('albumId')).models, { merge : true });
 
-        this.episodeCollection.each(function(model) {
-            model.episodeCollection = self.episodeCollection;
+        this.trackCollection.each(function(model) {
+            model.trackCollection = self.trackCollection;
         });
     },
 
-    _refreshEpisodes : function() {
-        this._updateEpisodeCollection();
-        this.episodeCollection.fullCollection.sort();
+    _updateImages : function () {
+        var cover = this._getImage('cover');
+
+        if (cover) {
+            this.ui.poster.attr('src', cover);
+        }
+    },
+
+    _refreshTracks : function() {
+        this._updateTrackCollection();
+        this.trackCollection.fullCollection.sort();
         this.render();
     },
 
-    _openEpisodeFileEditor : function() {
-        var view = new EpisodeFileEditorLayout({
-            model             : this.model,
-            series            : this.series,
-            episodeCollection : this.episodeCollection
-        });
+    _openTrackFileEditor : function() {
+        //var view = new TrackFileEditorLayout({
+        //    model             : this.model,
+        //    artist            : this.artist,
+        //    trackCollection : this.trackCollection
+        //});
 
-        vent.trigger(vent.Commands.OpenModalCommand, view);
+        //vent.trigger(vent.Commands.OpenModalCommand, view);
     }
 });

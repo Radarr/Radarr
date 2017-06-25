@@ -2,7 +2,7 @@
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Music
         {
             Images = new List<MediaCover.MediaCover>();
             Genres = new List<string>();
-            //Members = new List<Person>(); // Artist Band Member? (NOTE: This should be per album)
+            Members = new List<Member>();
             Albums = new List<Album>();
             Tags = new HashSet<int>();
 
@@ -45,7 +45,9 @@ namespace NzbDrone.Core.Music
         public int ProfileId { get; set; }
         public List<Album> Albums { get; set; }
         public HashSet<int> Tags { get; set; }
-        public AddSeriesOptions AddOptions { get; set; }
+        public AddArtistOptions AddOptions { get; set; }
+        public Ratings Ratings { get; set; }
+        public List<Member> Members { get; set; }
 
         public override string ToString()
         {
@@ -76,6 +78,8 @@ namespace NzbDrone.Core.Music
             Albums = otherArtist.Albums;
             Tags = otherArtist.Tags;
             AddOptions = otherArtist.AddOptions;
+            Ratings = otherArtist.Ratings;
+            Members = otherArtist.Members;
 
             Albums = otherArtist.Albums;
             Path = otherArtist.Path;
@@ -85,6 +89,7 @@ namespace NzbDrone.Core.Music
             RootFolderPath = otherArtist.RootFolderPath;
             Tags = otherArtist.Tags;
             AddOptions = otherArtist.AddOptions;
+            
 
         }
     }

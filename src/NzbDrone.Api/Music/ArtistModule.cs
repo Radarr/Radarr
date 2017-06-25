@@ -1,4 +1,7 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
@@ -7,12 +10,10 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
-using NzbDrone.Core.SeriesStats;
+using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
-using System;
-using System.Collections.Generic;
 
 namespace NzbDrone.Api.Music
 {
@@ -26,14 +27,14 @@ namespace NzbDrone.Api.Music
                                 //IHandle<MediaCoversUpdatedEvent>
     {
         private readonly IArtistService _artistService;
-        private readonly IAddArtistService _addSeriesService;
-        private readonly ISeriesStatisticsService _seriesStatisticsService;
+        private readonly IAddArtistService _addArtistService;
+        private readonly IArtistStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IArtistService artistService,
-                            IAddArtistService addSeriesService,
-                            ISeriesStatisticsService seriesStatisticsService,
+                            IAddArtistService addArtistService,
+                            IArtistStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator seriesPathValidator,
@@ -45,8 +46,8 @@ namespace NzbDrone.Api.Music
             : base(signalRBroadcaster)
         {
             _artistService = artistService;
-            _addSeriesService = addSeriesService;
-            _seriesStatisticsService = seriesStatisticsService;
+            _addArtistService = addArtistService;
+            _artistStatisticsService = artistStatisticsService;
 
             _coverMapper = coverMapper;
 
@@ -88,7 +89,7 @@ namespace NzbDrone.Api.Music
 
             var resource = artist.ToResource();
             MapCoversToLocal(resource);
-            //FetchAndLinkSeriesStatistics(resource);
+            FetchAndLinkArtistStatistics(resource);
             //PopulateAlternateTitles(resource);
 
             return resource;
@@ -96,10 +97,11 @@ namespace NzbDrone.Api.Music
 
         private List<ArtistResource> AllArtist()
         {
-            //var seriesStats = _seriesStatisticsService.SeriesStatistics();
+            var artistStats = _artistStatisticsService.ArtistStatistics();
             var artistResources = _artistService.GetAllArtists().ToResource();
+
             MapCoversToLocal(artistResources.ToArray());
-            //LinkSeriesStatistics(seriesResources, seriesStats);
+            LinkArtistStatistics(artistResources, artistStats);
             //PopulateAlternateTitles(seriesResources);
 
             return artistResources;
@@ -109,7 +111,7 @@ namespace NzbDrone.Api.Music
         {
             var model = artistResource.ToModel();
 
-            return _addSeriesService.AddArtist(model).Id;
+            return _addArtistService.AddArtist(model).Id;
         }
 
         private void UpdatArtist(ArtistResource artistResource)
@@ -140,6 +142,44 @@ namespace NzbDrone.Api.Music
             {
                 _coverMapper.ConvertToLocalUrls(artistResource.Id, artistResource.Images);
             }
+        }
+
+        private void FetchAndLinkArtistStatistics(ArtistResource resource)
+        {
+            LinkArtistStatistics(resource, _artistStatisticsService.ArtistStatistics(resource.Id));
+        }
+
+
+        private void LinkArtistStatistics(List<ArtistResource> resources, List<ArtistStatistics> artistStatistics)
+        {
+            var dictArtistStats = artistStatistics.ToDictionary(v => v.ArtistId);
+
+            foreach (var artist in resources)
+            {
+                var stats = dictArtistStats.GetValueOrDefault(artist.Id);
+                if (stats == null) continue;
+
+                LinkArtistStatistics(artist, stats);
+            }
+        }
+
+        private void LinkArtistStatistics(ArtistResource resource, ArtistStatistics artistStatistics)
+        {
+            resource.TotalTrackCount = artistStatistics.TotalTrackCount;
+            resource.TrackCount = artistStatistics.TrackCount;
+            resource.TrackFileCount = artistStatistics.TrackFileCount;
+            resource.SizeOnDisk = artistStatistics.SizeOnDisk;
+            resource.AlbumCount = artistStatistics.AlbumCount;
+
+            //if (artistStatistics.AlbumStatistics != null)
+            //{
+            //    var dictSeasonStats = artistStatistics.SeasonStatistics.ToDictionary(v => v.SeasonNumber);
+
+            //    foreach (var album in resource.Albums)
+            //    {
+            //        album.Statistics = dictSeasonStats.GetValueOrDefault(album.Id).ToResource();
+            //    }
+            //}
         }
 
         public void Handle(TrackImportedEvent message)

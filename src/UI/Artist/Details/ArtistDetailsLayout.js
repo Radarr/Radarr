@@ -36,7 +36,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     events : {
-        'click .x-episode-file-editor' : '_openEpisodeFileEditor',
+        'click .x-track-file-editor'   : '_openTrackFileEditor',
         'click .x-monitored'           : '_toggleMonitored',
         'click .x-edit'                : '_editArtist',
         'click .x-refresh'             : '_refreshArtist',
@@ -142,7 +142,7 @@ module.exports = Marionette.Layout.extend({
     _refreshArtist : function() {
         CommandController.Execute('refreshArtist', {
             name     : 'refreshArtist',
-            seriesId : this.model.id
+            artistId : this.model.id
         });
     },
 
@@ -167,30 +167,19 @@ module.exports = Marionette.Layout.extend({
 
         this.albums.show(new LoadingView());
 
-        this.albumCollection = new AlbumCollection(this.model.get('albums'));
+        this.albumCollection = new AlbumCollection({ artistId : this.model.id }).bindSignalR();
+
         this.trackCollection = new TrackCollection({ artistId : this.model.id }).bindSignalR();
         this.trackFileCollection = new TrackFileCollection({ artistId : this.model.id }).bindSignalR();
+
+        console.log (this.trackCollection);
 
         reqres.setHandler(reqres.Requests.GetEpisodeFileById, function(trackFileId) {
             return self.trackFileCollection.get(trackFileId);
         });
 
-        reqres.setHandler(reqres.Requests.GetAlternateNameBySeasonNumber, function(artistId, seasonNumber, sceneSeasonNumber) {
-            if (self.model.get('id') !== artistId) {
-                return [];
-            }
-            
-            if (sceneSeasonNumber === undefined) {
-                sceneSeasonNumber = seasonNumber;
-            }
-            
-            return _.where(self.model.get('alternateTitles'),
-                function(alt) {
-                    return alt.sceneSeasonNumber === sceneSeasonNumber || alt.seasonNumber === seasonNumber;
-                });
-        });
 
-        $.when(this.trackCollection.fetch(), this.trackFileCollection.fetch()).done(function() {
+        $.when(this.albumCollection.fetch(), this.trackCollection.fetch(), this.trackFileCollection.fetch()).done(function() {
             var albumCollectionView = new AlbumCollectionView({
                 collection        : self.albumCollection,
                 trackCollection   : self.trackCollection,
@@ -219,7 +208,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _refresh : function() {
-        this.albumCollection.add(this.model.get('albums'), { merge : true });
+        this.albumCollection.fetch();
         this.trackCollection.fetch();
         this.trackFileCollection.fetch();
 
