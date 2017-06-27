@@ -1,5 +1,3 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/37d89txts2vt5j83?svg=true)] [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43c18ff049df442fab086cea020c4642)](https://www.codacy.com/app/majora2007/Lidarr?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lidarr/Lidarr&amp;utm_campaign=Badge_Grade)(https://ci.appveyor.com/project/majora2007/lidarr)
-
 ## Lidarr
 
 Lidarr is a music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from your favorite artists and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
