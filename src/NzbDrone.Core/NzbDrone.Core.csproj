@@ -134,6 +134,7 @@
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
     <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
+    <Compile Include="Movies\AlternativeTitle.cs" />
     <Compile Include="NetImport\NetImportListLevels.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />
