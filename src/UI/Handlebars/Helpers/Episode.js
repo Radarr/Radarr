@@ -14,40 +14,7 @@ Handlebars.registerHelper('EpisodeNumber', function() {
     }
 });
 
-Handlebars.registerHelper('StatusLevel', function() {
-    var hasFile = this.hasFile;
-    var downloading = require('../../Activity/Queue/QueueCollection').findEpisode(this.id) || this.downloading;
-    var currentTime = moment();
-    var start = moment(this.airDateUtc);
-    var end = moment(this.end);
-    var monitored = this.series.monitored && this.monitored;
 
-    if (hasFile) {
-        return 'success';
-    }
-
-    if (downloading) {
-        return 'purple';
-    }
-
-    else if (!monitored) {
-        return 'unmonitored';
-    }
-
-    if (this.episodeNumber === 1) {
-        return 'premiere';
-    }
-
-    if (currentTime.isAfter(start) && currentTime.isBefore(end)) {
-        return 'warning';
-    }
-
-    if (start.isBefore(currentTime) && !hasFile) {
-        return 'danger';
-    }
-
-    return 'primary';
-});
 
 Handlebars.registerHelper('EpisodeProgressClass', function() {
     if (this.episodeFileCount === this.episodeCount) {

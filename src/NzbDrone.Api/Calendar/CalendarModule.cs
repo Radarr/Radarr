@@ -2,24 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Albums;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Calendar
 {
-    public class CalendarModule : EpisodeModuleWithSignalR
+    public class CalendarModule : AlbumModuleWithSignalR
     {
-        public CalendarModule(IEpisodeService episodeService,
-                              ISeriesService seriesService,
+        public CalendarModule(IAlbumService albumService,
+                              IArtistService artistService,
                               IQualityUpgradableSpecification qualityUpgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "calendar")
+            : base(albumService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }
 
-        private List<EpisodeResource> GetCalendar()
+        private List<AlbumResource> GetCalendar()
         {
             var start = DateTime.Today;
             var end = DateTime.Today.AddDays(2);
@@ -33,9 +35,9 @@ namespace NzbDrone.Api.Calendar
             if (queryEnd.HasValue) end = DateTime.Parse(queryEnd.Value);
             if (queryIncludeUnmonitored.HasValue) includeUnmonitored = Convert.ToBoolean(queryIncludeUnmonitored.Value);
 
-            var resources = MapToResource(_episodeService.EpisodesBetweenDates(start, end, includeUnmonitored), true, true);
+            var resources = MapToResource(_albumService.AlbumsBetweenDates(start, end, includeUnmonitored), true);
 
-            return resources.OrderBy(e => e.AirDateUtc).ToList();
+            return resources.OrderBy(e => e.ReleaseDate).ToList();
         }
     }
 }

@@ -9,7 +9,9 @@ module.exports = Marionette.CollectionView.extend({
     itemView : UpcomingItemView,
 
     initialize : function() {
+
         this.showUnmonitored = Config.getValue('calendar.show', 'monitored') === 'all';
+        
         this.collection = new UpcomingCollection().bindSignalR({ updateOnly : true });
         this._fetchCollection();
 

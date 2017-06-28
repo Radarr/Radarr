@@ -7,7 +7,7 @@ module.exports = NzbDroneCell.extend({
 
     render : function() {
         this.$el.empty();
-        var ratings = this.model.get('ratings')
+        var ratings = this.model.get('ratings');
 
         if (ratings) {
             this.$el.html(ratings.value + ' (' + ratings.votes + ' votes)');

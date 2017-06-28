@@ -40,6 +40,31 @@
   }
 }
 
+.album-title-cell {
+  .text-overflow();
+
+  color: #428bca;
+  text-decoration: none;
+
+  &:focus, &:hover {
+    color: #2a6496;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  @media @lg {
+    max-width: 350px;
+  }
+
+  @media @md {
+    max-width: 250px;
+  }
+
+  @media @sm {
+    max-width: 200px;
+  }
+}
+
 .air-date-cell {
   width : 120px;
   cursor: default;

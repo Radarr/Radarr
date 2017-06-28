@@ -89,7 +89,7 @@ module.exports = Marionette.ItemView.extend({
                 });
 
                 element.find('.chart').tooltip({
-                    title     : 'Episode is downloading - {0}% {1}'.format(progress.toFixed(1), releaseTitle),
+                    title     : 'Album is downloading - {0}% {1}'.format(progress.toFixed(1), releaseTitle),
                     container : '.fc'
                 });
             }
@@ -99,9 +99,6 @@ module.exports = Marionette.ItemView.extend({
             this._addStatusIcon(element, 'icon-lidarr-form-warning', 'Scene number hasn\'t been verified yet.');
         }
 
-        else if (event.model.get('series').seriesType === 'anime' && event.model.get('seasonNumber') > 0 && !event.model.has('absoluteEpisodeNumber')) {
-            this._addStatusIcon(element, 'icon-lidarr-form-warning', 'Episode does not have an absolute episode number');
-        }
     },
 
     _eventAfterAllRender :  function () {
@@ -148,20 +145,21 @@ module.exports = Marionette.ItemView.extend({
         var self = this;
 
         collection.each(function(model) {
-            var seriesTitle = model.get('series').title;
-            var start = model.get('airDateUtc');
-            var runtime = model.get('series').runtime;
+            var albumTitle = model.get('title');
+            var artistName = model.get('artist').name;
+            var start = model.get('releaseDate');
+            var runtime = '30';
             var end = moment(start).add('minutes', runtime).toISOString();
 
             var event = {
-                title       : seriesTitle,
+                title       : artistName + " - " + albumTitle,
                 start       : moment(start),
                 end         : moment(end),
-                allDay      : false,
+                allDay      : true,
                 statusLevel : self._getStatusLevel(model, end),
                 downloading : QueueCollection.findEpisode(model.get('id')),
                 model       : model,
-                sortOrder   : (model.get('seasonNumber') === 0 ? 1000000 : model.get('seasonNumber') * 10000) + model.get('episodeNumber')
+                sortOrder   : 0
             };
 
             events.push(event);
@@ -174,9 +172,9 @@ module.exports = Marionette.ItemView.extend({
         var hasFile = element.get('hasFile');
         var downloading = QueueCollection.findEpisode(element.get('id')) || element.get('grabbed');
         var currentTime = moment();
-        var start = moment(element.get('airDateUtc'));
+        var start = moment(element.get('releaseDate'));
         var end = moment(endTime);
-        var monitored = element.get('series').monitored && element.get('monitored');
+        var monitored = element.get('artist').monitored && element.get('monitored');
 
         var statusLevel = 'primary';
 
@@ -218,7 +216,7 @@ module.exports = Marionette.ItemView.extend({
 
     _getOptions    : function() {
         var options = {
-            allDayDefault       : false,
+            allDayDefault       : true,
             weekMode            : 'variable',
             firstDay            : UiSettings.get('firstDayOfWeek'),
             timeFormat          : 'h(:mm)t',
@@ -227,7 +225,7 @@ module.exports = Marionette.ItemView.extend({
             eventAfterAllRender : this._eventAfterAllRender.bind(this),
             windowResize        : this._windowResize.bind(this),
             eventClick          : function(event) {
-                vent.trigger(vent.Commands.ShowEpisodeDetails, { episode : event.model });
+                vent.trigger(vent.Commands.ShowAlbumDetails, { album : event.model });
             }
         };
 
@@ -237,7 +235,7 @@ module.exports = Marionette.ItemView.extend({
             options.header = {
                 left   : 'prev,next today',
                 center : 'title',
-                right  : 'basicWeek,basicDay'
+                right  : 'basicWeek,listYear'
             };
         }
 
@@ -247,20 +245,21 @@ module.exports = Marionette.ItemView.extend({
             options.header = {
                 left   : 'prev,next today',
                 center : 'title',
-                right  : 'month,basicWeek,basicDay'
+                right  : 'month,basicWeek,listYear'
             };
         }
 
-        options.titleFormat = {
-            month : 'MMMM YYYY',
-            week  : UiSettings.get('shortDateFormat'),
-            day   : UiSettings.get('longDateFormat')
-        };
+        options.views = {
+            month: {
+                titleFormat: 'MMMM YYYY',
+                columnFormat: 'ddd'
+            },
+            week: {
+                titleFormat: UiSettings.get('shortDateFormat'),
+                columnFormat: UiSettings.get('calendarWeekColumnHeader')
+            }
 
-        options.columnFormat = {
-            month : 'ddd',
-            week  : UiSettings.get('calendarWeekColumnHeader'),
-            day   : 'dddd'
+
         };
 
         options.timeFormat = UiSettings.get('timeFormat');

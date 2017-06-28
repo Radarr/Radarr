@@ -1,0 +1,35 @@
+<div class="modal-content">
+    <div class="album-detail-modal">
+        <div class="modal-header">
+            <span class="hidden-artist-title x-artist-title">{{artist.name}}</span>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+            <h3>
+                <i class="icon-lidarr-monitored x-album-monitored album-monitored" title="Toggle monitored status" />
+                {{title}} ({{albumYear}})
+            </h3>
+
+        </div>
+        <div class="modal-body">
+            <ul class="nav nav-tabs" id="myTab">
+                <li><a href="#album-summary" class="x-album-summary">Summary</a></li>
+                <li><a href="#album-history" class="x-album-history">History</a></li>
+                <li><a href="#album-search" class="x-album-search">Search</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="album-summary"/>
+                <div class="tab-pane" id="album-history"/>
+                <div class="tab-pane" id="album-search"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            {{#unless hideArtistLink}}
+                {{#with artist}}
+                    <a href="{{route}}" class="btn btn-default pull-left" data-dismiss="modal">Go to Artist</a>
+                {{/with}}
+            {{/unless}}
+
+            <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

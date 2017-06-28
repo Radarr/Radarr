@@ -1,18 +1,18 @@
 <div class="event">
     <div class="date {{StatusLevel}}">
-        <h1>{{Day airDateUtc}}</h1>
-        <h4>{{Month airDateUtc}}</h4>
+        <h1>{{Day releaseDate}}</h1>
+        <h4>{{Month releaseDate}}</h4>
     </div>
-    {{#with series}}
+    {{#with artist}}
     <a href="{{route}}">
-        <h4>{{title}}</h4>
+        <h4>{{name}}</h4>
     </a>
     {{/with}}
-    <p>{{StartTime airDateUtc}} {{#unless_today airDateUtc}}{{ShortDate airDateUtc}}{{/unless_today}}</p>
+    <p>{{#unless_today releaseDate}}{{ShortDate releaseDate}}{{/unless_today}}</p>
     <p>
-        <span class="episode-title x-episode-title">
+        <span class="album-title x-album-title">
             {{title}}
         </span>
-        <span class="pull-right">{{seasonNumber}}x{{Pad2 episodeNumber}}</span>
+        <span class="pull-right">x</span>
     </p>
 </div>

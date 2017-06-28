@@ -4,6 +4,7 @@ var Marionette = require('marionette');
 var EditArtistView = require('../../Artist/Edit/EditArtistView');
 var DeleteArtistView = require('../../Artist/Delete/DeleteArtistView');
 var EpisodeDetailsLayout = require('../../Episode/EpisodeDetailsLayout');
+var AlbumDetailsLayout = require('../../Album/AlbumDetailsLayout');
 var HistoryDetailsLayout = require('../../Activity/History/Details/HistoryDetailsLayout');
 var LogDetailsView = require('../../System/Logs/Table/Details/LogDetailsView');
 var RenamePreviewLayout = require('../../Rename/RenamePreviewLayout');
@@ -19,6 +20,7 @@ module.exports = Marionette.AppRouter.extend({
         vent.on(vent.Commands.EditArtistCommand, this._editArtist, this);
         vent.on(vent.Commands.DeleteArtistCommand, this._deleteArtist, this);
         vent.on(vent.Commands.ShowEpisodeDetails, this._showEpisode, this);
+        vent.on(vent.Commands.ShowAlbumDetails, this._showAlbum, this);
         vent.on(vent.Commands.ShowHistoryDetails, this._showHistory, this);
         vent.on(vent.Commands.ShowLogDetails, this._showLogDetails, this);
         vent.on(vent.Commands.ShowRenamePreview, this._showRenamePreview, this);
@@ -58,6 +60,13 @@ module.exports = Marionette.AppRouter.extend({
             model          : options.episode,
             hideSeriesLink : options.hideSeriesLink,
             openingTab     : options.openingTab
+        });
+        AppLayout.modalRegion.show(view);
+    },
+
+    _showAlbum : function(options) {
+        var view = new AlbumDetailsLayout({
+            model          : options.album
         });
         AppLayout.modalRegion.show(view);
     },

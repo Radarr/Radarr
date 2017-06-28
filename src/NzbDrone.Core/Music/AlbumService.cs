@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Music
         Album UpdateAlbum(Album album);
         List<Album> UpdateAlbums(List<Album> album);
         void SetAlbumMonitored(int albumId, bool monitored);
+        List<Album> AlbumsBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         void InsertMany(List<Album> albums);
         void UpdateMany(List<Album> albums);
         void DeleteMany(List<Album> albums);
@@ -108,6 +109,13 @@ namespace NzbDrone.Core.Music
         public void RemoveAddOptions(Album album)
         {
             _albumRepository.SetFields(album, s => s.AddOptions);
+        }
+
+        public List<Album> AlbumsBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
+        {
+            var albums = _albumRepository.AlbumsBetweenDates(start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
+
+            return albums;
         }
 
         public void InsertMany(List<Album> albums)

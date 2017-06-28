@@ -15,11 +15,13 @@ namespace NzbDrone.Core.Music
             Images = new List<MediaCover.MediaCover>();
         }
 
+        public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
+
         public string ForeignAlbumId { get; set; }
         public int ArtistId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
         public string Label { get; set; }
         //public int TrackCount { get; set; }
         public string Path { get; set; }

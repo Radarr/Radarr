@@ -20,6 +20,7 @@ vent.Commands = {
     OpenModal2Command        : 'OpenModal2Command',
     CloseModal2Command       : 'CloseModal2Command',
     ShowEpisodeDetails       : 'ShowEpisodeDetails',
+    ShowAlbumDetails         : 'ShowAlbumDetails',
     ShowHistoryDetails       : 'ShowHistoryDetails',
     ShowLogDetails           : 'ShowLogDetails',
     SaveSettings             : 'saveSettings',

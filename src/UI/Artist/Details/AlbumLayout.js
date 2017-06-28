@@ -24,6 +24,7 @@ module.exports = Marionette.Layout.extend({
         albumSearch    : '.x-album-search',
         albumMonitored : '.x-album-monitored',
         albumRename    : '.x-album-rename',
+        albumDetails   : '.x-album-details',
         cover          : '.x-album-cover'
     },
 
@@ -32,6 +33,7 @@ module.exports = Marionette.Layout.extend({
         'click .x-album-monitored'           : '_albumMonitored',
         'click .x-album-search'              : '_albumSearch',
         'click .x-album-rename'              : '_albumRename',
+        'click .x-album-details'             : '_albumDetails',
         'click .x-show-hide-tracks'          : '_showHideTracks',
         'dblclick .artist-album h2'          : '_showHideTracks'
     },
@@ -191,6 +193,10 @@ module.exports = Marionette.Layout.extend({
             artist       : this.artist,
             albumId : this.model.get('albumId')
         });
+    },
+
+    _albumDetails : function() {
+        vent.trigger(vent.Commands.ShowAlbumDetails, { album : this.model });
     },
 
     _albumMonitored : function() {

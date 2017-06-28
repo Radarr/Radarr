@@ -7,12 +7,12 @@ module.exports = Marionette.ItemView.extend({
     tagName  : 'div',
 
     events : {
-        'click .x-episode-title' : '_showEpisodeDetails'
+        'click .x-album-title' : '_showAlbumDetails'
     },
 
     initialize : function() {
-        var start = this.model.get('airDateUtc');
-        var runtime = this.model.get('series').runtime;
+        var start = this.model.get('releaseDate');
+        var runtime = '30';
         var end = moment(start).add('minutes', runtime);
 
         this.model.set({
@@ -22,7 +22,7 @@ module.exports = Marionette.ItemView.extend({
         this.listenTo(this.model, 'change', this.render);
     },
 
-    _showEpisodeDetails : function() {
-        vent.trigger(vent.Commands.ShowEpisodeDetails, { episode : this.model });
+    _showAlbumDetails : function() {
+        vent.trigger(vent.Commands.ShowAlbumDetails, { album : this.model });
     }
 });

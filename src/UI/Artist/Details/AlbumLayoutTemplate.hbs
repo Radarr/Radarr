@@ -7,8 +7,9 @@
             <i class="x-album-monitored album-monitored clickable" title="Toggle album monitored status"/>
 
             {{#if title}}
-            {{title}} ({{albumYear}})
-
+            <div class="x-album-details album-details">
+                {{title}} ({{albumYear}})
+            </div>
             {{else}}
             Specials
             {{/if}}

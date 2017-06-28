@@ -13,12 +13,13 @@ namespace NzbDrone.Api.Albums
     {
         
         public string Title { get; set; }
+        public int ArtistId { get; set; }
         public string Label { get; set; }
         public bool Monitored { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }
         public Ratings Ratings { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
         public List<string> Genres { get; set; }
         public ArtistResource Artist { get; set; }
         public List<MediaCover> Images { get; set; }
@@ -34,6 +35,7 @@ namespace NzbDrone.Api.Albums
             return new AlbumResource
             {
                 Id = model.Id,
+                ArtistId = model.ArtistId, 
                 Label = model.Label,
                 Path = model.Path,
                 ProfileId = model.ProfileId,
@@ -55,6 +57,7 @@ namespace NzbDrone.Api.Albums
             return new Core.Music.Album
             {
                 Id = resource.Id,
+                ArtistId = resource.ArtistId,
                 Label = resource.Label,
                 Path = resource.Path,
                 Monitored = resource.Monitored,

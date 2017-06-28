@@ -20,7 +20,36 @@ Handlebars.registerHelper('cover', function() {
     return new Handlebars.SafeString('<img class="album-cover placeholder-image" src="{0}">'.format(placeholder));
 });
 
+Handlebars.registerHelper('StatusLevel', function() {
+    var hasFile = false; //this.hasFile; #TODO Refactor for Albums
+    var downloading = false; //require('../../Activity/Queue/QueueCollection').findEpisode(this.id) || this.downloading; #TODO Queue Refactor for Albums
+    var currentTime = moment();
+    var start = moment(this.releaseDate);
+    var end = moment(this.end);
+    var monitored = this.artist.monitored && this.monitored;
 
+    if (hasFile) {
+        return 'success';
+    }
+
+    if (downloading) {
+        return 'purple';
+    }
+
+    else if (!monitored) {
+        return 'unmonitored';
+    }
+
+    if (currentTime.isAfter(start) && currentTime.isBefore(end)) {
+        return 'warning';
+    }
+
+    if (start.isBefore(currentTime) && !hasFile) {
+        return 'danger';
+    }
+
+    return 'primary';
+});
 
 Handlebars.registerHelper('MBAlbumUrl', function() {
     return 'https://musicbrainz.org/release-group/' + this.mbId;

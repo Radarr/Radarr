@@ -8,6 +8,7 @@ using Ical.Net.Interfaces.Serialization;
 using Ical.Net.Serialization;
 using Ical.Net.Serialization.iCalendar.Factory;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using Nancy.Responses;
 using NzbDrone.Core.Tags;
 using NzbDrone.Common.Extensions;
@@ -16,13 +17,13 @@ namespace NzbDrone.Api.Calendar
 {
     public class CalendarFeedModule : NzbDroneFeedModule
     {
-        private readonly IEpisodeService _episodeService;
+        private readonly IAlbumService _albumService;
         private readonly ITagService _tagService;
 
-        public CalendarFeedModule(IEpisodeService episodeService, ITagService tagService)
+        public CalendarFeedModule(IAlbumService albumService, ITagService tagService)
             : base("calendar")
         {
-            _episodeService = episodeService;
+            _albumService = albumService;
             _tagService = tagService;
 
             Get["/NzbDrone.ics"] = options => GetCalendarFeed();
@@ -86,7 +87,7 @@ namespace NzbDrone.Api.Calendar
                 tags.AddRange(tagInput.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
             }
 
-            var episodes = _episodeService.EpisodesBetweenDates(start, end, unmonitored);
+            var albums = _albumService.AlbumsBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
                 // This will need to point to the hosted web site
@@ -96,43 +97,28 @@ namespace NzbDrone.Api.Calendar
 
 
 
-            foreach (var episode in episodes.OrderBy(v => v.AirDateUtc.Value))
+            foreach (var album in albums.OrderBy(v => v.ReleaseDate))
             {
-                if (premiersOnly && (episode.SeasonNumber == 0 || episode.EpisodeNumber != 1))
-                {
-                    continue;
-                }
+                //if (premiersOnly && (album.SeasonNumber == 0 || album.EpisodeNumber != 1))
+                //{
+                //    continue;
+                //}
 
-                if (tags.Any() && tags.None(episode.Series.Tags.Contains))
+                if (tags.Any() && tags.None(album.Artist.Tags.Contains))
                 {
                     continue;
                 }
 
                 var occurrence = calendar.Create<Event>();
-                occurrence.Uid = "NzbDrone_album_" + episode.Id;
-                occurrence.Status = episode.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
-                occurrence.Description = episode.Overview;
-                occurrence.Categories = new List<string>() { episode.Series.Network };
+                occurrence.Uid = "NzbDrone_album_" + album.Id;
+                //occurrence.Status = album.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
+                //occurrence.Description = album.Overview;
+                //occurrence.Categories = new List<string>() { album.Artist. };
 
-                if (asAllDay)
-                {
-                    occurrence.Start = new CalDateTime(episode.AirDateUtc.Value) { HasTime = false };
-                }
-                else
-                {
-                    occurrence.Start = new CalDateTime(episode.AirDateUtc.Value) { HasTime = true };
-                    occurrence.End = new CalDateTime(episode.AirDateUtc.Value.AddMinutes(episode.Series.Runtime)) { HasTime = true };
-                }
-
-                switch (episode.Series.SeriesType)
-                {
-                    case SeriesTypes.Daily:
-                        occurrence.Summary = $"{episode.Series.Title} - {episode.Title}";
-                        break;
-                    default:
-                        occurrence.Summary =$"{episode.Series.Title} - {episode.SeasonNumber}x{episode.EpisodeNumber:00} - {episode.Title}";
-                        break;
-                }
+                occurrence.Start = new CalDateTime(album.ReleaseDate.Value) { HasTime = false };
+                
+                occurrence.Summary =$"{album.Artist.Name} - {album.Title}";
+                
             }
 
             var serializer = (IStringSerializer) new SerializerFactory().Build(calendar.GetType(), new SerializationContext());

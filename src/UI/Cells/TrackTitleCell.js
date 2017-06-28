@@ -5,7 +5,7 @@ module.exports = NzbDroneCell.extend({
     className : 'track-title-cell',
 
     events : {
-        'click' : '_showDetails'
+        //'click' : '_showDetails'
     },
 
     render : function() {
@@ -21,9 +21,9 @@ module.exports = NzbDroneCell.extend({
 
     _showDetails : function() {
         var hideArtistLink = this.column.get('hideArtistLink');
-        vent.trigger(vent.Commands.ShowTrackDetails, {
-            track        : this.cellValue,
-            hideArtistLink : hideArtistLink
-        });
+        //vent.trigger(vent.Commands.ShowTrackDetails, { //TODO Impelement Track search and screen as well as album?
+        //    track        : this.cellValue,
+        //    hideArtistLink : hideArtistLink
+        //});
     }
 });
