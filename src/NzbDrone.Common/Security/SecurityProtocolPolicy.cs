@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Common.Security
@@ -15,12 +14,6 @@ namespace NzbDrone.Common.Security
 
         public static void Register()
         {
-            if (OsInfo.IsNotWindows)
-            {
-                // This was never meant to be used on mono, and will cause issues with mono 5 and higher if btls is enabled.
-                return;
-            }
-
             try
             {
                 // TODO: In v3 we should drop support for SSL3 because its very insecure. Only leaving it enabled because some people might rely on it.
