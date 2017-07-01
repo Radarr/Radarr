@@ -74,8 +74,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("WEEDS.S03E01-06.DUAL.XviD.Bluray.AC3-REPACK.-HELLYWOOD.avi", true)]
         [TestCase("The.Shield.S01E13.NTSC.x264-CtrlSD", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.X-viD.AC3.-HELLYWOOD", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.AC3.-HELLYWOOD", false)]
+        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.X-viD.AC3.-HELLYWOOD", false)]    
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD.avi", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.XviD.Bluray.AC3.-HELLYWOOD.avi", false)]
         [TestCase("The.Girls.Next.Door.S03E06.DVDRip.XviD-WiDE", false)]
@@ -83,8 +82,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("the.shield.1x13.circles.ws.xvidvd-tns", false)]
         [TestCase("the_x-files.9x18.sunshine_days.ac3.ws_dvdrip_xvid-fov.avi", false)]
         [TestCase("[FroZen] Miyuki - 23 [DVD][7F6170E6]", false)]
-        [TestCase("Hannibal.S01E05.480p.BluRay.DD5.1.x264-HiSD", false)]
-        [TestCase("Heidi Girl of the Alps (BD)(640x480(RAW) (BATCH 1) (1-13)", false)]
         [TestCase("[Doki] Clannad - 02 (848x480 XviD BD MP3) [95360783]", false)]
         public void should_parse_dvd_quality(string title, bool proper)
         {
@@ -98,6 +95,14 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_webdl480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBDL480p, proper);
+        }
+
+        [TestCase("Heidi Girl of the Alps (BD)(640x480(RAW) (BATCH 1) (1-13)", false)]
+        [TestCase("Hannibal.S01E05.480p.BluRay.DD5.1.x264-HiSD", false)]
+        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.AC3.-HELLYWOOD", false)]
+        public void should_parse_bluray480p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Quality.Bluray480p, proper);
         }
 
         [TestCase("Dexter - S01E01 - Title [HDTV]", false)]
@@ -227,6 +232,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Contract.to.Kill.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("27.Dresses.2008.REMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
+        [TestCase("27.Dresses.2008.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Quality.Remux1080p, false);
