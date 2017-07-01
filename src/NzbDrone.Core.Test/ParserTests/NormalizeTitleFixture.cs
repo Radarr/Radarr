@@ -72,6 +72,40 @@ namespace NzbDrone.Core.Test.ParserTests
             }
         }
 
+        [Test]
+        public void should_not_remove_a_when_at_start_of_acronym()
+        {
+            var dirtyFormat = new[]
+            {
+                "word.{0}.N.K.L.E.word",
+                "word {0} N K L E word",
+                "word-{0}-N-K-L-E-word",
+            };
+
+            foreach (var s in dirtyFormat)
+            {
+                var dirty = string.Format(s, "a");
+                dirty.CleanSeriesTitle().Should().Be("wordankleword");
+            }
+        }
+        
+        [Test]
+        public void should_not_remove_a_when_at_end_of_acronym()
+        {
+            var dirtyFormat = new[]
+            {
+                "word.N.K.L.E.{0}.word",
+                "word N K L E {0} word",
+                "word-N-K-L-E-{0}-word",
+            };
+
+            foreach (var s in dirtyFormat)
+            {
+                var dirty = string.Format(s, "a");
+                dirty.CleanSeriesTitle().Should().Be("wordnkleaword");
+            }
+        }
+       
         [TestCase("the")]
         [TestCase("and")]
         [TestCase("or")]
