@@ -1,6 +1,10 @@
-﻿namespace NzbDrone.Core.Movies
+﻿using System;
+using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Parser;
+
+namespace NzbDrone.Core.Movies.AlternativeTitles
 {
-    public class AlternativeTitle
+    public class AlternativeTitle : ModelBase
     {
         public SourceType SourceType { get; set; }
         public int MovieId { get; set; }
@@ -9,6 +13,7 @@
         public int SourceId { get; set; }
         public int Votes { get; set; }
         public int VoteCount { get; set; }
+        public Language Language { get; set; }
 
         public bool IsTrusted(int minVotes = 3)
         {
@@ -19,6 +24,18 @@
                 default:
                     return true;
             }   
+        }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as AlternativeTitle;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return item.CleanTitle == this.CleanTitle;
         }
     }
 

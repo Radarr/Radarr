@@ -6,6 +6,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.MediaFiles;
 using System.IO;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -52,7 +54,7 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<MovieFile> MovieFile { get; set; }
 		public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
-        public List<string> AlternativeTitles { get; set; }
+        public LazyList<AlternativeTitle> AlternativeTitles { get; set; }
         public string YouTubeTrailerId{ get; set; }
         public string Studio { get; set; }
 

@@ -14,6 +14,7 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.MediaFiles.Commands;
+using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.Tv
     {
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieService _movieService;
+        private readonly IAlternativeTitleService _titleService;
         private readonly IRefreshEpisodeService _refreshEpisodeService;
         private readonly IEventAggregator _eventAggregator;
 	private readonly IManageCommandQueue _commandQueueManager;
@@ -30,6 +32,7 @@ namespace NzbDrone.Core.Tv
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
+                                    IAlternativeTitleService titleService,
                                     IRefreshEpisodeService refreshEpisodeService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
@@ -39,6 +42,7 @@ namespace NzbDrone.Core.Tv
         {
             _movieInfo = movieInfo;
             _movieService = movieService;
+            _titleService = titleService;
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
 		_commandQueueManager = commandQueue;
@@ -85,7 +89,7 @@ namespace NzbDrone.Core.Tv
             movie.Certification = movieInfo.Certification;
             movie.InCinemas = movieInfo.InCinemas;
             movie.Website = movieInfo.Website;
-            movie.AlternativeTitles = movieInfo.AlternativeTitles;
+            //movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
@@ -103,6 +107,17 @@ namespace NzbDrone.Core.Tv
             }
 
             _movieService.UpdateMovie(movie);
+
+            try
+            {
+                var newTitles = movieInfo.AlternativeTitles.Value.Except(movie.AlternativeTitles.Value);
+                _titleService.AddAltTitles(newTitles.ToList(), movie);
+            }
+            catch (Exception e)
+            {
+                _logger.Debug(e, "Failed adding alternative titles.");
+                throw;
+            }
 
             _logger.Debug("Finished movie refresh for {0}", movie.Title);
             _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));
