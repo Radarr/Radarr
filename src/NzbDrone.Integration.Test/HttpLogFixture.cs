@@ -18,7 +18,7 @@ namespace NzbDrone.Integration.Test
             var logFile = Path.Combine(_runner.AppData, "logs", "Lidarr.trace.txt");
             var logLines = File.ReadAllLines(logFile);
 
-            var result = Series.InvalidPost(new Api.Series.SeriesResource());
+            var result = Artist.InvalidPost(new Api.Music.ArtistResource());
 
             logLines = File.ReadAllLines(logFile).Skip(logLines.Length).ToArray();
 

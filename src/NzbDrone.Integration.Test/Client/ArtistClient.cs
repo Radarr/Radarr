@@ -1,40 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using NzbDrone.Api.Series;
+using NzbDrone.Api.Music;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client
 {
-    public class SeriesClient : ClientBase<SeriesResource>
+    public class ArtistClient : ClientBase<ArtistResource>
     {
-        public SeriesClient(IRestClient restClient, string apiKey)
+        public ArtistClient(IRestClient restClient, string apiKey)
             : base(restClient, apiKey)
         {
         }
 
-        public List<SeriesResource> Lookup(string term)
+        public List<ArtistResource> Lookup(string term)
         {
             var request = BuildRequest("lookup?term={term}");
             request.AddUrlSegment("term", term);
-            return Get<List<SeriesResource>>(request);
+            return Get<List<ArtistResource>>(request);
         }
 
-        public List<SeriesResource> Editor(List<SeriesResource> series)
+        public List<ArtistResource> Editor(List<ArtistResource> series)
         {
             var request = BuildRequest("editor");
             request.AddBody(series);
-            return Put<List<SeriesResource>>(request);
+            return Put<List<ArtistResource>>(request);
         }
 
-        public SeriesResource Get(string slug, HttpStatusCode statusCode = HttpStatusCode.OK)
+        public ArtistResource Get(string slug, HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             var request = BuildRequest(slug);
-            return Get<SeriesResource>(request, statusCode);
+            return Get<ArtistResource>(request, statusCode);
         }
 
     }
 
-    public class SystemInfoClient : ClientBase<SeriesResource>
+    public class SystemInfoClient : ClientBase<ArtistResource>
     {
         public SystemInfoClient(IRestClient restClient, string apiKey)
             : base(restClient, apiKey)

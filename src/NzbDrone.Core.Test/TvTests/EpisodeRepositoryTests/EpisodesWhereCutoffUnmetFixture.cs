@@ -69,9 +69,9 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                                         new QualitiesBelowCutoff(profile.Id, new[] {Quality.MP3192.Id})
                                     };
 
-            var qualityMet = new EpisodeFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3256 } };
-            var qualityUnmet = new EpisodeFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3192 } };
-            var qualityRawHD = new EpisodeFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.FLAC } };
+            var qualityMet = new TrackFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3256 } };
+            var qualityUnmet = new TrackFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3192 } };
+            var qualityRawHD = new TrackFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.FLAC } };
 
             MediaFileRepository fileRepository = Mocker.Resolve<MediaFileRepository>();
 

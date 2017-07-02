@@ -2,6 +2,7 @@
 using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore.Extensions;
 using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
 
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
         Album FindById(string spotifyId);
+        PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
         void SetMonitoredFlat(Album album, bool monitored);
     }
@@ -39,6 +41,16 @@ namespace NzbDrone.Core.Music
             return Query.Where(s => s.ForeignAlbumId == foreignAlbumId).SingleOrDefault();
         }
 
+        public PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec)
+        {
+            var currentTime = DateTime.UtcNow;
+
+            pagingSpec.TotalRecords = GetMissingAlbumsQuery(pagingSpec, currentTime).GetRowCount();
+            pagingSpec.Records = GetMissingAlbumsQuery(pagingSpec, currentTime).ToList();
+
+            return pagingSpec;
+        }
+
         public List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored)
         {
             var query = Query.Join<Album, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
@@ -53,6 +65,24 @@ namespace NzbDrone.Core.Music
             }
 
             return query.ToList();
+        }
+
+        private SortBuilder<Album> GetMissingAlbumsQuery(PagingSpec<Album> pagingSpec, DateTime currentTime)
+        {
+            return Query.Join<Album, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
+                            .Where<Album>(pagingSpec.FilterExpression)
+                            
+                            .AndWhere(BuildReleaseDateCutoffWhereClause(currentTime))
+                            //.Where<Track>(t => t.TrackFileId == 0)
+                            .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                            .Skip(pagingSpec.PagingOffset())
+                            .Take(pagingSpec.PageSize);
+        }
+
+        private string BuildReleaseDateCutoffWhereClause(DateTime currentTime)
+        {
+            return string.Format("WHERE datetime(strftime('%s', [t0].[ReleaseDate]),  'unixepoch') <= '{0}'",
+                                 currentTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
         public void SetMonitoredFlat(Album album, bool monitored)

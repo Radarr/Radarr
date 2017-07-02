@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -6,19 +6,21 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 using FluentAssertions;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
-    public class DownloadedEpisodesImportServiceFixture : CoreTest<DownloadedEpisodesImportService>
+    public class DownloadedTracksImportServiceFixture : CoreTest<DownloadedEpisodesImportService>
     {
         private string _droneFactory = "c:\\drop\\".AsOsAgnostic();
         private string[] _subFolders = new[] { "c:\\root\\foldername".AsOsAgnostic() };
@@ -36,7 +38,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FolderExists(It.IsAny<string>()))
                   .Returns(true);
 
-            Mocker.GetMock<IImportApprovedEpisodes>()
+            Mocker.GetMock<IImportApprovedTracks>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
                   .Returns(new List<ImportResult>());
         }
@@ -77,7 +79,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IMakeImportDecision>()
-                .Verify(c => c.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), It.IsAny<ParsedEpisodeInfo>(), It.IsAny<bool>()),
+                .Verify(c => c.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()),
                     Times.Never());
 
             VerifyNoImport();
@@ -122,13 +124,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenValidSeries();
 
-            var localEpisode = new LocalEpisode();
+            var localEpisode = new LocalTrack();
 
             var imported = new List<ImportDecision>();
             imported.Add(new ImportDecision(localEpisode));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), null, true))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedEpisodes>()
@@ -148,13 +150,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenValidSeries();
 
-            var localEpisode = new LocalEpisode();
+            var localEpisode = new LocalTrack();
 
             var imported = new List<ImportDecision>();
             imported.Add(new ImportDecision(localEpisode));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), null, true))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedEpisodes>()
@@ -210,8 +212,8 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             result.Should().HaveCount(1);
             result.First().ImportDecision.Should().NotBeNull();
-            result.First().ImportDecision.LocalEpisode.Should().NotBeNull();
-            result.First().ImportDecision.LocalEpisode.Path.Should().Be(fileName);
+            result.First().ImportDecision.LocalTrack.Should().NotBeNull();
+            result.First().ImportDecision.LocalTrack.Path.Should().Be(fileName);
             result.First().Result.Should().Be(ImportResultType.Rejected);
         }
 
@@ -220,13 +222,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenValidSeries();
 
-            var localEpisode = new LocalEpisode();
+            var localEpisode = new LocalTrack();
 
             var imported = new List<ImportDecision>();
             imported.Add(new ImportDecision(localEpisode));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), null, true))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedEpisodes>()
@@ -271,7 +273,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>().Setup(c => c.GetFiles(folderName, SearchOption.TopDirectoryOnly))
                   .Returns(new[] { fileName });
 
-            var localEpisode = new LocalEpisode();
+            var localEpisode = new LocalTrack();
 
             var imported = new List<ImportDecision>();
             imported.Add(new ImportDecision(localEpisode));
@@ -280,7 +282,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessPath(fileName);
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), It.Is<ParsedEpisodeInfo>(v => v.AbsoluteEpisodeNumbers.First() == 9), true), Times.Once());
+                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), It.Is<ParsedTrackInfo>(v => v.TrackNumbers.First() == 9)), Times.Once());
         }
 
         [Test]
@@ -296,7 +298,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(fileName))
                   .Returns(true);
 
-            var localEpisode = new LocalEpisode();
+            var localEpisode = new LocalTrack();
 
             var imported = new List<ImportDecision>();
             imported.Add(new ImportDecision(localEpisode));
@@ -304,7 +306,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var result = Subject.ProcessPath(fileName);
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), null, true), Times.Once());
+                  .Verify(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null), Times.Once());
         }
 
         [Test]
@@ -331,13 +333,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenValidSeries();
 
-            var localEpisode = new LocalEpisode();
+            var localEpisode = new LocalTrack();
 
             var imported = new List<ImportDecision>();
             imported.Add(new ImportDecision(localEpisode));
 
             Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Series>(), null, true))
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
                   .Returns(imported);
 
             Mocker.GetMock<IImportApprovedEpisodes>()

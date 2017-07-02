@@ -3,10 +3,10 @@
 namespace NzbDrone.Integration.Test.ApiTests
 {
     [TestFixture]
-    public class EpisodeFileFixture : IntegrationTest
+    public class TrackFileFixture : IntegrationTest
     {
         [Test]
-        public void get_all_episodefiles()
+        public void get_all_trackfiles()
         {
             Assert.Ignore("TODO");
         }

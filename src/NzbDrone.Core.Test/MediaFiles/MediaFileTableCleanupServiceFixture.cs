@@ -7,7 +7,7 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -15,117 +15,117 @@ namespace NzbDrone.Core.Test.MediaFiles
     public class MediaFileTableCleanupServiceFixture : CoreTest<MediaFileTableCleanupService>
     {
         private const string DELETED_PATH = "ANY FILE WITH THIS PATH IS CONSIDERED DELETED!";
-        private List<Episode> _episodes;
-        private Series _series;
+        private List<Track> _tracks;
+        private Artist _artist;
 
         [SetUp]
         public void SetUp()
         {
-            _episodes = Builder<Episode>.CreateListOfSize(10)
+            _tracks = Builder<Track>.CreateListOfSize(10)
                   .Build()
                   .ToList();
 
-            _series = Builder<Series>.CreateNew()
-                                     .With(s => s.Path = @"C:\Test\TV\Series".AsOsAgnostic())
+            _artist = Builder<Artist>.CreateNew()
+                                     .With(s => s.Path = @"C:\Test\Music\Artist".AsOsAgnostic())
                                      .Build();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(e => e.FileExists(It.Is<string>(c => !c.Contains(DELETED_PATH))))
                   .Returns(true);
 
-            Mocker.GetMock<IEpisodeService>()
-                  .Setup(c => c.GetEpisodeBySeries(It.IsAny<int>()))
-                  .Returns(_episodes);
+            Mocker.GetMock<ITrackService>()
+                  .Setup(c => c.GetTracksByArtist(It.IsAny<int>()))
+                  .Returns(_tracks);
         }
 
-        private void GivenEpisodeFiles(IEnumerable<EpisodeFile> episodeFiles)
+        private void GivenTrackFiles(IEnumerable<TrackFile> trackFiles)
         {
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                  .Returns(episodeFiles.ToList());
+                  .Setup(c => c.GetFilesByArtist(It.IsAny<int>()))
+                  .Returns(trackFiles.ToList());
         }
 
-        private void GivenFilesAreNotAttachedToEpisode()
+        private void GivenFilesAreNotAttachedToTrack()
         {
-            _episodes.ForEach(e => e.EpisodeFileId = 0);
+            _tracks.ForEach(e => e.TrackFileId = 0);
 
-            Mocker.GetMock<IEpisodeService>()
-                  .Setup(c => c.GetEpisodeBySeries(It.IsAny<int>()))
-                  .Returns(_episodes);
+            Mocker.GetMock<ITrackService>()
+                  .Setup(c => c.GetTracksByArtist(It.IsAny<int>()))
+                  .Returns(_tracks);
         }
 
-        private List<string> FilesOnDisk(IEnumerable<EpisodeFile> episodeFiles)
+        private List<string> FilesOnDisk(IEnumerable<TrackFile> trackFiles)
         {
-            return episodeFiles.Select(e => Path.Combine(_series.Path, e.RelativePath)).ToList();
+            return trackFiles.Select(e => Path.Combine(_artist.Path, e.RelativePath)).ToList();
         }
 
         [Test]
         public void should_skip_files_that_exist_in_disk()
         {
-            var episodeFiles = Builder<EpisodeFile>.CreateListOfSize(10)
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                 .Build();
 
-            GivenEpisodeFiles(episodeFiles);
+            GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_series, FilesOnDisk(episodeFiles));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles));
 
-            Mocker.GetMock<IEpisodeService>().Verify(c => c.UpdateEpisode(It.IsAny<Episode>()), Times.Never());
+            Mocker.GetMock<ITrackService>().Verify(c => c.UpdateTrack(It.IsAny<Track>()), Times.Never());
         }
 
         [Test]
         public void should_delete_non_existent_files()
         {
-            var episodeFiles = Builder<EpisodeFile>.CreateListOfSize(10)
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                 .Random(2)
                 .With(c => c.RelativePath = DELETED_PATH)
                 .Build();
 
-            GivenEpisodeFiles(episodeFiles);
+            GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_series, FilesOnDisk(episodeFiles.Where(e => e.RelativePath != DELETED_PATH)));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles.Where(e => e.RelativePath != DELETED_PATH)));
 
-            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.Is<EpisodeFile>(e => e.RelativePath == DELETED_PATH), DeleteMediaFileReason.MissingFromDisk), Times.Exactly(2));
+            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.Is<TrackFile>(e => e.RelativePath == DELETED_PATH), DeleteMediaFileReason.MissingFromDisk), Times.Exactly(2));
         }
 
         [Test]
         public void should_delete_files_that_dont_belong_to_any_episodes()
         {
-            var episodeFiles = Builder<EpisodeFile>.CreateListOfSize(10)
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                                 .Random(10)
                                 .With(c => c.RelativePath = "ExistingPath")
                                 .Build();
 
-            GivenEpisodeFiles(episodeFiles);
-            GivenFilesAreNotAttachedToEpisode();
+            GivenTrackFiles(trackFiles);
+            GivenFilesAreNotAttachedToTrack();
 
-            Subject.Clean(_series, FilesOnDisk(episodeFiles));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles));
 
-            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.IsAny<EpisodeFile>(), DeleteMediaFileReason.NoLinkedEpisodes), Times.Exactly(10));
+            Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.IsAny<TrackFile>(), DeleteMediaFileReason.NoLinkedEpisodes), Times.Exactly(10));
         }
 
         [Test]
         public void should_unlink_episode_when_episodeFile_does_not_exist()
         {
-            GivenEpisodeFiles(new List<EpisodeFile>());
+            GivenTrackFiles(new List<TrackFile>());
 
-            Subject.Clean(_series, new List<string>());
+            Subject.Clean(_artist, new List<string>());
 
-            Mocker.GetMock<IEpisodeService>().Verify(c => c.UpdateEpisode(It.Is<Episode>(e => e.EpisodeFileId == 0)), Times.Exactly(10));
+            Mocker.GetMock<ITrackService>().Verify(c => c.UpdateTrack(It.Is<Track>(e => e.TrackFileId == 0)), Times.Exactly(10));
         }
 
         [Test]
-        public void should_not_update_episode_when_episodeFile_exists()
+        public void should_not_update_track_when_trackFile_exists()
         {
-            var episodeFiles = Builder<EpisodeFile>.CreateListOfSize(10)
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                                 .Random(10)
                                 .With(c => c.RelativePath = "ExistingPath")
                                 .Build();
 
-            GivenEpisodeFiles(episodeFiles);
+            GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_series, FilesOnDisk(episodeFiles));
+            Subject.Clean(_artist, FilesOnDisk(trackFiles));
 
-            Mocker.GetMock<IEpisodeService>().Verify(c => c.UpdateEpisode(It.IsAny<Episode>()), Times.Never());
+            Mocker.GetMock<ITrackService>().Verify(c => c.UpdateTrack(It.IsAny<Track>()), Times.Never());
         }
     }
 }

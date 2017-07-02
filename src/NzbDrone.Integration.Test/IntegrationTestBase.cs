@@ -15,16 +15,18 @@ using NzbDrone.Api.Commands;
 using NzbDrone.Api.Config;
 using NzbDrone.Api.DownloadClient;
 using NzbDrone.Api.EpisodeFiles;
+using NzbDrone.Api.TrackFiles;
 using NzbDrone.Api.Episodes;
 using NzbDrone.Api.History;
 using NzbDrone.Api.Profiles;
 using NzbDrone.Api.RootFolders;
-using NzbDrone.Api.Series;
+using NzbDrone.Api.Music;
+using NzbDrone.Api.Albums;
 using NzbDrone.Api.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv.Commands;
+using NzbDrone.Core.Music.Commands;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
@@ -41,6 +43,7 @@ namespace NzbDrone.Integration.Test
         public CommandClient Commands;
         public DownloadClientClient DownloadClients;
         public EpisodeClient Episodes;
+        public TrackClient Tracks;
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
         public IndexerClient Indexers;
@@ -49,7 +52,7 @@ namespace NzbDrone.Integration.Test
         public ClientBase<ProfileResource> Profiles;
         public ReleaseClient Releases;
         public ClientBase<RootFolderResource> RootFolders;
-        public SeriesClient Series;
+        public ArtistClient Artist;
         public ClientBase<TagResource> Tags;
         public ClientBase<EpisodeResource> WantedMissing;
         public ClientBase<EpisodeResource> WantedCutoffUnmet;
@@ -71,7 +74,7 @@ namespace NzbDrone.Integration.Test
 
         public string TempDirectory { get; private set; }
 
-        public abstract string SeriesRootFolder { get; }
+        public abstract string ArtistRootFolder { get; }
 
         protected abstract string RootUrl { get; }
 
@@ -109,7 +112,7 @@ namespace NzbDrone.Integration.Test
             Profiles = new ClientBase<ProfileResource>(RestClient, ApiKey);
             Releases = new ReleaseClient(RestClient, ApiKey);
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
-            Series = new SeriesClient(RestClient, ApiKey);
+            Artist = new ArtistClient(RestClient, ApiKey);
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
             WantedMissing = new ClientBase<EpisodeResource>(RestClient, ApiKey, "wanted/missing");
             WantedCutoffUnmet = new ClientBase<EpisodeResource>(RestClient, ApiKey, "wanted/cutoff");
@@ -202,22 +205,21 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public SeriesResource EnsureSeries(int tvdbId, string seriesTitle, bool? monitored = null)
+        public ArtistResource EnsureArtist(string lidarrId, string artsitName, bool? monitored = null)
         {
-            var result = Series.All().FirstOrDefault(v => v.TvdbId == tvdbId);
+            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
 
             if (result == null)
             {
-                var lookup = Series.Lookup("tvdb:" + tvdbId);
-                var series = lookup.First();
-                series.ProfileId = 1;
-                series.Path = Path.Combine(SeriesRootFolder, series.Title);
-                series.Monitored = true;
-                series.Seasons.ForEach(v => v.Monitored = true);
-                series.AddOptions = new Core.Tv.AddSeriesOptions();
-                Directory.CreateDirectory(series.Path);
+                var lookup = Artist.Lookup("lidarr:" + lidarrId);
+                var artist = lookup.First();
+                artist.ProfileId = 1;
+                artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
+                artist.Monitored = true;
+                artist.AddOptions = new Core.Music.AddArtistOptions();
+                Directory.CreateDirectory(artist.Path);
 
-                result = Series.Post(series);
+                result = Artist.Post(artist);
                 Commands.WaitAll();
                 WaitForCompletion(() => Episodes.GetEpisodesInSeries(result.Id).Count > 0);
             }
@@ -231,7 +233,7 @@ namespace NzbDrone.Integration.Test
                     changed = true;
                 }
 
-                result.Seasons.ForEach(season =>
+                result.Albums.ForEach(season =>
                 {
                     if (season.Monitored != monitored.Value)
                     {
@@ -242,43 +244,44 @@ namespace NzbDrone.Integration.Test
 
                 if (changed)
                 {
-                    Series.Put(result);
+                    Artist.Put(result);
                 }
             }
 
             return result;
         }
 
-        public void EnsureNoSeries(int tvdbId, string seriesTitle)
+
+        public void EnsureNoArtsit(string lidarrId, string artistTitle)
         {
-            var result = Series.All().FirstOrDefault(v => v.TvdbId == tvdbId);
+            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
 
             if (result != null)
             {
-                Series.Delete(result.Id);
+                Artist.Delete(result.Id);
             }
         }
 
-        public EpisodeFileResource EnsureEpisodeFile(SeriesResource series, int season, int episode, Quality quality)
+        public TrackFileResource EnsureTrackFile(ArtistResource artist, int albumId, int track, Quality quality)
         {
-            var result = Episodes.GetEpisodesInSeries(series.Id).Single(v => v.SeasonNumber == season && v.EpisodeNumber == episode);
+            var result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.TrackNumber == track);
 
-            if (result.EpisodeFile == null)
+            if (result.TrackFile == null)
             {
-                var path = Path.Combine(SeriesRootFolder, series.Title, string.Format("Series.S{0}E{1}.{2}.mkv", season, episode, quality.Name));
+                var path = Path.Combine(ArtistRootFolder, artist.Name, string.Format("{0} - {1} - Track.mp3", track, artist.Name));
 
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
-                File.WriteAllText(path, "Fake Episode");
+                File.WriteAllText(path, "Fake Track");
 
-                Commands.PostAndWait(new CommandResource { Name = "refreshseries", Body = new RefreshSeriesCommand(series.Id) });
+                Commands.PostAndWait(new CommandResource { Name = "refreshseries", Body = new RefreshArtistCommand(artist.Id) });
                 Commands.WaitAll();
                 
-                result = Episodes.GetEpisodesInSeries(series.Id).Single(v => v.SeasonNumber == season && v.EpisodeNumber == episode);
+                result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.TrackNumber == track);
 
-                result.EpisodeFile.Should().NotBeNull();
+                result.TrackFile.Should().NotBeNull();
             }
 
-            return result.EpisodeFile;
+            return result.TrackFile;
         }
 
         public ProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)

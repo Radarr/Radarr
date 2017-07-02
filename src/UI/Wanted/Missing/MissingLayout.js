@@ -5,7 +5,7 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var MissingCollection = require('./MissingCollection');
 var SelectAllCell = require('../../Cells/SelectAllCell');
-var SeriesTitleCell = require('../../Cells/SeriesTitleCell');
+var ArtistTitleCell = require('../../Cells/ArtistTitleCell');
 var EpisodeNumberCell = require('../../Cells/EpisodeNumberCell');
 var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
@@ -40,10 +40,10 @@ module.exports = Marionette.Layout.extend({
             sortable   : false
         },
         {
-            name      : 'series',
+            name      : 'artist',
             label     : 'Artist',
-            cell      : SeriesTitleCell,
-            sortValue : 'series.sortTitle'
+            cell      : ArtistTitleCell,
+            sortValue : 'artist.sortName'
         },
 //        {
 //            name     : 'this',
@@ -58,7 +58,7 @@ module.exports = Marionette.Layout.extend({
             sortable : false
         },
         {
-            name  : 'airDateUtc',
+            name  : 'releaseDate',
             label : 'Release Date',
             cell  : RelativeDateCell
         },
@@ -195,7 +195,7 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No episodes selected'
+                message : 'No albums selected'
             });
             return;
         }
@@ -206,8 +206,8 @@ module.exports = Marionette.Layout.extend({
         });
     },
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} missing episodes? '.format(this.collection.state.totalRecords) +
-                           'One API request to each indexer will be used for each episode. ' + 'This cannot be stopped once started.')) {
+        if (window.confirm('Are you sure you want to search for {0} missing albums? '.format(this.collection.state.totalRecords) +
+                           'One API request to each indexer will be used for each album. ' + 'This cannot be stopped once started.')) {
             CommandController.Execute('missingEpisodeSearch', { name : 'missingEpisodeSearch' });
         }
     },
@@ -217,7 +217,7 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No episodes selected'
+                message : 'No albums selected'
             });
             return;
         }

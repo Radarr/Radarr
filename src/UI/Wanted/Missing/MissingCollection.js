@@ -12,7 +12,7 @@ var Collection = PagableCollection.extend({
 
     state : {
         pageSize : 15,
-        sortKey  : 'airDateUtc',
+        sortKey  : 'releaseDate',
         order    : 1
     },
 
@@ -40,7 +40,7 @@ var Collection = PagableCollection.extend({
     },
 
     sortMappings : {
-        'series' : { sortKey : 'series.sortTitle' }
+        'artist' : { sortKey : 'artist.sortName' }
     },
 
     parseState : function(resp) {
