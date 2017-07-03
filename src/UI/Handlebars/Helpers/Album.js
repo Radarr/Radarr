@@ -5,7 +5,7 @@ var _ = require('underscore');
 
 Handlebars.registerHelper('cover', function() {
 
-    var placeholder = StatusModel.get('urlBase') + '/Content/Images/poster-dark.png';
+    var placeholder = StatusModel.get('urlBase') + '/Content/Images/cover-dark.png';
     var cover = _.where(this.images, { coverType : 'cover' });
 
     if (cover[0]) {

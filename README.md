@@ -30,7 +30,7 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 
 * Visual Studio 2015 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
 * [Git](https://git-scm.com/downloads)
-* [NodeJS](https://nodejs.org/en/download/)
+* [NodeJS](https://nodejs.org/en/download/) (Node 6.X.X, NPM 3.X.X Recommended)
 
 ### Setup
 
