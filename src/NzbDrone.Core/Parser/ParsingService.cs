@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Parser
         private readonly IEpisodeService _episodeService;
         private readonly ISeriesService _seriesService;
 
+        private readonly IAlbumRepository _albumRepository;
         private readonly IArtistService _artistService;
         private readonly ITrackService _trackService;
         private readonly Logger _logger;
@@ -41,11 +42,13 @@ namespace NzbDrone.Core.Parser
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
                               ITrackService trackService,
+                              IAlbumRepository albumRepository,
                               // ISceneMappingService sceneMappingService,
                               Logger logger)
         {
             _episodeService = episodeService;
             _seriesService = seriesService;
+            _albumRepository = albumRepository;
             // _sceneMappingService = sceneMappingService;
             _trackService = trackService;
             _logger = logger;
@@ -409,74 +412,46 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        private List<Track> GetStandardTracks(Artist artist, ParsedTrackInfo parsedTrackInfo, SearchCriteriaBase searchCriteria)
-        {
-            var result = new List<Track>();
+        //private List<Track> GetStandardTracks(Artist artist, ParsedTrackInfo parsedTrackInfo, SearchCriteriaBase searchCriteria)
+        //{
+        //    var result = new List<Track>();
 
-            if (parsedTrackInfo.TrackNumbers == null)
-            {
-                return result;
-            }
+        //    if (parsedTrackInfo.TrackNumbers == null)
+        //    {
+        //        return result;
+        //    }
 
-            foreach (var trackNumber in parsedTrackInfo.TrackNumbers)
-            {
-                //if (series.UseSceneNumbering && sceneSource)
-                //{
-                //    List<Episode> episodes = new List<Episode>();
+        //    foreach (var trackNumber in parsedTrackInfo.TrackNumbers)
+        //    {
+        //        Track trackInfo = null;
 
-                //    if (searchCriteria != null)
-                //    {
-                //        episodes = searchCriteria.Episodes.Where(e => e.SceneSeasonNumber == parsedTrackInfo.SeasonNumber &&
-                //                                                      e.SceneEpisodeNumber == trackNumber).ToList();
-                //    }
+        //        if (searchCriteria != null)
+        //        {
+        //            trackInfo = searchCriteria.Tracks.SingleOrDefault(e => e.TrackNumber == trackNumber); //e => e.SeasonNumber == seasonNumber && e.TrackNumber == trackNumber
+        //        }
 
-                //    if (!episodes.Any())
-                //    {
-                //        episodes = _episodeService.FindEpisodesBySceneNumbering(series.Id, seasonNumber, trackNumber);
-                //    }
+        //        if (trackInfo == null)
+        //        {
+        //            // TODO: [ParsingService]: FindTrack by artistID and trackNumber (or albumID and trackNumber if we change db schema to album as base)
+        //            _logger.Debug("TrackInfo is null, we will not add as FindTrack(artistId, trackNumber) is not implemented");
+        //            //trackInfo = _trackService.FindTrack(artist.SpotifyId, trackNumber);
+        //        }
 
-                //    if (episodes != null && episodes.Any())
-                //    {
-                //        _logger.Debug("Using Scene to TVDB Mapping for: {0} - Scene: {1}x{2:00} - TVDB: {3}",
-                //                    series.Title,
-                //                    episodes.First().SceneSeasonNumber,
-                //                    episodes.First().SceneEpisodeNumber,
-                //                    string.Join(", ", episodes.Select(e => string.Format("{0}x{1:00}", e.SeasonNumber, e.EpisodeNumber))));
+        //        if (trackInfo != null)
+        //        {
+        //            result.Add(trackInfo);
+        //        }
 
-                //        result.AddRange(episodes);
-                //        continue;
-                //    }
-                //}
-
-                Track trackInfo = null;
-
-                if (searchCriteria != null)
-                {
-                    trackInfo = searchCriteria.Tracks.SingleOrDefault(e => e.TrackNumber == trackNumber); //e => e.SeasonNumber == seasonNumber && e.TrackNumber == trackNumber
-                }
-
-                if (trackInfo == null)
-                {
-                    // TODO: [ParsingService]: FindTrack by artistID and trackNumber (or albumID and trackNumber if we change db schema to album as base)
-                    _logger.Debug("TrackInfo is null, we will not add as FindTrack(artistId, trackNumber) is not implemented");
-                    //trackInfo = _trackService.FindTrack(artist.SpotifyId, trackNumber);
-                }
-
-                if (trackInfo != null)
-                {
-                    result.Add(trackInfo);
-                }
-
-                else
-                {
-                    _logger.Debug("Unable to find {0}", parsedTrackInfo);
-                }
-            }
+        //        else
+        //        {
+        //            _logger.Debug("Unable to find {0}", parsedTrackInfo);
+        //        }
+        //    }
 
 
 
-            return result;
-        }
+        //    return result;
+        //}
 
         private List<Episode> GetStandardEpisodes(Series series, ParsedEpisodeInfo parsedEpisodeInfo, bool sceneSource, SearchCriteriaBase searchCriteria)
         {
@@ -565,6 +540,7 @@ namespace NzbDrone.Core.Parser
         {
             ParsedTrackInfo parsedTrackInfo;
 
+
             if (folderInfo != null)
             {
                 parsedTrackInfo = folderInfo.JsonClone();
@@ -576,16 +552,10 @@ namespace NzbDrone.Core.Parser
                 parsedTrackInfo = Parser.ParseMusicPath(filename);
             }
 
-            if (parsedTrackInfo == null)
-            {
-                var title = Path.GetFileNameWithoutExtension(filename);
-                //var specialEpisodeInfo = ParseSpecialEpisodeTitle(title, series);
-
-                //if (specialEpisodeInfo != null)
-                //{
-                //    parsedTrackInfo = specialEpisodeInfo;
-                //}
-            }
+            //if (parsedTrackInfo == null)
+            //{
+            //    var title = Path.GetFileNameWithoutExtension(filename);
+            //}
 
             if (parsedTrackInfo == null)
             {
@@ -612,50 +582,12 @@ namespace NzbDrone.Core.Parser
 
         private List<Track> GetTracks(ParsedTrackInfo parsedTrackInfo, Artist artist)
         {
-
-            // TODO: Ensure GetTracks(parsedTrackInfo, artist) doesn't need any checks
-            /*if (parsedTrackInfo.FullSeason) // IF Album
-            {
-                return _trackService.GetTracksByAlbumTitle(artist.Id, parsedTrackInfo.AlbumTitle);
-            }
-
-            if (parsedTrackInfo.IsDaily)
-            {
-                if (artist.SeriesType == SeriesTypes.Standard)
-                {
-                    _logger.Warn("Found daily-style episode for non-daily series: {0}.", series);
-                    return new List<Episode>();
-                }
-
-                var episodeInfo = GetDailyEpisode(artist, parsedTrackInfo.AirDate, searchCriteria);
-
-                if (episodeInfo != null)
-                {
-                    return new List<Episode> { episodeInfo };
-                }
-
-                return new List<Track>();
-            }
-
-            return GetStandardEpisodes(artist, parsedTrackInfo, sceneSource, searchCriteria);*/
             return GetStandardTracks(artist, parsedTrackInfo);
         }
 
         private List<Track> GetStandardTracks(Artist artist, ParsedTrackInfo parsedTrackInfo)
         {
             var result = new List<Track>();
-            //var seasonNumber = parsedEpisodeInfo.SeasonNumber;
-
-            //if (sceneSource)
-            //{
-            //    var sceneMapping = _sceneMappingService.FindSceneMapping(parsedEpisodeInfo.SeriesTitle);
-
-            //    if (sceneMapping != null && sceneMapping.SeasonNumber.HasValue && sceneMapping.SeasonNumber.Value >= 0 &&
-            //        sceneMapping.SceneSeasonNumber == seasonNumber)
-            //    {
-            //        seasonNumber = sceneMapping.SeasonNumber.Value;
-            //    }
-            //}
 
             if (parsedTrackInfo.TrackNumbers == null)
             {
@@ -664,7 +596,7 @@ namespace NzbDrone.Core.Parser
 
             foreach (var trackNumber in parsedTrackInfo.TrackNumbers)
             {
-                
+
 
                 Track trackInfo = null;
 
@@ -675,9 +607,12 @@ namespace NzbDrone.Core.Parser
 
                 if (trackInfo == null)
                 {
-                    // TODO: [ParsingService]: FindTrack by artistID and trackNumber (or albumID and trackNumber if we change db schema to album as base)
-                    _logger.Debug("TrackInfo is null, we will not add as FindTrack(artistId, trackNumber) is not implemented");
-                    //trackInfo = _trackService.FindTrack(artist.SpotifyId, trackNumber); //series.Id, seasonNumber, trackNumber
+                    var album = _albumRepository.FindByArtistAndName(parsedTrackInfo.ArtistTitle, Parser.CleanArtistTitle(parsedTrackInfo.AlbumTitle));
+                    if (album == null)
+                    {
+                        return new List<Track>();
+                    }
+                    trackInfo = _trackService.FindTrack(artist.Id, album.Id, trackNumber);
                 }
 
                 if (trackInfo != null)

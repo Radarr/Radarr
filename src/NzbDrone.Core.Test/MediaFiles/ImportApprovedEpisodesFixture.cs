@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                                    Artist = artist,
                                                    Tracks = new List<Track> { track },
                                                    Path = Path.Combine(artist.Path, "30 Rock - S01E01 - Pilot.avi"),
-                                                   Quality = new QualityModel(Quality.MP3256),
+                                                   Quality = new QualityModel(Quality.MP3_256),
                                                    ParsedTrackInfo = new ParsedTrackInfo
                                                                        {
                                                                            ReleaseGroup = "DRONE"
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                      Artist = fileDecision.LocalTrack.Artist,
                      Tracks = new List<Track> { fileDecision.LocalTrack.Tracks.First() },
                      Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
-                     Quality = new QualityModel(Quality.MP3256),
+                     Quality = new QualityModel(Quality.MP3_256),
                      Size = 80.Megabytes()
                  });
 

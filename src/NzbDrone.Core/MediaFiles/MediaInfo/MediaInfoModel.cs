@@ -16,6 +16,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public int Height { get; set; }
         public string AudioFormat { get; set; }
         public int AudioBitrate { get; set; }
+        public string AudioBitrateMode { get; set; }
         public TimeSpan RunTime { get; set; }
         public int AudioStreamCount { get; set; }
         public int AudioChannels { get; set; }

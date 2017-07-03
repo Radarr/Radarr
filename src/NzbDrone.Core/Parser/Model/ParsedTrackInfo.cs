@@ -9,11 +9,12 @@ namespace NzbDrone.Core.Parser.Model
 {
     public class ParsedTrackInfo
     {
+        //public int TrackNumber { get; set; }
+        public string Title { get; set; }
         public string ArtistTitle { get; set; }
         public string AlbumTitle { get; set; }
         public ArtistTitleInfo ArtistTitleInfo { get; set; }
         public QualityModel Quality { get; set; }
-        public string AlbumId { get; set; } // maybe
         public int[] TrackNumbers { get; set; }
         //public Language Language { get; set; }
         public string ReleaseGroup { get; set; }
@@ -34,7 +35,7 @@ namespace NzbDrone.Core.Parser.Model
             
             if (TrackNumbers != null && TrackNumbers.Any())
             {
-                episodeString = string.Format("T{1}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));
+                episodeString = string.Format("T{0}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));
             }
             
 

@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteEpisode = Builder<RemoteEpisode>.CreateNew()
                                                    .With(r => r.Series = _series)
                                                    .With(r => r.Episodes = new List<Episode> { _episode })
-                                                   .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192) })
+                                                   .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192) })
                                                    .Build();
         }
 
@@ -96,14 +96,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_quality_in_queue_is_lower()
         {
-            _series.Profile.Value.Cutoff = Quality.MP3512;
+            _series.Profile.Value.Cutoff = Quality.MP3_512;
 
             var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
                                                       .With(r => r.Series = _series)
                                                       .With(r => r.Episodes = new List<Episode> { _episode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(Quality.MP3192)
+                                                                                           Quality = new QualityModel(Quality.MP3_192)
                                                                                        })
                                                       .Build();
 
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Episodes = new List<Episode> { _otherEpisode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(Quality.MP3192)
+                                                                                           Quality = new QualityModel(Quality.MP3_192)
                                                                                        })
                                                       .Build();
 
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Episodes = new List<Episode> { _episode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(Quality.MP3192)
+                                                                                           Quality = new QualityModel(Quality.MP3_192)
                                                                                        })
                                                       .Build();
 
@@ -146,14 +146,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_when_quality_in_queue_is_better()
         {
-            _series.Profile.Value.Cutoff = Quality.MP3512;
+            _series.Profile.Value.Cutoff = Quality.MP3_512;
 
             var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
                                                       .With(r => r.Series = _series)
                                                       .With(r => r.Episodes = new List<Episode> { _episode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(Quality.MP3256)
+                                                                                           Quality = new QualityModel(Quality.MP3_256)
                                                                                        })
                                                       .Build();
 
@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Episodes = new List<Episode> { _episode, _otherEpisode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3256)
+                                                          Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Episodes = new List<Episode> { _episode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3256)
+                                                          Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
@@ -203,7 +203,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Episodes = new List<Episode> { _episode, _otherEpisode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3256)
+                                                          Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
@@ -223,7 +223,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                                                         {
                                                                                             Quality =
                                                                                                 new QualityModel(
-                                                                                                Quality.MP3256)
+                                                                                                Quality.MP3_256)
                                                                                         })
                                                        .TheFirst(1)
                                                        .With(r => r.Episodes = new List<Episode> { _episode })
@@ -246,7 +246,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Episodes = new List<Episode> { _episode })
                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
                                                       {
-                                                          Quality = new QualityModel(Quality.MP3256)
+                                                          Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 

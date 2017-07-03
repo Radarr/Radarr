@@ -87,20 +87,20 @@ namespace NzbDrone.Core.Profiles
             _logger.Info("Setting up default quality profiles");
 
             AddDefaultProfile("Any", 
-                Quality.MP3192,
-                Quality.MP3256,
-                Quality.MP3320,
-                Quality.MP3512,
-                Quality.MP3VBR,
+                Quality.MP3_192,
+                Quality.MP3_256,
+                Quality.MP3_320,
+                Quality.MP3_512,
+                Quality.MP3_VBR,
                 Quality.FLAC);
 
             AddDefaultProfile("Lossless",
                 Quality.FLAC);
 
             AddDefaultProfile("Standard",
-                Quality.MP3192,
-                Quality.MP3256,
-                Quality.MP3320);
+                Quality.MP3_192,
+                Quality.MP3_256,
+                Quality.MP3_320);
         }
     }
 }

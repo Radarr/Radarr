@@ -52,11 +52,10 @@ namespace NzbDrone.Api.TrackFiles
 
         private TrackFileResource GetTrackFile(int id)
         {
-            throw new NotImplementedException();
-            //var episodeFile = _mediaFileService.Get(id);
-            //var series = _seriesService.GetSeries(episodeFile.SeriesId);
+            var trackFile = _mediaFileService.Get(id);
+            var artist = _artistService.GetArtist(trackFile.ArtistId);
 
-            //return episodeFile.ToResource(series, _qualityUpgradableSpecification);
+            return trackFile.ToResource(artist, _qualityUpgradableSpecification);
         }
 
         private List<TrackFileResource> GetTrackFiles()

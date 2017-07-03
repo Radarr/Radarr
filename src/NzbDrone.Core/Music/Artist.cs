@@ -81,14 +81,6 @@ namespace NzbDrone.Core.Music
             Ratings = otherArtist.Ratings;
             Members = otherArtist.Members;
 
-            Albums = otherArtist.Albums;
-            Path = otherArtist.Path;
-            ProfileId = otherArtist.ProfileId;
-            AlbumFolder = otherArtist.AlbumFolder;
-            Monitored = otherArtist.Monitored;
-            RootFolderPath = otherArtist.RootFolderPath;
-            Tags = otherArtist.Tags;
-            AddOptions = otherArtist.AddOptions;
             
 
         }

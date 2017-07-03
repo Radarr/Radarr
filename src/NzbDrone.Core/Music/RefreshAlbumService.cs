@@ -19,12 +19,14 @@ namespace NzbDrone.Core.Music
     {
         private readonly IAlbumService _albumService;
         private readonly IRefreshTrackService _refreshTrackService;
+        private readonly IBuildFileNames _fileNameBuilder;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public RefreshAlbumService(IAlbumService albumService, IRefreshTrackService refreshTrackService, IEventAggregator eventAggregator, Logger logger)
+        public RefreshAlbumService(IAlbumService albumService, IBuildFileNames fileNameBuilder, IRefreshTrackService refreshTrackService, IEventAggregator eventAggregator, Logger logger)
         {
             _albumService = albumService;
+            _fileNameBuilder = fileNameBuilder;
             _refreshTrackService = refreshTrackService;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -58,24 +60,28 @@ namespace NzbDrone.Core.Music
                     {
                         albumToUpdate = new Album();
                         albumToUpdate.Monitored = artist.Monitored;
+                        albumToUpdate.ProfileId = artist.ProfileId;
+                        albumToUpdate.Added = DateTime.UtcNow;
+
+                        if (string.IsNullOrWhiteSpace(albumToUpdate.Path))
+                        {
+                            albumToUpdate.Path = _fileNameBuilder.BuildAlbumPath(artist, album);
+                        }
+
                         newList.Add(albumToUpdate);
-                        //var folderName = _fileNameBuilder.GetAlbumFolder(albumToUpdate); //This likely does not belong here, need to create AddAlbumService
-                        //albumToUpdate.Path = Path.Combine(newArtist.RootFolderPath, folderName);
                     }
 
-                    albumToUpdate.ForeignAlbumId = album.ForeignAlbumId;
-                    albumToUpdate.CleanTitle = album.CleanTitle;
-                    //albumToUpdate.TrackNumber = album.TrackNumber;
-                    albumToUpdate.Title = album.Title ?? "Unknown";
-                    //albumToUpdate.AlbumId = album.AlbumId;
-                    //albumToUpdate.Album = album.Album;
-                    //albumToUpdate.Explicit = album.Explicit;
-                    albumToUpdate.ArtistId = artist.Id;
-                    albumToUpdate.Path = artist.Path + album.Title;
-                    albumToUpdate.AlbumType = album.AlbumType;
-                    //albumToUpdate.Compilation = album.Compilation;
 
-                    _refreshTrackService.RefreshTrackInfo(album, album.Tracks);
+                    albumToUpdate.ForeignAlbumId = album.ForeignAlbumId;
+                    albumToUpdate.LastInfoSync = DateTime.UtcNow;
+                    albumToUpdate.CleanTitle = album.CleanTitle;
+                    albumToUpdate.Title = album.Title ?? "Unknown";
+                    albumToUpdate.CleanTitle = Parser.Parser.CleanArtistTitle(albumToUpdate.Title);
+                    albumToUpdate.ArtistId = artist.Id;
+                    albumToUpdate.AlbumType = album.AlbumType;
+                    albumToUpdate.Genres = album.Genres;
+                    albumToUpdate.Images = album.Images;
+                    albumToUpdate.ReleaseDate = album.ReleaseDate;
 
 
                     successCount++;
@@ -121,7 +127,7 @@ namespace NzbDrone.Core.Music
 
         private Album GetAlbumToUpdate(Artist artist, Album album, List<Album> existingAlbums)
         {
-            return existingAlbums.FirstOrDefault(e => e.ForeignAlbumId == album.ForeignAlbumId && e.ReleaseDate == album.ReleaseDate);
+            return existingAlbums.FirstOrDefault(e => e.ForeignAlbumId == album.ForeignAlbumId/* && e.ReleaseDate == album.ReleaseDate*/);
         }
 
         private IEnumerable<Album> OrderAlbums(Artist artist, List<Album> albums)

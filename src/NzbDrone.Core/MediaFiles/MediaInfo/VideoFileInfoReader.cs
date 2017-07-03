@@ -104,6 +104,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     int.TryParse(mediaInfo.Get(StreamKind.Audio, 0, "PlayTime"), out audioRuntime);
                     int.TryParse(mediaInfo.Get(StreamKind.General, 0, "PlayTime"), out generalRuntime);
 
+                    string audioBitRateMode = mediaInfo.Get(StreamKind.Audio, 0, "BitRate_Mode");
                     string aBitRate = mediaInfo.Get(StreamKind.Audio, 0, "BitRate");
                     int aBindex = aBitRate.IndexOf(" /", StringComparison.InvariantCultureIgnoreCase);
                     if (aBindex > 0)
@@ -145,6 +146,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                         Height = height,
                         Width = width,
                         AudioFormat = mediaInfo.Get(StreamKind.Audio, 0, "Format"),
+                        AudioBitrateMode = audioBitRateMode,
                         AudioBitrate = audioBitRate,
                         RunTime = GetBestRuntime(audioRuntime, videoRuntime, generalRuntime),
                         AudioStreamCount = streamCount,

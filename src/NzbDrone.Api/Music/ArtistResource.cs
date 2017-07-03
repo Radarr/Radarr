@@ -46,7 +46,7 @@ namespace NzbDrone.Api.Music
         public int ProfileId { get; set; }
 
         //Editing Only
-        public bool ArtistFolder { get; set; }
+        public bool AlbumFolder { get; set; }
         public bool Monitored { get; set; }
 
         public string RootFolderPath { get; set; }
@@ -96,6 +96,7 @@ namespace NzbDrone.Api.Music
                 ProfileId = model.ProfileId,
 
                 Monitored = model.Monitored,
+                AlbumFolder = model.AlbumFolder,
 
                 //UseSceneNumbering = resource.UseSceneNumbering,
                 //Runtime = resource.Runtime,
@@ -150,6 +151,7 @@ namespace NzbDrone.Api.Music
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,
+                AlbumFolder = resource.AlbumFolder,
 
                 Monitored = resource.Monitored,
                 //LastInfoSync = resource.LastInfoSync,

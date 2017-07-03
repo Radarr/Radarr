@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Music
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IArtistService _artistService;
         private readonly IRefreshAlbumService _refreshAlbumService;
+        private readonly IRefreshTrackService _refreshTrackService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfArtistShouldBeRefreshed _checkIfArtistShouldBeRefreshed;
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.Music
         public RefreshArtistService(IProvideArtistInfo artistInfo,
                                     IArtistService artistService,
                                     IRefreshAlbumService refreshAlbumService,
+                                    IRefreshTrackService refreshTrackService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     ICheckIfArtistShouldBeRefreshed checkIfArtistShouldBeRefreshed,
@@ -37,6 +39,7 @@ namespace NzbDrone.Core.Music
             _artistInfo = artistInfo;
             _artistService = artistService;
             _refreshAlbumService = refreshAlbumService;
+            _refreshTrackService = refreshTrackService;
             _eventAggregator = eventAggregator;
             _diskScanService = diskScanService;
             _checkIfArtistShouldBeRefreshed = checkIfArtistShouldBeRefreshed;
@@ -55,7 +58,7 @@ namespace NzbDrone.Core.Music
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("Artist '{0}' (SpotifyId {1}) was not found, it may have been removed from Spotify.", artist.Name, artist.ForeignArtistId);
+                _logger.Error("Artist '{0}' (LidarrAPI {1}) was not found, it may have been removed from Metadata sources.", artist.Name, artist.ForeignArtistId);
                 return;
             }
 
@@ -63,7 +66,7 @@ namespace NzbDrone.Core.Music
 
             if (artist.ForeignArtistId != artistInfo.ForeignArtistId)
             {
-                _logger.Warn("Artist '{0}' (SpotifyId {1}) was replaced with '{2}' (SpotifyId {3}), because the original was a duplicate.", artist.Name, artist.ForeignArtistId, artistInfo.Name, artistInfo.ForeignArtistId);
+                _logger.Warn("Artist '{0}' (Artist {1}) was replaced with '{2}' (LidarrAPI {3}), because the original was a duplicate.", artist.Name, artist.ForeignArtistId, artistInfo.Name, artistInfo.ForeignArtistId);
                 artist.ForeignArtistId = artistInfo.ForeignArtistId;
             }
 
@@ -86,11 +89,16 @@ namespace NzbDrone.Core.Music
                 _logger.Warn(e, "Couldn't update artist path for " + artist.Path);
             }
 
-            artist.Albums = UpdateAlbums(artist, artistInfo);
+            //artist.Albums = UpdateAlbums(artist, artistInfo); # We don't need this since we don't store albums in artist table.
 
             _artistService.UpdateArtist(artist);
+
             _refreshAlbumService.RefreshAlbumInfo(artist, tuple.Item2);
-            //_refreshTrackService.RefreshTrackInfo(artist, tuple.Item2);
+            foreach (var album in tuple.Item2)
+            {
+                _refreshTrackService.RefreshTrackInfo(album, album.Tracks);
+            }
+            
 
             _logger.Debug("Finished artist refresh for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));

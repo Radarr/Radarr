@@ -5,6 +5,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
 using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
+using Marr.Data.QGen;
 
 namespace NzbDrone.Core.Music
 {
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.Music
         bool AlbumPathExists(string path);
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
+        Album FindByArtistAndName(string artistName, string cleanTitle);
         Album FindById(string spotifyId);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
@@ -31,6 +33,7 @@ namespace NzbDrone.Core.Music
         {
             return Query.Where(c => c.Path == path).Any();
         }
+
         public List<Album> GetAlbums(int artistId)
         {
             return Query.Where(s => s.ArtistId == artistId).ToList();
@@ -96,6 +99,19 @@ namespace NzbDrone.Core.Music
             cleanTitle = cleanTitle.ToLowerInvariant();
 
             return Query.Where(s => s.CleanTitle == cleanTitle)
+                        .SingleOrDefault();
+        }
+
+        public Album FindByArtistAndName(string artistName, string cleanTitle)
+        {
+            var cleanArtistName = Parser.Parser.CleanArtistTitle(artistName);
+            cleanTitle = cleanTitle.ToLowerInvariant();
+            var query = Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id)
+                        .Where<Artist>(artist => artist.CleanName == cleanArtistName)
+                        .Where<Album>(album => album.CleanTitle == cleanTitle);
+            return Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id )
+                        .Where<Artist>(artist => artist.CleanName == cleanArtistName)
+                        .Where<Album>(album => album.CleanTitle == cleanTitle)
                         .SingleOrDefault();
         }
     }

@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Organizer
 
             _singleEpisodeFile = new EpisodeFile
             {
-                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
                 RelativePath = "Series.Title.S01E01.720p.HDTV.x264-EVOLVE.mkv",
                 SceneName = "Series.Title.S01E01.720p.HDTV.x264-EVOLVE",
                 ReleaseGroup = "RlsGrp",
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Organizer
 
             _singleTrackFile = new TrackFile
             {
-                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
                 RelativePath = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256.mp3",
                 SceneName = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256",
                 ReleaseGroup = "RlsGrp",
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.Organizer
 
             _multiEpisodeFile = new EpisodeFile
             {
-                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
                 RelativePath = "Series.Title.S01E01-E03.720p.HDTV.x264-EVOLVE.mkv",
                 SceneName = "Series.Title.S01E01-E03.720p.HDTV.x264-EVOLVE",
                 ReleaseGroup = "RlsGrp",
@@ -164,7 +164,7 @@ namespace NzbDrone.Core.Organizer
 
             _dailyEpisodeFile = new EpisodeFile
             {
-                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
                 RelativePath = "Series.Title.2013.10.30.HDTV.x264-EVOLVE.mkv",
                 SceneName = "Series.Title.2013.10.30.HDTV.x264-EVOLVE",
                 ReleaseGroup = "RlsGrp",
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Organizer
 
             _animeEpisodeFile = new EpisodeFile
             {
-                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
                 RelativePath = "[RlsGroup] Series Title - 001 [720p].mkv",
                 SceneName = "[RlsGroup] Series Title - 001 [720p]",
                 ReleaseGroup = "RlsGrp",
@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Organizer
 
             _animeMultiEpisodeFile = new EpisodeFile
             {
-                Quality = new QualityModel(Quality.MP3256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
                 RelativePath = "[RlsGroup] Series Title - 001 - 103 [720p].mkv",
                 SceneName = "[RlsGroup] Series Title - 001 - 103 [720p]",
                 ReleaseGroup = "RlsGrp",

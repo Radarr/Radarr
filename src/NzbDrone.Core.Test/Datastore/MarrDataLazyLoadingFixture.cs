@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.Datastore
             var profile = new Profile
                 {
                     Name = "Test",
-                    Cutoff = Quality.MP3320,
+                    Cutoff = Quality.MP3_320,
                     Items = Qualities.QualityFixture.GetDefaultQualities()
                 };
 

@@ -20,7 +20,7 @@ namespace ServiceInstall
         {
             if (!File.Exists(NzbDroneExe))
             {
-                Console.WriteLine("Unable to find NzbDrone.Console.exe in the current directory.");
+                Console.WriteLine("Unable to find Lidarr.Console.exe in the current directory.");
                 return;
             }
 

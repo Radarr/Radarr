@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Blacklisting
                      {
                          SeriesId = 12345,
                          EpisodeIds = new List<int> {1},
-                         Quality = new QualityModel(Quality.MP3320),
+                         Quality = new QualityModel(Quality.MP3_320),
                          SourceTitle = "series.title.s01e01",
                          DownloadClient = "SabnzbdClient",
                          DownloadId = "Sabnzbd_nzo_2dfh73k"

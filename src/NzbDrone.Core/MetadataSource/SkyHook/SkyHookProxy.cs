@@ -81,7 +81,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             // We need to perform a direct lookup of the artist
             var httpRequest = _requestBuilder.Create()
-                                            .SetSegment("route", "artist/" + foreignArtistId)
+                                            .SetSegment("route", "artists/" + foreignArtistId)
                                              //.SetSegment("route", "search")
                                              //.AddQueryParam("type", "artist,album")
                                              //.AddQueryParam("q", spotifyId.ToString())

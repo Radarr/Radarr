@@ -6,10 +6,12 @@ using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -25,19 +27,22 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         //private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IAlbumRepository _albumRepository;
         private readonly Logger _logger;
 
         public ImportApprovedTracks(IUpgradeMediaFiles episodeFileUpgrader,
                                       IMediaFileService mediaFileService,
                                       //IExtraService extraService,
+                                      IAlbumRepository albumRepository,
                                       IDiskProvider diskProvider,
                                       IEventAggregator eventAggregator,
                                       Logger logger)
         {
             _trackFileUpgrader = episodeFileUpgrader;
             _mediaFileService = mediaFileService;
-           // _extraService = extraService;
-            _diskProvider = diskProvider;
+            // _extraService = extraService;
+            _albumRepository = albumRepository;
+             _diskProvider = diskProvider;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -78,9 +83,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     trackFile.Size = _diskProvider.GetFileSize(localTrack.Path);
                     trackFile.Quality = localTrack.Quality;
                     trackFile.MediaInfo = localTrack.MediaInfo;
-                    trackFile.AlbumId = localTrack.Album.Id;
-                    trackFile.Tracks = localTrack.Tracks;
+                    trackFile.AlbumId = _albumRepository.FindByArtistAndName(localTrack.Artist.Name, Parser.Parser.CleanArtistTitle(localTrack.ParsedTrackInfo.AlbumTitle)).Id;
                     trackFile.ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup;
+                    trackFile.Tracks = localTrack.Tracks;
 
                     bool copyOnly;
                     switch (importMode)

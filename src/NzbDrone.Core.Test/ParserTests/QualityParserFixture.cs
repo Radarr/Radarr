@@ -12,11 +12,11 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         public static object[] SelfQualityParserCases =
         {
-            new object[] {Quality.MP3192},
-            new object[] {Quality.MP3VBR},
-            new object[] {Quality.MP3256},
-            new object[] {Quality.MP3320},
-            new object[] {Quality.MP3512},
+            new object[] {Quality.MP3_192},
+            new object[] {Quality.MP3_VBR},
+            new object[] {Quality.MP3_256},
+            new object[] {Quality.MP3_320},
+            new object[] {Quality.MP3_512},
             new object[] {Quality.FLAC},
         };
 
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Other Song (192)[2014][MP3]")]
         public void should_parse_mp3_192_quality(string title)
         {
-            ParseAndVerifyQuality(title, Quality.MP3192);
+            ParseAndVerifyQuality(title, Quality.MP3_192);
         }
 
         [TestCase("Beyoncé Lemonade [320] 2016 Beyonce Lemonade [320] 2016")]
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Anderson Paak - Malibu (320)(2016)")]
         public void should_parse_mp3_320_quality(string title)
         {
-            ParseAndVerifyQuality(title, Quality.MP3320);
+            ParseAndVerifyQuality(title, Quality.MP3_320);
         }
 
 
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Walk the Line Soundtrack (2005) [AAC, 256 kbps]")]
         public void should_parse_mp3_256_quality(string title)
         {
-            ParseAndVerifyQuality(title, Quality.MP3256);
+            ParseAndVerifyQuality(title, Quality.MP3_256);
         }
 
         [TestCase("Caetano Veloso Discografia Completa MP3 @512")]
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Emeli Sande Next To Me (512 Kbps)")]
         public void should_parse_mp3_512_quality(string title)
         {
-            ParseAndVerifyQuality(title, Quality.MP3512);
+            ParseAndVerifyQuality(title, Quality.MP3_512);
         }
 
         [TestCase("Kendrick Lamar - DAMN (2017) FLAC")]

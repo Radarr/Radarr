@@ -39,12 +39,12 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _profile = new Profile
                        {
                            Name = "Test",
-                           Cutoff = Quality.MP3256,
+                           Cutoff = Quality.MP3_256,
                            Items = new List<ProfileQualityItem>
                                    {
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3256 },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3320 },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3512 }
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 },
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_512 }
                                    },
                        };
 
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
             _parsedEpisodeInfo = Builder<ParsedEpisodeInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.MP3256);
+            _parsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256);
 
             _remoteEpisode = new RemoteEpisode();
             _remoteEpisode.Episodes = new List<Episode>{ _episode };
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_delete_if_the_grabbed_quality_is_the_higher()
         {
-            GivenHeldRelease(new QualityModel(Quality.MP3192));
+            GivenHeldRelease(new QualityModel(Quality.MP3_192));
 
             Subject.Handle(new EpisodeGrabbedEvent(_remoteEpisode));
 
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_not_delete_if_the_grabbed_quality_is_the_lower()
         {
-            GivenHeldRelease(new QualityModel(Quality.MP3512));
+            GivenHeldRelease(new QualityModel(Quality.MP3_512));
 
             Subject.Handle(new EpisodeGrabbedEvent(_remoteEpisode));
 

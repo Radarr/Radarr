@@ -17,7 +17,7 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
                 .CreateFactory();
 
-            Search = new HttpRequestBuilder("http://localhost:3000/{route}/") // TODO: Add {version} once LidarrAPI.Metadata is released. 
+            Search = new HttpRequestBuilder("http://localhost:5000/{route}/") // TODO: Add {version} once LidarrAPI.Metadata is released. 
                 .CreateFactory();
 
 

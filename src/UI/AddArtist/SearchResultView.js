@@ -61,7 +61,7 @@ var view = Marionette.ItemView.extend({
 
         var defaultProfile = Config.getValue(Config.Keys.DefaultProfileId);
         var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
-        var useSeasonFolder = Config.getValueBoolean(Config.Keys.UseSeasonFolder, true);
+        var useAlbumFolder = Config.getValueBoolean(Config.Keys.UseAlbumFolder, true);
         var defaultArtistType = Config.getValue(Config.Keys.DefaultSeriesType, 'standard');
         var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'missing');
 
@@ -73,7 +73,7 @@ var view = Marionette.ItemView.extend({
             this.ui.rootFolder.val(defaultRoot);
         }
 
-        this.ui.albumFolder.prop('checked', useSeasonFolder);
+        this.ui.albumFolder.prop('checked', useAlbumFolder);
         this.ui.artistType.val(defaultArtistType);
         this.ui.monitor.val(defaultMonitorEpisodes);
 

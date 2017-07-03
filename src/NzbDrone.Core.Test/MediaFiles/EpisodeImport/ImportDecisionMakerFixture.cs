@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
 
-            _quality = new QualityModel(Quality.MP3256);
+            _quality = new QualityModel(Quality.MP3_256);
 
             _localTrack = new LocalTrack
             { 
@@ -184,7 +184,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
             GivenSpecifications(_pass1, _pass2, _pass3);
             var expectedQuality = QualityParser.ParseQuality(_audioFiles.Single());
 
-            var result = Subject.GetImportDecisions(_audioFiles, _artist, new ParsedTrackInfo{Quality = new QualityModel(Quality.MP3256) });
+            var result = Subject.GetImportDecisions(_audioFiles, _artist, new ParsedTrackInfo{Quality = new QualityModel(Quality.MP3_256) });
 
             result.Single().LocalTrack.Quality.Should().Be(expectedQuality);
         }
@@ -197,9 +197,9 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
 
             _localTrack.Path = _audioFiles.Single();
             _localTrack.Quality.QualitySource = QualitySource.Extension;
-            _localTrack.Quality.Quality = Quality.MP3256;
+            _localTrack.Quality.Quality = Quality.MP3_256;
 
-            var expectedQuality = new QualityModel(Quality.MP3256);
+            var expectedQuality = new QualityModel(Quality.MP3_256);
 
             var result = Subject.GetImportDecisions(_audioFiles, _artist, new ParsedTrackInfo { Quality = expectedQuality });
 
@@ -213,9 +213,9 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
             GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.mkv".AsOsAgnostic() });
 
             _localTrack.Path = _audioFiles.Single();
-            _localTrack.Quality.Quality = Quality.MP3256;
+            _localTrack.Quality.Quality = Quality.MP3_256;
 
-            var expectedQuality = new QualityModel(Quality.MP3256);
+            var expectedQuality = new QualityModel(Quality.MP3_256);
 
             var result = Subject.GetImportDecisions(_audioFiles, _artist, new ParsedTrackInfo { Quality = expectedQuality });
 
@@ -374,7 +374,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
 
             _artist.Profile = new Profile
                               {
-                                  Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3256, Quality.Unknown)
+                                  Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_256, Quality.Unknown)
                               };
 
 

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
@@ -15,12 +16,36 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(Parser));
 
+        private static readonly Regex[] ReportMusicTitleRegex = new[]
+        {
+             // Track with artist (01 - artist - trackName)
+                new Regex(@"(?<trackNumber>\d*){0,1}([-| ]{0,1})(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                // Track without artist (01 - trackName)
+                new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                // Track without trackNumber or artist(trackName)
+                new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                // Track without trackNumber and  with artist(artist - trackName)
+                new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                // Track with artist and starting title (01 - artist - trackName)
+                new Regex(@"(?<trackNumber>\d*){0,1}[-| ]{0,1}(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        };
+
         private static readonly Regex[] ReportTitleRegex = new[]
             {
                 //Anime - Absolute Episode Number + Title + Season+Episode
                 //Todo: This currently breaks series that start with numbers
 //                new Regex(@"^(?:(?<absoluteepisode>\d{2,3})(?:_|-|\s|\.)+)+(?<title>.+?)(?:\W|_)+(?:S?(?<season>(?<!\d+)\d{1,2}(?!\d+))(?:(?:\-|[ex]|\W[ex]){1,2}(?<episode>\d{2}(?!\d+)))+)",
 //                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
 
                 //Multi-Part episodes without a title (S01E05.S01E06)
                 new Regex(@"^(?:\W*S?(?<season>(?<!\d+)(?:\d{1,2}|\d{4})(?!\d+))(?:(?:[ex]){1,2}(?<episode>\d{1,3}(?!\d+)))+){2,}",
@@ -209,7 +234,7 @@ namespace NzbDrone.Core.Parser
             {
                 // Generic match for md5 and mixed-case hashes.
                 new Regex(@"^[0-9a-zA-Z]{32}", RegexOptions.Compiled),
-                
+
                 // Generic match for shorter lower-case hashes.
                 new Regex(@"^[a-z0-9]{24}$", RegexOptions.Compiled),
 
@@ -240,7 +265,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
+        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WebsitePrefixRegex = new Regex(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*",
@@ -280,8 +305,52 @@ namespace NzbDrone.Core.Parser
         public static ParsedTrackInfo ParseMusicPath(string path)
         {
             var fileInfo = new FileInfo(path);
+            var file = TagLib.File.Create(path);
+            var trackName = file.Tag.Title;
+            var trackNumber = file.Tag.Track;
 
-            var result = ParseMusicTitle(fileInfo.Name);
+            var artistTitleInfo = new ArtistTitleInfo
+            {
+                Title = file.Tag.Title,
+                Year = (int) file.Tag.Year
+            };
+
+            var temp = new int[1];
+            temp[0] = (int) trackNumber;
+            var result = new ParsedTrackInfo
+            {
+                AlbumTitle = file.Tag.Album,
+                ArtistTitle = file.Tag.FirstAlbumArtist, 
+                Quality = QualityParser.ParseQuality(trackName),
+                TrackNumbers = temp,
+                ArtistTitleInfo = artistTitleInfo,
+                Title = file.Tag.Title
+            };
+
+
+            Logger.Debug("Quality parsed: {0}", file.Tag.BeatsPerMinute);
+
+            foreach (TagLib.ICodec codec in file.Properties.Codecs)
+            {
+                TagLib.IAudioCodec acodec = codec as TagLib.IAudioCodec;
+                TagLib.IVideoCodec vcodec = codec as TagLib.IVideoCodec;
+
+                if (acodec != null && (acodec.MediaTypes & TagLib.MediaTypes.Audio) != TagLib.MediaTypes.None)
+                {
+                    Logger.Debug("Audio Properties : " + acodec.Description);
+                    Logger.Debug("Bitrate:    " + acodec.AudioBitrate);
+                    Logger.Debug("SampleRate: " + acodec.AudioSampleRate);
+                    Logger.Debug("Channels:   " + acodec.AudioChannels + "\n");
+
+                    result.Quality = QualityParser.ParseQuality(acodec.Description, acodec.AudioBitrate, acodec.AudioSampleRate);
+                }
+
+
+            }
+
+
+            // TODO: Check if it is common that we might need to fallback to parser to gather details
+            //var result = ParseMusicTitle(fileInfo.Name);
 
             if (result == null)
             {
@@ -367,7 +436,7 @@ namespace NzbDrone.Core.Parser
                     }
                 }
 
-                foreach (var regex in ReportTitleRegex)
+                foreach (var regex in ReportMusicTitleRegex)
                 {
                     var match = regex.Matches(simpleTitle);
 
@@ -392,7 +461,7 @@ namespace NzbDrone.Core.Parser
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
-                                // Majora: We don't currently need Release Group for Music. 
+                                // Majora: We don't currently need Release Group for Music.
                                 //result.ReleaseGroup = ParseReleaseGroup(title);
 
                                 //var subGroup = GetSubGroup(match);
@@ -667,8 +736,79 @@ namespace NzbDrone.Core.Parser
 
         private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)
         {
-            throw new NotImplementedException();
+            var artistName = matchCollection[0].Groups["artist"].Value./*Removed for cases like Will.I.Am Replace('.', ' ').*/Replace('_', ' ');
+            artistName = RequestInfoRegex.Replace(artistName, "").Trim(' ');
+
+            // Coppied from Radarr (https://github.com/Radarr/Radarr/blob/develop/src/NzbDrone.Core/Parser/Parser.cs)
+            // TODO: Split into separate method and write unit tests for. 
+            var parts = artistName.Split('.'); 
+            artistName = "";
+            int n = 0;
+            bool previousAcronym = false;
+            string nextPart = "";
+            foreach (var part in parts)
+            {
+                if (parts.Length >= n + 2)
+                {
+                    nextPart = parts[n + 1];
+                }
+                if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
+                {
+                    artistName += part + ".";
+                    previousAcronym = true;
+                }
+                else if (part.ToLower() == "a" && (previousAcronym == true || nextPart.Length == 1))
+                {
+                    artistName += part + ".";
+                    previousAcronym = true;
+                }
+                else
+                {
+                    if (previousAcronym)
+                    {
+                        artistName += " ";
+                        previousAcronym = false;
+                    }
+                    artistName += part + " ";
+                }
+                n++;
+            }
+
+            artistName = artistName.Trim(' ');
+
+            int trackNumber;
+            int.TryParse(matchCollection[0].Groups["trackNumber"].Value, out trackNumber);
+
+            ParsedTrackInfo result = new ParsedTrackInfo();
+
+            result.ArtistTitle = artistName;
+            result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistTitle);
+
+            Logger.Debug("Episode Parsed. {0}", result);
+            return result;
         }
+
+        private static ArtistTitleInfo GetArtistTitleInfo(string title)
+        {
+            var artistTitleInfo = new ArtistTitleInfo();
+            artistTitleInfo.Title = title;
+
+            //var match = YearInTitleRegex.Match(title);
+
+            //if (!match.Success)
+            //{
+            //    artistTitleInfo.TitleWithoutYear = title;
+            //}
+
+            //else
+            //{
+            //    artistTitleInfo.TitleWithoutYear = match.Groups["title"].Value;
+            //    artistTitleInfo.Year = Convert.ToInt32(match.Groups["year"].Value);
+            //}
+
+            return artistTitleInfo;
+        }
+
         private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)
         {
             var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');

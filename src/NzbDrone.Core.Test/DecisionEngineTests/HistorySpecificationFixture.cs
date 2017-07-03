@@ -45,25 +45,25 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                        };
 
             _fakeSeries = Builder<Series>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3512, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .Build();
 
             _parseResultMulti = new RemoteEpisode
             {
                 Series = _fakeSeries,
-                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                 Episodes = doubleEpisodeList
             };
 
             _parseResultSingle = new RemoteEpisode
             {
                 Series = _fakeSeries,
-                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                 Episodes = singleEpisodeList
             };
 
-            _upgradableQuality = new QualityModel(Quality.MP3192, new Revision(version: 1));
-            _notupgradableQuality = new QualityModel(Quality.MP3512, new Revision(version: 2));
+            _upgradableQuality = new QualityModel(Quality.MP3_192, new Revision(version: 1));
+            _notupgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 2));
 
             Mocker.GetMock<IConfigService>()
                   .SetupGet(s => s.EnableCompletedDownloadHandling)
@@ -159,9 +159,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_episode_is_of_same_quality_as_existing()
         {
-            _fakeSeries.Profile = new Profile { Cutoff = Quality.MP3512, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3512, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.MP3512, new Revision(version: 1));
+            _fakeSeries.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -171,9 +171,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeSeries.Profile = new Profile { Cutoff = Quality.MP3512, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3512, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.MP3512, new Revision(version: 1));
+            _fakeSeries.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -199,9 +199,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeSeries.Profile = new Profile { Cutoff = Quality.MP3512, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3512, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.MP3512, new Revision(version: 1));
+            _fakeSeries.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, "test", _upgradableQuality, DateTime.UtcNow.AddDays(-100), HistoryEventType.Grabbed);
 

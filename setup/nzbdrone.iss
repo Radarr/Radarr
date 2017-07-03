@@ -5,7 +5,7 @@
 #define AppPublisher "Team Lidarr"
 #define AppURL "https://lidarr.audio/"
 #define ForumsURL "https://forums.lidarr.audio/"
-#define AppExeName "NzbDrone.exe"
+#define AppExeName "Lidarr.exe"
 #define BuildNumber "2.0"
 #define BuildNumber GetEnv('BUILD_NUMBER')
 #define BranchName GetEnv('branch')
@@ -21,15 +21,15 @@ AppPublisher={#AppPublisher}
 AppPublisherURL={#AppURL}
 AppSupportURL={#ForumsURL}
 AppUpdatesURL={#AppURL}
-DefaultDirName={commonappdata}\NzbDrone\bin
+DefaultDirName={commonappdata}\Lidarr\bin
 DisableDirPage=yes
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=NzbDrone.{#BranchName}.{#BuildNumber}
+OutputBaseFilename=Lidarr.{#BranchName}.{#BuildNumber}
 SolidCompression=yes
 AppCopyright=Creative Commons 3.0 License
 AllowUNCPath=False
-UninstallDisplayIcon={app}\NzbDrone.exe
+UninstallDisplayIcon={app}\Lidarr.exe
 DisableReadyPage=True
 CompressionThreads=2
 Compression=lzma2/normal

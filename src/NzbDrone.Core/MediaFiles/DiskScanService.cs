@@ -33,7 +33,7 @@ namespace NzbDrone.Core.MediaFiles
     public class DiskScanService :
         IDiskScanService,
         IHandle<ArtistUpdatedEvent>,
-        IExecute<RescanArtistCommand>
+        IExecute<RescanArtistCommand> 
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMakeImportDecision _importDecisionMaker;

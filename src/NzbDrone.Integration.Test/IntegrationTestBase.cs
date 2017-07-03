@@ -221,7 +221,7 @@ namespace NzbDrone.Integration.Test
 
                 result = Artist.Post(artist);
                 Commands.WaitAll();
-                WaitForCompletion(() => Episodes.GetEpisodesInSeries(result.Id).Count > 0);
+                WaitForCompletion(() => Tracks.GetTracksInArtist(result.Id).Count > 0);
             }
 
             if (monitored.HasValue)

@@ -47,11 +47,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                    .Build();
 
             _profile.Items = new List<ProfileQualityItem>();
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3256 });
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3320 });
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3320 });
+            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 });
+            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
+            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
 
-            _profile.Cutoff = Quality.MP3320;
+            _profile.Cutoff = Quality.MP3_320;
 
             _remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
             _remoteEpisode.Release = new ReleaseInfo();
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_system_invoked_search_and_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3192);
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_192);
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_quality_is_last_allowed_in_profile()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3320);
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_320);
 
             Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
         }
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_older_than_delay()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3256);
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256);
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
 
             _delayProfile.UsenetDelay = 60;
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3192);
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_192);
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -144,10 +144,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_proper_for_existing_episode()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3256, new Revision(version: 2));
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3256));
+            GivenExistingFile(new QualityModel(Quality.MP3_256));
             GivenUpgradeForExistingFile();
 
             Mocker.GetMock<IQualityUpgradableSpecification>()
@@ -162,10 +162,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_real_for_existing_episode()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3256, new Revision(real: 1));
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(real: 1));
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3256));
+            GivenExistingFile(new QualityModel(Quality.MP3_256));
             GivenUpgradeForExistingFile();
 
             Mocker.GetMock<IQualityUpgradableSpecification>()
@@ -180,10 +180,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_proper_for_existing_episode_of_different_quality()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3256, new Revision(version: 2));
+            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3192));
+            GivenExistingFile(new QualityModel(Quality.MP3_192));
 
             _delayProfile.UsenetDelay = 720;
 

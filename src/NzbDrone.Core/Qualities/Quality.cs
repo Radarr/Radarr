@@ -56,11 +56,11 @@ namespace NzbDrone.Core.Qualities
         }
 
         public static Quality Unknown => new Quality(0,  "Unknown");
-        public static Quality MP3192 => new Quality(1, "MP3-192");
-        public static Quality MP3VBR => new Quality(2, "MP3-VBR");
-        public static Quality MP3256 => new Quality(3, "MP3-256");
-        public static Quality MP3320 => new Quality(4, "MP3-320");
-        public static Quality MP3512 => new Quality(5, "MP3-512");
+        public static Quality MP3_192 => new Quality(1, "MP3-192");
+        public static Quality MP3_VBR => new Quality(2, "MP3-VBR");
+        public static Quality MP3_256 => new Quality(3, "MP3-256");
+        public static Quality MP3_320 => new Quality(4, "MP3-320");
+        public static Quality MP3_512 => new Quality(5, "MP3-512");
         public static Quality FLAC => new Quality(6, "FLAC");
 
         static Quality()
@@ -68,11 +68,11 @@ namespace NzbDrone.Core.Qualities
             All = new List<Quality>
             {
                 Unknown,
-                MP3192,
-                MP3VBR,
-                MP3256,
-                MP3320,
-                MP3512,
+                MP3_192,
+                MP3_VBR,
+                MP3_256,
+                MP3_320,
+                MP3_512,
                 FLAC,
             };
 
@@ -85,11 +85,11 @@ namespace NzbDrone.Core.Qualities
             DefaultQualityDefinitions = new HashSet<QualityDefinition>
             {
                 new QualityDefinition(Quality.Unknown)     { Weight = 1,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.MP3192)        { Weight = 2,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.MP3VBR)   { Weight = 3,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.MP3256)         { Weight = 4,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.MP3320)    { Weight = 5,  MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.MP3512)    { Weight = 6,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.MP3_192)        { Weight = 2,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.MP3_VBR)   { Weight = 3,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.MP3_256)         { Weight = 4,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.MP3_320)    { Weight = 5,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.MP3_512)    { Weight = 6,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.FLAC)   { Weight = 7,  MinSize = 0, MaxSize = null },
             };
         }

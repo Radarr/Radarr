@@ -32,6 +32,9 @@ namespace NzbDrone.Core.Music
         public List<MediaCover.MediaCover> Images { get; set; }
         //public List<Actor> Actors { get; set; } // TODO: These are band members. TODO: Refactor
         public List<string> Genres { get; set; }
+        public DateTime? LastInfoSync { get; set; }
+        public DateTime? LastDiskSync { get; set; }
+        public DateTime Added { get; set; }
         public String AlbumType { get; set; } // TODO: Turn this into a type similar to Series Type in TV
         //public string ArtworkUrl { get; set; }
         //public string Explicitness { get; set; }

@@ -39,18 +39,48 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RealRegex = new Regex(@"\b(?<real>REAL)\b",
                                                                 RegexOptions.Compiled);
 
-        private static readonly Regex BitRateRegex = new Regex(@"(?:
-                                                                  (?<B192>192[ ]?kbps)|(?<B192>192$)|(?<B192>[\[\(].*192.*[\]\)])|
-                                                                  (?<B256>256[ ]?kbps)|(?<B256>256$)|(?<B256>[\[\(].*256.*[\]\)])|
-                                                                  (?<B320>320[ ]?kbps)|(?<B320>320$)|(?<B320>[\[\(].*320.*[\]\)])|
-                                                                  (?<B512>512[ ]?kbps)|(?<B512>512$)|(?<B512>[\[\(].*512.*[\]\)])|
-                                                                  (?<Flac>flac[-_.\]\b)} ])|(?<Flac>flac$)|
-                                                                  (?<VBR>VBR[ ]?kbps)|(?<VBR>VBR$)|(?<VBR>[\[\(].*VBR.*[\]\)])
-                                                                  )",
-                                                                  RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex BitRateRegex = new Regex(@"\b(?:(?<B192>192[ ]?kbps|192|[\[\(].*192.*[\]\)])|
+                                                                (?<B256>256[ ]?kbps|256|[\[\(].*256.*[\]\)])|
+                                                                (?<B320>320[ ]?kbps|320|[\[\(].*320.*[\]\)])|
+                                                                (?<B512>512[ ]?kbps|512|[\[\(].*512.*[\]\)])|
+                                                                (?<VBR>VBR[ ]?kbps|VBR|[\[\(].*VBR.*[\]\)])|
+                                                                (?<FLAC>FLAC))\b",
+                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>Xvid)|(?<divx>divx))\b",
-                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex CodecRegex = new Regex(@"\b(?:
+                                                                  (?<MP3>MPEG Version \d+ Audio, Layer 3)|
+                                                                  (?<FLAC>flac)|
+                                                                  (?<VBR>VBR|MPEG Version \d+ Audio, Layer 3 VBR$)
+                                                                  )\b",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
+
+        public static QualityModel ParseQuality(string desc, int bitrate, int sampleRate)
+        {
+            var result = new QualityModel { Quality = Quality.Unknown };
+
+            switch (bitrate)
+            {
+                case 192:
+                    result.Quality = Quality.MP3_192;
+                    break;
+                case 256:
+                    result.Quality = Quality.MP3_256;
+                    break;
+                case 320:
+                    result.Quality = Quality.MP3_320;
+                    break;
+                default:
+                    var match = CodecRegex.Match(desc); //TODO: BUG: Figure out why this always fails
+                    if (!match.Success) result.Quality = Quality.Unknown;
+                    if (match.Groups["VBR"].Success) result.Quality =  Quality.MP3_VBR;
+                    if (match.Groups["FLAC"].Success) result.Quality =  Quality.FLAC;
+                    break;
+            }
+
+
+            return result;
+        }
 
         public static QualityModel ParseQuality(string name)
         {
@@ -63,22 +93,22 @@ namespace NzbDrone.Core.Parser
             switch(bitrate)
             {
                 case BitRate.B192:
-                    result.Quality = Quality.MP3192;
+                    result.Quality = Quality.MP3_192;
                     break;
                 case BitRate.B256:
-                    result.Quality = Quality.MP3256;
+                    result.Quality = Quality.MP3_256;
                     break;
                 case BitRate.B320:
-                    result.Quality = Quality.MP3320;
+                    result.Quality = Quality.MP3_320;
                     break;
                 case BitRate.B512:
-                    result.Quality = Quality.MP3512;
+                    result.Quality = Quality.MP3_512;
                     break;
-                case BitRate.Flac:
+                case BitRate.FLAC:
                     result.Quality = Quality.FLAC;
                     break;
                 case BitRate.VBR:
-                    result.Quality = Quality.MP3VBR;
+                    result.Quality = Quality.MP3_VBR;
                     break;
             }
 
@@ -100,6 +130,17 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
+        private static BitRate ParseCodec(string name)
+        {
+            var match = BitRateRegex.Match(name);
+
+            if (!match.Success) return BitRate.Unknown;
+            if (match.Groups["FLAC"].Success) return BitRate.FLAC;
+            if (match.Groups["VBR"].Success) return BitRate.VBR;
+
+            return BitRate.Unknown;
+        }
+
         private static BitRate ParseBitRate(string name)
         {
             //var nameWithNoSpaces = Regex.Replace(name, @"\s+", "");
@@ -110,7 +151,7 @@ namespace NzbDrone.Core.Parser
             if (match.Groups["B256"].Success) return BitRate.B256;
             if (match.Groups["B320"].Success) return BitRate.B320;
             if (match.Groups["B512"].Success) return BitRate.B512;
-            if (match.Groups["Flac"].Success) return BitRate.Flac;
+            if (match.Groups["FLAC"].Success) return BitRate.FLAC;
             if (match.Groups["VBR"].Success) return BitRate.VBR;
 
             return BitRate.Unknown;
@@ -152,7 +193,7 @@ namespace NzbDrone.Core.Parser
         B320,
         B512,
         VBR,
-        Flac,
+        FLAC,
         Unknown,
     }
 }

@@ -14,13 +14,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     {
         public static object[] IsUpgradeTestCases =
         {
-            new object[] { Quality.MP3192, 1, Quality.MP3192, 2, Quality.MP3192, true },
-            new object[] { Quality.MP3320, 1, Quality.MP3320, 2, Quality.MP3320, true },
-            new object[] { Quality.MP3192, 1, Quality.MP3192, 1, Quality.MP3192, false },
-            new object[] { Quality.MP3320, 1, Quality.MP3256, 2, Quality.MP3320, false },
-            new object[] { Quality.MP3320, 1, Quality.MP3256, 2, Quality.MP3320, false },
-            new object[] { Quality.MP3320, 1, Quality.MP3320, 1, Quality.MP3320, false },
-            new object[] { Quality.MP3512, 1, Quality.MP3512, 1, Quality.MP3512, false }
+            new object[] { Quality.MP3_192, 1, Quality.MP3_192, 2, Quality.MP3_192, true },
+            new object[] { Quality.MP3_320, 1, Quality.MP3_320, 2, Quality.MP3_320, true },
+            new object[] { Quality.MP3_192, 1, Quality.MP3_192, 1, Quality.MP3_192, false },
+            new object[] { Quality.MP3_320, 1, Quality.MP3_256, 2, Quality.MP3_320, false },
+            new object[] { Quality.MP3_320, 1, Quality.MP3_256, 2, Quality.MP3_320, false },
+            new object[] { Quality.MP3_320, 1, Quality.MP3_320, 1, Quality.MP3_320, false },
+            new object[] { Quality.MP3_512, 1, Quality.MP3_512, 1, Quality.MP3_512, false }
         };
         
         [SetUp]
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile, new QualityModel(Quality.MP3192, new Revision(version: 2)), new QualityModel(Quality.MP3192, new Revision(version: 1)))
+            Subject.IsUpgradable(profile, new QualityModel(Quality.MP3_192, new Revision(version: 2)), new QualityModel(Quality.MP3_192, new Revision(version: 1)))
                     .Should().BeFalse();
         }
     }

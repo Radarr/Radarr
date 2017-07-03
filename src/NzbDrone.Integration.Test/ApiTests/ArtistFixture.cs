@@ -45,7 +45,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             EnsureNoArtsit("266189", "Alien Ant Farm");
 
-            var artist = Artist.Lookup("tvdb:266189").Single();
+            var artist = Artist.Lookup("lidarr:266189").Single();
 
             artist.ProfileId = 1;
 
@@ -57,7 +57,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             EnsureNoArtsit("266189", "Alien Ant Farm");
 
-            var artist = Artist.Lookup("tvdb:266189").Single();
+            var artist = Artist.Lookup("lidarr:266189").Single();
 
             artist.ProfileId = 1;
             artist.Path = Path.Combine(ArtistRootFolder, artist.Name);

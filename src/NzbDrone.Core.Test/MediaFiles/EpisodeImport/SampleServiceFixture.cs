@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport
                                     Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
                                     Episodes = episodes,
                                     Series = _series,
-                                    Quality = new QualityModel(Quality.MP3256)
+                                    Quality = new QualityModel(Quality.MP3_256)
                                 };
         }
 

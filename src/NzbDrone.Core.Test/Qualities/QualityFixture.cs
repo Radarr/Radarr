@@ -14,22 +14,22 @@ namespace NzbDrone.Core.Test.Qualities
         public static object[] FromIntCases =
                 {
                         new object[] {0, Quality.Unknown},
-                        new object[] {1, Quality.MP3192},
-                        new object[] {2, Quality.MP3VBR},
-                        new object[] {3, Quality.MP3256},
-                        new object[] {4, Quality.MP3320},
-                        new object[] {5, Quality.MP3512},
+                        new object[] {1, Quality.MP3_192},
+                        new object[] {2, Quality.MP3_VBR},
+                        new object[] {3, Quality.MP3_256},
+                        new object[] {4, Quality.MP3_320},
+                        new object[] {5, Quality.MP3_512},
                         new object[] {6, Quality.FLAC},
                 };
 
         public static object[] ToIntCases =
                 {
                         new object[] {Quality.Unknown, 0},
-                        new object[] {Quality.MP3192, 1},
-                        new object[] {Quality.MP3VBR, 2},
-                        new object[] {Quality.MP3256, 3},
-                        new object[] {Quality.MP3320, 4},
-                        new object[] {Quality.MP3512, 5},
+                        new object[] {Quality.MP3_192, 1},
+                        new object[] {Quality.MP3_VBR, 2},
+                        new object[] {Quality.MP3_256, 3},
+                        new object[] {Quality.MP3_320, 4},
+                        new object[] {Quality.MP3_512, 5},
                         new object[] {Quality.FLAC, 6},
                 };
 
@@ -52,11 +52,11 @@ namespace NzbDrone.Core.Test.Qualities
             var qualities = new List<Quality>
             {
                 Quality.Unknown,
-                Quality.MP3192,
-                Quality.MP3VBR,
-                Quality.MP3256,
-                Quality.MP3320,
-                Quality.MP3512,
+                Quality.MP3_192,
+                Quality.MP3_VBR,
+                Quality.MP3_256,
+                Quality.MP3_320,
+                Quality.MP3_512,
                 Quality.FLAC,
             };
 

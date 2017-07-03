@@ -28,11 +28,11 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
             var profile = new Profile 
             {  
                 Id = 1,
-                Cutoff = Quality.MP3256,
+                Cutoff = Quality.MP3_256,
                 Items = new List<ProfileQualityItem> 
                 { 
-                    new ProfileQualityItem { Allowed = true, Quality = Quality.MP3192 },
-                    new ProfileQualityItem { Allowed = true, Quality = Quality.MP3256 },
+                    new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_192 },
+                    new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
                     new ProfileQualityItem { Allowed = true, Quality = Quality.FLAC }
                 }
             };
@@ -66,11 +66,11 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
 
             _qualitiesBelowCutoff = new List<QualitiesBelowCutoff>
                                     {
-                                        new QualitiesBelowCutoff(profile.Id, new[] {Quality.MP3192.Id})
+                                        new QualitiesBelowCutoff(profile.Id, new[] {Quality.MP3_192.Id})
                                     };
 
-            var qualityMet = new TrackFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3256 } };
-            var qualityUnmet = new TrackFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3192 } };
+            var qualityMet = new TrackFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3_256 } };
+            var qualityUnmet = new TrackFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3_192 } };
             var qualityRawHD = new TrackFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.FLAC } };
 
             MediaFileRepository fileRepository = Mocker.Resolve<MediaFileRepository>();
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
             var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, false);
 
             spec.Records.Should().HaveCount(1);
-            spec.Records.Should().OnlyContain(e => e.EpisodeFile.Value.Quality.Quality == Quality.MP3192);
+            spec.Records.Should().OnlyContain(e => e.EpisodeFile.Value.Quality.Quality == Quality.MP3_192);
         }
 
         [Test]

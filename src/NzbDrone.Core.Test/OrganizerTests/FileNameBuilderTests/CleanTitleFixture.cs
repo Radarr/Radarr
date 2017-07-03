@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                             .With(e => e.AbsoluteEpisodeNumber = 100)
                             .Build();
 
-            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3256), ReleaseGroup = "LidarrTest" };
+            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
 
             _namingConfig = NamingConfig.Default;
             _namingConfig.RenameEpisodes = true;

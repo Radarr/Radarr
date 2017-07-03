@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_download_report_if_epsiode_was_not_already_downloaded()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_only_download_episode_once()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -86,12 +86,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var remoteEpisode1 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var remoteEpisode2 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(1), GetEpisode(2) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var decisions = new List<DownloadDecision>();
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_return_downloaded_reports()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -119,12 +119,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var remoteEpisode1 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var remoteEpisode2 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var decisions = new List<DownloadDecision>();
@@ -139,17 +139,17 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         {
             var remoteEpisode1 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(1) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var remoteEpisode2 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var remoteEpisode3 = GetRemoteEpisode(
                                                     new List<Episode> { GetEpisode(2) },
-                                                    new QualityModel(Quality.MP3192)
+                                                    new QualityModel(Quality.MP3_192)
                                                  );
 
             var decisions = new List<DownloadDecision>();
@@ -164,7 +164,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_add_to_downloaded_list_when_download_fails()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -188,7 +188,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_grab_if_pending()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));
@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_add_to_pending_if_episode_was_grabbed()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode));
@@ -216,7 +216,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_add_to_pending_even_if_already_added_to_pending()
         {
             var episodes = new List<Episode> { GetEpisode(1) };
-            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3192));
+            var remoteEpisode = GetRemoteEpisode(episodes, new QualityModel(Quality.MP3_192));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode, new Rejection("Failure!", RejectionType.Temporary)));

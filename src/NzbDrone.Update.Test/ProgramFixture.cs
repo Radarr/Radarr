@@ -34,7 +34,7 @@ namespace NzbDrone.Update.Test
         [Test]
         public void should_call_update_with_correct_path()
         {
-            var ProcessPath = @"C:\NzbDrone\nzbdrone.exe".AsOsAgnostic();
+            var ProcessPath = @"C:\NzbDrone\lidarr.exe".AsOsAgnostic();
 
             Mocker.GetMock<IProcessProvider>().Setup(c => c.GetProcessById(12))
                 .Returns(new ProcessInfo() { StartPath = ProcessPath });

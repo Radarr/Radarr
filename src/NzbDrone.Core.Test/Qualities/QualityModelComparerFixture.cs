@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenCustomProfile()
         {
-            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.MP3320, Quality.MP3192) });
+            Subject = new QualityModelComparer(new Profile { Items = QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_192) });
         }
 
         [Test]
@@ -26,8 +26,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.MP3320);
-            var second = new QualityModel(Quality.MP3192);
+            var first = new QualityModel(Quality.MP3_320);
+            var second = new QualityModel(Quality.MP3_192);
 
             var compare = Subject.Compare(first, second);
 
@@ -39,8 +39,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.MP3192);
-            var second = new QualityModel(Quality.MP3320);
+            var first = new QualityModel(Quality.MP3_192);
+            var second = new QualityModel(Quality.MP3_320);
 
             var compare = Subject.Compare(first, second);
 
@@ -52,8 +52,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.MP3320, new Revision(version: 2));
-            var second = new QualityModel(Quality.MP3320, new Revision(version: 1));
+            var first = new QualityModel(Quality.MP3_320, new Revision(version: 2));
+            var second = new QualityModel(Quality.MP3_320, new Revision(version: 1));
 
             var compare = Subject.Compare(first, second);
 
@@ -65,8 +65,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenCustomProfile();
 
-            var first = new QualityModel(Quality.MP3192);
-            var second = new QualityModel(Quality.MP3320);
+            var first = new QualityModel(Quality.MP3_192);
+            var second = new QualityModel(Quality.MP3_320);
 
             var compare = Subject.Compare(first, second);
 

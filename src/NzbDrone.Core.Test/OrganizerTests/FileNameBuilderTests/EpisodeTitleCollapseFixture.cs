@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                             .With(e => e.AbsoluteEpisodeNumber = 102)
                             .Build();
 
-            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3256), ReleaseGroup = "LidarrTest" };
+            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
 
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(Moq.It.IsAny<Quality>()))

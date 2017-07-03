@@ -25,8 +25,8 @@ namespace NzbDrone.Core.Test.HistoryTests
         [SetUp]
         public void Setup()
         {
-            _profile = new Profile { Cutoff = Quality.MP3256, Items = QualityFixture.GetDefaultQualities() };
-            _profileCustom = new Profile { Cutoff = Quality.MP3256, Items = QualityFixture.GetDefaultQualities(Quality.MP3192) };
+            _profile = new Profile { Cutoff = Quality.MP3_256, Items = QualityFixture.GetDefaultQualities() };
+            _profileCustom = new Profile { Cutoff = Quality.MP3_256, Items = QualityFixture.GetDefaultQualities(Quality.MP3_192) };
         }
 
         [Test]
@@ -46,11 +46,11 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             Mocker.GetMock<IHistoryRepository>()
                 .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel> { new QualityModel(Quality.MP3192), new QualityModel(Quality.MP3256) });
+                .Returns(new List<QualityModel> { new QualityModel(Quality.MP3_192), new QualityModel(Quality.MP3_256) });
 
             var quality = Subject.GetBestQualityInHistory(_profile, 2);
 
-            quality.Should().Be(new QualityModel(Quality.MP3256));
+            quality.Should().Be(new QualityModel(Quality.MP3_256));
         }
 
         [Test]
@@ -58,11 +58,11 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             Mocker.GetMock<IHistoryRepository>()
                 .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel> { new QualityModel(Quality.MP3192), new QualityModel(Quality.MP3256) });
+                .Returns(new List<QualityModel> { new QualityModel(Quality.MP3_192), new QualityModel(Quality.MP3_256) });
 
             var quality = Subject.GetBestQualityInHistory(_profileCustom, 2);
 
-            quality.Should().Be(new QualityModel(Quality.MP3192));
+            quality.Should().Be(new QualityModel(Quality.MP3_192));
         }
 
         [Test]

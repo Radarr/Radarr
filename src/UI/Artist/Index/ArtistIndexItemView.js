@@ -17,7 +17,7 @@ module.exports = Marionette.ItemView.extend({
             element : this.ui.refresh,
             command : {
                 name     : 'refreshArtist',
-                seriesId : this.model.get('id')
+                artistId : this.model.get('id')
             }
         });
     },
@@ -29,7 +29,7 @@ module.exports = Marionette.ItemView.extend({
     _refreshArtist : function() {
         CommandController.Execute('refreshArtist', {
             name     : 'refreshArtist',
-            seriesId : this.model.id
+            artistId : this.model.id
         });
     }
 });

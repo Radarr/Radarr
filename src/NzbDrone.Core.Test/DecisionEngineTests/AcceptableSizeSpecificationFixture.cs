@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                     {
                                         Series = series,
                                         Release = new ReleaseInfo(),
-                                        ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                                        ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                                         Episodes = new List<Episode> { new Episode(), new Episode(), new Episode(), new Episode(), new Episode(), new Episode() }
                                     };
 
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                     {
                                         Series = series,
                                         Release = new ReleaseInfo(),
-                                        ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                                        ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                                         Episodes = new List<Episode> { new Episode(), new Episode() }
                                     };
 
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                     {
                                         Series = series,
                                         Release = new ReleaseInfo(),
-                                        ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                                        ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                                         Episodes = new List<Episode> { new Episode() { Id = 2 } }
 
                                     };
@@ -60,10 +60,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             qualityType = Builder<QualityDefinition>.CreateNew()
                 .With(q => q.MinSize = 2)
                 .With(q => q.MaxSize = 10)
-                .With(q => q.Quality = Quality.MP3192)
+                .With(q => q.Quality = Quality.MP3_192)
                 .Build();
 
-            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.Get(Quality.MP3192)).Returns(qualityType);
+            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.Get(Quality.MP3_192)).Returns(qualityType);
 
             Mocker.GetMock<IEpisodeService>().Setup(
                 s => s.GetEpisodesBySeason(It.IsAny<int>(), It.IsAny<int>()))

@@ -184,14 +184,14 @@ namespace NzbDrone.Api.Music
 
         public void Handle(TrackImportedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.ImportedTrack.Id); // TODO: Ensure we can pass DB ID instead of Metadata ID (SpotifyID)
+            BroadcastResourceChange(ModelAction.Updated, message.ImportedTrack.ArtistId);
         }
 
         public void Handle(TrackFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.Upgrade) return;
 
-            BroadcastResourceChange(ModelAction.Updated, message.TrackFile.Id); // TODO: Ensure we can pass DB ID instead of Metadata ID (SpotifyID)
+            BroadcastResourceChange(ModelAction.Updated, message.TrackFile.ArtistId); 
         }
 
         public void Handle(ArtistUpdatedEvent message)

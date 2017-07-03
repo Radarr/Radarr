@@ -47,7 +47,7 @@ namespace NzbDrone.Automation.Test.PageModel
             });
         }
 
-        public IWebElement SeriesNavIcon => FindByClass("x-series-nav");
+        public IWebElement ArtistNavIcon => FindByClass("x-artist-nav");
 
         public IWebElement CalendarNavIcon => FindByClass("x-calendar-nav");
 

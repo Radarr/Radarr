@@ -55,7 +55,7 @@ namespace NzbDrone.Core.MediaFiles
         public void Delete(TrackFile trackFile, DeleteMediaFileReason reason)
         {
             //Little hack so we have the tracks and artist attached for the event consumers
-            trackFile.Episodes.LazyLoad();
+            trackFile.Tracks.LazyLoad();
             trackFile.Path = Path.Combine(trackFile.Artist.Value.Path, trackFile.RelativePath);
 
             _mediaFileRepository.Delete(trackFile);
@@ -70,7 +70,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<string> FilterExistingFiles(List<string> files, Artist artist)
         {
-            //var artistFiles = GetFilesByArtist(artist.ForeignArtistId).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
             var artistFiles = GetFilesByArtist(artist.Id).Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList();
 
             if (!artistFiles.Any()) return files;
@@ -80,7 +79,6 @@ namespace NzbDrone.Core.MediaFiles
 
         public TrackFile Get(int id)
         {
-            // TODO: Should this be spotifyID or DB Id?
             return _mediaFileRepository.Get(id);
         }
 

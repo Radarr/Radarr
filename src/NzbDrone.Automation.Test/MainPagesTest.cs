@@ -17,11 +17,11 @@ namespace NzbDrone.Automation.Test
         }
 
         [Test]
-        public void series_page()
+        public void artist_page()
         {
-            page.SeriesNavIcon.Click();
+            page.ArtistNavIcon.Click();
             page.WaitForNoSpinner();
-            page.FindByClass("iv-series-index-seriesindexlayout").Should().NotBeNull();
+            page.FindByClass("iv-artist-index-artistindexlayout").Should().NotBeNull();
         }
 
         [Test]
@@ -63,14 +63,14 @@ namespace NzbDrone.Automation.Test
         [Test]
         public void add_series_page()
         {
-            page.SeriesNavIcon.Click();
+            page.ArtistNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.Find(By.LinkText("Add Series")).Click();
+            page.Find(By.LinkText("Add Artist")).Click();
 
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-addseries-addserieslayout").Should().NotBeNull();
+            page.FindByClass("iv-addartist-addartistlayout").Should().NotBeNull();
         }
     }
 }

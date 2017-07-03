@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
-        public LazyLoaded<List<Track>> Episodes { get; set; }
+        //public LazyLoaded<List<Track>> Episodes { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }
         public LazyLoaded<List<Track>> Tracks { get; set; }
 

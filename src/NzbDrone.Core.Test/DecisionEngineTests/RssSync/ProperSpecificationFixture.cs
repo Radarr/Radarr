@@ -31,34 +31,34 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             Mocker.Resolve<QualityUpgradableSpecification>();
 
-            _firstFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3512, new Revision(version: 1)), DateAdded = DateTime.Now };
-            _secondFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3512, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _firstFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _secondFile = new EpisodeFile { Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1)), DateAdded = DateTime.Now };
 
             var singleEpisodeList = new List<Episode> { new Episode { EpisodeFile = _firstFile, EpisodeFileId = 1 }, new Episode { EpisodeFile = null } };
             var doubleEpisodeList = new List<Episode> { new Episode { EpisodeFile = _firstFile, EpisodeFileId = 1 }, new Episode { EpisodeFile = _secondFile, EpisodeFileId = 1 }, new Episode { EpisodeFile = null } };
 
             var fakeSeries = Builder<Series>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3512 })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512 })
                          .Build();
 
             _parseResultMulti = new RemoteEpisode
             {
                 Series = fakeSeries,
-                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                 Episodes = doubleEpisodeList
             };
 
             _parseResultSingle = new RemoteEpisode
             {
                 Series = fakeSeries,
-                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3192, new Revision(version: 2)) },
+                ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
                 Episodes = singleEpisodeList
             };
         }
 
         private void WithFirstFileUpgradable()
         {
-            _firstFile.Quality = new QualityModel(Quality.MP3192);
+            _firstFile.Quality = new QualityModel(Quality.MP3_192);
         }
 
         private void GivenAutoDownloadPropers()
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_episodeFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.MP3192;
+            _firstFile.Quality.Quality = Quality.MP3_192;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
@@ -80,8 +80,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_first_episodeFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.MP3192;
-            _secondFile.Quality.Quality = Quality.MP3192;
+            _firstFile.Quality.Quality = Quality.MP3_192;
+            _secondFile.Quality.Quality = Quality.MP3_192;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
@@ -90,8 +90,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_second_episodeFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.MP3192;
-            _secondFile.Quality.Quality = Quality.MP3192;
+            _firstFile.Quality.Quality = Quality.MP3_192;
+            _secondFile.Quality.Quality = Quality.MP3_192;
 
             _secondFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_proper_but_auto_download_propers_is_false()
         {
-            _firstFile.Quality.Quality = Quality.MP3192;
+            _firstFile.Quality.Quality = Quality.MP3_192;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             GivenAutoDownloadPropers();
 
-            _firstFile.Quality.Quality = Quality.MP3192;
+            _firstFile.Quality.Quality = Quality.MP3_192;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
