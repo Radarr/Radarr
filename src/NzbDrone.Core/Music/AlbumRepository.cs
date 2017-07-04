@@ -48,7 +48,9 @@ namespace NzbDrone.Core.Music
         {
             var currentTime = DateTime.UtcNow;
 
-            pagingSpec.TotalRecords = GetMissingAlbumsQuery(pagingSpec, currentTime).GetRowCount();
+            //pagingSpec.TotalRecords = GetMissingAlbumsQuery(pagingSpec, currentTime).GetRowCount(); Cant Use GetRowCount with a Manual Query
+
+            pagingSpec.TotalRecords = GetMissingAlbumsQueryCount(pagingSpec, currentTime);
             pagingSpec.Records = GetMissingAlbumsQuery(pagingSpec, currentTime).ToList();
 
             return pagingSpec;
@@ -70,21 +72,67 @@ namespace NzbDrone.Core.Music
             return query.ToList();
         }
 
-        private SortBuilder<Album> GetMissingAlbumsQuery(PagingSpec<Album> pagingSpec, DateTime currentTime)
+        private QueryBuilder<Album> GetMissingAlbumsQuery(PagingSpec<Album> pagingSpec, DateTime currentTime)
         {
-            return Query.Join<Album, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
-                            .Where<Album>(pagingSpec.FilterExpression)
-                            
-                            .AndWhere(BuildReleaseDateCutoffWhereClause(currentTime))
-                            //.Where<Track>(t => t.TrackFileId == 0)
-                            .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
-                            .Skip(pagingSpec.PagingOffset())
-                            .Take(pagingSpec.PageSize);
+            string sortKey;
+            int monitored = 0;
+
+            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            {
+                monitored = 1;
+            }
+
+            if (pagingSpec.SortKey == "releaseDate")
+            {
+                sortKey = "[t0]." + pagingSpec.SortKey;
+            }
+            else if (pagingSpec.SortKey == "artist.sortName")
+            {
+                sortKey = "[t1]." + pagingSpec.SortKey.Split('.').Last();
+            }
+            else
+            {
+                sortKey = "[t0].releaseDate";
+            }
+
+                string query = string.Format("SELECT * FROM Albums [t0] INNER JOIN Artists [t1] ON ([t0].[ArtistId] = [t1].[Id])" +
+                    "WHERE (([t0].[Monitored] = {0}) AND ([t1].[Monitored] = {0})) AND {1}" +
+                    " AND NOT EXISTS (SELECT 1 from Tracks [t2] WHERE [t2].albumId = [t0].id AND [t2].trackFileId <> 0) ORDER BY {2} {3} LIMIT {4} OFFSET {5}",
+                    monitored, BuildReleaseDateCutoffWhereClause(currentTime), sortKey, pagingSpec.ToSortDirection(), pagingSpec.PageSize, pagingSpec.PagingOffset());
+
+                return Query.QueryText(query);
+
+            //Use Manual Query until we find a way to "NOT EXIST(SELECT 1 from Tracks WHERE [t2].trackFileId <> 0)"
+            
+            //return Query.Join<Album, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
+            //                .Where<Album>(pagingSpec.FilterExpression)
+            //                .AndWhere(BuildReleaseDateCutoffWhereClause(currentTime))
+            //                //.Where<Track>(t => t.TrackFileId == 0)
+            //                .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+            //                .Skip(pagingSpec.PagingOffset())
+            //                .Take(pagingSpec.PageSize);
+        }
+
+        private int GetMissingAlbumsQueryCount(PagingSpec<Album> pagingSpec, DateTime currentTime)
+        {
+            var monitored = 0;
+
+            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            {
+                monitored = 1;
+            }
+            
+            string query = string.Format("SELECT * FROM Albums [t0] INNER JOIN Artists [t1] ON ([t0].[ArtistId] = [t1].[Id])" +
+                "WHERE (([t0].[Monitored] = {0}) AND ([t1].[Monitored] = {0})) AND {1}" +
+                " AND NOT EXISTS (SELECT 1 from Tracks [t2] WHERE [t2].albumId = [t0].id AND [t2].trackFileId <> 0)",
+                monitored, BuildReleaseDateCutoffWhereClause(currentTime));
+
+            return Query.QueryText(query).Count();
         }
 
         private string BuildReleaseDateCutoffWhereClause(DateTime currentTime)
         {
-            return string.Format("WHERE datetime(strftime('%s', [t0].[ReleaseDate]),  'unixepoch') <= '{0}'",
+            return string.Format("datetime(strftime('%s', [t0].[ReleaseDate]),  'unixepoch') <= '{0}'",
                                  currentTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
 

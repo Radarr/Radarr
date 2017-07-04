@@ -7,7 +7,7 @@ var MissingCollection = require('./MissingCollection');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var ArtistTitleCell = require('../../Cells/ArtistTitleCell');
 var EpisodeNumberCell = require('../../Cells/EpisodeNumberCell');
-var EpisodeTitleCell = require('../../Cells/EpisodeTitleCell');
+var AlbumTitleCell = require('../../Cells/AlbumTitleCell');
 var RelativeDateCell = require('../../Cells/RelativeDateCell');
 var EpisodeStatusCell = require('../../Cells/EpisodeStatusCell');
 var GridPager = require('../../Shared/Grid/Pager');
@@ -53,8 +53,8 @@ module.exports = Marionette.Layout.extend({
 //        },
         {
             name     : 'this',
-            label    : 'Track Title',
-            cell     : EpisodeTitleCell,
+            label    : 'Album Title',
+            cell     : AlbumTitleCell,
             sortable : false
         },
         {
