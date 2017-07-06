@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Notifications.Plex
 
                 if (sections.Empty())
                 {
-                    return new ValidationFailure("Host", "At least one TV library is required");
+                    return new ValidationFailure("Host", "At least one film library is required");
                 }
             }
             catch(PlexAuthenticationException ex)
