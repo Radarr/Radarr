@@ -153,9 +153,9 @@ PackageMono()
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
 
-    echo "Renaming NzbDrone.Console.exe to NzbDrone.exe"
-    rm $outputFolderMono/NzbDrone.exe*
-    for file in $outputFolderMono/NzbDrone.Console.exe*; do
+    echo "Renaming Lidarr.Console.exe to Lidarr.exe"
+    rm $outputFolderMono/Lidarr.exe*
+    for file in $outputFolderMono/Lidarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
