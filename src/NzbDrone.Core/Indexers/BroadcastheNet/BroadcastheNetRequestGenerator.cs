@@ -160,6 +160,11 @@ namespace NzbDrone.Core.Indexers.BroadcastheNet
             return new IndexerPageableRequestChain();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private bool AddSeriesSearchParameters(BroadcastheNetTorrentQuery parameters, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria.Series.TvdbId != 0)

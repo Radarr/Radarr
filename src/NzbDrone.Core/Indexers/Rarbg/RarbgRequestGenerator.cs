@@ -72,6 +72,15 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            pageableRequests.Add(GetPagedRequests("search", null, "{0}", searchCriteria.Album.Title));
+
+            return pageableRequests;
+        }
+
         private IEnumerable<IndexerRequest> GetPagedRequests(string mode, int? tvdbId, string query, params object[] args)
         {
             var requestBuilder = new HttpRequestBuilder(Settings.BaseUrl)

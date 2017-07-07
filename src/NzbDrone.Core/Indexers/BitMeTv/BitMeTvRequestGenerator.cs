@@ -42,6 +42,11 @@ namespace NzbDrone.Core.Indexers.BitMeTv
             return new IndexerPageableRequestChain();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetRssRequests()
         {
             var request = new IndexerRequest(string.Format("{0}/rss.php?uid={1}&passkey={2}", Settings.BaseUrl.Trim().TrimEnd('/'), Settings.UserId, Settings.RssPasskey), HttpAccept.Html);

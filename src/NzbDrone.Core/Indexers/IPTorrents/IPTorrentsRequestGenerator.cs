@@ -42,6 +42,11 @@ namespace NzbDrone.Core.Indexers.IPTorrents
             return new IndexerPageableRequestChain();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetRssRequests()
         {
             yield return new IndexerRequest(Settings.Url, HttpAccept.Rss);

@@ -12,6 +12,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 using System.Linq;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.IndexerSearch
 {
@@ -20,14 +21,19 @@ namespace NzbDrone.Core.IndexerSearch
         List<DownloadDecision> EpisodeSearch(int episodeId, bool userInvokedSearch);
         List<DownloadDecision> EpisodeSearch(Episode episode, bool userInvokedSearch);
         List<DownloadDecision> SeasonSearch(int seriesId, int seasonNumber, bool missingOnly, bool userInvokedSearch);
+        List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch);
     }
 
     public class NzbSearchService : ISearchForNzb
     {
         private readonly IIndexerFactory _indexerFactory;
         // private readonly ISceneMappingService _sceneMapping;
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private readonly ISeriesService _seriesService;
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private readonly IEpisodeService _episodeService;
+
+        private readonly IAlbumService _albumService;
         private readonly IMakeDownloadDecision _makeDownloadDecision;
         private readonly Logger _logger;
 
@@ -35,6 +41,7 @@ namespace NzbDrone.Core.IndexerSearch
                                 // ISceneMappingService sceneMapping,
                                 ISeriesService seriesService,
                                 IEpisodeService episodeService,
+                                IAlbumService albumService,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 Logger logger)
         {
@@ -42,6 +49,7 @@ namespace NzbDrone.Core.IndexerSearch
             //_sceneMapping = sceneMapping;
             _seriesService = seriesService;
             _episodeService = episodeService;
+            _albumService = albumService;
             _makeDownloadDecision = makeDownloadDecision;
             _logger = logger;
         }
@@ -158,6 +166,18 @@ namespace NzbDrone.Core.IndexerSearch
             return downloadDecisions;
         }
 
+        public List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch)
+        {
+            var album = _albumService.GetAlbum(1);
+            return AlbumSearch(album, missingOnly, userInvokedSearch);
+        }
+
+        public List<DownloadDecision> AlbumSearch(Album album, bool missingOnly, bool userInvokedSearch)
+        {
+            var searchSpec = Get<AlbumSearchCriteria>(album, userInvokedSearch);
+            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
+        }
+
         private List<DownloadDecision> SearchSingle(Series series, Episode episode, bool userInvokedSearch)
         {
             var searchSpec = Get<SingleEpisodeSearchCriteria>(series, new List<Episode> { episode }, userInvokedSearch);
@@ -240,6 +260,16 @@ namespace NzbDrone.Core.IndexerSearch
             spec.Episodes = episodes;
 
             spec.SceneTitles.Add(series.Title);
+            spec.UserInvokedSearch = userInvokedSearch;
+
+            return spec;
+        }
+
+        private TSpec Get<TSpec>(Album album, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        {
+            var spec = new TSpec();
+
+            spec.Album = album;
             spec.UserInvokedSearch = userInvokedSearch;
 
             return spec;
