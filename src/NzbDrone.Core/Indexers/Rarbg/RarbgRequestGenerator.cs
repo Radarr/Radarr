@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -34,6 +35,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -43,6 +45,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -52,11 +55,13 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
         {
             return new IndexerPageableRequestChain();
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
