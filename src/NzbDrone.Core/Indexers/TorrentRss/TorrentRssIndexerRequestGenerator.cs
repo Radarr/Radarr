@@ -43,6 +43,11 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             return new IndexerPageableRequestChain();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetRssRequests(string searchParameters)
         {
             var request = new IndexerRequest(Settings.BaseUrl.Trim().TrimEnd('/'), HttpAccept.Rss);

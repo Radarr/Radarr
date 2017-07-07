@@ -43,6 +43,11 @@ namespace NzbDrone.Core.Indexers.HDBits
             return new IndexerPageableRequestChain();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();

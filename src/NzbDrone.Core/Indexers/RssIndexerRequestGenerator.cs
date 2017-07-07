@@ -46,5 +46,10 @@ namespace NzbDrone.Core.Indexers
         {
             return new IndexerPageableRequestChain();
         }
+
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

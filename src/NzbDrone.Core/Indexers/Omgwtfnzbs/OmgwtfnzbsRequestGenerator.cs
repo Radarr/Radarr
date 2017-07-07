@@ -88,6 +88,11 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();
