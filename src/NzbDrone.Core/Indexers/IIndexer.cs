@@ -12,10 +12,15 @@ namespace NzbDrone.Core.Indexers
         DownloadProtocol Protocol { get; }
         
         IList<ReleaseInfo> FetchRecent();
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria);
         IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
     }

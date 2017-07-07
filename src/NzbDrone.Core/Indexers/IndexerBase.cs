@@ -62,10 +62,16 @@ namespace NzbDrone.Core.Indexers
         protected TSettings Settings => (TSettings)Definition.Settings;
 
         public abstract IList<ReleaseInfo> FetchRecent();
+
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public abstract IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public abstract IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public abstract IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public abstract IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria);
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public abstract IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria);
         public abstract IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
 
