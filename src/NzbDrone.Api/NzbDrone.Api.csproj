@@ -108,6 +108,7 @@
     <Compile Include="Commands\CommandResource.cs" />
     <Compile Include="AlbumStudio\AlbumStudioModule.cs" />
     <Compile Include="AlbumStudio\AlbumStudioResource.cs" />
+    <Compile Include="Music\ArtistEditorModule.cs" />
     <Compile Include="TrackFiles\TrackFileModule.cs" />
     <Compile Include="TrackFiles\TrackFileResource.cs" />
     <Compile Include="Albums\AlbumModule.cs" />

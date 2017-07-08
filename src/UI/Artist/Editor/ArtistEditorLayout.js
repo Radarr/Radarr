@@ -6,7 +6,7 @@ var ArtistCollection = require('../ArtistCollection');
 var ArtistTitleCell = require('../../Cells/ArtistTitleCell');
 var ProfileCell = require('../../Cells/ProfileCell');
 var ArtistStatusCell = require('../../Cells/ArtistStatusCell');
-var ArtistFolderCell = require('../../Cells/ArtistFolderCell');
+var AlbumFolderCell = require('../../Cells/AlbumFolderCell');
 var SelectAllCell = require('../../Cells/SelectAllCell');
 var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./ArtistEditorFooterView');
@@ -56,9 +56,9 @@ module.exports = Marionette.Layout.extend({
             cell  : ProfileCell
         },
         {
-            name  : 'artistFolder',
-            label : 'Artist Folder',
-            cell  : ArtistFolderCell
+            name  : 'albumFolder',
+            label : 'Album Folder',
+            cell  : AlbumFolderCell
         },
         {
             name  : 'path',

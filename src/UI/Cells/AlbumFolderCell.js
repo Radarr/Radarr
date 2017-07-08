@@ -5,9 +5,8 @@ module.exports = Backgrid.Cell.extend({
 
     render : function() {
         this.$el.empty();
-
-        var artistFolder = this.model.get(this.column.get('name'));
-        this.$el.html(artistFolder.toString());
+        var albumFolder = this.model.get(this.column.get('name'));
+        this.$el.html(albumFolder.toString());
 
         return this;
     }
