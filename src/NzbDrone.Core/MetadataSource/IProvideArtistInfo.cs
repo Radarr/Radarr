@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NzbDrone.Core.MetadataSource.SkyHook
+namespace NzbDrone.Core.MetadataSource
 {
     public interface IProvideArtistInfo
     {

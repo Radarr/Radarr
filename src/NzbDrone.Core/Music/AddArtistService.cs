@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
         Artist AddArtist(Artist newArtist);
     }
 
-    public class AddSeriesService : IAddArtistService
+    public class AddArtistService : IAddArtistService
     {
         private readonly IArtistService _artistService;
         private readonly IProvideArtistInfo _artistInfo;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Music
         private readonly IAddArtistValidator _addArtistValidator;
         private readonly Logger _logger;
 
-        public AddSeriesService(IArtistService artistService,
+        public AddArtistService(IArtistService artistService,
                                 IProvideArtistInfo artistInfo,
                                 IBuildFileNames fileNameBuilder,
                                 IAddArtistValidator addArtistValidator,

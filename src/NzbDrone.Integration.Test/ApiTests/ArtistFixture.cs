@@ -12,10 +12,10 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_with_tags_should_store_them()
         {
-            EnsureNoArtsit("266189", "Alien Ant Farm");
+            EnsureNoArtist("266189", "Alien Ant Farm");
             var tag = EnsureTag("abc");
 
-            var artist = Artist.Lookup("266189").Single();
+            var artist = Artist.Lookup("lidarr:266189").Single();
 
             artist.ProfileId = 1;
             artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
@@ -31,9 +31,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_without_profileid_should_return_badrequest()
         {
-            EnsureNoArtsit("266189", "Alien Ant Farm");
+            EnsureNoArtist("266189", "Alien Ant Farm");
 
-            var artist = Artist.Lookup("tvdb:266189").Single();
+            var artist = Artist.Lookup("lidarr:266189").Single();
 
             artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
 
@@ -43,7 +43,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_without_path_should_return_badrequest()
         {
-            EnsureNoArtsit("266189", "Alien Ant Farm");
+            EnsureNoArtist("266189", "Alien Ant Farm");
 
             var artist = Artist.Lookup("lidarr:266189").Single();
 
@@ -55,7 +55,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void add_artist()
         {
-            EnsureNoArtsit("266189", "Alien Ant Farm");
+            EnsureNoArtist("266189", "Alien Ant Farm");
 
             var artist = Artist.Lookup("lidarr:266189").Single();
 

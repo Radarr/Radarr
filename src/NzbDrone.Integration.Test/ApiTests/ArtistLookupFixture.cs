@@ -19,7 +19,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void lookup_new_series_by_tvdbid()
         {
-            var artist = Artist.Lookup("tvdb:266189");
+            var artist = Artist.Lookup("lidarr:266189");
 
             artist.Should().NotBeEmpty();
             artist.Should().Contain(c => c.Name == "The Blacklist");

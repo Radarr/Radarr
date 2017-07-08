@@ -14,7 +14,6 @@ using NzbDrone.Api.Blacklist;
 using NzbDrone.Api.Commands;
 using NzbDrone.Api.Config;
 using NzbDrone.Api.DownloadClient;
-using NzbDrone.Api.EpisodeFiles;
 using NzbDrone.Api.TrackFiles;
 using NzbDrone.Api.Episodes;
 using NzbDrone.Api.History;
@@ -205,7 +204,7 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public ArtistResource EnsureArtist(string lidarrId, string artsitName, bool? monitored = null)
+        public ArtistResource EnsureArtist(string lidarrId, string artistName, bool? monitored = null)
         {
             var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
 
@@ -252,7 +251,7 @@ namespace NzbDrone.Integration.Test
         }
 
 
-        public void EnsureNoArtsit(string lidarrId, string artistTitle)
+        public void EnsureNoArtist(string lidarrId, string artistTitle)
         {
             var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == lidarrId);
 

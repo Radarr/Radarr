@@ -11,7 +11,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void missing_should_be_empty()
         {
-            EnsureNoArtsit("266189", "The Blacklist");
+            EnsureNoArtist("266189", "The Blacklist");
 
             var result = WantedMissing.GetPaged(0, 15, "releaseDate", "desc");
 

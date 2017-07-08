@@ -5,7 +5,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.MetadataSource.SkyHook;
+using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
 using System;
