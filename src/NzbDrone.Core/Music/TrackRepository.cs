@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Music
 
         public List<Track> GetTracks(int artistId)
         {
-            return Query.Join<Track, Artist>(JoinType.Inner, s => s.Artist, (track, artist) => track.ArtistId == artist.Id).ToList();
+            return Query.Where(s => s.ArtistId == artistId).ToList();
         }
 
         public List<Track> GetTracks(int artistId, int albumId)
