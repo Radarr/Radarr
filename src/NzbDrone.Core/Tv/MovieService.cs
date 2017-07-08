@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace NzbDrone.Core.Tv
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie);
+        List<Movie> FilterExistingMovies(List<Movie> movies);
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
         List<Movie> MoviesWithFiles(int movieId);
@@ -443,6 +445,22 @@ namespace NzbDrone.Core.Tv
             }
 
             return false;
+        }
+
+        public List<Movie> FilterExistingMovies(List<Movie> movies)
+        {
+            var allMovies = GetAllMovies();
+
+            var withTmdbid = movies.Where(m => m.TmdbId != 0).ToList();
+            var withoutTmdbid = movies.Where(m => m.TmdbId == 0).ToList();
+            var withImdbid = withoutTmdbid.Where(m => m.ImdbId.IsNotNullOrWhiteSpace());
+            var rest = withoutTmdbid.Where(m => m.ImdbId.IsNullOrWhiteSpace());
+
+            var ret = withTmdbid.ExceptBy(m => m.TmdbId, allMovies, m => m.TmdbId, EqualityComparer<int>.Default)
+                .Union(withImdbid.ExceptBy(m => m.ImdbId, allMovies, m => m.ImdbId, EqualityComparer<string>.Default))
+                .Union(rest.ExceptBy(m => m.Title.CleanSeriesTitle(), allMovies, m => m.CleanTitle, EqualityComparer<string>.Default)).ToList();
+
+            return ret;
         }
     }
 }
