@@ -1,7 +1,14 @@
 @import "../Content/badges.less";
 @import "../Shared/Styles/clickable.less";
 
-.season {
+.artist-albums {
+  div {
+    display       : inline-block;
+    padding   : 4px;
+  }
+}
+
+.album {
   display       : inline-block;
   margin-bottom : 4px;
 
@@ -31,11 +38,11 @@
     background-color          : #f7f7f7;
   }
   
-  &.season-all .label:last-child {
+  &.album-all .label:last-child {
     background-color          : #e0ffe0;
   }
 
-  .season-monitored {
+  .album-monitored {
     width : 16px;
 
     i {
@@ -43,11 +50,11 @@
     }
   }
 
-  .season-number {
+  .album-number {
     font-size : 12px;
   }
 
-  .season-status {
+  .album-status {
     display        : inline-block;
     vertical-align : baseline !important;
   }

@@ -58,30 +58,19 @@ namespace NzbDrone.Core.Music
         {
 
             ForeignArtistId = otherArtist.ForeignArtistId;
-            MBId = otherArtist.MBId;
-            TADBId = otherArtist.TADBId;
-            DiscogsId = otherArtist.DiscogsId;
-            AMId = otherArtist.AMId;
-            Name = otherArtist.Name;
-            NameSlug = otherArtist.NameSlug;
-            CleanName = otherArtist.CleanName;
-            Monitored = otherArtist.Monitored;
-            AlbumFolder = otherArtist.AlbumFolder;
-            LastInfoSync = otherArtist.LastInfoSync;
-            Images = otherArtist.Images;
+           
             Path = otherArtist.Path;
-            Genres = otherArtist.Genres;
-            RootFolderPath = otherArtist.RootFolderPath;
-            Added = otherArtist.Added;
+
             Profile = otherArtist.Profile;
-            ProfileId = otherArtist.ProfileId;
+
             Albums = otherArtist.Albums;
+
+            ProfileId = otherArtist.ProfileId;
             Tags = otherArtist.Tags;
             AddOptions = otherArtist.AddOptions;
-            Ratings = otherArtist.Ratings;
-            Members = otherArtist.Members;
-
-            
+            RootFolderPath = otherArtist.RootFolderPath;
+            Monitored = otherArtist.Monitored;
+            AlbumFolder = otherArtist.AlbumFolder;
 
         }
     }

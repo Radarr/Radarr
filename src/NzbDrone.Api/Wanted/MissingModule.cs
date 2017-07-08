@@ -2,7 +2,7 @@
 using NzbDrone.Api.Albums;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 
@@ -11,10 +11,11 @@ namespace NzbDrone.Api.Wanted
     public class MissingModule : AlbumModuleWithSignalR
     {
         public MissingModule(IAlbumService albumService,
+                             IArtistStatisticsService artistStatisticsService,
                              IArtistService artistService,
                              IQualityUpgradableSpecification qualityUpgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
+            : base(albumService, artistStatisticsService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
         {
             GetResourcePaged = GetMissingAlbums;
         }

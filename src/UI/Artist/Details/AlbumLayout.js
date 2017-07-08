@@ -132,11 +132,9 @@ module.exports = Marionette.Layout.extend({
         this.trackCollection = this.fullTrackCollection.byAlbum(this.model.get('id'));
         this._updateTrackCollection();
 
-        console.log(options);
-
         this.showingTracks = this._shouldShowTracks();
 
-        this.listenTo(this.model, 'sync', this._afterSeasonMonitored);
+        this.listenTo(this.model, 'sync', this._afterAlbumMonitored);
         this.listenTo(this.trackCollection, 'sync', this.render);
         this.listenTo(this.fullTrackCollection, 'sync', this._refreshTracks);
         this.listenTo(this.model,  'change:images', this._updateImages);
@@ -203,28 +201,20 @@ module.exports = Marionette.Layout.extend({
         if (!this.artist.get('monitored')) {
 
             Messenger.show({
-                message : 'Unable to change monitored state when series is not monitored',
+                message : 'Unable to change monitored state when artist is not monitored',
                 type    : 'error'
             });
 
             return;
         }
 
-        var name = 'monitored';
-        this.model.set(name, !this.model.get(name));
-        this.artist.setSeasonMonitored(this.model.get('albumId'));
-
-        var savePromise = this.artist.save().always(this._afterSeasonMonitored.bind(this));
+        //var savePromise = this.model.save('monitored', !this.model.get('monitored'), { wait : true });
+        var savePromise = this.model.save('monitored', !this.model.get('monitored'), { wait : true });
 
         this.ui.albumMonitored.spinForPromise(savePromise);
     },
 
-    _afterSeasonMonitored : function() {
-        var self = this;
-
-        _.each(this.trackCollection.models, function(track) {
-            track.set({ monitored : self.model.get('monitored') });
-        });
+    _afterAlbumMonitored : function() {
 
         this.render();
     },

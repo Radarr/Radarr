@@ -2,23 +2,23 @@ var _ = require('underscore');
 var vent = require('vent');
 var Backgrid = require('backgrid');
 var Marionette = require('marionette');
-var EmptyView = require('../Series/Index/EmptyView');
-var SeriesCollection = require('../Series/SeriesCollection');
+var EmptyView = require('../Artist/Index/EmptyView');
+var ArtistCollection = require('../Artist/ArtistCollection');
 var ToolbarLayout = require('../Shared/Toolbar/ToolbarLayout');
-var FooterView = require('./SeasonPassFooterView');
+var FooterView = require('./AlbumStudioFooterView');
 var SelectAllCell = require('../Cells/SelectAllCell');
-var SeriesStatusCell = require('../Cells/SeriesStatusCell');
-var SeriesTitleCell = require('../Cells/SeriesTitleCell');
-var SeriesMonitoredCell = require('../Cells/ToggleCell');
-var SeasonsCell = require('./SeasonsCell');
+var ArtistStatusCell = require('../Cells/ArtistStatusCell');
+var ArtistTitleCell = require('../Cells/ArtistTitleCell');
+var ArtistMonitoredCell = require('../Cells/ArtistMonitoredCell');
+var AlbumsCell = require('./AlbumsCell');
 require('../Mixins/backbone.signalr.mixin');
 
 module.exports = Marionette.Layout.extend({
-    template : 'SeasonPass/SeasonPassLayoutTemplate',
+    template : 'AlbumStudio/AlbumStudioLayoutTemplate',
 
     regions : {
         toolbar : '#x-toolbar',
-        series  : '#x-series'
+        artist  : '#x-artist'
     },
 
     columns : [
@@ -31,42 +31,38 @@ module.exports = Marionette.Layout.extend({
         {
             name  : 'statusWeight',
             label : '',
-            cell  : SeriesStatusCell
-        },
-        {
-            name      : 'title',
-            label     : 'Title',
-            cell      : SeriesTitleCell,
-            cellValue : 'this'
+            cell  : ArtistStatusCell
         },
         {
             name       : 'monitored',
-            label      : '',
-            cell       : SeriesMonitoredCell,
+            label      : 'Artist',
+            cell       : ArtistMonitoredCell,
             trueClass  : 'icon-lidarr-monitored',
             falseClass : 'icon-lidarr-unmonitored',
-            tooltip    : 'Toggle series monitored status',
+            tooltip    : 'Toggle artist monitored status',
             sortable   : false
         },
+
         {
-            name      : 'seasons',
-            label     : 'Seasons',
-            cell      : SeasonsCell,
+            name      : 'albums',
+            label     : 'Albums',
+            cell      : AlbumsCell,
             cellValue : 'this'
         }
     ],
 
     initialize : function() {
-        this.seriesCollection = SeriesCollection.clone();
-        this.seriesCollection.shadowCollection.bindSignalR();
+        this.artistCollection = ArtistCollection.clone();
 
-//        this.listenTo(this.seriesCollection, 'sync', this.render);
-        this.listenTo(this.seriesCollection, 'seasonpass:saved', this.render);
+        this.artistCollection.shadowCollection.bindSignalR();
+
+        this.listenTo(this.artistCollection, 'sync', this.render);
+        this.listenTo(this.artistCollection, 'albumstudio:saved', this.render);
 
         this.filteringOptions = {
             type          : 'radio',
             storeState    : true,
-            menuKey       : 'seasonpass.filterMode',
+            menuKey       : 'albumstudio.filterMode',
             defaultAction : 'all',
             items         : [
                 {
@@ -87,14 +83,14 @@ module.exports = Marionette.Layout.extend({
                     key      : 'continuing',
                     title    : '',
                     tooltip  : 'Continuing Only',
-                    icon     : 'icon-lidarr-series-continuing',
+                    icon     : 'icon-lidarr-artist-continuing',
                     callback : this._setFilter
                 },
                 {
                     key      : 'ended',
                     title    : '',
                     tooltip  : 'Ended Only',
-                    icon     : 'icon-lidarr-series-ended',
+                    icon     : 'icon-lidarr-artist-ended',
                     callback : this._setFilter
                 }
             ]
@@ -119,34 +115,34 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showTable : function() {
-        if (this.seriesCollection.shadowCollection.length === 0) {
-            this.series.show(new EmptyView());
+        if (this.artistCollection.shadowCollection.length === 0) {
+            this.artist.show(new EmptyView());
             this.toolbar.close();
             return;
         }
 
-        this.columns[0].sortedCollection = this.seriesCollection;
+        this.columns[0].sortedCollection = this.artistCollection;
 
         this.editorGrid = new Backgrid.Grid({
-            collection : this.seriesCollection,
+            collection : this.artistCollection,
             columns    : this.columns,
             className  : 'table table-hover'
         });
 
-        this.series.show(this.editorGrid);
+        this.artist.show(this.editorGrid);
         this._showFooter();
     },
 
     _showFooter : function() {
         vent.trigger(vent.Commands.OpenControlPanelCommand, new FooterView({
             editorGrid : this.editorGrid,
-            collection : this.seriesCollection
+            collection : this.artistCollection
         }));
     },
 
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
 
-        this.seriesCollection.setFilterMode(mode);
+        this.artistCollection.setFilterMode(mode);
     }
 });

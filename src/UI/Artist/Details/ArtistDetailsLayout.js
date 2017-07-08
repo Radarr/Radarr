@@ -127,11 +127,11 @@ module.exports = Marionette.Layout.extend({
         if (monitored) {
             this.ui.monitored.addClass('icon-lidarr-monitored');
             this.ui.monitored.removeClass('icon-lidarr-unmonitored');
-            this.$el.removeClass('series-not-monitored');
+            this.$el.removeClass('artist-not-monitored');
         } else {
             this.ui.monitored.addClass('icon-lidarr-unmonitored');
             this.ui.monitored.removeClass('icon-lidarr-monitored');
-            this.$el.addClass('series-not-monitored');
+            this.$el.addClass('artist-not-monitored');
         }
     },
 
@@ -171,8 +171,6 @@ module.exports = Marionette.Layout.extend({
 
         this.trackCollection = new TrackCollection({ artistId : this.model.id }).bindSignalR();
         this.trackFileCollection = new TrackFileCollection({ artistId : this.model.id }).bindSignalR();
-
-        console.log (this.trackCollection);
 
         reqres.setHandler(reqres.Requests.GetEpisodeFileById, function(trackFileId) {
             return self.trackFileCollection.get(trackFileId);

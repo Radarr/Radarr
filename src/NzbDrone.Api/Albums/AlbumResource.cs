@@ -23,6 +23,7 @@ namespace NzbDrone.Api.Albums
         public List<string> Genres { get; set; }
         public ArtistResource Artist { get; set; }
         public List<MediaCover> Images { get; set; }
+        public AlbumStatisticsResource Statistics { get; set; }
 
     }
 

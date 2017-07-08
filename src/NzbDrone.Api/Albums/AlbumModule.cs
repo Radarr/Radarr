@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
 
@@ -9,10 +10,11 @@ namespace NzbDrone.Api.Albums
     public class AlbumModule : AlbumModuleWithSignalR
     {
         public AlbumModule(IArtistService artistService,
+                             IArtistStatisticsService artistStatisticsService,
                              IAlbumService albumService,
                              IQualityUpgradableSpecification qualityUpgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistService, qualityUpgradableSpecification, signalRBroadcaster)
+            : base(albumService, artistStatisticsService, artistService, qualityUpgradableSpecification, signalRBroadcaster)
         {
             GetResourceAll = GetAlbums;
             UpdateResource = SetMonitored;

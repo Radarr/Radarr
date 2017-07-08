@@ -52,6 +52,7 @@ namespace NzbDrone.Api.Music
         public string RootFolderPath { get; set; }
         //public string Certification { get; set; }
         public List<string> Genres { get; set; }
+        public string CleanName { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
         public AddArtistOptions AddOptions { get; set; }
@@ -73,6 +74,7 @@ namespace NzbDrone.Api.Music
                 DiscogsId = model.DiscogsId,
                 AllMusicId = model.AMId,
                 Name = model.Name,
+                CleanName = model.CleanName,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
 
@@ -88,8 +90,7 @@ namespace NzbDrone.Api.Music
                 //AirTime = resource.AirTime,
                 Images = model.Images,
                 Members = model.Members,
-
-                Albums = model.Albums.ToResource(),
+                //Albums = model.Albums.ToResource(),
                 //Year = resource.Year,
 
                 Path = model.Path,
@@ -127,6 +128,7 @@ namespace NzbDrone.Api.Music
                 Id = resource.Id,
 
                 Name = resource.Name,
+                CleanName = resource.CleanName,
                 //AlternateTitles
                 //SortTitle = resource.SortTitle,
                 MBId = resource.MBId,
@@ -145,8 +147,7 @@ namespace NzbDrone.Api.Music
                 //AirTime = resource.AirTime,
                 Images = resource.Images,
                 Members = resource.Members,
-
-                Albums = resource.Albums.ToModel(),
+                //Albums = resource.Albums.ToModel(),
                 //Year = resource.Year,
 
                 Path = resource.Path,

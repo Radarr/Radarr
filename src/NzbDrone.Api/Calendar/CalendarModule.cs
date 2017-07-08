@@ -6,6 +6,7 @@ using NzbDrone.Api.Albums;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Calendar
@@ -13,10 +14,11 @@ namespace NzbDrone.Api.Calendar
     public class CalendarModule : AlbumModuleWithSignalR
     {
         public CalendarModule(IAlbumService albumService,
+                              IArtistStatisticsService artistStatisticsService,
                               IArtistService artistService,
                               IQualityUpgradableSpecification qualityUpgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "calendar")
+            : base(albumService, artistStatisticsService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }

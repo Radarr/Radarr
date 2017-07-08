@@ -6,8 +6,5 @@ namespace NzbDrone.Core.Tv
     {
         public bool IgnoreEpisodesWithFiles { get; set; }
         public bool IgnoreEpisodesWithoutFiles { get; set; }
-
-        public bool IgnoreTracksWithFiles { get; set; }
-        public bool IgnoreTracksWithoutFiles { get; set; }
     }
 }

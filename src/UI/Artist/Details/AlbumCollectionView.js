@@ -11,7 +11,7 @@ var view = Marionette.CollectionView.extend({
         if (!options.trackCollection) {
             throw 'trackCollection is needed';
         }
-        console.log(options);
+
         this.albumCollection = options.collection;
         this.trackCollection = options.trackCollection;
         this.artist = options.artist;

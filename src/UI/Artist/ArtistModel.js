@@ -11,18 +11,17 @@ module.exports = Backbone.Model.extend({
         status           : 0
     },
 
-    setAlbumsMonitored : function(albumName) {
+    setAlbumsMonitored : function(albumId) {
         _.each(this.get('albums'), function(album) {
-            console.log(album);
-            if (album.albumName === albumName) {
+            if (album.albumId === albumId) {
                 album.monitored = !album.monitored;
             }
         });
     },
 
-    setAlbumPass : function(seasonNumber) {
+    setAlbumPass : function(monitored) {
         _.each(this.get('albums'), function(album) {
-            if (album.seasonNumber >= seasonNumber) {
+            if (monitored === 0) {
                 album.monitored = true;
             } else {
                 album.monitored = false;

@@ -9,7 +9,7 @@ var WantedLayout = require('./Wanted/WantedLayout');
 var CalendarLayout = require('./Calendar/CalendarLayout');
 var ReleaseLayout = require('./Release/ReleaseLayout');
 var SystemLayout = require('./System/SystemLayout');
-var SeasonPassLayout = require('./SeasonPass/SeasonPassLayout');
+var AlbumStudioLayout = require('./AlbumStudio/AlbumStudioLayout');
 //var SeriesEditorLayout = require('./Series/Editor/SeriesEditorLayout');
 var ArtistEditorLayout = require('./Artist/Editor/ArtistEditorLayout');
 
@@ -49,9 +49,9 @@ module.exports = NzbDroneController.extend({
         this.showMainRegion(new SystemLayout({ action : action }));
     },
 
-    seasonPass : function() {
-        this.setTitle('Season Pass');
-        this.showMainRegion(new SeasonPassLayout());
+    albumStudio : function() {
+        this.setTitle('Album Studio');
+        this.showMainRegion(new AlbumStudioLayout());
     },
 
     artistEditor : function() {

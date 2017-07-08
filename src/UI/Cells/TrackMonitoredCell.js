@@ -15,7 +15,7 @@ module.exports = ToggleCell.extend({
         if (!artist.get('monitored')) {
 
             Messenger.show({
-                message : 'Unable to change monitored state when series is not monitored',
+                message : 'Unable to change monitored state when artist is not monitored',
                 type    : 'error'
             });
 

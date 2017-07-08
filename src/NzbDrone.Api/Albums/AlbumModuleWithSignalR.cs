@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Api.TrackFiles;
 using NzbDrone.Api.Music;
@@ -8,6 +11,7 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Albums
@@ -15,16 +19,19 @@ namespace NzbDrone.Api.Albums
     public abstract class AlbumModuleWithSignalR : NzbDroneRestModuleWithSignalR<AlbumResource, Track>
     {
         protected readonly IAlbumService _albumService;
+        protected readonly IArtistStatisticsService _artistStatisticsService;
         protected readonly IArtistService _artistService;
         protected readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
+                                           IArtistStatisticsService artistStatisticsService,
                                            IArtistService artistService,
                                            IQualityUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
             _albumService = albumService;
+            _artistStatisticsService = artistStatisticsService;
             _artistService = artistService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
@@ -32,6 +39,7 @@ namespace NzbDrone.Api.Albums
         }
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
+                                           IArtistStatisticsService artistStatisticsService,
                                            IArtistService artistService,
                                            IQualityUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
@@ -39,6 +47,7 @@ namespace NzbDrone.Api.Albums
             : base(signalRBroadcaster, resource)
         {
             _albumService = albumService;
+            _artistStatisticsService = artistStatisticsService;
             _artistService = artistService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
 
@@ -66,6 +75,8 @@ namespace NzbDrone.Api.Albums
                 }
             }
 
+            FetchAndLinkAlbumStatistics(resource);
+
             return resource;
         }
 
@@ -91,7 +102,30 @@ namespace NzbDrone.Api.Albums
                 }
             }
 
+            for (var i = 0; i < albums.Count; i++)
+            {
+                var resource = result[i];
+                FetchAndLinkAlbumStatistics(resource);
+            }
+
+
             return result;
+        }
+
+        private void FetchAndLinkAlbumStatistics(AlbumResource resource)
+        {
+            LinkArtistStatistics(resource, _artistStatisticsService.ArtistStatistics(resource.ArtistId));
+        }
+
+        private void LinkArtistStatistics(AlbumResource resource, ArtistStatistics artistStatistics)
+        {
+            if (artistStatistics.AlbumStatistics != null)
+            {
+                var dictAlbumStats = artistStatistics.AlbumStatistics.ToDictionary(v => v.AlbumId);
+
+                resource.Statistics = dictAlbumStats.GetValueOrDefault(resource.Id).ToResource();
+                
+            }
         }
 
         //TODO: Implement Track or Album Grabbed/Dowloaded Events

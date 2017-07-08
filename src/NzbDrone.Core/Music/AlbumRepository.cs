@@ -75,11 +75,11 @@ namespace NzbDrone.Core.Music
         private QueryBuilder<Album> GetMissingAlbumsQuery(PagingSpec<Album> pagingSpec, DateTime currentTime)
         {
             string sortKey;
-            int monitored = 0;
+            string monitored = "([t0].[Monitored] = 0) OR ([t1].[Monitored] = 0)";
 
             if (pagingSpec.FilterExpression.ToString().Contains("True"))
             {
-                monitored = 1;
+                monitored = "([t0].[Monitored] = 1) AND ([t1].[Monitored] = 1)";
             }
 
             if (pagingSpec.SortKey == "releaseDate")
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Music
             }
 
                 string query = string.Format("SELECT * FROM Albums [t0] INNER JOIN Artists [t1] ON ([t0].[ArtistId] = [t1].[Id])" +
-                    "WHERE (([t0].[Monitored] = {0}) AND ([t1].[Monitored] = {0})) AND {1}" +
+                    "WHERE ({0}) AND {1}" +
                     " AND NOT EXISTS (SELECT 1 from Tracks [t2] WHERE [t2].albumId = [t0].id AND [t2].trackFileId <> 0) ORDER BY {2} {3} LIMIT {4} OFFSET {5}",
                     monitored, BuildReleaseDateCutoffWhereClause(currentTime), sortKey, pagingSpec.ToSortDirection(), pagingSpec.PageSize, pagingSpec.PagingOffset());
 

@@ -1,0 +1,30 @@
+{{#if_eq statistics.totalTrackCount compare=0}}
+<span class="album album-unaired">
+{{else}}
+{{#if_eq statistics.percentOfTracks compare=100}}
+<span class="album album-all">
+{{else}}
+<span class="album album-partial">
+{{/if_eq}}
+{{/if_eq}}
+    <span class="label">
+        <span class="x-album-monitored album-monitored" title="Toggle album monitored status" data-album-number="{{seasonNumber}}">
+            
+        </span>
+    <span class="album-number">{{Pad2 title}}</span>
+    </span><span class="label">
+    {{#with statistics}}
+        {{#if_eq trackCount compare=0}}
+            <span class="album-status" title="No aired tracks">&nbsp;</span>
+        {{else}}
+            {{#if_eq percentOfEpisodes compare=100}}
+                <span class="album-status" title="{{trackFileCount}}/{{trackCount}} tracks downloaded">{{trackFileCount}}/{{trackCount}}</span>
+            {{else}}
+                <span class="album-status" title="{{trackFileCount}}/{{trackCount}} tracks downloaded">{{trackFileCount}}/{{trackCount}}</span>
+            {{/if_eq}}
+        {{/if_eq}}
+    {{else}}
+        <span class="album-status" title="No aired tracks">&nbsp;</span>
+    {{/with}}
+    </span>
+</span>
