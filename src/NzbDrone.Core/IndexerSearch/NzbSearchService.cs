@@ -34,6 +34,7 @@ namespace NzbDrone.Core.IndexerSearch
         private readonly IEpisodeService _episodeService;
 
         private readonly IAlbumService _albumService;
+        private readonly IArtistService _artistService;
         private readonly IMakeDownloadDecision _makeDownloadDecision;
         private readonly Logger _logger;
 
@@ -42,6 +43,7 @@ namespace NzbDrone.Core.IndexerSearch
                                 ISeriesService seriesService,
                                 IEpisodeService episodeService,
                                 IAlbumService albumService,
+                                IArtistService artistService,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 Logger logger)
         {
@@ -50,6 +52,7 @@ namespace NzbDrone.Core.IndexerSearch
             _seriesService = seriesService;
             _episodeService = episodeService;
             _albumService = albumService;
+            _artistService = artistService;
             _makeDownloadDecision = makeDownloadDecision;
             _logger = logger;
         }
@@ -269,7 +272,9 @@ namespace NzbDrone.Core.IndexerSearch
         {
             var spec = new TSpec();
 
+            album = _albumService.GetAlbum(album.Id);
             spec.Album = album;
+            spec.Artist = _artistService.GetArtist(album.ArtistId);
             spec.UserInvokedSearch = userInvokedSearch;
 
             return spec;
