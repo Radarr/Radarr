@@ -154,7 +154,7 @@ module.exports = Marionette.Layout.extend({
             command : {
                 name         : 'albumSearch',
                 artistId     : this.artist.id,
-                albumId : this.model.get('albumId')
+                albumId : this.model.get('id')
             }
         });
 
@@ -163,7 +163,7 @@ module.exports = Marionette.Layout.extend({
             command : {
                 name         : 'renameFiles',
                 artistId     : this.artist.id,
-                albumId : this.model.get('albumId')
+                albumId : this.model.get('id')
             }
         });
     },
@@ -182,14 +182,14 @@ module.exports = Marionette.Layout.extend({
         CommandController.Execute('albumSearch', {
             name         : 'albumSearch',
             artistId     : this.artist.id,
-            albumId : this.model.get('albumId')
+            albumId : this.model.get('id')
         });
     },
 
     _albumRename : function() {
         vent.trigger(vent.Commands.ShowRenamePreview, {
             artist       : this.artist,
-            albumId : this.model.get('albumId')
+            albumId : this.model.get('id')
         });
     },
 

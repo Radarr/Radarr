@@ -21,7 +21,7 @@ module.exports = ToggleCell.extend({
             this.$('i').addClass(this.column.get('falseClass'));
         }
 
-        var link = "/artist/" + this.model.get('nameSlug');
+        var link = '/artist/' + this.model.get('nameSlug');
         var artistName = this.model.get('name');
 
         this.$('a').attr('href', link );
