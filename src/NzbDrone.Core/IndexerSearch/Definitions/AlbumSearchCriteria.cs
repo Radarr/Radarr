@@ -6,7 +6,16 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
     {
         public override string ToString()
         {
-            return $"[{Album.Title}]";
+            var baseRepresentation = $"[{Artist.Name} - {Album.Title}]";
+            if (Album.ReleaseDate.HasValue)
+            {
+                var beforeLast = baseRepresentation.Length - 1;
+                return baseRepresentation.Insert(beforeLast, $" ({Album.ReleaseDate.Value.Year})");
+            }
+            else
+            {
+                return baseRepresentation;
+            }
         }
     }
 }
