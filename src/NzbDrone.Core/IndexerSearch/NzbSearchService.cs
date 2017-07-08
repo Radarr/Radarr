@@ -171,7 +171,7 @@ namespace NzbDrone.Core.IndexerSearch
 
         public List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch)
         {
-            var album = _albumService.GetAlbum(1);
+            var album = _albumService.GetAlbum(albumId);
             return AlbumSearch(album, missingOnly, userInvokedSearch);
         }
 
