@@ -15,7 +15,7 @@
 	<key>CFBundleIconFile</key>
 	<string>radarr.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.osx.radarr.tv</string>
+	<string>com.osx.radarr.video</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
