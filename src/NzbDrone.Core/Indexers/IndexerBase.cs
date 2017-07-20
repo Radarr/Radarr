@@ -74,6 +74,7 @@ namespace NzbDrone.Core.Indexers
         [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public abstract IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria);
         public abstract IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
+        public abstract IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria);
 
         protected virtual IList<ReleaseInfo> CleanupReleases(IEnumerable<ReleaseInfo> releases)
         {

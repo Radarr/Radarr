@@ -185,6 +185,11 @@ namespace NzbDrone.Core.Indexers.Newznab
             throw new System.NotImplementedException();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private void AddTvIdPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria, string parameters)
         {
             var includeTvdbSearch = SupportsTvdbSearch && searchCriteria.Series.TvdbId > 0;

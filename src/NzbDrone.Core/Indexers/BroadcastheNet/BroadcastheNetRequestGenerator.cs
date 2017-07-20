@@ -165,6 +165,11 @@ namespace NzbDrone.Core.Indexers.BroadcastheNet
             throw new System.NotImplementedException();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private bool AddSeriesSearchParameters(BroadcastheNetTorrentQuery parameters, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria.Series.TvdbId != 0)

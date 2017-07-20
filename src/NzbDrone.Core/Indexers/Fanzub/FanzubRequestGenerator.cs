@@ -65,6 +65,11 @@ namespace NzbDrone.Core.Indexers.Fanzub
             throw new System.NotImplementedException();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();

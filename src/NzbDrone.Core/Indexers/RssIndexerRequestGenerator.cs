@@ -51,5 +51,10 @@ namespace NzbDrone.Core.Indexers
         {
             throw new System.NotImplementedException();
         }
+
+        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

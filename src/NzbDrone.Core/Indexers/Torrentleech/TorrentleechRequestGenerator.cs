@@ -47,6 +47,11 @@ namespace NzbDrone.Core.Indexers.Torrentleech
             throw new System.NotImplementedException();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetRssRequests(string searchParameters)
         {
             yield return new IndexerRequest(string.Format("{0}/{1}{2}", Settings.BaseUrl.Trim().TrimEnd('/'), Settings.ApiKey, searchParameters), HttpAccept.Rss);

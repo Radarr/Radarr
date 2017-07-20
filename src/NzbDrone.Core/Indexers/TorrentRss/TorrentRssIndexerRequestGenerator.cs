@@ -48,6 +48,11 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             throw new System.NotImplementedException();
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IEnumerable<IndexerRequest> GetRssRequests(string searchParameters)
         {
             var request = new IndexerRequest(Settings.BaseUrl.Trim().TrimEnd('/'), HttpAccept.Rss);

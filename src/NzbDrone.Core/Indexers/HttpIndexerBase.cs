@@ -128,6 +128,18 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(generator.GetSearchRequests(searchCriteria));
         }
 
+        public override IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria)
+        {
+            if (!SupportsSearch)
+            {
+                return new List<ReleaseInfo>();
+            }
+
+            var generator = GetRequestGenerator();
+
+            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+        }
+
         protected virtual IList<ReleaseInfo> FetchReleases(IndexerPageableRequestChain pageableRequestChain, bool isRecent = false)
         {
             var releases = new List<ReleaseInfo>();

@@ -22,6 +22,7 @@ namespace NzbDrone.Core.IndexerSearch
         List<DownloadDecision> EpisodeSearch(Episode episode, bool userInvokedSearch);
         List<DownloadDecision> SeasonSearch(int seriesId, int seasonNumber, bool missingOnly, bool userInvokedSearch);
         List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch);
+        List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch);
     }
 
     public class NzbSearchService : ISearchForNzb
@@ -175,6 +176,18 @@ namespace NzbDrone.Core.IndexerSearch
             return AlbumSearch(album, missingOnly, userInvokedSearch);
         }
 
+        public List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch)
+        {
+            var artist = _artistService.GetArtist(artistId);
+            return ArtistSearch(artist, missingOnly, userInvokedSearch);
+        }
+
+        public List<DownloadDecision> ArtistSearch(Artist artist, bool missingOnly, bool userInvokedSearch)
+        {
+            var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch);
+            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
+        }
+
         public List<DownloadDecision> AlbumSearch(Album album, bool missingOnly, bool userInvokedSearch)
         {
             var searchSpec = Get<AlbumSearchCriteria>(album, userInvokedSearch);
@@ -275,6 +288,16 @@ namespace NzbDrone.Core.IndexerSearch
             album = _albumService.GetAlbum(album.Id);
             spec.Album = album;
             spec.Artist = _artistService.GetArtist(album.ArtistId);
+            spec.UserInvokedSearch = userInvokedSearch;
+
+            return spec;
+        }
+
+        private TSpec Get<TSpec>(Artist artist, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        {
+            var spec = new TSpec();
+;
+            spec.Artist = artist;
             spec.UserInvokedSearch = userInvokedSearch;
 
             return spec;
