@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Tv
                 _logger.Debug("Detaching episode {0} from file.", episode.Id);
                 episode.EpisodeFileId = 0;
 
-                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedEpisodes)
+                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedTracks)
                 {
                     episode.Monitored = false;
                 }

@@ -6,10 +6,10 @@ namespace NzbDrone.Api.Config
 {
     public class MediaManagementConfigResource : RestResource
     {
-        public bool AutoUnmonitorPreviouslyDownloadedEpisodes { get; set; }
+        public bool AutoUnmonitorPreviouslyDownloadedTracks { get; set; }
         public string RecycleBin { get; set; }
         public bool AutoDownloadPropers { get; set; }
-        public bool CreateEmptySeriesFolders { get; set; }
+        public bool CreateEmptyArtistFolders { get; set; }
         public FileDateType FileDate { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
@@ -31,10 +31,10 @@ namespace NzbDrone.Api.Config
         {
             return new MediaManagementConfigResource
             {
-                AutoUnmonitorPreviouslyDownloadedEpisodes = model.AutoUnmonitorPreviouslyDownloadedEpisodes,
+                AutoUnmonitorPreviouslyDownloadedTracks = model.AutoUnmonitorPreviouslyDownloadedTracks,
                 RecycleBin = model.RecycleBin,
                 AutoDownloadPropers = model.AutoDownloadPropers,
-                CreateEmptySeriesFolders = model.CreateEmptySeriesFolders,
+                CreateEmptyArtistFolders = model.CreateEmptyArtistFolders,
                 FileDate = model.FileDate,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,

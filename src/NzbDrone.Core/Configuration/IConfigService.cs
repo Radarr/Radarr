@@ -24,10 +24,10 @@ namespace NzbDrone.Core.Configuration
         bool RemoveFailedDownloads { get; set; }
 
         //Media Management
-        bool AutoUnmonitorPreviouslyDownloadedEpisodes { get; set; }
+        bool AutoUnmonitorPreviouslyDownloadedTracks { get; set; }
         string RecycleBin { get; set; }
         bool AutoDownloadPropers { get; set; }
-        bool CreateEmptySeriesFolders { get; set; }
+        bool CreateEmptyArtistFolders { get; set; }
         FileDateType FileDate { get; set; }
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }

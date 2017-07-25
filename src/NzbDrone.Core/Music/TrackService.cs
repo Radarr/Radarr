@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Music
                 _logger.Debug("Detaching track {0} from file.", track.Id);
                 track.TrackFileId = 0;
 
-                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedEpisodes)
+                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedTracks)
                 {
                     track.Monitored = false;
                 }

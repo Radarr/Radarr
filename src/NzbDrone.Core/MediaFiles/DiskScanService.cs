@@ -91,7 +91,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!_diskProvider.FolderExists(artist.Path))
             {
-                if (_configService.CreateEmptySeriesFolders)
+                if (_configService.CreateEmptyArtistFolders)
                 {
                     _logger.Debug("Creating missing artist folder: {0}", artist.Path);
                     _diskProvider.CreateFolder(artist.Path);

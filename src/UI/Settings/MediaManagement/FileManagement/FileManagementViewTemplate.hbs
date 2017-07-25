@@ -2,12 +2,12 @@
     <legend>File Management</legend>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Ignore Deleted Episodes</label>
+        <label class="col-sm-3 control-label">Ignore Deleted Tracks</label>
 
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="autoUnmonitorPreviouslyDownloadedEpisodes"/>
+                    <input type="checkbox" name="autoUnmonitorPreviouslyDownloadedTracks"/>
                     <p>
                         <span>Yes</span>
                         <span>No</span>
@@ -17,7 +17,7 @@
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-lidarr-form-info" title="Episodes deleted from disk are automatically unmonitored in Lidarr"/>
+                    <i class="icon-lidarr-form-info" title="Tracks deleted from disk are automatically unmonitored in Lidarr"/>
                 </span>
             </div>
         </div>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-group advanced-setting">
-        <label class="col-sm-3 control-label">Analyse video files</label>
+        <label class="col-sm-3 control-label">Analyse Audio Files</label>
 
         <div class="col-sm-9">
             <div class="input-group">
@@ -61,7 +61,7 @@
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-lidarr-form-info" title="Extract video information such as resolution, runtime and codec information from files. This requires Lidarr to read parts of the file which may cause high disk or network activity during scans."/>
+                    <i class="icon-lidarr-form-info" title="Extract audio information such as bitrate, runtime and codec information from files. This requires Lidarr to read parts of the file which may cause high disk or network activity during scans."/>
                 </span>
             </div>
         </div>
@@ -87,7 +87,7 @@
         <label class="col-sm-3 control-label">Recycling Bin</label>
 
         <div class="col-sm-1 col-sm-push-8 help-inline">
-            <i class="icon-lidarr-form-info" title="Episode files will go here when deleted instead of being permanently deleted"/>
+            <i class="icon-lidarr-form-info" title="Track files will go here when deleted instead of being permanently deleted"/>
         </div>
 
         <div class="col-sm-8 col-sm-pull-1">

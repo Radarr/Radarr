@@ -81,10 +81,10 @@ namespace NzbDrone.Core.Configuration
             set { SetValue(ConfigKey.DownloadedEpisodesFolder.ToString(), value); }
         }
 
-        public bool AutoUnmonitorPreviouslyDownloadedEpisodes
+        public bool AutoUnmonitorPreviouslyDownloadedTracks
         {
-            get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedEpisodes"); }
-            set { SetValue("AutoUnmonitorPreviouslyDownloadedEpisodes", value); }
+            get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedTracks"); }
+            set { SetValue("AutoUnmonitorPreviouslyDownloadedTracks", value); }
         }
 
         public int Retention
@@ -148,11 +148,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RemoveFailedDownloads", value); }
         }
 
-        public bool CreateEmptySeriesFolders
+        public bool CreateEmptyArtistFolders
         {
-            get { return GetValueBoolean("CreateEmptySeriesFolders", false); }
+            get { return GetValueBoolean("CreateEmptyArtistFolders", false); }
 
-            set { SetValue("CreateEmptySeriesFolders", value); }
+            set { SetValue("CreateEmptyArtistFolders", value); }
         }
 
         public FileDateType FileDate

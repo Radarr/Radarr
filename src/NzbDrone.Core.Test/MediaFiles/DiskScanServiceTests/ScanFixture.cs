@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             GivenRootFolder(_otherArtistFolder);
 
             Mocker.GetMock<IConfigService>()
-                  .Setup(s => s.CreateEmptySeriesFolders)
+                  .Setup(s => s.CreateEmptyArtistFolders)
                   .Returns(true);
 
             Subject.Scan(_artist);
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             GivenRootFolder(_otherArtistFolder);
 
             Mocker.GetMock<IConfigService>()
-                  .Setup(s => s.CreateEmptySeriesFolders)
+                  .Setup(s => s.CreateEmptyArtistFolders)
                   .Returns(false);
 
             Subject.Scan(_artist);
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             GivenRootFolder(_otherArtistFolder);
 
             Mocker.GetMock<IConfigService>()
-                  .Setup(s => s.CreateEmptySeriesFolders)
+                  .Setup(s => s.CreateEmptyArtistFolders)
                   .Returns(true);
 
             Subject.Scan(_artist);
