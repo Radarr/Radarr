@@ -77,26 +77,26 @@ namespace NzbDrone.Api.Indexers
 
         private List<ReleaseResource> GetReleases()
         {
-            if (Request.Query.episodeId != null)
+            if (Request.Query.albumId != null)
             {
-                return GetEpisodeReleases(Request.Query.episodeId);
+                return GetAlbumReleases(Request.Query.albumId);
             }
 
             return GetRss();
         }
 
-        private List<ReleaseResource> GetEpisodeReleases(int episodeId)
+        private List<ReleaseResource> GetAlbumReleases(int albumId)
         {
             try
             {
-                var decisions = _nzbSearchService.EpisodeSearch(episodeId, true);
+                var decisions = _nzbSearchService.AlbumSearch(albumId, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Episode search failed");
+                _logger.Error(ex, "Album search failed");
             }
 
             return new List<ReleaseResource>();
