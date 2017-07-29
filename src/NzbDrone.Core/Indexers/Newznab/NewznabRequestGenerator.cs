@@ -45,6 +45,19 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
+        private bool SupportsAudioSearch
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.SupportedAudioSearchParameters != null &&
+                       capabilities.SupportedAudioSearchParameters.Contains("q") &&
+                       capabilities.SupportedAudioSearchParameters.Contains("artist") &&
+                       capabilities.SupportedAudioSearchParameters.Contains("album");
+            }
+        }
+
         private bool SupportsTvdbSearch
         {
             get
@@ -182,7 +195,14 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
         {
-            throw new System.NotImplementedException();
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            AddAudioPageableRequests(pageableRequests, MaxPages, Settings.Categories, searchCriteria,
+                string.Format("&artist={0}&album={1}",
+                    searchCriteria.Artist.Name,
+                    searchCriteria.Album.Title));
+
+            return pageableRequests;
         }
 
         public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
@@ -247,6 +267,20 @@ namespace NzbDrone.Core.Indexers.Newznab
                         NewsnabifyTitle(queryTitle),
                         parameters)));
                 }
+            }
+        }
+
+        private void AddAudioPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria, string parameters)
+        {
+
+            if (SupportsAudioSearch)
+            {
+                chain.AddTier();
+                
+                    chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "music",
+                        string.Format("&q={0}",
+                        parameters)));
+                
             }
         }
 

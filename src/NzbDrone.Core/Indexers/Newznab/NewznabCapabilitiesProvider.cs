@@ -115,6 +115,18 @@ namespace NzbDrone.Core.Indexers.Newznab
                     capabilities.SupportedTvSearchParameters = xmlTvSearch.Attribute("supportedParams").Value.Split(',');
                     capabilities.SupportsAggregateIdSearch = true;
                 }
+
+                var xmlAudioSearch = xmlSearching.Element("audio-search");
+                if (xmlAudioSearch == null || xmlAudioSearch.Attribute("available").Value != "yes")
+                {
+                    capabilities.SupportedAudioSearchParameters = null;
+                }
+                else if (xmlAudioSearch.Attribute("supportedParams") != null)
+                {
+                    capabilities.SupportedAudioSearchParameters = xmlAudioSearch.Attribute("supportedParams").Value.Split(',');
+                                 
+                    //capabilities.SupportsAggregateIdSearch = true;
+                }
             }
 
             var xmlCategories = xmlRoot.Element("categories");
