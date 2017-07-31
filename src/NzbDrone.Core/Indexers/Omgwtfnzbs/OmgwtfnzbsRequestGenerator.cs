@@ -90,7 +90,15 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
         public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
         {
-            throw new System.NotImplementedException();
+            var pageableRequests = new IndexerPageableRequestChain();
+
+
+            pageableRequests.Add(GetPagedRequests(string.Format("{0}+{1}",
+                searchCriteria.Artist.Name,
+                searchCriteria.Album.Title)));
+
+
+            return pageableRequests;
         }
 
         public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
@@ -101,7 +109,9 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();
-            url.AppendFormat("{0}?catid=19,20&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
+
+            // Category 22 is Music-FLAC, category 7 is Music-MP3
+            url.AppendFormat("{0}?catid=22,7&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
 
             if (query.IsNotNullOrWhiteSpace())
             {
