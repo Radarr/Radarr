@@ -58,6 +58,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
+
+
         private bool SupportsTvdbSearch
         {
             get
@@ -113,9 +115,9 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
-            if (capabilities.SupportedTvSearchParameters != null)
+            if (capabilities.SupportedAudioSearchParameters != null)
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories.Concat(Settings.AnimeCategories), "tvsearch", ""));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "music", ""));
             }
 
             return pageableRequests;

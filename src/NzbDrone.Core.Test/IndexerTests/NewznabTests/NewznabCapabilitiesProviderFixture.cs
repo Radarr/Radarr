@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         [Test]
         public void should_not_throw_on_xml_data_unexpected()
         {
-            GivenCapsResponse(_caps.Replace("5030", "asdf"));
+            GivenCapsResponse(_caps.Replace("3040", "asdf"));
 
             var result = Subject.GetCapabilities(_settings);
 
