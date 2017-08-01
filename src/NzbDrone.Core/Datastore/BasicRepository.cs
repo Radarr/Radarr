@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web.Hosting;
 using Marr.Data;
 using Marr.Data.QGen;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Datastore.Extensions;
@@ -48,7 +50,7 @@ namespace NzbDrone.Core.Datastore
             _eventAggregator = eventAggregator;
         }
 
-        protected QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
+        protected QueryBuilder<TModel> Query => AddJoinQueries(DataMapper.Query<TModel>());
 
         protected void Delete(Expression<Func<TModel, bool>> filter)
         {
@@ -249,6 +251,12 @@ namespace NzbDrone.Core.Datastore
             pagingSpec.Records = GetPagedQuery(Query, pagingSpec).ToList();
             pagingSpec.TotalRecords = GetPagedQuery(Query, pagingSpec).GetRowCount();
 
+            var queryStr = GetPagedQuery(Query, pagingSpec).BuildQuery();
+            var beforeQuery = Query.BuildQuery();
+
+            pagingSpec.SortKey = beforeQuery;
+            pagingSpec.SortKey = queryStr;
+
             return pagingSpec;
         }
 
@@ -281,6 +289,11 @@ namespace NzbDrone.Core.Datastore
             {
                 _eventAggregator.PublishEvent(new ModelEvent<TModel>(model, action));
             }
+        }
+
+        protected virtual QueryBuilder<TModel> AddJoinQueries(QueryBuilder<TModel> baseQuery)
+        {
+            return baseQuery;
         }
 
         protected virtual bool PublishModelEvents => false;

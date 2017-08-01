@@ -14,6 +14,7 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.MediaFiles.Commands;
+using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.Tv
@@ -28,6 +29,8 @@ namespace NzbDrone.Core.Tv
 	private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
+        private readonly IRadarrAPIClient _apiClient;
+        
         private readonly Logger _logger;
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
@@ -36,6 +39,7 @@ namespace NzbDrone.Core.Tv
                                     IRefreshEpisodeService refreshEpisodeService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
+                                    IRadarrAPIClient apiClient,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
 		                   IManageCommandQueue commandQueue,
                                     Logger logger)
@@ -45,7 +49,8 @@ namespace NzbDrone.Core.Tv
             _titleService = titleService;
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
-		_commandQueueManager = commandQueue;
+            _apiClient = apiClient;
+		    _commandQueueManager = commandQueue;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _logger = logger;
@@ -106,12 +111,25 @@ namespace NzbDrone.Core.Tv
                 _logger.Warn(e, "Couldn't update movie path for " + movie.Path);
             }
 
+            movieInfo.AlternativeTitles = movieInfo.AlternativeTitles.Where(t => t.CleanTitle != movie.CleanTitle)
+                .DistinctBy(t => t.CleanTitle)
+                .ExceptBy(t => t.CleanTitle, movie.AlternativeTitles, t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
+
+            var mappingsTitles = _apiClient.AlternativeTitlesForMovie(movieInfo.TmdbId);
+
+            movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
+            
+            mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
+                t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
+            
+            movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
+
             _movieService.UpdateMovie(movie);
 
             try
             {
-                var newTitles = movieInfo.AlternativeTitles.Value.Except(movie.AlternativeTitles.Value);
-                _titleService.AddAltTitles(newTitles.ToList(), movie);
+                var newTitles = movieInfo.AlternativeTitles.Except(movie.AlternativeTitles);
+                //_titleService.AddAltTitles(newTitles.ToList(), movie);
             }
             catch (Exception e)
             {

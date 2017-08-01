@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Tv
             Genres = new List<string>();
             Actors = new List<Actor>();
             Tags = new HashSet<int>();
-            AlternativeTitles = new List<string>();
+            AlternativeTitles = new List<AlternativeTitle>();
         }
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
@@ -54,7 +54,8 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<MovieFile> MovieFile { get; set; }
 		public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
-        public LazyList<AlternativeTitle> AlternativeTitles { get; set; }
+        //Get Loaded via a Join Query
+        public List<AlternativeTitle> AlternativeTitles { get; set; }
         public string YouTubeTrailerId{ get; set; }
         public string Studio { get; set; }
 

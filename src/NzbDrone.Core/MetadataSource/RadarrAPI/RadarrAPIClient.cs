@@ -4,6 +4,8 @@ using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
+using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.MetadataSource.RadarrAPI
 {
@@ -11,6 +13,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
     {
         IHttpRequestBuilderFactory RadarrAPI { get; }
         List<MovieResult> DiscoverMovies(string action, Func<HttpRequest, HttpRequest> enhanceRequest);
+        List<AlternativeTitle> AlternativeTitlesForMovie(int TmdbId);
         string APIURL { get; }
     }
 
@@ -65,7 +68,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
             {
                 var error = JsonConvert.DeserializeObject<RadarrError>(response.Content);
 
-                if (error != null && error.Errors.Count != 0)
+                if (error != null && error.Errors != null && error.Errors.Count != 0)
                 {
                     throw new RadarrAPIException(error);
                 }
@@ -96,6 +99,22 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
             return Execute<List<MovieResult>>(request);
         }
 
+
+        public List<AlternativeTitle> AlternativeTitlesForMovie(int TmdbId)
+        {
+            var request = RadarrAPI.Create().SetSegment("route", "mappings").SetSegment("action", "find").AddQueryParam("tmdbid", TmdbId).Build();
+
+            var mappings = Execute<Mapping>(request);
+
+            var titles = new List<NzbDrone.Core.Movies.AlternativeTitles.AlternativeTitle>();
+
+            foreach (var altTitle in mappings.Mappings.Titles)
+            {
+                titles.Add(new NzbDrone.Core.Movies.AlternativeTitles.AlternativeTitle(altTitle.Info.AkaTitle, SourceType.Mappings, altTitle.Id));
+            }
+
+            return titles;
+        }
         public IHttpRequestBuilderFactory RadarrAPI { get; private set; }
     }
 }

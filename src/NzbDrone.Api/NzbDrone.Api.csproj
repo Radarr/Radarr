@@ -240,7 +240,7 @@
     <Compile Include="RootFolders\RootFolderModule.cs" />
     <Compile Include="RootFolders\RootFolderResource.cs" />
     <Compile Include="SeasonPass\SeasonPassResource.cs" />
-    <Compile Include="Series\AlternateTitleResource.cs" />
+    <Compile Include="Series\AlternativeTitleResource.cs" />
     <Compile Include="Series\MovieFileResource.cs" />
     <Compile Include="Series\FetchMovieListModule.cs" />
     <Compile Include="Series\SeasonResource.cs" />

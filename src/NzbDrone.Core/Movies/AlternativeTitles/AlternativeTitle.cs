@@ -1,6 +1,8 @@
 ﻿using System;
+using Marr.Data;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
 {
@@ -14,6 +16,21 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         public int Votes { get; set; }
         public int VoteCount { get; set; }
         public Language Language { get; set; }
+        public LazyLoaded<Movie> Movie { get; set; }
+        
+        public AlternativeTitle() 
+        { 
+             
+        } 
+ 
+        public AlternativeTitle(string title, SourceType sourceType = SourceType.TMDB, int sourceId = 0, Language language = Language.English) 
+        { 
+            Title = title; 
+            CleanTitle = title.CleanSeriesTitle(); 
+            SourceType = sourceType;
+            SourceId = sourceId;
+            Language = language; 
+        }
 
         public bool IsTrusted(int minVotes = 3)
         {

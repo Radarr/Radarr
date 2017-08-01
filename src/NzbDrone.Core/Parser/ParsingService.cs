@@ -9,6 +9,7 @@ using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Tv;
@@ -458,9 +459,9 @@ namespace NzbDrone.Core.Parser
 
             possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
-            foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
+            foreach (AlternativeTitle altTitle in searchCriteria.Movie.AlternativeTitles)
             {
-                possibleTitles.Add(altTitle.CleanSeriesTitle());
+                possibleTitles.Add(altTitle.CleanTitle);
             }
 
             string cleanTitle = parsedMovieInfo.MovieTitle.CleanSeriesTitle();

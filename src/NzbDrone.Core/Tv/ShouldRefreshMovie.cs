@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Tv
 
         public bool ShouldRefresh(Movie movie)
         {
+            return false;
             if (movie.LastInfoSync < DateTime.UtcNow.AddDays(-30))
             {
                 _logger.Trace("Movie {0} last updated more than 30 days ago, should refresh.", movie.Title);

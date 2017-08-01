@@ -72,6 +72,7 @@ using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.Extras.Subtitles;
 using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
 
@@ -143,8 +144,14 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(s => s.RootFolderPath)
                 .Relationship()
                 .HasOne(s => s.Profile, s => s.ProfileId)
-                .HasOne(m => m.MovieFile, m => m.MovieFileId)
-                .HasMany(m => m.AlternativeTitles, t => t.MovieId);
+                .HasOne(m => m.MovieFile, m => m.MovieFileId);
+
+            Mapper.Entity<AlternativeTitle>().RegisterModel("AlternativeTitles")
+                .For(t => t.Id)
+                .SetAltName("AltTitle_Id")
+                .Relationship()
+                .HasOne(t => t.Movie, t => t.MovieId);
+                
 
             Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
        
