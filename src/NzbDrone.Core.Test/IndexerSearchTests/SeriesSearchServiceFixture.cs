@@ -12,6 +12,7 @@ using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.Test.IndexerSearchTests
 {
+    [System.Obsolete("Sonarr TV stuff. Not needed in lidarr.")]
     [TestFixture]
     public class SeriesSearchServiceFixture : CoreTest<SeriesSearchService>
     {
