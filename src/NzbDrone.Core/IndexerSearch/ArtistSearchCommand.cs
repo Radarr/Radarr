@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Core.IndexerSearch
 {
-    class ArtistSearchCommand : Command
+    public class ArtistSearchCommand : Command
     {
         public int ArtistId { get; set; }
 

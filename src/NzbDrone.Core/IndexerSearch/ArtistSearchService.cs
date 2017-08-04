@@ -5,7 +5,7 @@ using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.IndexerSearch
 {
-    class ArtistSearchService : IExecute<ArtistSearchCommand>
+    public class ArtistSearchService : IExecute<ArtistSearchCommand>
     {
         private readonly ISearchForNzb _nzbSearchService;
         private readonly IProcessDownloadDecisions _processDownloadDecisions;
