@@ -285,7 +285,6 @@ namespace NzbDrone.Core.IndexerSearch
         {
             var spec = new TSpec();
 
-            album = _albumService.GetAlbum(album.Id);
             spec.Album = album;
             spec.Artist = _artistService.GetArtist(album.ArtistId);
             spec.UserInvokedSearch = userInvokedSearch;

@@ -195,11 +195,11 @@ namespace NzbDrone.Core.Indexers.Newznab
             return pageableRequests;
         }
 
-        public IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            AddAudioPageableRequests(pageableRequests, MaxPages, Settings.Categories, searchCriteria,
+            AddAudioPageableRequests(pageableRequests,
                 string.Format("&artist={0}&album={1}",
                     searchCriteria.Artist.Name,
                     searchCriteria.Album.Title));
@@ -207,11 +207,11 @@ namespace NzbDrone.Core.Indexers.Newznab
             return pageableRequests;
         }
 
-        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            AddAudioPageableRequests(pageableRequests, MaxPages, Settings.Categories, searchCriteria,
+            AddAudioPageableRequests(pageableRequests,
                 string.Format("&artist={0}",
                     searchCriteria.Artist.Name));
 
@@ -278,7 +278,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
-        private void AddAudioPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria, string parameters)
+        private void AddAudioPageableRequests(IndexerPageableRequestChain chain, string parameters)
         {
 
             if (SupportsAudioSearch)

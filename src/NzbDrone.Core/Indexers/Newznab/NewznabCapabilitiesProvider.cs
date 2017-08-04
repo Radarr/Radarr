@@ -124,8 +124,6 @@ namespace NzbDrone.Core.Indexers.Newznab
                 else if (xmlAudioSearch.Attribute("supportedParams") != null)
                 {
                     capabilities.SupportedAudioSearchParameters = xmlAudioSearch.Attribute("supportedParams").Value.Split(',');
-                                 
-                    //capabilities.SupportsAggregateIdSearch = true;
                 }
             }
 
