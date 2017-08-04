@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             throw new System.NotImplementedException();
         }
 
-        public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
         {
             throw new System.NotImplementedException();
         }
