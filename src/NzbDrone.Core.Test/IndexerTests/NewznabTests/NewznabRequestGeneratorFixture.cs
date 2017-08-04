@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
     {
         private SingleEpisodeSearchCriteria _singleEpisodeSearchCriteria;
         private AlbumSearchCriteria _singleAlbumSearchCriteria;
-        private AnimeEpisodeSearchCriteria _animeSearchCriteria;
         private NewznabCapabilities _capabilities;
 
         [SetUp]
@@ -23,7 +22,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             {
                  Url = "http://127.0.0.1:1234/",
                  Categories = new [] { 1, 2 },
-                 //AnimeCategories = new [] { 3, 4 },
                  ApiKey = "abcd",
             };
 
@@ -40,12 +38,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
                 Artist = new Music.Artist { Name = "Alien Ant Farm" },
                 Album = new Music.Album { Title = "TruANT" }
 
-            };
-
-            _animeSearchCriteria = new AnimeEpisodeSearchCriteria()
-            {
-                SceneTitles = new List<string>() { "Monkey+Island" },
-                AbsoluteEpisodeNumber = 100
             };
 
             _capabilities = new NewznabCapabilities();
