@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
     {
         private SingleEpisodeSearchCriteria _singleEpisodeSearchCriteria;
         private AlbumSearchCriteria _singleAlbumSearchCriteria;
-        private AnimeEpisodeSearchCriteria _animeSearchCriteria;
         private NewznabCapabilities _capabilities;
 
         [SetUp]
@@ -23,7 +22,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             {
                  Url = "http://127.0.0.1:1234/",
                  Categories = new [] { 1, 2 },
-                 //AnimeCategories = new [] { 3, 4 },
                  ApiKey = "abcd",
             };
 
@@ -40,12 +38,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
                 Artist = new Music.Artist { Name = "Alien Ant Farm" },
                 Album = new Music.Album { Title = "TruANT" }
 
-            };
-
-            _animeSearchCriteria = new AnimeEpisodeSearchCriteria()
-            {
-                SceneTitles = new List<string>() { "Monkey+Island" },
-                AbsoluteEpisodeNumber = 100
             };
 
             _capabilities = new NewznabCapabilities();
@@ -67,125 +59,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             page.Url.Query.Should().Contain("&cat=1,2&");
         }
 
-        //We dont use Anime Categories so there is no need to check for proper concat in feed
-
-        //[Test]
-        //public void should_not_have_duplicate_categories()
-        //{
-        //    Subject.Settings.Categories = new[] { 1, 2, 3 };
-
-        //    var results = Subject.GetRecentRequests();
-
-        //    results.GetAllTiers().Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.FullUri.Should().Contain("&cat=1,2,3,4&");
-        //}
-
-        //[Test]
-        //public void should_use_only_anime_categories_for_anime_search()
-        //{
-        //    var results = Subject.GetSearchRequests(_animeSearchCriteria);
-
-        //    results.GetAllTiers().Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.FullUri.Should().Contain("&cat=3,4&");
-        //}
-
-        //[Test]
-        //public void should_use_mode_search_for_anime()
-        //{
-        //    var results = Subject.GetSearchRequests(_animeSearchCriteria);
-
-        //    results.GetAllTiers().Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.FullUri.Should().Contain("?t=search&");
-        //}
-
-        //[Test]
-        //public void should_return_subsequent_pages()
-        //{
-        //    var results = Subject.GetSearchRequests(_animeSearchCriteria);
-
-        //    results.GetAllTiers().Should().HaveCount(1);
-
-        //    var pages = results.GetAllTiers().First().Take(3).ToList();
-
-        //    pages[0].Url.FullUri.Should().Contain("&offset=0&");
-        //    pages[1].Url.FullUri.Should().Contain("&offset=100&");
-        //    pages[2].Url.FullUri.Should().Contain("&offset=200&");
-        //}
-
-        //[Test]
-        //public void should_not_get_unlimited_pages()
-        //{
-        //    var results = Subject.GetSearchRequests(_animeSearchCriteria);
-
-        //    results.GetAllTiers().Should().HaveCount(1);
-
-        //    var pages = results.GetAllTiers().First().Take(500).ToList();
-
-        //    pages.Count.Should().BeLessThan(500);
-        //}
-
-        //[Test]
-        //public void should_not_search_by_rid_if_not_supported()
-        //{
-        //    _capabilities.SupportedAudioSearchParameters = new[] { "q", "artist", "album" };
-
-        //    var results = Subject.GetSearchRequests(_singleAlbumSearchCriteria);
-
-        //    results.GetAllTiers().Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.Query.Should().NotContain("rid=10");
-        //    page.Url.Query.Should().Contain("q=Monkey");
-        //}
-
-        //[Test]
-        //public void should_search_by_rid_if_supported()
-        //{
-        //    var results = Subject.GetSearchRequests(_singleAlbumSearchCriteria);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.Query.Should().Contain("rid=10");
-        //}
-
-        //[Test]
-        //public void should_not_search_by_tvdbid_if_not_supported()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "season", "ep" };
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.Query.Should().NotContain("rid=10");
-        //    page.Url.Query.Should().Contain("q=Monkey");
-        //}
-
-        //[Test]
-        //public void should_search_by_tvdbid_if_supported()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "tvdbid", "season", "ep" };
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.Query.Should().Contain("tvdbid=20");
-        //}
-
         [Test]
         public void should_search_by_artist_and_album_if_supported()
         {
@@ -199,93 +72,5 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             page.Url.Query.Should().Contain("artist=Alien Ant Farm");
             page.Url.Query.Should().Contain("album=TruANT");
         }
-
-        //[Test]
-        //public void should_search_by_tvmaze_if_supported()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "tvmazeid", "season", "ep" };
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.Query.Should().Contain("tvmazeid=30");
-        //}
-
-        //[Test]
-        //public void should_prefer_search_by_tvdbid_if_rid_supported()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "tvdbid", "rid", "season", "ep" };
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetAllTiers().First().First();
-
-        //    page.Url.Query.Should().Contain("tvdbid=20");
-        //    page.Url.Query.Should().NotContain("rid=10");
-        //}
-
-        //[Test]
-        //public void should_use_aggregrated_id_search_if_supported()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "tvdbid", "rid", "season", "ep" };
-        //    _capabilities.SupportsAggregateIdSearch = true;
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetTier(0).First().First();
-
-        //    page.Url.Query.Should().Contain("tvdbid=20");
-        //    page.Url.Query.Should().Contain("rid=10");
-        //}
-
-        //[Test]
-        //public void should_not_use_aggregrated_id_search_if_no_ids_supported()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "season", "ep" };
-        //    _capabilities.SupportsAggregateIdSearch = true; // Turns true if indexer supplies supportedParams.
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-        //    results.Tiers.Should().Be(1);
-        //    results.GetTier(0).Should().HaveCount(1);
-
-        //    var page = results.GetTier(0).First().First();
-
-        //    page.Url.Query.Should().Contain("q=");
-        //}
-
-        //[Test]
-        //public void should_not_use_aggregrated_id_search_if_no_ids_are_known()
-        //{
-        //    _capabilities.SupportedTvSearchParameters = new[] { "q", "rid", "season", "ep" };
-        //    _capabilities.SupportsAggregateIdSearch = true; // Turns true if indexer supplies supportedParams.
-
-        //    _singleEpisodeSearchCriteria.Series.TvRageId = 0;
-
-        //    var results = Subject.GetSearchRequests(_singleEpisodeSearchCriteria);
-
-        //    var page = results.GetTier(0).First().First();
-
-        //    page.Url.Query.Should().Contain("q=");
-        //}
-
-        //[Test]
-        //public void should_fallback_to_q()
-        //{
-        //    _capabilities.SupportedAudioSearchParameters = new[] { "q", "artist", "album" };
-        //    _capabilities.SupportsAggregateIdSearch = true;
-
-        //    var results = Subject.GetSearchRequests(_singleAlbumSearchCriteria);
-        //    results.Tiers.Should().Be(2);
-
-        //    var pageTier2 = results.GetTier(1).First().First();
-
-        //    pageTier2.Url.Query.Should().NotContain("artist=");
-        //    pageTier2.Url.Query.Should().NotContain("album=");
-        //    pageTier2.Url.Query.Should().Contain("q=");
-        //}
     }
 }
