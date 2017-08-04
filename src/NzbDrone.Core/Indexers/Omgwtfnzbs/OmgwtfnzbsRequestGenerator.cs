@@ -103,7 +103,14 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
         public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
         {
-            throw new System.NotImplementedException();
+            var pageableRequests = new IndexerPageableRequestChain();
+
+
+            pageableRequests.Add(GetPagedRequests(string.Format("{0}",
+                searchCriteria.Artist.Name)));
+
+
+            return pageableRequests;
         }
 
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)

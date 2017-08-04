@@ -209,7 +209,13 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
         {
-            throw new System.NotImplementedException();
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            AddAudioPageableRequests(pageableRequests, MaxPages, Settings.Categories, searchCriteria,
+                string.Format("&artist={0}",
+                    searchCriteria.Artist.Name));
+
+            return pageableRequests;
         }
 
         private void AddTvIdPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria, string parameters)
