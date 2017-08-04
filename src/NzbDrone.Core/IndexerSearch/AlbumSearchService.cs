@@ -22,10 +22,14 @@ namespace NzbDrone.Core.IndexerSearch
 
         public void Execute(AlbumSearchCommand message)
         {
-            var decisions = _nzbSearchService.AlbumSearch(message.AlbumId, false, message.Trigger == CommandTrigger.Manual);
-            var processed = _processDownloadDecisions.ProcessDecisions(decisions);
+            foreach (var albumId in message.AlbumIds)
+            {
+                var decisions =
+                    _nzbSearchService.AlbumSearch(albumId, false, message.Trigger == CommandTrigger.Manual);
+                var processed = _processDownloadDecisions.ProcessDecisions(decisions);
 
-            _logger.ProgressInfo("Album search completed. {0} reports downloaded.", processed.Grabbed.Count);
+                _logger.ProgressInfo("Album search completed. {0} reports downloaded.", processed.Grabbed.Count);
+            }
         }
     }
 }

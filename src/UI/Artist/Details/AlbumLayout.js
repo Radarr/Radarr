@@ -154,7 +154,7 @@ module.exports = Marionette.Layout.extend({
             command : {
                 name         : 'albumSearch',
                 artistId     : this.artist.id,
-                albumId : this.model.get('id')
+                albumIds : [this.model.get('id')]
             }
         });
 
@@ -182,7 +182,7 @@ module.exports = Marionette.Layout.extend({
         CommandController.Execute('albumSearch', {
             name         : 'albumSearch',
             artistId     : this.artist.id,
-            albumId : this.model.get('id')
+            albumIds : [this.model.get('id')]
         });
     },
 

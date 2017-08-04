@@ -1,11 +1,21 @@
-﻿using NzbDrone.Core.Messaging.Commands;
+﻿using System.Collections.Generic;
+using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.IndexerSearch
 {
     class AlbumSearchCommand : Command
     {
-        public int AlbumId { get; set; }
+        public List<int> AlbumIds { get; set; }
 
         public override bool SendUpdatesToClient => true;
+
+        public AlbumSearchCommand()
+        {
+        }
+
+        public AlbumSearchCommand(List<int> albumIds)
+        {
+            AlbumIds = albumIds;
+        }
     }
 }
