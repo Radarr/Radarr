@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -34,6 +35,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -43,6 +45,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -52,11 +55,13 @@ namespace NzbDrone.Core.Indexers.Rarbg
             return pageableRequests;
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
         {
             return new IndexerPageableRequestChain();
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -68,6 +73,24 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
                 pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, query));
             }
+
+            return pageableRequests;
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            pageableRequests.Add(GetPagedRequests("search", null, "{0}+{1}", searchCriteria.Artist.Name, searchCriteria.Album.Title));
+
+            return pageableRequests;
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            pageableRequests.Add(GetPagedRequests("search", null, "{0}", searchCriteria.Artist.Name));
 
             return pageableRequests;
         }
@@ -101,7 +124,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 requestBuilder.AddQueryParam("ranked", "0");
             }
 
-            requestBuilder.AddQueryParam("category", "18;41;49");
+            requestBuilder.AddQueryParam("category", "1;23;24;25;26");
             requestBuilder.AddQueryParam("limit", "100");
             requestBuilder.AddQueryParam("token", _tokenProvider.GetToken(Settings));
             requestBuilder.AddQueryParam("format", "json_extended");

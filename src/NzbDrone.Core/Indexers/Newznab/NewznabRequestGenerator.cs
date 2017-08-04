@@ -45,6 +45,21 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
+        private bool SupportsAudioSearch
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.SupportedAudioSearchParameters != null &&
+                       capabilities.SupportedAudioSearchParameters.Contains("q") &&
+                       capabilities.SupportedAudioSearchParameters.Contains("artist") &&
+                       capabilities.SupportedAudioSearchParameters.Contains("album");
+            }
+        }
+
+
+
         private bool SupportsTvdbSearch
         {
             get
@@ -100,9 +115,9 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
-            if (capabilities.SupportedTvSearchParameters != null)
+            if (capabilities.SupportedAudioSearchParameters != null)
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories.Concat(Settings.AnimeCategories), "tvsearch", ""));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "music", ""));
             }
 
             return pageableRequests;
@@ -180,6 +195,29 @@ namespace NzbDrone.Core.Indexers.Newznab
             return pageableRequests;
         }
 
+        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            AddAudioPageableRequests(pageableRequests,
+                string.Format("&artist={0}&album={1}",
+                    searchCriteria.Artist.Name,
+                    searchCriteria.Album.Title));
+
+            return pageableRequests;
+        }
+
+        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            AddAudioPageableRequests(pageableRequests,
+                string.Format("&artist={0}",
+                    searchCriteria.Artist.Name));
+
+            return pageableRequests;
+        }
+
         private void AddTvIdPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria, string parameters)
         {
             var includeTvdbSearch = SupportsTvdbSearch && searchCriteria.Series.TvdbId > 0;
@@ -237,6 +275,20 @@ namespace NzbDrone.Core.Indexers.Newznab
                         NewsnabifyTitle(queryTitle),
                         parameters)));
                 }
+            }
+        }
+
+        private void AddAudioPageableRequests(IndexerPageableRequestChain chain, string parameters)
+        {
+
+            if (SupportsAudioSearch)
+            {
+                chain.AddTier();
+                
+                    chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "music",
+                        string.Format("&q={0}",
+                        parameters)));
+                
             }
         }
 

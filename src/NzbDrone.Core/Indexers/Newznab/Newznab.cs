@@ -106,6 +106,12 @@ namespace NzbDrone.Core.Indexers.Newznab
                     return null;
                 }
 
+                if (capabilities.SupportedAudioSearchParameters != null &&
+                    new[] { "artist", "album" }.All(v => capabilities.SupportedAudioSearchParameters.Contains(v)))
+                {
+                    return null;
+                }
+
                 if (capabilities.SupportedTvSearchParameters != null &&
                     new[] { "q", "tvdbid", "rid" }.Any(v => capabilities.SupportedTvSearchParameters.Contains(v)) &&
                     new[] { "season", "ep" }.All(v => capabilities.SupportedTvSearchParameters.Contains(v)))

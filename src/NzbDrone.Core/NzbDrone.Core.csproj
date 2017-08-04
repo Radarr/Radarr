@@ -605,6 +605,12 @@
     <Compile Include="Http\CloudFlare\CloudFlareHttpInterceptor.cs" />
     <Compile Include="Http\HttpProxySettingsProvider.cs" />
     <Compile Include="Http\TorcacheHttpInterceptor.cs" />
+    <Compile Include="IndexerSearch\AlbumSearchCommand.cs" />
+    <Compile Include="IndexerSearch\AlbumSearchService.cs" />
+    <Compile Include="IndexerSearch\ArtistSearchCommand.cs" />
+    <Compile Include="IndexerSearch\ArtistSearchService.cs" />
+    <Compile Include="IndexerSearch\Definitions\AlbumSearchCriteria.cs" />
+    <Compile Include="IndexerSearch\Definitions\ArtistSearchCriteria.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTv.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvSettings.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvRequestGenerator.cs" />

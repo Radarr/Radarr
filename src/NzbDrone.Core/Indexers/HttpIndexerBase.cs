@@ -51,6 +51,7 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(generator.GetRecentRequests(), true);
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public override IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
@@ -63,6 +64,7 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(generator.GetSearchRequests(searchCriteria));
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public override IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
@@ -75,6 +77,7 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(generator.GetSearchRequests(searchCriteria));
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public override IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
@@ -87,6 +90,7 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(generator.GetSearchRequests(searchCriteria));
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public override IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
@@ -99,7 +103,32 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(generator.GetSearchRequests(searchCriteria));
         }
 
+        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public override IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria)
+        {
+            if (!SupportsSearch)
+            {
+                return new List<ReleaseInfo>();
+            }
+
+            var generator = GetRequestGenerator();
+
+            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+        }
+
+        public override IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria)
+        {
+            if (!SupportsSearch)
+            {
+                return new List<ReleaseInfo>();
+            }
+
+            var generator = GetRequestGenerator();
+
+            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+        }
+
+        public override IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
             {

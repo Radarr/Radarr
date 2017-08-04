@@ -42,8 +42,8 @@ module.exports = Marionette.Layout.extend({
             e.preventDefault();
         }
 
-        CommandController.Execute('episodeSearch', {
-            episodeIds : [this.model.get('id')] //TODO Refactor for Albums search
+        CommandController.Execute('albumSearch', {
+            albumId : this.model.get('id')
         });
 
         vent.trigger(vent.Commands.CloseModalCommand);
@@ -56,7 +56,7 @@ module.exports = Marionette.Layout.extend({
 
         this.mainView = new LoadingView();
         this._showMainView();
-        this.releaseCollection.fetchEpisodeReleases(this.model.id); //TODO Refactor for Albums
+        this.releaseCollection.fetchAlbumReleases(this.model.id);
     },
 
     _showMainView : function() {
