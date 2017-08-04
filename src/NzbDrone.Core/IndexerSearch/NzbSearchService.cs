@@ -28,7 +28,6 @@ namespace NzbDrone.Core.IndexerSearch
     public class NzbSearchService : ISearchForNzb
     {
         private readonly IIndexerFactory _indexerFactory;
-        // private readonly ISceneMappingService _sceneMapping;
         [System.Obsolete("Used for sonarr, not lidarr")]
         private readonly ISeriesService _seriesService;
         [System.Obsolete("Used for sonarr, not lidarr")]
@@ -40,7 +39,6 @@ namespace NzbDrone.Core.IndexerSearch
         private readonly Logger _logger;
 
         public NzbSearchService(IIndexerFactory indexerFactory,
-                                // ISceneMappingService sceneMapping,
                                 ISeriesService seriesService,
                                 IEpisodeService episodeService,
                                 IAlbumService albumService,
@@ -292,10 +290,9 @@ namespace NzbDrone.Core.IndexerSearch
             return spec;
         }
 
-        private TSpec Get<TSpec>(Artist artist, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        private static TSpec Get<TSpec>(Artist artist, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
-;
             spec.Artist = artist;
             spec.UserInvokedSearch = userInvokedSearch;
 
