@@ -54,6 +54,11 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
             return item.CleanTitle == this.CleanTitle;
         }
+
+        public override String ToString()
+        {
+            return Title;
+        }
     }
 
     public enum SourceType

@@ -142,6 +142,15 @@ namespace NzbDrone.Core.Tv
         
         /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
         {
+            return DataMapper.Query<Movie>().Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
+                (m, t) => m.Id == t.MovieId).Where(pagingSpec.FilterExpression)
+                .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                .Skip(pagingSpec.PagingOffset())
+                .Take(pagingSpec.PageSize);
+        }*/
+        
+        /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
+        {
             var newQuery = base.GetPagedQuery(query.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.JoinAlternativeTitles, (movie, title) => title.MovieId == movie.Id), pagingSpec);
             System.Console.WriteLine(newQuery.ToString());
             return newQuery;
@@ -286,7 +295,7 @@ namespace NzbDrone.Core.Tv
         protected override QueryBuilder<Movie> AddJoinQueries(QueryBuilder<Movie> baseQuery)
         {
             baseQuery = base.AddJoinQueries(baseQuery);
-            baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Inner, m => m.AlternativeTitles,
+            baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
                 (m, t) => m.Id == t.MovieId);
 
             return baseQuery;

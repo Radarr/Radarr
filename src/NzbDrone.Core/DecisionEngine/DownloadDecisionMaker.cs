@@ -43,7 +43,7 @@ namespace NzbDrone.Core.DecisionEngine
         {
             if (searchCriteriaBase.Movie != null)
             {
-                return GetMovieDecisions(reports, null).ToList();
+                return GetMovieDecisions(reports, searchCriteriaBase).ToList();
             }
 
             return GetDecisions(reports, searchCriteriaBase).ToList();

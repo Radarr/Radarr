@@ -70,7 +70,7 @@ namespace NzbDrone.Api.Indexers
 
                 try
                 {
-                    _downloadService.DownloadReport(remoteMovie);
+                    _downloadService.DownloadReport(remoteMovie, !release.DownloadAllowed);
                 }
                 catch (ReleaseDownloadException ex)
                 {

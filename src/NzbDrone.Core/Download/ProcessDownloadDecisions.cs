@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Download
 
                     try
                     {
-                        _downloadService.DownloadReport(remoteMovie);
+                        _downloadService.DownloadReport(remoteMovie, false);
                         grabbed.Add(report);
                     }
                     catch (Exception e)
