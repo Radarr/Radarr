@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Core.Datastore.Events;
@@ -12,7 +12,7 @@ namespace NzbDrone.Api.System.Tasks
     {
         private readonly ITaskManager _taskManager;
 
-        private static readonly Regex NameRegex = new Regex("(?<!^)[A-Z]", RegexOptions.Compiled);
+        private static readonly Regex NameRegex = new Regex("(?<!^)[A-Z][a-z]", RegexOptions.Compiled);
 
         public TaskModule(ITaskManager taskManager, IBroadcastSignalRMessage broadcastSignalRMessage)
             : base(broadcastSignalRMessage, "system/task")
