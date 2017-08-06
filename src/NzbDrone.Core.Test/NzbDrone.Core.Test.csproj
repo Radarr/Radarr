@@ -275,6 +275,7 @@
     <Compile Include="IndexerTests\TorrentleechTests\TorrentleechFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TorrentRssIndexerFixture.cs" />
     <Compile Include="IndexerTests\TorrentRssIndexerTests\TestTorrentRssIndexer.cs" />
+    <Compile Include="IndexerTests\WafflesTests\WafflesFixture.cs" />
     <Compile Include="IndexerTests\XElementExtensionsFixture.cs" />
     <Compile Include="Instrumentation\DatabaseTargetFixture.cs" />
     <Compile Include="JobTests\JobRepositoryFixture.cs" />
@@ -429,6 +430,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Files\Indexers\TorrentRss\LimeTorrents.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Indexers\Waffles\Waffles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="License.txt" />

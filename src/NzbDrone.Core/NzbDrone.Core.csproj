@@ -611,6 +611,10 @@
     <Compile Include="IndexerSearch\ArtistSearchService.cs" />
     <Compile Include="IndexerSearch\Definitions\AlbumSearchCriteria.cs" />
     <Compile Include="IndexerSearch\Definitions\ArtistSearchCriteria.cs" />
+    <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
+    <Compile Include="Indexers\Waffles\Waffles.cs" />
+    <Compile Include="Indexers\Waffles\WafflesRequestGenerator.cs" />
+    <Compile Include="Indexers\Waffles\WafflesSettings.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTv.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvSettings.cs" />
     <Compile Include="Indexers\BitMeTv\BitMeTvRequestGenerator.cs" />
