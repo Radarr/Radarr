@@ -39,14 +39,14 @@ module.exports = Backgrid.Cell.extend({
               break;
               case "PTP_Approved":
               addon = "✔";
-              title = "Approved by PTP"
+              title = "Approved by PTP";
               break;
               case "HDB_Internal":
               addon = "⭐️";
               title = "HDBits Internal";
               break;
             }
-            if (addon != "") {
+            if (addon !== "") {
               html += "<span title='{0}'>{1}</span> ".format(title, addon);
             }
           });
