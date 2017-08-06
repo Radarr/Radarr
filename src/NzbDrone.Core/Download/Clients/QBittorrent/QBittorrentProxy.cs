@@ -197,12 +197,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 }
                 else
                 {
-                    throw new DownloadClientException("Failed to connect to qBitTorrent, check your settings.", ex);
+                    throw new DownloadClientException("Failed to connect to qBittorrent, check your settings.", ex);
                 }
             }
             catch (WebException ex)
             {
-                throw new DownloadClientException("Failed to connect to qBitTorrent, please check your settings.", ex);
+                throw new DownloadClientException("Failed to connect to qBittorrent, please check your settings.", ex);
             }
 
             return response.Content;
@@ -239,23 +239,23 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     _logger.Debug("qbitTorrent authentication failed.");
                     if (ex.Response.StatusCode == HttpStatusCode.Forbidden)
                     {
-                        throw new DownloadClientAuthenticationException("Failed to authenticate with qbitTorrent.", ex);
+                        throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.", ex);
                     }
 
-                    throw new DownloadClientException("Failed to connect to qBitTorrent, please check your settings.", ex);
+                    throw new DownloadClientException("Failed to connect to qBittorrent, please check your settings.", ex);
                 }
                 catch (WebException ex)
                 {
-                    throw new DownloadClientException("Failed to connect to qBitTorrent, please check your settings.", ex);
+                    throw new DownloadClientException("Failed to connect to qBittorrent, please check your settings.", ex);
                 }
 
                 if (response.Content != "Ok.") // returns "Fails." on bad login
                 {
                     _logger.Debug("qbitTorrent authentication failed.");
-                    throw new DownloadClientAuthenticationException("Failed to authenticate with qbitTorrent.");
+                    throw new DownloadClientAuthenticationException("Failed to authenticate with qBittorrent.");
                 }
 
-                _logger.Debug("qbitTorrent authentication succeeded.");
+                _logger.Debug("qBittorrent authentication succeeded.");
 
                 cookies = response.GetCookies();
 
