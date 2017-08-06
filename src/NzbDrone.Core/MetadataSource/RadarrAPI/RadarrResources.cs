@@ -149,5 +149,33 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         [JsonProperty("mappings")]
         public Mappings Mappings { get; set; }
     }
+    
+    public class AddTitleMapping
+    {
+
+        [JsonProperty("tmdbid")]
+        public string Tmdbid { get; set; }
+
+        [JsonProperty("info_type")]
+        public string InfoType { get; set; }
+
+        [JsonProperty("info_id")]
+        public int InfoId { get; set; }
+
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
+        [JsonProperty("info")]
+        public TitleInfo Info { get; set; }
+
+        [JsonProperty("votes")]
+        public int Votes { get; set; }
+
+        [JsonProperty("vote_count")]
+        public int VoteCount { get; set; }
+
+        [JsonProperty("locked")]
+        public bool Locked { get; set; }
+    }
 
 }

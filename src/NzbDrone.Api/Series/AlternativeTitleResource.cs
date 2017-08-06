@@ -60,7 +60,17 @@ namespace NzbDrone.Api.Movie
         {
             if (resource == null) return null;
 
-            return new AlternativeTitle();
+            return new AlternativeTitle
+            {
+                Id = resource.Id,
+                SourceType = resource.SourceType,
+                MovieId = resource.MovieId,
+                Title = resource.Title,
+                SourceId = resource.SourceId,
+                Votes = resource.Votes,
+                VoteCount = resource.VoteCount,
+                Language = resource.Language
+            };
         }
 
         public static List<AlternativeTitleResource> ToResource(this IEnumerable<AlternativeTitle> movies)

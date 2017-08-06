@@ -46,7 +46,7 @@ namespace NzbDrone.Api.Indexers
             GetResourceAll = GetReleases;
             Post["/"] = x => DownloadRelease(this.Bind<ReleaseResource>());
 
-            PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
+            //PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
             _remoteEpisodeCache = cacheManager.GetCache<RemoteEpisode>(GetType(), "remoteEpisodes");
@@ -70,7 +70,7 @@ namespace NzbDrone.Api.Indexers
 
                 try
                 {
-                    _downloadService.DownloadReport(remoteMovie, !release.DownloadAllowed);
+                    _downloadService.DownloadReport(remoteMovie, false);
                 }
                 catch (ReleaseDownloadException ex)
                 {

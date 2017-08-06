@@ -14,6 +14,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         IHttpRequestBuilderFactory RadarrAPI { get; }
         List<MovieResult> DiscoverMovies(string action, Func<HttpRequest, HttpRequest> enhanceRequest);
         List<AlternativeTitle> AlternativeTitlesForMovie(int TmdbId);
+        AlternativeTitle AddNewAlternativeTitle(AlternativeTitle title, int TmdbId);
         string APIURL { get; }
     }
 
@@ -115,6 +116,23 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
             return titles;
         }
+
+        public AlternativeTitle AddNewAlternativeTitle(AlternativeTitle title, int TmdbId)
+        {
+            var request = RadarrAPI.Create().SetSegment("route", "mappings").SetSegment("action", "add")
+                .AddQueryParam("tmdbid", TmdbId).AddQueryParam("type", "title")
+                .AddQueryParam("language", IsoLanguages.Get(title.Language).TwoLetterCode)
+                .AddQueryParam("aka_title", title.Title).Build();
+
+            var newMapping = Execute<AddTitleMapping>(request);
+            
+            var newTitle = new AlternativeTitle(newMapping.Info.AkaTitle, SourceType.Mappings, newMapping.Id, title.Language);
+            newTitle.VoteCount = newMapping.VoteCount;
+            newTitle.Votes = newMapping.Votes;
+            
+            return newTitle;
+        }
+        
         public IHttpRequestBuilderFactory RadarrAPI { get; private set; }
     }
 }

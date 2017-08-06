@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Parser.Model
         public ParsedEpisodeInfo ParsedEpisodeInfo { get; set; } //TODO: Change to ParsedMovieInfo, for now though ParsedEpisodeInfo will do.
         public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public Movie Movie { get; set; }
-        public bool DownloadAllowed { get; set; }
+        public MappingResultType MappingResult { get; set; }
 
         public override string ToString()
         {
