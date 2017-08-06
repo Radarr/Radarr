@@ -68,4 +68,10 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         User = 2,
         Indexer = 3
     }
+
+    public class AlternativeYear
+    {
+        public int Year { get; set; }
+        public int SourceId { get; set; }
+    }
 }

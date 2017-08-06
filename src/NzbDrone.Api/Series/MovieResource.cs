@@ -22,6 +22,8 @@ namespace NzbDrone.Api.Movie
         //View Only
         public string Title { get; set; }
         public List<AlternativeTitleResource> AlternativeTitles { get; set; }
+        public int? SecondaryYear { get; set; }
+        public int SecondaryYearSourceId { get; set; }
         public string SortTitle { get; set; }
         public long? SizeOnDisk { get; set; }
         public MovieStatusType Status { get; set; }
@@ -133,6 +135,8 @@ namespace NzbDrone.Api.Movie
                 Images = model.Images,
                 
                 Year = model.Year,
+                SecondaryYear = model.SecondaryYear,
+                SecondaryYearSourceId = model.SecondaryYearSourceId,
                 
                 Path = model.Path,
                 ProfileId = model.ProfileId,
@@ -191,6 +195,8 @@ namespace NzbDrone.Api.Movie
                 Images = resource.Images,
 
                 Year = resource.Year,
+                SecondaryYear = resource.SecondaryYear,
+                SecondaryYearSourceId = resource.SecondaryYearSourceId,
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,

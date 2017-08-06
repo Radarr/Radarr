@@ -115,7 +115,8 @@ namespace NzbDrone.Core.Tv
                 .DistinctBy(t => t.CleanTitle)
                 .ExceptBy(t => t.CleanTitle, movie.AlternativeTitles, t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
 
-            var mappingsTitles = _apiClient.AlternativeTitlesForMovie(movieInfo.TmdbId);
+            var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
+            var mappingsTitles = mappings.Item1;
 
             movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
             
@@ -123,6 +124,12 @@ namespace NzbDrone.Core.Tv
                 t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
             
             movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
+
+            if (mappings.Item2 != null)
+            {
+                movie.SecondaryYear = mappings.Item2.Year;
+                movie.SecondaryYearSourceId = mappings.Item2.SourceId;
+            }
 
             _movieService.UpdateMovie(movie);
 

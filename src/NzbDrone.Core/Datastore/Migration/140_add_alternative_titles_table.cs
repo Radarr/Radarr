@@ -7,6 +7,7 @@ using System.Collections;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using Marr.Data.QGen;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Datastore.Migration
@@ -30,6 +31,10 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 Delete.Column("AlternativeTitles").FromTable("Movies");
             }
+
+            Alter.Table("Movies").AddColumn("SecondaryYear").AsInt32().Nullable();
+            Alter.Table("Movies").AddColumn("SecondaryYearSourceId").AsInt64().NotNullable().WithDefault(0);
+            
             Execute.WithConnection(AddExisting);
         }
 

@@ -120,6 +120,8 @@
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
     <Compile Include="Indexers\ReleasePushModule.cs" />
     <Compile Include="Movies\AlternativeTitleModule.cs" />
+    <Compile Include="Movies\AlternativeYearResource.cs" />
+    <Compile Include="Movies\AlternativeYearModule.cs" />
     <Compile Include="Movies\MovieModuleWithSignalR.cs" />
     <Compile Include="Movies\MovieBulkImportModule.cs" />
     <Compile Include="Movies\MovieFileModule.cs" />

@@ -6,7 +6,8 @@
         <div>
             <h1 class="header-text">
                 <i class="x-monitored" title="Toggle monitored state for movie"/>
-                {{title}}
+                {{title}} <span class="year">({{year}}{{#if secondaryYear}} / <a href="https://mappings.radarr.video/mapping/{{secondaryYearSourceId}}" target="_blank"><span title="Secondary year pulled from Radarr Mappings.
+                Click to head on over there and tell us whether this is correct or not.">{{secondaryYear}}</span></a>{{/if}})</span>
                 <div class="movie-actions pull-right">
                     <div class="x-episode-file-editor">
                         <i class="icon-sonarr-episode-file" title="Modify movie files"/>

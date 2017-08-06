@@ -3,6 +3,7 @@ using NzbDrone.Core.Configuration;
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
@@ -14,7 +15,9 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         IHttpRequestBuilderFactory RadarrAPI { get; }
         List<MovieResult> DiscoverMovies(string action, Func<HttpRequest, HttpRequest> enhanceRequest);
         List<AlternativeTitle> AlternativeTitlesForMovie(int TmdbId);
+        Tuple<List<AlternativeTitle>, AlternativeYear> AlternativeTitlesAndYearForMovie(int tmdbId);
         AlternativeTitle AddNewAlternativeTitle(AlternativeTitle title, int TmdbId);
+        AlternativeYear AddNewAlternativeYear(int year, int tmdbId);
         string APIURL { get; }
     }
 
@@ -116,6 +119,35 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
             return titles;
         }
+        
+        public Tuple<List<AlternativeTitle>, AlternativeYear> AlternativeTitlesAndYearForMovie(int tmdbId)
+        {
+            var request = RadarrAPI.Create().SetSegment("route", "mappings").SetSegment("action", "find").AddQueryParam("tmdbid", tmdbId).Build();
+
+            var mappings = Execute<Mapping>(request);
+
+            var titles = new List<NzbDrone.Core.Movies.AlternativeTitles.AlternativeTitle>();
+
+            foreach (var altTitle in mappings.Mappings.Titles)
+            {
+                titles.Add(new NzbDrone.Core.Movies.AlternativeTitles.AlternativeTitle(altTitle.Info.AkaTitle, SourceType.Mappings, altTitle.Id));
+            }
+
+            var year = mappings.Mappings.Years.Where(y => y.Votes >= 3).OrderBy(y => y.Votes).FirstOrDefault();
+
+            AlternativeYear newYear = null;
+
+            if (year != null)
+            {
+                newYear = new AlternativeYear
+                {
+                    Year = year.Info.AkaYear,
+                    SourceId = year.Id
+                };
+            }
+            
+            return new Tuple<List<AlternativeTitle>, AlternativeYear>(titles, newYear);
+        }
 
         public AlternativeTitle AddNewAlternativeTitle(AlternativeTitle title, int TmdbId)
         {
@@ -131,6 +163,21 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
             newTitle.Votes = newMapping.Votes;
             
             return newTitle;
+        }
+
+        public AlternativeYear AddNewAlternativeYear(int year, int tmdbId)
+        {
+            var request = RadarrAPI.Create().SetSegment("route", "mappings").SetSegment("action", "add")
+                .AddQueryParam("tmdbid", tmdbId).AddQueryParam("type", "year")
+                .AddQueryParam("aka_year", year).Build();
+
+            var newYear = Execute<AddYearMapping>(request);
+
+            return new AlternativeYear
+            {
+                Year = newYear.Info.AkaYear,
+                SourceId = newYear.Id
+            };
         }
         
         public IHttpRequestBuilderFactory RadarrAPI { get; private set; }
