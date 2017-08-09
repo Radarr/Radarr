@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using NLog;
+ using System.ServiceModel;
+ using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -138,9 +139,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 			var movie = new Movie();
             var altTitles = new List<AlternativeTitle>();
 
-			if (langCode != "us")
+			if (langCode != "en")
 			{
-			    altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, IsoLanguages.Find(resource.original_language).Language));
+			    var iso = IsoLanguages.Find(resource.original_language);
+			    if (iso != null)
+			    {
+			        altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
+			    }
+			    
 				//movie.AlternativeTitles.Add(resource.original_title);
 			}
 

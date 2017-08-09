@@ -27,17 +27,17 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
 
     public class RadarrAPIException : Exception
     {
-        RadarrError APIErrors;
+        public RadarrError APIErrors;
 
         public RadarrAPIException(RadarrError apiError) : base(HumanReadable(apiError))
         {
-            
+            APIErrors = apiError;
         }
 
-        private static string HumanReadable(RadarrError APIErrors)
+        private static string HumanReadable(RadarrError apiErrors)
         {
-            var firstError = APIErrors.Errors.First();
-            var details = string.Join("\n", APIErrors.Errors.Select(error =>
+            var firstError = apiErrors.Errors.First();
+            var details = string.Join("\n", apiErrors.Errors.Select(error =>
             {
                 return $"{error.Title} ({error.Status}, RayId: {error.RayId}), Details: {error.Detail}";
             }));

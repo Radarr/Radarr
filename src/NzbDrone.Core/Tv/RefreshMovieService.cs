@@ -115,21 +115,29 @@ namespace NzbDrone.Core.Tv
                 .DistinctBy(t => t.CleanTitle)
                 .ExceptBy(t => t.CleanTitle, movie.AlternativeTitles, t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
 
-            var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
-            var mappingsTitles = mappings.Item1;
-
-            movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
-            
-            mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
-                t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
-            
-            movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
-
-            if (mappings.Item2 != null)
+            try
             {
-                movie.SecondaryYear = mappings.Item2.Year;
-                movie.SecondaryYearSourceId = mappings.Item2.SourceId;
+                var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
+                var mappingsTitles = mappings.Item1;
+
+                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
+
+                mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
+                    t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
+
+                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
+
+                if (mappings.Item2 != null)
+                {
+                    movie.SecondaryYear = mappings.Item2.Year;
+                    movie.SecondaryYearSourceId = mappings.Item2.SourceId;
+                }
             }
+            catch (RadarrAPIException ex)
+            {
+                //Not that wild, could just be a 404.
+            }
+            
 
             _movieService.UpdateMovie(movie);
 
