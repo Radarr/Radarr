@@ -9,7 +9,7 @@ namespace NzbDrone.Api.NetImport
     {
         public NetImportModule(NetImportFactory netImportFactory) : base(netImportFactory, "netimport")
         {
-            PostValidator.RuleFor(c => c.RootFolderPath).NotNull();
+            PostValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
             PostValidator.RuleFor(c => c.ProfileId).NotNull();
         }

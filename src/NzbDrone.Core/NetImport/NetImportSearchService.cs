@@ -63,7 +63,7 @@ namespace NzbDrone.Core.NetImport
         {
             var movies = MovieListSearch(listId, onlyEnableAuto);
 
-            return movies.Where(x => !_movieService.MovieExists(x)).ToList();
+            return _movieService.FilterExistingMovies(movies);
         }
 
         public List<Movie> MovieListSearch(int listId, bool onlyEnableAuto = false)

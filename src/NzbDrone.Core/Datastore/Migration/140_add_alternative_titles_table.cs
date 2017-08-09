@@ -35,7 +35,6 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("Movies").AddColumn("SecondaryYear").AsInt32().Nullable();
             Alter.Table("Movies").AddColumn("SecondaryYearSourceId").AsInt64().Nullable().WithDefault(0);
             
-            
             Execute.WithConnection(AddExisting);
         }
 

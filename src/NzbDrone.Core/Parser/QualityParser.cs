@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>Remux)\b",
+        private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD)?Remux)\b",
                                                         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper|repack|rerip)\b",
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480p|640x480|848x480)|(?<R576p>576p)|(?<R720p>720p|1280x720)|(?<R1080p>1080p|1920x1080)|(?<R2160p>2160p))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>Xvid)|(?<divx>divx))\b",
+        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>X-?vid)|(?<divx>divx))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex OtherSourceRegex = new Regex(@"(?<hdtv>HD[-_. ]TV)|(?<sdtv>SD[-_. ]TV)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Parser
 
                     if (resolution == Resolution.R480P)
                     {
-                        result.Quality = Quality.DVD;
+                        result.Quality = Quality.Bluray480p;
                         return result;
                     }
 
@@ -215,6 +215,12 @@ namespace NzbDrone.Core.Parser
                 if (sourceMatch.Groups["bdrip"].Success ||
                     sourceMatch.Groups["brrip"].Success)
                 {
+                    if (codecRegex.Groups["xvid"].Success || codecRegex.Groups["divx"].Success)
+                    {
+                        result.Quality = Quality.DVD;
+                        return result;
+                    }
+                    
                     switch (resolution)
                     {
                         case Resolution.R720p:
@@ -230,7 +236,7 @@ namespace NzbDrone.Core.Parser
 							result.Quality = Quality.Bluray480p;
 							return result;
                         default:
-                            result.Quality = Quality.DVD;
+                            result.Quality = Quality.Bluray480p;
                             return result;
                     }
                 }

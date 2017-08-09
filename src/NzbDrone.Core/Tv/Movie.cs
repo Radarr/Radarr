@@ -114,6 +114,11 @@ namespace NzbDrone.Core.Tv
             return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
         }
 
+        public DateTime PhysicalReleaseDate()
+        {
+            return PhysicalRelease ?? (InCinemas?.AddDays(90) ?? DateTime.MaxValue);
+        }
+
         public override string ToString()
         {
             return string.Format("[{0}][{1} ({2})]", ImdbId, Title.NullSafe(), Year.NullSafe());
