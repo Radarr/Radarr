@@ -125,6 +125,7 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\140_add_alternative_titles_table.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
     <Compile Include="Datastore\Migration\134_add_remux_qualities_for_the_wankers.cs" />
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
@@ -134,6 +135,9 @@
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
     <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
+    <Compile Include="Movies\AlternativeTitles\AlternativeTitle.cs" />
+    <Compile Include="Movies\AlternativeTitles\AlternativeTitleRepository.cs" />
+    <Compile Include="Movies\AlternativeTitles\AlternativeTitleService.cs" />
     <Compile Include="NetImport\NetImportListLevels.cs" />
     <Compile Include="NetImport\TMDb\TMDbLanguageCodes.cs" />
     <Compile Include="NetImport\TMDb\TMDbSettings.cs" />

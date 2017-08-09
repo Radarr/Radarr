@@ -14,6 +14,8 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.MediaFiles.Commands;
+using NzbDrone.Core.MetadataSource.RadarrAPI;
+using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -21,27 +23,34 @@ namespace NzbDrone.Core.Tv
     {
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieService _movieService;
+        private readonly IAlternativeTitleService _titleService;
         private readonly IRefreshEpisodeService _refreshEpisodeService;
         private readonly IEventAggregator _eventAggregator;
 	private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
+        private readonly IRadarrAPIClient _apiClient;
+        
         private readonly Logger _logger;
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
+                                    IAlternativeTitleService titleService,
                                     IRefreshEpisodeService refreshEpisodeService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
+                                    IRadarrAPIClient apiClient,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
 		                   IManageCommandQueue commandQueue,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
             _movieService = movieService;
+            _titleService = titleService;
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
-		_commandQueueManager = commandQueue;
+            _apiClient = apiClient;
+		    _commandQueueManager = commandQueue;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _logger = logger;
@@ -85,7 +94,7 @@ namespace NzbDrone.Core.Tv
             movie.Certification = movieInfo.Certification;
             movie.InCinemas = movieInfo.InCinemas;
             movie.Website = movieInfo.Website;
-            movie.AlternativeTitles = movieInfo.AlternativeTitles;
+            //movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
@@ -102,7 +111,46 @@ namespace NzbDrone.Core.Tv
                 _logger.Warn(e, "Couldn't update movie path for " + movie.Path);
             }
 
+            movieInfo.AlternativeTitles = movieInfo.AlternativeTitles.Where(t => t.CleanTitle != movie.CleanTitle)
+                .DistinctBy(t => t.CleanTitle)
+                .ExceptBy(t => t.CleanTitle, movie.AlternativeTitles, t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
+
+            try
+            {
+                var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
+                var mappingsTitles = mappings.Item1;
+
+                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
+
+                mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
+                    t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
+
+                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
+
+                if (mappings.Item2 != null)
+                {
+                    movie.SecondaryYear = mappings.Item2.Year;
+                    movie.SecondaryYearSourceId = mappings.Item2.SourceId;
+                }
+            }
+            catch (RadarrAPIException ex)
+            {
+                //Not that wild, could just be a 404.
+            }
+            
+
             _movieService.UpdateMovie(movie);
+
+            try
+            {
+                var newTitles = movieInfo.AlternativeTitles.Except(movie.AlternativeTitles);
+                //_titleService.AddAltTitles(newTitles.ToList(), movie);
+            }
+            catch (Exception e)
+            {
+                _logger.Debug(e, "Failed adding alternative titles.");
+                throw;
+            }
 
             _logger.Debug("Finished movie refresh for {0}", movie.Title);
             _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));

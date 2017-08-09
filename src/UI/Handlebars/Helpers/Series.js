@@ -64,6 +64,11 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
   if (titles.length === 0) {
     return "";
   }
+
+  titles = _.map(titles, function(item){
+      return item.title;
+  });
+
   if (titles.length === 1) {
     return titles[0];
   }

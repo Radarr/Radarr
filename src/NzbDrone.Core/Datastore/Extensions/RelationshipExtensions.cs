@@ -28,12 +28,12 @@ namespace NzbDrone.Core.Datastore.Extensions
             return mapBuilder.Relationships.AutoMapComplexTypeProperties<ILazyLoaded>();
         }
 
-        public static RelationshipBuilder<TParent> HasMany<TParent, TChild>(this RelationshipBuilder<TParent> relationshipBuilder, Expression<Func<TParent, LazyList<TChild>>> portalExpression, Func<TParent, int> childIdSelector)
+        public static RelationshipBuilder<TParent> HasMany<TParent, TChild>(this RelationshipBuilder<TParent> relationshipBuilder, Expression<Func<TParent, LazyList<TChild>>> portalExpression, Func<TChild, int> parentIdSelector)
             where TParent : ModelBase
             where TChild : ModelBase
         {
             return relationshipBuilder.For(portalExpression.GetMemberName())
-                   .LazyLoad((db, parent) => db.Query<TChild>().Where(c => c.Id == childIdSelector(parent)).ToList());
+                   .LazyLoad((db, parent) => db.Query<TChild>().Where(c => parentIdSelector(c) == parent.Id).ToList());
         }
 
         private static string GetMemberName<T, TMember>(this Expression<Func<T, TMember>> member)

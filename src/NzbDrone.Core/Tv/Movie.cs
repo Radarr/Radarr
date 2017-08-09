@@ -6,6 +6,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.MediaFiles;
 using System.IO;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.Tv
 {
@@ -17,7 +19,7 @@ namespace NzbDrone.Core.Tv
             Genres = new List<string>();
             Actors = new List<Actor>();
             Tags = new HashSet<int>();
-            AlternativeTitles = new List<string>();
+            AlternativeTitles = new List<AlternativeTitle>();
         }
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
@@ -52,7 +54,10 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<MovieFile> MovieFile { get; set; }
 		public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
-        public List<string> AlternativeTitles { get; set; }
+        //Get Loaded via a Join Query
+        public List<AlternativeTitle> AlternativeTitles { get; set; }
+        public int? SecondaryYear { get; set; }
+        public int SecondaryYearSourceId { get; set; }
         public string YouTubeTrailerId{ get; set; }
         public string Studio { get; set; }
 

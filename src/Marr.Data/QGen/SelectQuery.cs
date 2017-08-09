@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using Marr.Data.Mapping;
 using Marr.Data.QGen.Dialects;
 
@@ -129,7 +130,16 @@ namespace Marr.Data.QGen
         public void BuildOrderClause(StringBuilder sql)
         {
             sql.Append(OrderBy.ToString());
-        }       
+        }
+       
+        public void BuildGroupBy(StringBuilder sql)
+        {
+            var baseTable = this.Tables.First();
+            var primaryKeyColumn = baseTable.Columns.Single(c => c.ColumnInfo.IsPrimaryKey);
+
+            string token = this.Dialect.CreateToken(string.Concat(baseTable.Alias, ".", primaryKeyColumn.ColumnInfo.Name));
+            sql.AppendFormat(" GROUP BY {0}", token);
+        }
 
         private string TranslateJoin(JoinType join)
         {

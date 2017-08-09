@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Download
     public interface IDownloadService
     {
         void DownloadReport(RemoteEpisode remoteEpisode);
-        void DownloadReport(RemoteMovie remoteMovie);
+        void DownloadReport(RemoteMovie remoteMovie, bool forceDownload);
     }
 
 
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Download
             _eventAggregator.PublishEvent(episodeGrabbedEvent);
         }
 
-        public void DownloadReport(RemoteMovie remoteMovie)
+        public void DownloadReport(RemoteMovie remoteMovie, bool foceDownload = false)
         {
             //Ensure.That(remoteEpisode.Series, () => remoteEpisode.Series).IsNotNull();
             //Ensure.That(remoteEpisode.Episodes, () => remoteEpisode.Episodes).HasItems(); TODO update this shit

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web.Hosting;
 using Marr.Data;
 using Marr.Data.QGen;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Datastore.Extensions;
@@ -48,7 +50,7 @@ namespace NzbDrone.Core.Datastore
             _eventAggregator = eventAggregator;
         }
 
-        protected QueryBuilder<TModel> Query => DataMapper.Query<TModel>();
+        protected QueryBuilder<TModel> Query => AddJoinQueries(DataMapper.Query<TModel>());
 
         protected void Delete(Expression<Func<TModel, bool>> filter)
         {
@@ -246,8 +248,15 @@ namespace NzbDrone.Core.Datastore
 
         public virtual PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec)
         {
-            pagingSpec.Records = GetPagedQuery(Query, pagingSpec).ToList();
+            pagingSpec.Records = GetPagedQuery(Query, pagingSpec).Skip(pagingSpec.PagingOffset())
+                .Take(pagingSpec.PageSize).ToList();
             pagingSpec.TotalRecords = GetPagedQuery(Query, pagingSpec).GetRowCount();
+
+            var queryStr = GetPagedQuery(Query, pagingSpec).BuildQuery();
+            var beforeQuery = Query.BuildQuery();
+
+            pagingSpec.SortKey = beforeQuery;
+            pagingSpec.SortKey = queryStr;
 
             return pagingSpec;
         }
@@ -255,9 +264,7 @@ namespace NzbDrone.Core.Datastore
         protected virtual SortBuilder<TModel> GetPagedQuery(QueryBuilder<TModel> query, PagingSpec<TModel> pagingSpec)
         {
             return query.Where(pagingSpec.FilterExpression)
-                        .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
-                        .Skip(pagingSpec.PagingOffset())
-                        .Take(pagingSpec.PageSize);
+                .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection());
         }
 
         protected void ModelCreated(TModel model)
@@ -281,6 +288,11 @@ namespace NzbDrone.Core.Datastore
             {
                 _eventAggregator.PublishEvent(new ModelEvent<TModel>(model, action));
             }
+        }
+
+        protected virtual QueryBuilder<TModel> AddJoinQueries(QueryBuilder<TModel> baseQuery)
+        {
+            return baseQuery;
         }
 
         protected virtual bool PublishModelEvents => false;

@@ -8,6 +8,7 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.DecisionEngine;
 using System.Linq;
+using NzbDrone.Core.Datastore.Migration;
 
 namespace NzbDrone.Api.Indexers
 {
@@ -29,8 +30,8 @@ namespace NzbDrone.Api.Indexers
         public bool FullSeason { get; set; }
         public int SeasonNumber { get; set; }
         public Language Language { get; set; }
-        public string AirDate { get; set; }
-        public string SeriesTitle { get; set; }
+        public int Year { get; set; }
+        public string MovieTitle { get; set; }
         public int[] EpisodeNumbers { get; set; }
         public int[] AbsoluteEpisodeNumbers { get; set; }
         public bool Approved { get; set; }
@@ -43,8 +44,9 @@ namespace NzbDrone.Api.Indexers
         public string CommentUrl { get; set; }
         public string DownloadUrl { get; set; }
         public string InfoUrl { get; set; }
-        public bool DownloadAllowed { get; set; }
+        public MappingResultType MappingResult { get; set; }
         public int ReleaseWeight { get; set; }
+        public int SuspectedMovieId { get; set; }
 
 	public IEnumerable<string> IndexerFlags { get; set; }
 
@@ -88,11 +90,12 @@ namespace NzbDrone.Api.Indexers
             var parsedEpisodeInfo = model.RemoteEpisode.ParsedEpisodeInfo;
             var remoteEpisode = model.RemoteEpisode;
             var torrentInfo = (model.RemoteEpisode.Release as TorrentInfo) ?? new TorrentInfo();
-            var downloadAllowed = model.RemoteEpisode.DownloadAllowed;
+            var mappingResult = MappingResultType.Success;
             if (model.IsForMovie)
             {
-                downloadAllowed = model.RemoteMovie.DownloadAllowed;
+                mappingResult = model.RemoteMovie.MappingResult;
                 var parsedMovieInfo = model.RemoteMovie.ParsedMovieInfo;
+                var movieId = model.RemoteMovie.Movie?.Id ?? 0;
 
                 return new ReleaseResource
                 {
@@ -111,8 +114,8 @@ namespace NzbDrone.Api.Indexers
                     //FullSeason = parsedMovieInfo.FullSeason,
                     //SeasonNumber = parsedMovieInfo.SeasonNumber,
                     Language = parsedMovieInfo.Language,
-                    AirDate = "",
-                    SeriesTitle = parsedMovieInfo.MovieTitle,
+                    Year = parsedMovieInfo.Year,
+                    MovieTitle = parsedMovieInfo.MovieTitle,
                     EpisodeNumbers = new int[0],
                     AbsoluteEpisodeNumbers = new int[0],
                     Approved = model.Approved,
@@ -125,8 +128,10 @@ namespace NzbDrone.Api.Indexers
                     CommentUrl = releaseInfo.CommentUrl,
                     DownloadUrl = releaseInfo.DownloadUrl,
                     InfoUrl = releaseInfo.InfoUrl,
-                    DownloadAllowed = downloadAllowed,
+                    MappingResult = mappingResult,
                     //ReleaseWeight
+                    
+                    SuspectedMovieId = movieId,
 
                     MagnetUrl = torrentInfo.MagnetUrl,
                     InfoHash = torrentInfo.InfoHash,
@@ -161,8 +166,8 @@ namespace NzbDrone.Api.Indexers
                 FullSeason = parsedEpisodeInfo.FullSeason,
                 SeasonNumber = parsedEpisodeInfo.SeasonNumber,
                 Language = parsedEpisodeInfo.Language,
-                AirDate = parsedEpisodeInfo.AirDate,
-                SeriesTitle = parsedEpisodeInfo.SeriesTitle,
+                //AirDate = parsedEpisodeInfo.AirDate,
+                //SeriesTitle = parsedEpisodeInfo.SeriesTitle,
                 EpisodeNumbers = parsedEpisodeInfo.EpisodeNumbers,
                 AbsoluteEpisodeNumbers = parsedEpisodeInfo.AbsoluteEpisodeNumbers,
                 Approved = model.Approved,
@@ -175,7 +180,7 @@ namespace NzbDrone.Api.Indexers
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
-                DownloadAllowed = downloadAllowed,
+                //DownloadAllowed = downloadAllowed,
                 //ReleaseWeight
 
                 MagnetUrl = torrentInfo.MagnetUrl,

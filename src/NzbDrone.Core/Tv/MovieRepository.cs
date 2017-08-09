@@ -6,6 +6,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Datastore.Extensions;
 using Marr.Data.QGen;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Qualities;
 using CoreParser = NzbDrone.Core.Parser.Parser;
@@ -103,7 +104,7 @@ namespace NzbDrone.Core.Tv
 
         public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
 		{
-			if (pagingSpec.SortKey == "downloadedQuality")
+			/*if (pagingSpec.SortKey == "downloadedQuality")
 			{
 				var mapper = _database.GetDataMapper();
 				var offset = pagingSpec.PagingOffset();
@@ -113,7 +114,7 @@ namespace NzbDrone.Core.Tv
 				{
 					direction = "DESC";
 				}
-				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
+				var q = Query.Select($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
 				var q2 = mapper.Query<Movie>("SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title ASC;");
 
 				//var ok = q.BuildQuery();
@@ -122,9 +123,11 @@ namespace NzbDrone.Core.Tv
 				pagingSpec.TotalRecords = q2.Count();
 
 			}
-			else
+			else*/
 			{
 				pagingSpec = base.GetPaged(pagingSpec);
+			    //pagingSpec.Records = GetPagedQuery(Query, pagingSpec).ToList();
+			    //pagingSpec.TotalRecords = GetPagedQuery(Query, pagingSpec).GetRowCount();
 			}
 
 			if (pagingSpec.Records.Count == 0 && pagingSpec.Page != 1)
@@ -136,6 +139,22 @@ namespace NzbDrone.Core.Tv
 
 			return pagingSpec;
 		}
+        
+        /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
+        {
+            return DataMapper.Query<Movie>().Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
+                (m, t) => m.Id == t.MovieId).Where(pagingSpec.FilterExpression)
+                .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                .Skip(pagingSpec.PagingOffset())
+                .Take(pagingSpec.PageSize);
+        }*/
+        
+        /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
+        {
+            var newQuery = base.GetPagedQuery(query.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.JoinAlternativeTitles, (movie, title) => title.MovieId == movie.Id), pagingSpec);
+            System.Console.WriteLine(newQuery.ToString());
+            return newQuery;
+        }*/
 
         public SortBuilder<Movie> GetMoviesWithoutFilesQuery(PagingSpec<Movie> pagingSpec)
         {
@@ -247,22 +266,39 @@ namespace NzbDrone.Core.Tv
 
                 if (result == null)
                 {
-                    IEnumerable<Movie> movies = All();
+                    /*IEnumerable<Movie> movies = All();
                     Func<string, string> titleCleaner = title => CoreParser.CleanSeriesTitle(title.ToLower());
-                    Func<IEnumerable<string>, string, bool> altTitleComparer =
+                    Func<IEnumerable<AlternativeTitle>, string, bool> altTitleComparer =
                         (alternativeTitles, atitle) =>
-                        alternativeTitles.Any(altTitle => titleCleaner(altTitle) == atitle);
+                        alternativeTitles.Any(altTitle => altTitle.CleanTitle == atitle);*/
 
-                    result = movies.Where(m => altTitleComparer(m.AlternativeTitles, cleanTitle) ||
+                    /*result = movies.Where(m => altTitleComparer(m.AlternativeTitles, cleanTitle) ||
                                                 altTitleComparer(m.AlternativeTitles, cleanTitleWithRomanNumbers) ||
-                                          altTitleComparer(m.AlternativeTitles, cleanTitleWithArabicNumbers)).FirstWithYear(year);
+                                          altTitleComparer(m.AlternativeTitles, cleanTitleWithArabicNumbers)).FirstWithYear(year);*/
+
+                    //result = Query.Join<Movie, AlternativeTitle>(JoinType.Inner, m => m._newAltTitles,
+                        //(m, t) => m.Id == t.MovieId && (t.CleanTitle == cleanTitle)).FirstWithYear(year);
+                    result = Query.Where<AlternativeTitle>(t =>
+                        t.CleanTitle == cleanTitle || t.CleanTitle == cleanTitleWithArabicNumbers
+                        || t.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
 
                 }
             }
             return result;
             /*return year.HasValue
                 ? results?.FirstOrDefault(movie => movie.Year == year.Value)
-                : results?.FirstOrDefault();*/
+             
+             
+              : results?.FirstOrDefault();*/
+        }
+
+        protected override QueryBuilder<Movie> AddJoinQueries(QueryBuilder<Movie> baseQuery)
+        {
+            baseQuery = base.AddJoinQueries(baseQuery);
+            baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
+                (m, t) => m.Id == t.MovieId);
+
+            return baseQuery;
         }
 
         public Movie FindByTmdbId(int tmdbid)
