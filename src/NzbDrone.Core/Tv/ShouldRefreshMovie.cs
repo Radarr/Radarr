@@ -35,13 +35,19 @@ namespace NzbDrone.Core.Tv
                 return false;
             }
 
-            if (movie.Status != MovieStatusType.TBA)
+            if (movie.Status == MovieStatusType.Announced || movie.Status == MovieStatusType.InCinemas)
             {
-                _logger.Trace("Movie {0} is announced or released, should refresh.", movie.Title); //We probably have to change this.
+                _logger.Trace("Movie {0} is announced or in cinemas, should refresh.", movie.Title); //We probably have to change this.
                 return true;
             }
 
-            _logger.Trace("Movie {0} ended long ago, should not be refreshed.", movie.Title);
+            if (movie.Status == MovieStatusType.Released && movie.PhysicalReleaseDate() >= DateTime.UtcNow.AddDays(-30))
+            {
+                _logger.Trace("Movie {0} is released since less than 30 days, should refresh", movie.Title);
+                return true;
+            }
+
+            _logger.Trace("Movie {0} came out long ago, should not be refreshed.", movie.Title);
             return false;
         }
     }

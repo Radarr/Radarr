@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -39,15 +39,15 @@ namespace NzbDrone.Core.Test.Profiles
 
 
         [Test]
-        public void should_not_be_able_to_delete_profile_if_assigned_to_series()
+        public void should_not_be_able_to_delete_profile_if_assigned_to_movie()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var movieList = Builder<Movie>.CreateListOfSize(3)
                                             .Random(1)
                                             .With(c => c.ProfileId = 2)
                                             .Build().ToList();
 
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
 
             Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
 
@@ -57,15 +57,15 @@ namespace NzbDrone.Core.Test.Profiles
 
 
         [Test]
-        public void should_delete_profile_if_not_assigned_to_series()
+        public void should_delete_profile_if_not_assigned_to_movie()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var movieList = Builder<Movie>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.ProfileId = 2)
                                             .Build().ToList();
 
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
 
             Subject.Delete(1);
 

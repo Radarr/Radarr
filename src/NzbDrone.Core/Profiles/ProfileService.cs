@@ -22,13 +22,13 @@ namespace NzbDrone.Core.Profiles
     public class ProfileService : IProfileService, IHandle<ApplicationStartedEvent>
     {
         private readonly IProfileRepository _profileRepository;
-        private readonly ISeriesService _seriesService;
+        private readonly IMovieService _movieService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, ISeriesService seriesService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IMovieService movieService, Logger logger)
         {
             _profileRepository = profileRepository;
-            _seriesService = seriesService;
+            _movieService = movieService;
             _logger = logger;
         }
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Profiles
 
         public void Delete(int id)
         {
-            if (_seriesService.GetAllSeries().Any(c => c.ProfileId == id))
+            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id))
             {
                 throw new ProfileInUseException(id);
             }
