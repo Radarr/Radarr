@@ -34,40 +34,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Alter.Table("Movies").AddColumn("SecondaryYear").AsInt32().Nullable();
             Alter.Table("Movies").AddColumn("SecondaryYearSourceId").AsInt64().Nullable().WithDefault(0);
-            
-            
-            Execute.WithConnection(AddExisting);
-        }
-
-        private void AddExisting(IDbConnection conn, IDbTransaction tran)
-        {
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
-            {
-                getSeriesCmd.Transaction = tran;
-                getSeriesCmd.CommandText = @"SELECT Key, Value FROM Config WHERE Key = 'importexclusions'";
-                TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-                using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
-                {
-                    while (seriesReader.Read())
-                    {
-                        var Key = seriesReader.GetString(0);
-                        var Value = seriesReader.GetString(1);
-
-                        var importExclusions = Value.Split(',').Select(x => {
-                            return string.Format("(\"{0}\", \"{1}\")", Regex.Replace(x, @"^.*\-(.*)$", "$1"),
-                                                 textInfo.ToTitleCase(string.Join(" ", x.Split('-').DropLast(1))));
-                        }).ToList();
-
-                        using (IDbCommand updateCmd = conn.CreateCommand())
-                        {
-                            updateCmd.Transaction = tran;
-                            updateCmd.CommandText = "INSERT INTO ImportExclusions (tmdbid, MovieTitle) VALUES " + string.Join(", ", importExclusions);
-
-                            updateCmd.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
         }
     }
 }
