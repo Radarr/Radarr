@@ -1,7 +1,7 @@
 {
-  "name": "Sonarr",
+  "name": "Radarr",
   "version": "2.0.0",
-  "description": "Sonarr",
+  "description": "Radarr",
   "main": "main.js",
   "scripts": {
     "build": "gulp build",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Sonarr/Sonarr.git"
+    "url": "git://github.com/Radarr/Radarr.git"
   },
   "author": "",
   "license": "GPL-3.0",
