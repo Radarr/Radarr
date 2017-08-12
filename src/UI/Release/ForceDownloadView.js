@@ -1,4 +1,4 @@
-var _ = require('underscore');
+﻿var _ = require('underscore');
 var $ = require('jquery');
 var vent = require('vent');
 var AppLayout = require('../AppLayout');
@@ -33,7 +33,7 @@ module.exports = Marionette.ItemView.extend({
     },
 
     onShow : function() {
-        if (this.release.get("mappingResult") == "wrongYear") {
+        if (this.release.get("mappingResult") === "wrongYear") {
             this.ui.titleMapping.hide();
         } else {
             this.ui.yearMapping.hide();
@@ -42,14 +42,14 @@ module.exports = Marionette.ItemView.extend({
 
     _configureTemplateHelpers : function() {
         this.templateHelpers.release = this.release.toJSON();
-        this.templateHelpers.languages = LanguageCollection.toJSON()
+        this.templateHelpers.languages = LanguageCollection.toJSON();
     },
 
     _forceDownload : function() {
         this.ui.indicator.show();
         var self = this;
 
-        if (this.release.get("mappingResult") == "wrongYear") {
+        if (this.release.get("mappingResult") === "wrongYear") {
             var altYear = new AltYearModel({
                 movieId : this.release.get("suspectedMovieId"),
                 year : this.release.get("year")
