@@ -1,4 +1,4 @@
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
+﻿var NzbDroneCell = require('../../Cells/NzbDroneCell');
 
 module.exports = NzbDroneCell.extend({
     className : 'title-source-cell',
@@ -6,7 +6,7 @@ module.exports = NzbDroneCell.extend({
     render : function() {
         this.$el.empty();
 
-        var link = undefined;
+        var link;
         var sourceTitle = this.model.get("sourceType");
         var sourceId = this.model.get("sourceId");
 
@@ -30,7 +30,7 @@ module.exports = NzbDroneCell.extend({
         var a = "{0}";
 
         if (link) {
-            a = "<a href='"+link+"' target='_blank'>{0}</a>"
+            a = "<a href='"+link+"' target='_blank'>{0}</a>";
         }
 
         this.$el.html(a.format(sourceTitle));
