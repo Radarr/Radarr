@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Rest;
 using NzbDrone.Core.Tv;
@@ -14,10 +16,12 @@ namespace NzbDrone.Core.Notifications.Slack
 {
     public class Slack : NotificationBase<SlackSettings>
     {
+        private readonly ISlackProxy _proxy;
         private readonly Logger _logger;
-
-        public Slack(Logger logger)
+  
+        public Slack(ISlackProxy proxy, Logger logger)
         {
+            _proxy = proxy;
             _logger = logger;
         }
 
@@ -27,86 +31,68 @@ namespace NzbDrone.Core.Notifications.Slack
 
         public override void OnGrab(GrabMessage message)
         {
-            var payload = new SlackPayload
-            {
-                IconEmoji = Settings.Icon,
-                Username = Settings.Username,
-                Text = $"Grabbed: {message.Message}",
-                Attachments = new List<Attachment>
-                {
-                    new Attachment
-                    {
-                        Fallback = message.Message,
-                        Title = message.Movie.Title,
-                        Text = message.Message,
-                        Color = "warning"
-                    }
-                }
-            };
+            var attachments = new List<Attachment>
+                            {
+                                new Attachment
+                                {
+                                    Fallback = message.Message,
+                                    Title = message.Movie.Title,
+                                    Text = message.Message,
+                                    Color = "warning"
+                                }
+                            };
+            var payload = CreatePayload($"Grabbed: {message.Message}", attachments);
 
-            NotifySlack(payload);
+            _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            var payload = new SlackPayload
-            {
-                IconEmoji = Settings.Icon,
-                Username = Settings.Username,
-                Text = $"Imported: {message.Message}",
-                Attachments = new List<Attachment>
-                {
-                    new Attachment
-                    {
-                        Fallback = message.Message,
-                        Title = message.Movie.Title,
-                        Text = message.Message,
-                        Color = "good"
-                    }
-                }
-            };
+            var attachments = new List<Attachment>
+                                {
+                                    new Attachment
+                                    {
+                                        Fallback = message.Message,
+                                        Title = message.Movie.Title,
+                                        Text = message.Message,
+                                        Color = "good"
+                                    }
+                                };
+            var payload = CreatePayload($"Imported: {message.Message}", attachments);
 
-            NotifySlack(payload);
+            _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnMovieRename(Movie movie)
         {
-            var payload = new SlackPayload
-            {
-                IconEmoji = Settings.Icon,
-                Username = Settings.Username,
-                Text = "Renamed",
-                Attachments = new List<Attachment>
-                {
-                    new Attachment
-                    {
-                        Title = movie.Title,
-                    }
-                }
-            };
+            var attachments = new List<Attachment>
+                                {
+                                    new Attachment
+                                    {
+                                        Title = movie.Title,
+                                    }
+                                };
+ 
+             var payload = CreatePayload("Renamed", attachments);
 
-            NotifySlack(payload);
+            _proxy.SendPayload(payload, Settings);
         }
 
         public override void OnRename(Series series)
         {
-            var payload = new SlackPayload
-            {
-                IconEmoji = Settings.Icon,
-                Username = Settings.Username,
-                Text = "Renamed",
-                Attachments = new List<Attachment>
-                {
-                    new Attachment
-                    {
-                        Title = series.Title,
-                    }
-                }
-            };
+            var attachments = new List<Attachment>
+                                {
+                                    new Attachment
+                                    {
+                                        Title = series.Title,
+                                    }
+                                };
 
-            NotifySlack(payload);
+            var payload = CreatePayload("Renamed", attachments);
+
+            _proxy.SendPayload(payload, Settings);
         }
-
+        
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
@@ -121,14 +107,10 @@ namespace NzbDrone.Core.Notifications.Slack
             try
             {
                 var message = $"Test message from Radarr posted at {DateTime.Now}";
-                var payload = new SlackPayload
-                {
-                    IconEmoji = Settings.Icon,
-                    Username = Settings.Username,
-                    Text = message
-                };
 
-                NotifySlack(payload);
+                var payload = CreatePayload(message);
+
+                _proxy.SendPayload(payload, Settings);
 
             }
             catch (SlackExeption ex)
@@ -139,24 +121,31 @@ namespace NzbDrone.Core.Notifications.Slack
             return null;
         }
 
-        private void NotifySlack(SlackPayload payload)
+        private SlackPayload CreatePayload(string message, List<Attachment> attachments = null)
         {
-            try
+            var icon = Settings.Icon;
+
+            var payload = new SlackPayload
             {
-                var client = RestClientFactory.BuildClient(Settings.WebHookUrl);
-                var request = new RestRequest(Method.POST)
+                Username = Settings.Username,
+                Text = message,
+                Attachments = attachments
+            };
+
+            if (icon.IsNotNullOrWhiteSpace())
+            {
+                // Set the correct icon based on the value
+                if (icon.StartsWith(":") && icon.EndsWith(":"))
                 {
-                    RequestFormat = DataFormat.Json,
-                    JsonSerializer = new JsonNetSerializer()
-                };
-                request.AddBody(payload);
-                client.ExecuteAndValidate(request);
+                    payload.IconEmoji = icon;
+                }
+                else
+                {
+                    payload.IconUrl = icon;
+                }
             }
-            catch (RestException ex)
-            {
-                _logger.Error(ex, "Unable to post payload {0}", payload);
-                throw new SlackExeption("Unable to post payload", ex);
-            }
+
+            return payload;
         }
     }
 }
