@@ -14,9 +14,8 @@ namespace NzbDrone.Core.Download
 {
     public interface IDownloadService
     {
-        void DownloadReport(RemoteEpisode remoteEpisode);
+        void DownloadReport(RemoteAlbum remoteAlbum);
     }
-
 
     public class DownloadService : IDownloadService
     {
@@ -39,57 +38,57 @@ namespace NzbDrone.Core.Download
             _logger = logger;
         }
 
-        public void DownloadReport(RemoteEpisode remoteEpisode)
+        public void DownloadReport(RemoteAlbum remoteAlbum)
         {
-            Ensure.That(remoteEpisode.Series, () => remoteEpisode.Series).IsNotNull();
-            Ensure.That(remoteEpisode.Episodes, () => remoteEpisode.Episodes).HasItems();
+            Ensure.That(remoteAlbum.Artist, () => remoteAlbum.Artist).IsNotNull();
+            Ensure.That(remoteAlbum.Albums, () => remoteAlbum.Albums).HasItems();
 
-            var downloadTitle = remoteEpisode.Release.Title;
-            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteEpisode.Release.DownloadProtocol);
+            var downloadTitle = remoteAlbum.Release.Title;
+            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteAlbum.Release.DownloadProtocol);
 
             if (downloadClient == null)
             {
-                _logger.Warn("{0} Download client isn't configured yet.", remoteEpisode.Release.DownloadProtocol);
+                _logger.Warn("{0} Download client isn't configured yet.", remoteAlbum.Release.DownloadProtocol);
                 return;
             }
 
             // Limit grabs to 2 per second.
-            if (remoteEpisode.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteEpisode.Release.DownloadUrl.StartsWith("magnet:"))
+            if (remoteAlbum.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteAlbum.Release.DownloadUrl.StartsWith("magnet:"))
             {
-                var url = new HttpUri(remoteEpisode.Release.DownloadUrl);
+                var url = new HttpUri(remoteAlbum.Release.DownloadUrl);
                 _rateLimitService.WaitAndPulse(url.Host, TimeSpan.FromSeconds(2));
             }
 
             string downloadClientId;
             try
             {
-                downloadClientId = downloadClient.Download(remoteEpisode);
-                _indexerStatusService.RecordSuccess(remoteEpisode.Release.IndexerId);
+                downloadClientId = downloadClient.Download(remoteAlbum);
+                _indexerStatusService.RecordSuccess(remoteAlbum.Release.IndexerId);
             }
             catch (ReleaseDownloadException ex)
             {
                 var http429 = ex.InnerException as TooManyRequestsException;
                 if (http429 != null)
                 {
-                    _indexerStatusService.RecordFailure(remoteEpisode.Release.IndexerId, http429.RetryAfter);
+                    _indexerStatusService.RecordFailure(remoteAlbum.Release.IndexerId, http429.RetryAfter);
                 }
                 else
                 {
-                    _indexerStatusService.RecordFailure(remoteEpisode.Release.IndexerId);
+                    _indexerStatusService.RecordFailure(remoteAlbum.Release.IndexerId);
                 }
                 throw;
             }
 
-            var episodeGrabbedEvent = new EpisodeGrabbedEvent(remoteEpisode);
-            episodeGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
+            var albumGrabbedEvent = new AlbumGrabbedEvent(remoteAlbum);
+            albumGrabbedEvent.DownloadClient = downloadClient.GetType().Name;
 
             if (!string.IsNullOrWhiteSpace(downloadClientId))
             {
-                episodeGrabbedEvent.DownloadId = downloadClientId;
+                albumGrabbedEvent.DownloadId = downloadClientId;
             }
 
             _logger.ProgressInfo("Report sent to {0}. {1}", downloadClient.Definition.Name, downloadTitle);
-            _eventAggregator.PublishEvent(episodeGrabbedEvent);
+            _eventAggregator.PublishEvent(albumGrabbedEvent);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Indexers.Waffles
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests(string.Format("&q=artist:{0} album:{1}",searchCriteria.Artist.Name,searchCriteria.Album.Title)));
+            pageableRequests.Add(GetPagedRequests(string.Format("&q=artist:{0} album:{1}",searchCriteria.Artist.Name,searchCriteria.AlbumTitle)));
 
             return pageableRequests;
         }

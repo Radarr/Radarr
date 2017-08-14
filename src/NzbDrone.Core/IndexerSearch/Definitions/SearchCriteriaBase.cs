@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.EnsureThat;
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public virtual bool UserInvokedSearch { get; set; }
 
         public Artist Artist { get; set; }
-        public Album Album { get; set; }
+        public List<Album> Albums { get; set; }
         public List<Track> Tracks { get; set; }
 
         public List<string> QueryTitles => SceneTitles.Select(GetQueryTitle).ToList();

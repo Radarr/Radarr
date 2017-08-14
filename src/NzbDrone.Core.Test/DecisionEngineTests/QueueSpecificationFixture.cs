@@ -9,7 +9,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
@@ -17,41 +17,39 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class QueueSpecificationFixture : CoreTest<QueueSpecification>
     {
-        private Series _series;
-        private Episode _episode;
-        private RemoteEpisode _remoteEpisode;
+        private Artist _artist;
+        private Album _album;
+        private RemoteAlbum _remoteAlbum;
 
-        private Series _otherSeries;
-        private Episode _otherEpisode;
+        private Artist _otherArtist;
+        private Album _otherAlbum;
 
         [SetUp]
         public void Setup()
         {
             Mocker.Resolve<QualityUpgradableSpecification>();
 
-            _series = Builder<Series>.CreateNew()
+            _artist = Builder<Artist>.CreateNew()
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
 
-            _episode = Builder<Episode>.CreateNew()
-                                       .With(e => e.SeriesId = _series.Id)
+            _album = Builder<Album>.CreateNew()
+                                       .With(e => e.ArtistId = _artist.Id)
                                        .Build();
 
-            _otherSeries = Builder<Series>.CreateNew()
+            _otherArtist = Builder<Artist>.CreateNew()
                                           .With(s => s.Id = 2)
                                           .Build();
 
-            _otherEpisode = Builder<Episode>.CreateNew()
-                                            .With(e => e.SeriesId = _otherSeries.Id)
+            _otherAlbum = Builder<Album>.CreateNew()
+                                            .With(e => e.ArtistId = _otherArtist.Id)
                                             .With(e => e.Id = 2)
-                                            .With(e => e.SeasonNumber = 2)
-                                            .With(e => e.EpisodeNumber = 2)
                                             .Build();
 
-            _remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                   .With(r => r.Series = _series)
-                                                   .With(r => r.Episodes = new List<Episode> { _episode })
-                                                   .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo { Quality = new QualityModel(Quality.MP3_192) })
+            _remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                   .With(r => r.Artist = _artist)
+                                                   .With(r => r.Albums = new List<Album> { _album })
+                                                   .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192) })
                                                    .Build();
         }
 
@@ -62,11 +60,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Returns(new List<Queue.Queue>());
         }
 
-        private void GivenQueue(IEnumerable<RemoteEpisode> remoteEpisodes)
+        private void GivenQueue(IEnumerable<RemoteAlbum> remoteAlbums)
         {
-            var queue = remoteEpisodes.Select(remoteEpisode => new Queue.Queue
+            var queue = remoteAlbums.Select(remoteAlbum => new Queue.Queue
             {
-                RemoteEpisode = remoteEpisode
+                RemoteAlbum = remoteAlbum
             });
 
             Mocker.GetMock<IQueueService>()
@@ -78,181 +76,181 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_when_queue_is_empty()
         {
             GivenEmptyQueue();
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_when_series_doesnt_match()
         {
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                       .With(r => r.Series = _otherSeries)
-                                                       .With(r => r.Episodes = new List<Episode> { _episode })
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                       .With(r => r.Artist = _otherArtist)
+                                                       .With(r => r.Albums = new List<Album> { _album })
                                                        .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_when_quality_in_queue_is_lower()
         {
-            _series.Profile.Value.Cutoff = Quality.MP3_512;
+            _artist.Profile.Value.Cutoff = Quality.MP3_512;
 
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                                                        {
                                                                                            Quality = new QualityModel(Quality.MP3_192)
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_return_true_when_episode_doesnt_match()
+        public void should_return_true_when_album_doesnt_match()
         {
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _otherEpisode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _otherAlbum })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                                                        {
                                                                                            Quality = new QualityModel(Quality.MP3_192)
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_when_qualities_are_the_same()
         {
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                                                        {
                                                                                            Quality = new QualityModel(Quality.MP3_192)
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_when_quality_in_queue_is_better()
         {
-            _series.Profile.Value.Cutoff = Quality.MP3_512;
+            _artist.Profile.Value.Cutoff = Quality.MP3_512;
 
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                                                        {
                                                                                            Quality = new QualityModel(Quality.MP3_256)
                                                                                        })
                                                       .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_if_matching_multi_episode_is_in_queue()
+        public void should_return_false_if_matching_multi_album_is_in_queue()
         {
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode, _otherEpisode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album, _otherAlbum })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_if_multi_episode_has_one_episode_in_queue()
+        public void should_return_false_if_multi_album_has_one_album_in_queue()
         {
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
-            _remoteEpisode.Episodes.Add(_otherEpisode);
+            _remoteAlbum.Albums.Add(_otherAlbum);
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_if_multi_part_episode_is_already_in_queue()
+        public void should_return_false_if_multi_part_album_is_already_in_queue()
         {
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode, _otherEpisode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album, _otherAlbum })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
-            _remoteEpisode.Episodes.Add(_otherEpisode);
+            _remoteAlbum.Albums.Add(_otherAlbum);
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_if_multi_part_episode_has_two_episodes_in_queue()
+        public void should_return_false_if_multi_part_album_has_two_episodes_in_queue()
         {
-            var remoteEpisodes = Builder<RemoteEpisode>.CreateListOfSize(2)
+            var remoteAlbums = Builder<RemoteAlbum>.CreateListOfSize(2)
                                                        .All()
-                                                       .With(r => r.Series = _series)
-                                                       .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+                                                       .With(r => r.Artist = _artist)
+                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                                                         {
                                                                                             Quality =
                                                                                                 new QualityModel(
                                                                                                 Quality.MP3_256)
                                                                                         })
                                                        .TheFirst(1)
-                                                       .With(r => r.Episodes = new List<Episode> { _episode })
+                                                       .With(r => r.Albums = new List<Album> { _album })
                                                        .TheNext(1)
-                                                       .With(r => r.Episodes = new List<Episode> { _otherEpisode })
+                                                       .With(r => r.Albums = new List<Album> { _otherAlbum })
                                                        .Build();
 
-            _remoteEpisode.Episodes.Add(_otherEpisode);
-            GivenQueue(remoteEpisodes);
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            _remoteAlbum.Albums.Add(_otherAlbum);
+            GivenQueue(remoteAlbums);
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_quality_in_queue_meets_cutoff()
         {
-            _series.Profile.Value.Cutoff = _remoteEpisode.ParsedEpisodeInfo.Quality.Quality;
+            _artist.Profile.Value.Cutoff = _remoteAlbum.ParsedAlbumInfo.Quality.Quality;
 
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                      .With(r => r.Series = _series)
-                                                      .With(r => r.Episodes = new List<Episode> { _episode })
-                                                      .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo
+            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                      .With(r => r.Artist = _artist)
+                                                      .With(r => r.Albums = new List<Album> { _album })
+                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_256)
                                                       })
                                                       .Build();
 
-            GivenQueue(new List<RemoteEpisode> { remoteEpisode });
+            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
     }
 }

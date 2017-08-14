@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportMusicTitleRegex = new[]
         {
-             // Track with artist (01 - artist - trackName)
+                // Track with artist (01 - artist - trackName)
                 new Regex(@"(?<trackNumber>\d*){0,1}([-| ]{0,1})(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
@@ -36,6 +36,29 @@ namespace NzbDrone.Core.Parser
 
                 // Track with artist and starting title (01 - artist - trackName)
                 new Regex(@"(?<trackNumber>\d*){0,1}[-| ]{0,1}(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        };
+
+        private static readonly Regex[] ReportAlbumTitleRegex = new[]
+        {
+                //Artist - Album (Year) Strict
+                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[).+?(?<airyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album (Year)
+                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<airyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album
+                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album Year
+                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(\d{4}|\d{3})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist Discography
+                new Regex(@"^(?<artist>.+?)\W*(?<discograghy>Discograghy|Discografia).+(?<startyear>\d{4}).+(?<endyear>\d{4})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
@@ -499,6 +522,110 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
+        public static ParsedAlbumInfo ParseAlbumTitle(string title)
+        {
+            try
+            {
+                if (!ValidateBeforeParsing(title)) return null;
+
+                Logger.Debug("Parsing string '{0}'", title);
+
+                if (ReversedTitleRegex.IsMatch(title))
+                {
+                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
+                    Array.Reverse(titleWithoutExtension);
+
+                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
+
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                }
+
+                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+
+                simpleTitle = RemoveFileExtension(simpleTitle);
+
+                // TODO: Quick fix stripping [url] - prefixes.
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+
+                var airDateMatch = AirDateRegex.Match(simpleTitle);
+                if (airDateMatch.Success)
+                {
+                    simpleTitle = airDateMatch.Groups[1].Value + airDateMatch.Groups["airyear"].Value + "." + airDateMatch.Groups["airmonth"].Value + "." + airDateMatch.Groups["airday"].Value;
+                }
+
+                var sixDigitAirDateMatch = SixDigitAirDateRegex.Match(simpleTitle);
+                if (sixDigitAirDateMatch.Success)
+                {
+                    var airYear = sixDigitAirDateMatch.Groups["airyear"].Value;
+                    var airMonth = sixDigitAirDateMatch.Groups["airmonth"].Value;
+                    var airDay = sixDigitAirDateMatch.Groups["airday"].Value;
+
+                    if (airMonth != "00" || airDay != "00")
+                    {
+                        var fixedDate = string.Format("20{0}.{1}.{2}", airYear, airMonth, airDay);
+
+                        simpleTitle = simpleTitle.Replace(sixDigitAirDateMatch.Groups["airdate"].Value, fixedDate);
+                    }
+                }
+
+                foreach (var regex in ReportAlbumTitleRegex)
+                {
+                    var match = regex.Matches(simpleTitle);
+
+                    if (match.Count != 0)
+                    {
+                        Logger.Trace(regex);
+                        try
+                        {
+                            var result = ParseAlbumMatchCollection(match);
+
+                            if (result != null)
+                            {
+                                result.Language = LanguageParser.ParseLanguage(title);
+                                Logger.Debug("Language parsed: {0}", result.Language);
+
+                                result.Quality = QualityParser.ParseQuality(title);
+                                Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                                result.ReleaseGroup = ParseReleaseGroup(title);
+
+                                var subGroup = GetSubGroup(match);
+                                if (!subGroup.IsNullOrWhiteSpace())
+                                {
+                                    result.ReleaseGroup = subGroup;
+                                }
+
+                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                                result.ReleaseHash = GetReleaseHash(match);
+                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                                {
+                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                                }
+
+                                return result;
+                            }
+                        }
+                        catch (InvalidDateException ex)
+                        {
+                            Logger.Debug(ex, ex.Message);
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return null;
+        }
+
         public static ParsedEpisodeInfo ParseTitle(string title)
         {
             try
@@ -808,6 +935,30 @@ namespace NzbDrone.Core.Parser
 
             return artistTitleInfo;
         }
+
+        private static ParsedAlbumInfo ParseAlbumMatchCollection(MatchCollection matchCollection)
+        {
+            var artistName = matchCollection[0].Groups["artist"].Value.Replace('.', ' ').Replace('_', ' ');
+            var albumTitle = matchCollection[0].Groups["album"].Value.Replace('.', ' ').Replace('_', ' ');
+            artistName = RequestInfoRegex.Replace(artistName, "").Trim(' ');
+            albumTitle = RequestInfoRegex.Replace(albumTitle, "").Trim(' ');
+
+            int airYear;
+            int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);
+
+            ParsedAlbumInfo result;
+
+            result = new ParsedAlbumInfo();
+
+            result.ArtistName = artistName;
+            result.AlbumTitle = albumTitle;
+            result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistName);
+
+            Logger.Debug("Album Parsed. {0}", result);
+
+            return result;
+        }
+
 
         private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)
         {

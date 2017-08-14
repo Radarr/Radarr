@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbumsByArtist(int artistId);
         Album AddAlbum(Album newAlbum);
         Album FindById(string spotifyId);
+        Album FindByTitle(int artistId, string title);
         Album FindByTitleInexact(string title);
         void DeleteAlbum(int albumId, bool deleteFiles);
         List<Album> GetAllAlbums();
@@ -82,6 +83,10 @@ namespace NzbDrone.Core.Music
             return _albumRepository.FindById(lidarrId);
         }
 
+        public Album FindByTitle(int artistId, string title)
+        {
+            return _albumRepository.FindByTitle(artistId, title);
+        }
 
 
         public Album FindByTitleInexact(string title)

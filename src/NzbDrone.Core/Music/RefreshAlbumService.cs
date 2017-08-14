@@ -82,6 +82,7 @@ namespace NzbDrone.Core.Music
                     albumToUpdate.Genres = album.Genres;
                     albumToUpdate.Images = album.Images;
                     albumToUpdate.ReleaseDate = album.ReleaseDate;
+                    albumToUpdate.Duration = album.Tracks.Sum(track => track.Duration);
 
 
                     successCount++;

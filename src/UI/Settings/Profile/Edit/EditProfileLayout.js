@@ -7,7 +7,7 @@ var EditProfileItemView = require('./EditProfileItemView');
 var QualitySortableCollectionView = require('./QualitySortableCollectionView');
 var EditProfileView = require('./EditProfileView');
 var DeleteView = require('../DeleteProfileView');
-var SeriesCollection = require('../../../Series/SeriesCollection');
+var SeriesCollection = require('../../../Artist/ArtistCollection');
 var Config = require('../../../Config');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
 
@@ -104,7 +104,7 @@ var view = Marionette.Layout.extend({
     _updateDisableStatus : function() {
         if (this._isQualityInUse()) {
             this.ui.deleteButton.addClass('disabled');
-            this.ui.deleteButton.attr('title', 'Can\'t delete a profile that is attached to a series.');
+            this.ui.deleteButton.attr('title', 'Can\'t delete a profile that is attached to a artist.');
         } else {
             this.ui.deleteButton.removeClass('disabled');
         }

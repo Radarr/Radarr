@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
@@ -8,7 +8,7 @@ using NUnit.Framework;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Sabnzbd;
 using NzbDrone.Core.Download.Clients.Sabnzbd.Responses;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Common.Disk;
@@ -281,7 +281,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
             remoteEpisode.Release.Title = title;
 
             var id = Subject.Download(remoteEpisode);
@@ -295,7 +295,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -336,10 +336,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                     .Setup(s => s.DownloadNzb(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<string>(), (int)SabnzbdPriority.High, It.IsAny<SabnzbdSettings>()))
                     .Returns(new SabnzbdAddResponse());
 
-            var remoteEpisode = CreateRemoteEpisode();
-            remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1)
+            var remoteEpisode = CreateRemoteAlbum();
+            remoteEpisode.Albums = Builder<Album>.CreateListOfSize(1)
                                                       .All()
-                                                      .With(e => e.AirDate = DateTime.Today.ToString(Episode.AIR_DATE_FORMAT))
+                                                      .With(e => e.ReleaseDate = DateTime.Today)
                                                       .Build()
                                                       .ToList();
 

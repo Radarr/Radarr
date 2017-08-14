@@ -4,7 +4,7 @@ using System.Linq;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Queue
 {
@@ -44,11 +44,11 @@ namespace NzbDrone.Core.Queue
 
         private IEnumerable<Queue> MapQueue(TrackedDownload trackedDownload)
         {
-            if (trackedDownload.RemoteEpisode.Episodes != null && trackedDownload.RemoteEpisode.Episodes.Any())
+            if (trackedDownload.RemoteAlbum.Albums != null && trackedDownload.RemoteAlbum.Albums.Any())
             {
-                foreach (var episode in trackedDownload.RemoteEpisode.Episodes)
+                foreach (var album in trackedDownload.RemoteAlbum.Albums)
                 {
-                    yield return MapEpisode(trackedDownload, episode);
+                    yield return MapAlbum(trackedDownload, album);
                 }
             }
             else
@@ -57,14 +57,14 @@ namespace NzbDrone.Core.Queue
             }
         }
 
-        private Queue MapEpisode(TrackedDownload trackedDownload, Episode episode)
+        private Queue MapAlbum(TrackedDownload trackedDownload, Album album)
         {
             var queue = new Queue
             {
-                Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}-ep{1}", trackedDownload.DownloadItem.DownloadId, episode.Id)),
-                Series = trackedDownload.RemoteEpisode.Series,
-                Episode = episode,
-                Quality = trackedDownload.RemoteEpisode.ParsedEpisodeInfo.Quality,
+                Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}-album{1}", trackedDownload.DownloadItem.DownloadId, album.Id)),
+                Artist = trackedDownload.RemoteAlbum.Artist,
+                Album = album,
+                Quality = trackedDownload.RemoteAlbum.ParsedAlbumInfo.Quality,
                 Title = trackedDownload.DownloadItem.Title,
                 Size = trackedDownload.DownloadItem.TotalSize,
                 Sizeleft = trackedDownload.DownloadItem.RemainingSize,
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Queue
                 Status = trackedDownload.DownloadItem.Status.ToString(),
                 TrackedDownloadStatus = trackedDownload.Status.ToString(),
                 StatusMessages = trackedDownload.StatusMessages.ToList(),
-                RemoteEpisode = trackedDownload.RemoteEpisode,
+                RemoteAlbum = trackedDownload.RemoteAlbum,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol
             };

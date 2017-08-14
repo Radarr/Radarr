@@ -4,6 +4,8 @@ using NzbDrone.Api.REST;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Api.Series;
 using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Music;
+using NzbDrone.Api.Albums;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using System.Linq;
@@ -12,8 +14,8 @@ namespace NzbDrone.Api.Queue
 {
     public class QueueResource : RestResource
     {
-        public SeriesResource Series { get; set; }
-        public EpisodeResource Episode { get; set; }
+        public ArtistResource Artist { get; set; }
+        public AlbumResource Album { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
@@ -37,8 +39,8 @@ namespace NzbDrone.Api.Queue
             {
                 Id = model.Id,
 
-                Series = model.Series.ToResource(),
-                Episode = model.Episode.ToResource(),
+                Artist = model.Artist.ToResource(),
+                Album = model.Album.ToResource(),
                 Quality = model.Quality,
                 Size = model.Size,
                 Title = model.Title,

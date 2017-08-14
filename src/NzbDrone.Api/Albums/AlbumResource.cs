@@ -18,6 +18,7 @@ namespace NzbDrone.Api.Albums
         public bool Monitored { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }
+        public int Duration { get; set; }
         public Ratings Ratings { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public List<string> Genres { get; set; }
@@ -46,8 +47,7 @@ namespace NzbDrone.Api.Albums
                 Title = model.Title,
                 Images = model.Images,
                 Ratings = model.Ratings,
-                //Genres = model.Genres,
-                //ArtworkUrl = model.ArtworkUrl
+                Duration = model.Duration,
             };
         }
 
@@ -68,8 +68,6 @@ namespace NzbDrone.Api.Albums
                 Title = resource.Title,
                 Images = resource.Images,
                 Ratings = resource.Ratings,
-                //Genres = resource.Genres,
-                //ArtworkUrl = resource.ArtworkUrl
             };
         }
 

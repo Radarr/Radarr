@@ -15,10 +15,10 @@ var Collection = PageableCollection.extend({
     tableName : 'artist',
 
     state : {
-        sortKey            : 'sortTitle',
+        sortKey            : 'sortName',
         order              : -1,
         pageSize           : 100000,
-        secondarySortKey   : 'sortTitle',
+        secondarySortKey   : 'sortName',
         secondarySortOrder : -1
     },
 
@@ -73,7 +73,7 @@ var Collection = PageableCollection.extend({
 
     sortMappings : {
         title : {
-            sortKey : 'sortTitle'
+            sortKey : 'sortName'
         },
 
         artistName: {

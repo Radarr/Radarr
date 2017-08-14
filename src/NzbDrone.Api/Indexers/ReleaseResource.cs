@@ -25,18 +25,13 @@ namespace NzbDrone.Api.Indexers
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
         public string Title { get; set; }
-        public bool FullSeason { get; set; }
-        public int SeasonNumber { get; set; }
         public Language Language { get; set; }
-        public string AirDate { get; set; }
-        public string SeriesTitle { get; set; }
-        public int[] EpisodeNumbers { get; set; }
-        public int[] AbsoluteEpisodeNumbers { get; set; }
+        public string ReleaseDate { get; set; }
+        public string ArtistName { get; set; }
+        public string AlbumTitle { get; set; }
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
         public bool Rejected { get; set; }
-        public int TvdbId { get; set; }
-        public int TvRageId { get; set; }
         public IEnumerable<string> Rejections { get; set; }
         public DateTime PublishDate { get; set; }
         public string CommentUrl { get; set; }
@@ -82,16 +77,16 @@ namespace NzbDrone.Api.Indexers
     {
         public static ReleaseResource ToResource(this DownloadDecision model)
         {
-            var releaseInfo = model.RemoteEpisode.Release;
-            var parsedEpisodeInfo = model.RemoteEpisode.ParsedEpisodeInfo;
-            var remoteEpisode = model.RemoteEpisode;
-            var torrentInfo = (model.RemoteEpisode.Release as TorrentInfo) ?? new TorrentInfo();
+            var releaseInfo = model.RemoteAlbum.Release;
+            var parsedAlbumInfo = model.RemoteAlbum.ParsedAlbumInfo;
+            var remoteAlbum = model.RemoteAlbum;
+            var torrentInfo = (model.RemoteAlbum.Release as TorrentInfo) ?? new TorrentInfo();
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
             return new ReleaseResource
             {
                 Guid = releaseInfo.Guid,
-                Quality = parsedEpisodeInfo.Quality,
+                Quality = parsedAlbumInfo.Quality,
                 //QualityWeight
                 Age = releaseInfo.Age,
                 AgeHours = releaseInfo.AgeHours,
@@ -99,27 +94,22 @@ namespace NzbDrone.Api.Indexers
                 Size = releaseInfo.Size,
                 IndexerId = releaseInfo.IndexerId,
                 Indexer = releaseInfo.Indexer,
-                ReleaseGroup = parsedEpisodeInfo.ReleaseGroup,
-                ReleaseHash = parsedEpisodeInfo.ReleaseHash,
+                ReleaseGroup = parsedAlbumInfo.ReleaseGroup,
+                ReleaseHash = parsedAlbumInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                FullSeason = parsedEpisodeInfo.FullSeason,
-                SeasonNumber = parsedEpisodeInfo.SeasonNumber,
-                Language = parsedEpisodeInfo.Language,
-                AirDate = parsedEpisodeInfo.AirDate,
-                SeriesTitle = parsedEpisodeInfo.SeriesTitle,
-                EpisodeNumbers = parsedEpisodeInfo.EpisodeNumbers,
-                AbsoluteEpisodeNumbers = parsedEpisodeInfo.AbsoluteEpisodeNumbers,
+                Language = parsedAlbumInfo.Language,
+                ReleaseDate = parsedAlbumInfo.ReleaseDate,
+                ArtistName = parsedAlbumInfo.ArtistName,
+                AlbumTitle = parsedAlbumInfo.AlbumTitle,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,
-                TvdbId = releaseInfo.TvdbId,
-                TvRageId = releaseInfo.TvRageId,
                 Rejections = model.Rejections.Select(r => r.Reason).ToList(),
                 PublishDate = releaseInfo.PublishDate,
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
-                DownloadAllowed = remoteEpisode.DownloadAllowed,
+                DownloadAllowed = remoteAlbum.DownloadAllowed,
                 //ReleaseWeight
 
                 MagnetUrl = torrentInfo.MagnetUrl,
@@ -127,11 +117,6 @@ namespace NzbDrone.Api.Indexers
                 Seeders = torrentInfo.Seeders,
                 Leechers = (torrentInfo.Peers.HasValue && torrentInfo.Seeders.HasValue) ? (torrentInfo.Peers.Value - torrentInfo.Seeders.Value) : (int?)null,
                 Protocol = releaseInfo.DownloadProtocol,
-
-                IsDaily = parsedEpisodeInfo.IsDaily,
-                IsAbsoluteNumbering = parsedEpisodeInfo.IsAbsoluteNumbering,
-                IsPossibleSpecialEpisode = parsedEpisodeInfo.IsPossibleSpecialEpisode,
-                Special = parsedEpisodeInfo.Special,
             };
 
         }
@@ -164,8 +149,6 @@ namespace NzbDrone.Api.Indexers
             model.IndexerId = resource.IndexerId;
             model.Indexer = resource.Indexer;
             model.DownloadProtocol = resource.DownloadProtocol;
-            model.TvdbId = resource.TvdbId;
-            model.TvRageId = resource.TvRageId;
             model.PublishDate = resource.PublishDate;
 
             return model;

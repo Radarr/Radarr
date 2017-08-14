@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests("search", null, "{0}+{1}", searchCriteria.Artist.Name, searchCriteria.Album.Title));
+            pageableRequests.Add(GetPagedRequests("search", null, "{0}+{1}", searchCriteria.Artist.Name, searchCriteria.AlbumTitle));
 
             return pageableRequests;
         }

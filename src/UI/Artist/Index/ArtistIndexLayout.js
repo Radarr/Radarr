@@ -39,7 +39,7 @@ module.exports = Marionette.Layout.extend({
             label     : 'Title',
             cell      : ArtistTitleCell,
             cellValue : 'this',
-            sortValue : 'sortTitle'
+            sortValue : 'sortName'
         },
         {
             name  : 'albumCount',

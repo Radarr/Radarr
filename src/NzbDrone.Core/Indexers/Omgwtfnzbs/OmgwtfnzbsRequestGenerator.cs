@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
             pageableRequests.Add(GetPagedRequests(string.Format("{0}+{1}",
                 searchCriteria.Artist.Name,
-                searchCriteria.Album.Title)));
+                searchCriteria.AlbumTitle)));
 
 
             return pageableRequests;

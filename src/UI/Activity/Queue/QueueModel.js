@@ -1,12 +1,12 @@
 var Backbone = require('backbone');
-var SeriesModel = require('../../Series/SeriesModel');
-var EpisodeModel = require('../../Series/EpisodeModel');
+var ArtistModel = require('../../Artist/ArtistModel');
+var AlbumModel = require('../../Artist/AlbumModel');
 
 module.exports = Backbone.Model.extend({
     parse : function(model) {
-        model.series = new SeriesModel(model.series);
-        model.episode = new EpisodeModel(model.episode);
-        model.episode.set('series', model.series);
+        model.artist = new ArtistModel(model.artist);
+        model.album = new AlbumModel(model.album);
+        model.album.set('artist', model.artist);
         return model;
     }
 });

@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Music
         public bool Compilation { get; set; }
         public int TrackNumber { get; set; }
         public string Title { get; set; }
+        public int Duration { get; set; }
         //public bool Ignored { get; set; }
         public bool Explicit { get; set; }
         public bool Monitored { get; set; }

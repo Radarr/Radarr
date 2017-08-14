@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             GivenTvCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             _transmissionConfigItems["download-dir"] += "/";
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
             remoteEpisode.Release.DownloadUrl = magnetUrl;
 
             var id = Subject.Download(remoteEpisode);

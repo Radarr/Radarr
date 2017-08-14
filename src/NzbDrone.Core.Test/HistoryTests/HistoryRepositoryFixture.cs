@@ -32,13 +32,13 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             var historyBluray = Builder<History.History>.CreateNew()
                 .With(c => c.Quality = new QualityModel(Quality.MP3_320))
-                .With(c => c.SeriesId = 12)
+                .With(c => c.ArtistId = 12)
                 .With(c => c.EventType = HistoryEventType.Grabbed)
                 .BuildNew();
 
             var historyDvd = Builder<History.History>.CreateNew()
                 .With(c => c.Quality = new QualityModel(Quality.MP3_192))
-                .With(c => c.SeriesId = 12)
+                .With(c => c.ArtistId = 12)
                 .With(c => c.EventType = HistoryEventType.Grabbed)
              .BuildNew();
 

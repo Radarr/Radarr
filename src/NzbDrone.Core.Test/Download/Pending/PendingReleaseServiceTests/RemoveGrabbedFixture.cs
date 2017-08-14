@@ -12,7 +12,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -20,20 +20,20 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class RemoveGrabbedFixture : CoreTest<PendingReleaseService>
     {
         private DownloadDecision _temporarilyRejected;
-        private Series _series;
-        private Episode _episode;
+        private Artist _artist;
+        private Album _album;
         private Profile _profile;
         private ReleaseInfo _release;
-        private ParsedEpisodeInfo _parsedEpisodeInfo;
-        private RemoteEpisode _remoteEpisode;
+        private ParsedAlbumInfo _parsedAlbumInfo;
+        private RemoteAlbum _remoteAlbum;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
+            _artist = Builder<Artist>.CreateNew()
                                      .Build();
 
-            _episode = Builder<Episode>.CreateNew()
+            _album = Builder<Album>.CreateNew()
                                        .Build();
 
             _profile = new Profile
@@ -48,32 +48,32 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                    },
                        };
 
-            _series.Profile = new LazyLoaded<Profile>(_profile);
+            _artist.Profile = new LazyLoaded<Profile>(_profile);
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
-            _parsedEpisodeInfo = Builder<ParsedEpisodeInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256);
+            _parsedAlbumInfo = Builder<ParsedAlbumInfo>.CreateNew().Build();
+            _parsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256);
 
-            _remoteEpisode = new RemoteEpisode();
-            _remoteEpisode.Episodes = new List<Episode>{ _episode };
-            _remoteEpisode.Series = _series;
-            _remoteEpisode.ParsedEpisodeInfo = _parsedEpisodeInfo;
-            _remoteEpisode.Release = _release;
+            _remoteAlbum = new RemoteAlbum();
+            _remoteAlbum.Albums = new List<Album>{ _album };
+            _remoteAlbum.Artist = _artist;
+            _remoteAlbum.ParsedAlbumInfo = _parsedAlbumInfo;
+            _remoteAlbum.Release = _release;
             
-            _temporarilyRejected = new DownloadDecision(_remoteEpisode, new Rejection("Temp Rejected", RejectionType.Temporary));
+            _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
                   .Returns(new List<PendingRelease>());
 
-            Mocker.GetMock<ISeriesService>()
-                  .Setup(s => s.GetSeries(It.IsAny<int>()))
-                  .Returns(_series);
+            Mocker.GetMock<IArtistService>()
+                  .Setup(s => s.GetArtist(It.IsAny<int>()))
+                  .Returns(_artist);
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetEpisodes(It.IsAny<ParsedEpisodeInfo>(), _series, true, null))
-                  .Returns(new List<Episode> {_episode});
+                  .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), _artist, null))
+                  .Returns(new List<Album> {_album});
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisions(It.IsAny<List<DownloadDecision>>()))
@@ -82,14 +82,14 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
         private void GivenHeldRelease(QualityModel quality)
         {
-            var parsedEpisodeInfo = _parsedEpisodeInfo.JsonClone();
+            var parsedEpisodeInfo = _parsedAlbumInfo.JsonClone();
             parsedEpisodeInfo.Quality = quality;
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()
-                                                   .With(h => h.SeriesId = _series.Id)
+                                                   .With(h => h.ArtistId = _artist.Id)
                                                    .With(h => h.Release = _release.JsonClone())
-                                                   .With(h => h.ParsedEpisodeInfo = parsedEpisodeInfo)
+                                                   .With(h => h.ParsedAlbumInfo = parsedEpisodeInfo)
                                                    .Build();
 
             Mocker.GetMock<IPendingReleaseRepository>()
@@ -100,9 +100,9 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_delete_if_the_grabbed_quality_is_the_same()
         {
-            GivenHeldRelease(_parsedEpisodeInfo.Quality);
+            GivenHeldRelease(_parsedAlbumInfo.Quality);
 
-            Subject.Handle(new EpisodeGrabbedEvent(_remoteEpisode));
+            Subject.Handle(new AlbumGrabbedEvent(_remoteAlbum));
 
             VerifyDelete();
         }
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             GivenHeldRelease(new QualityModel(Quality.MP3_192));
 
-            Subject.Handle(new EpisodeGrabbedEvent(_remoteEpisode));
+            Subject.Handle(new AlbumGrabbedEvent(_remoteAlbum));
 
             VerifyDelete();
         }
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             GivenHeldRelease(new QualityModel(Quality.MP3_512));
 
-            Subject.Handle(new EpisodeGrabbedEvent(_remoteEpisode));
+            Subject.Handle(new AlbumGrabbedEvent(_remoteAlbum));
 
             VerifyNoDelete();
         }

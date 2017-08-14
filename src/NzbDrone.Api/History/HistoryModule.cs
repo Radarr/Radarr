@@ -1,8 +1,10 @@
 ﻿using System;
 using Nancy;
 using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Albums;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Api.Series;
+using NzbDrone.Api.Music;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
@@ -32,12 +34,12 @@ namespace NzbDrone.Api.History
         {
             var resource = model.ToResource();
 
-            resource.Series = model.Series.ToResource();
-            resource.Episode = model.Episode.ToResource();
+            resource.Artist = model.Artist.ToResource();
+            resource.Album = model.Album.ToResource();
 
-            if (model.Series != null)
+            if (model.Artist != null)
             {
-                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Series.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Artist.Profile.Value, model.Quality);
             }
 
             return resource;
@@ -45,7 +47,7 @@ namespace NzbDrone.Api.History
 
         private PagingResource<HistoryResource> GetHistory(PagingResource<HistoryResource> pagingResource)
         {
-            var episodeId = Request.Query.EpisodeId;
+            var albumId = Request.Query.AlbumId;
 
             var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, Core.History.History>("date", SortDirection.Descending);
 
@@ -55,10 +57,10 @@ namespace NzbDrone.Api.History
                 pagingSpec.FilterExpression = v => v.EventType == filterValue;
             }
 
-            if (episodeId.HasValue)
+            if (albumId.HasValue)
             {
-                int i = (int)episodeId;
-                pagingSpec.FilterExpression = h => h.EpisodeId == i;
+                int i = (int)albumId;
+                pagingSpec.FilterExpression = h => h.AlbumId == i;
             }
 
             return ApplyToPage(_historyService.Paged, pagingSpec, MapToResource);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NLog;
+﻿using NLog;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -13,8 +10,11 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -23,21 +23,21 @@ namespace NzbDrone.Core.Download.Pending
         void Add(DownloadDecision decision);
 
         List<ReleaseInfo> GetPending();
-        List<RemoteEpisode> GetPendingRemoteEpisodes(int seriesId);
+        List<RemoteAlbum> GetPendingRemoteAlbums(int artistId);
         List<Queue.Queue> GetPendingQueue();
         Queue.Queue FindPendingQueueItem(int queueId);
         void RemovePendingQueueItems(int queueId);
-        RemoteEpisode OldestPendingRelease(int seriesId, IEnumerable<int> episodeIds);
+        RemoteAlbum OldestPendingRelease(int artistId, IEnumerable<int> albumIds);
     }
 
     public class PendingReleaseService : IPendingReleaseService,
-                                         IHandle<SeriesDeletedEvent>,
-                                         IHandle<EpisodeGrabbedEvent>,
+                                         IHandle<ArtistDeletedEvent>,
+                                         IHandle<AlbumGrabbedEvent>,
                                          IHandle<RssSyncCompleteEvent>
     {
         private readonly IIndexerStatusService _indexerStatusService;
         private readonly IPendingReleaseRepository _repository;
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly IParsingService _parsingService;
         private readonly IDelayProfileService _delayProfileService;
         private readonly ITaskManager _taskManager;
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public PendingReleaseService(IIndexerStatusService indexerStatusService,
                                     IPendingReleaseRepository repository,
-                                    ISeriesService seriesService,
+                                    IArtistService artistService,
                                     IParsingService parsingService,
                                     IDelayProfileService delayProfileService,
                                     ITaskManager taskManager,
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Download.Pending
         {
             _indexerStatusService = indexerStatusService;
             _repository = repository;
-            _seriesService = seriesService;
+            _artistService = artistService;
             _parsingService = parsingService;
             _delayProfileService = delayProfileService;
             _taskManager = taskManager;
@@ -71,13 +71,13 @@ namespace NzbDrone.Core.Download.Pending
         {
             var alreadyPending = GetPendingReleases();
 
-            var episodeIds = decision.RemoteEpisode.Episodes.Select(e => e.Id);
+            var albumIds = decision.RemoteAlbum.Albums.Select(e => e.Id);
 
-            var existingReports = alreadyPending.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
-                                                             .Intersect(episodeIds)
+            var existingReports = alreadyPending.Where(r => r.RemoteAlbum.Albums.Select(e => e.Id)
+                                                             .Intersect(albumIds)
                                                              .Any());
 
-            if (existingReports.Any(MatchingReleasePredicate(decision.RemoteEpisode.Release)))
+            if (existingReports.Any(MatchingReleasePredicate(decision.RemoteAlbum.Release)))
             {
                 _logger.Debug("This release is already pending, not adding again");
                 return;
@@ -106,9 +106,9 @@ namespace NzbDrone.Core.Download.Pending
             return releases.Where(release => !blockedIndexers.Contains(release.IndexerId)).ToList();
         }
 
-        public List<RemoteEpisode> GetPendingRemoteEpisodes(int seriesId)
+        public List<RemoteAlbum> GetPendingRemoteAlbums(int artistId)
         {
-            return _repository.AllBySeriesId(seriesId).Select(GetRemoteEpisode).ToList();
+            return _repository.AllByArtistId(artistId).Select(GetRemoteAlbum).ToList();
         }
 
         public List<Queue.Queue> GetPendingQueue()
@@ -119,9 +119,9 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var pendingRelease in GetPendingReleases())
             {
-                foreach (var episode in pendingRelease.RemoteEpisode.Episodes)
+                foreach (var album in pendingRelease.RemoteAlbum.Albums)
                 {
-                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteEpisode));
+                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteAlbum));
 
                     if (ect < nextRssSync.Value)
                     {
@@ -134,30 +134,30 @@ namespace NzbDrone.Core.Download.Pending
 
                     var queue = new Queue.Queue
                                 {
-                                    Id = GetQueueId(pendingRelease, episode),
-                                    Series = pendingRelease.RemoteEpisode.Series,
-                                    Episode = episode,
-                                    Quality = pendingRelease.RemoteEpisode.ParsedEpisodeInfo.Quality,
+                                    Id = GetQueueId(pendingRelease, album),
+                                    Artist = pendingRelease.RemoteAlbum.Artist,
+                                    Album = album,
+                                    Quality = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Quality,
                                     Title = pendingRelease.Title,
-                                    Size = pendingRelease.RemoteEpisode.Release.Size,
-                                    Sizeleft = pendingRelease.RemoteEpisode.Release.Size,
-                                    RemoteEpisode = pendingRelease.RemoteEpisode,
+                                    Size = pendingRelease.RemoteAlbum.Release.Size,
+                                    Sizeleft = pendingRelease.RemoteAlbum.Release.Size,
+                                    RemoteAlbum = pendingRelease.RemoteAlbum,
                                     Timeleft = ect.Subtract(DateTime.UtcNow),
                                     EstimatedCompletionTime = ect,
                                     Status = "Pending",
-                                    Protocol = pendingRelease.RemoteEpisode.Release.DownloadProtocol
+                                    Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol
                                 };
                     queued.Add(queue);
                 }
             }
 
             //Return best quality release for each episode
-            var deduped = queued.GroupBy(q => q.Episode.Id).Select(g =>
+            var deduped = queued.GroupBy(q => q.Album.Id).Select(g =>
             {
-                var series = g.First().Series;
+                var artist = g.First().Artist;
 
-                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(series.Profile))
-                        .ThenBy(q => PrioritizeDownloadProtocol(q.Series, q.Protocol))
+                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(artist.Profile))
+                        .ThenBy(q => PrioritizeDownloadProtocol(q.Artist, q.Protocol))
                         .First();
             });
 
@@ -172,18 +172,17 @@ namespace NzbDrone.Core.Download.Pending
         public void RemovePendingQueueItems(int queueId)
         {
             var targetItem = FindPendingRelease(queueId);
-            var seriesReleases = _repository.AllBySeriesId(targetItem.SeriesId);
+            var artistReleases = _repository.AllByArtistId(targetItem.ArtistId);
 
-            var releasesToRemove = seriesReleases.Where(
-                c => c.ParsedEpisodeInfo.SeasonNumber == targetItem.ParsedEpisodeInfo.SeasonNumber &&
-                     c.ParsedEpisodeInfo.EpisodeNumbers.SequenceEqual(targetItem.ParsedEpisodeInfo.EpisodeNumbers));
+            var releasesToRemove = artistReleases.Where(
+                c => c.ParsedAlbumInfo.AlbumTitle == targetItem.ParsedAlbumInfo.AlbumTitle);
 
             _repository.DeleteMany(releasesToRemove.Select(c => c.Id));
         }
 
-        public RemoteEpisode OldestPendingRelease(int seriesId, IEnumerable<int> episodeIds)
+        public RemoteAlbum OldestPendingRelease(int artistId, IEnumerable<int> albumIds)
         {
-            return GetPendingRemoteEpisodes(seriesId).Where(r => r.Episodes.Select(e => e.Id).Intersect(episodeIds).Any())
+            return GetPendingRemoteAlbums(artistId).Where(r => r.Albums.Select(e => e.Id).Intersect(albumIds).Any())
                                                      .OrderByDescending(p => p.Release.AgeHours)
                                                      .FirstOrDefault();
         }
@@ -194,11 +193,14 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var release in _repository.All())
             {
-                var remoteEpisode = GetRemoteEpisode(release);
+                var remoteAlbum = GetRemoteAlbum(release);
 
-                if (remoteEpisode == null) continue;
+                if (remoteAlbum == null)
+                {
+                    continue;
+                }
 
-                release.RemoteEpisode = remoteEpisode;
+                release.RemoteAlbum = remoteAlbum;
 
                 result.Add(release);
             }
@@ -206,20 +208,23 @@ namespace NzbDrone.Core.Download.Pending
             return result;
         }
 
-        private RemoteEpisode GetRemoteEpisode(PendingRelease release)
+        private RemoteAlbum GetRemoteAlbum(PendingRelease release)
         {
-            var series = _seriesService.GetSeries(release.SeriesId);
+            var artist = _artistService.GetArtist(release.ArtistId);
 
             //Just in case the series was removed, but wasn't cleaned up yet (housekeeper will clean it up)
-            if (series == null) return null;
-
-            var episodes = _parsingService.GetEpisodes(release.ParsedEpisodeInfo, series, true);
-
-            return new RemoteEpisode
+            if (artist == null)
             {
-                Series = series,
-                Episodes = episodes,
-                ParsedEpisodeInfo = release.ParsedEpisodeInfo,
+                return null;
+            }
+
+            var album = _parsingService.GetAlbums(release.ParsedAlbumInfo, artist);
+
+            return new RemoteAlbum
+            {
+                Artist = artist,
+                Albums = album,
+                ParsedAlbumInfo = release.ParsedAlbumInfo,
                 Release = release.Release
             };
         }
@@ -228,10 +233,10 @@ namespace NzbDrone.Core.Download.Pending
         {
             _repository.Insert(new PendingRelease
             {
-                SeriesId = decision.RemoteEpisode.Series.Id,
-                ParsedEpisodeInfo = decision.RemoteEpisode.ParsedEpisodeInfo,
-                Release = decision.RemoteEpisode.Release,
-                Title = decision.RemoteEpisode.Release.Title,
+                ArtistId = decision.RemoteAlbum.Artist.Id,
+                ParsedAlbumInfo = decision.RemoteAlbum.ParsedAlbumInfo,
+                Release = decision.RemoteAlbum.Release,
+                Title = decision.RemoteAlbum.Release.Title,
                 Added = DateTime.UtcNow
             });
 
@@ -251,22 +256,22 @@ namespace NzbDrone.Core.Download.Pending
                    p.Release.Indexer == release.Indexer;
         }
 
-        private int GetDelay(RemoteEpisode remoteEpisode)
+        private int GetDelay(RemoteAlbum remoteAlbum)
         {
-            var delayProfile = _delayProfileService.AllForTags(remoteEpisode.Series.Tags).OrderBy(d => d.Order).First();
-            var delay = delayProfile.GetProtocolDelay(remoteEpisode.Release.DownloadProtocol);
+            var delayProfile = _delayProfileService.AllForTags(remoteAlbum.Artist.Tags).OrderBy(d => d.Order).First();
+            var delay = delayProfile.GetProtocolDelay(remoteAlbum.Release.DownloadProtocol);
             var minimumAge = _configService.MinimumAge;
 
             return new[] { delay, minimumAge }.Max();
         }
 
-        private void RemoveGrabbed(RemoteEpisode remoteEpisode)
+        private void RemoveGrabbed(RemoteAlbum remoteAlbum)
         {
             var pendingReleases = GetPendingReleases();
-            var episodeIds = remoteEpisode.Episodes.Select(e => e.Id);
+            var albumIds = remoteAlbum.Albums.Select(e => e.Id);
 
-            var existingReports = pendingReleases.Where(r => r.RemoteEpisode.Episodes.Select(e => e.Id)
-                                                             .Intersect(episodeIds)
+            var existingReports = pendingReleases.Where(r => r.RemoteAlbum.Albums.Select(e => e.Id)
+                                                             .Intersect(albumIds)
                                                              .Any())
                                                              .ToList();
 
@@ -275,12 +280,12 @@ namespace NzbDrone.Core.Download.Pending
                 return;
             }
 
-            var profile = remoteEpisode.Series.Profile.Value;
+            var profile = remoteAlbum.Artist.Profile.Value;
 
             foreach (var existingReport in existingReports)
             {
-                var compare = new QualityModelComparer(profile).Compare(remoteEpisode.ParsedEpisodeInfo.Quality,
-                                                                        existingReport.RemoteEpisode.ParsedEpisodeInfo.Quality);
+                var compare = new QualityModelComparer(profile).Compare(remoteAlbum.ParsedAlbumInfo.Quality,
+                                                                        existingReport.RemoteAlbum.ParsedAlbumInfo.Quality);
 
                 //Only remove lower/equal quality pending releases
                 //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
@@ -299,7 +304,7 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var rejectedRelease in rejected)
             {
-                var matching = pending.Where(MatchingReleasePredicate(rejectedRelease.RemoteEpisode.Release));
+                var matching = pending.Where(MatchingReleasePredicate(rejectedRelease.RemoteAlbum.Release));
 
                 foreach (var pendingRelease in matching)
                 {
@@ -311,17 +316,17 @@ namespace NzbDrone.Core.Download.Pending
 
         private PendingRelease FindPendingRelease(int queueId)
         {
-            return GetPendingReleases().First(p => p.RemoteEpisode.Episodes.Any(e => queueId == GetQueueId(p, e)));
+            return GetPendingReleases().First(p => p.RemoteAlbum.Albums.Any(e => queueId == GetQueueId(p, e)));
         }
 
-        private int GetQueueId(PendingRelease pendingRelease, Episode episode)
+        private int GetQueueId(PendingRelease pendingRelease, Album album)
         {
-            return HashConverter.GetHashInt31(string.Format("pending-{0}-ep{1}", pendingRelease.Id, episode.Id));
+            return HashConverter.GetHashInt31(string.Format("pending-{0}-album{1}", pendingRelease.Id, album.Id));
         }
 
-        private int PrioritizeDownloadProtocol(Series series, DownloadProtocol downloadProtocol)
+        private int PrioritizeDownloadProtocol(Artist artist, DownloadProtocol downloadProtocol)
         {
-            var delayProfile = _delayProfileService.BestForTags(series.Tags);
+            var delayProfile = _delayProfileService.BestForTags(artist.Tags);
 
             if (downloadProtocol == delayProfile.PreferredProtocol)
             {
@@ -331,14 +336,14 @@ namespace NzbDrone.Core.Download.Pending
             return 1;
         }
 
-        public void Handle(SeriesDeletedEvent message)
+        public void Handle(ArtistDeletedEvent message)
         {
-            _repository.DeleteBySeriesId(message.Series.Id);
+            _repository.DeleteByArtistId(message.Artist.Id);
         }
 
-        public void Handle(EpisodeGrabbedEvent message)
+        public void Handle(AlbumGrabbedEvent message)
         {
-            RemoveGrabbed(message.Episode);
+            RemoveGrabbed(message.Album);
         }
 
         public void Handle(RssSyncCompleteEvent message)

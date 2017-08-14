@@ -1,5 +1,5 @@
-﻿using NzbDrone.Api.Episodes;
-using NzbDrone.Api.Series;
+﻿using NzbDrone.Api.Albums;
+using NzbDrone.Api.Music;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Api.Parse
@@ -18,23 +18,23 @@ namespace NzbDrone.Api.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var parsedEpisodeInfo = Parser.ParseTitle(title);
+            var parsedAlbumInfo = Parser.ParseAlbumTitle(title);
 
-            if (parsedEpisodeInfo == null)
+            if (parsedAlbumInfo == null)
             {
                 return null;
             }
 
-            var remoteEpisode = _parsingService.Map(parsedEpisodeInfo, 0, 0);
+            var remoteAlbum = _parsingService.Map(parsedAlbumInfo);
 
-            if (remoteEpisode != null)
+            if (remoteAlbum != null)
             {
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedEpisodeInfo = remoteEpisode.ParsedEpisodeInfo,
-                    Series = remoteEpisode.Series.ToResource(),
-                    Episodes = remoteEpisode.Episodes.ToResource()
+                    ParsedAlbumInfo = remoteAlbum.ParsedAlbumInfo,
+                    Artist = remoteAlbum.Artist.ToResource(),
+                    Albums = remoteAlbum.Albums.ToResource()
                 };
             }
             else
@@ -42,7 +42,7 @@ namespace NzbDrone.Api.Parse
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedEpisodeInfo = parsedEpisodeInfo
+                    ParsedAlbumInfo = parsedAlbumInfo
                 };
             }
         }

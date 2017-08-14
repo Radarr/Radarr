@@ -26,6 +26,7 @@ namespace NzbDrone.Core.Music
         //public int TrackCount { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }
+        public int Duration { get; set; }
         public List<Track> Tracks { get; set; }
         //public int DiscCount { get; set; }
         public bool Monitored { get; set; }

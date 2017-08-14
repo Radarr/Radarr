@@ -36,12 +36,12 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _torrentCache = cacheManager.GetCache<UTorrentTorrentCache>(GetType(), "differentialTorrents");
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
             _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
@@ -52,12 +52,12 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
             _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)

@@ -7,22 +7,22 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
     public class ProtocolSpecificationFixture : CoreTest<ProtocolSpecification>
     {
-        private RemoteEpisode _remoteEpisode;
+        private RemoteAlbum _remoteAlbum;
         private DelayProfile _delayProfile;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = new RemoteEpisode();
-            _remoteEpisode.Release = new ReleaseInfo();
-            _remoteEpisode.Series = new Series();
+            _remoteAlbum = new RemoteAlbum();
+            _remoteAlbum.Release = new ReleaseInfo();
+            _remoteAlbum.Artist = new Artist();
             
             _delayProfile = new DelayProfile();
 
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenProtocol(DownloadProtocol downloadProtocol)
         {
-            _remoteEpisode.Release.DownloadProtocol = downloadProtocol;
+            _remoteAlbum.Release.DownloadProtocol = downloadProtocol;
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenProtocol(DownloadProtocol.Usenet);
             _delayProfile.EnableUsenet = true;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().Be(true);
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().Be(true);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenProtocol(DownloadProtocol.Torrent);
             _delayProfile.EnableTorrent = true;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().Be(true);
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().Be(true);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenProtocol(DownloadProtocol.Usenet);
             _delayProfile.EnableUsenet = false;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().Be(false);
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().Be(false);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenProtocol(DownloadProtocol.Torrent);
             _delayProfile.EnableTorrent = false;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().Be(false);
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().Be(false);
         }
     }
 }

@@ -71,6 +71,7 @@ namespace NzbDrone.Core.Music
                     trackToUpdate.Explicit = track.Explicit;
                     trackToUpdate.ArtistId = album.ArtistId;
                     trackToUpdate.Compilation = track.Compilation;
+                    trackToUpdate.Duration = track.Duration;
 
 
                     successCount++;

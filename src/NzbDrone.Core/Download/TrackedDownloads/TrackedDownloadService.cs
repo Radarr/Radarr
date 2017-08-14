@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
@@ -56,12 +56,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
-                var parsedEpisodeInfo = Parser.Parser.ParseTitle(trackedDownload.DownloadItem.Title);
+                var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(trackedDownload.DownloadItem.Title);
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
 
-                if (parsedEpisodeInfo != null)
+                if (parsedAlbumInfo != null)
                 {
-                    trackedDownload.RemoteEpisode = _parsingService.Map(parsedEpisodeInfo, 0, 0);
+                    trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo);
                 }
 
                 if (historyItems.Any())
@@ -69,30 +69,30 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).First();
                     trackedDownload.State = GetStateFromHistory(firstHistoryItem.EventType);
 
-                    if (parsedEpisodeInfo == null ||
-                        trackedDownload.RemoteEpisode == null ||
-                        trackedDownload.RemoteEpisode.Series == null ||
-                        trackedDownload.RemoteEpisode.Episodes.Empty())
+                    if (parsedAlbumInfo == null ||
+                        trackedDownload.RemoteAlbum == null ||
+                        trackedDownload.RemoteAlbum.Artist == null ||
+                        trackedDownload.RemoteAlbum.Albums.Empty())
                     {
                         // Try parsing the original source title and if that fails, try parsing it as a special
                         // TODO: Pass the TVDB ID and TVRage IDs in as well so we have a better chance for finding the item
-                        parsedEpisodeInfo = Parser.Parser.ParseTitle(firstHistoryItem.SourceTitle) ?? _parsingService.ParseSpecialEpisodeTitle(firstHistoryItem.SourceTitle, 0, 0);
+                        parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(firstHistoryItem.SourceTitle);
 
-                        if (parsedEpisodeInfo != null)
+                        if (parsedAlbumInfo != null)
                         {
-                            trackedDownload.RemoteEpisode = _parsingService.Map(parsedEpisodeInfo, firstHistoryItem.SeriesId, historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.EpisodeId).Distinct());
+                            trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo, firstHistoryItem.ArtistId, historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.AlbumId).Distinct());
                         }
                     }
                 }
 
-                if (trackedDownload.RemoteEpisode == null)
+                if (trackedDownload.RemoteAlbum == null)
                 {
                     return null;
                 }
             }
             catch (Exception e)
             {
-                _logger.Debug(e, "Failed to find episode for " + downloadItem.Title);
+                _logger.Debug(e, "Failed to find album for " + downloadItem.Title);
                 return null;
             }
 

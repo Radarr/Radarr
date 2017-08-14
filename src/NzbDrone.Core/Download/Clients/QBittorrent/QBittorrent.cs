@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             _proxy = proxy;
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
 
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
             }
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, Byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, Byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
             }
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)

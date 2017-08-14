@@ -50,15 +50,15 @@ var Collection = PageableCollection.extend({
     },
 
     sortMappings : {
-        'series' : { sortKey : 'series.sortTitle' }
+        'artist' : { sortKey : 'artist.sortName' }
     },
 
     initialize : function(options) {
-        delete this.queryParams.episodeId;
+        delete this.queryParams.albumId;
 
         if (options) {
-            if (options.episodeId) {
-                this.queryParams.episodeId = options.episodeId;
+            if (options.albumId) {
+                this.queryParams.albumId = options.albumId;
             }
         }
     },

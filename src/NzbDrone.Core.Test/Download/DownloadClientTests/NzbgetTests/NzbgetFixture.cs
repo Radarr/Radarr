@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                                               Port = 2222,
                                               Username = "admin",
                                               Password = "pass",
-                                              TvCategory = "tv",
+                                              TvCategory = "music",
                                               RecentTvPriority = (int)NzbgetPriority.High
                                           };
 
@@ -38,16 +38,16 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                 {
                     FileSizeLo = 1000,
                     RemainingSizeLo = 10,
-                    Category = "tv",
-                    NzbName = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
+                    Category = "music",
+                    NzbName = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
                     Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } }
                 };
 
             _failed = new NzbgetHistoryItem
                 {
                     FileSizeLo = 1000,
-                    Category = "tv",
-                    Name = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
+                    Category = "music",
+                    Name = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
                     DestDir = "somedirectory",
                     Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
                     ParStatus = "Some Error",
@@ -61,9 +61,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             _completed = new NzbgetHistoryItem
                 {
                     FileSizeLo = 1000,
-                    Category = "tv",
-                    Name = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
-                    DestDir = "/remote/mount/tv/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
+                    Category = "music",
+                    Name = "Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
+                    DestDir = "/remote/mount/music/Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN",
                     Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
                     ParStatus = "SUCCESS",
                     UnpackStatus = "NONE",
@@ -81,8 +81,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                 });
 
             var configItems = new Dictionary<string, string>();
-            configItems.Add("Category1.Name", "tv");
-            configItems.Add("Category1.DestDir", @"/remote/mount/tv");
+            configItems.Add("Category1.Name", "music");
+            configItems.Add("Category1.DestDir", @"/remote/mount/music");
 
             Mocker.GetMock<INzbgetProxy>()
                 .Setup(v => v.GetConfig(It.IsAny<NzbgetSettings>()))
@@ -303,7 +303,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
         {
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -315,7 +315,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
         {
             GivenFailedDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             Assert.Throws<DownloadClientException>(() => Subject.Download(remoteEpisode));
         }
@@ -340,7 +340,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
 
             result.IsLocalhost.Should().BeTrue();
             result.OutputRootFolders.Should().NotBeNull();
-            result.OutputRootFolders.First().Should().Be(@"/remote/mount/tv");
+            result.OutputRootFolders.First().Should().Be(@"/remote/mount/music");
         }
 
         [Test]
@@ -362,14 +362,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
         {
             Mocker.GetMock<IRemotePathMappingService>()
                 .Setup(v => v.RemapRemoteToLocal("127.0.0.1", It.IsAny<OsPath>()))
-                .Returns(new OsPath(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".AsOsAgnostic()));
+                .Returns(new OsPath(@"O:\mymount\Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN".AsOsAgnostic()));
 
             GivenQueue(null);
             GivenHistory(_completed);
 
             var result = Subject.GetItems().Single();
 
-            result.OutputPath.Should().Be(@"O:\mymount\Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".AsOsAgnostic());
+            result.OutputPath.Should().Be(@"O:\mymount\Fall Out Boy-Make America Psycho Again-CD-FLAC-2015-FORSAKEN".AsOsAgnostic());
         }
 
         [TestCase("11.0", false)]

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.Rarbg
@@ -26,8 +26,8 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
     public class RarbgTorrentInfo
     {
-        public string imdb { get; set; }
-        public int? tvrage { get; set; }
-        public int? tvdb { get; set; }
+        // For Future if RARBG decides to return metadata
+        public string artist { get; set; }
+        public string album { get; set; }
     }
 }

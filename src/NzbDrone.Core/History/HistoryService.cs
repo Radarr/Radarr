@@ -12,7 +12,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.History
 {
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.History
     {
         QualityModel GetBestQualityInHistory(Profile profile, int episodeId);
         PagingSpec<History> Paged(PagingSpec<History> pagingSpec);
-        History MostRecentForEpisode(int episodeId);
+        History MostRecentForAlbum(int episodeId);
         History MostRecentForDownloadId(string downloadId);
         History Get(int historyId);
         List<History> Find(string downloadId, HistoryEventType eventType);
@@ -28,11 +28,11 @@ namespace NzbDrone.Core.History
     }
 
     public class HistoryService : IHistoryService,
-                                  IHandle<EpisodeGrabbedEvent>,
+                                  IHandle<AlbumGrabbedEvent>,
                                   IHandle<EpisodeImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<EpisodeFileDeletedEvent>,
-                                  IHandle<SeriesDeletedEvent>
+                                  IHandle<ArtistDeletedEvent>
     {
         private readonly IHistoryRepository _historyRepository;
         private readonly Logger _logger;
@@ -48,9 +48,9 @@ namespace NzbDrone.Core.History
             return _historyRepository.GetPaged(pagingSpec);
         }
 
-        public History MostRecentForEpisode(int episodeId)
+        public History MostRecentForAlbum(int albumId)
         {
-            return _historyRepository.MostRecentForEpisode(episodeId);
+            return _historyRepository.MostRecentForAlbum(albumId);
         }
 
         public History MostRecentForDownloadId(string downloadId)
@@ -73,10 +73,10 @@ namespace NzbDrone.Core.History
             return _historyRepository.FindByDownloadId(downloadId);
         }
 
-        public QualityModel GetBestQualityInHistory(Profile profile, int episodeId)
+        public QualityModel GetBestQualityInHistory(Profile profile, int albumId)
         {
             var comparer = new QualityModelComparer(profile);
-            return _historyRepository.GetBestQualityInHistory(episodeId)
+            return _historyRepository.GetBestQualityInHistory(albumId)
                 .OrderByDescending(q => q, comparer)
                 .FirstOrDefault();
         }
@@ -85,25 +85,25 @@ namespace NzbDrone.Core.History
         {
             _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedEpisode.Path);
 
-            var episodeIds = trackedDownload.EpisodeInfo.Episodes.Select(c => c.Id).ToList();
+            var albumIds = trackedDownload.EpisodeInfo.Episodes.Select(c => c.Id).ToList();
 
             var allHistory = _historyRepository.FindDownloadHistory(trackedDownload.EpisodeInfo.Series.Id, trackedDownload.ImportedEpisode.Quality);
 
 
             //Find download related items for these episdoes
-            var episodesHistory = allHistory.Where(h => episodeIds.Contains(h.EpisodeId)).ToList();
+            var albumsHistory = allHistory.Where(h => albumIds.Contains(h.AlbumId)).ToList();
 
-            var processedDownloadId = episodesHistory
+            var processedDownloadId = albumsHistory
                 .Where(c => c.EventType != HistoryEventType.Grabbed && c.DownloadId != null)
                 .Select(c => c.DownloadId);
 
-            var stillDownloading = episodesHistory.Where(c => c.EventType == HistoryEventType.Grabbed && !processedDownloadId.Contains(c.DownloadId)).ToList();
+            var stillDownloading = albumsHistory.Where(c => c.EventType == HistoryEventType.Grabbed && !processedDownloadId.Contains(c.DownloadId)).ToList();
 
             string downloadId = null;
 
             if (stillDownloading.Any())
             {
-                foreach (var matchingHistory in trackedDownload.EpisodeInfo.Episodes.Select(e => stillDownloading.Where(c => c.EpisodeId == e.Id).ToList()))
+                foreach (var matchingHistory in trackedDownload.EpisodeInfo.Episodes.Select(e => stillDownloading.Where(c => c.AlbumId == e.Id).ToList()))
                 {
                     if (matchingHistory.Count != 1)
                     {
@@ -126,42 +126,40 @@ namespace NzbDrone.Core.History
             return downloadId;
         }
 
-        public void Handle(EpisodeGrabbedEvent message)
+        public void Handle(AlbumGrabbedEvent message)
         {
-            foreach (var episode in message.Episode.Episodes)
+            foreach (var album in message.Album.Albums)
             {
                 var history = new History
                 {
                     EventType = HistoryEventType.Grabbed,
                     Date = DateTime.UtcNow,
-                    Quality = message.Episode.ParsedEpisodeInfo.Quality,
-                    SourceTitle = message.Episode.Release.Title,
-                    SeriesId = episode.SeriesId,
-                    EpisodeId = episode.Id,
+                    Quality = message.Album.ParsedAlbumInfo.Quality,
+                    SourceTitle = message.Album.Release.Title,
+                    ArtistId = album.ArtistId,
+                    AlbumId = album.Id,
                     DownloadId = message.DownloadId
                 };
 
-                history.Data.Add("Indexer", message.Episode.Release.Indexer);
-                history.Data.Add("NzbInfoUrl", message.Episode.Release.InfoUrl);
-                history.Data.Add("ReleaseGroup", message.Episode.ParsedEpisodeInfo.ReleaseGroup);
-                history.Data.Add("Age", message.Episode.Release.Age.ToString());
-                history.Data.Add("AgeHours", message.Episode.Release.AgeHours.ToString());
-                history.Data.Add("AgeMinutes", message.Episode.Release.AgeMinutes.ToString());
-                history.Data.Add("PublishedDate", message.Episode.Release.PublishDate.ToString("s") + "Z");
+                history.Data.Add("Indexer", message.Album.Release.Indexer);
+                history.Data.Add("NzbInfoUrl", message.Album.Release.InfoUrl);
+                history.Data.Add("ReleaseGroup", message.Album.ParsedAlbumInfo.ReleaseGroup);
+                history.Data.Add("Age", message.Album.Release.Age.ToString());
+                history.Data.Add("AgeHours", message.Album.Release.AgeHours.ToString());
+                history.Data.Add("AgeMinutes", message.Album.Release.AgeMinutes.ToString());
+                history.Data.Add("PublishedDate", message.Album.Release.PublishDate.ToString("s") + "Z");
                 history.Data.Add("DownloadClient", message.DownloadClient);
-                history.Data.Add("Size", message.Episode.Release.Size.ToString());
-                history.Data.Add("DownloadUrl", message.Episode.Release.DownloadUrl);
-                history.Data.Add("Guid", message.Episode.Release.Guid);
-                history.Data.Add("TvdbId", message.Episode.Release.TvdbId.ToString());
-                history.Data.Add("TvRageId", message.Episode.Release.TvRageId.ToString());
-                history.Data.Add("Protocol", ((int)message.Episode.Release.DownloadProtocol).ToString());
+                history.Data.Add("Size", message.Album.Release.Size.ToString());
+                history.Data.Add("DownloadUrl", message.Album.Release.DownloadUrl);
+                history.Data.Add("Guid", message.Album.Release.Guid);
+                history.Data.Add("Protocol", ((int)message.Album.Release.DownloadProtocol).ToString());
 
-                if (!message.Episode.ParsedEpisodeInfo.ReleaseHash.IsNullOrWhiteSpace())
+                if (!message.Album.ParsedAlbumInfo.ReleaseHash.IsNullOrWhiteSpace())
                 {
-                    history.Data.Add("ReleaseHash", message.Episode.ParsedEpisodeInfo.ReleaseHash);
+                    history.Data.Add("ReleaseHash", message.Album.ParsedAlbumInfo.ReleaseHash);
                 }
 
-                var torrentRelease = message.Episode.Release as TorrentInfo;
+                var torrentRelease = message.Album.Release as TorrentInfo;
 
                 if (torrentRelease != null)
                 {
@@ -194,8 +192,8 @@ namespace NzbDrone.Core.History
                         Date = DateTime.UtcNow,
                         Quality = message.EpisodeInfo.Quality,
                         SourceTitle = message.ImportedEpisode.SceneName ?? Path.GetFileNameWithoutExtension(message.EpisodeInfo.Path),
-                        SeriesId = message.ImportedEpisode.SeriesId,
-                        EpisodeId = episode.Id,
+                        ArtistId = message.ImportedEpisode.SeriesId,
+                        AlbumId = episode.Id,
                         DownloadId = downloadId
                     };
 
@@ -211,7 +209,7 @@ namespace NzbDrone.Core.History
 
         public void Handle(DownloadFailedEvent message)
         {
-            foreach (var episodeId in message.EpisodeIds)
+            foreach (var albumId in message.AlbumIds)
             {
                 var history = new History
                 {
@@ -219,8 +217,8 @@ namespace NzbDrone.Core.History
                     Date = DateTime.UtcNow,
                     Quality = message.Quality,
                     SourceTitle = message.SourceTitle,
-                    SeriesId = message.SeriesId,
-                    EpisodeId = episodeId,
+                    ArtistId = message.SeriesId,
+                    AlbumId = albumId,
                     DownloadId = message.DownloadId
                 };
 
@@ -247,8 +245,8 @@ namespace NzbDrone.Core.History
                     Date = DateTime.UtcNow,
                     Quality = message.EpisodeFile.Quality,
                     SourceTitle = message.EpisodeFile.Path,
-                    SeriesId = message.EpisodeFile.SeriesId,
-                    EpisodeId = episode.Id,
+                    ArtistId = message.EpisodeFile.SeriesId,
+                    AlbumId = episode.Id,
                 };
 
                 history.Data.Add("Reason", message.Reason.ToString());
@@ -257,9 +255,9 @@ namespace NzbDrone.Core.History
             }
         }
 
-        public void Handle(SeriesDeletedEvent message)
+        public void Handle(ArtistDeletedEvent message)
         {
-            _historyRepository.DeleteForSeries(message.Series.Id);
+            _historyRepository.DeleteForArtist(message.Artist.Id);
         }
     }
 }

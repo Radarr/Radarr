@@ -20,34 +20,26 @@ var QueueCollection = PageableCollection.extend({
 
     mode : 'client',
 
-    findEpisode : function(episodeId) {
+    findEpisode : function(albumId) {
         return _.find(this.fullCollection.models, function(queueModel) {
-            return queueModel.get('episode').id === episodeId;
+            return queueModel.get('album').id === albumId;
         });
     },
 
     sortMappings : {
-        series : {
+        artist : {
             sortValue : function(model, attr) {
-                var series = model.get(attr);
+                var artist = model.get(attr);
 
-                return series.get('sortTitle');
+                return artist.get('sortName');
             }
         },
 
-        episode : {
+        albumTitle : {
             sortValue : function(model, attr) {
-                var episode = model.get('episode');
+                var album = model.get('album');
 
-                return FormatHelpers.pad(episode.get('seasonNumber'), 4) + FormatHelpers.pad(episode.get('episodeNumber'), 4);
-            }
-        },
-
-        episodeTitle : {
-            sortValue : function(model, attr) {
-                var episode = model.get('episode');
-
-                return episode.get('title');
+                return album.get('title');
             }
         },
 

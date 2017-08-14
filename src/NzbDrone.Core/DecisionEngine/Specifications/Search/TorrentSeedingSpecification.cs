@@ -1,4 +1,4 @@
-using NLog;
+﻿using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
@@ -15,10 +15,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
 
         public RejectionType Type => RejectionType.Permanent;
 
-
-        public Decision IsSatisfiedBy(RemoteEpisode remoteEpisode, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteria)
         {
-            var torrentInfo = remoteEpisode.Release as TorrentInfo;
+            var torrentInfo = remoteAlbum.Release as TorrentInfo;
 
             if (torrentInfo == null)
             {

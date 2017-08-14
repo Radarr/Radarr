@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Parser.Model
     public class RemoteAlbum
     {
         public ReleaseInfo Release { get; set; }
-        public ParsedTrackInfo ParsedTrackInfo { get; set; }
+        public ParsedAlbumInfo ParsedAlbumInfo { get; set; }
         public Artist Artist { get; set; }
         public List<Album> Albums { get; set; }
         public bool DownloadAllowed { get; set; }

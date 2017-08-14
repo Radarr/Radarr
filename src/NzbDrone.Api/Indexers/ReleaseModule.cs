@@ -25,7 +25,7 @@ namespace NzbDrone.Api.Indexers
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
 
-        private readonly ICached<RemoteEpisode> _remoteEpisodeCache;
+        private readonly ICached<RemoteAlbum> _remoteAlbumCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
                              ISearchForNzb nzbSearchService,
@@ -48,14 +48,14 @@ namespace NzbDrone.Api.Indexers
             PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
-            _remoteEpisodeCache = cacheManager.GetCache<RemoteEpisode>(GetType(), "remoteEpisodes");
+            _remoteAlbumCache = cacheManager.GetCache<RemoteAlbum>(GetType(), "remoteAlbums");
         }
 
         private Response DownloadRelease(ReleaseResource release)
         {
-            var remoteEpisode = _remoteEpisodeCache.Find(release.Guid);
+            var remoteAlbum = _remoteAlbumCache.Find(release.Guid);
 
-            if (remoteEpisode == null)
+            if (remoteAlbum == null)
             {
                 _logger.Debug("Couldn't find requested release in cache, cache timeout probably expired.");
 
@@ -64,7 +64,7 @@ namespace NzbDrone.Api.Indexers
 
             try
             {
-                _downloadService.DownloadReport(remoteEpisode);
+                _downloadService.DownloadReport(remoteAlbum);
             }
             catch (ReleaseDownloadException ex)
             {
@@ -113,7 +113,7 @@ namespace NzbDrone.Api.Indexers
 
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
-            _remoteEpisodeCache.Set(decision.RemoteEpisode.Release.Guid, decision.RemoteEpisode, TimeSpan.FromMinutes(30));
+            _remoteAlbumCache.Set(decision.RemoteAlbum.Release.Guid, decision.RemoteAlbum, TimeSpan.FromMinutes(30));
            return base.MapDecision(decision, initialWeight);
         }
     }

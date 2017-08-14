@@ -25,9 +25,9 @@ namespace NzbDrone.Api.Indexers
 
             release.ReleaseWeight = initialWeight;
 
-            if (decision.RemoteEpisode.Series != null)
+            if (decision.RemoteAlbum.Artist != null)
             {
-                release.QualityWeight = decision.RemoteEpisode.Series
+                release.QualityWeight = decision.RemoteAlbum.Artist
                                                               .Profile.Value
                                                               .Items.FindIndex(v => v.Quality == release.Quality.Quality) * 100;
             }

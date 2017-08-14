@@ -53,6 +53,7 @@ namespace NzbDrone.Api.Music
         //public string Certification { get; set; }
         public List<string> Genres { get; set; }
         public string CleanName { get; set; }
+        public string SortName { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
         public AddArtistOptions AddOptions { get; set; }
@@ -75,8 +76,9 @@ namespace NzbDrone.Api.Music
                 AllMusicId = model.AMId,
                 Name = model.Name,
                 CleanName = model.CleanName,
+
                 //AlternateTitles
-                //SortTitle = resource.SortTitle,
+                SortName = model.SortName,
 
                 //TotalTrackCount
                 //TrackCount
@@ -130,7 +132,7 @@ namespace NzbDrone.Api.Music
                 Name = resource.Name,
                 CleanName = resource.CleanName,
                 //AlternateTitles
-                //SortTitle = resource.SortTitle,
+                SortName = resource.SortName,
                 MBId = resource.MBId,
                 TADBId = resource.TADBId,
                 DiscogsId = resource.DiscogsId,

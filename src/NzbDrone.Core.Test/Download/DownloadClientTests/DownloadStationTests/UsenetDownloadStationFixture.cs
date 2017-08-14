@@ -29,18 +29,18 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected string _serialNumber = "SERIALNUMBER";
         protected string _category = "lidarr";
-        protected string _tvDirectory = @"video/Series";
+        protected string _musicDirectory = @"music/Artist";
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");
 
-        protected RemoteEpisode _remoteEpisode;
+        protected RemoteAlbum _remoteAlbum;
 
         protected Dictionary<string, object> _downloadStationConfigItems;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = CreateRemoteEpisode();
+            _remoteAlbum = CreateRemoteAlbum();
 
             _settings = new DownloadStationSettings()
             {
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -203,7 +203,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected void GivenTvDirectory()
         {
-            _settings.TvDirectory = _tvDirectory;
+            _settings.TvDirectory = _musicDirectory;
         }
 
         protected virtual void GivenTasks(List<DownloadStationTask> nzbs)
@@ -254,14 +254,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
             id.Should().NotBeNullOrEmpty();
 
             Mocker.GetMock<IDownloadStationTaskProxy>()
-                  .Verify(v => v.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), _tvDirectory, It.IsAny<DownloadStationSettings>()), Times.Once());
+                  .Verify(v => v.AddTaskFromData(It.IsAny<byte[]>(), It.IsAny<string>(), _musicDirectory, It.IsAny<DownloadStationSettings>()), Times.Once());
         }
 
         [Test]
@@ -271,7 +271,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -287,7 +287,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -362,7 +362,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_task_if_cannot_get_serial_number()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))

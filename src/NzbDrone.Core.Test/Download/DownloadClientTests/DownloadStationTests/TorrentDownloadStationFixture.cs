@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected string _serialNumber = "SERIALNUMBER";
         protected string _category ="lidarr";
-        protected string _tvDirectory = @"video/Series";
+        protected string _musicDirectory = @"music/Artist";
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");
 
@@ -301,7 +301,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected void GivenTvDirectory()
         {
-            _settings.TvDirectory = _tvDirectory;
+            _settings.TvDirectory = _musicDirectory;
         }
 
         protected virtual void GivenTasks(List<DownloadStationTask> torrents)
@@ -339,13 +339,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Callback(PrepareClientToReturnQueuedItem);
         }
 
-        protected override RemoteEpisode CreateRemoteEpisode()
+        protected override RemoteAlbum CreateRemoteAlbum()
         {
-            var episode = base.CreateRemoteEpisode();
+            var album = base.CreateRemoteAlbum();
 
-            episode.Release.DownloadUrl = DownloadURL;
+            album.Release.DownloadUrl = DownloadURL;
 
-            return episode;
+            return album;
         }
 
         protected int GivenAllKindOfTasks()
@@ -366,14 +366,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
             id.Should().NotBeNullOrEmpty();
 
             Mocker.GetMock<IDownloadStationTaskProxy>()
-                  .Verify(v => v.AddTaskFromUrl(It.IsAny<string>(), _tvDirectory, It.IsAny<DownloadStationSettings>()), Times.Once());
+                  .Verify(v => v.AddTaskFromUrl(It.IsAny<string>(), _musicDirectory, It.IsAny<DownloadStationSettings>()), Times.Once());
         }
 
         [Test]
@@ -383,7 +383,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvCategory();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -399,7 +399,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             var id = Subject.Download(remoteEpisode);
 
@@ -474,7 +474,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_task_if_cannot_get_serial_number()
         {
-            var remoteEpisode = CreateRemoteEpisode();
+            var remoteEpisode = CreateRemoteAlbum();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))

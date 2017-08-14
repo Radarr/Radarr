@@ -36,16 +36,6 @@ namespace NzbDrone.Core.Indexers.Torznab
             throw new TorznabException("Torznab error detected: {0}", errorMessage);
         }
 
-        protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
-        {
-            var torrentInfo = base.ProcessItem(item, releaseInfo) as TorrentInfo;
-
-            torrentInfo.TvdbId = GetTvdbId(item);
-            torrentInfo.TvRageId = GetTvRageId(item);
-
-            return torrentInfo;
-        }
-
         protected override ReleaseInfo PostProcess(XElement item, ReleaseInfo releaseInfo)
         {
             var enclosureType = item.Element("enclosure").Attribute("type").Value;
@@ -100,31 +90,6 @@ namespace NzbDrone.Core.Indexers.Torznab
             return url;
         }
 
-        protected virtual int GetTvdbId(XElement item)
-        {
-            var tvdbIdString = TryGetTorznabAttribute(item, "tvdbid");
-            int tvdbId;
-
-            if (!tvdbIdString.IsNullOrWhiteSpace() && int.TryParse(tvdbIdString, out tvdbId))
-            {
-                return tvdbId;
-            }
-
-            return 0;
-        }
-
-        protected virtual int GetTvRageId(XElement item)
-        {
-            var tvRageIdString = TryGetTorznabAttribute(item, "rageid");
-            int tvRageId;
-
-            if (!tvRageIdString.IsNullOrWhiteSpace() && int.TryParse(tvRageIdString, out tvRageId))
-            {
-                return tvRageId;
-            }
-
-            return 0;
-        }
         protected override string GetInfoHash(XElement item)
         {
             return TryGetTorznabAttribute(item, "infohash");

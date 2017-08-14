@@ -8,18 +8,18 @@ namespace NzbDrone.Core.Music
 
     public static class ArtistNameNormalizer
     {
-        private readonly static Dictionary<int, string> PreComputedTitles = new Dictionary<int, string>
+        private readonly static Dictionary<string, string> PreComputedTitles = new Dictionary<string, string>
                                                                      {
-                                                                         { 281588, "a to z" },
-                                                                         { 266757, "ad trials triumph early church" },
-                                                                         { 289260, "ad bible continues"}
+                                                                         { "281588", "a to z" },
+                                                                         { "266757", "ad trials triumph early church" },
+                                                                         { "289260", "ad bible continues"}
                                                                      };
 
-        public static string Normalize(string title, int iTunesId)
+        public static string Normalize(string title, string mbID)
         {
-            if (PreComputedTitles.ContainsKey(iTunesId))
+            if (PreComputedTitles.ContainsKey(mbID))
             {
-                return PreComputedTitles[iTunesId];
+                return PreComputedTitles[mbID];
             }
 
             return Parser.Parser.NormalizeTitle(title).ToLower();

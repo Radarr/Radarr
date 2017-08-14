@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Download
                 {
                     if (historyItem != null)
                     {
-                        series = _seriesService.GetSeries(historyItem.SeriesId);
+                        series = _seriesService.GetSeries(historyItem.ArtistId);
                     }
 
                     if (series == null)

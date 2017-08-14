@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null)
             {
@@ -39,16 +39,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             var cdhEnabled = _configService.EnableCompletedDownloadHandling;
 
             _logger.Debug("Performing history status check on report");
-            foreach (var episode in subject.Episodes)
+            foreach (var album in subject.Albums)
             {
-                _logger.Debug("Checking current status of episode [{0}] in history", episode.Id);
-                var mostRecent = _historyService.MostRecentForEpisode(episode.Id);
+                _logger.Debug("Checking current status of album [{0}] in history", album.Id);
+                var mostRecent = _historyService.MostRecentForAlbum(album.Id);
 
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
                 {
                     var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
-                    var cutoffUnmet = _qualityUpgradableSpecification.CutoffNotMet(subject.Series.Profile, mostRecent.Quality, subject.ParsedEpisodeInfo.Quality);
-                    var upgradeable = _qualityUpgradableSpecification.IsUpgradable(subject.Series.Profile, mostRecent.Quality, subject.ParsedEpisodeInfo.Quality);
+                    var cutoffUnmet = _qualityUpgradableSpecification.CutoffNotMet(subject.Artist.Profile, mostRecent.Quality, subject.ParsedAlbumInfo.Quality);
+                    var upgradeable = _qualityUpgradableSpecification.IsUpgradable(subject.Artist.Profile, mostRecent.Quality, subject.ParsedAlbumInfo.Quality);
 
                     if (!recent && cdhEnabled)
                     {
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     {
                         if (recent)
                         {
-                            return Decision.Reject("Recent grab event in history already meets cutoff: {0}", mostRecent.Quality);  
+                            return Decision.Reject("Recent grab event in history already meets cutoff: {0}", mostRecent.Quality);
                         }
 
                         return Decision.Reject("CDH is disabled and grab event in history already meets cutoff: {0}", mostRecent.Quality);

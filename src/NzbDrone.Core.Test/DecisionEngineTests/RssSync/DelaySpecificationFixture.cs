@@ -17,7 +17,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     {
         private Profile _profile;
         private DelayProfile _delayProfile;
-        private RemoteEpisode _remoteEpisode;
+        private RemoteAlbum _remoteAlbum;
 
         [SetUp]
         public void Setup()
@@ -38,12 +38,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                  .With(d => d.PreferredProtocol = DownloadProtocol.Usenet)
                                                  .Build();
 
-            var series = Builder<Series>.CreateNew()
+            var artist = Builder<Artist>.CreateNew()
                                         .With(s => s.Profile = _profile)
                                         .Build();
 
-            _remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                   .With(r => r.Series = series)
+            _remoteAlbum = Builder<RemoteAlbum>.CreateNew()
+                                                   .With(r => r.Artist = artist)
                                                    .Build();
 
             _profile.Items = new List<ProfileQualityItem>();
@@ -53,30 +53,30 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _profile.Cutoff = Quality.MP3_320;
 
-            _remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            _remoteEpisode.Release = new ReleaseInfo();
-            _remoteEpisode.Release.DownloadProtocol = DownloadProtocol.Usenet;
+            _remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
+            _remoteAlbum.Release = new ReleaseInfo();
+            _remoteAlbum.Release.DownloadProtocol = DownloadProtocol.Usenet;
 
-            _remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
-            _remoteEpisode.Episodes.First().EpisodeFileId = 0;
+            _remoteAlbum.Albums = Builder<Album>.CreateListOfSize(1).Build().ToList();
+
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new List<TrackFile> {});
 
             Mocker.GetMock<IDelayProfileService>()
                   .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
                   .Returns(_delayProfile);
 
             Mocker.GetMock<IPendingReleaseService>()
-                  .Setup(s => s.GetPendingRemoteEpisodes(It.IsAny<int>()))
-                  .Returns(new List<RemoteEpisode>());
+                  .Setup(s => s.GetPendingRemoteAlbums(It.IsAny<int>()))
+                  .Returns(new List<RemoteAlbum>());
         }
 
         private void GivenExistingFile(QualityModel quality)
         {
-            _remoteEpisode.Episodes.First().EpisodeFileId = 1;
-
-            _remoteEpisode.Episodes.First().EpisodeFile = new LazyLoaded<EpisodeFile>(new EpisodeFile
-                                                                                 {
-                                                                                     Quality = quality
-                                                                                 });
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new List<TrackFile> { new TrackFile { Quality = quality } });
         }
 
         private void GivenUpgradeForExistingFile()
@@ -89,18 +89,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_user_invoked_search()
         {
-            Subject.IsSatisfiedBy(new RemoteEpisode(), new SingleEpisodeSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(new RemoteAlbum(), new AlbumSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_false_when_system_invoked_search_and_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_192);
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_192);
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, new SingleEpisodeSearchCriteria()).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteAlbum, new AlbumSearchCriteria()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -108,44 +108,44 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             _delayProfile.UsenetDelay = 0;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_true_when_quality_is_last_allowed_in_profile()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_320);
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_true_when_release_is_older_than_delay()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256);
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256);
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
 
             _delayProfile.UsenetDelay = 60;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_false_when_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_192);
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_192);
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_be_true_when_release_is_a_proper_for_existing_episode()
+        public void should_be_true_when_release_is_a_proper_for_existing_album()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.MP3_256));
             GivenUpgradeForExistingFile();
@@ -156,14 +156,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_be_true_when_release_is_a_real_for_existing_episode()
+        public void should_be_true_when_release_is_a_real_for_existing_album()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(real: 1));
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(real: 1));
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.MP3_256));
             GivenUpgradeForExistingFile();
@@ -174,20 +174,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_be_false_when_release_is_proper_for_existing_episode_of_different_quality()
+        public void should_be_false_when_release_is_proper_for_existing_album_of_different_quality()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.MP3_192));
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
     }
 }

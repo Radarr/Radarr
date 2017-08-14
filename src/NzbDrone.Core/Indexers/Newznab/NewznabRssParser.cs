@@ -48,10 +48,10 @@ namespace NzbDrone.Core.Indexers.Newznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
-
-            releaseInfo.TvdbId = GetTvdbId(item);
-            releaseInfo.TvRageId = GetTvRageId(item);
-
+ 
+            releaseInfo.Artist = GetArtist(item);
+            releaseInfo.Album = GetAlbum(item);
+ 
             return releaseInfo;
         }
 
@@ -114,30 +114,28 @@ namespace NzbDrone.Core.Indexers.Newznab
             return url;
         }
 
-        protected virtual int GetTvdbId(XElement item)
+        protected virtual string GetArtist(XElement item)
         {
-            var tvdbIdString = TryGetNewznabAttribute(item, "tvdbid");
-            int tvdbId;
+            var artistString = TryGetNewznabAttribute(item, "artist");
 
-            if (!tvdbIdString.IsNullOrWhiteSpace() && int.TryParse(tvdbIdString, out tvdbId))
+            if (!artistString.IsNullOrWhiteSpace())
             {
-                return tvdbId;
+                return artistString;
             }
 
-            return 0;
+            return "";
         }
-
-        protected virtual int GetTvRageId(XElement item)
+ 
+        protected virtual string GetAlbum(XElement item)
         {
-            var tvRageIdString = TryGetNewznabAttribute(item, "rageid");
-            int tvRageId;
+            var albumString = TryGetNewznabAttribute(item, "album");
 
-            if (!tvRageIdString.IsNullOrWhiteSpace() && int.TryParse(tvRageIdString, out tvRageId))
+            if (!albumString.IsNullOrWhiteSpace())
             {
-                return tvRageId;
+                return albumString;
             }
 
-            return 0;
+            return "";
         }
 
         protected string TryGetNewznabAttribute(XElement item, string key, string defaultValue = "")

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
     [TestFixture]
     public class ScanWatchFolderFixture : CoreTest<ScanWatchFolder>
     {
-        protected readonly string _title = "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE";
+        protected readonly string _title = "Radiohead - Scotch Mist [2008-FLAC-Lossless]";
         protected string _completedDownloadFolder = @"c:\blackhole\completed".AsOsAgnostic();
         
         protected void GivenCompletedItem()
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.GetFiles(targetDir, SearchOption.AllDirectories))
-                .Returns(new[] { Path.Combine(targetDir, "somefile.mkv") });
+                .Returns(new[] { Path.Combine(targetDir, "somefile.flac") });
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.GetFileSize(It.IsAny<string>()))

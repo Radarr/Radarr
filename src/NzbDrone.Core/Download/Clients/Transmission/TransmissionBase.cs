@@ -135,11 +135,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             };
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)TransmissionPriority.First)
@@ -150,11 +150,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)TransmissionPriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)TransmissionPriority.First)

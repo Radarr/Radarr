@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -183,12 +183,25 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> ArtistSearch(Artist artist, bool missingOnly, bool userInvokedSearch)
         {
             var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch);
+            var albums = _albumService.GetAlbumsByArtist(artist.Id);
+
+            searchSpec.Albums = albums;
+            
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
         public List<DownloadDecision> AlbumSearch(Album album, bool missingOnly, bool userInvokedSearch)
         {
-            var searchSpec = Get<AlbumSearchCriteria>(album, userInvokedSearch);
+            var artist = _artistService.GetArtist(album.ArtistId);
+
+            var searchSpec = Get<AlbumSearchCriteria>(artist, new List<Album> { album }, userInvokedSearch);
+
+            searchSpec.AlbumTitle = album.Title;
+            if (album.ReleaseDate.HasValue)
+            {
+                searchSpec.AlbumYear = album.ReleaseDate.Value.Year;
+            }
+            
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
@@ -279,12 +292,12 @@ namespace NzbDrone.Core.IndexerSearch
             return spec;
         }
 
-        private TSpec Get<TSpec>(Album album, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        private TSpec Get<TSpec>(Artist artist, List<Album> albums, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
 
-            spec.Album = album;
-            spec.Artist = _artistService.GetArtist(album.ArtistId);
+            spec.Albums = albums;
+            spec.Artist = artist;
             spec.UserInvokedSearch = userInvokedSearch;
 
             return spec;

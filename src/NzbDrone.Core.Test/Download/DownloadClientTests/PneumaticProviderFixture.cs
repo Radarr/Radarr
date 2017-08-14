@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using Moq;
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         private string _pneumaticFolder;
         private string _sabDrop;
         private string _nzbPath;
-        private RemoteEpisode _remoteEpisode;
+        private RemoteAlbum _remoteEpisode;
 
         [SetUp]
         public void Setup()
@@ -33,13 +33,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
             Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedEpisodesFolder).Returns(_sabDrop);
 
-            _remoteEpisode = new RemoteEpisode();
+            _remoteEpisode = new RemoteAlbum();
             _remoteEpisode.Release = new ReleaseInfo();
             _remoteEpisode.Release.Title = _title;
             _remoteEpisode.Release.DownloadUrl = _nzbUrl;
 
-            _remoteEpisode.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            _remoteEpisode.ParsedEpisodeInfo.FullSeason = false;
+            _remoteEpisode.ParsedAlbumInfo = new ParsedAlbumInfo();
 
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
@@ -74,7 +73,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         public void should_throw_if_full_season_download()
         {
             _remoteEpisode.Release.Title = "30 Rock - Season 1";
-            _remoteEpisode.ParsedEpisodeInfo.FullSeason = true;
 
             Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteEpisode));
         }

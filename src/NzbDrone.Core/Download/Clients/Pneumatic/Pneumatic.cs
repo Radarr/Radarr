@@ -32,15 +32,10 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
-        public override string Download(RemoteEpisode remoteEpisode)
+        public override string Download(RemoteAlbum remoteAlbum)
         {
-            var url = remoteEpisode.Release.DownloadUrl;
-            var title = remoteEpisode.Release.Title;
-
-            if (remoteEpisode.ParsedEpisodeInfo.FullSeason)
-            {
-                throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
-            }
+            var url = remoteAlbum.Release.DownloadUrl;
+            var title = remoteAlbum.Release.Title;
 
             title = FileNameBuilder.CleanFileName(title);
 

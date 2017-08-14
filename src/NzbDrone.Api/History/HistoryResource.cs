@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Albums;
 using NzbDrone.Api.REST;
 using NzbDrone.Api.Series;
+using NzbDrone.Api.Music;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
 
@@ -11,8 +13,8 @@ namespace NzbDrone.Api.History
 {
     public class HistoryResource : RestResource
     {
-        public int EpisodeId { get; set; }
-        public int SeriesId { get; set; }
+        public int ArtistId { get; set; }
+        public int AlbumId { get; set; }
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }
         public bool QualityCutoffNotMet { get; set; }
@@ -23,8 +25,8 @@ namespace NzbDrone.Api.History
 
         public Dictionary<string, string> Data { get; set; }
 
-        public EpisodeResource Episode { get; set; }
-        public SeriesResource Series { get; set; }
+        public AlbumResource Album { get; set; }
+        public ArtistResource Artist { get; set; }
     }
 
     public static class HistoryResourceMapper
@@ -37,8 +39,8 @@ namespace NzbDrone.Api.History
             {
                 Id = model.Id,
 
-                EpisodeId = model.EpisodeId,
-                SeriesId = model.SeriesId,
+                AlbumId = model.AlbumId,
+                ArtistId = model.ArtistId,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
                 //QualityCutoffNotMet

@@ -83,16 +83,6 @@ Handlebars.registerHelper ('truncate', function (str, len) {
     return str;
 });
 
-Handlebars.registerHelper('albumCountHelper', function() {
-    var albumCount = this.albumCount;
-
-    if (albumCount === 1) {
-        return new Handlebars.SafeString('<span class="label label-info">{0} Albums</span>'.format(albumCount));
-    }
-
-    return new Handlebars.SafeString('<span class="label label-info">{0} Albums</span>'.format(albumCount));
-});
-
 /*Handlebars.registerHelper('titleWithYear', function() {
     if (this.title.endsWith(' ({0})'.format(this.year))) {
         return this.title;

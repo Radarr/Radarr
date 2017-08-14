@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -61,6 +61,53 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_remove_request_info_from_title(string postTitle, string title)
         {
             Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
+        }
+
+        [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "The Best 101 Love Ballads")]
+        [TestCase("ATCQ - The Love Movement 1998 2CD 192kbps  RIP", "The Love Movement")]
+        [TestCase("A Tribe Called Quest - The Love Movement 1998 2CD [192kbps] RIP", "The Love Movement")]
+        [TestCase("Maula - Jism 2 [2012] Mp3 - 192Kbps [Extended]- TK", "Jism 2")]
+        [TestCase("VA - Complete Clubland - The Ultimate Ride Of Your Lfe [2014][MP3][192 kbps]")]
+        [TestCase("Complete Clubland - The Ultimate Ride Of Your Lfe [2014][MP3](192kbps)", "The Ultimate Ride Of Your Lfe")]
+        [TestCase("The Ultimate Ride Of Your Lfe [192 KBPS][2014][MP3]", "The Ultimate Ride Of Your Lfe")]
+        [TestCase("Gary Clark Jr - Live North America 2016 (2017) MP3 192kbps", "Live North America 2016")]
+        [TestCase("Beyoncé Lemonade [320] 2016 Beyonce Lemonade [320] 2016", "Lemonade")]
+        [TestCase("Childish Gambino - Awaken, My Love Album 2016 mp3 320 Kbps", "Awaken, My Love Album")]
+        [TestCase("Maluma – Felices Los 4 MP3 320 Kbps 2017 Download", "Felices Los 4")]
+        [TestCase("Ricardo Arjona - APNEA (Single 2014) (320 kbps)", "APNEA")]
+        [TestCase("Kehlani - SweetSexySavage (Deluxe Edition) (2017) 320", "SweetSexySavage")]
+        [TestCase("Anderson Paak - Malibu (320)(2016)", "Malibu")]
+        [TestCase("Caetano Veloso Discografia Completa MP3 @256","")]
+        [TestCase("Little Mix - Salute [Deluxe Edition] [2013] [M4A-256]-V3nom [GLT", "Salute")]
+        [TestCase("Ricky Martin - A Quien Quiera Escuchar (2015) 256 kbps [GloDLS]", "A Quien Quiera Escuchar")]
+        [TestCase("Jake Bugg - Jake Bugg (Album) [2012] {MP3 256 kbps}", "Jake Bugg")]
+        [TestCase("Milky Chance - Sadnecessary [256 Kbps] [M4A]", "Sadnecessary")]
+        [TestCase("Clean Bandit - New Eyes [2014] [Mp3-256]-V3nom [GLT]", "New Eyes")]
+        [TestCase("Armin van Buuren - A State Of Trance 810 (20.04.2017) 256 kbps", "A State Of Trance 810")]
+        [TestCase("PJ Harvey - Let England Shake [mp3-256-2011][trfkad]", "Let England Shake")]
+        [TestCase("X-Men Soundtracks (2006-2014) AAC, 256 kbps","")]
+        [TestCase("Walk the Line Soundtrack (2005) [AAC, 256 kbps]", "Walk the Line Soundtrack")]
+        [TestCase("Emeli Sande Next To Me (512 Kbps)", "Next To Me")]
+        [TestCase("Kendrick Lamar - DAMN (2017) FLAC", "DAMN")]
+        [TestCase("Alicia Keys - Vault Playlist Vol. 1 (2017) [FLAC CD]", "Vault Playlist Vol  1")]
+        [TestCase("Gorillaz - Humanz (Deluxe) - lossless FLAC Tracks - 2017 - CDrip", "Humanz")]
+        [TestCase("David Bowie - Blackstar (2016) [FLAC]", "Blackstar")]
+        [TestCase("The Cure - Greatest Hits (2001) FLAC Soup", "Greatest Hits")]
+        [TestCase("Slowdive - Souvlaki (FLAC)", "Souvlaki")]
+        [TestCase("John Coltrane - Kulu Se Mama (1965) [EAC-FLAC]", "Kulu Se Mama")]
+        [TestCase("The Rolling Stones - The Very Best Of '75-'94 (1995) {FLAC}", "The Very Best Of '75-'94")]
+        [TestCase("Migos-No_Label_II-CD-FLAC-2014-FORSAKEN", "No Label II")]
+        [TestCase("ADELE 25 CD FLAC 2015 PERFECT", "25")]
+        [TestCase("A.I. - Sex & Robots [2007/MP3/V0(VBR)]", "Sex & Robots")]
+        [TestCase("Jay-Z - 4:44 (Deluxe Edition) (2017) 320", "444")]
+        [TestCase("Roberta Flack 2006 - The Very Best of", "The Very Best of")]
+        [TestCase("VA - NOW Thats What I Call Music 96 (2017) [Mp3~Kbps]", "NOW Thats What I Call Music 96")]
+        [TestCase("Queen - The Ultimate Best Of Queen(2011)[mp3]", "The Ultimate Best Of Queen")]
+        [TestCase("Little Mix - Salute [Deluxe Edition] [2013] [M4A-256]-V3nom [GLT]", "Salute")]
+        [TestCase("Barış Manço - Ben Bilirim [1993/FLAC/Lossless/Log]", "Ben Bilirim")]
+        public void should_parse_album_title(string postTitle, string title)
+        {
+            Parser.Parser.ParseAlbumTitle(postTitle).AlbumTitle.Should().Be(title);
         }
     }
 }

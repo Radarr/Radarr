@@ -75,6 +75,7 @@ namespace NzbDrone.Core.Music
             artist.Overview = artistInfo.Overview;
             artist.Status = artistInfo.Status;
             artist.CleanName = artistInfo.CleanName;
+            artist.SortName = artistInfo.SortName;
             artist.LastInfoSync = DateTime.UtcNow;
             artist.Images = artistInfo.Images;
             artist.Genres = artistInfo.Genres;

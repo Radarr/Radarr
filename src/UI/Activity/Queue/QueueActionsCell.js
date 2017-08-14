@@ -41,7 +41,7 @@ module.exports = TemplatedCell.extend({
 
     _grab : function() {
         var self = this;
-        var data = _.omit(this.model.toJSON(), 'series', 'episode');
+        var data = _.omit(this.model.toJSON(), 'artist', 'album');
 
         var promise = $.ajax({
             url  : window.NzbDrone.ApiRoot + '/queue/grab',

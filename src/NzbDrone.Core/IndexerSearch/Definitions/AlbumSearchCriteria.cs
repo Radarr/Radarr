@@ -4,18 +4,13 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
 {
     public class AlbumSearchCriteria : SearchCriteriaBase
     {
+
+        public string AlbumTitle { get; set; }
+        public int AlbumYear { get; set; }
+
         public override string ToString()
         {
-            var baseRepresentation = $"[{Artist.Name} - {Album.Title}]";
-            if (Album.ReleaseDate.HasValue)
-            {
-                var beforeLast = baseRepresentation.Length - 1;
-                return baseRepresentation.Insert(beforeLast, $" ({Album.ReleaseDate.Value.Year})");
-            }
-            else
-            {
-                return baseRepresentation;
-            }
+            return string.Format("[{0} - {1} ({2})]", Artist.Name, AlbumTitle, AlbumYear);
         }
     }
 }

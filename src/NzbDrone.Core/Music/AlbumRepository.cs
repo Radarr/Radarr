@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Music
         bool AlbumPathExists(string path);
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
+        Album FindByTitle(int artistId, string title);
         Album FindByArtistAndName(string artistName, string cleanTitle);
         Album FindById(string spotifyId);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
@@ -147,6 +148,15 @@ namespace NzbDrone.Core.Music
             cleanTitle = cleanTitle.ToLowerInvariant();
 
             return Query.Where(s => s.CleanTitle == cleanTitle)
+                        .SingleOrDefault();
+        }
+
+        public Album FindByTitle(int artistId, string title)
+        {
+            title = Parser.Parser.CleanArtistTitle(title);
+
+            return Query.Where(s => s.CleanTitle == title)
+                        .AndWhere(s => s.ArtistId == artistId)
                         .SingleOrDefault();
         }
 

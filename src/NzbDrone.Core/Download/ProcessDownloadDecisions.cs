@@ -39,15 +39,15 @@ namespace NzbDrone.Core.Download
 
             foreach (var report in prioritizedDecisions)
             {
-                var remoteEpisode = report.RemoteEpisode;
+                var remoteAlbum = report.RemoteAlbum;
 
-                var episodeIds = remoteEpisode.Episodes.Select(e => e.Id).ToList();
+                var albumIds = remoteAlbum.Albums.Select(e => e.Id).ToList();
 
                 //Skip if already grabbed
-                if (grabbed.SelectMany(r => r.RemoteEpisode.Episodes)
+                if (grabbed.SelectMany(r => r.RemoteAlbum.Albums)
                                 .Select(e => e.Id)
                                 .ToList()
-                                .Intersect(episodeIds)
+                                .Intersect(albumIds)
                                 .Any())
                 {
                     continue;
@@ -60,10 +60,10 @@ namespace NzbDrone.Core.Download
                     continue;
                 }
 
-                if (pending.SelectMany(r => r.RemoteEpisode.Episodes)
+                if (pending.SelectMany(r => r.RemoteAlbum.Albums)
                         .Select(e => e.Id)
                         .ToList()
-                        .Intersect(episodeIds)
+                        .Intersect(albumIds)
                         .Any())
                 {
                     continue;
@@ -71,14 +71,14 @@ namespace NzbDrone.Core.Download
 
                 try
                 {
-                    _downloadService.DownloadReport(remoteEpisode);
+                    _downloadService.DownloadReport(remoteAlbum);
                     grabbed.Add(report);
                 }
                 catch (Exception e)
                 {
                     //TODO: support for store & forward
                     //We'll need to differentiate between a download client error and an indexer error
-                    _logger.Warn(e, "Couldn't add report to download queue. " + remoteEpisode);
+                    _logger.Warn(e, "Couldn't add report to download queue. " + remoteAlbum);
                 }
             }
 
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Download
         internal List<DownloadDecision> GetQualifiedReports(IEnumerable<DownloadDecision> decisions)
         {
             //Process both approved and temporarily rejected
-            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteEpisode.Episodes.Any()).ToList();
+            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteAlbum.Albums.Any()).ToList();
         }
     }
 }

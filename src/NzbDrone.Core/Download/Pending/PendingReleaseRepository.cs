@@ -6,8 +6,8 @@ namespace NzbDrone.Core.Download.Pending
 {
     public interface IPendingReleaseRepository : IBasicRepository<PendingRelease>
     {
-        void DeleteBySeriesId(int seriesId);
-        List<PendingRelease> AllBySeriesId(int seriesId);
+        void DeleteByArtistId(int artistId);
+        List<PendingRelease> AllByArtistId(int artistId);
     }
 
     public class PendingReleaseRepository : BasicRepository<PendingRelease>, IPendingReleaseRepository
@@ -17,14 +17,14 @@ namespace NzbDrone.Core.Download.Pending
         {
         }
 
-        public void DeleteBySeriesId(int seriesId)
+        public void DeleteByArtistId(int artistId)
         {
-            Delete(r => r.SeriesId == seriesId);
+            Delete(r => r.ArtistId == artistId);
         }
 
-        public List<PendingRelease> AllBySeriesId(int seriesId)
+        public List<PendingRelease> AllByArtistId(int artistId)
         {
-            return Query.Where(p => p.SeriesId == seriesId);
+            return Query.Where(p => p.ArtistId == artistId);
         }
     }
 }

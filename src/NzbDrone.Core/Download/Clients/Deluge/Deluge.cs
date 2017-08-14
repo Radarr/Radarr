@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy = proxy;
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
 
@@ -42,10 +42,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)DelugePriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)DelugePriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
             }
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             return actualHash.ToUpper();
         }
 
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             var actualHash = _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
-            var isRecentEpisode = remoteEpisode.IsRecentEpisode();
+            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
             if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
                 !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)

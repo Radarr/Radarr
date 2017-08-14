@@ -10,6 +10,7 @@ var TrackActionsCell = require('../../Cells/TrackActionsCell');
 var TrackNumberCell = require('./TrackNumberCell');
 var TrackWarningCell = require('./TrackWarningCell');
 var TrackRatingCell = require('./TrackRatingCell');
+var TrackDurationCell = require('../../Cells/TrackDurationCell');
 var AlbumInfoView = require('./AlbumInfoView');
 var CommandController = require('../../Commands/CommandController');
 //var TrackFileEditorLayout = require('../../TrackFile/Editor/TrackFileEditorLayout');
@@ -87,12 +88,18 @@ module.exports = Marionette.Layout.extend({
         //    label : 'Air Date',
         //    cell  : RelativeDateCell
         //},
-         {
-             name     : 'status',
-             label    : 'Status',
-             cell     : TrackStatusCell,
-             sortable : false
-         },
+        {
+            name     : 'duration',
+            label    : 'Duration',
+            cell     : TrackDurationCell,
+            sortable : false
+        },
+        {
+            name     : 'status',
+            label    : 'Status',
+            cell     : TrackStatusCell,
+            sortable : false
+        },
         //{
         //   name     : 'this',
         //    label    : '',

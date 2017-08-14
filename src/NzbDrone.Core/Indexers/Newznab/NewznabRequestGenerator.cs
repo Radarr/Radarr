@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             AddAudioPageableRequests(pageableRequests,
                 string.Format("&artist={0}&album={1}",
                     searchCriteria.Artist.Name,
-                    searchCriteria.Album.Title));
+                    searchCriteria.AlbumTitle));
 
             return pageableRequests;
         }

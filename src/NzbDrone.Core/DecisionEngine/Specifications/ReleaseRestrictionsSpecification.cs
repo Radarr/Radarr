@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -22,19 +22,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Checking if release meets restrictions: {0}", subject);
 
             var title = subject.Release.Title;
-            var restrictions = _restrictionService.AllForTags(subject.Series.Tags);
+            var restrictions = _restrictionService.AllForTags(subject.Artist.Tags);
 
             var required = restrictions.Where(r => r.Required.IsNotNullOrWhiteSpace());
             var ignored = restrictions.Where(r => r.Ignored.IsNotNullOrWhiteSpace());
 
             foreach (var r in required)
             {
-                var requiredTerms = r.Required.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                var requiredTerms = r.Required.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var foundTerms = ContainsAny(requiredTerms, title);
                 if (foundTerms.Empty())

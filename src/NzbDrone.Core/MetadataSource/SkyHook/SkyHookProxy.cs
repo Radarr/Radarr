@@ -287,6 +287,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             track.Title = resource.TrackName;
             track.ForeignTrackId = resource.Id;
             track.TrackNumber = resource.TrackNumber;
+            track.Duration = resource.DurationMs;
             return track;
         }
 

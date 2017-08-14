@@ -4,18 +4,18 @@ using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.History
 {
     public interface IHistoryRepository : IBasicRepository<History>
     {
-        List<QualityModel> GetBestQualityInHistory(int episodeId);
-        History MostRecentForEpisode(int episodeId);
+        List<QualityModel> GetBestQualityInHistory(int albumId);
+        History MostRecentForAlbum(int albumId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
-        List<History> FindDownloadHistory(int idSeriesId, QualityModel quality);
-        void DeleteForSeries(int seriesId);
+        List<History> FindDownloadHistory(int idArtistId, QualityModel quality);
+        void DeleteForArtist(int artistId);
     }
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
@@ -27,16 +27,16 @@ namespace NzbDrone.Core.History
         }
 
 
-        public List<QualityModel> GetBestQualityInHistory(int episodeId)
+        public List<QualityModel> GetBestQualityInHistory(int albumId)
         {
-            var history = Query.Where(c => c.EpisodeId == episodeId);
+            var history = Query.Where(c => c.AlbumId == albumId);
 
             return history.Select(h => h.Quality).ToList();
         }
 
-        public History MostRecentForEpisode(int episodeId)
+        public History MostRecentForAlbum(int albumId)
         {
-            return Query.Where(h => h.EpisodeId == episodeId)
+            return Query.Where(h => h.AlbumId == albumId)
                         .OrderByDescending(h => h.Date)
                         .FirstOrDefault();
         }
@@ -53,10 +53,10 @@ namespace NzbDrone.Core.History
             return Query.Where(h => h.DownloadId == downloadId);
         }
 
-        public List<History> FindDownloadHistory(int idSeriesId, QualityModel quality)
+        public List<History> FindDownloadHistory(int idArtistId, QualityModel quality)
         {
             return Query.Where(h =>
-                 h.SeriesId == idSeriesId &&
+                 h.ArtistId == idArtistId &&
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
@@ -64,15 +64,15 @@ namespace NzbDrone.Core.History
                  ).ToList();
         }
 
-        public void DeleteForSeries(int seriesId)
+        public void DeleteForArtist(int artistId)
         {
-            Delete(c => c.SeriesId == seriesId);
+            Delete(c => c.ArtistId == artistId);
         }
 
         protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)
         {
-            var baseQuery = query.Join<History, Series>(JoinType.Inner, h => h.Series, (h, s) => h.SeriesId == s.Id)
-                                 .Join<History, Episode>(JoinType.Inner, h => h.Episode, (h, e) => h.EpisodeId == e.Id);
+            var baseQuery = query.Join<History, Artist>(JoinType.Inner, h => h.Artist, (h, s) => h.ArtistId == s.Id)
+                                 .Join<History, Album>(JoinType.Inner, h => h.Album, (h, e) => h.AlbumId == e.Id);
 
             return base.GetPagedQuery(baseQuery, pagingSpec);
         }
