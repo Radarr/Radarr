@@ -82,10 +82,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             // We need to perform a direct lookup of the artist
             var httpRequest = _requestBuilder.Create()
                                             .SetSegment("route", "artists/" + foreignArtistId)
-                                             //.SetSegment("route", "search")
-                                             //.AddQueryParam("type", "artist,album")
-                                             //.AddQueryParam("q", spotifyId.ToString())
-                                             .Build();
+                                            .Build();
 
             
 
@@ -107,97 +104,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
-            // It is safe to assume an id will only return one Artist back
             var albums = httpResponse.Resource.Albums.Select(MapAlbum);
             var artist = MapArtist(httpResponse.Resource);
 
-            //artist.Name = httpResponse.Resource.Artists.Items[0].ArtistName;
-
-            //artist.ForeignArtistId = httpResponse.Resource.Artists.Items[0].Id;
-            //artist.Genres = httpResponse.Resource.Artists.Items[0].Genres;
-
-            //var albumRet = MapAlbums(artist);
-            //artist = albumRet.Item1;
-
             return new Tuple<Artist, List<Album>>(artist, albums.ToList());
         }
-
-
-
-        //private Tuple<Artist, List<Track>> MapAlbums(Artist artist)
-        //{
-
-        //    // Find all albums for the artist and all tracks for said album
-        //    ///v1/artists/{id}/albums
-        //    var httpRequest = _requestBuilder.Create()
-        //                                    .SetSegment("route", "artists/" + artist.ForeignArtistId + "/albums")
-        //                                    .Build();
-        //    httpRequest.AllowAutoRedirect = true;
-        //    httpRequest.SuppressHttpError = true;
-
-        //    var httpResponse = _httpClient.Get<AlbumResultResource>(httpRequest);
-
-        //    if (httpResponse.HasHttpError)
-        //    {
-        //        throw new HttpException(httpRequest, httpResponse);
-        //    }
-
-        //    List<Track> masterTracks = new List<Track>();
-        //    List<Album> albums = new List<Album>();
-        //    foreach(var albumResource in httpResponse.Resource.Items)
-        //    {
-        //        Album album = new Album();
-        //        album.AlbumId = albumResource.Id;
-        //        album.Title = albumResource.AlbumName;
-        //        album.ArtworkUrl = albumResource.Images.Count > 0 ? albumResource.Images[0].Url : "";
-        //        album.Tracks = MapTracksToAlbum(album);
-        //        masterTracks.InsertRange(masterTracks.Count, album.Tracks);
-        //        albums.Add(album);
-        //    }
-
-        //    // TODO: We now need to get all tracks for each album
-
-        //    artist.Albums = albums;
-        //    return new Tuple<Artist, List<Track>>(artist, masterTracks);
-        //}
-
-        //private List<Track> MapTracksToAlbum(Album album)
-        //{
-        //    var httpRequest = _requestBuilder.Create()
-        //                                    .SetSegment("route", "albums/" + album.AlbumId + "/tracks")
-        //                                    .Build();
-
-        //    httpRequest.AllowAutoRedirect = true;
-        //    httpRequest.SuppressHttpError = true;
-
-        //    var httpResponse = _httpClient.Get<TrackResultResource>(httpRequest);
-
-        //    if (httpResponse.HasHttpError)
-        //    {
-        //        throw new HttpException(httpRequest, httpResponse);
-        //    }
-
-        //    List<Track> tracks = new List<Track>();
-        //    foreach (var trackResource in httpResponse.Resource.Items)
-        //    {
-        //        Track track = new Track();
-        //        track.AlbumId = album.AlbumId;
-        //        //track.Album = album; // This will cause infinite loop when trying to serialize. 
-        //        // TODO: Implement more track mapping
-        //        //track.Artist = trackResource.Artists
-        //        //track.ArtistId = album.
-        //        track.SpotifyTrackId = trackResource.Id;
-        //        track.ArtistSpotifyId = trackResource.Artists.Count > 0 ? trackResource.Artists[0].Id : null;
-        //        track.Explict = trackResource.Explicit;
-        //        track.Compilation = trackResource.Artists.Count > 1;
-        //        track.TrackNumber = trackResource.TrackNumber;
-        //        track.Title = trackResource.TrackName;
-        //        tracks.Add(track);
-        //    }
-
-        //    return tracks;
-        //}
-
 
         public List<Artist> SearchForNewArtist(string title)
         {
@@ -236,23 +147,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 var httpResponse = _httpClient.Get<List<ArtistResource>>(httpRequest);
                 
                 return httpResponse.Resource.SelectList(MapArtist);
-                //List<Artist> artists = MapArtists(httpResponse.Resource);
-                //List<Artist> artists = new List<Artist>();
-                //foreach (var artistResource in httpResponse.Resource.Artists.Items)
-                //{
-                //    Artist artist = new Artist();
-                //    artist.Name = artistResource.ArtistName;
-                //    artist.ForeignArtistId = artistResource.Id; // TODO: Rename spotifyId to LidarrId
-                //    artist.Genres = artistResource.Genres;
-                //    artist.NameSlug = Parser.Parser.CleanArtistTitle(artist.Name);
-                //    artist.CleanName = Parser.Parser.CleanArtistTitle(artist.Name);
-                    //artist.Images = artistResource.Images;
-
-                //    artists.Add(artist);
-                //}
-
-
-                //return artists;
             }
             catch (HttpException)
             {
@@ -273,6 +167,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             album.ReleaseDate = resource.ReleaseDate;
             album.CleanTitle = Parser.Parser.CleanArtistTitle(album.Title);
             album.AlbumType = resource.Type;
+            album.Images = resource.Images.Select(MapImage).ToList();
 
             var tracks = resource.Tracks.Select(MapTrack);
             album.Tracks = tracks.ToList();
@@ -302,27 +197,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.Overview = resource.Overview;
             artist.NameSlug = Parser.Parser.CleanArtistTitle(artist.Name);
             artist.CleanName = Parser.Parser.CleanArtistTitle(artist.Name);
-            //artist.Images = resource.Artists.Items[0].Images;
-
-
-
-            // Maybe? Get all the albums for said artist
-
+            artist.SortName = SeriesTitleNormalizer.Normalize(artist.Name,0);
+            artist.Images = resource.Images.Select(MapImage).ToList();
 
             return artist;
         }
 
-        //private Album MapAlbum(AlbumResource albumQuery)
-        //{
-        //    Album album = new Album();
-
-        //    album.AlbumId = albumQuery.CollectionId;
-        //    album.Title = albumQuery.CollectionName;
-        //    album.Year = albumQuery.ReleaseDate.Year;
-        //    album.ArtworkUrl = albumQuery.ArtworkUrl100;
-        //    album.Explicitness = albumQuery.CollectionExplicitness;
-        //    return album;
-        //}
 
         private static Series MapSeries(ShowResource show)
         {
@@ -477,6 +357,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     return MediaCoverTypes.Banner;
                 case "fanart":
                     return MediaCoverTypes.Fanart;
+                case "cover":
+                    return MediaCoverTypes.Cover;
+                case "disc":
+                    return MediaCoverTypes.Disc;
                 default:
                     return MediaCoverTypes.Unknown;
             }
