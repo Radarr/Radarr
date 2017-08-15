@@ -23,7 +23,7 @@ var view = Marionette.ItemView.extend({
     initialize : function() {
         this.model.set('profiles', Profiles);
         var pathState = this.model.get("pathState");
-        if (pathState == "static") {
+        if (pathState === "static") {
           this.model.set("pathState", true);
         } else {
           this.model.set("pathState", false);

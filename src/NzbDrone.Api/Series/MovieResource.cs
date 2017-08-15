@@ -21,7 +21,9 @@ namespace NzbDrone.Api.Movie
          
         //View Only
         public string Title { get; set; }
-        public List<AlternateTitleResource> AlternateTitles { get; set; }
+        public List<AlternativeTitleResource> AlternativeTitles { get; set; }
+        public int? SecondaryYear { get; set; }
+        public int SecondaryYearSourceId { get; set; }
         public string SortTitle { get; set; }
         public long? SizeOnDisk { get; set; }
         public MovieStatusType Status { get; set; }
@@ -62,7 +64,7 @@ namespace NzbDrone.Api.Movie
         public DateTime Added { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
-        public List<string> AlternativeTitles { get; set; }
+        //public List<string> AlternativeTitles { get; set; }
         public MovieFileResource MovieFile { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
@@ -107,6 +109,8 @@ namespace NzbDrone.Api.Movie
                 downloaded = true;
                 movieFile = model.MovieFile.Value.ToResource();
             }
+            
+            //model.AlternativeTitles.LazyLoad();
 
             return new MovieResource
             {
@@ -131,6 +135,8 @@ namespace NzbDrone.Api.Movie
                 Images = model.Images,
                 
                 Year = model.Year,
+                SecondaryYear = model.SecondaryYear,
+                SecondaryYearSourceId = model.SecondaryYearSourceId,
                 
                 Path = model.Path,
                 ProfileId = model.ProfileId,
@@ -156,7 +162,7 @@ namespace NzbDrone.Api.Movie
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
-                AlternativeTitles = model.AlternativeTitles,
+                AlternativeTitles = model.AlternativeTitles.ToResource(),
                 Ratings = model.Ratings,
                 MovieFile = movieFile,
                 YouTubeTrailerId = model.YouTubeTrailerId,
@@ -189,6 +195,8 @@ namespace NzbDrone.Api.Movie
                 Images = resource.Images,
 
                 Year = resource.Year,
+                SecondaryYear = resource.SecondaryYear,
+                SecondaryYearSourceId = resource.SecondaryYearSourceId,
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,
@@ -209,7 +217,7 @@ namespace NzbDrone.Api.Movie
                 Tags = resource.Tags,
                 Added = resource.Added,
                 AddOptions = resource.AddOptions,
-                AlternativeTitles = resource.AlternativeTitles,
+                //AlternativeTitles = resource.AlternativeTitles,
                 Ratings = resource.Ratings,
                 YouTubeTrailerId = resource.YouTubeTrailerId,
                 Studio = resource.Studio

@@ -6,7 +6,9 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.DataAugmentation.Scene;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
@@ -43,7 +45,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 								   .With(m => m.Title = "Fack Ju Göthe 2")
 								   .With(m => m.CleanTitle = "fackjugoethe2")
 			                       .With(m => m.Year = 2015)
-			                       .With(m => m.AlternativeTitles = new List<string> { "Fack Ju Göthe 2: Same same" })
+			                       .With(m => m.AlternativeTitles = new LazyList<AlternativeTitle>( new List<AlternativeTitle> {new AlternativeTitle("Fack Ju Göthe 2: Same same")}))
 								   .Build();
 
             _episodes = Builder<Episode>.CreateListOfSize(1)
@@ -80,7 +82,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
 			_alternativeTitleInfo = new ParsedMovieInfo
 			{
-				MovieTitle = _movie.AlternativeTitles.First(),
+				MovieTitle = _movie.AlternativeTitles.First().Title,
 				Year = _movie.Year,
 			};
 

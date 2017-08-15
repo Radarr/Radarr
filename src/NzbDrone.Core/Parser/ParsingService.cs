@@ -9,6 +9,7 @@ using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
 using NzbDrone.Core.Tv;
@@ -381,7 +382,7 @@ namespace NzbDrone.Core.Parser
         {
             var movie = _movieService.FindByImdbId(imdbId);
             //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-            if (movie != null && parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year != movie.Year)
+            if (movie != null && parsedMovieInfo.Year > 1800 && (parsedMovieInfo.Year != movie.Year && movie.SecondaryYear != parsedMovieInfo.Year))
             {
                 result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.WrongYear};
                 return false;
@@ -458,9 +459,9 @@ namespace NzbDrone.Core.Parser
 
             possibleTitles.Add(searchCriteria.Movie.CleanTitle);
 
-            foreach (string altTitle in searchCriteria.Movie.AlternativeTitles)
+            foreach (AlternativeTitle altTitle in searchCriteria.Movie.AlternativeTitles)
             {
-                possibleTitles.Add(altTitle.CleanSeriesTitle());
+                possibleTitles.Add(altTitle.CleanTitle);
             }
 
             string cleanTitle = parsedMovieInfo.MovieTitle.CleanSeriesTitle();
@@ -494,7 +495,7 @@ namespace NzbDrone.Core.Parser
 
             if (possibleMovie != null)
             {
-                if (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year)
+                if (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
                 {
                     result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.Success };
                     return true;
@@ -509,7 +510,7 @@ namespace NzbDrone.Core.Parser
                     cleanTitle.Contains(searchCriteria.Movie.CleanTitle))
                 {
                     possibleMovie = searchCriteria.Movie;
-                    if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year)
+                    if (parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
                     {
                         result = new MappingResult {Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping};
                         return true;

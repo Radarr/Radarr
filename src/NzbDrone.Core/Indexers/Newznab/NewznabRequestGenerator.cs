@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             else
             {
                 var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title)));
-                var altTitles = searchCriteria.Movie.AlternativeTitles.DistinctBy(t => Parser.Parser.CleanSeriesTitle(t)).Take(5).ToList();
+                var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
 
                 var realMaxPages = (int)MaxPages / (altTitles.Count() + 1);
 

@@ -20,7 +20,7 @@ namespace NzbDrone.Api.Series
 
         //View Only
         public string Title { get; set; }
-        public List<AlternateTitleResource> AlternateTitles { get; set; }
+        //public List<AlternativeTitleResource> AlternateTitles { get; set; }
         public string SortTitle { get; set; }
 
         public int SeasonCount

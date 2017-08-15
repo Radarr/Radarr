@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using NLog;
+ using System.ServiceModel;
+ using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -19,6 +20,7 @@ using NzbDrone.Common.Serializer;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MetadataSource.RadarrAPI;
+ using NzbDrone.Core.Movies.AlternativeTitles;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -33,12 +35,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IMovieService _movieService;
         private readonly IPreDBService _predbService;
         private readonly IImportExclusionsService _exclusionService;
+        private readonly IAlternativeTitleService _altTitleService;
         private readonly IRadarrAPIClient _radarrAPI;
 
         private readonly IHttpRequestBuilderFactory _apiBuilder;
 
         public SkyHookProxy(IHttpClient httpClient, ISonarrCloudRequestBuilder requestBuilder, ITmdbConfigService configService, IMovieService movieService,
-                            IPreDBService predbService, IImportExclusionsService exclusionService, IRadarrAPIClient radarrAPI, Logger logger)
+                            IPreDBService predbService, IImportExclusionsService exclusionService, IAlternativeTitleService altTitleService, IRadarrAPIClient radarrAPI, Logger logger)
         {
             _httpClient = httpClient;
              _requestBuilder = requestBuilder.SkyHookTvdb;
@@ -47,6 +50,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _movieService = movieService;
             _predbService = predbService;
             _exclusionService = exclusionService;
+            _altTitleService = altTitleService;
             _radarrAPI = radarrAPI;
 
             _logger = logger;
@@ -133,21 +137,28 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
 			var movie = new Movie();
+            var altTitles = new List<AlternativeTitle>();
 
-			if (langCode != "us")
+			if (langCode != "en")
 			{
-				movie.AlternativeTitles.Add(resource.original_title);
+			    var iso = IsoLanguages.Find(resource.original_language);
+			    if (iso != null)
+			    {
+			        altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
+			    }
+			    
+				//movie.AlternativeTitles.Add(resource.original_title);
 			}
 
             foreach (var alternativeTitle in resource.alternative_titles.titles)
             {
                 if (alternativeTitle.iso_3166_1.ToLower() == langCode)
                 {
-                    movie.AlternativeTitles.Add(alternativeTitle.title);
+                    altTitles.Add(new AlternativeTitle(alternativeTitle.title, SourceType.TMDB, TmdbId, IsoLanguages.Find(alternativeTitle.iso_3166_1.ToLower()).Language));
                 }
                 else if (alternativeTitle.iso_3166_1.ToLower() == "us")
                 {
-                    movie.AlternativeTitles.Add(alternativeTitle.title);
+                    altTitles.Add(new AlternativeTitle(alternativeTitle.title, SourceType.TMDB, TmdbId, Language.English));
                 }
             }
 
@@ -320,6 +331,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     movie.Studio = resource.production_companies[0].name;
                 }
             }
+
+            movie.AlternativeTitles.AddRange(altTitles);
 
             return movie;
         }
