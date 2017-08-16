@@ -83,9 +83,9 @@ module.exports = {
         var mins = s;
 
         if (format === 'ms') {
-            return pad(mins) + ':' + pad(secs) + '.' + pad(ms,3);
+            return pad(mins) + ':' + pad(secs);
         } else {
-            return pad(mins);
+            return Math.round(mins,0);
         }
     },
 
