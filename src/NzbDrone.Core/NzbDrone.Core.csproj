@@ -295,6 +295,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
+    <Compile Include="Datastore\Migration\113_music_blacklist.cs" />
     <Compile Include="Datastore\Migration\112_music_history.cs" />
     <Compile Include="Datastore\Migration\111_setup_music.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />

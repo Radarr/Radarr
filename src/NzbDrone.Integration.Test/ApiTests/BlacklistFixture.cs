@@ -13,12 +13,12 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _artist = EnsureArtist("266189", "The Blacklist");
-
+            _artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            
             Blacklist.Post(new Api.Blacklist.BlacklistResource
             {
-                SeriesId = _artist.Id,
-                SourceTitle = "Blacklist.S01E01.Brought.To.You.By-BoomBoxHD"
+                ArtistId = _artist.Id,
+                SourceTitle = "Blacklist - Album 1 [2015 FLAC]"
             });
         }
 

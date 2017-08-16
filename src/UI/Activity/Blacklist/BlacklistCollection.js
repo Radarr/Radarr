@@ -26,7 +26,7 @@ var Collection = PageableCollection.extend({
     },
 
     sortMappings : {
-        'series' : { sortKey : 'series.sortTitle' }
+        'artist' : { sortKey : 'artist.sortName' }
     },
 
     parseState : function(resp) {

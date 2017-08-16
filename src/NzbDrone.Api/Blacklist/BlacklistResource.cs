@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Api.Series;
+using NzbDrone.Api.Music;
 using NzbDrone.Core.Indexers;
 
 namespace NzbDrone.Api.Blacklist
 {
     public class BlacklistResource : RestResource
     {
-        public int SeriesId { get; set; }
-        public List<int> EpisodeIds { get; set; }
+        public int ArtistId { get; set; }
+        public List<int> AlbumIds { get; set; }
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }
         public DateTime Date { get; set; }
@@ -18,7 +18,7 @@ namespace NzbDrone.Api.Blacklist
         public string Indexer { get; set; }
         public string Message { get; set; }
 
-        public SeriesResource Series { get; set; }
+        public ArtistResource Artist { get; set; }
     }
 
     public static class BlacklistResourceMapper
@@ -31,8 +31,8 @@ namespace NzbDrone.Api.Blacklist
             {
                 Id = model.Id,
 
-                SeriesId = model.SeriesId,
-                EpisodeIds = model.EpisodeIds,
+                ArtistId = model.ArtistId,
+                AlbumIds = model.AlbumIds,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
                 Date = model.Date,
@@ -40,7 +40,7 @@ namespace NzbDrone.Api.Blacklist
                 Indexer = model.Indexer,
                 Message = model.Message,
 
-                Series = model.Series.ToResource()
+                Artist = model.Artist.ToResource()
             };
         }
     }
