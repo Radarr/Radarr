@@ -848,7 +848,7 @@ namespace NzbDrone.Core.Parser
 
         private static ParsedMovieInfo ParseMovieMatchCollection(MatchCollection matchCollection)
         {
-            if (!matchCollection[0].Groups["title"].Success)
+            if (!matchCollection[0].Groups["title"].Success || matchCollection[0].Groups["title"].Value == "(")
             {
                 return null;
             }
