@@ -12,11 +12,7 @@ namespace NzbDrone.Core.Download
             Data = new Dictionary<string, string>();
         }
 
-        [System.Obsolete("Used for sonarr, not lidarr")]
-        public int SeriesId { get; set; }
         public int ArtistId { get; set; }
-        [System.Obsolete("Used for sonarr, not lidarr")]
-        public List<int> EpisodeIds { get; set; }
         public List<int> AlbumIds { get; set; }
         public QualityModel Quality { get; set; }
         public string SourceTitle { get; set; }

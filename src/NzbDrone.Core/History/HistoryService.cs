@@ -81,6 +81,7 @@ namespace NzbDrone.Core.History
                 .FirstOrDefault();
         }
 
+        [Obsolete("Used for Sonarr, not Lidarr")]
         private string FindDownloadId(EpisodeImportedEvent trackedDownload)
         {
             _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedEpisode.Path);
@@ -170,6 +171,7 @@ namespace NzbDrone.Core.History
             }
         }
 
+        [Obsolete("Used for Sonarr, not Lidarr")]
         public void Handle(EpisodeImportedEvent message)
         {
             if (!message.NewDownload)
@@ -217,7 +219,7 @@ namespace NzbDrone.Core.History
                     Date = DateTime.UtcNow,
                     Quality = message.Quality,
                     SourceTitle = message.SourceTitle,
-                    ArtistId = message.SeriesId,
+                    ArtistId = message.ArtistId,
                     AlbumId = albumId,
                     DownloadId = message.DownloadId
                 };
@@ -229,6 +231,7 @@ namespace NzbDrone.Core.History
             }
         }
 
+        [Obsolete("Used for Sonarr, not Lidarr")]
         public void Handle(EpisodeFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
