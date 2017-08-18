@@ -11,15 +11,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>Sonarr</string>
+	<string>Lidarr</string>
 	<key>CFBundleIconFile</key>
-	<string>sonarr.icns</string>
+	<string>lidarr.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.osx.sonarr.tv</string>
+	<string>com.osx.lidarr.audio</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Sonarr</string>
+	<string>Lidarr</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
