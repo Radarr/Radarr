@@ -11,7 +11,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 {
     public class NewznabRequestGeneratorFixture : CoreTest<NewznabRequestGenerator>
     {
-        private SingleEpisodeSearchCriteria _singleEpisodeSearchCriteria;
         private AlbumSearchCriteria _singleAlbumSearchCriteria;
         private NewznabCapabilities _capabilities;
 
@@ -25,18 +24,10 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
                  ApiKey = "abcd",
             };
 
-            _singleEpisodeSearchCriteria = new SingleEpisodeSearchCriteria
-            {
-                Series = new Tv.Series { TvRageId = 10, TvdbId = 20, TvMazeId = 30 },
-                SceneTitles = new List<string> { "Monkey Island" },
-                SeasonNumber = 1,
-                EpisodeNumber = 2
-            };
-
             _singleAlbumSearchCriteria = new AlbumSearchCriteria
             {
                 Artist = new Music.Artist { Name = "Alien Ant Farm" },
-                Albums = new List<Music.Album> { new Music.Album { Title = "TruANT" } }
+                AlbumTitle = "TruANT"
 
             };
 
