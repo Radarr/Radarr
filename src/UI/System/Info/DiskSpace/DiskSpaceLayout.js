@@ -22,13 +22,13 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name     : 'freeSpace',
-            label    : 'Free Space',
+            label    : 'Free space',
             cell     : FileSizeCell,
             sortable : false
         },
         {
             name     : 'totalSpace',
-            label    : 'Total Space',
+            label    : 'Total space',
             cell     : FileSizeCell,
             sortable : false
         }

@@ -1,12 +1,12 @@
 <div class="modal-content">
     <div class="modal-header">
-    <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
-    {{#if id}}
-    <h3>Edit</h3>
-    {{else}}
-    <h3>Add</h3>
-    {{/if}}
-</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">&times;</button>
+        {{#if id}}
+            <h3>Edit</h3>
+        {{else}}
+            <h3>Add</h3>
+        {{/if}}
+    </div>
     <div class="modal-body">
         <div class="form-horizontal">
             <div id="x-fields"></div>
@@ -20,16 +20,18 @@
                 </div>
 
                 <div class="col-sm-1 help-inline">
-                    <i class="icon-sonarr-form-info" title="Qualities higher in the list are more preferred. Only checked qualities will be wanted."/>
+                    <i class="icon-sonarr-form-info" title="Qualities higher in the list are more preferred. Only checked qualities will be wanted."></i>
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         {{#if id}}
-        <button class="btn btn-danger pull-left x-delete">Delete</button>
+            <button class="btn btn-danger pull-left x-delete">Delete</button>
         {{/if}}
-        <span class="indicator x-indicator"><i class="icon-sonarr-spinner fa-spin"></i></span>
+        <span class="indicator x-indicator">
+            <i class="icon-sonarr-spinner fa-spin"></i>
+        </span>
         <button class="btn" data-dismiss="modal">Cancel</button>
         <button class="btn btn-primary x-save">Save</button>
     </div>

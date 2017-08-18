@@ -185,7 +185,7 @@ module.exports = Marionette.Layout.extend({
         this.ui.importSelected.addClass('disabled');
 
         Messenger.show({
-            message: "Importing {0} movies. Don't close this browser window until it has finished".format(selected.length),
+            message: "Importing {0} movies. Don't close this browser window until it has finished.".format(selected.length),
             hideOnNavigate: false,
             hideAfter: 30,
             type: "error"

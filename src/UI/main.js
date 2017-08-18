@@ -10,7 +10,7 @@ var SeriesController = require('./Series/SeriesController');
 var Router = require('./Router');
 var ModalController = require('./Shared/Modal/ModalController');
 var ControlPanelController = require('./Shared/ControlPanel/ControlPanelController');
-var serverStatusModel = require('./System/StatusModel');
+var ServerStatusModel = require('./System/StatusModel');
 var Tooltip = require('./Shared/Tooltip');
 var UiSettingsController = require('./Shared/UiSettingsController');
 
@@ -40,7 +40,7 @@ app.addInitializer(Tooltip.appInitializer, { app : app });
 app.addInitializer(function() {
     Backbone.history.start({
         pushState : true,
-        root      : serverStatusModel.get('urlBase')
+        root      : ServerStatusModel.get('urlBase')
     });
     RouteBinder.bind();
     AppLayout.navbarRegion.show(new NavbarLayout());
@@ -50,9 +50,9 @@ app.addInitializer(function() {
 app.addInitializer(UiSettingsController.appInitializer);
 
 app.addInitializer(function() {
-    var footerText = serverStatusModel.get('version');
-    if (serverStatusModel.get('branch') !== 'master') {
-        footerText += '</br>' + serverStatusModel.get('branch');
+    var footerText = ServerStatusModel.get('version');
+    if (ServerStatusModel.get('branch') !== 'master') {
+        footerText += '<br>' + ServerStatusModel.get('branch');
     }
     $('#footer-region .version').html(footerText);
 });

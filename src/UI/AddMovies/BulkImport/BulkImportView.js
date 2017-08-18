@@ -85,7 +85,7 @@ module.exports = Marionette.Layout.extend({
 				},
 				{
 					name	: 'tmdbId',
-					label	: 'Tmdb Id',
+					label	: 'TMDb Id',
 					cell	: TmdbIdCell,
 					cellValue : 'this',
 					sortable: false

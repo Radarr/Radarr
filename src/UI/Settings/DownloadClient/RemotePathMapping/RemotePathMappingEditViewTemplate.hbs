@@ -1,50 +1,48 @@
 <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">&times;</button>
         {{#if id}}
-            <h3>Edit Mapping</h3>
+            <h3>Edit mapping</h3>
         {{else}}
-            <h3>Add Mapping</h3>
+            <h3>Add aapping</h3>
         {{/if}}
     </div>
     <div class="modal-body remotepath-mapping-modal">
         <div class="form-horizontal">
-            <div>
-                <p>Use this feature if you have a remotely running Download Client. Radarr will use the information provided to translate the paths provided by the Download Client API to something Radarr can access and import.</p>
-            </div>
+            <p>Use this feature if you have a remotely running download client. Radarr will use the information provided to translate the paths provided by the download client API to something Radarr can access and import.</p>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Host</label>
 
                 <div class="col-sm-1 col-sm-push-3 help-inline">
-                    <i class="icon-sonarr-form-info" title="Host you specified for the remote Download Client." />
+                    <i class="icon-sonarr-form-info" title="Host you specified for the remote download client."></i>
                 </div>
 
                 <div class="col-sm-3 col-sm-pull-1">
-                    <input type="text" name="host" class="form-control"/>
+                    <input type="text" name="host" class="form-control">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Remote Path</label>
+                <label class="col-sm-3 control-label">Remote path</label>
 
                 <div class="col-sm-1 col-sm-push-5 help-inline">
-                    <i class="icon-sonarr-form-info" title="Root path to the directory that the Download Client accesses." />
+                    <i class="icon-sonarr-form-info" title="Root path to the directory that the download client can access."></i>
                 </div>
 
                 <div class="col-sm-5 col-sm-pull-1">
-                    <input type="text" name="remotePath" class="form-control"/>
+                    <input type="text" name="remotePath" class="form-control">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Local Path</label>
+                <label class="col-sm-3 control-label">Local path</label>
 
                 <div class="col-sm-1 col-sm-push-5 help-inline">
-                    <i class="icon-sonarr-form-info" title="Path that Radarr should use to access the same directory remotely." />
+                    <i class="icon-sonarr-form-info" title="Path that Radarr should use to access the same directory remotely."></i>
                 </div>
 
                 <div class="col-sm-5 col-sm-pull-1">
-                    <input type="text" name="localPath" class="form-control x-path"/>
+                    <input type="text" name="localPath" class="form-control x-path">
                 </div>
             </div>
         </div>

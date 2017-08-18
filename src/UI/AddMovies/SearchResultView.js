@@ -23,8 +23,8 @@ var view = Marionette.ItemView.extend({
         rootFolder      : '.x-root-folder',
         seasonFolder    : '.x-season-folder',
         monitor         : '.x-monitor',
-	      minimumAvailability : '.x-minimumavailability',
-	      minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
+	    minimumAvailability : '.x-minimumavailability',
+	    minimumAvailabilityTooltip : '.x-minimumavailability-tooltip',
         monitorTooltip  : '.x-monitor-tooltip',
         addButton       : '.x-add',
         addSearchButton : '.x-add-search',
@@ -91,7 +91,7 @@ var view = Marionette.ItemView.extend({
             content   : content,
             html      : true,
             trigger   : 'hover',
-            title     : 'Movie Monitoring Options',
+            title     : 'Movie monitoring options',
             placement : 'right',
             container : this.$el
         });
@@ -103,7 +103,7 @@ var view = Marionette.ItemView.extend({
 		content : content1,
 		html :true,
 		trigger : 'hover',
-		title : 'When to Consider a Movie Available',
+		title : 'When to consider a movie available',
 		placement : 'right',
 		container : this.$el
 	});

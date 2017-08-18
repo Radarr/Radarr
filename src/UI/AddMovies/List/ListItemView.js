@@ -11,9 +11,7 @@ require('jquery.dotdotdot');
 
 var view = Marionette.ItemView.extend({
 
-		template : 'AddMovies/SearchResultViewTemplate',
-
-
+		template : 'AddMovies/SearchResultViewTemplate'
 });
 
 

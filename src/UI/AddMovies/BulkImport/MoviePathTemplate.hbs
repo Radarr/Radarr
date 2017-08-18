@@ -1,2 +1,9 @@
-{{path}}<br>
-<span title="{{#if movieFile.relativePath}}&nbsp;{{movieFile.relativePath}}{{/if}}" class="hint" style="font-size: 12px;">{{#if movieFile.relativePath}}&nbsp;{{movieFile.relativePath}}{{else}}&nbsp;Movie File Not Found{{/if}}</span>
+{{path}}
+<br>
+<span title="{{#if movieFile.relativePath}}&nbsp;{{movieFile.relativePath}}{{/if}}" class="hint small">
+    {{#if movieFile.relativePath}}
+        &nbsp;{{movieFile.relativePath}}
+    {{else}}
+        &nbsp;Movie file not found
+    {{/if}}
+</span>

@@ -56,7 +56,7 @@ module.exports = {
                     id        : messengerId,
                     type      : 'error',
                     hideAfter : 0,
-                    message   : 'Connection to backend lost',
+                    message   : 'Connection to backend lost.',
                     actions   : {
                         cancel : {
                             label  : 'Reload',

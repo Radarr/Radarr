@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (backOffIndexers.Count == enabledIndexers.Count)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, "All indexers are unavailable due to failures", "#indexers-are-unavailable-due-to-failures");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, "All indexers are unavailable due to failures.", "#indexers-are-unavailable-due-to-failures");
             }
 
             return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format("Indexers unavailable due to failures: {0}", string.Join(", ", backOffIndexers.Select(v => v.Indexer.Definition.Name))), "#indexers-are-unavailable-due-to-failures");

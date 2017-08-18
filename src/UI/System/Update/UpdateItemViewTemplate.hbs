@@ -2,7 +2,7 @@
     <fieldset>
         <legend>{{version}}
             <span class="date">
-                - {{ShortDate releaseDate}}
+                - {{ ShortDate releaseDate}}
             </span>
             <span class="status">
                 {{#unless_eq branch compare="master"}}
@@ -13,9 +13,11 @@
                 {{else}}
                     {{#if latest}}
                         {{#if installable}}
-                            <span class="label label-info install-update x-install-update">Install Latest</span>
+                            <span class="label label-info install-update x-install-update" title="Install the latest update.">Install latest</span>
                         {{else}}
-                            <span class="label label-info label-disabled" title="Cannot install an older version">Install Latest</span>
+                            <span class="label label-info label-disabled" title="The version installed is newer than the branch you are currently on.">
+                                Install latest
+                            </span>
                         {{/if}}
                     {{/if}}
                 {{/if}}
@@ -37,7 +39,7 @@
         {{/with}}
 
         {{#unless changes}}
-            Maintenance release
+            <span>Maintenance release</span>
         {{/unless}}
     </fieldset>
 </div>

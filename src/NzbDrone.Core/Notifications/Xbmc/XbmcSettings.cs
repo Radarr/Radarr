@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using FluentValidation;
 using Newtonsoft.Json;
 using NzbDrone.Core.Annotations;
@@ -39,19 +39,19 @@ namespace NzbDrone.Core.Notifications.Xbmc
         public string Password { get; set; }
 
         [DefaultValue(5)]
-        [FieldDefinition(4, Label = "Display Time", HelpText = "How long the notification will be displayed for (In seconds)")]
+        [FieldDefinition(4, Label = "Display Time", HelpText = "How long the notification will be displayed for (in seconds).")]
         public int DisplayTime { get; set; }
 
         [FieldDefinition(5, Label = "GUI Notification", Type = FieldType.Checkbox)]
         public bool Notify { get; set; }
 
-        [FieldDefinition(6, Label = "Update Library", HelpText = "Update Library on Download & Rename?", Type = FieldType.Checkbox)]
+        [FieldDefinition(6, Label = "Update Library", HelpText = "Update library on download & rename?", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
 
-        [FieldDefinition(7, Label = "Clean Library", HelpText = "Clean Library after update?", Type = FieldType.Checkbox)]
+        [FieldDefinition(7, Label = "Clean Library", HelpText = "Clean library after update?", Type = FieldType.Checkbox)]
         public bool CleanLibrary { get; set; }
 
-        [FieldDefinition(8, Label = "Always Update", HelpText = "Update Library even when a video is playing?", Type = FieldType.Checkbox)]
+        [FieldDefinition(8, Label = "Always Update", HelpText = "Update library even when a video is playing?", Type = FieldType.Checkbox)]
         public bool AlwaysUpdate { get; set; }
 
         [JsonIgnore]

@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="close">&times;</button>
         <h3>{{title}}</h3>
     </div>
     <div class="modal-body edit-series-modal">
@@ -10,88 +10,72 @@
             </div>
             <div class="col-sm-9">
                 <div class="form-horizontal">
-
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Monitored</label>
-
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <label class="checkbox toggle well">
-                                    <input type="checkbox" name="monitored"/>
+                                    <input type="checkbox" name="monitored">
                                     <p>
                                         <span>Yes</span>
                                         <span>No</span>
                                     </p>
-
-                                    <div class="btn btn-primary slide-button"/>
+                                    <div class="btn btn-primary slide-button"></div>
                                 </label>
-
                                 <span class="help-inline-checkbox">
-                                    <i class="icon-sonarr-form-info" title="Should Radarr download the movie?"/>
+                                    <i class="icon-sonarr-form-info" title="Should Radarr download the movie?"></i>
                                 </span>
                             </div>
                         </div>
                     </div>
-		    <div class="form-group">
-		        <label class="col-sm-4 control-label">Minimum Availability</label>
-			<div class="col-sm-1 col-sm-push-4 help-inline">
-			    <i class="icon-sonarr-form-info" title="When the movie is considered Available"/>
-			</div>
-			<div class="col-sm-4 col-sm-pull-1">
-			        <select class="form-control x-minimumavailability" name="minimumAvailability">
-				    <option value="announced">Announced</option>
-				    <option value="inCinemas">In Cinemas</option>
-				    <option value="released">Physical/Web</option>
-				    <option value="preDB">PreDB</option>
-				</select>
-			</div>
-		    </div>
-
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Static Path</label>
-
+                        <label class="col-sm-4 control-label">Minimum availability</label>
+                        <div class="col-sm-1 col-sm-push-4 help-inline">
+                            <i class="icon-sonarr-form-info" title="When the movie is considered available"></i>
+                        </div>
+                        <div class="col-sm-4 col-sm-pull-1">
+                            <select class="form-control x-minimumavailability" name="minimumAvailability">
+                                <option value="announced">Announced</option>
+                                <option value="inCinemas">In cinemas</option>
+                                <option value="released">Physical/web</option>
+                                <option value="preDB">PreDB</option>
+				            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Static path</label>
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <label class="checkbox toggle well">
-                                    <input type="checkbox" name="pathState"/>
+                                    <input type="checkbox" name="pathState">
                                     <p>
                                         <span>Yes</span>
                                         <span>No</span>
                                     </p>
-
-                                    <div class="btn btn-primary slide-button">
-                                    </div>
+                                    <div class="btn btn-primary slide-button"></div>
                                 </label>
-
                                 <span class="help-inline-checkbox">
-                                    <i class="icon-sonarr-form-info" title="Should movie path stay static or should it change on each disk scan according to your naming config? Note: Auto Rename Folders under Settings -&gt; Media Management must be enabled too."/>
+                                    <i class="icon-sonarr-form-info" title="Should the movie path stay static or should it change on each disk scan according to your naming config? Note: Auto Rename Folders under Settings -&gt; Media Management must be enabled too."></i>
                                 </span>
                             </div>
                         </div>
                     </div>
-
-
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Profile</label>
-
                         <div class="col-sm-4">
                             <select class="form-control x-profile" id="inputProfile" name="profileId">
                                 {{#each profiles.models}}
-                                <option value="{{id}}">{{attributes.name}}</option>
+                                    <option value="{{id}}">{{attributes.name}}</option>
                                 {{/each}}
                             </select>
-
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Path</label>
-
                         <div class="col-sm-6">
                             <input type="text" class="form-control x-path" placeholder="Path" name="path">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-sm-4 control-label">Tags</label>
 
@@ -105,8 +89,9 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger pull-left x-remove">Delete</button>
-
-        <span class="indicator x-indicator"><i class="icon-sonarr-spinner fa-spin"></i></span>
+        <span class="indicator x-indicator">
+            <i class="icon-sonarr-spinner fa-spin" aria-hidden="true"></i>
+        </span>
         <button class="btn" data-dismiss="modal">Cancel</button>
         <button class="btn btn-primary x-save">Save</button>
     </div>
