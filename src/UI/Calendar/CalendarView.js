@@ -69,11 +69,11 @@ module.exports = Marionette.ItemView.extend({
 						}
 
 						else if (status === 'failed') {
-								this._addStatusIcon(element, 'icon-sonarr-download-failed', 'Download failed: check download client for more details');
+								this._addStatusIcon(element, 'icon-sonarr-download-failed', 'Download failed: check download client for more details.');
 						}
 
 						else if (status === 'warning') {
-								this._addStatusIcon(element, 'icon-sonarr-download-warning', 'Download warning: check download client for more details');
+								this._addStatusIcon(element, 'icon-sonarr-download-warning', 'Download warning: check download client for more details.');
 						}
 
 						else {

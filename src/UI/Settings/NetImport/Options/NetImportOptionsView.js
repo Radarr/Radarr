@@ -89,7 +89,7 @@ var view = Marionette.ItemView.extend({
 					this.ui.tokenExpiry.val(0).trigger('change');
 	        this.ui.resetTokensButton.show();
 					this.ui.revokeTokensButton.hide();
-					window.alert("Logged out of Trakt.tv - Click Save to make the change take effect");
+					window.alert("Logged out of Trakt.tv - click save to make the change take effect.");
 		}
 	},
 

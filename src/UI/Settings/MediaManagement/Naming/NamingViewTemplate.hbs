@@ -1,69 +1,58 @@
 <fieldset>
-    <legend>Movie Naming</legend>
-
+    <legend>Movie naming</legend>
     <div class="form-group">
-        <label class="col-sm-3 control-label">Rename Movies</label>
-
+        <label class="col-sm-3 control-label">Rename movies</label>
         <div class="col-sm-8">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="renameEpisodes" class="x-rename-episodes"/>
-
+                    <input type="checkbox" name="renameEpisodes" class="x-rename-episodes">
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
-
-                    <div class="btn btn-primary slide-button"/>
+                    <div class="btn btn-primary slide-button"></div>
                 </label>
-
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-warning" title="Radarr will use the existing file name if set to no"/>
+                    <i class="icon-sonarr-form-warning" title="Radarr will use the existing file name if set to no."></i>
                 </span>
             </div>
         </div>
     </div>
-
     <div class="form-group advanced-setting">
-        <label class="col-sm-3 control-label">Replace Illegal Characters</label>
-
+        <label class="col-sm-3 control-label">Replace illegal characters</label>
         <div class="col-sm-8">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="replaceIllegalCharacters" />
-
+                    <input type="checkbox" name="replaceIllegalCharacters">
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
-
-                    <div class="btn btn-primary slide-button"/>
+                    <div class="btn btn-primary slide-button"></div>
                 </label>
-
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-info" title="Replace or Remove illegal characters"/>
+                    <i class="icon-sonarr-form-info" title="Replace or remove illegal characters."></i>
                 </span>
             </div>
         </div>
     </div>
-
     <div class="x-naming-options">
         <div class="basic-setting x-basic-naming"></div>
 
         <div class="form-group advanced-setting">
-            <label class="col-sm-3 control-label">Standard Movie Format</label>
-
+            <label class="col-sm-3 control-label">Standard movie format</label>
             <div class="col-sm-1 col-sm-push-8 help-inline">
-                <i class="icon-sonarr-form-info" title="" data-original-title="All caps or all lower-case can also be used"></i>
-                <a href="https://github.com/Radarr/Radarr/wiki/Sorting-and-Renaming" class="help-link" title="More information"><i class="icon-sonarr-form-info-link"/></a>
+                <i class="icon-sonarr-form-info" title="All caps or all lower-case can also be used."></i>
+                <a href="https://github.com/Radarr/Radarr/wiki/Sorting-and-Renaming" class="help-link" title="More information.">
+                    <i class="icon-sonarr-form-info-link"></i>
+                </a>
             </div>
-
             <div class="col-sm-8 col-sm-pull-1">
                 <div class="input-group x-helper-input">
-                    <input type="text" class="form-control naming-format" name="standardMovieFormat" data-onkeyup="true" />
+                    <input type="text" class="form-control naming-format" name="standardMovieFormat" data-onkeyup="true">
                     <div class="input-group-btn btn-group x-naming-token-helper">
                         <button class="btn btn-icon-only dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-sonarr-add"></i>
+                            <i class="icon-sonarr-add" aria-hidden="true"></i>
                         </button>
                         <ul class="dropdown-menu">
                             {{> MovieTitleNamingPartial}}
@@ -79,85 +68,20 @@
                 </div>
             </div>
         </div>
-
-        {{!--<div class="form-group advanced-setting">
-            <label class="col-sm-3 control-label">Daily Episode Format</label>
-
-            <div class="col-sm-1 col-sm-push-8 help-inline">
-                <i class="icon-sonarr-form-info" title="" data-original-title="All caps or all lower-case can also be used"></i>
-                <a href="https://github.com/NzbDrone/NzbDrone/wiki/Sorting-and-Renaming" class="help-link" title="More information"><i class="icon-sonarr-form-info-link"/></a>
-            </div>
-
-            <div class="col-sm-8 col-sm-pull-1">
-                <div class="input-group x-helper-input">
-                    <input type="text" class="form-control naming-format" name="dailyEpisodeFormat" data-onkeyup="true" />
-                    <div class="input-group-btn btn-group x-naming-token-helper">
-                        <button class="btn btn-icon-only dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-sonarr-add"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {{> SeriesTitleNamingPartial}}
-                            {{> AirDateNamingPartial}}
-                            {{> SeasonNamingPartial}}
-                            {{> EpisodeNamingPartial}}
-                            {{> EpisodeTitleNamingPartial}}
-                            {{> QualityNamingPartial}}
-                            {{> MediaInfoNamingPartial}}
-                            {{> ReleaseGroupNamingPartial}}
-                            {{> OriginalTitleNamingPartial}}
-                            {{> SeparatorNamingPartial}}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>--}}
-
-        {{!--<div class="form-group advanced-setting">
-            <label class="col-sm-3 control-label">Anime Episode Format</label>
-
-            <div class="col-sm-1 col-sm-push-8 help-inline">
-                <i class="icon-sonarr-form-info" title="" data-original-title="All caps or all lower-case can also be used"></i>
-                <a href="https://github.com/NzbDrone/NzbDrone/wiki/Sorting-and-Renaming" class="help-link" title="More information"><i class="icon-sonarr-form-info-link"/></a>
-            </div>
-
-            <div class="col-sm-8 col-sm-pull-1">
-                <div class="input-group x-helper-input">
-                    <input type="text" class="form-control naming-format" name="animeEpisodeFormat" data-onkeyup="true" />
-                    <div class="input-group-btn btn-group x-naming-token-helper">
-                        <button class="btn btn-icon-only dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-sonarr-add"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {{> SeriesTitleNamingPartial}}
-                            {{> AbsoluteEpisodeNamingPartial}}
-                            {{> SeasonNamingPartial}}
-                            {{> EpisodeNamingPartial}}
-                            {{> EpisodeTitleNamingPartial}}
-                            {{> QualityNamingPartial}}
-                            {{> MediaInfoNamingPartial}}
-                            {{> ReleaseGroupNamingPartial}}
-                            {{> OriginalTitleNamingPartial}}
-                            {{> SeparatorNamingPartial}}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--}}
-
+    </div>
     <div class="form-group advanced-setting">
-        <label class="col-sm-3 control-label">Movie Folder Format</label>
+        <label class="col-sm-3 control-label">Movie folder format</label>
 
         <div class="col-sm-1 col-sm-push-8 help-inline">
-            <i class="icon-sonarr-form-info" title="" data-original-title="All caps or all lower-case can also be used. Only used when adding a new movie."></i>
+            <i class="icon-sonarr-form-info" title="All caps or all lower-case can also be used. Only used when adding a new movie."></i>
         </div>
 
         <div class="col-sm-8 col-sm-pull-1">
             <div class="input-group x-helper-input">
-                <input type="text" class="form-control naming-format" name="movieFolderFormat" data-onkeyup="true"/>
+                <input type="text" class="form-control naming-format" name="movieFolderFormat" data-onkeyup="true">
                 <div class="input-group-btn btn-group x-naming-token-helper">
                     <button class="btn btn-icon-only dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-sonarr-add"></i>
+                        <i class="icon-sonarr-add" aria-hidden="true"></i>
                     </button>
                     <ul class="dropdown-menu">
                         {{> MovieTitleNamingPartial}}
@@ -172,96 +96,18 @@
             </div>
         </div>
     </div>
-
-    {{!--<div class="form-group">
-        <label class="col-sm-3 control-label">Season Folder Format</label>
-
-        <div class="col-sm-8">
-            <div class="input-group x-helper-input">
-                <input type="text" class="form-control naming-format" name="seasonFolderFormat" data-onkeyup="true"/>
-                <div class="input-group-btn btn-group x-naming-token-helper">
-                    <button class="btn btn-icon-only dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-sonarr-add"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {{> SeriesTitleNamingPartial}}
-                        {{> SeasonNamingPartial}}
-                        {{> SeparatorNamingPartial}}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>--}}
-
-    {{!--<div class="x-naming-options">
-        <div class="form-group">
-            <label class="col-sm-3 control-label">Multi-Episode Style</label>
-
-            <div class="col-sm-2">
-                <select class="form-control x-multi-episode-style" name="multiEpisodeStyle">
-                    <option value="0">Extend</option>
-                    <option value="1">Duplicate</option>
-                    <option value="2">Repeat</option>
-                    <option value="3">Scene</option>
-                    <option value="4">Range</option>
-                    <option value="5">Prefixed Range</option>
-                </select>
-            </div>
-        </div>
-    </div>--}}
-
     <div class="form-group">
-        <label class="col-sm-3 control-label">Movie Example</label>
+        <label class="col-sm-3 control-label">Movie example</label>
 
         <div class="col-sm-8">
             <p class="form-control-static x-movie-example naming-example"></p>
         </div>
     </div>
-
-    {{!--<div class="form-group">
-        <label class="col-sm-3 control-label">Multi-Episode Example</label>
-
-        <div class="col-sm-8">
-            <p class="form-control-static x-multi-episode-example naming-example"></p>
-        </div>
-    </div>
-
     <div class="form-group">
-        <label class="col-sm-3 control-label">Daily-Episode Example</label>
-
-        <div class="col-sm-8">
-            <p class="form-control-static x-daily-episode-example naming-example"></p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Anime Episode Example</label>
-        <div class="col-sm-8">
-            <p class="form-control-static x-anime-episode-example naming-example"></p>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Anime Multi-Episode Example</label>
-
-        <div class="col-sm-8">
-            <p class="form-control-static x-anime-multi-episode-example naming-example"></p>
-        </div>
-    </div>--}}
-
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Movie Folder Example</label>
+        <label class="col-sm-3 control-label">Movie folder example</label>
 
         <div class="col-sm-8">
             <p class="form-control-static x-movie-folder-example naming-example"></p>
         </div>
     </div>
-
-    {{!--<div class="form-group">
-        <label class="col-sm-3 control-label">Season Folder Example</label>
-
-        <div class="col-sm-8">
-            <p class="form-control-static x-season-folder-example naming-example"></p>
-        </div>
-    </div>--}}
 </fieldset>

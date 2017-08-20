@@ -86,10 +86,16 @@ namespace NzbDrone.Core.Test.ParserTests
 		[TestCase("My Movie 1999 German Bluray", "My Movie")]
 		public void should_parse_movie_title(string postTitle, string title)
 		{
-			Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
-		}
+		    Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
+        }
 
-		[TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
+        [TestCase("(1995) Ghost in the Shell", "Ghost in the Shell")]
+        public void should_parse_movie_folder_name(string postTitle, string title)
+        {
+            Parser.Parser.ParseMovieTitle(postTitle, true, true).MovieTitle.Should().Be(title);
+        }
+
+        [TestCase("1941.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", 2016)]
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
         public void should_parse_movie_year(string postTitle, int year)

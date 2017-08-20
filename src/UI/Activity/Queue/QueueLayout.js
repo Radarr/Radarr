@@ -56,7 +56,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name      : 'timeleft',
-            label     : 'Time Left',
+            label     : 'Time left',
             cell      : TimeleftCell,
             cellValue : 'this'
         },

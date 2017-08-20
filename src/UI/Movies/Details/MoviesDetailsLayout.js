@@ -292,7 +292,7 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_manualSearchM : function() {
-				console.warn("Manual Search started");
+				console.warn("Manual search started");
 				console.warn(this.model.id);
 				console.warn(this.model);
 				console.warn(this.episodeCollection);

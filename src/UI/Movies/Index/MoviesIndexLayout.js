@@ -59,7 +59,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'added',
-            label : 'Date Added',
+            label : 'Date added',
             cell  : RelativeDateCell
         },
         {
@@ -75,7 +75,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'inCinemas',
-            label : 'In Cinemas',
+            label : 'In cinemas',
             cell  : RelativeDateCell
         },
         {
@@ -111,32 +111,32 @@ module.exports = Marionette.Layout.extend({
         collapse   : true,
         items      : [
             {
-                title : 'Add Movie',
+                title : 'Add movie',
                 icon  : 'icon-sonarr-add',
                 route : 'addmovies'
             },
             {
-                title : 'Movie Editor',
+                title : 'Movie editor',
                 icon  : 'icon-sonarr-edit',
                 route : 'movieeditor'
             },
             {
-                title        : 'RSS Sync',
+                title        : 'RSS sync',
                 icon         : 'icon-sonarr-rss',
                 command      : 'rsssync',
-                errorMessage : 'RSS Sync Failed!'
+                errorMessage : 'RSS sync failed!'
             },
             {
-              title : "PreDB Sync",
+              title : "PreDB sync",
               icon : "icon-sonarr-refresh",
               command : "predbsync",
-              errorMessage : "PreDB Sync Failed!"
+              errorMessage : "PreDB sync failed!"
             },
             {
-                title          : 'Update Library',
+                title          : 'Update library',
                 icon           : 'icon-sonarr-refresh',
                 command        : 'refreshmovie',
-                successMessage : 'Library was updated!',
+                successMessage : 'Library was successfully updated!',
                 errorMessage   : 'Library update failed!'
             }
         ]
@@ -222,7 +222,7 @@ module.exports = Marionette.Layout.extend({
                     name  : 'profileId'
                 },
                 {
-                    title : 'In Cinemas',
+                    title : 'In cinemas',
                     name  : 'inCinemas'
                 },
                 /*{
@@ -241,42 +241,42 @@ module.exports = Marionette.Layout.extend({
                 {
                     key      : 'all',
                     title    : '',
-                    tooltip  : 'All',
+                    tooltip  : 'Show all movies',
                     icon     : 'icon-sonarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
-                    tooltip  : 'Monitored Only',
+                    tooltip  : 'Show monitored movies',
                     icon     : 'icon-sonarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'missing',
                     title    : '',
-                    tooltip  : 'Missing Only',
+                    tooltip  : 'Show missing movies',
                     icon     : 'icon-sonarr-missing',
                     callback : this._setFilter
                 },
                 {
                     key      : 'released',
                     title    : '',
-                    tooltip  : 'Released',
+                    tooltip  : 'Show released movies',
                     icon     : 'icon-sonarr-movie-released',
                     callback : this._setFilter
                 },
                 {
                     key      : 'announced',
                     title    : '',
-                    tooltip  : 'Announced',
+                    tooltip  : 'Show announced movies',
                     icon     : 'icon-sonarr-movie-announced',
                     callback : this._setFilter
                 },
                 {
                     key      : 'cinemas',
                     title    : '',
-                    tooltip  : 'In Cinemas',
+                    tooltip  : 'Show movies currently in cinemas',
                     icon     : 'icon-sonarr-movie-cinemas',
                     callback : this._setFilter
                 }
@@ -292,21 +292,21 @@ module.exports = Marionette.Layout.extend({
                 {
                     key      : 'posterView',
                     title    : '',
-                    tooltip  : 'Posters',
+                    tooltip  : 'Posters view',
                     icon     : 'icon-sonarr-view-poster',
                     callback : this._showPosters
                 },
                 {
                     key      : 'listView',
                     title    : '',
-                    tooltip  : 'Overview List',
+                    tooltip  : 'Overview list',
                     icon     : 'icon-sonarr-view-list',
                     callback : this._showList
                 },
                 {
                     key      : 'tableView',
                     title    : '',
-                    tooltip  : 'Table',
+                    tooltip  : 'Table view',
                     icon     : 'icon-sonarr-view-table',
                     callback : this._showTable
                 }

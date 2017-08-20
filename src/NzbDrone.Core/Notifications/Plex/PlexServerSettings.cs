@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Notifications.Plex
         [FieldDefinition(4, Label = "Update Library", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
 
-        [FieldDefinition(5, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Connect to Plex over HTTPS instead of HTTP")]
+        [FieldDefinition(5, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Connect to Plex over HTTPS instead of HTTP?")]
         public bool UseSsl { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(Host);

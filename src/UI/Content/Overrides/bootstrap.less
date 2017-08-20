@@ -73,10 +73,23 @@
   }
 }
 
-.btn {
+/* Capitalise various layout elements */
+h3, label, legend, select, .btn, table th, dt,
+.advanced-settings-toggle span, option,
+.legend-label, .nav-tabs a, .popover-title {
   text-transform: capitalize;
 }
 
 .table-responsive {
   overflow-x: visible;
+}
+
+.navbar-nav {
+  margin-bottom : 20px;
+}
+
+.navbar-brand {
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    padding : 22px 15px !important;
+  }
 }

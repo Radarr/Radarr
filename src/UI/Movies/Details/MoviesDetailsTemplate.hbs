@@ -3,33 +3,40 @@
         {{poster}}
     </div>
     <div class="col-md-12 col-lg-10">
-        <div>
-            <h1 class="header-text">
-                <i class="x-monitored" title="Toggle monitored state for movie"/>
-                {{title}} <span class="year">({{year}}{{#if secondaryYear}} / <a href="https://mappings.radarr.video/mapping/{{secondaryYearSourceId}}" target="_blank"><span title="Secondary year pulled from Radarr Mappings.
-                Click to head on over there and tell us whether this is correct or not.">{{secondaryYear}}</span></a>{{/if}})</span>
-                <div class="movie-actions pull-right">
-                    <div class="x-episode-file-editor">
-                        <i class="icon-sonarr-episode-file" title="Modify movie files"/>
-                    </div>
-                    <div class="x-refresh">
-                        <i class="icon-sonarr-refresh icon-can-spin" title="Update movie info and scan disk"/>
-                    </div>
-                    <div class="x-rename">
-                        <i class="icon-sonarr-rename" title="Preview rename for movie"/>
-                    </div>
-                    <div class="x-search">
-                        <i class="icon-sonarr-search" title="Search for movie"/>
-                    </div>
-                    <div class="x-manual-search">
-                      <i class="icon-sonarr-search-manual" title="Manual Search"/>
-                    </div>
-                    <div class="x-edit">
-                        <i class="icon-sonarr-edit" title="Edit movie"/>
-                    </div>
+        <h1 class="header-text">
+            <i class="x-monitored" title="Toggle monitored state for movie."></i>
+            {{title}}
+            <span class="year">
+                ({{year}})
+                {{#if secondaryYear}}
+                    <a href="https://mappings.radarr.video/mapping/{{secondaryYearSourceId}}" target="_blank">
+                        <span title="Secondary year pulled from Radarr Mappings. Click to head on over there and tell us whether this is correct or not.">
+                            / ({{secondaryYear}})
+                        </span>
+                    </a>
+                {{/if}}
+            </span>
+            <div class="movie-actions pull-right">
+                <div class="x-episode-file-editor">
+                    <i class="icon-sonarr-episode-file" title="Modify movie files."></i>
                 </div>
-            </h1>
-        </div>
+                <div class="x-refresh">
+                    <i class="icon-sonarr-refresh icon-can-spin" title="Update movie info and scan disk."></i>
+                </div>
+                <div class="x-rename">
+                    <i class="icon-sonarr-rename" title="Preview rename for this movie."></i>
+                </div>
+                <div class="x-search">
+                    <i class="icon-sonarr-search" title="Search for this movie."></i>
+                </div>
+                <div class="x-manual-search">
+                    <i class="icon-sonarr-search-manual" title="Manually search for this movie."></i>
+                </div>
+                <div class="x-edit">
+                    <i class="icon-sonarr-edit" title="Edit movie."></i>
+                </div>
+            </div>
+        </h1>
         <div class="movie-detail-overview">
             {{overview}}
         </div>
@@ -37,22 +44,19 @@
     </div>
 </div>
 <div id="movie-info">
-  <div class="movie-tabs">
-    <div>
-      <div class="movie-tabs-card">
-        <ul class="nav nav-tabs" id="myTab">
+    <div class="movie-tabs">
+        <div class="movie-tabs-card">
+            <ul class="nav nav-tabs" id="myTab">
             <li><a href="#movie-history" class="x-movie-history">History</a></li>
             <li><a href="#movie-search" class="x-movie-search">Search</a></li>
             <li><a href="#movie-files" class="x-movie-files">Files</a></li>
             <li><a href="#movie-titles" class="x-movie-titles">Titles</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane" id="movie-history"/>
-            <div class="tab-pane" id="movie-search"/>
-            <div class="tab-pane" id="movie-files"/>
-            <div class="tab-pane" id="movie-titles"/>
+            <div class="tab-pane" id="movie-history"></div>
+            <div class="tab-pane" id="movie-search"></div>
+            <div class="tab-pane" id="movie-files"></div>
+            <div class="tab-pane" id="movie-titles"></div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Disk;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 
@@ -26,12 +26,12 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!_diskProvider.FolderExists(droneFactoryFolder))
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, "Drone factory folder does not exist");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, "Drone Factory folder does not exist.");
             }
-            
+
             if (!_diskProvider.FolderWritable(droneFactoryFolder))
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, "Unable to write to drone factory folder");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, "Unable to write to Drone Factory folder");
             }
 
             //Todo: Unable to import one or more files/folders from
