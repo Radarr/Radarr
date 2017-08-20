@@ -41,7 +41,7 @@ module.exports = Marionette.Layout.extend({
     leftSideButtons : {
         type       : 'default',
         storeState : false,
-        collapse   : false,
+        collapse   : true,
         items      : [
             {
                 title          : 'Backup',

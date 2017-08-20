@@ -80,6 +80,7 @@ module.exports = Marionette.Layout.extend({
         var leftSideButtons = {
             type       : 'default',
             storeState : false,
+            collapse: true,
             items      : [
                 {
                     title   : 'Clear blacklist',
