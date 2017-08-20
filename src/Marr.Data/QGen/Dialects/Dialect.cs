@@ -68,5 +68,13 @@ namespace Marr.Data.QGen.Dialects
         {
             get { return "({0} LIKE '%' + {1} + '%')"; }
         }
+
+        public virtual string InFormat
+        {
+            get
+            {
+                return "({0} in ({1}))";
+            }
+        }
     }
 }

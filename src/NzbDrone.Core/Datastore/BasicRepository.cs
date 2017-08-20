@@ -83,11 +83,12 @@ namespace NzbDrone.Core.Datastore
         {
             var idList = ids.ToList();
             var query = string.Format("Id IN ({0})", string.Join(",", idList));
-            var result = Query.Where(query).ToList();
+            var result = Query.Where(m => m.Id.In(idList)).ToList();
+            //var result = Query.Where(query).ToList();
 
             if (result.Count != idList.Count())
             {
-                throw new ApplicationException("Expected query to return {0} rows but returned {1}".Inject(idList.Count(), result.Count));
+                throw new ApplicationException("Expected query to return {0} rows but returned {1}.".Inject(idList.Count(), result.Count));
             }
 
             return result;
