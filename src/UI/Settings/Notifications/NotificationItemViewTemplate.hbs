@@ -1,47 +1,44 @@
 <div class="notification-item thingy">
-    <div>
-        <h3>{{name}}</h3>
-    </div>
-
+    <h3>{{name}}</h3>
     <div class="settings">
         {{#if supportsOnGrab}}
             {{#if onGrab}}
-                <span class="label label-success">On Grab</span>
+                <span class="label label-success">On grab</span>
             {{else}}
-                <span class="label label-default">On Grab</span>
+                <span class="label label-default">On grab</span>
             {{/if}}
         {{else}}
-            <span class="label label-default label-disabled">On Grab</span>
+            <span class="label label-default label-disabled">On grab</span>
         {{/if}}
 
         {{#if supportsOnDownload}}
             {{#if onDownload}}
-                <span class="label label-success">On Download</span>
+                <span class="label label-success">On download</span>
             {{else}}
-                <span class="label label-default">On Download</span>
+                <span class="label label-default">On download</span>
             {{/if}}
         {{else}}
-            <span class="label label-default label-disabled">On Download</span>
+            <span class="label label-default label-disabled">On download</span>
         {{/if}}
 
         {{#if supportsOnUpgrade}}
             {{#if onUpgrade}}
-                <span class="label label-success">On Upgrade</span>
+                <span class="label label-success">On upgrade</span>
             {{else}}
-                <span class="label label-default">On Upgrade</span>
+                <span class="label label-default">On upgrade</span>
             {{/if}}
         {{else}}
-            <span class="label label-default label-disabled">On Upgrade</span>
+            <span class="label label-default label-disabled">On upgrade</span>
         {{/if}}
 
         {{#if supportsOnRename}}
             {{#if onRename}}
-                <span class="label label-success">On Rename</span>
+                <span class="label label-success">On rename</span>
             {{else}}
-                <span class="label label-default">On Rename</span>
+                <span class="label label-default">On nename</span>
             {{/if}}
         {{else}}
-            <span class="label label-default label-disabled">On Rename</span>
+            <span class="label label-default label-disabled">On rename</span>
         {{/if}}
     </div>
 </div>

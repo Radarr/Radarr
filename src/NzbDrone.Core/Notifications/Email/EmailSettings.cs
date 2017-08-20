@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Email
             Ssl = true;
         }
 
-        [FieldDefinition(0, Label = "Server", HelpText = "Hostname or IP of Email server")]
+        [FieldDefinition(0, Label = "Server", HelpText = "Hostname or IP address of the email server")]
         public string Server { get; set; }
 
         [FieldDefinition(1, Label = "Port")]

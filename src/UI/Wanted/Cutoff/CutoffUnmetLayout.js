@@ -50,12 +50,12 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name      : 'inCinemas',
-            label     : 'In Cinemas',
+            label     : 'In cinemas',
             cell      : RelativeDateCell
         },
         {
             name      : 'physicalRelease',
-            label     : 'Physical Release',
+            label     : 'Physical release',
             cell      : RelativeDateCell
         },
         {
@@ -156,7 +156,7 @@ module.exports = Marionette.Layout.extend({
                     icon     : 'icon-sonarr-movie-announced',
                     callback : this._setFilter
                 },
-                {     
+                {
                     key      : 'incinemas',
                     title    : '',
                     tooltip  : 'In Cinemas Only',

@@ -4,7 +4,7 @@ var Backgrid = require('backgrid');
 module.exports = Backgrid.UriCell.extend({
     className : 'wiki-link-cell',
 
-    title : 'Read the Wiki for more information',
+    title : 'Read the Wiki for more information.',
 
     text : 'Wiki',
 

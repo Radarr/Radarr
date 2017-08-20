@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Notifications.Twitter
             RuleFor(c => c.Mention).NotEmpty().When(c => c.DirectMessage);
 
             RuleFor(c => c.DirectMessage).Equal(true)
-                                         .WithMessage("Using Direct Messaging is recommended, or use a private account.")
+                                         .WithMessage("Using direct messaging is recommended, or use a private account.")
                                          .AsWarning();
 
             RuleFor(c => c.AuthorizeNotification).Empty()
@@ -37,10 +37,10 @@ namespace NzbDrone.Core.Notifications.Twitter
             AuthorizeNotification = "step1";
         }
 
-        [FieldDefinition(0, Label = "Consumer Key", HelpText = "Consumer key from a Twitter application", HelpLink = "https://github.com/Radarr/Radarr/wiki/Twitter-Notifications")]
+        [FieldDefinition(0, Label = "Consumer Key", HelpText = "Consumer key from a Twitter application.", HelpLink = "https://github.com/Radarr/Radarr/wiki/Twitter-Notifications")]
         public string ConsumerKey { get; set; }
 
-        [FieldDefinition(1, Label = "Consumer Secret", HelpText = "Consumer secret from a Twitter application", HelpLink = "https://github.com/Radarr/Radarr/wiki/Twitter-Notifications")]
+        [FieldDefinition(1, Label = "Consumer Secret", HelpText = "Consumer secret from a Twitter application.", HelpLink = "https://github.com/Radarr/Radarr/wiki/Twitter-Notifications")]
         public string ConsumerSecret { get; set; }
 
         [FieldDefinition(2, Label = "Access Token", Advanced = true)]
@@ -49,10 +49,10 @@ namespace NzbDrone.Core.Notifications.Twitter
         [FieldDefinition(3, Label = "Access Token Secret", Advanced = true)]
         public string AccessTokenSecret { get; set; }
 
-        [FieldDefinition(4, Label = "Mention", HelpText = "Mention this user in sent tweets")]
+        [FieldDefinition(4, Label = "Mention", HelpText = "Mention this user in sent tweets.")]
         public string Mention { get; set; }
 
-        [FieldDefinition(5, Label = "Direct Message", Type = FieldType.Checkbox, HelpText = "Send a direct message instead of a public message")]
+        [FieldDefinition(5, Label = "Direct Message", Type = FieldType.Checkbox, HelpText = "Send a direct message instead of a public message.")]
         public bool DirectMessage { get; set; }
 
         [FieldDefinition(6, Label = "Connect to twitter", Type = FieldType.Action)]
