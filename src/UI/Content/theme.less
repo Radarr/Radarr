@@ -1,4 +1,4 @@
-﻿@import "Bootstrap/variables";
+@import "Bootstrap/variables";
 @import "Bootstrap/mixins";
 @import "Bootstrap/type";
 @import "font";
@@ -136,6 +136,41 @@ body {
   margin-bottom    : 100px;
   p {
     font-size : 0.9em;
+  }
+}
+
+body.debug {
+  &:after {
+    background-color: #222222;
+    color: white;
+    text-transform: uppercase;
+    padding: 17px 25px;
+    position: fixed;
+    font-size: 15px;
+    font-weight: bold;
+    bottom: 0;
+    right: 0;
+    opacity:.9;
+    z-index: 9999;
+    content: "X-Small";
+  }
+
+  @media (min-width: @screen-sm-min) {
+    &:after {
+      content: "Small";
+    }
+  }
+
+  @media (min-width: @screen-md-min) {
+    &:after {
+      content: "Medium";
+    }
+  }
+
+  @media (min-width: @screen-lg-min) {
+    &:after {
+      content: "Large";
+    }
   }
 }
 
