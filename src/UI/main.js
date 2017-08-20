@@ -30,7 +30,7 @@ new Router();
 var app = new Marionette.Application();
 
 app.addInitializer(function() {
-    console.log('starting application');
+    console.log("starting application");
 });
 
 app.addInitializer(SignalRBroadcaster.appInitializer, { app : app });
@@ -40,21 +40,34 @@ app.addInitializer(Tooltip.appInitializer, { app : app });
 app.addInitializer(function() {
     Backbone.history.start({
         pushState : true,
-        root      : ServerStatusModel.get('urlBase')
+        root      : ServerStatusModel.get("urlBase")
     });
     RouteBinder.bind();
     AppLayout.navbarRegion.show(new NavbarLayout());
-    $('body').addClass('started');
+    $("body").addClass("started");
 });
 
 app.addInitializer(UiSettingsController.appInitializer);
 
 app.addInitializer(function() {
-    var footerText = ServerStatusModel.get('version');
-    if (ServerStatusModel.get('branch') !== 'master') {
-        footerText += '<br>' + ServerStatusModel.get('branch');
+    var isDebug = ServerStatusModel.get("isDebug");
+    var isProduction = ServerStatusModel.get("isProduction");
+
+    if (isDebug === true) {
+        $("body").addClass("debug");
     }
-    $('#footer-region .version').html(footerText);
+
+    if (isProduction === true) {
+        $("body").addClass("production");
+    }
+});
+
+app.addInitializer(function() {
+    var footerText = ServerStatusModel.get("version");
+    if (ServerStatusModel.get("branch") !== "master") {
+        footerText += "<br>" + ServerStatusModel.get("branch");
+    }
+    $("#footer-region .version").html(footerText);
 });
 
 app.start();
