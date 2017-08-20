@@ -138,6 +138,35 @@ body {
   }
 }
 
+body.debug {
+  &:after {
+    background-color: #222222;
+    color: white;
+    text-transform: uppercase;
+    padding: 17px 25px;
+    position: fixed;
+    font-size: 15px;
+    font-weight: bold;
+    bottom: 0;
+    right: 0;
+    opacity:.9;
+    z-index: 9999;
+    content: "X-Small";
+
+    @media (min-width: @screen-sm-min) {
+      content: "Small";
+    }
+
+    @media (min-width: @screen-md-min) {
+      content: "Medium";
+    }
+
+    @media (min-width: @screen-lg-min) {
+      content: "Large";
+    }
+  }
+}
+
 .footer {
   font-size       : 13px;
   font-weight     : lighter;
