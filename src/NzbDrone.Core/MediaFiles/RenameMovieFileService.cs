@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -198,14 +199,22 @@ namespace NzbDrone.Core.MediaFiles
 
 	public void Execute(RenameMovieFolderCommand message)
 	{
-		_logger.Debug("Renaming movie folder for selected movie if necessary");
-            	var moviesToRename = _movieService.GetMovies(message.MovieIds);
-		foreach(var movie in moviesToRename)
-		{
-		        var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
-		        _logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
-		        RenameMoviePath(movie);
-	   	}
+	    try
+	    {
+	        _logger.Debug("Renaming movie folder for selected movie if necessary");
+	        var moviesToRename = _movieService.GetMovies(message.MovieIds);
+	        foreach(var movie in moviesToRename)
+	        {
+	            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+	            _logger.ProgressInfo("Renaming movie folder for {0}", movie.Title);
+	            RenameMoviePath(movie);
+	        }
+	    }
+	    catch (SQLiteException ex)
+	    {
+            _logger.Warn(ex, "wtf: {0}, {1}", ex.ResultCode, ex.Data);
+	    }
+		
 	}
     }
 }

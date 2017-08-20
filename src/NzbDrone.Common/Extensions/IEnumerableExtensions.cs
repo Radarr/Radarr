@@ -105,5 +105,9 @@ namespace NzbDrone.Common.Extensions
                     yield return buffer.Dequeue();
             }
         }
+        public static bool In<T>(this T source, List<T> list)
+        {
+            return list.Contains(source);
+        }
     }
 }

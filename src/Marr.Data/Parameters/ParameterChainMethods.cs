@@ -14,8 +14,10 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>. */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Runtime.InteropServices.ComTypes;
 using Marr.Data.Converters;
 
 namespace Marr.Data.Parameters
@@ -42,15 +44,25 @@ namespace Marr.Data.Parameters
             Type valueType = value.GetType();
 
             // Check for a registered IConverter
-            IConverter converter = MapRepository.Instance.GetConverter(valueType);
-            if (converter != null)
+            //If we have a list of ints, we ignore the converter since we want to do an in statement!
+            var list = value as List<int>;
+            if (list != null)
             {
-                Parameter.Value = converter.ToDB(value);
+                Parameter.Value = $"{string.Join(",", list)}";
             }
             else
             {
-                Parameter.Value = value;
-            } 
+                IConverter converter = MapRepository.Instance.GetConverter(valueType);
+                if (converter != null)
+                {
+                    Parameter.Value = converter.ToDB(value);
+                }
+                else
+                {
+                    Parameter.Value = value;
+                } 
+            }
+            
 
             //// Determine the correct DbType based on the passed in value type
             //IDbTypeBuilder typeBuilder = MapRepository.Instance.DbTypeBuilder;

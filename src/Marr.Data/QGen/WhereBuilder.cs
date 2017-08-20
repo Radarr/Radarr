@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Linq.Expressions;
 using System.Data.Common;
@@ -92,6 +93,10 @@ namespace Marr.Data.QGen
                 case "EndsWith":
                     Write_EndsWith(expression);
                     break;
+                    
+                case "In":
+                    Write_In(expression);
+                    break;
 
                 default:
                     string msg = string.Format("'{0}' expressions are not yet implemented in the where clause expression tree parser.", method);
@@ -140,31 +145,47 @@ namespace Marr.Data.QGen
             return expression;
         }
 
-        private object GetRightValue(Expression rightExpression)
+        private object GetRightValue(Expression expression)
         {
             object rightValue = null;
-
-            var right = rightExpression as ConstantExpression;
-            if (right == null) // Value is not directly passed in as a constant
+			
+            var simpleConstExp = expression as ConstantExpression;
+            if (simpleConstExp == null) // Value is not directly passed in as a constant
             {
-                var rightMemberExp = (rightExpression as MemberExpression);
-                var parentMemberExpression = rightMemberExp.Expression as MemberExpression;
-                if (parentMemberExpression != null) // Value is passed in as a property on a parent entity
+                MemberExpression memberExp = expression as MemberExpression;
+                ConstantExpression constExp = null;
+
+                // Value may be nested in multiple levels of objects/properties, so traverse the MemberExpressions 
+                // until a ConstantExpression property value is found, and then unwind the stack to get the value.
+                var memberNames = new Stack<string>();
+
+                while (memberExp != null)
                 {
-                    string entityName = (rightMemberExp.Expression as MemberExpression).Member.Name;
-                    var container = ((rightMemberExp.Expression as MemberExpression).Expression as ConstantExpression).Value;
-                    var entity = _repos.ReflectionStrategy.GetFieldValue(container, entityName);
-                    rightValue = _repos.ReflectionStrategy.GetFieldValue(entity, rightMemberExp.Member.Name);
+                    memberNames.Push(memberExp.Member.Name);
+
+                    // Function calls are not supported - user needs to simplify their Where expression.
+                    var methodExp = memberExp.Expression as MethodCallExpression;
+                    if (methodExp != null)
+                    {
+                        var errMsg = string.Format("Function calls are not supported by the Where clause expression parser.  Please evaluate your function call, '{0}', manually and then use the resulting paremeter value in your Where expression.",  methodExp.Method.Name);
+                        throw new NotSupportedException(errMsg);
+                    }
+
+                    constExp = memberExp.Expression as ConstantExpression;
+                    memberExp = memberExp.Expression as MemberExpression;
                 }
-                else // Value is passed in as a variable
+
+                object entity = constExp.Value;
+                while (memberNames.Count > 0)
                 {
-                    var parent = (rightMemberExp.Expression as ConstantExpression).Value;
-                    rightValue = _repos.ReflectionStrategy.GetFieldValue(parent, rightMemberExp.Member.Name);
+                    string entityName = memberNames.Pop();
+                    entity = _repos.ReflectionStrategy.GetFieldValue(entity, entityName);
                 }
+                rightValue = entity;
             }
             else // Value is passed in directly as a constant
             {
-                rightValue = right.Value;
+                rightValue = simpleConstExp.Value;
             }
 
             return rightValue;
@@ -236,6 +257,17 @@ namespace Marr.Data.QGen
             MemberExpression memberExp = (body.Object as MemberExpression);
             string fqColumn = GetFullyQualifiedColumnName(memberExp.Member, memberExp.Expression.Type);
             _sb.AppendFormat(_dialect.ContainsFormat, fqColumn, paramName);
+        }
+
+        private void Write_In(MethodCallExpression body)
+        {
+            object value = GetRightValue(body.Arguments[1]);
+            //string paramName = string.Concat(_paramPrefix, "P", _command.Parameters.Count.ToString());
+            //var parameter = new ParameterChainMethods(_command, paramName, value).Parameter;
+
+            MemberExpression memberExp = (body.Arguments[0] as MemberExpression);
+            string fqColumn = GetFullyQualifiedColumnName(memberExp.Member, memberExp.Expression.Type);
+            _sb.AppendFormat(_dialect.InFormat, fqColumn, string.Join(",", value as List<int>));
         }
 
         private void Write_StartsWith(MethodCallExpression body)
