@@ -13,7 +13,7 @@ var substringMatcher = function() {
 
     return function findMatches (q, cb) {
         var matches = _.select(ArtistCollection.toJSON(), function(artist) {
-            return artist.artistName.toLowerCase().indexOf(q.toLowerCase()) > -1;
+            return artist.name.toLowerCase().indexOf(q.toLowerCase()) > -1;
         });
         cb(matches);
     };
@@ -26,13 +26,13 @@ $.fn.bindSearch = function() {
         minLength : 1
     }, {
         name       : 'artist',
-        displayKey : 'artistName',
+        displayKey : 'name',
         source     : substringMatcher()
     });
 
     $(this).on('typeahead:selected typeahead:autocompleted', function(e, artist) {
         this.blur();
         $(this).val('');
-        Backbone.history.navigate('/artist/{0}'.format(artist.artistSlug), { trigger : true });
+        Backbone.history.navigate('/artist/{0}'.format(artist.nameSlug), { trigger : true });
     });
 };
