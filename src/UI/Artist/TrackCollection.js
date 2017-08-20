@@ -9,7 +9,7 @@ module.exports = PageableCollection.extend({
 
     state : {
         sortKey  : 'trackNumber',
-        order    : 1,
+        order    : -1,
         pageSize : 100000
     },
 

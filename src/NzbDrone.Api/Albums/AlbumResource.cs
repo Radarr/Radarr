@@ -19,6 +19,7 @@ namespace NzbDrone.Api.Albums
         public string Path { get; set; }
         public int ProfileId { get; set; }
         public int Duration { get; set; }
+        public string AlbumType { get; set; }
         public Ratings Ratings { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public List<string> Genres { get; set; }
@@ -48,6 +49,7 @@ namespace NzbDrone.Api.Albums
                 Images = model.Images,
                 Ratings = model.Ratings,
                 Duration = model.Duration,
+                AlbumType = model.AlbumType
             };
         }
 
@@ -68,6 +70,7 @@ namespace NzbDrone.Api.Albums
                 Title = resource.Title,
                 Images = resource.Images,
                 Ratings = resource.Ratings,
+                AlbumType = resource.AlbumType
             };
         }
 

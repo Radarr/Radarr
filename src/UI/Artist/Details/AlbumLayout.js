@@ -99,7 +99,7 @@ module.exports = Marionette.Layout.extend({
             label    : 'Status',
             cell     : TrackStatusCell,
             sortable : false
-        },
+        }
         //{
         //   name     : 'this',
         //    label    : '',

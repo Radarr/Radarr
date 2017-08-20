@@ -22,7 +22,7 @@ Handlebars.registerHelper('poster', function() {
 
 
 Handlebars.registerHelper('MBUrl', function() {
-    return 'https://musicbrainz.org/artist/' + this.mbId;
+    return 'https://musicbrainz.org/artist/' + this.foreignArtistId;
 });
 
 Handlebars.registerHelper('TADBUrl', function() {
