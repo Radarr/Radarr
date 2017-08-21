@@ -1,4 +1,4 @@
-var AppLayout = require('../AppLayout');
+var AppLayout = require("../AppLayout");
 
 module.exports = function() {
     var originalInitialize = this.prototype.initialize;
@@ -37,7 +37,7 @@ module.exports = function() {
 
     this.prototype.initialize = function(options) {
         if (!this.model) {
-            throw 'View has no model';
+            throw "View has no model";
         }
 
         this.testing = false;
@@ -46,13 +46,13 @@ module.exports = function() {
         this.originalModelData = JSON.stringify(this.model.toJSON());
 
         this.events = this.events || {};
-        this.events['click .x-save'] = '_save';
-        this.events['click .x-save-and-add'] = '_saveAndAdd';
-        this.events['click .x-test'] = '_test';
-        this.events['click .x-delete'] = '_delete';
+        this.events["click .x-save"] = "_save";
+        this.events["click .x-save-and-add"] = "_saveAndAdd";
+        this.events["click .x-test"] = "_test";
+        this.events["click .x-delete"] = "_delete";
 
         this.ui = this.ui || {};
-        this.ui.indicator = '.x-indicator';
+        this.ui.indicator = ".x-indicator";
 
         if (originalInitialize) {
             originalInitialize.call(this, options);

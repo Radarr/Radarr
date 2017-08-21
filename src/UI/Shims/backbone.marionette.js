@@ -1,8 +1,8 @@
-require('backbone');
-require('../JsLibraries/backbone.marionette');
+require("backbone");
+require("../JsLibraries/backbone.marionette");
 
-var templateMixin = require('../Handlebars/backbone.marionette.templates');
-var asNamedView = require('../Mixins/AsNamedView');
+var templateMixin = require("../Handlebars/backbone.marionette.templates");
+var asNamedView = require("../Mixins/AsNamedView");
 
 templateMixin.call(window.Marionette.TemplateCache);
 asNamedView.call(window.Marionette.ItemView.prototype);

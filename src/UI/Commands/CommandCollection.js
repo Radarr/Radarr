@@ -1,9 +1,9 @@
-var Backbone = require('backbone');
-var CommandModel = require('./CommandModel');
-require('../Mixins/backbone.signalr.mixin');
+var Backbone = require("backbone");
+var CommandModel = require("./CommandModel");
+require("../Mixins/backbone.signalr.mixin");
 
 var CommandCollection = Backbone.Collection.extend({
-    url   : window.NzbDrone.ApiRoot + '/command',
+    url   : window.NzbDrone.ApiRoot + "/command",
     model : CommandModel,
 
     findCommand : function(command) {

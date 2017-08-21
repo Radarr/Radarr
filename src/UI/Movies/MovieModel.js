@@ -1,8 +1,8 @@
-var Backbone = require('backbone');
-var _ = require('underscore');
+var Backbone = require("backbone");
+var _ = require("underscore");
 
 module.exports = Backbone.Model.extend({
-    urlRoot : window.NzbDrone.ApiRoot + '/movie',
+    urlRoot : window.NzbDrone.ApiRoot + "/movie",
 
     defaults : {
         episodeFileCount : 0,
@@ -31,7 +31,7 @@ module.exports = Backbone.Model.extend({
         return "inCinemas";
       }
 
-      if (status === 'released') {
+      if (status === "released") {
           return "released";
       }
     }

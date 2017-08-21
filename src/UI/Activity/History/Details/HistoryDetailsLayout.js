@@ -1,17 +1,17 @@
-var $ = require('jquery');
-var vent = require('vent');
-var Marionette = require('marionette');
-var HistoryDetailsView = require('./HistoryDetailsView');
+var $ = require("jquery");
+var vent = require("vent");
+var Marionette = require("marionette");
+var HistoryDetailsView = require("./HistoryDetailsView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Activity/History/Details/HistoryDetailsLayoutTemplate',
+    template : "Activity/History/Details/HistoryDetailsLayoutTemplate",
 
     regions : {
-        bodyRegion : '.modal-body'
+        bodyRegion : ".modal-body"
     },
 
     events : {
-        'click .x-mark-as-failed' : '_markAsFailed'
+        "click .x-mark-as-failed" : "_markAsFailed"
     },
 
     onShow : function() {
@@ -19,14 +19,14 @@ module.exports = Marionette.Layout.extend({
     },
 
     _markAsFailed : function() {
-        var url = window.NzbDrone.ApiRoot + '/history/failed';
+        var url = window.NzbDrone.ApiRoot + "/history/failed";
         var data = {
-            id : this.model.get('id')
+            id : this.model.get("id")
         };
 
         $.ajax({
             url  : url,
-            type : 'POST',
+            type : "POST",
             data : data
         });
 

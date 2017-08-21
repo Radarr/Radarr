@@ -1,27 +1,27 @@
-var PagableCollection = require('backbone.pageable');
-var ReleaseModel = require('./ReleaseModel');
-var AsSortedCollection = require('../Mixins/AsSortedCollection');
+var PagableCollection = require("backbone.pageable");
+var ReleaseModel = require("./ReleaseModel");
+var AsSortedCollection = require("../Mixins/AsSortedCollection");
 
 var Collection = PagableCollection.extend({
-    url   : window.NzbDrone.ApiRoot + '/release',
+    url   : window.NzbDrone.ApiRoot + "/release",
     model : ReleaseModel,
 
     state : {
         pageSize : 2000,
-        sortKey  : 'download',
+        sortKey  : "download",
         order    : -1
     },
 
-    mode : 'client',
+    mode : "client",
 
     sortMappings : {
-        'quality'    : {
+        "quality"    : {
             sortKey : "qualityWeight"
         },
-        'rejections' : {
+        "rejections" : {
             sortValue : function(model) {
-                var rejections = model.get('rejections');
-                var releaseWeight = model.get('releaseWeight');
+                var rejections = model.get("rejections");
+                var releaseWeight = model.get("releaseWeight");
 
                 if (rejections.length !== 0) {
                     return releaseWeight + 1000000;
@@ -60,19 +60,19 @@ var Collection = PagableCollection.extend({
             return weight;
           }
         },
-        'download'   : {
-            sortKey : 'releaseWeight'
+        "download"   : {
+            sortKey : "releaseWeight"
         },
-        'seeders'    : {
+        "seeders"    : {
             sortValue : function(model) {
-                var seeders = model.get('seeders') || 0;
-                var leechers = model.get('leechers') || 0;
+                var seeders = model.get("seeders") || 0;
+                var leechers = model.get("leechers") || 0;
 
                 return seeders * 1000000 + leechers;
             }
         },
-        'age'        : {
-            sortKey : 'ageMinutes'
+        "age"        : {
+            sortKey : "ageMinutes"
         }
     },
 

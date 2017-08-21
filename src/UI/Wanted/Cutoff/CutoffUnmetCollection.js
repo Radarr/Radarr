@@ -1,62 +1,62 @@
-var _ = require('underscore');
-var MovieModel = require('../../Movies/MovieModel');
-var PagableCollection = require('backbone.pageable');
-var AsFilteredCollection = require('../../Mixins/AsFilteredCollection');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
-var AsPersistedStateCollection = require('../../Mixins/AsPersistedStateCollection');
+var _ = require("underscore");
+var MovieModel = require("../../Movies/MovieModel");
+var PagableCollection = require("backbone.pageable");
+var AsFilteredCollection = require("../../Mixins/AsFilteredCollection");
+var AsSortedCollection = require("../../Mixins/AsSortedCollection");
+var AsPersistedStateCollection = require("../../Mixins/AsPersistedStateCollection");
 
 var Collection = PagableCollection.extend({
-    url       : window.NzbDrone.ApiRoot + '/wanted/cutoff',
+    url       : window.NzbDrone.ApiRoot + "/wanted/cutoff",
     model     : MovieModel,
-    tableName : 'wanted.cutoff',
+    tableName : "wanted.cutoff",
 
     state : {
         pageSize : 50,
-        sortKey  : 'title',
+        sortKey  : "title",
         order    : -1
     },
 
     queryParams : {
         totalPages   : null,
         totalRecords : null,
-        pageSize     : 'pageSize',
-        sortKey      : 'sortKey',
-        order        : 'sortDir',
+        pageSize     : "pageSize",
+        sortKey      : "sortKey",
+        order        : "sortDir",
         directions   : {
-            '-1' : 'asc',
-            '1'  : 'desc'
+            "-1" : "asc",
+            "1"  : "desc"
         }
     },
 
 
     filterModes : {
-        'monitored'   : [
-            'monitored',
-            'true'
+        "monitored"   : [
+            "monitored",
+            "true"
         ],
-        'unmonitored' : [
-            'monitored',
-            'false'
+        "unmonitored" : [
+            "monitored",
+            "false"
         ],
-        'announced' : [
-            'status',
-            'announced'
+        "announced" : [
+            "status",
+            "announced"
         ],
-        'incinemas' : [
-            'status',
-            'inCinemas'
+        "incinemas" : [
+            "status",
+            "inCinemas"
         ],
-        'released' : [
-            'status',
-            'released'
+        "released" : [
+            "status",
+            "released"
         ],
-        'available' : [
-            'status',
-            'available'
+        "available" : [
+            "status",
+            "available"
         ],
-        'all' : [
-            'all',
-            'all'
+        "all" : [
+            "all",
+            "all"
         ]
     },
 

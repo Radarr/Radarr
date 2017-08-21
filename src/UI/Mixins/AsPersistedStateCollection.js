@@ -1,5 +1,5 @@
-var _ = require('underscore');
-var Config = require('../Config');
+var _ = require("underscore");
+var Config = require("../Config");
 
 module.exports = function() {
 
@@ -14,13 +14,13 @@ module.exports = function() {
         }
 
         if (!this.tableName && !options.tableName) {
-            throw 'tableName is required';
+            throw "tableName is required";
         }
 
         _setInitialState.call(this);
 
-        this.on('backgrid:sort', _storeStateFromBackgrid, this);
-        this.on('drone:sort', _storeState, this);
+        this.on("backgrid:sort", _storeStateFromBackgrid, this);
+        this.on("drone:sort", _storeState, this);
 
         if (originalInit) {
             originalInit.call(this, options);
@@ -37,8 +37,8 @@ module.exports = function() {
     }
 
     _setInitialState = function() {
-        var key = Config.getValue('{0}.sortKey'.format(this.tableName), this.state.sortKey);
-        var direction = Config.getValue('{0}.sortDirection'.format(this.tableName), this.state.order);
+        var key = Config.getValue("{0}.sortKey".format(this.tableName), this.state.sortKey);
+        var direction = Config.getValue("{0}.sortDirection".format(this.tableName), this.state.order);
         var order = parseInt(direction, 10);
 
         this.state.sortKey = this._getSortMapping(key).sortKey;
@@ -47,26 +47,26 @@ module.exports = function() {
 
     _storeStateFromBackgrid = function(column, sortDirection) {
         var order = _convertDirectionToInt(sortDirection);
-        var sortKey = this._getSortMapping(column.get('name')).sortKey;
+        var sortKey = this._getSortMapping(column.get("name")).sortKey;
 
-        Config.setValue('{0}.sortKey'.format(this.tableName), sortKey);
-        Config.setValue('{0}.sortDirection'.format(this.tableName), order);
+        Config.setValue("{0}.sortKey".format(this.tableName), sortKey);
+        Config.setValue("{0}.sortDirection".format(this.tableName), order);
     };
 
     _storeState = function(sortModel, sortDirection) {
         var order = _convertDirectionToInt(sortDirection);
-        var sortKey = this._getSortMapping(sortModel.get('name')).sortKey;
+        var sortKey = this._getSortMapping(sortModel.get("name")).sortKey;
 
-        Config.setValue('{0}.sortKey'.format(this.tableName), sortKey);
-        Config.setValue('{0}.sortDirection'.format(this.tableName), order);
+        Config.setValue("{0}.sortKey".format(this.tableName), sortKey);
+        Config.setValue("{0}.sortDirection".format(this.tableName), order);
     };
 
     _convertDirectionToInt = function(dir) {
-        if (dir === 'ascending') {
-            return '-1';
+        if (dir === "ascending") {
+            return "-1";
         }
 
-        return '1';
+        return "1";
     };
 
     return this;

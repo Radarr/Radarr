@@ -1,23 +1,23 @@
-var NzbDroneCell = require('./NzbDroneCell');
+var NzbDroneCell = require("./NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'movie-status-cell',
+    className : "movie-status-cell",
 
     render : function() {
         this.$el.empty();
-        var monitored = this.model.get('monitored');
-        var status = this.model.get('status');
+        var monitored = this.model.get("monitored");
+        var status = this.model.get("status");
         var inCinemas = this.model.get("inCinemas");
         var date = new Date(inCinemas);
         var timeSince = new Date().getTime() - date.getTime();
         var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
 
 
-        if (status === 'released') {
+        if (status === "released") {
 		  this.$el.html('<i class="icon-sonarr-movie-released grid-icon" title="Released"></i>');
 		  this._setStatusWeight(3);
 		}
-        if (status === 'inCinemas') {
+        if (status === "inCinemas") {
           this.$el.html('<i class="icon-sonarr-movie-cinemas grid-icon" title="In Cinemas"></i>');
           this._setStatusWeight(2);
         }
@@ -31,6 +31,6 @@ module.exports = NzbDroneCell.extend({
     },
 
     _setStatusWeight : function(weight) {
-        this.model.set('statusWeight', weight, { silent : true });
+        this.model.set("statusWeight", weight, { silent : true });
     }
 });

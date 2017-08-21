@@ -1,17 +1,17 @@
-var BackboneSortableCollectionView = require('backbone.collectionview');
-var EditProfileItemView = require('./EditProfileItemView');
+var BackboneSortableCollectionView = require("backbone.collectionview");
+var EditProfileItemView = require("./EditProfileItemView");
 
 module.exports = BackboneSortableCollectionView.extend({
-    className : 'qualities',
+    className : "qualities",
     modelView : EditProfileItemView,
 
     attributes : {
-        'validation-name' : 'items'
+        "validation-name" : "items"
     },
 
     events : {
-        'click li, td'    : '_listItem_onMousedown',
-        'dblclick li, td' : '_listItem_onDoubleClick',
-        'keydown'         : '_onKeydown'
+        "click li, td"    : "_listItem_onMousedown",
+        "dblclick li, td" : "_listItem_onDoubleClick",
+        "keydown"         : "_onKeydown"
     }
 });

@@ -1,23 +1,23 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var DeleteView = require('../Delete/DownloadClientDeleteView');
-var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../../Mixins/AsEditModalView');
-require('../../../Form/FormBuilder');
-require('../../../Mixins/FileBrowser');
-require('bootstrap');
+var vent = require("vent");
+var Marionette = require("marionette");
+var DeleteView = require("../Delete/DownloadClientDeleteView");
+var AsModelBoundView = require("../../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../../Mixins/AsValidatedView");
+var AsEditModalView = require("../../../Mixins/AsEditModalView");
+require("../../../Form/FormBuilder");
+require("../../../Mixins/FileBrowser");
+require("bootstrap");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/DownloadClient/Edit/DownloadClientEditViewTemplate',
+    template : "Settings/DownloadClient/Edit/DownloadClientEditViewTemplate",
 
     ui : {
-        path      : '.x-path',
-        modalBody : '.modal-body'
+        path      : ".x-path",
+        modalBody : ".modal-body"
     },
 
     events : {
-        'click .x-back' : '_back'
+        "click .x-back" : "_back"
     },
 
     _deleteView : DeleteView,
@@ -28,7 +28,7 @@ var view = Marionette.ItemView.extend({
 
     onShow : function() {
         if (this.ui.path.length > 0) {
-            this.ui.modalBody.addClass('modal-overflow');
+            this.ui.modalBody.addClass("modal-overflow");
         }
 
         this.ui.path.fileBrowser();
@@ -42,10 +42,10 @@ var view = Marionette.ItemView.extend({
     _onAfterSaveAndAdd : function() {
         this.targetCollection.add(this.model, { merge : true });
 
-        require('../Add/DownloadClientSchemaModal').open(this.targetCollection);
+        require("../Add/DownloadClientSchemaModal").open(this.targetCollection);
     },
     _back              : function() {
-        require('../Add/DownloadClientSchemaModal').open(this.targetCollection);
+        require("../Add/DownloadClientSchemaModal").open(this.targetCollection);
     }
 });
 

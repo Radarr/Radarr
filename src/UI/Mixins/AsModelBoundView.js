@@ -1,4 +1,4 @@
-var ModelBinder = require('backbone.modelbinder');
+var ModelBinder = require("backbone.modelbinder");
 
 module.exports = function() {
 
@@ -8,7 +8,7 @@ module.exports = function() {
     this.prototype.onRender = function() {
 
         if (!this.model) {
-            throw 'View has no model for binding';
+            throw "View has no model for binding";
         }
 
         if (!this._modelBinder) {
@@ -17,9 +17,9 @@ module.exports = function() {
 
         var options = {
             changeTriggers : {
-                ''                  : 'change typeahead:selected typeahead:autocompleted',
-                '[contenteditable]' : 'blur',
-                '[data-onkeyup]'    : 'keyup'
+                ""                  : "change typeahead:selected typeahead:autocompleted",
+                "[contenteditable]" : "blur",
+                "[data-onkeyup]"    : "keyup"
             }
         };
 

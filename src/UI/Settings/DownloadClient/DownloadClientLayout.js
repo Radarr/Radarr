@@ -1,19 +1,19 @@
-var Marionette = require('marionette');
-var DownloadClientCollection = require('./DownloadClientCollection');
-var DownloadClientCollectionView = require('./DownloadClientCollectionView');
-var DownloadHandlingView = require('./DownloadHandling/DownloadHandlingView');
-var DroneFactoryView = require('./DroneFactory/DroneFactoryView');
-var RemotePathMappingCollection = require('./RemotePathMapping/RemotePathMappingCollection');
-var RemotePathMappingCollectionView = require('./RemotePathMapping/RemotePathMappingCollectionView');
+var Marionette = require("marionette");
+var DownloadClientCollection = require("./DownloadClientCollection");
+var DownloadClientCollectionView = require("./DownloadClientCollectionView");
+var DownloadHandlingView = require("./DownloadHandling/DownloadHandlingView");
+var DroneFactoryView = require("./DroneFactory/DroneFactoryView");
+var RemotePathMappingCollection = require("./RemotePathMapping/RemotePathMappingCollection");
+var RemotePathMappingCollectionView = require("./RemotePathMapping/RemotePathMappingCollectionView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Settings/DownloadClient/DownloadClientLayoutTemplate',
+    template : "Settings/DownloadClient/DownloadClientLayoutTemplate",
 
     regions : {
-        downloadClients    : '#x-download-clients-region',
-        downloadHandling   : '#x-download-handling-region',
-        droneFactory       : '#x-dronefactory-region',
-        remotePathMappings : '#x-remotepath-mapping-region'
+        downloadClients    : "#x-download-clients-region",
+        downloadHandling   : "#x-download-handling-region",
+        droneFactory       : "#x-dronefactory-region",
+        remotePathMappings : "#x-remotepath-mapping-region"
     },
 
     initialize : function() {

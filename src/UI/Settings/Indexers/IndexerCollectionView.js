@@ -1,22 +1,22 @@
-var Marionette = require('marionette');
-var ItemView = require('./IndexerItemView');
-var SchemaModal = require('./Add/IndexerSchemaModal');
+var Marionette = require("marionette");
+var ItemView = require("./IndexerItemView");
+var SchemaModal = require("./Add/IndexerSchemaModal");
 
 module.exports = Marionette.CompositeView.extend({
     itemView          : ItemView,
-    itemViewContainer : '.indexer-list',
-    template          : 'Settings/Indexers/IndexerCollectionViewTemplate',
+    itemViewContainer : ".indexer-list",
+    template          : "Settings/Indexers/IndexerCollectionViewTemplate",
 
     ui : {
-        'addCard' : '.x-add-card'
+        "addCard" : ".x-add-card"
     },
 
     events : {
-        'click .x-add-card' : '_openSchemaModal'
+        "click .x-add-card" : "_openSchemaModal"
     },
 
     appendHtml : function(collectionView, itemView, index) {
-        collectionView.ui.addCard.parent('li').before(itemView.el);
+        collectionView.ui.addCard.parent("li").before(itemView.el);
     },
 
     _openSchemaModal : function() {

@@ -1,11 +1,11 @@
-var vent = require('vent');
-var Backgrid = require('backgrid');
+var vent = require("vent");
+var Backgrid = require("backgrid");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'delete-episode-file-cell',
+    className : "delete-episode-file-cell",
 
     events : {
-        'click' : '_onClick'
+        "click" : "_onClick"
     },
 
     render : function() {
@@ -18,7 +18,7 @@ module.exports = Backgrid.Cell.extend({
     _onClick : function() {
         var self = this;
 
-        if (window.confirm('Are you sure you want to delete \'{0}\' from disk?'.format(this.model.get('path')))) {
+        if (window.confirm("Are you sure you want to delete \"{0}\" from disk?".format(this.model.get("path")))) {
             this.model.destroy().done(function() {
                 vent.trigger(vent.Events.EpisodeFileDeleted, { episodeFile : self.model });
             });

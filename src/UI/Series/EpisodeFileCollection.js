@@ -1,8 +1,8 @@
-var Backbone = require('backbone');
-var EpisodeFileModel = require('./EpisodeFileModel');
+var Backbone = require("backbone");
+var EpisodeFileModel = require("./EpisodeFileModel");
 
 module.exports = Backbone.Collection.extend({
-    url   : window.NzbDrone.ApiRoot + '/episodefile',
+    url   : window.NzbDrone.ApiRoot + "/episodefile",
     model : EpisodeFileModel,
 
     originalFetch : Backbone.Collection.prototype.fetch,
@@ -14,7 +14,7 @@ module.exports = Backbone.Collection.extend({
 
     fetch : function(options) {
         if (!this.seriesId) {
-            throw 'seriesId is required';
+            throw "seriesId is required";
         }
 
         if (!options) {

@@ -1,9 +1,9 @@
-var Backbone = require('backbone');
-var ProfileModel = require('./ProfileModel');
+var Backbone = require("backbone");
+var ProfileModel = require("./ProfileModel");
 
 var ProfileCollection = Backbone.Collection.extend({
     model : ProfileModel,
-    url   : window.NzbDrone.ApiRoot + '/profile'
+    url   : window.NzbDrone.ApiRoot + "/profile"
 });
 
 var profiles = new ProfileCollection();

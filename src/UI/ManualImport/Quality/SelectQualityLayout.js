@@ -1,26 +1,26 @@
-var _ = require('underscore');
-var vent = require('../../vent');
-var Marionette = require('marionette');
-var LoadingView = require('../../Shared/LoadingView');
-var ProfileSchemaCollection = require('../../Settings/Profile/ProfileSchemaCollection');
-var SelectQualityView = require('./SelectQualityView');
+var _ = require("underscore");
+var vent = require("../../vent");
+var Marionette = require("marionette");
+var LoadingView = require("../../Shared/LoadingView");
+var ProfileSchemaCollection = require("../../Settings/Profile/ProfileSchemaCollection");
+var SelectQualityView = require("./SelectQualityView");
 
 module.exports = Marionette.Layout.extend({
-    template  : 'ManualImport/Quality/SelectQualityLayoutTemplate',
+    template  : "ManualImport/Quality/SelectQualityLayoutTemplate",
 
     regions : {
-        quality : '.x-quality'
+        quality : ".x-quality"
     },
 
     events : {
-        'click .x-select' : '_selectQuality'
+        "click .x-select" : "_selectQuality"
     },
 
     initialize : function() {
         this.profileSchemaCollection = new ProfileSchemaCollection();
         this.profileSchemaCollection.fetch();
 
-        this.listenTo(this.profileSchemaCollection, 'sync', this._showQuality);
+        this.listenTo(this.profileSchemaCollection, "sync", this._showQuality);
     },
 
     onRender : function() {
@@ -28,7 +28,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showQuality : function () {
-        var qualities = _.map(this.profileSchemaCollection.first().get('items'), function (quality) {
+        var qualities = _.map(this.profileSchemaCollection.first().get("items"), function (quality) {
             return quality.quality;
         });
 
@@ -37,7 +37,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _selectQuality : function () {
-        this.trigger('manualimport:selected:quality', { quality: this.selectQualityView.selectedQuality() });
+        this.trigger("manualimport:selected:quality", { quality: this.selectQualityView.selectedQuality() });
         vent.trigger(vent.Commands.CloseModal2Command);
     }
 });

@@ -1,100 +1,100 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var CommandController = require('../Commands/CommandController');
-var EmptyView = require('./EmptyView');
-var SelectFolderView = require('./Folder/SelectFolderView');
-var LoadingView = require('../Shared/LoadingView');
-var ManualImportRow = require('./ManualImportRow');
-var SelectAllCell = require('../Cells/SelectAllCell');
-var PathCell = require('./Cells/PathCell');
-var SeriesCell = require('./Cells/SeriesCell');
-var SeasonCell = require('./Cells/SeasonCell');
-var EpisodesCell = require('./Cells/EpisodesCell');
-var QualityCell = require('./Cells/QualityCell');
-var FileSizeCell = require('../Cells/FileSizeCell');
-var ApprovalStatusCell = require('../Cells/ApprovalStatusCell');
-var ManualImportCollection = require('./ManualImportCollection');
-var MovieCell = require('./Cells/MovieCell');
-var Messenger = require('../Shared/Messenger');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var CommandController = require("../Commands/CommandController");
+var EmptyView = require("./EmptyView");
+var SelectFolderView = require("./Folder/SelectFolderView");
+var LoadingView = require("../Shared/LoadingView");
+var ManualImportRow = require("./ManualImportRow");
+var SelectAllCell = require("../Cells/SelectAllCell");
+var PathCell = require("./Cells/PathCell");
+var SeriesCell = require("./Cells/SeriesCell");
+var SeasonCell = require("./Cells/SeasonCell");
+var EpisodesCell = require("./Cells/EpisodesCell");
+var QualityCell = require("./Cells/QualityCell");
+var FileSizeCell = require("../Cells/FileSizeCell");
+var ApprovalStatusCell = require("../Cells/ApprovalStatusCell");
+var ManualImportCollection = require("./ManualImportCollection");
+var MovieCell = require("./Cells/MovieCell");
+var Messenger = require("../Shared/Messenger");
 
 module.exports = Marionette.Layout.extend({
-    className : 'modal-lg',
-    template  : 'ManualImport/ManualImportLayoutTemplate',
+    className : "modal-lg",
+    template  : "ManualImport/ManualImportLayoutTemplate",
 
     regions : {
-        workspace  : '.x-workspace'
+        workspace  : ".x-workspace"
     },
 
     ui : {
-        importButton : '.x-import',
-        importMode   : '.x-importmode'
+        importButton : ".x-import",
+        importMode   : ".x-importmode"
     },
 
     events : {
-        'click .x-import' : '_import'
+        "click .x-import" : "_import"
     },
 
     columns : [
         {
-            name       : '',
+            name       : "",
             cell       : SelectAllCell,
-            headerCell : 'select-all',
+            headerCell : "select-all",
             sortable   : false
         },
         {
-            name       : 'relativePath',
-            label      : 'Relative Path',
+            name       : "relativePath",
+            label      : "Relative Path",
             cell       : PathCell,
             sortable   : true
         },
         {
-            name       : 'movie',
-            label      : 'Movie',
+            name       : "movie",
+            label      : "Movie",
             cell       : MovieCell,
             sortable   : true
         },
         // {
-        //     name       : 'series',
-        //     label      : 'Series',
+        //     name       : "series",
+        //     label      : "Series",
         //     cell       : SeriesCell,
         //     sortable   : true
         // },
         // {
-        //     name       : 'seasonNumber',
-        //     label      : 'Season',
+        //     name       : "seasonNumber",
+        //     label      : "Season",
         //     cell       : SeasonCell,
         //     sortable   : true
         // },
         // {
-        //     name       : 'episodes',
-        //     label      : 'Episode(s)',
+        //     name       : "episodes",
+        //     label      : "Episode(s)",
         //     cell       : EpisodesCell,
         //     sortable   : false
         // },
         {
-            name       : 'quality',
-            label      : 'Quality',
+            name       : "quality",
+            label      : "Quality",
             cell       : QualityCell,
             sortable   : true
 
         },
         {
-            name       : 'size',
-            label      : 'Size',
+            name       : "size",
+            label      : "Size",
             cell       : FileSizeCell,
             sortable   : true
         },
         {
-            name       : 'rejections',
-            label      : '<i class="icon-sonarr-header-rejections" />',
-            tooltip    : 'Rejections',
+            name       : "rejections",
+            label      : '<i class="icon-sonarr-header-rejections"></i>',
+            tooltip    : "Rejections",
             cell       : ApprovalStatusCell,
             sortable   : false,
-            sortType   : 'fixed',
-            direction  : 'ascending',
-            title      : 'Import Rejected'
+            sortType   : "fixed",
+            direction  : "ascending",
+            title      : "Import Rejected"
         }
     ],
 
@@ -102,7 +102,7 @@ module.exports = Marionette.Layout.extend({
         this.folder = options.folder;
         this.downloadId = options.downloadId;
         this.title = options.title;
-        this.importMode = options.importMode || 'Move';
+        this.importMode = options.importMode || "Move";
 
         this.templateHelpers = {
             title : this.title || this.folder
@@ -132,8 +132,8 @@ module.exports = Marionette.Layout.extend({
         this.manualImportCollection = new ManualImportCollection({ folder: this.folder, downloadId: this.downloadId });
         this.manualImportCollection.fetch();
 
-        this.listenTo(this.manualImportCollection, 'sync', this._showTable);
-        this.listenTo(this.manualImportCollection, 'backgrid:selected', this._updateButtons);
+        this.listenTo(this.manualImportCollection, "sync", this._showTable);
+        this.listenTo(this.manualImportCollection, "backgrid:selected", this._updateButtons);
     },
 
     _showTable : function () {
@@ -145,7 +145,7 @@ module.exports = Marionette.Layout.extend({
         this.fileView = new Backgrid.Grid({
             columns    : this.columns,
             collection : this.manualImportCollection,
-            className  : 'table table-hover',
+            className  : "table table-hover",
             row        : ManualImportRow
         });
 
@@ -157,8 +157,8 @@ module.exports = Marionette.Layout.extend({
         this.selectFolderView = new SelectFolderView();
         this.workspace.show(this.selectFolderView);
 
-        this.listenTo(this.selectFolderView, 'manualImport', this._manualImport);
-        this.listenTo(this.selectFolderView, 'automaticImport', this._automaticImport);
+        this.listenTo(this.selectFolderView, "manualImport", this._manualImport);
+        this.listenTo(this.selectFolderView, "automaticImport", this._automaticImport);
     },
 
     _manualImport : function (e) {
@@ -168,8 +168,8 @@ module.exports = Marionette.Layout.extend({
     },
 
     _automaticImport : function (e) {
-        CommandController.Execute('downloadedMoviesScan', {
-            name : 'downloadedMoviesScan',
+        CommandController.Execute("downloadedMoviesScan", {
+            name : "downloadedMoviesScan",
             path : e.folder
         });
 
@@ -184,48 +184,48 @@ module.exports = Marionette.Layout.extend({
         }
 
         if(_.any(selected, function(model) {
-            return !model.has('movie');
+            return !model.has("movie");
         })) {
-            this._showErrorMessage('Movie must be chosen for each selected file');
+            this._showErrorMessage("Movie must be chosen for each selected file");
             return;
         }
 
         // if (_.any(selected, function (model) {
-        //         return !model.has('series');
+        //         return !model.has("series");
         //     })) {
 
-        //     this._showErrorMessage('Series must be chosen for each selected file');
+        //     this._showErrorMessage("Series must be chosen for each selected file");
         //     return;
         // }
 
         // if (_.any(selected, function (model) {
-        //         return !model.has('seasonNumber');
+        //         return !model.has("seasonNumber");
         //     })) {
 
-        //     this._showErrorMessage('Season must be chosen for each selected file');
+        //     this._showErrorMessage("Season must be chosen for each selected file");
         //     return;
         // }
 
         // if (_.any(selected, function (model) {
-        //         return !model.has('episodes') || model.get('episodes').length === 0;
+        //         return !model.has("episodes") || model.get("episodes").length === 0;
         //     })) {
 
-        //     this._showErrorMessage('One or more episodes must be chosen for each selected file');
+        //     this._showErrorMessage("One or more episodes must be chosen for each selected file");
         //     return;
         // }
 
         var importMode = this.ui.importMode.val();
 
-        CommandController.Execute('manualImport', {
-            name  : 'manualImport',
+        CommandController.Execute("manualImport", {
+            name  : "manualImport",
             files : _.map(selected, function (file) {
                 return {
-                    path       : file.get('path'),
-                    movieId    : file.get('movie').id,
-                    // seriesId   : file.get('series').id,
-                    // episodeIds : _.map(file.get('episodes'), 'id'),
-                    quality    : file.get('quality'),
-                    downloadId : file.get('downloadId')
+                    path       : file.get("path"),
+                    movieId    : file.get("movie").id,
+                    // seriesId   : file.get("series").id,
+                    // episodeIds : _.map(file.get("episodes"), "id"),
+                    quality    : file.get("quality"),
+                    downloadId : file.get("downloadId")
                 };
             }),
             importMode : importMode
@@ -236,7 +236,7 @@ module.exports = Marionette.Layout.extend({
 
     _updateButtons : function (model, selected) {
         if (!this.fileView) {
-            this.ui.importButton.attr('disabled', 'disabled');
+            this.ui.importButton.attr("disabled", "disabled");
             return;
         }
 
@@ -256,18 +256,18 @@ module.exports = Marionette.Layout.extend({
         }
 
         if (selectedCount === 0) {
-            this.ui.importButton.attr('disabled', 'disabled');
+            this.ui.importButton.attr("disabled", "disabled");
         }
 
         else {
-            this.ui.importButton.removeAttr('disabled');
+            this.ui.importButton.removeAttr("disabled");
         }
     },
 
     _showErrorMessage : function (message) {
         Messenger.show({
             message   : message,
-            type      : 'error',
+            type      : "error",
             hideAfter : 5
         });
     }

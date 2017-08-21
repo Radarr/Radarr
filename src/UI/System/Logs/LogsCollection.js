@@ -1,28 +1,28 @@
-var PagableCollection = require('backbone.pageable');
-var LogsModel = require('./LogsModel');
-var AsFilteredCollection = require('../../Mixins/AsFilteredCollection');
-var AsPersistedStateCollection = require('../../Mixins/AsPersistedStateCollection');
+var PagableCollection = require("backbone.pageable");
+var LogsModel = require("./LogsModel");
+var AsFilteredCollection = require("../../Mixins/AsFilteredCollection");
+var AsPersistedStateCollection = require("../../Mixins/AsPersistedStateCollection");
 
 var collection = PagableCollection.extend({
-    url       : window.NzbDrone.ApiRoot + '/log',
+    url       : window.NzbDrone.ApiRoot + "/log",
     model     : LogsModel,
-    tableName : 'logs',
+    tableName : "logs",
 
     state : {
         pageSize : 50,
-        sortKey  : 'time',
+        sortKey  : "time",
         order    : 1
     },
 
     queryParams : {
         totalPages   : null,
         totalRecords : null,
-        pageSize     : 'pageSize',
-        sortKey      : 'sortKey',
-        order        : 'sortDir',
+        pageSize     : "pageSize",
+        sortKey      : "sortKey",
+        order        : "sortDir",
         directions   : {
-            '-1' : 'asc',
-            '1'  : 'desc'
+            "-1" : "asc",
+            "1"  : "desc"
         }
     },
 
@@ -33,16 +33,16 @@ var collection = PagableCollection.extend({
             null
         ],
         "info"  : [
-            'level',
-            'Info'
+            "level",
+            "Info"
         ],
         "warn"  : [
-            'level',
-            'Warn'
+            "level",
+            "Warn"
         ],
         "error" : [
-            'level',
-            'Error'
+            "level",
+            "Error"
         ]
     },
 

@@ -1,33 +1,33 @@
-var _ = require('underscore');
-var $ = require('jquery');
-var vent = require('vent');
-var Marionette = require('marionette');
-var DeleteView = require('../Delete/NotificationDeleteView');
-var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../../Mixins/AsEditModalView');
-require('../../../Form/FormBuilder');
-require('../../../Mixins/TagInput');
-require('../../../Mixins/FileBrowser');
-require('bootstrap.tagsinput');
+var _ = require("underscore");
+var $ = require("jquery");
+var vent = require("vent");
+var Marionette = require("marionette");
+var DeleteView = require("../Delete/NotificationDeleteView");
+var AsModelBoundView = require("../../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../../Mixins/AsValidatedView");
+var AsEditModalView = require("../../../Mixins/AsEditModalView");
+require("../../../Form/FormBuilder");
+require("../../../Mixins/TagInput");
+require("../../../Mixins/FileBrowser");
+require("bootstrap.tagsinput");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/Notifications/Edit/NotificationEditViewTemplate',
+    template : "Settings/Notifications/Edit/NotificationEditViewTemplate",
 
     ui : {
-        onDownloadToggle             : '.x-on-download',
-        onUpgradeSection             : '.x-on-upgrade',
-        tags                         : '.x-tags',
-        modalBody                    : '.x-modal-body',
-        formTag                      : '.x-form-tag',
-        path                         : '.x-path',
-        authorizedNotificationButton : '.AuthorizeNotification'
+        onDownloadToggle             : ".x-on-download",
+        onUpgradeSection             : ".x-on-upgrade",
+        tags                         : ".x-tags",
+        modalBody                    : ".x-modal-body",
+        formTag                      : ".x-form-tag",
+        path                         : ".x-path",
+        authorizedNotificationButton : ".AuthorizeNotification"
     },
 
     events : {
-        'click .x-back'         : '_back',
-        'change .x-on-download' : '_onDownloadChanged',
-        'click .AuthorizeNotification' : '_onAuthorizeNotification'
+        "click .x-back"         : "_back",
+        "change .x-on-download" : "_onDownloadChanged",
+        "click .AuthorizeNotification" : "_onAuthorizeNotification"
     },
 
     _deleteView : DeleteView,
@@ -41,18 +41,18 @@ var view = Marionette.ItemView.extend({
 
         this.ui.tags.tagInput({
             model    : this.model,
-            property : 'tags'
+            property : "tags"
         });
 
         this.ui.formTag.tagsinput({
             trimValue : true,
-            tagClass  : 'label label-default'
+            tagClass  : "label label-default"
         });
     },
 
     onShow : function() {
         if (this.ui.path.length > 0) {
-            this.ui.modalBody.addClass('modal-overflow');
+            this.ui.modalBody.addClass("modal-overflow");
         }
 
         this.ui.path.fileBrowser();
@@ -66,7 +66,7 @@ var view = Marionette.ItemView.extend({
     _onAfterSaveAndAdd : function() {
         this.targetCollection.add(this.model, { merge : true });
 
-        require('../Add/NotificationSchemaModal').open(this.targetCollection);
+        require("../Add/NotificationSchemaModal").open(this.targetCollection);
     },
 
     _back : function() {
@@ -74,11 +74,11 @@ var view = Marionette.ItemView.extend({
             this.model.destroy();
         }
 
-        require('../Add/NotificationSchemaModal').open(this.targetCollection);
+        require("../Add/NotificationSchemaModal").open(this.targetCollection);
     },
 
     _onDownloadChanged : function() {
-        var checked = this.ui.onDownloadToggle.prop('checked');
+        var checked = this.ui.onDownloadToggle.prop("checked");
 
         if (checked) {
             this.ui.onUpgradeSection.show();
@@ -91,18 +91,18 @@ var view = Marionette.ItemView.extend({
         this.ui.indicator.show();
 
         var self = this;
-        var callbackUrl = window.location.origin + window.NzbDrone.UrlBase + '/oauth.html';
+        var callbackUrl = window.location.origin + window.NzbDrone.UrlBase + "/oauth.html";
 
-        var promise = this.model.requestAction('startOAuth', { callbackUrl: callbackUrl })
+        var promise = this.model.requestAction("startOAuth", { callbackUrl: callbackUrl })
             .then(function(response) {
                 return self._showOAuthWindow(response.oauthUrl);
             })
             .then(function(responseQueryParams) {
-                return self.model.requestAction('getOAuthToken', responseQueryParams);
+                return self.model.requestAction("getOAuthToken", responseQueryParams);
             })
             .then(function(response) {
-                self.model.setFieldValue('AccessToken', response.accessToken);
-                self.model.setFieldValue('AccessTokenSecret', response.accessTokenSecret);
+                self.model.setFieldValue("AccessToken", response.accessToken);
+                self.model.setFieldValue("AccessTokenSecret", response.accessTokenSecret);
             });
             
         promise.always(function() {
@@ -119,9 +119,9 @@ var view = Marionette.ItemView.extend({
             delete selfWindow.onCompleteOauth;
 
             var queryParams = {};
-            var splitQuery = query.substring(1).split('&');
+            var splitQuery = query.substring(1).split("&");
             _.each(splitQuery, function (param) {
-                var paramSplit = param.split('=');
+                var paramSplit = param.split("=");
                 queryParams[paramSplit[0]] = paramSplit[1];
             });
 

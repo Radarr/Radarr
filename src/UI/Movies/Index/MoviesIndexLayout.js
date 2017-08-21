@@ -1,65 +1,65 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
-var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
-var EmptyView = require('./EmptyView');
-var MoviesCollection = require('../MoviesCollection');
+var _ = require("underscore");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var PosterCollectionView = require("./Posters/SeriesPostersCollectionView");
+var ListCollectionView = require("./Overview/SeriesOverviewCollectionView");
+var EmptyView = require("./EmptyView");
+var MoviesCollection = require("../MoviesCollection");
 
-var FullMovieCollection = require('../FullMovieCollection');
-var InCinemasCell = require('../../Cells/InCinemasCell');
+var FullMovieCollection = require("../FullMovieCollection");
+var InCinemasCell = require("../../Cells/InCinemasCell");
 
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
 
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
-var TemplatedCell = require('../../Cells/TemplatedCell');
-var ProfileCell = require('../../Cells/ProfileCell');
-var MovieLinksCell = require('../../Cells/MovieLinksCell');
-var MovieActionCell = require('../../Cells/MovieActionCell');
-var MovieStatusCell = require('../../Cells/MovieStatusCell');
-var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
-var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
-var FooterView = require('./FooterView');
-var GridPager = require('../../Shared/Grid/Pager');
-var FooterModel = require('./FooterModel');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
-require('../../Mixins/backbone.signalr.mixin');
-var Config = require('../../Config');
+var MovieTitleCell = require("../../Cells/MovieTitleCell");
+var TemplatedCell = require("../../Cells/TemplatedCell");
+var ProfileCell = require("../../Cells/ProfileCell");
+var MovieLinksCell = require("../../Cells/MovieLinksCell");
+var MovieActionCell = require("../../Cells/MovieActionCell");
+var MovieStatusCell = require("../../Cells/MovieStatusCell");
+var MovieDownloadStatusCell = require("../../Cells/MovieDownloadStatusCell");
+var DownloadedQualityCell = require("../../Cells/DownloadedQualityCell");
+var FooterView = require("./FooterView");
+var GridPager = require("../../Shared/Grid/Pager");
+var FooterModel = require("./FooterModel");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
+require("../../Mixins/backbone.signalr.mixin");
+var Config = require("../../Config");
 
-//var MoviesCollectionClient = require('../MoviesCollectionClient');
+//var MoviesCollectionClient = require("../MoviesCollectionClient");
 
 
 //this variable prevents double fetching the FullMovieCollection on first load
 //var shownOnce = false;
-//require('../Globals');
+//require("../Globals");
 window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
-    template : 'Movies/Index/MoviesIndexLayoutTemplate',
+    template : "Movies/Index/MoviesIndexLayoutTemplate",
 
     regions : {
-        seriesRegion : '#x-series',
-        toolbar      : '#x-toolbar',
-        toolbar2     : '#x-toolbar2',
-        footer       : '#x-series-footer',
+        seriesRegion : "#x-series",
+        toolbar      : "#x-toolbar",
+        toolbar2     : "#x-toolbar2",
+        footer       : "#x-series-footer",
         pager : "#x-movie-pager",
         pagerTop : "#x-movie-pager-top"
     },
 
     columns : [
         {
-            name  : 'status',
-            label : '',
+            name  : "status",
+            label : "",
             cell  : MovieStatusCell
         },
         {
-            name      : 'title',
-            label     : 'Title',
+            name      : "title",
+            label     : "Title",
             cell      : MovieTitleCell,
-            cellValue : 'this',
+            cellValue : "this",
         },
         {
-            name  : 'added',
-            label : 'Date added',
+            name  : "added",
+            label : "Date added",
             cell  : RelativeDateCell
         },
         {
@@ -69,18 +69,18 @@ module.exports = Marionette.Layout.extend({
           sortable : true
         },
         {
-            name  : 'profileId',
-            label : 'Profile',
+            name  : "profileId",
+            label : "Profile",
             cell  : ProfileCell
         },
         {
-            name  : 'inCinemas',
-            label : 'In cinemas',
+            name  : "inCinemas",
+            label : "In cinemas",
             cell  : RelativeDateCell
         },
         {
-            name      : 'this',
-            label     : 'Links',
+            name      : "this",
+            label     : "Links",
             cell      : MovieLinksCell,
             className : "movie-links-cell",
             sortable : false,
@@ -98,33 +98,33 @@ module.exports = Marionette.Layout.extend({
           }
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             sortable : false,
             cell     : MovieActionCell
         }
     ],
 
     leftSideButtons : {
-        type       : 'default',
+        type       : "default",
         storeState : false,
         collapse   : true,
         items      : [
             {
-                title : 'Add movie',
-                icon  : 'icon-sonarr-add',
-                route : 'addmovies'
+                title : "Add movie",
+                icon  : "icon-sonarr-add",
+                route : "addmovies"
             },
             {
-                title : 'Movie editor',
-                icon  : 'icon-sonarr-edit',
-                route : 'movieeditor'
+                title : "Movie editor",
+                icon  : "icon-sonarr-edit",
+                route : "movieeditor"
             },
             {
-                title        : 'RSS sync',
-                icon         : 'icon-sonarr-rss',
-                command      : 'rsssync',
-                errorMessage : 'RSS sync failed!'
+                title        : "RSS sync",
+                icon         : "icon-sonarr-rss",
+                command      : "rsssync",
+                errorMessage : "RSS sync failed!"
             },
             {
               title : "PreDB sync",
@@ -133,11 +133,11 @@ module.exports = Marionette.Layout.extend({
               errorMessage : "PreDB sync failed!"
             },
             {
-                title          : 'Update library',
-                icon           : 'icon-sonarr-refresh',
-                command        : 'refreshmovie',
-                successMessage : 'Library was successfully updated!',
-                errorMessage   : 'Library update failed!'
+                title          : "Update library",
+                icon           : "icon-sonarr-refresh",
+                command        : "refreshmovie",
+                successMessage : "Library was successfully updated!",
+                errorMessage   : "Library update failed!"
             }
         ]
     },
@@ -151,11 +151,11 @@ module.exports = Marionette.Layout.extend({
 		if (this.seriesCollection.state.pageSize !== pageSize) {
         	this.seriesCollection.setPageSize(pageSize);
 		}
-        //this.listenTo(MoviesCollection, 'sync', function() {
+        //this.listenTo(MoviesCollection, "sync", function() {
 		//	this.seriesCollection.fetch();
 		//});
 
- 		this.listenToOnce(this.seriesCollection, 'sync', function() {
+ 		this.listenToOnce(this.seriesCollection, "sync", function() {
             this._showToolbar();
             //this._fetchCollection();
             if (window.shownOnce) {
@@ -167,33 +167,33 @@ module.exports = Marionette.Layout.extend({
 
 
 
-	    this.listenTo(FullMovieCollection, 'sync', function() {
+	    this.listenTo(FullMovieCollection, "sync", function() {
 			this._showFooter();
 		});
 
-        /*this.listenTo(this.seriesCollection, 'sync', function(model, collection, options) {
+        /*this.listenTo(this.seriesCollection, "sync", function(model, collection, options) {
             this._renderView();
 			//MoviesCollectionClient.fetch();
         });*/
         this.listenTo(this.seriesCollection, "change", function(model) {
-			if (model.get('saved'))	{
-				model.set('saved', false);
+			if (model.get("saved"))	{
+				model.set("saved", false);
 				this.seriesCollection.fetch();
 				//FullMovieCollection.fetch({reset : true });
 				//this._showFooter();
-				var m = FullMovieCollection.findWhere( { tmdbId : model.get('tmdbId') });
-				m.set('monitored', model.get('monitored'));
-				m.set('minimumAvailability', model.get('minimumAvailability'));
-				m.set( {profileId : model.get('profileId') } );
+				var m = FullMovieCollection.findWhere( { tmdbId : model.get("tmdbId") });
+				m.set("monitored", model.get("monitored"));
+				m.set("minimumAvailability", model.get("minimumAvailability"));
+				m.set( {profileId : model.get("profileId") } );
 
 				this._showFooter();
 			}
 		});
 
 
-        this.listenTo(this.seriesCollection, 'remove', function(model, collection, options) {
-			if (model.get('deleted')) {
-				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the 'total records' number is updated
+        this.listenTo(this.seriesCollection, "remove", function(model, collection, options) {
+			if (model.get("deleted")) {
+				this.seriesCollection.fetch(); //need to do this so that the page shows a full page and the "total records" number is updated
 				//FullMovieCollection.fetch({reset : true}); //need to do this to update the footer
 				FullMovieCollection.remove(model);
 				this._showFooter();
@@ -204,26 +204,26 @@ module.exports = Marionette.Layout.extend({
 
 
         this.sortingOptions = {
-            type           : 'sorting',
+            type           : "sorting",
             storeState     : false,
             viewCollection : this.seriesCollection,
             callback : this._sort,
             items          : [
                 {
-                    title : 'Title',
-                    name  : 'title'
+                    title : "Title",
+                    name  : "title"
                 },
                 {
-                    title: 'Downloaded',
-                    name: 'downloadedQuality'
+                    title: "Downloaded",
+                    name: "downloadedQuality"
                 },
                 {
-                    title : 'Profile',
-                    name  : 'profileId'
+                    title : "Profile",
+                    name  : "profileId"
                 },
                 {
-                    title : 'In cinemas',
-                    name  : 'inCinemas'
+                    title : "In cinemas",
+                    name  : "inCinemas"
                 },
                 /*{
                   title : "Status",
@@ -233,81 +233,81 @@ module.exports = Marionette.Layout.extend({
         };
 
         this.filteringOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'series.filterMode',
-            defaultAction : 'all',
+            menuKey       : "series.filterMode",
+            defaultAction : "all",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'Show all movies',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "Show all movies",
+                    icon     : "icon-sonarr-all",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'monitored',
-                    title    : '',
-                    tooltip  : 'Show monitored movies',
-                    icon     : 'icon-sonarr-monitored',
+                    key      : "monitored",
+                    title    : "",
+                    tooltip  : "Show monitored movies",
+                    icon     : "icon-sonarr-monitored",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'missing',
-                    title    : '',
-                    tooltip  : 'Show missing movies',
-                    icon     : 'icon-sonarr-missing',
+                    key      : "missing",
+                    title    : "",
+                    tooltip  : "Show missing movies",
+                    icon     : "icon-sonarr-missing",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'released',
-                    title    : '',
-                    tooltip  : 'Show released movies',
-                    icon     : 'icon-sonarr-movie-released',
+                    key      : "released",
+                    title    : "",
+                    tooltip  : "Show released movies",
+                    icon     : "icon-sonarr-movie-released",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'announced',
-                    title    : '',
-                    tooltip  : 'Show announced movies',
-                    icon     : 'icon-sonarr-movie-announced',
+                    key      : "announced",
+                    title    : "",
+                    tooltip  : "Show announced movies",
+                    icon     : "icon-sonarr-movie-announced",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'cinemas',
-                    title    : '',
-                    tooltip  : 'Show movies currently in cinemas',
-                    icon     : 'icon-sonarr-movie-cinemas',
+                    key      : "cinemas",
+                    title    : "",
+                    tooltip  : "Show movies currently in cinemas",
+                    icon     : "icon-sonarr-movie-cinemas",
                     callback : this._setFilter
                 }
             ]
         };
 
         this.viewButtons = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'seriesViewMode',
-            defaultAction : 'listView',
+            menuKey       : "seriesViewMode",
+            defaultAction : "listView",
             items         : [
                 {
-                    key      : 'posterView',
-                    title    : '',
-                    tooltip  : 'Posters view',
-                    icon     : 'icon-sonarr-view-poster',
+                    key      : "posterView",
+                    title    : "",
+                    tooltip  : "Posters view",
+                    icon     : "icon-sonarr-view-poster",
                     callback : this._showPosters
                 },
                 {
-                    key      : 'listView',
-                    title    : '',
-                    tooltip  : 'Overview list',
-                    icon     : 'icon-sonarr-view-list',
+                    key      : "listView",
+                    title    : "",
+                    tooltip  : "Overview list",
+                    icon     : "icon-sonarr-view-list",
                     callback : this._showList
                 },
                 {
-                    key      : 'tableView',
-                    title    : '',
-                    tooltip  : 'Table view',
-                    icon     : 'icon-sonarr-view-table',
+                    key      : "tableView",
+                    title    : "",
+                    tooltip  : "Table view",
+                    icon     : "icon-sonarr-view-table",
                     callback : this._showTable
                 }
             ]
@@ -321,7 +321,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     onShow : function() {
-/*		this.listenToOnce(this.seriesCollection, 'sync', function() {
+/*		this.listenToOnce(this.seriesCollection, "sync", function() {
         	this._showToolbar();
 			//this._fetchCollection();
 			if (window.shownOnce) {
@@ -336,7 +336,7 @@ module.exports = Marionette.Layout.extend({
         this.currentView = new Backgrid.Grid({
             collection : this.seriesCollection,
             columns    : this.columns,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         });
 
         //this._showPager();
@@ -373,7 +373,7 @@ module.exports = Marionette.Layout.extend({
         } else {
             this.renderedOnce = true;
             this.seriesRegion.show(this.currentView);
-			this.listenTo(this.currentView.collection, 'sync', function(eventName){
+			this.listenTo(this.currentView.collection, "sync", function(eventName){
 				this._showPager();
 			});
             this._showToolbar();
@@ -385,7 +385,7 @@ module.exports = Marionette.Layout.extend({
 	},
 
     _setFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
         this.seriesCollection.setFilterMode(mode);
     },
 
@@ -431,7 +431,7 @@ module.exports = Marionette.Layout.extend({
         var footerModel = new FooterModel();
         var movies = FullMovieCollection.models.length;
         //instead of all the counters could do something like this with different query in the where...
-        //var releasedMovies = FullMovieCollection.where({ 'released' : this.model.get('released') });
+        //var releasedMovies = FullMovieCollection.where({ "released" : this.model.get("released") });
         //    releasedMovies.length
 
         var announced = 0;
@@ -451,24 +451,24 @@ module.exports = Marionette.Layout.extend({
 
         _.each(FullMovieCollection.models, function(model) {
 
-        	if (model.get('status').toLowerCase() === 'released') {
+        	if (model.get("status").toLowerCase() === "released") {
         		released++;
 	    	}
-	    	else if (model.get('status').toLowerCase() === 'incinemas') {
+	    	else if (model.get("status").toLowerCase() === "incinemas") {
             	incinemas++;
         	}
-	    	else if (model.get('status').toLowerCase() === 'announced') {
+	    	else if (model.get("status").toLowerCase() === "announced") {
             	announced++;
         	}
 
-        	if (model.get('monitored')) {
+        	if (model.get("monitored")) {
             		monitored++;
-  			if (model.get('downloaded')) {
+  			if (model.get("downloaded")) {
 				downloadedMonitored++;
 			}
 	    	}
 	    	else { //not monitored
-				if (model.get('downloaded')) {
+				if (model.get("downloaded")) {
 					downloadedNotMonitored++;
 				}
 				else { //missing
@@ -476,19 +476,19 @@ module.exports = Marionette.Layout.extend({
 				}
 	    	}
 
-	    	if (model.get('downloaded')) {
+	    	if (model.get("downloaded")) {
 				downloaded++;
 	    	}
         	else { //missing
-				if (!model.get('isAvailable')) {
-   					if (model.get('monitored')) {
+				if (!model.get("isAvailable")) {
+   					if (model.get("monitored")) {
 						missingMonitoredNotAvailable++;
 					}
 				}
 
-				if (model.get('monitored')) {
+				if (model.get("monitored")) {
 		    		missingMonitored++;
-		    		if (model.get('isAvailable')) {
+		    		if (model.get("isAvailable")) {
 		        		missingMonitoredAvailable++;
 		    		}
 				}

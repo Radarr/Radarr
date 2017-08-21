@@ -1,18 +1,18 @@
-var AppLayout = require('../../AppLayout');
-var Marionette = require('marionette');
-var EditView = require('./MetadataEditView');
-var AsModelBoundView = require('../../Mixins/AsModelBoundView');
+var AppLayout = require("../../AppLayout");
+var Marionette = require("marionette");
+var EditView = require("./MetadataEditView");
+var AsModelBoundView = require("../../Mixins/AsModelBoundView");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/Metadata/MetadataItemViewTemplate',
-    tagName  : 'li',
+    template : "Settings/Metadata/MetadataItemViewTemplate",
+    tagName  : "li",
 
     events : {
-        'click' : '_edit'
+        "click" : "_edit"
     },
 
     initialize : function() {
-        this.listenTo(this.model, 'sync', this.render);
+        this.listenTo(this.model, "sync", this.render);
     },
 
     _edit : function() {

@@ -1,34 +1,34 @@
-var _ = require('underscore');
-var PageableCollection = require('backbone.pageable');
-//var PageableCollection = require('../../Shared/Grid/SonarrPageableCollection');
-var QueueModel = require('./QueueModel');
-var FormatHelpers = require('../../Shared/FormatHelpers');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
-var AsPageableCollection = require('../../Mixins/AsPageableCollection');
-var moment = require('moment');
+var _ = require("underscore");
+var PageableCollection = require("backbone.pageable");
+//var PageableCollection = require("../../Shared/Grid/SonarrPageableCollection");
+var QueueModel = require("./QueueModel");
+var FormatHelpers = require("../../Shared/FormatHelpers");
+var AsSortedCollection = require("../../Mixins/AsSortedCollection");
+var AsPageableCollection = require("../../Mixins/AsPageableCollection");
+var moment = require("moment");
 
-require('../../Mixins/backbone.signalr.mixin');
+require("../../Mixins/backbone.signalr.mixin");
 
 var QueueCollection = PageableCollection.extend({
-    url   : window.NzbDrone.ApiRoot + '/queue',
+    url   : window.NzbDrone.ApiRoot + "/queue",
     model : QueueModel,
 
     state : {
         pageSize : 15,
-        sortKey: 'timeleft'
+        sortKey: "timeleft"
     },
 
-    mode : 'client',
+    mode : "client",
 
     findEpisode : function(episodeId) {
         return _.find(this.fullCollection.models, function(queueModel) {
-            return queueModel.get('episode').id === episodeId;
+            return queueModel.get("episode").id === episodeId;
         });
     },
 
     findMovie : function(movieId) {
         return _.find(this.fullCollection.models, function(queueModel) {
-            return queueModel.get('movie').id === movieId;
+            return queueModel.get("movie").id === movieId;
         });
     },
 
@@ -37,7 +37,7 @@ var QueueCollection = PageableCollection.extend({
             sortValue : function(model, attr) {
                 var series = model.get(attr);
 
-                return series.get('sortTitle');
+                return series.get("sortTitle");
             }
         },
 
@@ -45,29 +45,29 @@ var QueueCollection = PageableCollection.extend({
             sortValue : function(model, attr) {
                 var movie = model.get(attr);
 
-                return movie.get('sortTitle');
+                return movie.get("sortTitle");
             }
         },
 
         episode : {
             sortValue : function(model, attr) {
-                var episode = model.get('episode');
+                var episode = model.get("episode");
 
-                return FormatHelpers.pad(episode.get('seasonNumber'), 4) + FormatHelpers.pad(episode.get('episodeNumber'), 4);
+                return FormatHelpers.pad(episode.get("seasonNumber"), 4) + FormatHelpers.pad(episode.get("episodeNumber"), 4);
             }
         },
 
         episodeTitle : {
             sortValue : function(model, attr) {
-                var episode = model.get('episode');
+                var episode = model.get("episode");
 
-                return episode.get('title');
+                return episode.get("title");
             }
         },
 
         timeleft : {
             sortValue : function(model, attr) {
-                var eta = model.get('estimatedCompletionTime');
+                var eta = model.get("estimatedCompletionTime");
 
                 if (eta) {
                     return moment(eta).unix();
@@ -79,8 +79,8 @@ var QueueCollection = PageableCollection.extend({
 
         sizeleft : {
             sortValue : function(model, attr) {
-                var size = model.get('size');
-                var sizeleft = model.get('sizeleft');
+                var size = model.get("size");
+                var sizeleft = model.get("sizeleft");
 
                 if (size && sizeleft) {
                     return sizeleft / size;

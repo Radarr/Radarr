@@ -1,30 +1,30 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var ButtonsView = require('./ButtonsView');
-var ManualSearchLayout = require('./ManualLayout');
-var ReleaseCollection = require('../../Release/ReleaseCollection');
-var CommandController = require('../../Commands/CommandController');
-var LoadingView = require('../../Shared/LoadingView');
-var NoResultsView = require('./NoResultsView');
+var vent = require("vent");
+var Marionette = require("marionette");
+var ButtonsView = require("./ButtonsView");
+var ManualSearchLayout = require("./ManualLayout");
+var ReleaseCollection = require("../../Release/ReleaseCollection");
+var CommandController = require("../../Commands/CommandController");
+var LoadingView = require("../../Shared/LoadingView");
+var NoResultsView = require("./NoResultsView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Movies/Search/MovieSearchLayoutTemplate',
+    template : "Movies/Search/MovieSearchLayoutTemplate",
 
     regions : {
-        main : '#episode-search-region'
+        main : "#episode-search-region"
     },
 
     events : {
-        'click .x-search-auto'   : '_searchAuto',
-        'click .x-search-manual' : '_searchManual',
-        'click .x-search-back'   : '_showButtons'
+        "click .x-search-auto"   : "_searchAuto",
+        "click .x-search-manual" : "_searchManual",
+        "click .x-search-back"   : "_showButtons"
     },
 
     initialize : function() {
         this.mainView = new ButtonsView();
         this.releaseCollection = new ReleaseCollection();
 
-        this.listenTo(this.releaseCollection, 'sync', this._showSearchResults);
+        this.listenTo(this.releaseCollection, "sync", this._showSearchResults);
     },
 
     onShow : function() {
@@ -42,8 +42,8 @@ module.exports = Marionette.Layout.extend({
             e.preventDefault();
         }
 
-        CommandController.Execute('episodeSearch', {
-            episodeIds : [this.model.get('id')]
+        CommandController.Execute("episodeSearch", {
+            episodeIds : [this.model.get("id")]
         });
 
         vent.trigger(vent.Commands.CloseModalCommand);

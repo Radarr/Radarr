@@ -1,7 +1,7 @@
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'language-cell',
+    className : "language-cell",
 
     render : function() {
         this.$el.empty();

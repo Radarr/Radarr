@@ -1,11 +1,11 @@
-var Marionette = require('marionette');
-var CommandController = require('../../Commands/CommandController');
+var Marionette = require("marionette");
+var CommandController = require("../../Commands/CommandController");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'System/Update/UpdateItemViewTemplate',
+    template : "System/Update/UpdateItemViewTemplate",
 
     events : {
-        'click .x-install-update' : '_installUpdate'
+        "click .x-install-update" : "_installUpdate"
     },
 
     initialize : function() {
@@ -20,7 +20,7 @@ module.exports = Marionette.ItemView.extend({
         this.updating = true;
         var self = this;
 
-        var promise = CommandController.Execute('applicationUpdate');
+        var promise = CommandController.Execute("applicationUpdate");
 
         promise.done(function() {
             window.setTimeout(function() {

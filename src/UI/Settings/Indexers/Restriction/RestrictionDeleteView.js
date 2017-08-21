@@ -1,11 +1,11 @@
-var vent = require('vent');
-var Marionette = require('marionette');
+var vent = require("vent");
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Settings/Indexers/Restriction/RestrictionDeleteViewTemplate',
+    template : "Settings/Indexers/Restriction/RestrictionDeleteViewTemplate",
 
     events : {
-        'click .x-confirm-delete' : '_delete'
+        "click .x-confirm-delete" : "_delete"
     },
 
     _delete : function() {

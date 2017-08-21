@@ -1,9 +1,9 @@
-var $ = require('jquery');
-var vent = require('vent');
-var HotkeysView = require('./HotkeysView');
+var $ = require("jquery");
+var vent = require("vent");
+var HotkeysView = require("./HotkeysView");
 
-$(document).on('keypress', function(e) {
-    if ($(e.target).is('input') || $(e.target).is('textarea')) {
+$(document).on("keypress", function(e) {
+    if ($(e.target).is("input") || $(e.target).is("textarea")) {
         return;
     }
 
@@ -12,14 +12,14 @@ $(document).on('keypress', function(e) {
     }
 });
 
-$(document).on('keydown', function(e) {
+$(document).on("keydown", function(e) {
     if (e.ctrlKey && e.keyCode === 83) {
         vent.trigger(vent.Hotkeys.SaveSettings);
         e.preventDefault();
         return;
     }
 
-    if ($(e.target).is('input') || $(e.target).is('textarea')) {
+    if ($(e.target).is("input") || $(e.target).is("textarea")) {
         return;
     }
 

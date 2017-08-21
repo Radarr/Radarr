@@ -1,18 +1,18 @@
-var vent = require('../../vent');
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
-var SelectSeriesLayout = require('../Series/SelectSeriesLayout');
+var vent = require("../../vent");
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
+var SelectSeriesLayout = require("../Series/SelectSeriesLayout");
 
 module.exports = NzbDroneCell.extend({
-    className : 'series-title-cell editable',
+    className : "series-title-cell editable",
 
     events : {
-        'click' : '_onClick'
+        "click" : "_onClick"
     },
 
     render : function() {
         this.$el.empty();
 
-        var series = this.model.get('series');
+        var series = this.model.get("series");
 
         if (series)
         {
@@ -26,13 +26,13 @@ module.exports = NzbDroneCell.extend({
     _onClick : function () {
         var view = new SelectSeriesLayout();
 
-        this.listenTo(view, 'manualimport:selected:series', this._setSeries);
+        this.listenTo(view, "manualimport:selected:series", this._setSeries);
 
         vent.trigger(vent.Commands.OpenModal2Command, view);
     },
 
     _setSeries : function (e) {
-        if (this.model.has('series') && e.model.id === this.model.get('series').id) {
+        if (this.model.has("series") && e.model.id === this.model.get("series").id) {
             return;
         }
 

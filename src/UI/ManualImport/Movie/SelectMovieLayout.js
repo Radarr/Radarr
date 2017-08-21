@@ -1,34 +1,34 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var MoviesCollection = require('../../Movies/MoviesCollection');
-var SelectRow = require('./SelectMovieRow');
-var FullMovieCollection = require('../../Movies/FullMovieCollection');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var MoviesCollection = require("../../Movies/MoviesCollection");
+var SelectRow = require("./SelectMovieRow");
+var FullMovieCollection = require("../../Movies/FullMovieCollection");
 
 module.exports = Marionette.Layout.extend({
-    template  : 'ManualImport/Movie/SelectMovieLayoutTemplate',
+    template  : "ManualImport/Movie/SelectMovieLayoutTemplate",
 
     regions : {
-        movie : '.x-movie'
+        movie : ".x-movie"
     },
 
     ui : {
-        filter : '.x-filter'
+        filter : ".x-filter"
     },
 
     columns : [
         {
-            name      : 'title',
-            label     : 'Title',
-            cell      : 'String',
-            sortValue : 'title'
+            name      : "title",
+            label     : "Title",
+            cell      : "String",
+            sortValue : "title"
         },
         {
-            name      : 'year',
-            label     : 'Year',
-            cell      : 'String',
-            sortValue : 'year'
+            name      : "year",
+            label     : "Year",
+            cell      : "String",
+            sortValue : "year"
         }
     ],
 
@@ -36,15 +36,15 @@ module.exports = Marionette.Layout.extend({
         this.movieCollection = FullMovieCollection;
         this._setModelCollection();
 
-        this.listenTo(this.movieCollection, 'row:selected', this._onSelected);
-        this.listenTo(this, 'modal:afterShow', this._setFocus);
+        this.listenTo(this.movieCollection, "row:selected", this._onSelected);
+        this.listenTo(this, "modal:afterShow", this._setFocus);
     },
 
     onRender : function() {
         this.movieView = new Backgrid.Grid({
             columns    : this.columns,
             collection : this.movieCollection,
-            className  : 'table table-hover season-grid',
+            className  : "table table-hover season-grid",
             row        : SelectRow
         });
 
@@ -84,12 +84,12 @@ module.exports = Marionette.Layout.extend({
     },
 
     _filter : function (term) {
-        this.movieCollection.setFilter(['title', term, 'contains']);
+        this.movieCollection.setFilter(["title", term, "contains"]);
         this._setModelCollection();
     },
 
     _onSelected : function (e) {
-        this.trigger('manualimport:selected:movie', { model: e.model });
+        this.trigger("manualimport:selected:movie", { model: e.model });
 
         vent.trigger(vent.Commands.CloseModal2Command);
     },

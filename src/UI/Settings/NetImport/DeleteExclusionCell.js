@@ -1,11 +1,11 @@
-var vent = require('vent');
-var Backgrid = require('backgrid');
+var vent = require("vent");
+var Backgrid = require("backgrid");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'delete-episode-file-cell',
+    className : "delete-episode-file-cell",
 
     events : {
-        'click' : '_onClick'
+        "click" : "_onClick"
     },
 
     render : function() {

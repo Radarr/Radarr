@@ -1,10 +1,10 @@
-var Backgrid = require('backgrid');
-var Marionette = require('marionette');
-require('bootstrap');
+var Backgrid = require("backgrid");
+var Marionette = require("marionette");
+require("bootstrap");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'edition-cell',
-    //template  : 'Cells/EditionCellTemplate',
+    className : "edition-cell",
+    //template  : "Cells/EditionCellTemplate",
 
     render : function() {
 
@@ -47,7 +47,7 @@ module.exports = Backgrid.Cell.extend({
               break;
             }
             if (addon !== "") {
-              html += "<span title='{0}'>{1}</span> ".format(title, addon);
+              html += '<span title="{0}">{1}</span>'.format(title, addon);
             }
           });
         }

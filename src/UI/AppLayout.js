@@ -1,12 +1,12 @@
-var Marionette = require('marionette');
-var ModalRegion = require('./Shared/Modal/ModalRegion');
-var ModalRegion2 = require('./Shared/Modal/ModalRegion2');
-var ControlPanelRegion = require('./Shared/ControlPanel/ControlPanelRegion');
+var Marionette = require("marionette");
+var ModalRegion = require("./Shared/Modal/ModalRegion");
+var ModalRegion2 = require("./Shared/Modal/ModalRegion2");
+var ControlPanelRegion = require("./Shared/ControlPanel/ControlPanelRegion");
 
 var Layout = Marionette.Layout.extend({
     regions : {
-        navbarRegion : '#nav-region',
-        mainRegion   : '#main-region'
+        navbarRegion : "#nav-region",
+        mainRegion   : "#main-region"
     },
 
     initialize : function() {
@@ -17,4 +17,4 @@ var Layout = Marionette.Layout.extend({
         });
     }
 });
-module.exports = new Layout({ el : 'body' });
+module.exports = new Layout({ el : "body" });

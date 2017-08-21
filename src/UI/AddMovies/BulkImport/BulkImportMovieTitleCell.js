@@ -1,12 +1,12 @@
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
 var BulkImportCollection = require("./BulkImportCollection");
 
 module.exports = NzbDroneCell.extend({
-		className : 'series-title-cell',
+		className : "series-title-cell",
 
         render : function() {
             var collection = this.model.collection;
-            //this.listenTo(collection, 'sync', this._renderCell);
+            //this.listenTo(collection, "sync", this._renderCell);
 
             this._renderCell();
 
@@ -16,6 +16,6 @@ module.exports = NzbDroneCell.extend({
         _renderCell : function() {
             this.$el.empty();
 
-            this.$el.html('<a href="https://www.themoviedb.org/movie/' + this.cellValue.get('tmdbId') +'">' + this.cellValue.get('title') + ' (' + this.cellValue.get('year') + ')' +'</a>');
+            this.$el.html('<a href="https://www.themoviedb.org/movie/" + this.cellValue.get("tmdbId") +"">' + this.cellValue.get("title") + ' (' + this.cellValue.get("year") + ')' +'</a>');
         }
 });

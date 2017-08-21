@@ -1,15 +1,15 @@
-var Marionette = require('marionette');
-var AddMoviesView = require('../AddMoviesView');
-var UnmappedFolderCollection = require('./UnmappedFolderCollection');
-var vent = require('vent');
+var Marionette = require("marionette");
+var AddMoviesView = require("../AddMoviesView");
+var UnmappedFolderCollection = require("./UnmappedFolderCollection");
+var vent = require("vent");
 
 module.exports = Marionette.CompositeView.extend({
     itemView          : AddMoviesView,
-    itemViewContainer : '.x-loading-folders',
-    template          : 'AddMovies/Existing/AddExistingMovieCollectionViewTemplate',
+    itemViewContainer : ".x-loading-folders",
+    template          : "AddMovies/Existing/AddExistingMovieCollectionViewTemplate",
 
     ui : {
-        loadingFolders : '.x-loading-folders'
+        loadingFolders : ".x-loading-folders"
     },
 
     initialize : function() {
@@ -31,7 +31,7 @@ module.exports = Marionette.CompositeView.extend({
 
         if (model) {
             var currentIndex = index;
-            var folderName = model.get('folder').name;
+            var folderName = model.get("folder").name;
             this.addItemView(model, this.getItemView(), index);
             this.children.findByModel(model).search({ term : folderName }).always(function() {
                 if (!self.isClosed) {

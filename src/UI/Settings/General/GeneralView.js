@@ -1,34 +1,34 @@
-var vent = require('../../vent');
-var Marionette = require('marionette');
-var CommandController = require('../../Commands/CommandController');
-var AsModelBoundView = require('../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../Mixins/AsValidatedView');
+var vent = require("../../vent");
+var Marionette = require("marionette");
+var CommandController = require("../../Commands/CommandController");
+var AsModelBoundView = require("../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../Mixins/AsValidatedView");
 
-require('../../Mixins/CopyToClipboard');
+require("../../Mixins/CopyToClipboard");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/General/GeneralViewTemplate',
+    template : "Settings/General/GeneralViewTemplate",
 
     events : {
-        'change .x-auth'             : '_setAuthOptionsVisibility',
-        'change .x-proxy'            : '_setProxyOptionsVisibility',
-        'change .x-ssl'              : '_setSslOptionsVisibility',
-        'click .x-reset-api-key'     : '_resetApiKey',
-        'change .x-update-mechanism' : '_setScriptGroupVisibility'
+        "change .x-auth"             : "_setAuthOptionsVisibility",
+        "change .x-proxy"            : "_setProxyOptionsVisibility",
+        "change .x-ssl"              : "_setSslOptionsVisibility",
+        "click .x-reset-api-key"     : "_resetApiKey",
+        "change .x-update-mechanism" : "_setScriptGroupVisibility"
     },
 
     ui : {
-        authToggle      : '.x-auth',
-        authOptions     : '.x-auth-options',
-        sslToggle       : '.x-ssl',
-        sslOptions      : '.x-ssl-options',
-        resetApiKey     : '.x-reset-api-key',
-        copyApiKey      : '.x-copy-api-key',
-        apiKeyInput     : '.x-api-key',
-        updateMechanism : '.x-update-mechanism',
-        scriptGroup     : '.x-script-group',
-        proxyToggle     : '.x-proxy',
-        proxyOptions    : '.x-proxy-settings'
+        authToggle      : ".x-auth",
+        authOptions     : ".x-auth-options",
+        sslToggle       : ".x-ssl",
+        sslOptions      : ".x-ssl-options",
+        resetApiKey     : ".x-reset-api-key",
+        copyApiKey      : ".x-copy-api-key",
+        apiKeyInput     : ".x-api-key",
+        updateMechanism : ".x-update-mechanism",
+        scriptGroup     : ".x-script-group",
+        proxyToggle     : ".x-proxy",
+        proxyOptions    : ".x-proxy-settings"
     },
 
     initialize : function() {
@@ -36,15 +36,15 @@ var view = Marionette.ItemView.extend({
     },
 
     onRender : function() {
-        if (this.ui.authToggle.val() === 'none') {
+        if (this.ui.authToggle.val() === "none") {
             this.ui.authOptions.hide();
         }
 
-        if (!this.ui.proxyToggle.prop('checked')) {
+        if (!this.ui.proxyToggle.prop("checked")) {
             this.ui.proxyOptions.hide();
         }
 
-        if (!this.ui.sslToggle.prop('checked')) {
+        if (!this.ui.sslToggle.prop("checked")) {
             this.ui.sslOptions.hide();
         }
 
@@ -55,7 +55,7 @@ var view = Marionette.ItemView.extend({
         CommandController.bindToCommand({
             element : this.ui.resetApiKey,
             command : {
-                name : 'resetApiKey'
+                name : "resetApiKey"
             }
         });
     },
@@ -66,7 +66,7 @@ var view = Marionette.ItemView.extend({
 
     _setAuthOptionsVisibility : function() {
 
-        var showAuthOptions = this.ui.authToggle.val() !== 'none';
+        var showAuthOptions = this.ui.authToggle.val() !== "none";
 
         if (showAuthOptions) {
             this.ui.authOptions.slideDown();
@@ -78,7 +78,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _setProxyOptionsVisibility : function() {
-        if (this.ui.proxyToggle.prop('checked')) {
+        if (this.ui.proxyToggle.prop("checked")) {
             this.ui.proxyOptions.slideDown();
         }
         else {
@@ -88,7 +88,7 @@ var view = Marionette.ItemView.extend({
 
     _setSslOptionsVisibility : function() {
 
-        var showSslOptions = this.ui.sslToggle.prop('checked');
+        var showSslOptions = this.ui.sslToggle.prop("checked");
 
         if (showSslOptions) {
             this.ui.sslOptions.slideDown();
@@ -100,15 +100,15 @@ var view = Marionette.ItemView.extend({
     },
 
     _resetApiKey : function() {
-        if (window.confirm('Reset API Key?')) {
-            CommandController.Execute('resetApiKey', {
-                name : 'resetApiKey'
+        if (window.confirm("Reset API Key?")) {
+            CommandController.Execute("resetApiKey", {
+                name : "resetApiKey"
             });
         }
     },
 
     _commandComplete : function(options) {
-        if (options.command.get('name') === 'resetapikey') {
+        if (options.command.get("name") === "resetapikey") {
             this.model.fetch();
         }
     },
@@ -125,7 +125,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _showScriptGroup : function() {
-        return this.ui.updateMechanism.val() === 'script';
+        return this.ui.updateMechanism.val() === "script";
     }
 });
 

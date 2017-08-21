@@ -1,17 +1,17 @@
-var Marionette = require('marionette');
-var NamingView = require('./Naming/NamingView');
-var SortingView = require('./Sorting/SortingView');
-var FileManagementView = require('./FileManagement/FileManagementView');
-var PermissionsView = require('./Permissions/PermissionsView');
+var Marionette = require("marionette");
+var NamingView = require("./Naming/NamingView");
+var SortingView = require("./Sorting/SortingView");
+var FileManagementView = require("./FileManagement/FileManagementView");
+var PermissionsView = require("./Permissions/PermissionsView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Settings/MediaManagement/MediaManagementLayoutTemplate',
+    template : "Settings/MediaManagement/MediaManagementLayoutTemplate",
 
     regions : {
-        episodeNaming  : '#episode-naming',
-        sorting        : '#sorting',
-        fileManagement : '#file-management',
-        permissions    : '#permissions'
+        episodeNaming  : "#episode-naming",
+        sorting        : "#sorting",
+        fileManagement : "#file-management",
+        permissions    : "#permissions"
     },
 
     initialize : function(options) {

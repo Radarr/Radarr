@@ -1,61 +1,61 @@
-var $ = require('jquery');
-var _ = require('underscore');
-var vent = require('../../vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var MissingCollection = require('./MissingCollection');
-var SelectAllCell = require('../../Cells/SelectAllCell');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var MovieStatusWithTextCell = require('../../Cells/MovieStatusWithTextCell');
-var GridPager = require('../../Shared/Grid/Pager');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
-var LoadingView = require('../../Shared/LoadingView');
-var Messenger = require('../../Shared/Messenger');
-var CommandController = require('../../Commands/CommandController');
+var $ = require("jquery");
+var _ = require("underscore");
+var vent = require("../../vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var MissingCollection = require("./MissingCollection");
+var SelectAllCell = require("../../Cells/SelectAllCell");
+var MovieTitleCell = require("../../Cells/MovieTitleCell");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var MovieStatusWithTextCell = require("../../Cells/MovieStatusWithTextCell");
+var GridPager = require("../../Shared/Grid/Pager");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
+var LoadingView = require("../../Shared/LoadingView");
+var Messenger = require("../../Shared/Messenger");
+var CommandController = require("../../Commands/CommandController");
 
-require('backgrid.selectall');
-require('../../Mixins/backbone.signalr.mixin');
+require("backgrid.selectall");
+require("../../Mixins/backbone.signalr.mixin");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Wanted/Missing/MissingLayoutTemplate',
+    template : "Wanted/Missing/MissingLayoutTemplate",
 
     regions : {
-        missing : '#x-missing',
-        toolbar : '#x-toolbar',
-        pager   : '#x-pager'
+        missing : "#x-missing",
+        toolbar : "#x-toolbar",
+        pager   : "#x-pager"
     },
 
     ui : {
-        searchSelectedButton : '.btn i.icon-sonarr-search'
+        searchSelectedButton : ".btn i.icon-sonarr-search"
     },
 
     columns : [
         {
-            name       : '',
+            name       : "",
             cell       : SelectAllCell,
-            headerCell : 'select-all',
+            headerCell : "select-all",
             sortable   : false
         },
         {
-            name      : 'title',
-            label     : 'Title',
+            name      : "title",
+            label     : "Title",
             cell      : MovieTitleCell,
-            cellValue : 'this',
+            cellValue : "this",
         },
         {
-            name  : 'inCinemas',
-            label : 'In cinemas',
+            name  : "inCinemas",
+            label : "In cinemas",
             cell  : RelativeDateCell
         },
         {
-            name  : 'physicalRelease',
-            label : 'Physical release',
+            name  : "physicalRelease",
+            label : "Physical release",
             cell  : RelativeDateCell
         },
         {
-            name     : 'status',
-            label    : 'Status',
+            name     : "status",
+            label    : "Status",
             cell     : MovieStatusWithTextCell,
             sortable : false
         },
@@ -65,7 +65,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.collection = new MissingCollection().bindSignalR({ updateOnly : true });
 
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.listenTo(this.collection, "sync", this._showTable);
     },
 
     onShow : function() {
@@ -78,7 +78,7 @@ module.exports = Marionette.Layout.extend({
         this.missingGrid = new Backgrid.Grid({
             columns    : this.columns,
             collection : this.collection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         });
 
         this.missing.show(this.missingGrid);
@@ -91,41 +91,41 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar    : function() {
         var leftSideButtons = {
-            type       : 'default',
+            type       : "default",
             storeState : false,
             collapse   : true,
             items      : [
                 {
-                    title        : 'Search selected',
-                    icon         : 'icon-sonarr-search',
+                    title        : "Search selected",
+                    icon         : "icon-sonarr-search",
                     callback     : this._searchSelected,
                     ownerContext : this,
-                    className    : 'x-search-selected'
+                    className    : "x-search-selected"
                 },
                 {
-                    title        : 'Search all',
-                    icon         : 'icon-sonarr-search',
+                    title        : "Search all",
+                    icon         : "icon-sonarr-search",
                     callback     : this._searchMissing,
                     ownerContext : this,
-                    className    : 'x-search-missing'
+                    className    : "x-search-missing"
                 },
                 {
-                    title        : 'Toggle selected',
-                    icon         : 'icon-sonarr-monitored',
-                    tooltip      : 'Toggle monitored status of selected',
+                    title        : "Toggle selected",
+                    icon         : "icon-sonarr-monitored",
+                    tooltip      : "Toggle monitored status of selected",
                     callback     : this._toggleMonitoredOfSelected,
                     ownerContext : this,
-                    className    : 'x-unmonitor-selected'
+                    className    : "x-unmonitor-selected"
                 },
                 {
-                    title      : 'Rescan Drone Factory folder',
-                    icon       : 'icon-sonarr-refresh',
-                    command    : 'downloadedMoviesScan',
+                    title      : "Rescan Drone Factory folder",
+                    icon       : "icon-sonarr-refresh",
+                    command    : "downloadedMoviesScan",
                     properties : { sendUpdates : true }
                 },
                 {
-                    title        : 'Manual import',
-                    icon         : 'icon-sonarr-search-manual',
+                    title        : "Manual import",
+                    icon         : "icon-sonarr-search-manual",
                     callback     : this._manualImport,
                     ownerContext : this
                 }
@@ -133,58 +133,58 @@ module.exports = Marionette.Layout.extend({
         };
 
         var filterOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : false,
-            menuKey       : 'wanted.filterMode',
-            defaultAction : 'monitored',
+            menuKey       : "wanted.filterMode",
+            defaultAction : "monitored",
             items         : [
         		{
-        	 	    key      : 'all',
-        		    title    : '',
-        		    tooltip  : 'All',
-        		    icon     : 'icon-sonarr-all',
+        	 	    key      : "all",
+        		    title    : "",
+        		    tooltip  : "All",
+        		    icon     : "icon-sonarr-all",
         		    callback : this._setFilter
         		},
         		{
-        	        key      : 'available',
-        		    title    : '',
-        		    tooltip  : 'Available & monitored',
-        		    icon     : 'icon-sonarr-available',
+        	        key      : "available",
+        		    title    : "",
+        		    tooltip  : "Available & monitored",
+        		    icon     : "icon-sonarr-available",
         		    callback : this._setFilter
         		},
                 {
-                    key      : 'monitored',
-                    title    : '',
-                    tooltip  : 'Monitored only',
-                    icon     : 'icon-sonarr-monitored',
+                    key      : "monitored",
+                    title    : "",
+                    tooltip  : "Monitored only",
+                    icon     : "icon-sonarr-monitored",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'unmonitored',
-                    title    : '',
-                    tooltip  : 'Unmonitored only',
-                    icon     : 'icon-sonarr-unmonitored',
+                    key      : "unmonitored",
+                    title    : "",
+                    tooltip  : "Unmonitored only",
+                    icon     : "icon-sonarr-unmonitored",
                     callback : this._setFilter
                 },
     		    {
-    			    key      : 'announced',
-    			    title    : '',
-    			    tooltip  : 'Announced only',
-    			    icon     : 'icon-sonarr-movie-announced',
+    			    key      : "announced",
+    			    title    : "",
+    			    tooltip  : "Announced only",
+    			    icon     : "icon-sonarr-movie-announced",
     			    callback : this._setFilter
     		    },
     	            {
-    			    key      : 'incinemas',
-    			    title    : '',
-    			    tooltip  : 'In cinemas only',
-    			    icon     : 'icon-sonarr-movie-cinemas',
+    			    key      : "incinemas",
+    			    title    : "",
+    			    tooltip  : "In cinemas only",
+    			    icon     : "icon-sonarr-movie-cinemas",
     			    callback : this._setFilter
     		    },
     		    {
-    			    key      : 'released',
-    			    title    : '',
-    			    tooltip  : 'Released only',
-    			    icon     : 'icon-sonarr-movie-released',
+    			    key      : "released",
+    			    title    : "",
+    			    tooltip  : "Released only",
+    			    icon     : "icon-sonarr-movie-released",
     			    callback : this._setFilter
     		    }
     		]
@@ -195,17 +195,17 @@ module.exports = Marionette.Layout.extend({
             context : this
         }));
         CommandController.bindToCommand({
-            element : this.$('.x-search-selected'),
-            command : { name : 'moviesSearch' }
+            element : this.$(".x-search-selected"),
+            command : { name : "moviesSearch" }
         });
         CommandController.bindToCommand({
-            element : this.$('.x-search-missing'),
-            command : { name : 'missingMoviesSearch' }
+            element : this.$(".x-search-missing"),
+            command : { name : "missingMoviesSearch" }
         });
     },
 
     _setFilter      : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
         this.collection.state.currentPage = 1;
         var promise = this.collection.setFilterMode(mode);
         if (buttonContext) {
@@ -217,21 +217,21 @@ module.exports = Marionette.Layout.extend({
         var selected = this.missingGrid.getSelectedModels();
         if (selected.length === 0) {
             Messenger.show({
-                type    : 'error',
-                message : 'No movies selected.'
+                type    : "error",
+                message : "No movies selected."
             });
             return;
         }
-        var ids = _.pluck(selected, 'id');
-        CommandController.Execute('moviesSearch', {
-            name       : 'moviesSearch',
+        var ids = _.pluck(selected, "id");
+        CommandController.Execute("moviesSearch", {
+            name       : "moviesSearch",
             movieIds : ids
         });
     },
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} filtered missing movies?'.format(this.collection.state.totalRecords) +
-                           'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
-            CommandController.Execute('missingMoviesSearch', { name : 'missingMoviesSearch',
+        if (window.confirm("Are you sure you want to search for {0} filtered missing movies?".format(this.collection.state.totalRecords) +
+                           "One API request to each indexer will be used for each movie. " + "This cannot be stopped once started.")) {
+            CommandController.Execute("missingMoviesSearch", { name : "missingMoviesSearch",
 	                                                       filterKey : this.collection.state.filterKey,
 	   						       filterValue : this.collection.state.filterValue });
         }
@@ -241,8 +241,8 @@ module.exports = Marionette.Layout.extend({
 
         if (selected.length === 0) {
             Messenger.show({
-                type    : 'error',
-                message : 'No movies selected.'
+                type    : "error",
+                message : "No movies selected."
             });
             return;
         }
@@ -251,7 +251,7 @@ module.exports = Marionette.Layout.extend({
         var self = this;
 
         _.each(selected, function (episode) {
-            episode.set('monitored', !episode.get('monitored'));
+            episode.set("monitored", !episode.get("monitored"));
             promises.push(episode.save());
         });
 

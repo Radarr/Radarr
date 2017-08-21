@@ -1,58 +1,58 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var BlacklistCollection = require('./BlacklistCollection');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
-var QualityCell = require('../../Cells/QualityCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var BlacklistActionsCell = require('./BlacklistActionsCell');
-var GridPager = require('../../Shared/Grid/Pager');
-var LoadingView = require('../../Shared/LoadingView');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var BlacklistCollection = require("./BlacklistCollection");
+var MovieTitleCell = require("../../Cells/MovieTitleCell");
+var QualityCell = require("../../Cells/QualityCell");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var BlacklistActionsCell = require("./BlacklistActionsCell");
+var GridPager = require("../../Shared/Grid/Pager");
+var LoadingView = require("../../Shared/LoadingView");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Activity/Blacklist/BlacklistLayoutTemplate',
+    template : "Activity/Blacklist/BlacklistLayoutTemplate",
 
     regions : {
-        blacklist : '#x-blacklist',
-        toolbar   : '#x-toolbar',
-        pager     : '#x-pager'
+        blacklist : "#x-blacklist",
+        toolbar   : "#x-toolbar",
+        pager     : "#x-pager"
     },
 
     columns : [
         {
-            name  : 'movie',
-            label : 'Movie Title',
+            name  : "movie",
+            label : "Movie Title",
             cell  : MovieTitleCell
         },
         {
-            name  : 'sourceTitle',
-            label : 'Source Title',
-            cell  : 'string'
+            name  : "sourceTitle",
+            label : "Source Title",
+            cell  : "string"
         },
         {
-            name     : 'quality',
-            label    : 'Quality',
+            name     : "quality",
+            label    : "Quality",
             cell     : QualityCell,
             sortable : false
         },
         {
-            name  : 'date',
-            label : 'Date',
+            name  : "date",
+            label : "Date",
             cell  : RelativeDateCell
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             cell     : BlacklistActionsCell,
             sortable : false
         }
     ],
 
     initialize : function() {
-        this.collection = new BlacklistCollection({ tableName : 'blacklist' });
+        this.collection = new BlacklistCollection({ tableName : "blacklist" });
 
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.listenTo(this.collection, "sync", this._showTable);
         this.listenTo(vent, vent.Events.CommandComplete, this._commandComplete);
     },
 
@@ -67,7 +67,7 @@ module.exports = Marionette.Layout.extend({
         this.blacklist.show(new Backgrid.Grid({
             columns    : this.columns,
             collection : collection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         }));
 
         this.pager.show(new GridPager({
@@ -78,13 +78,13 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar : function() {
         var leftSideButtons = {
-            type       : 'default',
+            type       : "default",
             storeState : false,
             items      : [
                 {
-                    title   : 'Clear blacklist',
-                    icon    : 'icon-sonarr-clear',
-                    command : 'clearBlacklist'
+                    title   : "Clear blacklist",
+                    icon    : "icon-sonarr-clear",
+                    command : "clearBlacklist"
                 }
             ]
         };
@@ -107,7 +107,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _commandComplete : function(options) {
-        if (options.command.get('name') === 'clearblacklist') {
+        if (options.command.get("name") === "clearblacklist") {
             this._refreshTable();
         }
     }

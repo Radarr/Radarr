@@ -1,17 +1,17 @@
-var _ = require('underscore');
-var $ = require('jquery');
-var AppLayout = require('../../../AppLayout');
-var Marionette = require('marionette');
-var EditView = require('../Edit/IndexerEditView');
+var _ = require("underscore");
+var $ = require("jquery");
+var AppLayout = require("../../../AppLayout");
+var Marionette = require("marionette");
+var EditView = require("../Edit/IndexerEditView");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'Settings/Indexers/Add/IndexerAddItemViewTemplate',
-    tagName   : 'li',
-    className : 'add-thingy-item',
+    template  : "Settings/Indexers/Add/IndexerAddItemViewTemplate",
+    tagName   : "li",
+    className : "add-thingy-item",
 
     events : {
-        'click .x-preset' : '_addPreset',
-        'click'           : '_add'
+        "click .x-preset" : "_addPreset",
+        "click"           : "_add"
     },
 
     initialize : function(options) {
@@ -19,8 +19,8 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _addPreset : function(e) {
-        var presetName = $(e.target).closest('.x-preset').attr('data-id');
-        var presetData = _.where(this.model.get('presets'), { name : presetName })[0];
+        var presetName = $(e.target).closest(".x-preset").attr("data-id");
+        var presetData = _.where(this.model.get("presets"), { name : presetName })[0];
 
         this.model.set(presetData);
 
@@ -28,7 +28,7 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _add : function(e) {
-        if ($(e.target).closest('.btn,.btn-group').length !== 0 && $(e.target).closest('.x-custom').length === 0) {
+        if ($(e.target).closest(".btn,.btn-group").length !== 0 && $(e.target).closest(".x-custom").length === 0) {
             return;
         }
 
@@ -38,8 +38,8 @@ module.exports = Marionette.ItemView.extend({
     _openEdit : function() {
         this.model.set({
             id           : undefined,
-            enableRss    : this.model.get('supportsRss'),
-            enableSearch : this.model.get('supportsSearch')
+            enableRss    : this.model.get("supportsRss"),
+            enableSearch : this.model.get("supportsSearch")
         });
 
         var editView = new EditView({

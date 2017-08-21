@@ -1,33 +1,33 @@
-var _ = require('underscore');
-var vent = require('../../vent');
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
-var SelectEpisodeLayout = require('../Episode/SelectEpisodeLayout');
+var _ = require("underscore");
+var vent = require("../../vent");
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
+var SelectEpisodeLayout = require("../Episode/SelectEpisodeLayout");
 
 module.exports = NzbDroneCell.extend({
-    className : 'episodes-cell',
+    className : "episodes-cell",
 
     events : {
-        'click' : '_onClick'
+        "click" : "_onClick"
     },
 
     render : function() {
         this.$el.empty();
 
-        var episodes = this.model.get('episodes');
+        var episodes = this.model.get("episodes");
 
         if (episodes)
         {
-            var episodeNumbers = _.map(episodes, 'episodeNumber');
+            var episodeNumbers = _.map(episodes, "episodeNumber");
 
-            this.$el.html(episodeNumbers.join(', '));
+            this.$el.html(episodeNumbers.join(", "));
         }
 
         return this;
     },
 
     _onClick : function () {
-        var series = this.model.get('series');
-        var seasonNumber = this.model.get('seasonNumber');
+        var series = this.model.get("series");
+        var seasonNumber = this.model.get("seasonNumber");
 
         if (series === undefined || seasonNumber === undefined) {
             return;
@@ -35,12 +35,12 @@ module.exports = NzbDroneCell.extend({
 
         var view =  new SelectEpisodeLayout({ series: series, seasonNumber: seasonNumber });
 
-        this.listenTo(view, 'manualimport:selected:episodes', this._setEpisodes);
+        this.listenTo(view, "manualimport:selected:episodes", this._setEpisodes);
 
         vent.trigger(vent.Commands.OpenModal2Command, view);
     },
 
     _setEpisodes : function (e) {
-        this.model.set('episodes', e.episodes);
+        this.model.set("episodes", e.episodes);
     }
 });

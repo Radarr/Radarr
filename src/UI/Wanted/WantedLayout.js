@@ -1,26 +1,26 @@
-var Marionette = require('marionette');
-var Backbone = require('backbone');
-var Backgrid = require('backgrid');
-var MissingLayout = require('./Missing/MissingLayout');
-var CutoffUnmetLayout = require('./Cutoff/CutoffUnmetLayout');
+var Marionette = require("marionette");
+var Backbone = require("backbone");
+var Backgrid = require("backgrid");
+var MissingLayout = require("./Missing/MissingLayout");
+var CutoffUnmetLayout = require("./Cutoff/CutoffUnmetLayout");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Wanted/WantedLayoutTemplate',
+    template : "Wanted/WantedLayoutTemplate",
 
     regions : {
-        content : '#content'
-        //missing    : '#missing',
-        //cutoff     : '#cutoff'
+        content : "#content"
+        //missing    : "#missing",
+        //cutoff     : "#cutoff"
     },
 
     ui : {
-        missingTab : '.x-missing-tab',
-        cutoffTab  : '.x-cutoff-tab'
+        missingTab : ".x-missing-tab",
+        cutoffTab  : ".x-cutoff-tab"
     },
 
     events : {
-        'click .x-missing-tab' : '_showMissing',
-        'click .x-cutoff-tab'  : '_showCutoffUnmet'
+        "click .x-missing-tab" : "_showMissing",
+        "click .x-cutoff-tab"  : "_showCutoffUnmet"
     },
 
     initialize : function(options) {
@@ -31,7 +31,7 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         switch (this.action) {
-            case 'cutoff':
+            case "cutoff":
                 this._showCutoffUnmet();
                 break;
             default:
@@ -52,8 +52,8 @@ module.exports = Marionette.Layout.extend({
         }
 
         this.content.show(new MissingLayout());
-        this.ui.missingTab.tab('show');
-        this._navigate('/wanted/missing');
+        this.ui.missingTab.tab("show");
+        this._navigate("/wanted/missing");
     },
 
     _showCutoffUnmet : function(e) {
@@ -62,7 +62,7 @@ module.exports = Marionette.Layout.extend({
         }
 
         this.content.show(new CutoffUnmetLayout());
-        this.ui.cutoffTab.tab('show');
-        this._navigate('/wanted/cutoff');
+        this.ui.cutoffTab.tab("show");
+        this._navigate("/wanted/cutoff");
     }
 });

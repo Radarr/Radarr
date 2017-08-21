@@ -1,46 +1,46 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var CutoffUnmetCollection = require('./CutoffUnmetCollection');
-var SelectAllCell = require('../../Cells/SelectAllCell');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
-var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
-var MovieStatusWithTextCell = require('../../Cells/MovieStatusWithTextCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var GridPager = require('../../Shared/Grid/Pager');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
-var LoadingView = require('../../Shared/LoadingView');
-var Messenger = require('../../Shared/Messenger');
-var CommandController = require('../../Commands/CommandController');
+var _ = require("underscore");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var CutoffUnmetCollection = require("./CutoffUnmetCollection");
+var SelectAllCell = require("../../Cells/SelectAllCell");
+var MovieTitleCell = require("../../Cells/MovieTitleCell");
+var DownloadedQualityCell = require("../../Cells/DownloadedQualityCell");
+var MovieStatusWithTextCell = require("../../Cells/MovieStatusWithTextCell");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var GridPager = require("../../Shared/Grid/Pager");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
+var LoadingView = require("../../Shared/LoadingView");
+var Messenger = require("../../Shared/Messenger");
+var CommandController = require("../../Commands/CommandController");
 
-require('backgrid.selectall');
-require('../../Mixins/backbone.signalr.mixin');
+require("backgrid.selectall");
+require("../../Mixins/backbone.signalr.mixin");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Wanted/Cutoff/CutoffUnmetLayoutTemplate',
+    template : "Wanted/Cutoff/CutoffUnmetLayoutTemplate",
 
     regions : {
-        cutoff  : '#x-cutoff-unmet',
-        toolbar : '#x-toolbar',
-        pager   : '#x-pager'
+        cutoff  : "#x-cutoff-unmet",
+        toolbar : "#x-toolbar",
+        pager   : "#x-pager"
     },
 
     ui : {
-        searchSelectedButton : '.btn i.icon-sonarr-search'
+        searchSelectedButton : ".btn i.icon-sonarr-search"
     },
 
     columns : [
         {
-            name       : '',
+            name       : "",
             cell       : SelectAllCell,
-            headerCell : 'select-all',
+            headerCell : "select-all",
             sortable   : false
         },
         {
-            name      : 'title',
-            label     : 'Title',
+            name      : "title",
+            label     : "Title",
             cell      : MovieTitleCell,
-            cellValue : 'this',
+            cellValue : "this",
         },
         {
           name : "downloadedQuality",
@@ -49,18 +49,18 @@ module.exports = Marionette.Layout.extend({
           sortable : true
         },
         {
-            name      : 'inCinemas',
-            label     : 'In cinemas',
+            name      : "inCinemas",
+            label     : "In cinemas",
             cell      : RelativeDateCell
         },
         {
-            name      : 'physicalRelease',
-            label     : 'Physical release',
+            name      : "physicalRelease",
+            label     : "Physical release",
             cell      : RelativeDateCell
         },
         {
-            name     : 'status',
-            label    : 'Status',
+            name     : "status",
+            label    : "Status",
             cell     : MovieStatusWithTextCell,
             sortable : false
         }
@@ -69,7 +69,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.collection = new CutoffUnmetCollection().bindSignalR({ updateOnly : true });
 
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.listenTo(this.collection, "sync", this._showTable);
     },
 
     onShow : function() {
@@ -82,7 +82,7 @@ module.exports = Marionette.Layout.extend({
         this.cutoffGrid = new Backgrid.Grid({
             columns    : this.columns,
             collection : this.collection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         });
 
         this.cutoff.show(this.cutoffGrid);
@@ -95,79 +95,79 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar : function() {
         var leftSideButtons = {
-            type       : 'default',
+            type       : "default",
             storeState : false,
             items      : [
                 {
-                    title        : 'Search Selected',
-                    icon         : 'icon-sonarr-search',
+                    title        : "Search Selected",
+                    icon         : "icon-sonarr-search",
                     callback     : this._searchSelected,
                     ownerContext : this,
-                    className    : 'x-search-selected'
+                    className    : "x-search-selected"
                 },
                 {
-                    title        : 'Search All',
-                    icon         : 'icon-sonarr-search',
+                    title        : "Search All",
+                    icon         : "icon-sonarr-search",
                     callback     : this._searchMissing,
                     ownerContext : this,
-                    className    : 'x-search-cutoff'
+                    className    : "x-search-cutoff"
                 },
             ]
         };
 
         var filterOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : false,
-            menuKey       : 'wanted.filterMode',
-            defaultAction : 'monitored',
+            menuKey       : "wanted.filterMode",
+            defaultAction : "monitored",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "All",
+                    icon     : "icon-sonarr-all",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'available',
-                    title    : '',
-                    tooltip  : 'Available & Monitored',
-                    icon     : 'icon-sonarr-available',
+                    key      : "available",
+                    title    : "",
+                    tooltip  : "Available & Monitored",
+                    icon     : "icon-sonarr-available",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'monitored',
-                    title    : '',
-                    tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    key      : "monitored",
+                    title    : "",
+                    tooltip  : "Monitored Only",
+                    icon     : "icon-sonarr-monitored",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'unmonitored',
-                    title    : '',
-                    tooltip  : 'Unmonitored Only',
-                    icon     : 'icon-sonarr-unmonitored',
+                    key      : "unmonitored",
+                    title    : "",
+                    tooltip  : "Unmonitored Only",
+                    icon     : "icon-sonarr-unmonitored",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'announced',
-                    title    : '',
-                    tooltip  : 'Announced Only',
-                    icon     : 'icon-sonarr-movie-announced',
+                    key      : "announced",
+                    title    : "",
+                    tooltip  : "Announced Only",
+                    icon     : "icon-sonarr-movie-announced",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'incinemas',
-                    title    : '',
-                    tooltip  : 'In Cinemas Only',
-                    icon     : 'icon-sonarr-movie-cinemas',
+                    key      : "incinemas",
+                    title    : "",
+                    tooltip  : "In Cinemas Only",
+                    icon     : "icon-sonarr-movie-cinemas",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'released',
-                    title    : '',
-                    tooltip  : 'Released Only',
-                    icon     : 'icon-sonarr-movie-released',
+                    key      : "released",
+                    title    : "",
+                    tooltip  : "Released Only",
+                    icon     : "icon-sonarr-movie-released",
                     callback : this._setFilter
                 }
         ]
@@ -184,20 +184,20 @@ module.exports = Marionette.Layout.extend({
         }));
 
         CommandController.bindToCommand({
-            element  : this.$('.x-search-selected'),
+            element  : this.$(".x-search-selected"),
             command  : {
-                name : 'moviesSearch'
+                name : "moviesSearch"
             }
         });
 
         CommandController.bindToCommand({
-            element : this.$('.x-search-cutoff'),
-            command : { name : 'cutOffUnmetMoviesSearch' }
+            element : this.$(".x-search-cutoff"),
+            command : { name : "cutOffUnmetMoviesSearch" }
         });
     },
 
     _setFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
 
         this.collection.state.currentPage = 1;
         var promise = this.collection.setFilterMode(mode);
@@ -212,25 +212,25 @@ module.exports = Marionette.Layout.extend({
 
         if (selected.length === 0) {
             Messenger.show({
-                type    : 'error',
-                message : 'No movies selected'
+                type    : "error",
+                message : "No movies selected"
             });
 
             return;
         }
 
-        var ids = _.pluck(selected, 'id');
+        var ids = _.pluck(selected, "id");
 
-        CommandController.Execute('moviesSearch', {
-            name       : 'moviesSearch',
+        CommandController.Execute("moviesSearch", {
+            name       : "moviesSearch",
             movieIds : ids
         });
     },
 
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} filtered missing movies?'.format(this.collection.state.totalRecords) +
-                           'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
-            CommandController.Execute('cutOffUnmetMoviesSearch', { name : 'cutOffUnmetMoviesSearch',
+        if (window.confirm("Are you sure you want to search for {0} filtered missing movies?".format(this.collection.state.totalRecords) +
+                           "One API request to each indexer will be used for each movie. " + "This cannot be stopped once started.")) {
+            CommandController.Execute("cutOffUnmetMoviesSearch", { name : "cutOffUnmetMoviesSearch",
                                                            filterKey : this.collection.state.filterKey,
                                    filterValue : this.collection.state.filterValue });
         }

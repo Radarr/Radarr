@@ -1,5 +1,5 @@
-var _ = require('underscore');
-var Backbone = require('backbone');
+var _ = require("underscore");
+var Backbone = require("backbone");
 
 module.exports = function() {
 
@@ -8,10 +8,10 @@ module.exports = function() {
 
         this.state.filterKey = filter[0];
         this.state.filterValue = filter[1];
-        this.state.filterType = filter[2] || 'equal';
+        this.state.filterType = filter[2] || "equal";
 
         if (options.reset) {
-            if (this.mode !== 'server') {
+            if (this.mode !== "server") {
                 this.fullCollection.resetFiltered();
             } else {
                 return this.fetch();
@@ -38,7 +38,7 @@ module.exports = function() {
             if (!self.state.filterKey) {
                 return true;
             }
-            else if (self.state.filterType === 'contains') {
+            else if (self.state.filterType === "contains") {
                 return model.get(self.state.filterKey).toLowerCase().indexOf(self.state.filterValue.toLowerCase()) > -1;
             }
             else {
@@ -72,9 +72,9 @@ module.exports = function() {
     });
 
     _.extend(this.prototype.queryParams, {
-        filterKey   : 'filterKey',
-        filterValue : 'filterValue',
-		filterType  : 'filterType'
+        filterKey   : "filterKey",
+        filterValue : "filterValue",
+		filterType  : "filterType"
     });
 
     return this;

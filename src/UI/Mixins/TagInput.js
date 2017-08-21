@@ -1,12 +1,12 @@
-﻿var $ = require('jquery');
-var _ = require('underscore');
-var TagCollection = require('../Tags/TagCollection');
-var TagModel = require('../Tags/TagModel');
-require('bootstrap.tagsinput');
+var $ = require("jquery");
+var _ = require("underscore");
+var TagCollection = require("../Tags/TagCollection");
+var TagModel = require("../Tags/TagModel");
+require("bootstrap.tagsinput");
 
 var substringMatcher = function(tags, selector) {
     return function findMatches (q, cb) {
-        q = q.replace(/[^-_a-z0-9]/gi, '').toLowerCase();
+        q = q.replace(/[^-_a-z0-9]/gi, "").toLowerCase();
         var matches = _.select(tags, function(tag) {
             return selector(tag).toLowerCase().indexOf(q) > -1;
         });
@@ -20,7 +20,7 @@ var getExistingTags = function(tagValues) {
 };
 
 var testTag = function(item) {
-    var tagLimitations = new RegExp('[^-_a-z0-9]', 'i');
+    var tagLimitations = new RegExp("[^-_a-z0-9]", "i");
     try {
         return !tagLimitations.test(item);
     }
@@ -42,13 +42,13 @@ $.fn.tagsinput.Constructor.prototype.add = function(item, dontPushVal) {
     }
     var self = this;
 
-    if (typeof item === 'string') {
+    if (typeof item === "string") {
         var existing = _.find(tagCollection.toJSON(), { label : item });
 
         if (existing) {
             originalAdd.call(this, existing, dontPushVal);
         } else if (this.options.allowNew) {
-            if (item === null || item === '' || !testTag(item)) {
+            if (item === null || item === "" || !testTag(item)) {
                 return;
             }
 
@@ -65,7 +65,7 @@ $.fn.tagsinput.Constructor.prototype.add = function(item, dontPushVal) {
         originalAdd.call(self, item, dontPushVal);
     }
 
-    self.$input.typeahead('val', '');
+    self.$input.typeahead("val", "");
 };
 
 $.fn.tagsinput.Constructor.prototype.remove = function(item, dontPushVal) {
@@ -90,18 +90,18 @@ $.fn.tagsinput.Constructor.prototype.build = function(options) {
 
     options = $.extend({}, defaults, options);
 
-    self.$input.on('keydown', function(event) {
+    self.$input.on("keydown", function(event) {
         if (event.which === 9) {
-            var e = $.Event('keypress');
+            var e = $.Event("keypress");
             e.which = 9;
             self.$input.trigger(e);
             event.preventDefault();
         }
     });
 
-    self.$input.on('focusout', function() {
+    self.$input.on("focusout", function() {
         self.add(self.$input.val());
-        self.$input.val('');
+        self.$input.val("");
     });
 
     originalBuild.call(this, options);
@@ -113,34 +113,34 @@ $.fn.tagInput = function(options) {
 
         var input = $(this);
         var tagInput = null;
-        
-        if (input[0].hasAttribute('tag-source')) {
 
-            var listItems = JSON.parse(input.attr('tag-source'));
+        if (input[0].hasAttribute("tag-source")) {
+
+            var listItems = JSON.parse(input.attr("tag-source"));
 
             tagInput = input.tagsinput({
                 freeInput: false,
                 allowNew: false,
                 allowDuplicates: false,
-                itemValue: 'value',
-                itemText: 'name',
+                itemValue: "value",
+                itemText: "name",
                 typeaheadjs: {
-                    displayKey: 'name',
+                    displayKey: "name",
                     source: substringMatcher(listItems, function (t) { return t.name; })
                 }
             });
 
             var origValue = input.val();
 
-            input.tagsinput('removeAll');
+            input.tagsinput("removeAll");
 
             if (origValue) {
-                _.each(origValue.split(','), function (v) {
+                _.each(origValue.split(","), function (v) {
                     var parsed = parseInt(v);
                     var found = _.find(listItems, function (t) { return t.value === parsed; });
 
                     if (found) {
-                        input.tagsinput('add', found);
+                        input.tagsinput("add", found);
                     }
                 });
             }
@@ -156,12 +156,12 @@ $.fn.tagInput = function(options) {
                 tagCollection: TagCollection,
                 freeInput: true,
                 allowNew: options.allowNew,
-                itemValue: 'id',
-                itemText: 'label',
+                itemValue: "id",
+                itemText: "label",
                 trimValue: true,
                 typeaheadjs: {
-                    name: 'tags',
-                    displayKey: 'label',
+                    name: "tags",
+                    displayKey: "label",
                     source: substringMatcher(TagCollection.toJSON(), function (t) { return t.label; })
                 }
             });
@@ -173,17 +173,17 @@ $.fn.tagInput = function(options) {
                 var tags = getExistingTags(model.get(property));
 
                 //Remove any existing tags and re-add them
-                input.tagsinput('removeAll');
+                input.tagsinput("removeAll");
                 _.each(tags, function (tag) {
-                    input.tagsinput('add', tag);
+                    input.tagsinput("add", tag);
                 });
-                input.tagsinput('refresh');
-                input.on('itemAdded', function (event) {
+                input.tagsinput("refresh");
+                input.on("itemAdded", function (event) {
                     var tags = model.get(property);
                     tags.push(event.item.id);
                     model.set(property, tags);
                 });
-                input.on('itemRemoved', function (event) {
+                input.on("itemRemoved", function (event) {
                     if (!event.item) {
                         return;
                     }

@@ -1,11 +1,11 @@
-﻿var Handlebars = require('handlebars');
+var Handlebars = require("handlebars");
 
-Handlebars.registerHelper('TitleCase', function(input) {
+Handlebars.registerHelper("TitleCase", function(input) {
     return new Handlebars.SafeString(input.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     }));
 });
 
-Handlebars.registerHelper('json', function (obj) {
+Handlebars.registerHelper("json", function (obj) {
     return JSON.stringify(obj);
 });

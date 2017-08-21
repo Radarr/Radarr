@@ -1,6 +1,6 @@
-var moment = require('moment');
-var filesize = require('filesize');
-var UiSettings = require('./UiSettingsModel');
+var moment = require("moment");
+var filesize = require("filesize");
+var UiSettings = require("./UiSettingsModel");
 
 module.exports = {
     bytes : function(sourceSize, sourceRounding) {
@@ -8,7 +8,7 @@ module.exports = {
         var rounding = Number(sourceRounding);
 
         if (isNaN(size)) {
-            return '';
+            return "";
         }
 
         if (isNaN(rounding)) {
@@ -23,42 +23,42 @@ module.exports = {
 
     relativeDate : function(sourceDate) {
         if (!sourceDate) {
-            return '';
+            return "";
         }
 
         var date = moment(sourceDate);
         var calendarDate = date.calendar();
 
         //TODO: It would be nice to not have to hack this...
-        var strippedCalendarDate = calendarDate.substring(0, calendarDate.indexOf(' at '));
+        var strippedCalendarDate = calendarDate.substring(0, calendarDate.indexOf(" at "));
 
         if (strippedCalendarDate) {
             return strippedCalendarDate;
         }
 
         if (date.isAfter(moment())) {
-            return 'in ' + date.fromNow(true);
+            return "in " + date.fromNow(true);
         }
 
-        if (date.isBefore(moment().add('years', -1))) {
-            return date.format(UiSettings.get('shortDateFormat'));
+        if (date.isBefore(moment().add("years", -1))) {
+            return date.format(UiSettings.get("shortDateFormat"));
         }
 
         return date.fromNow();
     },
 
     pad : function(n, width, z) {
-        z = z || '0';
-        n = n + '';
+        z = z || "0";
+        n = n + "";
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     },
 
     number : function(input) {
         if (!input) {
-            return '0';
+            return "0";
         }
 
-        return input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
 
     plural : function(input, unit) {
@@ -66,6 +66,6 @@ module.exports = {
             return unit;
         }
 
-        return unit + 's';
+        return unit + "s";
     }
 };

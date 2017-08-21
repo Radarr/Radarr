@@ -1,11 +1,11 @@
-var _ = require('underscore');
-var Backgrid = require('backgrid');
+var _ = require("underscore");
+var Backgrid = require("backgrid");
 
 module.exports = Backgrid.Row.extend({
-    className : 'file-browser-row',
+    className : "file-browser-row",
 
     events : {
-        'click' : '_selectRow'
+        "click" : "_selectRow"
     },
 
     _originalInit : Backgrid.Row.prototype.initialize,
@@ -15,10 +15,10 @@ module.exports = Backgrid.Row.extend({
     },
 
     _selectRow : function() {
-        if (this.model.get('type') === 'file') {
-            this.model.collection.trigger('filebrowser:row:fileselected', this.model);
+        if (this.model.get("type") === "file") {
+            this.model.collection.trigger("filebrowser:row:fileselected", this.model);
         } else {
-            this.model.collection.trigger('filebrowser:row:folderselected', this.model);
+            this.model.collection.trigger("filebrowser:row:folderselected", this.model);
         }
     }
 });

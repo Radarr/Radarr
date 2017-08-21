@@ -1,32 +1,32 @@
-var BlacklistModel = require('./BlacklistModel');
-var PageableCollection = require('backbone.pageable');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
-var AsPersistedStateCollection = require('../../Mixins/AsPersistedStateCollection');
+var BlacklistModel = require("./BlacklistModel");
+var PageableCollection = require("backbone.pageable");
+var AsSortedCollection = require("../../Mixins/AsSortedCollection");
+var AsPersistedStateCollection = require("../../Mixins/AsPersistedStateCollection");
 
 var Collection = PageableCollection.extend({
-    url   : window.NzbDrone.ApiRoot + '/blacklist',
+    url   : window.NzbDrone.ApiRoot + "/blacklist",
     model : BlacklistModel,
 
     state : {
         pageSize : 15,
-        sortKey  : 'date',
+        sortKey  : "date",
         order    : 1
     },
 
     queryParams : {
         totalPages   : null,
         totalRecords : null,
-        pageSize     : 'pageSize',
-        sortKey      : 'sortKey',
-        order        : 'sortDir',
+        pageSize     : "pageSize",
+        sortKey      : "sortKey",
+        order        : "sortDir",
         directions   : {
-            '-1' : 'asc',
-            '1'  : 'desc'
+            "-1" : "asc",
+            "1"  : "desc"
         }
     },
 
     sortMappings : {
-        'movie' : { sortKey : 'movie.title' }
+        "movie" : { sortKey : "movie.title" }
     },
 
     parseState : function(resp) {

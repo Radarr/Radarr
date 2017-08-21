@@ -1,18 +1,18 @@
-var vent = require('vent');
-var NzbDroneCell = require('./NzbDroneCell');
+var vent = require("vent");
+var NzbDroneCell = require("./NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'episode-title-cell',
+    className : "episode-title-cell",
 
     events : {
-        'click' : '_showDetails'
+        "click" : "_showDetails"
     },
 
     render : function() {
-        var title = this.cellValue.get('title');
+        var title = this.cellValue.get("title");
 
-        if (!title || title === '') {
-            title = 'TBA';
+        if (!title || title === "") {
+            title = "TBA";
         }
 
         this.$el.html(title);
@@ -20,7 +20,7 @@ module.exports = NzbDroneCell.extend({
     },
 
     _showDetails : function() {
-        var hideSeriesLink = this.column.get('hideSeriesLink');
+        var hideSeriesLink = this.column.get("hideSeriesLink");
         vent.trigger(vent.Commands.ShowEpisodeDetails, {
             episode        : this.cellValue,
             hideSeriesLink : hideSeriesLink

@@ -1,11 +1,11 @@
-var vent = require('vent');
-var CommandModel = require('./CommandModel');
-var CommandCollection = require('./CommandCollection');
-var CommandMessengerCollectionView = require('./CommandMessengerCollectionView');
-var _ = require('underscore');
-var moment = require('moment');
-var Messenger = require('../Shared/Messenger');
-require('../jQuery/jquery.spin');
+var vent = require("vent");
+var CommandModel = require("./CommandModel");
+var CommandCollection = require("./CommandCollection");
+var CommandMessengerCollectionView = require("./CommandMessengerCollectionView");
+var _ = require("underscore");
+var moment = require("moment");
+var Messenger = require("../Shared/Messenger");
+require("../jQuery/jquery.spin");
 
 CommandMessengerCollectionView.render();
 
@@ -20,12 +20,12 @@ var singleton = function() {
             var attr = _.extend({ name : name.toLocaleLowerCase() }, properties);
             var commandModel = new CommandModel(attr);
 
-            if (this._lastCommand.command && this._lastCommand.command.isSameCommand(attr) && moment().add('seconds', -5).isBefore(this._lastCommand.time)) {
+            if (this._lastCommand.command && this._lastCommand.command.isSameCommand(attr) && moment().add("seconds", -5).isBefore(this._lastCommand.time)) {
 
                 Messenger.show({
-                    message   : 'Please wait at least 5 seconds before running this command again',
+                    message   : "Please wait at least 5 seconds before running this command again",
                     hideAfter : 5,
-                    type      : 'error'
+                    type      : "error"
                 });
 
                 return this._lastCommand.promise;
@@ -53,13 +53,13 @@ var singleton = function() {
                 this._bindToCommandModel.call(this, existingCommand, options);
             }
 
-            CommandCollection.bind('add', function(model) {
+            CommandCollection.bind("add", function(model) {
                 if (model.isSameCommand(options.command)) {
                     self._bindToCommandModel.call(self, model, options);
                 }
             });
 
-            CommandCollection.bind('sync', function() {
+            CommandCollection.bind("sync", function() {
                 var command = CommandCollection.findCommand(options.command);
                 if (command) {
                     self._bindToCommandModel.call(self, command, options);
@@ -74,7 +74,7 @@ var singleton = function() {
                 return;
             }
 
-            model.bind('change:status', function(model) {
+            model.bind("change:status", function(model) {
                 if (!model.isActive()) {
                     options.element.stopSpin();
 

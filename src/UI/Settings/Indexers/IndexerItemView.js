@@ -1,17 +1,17 @@
-var AppLayout = require('../../AppLayout');
-var Marionette = require('marionette');
-var EditView = require('./Edit/IndexerEditView');
+var AppLayout = require("../../AppLayout");
+var Marionette = require("marionette");
+var EditView = require("./Edit/IndexerEditView");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Settings/Indexers/IndexerItemViewTemplate',
-    tagName  : 'li',
+    template : "Settings/Indexers/IndexerItemViewTemplate",
+    tagName  : "li",
 
     events : {
-        'click' : '_edit'
+        "click" : "_edit"
     },
 
     initialize : function() {
-        this.listenTo(this.model, 'sync', this.render);
+        this.listenTo(this.model, "sync", this.render);
     },
 
     _edit : function() {

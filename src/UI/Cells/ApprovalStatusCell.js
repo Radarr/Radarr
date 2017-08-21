@@ -1,14 +1,14 @@
-var Backgrid = require('backgrid');
-var Marionette = require('marionette');
-require('bootstrap');
+var Backgrid = require("backgrid");
+var Marionette = require("marionette");
+require("bootstrap");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'approval-status-cell',
-    template  : 'Cells/ApprovalStatusCellTemplate',
+    className : "approval-status-cell",
+    template  : "Cells/ApprovalStatusCellTemplate",
 
     render : function() {
 
-        var rejections = this.model.get(this.column.get('name'));
+        var rejections = this.model.get(this.column.get("name"));
 
         if (rejections.length === 0) {
             return this;
@@ -17,14 +17,14 @@ module.exports = Backgrid.Cell.extend({
         this.templateFunction = Marionette.TemplateCache.get(this.template);
 
         var html = this.templateFunction(rejections);
-        this.$el.html('<i class="icon-sonarr-form-danger"/>');
+        this.$el.html('<i class="icon-sonarr-form-danger"></i>');
 
         this.$el.popover({
             content   : html,
             html      : true,
-            trigger   : 'hover',
-            title     : this.column.get('title'),
-            placement : 'left',
+            trigger   : "hover",
+            title     : this.column.get("title"),
+            placement : "left",
             container : this.$el
         });
 

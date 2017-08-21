@@ -1,58 +1,58 @@
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var HistoryCollection = require('./HistoryCollection');
-var EventTypeCell = require('../../Cells/EventTypeCell');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
-var HistoryQualityCell = require('./HistoryQualityCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var HistoryDetailsCell = require('./HistoryDetailsCell');
-var GridPager = require('../../Shared/Grid/Pager');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
-var LoadingView = require('../../Shared/LoadingView');
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var HistoryCollection = require("./HistoryCollection");
+var EventTypeCell = require("../../Cells/EventTypeCell");
+var MovieTitleCell = require("../../Cells/MovieTitleCell");
+var HistoryQualityCell = require("./HistoryQualityCell");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var HistoryDetailsCell = require("./HistoryDetailsCell");
+var GridPager = require("../../Shared/Grid/Pager");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
+var LoadingView = require("../../Shared/LoadingView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Activity/History/HistoryLayoutTemplate',
+    template : "Activity/History/HistoryLayoutTemplate",
 
     regions : {
-        history : '#x-history',
-        toolbar : '#x-history-toolbar',
-        pager   : '#x-history-pager'
+        history : "#x-history",
+        toolbar : "#x-history-toolbar",
+        pager   : "#x-history-pager"
     },
 
     columns : [
         {
-            name      : 'eventType',
-            label     : '',
+            name      : "eventType",
+            label     : "",
             cell      : EventTypeCell,
-            cellValue : 'this'
+            cellValue : "this"
         },
         {
-            name  : 'movie',
-            label : 'Movie title',
+            name  : "movie",
+            label : "Movie title",
             cell  : MovieTitleCell,
         },
         {
-            name     : 'this',
-            label    : 'Quality',
+            name     : "this",
+            label    : "Quality",
             cell     : HistoryQualityCell,
             sortable : false
         },
         {
-            name  : 'date',
-            label : 'Date',
+            name  : "date",
+            label : "Date",
             cell  : RelativeDateCell
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             cell     : HistoryDetailsCell,
             sortable : false
         }
     ],
 
     initialize : function() {
-        this.collection = new HistoryCollection({ tableName : 'history' });
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.collection = new HistoryCollection({ tableName : "history" });
+        this.listenTo(this.collection, "sync", this._showTable);
     },
 
     onShow : function() {
@@ -65,7 +65,7 @@ module.exports = Marionette.Layout.extend({
         this.history.show(new Backgrid.Grid({
             columns    : this.columns,
             collection : collection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         }));
 
         this.pager.show(new GridPager({
@@ -76,44 +76,44 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar : function() {
         var filterOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'history.filterMode',
-            defaultAction : 'all',
+            menuKey       : "history.filterMode",
+            defaultAction : "all",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "All",
+                    icon     : "icon-sonarr-all",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'grabbed',
-                    title    : '',
-                    tooltip  : 'Grabbed',
-                    icon     : 'icon-sonarr-downloading',
+                    key      : "grabbed",
+                    title    : "",
+                    tooltip  : "Grabbed",
+                    icon     : "icon-sonarr-downloading",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'imported',
-                    title    : '',
-                    tooltip  : 'Imported',
-                    icon     : 'icon-sonarr-imported',
+                    key      : "imported",
+                    title    : "",
+                    tooltip  : "Imported",
+                    icon     : "icon-sonarr-imported",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'failed',
-                    title    : '',
-                    tooltip  : 'Failed',
-                    icon     : 'icon-sonarr-download-failed',
+                    key      : "failed",
+                    title    : "",
+                    tooltip  : "Failed",
+                    icon     : "icon-sonarr-download-failed",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'deleted',
-                    title    : '',
-                    tooltip  : 'Deleted',
-                    icon     : 'icon-sonarr-deleted',
+                    key      : "deleted",
+                    title    : "",
+                    tooltip  : "Deleted",
+                    icon     : "icon-sonarr-deleted",
                     callback : this._setFilter
                 }
             ]
@@ -128,7 +128,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _setFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
 
         this.collection.state.currentPage = 1;
         var promise = this.collection.setFilterMode(mode);

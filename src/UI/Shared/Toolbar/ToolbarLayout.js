@@ -1,27 +1,27 @@
-var Marionette = require('marionette');
-var ButtonCollection = require('./ButtonCollection');
-var ButtonModel = require('./ButtonModel');
-var RadioButtonCollectionView = require('./Radio/RadioButtonCollectionView');
-var ButtonCollectionView = require('./Button/ButtonCollectionView');
-var SortingButtonCollectionView = require('./Sorting/SortingButtonCollectionView');
-var _ = require('underscore');
+var Marionette = require("marionette");
+var ButtonCollection = require("./ButtonCollection");
+var ButtonModel = require("./ButtonModel");
+var RadioButtonCollectionView = require("./Radio/RadioButtonCollectionView");
+var ButtonCollectionView = require("./Button/ButtonCollectionView");
+var SortingButtonCollectionView = require("./Sorting/SortingButtonCollectionView");
+var _ = require("underscore");
 
 module.exports = Marionette.Layout.extend({
-    template  : 'Shared/Toolbar/ToolbarLayoutTemplate',
-    className : 'toolbar',
+    template  : "Shared/Toolbar/ToolbarLayoutTemplate",
+    className : "toolbar",
 
     ui : {
-        left_x  : '.x-toolbar-left',
-        right_x : '.x-toolbar-right'
+        left_x  : ".x-toolbar-left",
+        right_x : ".x-toolbar-right"
     },
 
     initialize : function(options) {
         if (!options) {
-            throw 'options needs to be passed';
+            throw "options needs to be passed";
         }
 
         if (!options.context) {
-            throw 'context needs to be passed';
+            throw "context needs to be passed";
         }
 
         this.templateHelpers = {
@@ -43,11 +43,11 @@ module.exports = Marionette.Layout.extend({
     },
 
     _showToolbarLeft : function(element, index) {
-        this._showToolbar(element, index, 'left');
+        this._showToolbar(element, index, "left");
     },
 
     _showToolbarRight : function(element, index) {
-        this._showToolbar(element, index, 'right');
+        this._showToolbar(element, index, "right");
     },
 
     _showToolbar : function(buttonGroup, index, position) {
@@ -55,11 +55,11 @@ module.exports = Marionette.Layout.extend({
 
         _.each(buttonGroup.items, function(button) {
             if (buttonGroup.storeState && !button.key) {
-                throw 'must provide key for all buttons when storeState is enabled';
+                throw "must provide key for all buttons when storeState is enabled";
             }
 
             var model = new ButtonModel(button);
-            model.set('menuKey', buttonGroup.menuKey);
+            model.set("menuKey", buttonGroup.menuKey);
             model.ownerContext = this.toolbarContext;
             groupCollection.add(model);
         }, this);
@@ -67,7 +67,7 @@ module.exports = Marionette.Layout.extend({
         var buttonGroupView;
 
         switch (buttonGroup.type) {
-            case 'radio':
+            case "radio":
             {
                 buttonGroupView = new RadioButtonCollectionView({
                     collection : groupCollection,
@@ -75,7 +75,7 @@ module.exports = Marionette.Layout.extend({
                 });
                 break;
             }
-            case 'sorting':
+            case "sorting":
             {
                 buttonGroupView = new SortingButtonCollectionView({
                     collection     : groupCollection,
@@ -94,13 +94,13 @@ module.exports = Marionette.Layout.extend({
             }
         }
 
-        var regionId = position + '_' + (index + 1);
+        var regionId = position + "_" + (index + 1);
         var region = this[regionId];
 
         if (!region) {
-            var regionClassName = 'x-toolbar-' + position + '-' + (index + 1);
-            this.ui[position + '_x'].append('<div class="toolbar-group ' + regionClassName + '" />\r\n');
-            region = this.addRegion(regionId, '.' + regionClassName);
+            var regionClassName = "x-toolbar-" + position + "-" + (index + 1);
+            this.ui[position + "_x"].append('<div class="toolbar-group ' + regionClassName + '"></div>\r\n');
+            region = this.addRegion(regionId, "." + regionClassName);
         }
 
         region.show(buttonGroupView);

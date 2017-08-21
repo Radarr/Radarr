@@ -1,5 +1,5 @@
-var _ = require('underscore');
-var Config = require('../Config');
+var _ = require("underscore");
+var Config = require("../Config");
 
 module.exports = function() {
 

@@ -1,15 +1,15 @@
-var PageableCollection = require('backbone.pageable');
-var TaskModel = require('./TaskModel');
+var PageableCollection = require("backbone.pageable");
+var TaskModel = require("./TaskModel");
 
 module.exports = PageableCollection.extend({
-    url   : window.NzbDrone.ApiRoot + '/system/task',
+    url   : window.NzbDrone.ApiRoot + "/system/task",
     model : TaskModel,
 
     state : {
-        sortKey  : 'name',
+        sortKey  : "name",
         order    : -1,
         pageSize : 100000
     },
 
-    mode : 'client'
+    mode : "client"
 });

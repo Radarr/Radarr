@@ -1,13 +1,13 @@
-var Marionette = require('marionette');
-var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../../Mixins/AsValidatedView');
-require('../../../Mixins/FileBrowser');
+var Marionette = require("marionette");
+var AsModelBoundView = require("../../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../../Mixins/AsValidatedView");
+require("../../../Mixins/FileBrowser");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/DownloadClient/DroneFactory/DroneFactoryViewTemplate',
+    template : "Settings/DownloadClient/DroneFactory/DroneFactoryViewTemplate",
 
     ui : {
-        droneFactory : '.x-path'
+        droneFactory : ".x-path"
     },
 
     onShow : function() {

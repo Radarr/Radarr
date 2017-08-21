@@ -1,19 +1,19 @@
-require('messenger');
+require("messenger");
 
-var messenger = require('messenger');
+var messenger = require("messenger");
 module.exports = {
     show : function(options) {
         if (!options.type) {
-            options.type = 'info';
+            options.type = "info";
         }
 
         if (options.hideAfter === undefined) {
             switch (options.type) {
-                case 'info':
+                case "info":
                     options.hideAfter = 5;
                     break;
 
-                case 'success':
+                case "success":
                     options.hideAfter = 5;
                     break;
 
@@ -37,15 +37,15 @@ module.exports = {
 
     monitor : function(options) {
         if (!options.promise) {
-            throw 'promise is required';
+            throw "promise is required";
         }
 
         if (!options.successMessage) {
-            throw 'success message is required';
+            throw "success message is required";
         }
 
         if (!options.errorMessage) {
-            throw 'error message is required';
+            throw "error message is required";
         }
 
         var self = this;
@@ -57,7 +57,7 @@ module.exports = {
         options.promise.fail(function() {
             self.show({
                 message : options.errorMessage,
-                type    : 'error'
+                type    : "error"
             });
         });
 

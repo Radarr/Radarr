@@ -1,6 +1,6 @@
-var gulp = require('gulp');
-var paths = require('./paths.js');
-var stripbom = require('gulp-stripbom');
+var gulp = require("gulp");
+var paths = require("./paths.js");
+var stripbom = require("gulp-stripbom");
 
 var stripBom = function (dest) {
     gulp.src([paths.src.scripts, paths.src.exclude.libs])
@@ -16,6 +16,6 @@ var stripBom = function (dest) {
         .pipe(gulp.dest(dest));
 };
 
-gulp.task('stripBom', function () {
+gulp.task("stripBom", function () {
     stripBom(paths.src.root);
 });

@@ -1,34 +1,34 @@
-var _ = require('underscore');
-var vent = require('vent');
-var AppLayout = require('../../../AppLayout');
-var Marionette = require('marionette');
-var Backbone = require('backbone');
-var EditProfileItemView = require('./EditProfileItemView');
-var QualitySortableCollectionView = require('./QualitySortableCollectionView');
-var EditProfileView = require('./EditProfileView');
-var DeleteView = require('../DeleteProfileView');
-var SeriesCollection = require('../../../Series/SeriesCollection');
-var Config = require('../../../Config');
-var AsEditModalView = require('../../../Mixins/AsEditModalView');
+var _ = require("underscore");
+var vent = require("vent");
+var AppLayout = require("../../../AppLayout");
+var Marionette = require("marionette");
+var Backbone = require("backbone");
+var EditProfileItemView = require("./EditProfileItemView");
+var QualitySortableCollectionView = require("./QualitySortableCollectionView");
+var EditProfileView = require("./EditProfileView");
+var DeleteView = require("../DeleteProfileView");
+var SeriesCollection = require("../../../Series/SeriesCollection");
+var Config = require("../../../Config");
+var AsEditModalView = require("../../../Mixins/AsEditModalView");
 
 var view = Marionette.Layout.extend({
-    template : 'Settings/Profile/Edit/EditProfileLayoutTemplate',
+    template : "Settings/Profile/Edit/EditProfileLayoutTemplate",
 
     regions : {
-        fields    : '#x-fields',
-        qualities : '#x-qualities'
+        fields    : "#x-fields",
+        qualities : "#x-qualities"
     },
 
     ui : {
-        deleteButton : '.x-delete'
+        deleteButton : ".x-delete"
     },
 
     _deleteView : DeleteView,
 
     initialize : function(options) {
         this.profileCollection = options.profileCollection;
-        this.itemsCollection = new Backbone.Collection(_.toArray(this.model.get('items')).reverse());
-        this.listenTo(SeriesCollection, 'all', this._updateDisableStatus);
+        this.itemsCollection = new Backbone.Collection(_.toArray(this.model.get("items")).reverse());
+        this.listenTo(SeriesCollection, "all", this._updateDisableStatus);
     },
 
     onRender : function() {
@@ -48,11 +48,11 @@ var view = Marionette.Layout.extend({
             sortable       : advancedShown,
 
             sortableOptions : {
-                handle : '.x-drag-handle'
+                handle : ".x-drag-handle"
             },
 
             visibleModelsFilter : function(model) {
-                return model.get('quality').id !== 0 || advancedShown;
+                return model.get("quality").id !== 0 || advancedShown;
             },
 
             collection : this.itemsCollection,
@@ -60,17 +60,17 @@ var view = Marionette.Layout.extend({
         });
 
         this.sortableListView.setSelectedModels(this.itemsCollection.filter(function(item) {
-            return item.get('allowed') === true;
+            return item.get("allowed") === true;
         }));
         this.qualities.show(this.sortableListView);
 
-        this.listenTo(this.sortableListView, 'selectionChanged', this._selectionChanged);
-        this.listenTo(this.sortableListView, 'sortStop', this._updateModel);
+        this.listenTo(this.sortableListView, "selectionChanged", this._selectionChanged);
+        this.listenTo(this.sortableListView, "sortStop", this._updateModel);
     },
 
     _onBeforeSave : function() {
         var cutoff = this.fieldsView.getCutoff();
-        this.model.set('cutoff', cutoff);
+        this.model.set("cutoff", cutoff);
     },
 
     _onAfterSave : function() {
@@ -83,16 +83,16 @@ var view = Marionette.Layout.extend({
         var removeModels = _.difference(oldSelectedModels, newSelectedModels);
 
         _.each(removeModels, function(item) {
-            item.set('allowed', false);
+            item.set("allowed", false);
         });
         _.each(addedModels, function(item) {
-            item.set('allowed', true);
+            item.set("allowed", true);
         });
         this._updateModel();
     },
 
     _updateModel : function() {
-        this.model.set('items', this.itemsCollection.toJSON().reverse());
+        this.model.set("items", this.itemsCollection.toJSON().reverse());
 
         this._showFieldsView();
     },
@@ -103,15 +103,15 @@ var view = Marionette.Layout.extend({
 
     _updateDisableStatus : function() {
         if (this._isQualityInUse()) {
-            this.ui.deleteButton.addClass('disabled');
-            this.ui.deleteButton.attr('title', 'Can\'t delete a profile that is attached to a series.');
+            this.ui.deleteButton.addClass("disabled");
+            this.ui.deleteButton.attr("title", "Can\"t delete a profile that is attached to a series.");
         } else {
-            this.ui.deleteButton.removeClass('disabled');
+            this.ui.deleteButton.removeClass("disabled");
         }
     },
 
     _isQualityInUse : function() {
-        return SeriesCollection.where({ 'profileId' : this.model.id }).length !== 0;
+        return SeriesCollection.where({ "profileId" : this.model.id }).length !== 0;
     }
 });
 module.exports = AsEditModalView.call(view);

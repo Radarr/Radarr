@@ -1,27 +1,27 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Profiles = require('../../Profile/ProfileCollection');
-var AsModelBoundView = require('../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../Mixins/AsEditModalView');
-require('../../Mixins/TagInput');
-require('../../Mixins/FileBrowser');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Profiles = require("../../Profile/ProfileCollection");
+var AsModelBoundView = require("../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../Mixins/AsValidatedView");
+var AsEditModalView = require("../../Mixins/AsEditModalView");
+require("../../Mixins/TagInput");
+require("../../Mixins/FileBrowser");
 
 var view = Marionette.ItemView.extend({
-    template : 'Movies/Edit/EditMovieTemplate',
+    template : "Movies/Edit/EditMovieTemplate",
 
     ui : {
-        profile : '.x-profile',
-        path    : '.x-path',
-        tags    : '.x-tags'
+        profile : ".x-profile",
+        path    : ".x-path",
+        tags    : ".x-tags"
     },
 
     events : {
-        'click .x-remove' : '_removeMovie'
+        "click .x-remove" : "_removeMovie"
     },
 
     initialize : function() {
-        this.model.set('profiles', Profiles);
+        this.model.set("profiles", Profiles);
         var pathState = this.model.get("pathState");
         if (pathState === "static") {
           this.model.set("pathState", true);
@@ -34,7 +34,7 @@ var view = Marionette.ItemView.extend({
         this.ui.path.fileBrowser();
         this.ui.tags.tagInput({
             model    : this.model,
-            property : 'tags'
+            property : "tags"
         });
 
     },
@@ -51,8 +51,8 @@ var view = Marionette.ItemView.extend({
     },
 
     _onAfterSave : function() {
-		this.model.set('saved', true);
-        this.trigger('saved');
+		this.model.set("saved", true);
+        this.trigger("saved");
         vent.trigger(vent.Commands.CloseModalCommand);
     },
 

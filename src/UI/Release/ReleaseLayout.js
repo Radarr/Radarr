@@ -1,71 +1,71 @@
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var ReleaseCollection = require('./ReleaseCollection');
-var IndexerCell = require('../Cells/IndexerCell');
-var EpisodeNumberCell = require('../Cells/EpisodeNumberCell');
-var FileSizeCell = require('../Cells/FileSizeCell');
-var QualityCell = require('../Cells/QualityCell');
-var ApprovalStatusCell = require('../Cells/ApprovalStatusCell');
-var LoadingView = require('../Shared/LoadingView');
-var EditionCell = require('../Cells/EditionCell');
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var ReleaseCollection = require("./ReleaseCollection");
+var IndexerCell = require("../Cells/IndexerCell");
+var EpisodeNumberCell = require("../Cells/EpisodeNumberCell");
+var FileSizeCell = require("../Cells/FileSizeCell");
+var QualityCell = require("../Cells/QualityCell");
+var ApprovalStatusCell = require("../Cells/ApprovalStatusCell");
+var LoadingView = require("../Shared/LoadingView");
+var EditionCell = require("../Cells/EditionCell");
 var ReleaseTitleCell = require("../Cells/ReleaseTitleCell");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Release/ReleaseLayoutTemplate',
+    template : "Release/ReleaseLayoutTemplate",
 
     regions : {
-        grid    : '#x-grid',
-        toolbar : '#x-toolbar'
+        grid    : "#x-grid",
+        toolbar : "#x-toolbar"
     },
 
     columns : [
         {
-          name      : 'edition',
-          label     : 'Edition',
+          name      : "edition",
+          label     : "Edition",
           sortable  : false,
           cell      : EditionCell
         },
         {
-            name     : 'indexer',
-            label    : 'Indexer',
+            name     : "indexer",
+            label    : "Indexer",
             sortable : true,
             cell     : IndexerCell
         },
         {
-            name     : 'title',
-            label    : 'Title',
+            name     : "title",
+            label    : "Title",
             sortable : true,
             cell     : ReleaseTitleCell
         },
         /*{
-            name     : 'episodeNumbers',
-            episodes : 'episodeNumbers',
-            label    : 'season',
+            name     : "episodeNumbers",
+            episodes : "episodeNumbers",
+            label    : "season",
             cell     : EpisodeNumberCell
         },*/
         {
-            name     : 'size',
-            label    : 'Size',
+            name     : "size",
+            label    : "Size",
             sortable : true,
             cell     : FileSizeCell
         },
         {
-            name     : 'quality',
-            label    : 'Quality',
+            name     : "quality",
+            label    : "Quality",
             sortable : true,
             cell     : QualityCell
         },
         {
-            name  : 'rejections',
-            label : '',
+            name  : "rejections",
+            label : "",
             cell  : ApprovalStatusCell,
-            title : 'Release Rejected'
+            title : "Release Rejected"
         }
     ],
 
     initialize : function() {
         this.collection = new ReleaseCollection();
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.listenTo(this.collection, "sync", this._showTable);
     },
 
     onRender : function() {
@@ -79,7 +79,7 @@ module.exports = Marionette.Layout.extend({
                 row        : Backgrid.Row,
                 columns    : this.columns,
                 collection : this.collection,
-                className  : 'table table-hover'
+                className  : "table table-hover"
             }));
         }
     }

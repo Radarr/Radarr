@@ -1,55 +1,55 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var BackupCollection = require('./BackupCollection');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var BackupFilenameCell = require('./BackupFilenameCell');
-var BackupTypeCell = require('./BackupTypeCell');
-var EmptyView = require('./BackupEmptyView');
-var LoadingView = require('../../Shared/LoadingView');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var BackupCollection = require("./BackupCollection");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var BackupFilenameCell = require("./BackupFilenameCell");
+var BackupTypeCell = require("./BackupTypeCell");
+var EmptyView = require("./BackupEmptyView");
+var LoadingView = require("../../Shared/LoadingView");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
 
 module.exports = Marionette.Layout.extend({
-    template : 'System/Backup/BackupLayoutTemplate',
+    template : "System/Backup/BackupLayoutTemplate",
 
     regions : {
-        backups : '#x-backups',
-        toolbar : '#x-backup-toolbar'
+        backups : "#x-backups",
+        toolbar : "#x-backup-toolbar"
     },
 
     columns : [
         {
-            name     : 'type',
-            label    : '',
+            name     : "type",
+            label    : "",
             sortable : false,
             cell     : BackupTypeCell
         },
         {
-            name     : 'this',
-            label    : 'Name',
+            name     : "this",
+            label    : "Name",
             sortable : false,
             cell     : BackupFilenameCell
         },
         {
-            name     : 'time',
-            label    : 'Time',
+            name     : "time",
+            label    : "Time",
             sortable : false,
             cell     : RelativeDateCell
         }
     ],
 
     leftSideButtons : {
-        type       : 'default',
+        type       : "default",
         storeState : false,
         collapse   : false,
         items      : [
             {
-                title          : 'Backup',
-                icon           : 'icon-sonarr-file-text',
-                command        : 'backup',
-                properties     : { type : 'manual' },
-                successMessage : 'Database and settings were backed up successfully.',
-                errorMessage   : 'Backup Failed!'
+                title          : "Backup",
+                icon           : "icon-sonarr-file-text",
+                command        : "backup",
+                properties     : { type : "manual" },
+                successMessage : "Database and settings were backed up successfully.",
+                errorMessage   : "Backup Failed!"
             }
         ]
     },
@@ -57,7 +57,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.backupCollection = new BackupCollection();
 
-        this.listenTo(this.backupCollection, 'sync', this._showBackups);
+        this.listenTo(this.backupCollection, "sync", this._showBackups);
         this.listenTo(vent, vent.Events.CommandComplete, this._commandComplete);
     },
 
@@ -75,7 +75,7 @@ module.exports = Marionette.Layout.extend({
             this.backups.show(new Backgrid.Grid({
                 columns    : this.columns,
                 collection : this.backupCollection,
-                className  : 'table table-hover'
+                className  : "table table-hover"
             }));
         }
     },
@@ -87,7 +87,7 @@ module.exports = Marionette.Layout.extend({
         }));
     },
     _commandComplete : function(options) {
-        if (options.command.get('name') === 'backup') {
+        if (options.command.get("name") === "backup") {
             this.backupCollection.fetch();
         }
     }

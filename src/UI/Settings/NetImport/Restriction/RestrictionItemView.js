@@ -1,21 +1,21 @@
-var AppLayout = require('../../../AppLayout');
-var Marionette = require('marionette');
-var EditView = require('./RestrictionEditView');
+var AppLayout = require("../../../AppLayout");
+var Marionette = require("marionette");
+var EditView = require("./RestrictionEditView");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'Settings/Indexers/Restriction/RestrictionItemViewTemplate',
-    className : 'row',
+    template  : "Settings/Indexers/Restriction/RestrictionItemViewTemplate",
+    className : "row",
 
     ui : {
-        tags : '.x-tags'
+        tags : ".x-tags"
     },
 
     events : {
-        'click .x-edit' : '_edit'
+        "click .x-edit" : "_edit"
     },
 
     initialize : function() {
-        this.listenTo(this.model, 'sync', this.render);
+        this.listenTo(this.model, "sync", this.render);
     },
 
     _edit : function() {

@@ -1,7 +1,7 @@
-var Backbone = require('backbone');
-var MetadataModel = require('./MetadataModel');
+var Backbone = require("backbone");
+var MetadataModel = require("./MetadataModel");
 
 module.exports = Backbone.Collection.extend({
     model : MetadataModel,
-    url   : window.NzbDrone.ApiRoot + '/metadata'
+    url   : window.NzbDrone.ApiRoot + "/metadata"
 });

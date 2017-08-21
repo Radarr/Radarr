@@ -1,50 +1,50 @@
-var _ = require('underscore');
-var Backbone = require('backbone');
-var PageableCollection = require('backbone.pageable');
-var MovieModel = require('./MovieModel');
-var ApiData = require('../Shared/ApiData');
-var AsFilteredCollection = require('../Mixins/AsFilteredCollection');
-var AsSortedCollection = require('../Mixins/AsSortedCollection');
-var AsPersistedStateCollection = require('../Mixins/AsPersistedStateCollection');
-var moment = require('moment');
-var UiSettings = require('../Shared/UiSettingsModel');
-require('../Mixins/backbone.signalr.mixin');
-var Config = require('../Config');
+var _ = require("underscore");
+var Backbone = require("backbone");
+var PageableCollection = require("backbone.pageable");
+var MovieModel = require("./MovieModel");
+var ApiData = require("../Shared/ApiData");
+var AsFilteredCollection = require("../Mixins/AsFilteredCollection");
+var AsSortedCollection = require("../Mixins/AsSortedCollection");
+var AsPersistedStateCollection = require("../Mixins/AsPersistedStateCollection");
+var moment = require("moment");
+var UiSettings = require("../Shared/UiSettingsModel");
+require("../Mixins/backbone.signalr.mixin");
+var Config = require("../Config");
 
 var pageSize = parseInt(Config.getValue("pageSize")) || 250;
 
 var filterModes = {
-    'all'        : [
+    "all"        : [
         null,
         null
     ],
-    'continuing' : [
-        'status',
-        'continuing'
+    "continuing" : [
+        "status",
+        "continuing"
     ],
-    'ended'      : [
-        'status',
-        'ended'
+    "ended"      : [
+        "status",
+        "ended"
     ],
-    'monitored'  : [
-        'monitored',
+    "monitored"  : [
+        "monitored",
         true
     ],
-    'missing'  : [
-        'downloaded',
+    "missing"  : [
+        "downloaded",
         false
     ],
-    'released'  : [
+    "released"  : [
         "status",
         "released",
         //function(model) { return model.getStatus() == "released"; }
     ],
-    'announced'  : [
+    "announced"  : [
         "status",
         "announced",
         //function(model) { return model.getStatus() == "announced"; }
     ],
-    'cinemas'  : [
+    "cinemas"  : [
         "status",
         "inCinemas",
         //function(model) { return model.getStatus() == "inCinemas"; }
@@ -53,36 +53,36 @@ var filterModes = {
 
 
 var Collection = PageableCollection.extend({
-    url       : window.NzbDrone.ApiRoot + '/movie',
+    url       : window.NzbDrone.ApiRoot + "/movie",
     model     : MovieModel,
-    tableName : 'movie',
+    tableName : "movie",
 
     origSetSorting : PageableCollection.prototype.setSorting,
     origAdd : PageableCollection.prototype.add,
     origSort : PageableCollection.prototype.sort,
 
     state : {
-        sortKey            : 'sortTitle',
+        sortKey            : "sortTitle",
         order              : -1,
         pageSize           : pageSize,
-        secondarySortKey   : 'sortTitle',
+        secondarySortKey   : "sortTitle",
         secondarySortOrder : -1
     },
 
     queryParams : {
         totalPages   : null,
         totalRecords : null,
-        pageSize     : 'pageSize',
-        sortKey      : 'sortKey',
-        order        : 'sortDir',
+        pageSize     : "pageSize",
+        sortKey      : "sortKey",
+        order        : "sortDir",
         directions   : {
-            '-1' : 'asc',
-            '1'  : 'desc'
+            "-1" : "asc",
+            "1"  : "desc"
         }
     },
 
     parseState : function(resp) {
-	  if (this.mode === 'client') {
+	  if (this.mode === "client") {
 	  	return {};
 	  }
       var direction = -1;
@@ -93,21 +93,21 @@ var Collection = PageableCollection.extend({
     },
 
     parseRecords : function(resp) {
-        if (resp && this.mode !== 'client') {
+        if (resp && this.mode !== "client") {
             return resp.records;
         }
 
         return resp;
     },
 
-    mode : 'server',
+    mode : "server",
 
     setSorting : function(sortKey, order, options) {
         return this.origSetSorting.call(this, sortKey, order, options);
     },
 
     sort : function(options){
-    	//if (this.mode == 'server' && this.state.order == '-1' && this.state.sortKey === 'sortTitle'){
+    	//if (this.mode == "server" && this.state.order == "-1" && this.state.sortKey === "sortTitle"){
         //    this.origSort(options);
         //}
     },
@@ -115,13 +115,13 @@ var Collection = PageableCollection.extend({
     save : function() {
         var self = this;
 		var t= self;
-		if (self.mode === 'client') {
+		if (self.mode === "client") {
 			t = self.fullCollection;
 			}
         var proxy = _.extend(new Backbone.Model(), {
-            id : '',
+            id : "",
 
-            url : self.url + '/editor',
+            url : self.url + "/editor",
 
             toJSON : function() {
                 return t.filter(function(model) {
@@ -129,13 +129,13 @@ var Collection = PageableCollection.extend({
                 });
             }
         });
-        this.listenTo(proxy, 'sync', function(proxyModel, models) {
-			if (self.mode === 'client') {
+        this.listenTo(proxy, "sync", function(proxyModel, models) {
+			if (self.mode === "client") {
             	this.fullCollection.add(models, { merge : true });
 			} else {
 				this.add(models, { merge : true });
 			}
-            this.trigger('save', this);
+            this.trigger("save", this);
         });
 
         return proxy.save();
@@ -166,10 +166,10 @@ var Collection = PageableCollection.extend({
 
     sortMappings : {
         movie : {
-            sortKey : 'series.sortTitle'
+            sortKey : "series.sortTitle"
         },
         title : {
-            sortKey : 'sortTitle'
+            sortKey : "sortTitle"
         },
         statusWeight : {
           sortValue : function(model, attr) {
@@ -220,7 +220,7 @@ var Collection = PageableCollection.extend({
         percentOfEpisodes : {
             sortValue : function(model, attr) {
                 var percentOfEpisodes = model.get(attr);
-                var episodeCount = model.get('episodeCount');
+                var episodeCount = model.get("episodeCount");
 
                 return percentOfEpisodes + episodeCount / 1000000;
             }
@@ -239,7 +239,7 @@ var Collection = PageableCollection.extend({
         },
         path : {
             sortValue : function(model) {
-                var path = model.get('path');
+                var path = model.get("path");
 
                 return path.toLowerCase();
             }
@@ -261,7 +261,7 @@ var Collection = PageableCollection.extend({
     },
 
     comparator: function (model) {
-		return model.get('sortTitle');
+		return model.get("sortTitle");
     }
 });
 

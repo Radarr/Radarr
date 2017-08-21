@@ -1,20 +1,20 @@
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var UpdateCollection = require('./UpdateCollection');
-var UpdateCollectionView = require('./UpdateCollectionView');
-var LoadingView = require('../../Shared/LoadingView');
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var UpdateCollection = require("./UpdateCollection");
+var UpdateCollectionView = require("./UpdateCollectionView");
+var LoadingView = require("../../Shared/LoadingView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'System/Update/UpdateLayoutTemplate',
+    template : "System/Update/UpdateLayoutTemplate",
 
     regions : {
-        updates : '#x-updates'
+        updates : "#x-updates"
     },
 
     initialize : function() {
         this.updateCollection = new UpdateCollection();
 
-        this.listenTo(this.updateCollection, 'sync', this._showUpdates);
+        this.listenTo(this.updateCollection, "sync", this._showUpdates);
     },
 
     onRender : function() {

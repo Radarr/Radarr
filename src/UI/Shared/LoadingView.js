@@ -1,6 +1,6 @@
-var Marionette = require('marionette');
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'Shared/LoadingViewTemplate',
-    className : 'nz-loading row'
+    template  : "Shared/LoadingViewTemplate",
+    className : "nz-loading row"
 });

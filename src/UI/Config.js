@@ -1,21 +1,21 @@
-var $ = require('jquery');
-var vent = require('./vent');
+var $ = require("jquery");
+var vent = require("./vent");
 
 module.exports = {
-    ConfigNamespace : 'Radarr.',
+    ConfigNamespace : "Radarr.",
 
     Events : {
-        ConfigUpdatedEvent : 'ConfigUpdatedEvent'
+        ConfigUpdatedEvent : "ConfigUpdatedEvent"
     },
 
     Keys : {
-        DefaultProfileId    : 'RadarrDefaultProfileId',
-        DefaultRootFolderId : 'RadarrDefaultRootFolderId',
+        DefaultProfileId    : "RadarrDefaultProfileId",
+        DefaultRootFolderId : "RadarrDefaultRootFolderId",
         DefaultMinAvailability : "RadarrDefaultMinAvailability",
-        UseSeasonFolder     : 'RadarrUseSeasonFolder',
-        DefaultSeriesType   : 'RadarrDefaultSeriesType',
-        MonitorEpisodes     : 'RadarrMonitorEpisodes',
-        AdvancedSettings    : 'RadarradvancedSettings'
+        UseSeasonFolder     : "RadarrUseSeasonFolder",
+        DefaultSeriesType   : "RadarrDefaultSeriesType",
+        MonitorEpisodes     : "RadarrMonitorEpisodes",
+        AdvancedSettings    : "RadarradvancedSettings"
     },
 
     getValueJson : function (key, defaultValue) {
@@ -34,7 +34,7 @@ module.exports = {
     getValueBoolean : function(key, defaultValue) {
         defaultValue = defaultValue || false;
 
-        return this.getValue(key, defaultValue.toString()) === 'true';
+        return this.getValue(key, defaultValue.toString()) === "true";
     },
 
     getValue : function(key, defaultValue) {
@@ -54,7 +54,7 @@ module.exports = {
 
     setValue : function(key, value) {
         var storeKey = this.ConfigNamespace + key;
-        console.log('Config: [{0}] => [{1}]'.format(storeKey, value));
+        console.log("Config: [{0}] => [{1}]".format(storeKey, value));
 
         if (this.getValue(key) === value.toString()) {
             return;
@@ -68,7 +68,7 @@ module.exports = {
             });
         }
         catch (error) {
-            console.error('Unable to save config: [{0}] => [{1}]'.format(storeKey, value));
+            console.error("Unable to save config: [{0}] => [{1}]".format(storeKey, value));
         }
     }
 };

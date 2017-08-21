@@ -1,7 +1,7 @@
-var NzbDroneCell = require('../../../Cells/NzbDroneCell');
+var NzbDroneCell = require("../../../Cells/NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'log-level-cell',
+    className : "log-level-cell",
 
     render : function() {
         var level = this._getValue();

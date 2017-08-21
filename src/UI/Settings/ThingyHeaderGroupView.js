@@ -1,10 +1,10 @@
-var Backbone = require('backbone');
-var Marionette = require('marionette');
+var Backbone = require("backbone");
+var Marionette = require("marionette");
 
 module.exports = Marionette.CompositeView.extend({
-    itemViewContainer : '.item-list',
-    template          : 'Settings/ThingyHeaderGroupViewTemplate',
-    tagName           : 'div',
+    itemViewContainer : ".item-list",
+    template          : "Settings/ThingyHeaderGroupViewTemplate",
+    tagName           : "div",
 
     itemViewOptions : function() {
         return {
@@ -13,6 +13,6 @@ module.exports = Marionette.CompositeView.extend({
     },
 
     initialize : function() {
-        this.collection = new Backbone.Collection(this.model.get('collection'));
+        this.collection = new Backbone.Collection(this.model.get("collection"));
     }
 });

@@ -1,56 +1,56 @@
-var _ = require('underscore');
-var vent = require('vent');
-var AppLayout = require('../AppLayout');
-var Backbone = require('backbone');
-var Marionette = require('marionette');
-var Profiles = require('../Profile/ProfileCollection');
-var RootFolders = require('./RootFolders/RootFolderCollection');
-var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var SeriesCollection = require('../Series/SeriesCollection');
-var Config = require('../Config');
-var Messenger = require('../Shared/Messenger');
-var AsValidatedView = require('../Mixins/AsValidatedView');
+var _ = require("underscore");
+var vent = require("vent");
+var AppLayout = require("../AppLayout");
+var Backbone = require("backbone");
+var Marionette = require("marionette");
+var Profiles = require("../Profile/ProfileCollection");
+var RootFolders = require("./RootFolders/RootFolderCollection");
+var RootFolderLayout = require("./RootFolders/RootFolderLayout");
+var SeriesCollection = require("../Series/SeriesCollection");
+var Config = require("../Config");
+var Messenger = require("../Shared/Messenger");
+var AsValidatedView = require("../Mixins/AsValidatedView");
 
-require('jquery.dotdotdot');
+require("jquery.dotdotdot");
 
 var view = Marionette.ItemView.extend({
 
-    template : 'AddSeries/SearchResultViewTemplate',
+    template : "AddSeries/SearchResultViewTemplate",
 
     ui : {
-        profile         : '.x-profile',
-        rootFolder      : '.x-root-folder',
-        seasonFolder    : '.x-season-folder',
-        seriesType      : '.x-series-type',
-        monitor         : '.x-monitor',
-        monitorTooltip  : '.x-monitor-tooltip',
-        addButton       : '.x-add',
-        addSearchButton : '.x-add-search',
-        overview        : '.x-overview'
+        profile         : ".x-profile",
+        rootFolder      : ".x-root-folder",
+        seasonFolder    : ".x-season-folder",
+        seriesType      : ".x-series-type",
+        monitor         : ".x-monitor",
+        monitorTooltip  : ".x-monitor-tooltip",
+        addButton       : ".x-add",
+        addSearchButton : ".x-add-search",
+        overview        : ".x-overview"
     },
 
     events : {
-        'click .x-add'            : '_addWithoutSearch',
-        'click .x-add-search'     : '_addAndSearch',
-        'change .x-profile'       : '_profileChanged',
-        'change .x-root-folder'   : '_rootFolderChanged',
-        'change .x-season-folder' : '_seasonFolderChanged',
-        'change .x-series-type'   : '_seriesTypeChanged',
-        'change .x-monitor'       : '_monitorChanged'
+        "click .x-add"            : "_addWithoutSearch",
+        "click .x-add-search"     : "_addAndSearch",
+        "change .x-profile"       : "_profileChanged",
+        "change .x-root-folder"   : "_rootFolderChanged",
+        "change .x-season-folder" : "_seasonFolderChanged",
+        "change .x-series-type"   : "_seriesTypeChanged",
+        "change .x-monitor"       : "_monitorChanged"
     },
 
     initialize : function() {
 
         if (!this.model) {
-            throw 'model is required';
+            throw "model is required";
         }
 
         this.templateHelpers = {};
         this._configureTemplateHelpers();
 
         this.listenTo(vent, Config.Events.ConfigUpdatedEvent, this._onConfigUpdated);
-        this.listenTo(this.model, 'change', this.render);
-        this.listenTo(RootFolders, 'all', this._rootFoldersUpdated);
+        this.listenTo(this.model, "change", this.render);
+        this.listenTo(RootFolders, "all", this._rootFoldersUpdated);
     },
 
     onRender : function() {
@@ -58,8 +58,8 @@ var view = Marionette.ItemView.extend({
         var defaultProfile = Config.getValue(Config.Keys.DefaultProfileId);
         var defaultRoot = Config.getValue(Config.Keys.DefaultRootFolderId);
         var useSeasonFolder = Config.getValueBoolean(Config.Keys.UseSeasonFolder, true);
-        var defaultSeriesType = Config.getValue(Config.Keys.DefaultSeriesType, 'standard');
-        var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, 'missing');
+        var defaultSeriesType = Config.getValue(Config.Keys.DefaultSeriesType, "standard");
+        var defaultMonitorEpisodes = Config.getValue(Config.Keys.MonitorEpisodes, "missing");
 
         if (Profiles.get(defaultProfile)) {
             this.ui.profile.val(defaultProfile);
@@ -69,7 +69,7 @@ var view = Marionette.ItemView.extend({
             this.ui.rootFolder.val(defaultRoot);
         }
 
-        this.ui.seasonFolder.prop('checked', useSeasonFolder);
+        this.ui.seasonFolder.prop("checked", useSeasonFolder);
         this.ui.seriesType.val(defaultSeriesType);
         this.ui.monitor.val(defaultMonitorEpisodes);
 
@@ -79,21 +79,21 @@ var view = Marionette.ItemView.extend({
             height : 120
         });
 
-        this.templateFunction = Marionette.TemplateCache.get('AddSeries/MonitoringTooltipTemplate');
+        this.templateFunction = Marionette.TemplateCache.get("AddSeries/MonitoringTooltipTemplate");
         var content = this.templateFunction();
 
         this.ui.monitorTooltip.popover({
             content   : content,
             html      : true,
-            trigger   : 'hover',
-            title     : 'Episode Monitoring Options',
-            placement : 'right',
+            trigger   : "hover",
+            title     : "Episode Monitoring Options",
+            placement : "right",
             container : this.$el
         });
     },
 
     _configureTemplateHelpers : function() {
-        var existingSeries = SeriesCollection.where({ tvdbId : this.model.get('tvdbId') });
+        var existingSeries = SeriesCollection.where({ tvdbId : this.model.get("tvdbId") });
 
         if (existingSeries.length > 0) {
             this.templateHelpers.existing = existingSeries[0].toJSON();
@@ -101,7 +101,7 @@ var view = Marionette.ItemView.extend({
 
         this.templateHelpers.profiles = Profiles.toJSON();
 
-        if (!this.model.get('isExisting')) {
+        if (!this.model.get("isExisting")) {
             this.templateHelpers.rootFolders = RootFolders.toJSON();
         }
     },
@@ -116,7 +116,7 @@ var view = Marionette.ItemView.extend({
         }
 
         else if (options.key === Config.Keys.UseSeasonFolder) {
-            this.ui.seasonFolder.prop('checked', options.value);
+            this.ui.seasonFolder.prop("checked", options.value);
         }
 
         else if (options.key === Config.Keys.DefaultSeriesType) {
@@ -133,14 +133,14 @@ var view = Marionette.ItemView.extend({
     },
 
     _seasonFolderChanged : function() {
-        Config.setValue(Config.Keys.UseSeasonFolder, this.ui.seasonFolder.prop('checked'));
+        Config.setValue(Config.Keys.UseSeasonFolder, this.ui.seasonFolder.prop("checked"));
     },
 
     _rootFolderChanged : function() {
         var rootFolderValue = this.ui.rootFolder.val();
-        if (rootFolderValue === 'addNew') {
+        if (rootFolderValue === "addNew") {
             var rootFolderLayout = new RootFolderLayout();
-            this.listenToOnce(rootFolderLayout, 'folderSelected', this._setRootFolder);
+            this.listenToOnce(rootFolderLayout, "folderSelected", this._setRootFolder);
             AppLayout.modalRegion.show(rootFolderLayout);
         } else {
             Config.setValue(Config.Keys.DefaultRootFolderId, rootFolderValue);
@@ -173,13 +173,13 @@ var view = Marionette.ItemView.extend({
         var addButton = this.ui.addButton;
         var addSearchButton = this.ui.addSearchButton;
 
-        addButton.addClass('disabled');
-        addSearchButton.addClass('disabled');
+        addButton.addClass("disabled");
+        addSearchButton.addClass("disabled");
 
         var profile = this.ui.profile.val();
-        var rootFolderPath = this.ui.rootFolder.children(':selected').text();
+        var rootFolderPath = this.ui.rootFolder.children(":selected").text();
         var seriesType = this.ui.seriesType.val();
-        var seasonFolder = this.ui.seasonFolder.prop('checked');
+        var seasonFolder = this.ui.seasonFolder.prop("checked");
 
         var options = this._getAddSeriesOptions();
         options.searchForMissingEpisodes = searchForMissingEpisodes;
@@ -205,8 +205,8 @@ var view = Marionette.ItemView.extend({
         }
 
         promise.always(function() {
-            addButton.removeClass('disabled');
-            addSearchButton.removeClass('disabled');
+            addButton.removeClass("disabled");
+            addSearchButton.removeClass("disabled");
         });
 
         promise.done(function() {
@@ -215,12 +215,12 @@ var view = Marionette.ItemView.extend({
             self.close();
 
             Messenger.show({
-                message        : 'Added: ' + self.model.get('title'),
+                message        : "Added: " + self.model.get("title"),
                 actions        : {
                     goToSeries : {
-                        label  : 'Go to Series',
+                        label  : "Go to Series",
                         action : function() {
-                            Backbone.history.navigate('/series/' + self.model.get('titleSlug'), { trigger : true });
+                            Backbone.history.navigate("/series/" + self.model.get("titleSlug"), { trigger : true });
                         }
                     }
                 },
@@ -239,8 +239,8 @@ var view = Marionette.ItemView.extend({
 
     _getAddSeriesOptions : function() {
         var monitor = this.ui.monitor.val();
-        var lastSeason = _.max(this.model.get('seasons'), 'seasonNumber');
-        var firstSeason = _.min(_.reject(this.model.get('seasons'), { seasonNumber : 0 }), 'seasonNumber');
+        var lastSeason = _.max(this.model.get("seasons"), "seasonNumber");
+        var firstSeason = _.min(_.reject(this.model.get("seasons"), { seasonNumber : 0 }), "seasonNumber");
 
         this.model.setSeasonPass(firstSeason.seasonNumber);
 
@@ -249,33 +249,33 @@ var view = Marionette.ItemView.extend({
             ignoreEpisodesWithoutFiles : false
         };
 
-        if (monitor === 'all') {
+        if (monitor === "all") {
             return options;
         }
 
-        else if (monitor === 'future') {
+        else if (monitor === "future") {
             options.ignoreEpisodesWithFiles = true;
             options.ignoreEpisodesWithoutFiles = true;
         }
 
-        else if (monitor === 'latest') {
+        else if (monitor === "latest") {
             this.model.setSeasonPass(lastSeason.seasonNumber);
         }
 
-        else if (monitor === 'first') {
+        else if (monitor === "first") {
             this.model.setSeasonPass(lastSeason.seasonNumber + 1);
             this.model.setSeasonMonitored(firstSeason.seasonNumber);
         }
 
-        else if (monitor === 'missing') {
+        else if (monitor === "missing") {
             options.ignoreEpisodesWithFiles = true;
         }
 
-        else if (monitor === 'existing') {
+        else if (monitor === "existing") {
             options.ignoreEpisodesWithoutFiles = true;
         }
 
-        else if (monitor === 'none') {
+        else if (monitor === "none") {
             this.model.setSeasonPass(lastSeason.seasonNumber + 1);
         }
 

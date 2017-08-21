@@ -1,15 +1,15 @@
-var Backbone = require('backbone');
-var RenamePreviewModel = require('./RenamePreviewModel');
+var Backbone = require("backbone");
+var RenamePreviewModel = require("./RenamePreviewModel");
 
 module.exports = Backbone.Collection.extend({
-    url   : window.NzbDrone.ApiRoot + '/renameMovie',
+    url   : window.NzbDrone.ApiRoot + "/renameMovie",
     model : RenamePreviewModel,
 
     originalFetch : Backbone.Collection.prototype.fetch,
 
     initialize : function(options) {
         if (!options.movieId) {
-            throw 'movieId is required';
+            throw "movieId is required";
         }
 
         this.movieId = options.movieId;
@@ -18,7 +18,7 @@ module.exports = Backbone.Collection.extend({
 
     fetch : function(options) {
         if (!this.movieId) {
-            throw 'movieId is required';
+            throw "movieId is required";
         }
 
         options = options || {};

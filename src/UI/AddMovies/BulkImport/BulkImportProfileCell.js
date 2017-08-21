@@ -1,10 +1,10 @@
-var Backgrid = require('backgrid');
-var ProfileCollection = require('../../Profile/ProfileCollection');
-var Config = require('../../Config');
-var _ = require('underscore');
+var Backgrid = require("backgrid");
+var ProfileCollection = require("../../Profile/ProfileCollection");
+var Config = require("../../Config");
+var _ = require("underscore");
 
 module.exports = Backgrid.SelectCell.extend({
-    className : 'profile-cell',
+    className : "profile-cell",
 
     _orig : Backgrid.SelectCell.prototype.initialize,
 

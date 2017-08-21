@@ -1,11 +1,11 @@
-var vent = require('vent');
-var Backgrid = require('backgrid');
+var vent = require("vent");
+var Backgrid = require("backgrid");
 
 module.exports = Backgrid.Row.extend({
-    className : 'log-row',
+    className : "log-row",
 
     events : {
-        'click' : '_showDetails'
+        "click" : "_showDetails"
     },
 
     _showDetails : function() {

@@ -1,17 +1,17 @@
-var Handlebars = require('handlebars');
-var StatusModel = require('../../System/StatusModel');
-var _ = require('underscore');
+var Handlebars = require("handlebars");
+var StatusModel = require("../../System/StatusModel");
+var _ = require("underscore");
 
-Handlebars.registerHelper('poster', function() {
+Handlebars.registerHelper("poster", function() {
 
-    var placeholder = StatusModel.get('urlBase') + '/Content/Images/poster-dark.png';
-    var poster = _.where(this.images, { coverType : 'poster' });
+    var placeholder = StatusModel.get("urlBase") + "/Content/Images/poster-dark.png";
+    var poster = _.where(this.images, { coverType : "poster" });
 
     if (poster[0]) {
         if (!poster[0].url.match(/^https?:\/\//)) {
             return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster[0].url, 250)));
         } else {
-            var url = poster[0].url.replace(/^https?\:/, 'https://'); //IMDb posters need https to work, k?
+            var url = poster[0].url.replace(/^https?\:/, "https://"); //IMDb posters need https to work, k?
             return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
         }
     }
@@ -19,15 +19,15 @@ Handlebars.registerHelper('poster', function() {
     return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
 });
 
-Handlebars.registerHelper('remotePoster', function() {
-  var placeholder = StatusModel.get('urlBase') + '/Content/Images/poster-dark.png';
+Handlebars.registerHelper("remotePoster", function() {
+  var placeholder = StatusModel.get("urlBase") + "/Content/Images/poster-dark.png";
   var poster = this.remotePoster;
 
   if (poster) {
       if (!poster.match(/^https?:\/\//)) {
           return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster, 250)));
       } else {
-          var url = poster.replace(/^https?\:/, 'https://'); //IMDb posters need https to work, k?
+          var url = poster.replace(/^https?\:/, "https://"); //IMDb posters need https to work, k?
           return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
       }
   }
@@ -35,31 +35,31 @@ Handlebars.registerHelper('remotePoster', function() {
   return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
 });
 
-Handlebars.registerHelper('traktUrl', function() {
-    return 'http://trakt.tv/search/tmdb/' + this.tmdbId + '?id_type=movie';
+Handlebars.registerHelper("traktUrl", function() {
+    return "http://trakt.tv/search/tmdb/" + this.tmdbId + "?id_type=movie";
 });
 
-Handlebars.registerHelper('imdbUrl', function() {
-    return 'http://imdb.com/title/' + this.imdbId;
+Handlebars.registerHelper("imdbUrl", function() {
+    return "http://imdb.com/title/" + this.imdbId;
 });
 
-Handlebars.registerHelper('tvdbUrl', function() {
-    return 'http://imdb.com/title/tt' + this.imdbId;
+Handlebars.registerHelper("tvdbUrl", function() {
+    return "http://imdb.com/title/tt" + this.imdbId;
 });
 
-Handlebars.registerHelper('tmdbUrl', function() {
-    return 'https://www.themoviedb.org/movie/' + this.tmdbId;
+Handlebars.registerHelper("tmdbUrl", function() {
+    return "https://www.themoviedb.org/movie/" + this.tmdbId;
 });
 
-Handlebars.registerHelper('youTubeTrailerUrl', function() {
-    return 'https://www.youtube.com/watch?v=' + this.youTubeTrailerId;
+Handlebars.registerHelper("youTubeTrailerUrl", function() {
+    return "https://www.youtube.com/watch?v=" + this.youTubeTrailerId;
 });
 
-Handlebars.registerHelper('homepage', function() {
+Handlebars.registerHelper("homepage", function() {
     return this.website;
 });
 
-Handlebars.registerHelper('alternativeTitlesString', function() {
+Handlebars.registerHelper("alternativeTitlesString", function() {
   var titles = this.alternativeTitles;
   if (titles.length === 0) {
     return "";
@@ -75,7 +75,7 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
   return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
 });
 
-Handlebars.registerHelper('GetStatus', function() {
+Handlebars.registerHelper("GetStatus", function() {
   var monitored = this.monitored;
   var status = this.status;
   //var inCinemas = this.inCinemas;
@@ -93,7 +93,7 @@ Handlebars.registerHelper('GetStatus', function() {
     return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
   }
 
-  if (status === 'released') {
+  if (status === "released") {
       return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
   }
 
@@ -102,7 +102,7 @@ Handlebars.registerHelper('GetStatus', function() {
   }
 });
 
-Handlebars.registerHelper('GetBannerStatus', function() {
+Handlebars.registerHelper("GetBannerStatus", function() {
   var monitored = this.monitored;
   var status = this.status;
   //var inCinemas = this.inCinemas;
@@ -123,7 +123,7 @@ Handlebars.registerHelper('GetBannerStatus', function() {
   }
 });
 
-Handlebars.registerHelper('DownloadedStatusColor', function() {
+Handlebars.registerHelper("DownloadedStatusColor", function() {
   if (!this.monitored) {
     if (this.downloaded) {
       return "default";
@@ -142,7 +142,7 @@ Handlebars.registerHelper('DownloadedStatusColor', function() {
   return "danger";
 });
 
-Handlebars.registerHelper('DownloadedStatus', function() {
+Handlebars.registerHelper("DownloadedStatus", function() {
 
   if (this.downloaded) {
     return "Downloaded";
@@ -162,7 +162,7 @@ Handlebars.registerHelper("DownloadedQuality", function() {
 });
 
 
-Handlebars.registerHelper('inCinemas', function() {
+Handlebars.registerHelper("inCinemas", function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
@@ -184,19 +184,19 @@ Handlebars.registerHelper('inCinemas', function() {
   return "To be announced";
 });
 
-Handlebars.registerHelper('tvRageUrl', function() {
-    return 'http://www.tvrage.com/shows/id-' + this.tvRageId;
+Handlebars.registerHelper("tvRageUrl", function() {
+    return "http://www.tvrage.com/shows/id-" + this.tvRageId;
 });
 
-Handlebars.registerHelper('tvMazeUrl', function() {
-    return 'http://www.tvmaze.com/shows/' + this.tvMazeId + '/_';
+Handlebars.registerHelper("tvMazeUrl", function() {
+    return "http://www.tvmaze.com/shows/" + this.tvMazeId + "/_";
 });
 
-Handlebars.registerHelper('route', function() {
-    return StatusModel.get('urlBase') + '/movies/' + this.titleSlug;
+Handlebars.registerHelper("route", function() {
+    return StatusModel.get("urlBase") + "/movies/" + this.titleSlug;
 });
 
-Handlebars.registerHelper('percentOfEpisodes', function() {
+Handlebars.registerHelper("percentOfEpisodes", function() {
     var episodeCount = this.episodeCount;
     var episodeFileCount = this.episodeFileCount;
 
@@ -209,9 +209,9 @@ Handlebars.registerHelper('percentOfEpisodes', function() {
     return percent;
 });
 
-Handlebars.registerHelper('seasonCountHelper', function() {
+Handlebars.registerHelper("seasonCountHelper", function() {
     var seasonCount = this.seasonCount;
-    var continuing = this.status === 'continuing';
+    var continuing = this.status === "continuing";
 
     if (continuing) {
         return new Handlebars.SafeString('<span class="label label-info">Season {0}</span>'.format(seasonCount));
@@ -224,8 +224,8 @@ Handlebars.registerHelper('seasonCountHelper', function() {
     return new Handlebars.SafeString('<span class="label label-info">{0} Seasons</span>'.format(seasonCount));
 });
 
-Handlebars.registerHelper('titleWithYear', function() {
-    if (this.title.endsWith(' ({0})'.format(this.year))) {
+Handlebars.registerHelper("titleWithYear", function() {
+    if (this.title.endsWith(" ({0})".format(this.year))) {
         return this.title;
     }
 

@@ -1,12 +1,12 @@
-var Marionette = require('marionette');
-var MetadataCollection = require('./MetadataCollection');
-var MetadataCollectionView = require('./MetadataCollectionView');
+var Marionette = require("marionette");
+var MetadataCollection = require("./MetadataCollection");
+var MetadataCollectionView = require("./MetadataCollectionView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Settings/Metadata/MetadataLayoutTemplate',
+    template : "Settings/Metadata/MetadataLayoutTemplate",
 
     regions : {
-        metadata : '#x-metadata-providers'
+        metadata : "#x-metadata-providers"
     },
 
     initialize : function(options) {

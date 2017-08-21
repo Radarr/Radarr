@@ -1,18 +1,18 @@
-var PageableCollection = require('backbone.pageable');
-var ManualImportModel = require('./ManualImportModel');
-var AsSortedCollection = require('../Mixins/AsSortedCollection');
+var PageableCollection = require("backbone.pageable");
+var ManualImportModel = require("./ManualImportModel");
+var AsSortedCollection = require("../Mixins/AsSortedCollection");
 
 var Collection = PageableCollection.extend({
     model : ManualImportModel,
-    url   : window.NzbDrone.ApiRoot + '/manualimport',
+    url   : window.NzbDrone.ApiRoot + "/manualimport",
 
     state : {
-        sortKey  : 'quality',
+        sortKey  : "quality",
         order    : 1,
         pageSize : 100000
     },
 
-    mode : 'client',
+    mode : "client",
 
     originalFetch : PageableCollection.prototype.fetch,
 
@@ -20,7 +20,7 @@ var Collection = PageableCollection.extend({
         options = options || {};
 
         if (!options.folder && !options.downloadId) {
-            throw 'folder or downloadId is required';
+            throw "folder or downloadId is required";
         }
 
         this.folder = options.folder;
@@ -44,18 +44,18 @@ var Collection = PageableCollection.extend({
                     return series.sortTitle;
                 }
 
-                return '';
+                return "";
             }
         },
 
         quality : {
-            sortKey : 'qualityWeight'
+            sortKey : "qualityWeight"
         }
     },
 
     comparator : function(model1, model2) {
-        var quality1 = model1.get('quality');
-        var quality2 = model2.get('quality');
+        var quality1 = model1.get("quality");
+        var quality2 = model2.get("quality");
 
         if (quality1 < quality2) {
             return 1;

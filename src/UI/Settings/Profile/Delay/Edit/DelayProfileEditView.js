@@ -1,27 +1,27 @@
-var vent = require('vent');
-var AppLayout = require('../../../../AppLayout');
-var Marionette = require('marionette');
-var DeleteView = require('../Delete/DelayProfileDeleteView');
-var AsModelBoundView = require('../../../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../../../Mixins/AsEditModalView');
-require('../../../../Mixins/TagInput');
-require('bootstrap');
+var vent = require("vent");
+var AppLayout = require("../../../../AppLayout");
+var Marionette = require("marionette");
+var DeleteView = require("../Delete/DelayProfileDeleteView");
+var AsModelBoundView = require("../../../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../../../Mixins/AsValidatedView");
+var AsEditModalView = require("../../../../Mixins/AsEditModalView");
+require("../../../../Mixins/TagInput");
+require("bootstrap");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/Profile/Delay/Edit/DelayProfileEditViewTemplate',
+    template : "Settings/Profile/Delay/Edit/DelayProfileEditViewTemplate",
 
     _deleteView : DeleteView,
 
     ui : {
-        tags         : '.x-tags',
-        usenetDelay  : '.x-usenet-delay',
-        torrentDelay : '.x-torrent-delay',
-        protocol     : '.x-protocol'
+        tags         : ".x-tags",
+        usenetDelay  : ".x-usenet-delay",
+        torrentDelay : ".x-torrent-delay",
+        protocol     : ".x-protocol"
     },
 
     events : {
-        'change .x-protocol' : '_updateModel'
+        "change .x-protocol" : "_updateModel"
     },
 
     initialize : function(options) {
@@ -32,7 +32,7 @@ var view = Marionette.ItemView.extend({
         if (this.model.id !== 1) {
             this.ui.tags.tagInput({
                 model    : this.model,
-                property : 'tags'
+                property : "tags"
             });
         }
 
@@ -47,35 +47,35 @@ var view = Marionette.ItemView.extend({
     _updateModel : function() {
         var protocol = this.ui.protocol.val();
 
-        if (protocol === 'preferUsenet') {
+        if (protocol === "preferUsenet") {
             this.model.set({
                 enableUsenet      : true,
                 enableTorrent     : true,
-                preferredProtocol : 'usenet'
+                preferredProtocol : "usenet"
             });
         }
 
-        if (protocol === 'preferTorrent') {
+        if (protocol === "preferTorrent") {
             this.model.set({
                 enableUsenet      : true,
                 enableTorrent     : true,
-                preferredProtocol : 'torrent'
+                preferredProtocol : "torrent"
             });
         }
 
-        if (protocol === 'onlyUsenet') {
+        if (protocol === "onlyUsenet") {
             this.model.set({
                 enableUsenet      : true,
                 enableTorrent     : false,
-                preferredProtocol : 'usenet'
+                preferredProtocol : "usenet"
             });
         }
 
-        if (protocol === 'onlyTorrent') {
+        if (protocol === "onlyTorrent") {
             this.model.set({
                 enableUsenet      : false,
                 enableTorrent     : true,
-                preferredProtocol : 'torrent'
+                preferredProtocol : "torrent"
             });
         }
 
@@ -83,16 +83,16 @@ var view = Marionette.ItemView.extend({
     },
 
     _toggleControls : function() {
-        var enableUsenet = this.model.get('enableUsenet');
-        var enableTorrent = this.model.get('enableTorrent');
-        var preferred = this.model.get('preferredProtocol');
+        var enableUsenet = this.model.get("enableUsenet");
+        var enableTorrent = this.model.get("enableTorrent");
+        var preferred = this.model.get("preferredProtocol");
 
-        if (preferred === 'usenet') {
-            this.ui.protocol.val('preferUsenet');
+        if (preferred === "usenet") {
+            this.ui.protocol.val("preferUsenet");
         }
 
         else {
-            this.ui.protocol.val('preferTorrent');
+            this.ui.protocol.val("preferTorrent");
         }
 
         if (enableUsenet) {
@@ -100,7 +100,7 @@ var view = Marionette.ItemView.extend({
         }
 
         else {
-            this.ui.protocol.val('onlyTorrent');
+            this.ui.protocol.val("onlyTorrent");
             this.ui.usenetDelay.hide();
         }
 
@@ -109,7 +109,7 @@ var view = Marionette.ItemView.extend({
         }
 
         else {
-            this.ui.protocol.val('onlyUsenet');
+            this.ui.protocol.val("onlyUsenet");
             this.ui.torrentDelay.hide();
         }
     }

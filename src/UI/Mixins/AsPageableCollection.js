@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require("underscore");
 
 module.exports = function() {
     var originalMakeCollectionEventHandler = this.prototype._makeCollectionEventHandler;
@@ -13,7 +13,7 @@ module.exports = function() {
     };
 
     this.prototype._resetEventHandler = function (originalEventHandler, event, model, collection, options) {
-        if (event === 'reset') {
+        if (event === "reset") {
             var currentPage = this.state.currentPage;
             var pageSize = this.state.pageSize;
 

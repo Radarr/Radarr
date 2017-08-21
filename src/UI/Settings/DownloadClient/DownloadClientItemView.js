@@ -1,17 +1,17 @@
-var AppLayout = require('../../AppLayout');
-var Marionette = require('marionette');
-var EditView = require('./Edit/DownloadClientEditView');
+var AppLayout = require("../../AppLayout");
+var Marionette = require("marionette");
+var EditView = require("./Edit/DownloadClientEditView");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Settings/DownloadClient/DownloadClientItemViewTemplate',
-    tagName  : 'li',
+    template : "Settings/DownloadClient/DownloadClientItemViewTemplate",
+    tagName  : "li",
 
     events : {
-        'click' : '_edit'
+        "click" : "_edit"
     },
 
     initialize : function() {
-        this.listenTo(this.model, 'sync', this.render);
+        this.listenTo(this.model, "sync", this.render);
     },
 
     _edit : function() {
