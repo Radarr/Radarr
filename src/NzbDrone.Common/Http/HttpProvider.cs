@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
@@ -24,7 +24,7 @@ namespace NzbDrone.Common.Http
         public HttpProvider(Logger logger)
         {
             _logger = logger;
-            _userAgent = string.Format("Sonarr {0}", BuildInfo.Version);
+            _userAgent = string.Format("Radarr {0}", BuildInfo.Version);
             ServicePointManager.Expect100Continue = false;
         }
 
@@ -58,6 +58,6 @@ namespace NzbDrone.Common.Http
             }
         }
 
-    
+
     }
 }

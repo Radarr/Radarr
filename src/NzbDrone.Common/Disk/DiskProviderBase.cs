@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -108,7 +108,7 @@ namespace NzbDrone.Common.Disk
                 }
             }
         }
-        
+
         public bool CanUseGDIPlus()
         {
             try
@@ -129,7 +129,7 @@ namespace NzbDrone.Common.Disk
             {
                 return true;
             }
-            
+
             try
             {
                 using (var bmp = new Bitmap(filename))
@@ -150,7 +150,7 @@ namespace NzbDrone.Common.Disk
 
             try
             {
-                var testPath = Path.Combine(path, "sonarr_write_test.txt");
+                var testPath = Path.Combine(path, "radarr_write_test.txt");
                 var testContent = string.Format("This file was created to verify if '{0}' is writable. It should've been automatically deleted. Feel free to delete it.", path);
                 File.WriteAllText(testPath, testContent);
                 File.Delete(testPath);

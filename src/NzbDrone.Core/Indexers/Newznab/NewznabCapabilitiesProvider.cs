@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Xml;
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             catch (Exception ex)
             {
-                _logger.Debug(ex, "Failed to get newznab api capabilities from {0}", indexerSettings.BaseUrl);
+                _logger.Debug(ex, "Failed to get Newznab API capabilities from {0}", indexerSettings.BaseUrl);
                 throw;
             }
 
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Sonarr restarts.", indexerSettings.BaseUrl);
+                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Radarr restarts.", indexerSettings.BaseUrl);
             }
 
             return capabilities;
