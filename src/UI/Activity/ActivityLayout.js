@@ -1,29 +1,29 @@
-var Marionette = require('marionette');
-var Backbone = require('backbone');
-var Backgrid = require('backgrid');
-var HistoryLayout = require('./History/HistoryLayout');
-var BlacklistLayout = require('./Blacklist/BlacklistLayout');
-var QueueLayout = require('./Queue/QueueLayout');
+var Marionette = require("marionette");
+var Backbone = require("backbone");
+var Backgrid = require("backgrid");
+var HistoryLayout = require("./History/HistoryLayout");
+var BlacklistLayout = require("./Blacklist/BlacklistLayout");
+var QueueLayout = require("./Queue/QueueLayout");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Activity/ActivityLayoutTemplate',
+    template : "Activity/ActivityLayoutTemplate",
 
     regions : {
-        queueRegion : '#queue',
-        history     : '#history',
-        blacklist   : '#blacklist'
+        queueRegion : "#queue",
+        history     : "#history",
+        blacklist   : "#blacklist"
     },
 
     ui : {
-        queueTab     : '.x-queue-tab',
-        historyTab   : '.x-history-tab',
-        blacklistTab : '.x-blacklist-tab'
+        queueTab     : ".x-queue-tab",
+        historyTab   : ".x-history-tab",
+        blacklistTab : ".x-blacklist-tab"
     },
 
     events : {
-        'click .x-queue-tab'     : '_showQueue',
-        'click .x-history-tab'   : '_showHistory',
-        'click .x-blacklist-tab' : '_showBlacklist'
+        "click .x-queue-tab"     : "_showQueue",
+        "click .x-history-tab"   : "_showHistory",
+        "click .x-blacklist-tab" : "_showBlacklist"
     },
 
     initialize : function(options) {
@@ -34,10 +34,10 @@ module.exports = Marionette.Layout.extend({
 
     onShow : function() {
         switch (this.action) {
-            case 'history':
+            case "history":
                 this._showHistory();
                 break;
-            case 'blacklist':
+            case "blacklist":
                 this._showBlacklist();
                 break;
             default:
@@ -58,8 +58,8 @@ module.exports = Marionette.Layout.extend({
         }
 
         this.history.show(new HistoryLayout());
-        this.ui.historyTab.tab('show');
-        this._navigate('/activity/history');
+        this.ui.historyTab.tab("show");
+        this._navigate("/activity/history");
     },
 
     _showBlacklist : function(e) {
@@ -68,8 +68,8 @@ module.exports = Marionette.Layout.extend({
         }
 
         this.blacklist.show(new BlacklistLayout());
-        this.ui.blacklistTab.tab('show');
-        this._navigate('/activity/blacklist');
+        this.ui.blacklistTab.tab("show");
+        this._navigate("/activity/blacklist");
     },
 
     _showQueue : function(e) {
@@ -78,7 +78,7 @@ module.exports = Marionette.Layout.extend({
         }
 
         this.queueRegion.show(new QueueLayout());
-        this.ui.queueTab.tab('show');
-        this._navigate('/activity/queue');
+        this.ui.queueTab.tab("show");
+        this._navigate("/activity/queue");
     }
 });

@@ -1,16 +1,16 @@
-var $ = require('jquery');
-require('./AutoComplete');
+var $ = require("jquery");
+require("./AutoComplete");
 
 $.fn.directoryAutoComplete = function(options) {
     options = options || {};
 
-    var query = 'path';
+    var query = "path";
     var data = {
         includeFiles: options.includeFiles || false
     };
 
     $(this).autoComplete({
-        resource : '/filesystem',
+        resource : "/filesystem",
         query    : query,
         data     : data,
         filter   : function(filter, response, callback) {

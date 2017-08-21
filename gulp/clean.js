@@ -1,8 +1,8 @@
-var gulp = require('gulp');
-var del = require('del');
+var gulp = require("gulp");
+var del = require("del");
 
-var paths = require('./paths');
+var paths = require("./paths");
 
-gulp.task('clean', function(cb) {
+gulp.task("clean", function(cb) {
     del([paths.dest.root], cb);
 });

@@ -1,6 +1,6 @@
-var PagableCollection = require('backbone.pageable');
-var FileModel = require('./FileModel');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
+var PagableCollection = require("backbone.pageable");
+var FileModel = require("./FileModel");
+var AsSortedCollection = require("../../Mixins/AsSortedCollection");
 
 var Collection = PagableCollection.extend({
     url   : window.NzbDrone.ApiRoot + "/moviefile",
@@ -8,14 +8,14 @@ var Collection = PagableCollection.extend({
 
     state : {
         pageSize : 2000,
-        sortKey  : 'title',
+        sortKey  : "title",
         order    : -1
     },
 
-    mode : 'client',
+    mode : "client",
 
     sortMappings : {
-        'quality'    : {
+        "quality"    : {
             sortKey : "qualityWeight"
         },
         "edition" : {

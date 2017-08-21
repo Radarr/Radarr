@@ -1,6 +1,6 @@
-var PagableCollection = require('backbone.pageable');
-var TitleModel = require('./TitleModel');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
+var PagableCollection = require("backbone.pageable");
+var TitleModel = require("./TitleModel");
+var AsSortedCollection = require("../../Mixins/AsSortedCollection");
 
 var Collection = PagableCollection.extend({
     url   : window.NzbDrone.ApiRoot + "/aka",
@@ -8,11 +8,11 @@ var Collection = PagableCollection.extend({
 
     state : {
         pageSize : 2000,
-        sortKey  : 'title',
+        sortKey  : "title",
         order    : -1
     },
 
-    mode : 'client',
+    mode : "client",
 
     sortMappings : {
         "source" : {

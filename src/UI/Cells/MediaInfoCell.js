@@ -1,12 +1,12 @@
-var NzbDroneCell = require('./NzbDroneCell');
+var NzbDroneCell = require("./NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'release-title-cell',
+    className : "release-title-cell",
 
     render : function() {
         this.$el.empty();
 
-        var info = this.model.get('mediaInfo');
+        var info = this.model.get("mediaInfo");
         if (info) {
           var runtime = info.runTime;
           if (runtime) {

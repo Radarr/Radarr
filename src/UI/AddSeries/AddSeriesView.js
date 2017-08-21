@@ -1,28 +1,28 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var AddSeriesCollection = require('./AddSeriesCollection');
-var SearchResultCollectionView = require('./SearchResultCollectionView');
-var EmptyView = require('./EmptyView');
-var NotFoundView = require('./NotFoundView');
-var ErrorView = require('./ErrorView');
-var LoadingView = require('../Shared/LoadingView');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var AddSeriesCollection = require("./AddSeriesCollection");
+var SearchResultCollectionView = require("./SearchResultCollectionView");
+var EmptyView = require("./EmptyView");
+var NotFoundView = require("./NotFoundView");
+var ErrorView = require("./ErrorView");
+var LoadingView = require("../Shared/LoadingView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'AddSeries/AddSeriesViewTemplate',
+    template : "AddSeries/AddSeriesViewTemplate",
 
     regions : {
-        searchResult : '#search-result'
+        searchResult : "#search-result"
     },
 
     ui : {
-        seriesSearch : '.x-series-search',
-        searchBar    : '.x-search-bar',
-        loadMore     : '.x-load-more'
+        seriesSearch : ".x-series-search",
+        searchBar    : ".x-search-bar",
+        loadMore     : ".x-load-more"
     },
 
     events : {
-        'click .x-load-more' : '_onLoadMore'
+        "click .x-load-more" : "_onLoadMore"
     },
 
     initialize : function(options) {
@@ -34,13 +34,13 @@ module.exports = Marionette.Layout.extend({
         }
 
         if (this.isExisting) {
-            this.className = 'existing-series';
+            this.className = "existing-series";
         } else {
-            this.className = 'new-series';
+            this.className = "new-series";
         }
 
         this.listenTo(vent, vent.Events.SeriesAdded, this._onSeriesAdded);
-        this.listenTo(this.collection, 'sync', this._showResults);
+        this.listenTo(this.collection, "sync", this._showResults);
 
         this.resultCollectionView = new SearchResultCollectionView({
             collection : this.collection,
@@ -119,15 +119,15 @@ module.exports = Marionette.Layout.extend({
     },
 
     _onSeriesAdded : function(options) {
-        if (this.isExisting && options.series.get('path') === this.model.get('folder').path) {
+        if (this.isExisting && options.series.get("path") === this.model.get("folder").path) {
             this.close();
         }
 
         else if (!this.isExisting) {
-            this.collection.term = '';
+            this.collection.term = "";
             this.collection.reset();
             this._clearResults();
-            this.ui.seriesSearch.val('');
+            this.ui.seriesSearch.val("");
             this.ui.seriesSearch.focus();
         }
     },
@@ -165,7 +165,7 @@ module.exports = Marionette.Layout.extend({
 
     _abortExistingSearch : function() {
         if (this.currentSearchPromise && this.currentSearchPromise.readyState > 0 && this.currentSearchPromise.readyState < 4) {
-            console.log('aborting previous pending search request.');
+            console.log("aborting previous pending search request.");
             this.currentSearchPromise.abort();
         } else {
             this._clearResults();
@@ -176,7 +176,7 @@ module.exports = Marionette.Layout.extend({
         if (!this.isClosed) {
             this.ui.searchBar.show();
             this.searchResult.show(new ErrorView({ term : this.collection.term }));
-            this.collection.term = '';
+            this.collection.term = "";
         }
     }
 });

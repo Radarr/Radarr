@@ -1,111 +1,111 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var PosterCollectionView = require('./Posters/SeriesPostersCollectionView');
-var ListCollectionView = require('./Overview/SeriesOverviewCollectionView');
-var EmptyView = require('./EmptyView');
-var SeriesCollection = require('../SeriesCollection');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var SeriesTitleCell = require('../../Cells/SeriesTitleCell');
-var TemplatedCell = require('../../Cells/TemplatedCell');
-var ProfileCell = require('../../Cells/ProfileCell');
-var EpisodeProgressCell = require('../../Cells/EpisodeProgressCell');
-var SeriesActionsCell = require('../../Cells/SeriesActionsCell');
-var SeriesStatusCell = require('../../Cells/SeriesStatusCell');
-var FooterView = require('./FooterView');
-var FooterModel = require('./FooterModel');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
-require('../../Mixins/backbone.signalr.mixin');
+var _ = require("underscore");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var PosterCollectionView = require("./Posters/SeriesPostersCollectionView");
+var ListCollectionView = require("./Overview/SeriesOverviewCollectionView");
+var EmptyView = require("./EmptyView");
+var SeriesCollection = require("../SeriesCollection");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var SeriesTitleCell = require("../../Cells/SeriesTitleCell");
+var TemplatedCell = require("../../Cells/TemplatedCell");
+var ProfileCell = require("../../Cells/ProfileCell");
+var EpisodeProgressCell = require("../../Cells/EpisodeProgressCell");
+var SeriesActionsCell = require("../../Cells/SeriesActionsCell");
+var SeriesStatusCell = require("../../Cells/SeriesStatusCell");
+var FooterView = require("./FooterView");
+var FooterModel = require("./FooterModel");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
+require("../../Mixins/backbone.signalr.mixin");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Series/Index/SeriesIndexLayoutTemplate',
+    template : "Series/Index/SeriesIndexLayoutTemplate",
 
     regions : {
-        seriesRegion : '#x-series',
-        toolbar      : '#x-toolbar',
-        toolbar2     : '#x-toolbar2',
-        footer       : '#x-series-footer'
+        seriesRegion : "#x-series",
+        toolbar      : "#x-toolbar",
+        toolbar2     : "#x-toolbar2",
+        footer       : "#x-series-footer"
     },
 
     columns : [
         {
-            name  : 'statusWeight',
-            label : '',
+            name  : "statusWeight",
+            label : "",
             cell  : SeriesStatusCell
         },
         {
-            name      : 'title',
-            label     : 'Title',
+            name      : "title",
+            label     : "Title",
             cell      : SeriesTitleCell,
-            cellValue : 'this',
-            sortValue : 'sortTitle'
+            cellValue : "this",
+            sortValue : "sortTitle"
         },
         {
-            name  : 'seasonCount',
-            label : 'Seasons',
-            cell  : 'integer'
+            name  : "seasonCount",
+            label : "Seasons",
+            cell  : "integer"
         },
         {
-            name  : 'profileId',
-            label : 'Profile',
+            name  : "profileId",
+            label : "Profile",
             cell  : ProfileCell
         },
         {
-            name  : 'network',
-            label : 'Network',
-            cell  : 'string'
+            name  : "network",
+            label : "Network",
+            cell  : "string"
         },
         {
-            name  : 'nextAiring',
-            label : 'Next Airing',
+            name  : "nextAiring",
+            label : "Next Airing",
             cell  : RelativeDateCell
         },
         {
-            name      : 'percentOfEpisodes',
-            label     : 'Episodes',
+            name      : "percentOfEpisodes",
+            label     : "Episodes",
             cell      : EpisodeProgressCell,
-            className : 'episode-progress-cell'
+            className : "episode-progress-cell"
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             sortable : false,
             cell     : SeriesActionsCell
         }
     ],
 
     leftSideButtons : {
-        type       : 'default',
+        type       : "default",
         storeState : false,
         collapse   : true,
         items      : [
             {
-                title : 'Add Movie',
-                icon  : 'icon-sonarr-add',
-                route : 'addmovies'
+                title : "Add Movie",
+                icon  : "icon-sonarr-add",
+                route : "addmovies"
             },
             {
-                title : 'Season Pass',
-                icon  : 'icon-sonarr-monitored',
-                route : 'seasonpass'
+                title : "Season Pass",
+                icon  : "icon-sonarr-monitored",
+                route : "seasonpass"
             },
             {
-                title : 'Series Editor',
-                icon  : 'icon-sonarr-edit',
-                route : 'serieseditor'
+                title : "Series Editor",
+                icon  : "icon-sonarr-edit",
+                route : "serieseditor"
             },
             {
-                title        : 'RSS Sync',
-                icon         : 'icon-sonarr-rss',
-                command      : 'rsssync',
-                errorMessage : 'RSS Sync Failed!'
+                title        : "RSS Sync",
+                icon         : "icon-sonarr-rss",
+                command      : "rsssync",
+                errorMessage : "RSS Sync Failed!"
             },
             {
-                title          : 'Update Library',
-                icon           : 'icon-sonarr-refresh',
-                command        : 'refreshseries',
-                successMessage : 'Library was updated!',
-                errorMessage   : 'Library update failed!'
+                title          : "Update Library",
+                icon           : "icon-sonarr-refresh",
+                command        : "refreshseries",
+                successMessage : "Library was updated!",
+                errorMessage   : "Library update failed!"
             }
         ]
     },
@@ -114,122 +114,122 @@ module.exports = Marionette.Layout.extend({
         this.seriesCollection = SeriesCollection.clone();
         this.seriesCollection.shadowCollection.bindSignalR();
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'sync', function(model, collection, options) {
+        this.listenTo(this.seriesCollection.shadowCollection, "sync", function(model, collection, options) {
             this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'add', function(model, collection, options) {
+        this.listenTo(this.seriesCollection.shadowCollection, "add", function(model, collection, options) {
             this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
-        this.listenTo(this.seriesCollection.shadowCollection, 'remove', function(model, collection, options) {
+        this.listenTo(this.seriesCollection.shadowCollection, "remove", function(model, collection, options) {
             this.seriesCollection.fullCollection.resetFiltered();
             this._renderView();
         });
 
         this.sortingOptions = {
-            type           : 'sorting',
+            type           : "sorting",
             storeState     : false,
             viewCollection : this.seriesCollection,
             items          : [
                 {
-                    title : 'Title',
-                    name  : 'title'
+                    title : "Title",
+                    name  : "title"
                 },
                 {
-                    title : 'Seasons',
-                    name  : 'seasonCount'
+                    title : "Seasons",
+                    name  : "seasonCount"
                 },
                 {
-                    title : 'Quality',
-                    name  : 'profileId'
+                    title : "Quality",
+                    name  : "profileId"
                 },
                 {
-                    title : 'Network',
-                    name  : 'network'
+                    title : "Network",
+                    name  : "network"
                 },
                 {
-                    title : 'Next Airing',
-                    name  : 'nextAiring'
+                    title : "Next Airing",
+                    name  : "nextAiring"
                 },
                 {
-                    title : 'Episodes',
-                    name  : 'percentOfEpisodes'
+                    title : "Episodes",
+                    name  : "percentOfEpisodes"
                 }
             ]
         };
 
         this.filteringOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'series.filterMode',
-            defaultAction : 'all',
+            menuKey       : "series.filterMode",
+            defaultAction : "all",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "All",
+                    icon     : "icon-sonarr-all",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'monitored',
-                    title    : '',
-                    tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    key      : "monitored",
+                    title    : "",
+                    tooltip  : "Monitored Only",
+                    icon     : "icon-sonarr-monitored",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'continuing',
-                    title    : '',
-                    tooltip  : 'Continuing Only',
-                    icon     : 'icon-sonarr-series-continuing',
+                    key      : "continuing",
+                    title    : "",
+                    tooltip  : "Continuing Only",
+                    icon     : "icon-sonarr-series-continuing",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'ended',
-                    title    : '',
-                    tooltip  : 'Ended Only',
-                    icon     : 'icon-sonarr-series-ended',
+                    key      : "ended",
+                    title    : "",
+                    tooltip  : "Ended Only",
+                    icon     : "icon-sonarr-series-ended",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'missing',
-                    title    : '',
-                    tooltip  : 'Missing',
-                    icon     : 'icon-sonarr-missing',
+                    key      : "missing",
+                    title    : "",
+                    tooltip  : "Missing",
+                    icon     : "icon-sonarr-missing",
                     callback : this._setFilter
                 }
             ]
         };
 
         this.viewButtons = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'seriesViewMode',
-            defaultAction : 'listView',
+            menuKey       : "seriesViewMode",
+            defaultAction : "listView",
             items         : [
                 {
-                    key      : 'posterView',
-                    title    : '',
-                    tooltip  : 'Posters',
-                    icon     : 'icon-sonarr-view-poster',
+                    key      : "posterView",
+                    title    : "",
+                    tooltip  : "Posters",
+                    icon     : "icon-sonarr-view-poster",
                     callback : this._showPosters
                 },
                 {
-                    key      : 'listView',
-                    title    : '',
-                    tooltip  : 'Overview List',
-                    icon     : 'icon-sonarr-view-list',
+                    key      : "listView",
+                    title    : "",
+                    tooltip  : "Overview List",
+                    icon     : "icon-sonarr-view-list",
                     callback : this._showList
                 },
                 {
-                    key      : 'tableView',
-                    title    : '',
-                    tooltip  : 'Table',
-                    icon     : 'icon-sonarr-view-table',
+                    key      : "tableView",
+                    title    : "",
+                    tooltip  : "Table",
+                    icon     : "icon-sonarr-view-table",
                     callback : this._showTable
                 }
             ]
@@ -245,7 +245,7 @@ module.exports = Marionette.Layout.extend({
         this.currentView = new Backgrid.Grid({
             collection : this.seriesCollection,
             columns    : this.columns,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         });
 
         this._renderView();
@@ -286,7 +286,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _setFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
 
         this.seriesCollection.setFilterMode(mode);
     },
@@ -325,16 +325,16 @@ module.exports = Marionette.Layout.extend({
         var monitored = 0;
 
         _.each(SeriesCollection.models, function(model) {
-            episodes += model.get('episodeCount');
-            episodeFiles += model.get('episodeFileCount');
+            episodes += model.get("episodeCount");
+            episodeFiles += model.get("episodeFileCount");
 
-            if (model.get('status').toLowerCase() === 'ended') {
+            if (model.get("status").toLowerCase() === "ended") {
                 ended++;
             } else {
                 continuing++;
             }
 
-            if (model.get('monitored')) {
+            if (model.get("monitored")) {
                 monitored++;
             }
         });

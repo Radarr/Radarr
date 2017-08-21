@@ -1,40 +1,40 @@
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var HealthCollection = require('../../../Health/HealthCollection');
-var HealthCell = require('./HealthCell');
-var HealthWikiCell = require('./HealthWikiCell');
-var HealthOkView = require('./HealthOkView');
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var HealthCollection = require("../../../Health/HealthCollection");
+var HealthCell = require("./HealthCell");
+var HealthWikiCell = require("./HealthWikiCell");
+var HealthOkView = require("./HealthOkView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'System/Info/Health/HealthLayoutTemplate',
+    template : "System/Info/Health/HealthLayoutTemplate",
 
     regions : {
-        grid : '#x-health-grid'
+        grid : "#x-health-grid"
     },
 
     columns : [
         {
-            name     : 'type',
-            label    : '',
+            name     : "type",
+            label    : "",
             cell     : HealthCell,
             sortable : false
         },
         {
-            name     : 'message',
-            label    : 'Message',
-            cell     : 'string',
+            name     : "message",
+            label    : "Message",
+            cell     : "string",
             sortable : false
         },
         {
-            name     : 'wikiUrl',
-            label    : '',
+            name     : "wikiUrl",
+            label    : "",
             cell     : HealthWikiCell,
             sortable : false
         }
     ],
 
     initialize : function() {
-        this.listenTo(HealthCollection, 'sync', this.render);
+        this.listenTo(HealthCollection, "sync", this.render);
         HealthCollection.fetch();
     },
 
@@ -51,7 +51,7 @@ module.exports = Marionette.Layout.extend({
             row        : Backgrid.Row,
             columns    : this.columns,
             collection : HealthCollection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         }));
     }
 });

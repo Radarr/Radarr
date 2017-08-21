@@ -1,13 +1,13 @@
-var vent = require('vent');
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
-var BlacklistDetailsLayout = require('./Details/BlacklistDetailsLayout');
+var vent = require("vent");
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
+var BlacklistDetailsLayout = require("./Details/BlacklistDetailsLayout");
 
 module.exports = NzbDroneCell.extend({
-    className : 'blacklist-actions-cell',
+    className : "blacklist-actions-cell",
 
     events : {
-        'click .x-details' : '_details',
-        'click .x-delete'  : '_delete'
+        "click .x-details" : "_details",
+        "click .x-delete"  : "_delete"
     },
 
     render : function() {

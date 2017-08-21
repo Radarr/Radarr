@@ -1,56 +1,56 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var EmptyView = require('../Index/EmptyView');
-var FullMovieCollection = require ('../FullMovieCollection');
-var MoviesCollection = require('../MoviesCollection');
-var MovieTitleCell = require('../../Cells/MovieTitleCell');
-var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
-var ProfileCell = require('../../Cells/ProfileCell');
-var SelectAllCell = require('../../Cells/SelectAllCell');
-var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
-var FooterView = require('./MovieEditorFooterView');
-var GridPager = require('../../Shared/Grid/Pager');
-require('../../Mixins/backbone.signalr.mixin');
-var DeleteSelectedView = require('./Delete/DeleteSelectedView');
-var Config = require('../../Config');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var EmptyView = require("../Index/EmptyView");
+var FullMovieCollection = require ("../FullMovieCollection");
+var MoviesCollection = require("../MoviesCollection");
+var MovieTitleCell = require("../../Cells/MovieTitleCell");
+var DownloadedQualityCell = require("../../Cells/DownloadedQualityCell");
+var ProfileCell = require("../../Cells/ProfileCell");
+var SelectAllCell = require("../../Cells/SelectAllCell");
+var ToolbarLayout = require("../../Shared/Toolbar/ToolbarLayout");
+var FooterView = require("./MovieEditorFooterView");
+var GridPager = require("../../Shared/Grid/Pager");
+require("../../Mixins/backbone.signalr.mixin");
+var DeleteSelectedView = require("./Delete/DeleteSelectedView");
+var Config = require("../../Config");
 
 window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
-    template : 'Movies/Editor/MovieEditorLayoutTemplate',
+    template : "Movies/Editor/MovieEditorLayoutTemplate",
 
     regions : {
-        seriesRegion : '#x-series-editor',
-        toolbar      : '#x-toolbar',
+        seriesRegion : "#x-series-editor",
+        toolbar      : "#x-toolbar",
         pagerTop : "#x-movie-pager-top",
         pager : "#x-movie-pager"
     },
 
     ui : {
-        monitored     : '.x-monitored',
-        profiles      : '.x-profiles',
-        rootFolder    : '.x-root-folder',
-        selectedCount : '.x-selected-count'
+        monitored     : ".x-monitored",
+        profiles      : ".x-profiles",
+        rootFolder    : ".x-root-folder",
+        selectedCount : ".x-selected-count"
     },
 
     events : {
-        'click .x-save'         : '_updateAndSave',
-        'change .x-root-folder' : '_rootFolderChanged'
+        "click .x-save"         : "_updateAndSave",
+        "change .x-root-folder" : "_rootFolderChanged"
     },
 
     columns : [
         {
-            name       : '',
+            name       : "",
             cell       : SelectAllCell,
-            headerCell : 'select-all',
+            headerCell : "select-all",
             sortable   : false
         },
         {
-            name      : 'title',
-            label     : 'Title',
+            name      : "title",
+            label     : "Title",
             cell      : MovieTitleCell,
-            cellValue : 'this'
+            cellValue : "this"
         },
         {
             name: "downloadedQuality",
@@ -58,14 +58,14 @@ module.exports = Marionette.Layout.extend({
             cell: DownloadedQualityCell,
         },
         {
-            name  : 'profileId',
-            label : 'Profile',
+            name  : "profileId",
+            label : "Profile",
             cell  : ProfileCell
         },
         {
-            name  : 'path',
-            label : 'Path',
-            cell  : 'string'
+            name  : "path",
+            label : "Path",
+            cell  : "string"
         }
     ],
 
@@ -73,96 +73,96 @@ module.exports = Marionette.Layout.extend({
 
 		this.movieCollection = MoviesCollection.clone();
 		var pageSize = parseInt(Config.getValue("pageSize")) || 10;
-		this.movieCollection.switchMode('client', {fetch: false});
+		this.movieCollection.switchMode("client", {fetch: false});
 		this.movieCollection.setPageSize(pageSize, {fetch: true});
         this.movieCollection.bindSignalR();
 		this.movieCollection.fullCollection.bindSignalR();
 
 		var selected = FullMovieCollection.where( { selected : true });
 		_.each(selected, function(model) {
-	     	model.set('selected', false);
+	     	model.set("selected", false);
 		});
 
-		this.listenTo(this.movieCollection, 'sync', function() {
+		this.listenTo(this.movieCollection, "sync", function() {
 			this._showToolbar();
 			this._showTable();
 			this._showPager();
 			window.shownOnce = true;
 		});
 
-		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
+		this.listenTo(this.movieCollection.fullCollection, "sync", function() {
 			});
 
 
 		this.leftSideButtons = {
-            type       : 'default',
+            type       : "default",
                 storeState : false,
                 items      : [
                 {
-                    title          : 'Update Library',
-                    icon           : 'icon-sonarr-refresh',
-                    command        : 'refreshmovie',
-                    successMessage : 'Library was updated!',
-                    errorMessage   : 'Library update failed!'
+                    title          : "Update Library",
+                    icon           : "icon-sonarr-refresh",
+                    command        : "refreshmovie",
+                    successMessage : "Library was updated!",
+                    errorMessage   : "Library update failed!"
                 },
                 {
-                    title : 'Delete Selected',
-                    icon : 'icon-radarr-delete-white',
-                    className: 'btn-danger',
+                    title : "Delete Selected",
+                    icon : "icon-radarr-delete-white",
+                    className: "btn-danger",
                     callback : this._deleteSelected
                 }
             ]
         };
-		//this.listenTo(FullMovieCollection, 'save', function() {
-		//	window.alert('Done Saving');
+		//this.listenTo(FullMovieCollection, "save", function() {
+		//	window.alert("Done Saving");
 		//});
 
         this.filteringOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : false,
-            menuKey       : 'serieseditor.filterMode',
-            defaultAction : 'all',
+            menuKey       : "serieseditor.filterMode",
+            defaultAction : "all",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "All",
+                    icon     : "icon-sonarr-all",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'monitored',
-                    title    : '',
-                    tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    key      : "monitored",
+                    title    : "",
+                    tooltip  : "Monitored Only",
+                    icon     : "icon-sonarr-monitored",
                     callback : this._setFilter
                 },
 		                {
-                    key      : 'missing',
-                    title    : '',
-                    tooltip  : 'Missing Only',
-                    icon     : 'icon-sonarr-missing',
+                    key      : "missing",
+                    title    : "",
+                    tooltip  : "Missing Only",
+                    icon     : "icon-sonarr-missing",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'released',
-                    title    : '',
-                    tooltip  : 'Released',
-                    icon     : 'icon-sonarr-movie-released',
+                    key      : "released",
+                    title    : "",
+                    tooltip  : "Released",
+                    icon     : "icon-sonarr-movie-released",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'announced',
-                    title    : '',
-                    tooltip  : 'Announced',
-                    icon     : 'icon-sonarr-movie-announced',
+                    key      : "announced",
+                    title    : "",
+                    tooltip  : "Announced",
+                    icon     : "icon-sonarr-movie-announced",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'cinemas',
-                    title    : '',
-                    tooltip  : 'In Cinemas',
-                    icon     : 'icon-sonarr-movie-cinemas',
+                    key      : "cinemas",
+                    title    : "",
+                    tooltip  : "In Cinemas",
+                    icon     : "icon-sonarr-movie-cinemas",
                     callback : this._setFilter
                 }
             ]
@@ -207,7 +207,7 @@ module.exports = Marionette.Layout.extend({
         this.editorGrid = new Backgrid.Grid({
             collection : this.movieCollection,
             columns    : this.columns,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         });
 
         this.seriesRegion.show(this.editorGrid);
@@ -235,7 +235,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _setFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
         this.movieCollection.setFilterMode(mode);
     },
 

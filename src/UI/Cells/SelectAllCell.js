@@ -1,25 +1,25 @@
-var $ = require('jquery');
-var _ = require('underscore');
-var BackgridSelectAll = require('backgrid.selectall');
+var $ = require("jquery");
+var _ = require("underscore");
+var BackgridSelectAll = require("backgrid.selectall");
 
 module.exports = BackgridSelectAll.extend({
     enterEditMode : function(e) {
-        var collection = this.column.get('sortedCollection') || this.model.collection;
+        var collection = this.column.get("sortedCollection") || this.model.collection;
 
         if (e.shiftKey && collection.lastToggled) {
             this._selectRange(collection);
         }
 
-        var checked = $(e.target).prop('checked');
+        var checked = $(e.target).prop("checked");
 
         collection.lastToggled = this.model;
         collection.checked = checked;
     },
 
     onChange : function(e) {
-        var checked = $(e.target).prop('checked');
-        this.$el.parent().toggleClass('selected', checked);
-        this.model.trigger('backgrid:selected', this.model, checked);
+        var checked = $(e.target).prop("checked");
+        this.$el.parent().toggleClass("selected", checked);
+        this.model.trigger("backgrid:selected", this.model, checked);
     },
 
     _selectRange : function(collection) {
@@ -36,7 +36,7 @@ module.exports = BackgridSelectAll.extend({
         _.each(range, function(index) {
             var model = collection.at(index);
 
-            model.trigger('backgrid:select', model, checked);
+            model.trigger("backgrid:select", model, checked);
         });
 
         collection.lastToggled = undefined;

@@ -1,17 +1,17 @@
-var _ = require('underscore');
-var Backgrid = require('backgrid');
-var Marionette = require('marionette');
-var ProfileSchemaCollection = require('../../Settings/Profile/ProfileSchemaCollection');
+var _ = require("underscore");
+var Backgrid = require("backgrid");
+var Marionette = require("marionette");
+var ProfileSchemaCollection = require("../../Settings/Profile/ProfileSchemaCollection");
 
 module.exports = Backgrid.CellEditor.extend({
-    className : 'quality-cell-editor',
-    template  : 'Cells/Edit/QualityCellEditorTemplate',
-    tagName   : 'select',
+    className : "quality-cell-editor",
+    template  : "Cells/Edit/QualityCellEditorTemplate",
+    tagName   : "select",
 
     events : {
-        'change'  : 'save',
-        'blur'    : 'close',
-        'keydown' : 'close'
+        "change"  : "save",
+        "blur"    : "close",
+        "keydown" : "close"
     },
 
     render : function() {
@@ -24,8 +24,8 @@ module.exports = Backgrid.CellEditor.extend({
             var templateName = self.template;
             self.schema = profileSchemaCollection.first();
 
-            var selected = _.find(self.schema.get('items'), function(model) {
-                return model.quality.id === self.model.get(self.column.get('name')).quality.id;
+            var selected = _.find(self.schema.get("items"), function(model) {
+                return model.quality.id === self.model.get(self.column.get("name")).quality.id;
             });
 
             if (selected) {
@@ -46,7 +46,7 @@ module.exports = Backgrid.CellEditor.extend({
         var column = this.column;
         var selected = parseInt(this.$el.val(), 10);
 
-        var profileItem = _.find(this.schema.get('items'), function(model) {
+        var profileItem = _.find(this.schema.get("items"), function(model) {
             return model.quality.id === selected;
         });
 
@@ -58,10 +58,10 @@ module.exports = Backgrid.CellEditor.extend({
             }
         };
 
-        model.set(column.get('name'), newQuality);
+        model.set(column.get("name"), newQuality);
         model.save();
 
-        model.trigger('backgrid:edited', model, column, new Backgrid.Command(e));
+        model.trigger("backgrid:edited", model, column, new Backgrid.Command(e));
     },
 
     close : function(e) {
@@ -69,6 +69,6 @@ module.exports = Backgrid.CellEditor.extend({
         var column = this.column;
         var command = new Backgrid.Command(e);
 
-        model.trigger('backgrid:edited', model, column, command);
+        model.trigger("backgrid:edited", model, column, command);
     }
 });

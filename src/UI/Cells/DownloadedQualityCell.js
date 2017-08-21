@@ -1,16 +1,16 @@
-var Backgrid = require('backgrid');
-var ProfileCollection = require('../Profile/ProfileCollection');
-var _ = require('underscore');
+var Backgrid = require("backgrid");
+var ProfileCollection = require("../Profile/ProfileCollection");
+var _ = require("underscore");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'profile-cell',
+    className : "profile-cell",
 
     _originalInit : Backgrid.Cell.prototype.initialize,
 
     initialize : function () {
         this._originalInit.apply(this, arguments);
 
-        this.listenTo(ProfileCollection, 'sync', this.render);
+        this.listenTo(ProfileCollection, "sync", this.render);
     },
 
     render : function() {

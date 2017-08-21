@@ -1,7 +1,7 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
-var SeasonLayout = require('./SeasonLayout');
-var AsSortedCollectionView = require('../../Mixins/AsSortedCollectionView');
+var _ = require("underscore");
+var Marionette = require("marionette");
+var SeasonLayout = require("./SeasonLayout");
+var AsSortedCollectionView = require("../../Mixins/AsSortedCollectionView");
 
 var view = Marionette.CollectionView.extend({
 
@@ -9,7 +9,7 @@ var view = Marionette.CollectionView.extend({
 
     initialize : function(options) {
         if (!options.episodeCollection) {
-            throw 'episodeCollection is needed';
+            throw "episodeCollection is needed";
         }
 
         this.episodeCollection = options.episodeCollection;
@@ -32,7 +32,7 @@ var view = Marionette.CollectionView.extend({
 
         _.each(message.episode.episodes, function(episode) {
             var ep = self.episodeCollection.get(episode.id);
-            ep.set('downloading', true);
+            ep.set("downloading", true);
         });
 
         this.render();

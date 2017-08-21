@@ -1,15 +1,15 @@
-var Backgrid = require('backgrid');
-var ProfileCollection = require('../../Profile/ProfileCollection');
-var Config = require('../../Config');
-var _ = require('underscore');
+var Backgrid = require("backgrid");
+var ProfileCollection = require("../../Profile/ProfileCollection");
+var Config = require("../../Config");
+var _ = require("underscore");
 var vent = require("vent");
-var TemplatedCell = require('../../Cells/TemplatedCell');
+var TemplatedCell = require("../../Cells/TemplatedCell");
 var NzbDroneCell = require("../../Cells/NzbDroneCell");
-var Marionette = require('marionette');
+var Marionette = require("marionette");
 
 module.exports = TemplatedCell.extend({
-    className : 'profile-cell',
-    template  : 'AddMovies/BulkImport/BulkImportProfileCell',
+    className : "profile-cell",
+    template  : "AddMovies/BulkImport/BulkImportProfileCell",
 
     _orig : TemplatedCell.prototype.initialize,
     _origRender : TemplatedCell.prototype.initialize,
@@ -41,7 +41,7 @@ module.exports = TemplatedCell.extend({
 
 
         //this.render();
-        //this.listenTo(ProfileCollection, 'sync', this.render);
+        //this.listenTo(ProfileCollection, "sync", this.render);
 
     },
 
@@ -61,7 +61,7 @@ module.exports = TemplatedCell.extend({
     },
 
     render : function() {
-      var templateName = this.column.get('template') || this.template;
+      var templateName = this.column.get("template") || this.template;
 
       this.cellValue = ProfileCollection;
 

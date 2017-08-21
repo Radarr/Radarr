@@ -1,15 +1,15 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
-var UpcomingCollection = require('./UpcomingCollection');
-var UpcomingItemView = require('./UpcomingItemView');
-var Config = require('../Config');
-require('../Mixins/backbone.signalr.mixin');
+var _ = require("underscore");
+var Marionette = require("marionette");
+var UpcomingCollection = require("./UpcomingCollection");
+var UpcomingItemView = require("./UpcomingItemView");
+var Config = require("../Config");
+require("../Mixins/backbone.signalr.mixin");
 
 module.exports = Marionette.CollectionView.extend({
     itemView : UpcomingItemView,
 
     initialize : function() {
-        this.showUnmonitored = Config.getValue('calendar.show', 'monitored') === 'all';
+        this.showUnmonitored = Config.getValue("calendar.show", "monitored") === "all";
         this.collection = new UpcomingCollection().bindSignalR({ updateOnly : true });
         this._fetchCollection();
 

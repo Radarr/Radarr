@@ -1,27 +1,27 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var SeriesCollection = require('../../Series/SeriesCollection');
-var SelectRow = require('./SelectSeriesRow');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var SeriesCollection = require("../../Series/SeriesCollection");
+var SelectRow = require("./SelectSeriesRow");
 
 module.exports = Marionette.Layout.extend({
-    template  : 'ManualImport/Series/SelectSeriesLayoutTemplate',
+    template  : "ManualImport/Series/SelectSeriesLayoutTemplate",
 
     regions : {
-        series : '.x-series'
+        series : ".x-series"
     },
 
     ui : {
-        filter : '.x-filter'
+        filter : ".x-filter"
     },
 
     columns : [
         {
-            name      : 'title',
-            label     : 'Title',
-            cell      : 'String',
-            sortValue : 'sortTitle'
+            name      : "title",
+            label     : "Title",
+            cell      : "String",
+            sortValue : "sortTitle"
         }
     ],
 
@@ -29,15 +29,15 @@ module.exports = Marionette.Layout.extend({
         this.seriesCollection = SeriesCollection.clone();
         this._setModelCollection();
 
-        this.listenTo(this.seriesCollection, 'row:selected', this._onSelected);
-        this.listenTo(this, 'modal:afterShow', this._setFocus);
+        this.listenTo(this.seriesCollection, "row:selected", this._onSelected);
+        this.listenTo(this, "modal:afterShow", this._setFocus);
     },
 
     onRender : function() {
         this.seriesView = new Backgrid.Grid({
             columns    : this.columns,
             collection : this.seriesCollection,
-            className  : 'table table-hover season-grid',
+            className  : "table table-hover season-grid",
             row        : SelectRow
         });
 
@@ -77,12 +77,12 @@ module.exports = Marionette.Layout.extend({
     },
 
     _filter : function (term) {
-        this.seriesCollection.setFilter(['title', term, 'contains']);
+        this.seriesCollection.setFilter(["title", term, "contains"]);
         this._setModelCollection();
     },
 
     _onSelected : function (e) {
-        this.trigger('manualimport:selected:series', { model: e.model });
+        this.trigger("manualimport:selected:series", { model: e.model });
 
         vent.trigger(vent.Commands.CloseModal2Command);
     },

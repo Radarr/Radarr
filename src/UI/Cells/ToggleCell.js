@@ -1,24 +1,24 @@
-var Backgrid = require('backgrid');
+var Backgrid = require("backgrid");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'toggle-cell',
+    className : "toggle-cell",
 
     events : {
-        'click' : '_onClick'
+        "click" : "_onClick"
     },
 
     _onClick : function() {
 
         var self = this;
 
-        this.$el.tooltip('hide');
+        this.$el.tooltip("hide");
 
-        var name = this.column.get('name');
+        var name = this.column.get("name");
         this.model.set(name, !this.model.get(name));
 
         var promise = this.model.save();
 
-        this.$('i').spinForPromise(promise);
+        this.$("i").spinForPromise(promise);
 
         promise.always(function() {
             self.render();
@@ -27,20 +27,20 @@ module.exports = Backgrid.Cell.extend({
 
     render : function() {
         this.$el.empty();
-        this.$el.html('<i />');
+        this.$el.html("<i />");
 
-        var name = this.column.get('name');
+        var name = this.column.get("name");
 
         if (this.model.get(name)) {
-            this.$('i').addClass(this.column.get('trueClass'));
+            this.$("i").addClass(this.column.get("trueClass"));
         } else {
-            this.$('i').addClass(this.column.get('falseClass'));
+            this.$("i").addClass(this.column.get("falseClass"));
         }
 
-        var tooltip = this.column.get('tooltip');
+        var tooltip = this.column.get("tooltip");
 
         if (tooltip) {
-            this.$('i').attr('title', tooltip);
+            this.$("i").attr("title", tooltip);
         }
 
         return this;

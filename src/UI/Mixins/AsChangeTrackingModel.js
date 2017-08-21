@@ -5,11 +5,11 @@ module.exports = function() {
 
         this.isSaved = true;
 
-        this.on('change', function() {
+        this.on("change", function() {
             this.isSaved = false;
         }, this);
 
-        this.on('sync', function() {
+        this.on("sync", function() {
             this.isSaved = true;
         }, this);
 

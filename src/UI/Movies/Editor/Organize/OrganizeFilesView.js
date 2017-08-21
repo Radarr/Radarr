@@ -1,14 +1,14 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Backbone = require('backbone');
-var Marionette = require('marionette');
-var CommandController = require('../../../Commands/CommandController');
+var _ = require("underscore");
+var vent = require("vent");
+var Backbone = require("backbone");
+var Marionette = require("marionette");
+var CommandController = require("../../../Commands/CommandController");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Movies/Editor/Organize/OrganizeFilesViewTemplate',
+    template : "Movies/Editor/Organize/OrganizeFilesViewTemplate",
 
     events : {
-        'click .x-confirm-organize' : '_organize'
+        "click .x-confirm-organize" : "_organize"
     },
 
     initialize : function(options) {
@@ -20,14 +20,14 @@ module.exports = Marionette.ItemView.extend({
     },
 
     _organize : function() {
-        var movieIds = _.pluck(this.movies, 'id');
+        var movieIds = _.pluck(this.movies, "id");
 
-        CommandController.Execute('renameMovie', {
-            name      : 'renameMovie',
+        CommandController.Execute("renameMovie", {
+            name      : "renameMovie",
             movieIds : movieIds
         });
 
-        this.trigger('organizingFiles');
+        this.trigger("organizingFiles");
         vent.trigger(vent.Commands.CloseModalCommand);
     }
 });

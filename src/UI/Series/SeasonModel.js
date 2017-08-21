@@ -1,4 +1,4 @@
-var Backbone = require('backbone');
+var Backbone = require("backbone");
 
 module.exports = Backbone.Model.extend({
     defaults : {
@@ -6,6 +6,6 @@ module.exports = Backbone.Model.extend({
     },
 
     initialize : function() {
-        this.set('id', this.get('seasonNumber'));
+        this.set("id", this.get("seasonNumber"));
     }
 });

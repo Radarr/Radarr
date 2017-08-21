@@ -1,8 +1,8 @@
-var Handlebars = require('handlebars');
+var Handlebars = require("handlebars");
 
-Handlebars.registerHelper('eachReverse', function(context) {
+Handlebars.registerHelper("eachReverse", function(context) {
     var options = arguments[arguments.length - 1];
-    var ret = '';
+    var ret = "";
 
     if (context && context.length > 0) {
         for (var i = context.length - 1; i >= 0; i--) {

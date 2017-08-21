@@ -1,11 +1,11 @@
-var vent = require('vent');
-var Marionette = require('marionette');
+var vent = require("vent");
+var Marionette = require("marionette");
 
 module.exports = Marionette.Layout.extend({
-    template  : 'ManualImport/Season/SelectSeasonLayoutTemplate',
+    template  : "ManualImport/Season/SelectSeasonLayoutTemplate",
 
     events : {
-        'change .x-select-season' : '_selectSeason'
+        "change .x-select-season" : "_selectSeason"
     },
 
     initialize : function(options) {
@@ -22,7 +22,7 @@ module.exports = Marionette.Layout.extend({
             return;
         }
 
-        this.trigger('manualimport:selected:season', { seasonNumber: seasonNumber });
+        this.trigger("manualimport:selected:season", { seasonNumber: seasonNumber });
         vent.trigger(vent.Commands.CloseModal2Command);
     }
 });

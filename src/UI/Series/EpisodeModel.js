@@ -1,4 +1,4 @@
-var Backbone = require('backbone');
+var Backbone = require("backbone");
 
 module.exports = Backbone.Model.extend({
     defaults : {
@@ -7,7 +7,7 @@ module.exports = Backbone.Model.extend({
     },
 
     methodUrls : {
-        'update' : window.NzbDrone.ApiRoot + '/episode'
+        "update" : window.NzbDrone.ApiRoot + "/episode"
     },
 
     sync : function(method, model, options) {

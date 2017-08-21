@@ -1,6 +1,6 @@
-var Marionette = require('marionette');
-var UpdateItemView = require('./UpdateItemView');
-var EmptyView = require('./EmptyView');
+var Marionette = require("marionette");
+var UpdateItemView = require("./UpdateItemView");
+var EmptyView = require("./EmptyView");
 
 module.exports = Marionette.CollectionView.extend({
     itemView  : UpdateItemView,

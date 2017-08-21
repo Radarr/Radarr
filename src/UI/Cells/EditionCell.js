@@ -1,14 +1,14 @@
-var Backgrid = require('backgrid');
-var Marionette = require('marionette');
-require('bootstrap');
+var Backgrid = require("backgrid");
+var Marionette = require("marionette");
+require("bootstrap");
 
 module.exports = Backgrid.Cell.extend({
-    className : 'edition-cell',
-    //template  : 'Cells/EditionCellTemplate',
+    className : "edition-cell",
+    //template  : "Cells/EditionCellTemplate",
 
     render : function() {
 
-        var edition = this.model.get(this.column.get('name'));
+        var edition = this.model.get(this.column.get("name"));
         if (!edition) {
           return this;
         }
@@ -22,17 +22,17 @@ module.exports = Backgrid.Cell.extend({
 
         //var html = this.templateFunction(edition);
         if (cut) {
-          this.$el.html('<i class="icon-sonarr-form-cut"/ title="{0}">'.format(edition));
+          this.$el.html('<i class="icon-sonarr-form-cut"/ title="{0}"></i>'.format(edition));
         } else {
-          this.$el.html('<i class="icon-sonarr-form-special"/ title="{0}">'.format(edition));
+          this.$el.html('<i class="icon-sonarr-form-special"/ title="{0}"></i>'.format(edition));
         }
 
         /*this.$el.popover({
             content   : html,
             html      : true,
-            trigger   : 'hover',
-            title     : this.column.get('title'),
-            placement : 'left',
+            trigger   : "hover",
+            title     : this.column.get("title"),
+            placement : "left",
             container : this.$el
         });*/
 

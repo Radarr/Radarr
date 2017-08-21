@@ -1,5 +1,5 @@
-var Marionette = require('marionette');
-var SearchResultView = require('./SearchResultView');
+var Marionette = require("marionette");
+var SearchResultView = require("./SearchResultView");
 
 module.exports = Marionette.CollectionView.extend({
     itemView : SearchResultView,

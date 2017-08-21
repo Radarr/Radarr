@@ -1,32 +1,32 @@
-var $ = require('jquery');
-var Messenger = require('messenger');
+var $ = require("jquery");
+var Messenger = require("messenger");
 
 window.alert = function(message) {
     new Messenger().post(message);
 };
 
 var addError = function(message) {
-    $('#errors').append('<div>' + message + '</div>');
+    $("#errors").append("<div>" + message + "</div>");
 };
 
 window.onerror = function(msg, url, line) {
 
     try {
 
-        var a = document.createElement('a');
+        var a = document.createElement("a");
         a.href = url;
-        var filename = a.pathname.split('/').pop();
+        var filename = a.pathname.split("/").pop();
 
         //Suppress Firefox debug errors when console window is closed
-        if (filename.toLowerCase() === 'markupview.jsm' || filename.toLowerCase() === 'markup-view.js') {
+        if (filename.toLowerCase() === "markupview.jsm" || filename.toLowerCase() === "markup-view.js") {
             return false;
         }
 
-        var messageText = filename + ' : ' + line + '</br>' + msg;
+        var messageText = filename + " : " + line + "<br>" + msg;
 
         var message = {
             message         : messageText,
-            type            : 'error',
+            type            : "error",
             hideAfter       : 1000,
             showCloseButton : true
         };
@@ -37,9 +37,9 @@ window.onerror = function(msg, url, line) {
 
     }
     catch (error) {
-        console.log('An error occurred while reporting error. ' + error);
+        console.log("An error occurred while reporting error. " + error);
         console.log(msg);
-        new Messenger().post('Couldn\'t report JS error.  ' + msg);
+        new Messenger().post("Couldn't report JS error." + msg);
     }
 
     return false; //don't suppress default alerts and logs.
@@ -53,12 +53,12 @@ $(document).ajaxError(function(event, xmlHttpRequest, ajaxOptions) {
     }
 
     //don't report aborted requests
-    if (xmlHttpRequest.statusText === 'abort') {
+    if (xmlHttpRequest.statusText === "abort") {
         return undefined;
     }
 
     var message = {
-        type            : 'error',
+        type            : "error",
         hideAfter       : 1000,
         showCloseButton : true
     };
@@ -76,7 +76,7 @@ $(document).ajaxError(function(event, xmlHttpRequest, ajaxOptions) {
     } else if (xmlHttpRequest.status === 409) {
         message.message = xmlHttpRequest.responseJSON.message;
     } else {
-        message.message = '[{0}] {1} : {2}'.format(ajaxOptions.type, xmlHttpRequest.statusText, ajaxOptions.url);
+        message.message = "[{0}] {1} : {2}".format(ajaxOptions.type, xmlHttpRequest.statusText, ajaxOptions.url);
     }
 
     new Messenger().post(message);

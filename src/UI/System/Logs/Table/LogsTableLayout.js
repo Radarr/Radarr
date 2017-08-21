@@ -1,54 +1,54 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var LogTimeCell = require('./LogTimeCell');
-var LogLevelCell = require('./LogLevelCell');
-var LogRow = require('./LogRow');
-var GridPager = require('../../../Shared/Grid/Pager');
-var LogCollection = require('../LogsCollection');
-var ToolbarLayout = require('../../../Shared/Toolbar/ToolbarLayout');
-var LoadingView = require('../../../Shared/LoadingView');
-require('../../../jQuery/jquery.spin');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var LogTimeCell = require("./LogTimeCell");
+var LogLevelCell = require("./LogLevelCell");
+var LogRow = require("./LogRow");
+var GridPager = require("../../../Shared/Grid/Pager");
+var LogCollection = require("../LogsCollection");
+var ToolbarLayout = require("../../../Shared/Toolbar/ToolbarLayout");
+var LoadingView = require("../../../Shared/LoadingView");
+require("../../../jQuery/jquery.spin");
 
 module.exports = Marionette.Layout.extend({
-    template : 'System/Logs/Table/LogsTableLayoutTemplate',
+    template : "System/Logs/Table/LogsTableLayoutTemplate",
 
     regions : {
-        grid    : '#x-grid',
-        toolbar : '#x-toolbar',
-        pager   : '#x-pager'
+        grid    : "#x-grid",
+        toolbar : "#x-toolbar",
+        pager   : "#x-pager"
     },
 
     attributes : {
-        id : 'logs-screen'
+        id : "logs-screen"
     },
 
     columns : [
         {
-            name     : 'level',
-            label    : '',
+            name     : "level",
+            label    : "",
             sortable : true,
             cell     : LogLevelCell
         },
         {
-            name     : 'logger',
-            label    : 'Component',
+            name     : "logger",
+            label    : "Component",
             sortable : true,
             cell     : Backgrid.StringCell.extend({
-                className : 'log-logger-cell'
+                className : "log-logger-cell"
             })
         },
         {
-            name     : 'message',
-            label    : 'Message',
+            name     : "message",
+            label    : "Message",
             sortable : false,
             cell     : Backgrid.StringCell.extend({
-                className : 'log-message-cell'
+                className : "log-message-cell"
             })
         },
         {
-            name  : 'time',
-            label : 'Time',
+            name  : "time",
+            label : "Time",
             cell  : LogTimeCell
         }
     ],
@@ -56,7 +56,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.collection = new LogCollection();
 
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.listenTo(this.collection, "sync", this._showTable);
         this.listenTo(vent, vent.Events.CommandComplete, this._commandComplete);
     },
 
@@ -73,7 +73,7 @@ module.exports = Marionette.Layout.extend({
             row        : LogRow,
             columns    : this.columns,
             collection : this.collection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         }));
 
         this.pager.show(new GridPager({
@@ -84,56 +84,56 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar : function() {
         var filterButtons = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'logs.filterMode',
-            defaultAction : 'all',
+            menuKey       : "logs.filterMode",
+            defaultAction : "all",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "All",
+                    icon     : "icon-sonarr-all",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'info',
-                    title    : '',
-                    tooltip  : 'Info',
-                    icon     : 'icon-sonarr-log-info',
+                    key      : "info",
+                    title    : "",
+                    tooltip  : "Info",
+                    icon     : "icon-sonarr-log-info",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'warn',
-                    title    : '',
-                    tooltip  : 'Warn',
-                    icon     : 'icon-sonarr-log-warn',
+                    key      : "warn",
+                    title    : "",
+                    tooltip  : "Warn",
+                    icon     : "icon-sonarr-log-warn",
                     callback : this._setFilter
                 },
                 {
-                    key      : 'error',
-                    title    : '',
-                    tooltip  : 'Error',
-                    icon     : 'icon-sonarr-log-error',
+                    key      : "error",
+                    title    : "",
+                    tooltip  : "Error",
+                    icon     : "icon-sonarr-log-error",
                     callback : this._setFilter
                 }
             ]
         };
 
         var leftSideButtons = {
-            type       : 'default',
+            type       : "default",
             storeState : false,
             items      : [
                 {
-                    title        : 'Refresh',
-                    icon         : 'icon-sonarr-refresh',
+                    title        : "Refresh",
+                    icon         : "icon-sonarr-refresh",
                     ownerContext : this,
                     callback     : this._refreshTable
                 },
                 {
-                    title   : 'Clear Logs',
-                    icon    : 'icon-sonarr-clear',
-                    command : 'clearLog'
+                    title   : "Clear Logs",
+                    icon    : "icon-sonarr-clear",
+                    command : "clearLog"
                 }
             ]
         };
@@ -155,7 +155,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _setFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
 
         this.collection.setFilterMode(mode, { reset : false });
 
@@ -168,7 +168,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _commandComplete : function(options) {
-        if (options.command.get('name') === 'clearlog') {
+        if (options.command.get("name") === "clearlog") {
             this._refreshTable();
         }
     }

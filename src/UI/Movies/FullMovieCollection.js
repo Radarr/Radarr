@@ -1,4 +1,4 @@
-var movieCollection = require('./MoviesCollection');
+var movieCollection = require("./MoviesCollection");
 
 var fullCollection = movieCollection.clone();
 fullCollection.reset();
@@ -7,7 +7,7 @@ fullCollection.state.pageSize = 100000;
 fullCollection.fetch({reset : true});
 module.exports = fullCollection;
 
-/*var movieCollection = require('./MoviesCollectionClient');
+/*var movieCollection = require("./MoviesCollectionClient");
 
 movieCollection.bindSignalR();
 module.exports = movieCollection.fullCollection;*/

@@ -1,16 +1,16 @@
-var vent = require('../../vent');
-var Marionette = require('marionette');
+var vent = require("../../vent");
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Activity/Queue/RemoveFromQueueViewTemplate',
+    template : "Activity/Queue/RemoveFromQueueViewTemplate",
 
     events : {
-        'click .x-confirm-remove' : 'removeItem'
+        "click .x-confirm-remove" : "removeItem"
     },
 
     ui : {
-        blacklist : '.x-blacklist',
-        indicator : '.x-indicator'
+        blacklist : ".x-blacklist",
+        indicator : ".x-indicator"
     },
 
     initialize : function(options) {
@@ -20,12 +20,12 @@ module.exports = Marionette.ItemView.extend({
     },
 
     removeItem : function() {
-        var blacklist = this.ui.blacklist.prop('checked') || false;
+        var blacklist = this.ui.blacklist.prop("checked") || false;
 
         this.ui.indicator.show();
 
         this.model.destroy({
-            data : { 'blacklist' : blacklist },
+            data : { "blacklist" : blacklist },
             wait : true
         }).done(function() {
             vent.trigger(vent.Commands.CloseModalCommand);

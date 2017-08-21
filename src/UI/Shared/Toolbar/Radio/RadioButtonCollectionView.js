@@ -1,13 +1,13 @@
-var Marionette = require('marionette');
-var RadioButtonView = require('./RadioButtonView');
-var Config = require('../../../Config');
+var Marionette = require("marionette");
+var RadioButtonView = require("./RadioButtonView");
+var Config = require("../../../Config");
 
 module.exports = Marionette.CollectionView.extend({
-    className : 'btn-group',
+    className : "btn-group",
     itemView  : RadioButtonView,
 
     attributes : {
-        'data-toggle' : 'buttons'
+        "data-toggle" : "buttons"
     },
 
     initialize : function(options) {
@@ -27,10 +27,10 @@ module.exports = Marionette.CollectionView.extend({
             return;
         }
         this.collection.each(function(model) {
-            if (model.get('key').toLocaleLowerCase() === storedKey.toLowerCase()) {
-                model.set('active', true);
+            if (model.get("key").toLocaleLowerCase() === storedKey.toLowerCase()) {
+                model.set("active", true);
             } else {
-                model.set('active, false');
+                model.set("active, false");
             }
         });
     }

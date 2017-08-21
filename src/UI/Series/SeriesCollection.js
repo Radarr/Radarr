@@ -1,36 +1,36 @@
-var _ = require('underscore');
-var Backbone = require('backbone');
-var PageableCollection = require('backbone.pageable');
-var SeriesModel = require('./SeriesModel');
-var ApiData = require('../Shared/ApiData');
-var AsFilteredCollection = require('../Mixins/AsFilteredCollection');
-var AsSortedCollection = require('../Mixins/AsSortedCollection');
-var AsPersistedStateCollection = require('../Mixins/AsPersistedStateCollection');
-var moment = require('moment');
-require('../Mixins/backbone.signalr.mixin');
+var _ = require("underscore");
+var Backbone = require("backbone");
+var PageableCollection = require("backbone.pageable");
+var SeriesModel = require("./SeriesModel");
+var ApiData = require("../Shared/ApiData");
+var AsFilteredCollection = require("../Mixins/AsFilteredCollection");
+var AsSortedCollection = require("../Mixins/AsSortedCollection");
+var AsPersistedStateCollection = require("../Mixins/AsPersistedStateCollection");
+var moment = require("moment");
+require("../Mixins/backbone.signalr.mixin");
 
 var Collection = PageableCollection.extend({
-    url       : window.NzbDrone.ApiRoot + '/series',
+    url       : window.NzbDrone.ApiRoot + "/series",
     model     : SeriesModel,
-    tableName : 'series',
+    tableName : "series",
 
     state : {
-        sortKey            : 'sortTitle',
+        sortKey            : "sortTitle",
         order              : -1,
         pageSize           : 100000,
-        secondarySortKey   : 'sortTitle',
+        secondarySortKey   : "sortTitle",
         secondarySortOrder : -1
     },
 
-    mode : 'client',
+    mode : "client",
 
     save : function() {
         var self = this;
 
         var proxy = _.extend(new Backbone.Model(), {
-            id : '',
+            id : "",
 
-            url : self.url + '/editor',
+            url : self.url + "/editor",
 
             toJSON : function() {
                 return self.filter(function(model) {
@@ -39,41 +39,41 @@ var Collection = PageableCollection.extend({
             }
         });
 
-        this.listenTo(proxy, 'sync', function(proxyModel, models) {
+        this.listenTo(proxy, "sync", function(proxyModel, models) {
             this.add(models, { merge : true });
-            this.trigger('save', this);
+            this.trigger("save", this);
         });
 
         return proxy.save();
     },
 
     filterModes : {
-        'all'        : [
+        "all"        : [
             null,
             null
         ],
-        'continuing' : [
-            'status',
-            'continuing'
+        "continuing" : [
+            "status",
+            "continuing"
         ],
-        'ended'      : [
-            'status',
-            'ended'
+        "ended"      : [
+            "status",
+            "ended"
         ],
-        'monitored'  : [
-            'monitored',
+        "monitored"  : [
+            "monitored",
             true
         ],
-        'missing'  : [
+        "missing"  : [
             null,
             null,
-            function(model) { return model.get('episodeCount') !== model.get('episodeFileCount'); }
+            function(model) { return model.get("episodeCount") !== model.get("episodeFileCount"); }
         ]
     },
 
     sortMappings : {
         title : {
-            sortKey : 'sortTitle'
+            sortKey : "sortTitle"
         },
 
         nextAiring : {
@@ -95,7 +95,7 @@ var Collection = PageableCollection.extend({
         percentOfEpisodes : {
             sortValue : function(model, attr) {
                 var percentOfEpisodes = model.get(attr);
-                var episodeCount = model.get('episodeCount');
+                var episodeCount = model.get("episodeCount");
 
                 return percentOfEpisodes + episodeCount / 1000000;
             }
@@ -103,7 +103,7 @@ var Collection = PageableCollection.extend({
 
         path : {
             sortValue : function(model) {
-                var path = model.get('path');
+                var path = model.get("path");
 
                 return path.toLowerCase();
             }
@@ -115,6 +115,6 @@ Collection = AsFilteredCollection.call(Collection);
 Collection = AsSortedCollection.call(Collection);
 Collection = AsPersistedStateCollection.call(Collection);
 
-var data = ApiData.get('series');
+var data = ApiData.get("series");
 
 module.exports = new Collection(data, { full : true }).bindSignalR();

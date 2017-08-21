@@ -1,17 +1,17 @@
-var AppLayout = require('../../../AppLayout');
-var Marionette = require('marionette');
-var EditView = require('./RemotePathMappingEditView');
+var AppLayout = require("../../../AppLayout");
+var Marionette = require("marionette");
+var EditView = require("./RemotePathMappingEditView");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'Settings/DownloadClient/RemotePathMapping/RemotePathMappingItemViewTemplate',
-    className : 'row',
+    template  : "Settings/DownloadClient/RemotePathMapping/RemotePathMappingItemViewTemplate",
+    className : "row",
 
     events : {
-        'click .x-edit' : '_editMapping'
+        "click .x-edit" : "_editMapping"
     },
 
     initialize : function() {
-        this.listenTo(this.model, 'sync', this.render);
+        this.listenTo(this.model, "sync", this.render);
     },
 
     _editMapping : function() {

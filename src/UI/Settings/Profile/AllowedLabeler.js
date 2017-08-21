@@ -1,8 +1,8 @@
-var Handlebars = require('handlebars');
-var _ = require('underscore');
+var Handlebars = require("handlebars");
+var _ = require("underscore");
 
-Handlebars.registerHelper('allowedLabeler', function() {
-    var ret = '';
+Handlebars.registerHelper("allowedLabeler", function() {
+    var ret = "";
     var cutoff = this.cutoff;
 
     _.each(this.items, function(item) {

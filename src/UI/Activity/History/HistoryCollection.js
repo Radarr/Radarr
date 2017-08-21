@@ -1,56 +1,56 @@
-var HistoryModel = require('./HistoryModel');
-var PageableCollection = require('backbone.pageable');
-var AsFilteredCollection = require('../../Mixins/AsFilteredCollection');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
-var AsPersistedStateCollection = require('../../Mixins/AsPersistedStateCollection');
+var HistoryModel = require("./HistoryModel");
+var PageableCollection = require("backbone.pageable");
+var AsFilteredCollection = require("../../Mixins/AsFilteredCollection");
+var AsSortedCollection = require("../../Mixins/AsSortedCollection");
+var AsPersistedStateCollection = require("../../Mixins/AsPersistedStateCollection");
 
 var Collection = PageableCollection.extend({
-    url   : window.NzbDrone.ApiRoot + '/history',
+    url   : window.NzbDrone.ApiRoot + "/history",
     model : HistoryModel,
 
     state : {
         pageSize : 15,
-        sortKey  : 'date',
+        sortKey  : "date",
         order    : 1
     },
 
     queryParams : {
         totalPages   : null,
         totalRecords : null,
-        pageSize     : 'pageSize',
-        sortKey      : 'sortKey',
-        order        : 'sortDir',
+        pageSize     : "pageSize",
+        sortKey      : "sortKey",
+        order        : "sortDir",
         directions   : {
-            '-1' : 'asc',
-            '1'  : 'desc'
+            "-1" : "asc",
+            "1"  : "desc"
         }
     },
 
     filterModes : {
-        'all'      : [
+        "all"      : [
             null,
             null
         ],
-        'grabbed'  : [
-            'eventType',
-            '1'
+        "grabbed"  : [
+            "eventType",
+            "1"
         ],
-        'imported' : [
-            'eventType',
-            '3'
+        "imported" : [
+            "eventType",
+            "3"
         ],
-        'failed'   : [
-            'eventType',
-            '4'
+        "failed"   : [
+            "eventType",
+            "4"
         ],
-        'deleted'  : [
-            'eventType',
-            '6'
+        "deleted"  : [
+            "eventType",
+            "6"
         ]
     },
 
     sortMappings : {
-        'movie' : { sortKey : 'movie.title' }
+        "movie" : { sortKey : "movie.title" }
     },
 
     initialize : function(options) {

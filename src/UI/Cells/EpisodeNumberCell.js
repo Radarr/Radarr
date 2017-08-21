@@ -1,21 +1,21 @@
-var NzbDroneCell = require('./NzbDroneCell');
-var FormatHelpers = require('../Shared/FormatHelpers');
-var _ = require('underscore');
+var NzbDroneCell = require("./NzbDroneCell");
+var FormatHelpers = require("../Shared/FormatHelpers");
+var _ = require("underscore");
 
 module.exports = NzbDroneCell.extend({
-    className : 'episode-number-cell',
+    className : "episode-number-cell",
 
     render : function() {
 
         this.$el.empty();
 
-        var airDateField = this.column.get('airDateUtc') || 'airDateUtc';
-        var seasonField = this.column.get('seasonNumber') || 'seasonNumber';
-        var episodeField = this.column.get('episodes') || 'episodeNumber';
-        var absoluteEpisodeField = 'absoluteEpisodeNumber';
+        var airDateField = this.column.get("airDateUtc") || "airDateUtc";
+        var seasonField = this.column.get("seasonNumber") || "seasonNumber";
+        var episodeField = this.column.get("episodes") || "episodeNumber";
+        var absoluteEpisodeField = "absoluteEpisodeNumber";
 
         if (this.model) {
-            var result = 'Unknown';
+            var result = "Unknown";
 
             var airDate = this.model.get(airDateField);
             var seasonNumber = this.model.get(seasonField);
@@ -54,10 +54,10 @@ module.exports = NzbDroneCell.extend({
                     paddedAbsoluteEpisode = FormatHelpers.pad(absoluteEpisodeNumber, 2);
                 }
 
-                result = '{0}x{1}'.format(seasonNumber, paddedEpisodes);
+                result = "{0}x{1}".format(seasonNumber, paddedEpisodes);
 
                 if (absoluteEpisodeNumber !== undefined && paddedAbsoluteEpisode) {
-                    result += ' ({0})'.format(paddedAbsoluteEpisode);
+                    result += " ({0})".format(paddedAbsoluteEpisode);
                 }
             } else if (airDate) {
                 result = new Date(airDate).toLocaleDateString();

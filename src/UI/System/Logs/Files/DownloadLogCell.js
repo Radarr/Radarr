@@ -1,7 +1,7 @@
-var NzbDroneCell = require('../../../Cells/NzbDroneCell');
+var NzbDroneCell = require("../../../Cells/NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'download-log-cell',
+    className : "download-log-cell",
 
     render : function() {
         this.$el.empty();

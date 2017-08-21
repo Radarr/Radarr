@@ -1,18 +1,18 @@
-var vent = require('../../vent');
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
-var SelectMovieLayout = require('../Movie/SelectMovieLayout');
+var vent = require("../../vent");
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
+var SelectMovieLayout = require("../Movie/SelectMovieLayout");
 
 module.exports = NzbDroneCell.extend({
-    className : 'series-title-cell editable',
+    className : "series-title-cell editable",
 
     events : {
-        'click' : '_onClick'
+        "click" : "_onClick"
     },
 
     render : function() {
         this.$el.empty();
 
-        var movie = this.model.get('movie');
+        var movie = this.model.get("movie");
 
         if (movie)
         {
@@ -30,13 +30,13 @@ module.exports = NzbDroneCell.extend({
     _onClick : function () {
         var view = new SelectMovieLayout();
 
-        this.listenTo(view, 'manualimport:selected:movie', this._setMovie);
+        this.listenTo(view, "manualimport:selected:movie", this._setMovie);
 
         vent.trigger(vent.Commands.OpenModal2Command, view);
     },
 
     _setMovie : function (e) {
-        if (this.model.has('movie') && e.model.id === this.model.get('movie').id) {
+        if (this.model.has("movie") && e.model.id === this.model.get("movie").id) {
             return;
         }
 

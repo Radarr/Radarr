@@ -1,48 +1,48 @@
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var BackupCollection = require('./TaskCollection');
-var RelativeTimeCell = require('../../Cells/RelativeTimeCell');
-var TaskIntervalCell = require('./TaskIntervalCell');
-var ExecuteTaskCell = require('./ExecuteTaskCell');
-var NextExecutionCell = require('./NextExecutionCell');
-var LoadingView = require('../../Shared/LoadingView');
-require('../../Mixins/backbone.signalr.mixin');
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var BackupCollection = require("./TaskCollection");
+var RelativeTimeCell = require("../../Cells/RelativeTimeCell");
+var TaskIntervalCell = require("./TaskIntervalCell");
+var ExecuteTaskCell = require("./ExecuteTaskCell");
+var NextExecutionCell = require("./NextExecutionCell");
+var LoadingView = require("../../Shared/LoadingView");
+require("../../Mixins/backbone.signalr.mixin");
 
 module.exports = Marionette.Layout.extend({
-    template : 'System/Task/TaskLayoutTemplate',
+    template : "System/Task/TaskLayoutTemplate",
 
     regions : {
-        tasks : '#x-tasks'
+        tasks : "#x-tasks"
     },
 
     columns : [
         {
-            name     : 'name',
-            label    : 'Name',
+            name     : "name",
+            label    : "Name",
             sortable : true,
-            cell     : 'string'
+            cell     : "string"
         },
         {
-            name     : 'interval',
-            label    : 'Interval',
+            name     : "interval",
+            label    : "Interval",
             sortable : true,
             cell     : TaskIntervalCell
         },
         {
-            name     : 'lastExecution',
-            label    : 'Last Execution',
+            name     : "lastExecution",
+            label    : "Last Execution",
             sortable : true,
             cell     : RelativeTimeCell
         },
         {
-            name     : 'nextExecution',
-            label    : 'Next Execution',
+            name     : "nextExecution",
+            label    : "Next Execution",
             sortable : true,
             cell     : NextExecutionCell
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             sortable : false,
             cell     : ExecuteTaskCell
         }
@@ -51,7 +51,7 @@ module.exports = Marionette.Layout.extend({
     initialize : function() {
         this.taskCollection = new BackupCollection();
 
-        this.listenTo(this.taskCollection, 'sync', this._showTasks);
+        this.listenTo(this.taskCollection, "sync", this._showTasks);
         this.taskCollection.bindSignalR();
     },
 
@@ -65,7 +65,7 @@ module.exports = Marionette.Layout.extend({
         this.tasks.show(new Backgrid.Grid({
             columns    : this.columns,
             collection : this.taskCollection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         }));
     }
 });

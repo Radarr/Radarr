@@ -1,20 +1,20 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backbone = require('backbone');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backbone = require("backbone");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Movies/Editor/Delete/DeleteSelectedTemplate',
+    template : "Movies/Editor/Delete/DeleteSelectedTemplate",
 
     events : {
-        'click .x-confirm-delete' : 'removeSeries',
-        'change .x-delete-files'  : 'changeDeletedFiles'
+        "click .x-confirm-delete" : "removeSeries",
+        "change .x-delete-files"  : "changeDeletedFiles"
     },
 
     ui : {
-        deleteFiles     : '.x-delete-files',
-        deleteFilesInfo : '.x-delete-files-info',
-        indicator       : '.x-indicator',
-        addExclusion    : '.x-add-exclusion'
+        deleteFiles     : ".x-delete-files",
+        deleteFilesInfo : ".x-delete-files-info",
+        indicator       : ".x-indicator",
+        addExclusion    : ".x-add-exclusion"
     },
 
     initialize : function(options) {
@@ -29,13 +29,13 @@ module.exports = Marionette.ItemView.extend({
 
     removeSeries : function() {
         var self = this;
-        var deleteFiles = this.ui.deleteFiles.prop('checked');
-        var addExclusion = this.ui.addExclusion.prop('checked');
+        var deleteFiles = this.ui.deleteFiles.prop("checked");
+        var addExclusion = this.ui.addExclusion.prop("checked");
         this.ui.indicator.show();
         var proxy = _.extend(new Backbone.Model(), {
-            id : '',
+            id : "",
 
-            url : window.NzbDrone.ApiRoot+'/movie/editor/delete?deleteFiles='+deleteFiles+'&addExclusion='+addExclusion,
+            url : window.NzbDrone.ApiRoot+"/movie/editor/delete?deleteFiles="+deleteFiles+"&addExclusion="+addExclusion,
 
             toJSON : function() {
                 return _.pluck(self.movies, "id");
@@ -49,7 +49,7 @@ module.exports = Marionette.ItemView.extend({
     },
 
     changeDeletedFiles : function() {
-        var deleteFiles = this.ui.deleteFiles.prop('checked');
+        var deleteFiles = this.ui.deleteFiles.prop("checked");
 
         if (deleteFiles) {
             this.ui.deleteFilesInfo.show();

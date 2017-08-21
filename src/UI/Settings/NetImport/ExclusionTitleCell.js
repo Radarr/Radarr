@@ -1,7 +1,7 @@
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'exclusion-title-cell',
+    className : "exclusion-title-cell",
 
     render : function() {
         this.$el.empty();

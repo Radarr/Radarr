@@ -1,8 +1,8 @@
-var Validation = require('backbone.validation');
-var _ = require('underscore');
+var Validation = require("backbone.validation");
+var _ = require("underscore");
 
 module.exports = (function() {
-    'use strict';
+    "use strict";
     return function() {
 
         var originalInitialize = this.prototype.initialize;
@@ -11,14 +11,14 @@ module.exports = (function() {
 
         var errorHandler = function(response) {
             if (this.model) {
-                this.model.trigger('validation:failed', response);
+                this.model.trigger("validation:failed", response);
             } else {
-                this.trigger('validation:failed', response);
+                this.trigger("validation:failed", response);
             }
         };
 
         var validatedSync = function(method, model, options) {
-            model.trigger('validation:sync');
+            model.trigger("validation:sync");
 
             arguments[2].isValidatedCall = true;
             return model._originalSync.apply(this, arguments).fail(errorHandler.bind(this));
@@ -43,17 +43,17 @@ module.exports = (function() {
 
         this.prototype.initialize = function(options) {
             if (this.model) {
-                this.listenTo(this.model, 'validation:sync', function() {
+                this.listenTo(this.model, "validation:sync", function() {
                     this.$el.removeAllErrors();
                 });
 
-                this.listenTo(this.model, 'validation:failed', validationFailed);
+                this.listenTo(this.model, "validation:failed", validationFailed);
             } else {
-                this.listenTo(this, 'validation:sync', function() {
+                this.listenTo(this, "validation:sync", function() {
                     this.$el.removeAllErrors();
                 });
 
-                this.listenTo(this, 'validation:failed', validationFailed);
+                this.listenTo(this, "validation:failed", validationFailed);
             }
 
             if (originalInitialize) {
@@ -78,7 +78,7 @@ module.exports = (function() {
             if (this.model) {
                 Validation.unbind(this);
 
-                //If we don't do this the next time the model is used the sync is bound to an old view
+                //If we don"t do this the next time the model is used the sync is bound to an old view
                 this.model.sync = this.model._originalSync;
                 this.model._originalSync = undefined;
             }

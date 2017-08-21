@@ -1,8 +1,8 @@
-var _ = require('underscore');
-var Backbone = require('backbone');
+var _ = require("underscore");
+var Backbone = require("backbone");
 
 module.exports = Backbone.Model.extend({
-    url : window.NzbDrone.ApiRoot + '/command',
+    url : window.NzbDrone.ApiRoot + "/command",
 
     parse : function(response) {
         response.name = response.name.toLocaleLowerCase();
@@ -19,12 +19,12 @@ module.exports = Backbone.Model.extend({
 
     isSameCommand : function(command) {
 
-        if (command.name.toLocaleLowerCase() !== this.get('name').toLocaleLowerCase()) {
+        if (command.name.toLocaleLowerCase() !== this.get("name").toLocaleLowerCase()) {
             return false;
         }
 
         for (var key in command) {
-            if (key !== 'name') {
+            if (key !== "name") {
                 if (Array.isArray(command[key])) {
                     if (_.difference(command[key], this.get(key)).length > 0) {
                         return false;
@@ -41,10 +41,10 @@ module.exports = Backbone.Model.extend({
     },
 
     isActive : function() {
-        return this.get('status') !== 'completed' && this.get('status') !== 'failed';
+        return this.get("status") !== "completed" && this.get("status") !== "failed";
     },
 
     isComplete : function() {
-        return this.get('status') === 'completed';
+        return this.get("status") === "completed";
     }
 });

@@ -1,8 +1,8 @@
-var $ = require('jquery');
+var $ = require("jquery");
 
 module.exports = {
     get : function(resource) {
-        var url = window.NzbDrone.ApiRoot + '/' + resource;
+        var url = window.NzbDrone.ApiRoot + "/" + resource;
         var _data;
         $.ajax({
             url   : url,

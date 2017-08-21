@@ -1,9 +1,9 @@
-var DeepModel = require('backbone.deepmodel');
+var DeepModel = require("backbone.deepmodel");
 
 module.exports = DeepModel.extend({
     defaults : {
         id     : null,
-        name   : '',
+        name   : "",
         cutoff : null
     }
 });

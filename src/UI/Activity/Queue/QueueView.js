@@ -1,12 +1,12 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
-var QueueCollection = require('./QueueCollection');
+var _ = require("underscore");
+var Marionette = require("marionette");
+var QueueCollection = require("./QueueCollection");
 
 module.exports = Marionette.ItemView.extend({
-    tagName : 'span',
+    tagName : "span",
 
     initialize : function() {
-        this.listenTo(QueueCollection, 'sync', this.render);
+        this.listenTo(QueueCollection, "sync", this.render);
         QueueCollection.fetch();
     },
 
@@ -18,20 +18,20 @@ module.exports = Marionette.ItemView.extend({
         }
 
         var count = QueueCollection.fullCollection.length;
-        var label = 'label-info';
+        var label = "label-info";
 
         var errors = QueueCollection.fullCollection.some(function(model) {
-            return model.has('trackedDownloadStatus') && model.get('trackedDownloadStatus').toLowerCase() === 'error';
+            return model.has("trackedDownloadStatus") && model.get("trackedDownloadStatus").toLowerCase() === "error";
         });
 
         var warnings = QueueCollection.fullCollection.some(function(model) {
-            return model.has('trackedDownloadStatus') && model.get('trackedDownloadStatus').toLowerCase() === 'warning';
+            return model.has("trackedDownloadStatus") && model.get("trackedDownloadStatus").toLowerCase() === "warning";
         });
 
         if (errors) {
-            label = 'label-danger';
+            label = "label-danger";
         } else if (warnings) {
-            label = 'label-warning';
+            label = "label-warning";
         }
 
         this.$el.html('<span class="label {0}">{1}</span>'.format(label, count));

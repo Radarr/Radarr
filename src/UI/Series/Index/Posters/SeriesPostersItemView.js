@@ -1,15 +1,15 @@
-var SeriesIndexItemView = require('../SeriesIndexItemView');
+var SeriesIndexItemView = require("../SeriesIndexItemView");
 
 module.exports = SeriesIndexItemView.extend({
-    tagName  : 'li',
-    template : 'Series/Index/Posters/SeriesPostersItemViewTemplate',
+    tagName  : "li",
+    template : "Series/Index/Posters/SeriesPostersItemViewTemplate",
 
     initialize : function() {
-        this.events['mouseenter .x-series-poster-container'] = 'posterHoverAction';
-        this.events['mouseleave .x-series-poster-container'] = 'posterHoverAction';
+        this.events["mouseenter .x-series-poster-container"] = "posterHoverAction";
+        this.events["mouseleave .x-series-poster-container"] = "posterHoverAction";
 
-        this.ui.controls = '.x-series-controls';
-        this.ui.title = '.x-title';
+        this.ui.controls = ".x-series-controls";
+        this.ui.title = ".x-title";
     },
 
     posterHoverAction : function() {

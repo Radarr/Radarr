@@ -1,11 +1,11 @@
-var Marionette = require('marionette');
-var BlacklistDetailsView = require('./BlacklistDetailsView');
+var Marionette = require("marionette");
+var BlacklistDetailsView = require("./BlacklistDetailsView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Activity/Blacklist/Details/BlacklistDetailsLayoutTemplate',
+    template : "Activity/Blacklist/Details/BlacklistDetailsLayoutTemplate",
 
     regions : {
-        bodyRegion : '.modal-body'
+        bodyRegion : ".modal-body"
     },
 
     onShow : function() {

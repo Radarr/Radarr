@@ -1,17 +1,17 @@
-var Marionette = require('marionette');
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'AddMovies/RootFolders/RootFolderItemViewTemplate',
-    className : 'recent-folder',
-    tagName   : 'tr',
+    template  : "AddMovies/RootFolders/RootFolderItemViewTemplate",
+    className : "recent-folder",
+    tagName   : "tr",
 
     initialize : function() {
-        this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.model, "change", this.render);
     },
 
     events : {
-        'click .x-delete' : 'removeFolder',
-        'click .x-folder' : 'folderSelected'
+        "click .x-delete" : "removeFolder",
+        "click .x-folder" : "folderSelected"
     },
 
     removeFolder : function() {
@@ -23,6 +23,6 @@ module.exports = Marionette.ItemView.extend({
     },
 
     folderSelected : function() {
-        this.trigger('folderSelected', this.model);
+        this.trigger("folderSelected", this.model);
     }
 });

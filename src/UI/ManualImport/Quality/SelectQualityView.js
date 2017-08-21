@@ -1,12 +1,12 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
+var _ = require("underscore");
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'ManualImport/Quality/SelectQualityViewTemplate',
+    template  : "ManualImport/Quality/SelectQualityViewTemplate",
 
     ui : {
-        select : '.x-select-quality',
-        proper : 'x-proper'
+        select : ".x-select-quality",
+        proper : "x-proper"
     },
 
     initialize : function(options) {
@@ -19,7 +19,7 @@ module.exports = Marionette.ItemView.extend({
 
     selectedQuality : function () {
         var selected = parseInt(this.ui.select.val(), 10);
-        var proper = this.ui.proper.prop('checked');
+        var proper = this.ui.proper.prop("checked");
 
         var quality = _.find(this.qualities, function(q) {
             return q.id === selected;

@@ -1,5 +1,5 @@
-var Backgrid = require('backgrid');
-var Backbone = require('backbone');
+var Backgrid = require("backgrid");
+var Backbone = require("backbone");
 
 module.exports = Backgrid.Cell.extend({
 
@@ -9,11 +9,11 @@ module.exports = Backgrid.Cell.extend({
         this._originalInit.apply(this, arguments);
         this.cellValue = this._getValue();
 
-        this.listenTo(this.model, 'change', this._refresh);
+        this.listenTo(this.model, "change", this._refresh);
 
         if (this._onEdit) {
-            this.listenTo(this.model, 'backgrid:edit', function(model, column, cell, editor) {
-                if (column.get('name') === this.column.get('name')) {
+            this.listenTo(this.model, "backgrid:edit", function(model, column, cell, editor) {
+                if (column.get("name") === this.column.get("name")) {
                     this._onEdit(model, column, cell, editor);
                 }
             });
@@ -27,10 +27,10 @@ module.exports = Backgrid.Cell.extend({
 
     _getValue : function() {
 
-        var cellValue = this.column.get('cellValue');
+        var cellValue = this.column.get("cellValue");
 
         if (cellValue) {
-            if (cellValue === 'this') {
+            if (cellValue === "this") {
                 return this.model;
             }
 
@@ -39,9 +39,9 @@ module.exports = Backgrid.Cell.extend({
             }
         }
 
-        var name = this.column.get('name');
+        var name = this.column.get("name");
 
-        if (name === 'this') {
+        if (name === "this") {
             return this.model;
         }
 
@@ -52,7 +52,7 @@ module.exports = Backgrid.Cell.extend({
         }
 
         //if not a model
-        if (!value.get && typeof value === 'object') {
+        if (!value.get && typeof value === "object") {
             value = new Backbone.Model(value);
         }
 

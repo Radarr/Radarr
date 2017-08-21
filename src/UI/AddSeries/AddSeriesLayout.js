@@ -1,27 +1,27 @@
-var vent = require('vent');
-var AppLayout = require('../AppLayout');
-var Marionette = require('marionette');
-var RootFolderLayout = require('./RootFolders/RootFolderLayout');
-var ExistingSeriesCollectionView = require('./Existing/AddExistingSeriesCollectionView');
-var AddSeriesView = require('./AddSeriesView');
-var ProfileCollection = require('../Profile/ProfileCollection');
-var RootFolderCollection = require('./RootFolders/RootFolderCollection');
-require('../Series/SeriesCollection');
+var vent = require("vent");
+var AppLayout = require("../AppLayout");
+var Marionette = require("marionette");
+var RootFolderLayout = require("./RootFolders/RootFolderLayout");
+var ExistingSeriesCollectionView = require("./Existing/AddExistingSeriesCollectionView");
+var AddSeriesView = require("./AddSeriesView");
+var ProfileCollection = require("../Profile/ProfileCollection");
+var RootFolderCollection = require("./RootFolders/RootFolderCollection");
+require("../Series/SeriesCollection");
 
 module.exports = Marionette.Layout.extend({
-    template : 'AddSeries/AddSeriesLayoutTemplate',
+    template : "AddSeries/AddSeriesLayoutTemplate",
 
     regions : {
-        workspace : '#add-series-workspace'
+        workspace : "#add-series-workspace"
     },
 
     events : {
-        'click .x-import'  : '_importSeries',
-        'click .x-add-new' : '_addSeries'
+        "click .x-import"  : "_importSeries",
+        "click .x-add-new" : "_addSeries"
     },
 
     attributes : {
-        id : 'add-series-screen'
+        id : "add-series-screen"
     },
 
     initialize : function() {
@@ -43,7 +43,7 @@ module.exports = Marionette.Layout.extend({
 
     _importSeries : function() {
         this.rootFolderLayout = new RootFolderLayout();
-        this.listenTo(this.rootFolderLayout, 'folderSelected', this._folderSelected);
+        this.listenTo(this.rootFolderLayout, "folderSelected", this._folderSelected);
         AppLayout.modalRegion.show(this.rootFolderLayout);
     },
 

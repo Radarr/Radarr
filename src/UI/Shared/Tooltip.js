@@ -1,5 +1,5 @@
-var $ = require('jquery');
-require('bootstrap');
+var $ = require("jquery");
+require("bootstrap");
 
 var Tooltip = $.fn.tooltip.Constructor;
 
@@ -9,7 +9,7 @@ Tooltip.prototype.getOptions = function(options) {
 
     if (result.container === false) {
 
-        var container = this.$element.closest('.btn-group,.input-group').parent();
+        var container = this.$element.closest(".btn-group,.input-group").parent();
 
         if (container.length) {
             result.container = container;
@@ -27,20 +27,20 @@ var origShow = Tooltip.prototype.show;
 Tooltip.prototype.show = function() {
     origShow.call(this);
 
-    this.$element.on('remove', this, onElementRemoved);
+    this.$element.on("remove", this, onElementRemoved);
 };
 
 var origHide = Tooltip.prototype.hide;
 Tooltip.prototype.hide = function() {
     origHide.call(this);
 
-    this.$element.off('remove', onElementRemoved);
+    this.$element.off("remove", onElementRemoved);
 };
 
 module.exports = {
     appInitializer : function() {
 
-        $('body').tooltip({ selector : '[title]' });
+        $("body").tooltip({ selector : "[title]" });
 
         return this;
     }

@@ -1,17 +1,17 @@
-var AppLayout = require('../AppLayout');
-var Marionette = require('marionette');
-var UpcomingCollectionView = require('./UpcomingCollectionView');
-var CalendarView = require('./CalendarView');
-var CalendarFeedView = require('./CalendarFeedView');
-var ToolbarLayout = require('../Shared/Toolbar/ToolbarLayout');
+var AppLayout = require("../AppLayout");
+var Marionette = require("marionette");
+var UpcomingCollectionView = require("./UpcomingCollectionView");
+var CalendarView = require("./CalendarView");
+var CalendarFeedView = require("./CalendarFeedView");
+var ToolbarLayout = require("../Shared/Toolbar/ToolbarLayout");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Calendar/CalendarLayoutTemplate',
+    template : "Calendar/CalendarLayoutTemplate",
 
     regions : {
-        upcoming : '#x-upcoming',
-        calendar : '#x-calendar',
-        toolbar  : '#x-toolbar'
+        upcoming : "#x-upcoming",
+        calendar : "#x-calendar",
+        toolbar  : "#x-toolbar"
     },
 
     onShow : function() {
@@ -37,12 +37,12 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar    : function() {
         var leftSideButtons = {
-            type       : 'default',
+            type       : "default",
             storeState : false,
             items      : [
                 {
-                    title        : 'Movies calendar link',
-                    icon         : 'icon-sonarr-calendar-o',
+                    title        : "Movies calendar link",
+                    icon         : "icon-sonarr-calendar-o",
                     callback     : this._showiCal,
                     ownerContext : this
                 }
@@ -50,23 +50,23 @@ module.exports = Marionette.Layout.extend({
         };
 
         var filterOptions = {
-            type          : 'radio',
+            type          : "radio",
             storeState    : true,
-            menuKey       : 'calendar.show',
-            defaultAction : 'monitored',
+            menuKey       : "calendar.show",
+            defaultAction : "monitored",
             items         : [
                 {
-                    key      : 'all',
-                    title    : '',
-                    tooltip  : 'All movies',
-                    icon     : 'icon-sonarr-all',
+                    key      : "all",
+                    title    : "",
+                    tooltip  : "All movies",
+                    icon     : "icon-sonarr-all",
                     callback : this._setCalendarFilter
                 },
                 {
-                    key      : 'monitored',
-                    title    : '',
-                    tooltip  : 'Monitored only',
-                    icon     : 'icon-sonarr-monitored',
+                    key      : "monitored",
+                    title    : "",
+                    tooltip  : "Monitored only",
+                    icon     : "icon-sonarr-monitored",
                     callback : this._setCalendarFilter
                 }
             ]
@@ -81,9 +81,9 @@ module.exports = Marionette.Layout.extend({
     },
 
     _setCalendarFilter : function(buttonContext) {
-        var mode = buttonContext.model.get('key');
+        var mode = buttonContext.model.get("key");
 
-        if (mode === 'all') {
+        if (mode === "all") {
             this.calendarView.setShowUnmonitored(true);
             this.upcomingView.setShowUnmonitored(true);
         }

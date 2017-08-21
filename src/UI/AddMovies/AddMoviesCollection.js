@@ -1,9 +1,9 @@
-var Backbone = require('backbone');
-var MovieModel = require('../Movies/MovieModel');
-var _ = require('underscore');
+var Backbone = require("backbone");
+var MovieModel = require("../Movies/MovieModel");
+var _ = require("underscore");
 
 module.exports = Backbone.Collection.extend({
-    url   : window.NzbDrone.ApiRoot + '/movies/lookup',
+    url   : window.NzbDrone.ApiRoot + "/movies/lookup",
     model : MovieModel,
 
     parse : function(response) {
@@ -13,7 +13,7 @@ module.exports = Backbone.Collection.extend({
             model.id = undefined;
 
             if (self.unmappedFolderModel) {
-                model.path = self.unmappedFolderModel.get('folder').path;
+                model.path = self.unmappedFolderModel.get("folder").path;
             }
         });
 

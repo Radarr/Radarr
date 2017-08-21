@@ -1,5 +1,5 @@
-var Marionette = require('marionette');
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'Shared/NotFoundViewTemplate'
+    template : "Shared/NotFoundViewTemplate"
 });

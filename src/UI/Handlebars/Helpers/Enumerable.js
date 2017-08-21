@@ -1,7 +1,7 @@
-var Handlebars = require('handlebars');
+var Handlebars = require("handlebars");
 
-Handlebars.registerHelper('times', function(n, block) {
-    var accum = '';
+Handlebars.registerHelper("times", function(n, block) {
+    var accum = "";
 
     for (var i = 0; i < n; ++i) {
         accum += block.fn(i);
@@ -10,8 +10,8 @@ Handlebars.registerHelper('times', function(n, block) {
     return accum;
 });
 
-Handlebars.registerHelper('for', function(from, to, incr, block) {
-    var accum = '';
+Handlebars.registerHelper("for", function(from, to, incr, block) {
+    var accum = "";
 
     for (var i = from; i < to; i += incr) {
         accum += block.fn(i);

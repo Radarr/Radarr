@@ -1,15 +1,15 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
+var _ = require("underscore");
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template : 'EpisodeFile/Editor/QualitySelectViewTemplate',
+    template : "EpisodeFile/Editor/QualitySelectViewTemplate",
 
     ui : {
-        select : '.x-select'
+        select : ".x-select"
     },
 
     events : {
-        'change .x-select' : '_changeSelect'
+        "change .x-select" : "_changeSelect"
     },
 
     initialize : function (options) {
@@ -23,13 +23,13 @@ module.exports = Marionette.ItemView.extend({
     _changeSelect : function () {
         var value =  this.ui.select.val();
 
-        if (value === 'choose') {
+        if (value === "choose") {
             return;
         }
 
-        var quality = _.find(this.qualities, { 'id': parseInt(value) });
+        var quality = _.find(this.qualities, { "id": parseInt(value) });
 
-        this.trigger('seasonedit:quality', { selected : quality });
-        this.ui.select.val('choose');
+        this.trigger("seasonedit:quality", { selected : quality });
+        this.ui.select.val("choose");
     }
 });

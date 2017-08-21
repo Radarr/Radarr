@@ -1,7 +1,7 @@
-﻿var NzbDroneCell = require('../../Cells/NzbDroneCell');
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'title-source-cell',
+    className : "title-source-cell",
 
     render : function() {
         this.$el.empty();
@@ -30,7 +30,7 @@ module.exports = NzbDroneCell.extend({
         var a = "{0}";
 
         if (link) {
-            a = "<a href='"+link+"' target='_blank'>{0}</a>";
+            a = '<a href="'+link+'" target="_blank">{0}</a>';
         }
 
         this.$el.html(a.format(sourceTitle));

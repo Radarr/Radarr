@@ -1,14 +1,14 @@
-var NzbDroneCell = require('./NzbDroneCell');
+var NzbDroneCell = require("./NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'series-status-cell',
+    className : "series-status-cell",
 
     render : function() {
         this.$el.empty();
-        var monitored = this.model.get('monitored');
-        var status = this.model.get('status');
+        var monitored = this.model.get("monitored");
+        var status = this.model.get("status");
 
-        if (status === 'ended') {
+        if (status === "ended") {
             this.$el.html('<i class="icon-sonarr-series-ended grid-icon" title="Ended"></i>');
             this._setStatusWeight(3);
         }
@@ -27,6 +27,6 @@ module.exports = NzbDroneCell.extend({
     },
 
     _setStatusWeight : function(weight) {
-        this.model.set('statusWeight', weight, { silent : true });
+        this.model.set("statusWeight", weight, { silent : true });
     }
 });

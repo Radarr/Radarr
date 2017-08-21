@@ -1,34 +1,34 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var FileBrowserCollection = require('./FileBrowserCollection');
-var EmptyView = require('./EmptyView');
-var FileBrowserRow = require('./FileBrowserRow');
-var FileBrowserTypeCell = require('./FileBrowserTypeCell');
-var FileBrowserNameCell = require('./FileBrowserNameCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var FileSizeCell = require('../../Cells/FileSizeCell');
-var LoadingView = require('../LoadingView');
-require('../../Mixins/DirectoryAutoComplete');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var FileBrowserCollection = require("./FileBrowserCollection");
+var EmptyView = require("./EmptyView");
+var FileBrowserRow = require("./FileBrowserRow");
+var FileBrowserTypeCell = require("./FileBrowserTypeCell");
+var FileBrowserNameCell = require("./FileBrowserNameCell");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var FileSizeCell = require("../../Cells/FileSizeCell");
+var LoadingView = require("../LoadingView");
+require("../../Mixins/DirectoryAutoComplete");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Shared/FileBrowser/FileBrowserLayoutTemplate',
+    template : "Shared/FileBrowser/FileBrowserLayoutTemplate",
 
     regions : {
-        browser : '#x-browser'
+        browser : "#x-browser"
     },
 
     ui : {
-        path      : '.x-path',
-        indicator : '.x-indicator'
+        path      : ".x-path",
+        indicator : ".x-indicator"
     },
 
     events : {
-        'typeahead:selected .x-path'      : '_pathChanged',
-        'typeahead:autocompleted .x-path' : '_pathChanged',
-        'keyup .x-path'                   : '_inputChanged',
-        'click .x-ok'                     : '_selectPath'
+        "typeahead:selected .x-path"      : "_pathChanged",
+        "typeahead:autocompleted .x-path" : "_pathChanged",
+        "keyup .x-path"                   : "_inputChanged",
+        "click .x-ok"                     : "_selectPath"
     },
 
     initialize : function(options) {
@@ -37,9 +37,9 @@ module.exports = Marionette.Layout.extend({
         this.collection.showLastModified = options.showLastModified || false;
         this.input = options.input;
         this._setColumns();
-        this.listenTo(this.collection, 'sync', this._showGrid);
-        this.listenTo(this.collection, 'filebrowser:row:folderselected', this._rowSelected);
-        this.listenTo(this.collection, 'filebrowser:row:fileselected', this._fileSelected);
+        this.listenTo(this.collection, "sync", this._showGrid);
+        this.listenTo(this.collection, "filebrowser:row:folderselected", this._rowSelected);
+        this.listenTo(this.collection, "filebrowser:row:fileselected", this._fileSelected);
     },
 
     onRender : function() {
@@ -52,30 +52,30 @@ module.exports = Marionette.Layout.extend({
     _setColumns : function() {
         this.columns = [
             {
-                name     : 'type',
-                label    : '',
+                name     : "type",
+                label    : "",
                 sortable : false,
                 cell     : FileBrowserTypeCell
             },
             {
-                name     : 'name',
-                label    : 'Name',
+                name     : "name",
+                label    : "Name",
                 sortable : false,
                 cell     : FileBrowserNameCell
             }
         ];
         if (this.collection.showLastModified) {
             this.columns.push({
-                name     : 'lastModified',
-                label    : 'Last Modified',
+                name     : "lastModified",
+                label    : "Last Modified",
                 sortable : false,
                 cell     : RelativeDateCell
             });
         }
         if (this.collection.showFiles) {
             this.columns.push({
-                name     : 'size',
-                label    : 'Size',
+                name     : "size",
+                label    : "Size",
                 sortable : false,
                 cell     : FileSizeCell
             });
@@ -101,26 +101,26 @@ module.exports = Marionette.Layout.extend({
             row        : FileBrowserRow,
             collection : this.collection,
             columns    : this.columns,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         });
         this.browser.show(grid);
     },
 
     _rowSelected : function(model) {
-        var path = model.get('path');
+        var path = model.get("path");
 
         this._updatePath(path);
         this._fetchCollection(path);
     },
 
     _fileSelected : function(model) {
-        var path = model.get('path');
-        var type = model.get('type');
+        var path = model.get("path");
+        var type = model.get("type");
 
         this.input.val(path);
-        this.input.trigger('change');
+        this.input.trigger("change");
 
-        this.input.trigger('filebrowser:fileselected', {
+        this.input.trigger("filebrowser:fileselected", {
             type : type,
             path : path
         });
@@ -135,7 +135,7 @@ module.exports = Marionette.Layout.extend({
 
     _inputChanged : function() {
         var path = this.ui.path.val();
-        if (path === '' || path.endsWith('\\') || path.endsWith('/')) {
+        if (path === "" || path.endsWith("\\") || path.endsWith("/")) {
             this._fetchCollection(path);
         }
     },
@@ -150,10 +150,10 @@ module.exports = Marionette.Layout.extend({
         var path = this.ui.path.val();
 
         this.input.val(path);
-        this.input.trigger('change');
+        this.input.trigger("change");
 
-        this.input.trigger('filebrowser:folderselected', {
-            type: 'folder',
+        this.input.trigger("filebrowser:folderselected", {
+            type: "folder",
             path: path
         });
 

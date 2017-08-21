@@ -1,52 +1,52 @@
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var HistoryCollection = require('../../Activity/History/HistoryCollection');
-var EventTypeCell = require('../../Cells/EventTypeCell');
-var QualityCell = require('../../Cells/QualityCell');
-var RelativeDateCell = require('../../Cells/RelativeDateCell');
-var EpisodeHistoryActionsCell = require('./EpisodeHistoryActionsCell');
-var EpisodeHistoryDetailsCell = require('./EpisodeHistoryDetailsCell');
-var NoHistoryView = require('./NoHistoryView');
-var LoadingView = require('../../Shared/LoadingView');
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var HistoryCollection = require("../../Activity/History/HistoryCollection");
+var EventTypeCell = require("../../Cells/EventTypeCell");
+var QualityCell = require("../../Cells/QualityCell");
+var RelativeDateCell = require("../../Cells/RelativeDateCell");
+var EpisodeHistoryActionsCell = require("./EpisodeHistoryActionsCell");
+var EpisodeHistoryDetailsCell = require("./EpisodeHistoryDetailsCell");
+var NoHistoryView = require("./NoHistoryView");
+var LoadingView = require("../../Shared/LoadingView");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Episode/History/EpisodeHistoryLayoutTemplate',
+    template : "Episode/History/EpisodeHistoryLayoutTemplate",
 
     regions : {
-        historyTable : '.history-table'
+        historyTable : ".history-table"
     },
 
     columns : [
         {
-            name      : 'eventType',
-            label     : '',
+            name      : "eventType",
+            label     : "",
             cell      : EventTypeCell,
-            cellValue : 'this'
+            cellValue : "this"
         },
         {
-            name  : 'sourceTitle',
-            label : 'Source Title',
-            cell  : 'string'
+            name  : "sourceTitle",
+            label : "Source Title",
+            cell  : "string"
         },
         {
-            name  : 'quality',
-            label : 'Quality',
+            name  : "quality",
+            label : "Quality",
             cell  : QualityCell
         },
         {
-            name  : 'date',
-            label : 'Date',
+            name  : "date",
+            label : "Date",
             cell  : RelativeDateCell
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             cell     : EpisodeHistoryDetailsCell,
             sortable : false
         },
         {
-            name     : 'this',
-            label    : '',
+            name     : "this",
+            label    : "",
             cell     : EpisodeHistoryActionsCell,
             sortable : false
         }
@@ -58,10 +58,10 @@ module.exports = Marionette.Layout.extend({
 
         this.collection = new HistoryCollection({
             episodeId : this.model.id,
-            tableName : 'episodeHistory'
+            tableName : "episodeHistory"
         });
         this.collection.fetch();
-        this.listenTo(this.collection, 'sync', this._showTable);
+        this.listenTo(this.collection, "sync", this._showTable);
     },
 
     onRender : function() {
@@ -73,7 +73,7 @@ module.exports = Marionette.Layout.extend({
             this.historyTable.show(new Backgrid.Grid({
                 collection : this.collection,
                 columns    : this.columns,
-                className  : 'table table-hover table-condensed'
+                className  : "table table-hover table-condensed"
             }));
         }
 

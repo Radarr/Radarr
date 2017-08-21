@@ -1,24 +1,24 @@
-var $ = require('jquery');
-var Marionette = require('marionette');
-var Paginator = require('backgrid.paginator');
+var $ = require("jquery");
+var Marionette = require("marionette");
+var Paginator = require("backgrid.paginator");
 
 module.exports = Paginator.extend({
-    template : 'Shared/Grid/PagerTemplate',
+    template : "Shared/Grid/PagerTemplate",
 
     events : {
-        'click .pager-btn'      : 'changePage',
-        'click .x-page-number'  : '_showPageJumper',
-        'change .x-page-select' : '_jumpToPage',
-        'blur .x-page-select'   : 'render'
+        "click .pager-btn"      : "changePage",
+        "click .x-page-number"  : "_showPageJumper",
+        "change .x-page-select" : "_jumpToPage",
+        "blur .x-page-select"   : "render"
     },
 
     windowSize : 1,
 
     fastForwardHandleLabels : {
-        first : 'icon-sonarr-pager-first',
-        prev  : 'icon-sonarr-pager-previous',
-        next  : 'icon-sonarr-pager-next',
-        last  : 'icon-sonarr-pager-last'
+        first : "icon-sonarr-pager-first",
+        prev  : "icon-sonarr-pager-previous",
+        next  : "icon-sonarr-pager-next",
+        last  : "icon-sonarr-pager-last"
     },
 
     changePage : function(e) {
@@ -26,38 +26,38 @@ module.exports = Paginator.extend({
 
         var target = this.$(e.target);
 
-        if (target.closest('li').hasClass('disabled')) {
+        if (target.closest("li").hasClass("disabled")) {
             return;
         }
 
-        var icon = target.closest('li i');
-        var iconClasses = icon.attr('class').match(/(?:^|\s)icon\-.+?(?:$|\s)/);
+        var icon = target.closest("li i");
+        var iconClasses = icon.attr("class").match(/(?:^|\s)icon\-.+?(?:$|\s)/);
         var iconClass = $.trim(iconClasses[0]);
 
         icon.removeClass(iconClass);
-        icon.addClass('icon-sonarr-spinner fa-spin');
+        icon.addClass("icon-sonarr-spinner fa-spin");
 
-        var label = target.attr('data-action');
+        var label = target.attr("data-action");
         var ffLabels = this.fastForwardHandleLabels;
 
         var collection = this.collection;
 
         if (ffLabels) {
             switch (label) {
-                case 'first':
+                case "first":
                     collection.getFirstPage();
                     return;
-                case 'prev':
+                case "prev":
                     if (collection.hasPrevious()) {
                         collection.getPreviousPage();
                     }
                     return;
-                case 'next':
+                case "next":
                     if (collection.hasNext()) {
                         collection.getNextPage();
                     }
                     return;
-                case 'last':
+                case "last":
                     collection.getLastPage();
                     return;
             }
@@ -73,7 +73,7 @@ module.exports = Paginator.extend({
 
         var collection = this.collection;
 
-        
+
         var state = collection.state;
 
         // convert all indices to 0-based here
@@ -85,12 +85,12 @@ module.exports = Paginator.extend({
         var windowStart = Math.floor(currentPage / this.windowSize) * this.windowSize;
         var windowEnd = Math.min(lastPage + 1, windowStart + this.windowSize);
 
-        if (true/*collection.mode !== 'infinite'*/) {
+        if (true/*collection.mode !== "infinite"*/) {
             for (var i = windowStart; i < windowEnd; i++) {
                 handles.push({
                     label      : i + 1,
-                    title      : 'No. ' + (i + 1),
-                    className  : currentPage === i ? 'active' : undefined,
+                    title      : "No. " + (i + 1),
+                    className  : currentPage === i ? "active" : undefined,
                     pageNumber : i + 1,
                     lastPage   : lastPage + 1
                 });
@@ -102,32 +102,32 @@ module.exports = Paginator.extend({
             if (ffLabels.prev) {
                 handles.unshift({
                     label     : ffLabels.prev,
-                    className : collection.hasPrevious() ? void 0 : 'disabled',
-                    action    : 'prev'
+                    className : collection.hasPrevious() ? void 0 : "disabled",
+                    action    : "prev"
                 });
             }
 
             if (ffLabels.first) {
                 handles.unshift({
                     label     : ffLabels.first,
-                    className : collection.hasPrevious() ? void 0 : 'disabled',
-                    action    : 'first'
+                    className : collection.hasPrevious() ? void 0 : "disabled",
+                    action    : "first"
                 });
             }
 
             if (ffLabels.next) {
                 handles.push({
                     label     : ffLabels.next,
-                    className : collection.hasNext() ? void 0 : 'disabled',
-                    action    : 'next'
+                    className : collection.hasNext() ? void 0 : "disabled",
+                    action    : "next"
                 });
             }
 
             if (ffLabels.last) {
                 handles.push({
                     label     : ffLabels.last,
-                    className : collection.hasNext() ? void 0 : 'disabled',
-                    action    : 'last'
+                    className : collection.hasNext() ? void 0 : "disabled",
+                    action    : "last"
                 });
             }
         }
@@ -151,11 +151,11 @@ module.exports = Paginator.extend({
     },
 
     _showPageJumper : function(e) {
-        if ($(e.target).is('select')) {
+        if ($(e.target).is("select")) {
             return;
         }
 
-        var templateFunction = Marionette.TemplateCache.get('Shared/Grid/JumpToPageTemplate');
+        var templateFunction = Marionette.TemplateCache.get("Shared/Grid/JumpToPageTemplate");
         var state = this.collection.state;
         var currentPage = Math.max(state.currentPage, state.firstPage);
         currentPage = state.firstPage ? currentPage - 1 : currentPage;
@@ -173,18 +173,18 @@ module.exports = Paginator.extend({
             }
         }
 
-        this.$el.find('.x-page-number').html(templateFunction({ pages : pages }));
+        this.$el.find(".x-page-number").html(templateFunction({ pages : pages }));
     },
 
     _jumpToPage : function() {
-        var target = this.$el.find('.x-page-select');
+        var target = this.$el.find(".x-page-select");
 
         //Remove event handlers so the blur event is not triggered
         this.undelegateEvents();
 
         var selectedPage = parseInt(target.val(), 10);
 
-        this.$el.find('.x-page-number').html('<i class="icon-sonarr-spinner fa-spin"></i>');
+        this.$el.find(".x-page-number").html('<i class="icon-sonarr-spinner fa-spin"></i>');
         this.collection.getPage(selectedPage);
     }
 });

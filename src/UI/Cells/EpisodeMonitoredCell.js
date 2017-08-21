@@ -1,22 +1,22 @@
-var _ = require('underscore');
-var ToggleCell = require('./ToggleCell');
-var SeriesCollection = require('../Series/SeriesCollection');
-var Messenger = require('../Shared/Messenger');
+var _ = require("underscore");
+var ToggleCell = require("./ToggleCell");
+var SeriesCollection = require("../Series/SeriesCollection");
+var Messenger = require("../Shared/Messenger");
 
 module.exports = ToggleCell.extend({
-    className : 'toggle-cell episode-monitored',
+    className : "toggle-cell episode-monitored",
 
     _originalOnClick : ToggleCell.prototype._onClick,
 
     _onClick : function(e) {
 
-        var series = SeriesCollection.get(this.model.get('seriesId'));
+        var series = SeriesCollection.get(this.model.get("seriesId"));
 
-        if (!series.get('monitored')) {
+        if (!series.get("monitored")) {
 
             Messenger.show({
-                message : 'Unable to change monitored state when series is not monitored',
-                type    : 'error'
+                message : "Unable to change monitored state when series is not monitored",
+                type    : "error"
             });
 
             return;
@@ -46,11 +46,11 @@ module.exports = ToggleCell.extend({
         _.each(range, function(index) {
             var model = episodeCollection.at(index);
 
-            model.set('monitored', lastToggled.get('monitored'));
+            model.set("monitored", lastToggled.get("monitored"));
             model.save();
         });
 
-        this.model.set('monitored', lastToggled.get('monitored'));
+        this.model.set("monitored", lastToggled.get("monitored"));
         this.model.save();
         this.model.episodeCollection.lastToggled = undefined;
     }

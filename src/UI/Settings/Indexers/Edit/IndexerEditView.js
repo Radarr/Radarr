@@ -1,26 +1,26 @@
-﻿var _ = require('underscore');
-var $ = require('jquery');
-var vent = require('vent');
-var Marionette = require('marionette');
-var DeleteView = require('../Delete/IndexerDeleteView');
-var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../../Mixins/AsEditModalView');
-require('../../../Form/FormBuilder');
-require('../../../Mixins/AutoComplete');
-require('../../../Mixins/TagInput');
-require('bootstrap');
+var _ = require("underscore");
+var $ = require("jquery");
+var vent = require("vent");
+var Marionette = require("marionette");
+var DeleteView = require("../Delete/IndexerDeleteView");
+var AsModelBoundView = require("../../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../../Mixins/AsValidatedView");
+var AsEditModalView = require("../../../Mixins/AsEditModalView");
+require("../../../Form/FormBuilder");
+require("../../../Mixins/AutoComplete");
+require("../../../Mixins/TagInput");
+require("bootstrap");
 
 var view = Marionette.ItemView.extend({
-    template : 'Settings/Indexers/Edit/IndexerEditViewTemplate',
+    template : "Settings/Indexers/Edit/IndexerEditViewTemplate",
 
     ui: {
-        tags : '.x-form-tag'
+        tags : ".x-form-tag"
     },
 
     events : {
-        'click .x-back'            : '_back',
-        'click .x-captcha-refresh' : '_onRefreshCaptcha'
+        "click .x-back"            : "_back",
+        "click .x-captcha-refresh" : "_onRefreshCaptcha"
     },
 
     _deleteView : DeleteView,
@@ -41,7 +41,7 @@ var view = Marionette.ItemView.extend({
     _onAfterSaveAndAdd : function() {
         this.targetCollection.add(this.model, { merge : true });
 
-        require('../Add/IndexerSchemaModal').open(this.targetCollection);
+        require("../Add/IndexerSchemaModal").open(this.targetCollection);
     },
 
     _back : function() {
@@ -49,20 +49,20 @@ var view = Marionette.ItemView.extend({
             this.model.destroy();
         }
 
-        require('../Add/IndexerSchemaModal').open(this.targetCollection);
+        require("../Add/IndexerSchemaModal").open(this.targetCollection);
     },
 
     _onRefreshCaptcha : function(event) {
         var self = this;
 
-        var target = $(event.target).parents('.input-group');
+        var target = $(event.target).parents(".input-group");
 
         this.ui.indicator.show();
 
         this.model.requestAction("checkCaptcha")
             .then(function(result) {
                 if (!result.captchaRequest) {
-                    self.model.setFieldValue('CaptchaToken', '');
+                    self.model.setFieldValue("CaptchaToken", "");
 
                     return result;
                 }
@@ -81,7 +81,7 @@ var view = Marionette.ItemView.extend({
 
         return this._loadRecaptchaWidget(widget[0], captchaRequest.siteKey, captchaRequest.secretToken)
             .then(function(captchaResponse) {
-                target.parents('.form-group').removeAllErrors();
+                target.parents(".form-group").removeAllErrors();
                 widget.remove();
 
                 var queryParams = {
@@ -93,7 +93,7 @@ var view = Marionette.ItemView.extend({
                 return self.model.requestAction("getCaptchaCookie", queryParams);
             })
             .then(function(response) {
-                self.model.setFieldValue('CaptchaToken', response.captchaToken);
+                self.model.setFieldValue("CaptchaToken", response.captchaToken);
             });
     },
 
@@ -102,9 +102,9 @@ var view = Marionette.ItemView.extend({
 
         var renderWidget = function() {
             window.grecaptcha.render(widget, {
-              'sitekey'  : sitekey,
-              'stoken'   : stoken,
-              'callback' : promise.resolve
+              "sitekey"  : sitekey,
+              "stoken"   : stoken,
+              "callback" : promise.resolve
             });
         };
 
@@ -116,7 +116,7 @@ var view = Marionette.ItemView.extend({
                 renderWidget();
             };
 
-            $.getScript('https://www.google.com/recaptcha/api.js?onload=grecaptchaLoadCallback&render=explicit')
+            $.getScript("https://www.google.com/recaptcha/api.js?onload=grecaptchaLoadCallback&render=explicit")
              .fail(function() { promise.reject(); });
         }
 

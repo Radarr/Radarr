@@ -1,16 +1,16 @@
-var Marionette = require('marionette');
-var ProfileCollection = require('../../Profile/ProfileCollection');
-var ProfileCollectionView = require('./ProfileCollectionView');
-var DelayProfileLayout = require('./Delay/DelayProfileLayout');
-var DelayProfileCollection = require('./Delay/DelayProfileCollection');
-var LanguageCollection = require('./Language/LanguageCollection');
+var Marionette = require("marionette");
+var ProfileCollection = require("../../Profile/ProfileCollection");
+var ProfileCollectionView = require("./ProfileCollectionView");
+var DelayProfileLayout = require("./Delay/DelayProfileLayout");
+var DelayProfileCollection = require("./Delay/DelayProfileCollection");
+var LanguageCollection = require("./Language/LanguageCollection");
 
 module.exports = Marionette.Layout.extend({
-    template : 'Settings/Profile/ProfileLayoutTemplate',
+    template : "Settings/Profile/ProfileLayoutTemplate",
 
     regions : {
-        profile      : '#profile',
-        delayProfile : '#delay-profile'
+        profile      : "#profile",
+        delayProfile : "#delay-profile"
     },
 
     initialize : function(options) {

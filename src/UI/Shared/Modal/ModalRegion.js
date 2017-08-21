@@ -1,7 +1,7 @@
-var ModalRegionBase = require('./ModalRegionBase');
+var ModalRegionBase = require("./ModalRegionBase");
 
 var region = ModalRegionBase.extend({
-    el : '#modal-region'
+    el : "#modal-region"
 });
 
 module.exports = region;

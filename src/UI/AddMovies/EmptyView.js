@@ -1,5 +1,5 @@
-var Marionette = require('marionette');
+var Marionette = require("marionette");
 
 module.exports = Marionette.CompositeView.extend({
-    template : 'AddMovies/EmptyViewTemplate'
+    template : "AddMovies/EmptyViewTemplate"
 });

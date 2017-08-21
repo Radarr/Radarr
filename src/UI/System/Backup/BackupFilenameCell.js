@@ -1,6 +1,6 @@
-var TemplatedCell = require('../../Cells/TemplatedCell');
+var TemplatedCell = require("../../Cells/TemplatedCell");
 
 module.exports = TemplatedCell.extend({
-    className : 'series-title-cell',
-    template  : 'System/Backup/BackupFilenameCellTemplate'
+    className : "series-title-cell",
+    template  : "System/Backup/BackupFilenameCellTemplate"
 });

@@ -1,41 +1,41 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var FilenameCell = require('./FilenameCell');
-var RelativeDateCell = require('../../../Cells/RelativeDateCell');
-var DownloadLogCell = require('./DownloadLogCell');
-var LogFileRow = require('./Row');
-var ContentsView = require('./ContentsView');
-var ContentsModel = require('./ContentsModel');
-var ToolbarLayout = require('../../../Shared/Toolbar/ToolbarLayout');
-var LoadingView = require('../../../Shared/LoadingView');
-require('../../../jQuery/jquery.spin');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var FilenameCell = require("./FilenameCell");
+var RelativeDateCell = require("../../../Cells/RelativeDateCell");
+var DownloadLogCell = require("./DownloadLogCell");
+var LogFileRow = require("./Row");
+var ContentsView = require("./ContentsView");
+var ContentsModel = require("./ContentsModel");
+var ToolbarLayout = require("../../../Shared/Toolbar/ToolbarLayout");
+var LoadingView = require("../../../Shared/LoadingView");
+require("../../../jQuery/jquery.spin");
 
 module.exports = Marionette.Layout.extend({
-    template : 'System/Logs/Files/LogFileLayoutTemplate',
+    template : "System/Logs/Files/LogFileLayoutTemplate",
 
     regions : {
-        toolbar  : '#x-toolbar',
-        grid     : '#x-grid',
-        contents : '#x-contents'
+        toolbar  : "#x-toolbar",
+        grid     : "#x-grid",
+        contents : "#x-contents"
     },
 
     columns : [
         {
-            name     : 'filename',
-            label    : 'Filename',
+            name     : "filename",
+            label    : "Filename",
             cell     : FilenameCell,
             sortable : false
         },
         {
-            name     : 'lastWriteTime',
-            label    : 'Last Write Time',
+            name     : "lastWriteTime",
+            label    : "Last Write Time",
             cell     : RelativeDateCell,
             sortable : false
         },
         {
-            name     : 'downloadUrl',
-            label    : '',
+            name     : "downloadUrl",
+            label    : "",
             cell     : DownloadLogCell,
             sortable : false
         }
@@ -47,7 +47,7 @@ module.exports = Marionette.Layout.extend({
 
         this.listenTo(vent, vent.Commands.ShowLogFile, this._fetchLogFileContents);
         this.listenTo(vent, vent.Events.CommandComplete, this._commandComplete);
-        this.listenTo(this.collection, 'sync', this._collectionSynced);
+        this.listenTo(this.collection, "sync", this._collectionSynced);
 
         this.collection.fetch();
     },
@@ -59,21 +59,21 @@ module.exports = Marionette.Layout.extend({
 
     _showToolbar : function() {
         var leftSideButtons = {
-            type       : 'default',
+            type       : "default",
             storeState : false,
             items      : [
                 {
-                    title        : 'Refresh',
-                    icon         : 'icon-sonarr-refresh',
+                    title        : "Refresh",
+                    icon         : "icon-sonarr-refresh",
                     ownerContext : this,
                     callback     : this._refreshTable
                 },
                 {
-                    title          : 'Clear Log Files',
-                    icon           : 'icon-sonarr-clear',
+                    title          : "Clear Log Files",
+                    icon           : "icon-sonarr-clear",
                     command        : this.deleteFilesCommand,
-                    successMessage : 'Log files have been deleted',
-                    errorMessage   : 'Failed to delete log files'
+                    successMessage : "Log files have been deleted",
+                    errorMessage   : "Failed to delete log files"
                 }
             ]
         };
@@ -89,7 +89,7 @@ module.exports = Marionette.Layout.extend({
             row        : LogFileRow,
             columns    : this.columns,
             collection : this.collection,
-            className  : 'table table-hover'
+            className  : "table table-hover"
         }));
     },
 
@@ -108,9 +108,9 @@ module.exports = Marionette.Layout.extend({
         var model = options.model;
         var contentsModel = new ContentsModel(model.toJSON());
 
-        this.listenToOnce(contentsModel, 'sync', this._showDetails);
+        this.listenToOnce(contentsModel, "sync", this._showDetails);
 
-        contentsModel.fetch({ dataType : 'text' });
+        contentsModel.fetch({ dataType : "text" });
     },
 
     _showDetails : function(model) {
@@ -128,7 +128,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _commandComplete : function(options) {
-        if (options.command.get('name') === this.deleteFilesCommand.toLowerCase()) {
+        if (options.command.get("name") === this.deleteFilesCommand.toLowerCase()) {
             this._refreshTable();
         }
     }

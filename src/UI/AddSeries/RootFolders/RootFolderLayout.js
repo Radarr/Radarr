@@ -1,36 +1,36 @@
-var Marionette = require('marionette');
-var RootFolderCollectionView = require('./RootFolderCollectionView');
-var RootFolderCollection = require('./RootFolderCollection');
-var RootFolderModel = require('./RootFolderModel');
-var LoadingView = require('../../Shared/LoadingView');
-var AsValidatedView = require('../../Mixins/AsValidatedView');
-require('../../Mixins/FileBrowser');
+var Marionette = require("marionette");
+var RootFolderCollectionView = require("./RootFolderCollectionView");
+var RootFolderCollection = require("./RootFolderCollection");
+var RootFolderModel = require("./RootFolderModel");
+var LoadingView = require("../../Shared/LoadingView");
+var AsValidatedView = require("../../Mixins/AsValidatedView");
+require("../../Mixins/FileBrowser");
 
 var Layout = Marionette.Layout.extend({
-    template : 'AddSeries/RootFolders/RootFolderLayoutTemplate',
+    template : "AddSeries/RootFolders/RootFolderLayoutTemplate",
 
     ui : {
-        pathInput : '.x-path'
+        pathInput : ".x-path"
     },
 
     regions : {
-        currentDirs : '#current-dirs'
+        currentDirs : "#current-dirs"
     },
 
     events : {
-        'click .x-add'          : '_addFolder',
-        'keydown .x-path input' : '_keydown'
+        "click .x-add"          : "_addFolder",
+        "keydown .x-path input" : "_keydown"
     },
 
     initialize : function() {
         this.collection = RootFolderCollection;
         this.rootfolderListView = new RootFolderCollectionView({ collection : RootFolderCollection });
 
-        this.listenTo(this.rootfolderListView, 'itemview:folderSelected', this._onFolderSelected);
+        this.listenTo(this.rootfolderListView, "itemview:folderSelected", this._onFolderSelected);
     },
 
     onShow : function() {
-        this.listenTo(RootFolderCollection, 'sync', this._showCurrentDirs);
+        this.listenTo(RootFolderCollection, "sync", this._showCurrentDirs);
         this.currentDirs.show(new LoadingView());
 
         if (RootFolderCollection.synced) {
@@ -41,7 +41,7 @@ var Layout = Marionette.Layout.extend({
     },
 
     _onFolderSelected : function(options) {
-        this.trigger('folderSelected', options);
+        this.trigger("folderSelected", options);
     },
 
     _addFolder : function() {
@@ -55,7 +55,7 @@ var Layout = Marionette.Layout.extend({
 
         newDir.save().done(function() {
             RootFolderCollection.add(newDir);
-            self.trigger('folderSelected', { model : newDir });
+            self.trigger("folderSelected", { model : newDir });
         });
     },
 

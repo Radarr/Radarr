@@ -1,11 +1,11 @@
-var vent = require('vent');
-var NzbDroneCell = require('../../Cells/NzbDroneCell');
+var vent = require("vent");
+var NzbDroneCell = require("../../Cells/NzbDroneCell");
 
 module.exports = NzbDroneCell.extend({
-    className : 'history-details-cell',
+    className : "history-details-cell",
 
     events : {
-        'click' : '_showDetails'
+        "click" : "_showDetails"
     },
 
     render : function() {

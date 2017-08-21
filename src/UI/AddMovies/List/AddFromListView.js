@@ -1,69 +1,69 @@
-var _ = require('underscore');
-var vent = require('vent');
-var Marionette = require('marionette');
-var Backgrid = require('backgrid');
-var AddFromListCollection = require('./AddFromListCollection');
-var AddFromListCollectionView = require('./AddFromListCollectionView');
+var _ = require("underscore");
+var vent = require("vent");
+var Marionette = require("marionette");
+var Backgrid = require("backgrid");
+var AddFromListCollection = require("./AddFromListCollection");
+var AddFromListCollectionView = require("./AddFromListCollectionView");
 var AddListView = require("../../Settings/NetImport/Add/NetImportAddItemView");
-var EmptyView = require('../EmptyView');
-var NotFoundView = require('../NotFoundView');
+var EmptyView = require("../EmptyView");
+var NotFoundView = require("../NotFoundView");
 var ListCollection = require("../../Settings/NetImport/NetImportCollection");
-var ErrorView = require('../ErrorView');
-var LoadingView = require('../../Shared/LoadingView');
-var AppLayout = require('../../AppLayout');
-var InCinemasCell = require('../../Cells/InCinemasCell');
-var MovieTitleCell = require('../../Cells/MovieListTitleCell');
-var SelectAllCell = require('../../Cells/SelectAllCell');
-var TemplatedCell = require('../../Cells/TemplatedCell');
-var ProfileCell = require('../../Cells/ProfileCell');
-var MovieLinksCell = require('../../Cells/MovieLinksCell');
-var MovieActionCell = require('../../Cells/MovieActionCell');
-var MovieStatusCell = require('../../Cells/MovieStatusCell');
-var MovieDownloadStatusCell = require('../../Cells/MovieDownloadStatusCell');
-var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
-var MoviesCollection = require('../../Movies/MoviesCollection');
-var Messenger = require('../../Shared/Messenger');
-require('jquery.dotdotdot');
-var SchemaModal = require('../../Settings/NetImport/Add/NetImportSchemaModal');
+var ErrorView = require("../ErrorView");
+var LoadingView = require("../../Shared/LoadingView");
+var AppLayout = require("../../AppLayout");
+var InCinemasCell = require("../../Cells/InCinemasCell");
+var MovieTitleCell = require("../../Cells/MovieListTitleCell");
+var SelectAllCell = require("../../Cells/SelectAllCell");
+var TemplatedCell = require("../../Cells/TemplatedCell");
+var ProfileCell = require("../../Cells/ProfileCell");
+var MovieLinksCell = require("../../Cells/MovieLinksCell");
+var MovieActionCell = require("../../Cells/MovieActionCell");
+var MovieStatusCell = require("../../Cells/MovieStatusCell");
+var MovieDownloadStatusCell = require("../../Cells/MovieDownloadStatusCell");
+var DownloadedQualityCell = require("../../Cells/DownloadedQualityCell");
+var MoviesCollection = require("../../Movies/MoviesCollection");
+var Messenger = require("../../Shared/Messenger");
+require("jquery.dotdotdot");
+var SchemaModal = require("../../Settings/NetImport/Add/NetImportSchemaModal");
 
 module.exports = Marionette.Layout.extend({
-    template: 'AddMovies/List/AddFromListViewTemplate',
+    template: "AddMovies/List/AddFromListViewTemplate",
 
     regions: {
-        fetchResult: '#fetch-result'
+        fetchResult: "#fetch-result"
     },
 
     ui: {
-        moviesSearch: '.x-movies-search',
+        moviesSearch: ".x-movies-search",
         listSelection: ".x-list-selection",
         importSelected: ".x-import-selected"
     },
 
     columns: [{
-        name: '',
+        name: "",
         cell: SelectAllCell,
-        headerCell: 'select-all',
+        headerCell: "select-all",
         sortable: false
     }, {
-        name: 'title',
-        label: 'Title',
+        name: "title",
+        label: "Title",
         cell: MovieTitleCell,
-        cellValue: 'this',
+        cellValue: "this",
     }, {
-        name: 'profileId',
-        label: 'Profile',
+        name: "profileId",
+        label: "Profile",
         cell: ProfileCell,
         sortable: false,
     }, {
-        name: 'this',
-        label: 'Links',
+        name: "this",
+        label: "Links",
         cell: MovieLinksCell,
         className: "movie-links-cell",
         sortable: false,
     }],
 
     events: {
-        'click .x-load-more': '_onLoadMore',
+        "click .x-load-more": "_onLoadMore",
         "change .x-list-selection": "_listSelected",
         "click .x-fetch-list": "_fetchList",
         "click .x-import-selected": "_importSelected"
@@ -79,14 +79,14 @@ module.exports = Marionette.Layout.extend({
         this.listCollection = new ListCollection();
         this.templateHelpers.lists = this.listCollection.toJSON();
 
-        this.listenTo(this.listCollection, 'all', this._listsUpdated);
+        this.listenTo(this.listCollection, "all", this._listsUpdated);
         this.listCollection.fetch();
 
         this.collection = new AddFromListCollection();
 
-        this.listenTo(this.collection, 'sync', this._showResults);
+        this.listenTo(this.collection, "sync", this._showResults);
 
-        /*this.listenTo(this.collection, 'sync', this._showResults);
+        /*this.listenTo(this.collection, "sync", this._showResults);
 
         this.resultCollectionView = new SearchResultCollectionView({
         		collection : this.collection,
@@ -129,14 +129,14 @@ module.exports = Marionette.Layout.extend({
     },
 
     _onMoviesAdded: function(options) {
-        if (this.isExisting && options.movie.get('path') === this.model.get('folder').path) {
+        if (this.isExisting && options.movie.get("path") === this.model.get("folder").path) {
             this.close();
         } else if (!this.isExisting) {
-            this.resultCollectionView.setExisting(options.movie.get('tmdbId'));
-            /*this.collection.term = '';
+            this.resultCollectionView.setExisting(options.movie.get("tmdbId"));
+            /*this.collection.term = "";
             this.collection.reset();
             this._clearResults();
-            this.ui.moviesSearch.val('');
+            this.ui.moviesSearch.val("");
             this.ui.moviesSearch.focus();*/ //TODO: Maybe add option wheter to clear search result.
         }
     },
@@ -152,7 +152,7 @@ module.exports = Marionette.Layout.extend({
 
     _listSelected: function() {
         var rootFolderValue = this.ui.listSelection.val();
-        if (rootFolderValue === 'addNew') {
+        if (rootFolderValue === "addNew") {
             //var rootFolderLayout = new SchemaModal(this.listCollection);
             //AppLayout.modalRegion.show(rootFolderLayout);
             SchemaModal.open(this.listCollection);
@@ -182,7 +182,7 @@ module.exports = Marionette.Layout.extend({
         // console.log(selected);
         var promise = MoviesCollection.importFromList(selected);
         this.ui.importSelected.spinForPromise(promise);
-        this.ui.importSelected.addClass('disabled');
+        this.ui.importSelected.addClass("disabled");
 
         Messenger.show({
             message: "Importing {0} movies. Don't close this browser window until it has finished.".format(selected.length),
@@ -223,7 +223,7 @@ module.exports = Marionette.Layout.extend({
             this.importGrid = new Backgrid.Grid({
                 collection: this.collection,
                 columns: this.columns,
-                className: 'table table-hover'
+                className: "table table-hover"
             });
             this.fetchResult.show(this.importGrid);
             this.ui.importSelected.show();
@@ -233,7 +233,7 @@ module.exports = Marionette.Layout.extend({
 
     _abortExistingSearch: function() {
         if (this.currentSearchPromise && this.currentSearchPromise.readyState > 0 && this.currentSearchPromise.readyState < 4) {
-            console.log('aborting previous pending search request.');
+            console.log("aborting previous pending search request.");
             this.currentSearchPromise.abort();
         } else {
             this._clearResults();

@@ -1,8 +1,8 @@
-var _ = require('underscore');
-var Marionette = require('marionette');
+var _ = require("underscore");
+var Marionette = require("marionette");
 
 module.exports = Marionette.ItemView.extend({
-    template  : 'ManualImport/Summary/ManualImportSummaryViewTemplate',
+    template  : "ManualImport/Summary/ManualImportSummaryViewTemplate",
 
     // initialize : function (options) {
     //     var episodes = _.map(options.episodes, function (episode) {

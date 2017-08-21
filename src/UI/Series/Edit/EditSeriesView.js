@@ -1,34 +1,34 @@
-var vent = require('vent');
-var Marionette = require('marionette');
-var Profiles = require('../../Profile/ProfileCollection');
-var AsModelBoundView = require('../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../Mixins/AsEditModalView');
-require('../../Mixins/TagInput');
-require('../../Mixins/FileBrowser');
+var vent = require("vent");
+var Marionette = require("marionette");
+var Profiles = require("../../Profile/ProfileCollection");
+var AsModelBoundView = require("../../Mixins/AsModelBoundView");
+var AsValidatedView = require("../../Mixins/AsValidatedView");
+var AsEditModalView = require("../../Mixins/AsEditModalView");
+require("../../Mixins/TagInput");
+require("../../Mixins/FileBrowser");
 
 var view = Marionette.ItemView.extend({
-    template : 'Series/Edit/EditSeriesViewTemplate',
+    template : "Series/Edit/EditSeriesViewTemplate",
 
     ui : {
-        profile : '.x-profile',
-        path    : '.x-path',
-        tags    : '.x-tags'
+        profile : ".x-profile",
+        path    : ".x-path",
+        tags    : ".x-tags"
     },
 
     events : {
-        'click .x-remove' : '_removeSeries'
+        "click .x-remove" : "_removeSeries"
     },
 
     initialize : function() {
-        this.model.set('profiles', Profiles);
+        this.model.set("profiles", Profiles);
     },
 
     onRender : function() {
         this.ui.path.fileBrowser();
         this.ui.tags.tagInput({
             model    : this.model,
-            property : 'tags'
+            property : "tags"
         });
     },
 
@@ -38,7 +38,7 @@ var view = Marionette.ItemView.extend({
     },
 
     _onAfterSave : function() {
-        this.trigger('saved');
+        this.trigger("saved");
         vent.trigger(vent.Commands.CloseModalCommand);
     },
 

@@ -7,7 +7,7 @@ window.console.warn = window.console.warn || function() {};
 window.console.assert = window.console.assert || function() {};
 
 if (!String.prototype.startsWith) {
-    Object.defineProperty(String.prototype, 'startsWith', {
+    Object.defineProperty(String.prototype, "startsWith", {
         enumerable   : false,
         configurable : false,
         writable     : false,
@@ -19,7 +19,7 @@ if (!String.prototype.startsWith) {
 }
 
 if (!String.prototype.endsWith) {
-    Object.defineProperty(String.prototype, 'endsWith', {
+    Object.defineProperty(String.prototype, "endsWith", {
         enumerable   : false,
         configurable : false,
         writable     : false,
@@ -32,7 +32,7 @@ if (!String.prototype.endsWith) {
     });
 }
 
-if (!('contains' in String.prototype)) {
+if (!("contains" in String.prototype)) {
     String.prototype.contains = function(str, startIndex) {
         return -1 !== String.prototype.indexOf.call(this, str, startIndex);
     };
