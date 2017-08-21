@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 using Growl.Connector;
 using Growl.CoreLibrary;
 using NzbDrone.Common.Extensions;
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Notifications.Growl
 
         private void Register(string host, int port, string password)
         {
-            _logger.Debug("Registering Sonarr with Growl host: {0}:{1}", host, port);
+            _logger.Debug("Registering Radarr with Growl host: {0}:{1}", host, port);
 
             var growlConnector = GetGrowlConnector(host, port, password);
 

@@ -1,4 +1,4 @@
-﻿using RestSharp;
+using RestSharp;
 using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Core.Rest
@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Rest
         {
             var restClient = new RestClient(baseUrl);
 
-            restClient.UserAgent = string.Format("Sonarr/{0} (RestSharp/{1}; {2}/{3})",
+            restClient.UserAgent = string.Format("Radarr/{0} (RestSharp/{1}; {2}/{3})",
                 BuildInfo.Version,
                 restClient.GetType().Assembly.GetName().Version,
                 OsInfo.Os, OsInfo.Version.ToString(2));

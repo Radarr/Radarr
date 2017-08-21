@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
@@ -49,13 +49,13 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             {
                 _logger.Debug("Testing connection to MediaBrowser: {0}", settings.Address);
 
-                Notify(settings, "Test from Sonarr", "Success! MediaBrowser has been successfully configured!");
+                Notify(settings, "Test from Radarr", "Success! MediaBrowser has been successfully configured!");
             }
             catch (RestException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    return new ValidationFailure("ApiKey", "API Key is incorrect");
+                    return new ValidationFailure("ApiKey", "API key is incorrect");
                 }
             }
             catch (Exception ex)
