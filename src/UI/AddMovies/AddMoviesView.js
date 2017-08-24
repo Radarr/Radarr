@@ -294,7 +294,7 @@ module.exports = Marionette.Layout.extend({
 
 		_discoverList : function(options) {
 			this.ui.discoverLists.tab("show");
-			this.ui.discoverHeader.html("Showing movies from list: " + options.target.textContent);
+			this.ui.discoverHeader.html("Showing movies from list: "+options.target.textContent);
 
 			this.collection.reset();
 			this.collection = new AddFromListCollection();

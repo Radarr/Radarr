@@ -41,7 +41,7 @@ module.exports = Marionette.Layout.extend({
             storeState : false,
             items      : [
                 {
-                    title        : 'Movies calendar link',
+                    title        : 'Get iCal Link',
                     icon         : 'icon-sonarr-calendar-o',
                     callback     : this._showiCal,
                     ownerContext : this
@@ -58,14 +58,14 @@ module.exports = Marionette.Layout.extend({
                 {
                     key      : 'all',
                     title    : '',
-                    tooltip  : 'All movies',
+                    tooltip  : 'All',
                     icon     : 'icon-sonarr-all',
                     callback : this._setCalendarFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
-                    tooltip  : 'Monitored only',
+                    tooltip  : 'Monitored Only',
                     icon     : 'icon-sonarr-monitored',
                     callback : this._setCalendarFilter
                 }

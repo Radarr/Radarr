@@ -1,14 +1,16 @@
 <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="close">&times;</button>
-        <h3>Force download</h3>
+        <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
+            <h3>Force Download</h3>
     </div>
     <div class="modal-body indexer-modal">
         <div id="title-mapping">
-            <p>The title "{{release.movieTitle}}" could not be found amongst the alternative titles of the movie. This could lead to problems when Radarr wants to import your movie. If you click force download below, the title will be added to the alternative titles using the language selected below.</p>
+            <p>The title "{{release.movieTitle}}" could not be found amongst the alternative titles of the movie. This could lead to problems when Radarr wants to import your movie.
+            If you click force download below, the title will be added to the alternative titles using the language selected below.</p>
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Language</label>
+
                     <div class="col-sm-5">
                         <select id="language-selection" class="form-control" name="language">
                             {{#each languages}}
@@ -18,11 +20,13 @@
                             {{/each}}
                         </select>
                     </div>
+
                     <div class="col-sm-1 help-inline">
-                        <i class="icon-sonarr-form-info" title="Language of the alternative title."></i>
+                        <i class="icon-sonarr-form-info" title="Language of the alternative title."/>
                     </div>
                 </div>
             </div>
+
         </div>
         <div id="year-mapping">
             <p>The year {{release.year}} does not match the expected release year. This could lead to problems when Radarr wants to import your movie.
@@ -30,12 +34,11 @@
         </div>
     </div>
     <div class="modal-footer">
-        <span class="indicator x-indicator">
-            <i class="icon-sonarr-spinner fa-spin" aria-hidden="true"></i>
-        </span>
+        <span class="indicator x-indicator"><i class="icon-sonarr-spinner fa-spin"></i></span>
         <button class="btn" data-dismiss="modal">Cancel</button>
+
         <div class="btn-group">
-            <button class="btn btn-primary x-download">Force download</button>
+            <button class="btn btn-primary x-download">Force Download</button>
         </div>
     </div>
 </div>

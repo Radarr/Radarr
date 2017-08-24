@@ -27,7 +27,7 @@ var view = Marionette.ItemView.extend({
                 content   : content,
                 html      : true,
                 trigger   : 'hover',
-                title     : 'Parsing leniency notes',
+                title     : 'Parsing Leniency Notes',
                 placement : 'right',
                 container : this.$el
             });

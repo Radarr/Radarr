@@ -14,31 +14,30 @@
                 <div class="col-md-12">
                     <h2 class="movies-title">
                         {{titleWithYear}}
+
                         <span class="labels">
                             <span class="label label-default">{{network}}</span>
-
                             {{#if_eq status compare="announced"}}
                                 <span class="label label-default">Announced</span>
                             {{/if_eq}}
-
                             {{#if_eq status compare="released"}}
                                 <span class="label label-success">Released</span>
                             {{/if_eq}}
-
                             {{#if_eq status compare="inCinemas"}}
-                                <span class="label label-warning">In cinemas</span>
+                                <span class="label label-warning">In Cinemas</span>
                             {{/if_eq}}
-
                             <span class="label label-default" title="{{ratings.votes}} Vote(s)">{{ratings.value}}</span>
 
                             {{#if youTubeTrailerId}}
-                                <a href="{{youTubeTrailerUrl}}" class="label label-info trailer">Trailer</a>
+                            <span class="label label-info"><a href="{{youTubeTrailerUrl}}" style="color: white;">Trailer</a></span>
                             {{/if}}
 
                             {{#if physicalRelease}}
-                                <span class="label label-info" title="{{physicalReleaseNote}}">{{inCinemas}}</span>
+                            <span class="label label-info" title="{{physicalReleaseNote}}">{{inCinemas}}</span>
                             {{/if}}
                         </span>
+
+
                     </h2>
                 </div>
             </div>
@@ -55,62 +54,81 @@
                             {{> RootFolderSelectionPartial rootFolders}}
                         </div>
                     {{/unless}}
+
                     <div class="form-group col-md-2">
-                        <label>
-                            <i class="icon-sonarr-form-info monitor-tooltip x-monitor-tooltip" aria-hidden="true"></i>
-                            Monitor
-                        </label>
+                        <label>Monitor <i class="icon-sonarr-form-info monitor-tooltip x-monitor-tooltip"></i></label>
                         <select class="form-control col-md-2 x-monitor">
                             <option value="all">Yes</option>
+                            <!-- <option value="missing">Missing</option> -->
                             <option value="none">No</option>
                         </select>
                     </div>
-        		    <div class="form-group col-md-2">
-        		        <label>
-                            <i class="icon-sonarr-form-info minimumavailability-tooltip x-minimumavailability-tooltip" aria-hidden="true"></i>
-                            Availability
-                        </label>
-                        <select class="form-control col-md-2 x-minimumavailability">
-                            <option value="announced">Announced</option>
-                            <option value="inCinemas">In cinemas</option>
-                            <option value="released">Physical/web</option>
-                            <option value="preDB">PreDB</option>
-                        </select>
-    	            </div>
+
+		    <div class="form-group col-md-2">
+		        <label>Min Availability <i class="icon-sonarr-form-info minimumavailability-tooltip x-minimumavailability-tooltip"></i></label>
+			<select class="form-control col-md-2 x-minimumavailability">
+			    <option value="announced">Announced</option>
+			    <option value="inCinemas">In Cinemas</option>
+			    <option value="released">Physical/Web</option>
+			    <option value="preDB">PreDB</option>
+			</select>
+	            </div>
+
                     <div class="form-group col-md-2">
                         <label>Profile</label>
                         {{> ProfileSelectionPartial profiles}}
                     </div>
+
+                    {{!--<div class="form-group col-md-2">
+                        <label>Season Folders</label>
+
+                        <div class="input-group">
+                            <label class="checkbox toggle well">
+                                <input type="checkbox" class="x-season-folder"/>
+                                <p>
+                                    <span>Yes</span>
+                                    <span>No</span>
+                                </p>
+                                <div class="btn btn-primary slide-button"/>
+                            </label>
+                        </div>
+                    </div>--}}
                 {{/unless}}
+
                 {{#unless existing}}
                     {{#if title}}
-                        <div class="form-group col-md-2">
-                            <label class="invisible">Add</label>
-                            <div class="btn-group">
-                                <button class="btn btn-success add x-add" title="Add this movie to your library.">
-                                    <i class="icon-sonarr-add" aria-hidden="true"></i>
-                                </button>
+                    <div class="form-group col-md-2">
+                        <!--Uncomment if we need to add even more controls to add Movies-->
+                        <label style="visibility: hidden">Add</label>
+                        <div class="btn-group">
+                            <button class="btn btn-success add x-add" title="Add">
+                                <i class="icon-sonarr-add"></i>
+                            </button>
 
-                                <button class="btn btn-success add x-add-search" title="Search for this movie after adding it.">
-                                    <i class="icon-sonarr-search" aria-hidden="true"></i>
-                                </button>
+                            <button class="btn btn-success add x-add-search" title="Add and Search for movie">
+                                <i class="icon-sonarr-search"></i>
+                            </button>
 
-                                <button class="btn btn-warning ignore x-ignore" title="Ignore this movie, so it does not show up anymore.">
-                                    <i class="icon-sonarr-ignore" aria-hidden="true"></i>
-                                </button>
-                            </div>
+                            <button class="btn btn-warning ignore x-ignore" title="Ignore this movie, so it does not show up anymore">
+                                <i class="icon-sonarr-ignore"></i>
+                            </button>
                         </div>
+                    </div>
                     {{else}}
-                        <label class="invisible">Add</label>
-                        <div class="col-md-2" title="Movies require an English title.">
-                            <button class="btn add-movies disabled">Add</button>
+                      <label style="visibility: hidden">Add</label>
+                        <div class="col-md-2" title="Movies require an English title">
+                            <button class="btn add-movies disabled">
+                                Add
+                            </button>
                         </div>
                     {{/if}}
-                    {{else}}
-                        <label class="invisible">Add</label>
-                        <div class="col-md-2 col-md-offset-10">
-                            <a class="btn btn-default" href="{{route}}">Already exists</a>
-                        </div>
+                {{else}}
+                  <label style="visibility: hidden">Add</label>
+                    <div class="col-md-2 col-md-offset-10">
+                        <a class="btn btn-default" href="{{route}}">
+                            Already Exists
+                        </a>
+                    </div>
                 {{/unless}}
             </div>
         </div>

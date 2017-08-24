@@ -45,12 +45,12 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'inCinemas',
-            label : 'In cinemas',
+            label : 'In Cinemas',
             cell  : RelativeDateCell
         },
         {
             name  : 'physicalRelease',
-            label : 'Physical release',
+            label : 'Physical Release',
             cell  : RelativeDateCell
         },
         {
@@ -96,21 +96,21 @@ module.exports = Marionette.Layout.extend({
             collapse   : true,
             items      : [
                 {
-                    title        : 'Search selected',
+                    title        : 'Search Selected',
                     icon         : 'icon-sonarr-search',
                     callback     : this._searchSelected,
                     ownerContext : this,
                     className    : 'x-search-selected'
                 },
                 {
-                    title        : 'Search all',
+                    title        : 'Search All',
                     icon         : 'icon-sonarr-search',
                     callback     : this._searchMissing,
                     ownerContext : this,
                     className    : 'x-search-missing'
                 },
                 {
-                    title        : 'Toggle selected',
+                    title        : 'Toggle Selected',
                     icon         : 'icon-sonarr-monitored',
                     tooltip      : 'Toggle monitored status of selected',
                     callback     : this._toggleMonitoredOfSelected,
@@ -118,13 +118,13 @@ module.exports = Marionette.Layout.extend({
                     className    : 'x-unmonitor-selected'
                 },
                 {
-                    title      : 'Rescan Drone Factory folder',
+                    title      : 'Rescan Drone Factory Folder',
                     icon       : 'icon-sonarr-refresh',
                     command    : 'downloadedMoviesScan',
                     properties : { sendUpdates : true }
                 },
                 {
-                    title        : 'Manual import',
+                    title        : 'Manual Import',
                     icon         : 'icon-sonarr-search-manual',
                     callback     : this._manualImport,
                     ownerContext : this
@@ -148,42 +148,42 @@ module.exports = Marionette.Layout.extend({
         		{
         	        key      : 'available',
         		    title    : '',
-        		    tooltip  : 'Available & monitored',
+        		    tooltip  : 'Available & Monitored',
         		    icon     : 'icon-sonarr-available',
         		    callback : this._setFilter
         		},
                 {
                     key      : 'monitored',
                     title    : '',
-                    tooltip  : 'Monitored only',
+                    tooltip  : 'Monitored Only',
                     icon     : 'icon-sonarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'unmonitored',
                     title    : '',
-                    tooltip  : 'Unmonitored only',
+                    tooltip  : 'Unmonitored Only',
                     icon     : 'icon-sonarr-unmonitored',
                     callback : this._setFilter
                 },
     		    {
     			    key      : 'announced',
     			    title    : '',
-    			    tooltip  : 'Announced only',
+    			    tooltip  : 'Announced Only',
     			    icon     : 'icon-sonarr-movie-announced',
     			    callback : this._setFilter
     		    },
-    	            {
+    	            {     
     			    key      : 'incinemas',
     			    title    : '',
-    			    tooltip  : 'In cinemas only',
+    			    tooltip  : 'In Cinemas Only',
     			    icon     : 'icon-sonarr-movie-cinemas',
     			    callback : this._setFilter
     		    },
     		    {
     			    key      : 'released',
     			    title    : '',
-    			    tooltip  : 'Released only',
+    			    tooltip  : 'Released Only',
     			    icon     : 'icon-sonarr-movie-released',
     			    callback : this._setFilter
     		    }
@@ -218,7 +218,7 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No movies selected.'
+                message : 'No movies selected'
             });
             return;
         }
@@ -242,7 +242,7 @@ module.exports = Marionette.Layout.extend({
         if (selected.length === 0) {
             Messenger.show({
                 type    : 'error',
-                message : 'No movies selected.'
+                message : 'No movies selected'
             });
             return;
         }

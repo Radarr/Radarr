@@ -82,7 +82,7 @@ module.exports = Marionette.Layout.extend({
             storeState : false,
             items      : [
                 {
-                    title   : 'Clear blacklist',
+                    title   : 'Clear Blacklist',
                     icon    : 'icon-sonarr-clear',
                     command : 'clearBlacklist'
                 }

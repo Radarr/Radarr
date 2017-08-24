@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
 
@@ -19,14 +19,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (enabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with search enabled, Radarr will not provide any search results.");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Search enabled, Radarr will not provide any search results");
             }
 
             var active = _indexerFactory.SearchEnabled(true);
 
             if (active.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "All search-capable indexers are temporarily unavailable due to recent indexer errors.");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "All search-capable indexers are temporarily unavailable due to recent indexer errors");
             }
 
             return new HealthCheck(GetType());

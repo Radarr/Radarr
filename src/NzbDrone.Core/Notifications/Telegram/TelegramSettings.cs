@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Notifications.Telegram
         [FieldDefinition(0, Label = "Bot Token", HelpLink = "https://core.telegram.org/bots")]
         public string BotToken { get; set; }
 
-        [FieldDefinition(1, Label = "Chat ID", HelpLink = "http://stackoverflow.com/a/37396871/882971", HelpText = "You must start a conversation with the bot or add it to your group before you can receive messages.")]
+        [FieldDefinition(1, Label = "Chat ID", HelpLink = "http://stackoverflow.com/a/37396871/882971", HelpText = "You must start a conversation with the bot or add it to your group to receive messages")]
         public string ChatId { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(ChatId) && !string.IsNullOrWhiteSpace(BotToken);

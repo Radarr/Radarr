@@ -1,7 +1,9 @@
 <div class="movie-item">
     <div class="row">
         <div class="col-md-2 col-xs-3">
-            <a href="{{route}}">{{poster}}</a>
+            <a href="{{route}}">
+                {{poster}}
+            </a>
         </div>
         <div class="col-md-10 col-xs-9">
             <div class="row">
@@ -12,8 +14,8 @@
                 </div>
                 <div class="col-md-2 col-xs-2">
                     <div class="pull-right series-overview-list-actions">
-                        <i class="icon-sonarr-refresh x-refresh" title="Update movie info and scan disk."></i>
-                        <i class="icon-sonarr-edit x-edit" title="Edit movie."></i>
+                        <i class="icon-sonarr-refresh x-refresh" title="Update movie info and scan disk"/>
+                        <i class="icon-sonarr-edit x-edit" title="Edit Movie"/>
                     </div>
                 </div>
             </div>
@@ -27,15 +29,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    &nbsp;
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
                 </div>
-            </div>
             <div class="row">
                 <div class="col-md-8 col-xs-8">
                     <span class="label label-default">{{GetStatus}}</span>
+
                     {{#if inCinemas}}
-                        <span class="label label-default">{{RelativeDate inCinemas}}</span>
+                      <span class="label label-default">{{RelativeDate inCinemas}}</span>
                     {{/if}}
 
                     {{profile profileId}}
@@ -43,22 +46,20 @@
                     <span class="label label-{{DownloadedStatusColor}}" title="{{DownloadedQuality}}">{{DownloadedStatus}}</span>
                 </div>
                 <div class="col-md-4 col-xs-4">
-                    <span class="movie-info-links">
-                        <a href="{{traktUrl}}" class="label label-info">Trakt</a>
+                  <span class="movie-info-links">
+                      <a href="{{traktUrl}}" class="label label-info">Trakt</a>
+                      {{#if website}}
+                        <a href="{{homepage}}" class="label label-info">Homepage</a>
+                      {{/if}}
+                      <a href="{{tmdbUrl}}" class="label label-info">The Movie DB</a>
 
-                        {{#if website}}
-                            <a href="{{homepage}}" class="label label-info">Homepage</a>
-                        {{/if}}
+                      {{#if imdbId}}
+                          <a href="{{imdbUrl}}" class="label label-info">IMDB</a>
+                      {{/if}}
 
-                        <a href="{{tmdbUrl}}" class="label label-info">The Movie DB</a>
-
-                        {{#if imdbId}}
-                            <a href="{{imdbUrl}}" class="label label-info">IMDB</a>
-                        {{/if}}
-
-                        {{#if youTubeTrailerId}}
-                            <a href="{{youTubeTrailerUrl}}" class="label label-info">Trailer</a>
-                        {{/if}}
+                      {{#if youTubeTrailerId}}
+                          <a href="{{youTubeTrailerUrl}}" class="label label-info">Trailer</a>
+                      {{/if}}
                   </span>
                 </div>
             </div>

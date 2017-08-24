@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -34,13 +34,13 @@ namespace NzbDrone.Core.Notifications.Pushover
         [FieldDefinition(2, Label = "Priority", Type = FieldType.Select, SelectOptions = typeof(PushoverPriority) )]
         public int Priority { get; set; }
 
-        [FieldDefinition(3, Label = "Retry", Type = FieldType.Textbox, HelpText = "Interval to retry emergency alerts, minimum 30 seconds.")]
+        [FieldDefinition(3, Label = "Retry", Type = FieldType.Textbox, HelpText = "Interval to retry Emergency alerts, minimum 30 seconds")]
         public int Retry { get; set; }
 
-        [FieldDefinition(4, Label = "Expire", Type = FieldType.Textbox, HelpText = "Maximum time to retry emergency alerts, maximum 86400 seconds.")]
+        [FieldDefinition(4, Label = "Expire", Type = FieldType.Textbox, HelpText = "Maximum time to retry Emergency alerts, maximum 86400 seconds")]
         public int Expire { get; set; }
 
-        [FieldDefinition(5, Label = "Sound", Type = FieldType.Textbox, HelpText = "Notification sound, leave blank to use the default.", HelpLink = "https://pushover.net/api#sounds")]
+        [FieldDefinition(5, Label = "Sound", Type = FieldType.Textbox, HelpText = "Notification sound, leave blank to use the default", HelpLink = "https://pushover.net/api#sounds")]
         public string Sound { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(UserKey) && Priority >= -1 && Priority <= 2;

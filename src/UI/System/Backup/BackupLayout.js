@@ -48,7 +48,7 @@ module.exports = Marionette.Layout.extend({
                 icon           : 'icon-sonarr-file-text',
                 command        : 'backup',
                 properties     : { type : 'manual' },
-                successMessage : 'Database and settings were backed up successfully.',
+                successMessage : 'Database and settings were backed up successfully',
                 errorMessage   : 'Backup Failed!'
             }
         ]

@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using Newtonsoft.Json;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -33,10 +33,10 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
         [FieldDefinition(2, Label = "API Key")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "Send Notifications", HelpText = "Should MediaBrowser send notfications to configured providers?", Type = FieldType.Checkbox)]
+        [FieldDefinition(3, Label = "Send Notifications", HelpText = "Have MediaBrowser send notfications to configured providers", Type = FieldType.Checkbox)]
         public bool Notify { get; set; }
 
-        [FieldDefinition(4, Label = "Update Library", HelpText = "Update library on download & rename?", Type = FieldType.Checkbox)]
+        [FieldDefinition(4, Label = "Update Library", HelpText = "Update Library on Download & Rename?", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
 
         [JsonIgnore]

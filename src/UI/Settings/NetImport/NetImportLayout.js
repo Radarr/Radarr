@@ -28,7 +28,7 @@ module.exports = Marionette.Layout.extend({
 				sortable: false
 		}, {
 				name: 'tmdbId',
-				label: 'TMDb ID',
+				label: 'TMDBID',
 				cell: Backgrid.StringCell,
 				sortable: false,
 		}, {

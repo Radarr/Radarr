@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -45,14 +45,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 {
                     return new HealthCheck(GetType(), HealthCheckResult.Error,
                         string.Format("Cannot install update because startup folder '{0}' is not writable by the user '{1}'.", startupFolder, Environment.UserName),
-                        "Cannot install update because startup folder is not writable by the user.");
+                        "Cannot install update because startup folder is not writable by the user");
                 }
 
                 if (!_diskProvider.FolderWritable(uiFolder))
                 {
                     return new HealthCheck(GetType(), HealthCheckResult.Error,
                         string.Format("Cannot install update because UI folder '{0}' is not writable by the user '{1}'.", uiFolder, Environment.UserName),
-                        "Cannot install update because UI folder is not writable by the user.");
+                        "Cannot install update because UI folder is not writable by the user");
                 }
             }
 
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 if (_checkUpdateService.AvailableUpdate() != null)
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Warning, "New update is available.");
+                    return new HealthCheck(GetType(), HealthCheckResult.Warning, "New update is available");
                 }
             }
 

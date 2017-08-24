@@ -3,57 +3,68 @@
 
     <div class="form-group">
         <label class="col-sm-3 control-label">Create empty movie folders</label>
+
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="createEmptySeriesFolders">
+                    <input type="checkbox" name="createEmptySeriesFolders"/>
+
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
-                    <div class="btn btn-primary slide-button"></div>
+
+                    <div class="btn btn-primary slide-button"/>
                 </label>
+
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-info" title="Create missing movie folders during disk scan."></i>
+                    <i class="icon-sonarr-form-info" title="Create missing movie folders during disk scan"/>
                 </span>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Automatically rename folders</label>
+        <label class="col-sm-3 control-label">Automatically Rename Folders</label>
+
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="autoRenameFolders">
+                    <input type="checkbox" name="autoRenameFolders"/>
+
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
-                    <div class="btn btn-primary slide-button"></div>
+
+                    <div class="btn btn-primary slide-button"/>
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! This feature must be enabled for namings schemes beyond '{Movie Title} {Year}' to work. With it folders are automatically renamed according to your naming scheme on each disk scan. If your folder naming scheme contains things such as quality, etc., the movie folder will be automatically adjusted for that regardless of this setting."></i>
+                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! This feature must be enabled for namings schemes beyond '{Movie Title} {Year}' to work. With it folders are automatically renamed according to your naming scheme on each disk scan. If your folder naming scheme contains things such as quality, etc., the movie folder will be automatically adjusted for that regardless of this setting."/>
                 </span>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-sm-3 control-label">Static movie paths</label>
+        <label class="col-sm-3 control-label">Movie Paths Default to Static</label>
+
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="pathsDefaultStatic">
+                    <input type="checkbox" name="pathsDefaultStatic"/>
+
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
-                    <div class="btn btn-primary slide-button"></div>
+
+                    <div class="btn btn-primary slide-button"/>
                 </label>
+
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! If enabled, the path of new movies is static and won't change."></i>
+                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! If enabled, the path of new movies is static and won't change."/>
                 </span>
             </div>
         </div>
@@ -63,44 +74,50 @@
 <fieldset class="advanced-setting">
     <legend>Importing</legend>
 
-    {{#if_mono}}
-        <div class="form-group">
-            <label class="col-sm-3 control-label">Skip free space check</label>
-
-            <div class="col-sm-9">
-                <div class="input-group">
-                    <label class="checkbox toggle well">
-                        <input type="checkbox" name="skipFreeSpaceCheckWhenImporting">
-                        <p>
-                            <span>Yes</span>
-                            <span>No</span>
-                        </p>
-                        <div class="btn btn-primary slide-button"></div>
-                    </label>
-                    <span class="help-inline-checkbox">
-                        <i class="icon-sonarr-form-info" title="Use when drone is unable to detect free space from your movies root folder."></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-    {{/if_mono}}
-
+{{#if_mono}}
     <div class="form-group">
-        <label class="col-sm-3 control-label">Use hardlinks instead of copy</label>
+        <label class="col-sm-3 control-label">Skip Free Space Check</label>
 
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="copyUsingHardlinks">
+                    <input type="checkbox" name="skipFreeSpaceCheckWhenImporting"/>
+
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
-                    <div class="btn btn-primary slide-button"></div>
+
+                    <div class="btn btn-primary slide-button"/>
                 </label>
+
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-info" title="Use Hardlinks when trying to copy files from torrents that are still being seeded."></i>
-                    <i class="icon-sonarr-form-warning" title="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Radarr's rename function as a work around."></i>
+                    <i class="icon-sonarr-form-info" title="Use when drone is unable to detect free space from your movies root folder"/>
+                </span>
+            </div>
+        </div>
+    </div>
+{{/if_mono}}
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Use Hardlinks instead of Copy</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="checkbox toggle well">
+                    <input type="checkbox" name="copyUsingHardlinks"/>
+
+                    <p>
+                        <span>Yes</span>
+                        <span>No</span>
+                    </p>
+
+                    <div class="btn btn-primary slide-button"/>
+                </label>
+
+                <span class="help-inline-checkbox">
+                    <i class="icon-sonarr-form-info" title="Use Hardlinks when trying to copy files from torrents that are still being seeded"/>
+                    <i class="icon-sonarr-form-warning" title="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Radarr's rename function as a work around."/>
                 </span>
             </div>
         </div>

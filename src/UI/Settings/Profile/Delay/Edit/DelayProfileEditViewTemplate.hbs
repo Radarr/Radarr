@@ -1,10 +1,10 @@
 <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" aria-hidden="true" data-label="close">&times;</button>
+        <button type="button" class="close" aria-hidden="true" data-dismiss="modal">&times;</button>
         {{#if id}}
-            <h3>Edit - delay profile</h3>
+            <h3>Edit - Delay Profile</h3>
         {{else}}
-            <h3>Add - delay profile</h3>
+            <h3>Add - Delay Profile</h3>
         {{/if}}
     </div>
     <div class="modal-body indexer-modal">
@@ -13,7 +13,7 @@
                 <label class="col-sm-3 control-label">Protocol</label>
 
                 <div class="col-sm-1 col-sm-push-5 help-inline">
-                    <i class="icon-sonarr-form-info" title="Choose which protocol(s) to use and which one is preferred when choosing between otherwise equal releases."></i>
+                    <i class="icon-sonarr-form-info" title="Choose which protocol(s) to use and which one is preferred when choosing between otherwise equal releases" />
                 </div>
 
                 <div class="col-sm-5 col-sm-pull-1">
@@ -27,39 +27,37 @@
             </div>
 
             <div class="form-group x-usenet-delay">
-                <label class="col-sm-3 control-label">Usenet delay</label>
+                <label class="col-sm-3 control-label">Usenet Delay</label>
 
                 <div class="col-sm-1 col-sm-push-5 help-inline">
-                    <i class="icon-sonarr-form-info" title="Delay in minutes to wait before grabbing a release from Usenet."></i>
+                    <i class="icon-sonarr-form-info" title="Delay in minutes to wait before grabbing a release from Usenet" />
                 </div>
 
                 <div class="col-sm-5 col-sm-pull-1">
-                    <input type="number" class="form-control" name="usenetDelay">
+                    <input type="number" class="form-control" name="usenetDelay"/>
                 </div>
             </div>
 
             <div class="form-group x-torrent-delay">
-                <label class="col-sm-3 control-label">Torrent delay</label>
+                <label class="col-sm-3 control-label">Torrent Delay</label>
 
                 <div class="col-sm-1 col-sm-push-5 help-inline">
-                    <i class="icon-sonarr-form-info" title="Delay in minutes to wait before grabbing a torrent."></i>
+                    <i class="icon-sonarr-form-info" title="Delay in minutes to wait before grabbing a torrent" />
                 </div>
 
                 <div class="col-sm-5 col-sm-pull-1">
-                    <input type="number" class="form-control" name="torrentDelay">
+                    <input type="number" class="form-control" name="torrentDelay"/>
                 </div>
             </div>
 
             {{#if_eq id compare="1"}}
-                <div class="alert alert-info" role="alert">
-                    This is the default profile. It applies to all movies that don't have an explicit profile.
-                </div>
+                <div class="alert alert-info" role="alert">This is the default profile. It applies to all movies that don't have an explicit profile.</div>
             {{else}}
             <div class="form-group">
                 <label class="col-sm-3 control-label">Tags</label>
 
                 <div class="col-sm-1 col-sm-push-5 help-inline">
-                    <i class="icon-sonarr-form-info" title="One or more tags to apply these rules to matching movies."></i>
+                    <i class="icon-sonarr-form-info" title="One or more tags to apply these rules to matching movies" />
                 </div>
 
                 <div class="col-sm-5 col-sm-pull-1">
@@ -75,9 +73,7 @@
                 <button class="btn btn-danger pull-left x-delete">Delete</button>
             {{/if_gt}}
         {{/if}}
-        <span class="indicator x-indicator">
-            <i class="icon-sonarr-spinner fa-spin" aria-hidden="true"></i>
-        </span>
+        <span class="indicator x-indicator"><i class="icon-sonarr-spinner fa-spin"></i></span>
         <button class="btn" data-dismiss="modal">Cancel</button>
         <button class="btn btn-primary x-save">Save</button>
     </div>

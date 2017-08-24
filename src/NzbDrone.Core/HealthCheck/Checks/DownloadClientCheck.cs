@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Download;
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!downloadClients.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No download client is available.");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No download client is available");
             }
 
             foreach (var downloadClient in downloadClients)

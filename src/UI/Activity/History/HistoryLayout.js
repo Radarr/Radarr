@@ -28,7 +28,7 @@ module.exports = Marionette.Layout.extend({
         },
         {
             name  : 'movie',
-            label : 'Movie title',
+            label : 'Movie Title',
             cell  : MovieTitleCell,
         },
         {
