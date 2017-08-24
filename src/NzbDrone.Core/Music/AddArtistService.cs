@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Music
     public interface IAddArtistService
     {
         Artist AddArtist(Artist newArtist);
+        List<Artist> AddArtists(List<Artist> newArtists);
     }
 
     public class AddArtistService : IAddArtistService
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.Music
         {
             Ensure.That(newArtist, () => newArtist).IsNotNull();
 
-            newArtist = AddSkyhookData(newArtist);
+            //newArtist = AddSkyhookData(newArtist);
 
             if (string.IsNullOrWhiteSpace(newArtist.Path))
             {
@@ -64,9 +65,19 @@ namespace NzbDrone.Core.Music
             }
 
             _logger.Info("Adding Artist {0} Path: [{1}]", newArtist, newArtist.Path);
-            _artistService.AddArtist(newArtist);
+            newArtist = _artistService.AddArtist(newArtist);
 
             return newArtist;
+        }
+
+        public List<Artist> AddArtists(List<Artist> newArtists)
+        {
+            newArtists.ForEach(artist =>
+            {
+                AddArtist(artist);
+            });
+
+            return newArtists;
         }
 
         private Artist AddSkyhookData(Artist newArtist)

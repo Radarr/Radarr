@@ -17,37 +17,34 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             UseRealHttp();
         }
 
-        [TestCase("The Simpsons", "The Simpsons")]
-        [TestCase("South Park", "South Park")]
-        [TestCase("Franklin & Bash", "Franklin & Bash")]
-        [TestCase("House", "House")]
-        [TestCase("Mr. D", "Mr. D")]
-        [TestCase("Rob & Big", "Rob & Big")]
-        [TestCase("M*A*S*H", "M*A*S*H")]
-        //[TestCase("imdb:tt0436992", "Doctor Who (2005)")]
-        [TestCase("tvdb:78804", "Doctor Who (2005)")]
-        [TestCase("tvdbid:78804", "Doctor Who (2005)")]
-        [TestCase("tvdbid: 78804 ", "Doctor Who (2005)")]
+        [TestCase("Coldplay", "Coldplay")]
+        [TestCase("Avenged Sevenfold", "Avenged Sevenfold")]
+        [TestCase("3OH!3", "3OH!3")]
+        [TestCase("Where's Kitty?", "Where's Kitty?")]
+        [TestCase("The Academy Is...", "The Academy Is...")]
+        [TestCase("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
+        [TestCase("lidarrid:f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
+        [TestCase("lidarrid: f59c5520-5f46-4d2c-b2c4-822eabf53419 ", "Linkin Park")]
         public void successful_search(string title, string expected)
         {
-            var result = Subject.SearchForNewSeries(title);
+            var result = Subject.SearchForNewArtist(title);
 
             result.Should().NotBeEmpty();
 
-            result[0].Title.Should().Be(expected);
+            result[0].Name.Should().Be(expected);
 
             ExceptionVerification.IgnoreWarns();
         }
 
-        [TestCase("tvdbid:")]
-        [TestCase("tvdbid: 99999999999999999999")]
-        [TestCase("tvdbid: 0")]
-        [TestCase("tvdbid: -12")]
-        [TestCase("tvdbid:289578")]
+        [TestCase("lidarrid:")]
+        [TestCase("lidarrid: 99999999999999999999")]
+        [TestCase("lidarrid: 0")]
+        [TestCase("lidarrid: -12")]
+        [TestCase("lidarrid:289578")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD;EF")]
         public void no_search_result(string term)
         {
-            var result = Subject.SearchForNewSeries(term);
+            var result = Subject.SearchForNewArtist(term);
             result.Should().BeEmpty();
             
             ExceptionVerification.IgnoreWarns();

@@ -108,7 +108,9 @@
     <Compile Include="Commands\CommandResource.cs" />
     <Compile Include="AlbumStudio\AlbumStudioModule.cs" />
     <Compile Include="AlbumStudio\AlbumStudioResource.cs" />
+    <Compile Include="Music\ArtistBulkImportModule.cs" />
     <Compile Include="Music\ArtistEditorModule.cs" />
+    <Compile Include="Music\ListImport.cs" />
     <Compile Include="TrackFiles\TrackFileModule.cs" />
     <Compile Include="TrackFiles\TrackFileResource.cs" />
     <Compile Include="Albums\AlbumModule.cs" />
@@ -244,7 +246,6 @@
     <Compile Include="Series\SeasonResource.cs" />
     <Compile Include="SeasonPass\SeasonPassModule.cs" />
     <Compile Include="Series\SeriesEditorModule.cs" />
-    <Compile Include="Series\SeriesLookupModule.cs" />
     <Compile Include="Series\SeriesModule.cs" />
     <Compile Include="Series\SeriesResource.cs" />
     <Compile Include="Series\SeasonStatisticsResource.cs" />

@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles
     {
         void Scan(Artist artist);
         string[] GetVideoFiles(string path, bool allDirectories = true);
+        string[] GetMusicFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
         List<string> FilterFiles(Series series, IEnumerable<string> files);
     }
@@ -166,7 +167,7 @@ namespace NzbDrone.Core.MediaFiles
                                            .ToList();
 
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
-            _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path);
+            _logger.Debug("{0} audio files were found in {1}", mediaFileList.Count, path);
             return mediaFileList.ToArray();
         }
 

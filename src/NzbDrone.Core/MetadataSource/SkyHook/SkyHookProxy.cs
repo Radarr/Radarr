@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, IProvideArtistInfo, ISearchForNewSeries
+    public class SkyHookProxy : IProvideSeriesInfo, IProvideArtistInfo, ISearchForNewArtist
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -30,49 +30,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger = logger;
         }
 
-       
-
         public Tuple<Series, List<Episode>> GetSeriesInfo(int tvdbSeriesId)
         {
-            Console.WriteLine("[GetSeriesInfo] id:" + tvdbSeriesId);
-            var httpRequest = _requestBuilder.Create()
-                                             .SetSegment("route", "shows")
-                                             .Resource(tvdbSeriesId.ToString())
-                                             .Build();
-
-            httpRequest.AllowAutoRedirect = true;
-            httpRequest.SuppressHttpError = true;
-
-            var httpResponse = _httpClient.Get<ShowResource>(httpRequest);
-
-            if (httpResponse.HasHttpError)
-            {
-                if (httpResponse.StatusCode == HttpStatusCode.NotFound)
-                {
-                    throw new SeriesNotFoundException(tvdbSeriesId);
-                }
-                else
-                {
-                    throw new HttpException(httpRequest, httpResponse);
-                }
-            }
-
-            var episodes = httpResponse.Resource.Episodes.Select(MapEpisode);
-            var series = MapSeries(httpResponse.Resource);
-
-            return new Tuple<Series, List<Episode>>(series, episodes.ToList());
+            throw new NotImplementedException();
         }
-
-        public List<Series> SearchForNewSeries(string title)
-        {
-            // TODO: Remove this API
-            var tempList = new List<Series>();
-            var tempSeries = new Series();
-            tempSeries.Title = "AFI";
-            tempList.Add(tempSeries);
-            return tempList;
-        }
-
 
         public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId)
         {
@@ -203,65 +164,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return artist;
         }
 
-
-        private static Series MapSeries(ShowResource show)
-        {
-            var series = new Series();
-            series.TvdbId = show.TvdbId;
-
-            if (show.TvRageId.HasValue)
-            {
-                series.TvRageId = show.TvRageId.Value;
-            }
-
-            if (show.TvMazeId.HasValue)
-            {
-                series.TvMazeId = show.TvMazeId.Value;
-            }
-
-            series.ImdbId = show.ImdbId;
-            series.Title = show.Title;
-            series.CleanTitle = Parser.Parser.CleanSeriesTitle(show.Title);
-            series.SortTitle = SeriesTitleNormalizer.Normalize(show.Title, show.TvdbId);
-
-            if (show.FirstAired != null)
-            {
-                series.FirstAired = DateTime.Parse(show.FirstAired).ToUniversalTime();
-                series.Year = series.FirstAired.Value.Year;
-            }
-
-            series.Overview = show.Overview;
-
-            if (show.Runtime != null)
-            {
-                series.Runtime = show.Runtime.Value;
-            }
-
-            series.Network = show.Network;
-
-            if (show.TimeOfDay != null)
-            {
-                series.AirTime = string.Format("{0:00}:{1:00}", show.TimeOfDay.Hours, show.TimeOfDay.Minutes);
-            }
-
-            series.TitleSlug = show.Slug;
-            series.Status = MapSeriesStatus(show.Status);
-            //series.Ratings = MapRatings(show.Rating);
-            series.Genres = show.Genres;
-
-            if (show.ContentRating.IsNotNullOrWhiteSpace())
-            {
-                series.Certification = show.ContentRating.ToUpper();
-            }
-            
-            series.Actors = show.Actors.Select(MapActors).ToList();
-            series.Seasons = show.Seasons.Select(MapSeason).ToList();
-            series.Images = show.Images.Select(MapImage).ToList();
-            series.Monitored = true;
-
-            return series;
-        }
-
         private static Actor MapActors(ActorResource arg)
         {
             var newActor = new Actor
@@ -281,40 +183,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return newActor;
         }
 
-        private static Episode MapEpisode(EpisodeResource oracleEpisode)
-        {
-            var episode = new Episode();
-            episode.Overview = oracleEpisode.Overview;
-            episode.SeasonNumber = oracleEpisode.SeasonNumber;
-            episode.EpisodeNumber = oracleEpisode.EpisodeNumber;
-            episode.AbsoluteEpisodeNumber = oracleEpisode.AbsoluteEpisodeNumber;
-            episode.Title = oracleEpisode.Title;
-
-            episode.AirDate = oracleEpisode.AirDate;
-            episode.AirDateUtc = oracleEpisode.AirDateUtc;
-
-            //episode.Ratings = MapRatings(oracleEpisode.Rating);
-
-            //Don't include series fanart images as episode screenshot
-            if (oracleEpisode.Image != null)
-            {
-                episode.Images.Add(new MediaCover.MediaCover(MediaCoverTypes.Screenshot, oracleEpisode.Image));
-            }
-
-            return episode;
-        }
-
-        private static Season MapSeason(SeasonResource seasonResource)
-        {
-            return new Season
-            {
-                SeasonNumber = seasonResource.SeasonNumber,
-                Images = seasonResource.Images.Select(MapImage).ToList(),
-                Monitored = seasonResource.SeasonNumber > 0
-            };
-        }
-
-        private static SeriesStatusType MapSeriesStatus(string status)
+        private static SeriesStatusType MapArtistStatus(string status)
         {
             if (status.Equals("ended", StringComparison.InvariantCultureIgnoreCase))
             {

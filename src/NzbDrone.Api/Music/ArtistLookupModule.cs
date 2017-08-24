@@ -11,9 +11,9 @@ namespace NzbDrone.Api.Music
 {
     public class ArtistLookupModule : NzbDroneRestModule<ArtistResource>
     {
-        private readonly ISearchForNewSeries _searchProxy; //TODO: Switch out for Music varriant
+        private readonly ISearchForNewArtist _searchProxy;
 
-        public ArtistLookupModule(ISearchForNewSeries searchProxy)
+        public ArtistLookupModule(ISearchForNewArtist searchProxy)
             : base("/artist/lookup")
         {
             _searchProxy = searchProxy;
