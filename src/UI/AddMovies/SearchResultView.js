@@ -237,7 +237,7 @@ var view = Marionette.ItemView.extend({
                 message        : 'Added: ' + self.model.get('title'),
                 actions        : {
                     goToSeries : {
-                        label  : 'Go to Movie',
+                        label  : 'Go to movie',
                         action : function() {
                             Backbone.history.navigate('/movies/' + self.model.get('titleSlug'), { trigger : true });
                         }
