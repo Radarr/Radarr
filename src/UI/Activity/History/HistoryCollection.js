@@ -50,7 +50,8 @@ var Collection = PageableCollection.extend({
     },
 
     sortMappings : {
-        'artist' : { sortKey : 'artist.sortName' }
+        'artist' : { sortKey : 'artist.sortName' },
+        'album'  : { sortKey : 'album.title' }
     },
 
     initialize : function(options) {

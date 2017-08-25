@@ -35,8 +35,7 @@ module.exports = Marionette.Layout.extend({
         {
             name     : 'album',
             label    : 'Album Title',
-            cell     : AlbumTitleCell,
-            sortable : false
+            cell     : AlbumTitleCell
         },
         {
             name     : 'this',

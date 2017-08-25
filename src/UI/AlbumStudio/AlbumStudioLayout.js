@@ -42,7 +42,6 @@ module.exports = Marionette.Layout.extend({
             tooltip    : 'Toggle artist monitored status',
             sortable   : false
         },
-
         {
             name      : 'albums',
             label     : 'Albums',

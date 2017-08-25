@@ -11,6 +11,7 @@ var AlbumCollectionView = require('./AlbumStudioCollectionView');
 
 module.exports = Marionette.Layout.extend({
     template  : 'AlbumStudio/AlbumsCellTemplate',
+    tagName   : 'td',
 
     regions : {
         albums : '#albums'
