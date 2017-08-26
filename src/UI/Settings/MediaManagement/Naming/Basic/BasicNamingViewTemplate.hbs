@@ -1,10 +1,10 @@
 <div class="form-group">
-    <label class="col-sm-3 control-label">Include Series Title</label>
+    <label class="col-sm-3 control-label">Include Artist Name</label>
 
     <div class="col-sm-9">
         <div class="input-group">
             <label class="checkbox toggle well">
-                <input type="checkbox" name="includeSeriesTitle"/>
+                <input type="checkbox" name="includeArtistName"/>
 
                 <p>
                     <span>Yes</span>
@@ -17,15 +17,13 @@
     </div>
 </div>
 
-
-
 <div class="form-group">
-    <label class="col-sm-3 control-label">Include Episode Title</label>
+    <label class="col-sm-3 control-label">Include Album Title</label>
 
     <div class="col-sm-9">
         <div class="input-group">
             <label class="checkbox toggle well">
-                <input type="checkbox" name="includeEpisodeTitle"/>
+                <input type="checkbox" name="includeAlbumTitle"/>
 
                 <p>
                     <span>Yes</span>
@@ -93,10 +91,8 @@
 
     <div class="col-sm-9">
         <select class="form-control" name="numberStyle">
-            <option value="{season}x{episode:00}">1x05</option>
-            <option value="{season:00}x{episode:00}">01x05</option>
-            <option value="S{season:00}E{episode:00}">S01E05</option>
-            <option value="s{season:00}e{episode:00}">s01e05</option>
+            <option value="{track}">1</option>
+            <option value="{track:00}">01</option>
         </select>
     </div>
 </div>

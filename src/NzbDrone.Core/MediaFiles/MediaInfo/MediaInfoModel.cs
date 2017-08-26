@@ -9,12 +9,19 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public class MediaInfoModel : IEmbeddedDocument
     {
+        public string ContainerFormat { get; set; }
         public string VideoCodec { get; set; }
+        public string VideoFormat { get; set; }
+        public string VideoCodecID { get; set; }
+        public string VideoProfile { get; set; }
+        public string VideoCodecLibrary { get; set; }
         public int VideoBitrate { get; set; }
         public int VideoBitDepth { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public string AudioFormat { get; set; }
+        public string AudioCodecID { get; set; }
+        public string AudioCodecLibrary { get; set; }
         public int AudioBitrate { get; set; }
         public string AudioBitrateMode { get; set; }
         public TimeSpan RunTime { get; set; }
@@ -29,32 +36,5 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string ScanType { get; set; }
         public int SchemaRevision { get; set; }
 
-        [JsonIgnore]
-        public decimal FormattedAudioChannels
-        {
-            get
-            {
-                if (AudioChannelPositions.IsNullOrWhiteSpace())
-                {
-                    if (AudioChannelPositionsText.IsNullOrWhiteSpace())
-                    {
-                        if (SchemaRevision >= 3)
-                        {
-                            return AudioChannels;
-                        }
-
-                        return 0;
-                    }
-
-                    return AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? AudioChannels - 1 + 0.1m : AudioChannels;
-                }
-
-                return AudioChannelPositions.Replace("Object Based / ", "")
-                                            .Split(new string[] { " / " }, StringSplitOptions.None)
-                                            .First()
-                                            .Split('/')
-                                            .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));
-            }
-        }
     }
 }

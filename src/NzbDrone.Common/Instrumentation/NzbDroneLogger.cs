@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -89,32 +89,38 @@ namespace NzbDrone.Common.Instrumentation
 
         private static void RegisterSentry(bool updateClient)
         {
-        //    string dsn;
+            // TODO Enable above when we recieve sentry service account.
 
-        //    if (updateClient)
-        //    {
-        //        dsn = RuntimeInfo.IsProduction
-        //            ? "https://b85aa82c65b84b0e99e3b7c281438357:392b5bc007974147a922c5d841c47cf9@sentry.lidarr.audio/11"
-        //            : "https://6168f0946aba4e60ac23e469ac08eac5:bd59e8454ccc454ea27a90cff1f814ca@sentry.lidarr.audio/9";
+            string dsn;
 
-        //    }
-        //    else
-        //    {
-        //        dsn = RuntimeInfo.IsProduction
-        //            ? "https://3e8a38b1a4df4de8b0453a724f5a1139:5a708dd75c724b32ae5128b6a895650f@sentry.lidarr.audio/8"
-        //            : "https://4ee3580e01d8407c96a7430fbc953512:5f2d07227a0b4fde99dea07041a3ff93@sentry.lidarr.audio/10";
-        //    }
+            if (updateClient)
+            {
+                dsn = RuntimeInfo.IsProduction
+                    ? "https://b85aa82c65b84b0e99e3b7c281438357:392b5bc007974147a922c5d841c47cf9@sentry.lidarr.audio/11"
+                    : "https://6168f0946aba4e60ac23e469ac08eac5:bd59e8454ccc454ea27a90cff1f814ca@sentry.lidarr.audio/9";
 
-        //    var target = new SentryTarget(dsn)
-        //    {
-        //        Name = "sentryTarget",
-        //        Layout = "${message}"
-        //    };
+            }
+            else
+            {
+                dsn = RuntimeInfo.IsProduction
+                    ? "https://3e8a38b1a4df4de8b0453a724f5a1139:5a708dd75c724b32ae5128b6a895650f@sentry.lidarr.audio/8"
+                    : "https://4ee3580e01d8407c96a7430fbc953512:5f2d07227a0b4fde99dea07041a3ff93@sentry.lidarr.audio/10";
+            }
 
-        //    var loggingRule = new LoggingRule("*", updateClient ? LogLevel.Trace : LogLevel.Error, target);
-        //    LogManager.Configuration.AddTarget("sentryTarget", target);
-        //    LogManager.Configuration.LoggingRules.Add(loggingRule);
-    }
+            var target = new SentryTarget(dsn)
+            {
+                Name = "sentryTarget",
+                Layout = "${message}"
+            };
+
+            var loggingRule = new LoggingRule("*", updateClient ? LogLevel.Trace : LogLevel.Warn, target);
+            LogManager.Configuration.AddTarget("sentryTarget", target);
+            LogManager.Configuration.LoggingRules.Add(loggingRule);
+
+            // Events logged to Sentry go only to Sentry.
+            var loggingRuleSentry = new LoggingRule("Sentry", LogLevel.Debug, target) { Final = true };
+            LogManager.Configuration.LoggingRules.Insert(0, loggingRuleSentry);
+        }
 
     private static void RegisterDebugger()
         {

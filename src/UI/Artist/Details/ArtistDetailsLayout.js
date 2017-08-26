@@ -86,8 +86,8 @@ module.exports = Marionette.Layout.extend({
             element : this.ui.rename,
             command : {
                 name         : 'renameFiles',
-                seriesId     : this.model.id,
-                seasonNumber : -1
+                artistId     : this.model.id,
+                albumId      : -1
             }
         });
     },

@@ -4,8 +4,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
 using NzbDrone.Common;
 using NzbDrone.Core.Music;
 using System;
@@ -100,7 +98,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<TrackFile> GetFilesByAlbum(int artistId, int albumId)
         {
-            return _mediaFileRepository.GetFilesByArtist(artistId);
+            return _mediaFileRepository.GetFilesByAlbum(albumId);
         }
     }
 }

@@ -1,16 +1,16 @@
 ﻿using NzbDrone.Common.Messaging;
 
-namespace NzbDrone.Core.Tv.Events
+namespace NzbDrone.Core.Music.Events
 {
-    public class SeriesMovedEvent : IEvent
+    public class ArtistMovedEvent : IEvent
     {
-        public Series Series { get; set; }
+        public Artist Artist { get; set; }
         public string SourcePath { get; set; }
         public string DestinationPath { get; set; }
 
-        public SeriesMovedEvent(Series series, string sourcePath, string destinationPath)
+        public ArtistMovedEvent(Artist artist, string sourcePath, string destinationPath)
         {
-            Series = series;
+            Artist = artist;
             SourcePath = sourcePath;
             DestinationPath = destinationPath;
         }

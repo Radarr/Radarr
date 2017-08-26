@@ -295,6 +295,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
+    <Compile Include="Datastore\Migration\114_remove_tv_naming.cs" />
     <Compile Include="Datastore\Migration\113_music_blacklist.cs" />
     <Compile Include="Datastore\Migration\112_music_history.cs" />
     <Compile Include="Datastore\Migration\111_setup_music.cs" />
@@ -731,7 +732,10 @@
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedEpisodesScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
+    <Compile Include="MediaFiles\Events\EpisodeFolderCreatedEvent.cs" />
+    <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackDownloadedEvent.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatter.cs" />
     <Compile Include="MediaFiles\RenameTrackFilePreview.cs" />
     <Compile Include="MediaFiles\RenameTrackFileService.cs" />
     <Compile Include="MediaFiles\TrackFileMovingService.cs" />
@@ -749,8 +753,6 @@
     </Compile>
     <Compile Include="MediaFiles\DownloadedEpisodesCommandService.cs" />
     <Compile Include="MediaFiles\EpisodeFile.cs" />
-    <Compile Include="MediaFiles\EpisodeFileMoveResult.cs" />
-    <Compile Include="MediaFiles\EpisodeFileMovingService.cs" />
     <Compile Include="MediaFiles\EpisodeImport\IImportDecisionEngineSpecification.cs" />
     <Compile Include="MediaFiles\EpisodeImport\ImportApprovedEpisodes.cs" />
     <Compile Include="MediaFiles\EpisodeImport\ImportDecisionMaker.cs" />
@@ -771,7 +773,6 @@
     <Compile Include="MediaFiles\Events\EpisodeDownloadedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeFileAddedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeFileDeletedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\EpisodeImportedEvent.cs" />
     <Compile Include="MediaFiles\Commands\RescanArtistCommand.cs" />
     <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
@@ -793,15 +794,13 @@
     <Compile Include="MediaFiles\MediaInfo\UpdateMediaInfoService.cs" />
     <Compile Include="MediaFiles\MediaInfo\VideoFileInfoReader.cs" />
     <Compile Include="MediaFiles\RecycleBinProvider.cs" />
-    <Compile Include="MediaFiles\RenameEpisodeFilePreview.cs" />
-    <Compile Include="MediaFiles\RenameEpisodeFileService.cs" />
     <Compile Include="MediaFiles\SameFilenameException.cs" />
     <Compile Include="MediaFiles\TrackFile.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportApprovedTracks.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecision.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportResult.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\SameTracksImportSpecification.cs" />
-    <Compile Include="MediaFiles\UpdateEpisodeFileService.cs" />
+    <Compile Include="MediaFiles\UpdateTrackFileService.cs" />
     <Compile Include="MediaFiles\UpgradeMediaFileService.cs" />
     <Compile Include="Messaging\Commands\BackendCommandAttribute.cs" />
     <Compile Include="Messaging\Commands\CleanupCommandMessagingService.cs" />
@@ -828,6 +827,7 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
     <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
+    <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistInfoResource.cs" />
@@ -861,9 +861,11 @@
     <Compile Include="Extras\Metadata\MetadataRepository.cs" />
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
-    <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
+    <Compile Include="Music\Commands\MoveArtistCommand.cs" />
+    <Compile Include="Music\Events\ArtistMovedEvent.cs" />
     <Compile Include="Music\MonitoringOptions.cs" />
     <Compile Include="Music\AlbumMonitoredService.cs" />
+    <Compile Include="Music\MoveArtistService.cs" />
     <Compile Include="Music\TrackMonitoredService.cs" />
     <Compile Include="Music\Member.cs" />
     <Compile Include="Music\AddArtistOptions.cs" />
@@ -945,6 +947,8 @@
     <Compile Include="Notifications\Webhook\WebhookService.cs" />
     <Compile Include="Notifications\Webhook\WebhookSettings.cs" />
     <Compile Include="Notifications\Webhook\Webhook.cs" />
+    <Compile Include="Organizer\AbsoluteTrackFormat.cs" />
+    <Compile Include="Organizer\TrackFormat.cs" />
     <Compile Include="Organizer\NamingConfigRepository.cs" />
     <Compile Include="Notifications\Twitter\Twitter.cs" />
     <Compile Include="Notifications\Twitter\TwitterService.cs" />
@@ -1055,9 +1059,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Notifications\Xbmc\XbmcSettings.cs" />
-    <Compile Include="Organizer\AbsoluteEpisodeFormat.cs" />
     <Compile Include="Organizer\BasicNamingConfig.cs" />
-    <Compile Include="Organizer\EpisodeFormat.cs" />
     <Compile Include="Organizer\EpisodeSortingType.cs" />
     <Compile Include="Organizer\Exception.cs" />
     <Compile Include="Organizer\FileNameBuilder.cs" />
@@ -1143,7 +1145,6 @@
     <Compile Include="Tv\AddSeriesOptions.cs" />
     <Compile Include="Tv\AddSeriesService.cs" />
     <Compile Include="Tv\AddSeriesValidator.cs" />
-    <Compile Include="Tv\Commands\MoveSeriesCommand.cs" />
     <Compile Include="Tv\Commands\RefreshSeriesCommand.cs" />
     <Compile Include="Tv\Episode.cs" />
     <Compile Include="Tv\EpisodeAddedService.cs" />
@@ -1157,11 +1158,9 @@
     <Compile Include="Tv\Events\SeriesAddedEvent.cs" />
     <Compile Include="Tv\Events\SeriesDeletedEvent.cs" />
     <Compile Include="Tv\Events\SeriesEditedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesMovedEvent.cs" />
     <Compile Include="Tv\Events\SeriesRefreshStartingEvent.cs" />
     <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
     <Compile Include="Tv\MonitoringOptions.cs" />
-    <Compile Include="Tv\MoveSeriesService.cs" />
     <Compile Include="Tv\Ratings.cs" />
     <Compile Include="Tv\RefreshEpisodeService.cs" />
     <Compile Include="Tv\RefreshSeriesService.cs" />

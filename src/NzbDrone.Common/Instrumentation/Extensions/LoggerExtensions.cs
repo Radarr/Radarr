@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 
 namespace NzbDrone.Common.Instrumentation.Extensions
 {

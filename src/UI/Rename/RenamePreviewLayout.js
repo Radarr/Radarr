@@ -29,12 +29,12 @@ module.exports = Marionette.Layout.extend({
     },
 
     initialize : function(options) {
-        this.model = options.series;
-        this.seasonNumber = options.seasonNumber;
+        this.model = options.artist;
+        this.albumId = options.albumId;
 
         var viewOptions = {};
-        viewOptions.seriesId = this.model.id;
-        viewOptions.seasonNumber = this.seasonNumber;
+        viewOptions.artistId = this.model.id;
+        viewOptions.albumId = this.albumId;
 
         this.collection = new RenamePreviewCollection(viewOptions);
         this.listenTo(this.collection, 'sync', this._showPreviews);
@@ -66,7 +66,7 @@ module.exports = Marionette.Layout.extend({
         }
 
         var files = _.map(this.collection.where({ rename : true }), function(model) {
-            return model.get('episodeFileId');
+            return model.get('trackFileId');
         });
 
         if (files.length === 0) {
@@ -74,18 +74,18 @@ module.exports = Marionette.Layout.extend({
             return;
         }
 
-        if (this.seasonNumber) {
+        if (this.albumId) {
             CommandController.Execute('renameFiles', {
                 name         : 'renameFiles',
-                seriesId     : this.model.id,
-                seasonNumber : this.seasonNumber,
+                artistId     : this.model.id,
+                albumId      : this.albumId,
                 files        : files
             });
         } else {
             CommandController.Execute('renameFiles', {
                 name         : 'renameFiles',
-                seriesId     : this.model.id,
-                seasonNumber : -1,
+                artistId     : this.model.id,
+                albumId      : -1,
                 files        : files
             });
         }

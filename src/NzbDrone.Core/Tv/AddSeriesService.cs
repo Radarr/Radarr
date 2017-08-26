@@ -47,8 +47,8 @@ namespace NzbDrone.Core.Tv
 
             if (string.IsNullOrWhiteSpace(newSeries.Path))
             {
-                var folderName = _fileNameBuilder.GetSeriesFolder(newSeries);
-                newSeries.Path = Path.Combine(newSeries.RootFolderPath, folderName);
+                //var folderName = _fileNameBuilder.GetSeriesFolder(newSeries);
+                //newSeries.Path = Path.Combine(newSeries.RootFolderPath, folderName);
             }
 
             newSeries.CleanTitle = newSeries.Title.CleanSeriesTitle();

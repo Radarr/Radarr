@@ -10,9 +10,7 @@ var view = Marionette.ItemView.extend({
 
     ui : {
         namingOptions        : '.x-naming-options',
-        singleEpisodeExample : '.x-single-episode-example',
-        multiEpisodeExample  : '.x-multi-episode-example',
-        dailyEpisodeExample  : '.x-daily-episode-example'
+        singleTrackExample   : '.x-single-track-example'
     },
 
     initialize : function(options) {
@@ -26,12 +24,12 @@ var view = Marionette.ItemView.extend({
     },
 
     _parseNamingModel : function() {
-        var standardFormat = this.namingModel.get('standardEpisodeFormat');
+        var standardFormat = this.namingModel.get('standardTrackFormat');
 
-        var includeSeriesTitle = standardFormat.match(/\{Series[-_. ]Title\}/i);
-        var includeEpisodeTitle = standardFormat.match(/\{Episode[-_. ]Title\}/i);
+        var includeArtistName = standardFormat.match(/\{Artist[-_. ]Name\}/i);
+        var includeAlbumTitle = standardFormat.match(/\{Album[-_. ]Title\}/i);
         var includeQuality = standardFormat.match(/\{Quality[-_. ]Title\}/i);
-        var numberStyle = standardFormat.match(/s?\{season(?:\:0+)?\}[ex]\{episode(?:\:0+)?\}/i);
+        var numberStyle = standardFormat.match(/\{track(?:\:0+)?\}/i);
         var replaceSpaces = standardFormat.indexOf(' ') === -1;
         var separator = standardFormat.match(/\}( - |\.-\.|\.| )|( - |\.-\.|\.| )\{/i);
 
@@ -42,14 +40,14 @@ var view = Marionette.ItemView.extend({
         }
 
         if (numberStyle === null) {
-            numberStyle = 'S{season:00}E{episode:00}';
+            numberStyle = '{track:00}';
         } else {
             numberStyle = numberStyle[0];
         }
 
         this.model.set({
-            includeSeriesTitle  : includeSeriesTitle !== null,
-            includeEpisodeTitle : includeEpisodeTitle !== null,
+            includeArtistName   : includeArtistName !== null,
+            includeAlbumTitle   : includeAlbumTitle !== null,
             includeQuality      : includeQuality !== null,
             numberStyle         : numberStyle,
             replaceSpaces       : replaceSpaces,
@@ -62,56 +60,52 @@ var view = Marionette.ItemView.extend({
             return;
         }
 
-        var standardEpisodeFormat = '';
-        var dailyEpisodeFormat = '';
+        var standardTrackFormat = '';
 
-        if (this.model.get('includeSeriesTitle')) {
+        if (this.model.get('includeArtistName')) {
             if (this.model.get('replaceSpaces')) {
-                standardEpisodeFormat += '{Series.Title}';
-                dailyEpisodeFormat += '{Series.Title}';
+                standardTrackFormat += '{Artist.Name}';
             } else {
-                standardEpisodeFormat += '{Series Title}';
-                dailyEpisodeFormat += '{Series Title}';
+                standardTrackFormat += '{Artist Name}';
             }
 
-            standardEpisodeFormat += this.model.get('separator');
-            dailyEpisodeFormat += this.model.get('separator');
+            standardTrackFormat += this.model.get('separator');
         }
 
-        standardEpisodeFormat += this.model.get('numberStyle');
-        dailyEpisodeFormat += '{Air-Date}';
-
-        if (this.model.get('includeEpisodeTitle')) {
-            standardEpisodeFormat += this.model.get('separator');
-            dailyEpisodeFormat += this.model.get('separator');
-
+        if (this.model.get('includeAlbumTitle')) {
             if (this.model.get('replaceSpaces')) {
-                standardEpisodeFormat += '{Episode.Title}';
-                dailyEpisodeFormat += '{Episode.Title}';
+                standardTrackFormat += '{Album.Title}';
             } else {
-                standardEpisodeFormat += '{Episode Title}';
-                dailyEpisodeFormat += '{Episode Title}';
+                standardTrackFormat += '{Album Title}';
             }
+
+            standardTrackFormat += this.model.get('separator');
         }
+
+        standardTrackFormat += this.model.get('numberStyle');
+
+        standardTrackFormat += this.model.get('separator');
+
+        if (this.model.get('replaceSpaces')) {
+            standardTrackFormat += '{Track.Title}';
+        } else {
+            standardTrackFormat += '{Track Title}';
+        }
+        
 
         if (this.model.get('includeQuality')) {
             if (this.model.get('replaceSpaces')) {
-                standardEpisodeFormat += ' {Quality.Title}';
-                dailyEpisodeFormat += ' {Quality.Title}';
+                standardTrackFormat += ' {Quality.Title}';
             } else {
-                standardEpisodeFormat += ' {Quality Title}';
-                dailyEpisodeFormat += ' {Quality Title}';
+                standardTrackFormat += ' {Quality Title}';
             }
         }
 
         if (this.model.get('replaceSpaces')) {
-            standardEpisodeFormat = standardEpisodeFormat.replace(/\s/g, '.');
-            dailyEpisodeFormat = dailyEpisodeFormat.replace(/\s/g, '.');
+            standardTrackFormat = standardTrackFormat.replace(/\s/g, '.');
         }
 
-        this.namingModel.set('standardEpisodeFormat', standardEpisodeFormat);
-        this.namingModel.set('dailyEpisodeFormat', dailyEpisodeFormat);
-        this.namingModel.set('animeEpisodeFormat', standardEpisodeFormat);
+        this.namingModel.set('standardTrackFormat', standardTrackFormat);
     }
 });
 

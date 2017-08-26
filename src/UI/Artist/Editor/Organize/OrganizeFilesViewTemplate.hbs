@@ -1,7 +1,7 @@
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3>Organize of Selected Series</h3>
+        <h3>Organize of Selected Artist(s)</h3>
     </div>
     <div class="modal-body update-files-artist-modal">
         <div class="alert alert-info">
@@ -9,12 +9,12 @@
             Tip: To preview a rename... select "Cancel" then any artist title and use the <i data-original-title="" class="icon-lidarr-rename" title=""></i>
         </div>
 
-        Are you sure you want to update all files in the {{numberOfSeries}} selected artist?
+        Are you sure you want to update all files in the {{numberOfArtists}} selected artist(s)?
 
         {{debug}}
         <ul class="selected-artist">
-            {{#each series}}
-            <li>{{title}}</li>
+            {{#each artist}}
+            <li>{{name}}</li>
             {{/each}}
         </ul>
     </div>

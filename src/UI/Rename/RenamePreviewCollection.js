@@ -8,25 +8,25 @@ module.exports = Backbone.Collection.extend({
     originalFetch : Backbone.Collection.prototype.fetch,
 
     initialize : function(options) {
-        if (!options.seriesId) {
-            throw 'seriesId is required';
+        if (!options.artistId) {
+            throw 'artistId is required';
         }
 
-        this.seriesId = options.seriesId;
-        this.seasonNumber = options.seasonNumber;
+        this.artistId = options.artistId;
+        this.albumId = options.albumId;
     },
 
     fetch : function(options) {
-        if (!this.seriesId) {
-            throw 'seriesId is required';
+        if (!this.artistId) {
+            throw 'artistId is required';
         }
 
         options = options || {};
         options.data = {};
-        options.data.seriesId = this.seriesId;
+        options.data.artistId = this.artistId;
 
-        if (this.seasonNumber !== undefined) {
-            options.data.seasonNumber = this.seasonNumber;
+        if (this.albumId !== undefined) {
+            options.data.albumId = this.albumId;
         }
 
         return this.originalFetch.call(this, options);

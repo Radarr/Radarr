@@ -164,8 +164,6 @@
     <Compile Include="Episodes\EpisodeModule.cs" />
     <Compile Include="Episodes\EpisodeModuleWithSignalR.cs" />
     <Compile Include="Episodes\EpisodeResource.cs" />
-    <Compile Include="Episodes\RenameEpisodeModule.cs" />
-    <Compile Include="Episodes\RenameEpisodeResource.cs" />
     <Compile Include="ErrorManagement\ApiException.cs" />
     <Compile Include="ErrorManagement\ErrorHandler.cs" />
     <Compile Include="ErrorManagement\ErrorModel.cs" />

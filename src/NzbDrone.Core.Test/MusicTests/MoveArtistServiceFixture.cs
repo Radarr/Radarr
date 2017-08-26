@@ -5,35 +5,35 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Commands;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Commands;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.TvTests
+namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class MoveSeriesServiceFixture : CoreTest<MoveSeriesService>
+    public class MoveArtistServiceFixture : CoreTest<MoveArtistService>
     {
-        private Series _series;
-        private MoveSeriesCommand _command;
+        private Artist _artist;
+        private MoveArtistCommand _command;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>
+            _artist = Builder<Artist>
                 .CreateNew()
                 .Build();
 
-            _command = new MoveSeriesCommand
-                       {
-                           SeriesId = 1,
-                           SourcePath = @"C:\Test\TV\Series".AsOsAgnostic(),
-                           DestinationPath = @"C:\Test\TV2\Series".AsOsAgnostic()
+            _command = new MoveArtistCommand
+            {
+                           ArtistId = 1,
+                           SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic(),
+                           DestinationPath = @"C:\Test\Music2\Artist".AsOsAgnostic()
                        };
 
-            Mocker.GetMock<ISeriesService>()
-                  .Setup(s => s.GetSeries(It.IsAny<int>()))
-                  .Returns(_series);
+            Mocker.GetMock<IArtistService>()
+                  .Setup(s => s.GetArtist(It.IsAny<int>()))
+                  .Returns(_artist);
         }
 
         private void GivenFailedMove()
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.TvTests
         }
 
         [Test]
-        public void should_no_update_series_path_on_error()
+        public void should_no_update_artist_path_on_error()
         {
             GivenFailedMove();
 
@@ -62,26 +62,26 @@ namespace NzbDrone.Core.Test.TvTests
 
             ExceptionVerification.ExpectedErrors(1);
 
-            Mocker.GetMock<ISeriesService>()
-                  .Verify(v => v.UpdateSeries(It.IsAny<Series>()), Times.Never());
+            Mocker.GetMock<IArtistService>()
+                  .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Never());
         }
 
         [Test]
         public void should_build_new_path_when_root_folder_is_provided()
         {
             _command.DestinationPath = null;
-            _command.DestinationRootFolder = @"C:\Test\TV3".AsOsAgnostic();
+            _command.DestinationRootFolder = @"C:\Test\Music3".AsOsAgnostic();
             
-            var expectedPath = @"C:\Test\TV3\Series".AsOsAgnostic();
+            var expectedPath = @"C:\Test\Music3\Artist".AsOsAgnostic();
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetSeriesFolder(It.IsAny<Series>(), null))
-                  .Returns("Series");
+                  .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
+                  .Returns("Artist");
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<ISeriesService>()
-                  .Verify(v => v.UpdateSeries(It.Is<Series>(s => s.Path == expectedPath)), Times.Once());
+            Mocker.GetMock<IArtistService>()
+                  .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.Path == expectedPath)), Times.Once());
         }
 
         [Test]
@@ -89,11 +89,11 @@ namespace NzbDrone.Core.Test.TvTests
         {
             Subject.Execute(_command);
 
-            Mocker.GetMock<ISeriesService>()
-                  .Verify(v => v.UpdateSeries(It.Is<Series>(s => s.Path == _command.DestinationPath)), Times.Once());
+            Mocker.GetMock<IArtistService>()
+                  .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.Path == _command.DestinationPath)), Times.Once());
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Verify(v => v.GetSeriesFolder(It.IsAny<Series>(), null), Times.Never());
+                  .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
         }
     }
 }

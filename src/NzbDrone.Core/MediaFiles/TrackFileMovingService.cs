@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
@@ -27,7 +27,8 @@ namespace NzbDrone.Core.MediaFiles
     public class TrackFileMovingService : IMoveTrackFiles
     {
         private readonly ITrackService _trackService;
-        //private readonly IUpdateTrackFileService _updateTrackFileService;
+        private readonly IAlbumService _albumService;
+        private readonly IUpdateTrackFileService _updateTrackFileService;
         private readonly IBuildFileNames _buildFileNames;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IDiskProvider _diskProvider;
@@ -36,8 +37,9 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public TrackFileMovingService(ITrackService episodeService,
-                                //IUpdateEpisodeFileService updateEpisodeFileService,
+        public TrackFileMovingService(ITrackService trackService,
+                                IAlbumService albumService,
+                                IUpdateTrackFileService updateTrackFileService,
                                 IBuildFileNames buildFileNames,
                                 IDiskTransferService diskTransferService,
                                 IDiskProvider diskProvider,
@@ -46,8 +48,9 @@ namespace NzbDrone.Core.MediaFiles
                                 IConfigService configService,
                                 Logger logger)
         {
-            _trackService = episodeService;
-            //_updateTrackFileService = updateEpisodeFileService;
+            _trackService = trackService;
+            _albumService = albumService;
+            _updateTrackFileService = updateTrackFileService;
             _buildFileNames = buildFileNames;
             _diskTransferService = diskTransferService;
             _diskProvider = diskProvider;
@@ -59,112 +62,107 @@ namespace NzbDrone.Core.MediaFiles
 
         public TrackFile MoveTrackFile(TrackFile trackFile, Artist artist)
         {
-            throw new System.NotImplementedException();
-            // TODO
-            //var tracks = _trackService.GetTracksByFileId(trackFile.Id);
-            //var newFileName = _buildFileNames.BuildFileName(tracks, artist, trackFile);
-            //var filePath = _buildFileNames.BuildFilePath(artist, tracks.First(), trackFile.AlbumId, newFileName, Path.GetExtension(trackFile.RelativePath));
 
-            //EnsureAlbumFolder(trackFile, artist, tracks.Select(v => v.Album).First(), filePath);
+            var tracks = _trackService.GetTracksByFileId(trackFile.Id);
+            var album = _albumService.GetAlbum(trackFile.AlbumId);
+            var newFileName = _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile);
+            var filePath = _buildFileNames.BuildTrackFilePath(artist, album, newFileName, Path.GetExtension(trackFile.RelativePath));
 
-            //_logger.Debug("Renaming track file: {0} to {1}", trackFile, filePath);
+            EnsureTrackFolder(trackFile, artist, album, filePath);
 
-            //return TransferFile(trackFile, artist, tracks, filePath, TransferMode.Move);
+            _logger.Debug("Renaming track file: {0} to {1}", trackFile, filePath);
+
+            return TransferFile(trackFile, artist, tracks, filePath, TransferMode.Move);
         }
 
         public TrackFile MoveTrackFile(TrackFile trackFile, LocalTrack localTrack)
         {
-            // TODO
-            throw new System.NotImplementedException();
-            //var newFileName = _buildFileNames.BuildFileName(localEpisode.Episodes, localEpisode.Series, episodeFile);
-            //var filePath = _buildFileNames.BuildFilePath(localEpisode.Series, localEpisode.SeasonNumber, newFileName, Path.GetExtension(localEpisode.Path));
 
-            //EnsureEpisodeFolder(episodeFile, localEpisode, filePath);
+            var newFileName = _buildFileNames.BuildTrackFileName(localTrack.Tracks, localTrack.Artist, localTrack.Album, trackFile);
+            var filePath = _buildFileNames.BuildTrackFilePath(localTrack.Artist, localTrack.Album, newFileName, Path.GetExtension(localTrack.Path));
 
-            //_logger.Debug("Moving episode file: {0} to {1}", episodeFile.Path, filePath);
+            EnsureTrackFolder(trackFile, localTrack, filePath);
 
-            //return TransferFile(episodeFile, localEpisode.Series, localEpisode.Episodes, filePath, TransferMode.Move);
+            _logger.Debug("Moving track file: {0} to {1}", trackFile.Path, filePath);
+
+            return TransferFile(trackFile, localTrack.Artist, localTrack.Tracks, filePath, TransferMode.Move);
         }
 
         public TrackFile CopyTrackFile(TrackFile trackFile, LocalTrack localTrack)
         {
-            // TODO
-            throw new System.NotImplementedException();
-            //var newFileName = _buildFileNames.BuildFileName(localEpisode.Episodes, localEpisode.Series, episodeFile);
-            //var filePath = _buildFileNames.BuildFilePath(localEpisode.Series, localEpisode.SeasonNumber, newFileName, Path.GetExtension(localEpisode.Path));
+            var newFileName = _buildFileNames.BuildTrackFileName(localTrack.Tracks, localTrack.Artist, localTrack.Album, trackFile);
+            var filePath = _buildFileNames.BuildTrackFilePath(localTrack.Artist, localTrack.Album, newFileName, Path.GetExtension(localTrack.Path));
 
-            //EnsureEpisodeFolder(episodeFile, localEpisode, filePath);
+            EnsureTrackFolder(trackFile, localTrack, filePath);
 
-            //if (_configService.CopyUsingHardlinks)
-            //{
-            //    _logger.Debug("Hardlinking episode file: {0} to {1}", episodeFile.Path, filePath);
-            //    return TransferFile(episodeFile, localEpisode.Series, localEpisode.Episodes, filePath, TransferMode.HardLinkOrCopy);
-            //}
+            if (_configService.CopyUsingHardlinks)
+            {
+                _logger.Debug("Hardlinking track file: {0} to {1}", trackFile.Path, filePath);
+                return TransferFile(trackFile, localTrack.Artist, localTrack.Tracks, filePath, TransferMode.HardLinkOrCopy);
+            }
 
-            //_logger.Debug("Copying episode file: {0} to {1}", episodeFile.Path, filePath);
-            //return TransferFile(episodeFile, localEpisode.Series, localEpisode.Episodes, filePath, TransferMode.Copy);
+            _logger.Debug("Copying track file: {0} to {1}", trackFile.Path, filePath);
+            return TransferFile(trackFile, localTrack.Artist, localTrack.Tracks, filePath, TransferMode.Copy);
         }
 
-        private EpisodeFile TransferFile(EpisodeFile episodeFile, Series series, List<Episode> episodes, string destinationFilePath, TransferMode mode)
+        private TrackFile TransferFile(TrackFile trackFile, Artist artist, List<Track> tracks, string destinationFilePath, TransferMode mode)
         {
-            // TODO
-            throw new System.NotImplementedException();
 
-            //Ensure.That(episodeFile, () => episodeFile).IsNotNull();
-            //Ensure.That(series, () => series).IsNotNull();
-            //Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath();
+            Ensure.That(trackFile, () => trackFile).IsNotNull();
+            Ensure.That(artist, () => artist).IsNotNull();
+            Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath();
 
-            //var episodeFilePath = episodeFile.Path ?? Path.Combine(series.Path, episodeFile.RelativePath);
+            var trackFilePath = trackFile.Path ?? Path.Combine(artist.Path, trackFile.RelativePath);
 
-            //if (!_diskProvider.FileExists(episodeFilePath))
-            //{
-            //    throw new FileNotFoundException("Episode file path does not exist", episodeFilePath);
-            //}
+            if (!_diskProvider.FileExists(trackFilePath))
+            {
+                throw new FileNotFoundException("Track file path does not exist", trackFilePath);
+            }
 
-            //if (episodeFilePath == destinationFilePath)
-            //{
-            //    throw new SameFilenameException("File not moved, source and destination are the same", episodeFilePath);
-            //}
+            if (trackFilePath == destinationFilePath)
+            {
+                throw new SameFilenameException("File not moved, source and destination are the same", trackFilePath);
+            }
 
-            //_diskTransferService.TransferFile(episodeFilePath, destinationFilePath, mode);
+            _diskTransferService.TransferFile(trackFilePath, destinationFilePath, mode);
 
-            //episodeFile.RelativePath = series.Path.GetRelativePath(destinationFilePath);
+            trackFile.RelativePath = artist.Path.GetRelativePath(destinationFilePath);
 
-            //_updateTrackFileService.ChangeFileDateForFile(episodeFile, series, episodes);
+            _updateTrackFileService.ChangeFileDateForFile(trackFile, artist, tracks);
 
-            //try
-            //{
-            //    _mediaFileAttributeService.SetFolderLastWriteTime(series.Path, episodeFile.DateAdded);
+            try
+            {
+                _mediaFileAttributeService.SetFolderLastWriteTime(artist.Path, trackFile.DateAdded);
 
-            //    if (series.SeasonFolder)
-            //    {
-            //        var seasonFolder = Path.GetDirectoryName(destinationFilePath);
+                if (artist.AlbumFolder)
+                {
+                    var albumFolder = Path.GetDirectoryName(destinationFilePath);
 
-            //        _mediaFileAttributeService.SetFolderLastWriteTime(seasonFolder, episodeFile.DateAdded);
-            //    }
-            //}
+                    _mediaFileAttributeService.SetFolderLastWriteTime(albumFolder, trackFile.DateAdded);
+                }
+            }
 
-            //catch (Exception ex)
-            //{
-            //    _logger.Warn(ex, "Unable to set last write time");
-            //}
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Unable to set last write time");
+            }
 
-            //_mediaFileAttributeService.SetFilePermissions(destinationFilePath);
+            _mediaFileAttributeService.SetFilePermissions(destinationFilePath);
 
-            //return episodeFile;
+            return trackFile;
         }
 
-        private void EnsureEpisodeFolder(EpisodeFile episodeFile, LocalEpisode localEpisode, string filePath)
+        private void EnsureTrackFolder(TrackFile trackFile, LocalTrack localTrack, string filePath)
         {
-            EnsureEpisodeFolder(episodeFile, localEpisode.Series, localEpisode.SeasonNumber, filePath);
+            EnsureTrackFolder(trackFile, localTrack.Artist, localTrack.Album, filePath);
         }
 
-        private void EnsureEpisodeFolder(EpisodeFile episodeFile, Series series, int seasonNumber, string filePath)
+        private void EnsureTrackFolder(TrackFile trackFile, Artist artist, Album album, string filePath)
         {
-            var episodeFolder = Path.GetDirectoryName(filePath);
-            var seasonFolder = _buildFileNames.BuildSeasonPath(series, seasonNumber);
-            var seriesFolder = series.Path;
-            var rootFolder = new OsPath(seriesFolder).Directory.FullPath;
+            var trackFolder = Path.GetDirectoryName(filePath);
+            var albumFolder = _buildFileNames.BuildAlbumPath(artist, album);
+            var artistFolder = artist.Path;
+            var rootFolder = new OsPath(artistFolder).Directory.FullPath;
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
@@ -172,26 +170,26 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var changed = false;
-            var newEvent = new EpisodeFolderCreatedEvent(series, episodeFile);
+            var newEvent = new TrackFolderCreatedEvent(artist, trackFile);
 
-            if (!_diskProvider.FolderExists(seriesFolder))
+            if (!_diskProvider.FolderExists(artistFolder))
             {
-                CreateFolder(seriesFolder);
-                newEvent.SeriesFolder = seriesFolder;
+                CreateFolder(artistFolder);
+                newEvent.ArtistFolder = artistFolder;
                 changed = true;
             }
 
-            if (seriesFolder != seasonFolder && !_diskProvider.FolderExists(seasonFolder))
+            if (artistFolder != albumFolder && !_diskProvider.FolderExists(albumFolder))
             {
-                CreateFolder(seasonFolder);
-                newEvent.SeasonFolder = seasonFolder;
+                CreateFolder(albumFolder);
+                newEvent.AlbumFolder = albumFolder;
                 changed = true;
             }
 
-            if (seasonFolder != episodeFolder && !_diskProvider.FolderExists(episodeFolder))
+            if (albumFolder != trackFolder && !_diskProvider.FolderExists(trackFolder))
             {
-                CreateFolder(episodeFolder);
-                newEvent.EpisodeFolder = episodeFolder;
+                CreateFolder(trackFolder);
+                newEvent.TrackFolder = trackFolder;
                 changed = true;
             }
 

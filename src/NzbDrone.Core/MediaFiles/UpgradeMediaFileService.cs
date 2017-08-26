@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -9,7 +9,6 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IUpgradeMediaFiles
     {
-        //EpisodeFileMoveResult UpgradeEpisodeFile(EpisodeFile episodeFile, LocalEpisode localEpisode, bool copyOnly = false);
         TrackFileMoveResult UpgradeTrackFile(TrackFile trackFile, LocalTrack localTrack, bool copyOnly = false);
     }
 
@@ -17,7 +16,6 @@ namespace NzbDrone.Core.MediaFiles
     {
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
-        private readonly IMoveEpisodeFiles _episodeFileMover;
         private readonly IMoveTrackFiles _trackFileMover;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
@@ -46,13 +44,13 @@ namespace NzbDrone.Core.MediaFiles
             foreach (var existingFile in existingFiles)
             {
                 var file = existingFile.First();
-                var episodeFilePath = Path.Combine(localTrack.Artist.Path, file.RelativePath);
-                var subfolder = _diskProvider.GetParentFolder(localTrack.Artist.Path).GetRelativePath(_diskProvider.GetParentFolder(episodeFilePath));
+                var trackFilePath = Path.Combine(localTrack.Artist.Path, file.RelativePath);
+                var subfolder = _diskProvider.GetParentFolder(localTrack.Artist.Path).GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
 
-                if (_diskProvider.FileExists(episodeFilePath))
+                if (_diskProvider.FileExists(trackFilePath))
                 {
-                    _logger.Debug("Removing existing episode file: {0}", file);
-                    _recycleBinProvider.DeleteFile(episodeFilePath, subfolder);
+                    _logger.Debug("Removing existing track file: {0}", file);
+                    _recycleBinProvider.DeleteFile(trackFilePath, subfolder);
                 }
 
                 moveFileResult.OldFiles.Add(file);

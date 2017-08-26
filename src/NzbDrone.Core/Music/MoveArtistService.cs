@@ -6,45 +6,45 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Tv.Commands;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Music.Commands;
+using NzbDrone.Core.Music.Events;
 
-namespace NzbDrone.Core.Tv
+namespace NzbDrone.Core.Music
 {
-    public class MoveSeriesService : IExecute<MoveSeriesCommand>
+    public class MoveArtistService : IExecute<MoveArtistCommand>
     {
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly IBuildFileNames _filenameBuilder;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public MoveSeriesService(ISeriesService seriesService,
+        public MoveArtistService(IArtistService artistService,
                                  IBuildFileNames filenameBuilder,
                                  IDiskTransferService diskTransferService,
                                  IEventAggregator eventAggregator,
                                  Logger logger)
         {
-            _seriesService = seriesService;
+            _artistService = artistService;
             _filenameBuilder = filenameBuilder;
             _diskTransferService = diskTransferService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
-        public void Execute(MoveSeriesCommand message)
+        public void Execute(MoveArtistCommand message)
         {
-            var series = _seriesService.GetSeries(message.SeriesId);
+            var artist = _artistService.GetArtist(message.ArtistId);
             var source = message.SourcePath;
             var destination = message.DestinationPath;
 
             if (!message.DestinationRootFolder.IsNullOrWhiteSpace())
             {
-                _logger.Debug("Buiding destination path using root folder: {0} and the series title", message.DestinationRootFolder);
-                destination = Path.Combine(message.DestinationRootFolder, _filenameBuilder.GetSeriesFolder(series));
+                _logger.Debug("Buiding destination path using root folder: {0} and the artist name", message.DestinationRootFolder);
+                destination = Path.Combine(message.DestinationRootFolder, _filenameBuilder.GetArtistFolder(artist));
             }
 
-            _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", series.Title, source, destination);
+            _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", artist.Name, source, destination);
 
             //TODO: Move to transactional disk operations
             try
@@ -53,17 +53,17 @@ namespace NzbDrone.Core.Tv
             }
             catch (IOException ex)
             {
-                _logger.Error(ex, "Unable to move series from '{0}' to '{1}'", source, destination);
+                _logger.Error(ex, "Unable to move artist from '{0}' to '{1}'", source, destination);
                 throw;
             }
 
-            _logger.ProgressInfo("{0} moved successfully to {1}", series.Title, series.Path);
+            _logger.ProgressInfo("{0} moved successfully to {1}", artist.Name, artist.Path);
 
-            //Update the series path to the new path
-            series.Path = destination;
-            series = _seriesService.UpdateSeries(series);
+            //Update the artist path to the new path
+            artist.Path = destination;
+            artist = _artistService.UpdateArtist(artist);
 
-            _eventAggregator.PublishEvent(new SeriesMovedEvent(series, source, destination));
+            _eventAggregator.PublishEvent(new ArtistMovedEvent(artist, source, destination));
         }
     }
 }

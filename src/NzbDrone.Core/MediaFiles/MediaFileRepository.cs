@@ -9,6 +9,7 @@ namespace NzbDrone.Core.MediaFiles
     public interface IMediaFileRepository : IBasicRepository<TrackFile>
     {
         List<TrackFile> GetFilesByArtist(int artistId);
+        List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFilesWithoutMediaInfo();
     }
 
@@ -28,6 +29,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> GetFilesByArtist(int artistId)
         {
             return Query.Where(c => c.ArtistId == artistId).ToList();
+        }
+
+        public List<TrackFile> GetFilesByAlbum(int albumId)
+        {
+            return Query.Where(c => c.AlbumId == albumId).ToList();
         }
     }
 }

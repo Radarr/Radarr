@@ -161,7 +161,7 @@ module.exports = Marionette.Layout.extend({
             command : {
                 name         : 'albumSearch',
                 artistId     : this.artist.id,
-                albumIds : [this.model.get('id')]
+                albumIds     : [this.model.get('id')]
             }
         });
 
@@ -170,7 +170,7 @@ module.exports = Marionette.Layout.extend({
             command : {
                 name         : 'renameFiles',
                 artistId     : this.artist.id,
-                albumId : this.model.get('id')
+                albumId      : this.model.get('id')
             }
         });
     },

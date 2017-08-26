@@ -14,8 +14,8 @@ module.exports = Marionette.ItemView.extend({
     initialize : function(options) {
         this.artist = options.artist;
         this.templateHelpers = {
-            numberOfArtist : this.artist.length,
-            artist         : new Backbone.Collection(this.artist).toJSON()
+            numberOfArtists : this.artist.length,
+            artist          : new Backbone.Collection(this.artist).toJSON()
         };
     },
 

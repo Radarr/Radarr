@@ -21,9 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         List<RenameTrackFilePreview> GetRenamePreviews(int artistId, int albumId);
     }
 
-    public class RenameTrackFileService : IRenameTrackFileService,
-                                            IExecute<RenameFilesCommand>,
-                                            IExecute<RenameArtistCommand>
+    public class RenameTrackFileService : IRenameTrackFileService, IExecute<RenameFilesCommand>, IExecute<RenameArtistCommand>
     {
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
@@ -58,32 +56,29 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<RenameTrackFilePreview> GetRenamePreviews(int artistId)
         {
-            // TODO
-            throw new NotImplementedException();
-            //var artist = _artistService.GetArtist(artistId);
-            //var tracks = _trackService.GetTracksByArtist(artistId);
-            //var files = _mediaFileService.GetFilesByArtist(artistId);
 
-            //return GetPreviews(artist, tracks, files)
-            //    .OrderByDescending(e => e.SeasonNumber)
-            //    .ThenByDescending(e => e.TrackNumbers.First())
-            //    .ToList();
+            var artist = _artistService.GetArtist(artistId);
+            var tracks = _trackService.GetTracksByArtist(artistId);
+            var files = _mediaFileService.GetFilesByArtist(artistId);
+
+            return GetPreviews(artist, tracks, files)
+                .OrderByDescending(e => e.AlbumId)
+                .ThenByDescending(e => e.TrackNumbers.First())
+                .ToList();
         }
 
         public List<RenameTrackFilePreview> GetRenamePreviews(int artistId, int albumId)
         {
-            // TODO
-            //throw new NotImplementedException();
+
             var artist = _artistService.GetArtist(artistId);
-            var album = _albumService.GetAlbum(albumId);
             var tracks = _trackService.GetTracksByAlbum(artistId, albumId);
             var files = _mediaFileService.GetFilesByAlbum(artistId, albumId);
 
-            return GetPreviews(artist, album, tracks, files)
+            return GetPreviews(artist, tracks, files)
                 .OrderByDescending(e => e.TrackNumbers.First()).ToList();
         }
 
-        private IEnumerable<RenameTrackFilePreview> GetPreviews(Artist artist, Album album, List<Track> tracks, List<TrackFile> files)
+        private IEnumerable<RenameTrackFilePreview> GetPreviews(Artist artist, List<Track> tracks, List<TrackFile> files)
         {
             foreach (var f in files)
             {
@@ -97,7 +92,8 @@ namespace NzbDrone.Core.MediaFiles
                     continue;
                 }
 
-                var albumId = tracksInFile.First().AlbumId;
+                var album = _albumService.GetAlbum(tracksInFile.First().AlbumId);
+
                 var newName = _filenameBuilder.BuildTrackFileName(tracksInFile, artist, album, file);
                 var newPath = _filenameBuilder.BuildTrackFilePath(artist, album, newName, Path.GetExtension(trackFilePath));
 
@@ -106,7 +102,7 @@ namespace NzbDrone.Core.MediaFiles
                     yield return new RenameTrackFilePreview
                     {
                         ArtistId = artist.Id,
-                        AlbumId = albumId,
+                        AlbumId = album.Id,
                         TrackNumbers = tracksInFile.Select(e => e.TrackNumber).ToList(),
                         TrackFileId = file.Id,
                         ExistingPath = file.RelativePath,
@@ -118,68 +114,64 @@ namespace NzbDrone.Core.MediaFiles
 
         private void RenameFiles(List<TrackFile> trackFiles, Artist artist)
         {
-            // TODO
-            throw new NotImplementedException();
-            //var renamed = new List<TrackFile>();
+            var renamed = new List<TrackFile>();
 
-            //foreach (var trackFile in trackFiles)
-            //{
-            //    var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
+            foreach (var trackFile in trackFiles)
+            {
+                var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
 
-            //    try
-            //    {
-            //        _logger.Debug("Renaming track file: {0}", trackFile);
-            //        _trackFileMover.MoveTrackFile(trackFile, artist);
+                try
+                {
+                    _logger.Debug("Renaming track file: {0}", trackFile);
+                    _trackFileMover.MoveTrackFile(trackFile, artist);
 
-            //        _mediaFileService.Update(trackFile);
-            //        renamed.Add(trackFile);
+                    _mediaFileService.Update(trackFile);
+                    renamed.Add(trackFile);
 
-            //        _logger.Debug("Renamed track file: {0}", trackFile);
-            //    }
-            //    catch (SameFilenameException ex)
-            //    {
-            //        _logger.Debug("File not renamed, source and destination are the same: {0}", ex.Filename);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        _logger.Error(ex, "Failed to rename file {0}", trackFilePath);
-            //    }
-            //}
+                    _logger.Debug("Renamed track file: {0}", trackFile);
+                }
+                catch (SameFilenameException ex)
+                {
+                    _logger.Debug("File not renamed, source and destination are the same: {0}", ex.Filename);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, "Failed to rename file {0}", trackFilePath);
+                }
+            }
 
-            //if (renamed.Any())
-            //{
-            //    _diskProvider.RemoveEmptySubfolders(artist.Path);
+            if (renamed.Any())
+            {
+                _diskProvider.RemoveEmptySubfolders(artist.Path);
 
-            //    _eventAggregator.PublishEvent(new ArtistRenamedEvent(artist));
-            //}
+                _eventAggregator.PublishEvent(new ArtistRenamedEvent(artist));
+            }
         }
 
         public void Execute(RenameFilesCommand message)
         {
-            // TODO
-            throw new NotImplementedException();
-            //var artist = _artistService.GetArtist(message.ArtistId);
-            //var trackFiles = _mediaFileService.Get(message.Files);
 
-            //_logger.ProgressInfo("Renaming {0} files for {1}", trackFiles.Count, artist.Title);
-            //RenameFiles(trackFiles, artist);
-            //_logger.ProgressInfo("Selected track files renamed for {0}", artist.Title);
+            var artist = _artistService.GetArtist(message.ArtistId);
+            var trackFiles = _mediaFileService.Get(message.Files);
+
+            _logger.ProgressInfo("Renaming {0} files for {1}", trackFiles.Count, artist.Name);
+            RenameFiles(trackFiles, artist);
+            _logger.ProgressInfo("Selected track files renamed for {0}", artist.Name);
         }
 
         public void Execute(RenameArtistCommand message)
         {
-            // TODO
-            throw new NotImplementedException();
-            //_logger.Debug("Renaming all files for selected artist");
-            //var artistToRename = _artistService.GetArtist(message.ArtistIds);
 
-            //foreach (var artist in artistToRename)
-            //{
-            //    var trackFiles = _mediaFileService.GetFilesByArtist(artist.Id);
-            //    _logger.ProgressInfo("Renaming all files in artist: {0}", artist.Title);
-            //    RenameFiles(trackFiles, artist);
-            //    _logger.ProgressInfo("All track files renamed for {0}", artist.Title);
-            //}
+            _logger.Debug("Renaming all files for selected artist");
+            var artistToRename = _artistService.GetArtists(message.ArtistIds);
+
+            foreach (var artist in artistToRename)
+            {
+                var trackFiles = _mediaFileService.GetFilesByArtist(artist.Id);
+                _logger.ProgressInfo("Renaming all files in artist: {0}", artist.Name);
+                RenameFiles(trackFiles, artist);
+                _logger.ProgressInfo("All track files renamed for {0}", artist.Name);
+            }
         }
     }
 }

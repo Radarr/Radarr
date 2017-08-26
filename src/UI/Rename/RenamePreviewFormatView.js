@@ -7,9 +7,10 @@ module.exports = Marionette.ItemView.extend({
 
     templateHelpers : function() {
         var type = this.model.get('seriesType');
+
         return {
-            rename : this.naming.get('renameEpisodes'),
-            format : this.naming.get(type + 'EpisodeFormat')
+            rename : this.naming.get('renameTracks'),
+            format : this.naming.get('standardTrackFormat')
         };
     },
 

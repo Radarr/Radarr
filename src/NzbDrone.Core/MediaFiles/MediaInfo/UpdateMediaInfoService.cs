@@ -3,11 +3,10 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
@@ -19,7 +18,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        private const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 3;
+        public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 3;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 4;
 
         public UpdateMediaInfoService(IDiskProvider diskProvider,
                                 IMediaFileService mediaFileService,
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             var allMediaFiles = _mediaFileService.GetFilesByArtist(message.Artist.Id);
-            var filteredMediaFiles = allMediaFiles.Where(c => c.MediaInfo == null || c.MediaInfo.SchemaRevision < CURRENT_MEDIA_INFO_SCHEMA_REVISION).ToList();
+            var filteredMediaFiles = allMediaFiles.Where(c => c.MediaInfo == null || c.MediaInfo.SchemaRevision < MINIMUM_MEDIA_INFO_SCHEMA_REVISION).ToList();
 
             UpdateMediaInfo(message.Artist, filteredMediaFiles);
         }
