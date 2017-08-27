@@ -50,6 +50,8 @@ module.exports = Backgrid.Cell.extend({
         } else if (this.model.forceDownloadOk()){
             this.$el.html('<i class="icon-radarr-download-warning" title="Force add to download queue."/>');
             this.className = 'force-download-report-cell';
+        } else {
+            this.className = 'no-download-report-cell';
         }
 
         return this;

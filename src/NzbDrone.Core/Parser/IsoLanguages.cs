@@ -8,6 +8,8 @@ namespace NzbDrone.Core.Parser
         private static readonly HashSet<IsoLanguage> All = new HashSet<IsoLanguage>
                                                            {
                                                                new IsoLanguage("en", "eng", Language.English),
+                                                               new IsoLanguage("us", "usa", Language.English), //For tmdb mapping
+                                                               new IsoLanguage("uk", "brit", Language.English), //For tmdb mapping too.
                                                                new IsoLanguage("fr", "fra", Language.French),
                                                                new IsoLanguage("es", "spa", Language.Spanish),
                                                                new IsoLanguage("de", "deu", Language.German),
