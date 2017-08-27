@@ -60,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles
                 results.AddRange(folderResults);
             }
 
-            foreach (var videoFile in _diskScanService.GetNonVideoFiles(directoryInfo.FullName, false))
+            foreach (var videoFile in _diskScanService.GetNonAudioFiles(directoryInfo.FullName, false))
             {
                 var fileResults = ProcessFile(new FileInfo(videoFile), ImportMode.Auto, null);
                 results.AddRange(fileResults);
@@ -101,7 +101,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Series series)
         {
-            var videoFiles = _diskScanService.GetNonVideoFiles(directoryInfo.FullName);
+            var videoFiles = _diskScanService.GetNonAudioFiles(directoryInfo.FullName);
             var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f) == ".rar");
 
             foreach (var videoFile in videoFiles)

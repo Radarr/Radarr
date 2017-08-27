@@ -9,7 +9,6 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
@@ -60,7 +59,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             }
         }
 
-        private void GivenSeriesFolder()
+        private void GivenArtistFolder()
         {
             GivenRootFolder(_artist.Path);
         }
@@ -87,7 +86,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_not_scan_if_series_root_folder_is_empty()
+        public void should_not_scan_if_artist_root_folder_is_empty()
         {
             GivenRootFolder();
 
@@ -106,7 +105,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_create_if_series_folder_does_not_exist_but_create_folder_enabled()
+        public void should_create_if_artist_folder_does_not_exist_but_create_folder_enabled()
         {
             GivenRootFolder(_otherArtistFolder);
 
@@ -121,7 +120,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_not_create_if_series_folder_does_not_exist_and_create_folder_disabled()
+        public void should_not_create_if_artist_folder_does_not_exist_and_create_folder_disabled()
         {
             GivenRootFolder(_otherArtistFolder);
 
@@ -136,7 +135,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_clean_but_not_import_if_series_folder_does_not_exist()
+        public void should_clean_but_not_import_if_artist_folder_does_not_exist()
         {
             GivenRootFolder(_otherArtistFolder);
 
@@ -153,7 +152,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_clean_but_not_import_if_series_folder_does_not_exist_and_create_folder_enabled()
+        public void should_clean_but_not_import_if_artist_folder_does_not_exist_and_create_folder_enabled()
         {
             GivenRootFolder(_otherArtistFolder);
 
@@ -171,14 +170,14 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_find_files_at_root_of_series_folder()
+        public void should_find_files_at_root_of_artist_folder()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -190,15 +189,15 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_extras_subfolder()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "EXTRAS", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Extras", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "EXTRAs", "file3.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "ExTrAs", "file4.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, "EXTRAS", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Extras", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "EXTRAs", "file3.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "ExTrAs", "file4.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -213,13 +212,13 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_AppleDouble_subfolder()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, ".AppleDouble", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, ".appledouble", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, ".AppleDouble", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, ".appledouble", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -229,20 +228,20 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_scan_extras_series_and_subfolders()
+        public void should_scan_extras_artist_and_subfolders()
         {
-            _artist.Path = @"C:\Test\TV\Extras".AsOsAgnostic();
+            _artist.Path = @"C:\Test\Music\Extras".AsOsAgnostic();
 
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "Extras", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, ".AppleDouble", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e02.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 2", "s02e01.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 2", "s02e02.mkv").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Extras", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, ".AppleDouble", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e02.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 2", "s02e01.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 2", "s02e02.flac").AsOsAgnostic(),
                        });
 
             Subject.Scan(_artist);
@@ -254,14 +253,14 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_subfolders_that_start_with_period()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, ".@__thumb", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, ".@__THUMB", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, ".hidden", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, ".@__thumb", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, ".@__THUMB", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, ".hidden", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -273,15 +272,15 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_subfolder_of_season_folder_that_starts_with_a_period()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "Season 1", ".@__thumb", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", ".@__THUMB", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", ".hidden", "file2.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", ".AppleDouble", "s01e01.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, "Season 1", ".@__thumb", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", ".@__THUMB", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", ".hidden", "file2.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", ".AppleDouble", "s01e01.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -293,12 +292,12 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_Synology_eaDir()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "@eaDir", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, "@eaDir", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -310,12 +309,12 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_thumb_folder()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, ".@__thumb", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, ".@__thumb", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -327,14 +326,14 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_scan_dotHack_folder()
         {
-            _artist.Path = @"C:\Test\TV\.hack".AsOsAgnostic();
+            _artist.Path = @"C:\Test\Music\.hack".AsOsAgnostic();
 
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "Season 1", "file1.mkv").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "Season 1", "s01e01.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, "Season 1", "file1.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "Season 1", "s01e01.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);
@@ -346,12 +345,13 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_exclude_osx_metadata_files()
         {
-            GivenSeriesFolder();
+            GivenArtistFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_artist.Path, "._24 The Status Quo Combustion.mp4").AsOsAgnostic(),
-                           Path.Combine(_artist.Path, "24 The Status Quo Combustion.mkv").AsOsAgnostic()
+                           Path.Combine(_artist.Path, ".DS_STORE").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "._24 The Status Quo Combustion.flac").AsOsAgnostic(),
+                           Path.Combine(_artist.Path, "24 The Status Quo Combustion.flac").AsOsAgnostic()
                        });
 
             Subject.Scan(_artist);

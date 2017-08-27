@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [SetUp]
         public void Setup()
         {
-            Mocker.GetMock<IDiskScanService>().Setup(c => c.GetVideoFiles(It.IsAny<string>(), It.IsAny<bool>()))
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.GetAudioFiles(It.IsAny<string>(), It.IsAny<bool>()))
                   .Returns(_videoFiles);
 
             Mocker.GetMock<IDiskProvider>().Setup(c => c.GetDirectories(It.IsAny<string>()))
@@ -95,13 +95,13 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(true);
 
             Mocker.GetMock<IDiskScanService>()
-                  .Setup(c => c.GetVideoFiles(It.IsAny<string>(), It.IsAny<bool>()))
+                  .Setup(c => c.GetAudioFiles(It.IsAny<string>(), It.IsAny<bool>()))
                   .Returns(new string[0]);
 
             Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IDiskScanService>()
-                  .Verify(v => v.GetVideoFiles(It.IsAny<string>(), true), Times.Never());
+                  .Verify(v => v.GetAudioFiles(It.IsAny<string>(), true), Times.Never());
 
             ExceptionVerification.ExpectedWarns(1);
         }

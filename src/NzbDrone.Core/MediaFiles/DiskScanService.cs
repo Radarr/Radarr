@@ -15,7 +15,6 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
@@ -25,10 +24,9 @@ namespace NzbDrone.Core.MediaFiles
     public interface IDiskScanService
     {
         void Scan(Artist artist);
-        string[] GetVideoFiles(string path, bool allDirectories = true);
-        string[] GetMusicFiles(string path, bool allDirectories = true);
-        string[] GetNonVideoFiles(string path, bool allDirectories = true);
-        List<string> FilterFiles(Series series, IEnumerable<string> files);
+        string[] GetAudioFiles(string path, bool allDirectories = true);
+        string[] GetNonAudioFiles(string path, bool allDirectories = true);
+        List<string> FilterFiles(Artist artist, IEnumerable<string> files);
     }
 
     public class DiskScanService :
@@ -40,7 +38,6 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly IConfigService _configService;
-        private readonly ISeriesService _seriesService;
         private readonly IArtistService _artistService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IEventAggregator _eventAggregator;
@@ -50,7 +47,6 @@ namespace NzbDrone.Core.MediaFiles
                                IMakeImportDecision importDecisionMaker,
                                IImportApprovedTracks importApprovedTracks,
                                IConfigService configService,
-                               ISeriesService seriesService,
                                IArtistService artistService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IEventAggregator eventAggregator,
@@ -60,7 +56,6 @@ namespace NzbDrone.Core.MediaFiles
             _importDecisionMaker = importDecisionMaker;
             _importApprovedTracks = importApprovedTracks;
             _configService = configService;
-            _seriesService = seriesService;
             _artistService = artistService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _eventAggregator = eventAggregator;
@@ -108,7 +103,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var musicFilesStopwatch = Stopwatch.StartNew();
-            var mediaFileList = FilterFiles(artist, GetMusicFiles(artist.Path)).ToList();
+            var mediaFileList = FilterFiles(artist, GetAudioFiles(artist.Path)).ToList();
             musicFilesStopwatch.Stop();
             _logger.Trace("Finished getting track files for: {0} [{1}]", artist, musicFilesStopwatch.Elapsed);
 
@@ -129,34 +124,13 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileTableCleanupService.Clean(artist, mediaFileList);
         }
 
-        //private void CompletedScanning(Series series)
-        //{
-        //    _logger.Info("Completed scanning disk for {0}", series.Title);
-        //    _eventAggregator.PublishEvent(new SeriesScannedEvent(series));
-        //}
-
         private void CompletedScanning(Artist artist)
         {
             _logger.Info("Completed scanning disk for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistScannedEvent(artist));
         }
 
-        public string[] GetVideoFiles(string path, bool allDirectories = true)
-        {
-            _logger.Debug("Scanning '{0}' for video files", path);
-
-            var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            var filesOnDisk = _diskProvider.GetFiles(path, searchOption).ToList();
-
-            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
-                                           .ToList();
-
-            _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
-            _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path);
-            return mediaFileList.ToArray();
-        }
-
-        public string[] GetMusicFiles(string path, bool allDirectories = true)
+        public string[] GetAudioFiles(string path, bool allDirectories = true)
         {
             _logger.Debug("Scanning '{0}' for music files", path);
 
@@ -171,7 +145,7 @@ namespace NzbDrone.Core.MediaFiles
             return mediaFileList.ToArray();
         }
 
-        public string[] GetNonVideoFiles(string path, bool allDirectories = true)
+        public string[] GetNonAudioFiles(string path, bool allDirectories = true)
         {
             _logger.Debug("Scanning '{0}' for non-music files", path);
 
@@ -184,13 +158,6 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
             _logger.Debug("{0} non-music files were found in {1}", mediaFileList.Count, path);
             return mediaFileList.ToArray();
-        }
-
-        public List<string> FilterFiles(Series series, IEnumerable<string> files)
-        {
-            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(series.Path.GetRelativePath(file)))
-                        .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
-                        .ToList();
         }
 
         public List<string> FilterFiles(Artist artist, IEnumerable<string> files)

@@ -351,7 +351,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\XemProxyFixture.cs" />
     <Compile Include="ProviderTests\DiskProviderTests\ArchiveProviderFixture.cs" />
-    <Compile Include="ProviderTests\DiskScanProviderTests\GetVideoFilesFixture.cs" />
+    <Compile Include="ProviderTests\DiskScanProviderTests\GetAudioFilesFixture.cs" />
     <Compile Include="ProviderTests\RecycleBinProviderTests\CleanupFixture.cs" />
     <Compile Include="ProviderTests\RecycleBinProviderTests\DeleteDirectoryFixture.cs" />
     <Compile Include="ProviderTests\RecycleBinProviderTests\DeleteFileFixture.cs" />

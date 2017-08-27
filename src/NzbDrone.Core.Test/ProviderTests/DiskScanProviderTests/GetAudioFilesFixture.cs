@@ -8,12 +8,12 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
 {
 
-    public class GetVideoFilesFixture : CoreTest<DiskScanService>
+    public class GetAudioFilesFixture : CoreTest<DiskScanService>
     {
         private string[] _fileNames;
 
@@ -22,10 +22,11 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         {
             _fileNames = new[]
                         {
-                            @"30 Rock1.mkv",
-                            @"30 Rock2.avi",
-                            @"30 Rock3.MP4",
-                            @"30 Rock4.wMv",
+                            @"30 Rock1.mp3",
+                            @"30 Rock2.flac",
+                            @"30 Rock3.ogg",
+                            @"30 Rock4.m4a",
+                            @"30 Rock.avi",
                             @"movie.exe",
                             @"movie"
                         };
@@ -49,7 +50,7 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         {
             var path = @"C:\Test\";
 
-            Subject.GetVideoFiles(path);
+            Subject.GetAudioFiles(path);
 
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.AllDirectories), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.TopDirectoryOnly), Times.Never());
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         {
             var path = @"C:\Test\";
 
-            Subject.GetVideoFiles(path, true);
+            Subject.GetAudioFiles(path, true);
 
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.AllDirectories), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.TopDirectoryOnly), Times.Never());
@@ -71,19 +72,19 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         {
             var path = @"C:\Test\";
 
-            Subject.GetVideoFiles(path, false);
+            Subject.GetAudioFiles(path, false);
 
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.AllDirectories), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(s => s.GetFiles(path, SearchOption.TopDirectoryOnly), Times.Once());
         }
 
         [Test]
-        public void should_return_video_files_only()
+        public void should_return_audio_files_only()
         {
             var path = @"C:\Test\";
             GivenFiles(GetFiles(path));
 
-            Subject.GetVideoFiles(path).Should().HaveCount(4);
+            Subject.GetAudioFiles(path).Should().HaveCount(4);
         }
 
         [TestCase("Extras")]
@@ -99,11 +100,11 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
             var specialFiles = GetFiles(path, subFolder).ToList();
             var allFiles = files.Concat(specialFiles);
 
-            var series = Builder<Series>.CreateNew()
+            var artist = Builder<Artist>.CreateNew()
                                         .With(s => s.Path = path)
                                         .Build();
 
-            var filteredFiles = Subject.FilterFiles(series, allFiles);
+            var filteredFiles = Subject.FilterFiles(artist, allFiles);
             filteredFiles.Should().NotContain(specialFiles);
             filteredFiles.Count.Should().BeGreaterThan(0);
         }
