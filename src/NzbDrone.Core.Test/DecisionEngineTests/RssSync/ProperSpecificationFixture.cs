@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             WithFirstFileUpgradable();
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
-            Subject.IsSatisfiedBy(_parseResultSingle, new SingleEpisodeSearchCriteria()).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]

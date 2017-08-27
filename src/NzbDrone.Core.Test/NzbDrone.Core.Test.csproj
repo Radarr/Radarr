@@ -247,8 +247,6 @@
     <Compile Include="Http\HttpProxySettingsProviderFixture.cs" />
     <Compile Include="Http\TorCacheHttpRequestInterceptorFixture.cs" />
     <Compile Include="IndexerSearchTests\ArtistSearchServiceFixture.cs" />
-    <Compile Include="IndexerSearchTests\SeriesSearchServiceFixture.cs" />
-    <Compile Include="IndexerSearchTests\NzbSearchServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\SearchDefinitionFixture.cs" />
     <Compile Include="IndexerTests\BasicRssParserFixture.cs" />
     <Compile Include="IndexerTests\IndexerServiceFixture.cs" />
@@ -264,7 +262,6 @@
     <Compile Include="IndexerTests\NewznabTests\NewznabSettingFixture.cs" />
     <Compile Include="IndexerTests\FanzubTests\FanzubFixture.cs" />
     <Compile Include="IndexerTests\OmgwtfnzbsTests\OmgwtfnzbsFixture.cs" />
-    <Compile Include="IndexerTests\SeasonSearchFixture.cs" />
     <Compile Include="IndexerTests\TestIndexer.cs" />
     <Compile Include="IndexerTests\TestIndexerSettings.cs" />
     <Compile Include="IndexerTests\IPTorrentsTests\IPTorrentsFixture.cs" />
@@ -341,9 +338,7 @@
     <Compile Include="ParserTests\MultiEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\NormalizeTitleFixture.cs" />
     <Compile Include="ParserTests\ParserFixture.cs" />
-    <Compile Include="ParserTests\ParsingServiceTests\GetEpisodesFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\GetSeriesFixture.cs" />
-    <Compile Include="ParserTests\ParsingServiceTests\MapFixture.cs" />
     <Compile Include="ParserTests\PathParserFixture.cs" />
     <Compile Include="ParserTests\QualityParserFixture.cs" />
     <Compile Include="ParserTests\ReleaseGroupParserFixture.cs" />

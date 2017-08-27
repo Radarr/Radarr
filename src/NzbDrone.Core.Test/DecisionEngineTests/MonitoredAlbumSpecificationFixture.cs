@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -108,34 +108,34 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_for_single_album_search()
         {
             _fakeArtist.Monitored = false;
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new SingleEpisodeSearchCriteria()).Accepted.Should().BeTrue();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_album_is_monitored_for_season_search()
         {
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new SeasonSearchCriteria()).Accepted.Should().BeTrue();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_if_album_is_not_monitored_for_season_search()
         {
             WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new SeasonSearchCriteria()).Accepted.Should().BeFalse();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_true_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_false()
         {
             WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new SingleEpisodeSearchCriteria { MonitoredEpisodesOnly = false }).Accepted.Should().BeTrue();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria { MonitoredEpisodesOnly = false }).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_true()
         {
             WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new SingleEpisodeSearchCriteria{ MonitoredEpisodesOnly = true}).Accepted.Should().BeFalse();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria{ MonitoredEpisodesOnly = true}).Accepted.Should().BeFalse();
         }
     }
 }

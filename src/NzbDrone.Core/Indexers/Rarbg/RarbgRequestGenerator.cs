@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -21,58 +21,6 @@ namespace NzbDrone.Core.Indexers.Rarbg
             var pageableRequests = new IndexerPageableRequestChain();
 
             pageableRequests.Add(GetPagedRequests("list", null, null));
-
-            return pageableRequests;
-        }
-
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, "S{0:00}E{1:00}", searchCriteria.SeasonNumber, searchCriteria.EpisodeNumber));
-
-            return pageableRequests;
-        }
-
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, "S{0:00}", searchCriteria.SeasonNumber));
-
-            return pageableRequests;
-        }
-
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, "\"{0:yyyy MM dd}\"", searchCriteria.AirDate));
-
-            return pageableRequests;
-        }
-
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            foreach (var queryTitle in searchCriteria.EpisodeQueryTitles)
-            {
-                var query = queryTitle.Replace('+', ' ');
-                query = System.Web.HttpUtility.UrlEncode(query);
-
-                pageableRequests.Add(GetPagedRequests("search", searchCriteria.Series.TvdbId, query));
-            }
 
             return pageableRequests;
         }

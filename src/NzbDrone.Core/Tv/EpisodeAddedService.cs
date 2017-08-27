@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Tv
 
                 if (missing.Any())
                 {
-                    _commandQueueManager.Push(new EpisodeSearchCommand(missing.Select(e => e.Id).ToList()));
+                    //_commandQueueManager.Push(new EpisodeSearchCommand(missing.Select(e => e.Id).ToList()));
                 }
             }
             

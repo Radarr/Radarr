@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -63,16 +63,6 @@ namespace NzbDrone.Core.Indexers
 
         public abstract IList<ReleaseInfo> FetchRecent();
 
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public abstract IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria);
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public abstract IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria);
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public abstract IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria);
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public abstract IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria);
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public abstract IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria);
         public abstract IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
         public abstract IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria);
 
