@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Tv
 
         public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
 		{
-			/*if (pagingSpec.SortKey == "downloadedQuality")
+			if (pagingSpec.SortKey == "downloadedQuality")
 			{
 				var mapper = _database.GetDataMapper();
 				var offset = pagingSpec.PagingOffset();
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Tv
 				{
 					direction = "DESC";
 				}
-				var q = Query.Select($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
+				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
 				var q2 = mapper.Query<Movie>("SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title ASC;");
 
 				//var ok = q.BuildQuery();
@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Tv
 				pagingSpec.TotalRecords = q2.Count();
 
 			}
-			else*/
+			else
 			{
 				pagingSpec = base.GetPaged(pagingSpec);
 			    //pagingSpec.Records = GetPagedQuery(Query, pagingSpec).ToList();
@@ -220,7 +220,7 @@ namespace NzbDrone.Core.Tv
             {
                 foreach (var belowCutoff in profile.QualityIds)
                 {
-                    clauses.Add(string.Format("([t0].[ProfileId] = {0} AND [t1].[Quality] LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+                    clauses.Add(string.Format("([t0].[ProfileId] = {0} AND [t2].[Quality] LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
                 }
             }
 

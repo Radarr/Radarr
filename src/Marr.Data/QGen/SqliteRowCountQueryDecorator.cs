@@ -23,6 +23,7 @@ namespace Marr.Data.QGen
                 _innerQuery.BuildSelectClause(sql);
                 _innerQuery.BuildFromClause(sql);
                 _innerQuery.BuildJoinClauses(sql);
+                _innerQuery.BuildWhereClause(sql);
                 _innerQuery.BuildGroupBy(sql);
                 sql.Append(") ");
 
