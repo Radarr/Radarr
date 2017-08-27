@@ -253,12 +253,6 @@ namespace NzbDrone.Core.Datastore
                 .Take(pagingSpec.PageSize).ToList();
             pagingSpec.TotalRecords = GetPagedQuery(Query, pagingSpec).GetRowCount();
 
-            var queryStr = GetPagedQuery(Query, pagingSpec).BuildQuery();
-            var beforeQuery = Query.BuildQuery();
-
-            pagingSpec.SortKey = beforeQuery;
-            pagingSpec.SortKey = queryStr;
-
             return pagingSpec;
         }
 
