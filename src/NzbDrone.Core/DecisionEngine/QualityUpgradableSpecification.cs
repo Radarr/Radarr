@@ -1,4 +1,4 @@
-using NLog;
+﻿using NLog;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 
@@ -34,6 +34,11 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     return true;
                 }
+
+                if (profile.Language != Parser.Language.Hungarian)
+                {
+                    return true;
+                }
             }
 
             return true;
@@ -42,6 +47,11 @@ namespace NzbDrone.Core.DecisionEngine
         public bool CutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
         {
             var compare = new QualityModelComparer(profile).Compare(currentQuality.Quality, profile.Cutoff);
+
+            if (profile.Language != Parser.Language.Hungarian)
+            {
+                return true;
+            }
 
             if (compare < 0)
             {
@@ -52,7 +62,7 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 return true;
             }
-            
+
             return false;
 
         }

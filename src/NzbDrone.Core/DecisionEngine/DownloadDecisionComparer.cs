@@ -25,6 +25,7 @@ namespace NzbDrone.Core.DecisionEngine
         {
             var comparers = new List<CompareDelegate>
             {
+                CompareLanguage,
                 CompareQuality,
                 ComparePreferredWords,
                 CompareIndexerFlags,
@@ -35,6 +36,21 @@ namespace NzbDrone.Core.DecisionEngine
             };
 
             return comparers.Select(comparer => comparer(x, y)).FirstOrDefault(result => result != 0);
+        }
+
+        private int CompareLanguage(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
+            {
+                var language = remoteMovie.ParsedMovieInfo.Language;
+
+                if (language == Parser.Language.Hungarian)
+                {
+                    return 1;
+                }
+
+                return 0;
+            });
         }
 
         private int CompareBy<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
@@ -49,7 +65,7 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareByReverse<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
             where TValue : IComparable<TValue>
         {
-            return CompareBy(left, right, funcValue)*-1;
+            return CompareBy(left, right, funcValue) * -1;
         }
 
         private int CompareAll(params int[] comparers)
@@ -89,7 +105,7 @@ namespace NzbDrone.Core.DecisionEngine
 
             });
         }
-        
+
         private int CompareIndexerFlags(DownloadDecision x, DownloadDecision y)
         {
             var releaseX = x.RemoteMovie.Release;
@@ -118,7 +134,7 @@ namespace NzbDrone.Core.DecisionEngine
                     return downloadProtocol == delayProfile.PreferredProtocol;
                 });
             }
-            
+
             var result = CompareBy(x.RemoteEpisode, y.RemoteEpisode, remoteEpisode =>
             {
                 var delayProfile = _delayProfileService.BestForTags(remoteEpisode.Series.Tags);
@@ -126,7 +142,7 @@ namespace NzbDrone.Core.DecisionEngine
                 return downloadProtocol == delayProfile.PreferredProtocol;
             });
 
-            
+
 
             return result;
         }

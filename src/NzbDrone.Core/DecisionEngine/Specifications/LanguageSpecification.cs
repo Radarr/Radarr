@@ -1,4 +1,4 @@
-using NLog;
+﻿using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
@@ -18,31 +18,34 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
         {
             var wantedLanguage = subject.Series.Profile.Value.Language;
-            
-            _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedEpisodeInfo.Language);
 
-            if (subject.ParsedEpisodeInfo.Language != wantedLanguage)
+            if (subject.ParsedEpisodeInfo.Language == wantedLanguage || subject.ParsedEpisodeInfo.Language == Parser.Language.Hungarian)
             {
-                _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.ParsedEpisodeInfo.Language, wantedLanguage);
-                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.ParsedEpisodeInfo.Language);
-            }
 
-            return Decision.Accept();
+                return Decision.Accept();
+            }
+            else
+            {
+                _logger.Debug("Report Language: {0} rejected because it is not wanted", subject.ParsedEpisodeInfo.Language);
+                return Decision.Reject("{0} isn't wanted!", subject.ParsedEpisodeInfo.Language);
+            }
         }
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var wantedLanguage = subject.Movie.Profile.Value.Language;
+            var wantedLanguage = Parser.Language.English;
 
-            _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Language);
-
-            if (subject.ParsedMovieInfo.Language != wantedLanguage)
+            if (subject.ParsedMovieInfo.Language == wantedLanguage || subject.ParsedMovieInfo.Language == Parser.Language.Hungarian)
             {
-                _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.ParsedMovieInfo.Language, wantedLanguage);
-                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.ParsedMovieInfo.Language);
+
+                return Decision.Accept();
+            }
+            else
+            {
+                _logger.Debug("Report Language: {0} rejected because it is not wanted", subject.ParsedMovieInfo.Language);
+                return Decision.Reject("{0} isn't wanted!", subject.ParsedMovieInfo.Language);
             }
 
-            return Decision.Accept();
         }
     }
 }
