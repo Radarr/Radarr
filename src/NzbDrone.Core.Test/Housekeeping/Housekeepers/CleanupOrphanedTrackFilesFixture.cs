@@ -1,49 +1,49 @@
-﻿using System.Linq;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
     [TestFixture]
-    public class CleanupOrphanedEpisodeFilesFixture : DbTest<CleanupOrphanedEpisodeFiles, EpisodeFile>
+    public class CleanupOrphanedTrackFilesFixture : DbTest<CleanupOrphanedTrackFiles, TrackFile>
     {
         [Test]
-        public void should_delete_orphaned_episode_files()
+        public void should_delete_orphaned_track_files()
         {
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
+            var trackFile = Builder<TrackFile>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
                                                   .BuildNew();
 
-            Db.Insert(episodeFile);
+            Db.Insert(trackFile);
             Subject.Clean();
             AllStoredModels.Should().BeEmpty();
         }
 
         [Test]
-        public void should_not_delete_unorphaned_episode_files()
+        public void should_not_delete_unorphaned_track_files()
         {
-            var episodeFiles = Builder<EpisodeFile>.CreateListOfSize(2)
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(2)
                                                    .All()
                                                    .With(h => h.Quality = new QualityModel())
                                                    .BuildListOfNew();
 
-            Db.InsertMany(episodeFiles);
+            Db.InsertMany(trackFiles);
 
-            var episode = Builder<Episode>.CreateNew()
-                                          .With(e => e.EpisodeFileId = episodeFiles.First().Id)
+            var track = Builder<Track>.CreateNew()
+                                          .With(e => e.TrackFileId = trackFiles.First().Id)
                                           .BuildNew();
 
-            Db.Insert(episode);
+            Db.Insert(track);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            Db.All<Episode>().Should().Contain(e => e.EpisodeFileId == AllStoredModels.First().Id);
+            Db.All<Track>().Should().Contain(e => e.TrackFileId == AllStoredModels.First().Id);
         }
     }
 }
