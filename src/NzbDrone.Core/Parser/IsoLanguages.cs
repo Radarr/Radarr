@@ -7,9 +7,7 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly HashSet<IsoLanguage> All = new HashSet<IsoLanguage>
                                                            {
-                                                               new IsoLanguage("en", "eng", Language.English),
-                                                               new IsoLanguage("us", "usa", Language.English), //For tmdb mapping
-                                                               new IsoLanguage("uk", "brit", Language.English), //For tmdb mapping too.
+                                                               new IsoLanguage(new List<string> {"en", "us", "uk"}, "eng", Language.English),
                                                                new IsoLanguage("fr", "fra", Language.French),
                                                                new IsoLanguage("es", "spa", Language.Spanish),
                                                                new IsoLanguage("de", "deu", Language.German),
@@ -39,7 +37,7 @@ namespace NzbDrone.Core.Parser
             if (isoCode.Length == 2)
             {
                 //Lookup ISO639-1 code
-                return All.SingleOrDefault(l => l.TwoLetterCode == isoCode);
+                return All.SingleOrDefault(l => l.TwoLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
             }
             else if (isoCode.Length == 3)
             {
