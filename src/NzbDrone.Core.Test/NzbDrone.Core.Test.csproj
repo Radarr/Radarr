@@ -278,7 +278,7 @@
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
     <Compile Include="MediaFiles\DiskScanServiceTests\ScanFixture.cs" />
-    <Compile Include="MediaFiles\DownloadedEpisodesCommandServiceFixture.cs" />
+    <Compile Include="MediaFiles\DownloadedAlbumsCommandServiceFixture.cs" />
     <Compile Include="MediaFiles\DownloadedEpisodesImportServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />

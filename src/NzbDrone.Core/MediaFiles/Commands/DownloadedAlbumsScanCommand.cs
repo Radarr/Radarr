@@ -1,10 +1,9 @@
-using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.MediaFiles.Commands
 {
-    public class DownloadedEpisodesScanCommand : Command
+    public class DownloadedAlbumsScanCommand : Command
     {
         public override bool SendUpdatesToClient => SendUpdates;
 

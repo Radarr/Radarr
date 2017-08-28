@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -7,13 +7,12 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MediaFiles.TrackImport;
 
 namespace NzbDrone.Core.MediaFiles
 {
-    public class DownloadedEpisodesCommandService : IExecute<DownloadedEpisodesScanCommand>
+    public class DownloadedAlbumsCommandService : IExecute<DownloadedAlbumsScanCommand>
     {
         private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
         private readonly ITrackedDownloadService _trackedDownloadService;
@@ -21,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public DownloadedEpisodesCommandService(IDownloadedEpisodesImportService downloadedEpisodesImportService,
+        public DownloadedAlbumsCommandService(IDownloadedEpisodesImportService downloadedEpisodesImportService,
                                                 ITrackedDownloadService trackedDownloadService,
                                                 IDiskProvider diskProvider,
                                                 IConfigService configService,
@@ -53,7 +52,7 @@ namespace NzbDrone.Core.MediaFiles
             return _downloadedEpisodesImportService.ProcessRootFolder(new DirectoryInfo(downloadedAlbumsFolder));
         }
 
-        private List<ImportResult> ProcessPath(DownloadedEpisodesScanCommand message)
+        private List<ImportResult> ProcessPath(DownloadedAlbumsScanCommand message)
         {
             if (!_diskProvider.FolderExists(message.Path) && !_diskProvider.FileExists(message.Path))
             {
@@ -82,7 +81,7 @@ namespace NzbDrone.Core.MediaFiles
             return _downloadedEpisodesImportService.ProcessPath(message.Path, message.ImportMode);
         }
 
-        public void Execute(DownloadedEpisodesScanCommand message)
+        public void Execute(DownloadedAlbumsScanCommand message)
         {
             List<ImportResult> importResults;
 

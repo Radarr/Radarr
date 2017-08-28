@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_true_when_there_are_no_properties()
         {
-            var command1 = new DownloadedEpisodesScanCommand();
-            var command2 = new DownloadedEpisodesScanCommand();
+            var command1 = new DownloadedAlbumsScanCommand();
+            var command2 = new DownloadedAlbumsScanCommand();
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeTrue();
         }
