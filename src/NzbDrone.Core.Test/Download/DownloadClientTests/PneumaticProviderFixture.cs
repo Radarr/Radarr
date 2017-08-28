@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _nzbPath = Path.Combine(_pneumaticFolder, _title + ".nzb").AsOsAgnostic();
             _sabDrop = @"d:\unsorted tv\".AsOsAgnostic();
 
-            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedEpisodesFolder).Returns(_sabDrop);
+            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedAlbumsFolder).Returns(_sabDrop);
 
             _remoteEpisode = new RemoteAlbum();
             _remoteEpisode.Release = new ReleaseInfo();

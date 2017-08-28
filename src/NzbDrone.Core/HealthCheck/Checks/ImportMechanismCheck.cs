@@ -24,7 +24,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var droneFactoryFolder = new OsPath(_configService.DownloadedEpisodesFolder);
+            var droneFactoryFolder = new OsPath(_configService.DownloadedAlbumsFolder);
             List<ImportMechanismCheckStatus> downloadClients;
 
             try

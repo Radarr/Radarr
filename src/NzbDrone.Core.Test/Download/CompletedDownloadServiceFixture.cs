@@ -157,7 +157,7 @@ namespace NzbDrone.Core.Test.Download
         public void should_not_process_if_storage_directory_in_drone_factory()
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedEpisodesFolder)
+                  .SetupGet(v => v.DownloadedAlbumsFolder)
                   .Returns(@"C:\DropFolder".AsOsAgnostic());
 
             _trackedDownload.DownloadItem.OutputPath = new OsPath(@"C:\DropFolder\SomeOtherFolder".AsOsAgnostic());

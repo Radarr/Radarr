@@ -36,21 +36,21 @@ namespace NzbDrone.Core.MediaFiles
 
         private List<ImportResult> ProcessDroneFactoryFolder()
         {
-            var downloadedEpisodesFolder = _configService.DownloadedEpisodesFolder;
+            var downloadedAlbumsFolder = _configService.DownloadedAlbumsFolder;
 
-            if (string.IsNullOrEmpty(downloadedEpisodesFolder))
+            if (string.IsNullOrEmpty(downloadedAlbumsFolder))
             {
                 _logger.Trace("Drone Factory folder is not configured");
                 return new List<ImportResult>();
             }
 
-            if (!_diskProvider.FolderExists(downloadedEpisodesFolder))
+            if (!_diskProvider.FolderExists(downloadedAlbumsFolder))
             {
-                _logger.Warn("Drone Factory folder [{0}] doesn't exist.", downloadedEpisodesFolder);
+                _logger.Warn("Drone Factory folder [{0}] doesn't exist.", downloadedAlbumsFolder);
                 return new List<ImportResult>();
             }
 
-            return _downloadedEpisodesImportService.ProcessRootFolder(new DirectoryInfo(downloadedEpisodesFolder));
+            return _downloadedEpisodesImportService.ProcessRootFolder(new DirectoryInfo(downloadedAlbumsFolder));
         }
 
         private List<ImportResult> ProcessPath(DownloadedEpisodesScanCommand message)

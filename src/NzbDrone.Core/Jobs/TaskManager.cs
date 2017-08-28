@@ -65,10 +65,8 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 1, TypeName = typeof(CheckForFinishedDownloadCommand).FullName},
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
-                    //new ScheduledTask{ Interval = 3*60, TypeName = typeof(UpdateSceneMappingCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
                     new ScheduledTask{ Interval = 12*60, TypeName = typeof(RefreshArtistCommand).FullName},
-                    //new ScheduledTask{ Interval = 12*60, TypeName = typeof(RefreshSeriesCommand).FullName}, // TODO: Remove
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
                     new ScheduledTask{ Interval = 7*24*60, TypeName = typeof(BackupCommand).FullName},
 
@@ -80,7 +78,7 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     { 
-                        Interval = _configService.DownloadedEpisodesScanInterval,
+                        Interval = _configService.DownloadedAlbumsScanInterval,
                         TypeName = typeof(DownloadedEpisodesScanCommand).FullName
                     },
                 };
@@ -146,10 +144,10 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var downloadedEpisodes = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
-            downloadedEpisodes.Interval = _configService.DownloadedEpisodesScanInterval;
+            var downloadedAlbums = _scheduledTaskRepository.GetDefinition(typeof(DownloadedEpisodesScanCommand));
+            downloadedAlbums.Interval = _configService.DownloadedAlbumsScanInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedEpisodes });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedAlbums });
         }
     }
 }

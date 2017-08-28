@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [SetUp]
         public void Setup()
         {
-            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedEpisodesFolder)
+            Mocker.GetMock<IConfigService>().SetupGet(c => c.DownloadedAlbumsFolder)
                   .Returns(_droneFactory);
 
             Mocker.GetMock<IDownloadedEpisodesImportService>()

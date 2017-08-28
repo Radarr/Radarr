@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         private void GivenDroneFactoryFolder(bool exists = false, bool writable = true)
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(s => s.DownloadedEpisodesFolder)
+                  .SetupGet(s => s.DownloadedAlbumsFolder)
                   .Returns(DRONE_FACTORY_FOLDER);
 
             Mocker.GetMock<IDiskProvider>()

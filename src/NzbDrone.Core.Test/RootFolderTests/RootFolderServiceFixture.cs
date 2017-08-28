@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.RootFolderTests
             var path = @"C:\TV".AsOsAgnostic();
 
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(s => s.DownloadedEpisodesFolder)
+                  .SetupGet(s => s.DownloadedAlbumsFolder)
                   .Returns(path);
 
             Assert.Throws<InvalidOperationException>(() => Subject.Add(new RootFolder { Path = path }));

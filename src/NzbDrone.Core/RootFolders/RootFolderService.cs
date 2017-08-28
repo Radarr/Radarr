@@ -107,7 +107,7 @@ namespace NzbDrone.Core.RootFolders
                 throw new InvalidOperationException("Recent directory already exists.");
             }
 
-            if (_configService.DownloadedEpisodesFolder.IsNotNullOrWhiteSpace() && _configService.DownloadedEpisodesFolder.PathEquals(rootFolder.Path))
+            if (_configService.DownloadedAlbumsFolder.IsNotNullOrWhiteSpace() && _configService.DownloadedAlbumsFolder.PathEquals(rootFolder.Path))
             {
                 throw new InvalidOperationException("Drone Factory folder cannot be used.");
             }

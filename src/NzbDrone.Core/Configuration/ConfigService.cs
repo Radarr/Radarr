@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Configuration
 {
     public enum ConfigKey
     {
-        DownloadedEpisodesFolder
+        DownloadedAlbumsFolder
     }
 
     public class ConfigService : IConfigService
@@ -74,11 +74,11 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public string DownloadedEpisodesFolder
+        public string DownloadedAlbumsFolder
         {
-            get { return GetValue(ConfigKey.DownloadedEpisodesFolder.ToString()); }
+            get { return GetValue(ConfigKey.DownloadedAlbumsFolder.ToString()); }
 
-            set { SetValue(ConfigKey.DownloadedEpisodesFolder.ToString(), value); }
+            set { SetValue(ConfigKey.DownloadedAlbumsFolder.ToString(), value); }
         }
 
         public bool AutoUnmonitorPreviouslyDownloadedTracks
@@ -168,11 +168,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("DownloadClientWorkingFolders", value); }
         }
 
-        public int DownloadedEpisodesScanInterval
+        public int DownloadedAlbumsScanInterval
         {
-            get { return GetValueInt("DownloadedEpisodesScanInterval", 1); }
+            get { return GetValueInt("DownloadedAlbumsScanInterval", 1); }
 
-            set { SetValue("DownloadedEpisodesScanInterval", value); }
+            set { SetValue("DownloadedAlbumsScanInterval", value); }
         }
 
         public int DownloadClientHistoryLimit

@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         public void should_check_diskspace_for_dronefactory_folder()
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedEpisodesFolder)
+                  .SetupGet(v => v.DownloadedAlbumsFolder)
                   .Returns(_droneFactoryFolder);
 
             GivenExistingFolder(_droneFactoryFolder);
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         public void should_not_check_diskspace_for_missing_dronefactory_folder()
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedEpisodesFolder)
+                  .SetupGet(v => v.DownloadedAlbumsFolder)
                   .Returns(_droneFactoryFolder);
 
             var freeSpace = Subject.GetFreeSpace();

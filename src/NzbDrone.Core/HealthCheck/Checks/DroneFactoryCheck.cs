@@ -17,7 +17,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var droneFactoryFolder = _configService.DownloadedEpisodesFolder;
+            var droneFactoryFolder = _configService.DownloadedAlbumsFolder;
 
             if (droneFactoryFolder.IsNullOrWhiteSpace())
             {

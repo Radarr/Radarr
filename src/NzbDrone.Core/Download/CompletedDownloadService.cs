@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Download
                     return;
                 }
 
-                var downloadedEpisodesFolder = new OsPath(_configService.DownloadedEpisodesFolder);
+                var downloadedEpisodesFolder = new OsPath(_configService.DownloadedAlbumsFolder);
 
                 if (downloadedEpisodesFolder.Contains(downloadItemOutputPath))
                 {
