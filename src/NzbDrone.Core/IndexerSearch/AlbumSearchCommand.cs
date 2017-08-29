@@ -3,7 +3,7 @@ using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.IndexerSearch
 {
-    class AlbumSearchCommand : Command
+    public class AlbumSearchCommand : Command
     {
         public List<int> AlbumIds { get; set; }
 
