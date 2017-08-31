@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NLog;
@@ -6,7 +6,7 @@ using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
 
-namespace NzbDrone.Core.MediaFiles.EpisodeImport
+namespace NzbDrone.Core.MediaFiles.TrackImport
 {
     public interface IDetectSample
     {

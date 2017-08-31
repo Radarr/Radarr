@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,18 +9,14 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.MediaFiles.TrackImport;
 
-namespace NzbDrone.Core.MediaFiles.EpisodeImport
+namespace NzbDrone.Core.MediaFiles.TrackImport
 {
     public interface IMakeImportDecision
     {
-        //List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist);
-        //List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
     }
 
@@ -50,28 +46,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             _detectSample = detectSample;
             _logger = logger;
         }
-
-        //public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series)
-        //{
-        //    return GetImportDecisions(videoFiles, series, null, false);
-        //}
-
-        //public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Artist series, ParsedEpisodeInfo folderInfo, bool sceneSource)
-        //{
-        //    var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), series);
-
-        //    _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
-
-        //    var shouldUseFolderName = ShouldUseFolderName(videoFiles, series, folderInfo);
-        //    var decisions = new List<ImportDecision>();
-
-        //    foreach (var file in newFiles)
-        //    {
-        //        decisions.AddIfNotNull(GetDecision(file, series, folderInfo, sceneSource, shouldUseFolderName));
-        //    }
-
-        //    return decisions;
-        //}
 
         public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist)
         {
@@ -165,28 +139,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
                 //e.Data.Add("report", remoteEpisode.Report.ToJson());
                 //e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
                 _logger.Error(e, "Couldn't evaluate decision on {0}", localTrack.Path);
-                return new Rejection($"{spec.GetType().Name}: {e.Message}");
-            }
-
-            return null;
-        }
-
-        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalEpisode localEpisode)
-        {
-            try
-            {
-                var result = spec.IsSatisfiedBy(localEpisode);
-
-                if (!result.Accepted)
-                {
-                    return new Rejection(result.Reason);
-                }
-            }
-            catch (Exception e)
-            {
-                //e.Data.Add("report", remoteEpisode.Report.ToJson());
-                //e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on {0}", localEpisode.Path);
                 return new Rejection($"{spec.GetType().Name}: {e.Message}");
             }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,10 +12,10 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Extras;
-using NzbDrone.Core.MediaFiles.TrackImport;
 
-namespace NzbDrone.Core.MediaFiles.EpisodeImport
+namespace NzbDrone.Core.MediaFiles.TrackImport
 {
+    [Obsolete("Used by Sonarr, not by Lidarr")]
     public interface IImportApprovedEpisodes
     {
         List<ImportResult> Import(List<ImportDecision> decisions, bool newDownload, DownloadClientItem downloadClientItem = null, ImportMode importMode = ImportMode.Auto);

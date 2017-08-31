@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
@@ -21,11 +20,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         }
 
         public RejectionType Type => RejectionType.Permanent;
-
-        public Decision IsSatisfiedBy(LocalEpisode localEpisode)
-        {
-            throw new NotImplementedException();
-        }
 
         public Decision IsSatisfiedBy(LocalTrack localTrack)
         {

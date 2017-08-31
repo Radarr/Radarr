@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
 
-namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
+namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public class ManualImportFile
     {

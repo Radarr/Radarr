@@ -1,22 +1,22 @@
-﻿using System;
+using System;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles.EpisodeImport.Specifications;
+using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
+namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
 {
     [TestFixture]
     public class NotUnpackingSpecificationFixture : CoreTest<NotUnpackingSpecification>
     {
-        private LocalEpisode _localEpisode;
+        private LocalTrack _localTrack;
 
         [SetUp]
         public void Setup()
@@ -25,17 +25,17 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
                 .SetupGet(s => s.DownloadClientWorkingFolders)
                 .Returns("_UNPACK_|_FAILED_");
 
-            _localEpisode = new LocalEpisode
+            _localTrack = new LocalTrack
             {
-                Path = @"C:\Test\Unsorted TV\30.rock\30.rock.s01e01.avi".AsOsAgnostic(),
+                Path = @"C:\Test\Unsorted Music\Kid.Rock\Kid.Rock.Cowboy.mp3".AsOsAgnostic(),
                 Size = 100,
-                Series = Builder<Series>.CreateNew().Build()
+                Artist = Builder<Artist>.CreateNew().Build()
             };
         }
 
         private void GivenInWorkingFolder()
         {
-            _localEpisode.Path = @"C:\Test\Unsorted TV\_UNPACK_30.rock\someSubFolder\30.rock.s01e01.avi".AsOsAgnostic();
+            _localTrack.Path = @"C:\Test\Unsorted Music\_UNPACK_Kid.Rock\someSubFolder\Kid.Rock.Cowboy.mp3".AsOsAgnostic();
         }
 
         private void GivenLastWriteTimeUtc(DateTime time)
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
         [Test]
         public void should_return_true_if_not_in_working_folder()
         {
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow.AddHours(-1));
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow);
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow.AddDays(-5));
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
         }
     }
 }

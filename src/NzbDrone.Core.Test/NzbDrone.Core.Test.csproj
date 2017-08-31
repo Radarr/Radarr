@@ -282,11 +282,11 @@
     <Compile Include="MediaFiles\DownloadedEpisodesImportServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />
-    <Compile Include="MediaFiles\EpisodeImport\ImportDecisionMakerFixture.cs" />
-    <Compile Include="MediaFiles\EpisodeImport\SampleServiceFixture.cs" />
-    <Compile Include="MediaFiles\EpisodeImport\Specifications\FreeSpaceSpecificationFixture.cs" />
-    <Compile Include="MediaFiles\EpisodeImport\Specifications\NotUnpackingSpecificationFixture.cs" />
-    <Compile Include="MediaFiles\EpisodeImport\Specifications\UpgradeSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\SampleServiceFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecificationFixture.cs" />
     <Compile Include="MediaFiles\ImportApprovedEpisodesFixture.cs" />
     <Compile Include="MediaFiles\MediaFileRepositoryFixture.cs" />
     <Compile Include="Messaging\Commands\CommandQueueManagerFixture.cs" />

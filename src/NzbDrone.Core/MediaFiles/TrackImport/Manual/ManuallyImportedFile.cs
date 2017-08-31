@@ -1,7 +1,6 @@
-﻿using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.Download.TrackedDownloads;
 
-namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
+namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public class ManuallyImportedFile
     {

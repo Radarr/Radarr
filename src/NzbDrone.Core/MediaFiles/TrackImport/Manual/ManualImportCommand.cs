@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.MediaFiles.TrackImport;
 
-namespace NzbDrone.Core.MediaFiles.EpisodeImport.Manual
+namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public class ManualImportCommand : Command
     {

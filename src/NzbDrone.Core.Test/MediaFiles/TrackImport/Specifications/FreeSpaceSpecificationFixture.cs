@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -6,48 +6,46 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles.EpisodeImport.Specifications;
+using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
+namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
 {
     [TestFixture]
     public class FreeSpaceSpecificationFixture : CoreTest<FreeSpaceSpecification>
     {
-        private Series _series;
-        private LocalEpisode _localEpisode;
+        private Artist _artist;
+        private LocalTrack _localTrack;
         private string _rootFolder;
 
         [SetUp]
         public void Setup()
         {
-             _rootFolder = @"C:\Test\TV".AsOsAgnostic();
+             _rootFolder = @"C:\Test\Music".AsOsAgnostic();
 
-            _series = Builder<Series>.CreateNew()
-                                     .With(s => s.SeriesType = SeriesTypes.Standard)
-                                     .With(s => s.Path = Path.Combine(_rootFolder, "30 Rock"))
+            _artist = Builder<Artist>.CreateNew()
+                                     .With(s => s.Path = Path.Combine(_rootFolder, "Alice in Chains"))
                                      .Build();
 
-            var episodes = Builder<Episode>.CreateListOfSize(1)
+            var tracks = Builder<Track>.CreateListOfSize(1)
                                            .All()
-                                           .With(e => e.SeasonNumber = 1)
                                            .Build()
                                            .ToList();
 
-            _localEpisode = new LocalEpisode
+            _localTrack = new LocalTrack
                                 {
-                                    Path = @"C:\Test\Unsorted\30 Rock\30.rock.s01e01.avi".AsOsAgnostic(),
-                                    Episodes = episodes,
-                                    Series = _series
+                                    Path = @"C:\Test\Unsorted\Alice in Chains\Alice in Chains - track1.mp3".AsOsAgnostic(),
+                                    Tracks = tracks,
+                                    Artist = _artist
                                 };
         }
 
         private void GivenFileSize(long size)
         {
-            _localEpisode.Size = size;
+            _localTrack.Size = size;
         }
 
         private void GivenFreeSpace(long? size)
@@ -63,7 +61,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(80.Megabytes());
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
             ExceptionVerification.ExpectedWarns(1);
         }
 
@@ -73,7 +71,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(150.Megabytes());
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeFalse();
             ExceptionVerification.ExpectedWarns(1);
         }
 
@@ -83,16 +81,16 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(1.Gigabytes());
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_use_series_paths_parent_for_free_space_check()
+        public void should_use_artist_paths_parent_for_free_space_check()
         {
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(1.Gigabytes());
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
 
             Mocker.GetMock<IDiskProvider>()
                 .Verify(v => v.GetAvailableSpace(_rootFolder), Times.Once());
@@ -104,7 +102,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(null);
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -116,16 +114,16 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
                   .Setup(s => s.GetAvailableSpace(It.IsAny<string>()))
                   .Throws(new TestException());
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
             ExceptionVerification.ExpectedErrors(1);
         }
 
         [Test]
-        public void should_skip_check_for_files_under_series_folder()
+        public void should_skip_check_for_files_under_artist_folder()
         {
-            _localEpisode.ExistingFile = true;
+            _localTrack.ExistingFile = true;
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
 
             Mocker.GetMock<IDiskProvider>()
                   .Verify(s => s.GetAvailableSpace(It.IsAny<string>()), Times.Never());
@@ -140,7 +138,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
                   .Setup(s => s.GetAvailableSpace(It.IsAny<string>()))
                   .Returns(freeSpace);
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -150,7 +148,7 @@ namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Specifications
                   .Setup(s => s.SkipFreeSpaceCheckWhenImporting)
                   .Returns(true);
 
-            Subject.IsSatisfiedBy(_localEpisode).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localTrack).Accepted.Should().BeTrue();
         }
     }
 }
