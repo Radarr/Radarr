@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -55,6 +55,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", Language.German)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", Language.French)]
         [TestCase("Smurfs.​The.​Lost.​Village.​2017.​1080p.​BluRay.​HebDub.​x264-​iSrael",Language.Hebrew)]
+        [TestCase("Power Rangers (2017)(CZ)[720pHD]", Language.Czech)]
+        [TestCase("Beauty and the Beast (2017)(CZ)[1080pLQ]", Language.Czech)]
         public void should_parse_language(string postTitle, Language language)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
