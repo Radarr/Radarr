@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -43,9 +43,14 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Release_EpisodeCount", remoteEpisode.Episodes.Count.ToString());
             environmentVariables.Add("Lidarr_Release_SeasonNumber", remoteEpisode.ParsedEpisodeInfo.SeasonNumber.ToString());
             environmentVariables.Add("Lidarr_Release_EpisodeNumbers", string.Join(",", remoteEpisode.Episodes.Select(e => e.EpisodeNumber)));
+            environmentVariables.Add("Lidarr_Release_EpisodeAirDates", string.Join(",", remoteEpisode.Episodes.Select(e => e.AirDate)));
+            environmentVariables.Add("Lidarr_Release_EpisodeAirDatesUtc", string.Join(",", remoteEpisode.Episodes.Select(e => e.AirDateUtc)));
+            environmentVariables.Add("Lidarr_Release_EpisodeTitles", string.Join("|", remoteEpisode.Episodes.Select(e => e.Title)));
             environmentVariables.Add("Lidarr_Release_Title", remoteEpisode.Release.Title);
             environmentVariables.Add("Lidarr_Release_Indexer", remoteEpisode.Release.Indexer);
             environmentVariables.Add("Lidarr_Release_Size", remoteEpisode.Release.Size.ToString());
+            environmentVariables.Add("Lidarr_Release_Quality", remoteEpisode.ParsedEpisodeInfo.Quality.Quality.Name);
+            environmentVariables.Add("Lidarr_Release_QualityVersion", remoteEpisode.ParsedEpisodeInfo.Quality.Revision.Version.ToString());
             environmentVariables.Add("Lidarr_Release_ReleaseGroup", releaseGroup);
 
             ExecuteScript(environmentVariables);
@@ -59,6 +64,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Lidarr_EventType", "Download");
+            environmentVariables.Add("LIdarr_IsUpgrade", message.OldFiles.Any().ToString());
             environmentVariables.Add("Lidarr_Series_Id", series.Id.ToString());
             environmentVariables.Add("Lidarr_Series_Title", series.Title);
             environmentVariables.Add("Lidarr_Series_Path", series.Path);
@@ -79,6 +85,12 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_EpisodeFile_SceneName", episodeFile.SceneName ?? string.Empty);
             environmentVariables.Add("Lidarr_EpisodeFile_SourcePath", sourcePath);
             environmentVariables.Add("Lidarr_EpisodeFile_SourceFolder", Path.GetDirectoryName(sourcePath));
+
+            if (message.OldFiles.Any())
+            {
+                environmentVariables.Add("Lidarr_DeletedRelativePaths", string.Join("|", message.OldFiles.Select(e => e.RelativePath)));
+                environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => Path.Combine(series.Path, e.RelativePath))));
+            }
 
             ExecuteScript(environmentVariables);
         }
