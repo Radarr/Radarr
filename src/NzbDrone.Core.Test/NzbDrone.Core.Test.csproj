@@ -235,6 +235,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalNamingSpecsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFilesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbumsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklistFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTrackFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTracksFixture.cs" />
