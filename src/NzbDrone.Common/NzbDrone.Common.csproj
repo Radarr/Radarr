@@ -136,6 +136,7 @@
     <Compile Include="Extensions\Base64Extensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Crypto\HashConverter.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\Int64Extensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Http\UserAgentBuilder.cs" />
     <Compile Include="Instrumentation\CleanseLogMessage.cs" />
+    <Compile Include="Instrumentation\CleansingJsonVisitor.cs" />
     <Compile Include="Instrumentation\Extensions\SentryLoggerExtensions.cs" />
     <Compile Include="Instrumentation\Extensions\LoggerExtensions.cs" />
     <Compile Include="Instrumentation\GlobalExceptionHandlers.cs" />
@@ -182,10 +184,11 @@
     <Compile Include="Instrumentation\NzbDroneFileTarget.cs" />
     <Compile Include="Instrumentation\NzbDroneLogger.cs" />
     <Compile Include="Instrumentation\Sentry\SentryDebounce.cs" />
+    <Compile Include="Instrumentation\Sentry\SentryPacketCleanser.cs" />
     <Compile Include="Instrumentation\Sentry\SentryTarget.cs" />
     <Compile Include="Instrumentation\Sentry\MachineNameUserFactory.cs" />
-    <Compile Include="Instrumentation\Sentry\SonarrJsonPacketFactory.cs" />
-    <Compile Include="Instrumentation\Sentry\SonarrSentryPacket.cs" />
+    <Compile Include="Instrumentation\Sentry\LidarrJsonPacketFactory.cs" />
+    <Compile Include="Instrumentation\Sentry\LidarrSentryPacket.cs" />
     <Compile Include="Instrumentation\VersionLayoutRenderer.cs" />
     <Compile Include="Extensions\LevenstheinExtensions.cs" />
     <Compile Include="Messaging\IEvent.cs" />
@@ -206,6 +209,7 @@
     <Compile Include="Serializer\HttpUriConverter.cs" />
     <Compile Include="Serializer\IntConverter.cs" />
     <Compile Include="Serializer\Json.cs" />
+    <Compile Include="Serializer\JsonVisitor.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="ServiceProvider.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

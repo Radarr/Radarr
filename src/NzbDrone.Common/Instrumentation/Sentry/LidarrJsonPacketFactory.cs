@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using SharpRaven.Data;
 
@@ -6,7 +6,14 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 {
     public class LidarrJsonPacketFactory : IJsonPacketFactory
     {
-        private static string ShortenPath(string path)
+        private readonly SentryPacketCleanser _cleanser;
+ 
+        public LidarrJsonPacketFactory()
+        {
+             _cleanser = new SentryPacketCleanser();
+        }
+
+    private static string ShortenPath(string path)
         {
 
             if (string.IsNullOrWhiteSpace(path))
@@ -37,7 +44,10 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                         frame.Filename = ShortenPath(frame.Filename);
                     }
                 }
+
+                _cleanser.CleansePacket(packet);
             }
+
             catch (Exception)
             {
 
@@ -45,7 +55,6 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
             return packet;
         }
-
 
         [Obsolete]
         public JsonPacket Create(string project, SentryMessage message, ErrorLevel level = ErrorLevel.Info, IDictionary<string, string> tags = null,

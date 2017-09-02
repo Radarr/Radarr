@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Xml;
@@ -69,6 +69,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             catch (XmlException ex)
             {
                 _logger.Debug(ex, "Failed to parse newznab api capabilities for {0}.", indexerSettings.Url);
+                ex.WithData(response);
                 throw;
             }
             catch (Exception ex)
