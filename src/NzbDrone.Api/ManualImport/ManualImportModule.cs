@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.ManualImport
 {
-    public class ManualImportModule : NzbDroneRestModule<ManualImportResource>
+    public class ManualImportModule : LidarrRestModule<ManualImportResource>
     {
         private readonly IManualImportService _manualImportService;
 

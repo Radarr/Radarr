@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Linq;
 using FluentMigrator;
 using FluentMigrator.Expressions;
 using FluentMigrator.Model;
 using FluentMigrator.Runner;
+using FluentMigrator.Runner.Announcers;
 using FluentMigrator.Runner.Generators.SQLite;
 using FluentMigrator.Runner.Processors.SQLite;
 

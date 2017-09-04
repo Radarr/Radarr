@@ -1,29 +1,30 @@
-﻿using System;
+using System;
 using Nancy;
 using NzbDrone.Api.Episodes;
 using NzbDrone.Api.Albums;
-using NzbDrone.Api.Extensions;
+using Lidarr.Http.Extensions;
 using NzbDrone.Api.Series;
 using NzbDrone.Api.Music;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.History
 {
-    public class HistoryModule : NzbDroneRestModule<HistoryResource>
+    public class HistoryModule : LidarrRestModule<HistoryResource>
     {
         private readonly IHistoryService _historyService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly IFailedDownloadService _failedDownloadService;
 
         public HistoryModule(IHistoryService historyService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification qualityUpgradableSpecification,
                              IFailedDownloadService failedDownloadService)
         {
             _historyService = historyService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = qualityUpgradableSpecification;
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
@@ -39,7 +40,10 @@ namespace NzbDrone.Api.History
 
             if (model.Artist != null)
             {
-                resource.QualityCutoffNotMet = _qualityUpgradableSpecification.CutoffNotMet(model.Artist.Profile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _upgradableSpecification.CutoffNotMet(model.Artist.Profile.Value,
+                                                                                     model.Artist.LanguageProfile,
+                                                                                     model.Quality,
+                                                                                     model.Language);
             }
 
             return resource;

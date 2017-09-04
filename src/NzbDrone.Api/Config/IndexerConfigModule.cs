@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using NzbDrone.Api.Validation;
+using FluentValidation;
+using Lidarr.Http.Validation;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Api.Config

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Tv;
 
@@ -52,6 +52,7 @@ namespace NzbDrone.Api.Series
         //View & Edit
         public string Path { get; set; }
         public int ProfileId { get; set; }
+        public int LanguageProfileId { get; set; }
 
         //Editing Only
         public bool SeasonFolder { get; set; }
@@ -126,7 +127,8 @@ namespace NzbDrone.Api.Series
                 
                 Path = model.Path,
                 ProfileId = model.ProfileId,
-                
+                LanguageProfileId = model.LanguageProfileId,
+
                 SeasonFolder = model.SeasonFolder,
                 Monitored = model.Monitored,
 
@@ -180,6 +182,7 @@ namespace NzbDrone.Api.Series
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,
+                LanguageProfileId = resource.LanguageProfileId,
 
                 SeasonFolder = resource.SeasonFolder,
                 Monitored = resource.Monitored,

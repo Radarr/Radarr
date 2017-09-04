@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using System.Collections.Generic;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
@@ -10,9 +10,9 @@ namespace NzbDrone.Api.Tracks
     {
         public TrackModule(IArtistService artistService,
                              ITrackService trackService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification upgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(trackService, artistService, qualityUpgradableSpecification, signalRBroadcaster)
+            : base(trackService, artistService, upgradableSpecification, signalRBroadcaster)
         {
             GetResourceAll = GetTracks;
             UpdateResource = SetMonitored;

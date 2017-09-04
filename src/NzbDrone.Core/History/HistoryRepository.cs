@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
@@ -10,7 +10,6 @@ namespace NzbDrone.Core.History
 {
     public interface IHistoryRepository : IBasicRepository<History>
     {
-        List<QualityModel> GetBestQualityInHistory(int albumId);
         History MostRecentForAlbum(int albumId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
@@ -26,13 +25,6 @@ namespace NzbDrone.Core.History
         {
         }
 
-
-        public List<QualityModel> GetBestQualityInHistory(int albumId)
-        {
-            var history = Query.Where(c => c.AlbumId == albumId);
-
-            return history.Select(h => h.Quality).ToList();
-        }
 
         public History MostRecentForAlbum(int albumId)
         {

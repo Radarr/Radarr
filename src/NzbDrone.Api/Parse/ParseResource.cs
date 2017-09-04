@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using System.Collections.Generic;
+using Lidarr.Http.REST;
 using NzbDrone.Api.Music;
 using NzbDrone.Api.Albums;
 using NzbDrone.Core.Parser.Model;

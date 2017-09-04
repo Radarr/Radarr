@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tags;
 using NzbDrone.SignalR;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Tags
 {
-    public class TagModule : NzbDroneRestModuleWithSignalR<TagResource, Tag>, IHandle<TagsUpdatedEvent>
+    public class TagModule : LidarrRestModuleWithSignalR<TagResource, Tag>, IHandle<TagsUpdatedEvent>
     {
         private readonly ITagService _tagService;
 

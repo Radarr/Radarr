@@ -1,11 +1,12 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Configuration;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Config
 {
-    public abstract class NzbDroneConfigModule<TResource> : NzbDroneRestModule<TResource> where TResource : RestResource, new()
+    public abstract class NzbDroneConfigModule<TResource> : LidarrRestModule<TResource> where TResource : RestResource, new()
     {
         private readonly IConfigService _configService;
 

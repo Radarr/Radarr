@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Api.ClientSchema;
-using NzbDrone.Api.REST;
+using System.Collections.Generic;
+using Lidarr.Http.ClientSchema;
+using Lidarr.Http.REST;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Api

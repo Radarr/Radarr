@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -27,5 +27,8 @@ namespace NzbDrone.Core.Queue
         public string DownloadId { get; set; }
         public RemoteAlbum RemoteAlbum { get; set; }
         public DownloadProtocol Protocol { get; set; }
+        public string DownloadClient { get; set; }
+        public string Indexer { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

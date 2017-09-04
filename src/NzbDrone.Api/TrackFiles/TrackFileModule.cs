@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using NLog;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
@@ -13,10 +13,12 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
 using System;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.TrackFiles
 {
-    public class TrackFileModule : NzbDroneRestModuleWithSignalR<TrackFileResource, TrackFile>,
+    public class TrackFileModule : LidarrRestModuleWithSignalR<TrackFileResource, TrackFile>,
                                  IHandle<TrackFileAddedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
@@ -24,7 +26,7 @@ namespace NzbDrone.Api.TrackFiles
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly ISeriesService _seriesService;
         private readonly IArtistService _artistService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly Logger _logger;
 
         public TrackFileModule(IBroadcastSignalRMessage signalRBroadcaster,
@@ -33,7 +35,7 @@ namespace NzbDrone.Api.TrackFiles
                              IRecycleBinProvider recycleBinProvider,
                              ISeriesService seriesService,
                              IArtistService artistService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification upgradableSpecification,
                              Logger logger)
             : base(signalRBroadcaster)
         {
@@ -42,7 +44,7 @@ namespace NzbDrone.Api.TrackFiles
             _recycleBinProvider = recycleBinProvider;
             _seriesService = seriesService;
             _artistService = artistService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
             _logger = logger;
             GetResourceById = GetTrackFile;
             GetResourceAll = GetTrackFiles;
@@ -55,7 +57,7 @@ namespace NzbDrone.Api.TrackFiles
             var trackFile = _mediaFileService.Get(id);
             var artist = _artistService.GetArtist(trackFile.ArtistId);
 
-            return trackFile.ToResource(artist, _qualityUpgradableSpecification);
+            return trackFile.ToResource(artist, _upgradableSpecification);
         }
 
         private List<TrackFileResource> GetTrackFiles()
@@ -69,7 +71,7 @@ namespace NzbDrone.Api.TrackFiles
 
             var artist = _artistService.GetArtist(artistId);
 
-            return _mediaFileService.GetFilesByArtist(artistId).ConvertAll(f => f.ToResource(artist, _qualityUpgradableSpecification));
+            return _mediaFileService.GetFilesByArtist(artistId).ConvertAll(f => f.ToResource(artist, _upgradableSpecification));
         }
 
         private void SetQuality(TrackFileResource trackFileResource)

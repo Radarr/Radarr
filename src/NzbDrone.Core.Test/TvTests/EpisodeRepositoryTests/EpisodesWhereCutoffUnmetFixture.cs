@@ -1,15 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
 {
@@ -20,21 +22,29 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
         private Series _unmonitoredSeries;
         private PagingSpec<Episode> _pagingSpec;
         private List<QualitiesBelowCutoff> _qualitiesBelowCutoff;
+        private List<LanguagesBelowCutoff> _languagesBelowCutoff;
         private List<Episode> _unairedEpisodes;
-            
+
         [SetUp]
         public void Setup()
         {
-            var profile = new Profile 
-            {  
+            var profile = new Profile
+            {
                 Id = 1,
                 Cutoff = Quality.MP3_256,
-                Items = new List<ProfileQualityItem> 
-                { 
+                Items = new List<ProfileQualityItem>
+                {
                     new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_192 },
                     new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
                     new ProfileQualityItem { Allowed = true, Quality = Quality.FLAC }
                 }
+            };
+
+            var langProfile = new LanguageProfile
+            {
+                Id = 1,
+                Languages = Languages.LanguageFixture.GetDefaultLanguages(),
+                Cutoff = Language.Spanish
             };
 
             _monitoredSeries = Builder<Series>.CreateNew()
@@ -42,7 +52,8 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                                               .With(s => s.Runtime = 30)
                                               .With(s => s.Monitored = true)
                                               .With(s => s.TitleSlug = "Title3")
-                                              .With(s => s.Id = profile.Id)
+                                              .With(s => s.ProfileId = profile.Id)
+                                              .With(s => s.LanguageProfileId = langProfile.Id)
                                               .BuildNew();
 
             _unmonitoredSeries = Builder<Series>.CreateNew()
@@ -50,34 +61,52 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                                                 .With(s => s.Runtime = 30)
                                                 .With(s => s.Monitored = false)
                                                 .With(s => s.TitleSlug = "Title2")
-                                                .With(s => s.Id = profile.Id)
+                                                .With(s => s.ProfileId = profile.Id)
+                                                .With(s => s.LanguageProfileId = langProfile.Id)
                                                 .BuildNew();
 
             _monitoredSeries.Id = Db.Insert(_monitoredSeries).Id;
             _unmonitoredSeries.Id = Db.Insert(_unmonitoredSeries).Id;
 
             _pagingSpec = new PagingSpec<Episode>
-                              {
-                                  Page = 1,
-                                  PageSize = 10,
-                                  SortKey = "AirDate",
-                                  SortDirection = SortDirection.Ascending
-                              };
+            {
+                Page = 1,
+                PageSize = 10,
+                SortKey = "AirDate",
+                SortDirection = SortDirection.Ascending
+            };
 
             _qualitiesBelowCutoff = new List<QualitiesBelowCutoff>
                                     {
                                         new QualitiesBelowCutoff(profile.Id, new[] {Quality.MP3_192.Id})
                                     };
 
-            var qualityMet = new TrackFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3_256 } };
-            var qualityUnmet = new TrackFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3_192 } };
-            var qualityRawHD = new TrackFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.FLAC } };
-
+           _languagesBelowCutoff = new List<LanguagesBelowCutoff>
+            
+                                                {
+               new LanguagesBelowCutoff(profile.Id, new[] { Language.English.Id })
+                                                   };
+           
+           var qualityMetLanguageUnmet = new TrackFile { RelativePath = "a", Quality = new QualityModel { Quality = Quality.MP3_256 }, Language = Language.English };
+           var qualityMetLanguageMet = new TrackFile { RelativePath = "b", Quality = new QualityModel { Quality = Quality.MP3_256 }, Language = Language.Spanish };
+           var qualityMetLanguageExceed = new TrackFile { RelativePath = "c", Quality = new QualityModel { Quality = Quality.MP3_256 }, Language = Language.French };
+           var qualityUnmetLanguageUnmet = new TrackFile { RelativePath = "d", Quality = new QualityModel { Quality = Quality.MP3_192 }, Language = Language.English };
+           var qualityUnmetLanguageMet = new TrackFile { RelativePath = "e", Quality = new QualityModel { Quality = Quality.MP3_192 }, Language = Language.Spanish };
+           var qualityUnmetLanguageExceed = new TrackFile { RelativePath = "f", Quality = new QualityModel { Quality = Quality.MP3_192 }, Language = Language.French };
+           var qualityRawHDLanguageUnmet = new TrackFile { RelativePath = "g", Quality = new QualityModel { Quality = Quality.FLAC }, Language = Language.English };
+           var qualityRawHDLanguageMet = new TrackFile { RelativePath = "h", Quality = new QualityModel { Quality = Quality.FLAC }, Language = Language.Spanish };
+           var qualityRawHDLanguageExceed = new TrackFile { RelativePath = "i", Quality = new QualityModel { Quality = Quality.FLAC }, Language = Language.French };
             MediaFileRepository fileRepository = Mocker.Resolve<MediaFileRepository>();
 
-            qualityMet = fileRepository.Insert(qualityMet);
-            qualityUnmet = fileRepository.Insert(qualityUnmet);
-            qualityRawHD = fileRepository.Insert(qualityRawHD);
+           qualityMetLanguageUnmet = fileRepository.Insert(qualityMetLanguageUnmet);
+           qualityMetLanguageMet = fileRepository.Insert(qualityMetLanguageMet);
+           qualityMetLanguageExceed = fileRepository.Insert(qualityMetLanguageExceed);
+           qualityUnmetLanguageUnmet = fileRepository.Insert(qualityUnmetLanguageUnmet);
+           qualityUnmetLanguageMet = fileRepository.Insert(qualityUnmetLanguageMet);
+           qualityUnmetLanguageExceed = fileRepository.Insert(qualityUnmetLanguageExceed);
+           qualityRawHDLanguageUnmet = fileRepository.Insert(qualityRawHDLanguageUnmet);
+           qualityRawHDLanguageMet = fileRepository.Insert(qualityRawHDLanguageMet);
+           qualityRawHDLanguageExceed = fileRepository.Insert(qualityRawHDLanguageExceed);
 
             var monitoredSeriesEpisodes = Builder<Episode>.CreateListOfSize(4)
                                            .All()
@@ -85,12 +114,12 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                                            .With(e => e.SeriesId = _monitoredSeries.Id)
                                            .With(e => e.AirDateUtc = DateTime.Now.AddDays(-5))
                                            .With(e => e.Monitored = true)
-                                           .With(e => e.EpisodeFileId = qualityUnmet.Id)
+                                           .With(e => e.EpisodeFileId = qualityUnmetLanguageUnmet.Id)
                                            .TheFirst(1)
                                            .With(e => e.Monitored = false)
-                                           .With(e => e.EpisodeFileId = qualityMet.Id)
+                                           .With(e => e.EpisodeFileId = qualityMetLanguageMet.Id)
                                            .TheNext(1)
-                                           .With(e => e.EpisodeFileId = qualityRawHD.Id)
+                                           .With(e => e.EpisodeFileId = qualityRawHDLanguageExceed.Id)
                                            .TheLast(1)
                                            .With(e => e.SeasonNumber = 0)
                                            .Build();
@@ -101,25 +130,25 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
                                            .With(e => e.SeriesId = _unmonitoredSeries.Id)
                                            .With(e => e.AirDateUtc = DateTime.Now.AddDays(-5))
                                            .With(e => e.Monitored = true)
-                                           .With(e => e.EpisodeFileId = qualityUnmet.Id)
+                                           .With(e => e.EpisodeFileId = qualityRawHDLanguageUnmet.Id)
                                            .TheFirst(1)
                                            .With(e => e.Monitored = false)
-                                           .With(e => e.EpisodeFileId = qualityMet.Id)
+                                           .With(e => e.EpisodeFileId = qualityMetLanguageMet.Id)
                                            .TheLast(1)
                                            .With(e => e.SeasonNumber = 0)
                                            .Build();
 
 
-            _unairedEpisodes             = Builder<Episode>.CreateListOfSize(1)
+            _unairedEpisodes = Builder<Episode>.CreateListOfSize(1)
                                            .All()
                                            .With(e => e.Id = 0)
                                            .With(e => e.SeriesId = _monitoredSeries.Id)
                                            .With(e => e.AirDateUtc = DateTime.Now.AddDays(5))
                                            .With(e => e.Monitored = true)
-                                           .With(e => e.EpisodeFileId = qualityUnmet.Id)
+                                           .With(e => e.EpisodeFileId = qualityUnmetLanguageUnmet.Id)
                                            .Build()
                                            .ToList();
-            
+
             Db.InsertMany(monitoredSeriesEpisodes);
             Db.InsertMany(unmonitoredSeriesEpisodes);
         }
@@ -139,7 +168,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
         {
             GivenMonitoredFilterExpression();
 
-            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, false);
+            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, _languagesBelowCutoff, false);
 
             spec.Records.Should().HaveCount(1);
             spec.Records.Should().OnlyContain(e => e.EpisodeFile.Value.Quality.Quality == Quality.MP3_192);
@@ -150,7 +179,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
         {
             GivenMonitoredFilterExpression();
 
-            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, false);
+            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, _languagesBelowCutoff, false);
 
             spec.Records.Should().HaveCount(1);
             spec.Records.Should().OnlyContain(e => e.Monitored);
@@ -161,7 +190,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
         {
             GivenMonitoredFilterExpression();
 
-            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, false);
+            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, _languagesBelowCutoff, false);
 
             spec.Records.Should().HaveCount(1);
             spec.Records.Should().OnlyContain(e => e.Series.Monitored);
@@ -174,7 +203,7 @@ namespace NzbDrone.Core.Test.TvTests.EpisodeRepositoryTests
 
             GivenMonitoredFilterExpression();
 
-            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, false);
+            var spec = Subject.EpisodesWhereCutoffUnmet(_pagingSpec, _qualitiesBelowCutoff, _languagesBelowCutoff, false);
 
             spec.Records.Should().HaveCount(2);
             spec.Records.Should().OnlyContain(e => e.Series.Monitored);

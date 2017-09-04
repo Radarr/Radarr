@@ -1,0 +1,11 @@
+.linkOverlay {
+  composes: cover from 'Styles/Mixins/cover.css';
+
+  pointer-events: none;
+  user-select: none;
+
+  a,
+  button {
+    pointer-events: all;
+  }
+}

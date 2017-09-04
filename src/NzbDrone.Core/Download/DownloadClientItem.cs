@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using NzbDrone.Common.Disk;
 
@@ -21,6 +21,10 @@ namespace NzbDrone.Core.Download
 
         public DownloadItemStatus Status { get; set; }
         public bool IsEncrypted { get; set; }
+
+        public bool CanMoveFiles { get; set; }
+        public bool CanBeRemoved { get; set; }
+
         public bool IsReadOnly { get; set; }
 
         public bool Removed { get; set; }

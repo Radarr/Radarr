@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using NLog;
-using NzbDrone.Api.REST;
+using Lidarr.Http;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
@@ -15,14 +15,14 @@ using System;
 
 namespace NzbDrone.Api.EpisodeFiles
 {
-    public class EpisodeFileModule : NzbDroneRestModuleWithSignalR<EpisodeFileResource, EpisodeFile>,
+    public class EpisodeFileModule : LidarrRestModuleWithSignalR<EpisodeFileResource, EpisodeFile>,
                                  IHandle<EpisodeFileAddedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly ISeriesService _seriesService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly Logger _logger;
 
         public EpisodeFileModule(IBroadcastSignalRMessage signalRBroadcaster,
@@ -30,7 +30,7 @@ namespace NzbDrone.Api.EpisodeFiles
                              IDiskProvider diskProvider,
                              IRecycleBinProvider recycleBinProvider,
                              ISeriesService seriesService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification upgradableSpecification,
                              Logger logger)
             : base(signalRBroadcaster)
         {
@@ -38,7 +38,7 @@ namespace NzbDrone.Api.EpisodeFiles
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
             _seriesService = seriesService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
             _logger = logger;
             GetResourceById = GetEpisodeFile;
             GetResourceAll = GetEpisodeFiles;

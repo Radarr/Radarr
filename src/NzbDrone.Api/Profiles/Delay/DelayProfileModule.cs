@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using FluentValidation.Results;
-using NzbDrone.Api.REST;
-using NzbDrone.Api.Validation;
+using Lidarr.Http.REST;
+using Lidarr.Http.Validation;
 using NzbDrone.Core.Profiles.Delay;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Profiles.Delay
 {
-    public class DelayProfileModule : NzbDroneRestModule<DelayProfileResource>
+    public class DelayProfileModule : LidarrRestModule<DelayProfileResource>
     {
         private readonly IDelayProfileService _delayProfileService;
 

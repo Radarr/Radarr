@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -109,6 +109,7 @@ namespace NzbDrone.Core.Parser
             {
                 Series = series,
                 Quality = parsedEpisodeInfo.Quality,
+                Language = parsedEpisodeInfo.Language,
                 Episodes = episodes,
                 Path = filename,
                 ParsedEpisodeInfo = parsedEpisodeInfo,
@@ -674,6 +675,7 @@ namespace NzbDrone.Core.Parser
             {
                 Artist = artist,
                 Quality = parsedTrackInfo.Quality,
+                Language = parsedTrackInfo.Language,
                 Tracks = tracks,
                 Path = filename,
                 ParsedTrackInfo = parsedTrackInfo,

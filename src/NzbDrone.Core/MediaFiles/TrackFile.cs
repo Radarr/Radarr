@@ -1,4 +1,4 @@
-﻿using Marr.Data;
+using Marr.Data;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.MediaFiles
         //public LazyLoaded<List<Track>> Episodes { get; set; }
         public LazyLoaded<Artist> Artist { get; set; }
         public LazyLoaded<List<Track>> Tracks { get; set; }
+        public Language Language { get; set; }
 
         public override string ToString()
         {

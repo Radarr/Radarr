@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.SignalR;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Health
 {
-    public class HealthModule : NzbDroneRestModuleWithSignalR<HealthResource, HealthCheck>,
+    public class HealthModule : LidarrRestModuleWithSignalR<HealthResource, HealthCheck>,
                                 IHandle<HealthCheckCompleteEvent>
     {
         private readonly IHealthCheckService _healthCheckService;

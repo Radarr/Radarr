@@ -120,7 +120,7 @@ _tests/
 setup/Output/
 *.~is
 
-UI.Phantom/
+UI/
 
 #VS outout folders
 bin
@@ -135,5 +135,3 @@ _start
 _temp_*/**/*
 
 src/.idea/
-/npm_start.bat
-/npm_start.bat

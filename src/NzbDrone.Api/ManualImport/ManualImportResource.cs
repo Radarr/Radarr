@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Episodes;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Api.Series;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.DecisionEngine;

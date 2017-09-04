@@ -1,8 +1,9 @@
-﻿using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Episodes;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Tv;
 using NzbDrone.SignalR;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Wanted
 {
@@ -13,7 +14,7 @@ namespace NzbDrone.Api.Wanted
         public CutoffModule(IEpisodeCutoffService episodeCutoffService,
                             IEpisodeService episodeService,
                             ISeriesService seriesService,
-                            IQualityUpgradableSpecification qualityUpgradableSpecification,
+                            IUpgradableSpecification qualityUpgradableSpecification,
                             IBroadcastSignalRMessage signalRBroadcaster)
             : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {

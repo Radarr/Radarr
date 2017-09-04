@@ -1,11 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.DiskSpace
@@ -18,51 +17,43 @@ namespace NzbDrone.Core.DiskSpace
     public class DiskSpaceService : IDiskSpaceService
     {
         private readonly ISeriesService _seriesService;
-        private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public DiskSpaceService(ISeriesService seriesService, IConfigService configService, IDiskProvider diskProvider, Logger logger)
+        private static readonly Regex _regexSpecialDrive = new Regex("^/var/lib/(docker|rancher|kubelet)(/|$)|^/boot(/|$)|/docker(/var)?/aufs(/|$)", RegexOptions.Compiled);
+
+        public DiskSpaceService(ISeriesService seriesService, IDiskProvider diskProvider, Logger logger)
         {
             _seriesService = seriesService;
-            _configService = configService;
             _diskProvider = diskProvider;
             _logger = logger;
         }
 
         public List<DiskSpace> GetFreeSpace()
         {
-            var diskSpace = new List<DiskSpace>();
-            diskSpace.AddRange(GetSeriesFreeSpace());
-            diskSpace.AddRange(GetDroneFactoryFreeSpace());
-            diskSpace.AddRange(GetFixedDisksFreeSpace());
+            var importantRootFolders = GetSeriesRootPaths().Distinct().ToList();
 
-            return diskSpace.DistinctBy(d => d.Path).ToList();
+            var optionalRootFolders = GetFixedDisksRootPaths().Except(importantRootFolders).Distinct().ToList();
+
+            var diskSpace = GetDiskSpace(importantRootFolders).Concat(GetDiskSpace(optionalRootFolders, true)).ToList();
+
+            return diskSpace;
         }
 
-        private IEnumerable<DiskSpace> GetSeriesFreeSpace()
+        private IEnumerable<string> GetSeriesRootPaths()
         {
-            var seriesRootPaths = _seriesService.GetAllSeries()
+            return _seriesService.GetAllSeries()
                 .Where(s => _diskProvider.FolderExists(s.Path))
                 .Select(s => _diskProvider.GetPathRoot(s.Path))
                 .Distinct();
-
-            return GetDiskSpace(seriesRootPaths);
         }
 
-        private IEnumerable<DiskSpace> GetDroneFactoryFreeSpace()
+        private IEnumerable<string> GetFixedDisksRootPaths()
         {
-            if (_configService.DownloadedAlbumsFolder.IsNotNullOrWhiteSpace() && _diskProvider.FolderExists(_configService.DownloadedAlbumsFolder))
-            {
-                return GetDiskSpace(new[] { _diskProvider.GetPathRoot(_configService.DownloadedAlbumsFolder) });
-            }
-
-            return new List<DiskSpace>();
-        }
-
-        private IEnumerable<DiskSpace> GetFixedDisksFreeSpace()
-        {
-            return GetDiskSpace(_diskProvider.GetMounts().Where(d => d.DriveType == DriveType.Fixed).Select(d => d.RootDirectory), true);
+            return _diskProvider.GetMounts()
+                .Where(d => d.DriveType == DriveType.Fixed)
+                .Where(d => !_regexSpecialDrive.IsMatch(d.RootDirectory))
+                .Select(d => d.RootDirectory);
         }
 
         private IEnumerable<DiskSpace> GetDiskSpace(IEnumerable<string> paths, bool suppressWarnings = false)

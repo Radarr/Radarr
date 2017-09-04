@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Tags;
 
 namespace NzbDrone.Api.Tags

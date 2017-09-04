@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.SignalR;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.System.Tasks
 {
-    public class TaskModule : NzbDroneRestModuleWithSignalR<TaskResource, ScheduledTask>, IHandle<CommandExecutedEvent>
+    public class TaskModule : LidarrRestModuleWithSignalR<TaskResource, ScheduledTask>, IHandle<CommandExecutedEvent>
     {
         private readonly ITaskManager _taskManager;
 

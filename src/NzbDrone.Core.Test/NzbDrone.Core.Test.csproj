@@ -275,6 +275,9 @@
     <Compile Include="Instrumentation\DatabaseTargetFixture.cs" />
     <Compile Include="JobTests\JobRepositoryFixture.cs" />
     <Compile Include="JobTests\TestJobs.cs" />
+    <Compile Include="Languages\LanguageFixture.cs" />
+    <Compile Include="Languages\LanguageProfileRepositoryFixture.cs" />
+    <Compile Include="Languages\LanguageProfileServiceFixture.cs" />
     <Compile Include="MediaCoverTests\CoverExistsSpecificationFixture.cs" />
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />

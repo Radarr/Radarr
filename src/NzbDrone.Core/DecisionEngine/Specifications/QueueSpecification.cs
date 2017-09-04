@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -10,15 +10,15 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     public class QueueSpecification : IDecisionEngineSpecification
     {
         private readonly IQueueService _queueService;
-        private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly UpgradableSpecification _upgradableSpecification;
         private readonly Logger _logger;
 
         public QueueSpecification(IQueueService queueService,
-                                       QualityUpgradableSpecification qualityUpgradableSpecification,
+                                       UpgradableSpecification qualityUpgradableSpecification,
                                        Logger logger)
         {
             _queueService = queueService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = qualityUpgradableSpecification;
             _logger = logger;
         }
 
@@ -36,14 +36,23 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
 
-                if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Artist.Profile, remoteAlbum.ParsedAlbumInfo.Quality, subject.ParsedAlbumInfo.Quality))
+                if (!_upgradableSpecification.CutoffNotMet(subject.Artist.Profile,
+                                                           subject.Artist.LanguageProfile,
+                                                           remoteAlbum.ParsedAlbumInfo.Quality,
+                                                           remoteAlbum.ParsedAlbumInfo.Language,
+                                                           subject.ParsedAlbumInfo.Quality))
                 {
                     return Decision.Reject("Quality for release in queue already meets cutoff: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
                 }
 
                 _logger.Debug("Checking if release is higher quality than queued release. Queued quality is: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
 
-                if (!_qualityUpgradableSpecification.IsUpgradable(subject.Artist.Profile, remoteAlbum.ParsedAlbumInfo.Quality, subject.ParsedAlbumInfo.Quality))
+                if (!_upgradableSpecification.IsUpgradable(subject.Artist.Profile,
+                                                           subject.Artist.LanguageProfile,
+                                                           remoteAlbum.ParsedAlbumInfo.Quality,
+                                                           remoteAlbum.ParsedAlbumInfo.Language,
+                                                           subject.ParsedAlbumInfo.Quality,
+                                                           subject.ParsedAlbumInfo.Language))
                 {
                     return Decision.Reject("Quality for release in queue is of equal or higher preference: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
                 }

@@ -11,6 +11,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -80,6 +81,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 if (localTrack != null)
                 {
                     localTrack.Quality = GetQuality(folderInfo, localTrack.Quality, artist);
+                    localTrack.Language = GetLanguage(folderInfo, localTrack.Language, artist);
                     localTrack.Size = _diskProvider.GetFileSize(file);
 
                     _logger.Debug("Size: {0}", localTrack.Size);
@@ -187,6 +189,37 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             return fileQuality;
         }
+
+        private Language GetLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
+         {
+             if (UseFolderLanguage (folderInfo, fileLanguage, artist))
+             {
+                 _logger.Debug("Using language from folder: {0}", folderInfo.Language);
+                 return folderInfo.Language;
+             }
+ 
+             return fileLanguage;
+         }
+ 
+         private bool UseFolderLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
+         {
+             if (folderInfo == null)
+             {
+                 return false;
+             }
+ 
+             if (folderInfo.Language == Language.Unknown)
+             {
+                 return false;
+             }
+ 
+             if (new LanguageComparer(artist.LanguageProfile).Compare(folderInfo.Language, fileLanguage) > 0)
+             {
+                 return true;
+             }
+ 
+             return false;
+         }
 
         private bool UseFolderQuality(ParsedTrackInfo folderInfo, QualityModel fileQuality, Artist artist)
         {

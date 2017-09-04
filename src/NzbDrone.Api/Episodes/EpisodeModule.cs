@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using System.Collections.Generic;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
@@ -10,7 +10,7 @@ namespace NzbDrone.Api.Episodes
     {
         public EpisodeModule(ISeriesService seriesService,
                              IEpisodeService episodeService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification qualityUpgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
             : base(episodeService, seriesService, qualityUpgradableSpecification, signalRBroadcaster)
         {

@@ -167,6 +167,7 @@
     <Compile Include="Datastore\Converters\DoubleConverter.cs" />
     <Compile Include="Datastore\Converters\EmbeddedDocumentConverter.cs" />
     <Compile Include="Datastore\Converters\EnumIntConverter.cs" />
+    <Compile Include="Datastore\Converters\LanguageIntConverter.cs" />
     <Compile Include="Datastore\Converters\TimeSpanConverter.cs" />
     <Compile Include="Datastore\Converters\Int32Converter.cs" />
     <Compile Include="Datastore\Converters\GuidConverter.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="Datastore\Migration\068_add_release_restrictions.cs" />
     <Compile Include="Datastore\Migration\069_quality_proper.cs" />
     <Compile Include="Datastore\Migration\070_delay_profile.cs" />
+    <Compile Include="Datastore\Migration\102_add_language_to_episodeFiles_history_and_blacklist.cs" />
     <Compile Include="Datastore\Migration\110_fix_extra_files_config.cs" />
     <Compile Include="Datastore\Migration\109_import_extra_files.cs" />
     <Compile Include="Datastore\Migration\108_fix_extra_file_extension.cs" />
@@ -295,11 +297,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
-    <Compile Include="Datastore\Migration\115_change_drone_factory_variable_name.cs" />
-    <Compile Include="Datastore\Migration\114_remove_tv_naming.cs" />
-    <Compile Include="Datastore\Migration\113_music_blacklist.cs" />
-    <Compile Include="Datastore\Migration\112_music_history.cs" />
-    <Compile Include="Datastore\Migration\111_setup_music.cs" />
+    <Compile Include="Datastore\Migration\111_create_language_profiles.cs" />
+    <Compile Include="Datastore\Migration\116_change_drone_factory_variable_name.cs" />
+    <Compile Include="Datastore\Migration\115_remove_tv_naming.cs" />
+    <Compile Include="Datastore\Migration\114_music_blacklist.cs" />
+    <Compile Include="Datastore\Migration\113_music_history.cs" />
+    <Compile Include="Datastore\Migration\112_setup_music.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -324,7 +327,6 @@
     <Compile Include="DecisionEngine\DownloadDecisionPriorizationService.cs" />
     <Compile Include="DecisionEngine\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
-    <Compile Include="DecisionEngine\QualityUpgradableSpecification.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
     <Compile Include="DecisionEngine\RejectionType.cs" />
     <Compile Include="DecisionEngine\SameEpisodesSpecification.cs" />
@@ -354,6 +356,7 @@
     <Compile Include="DecisionEngine\Specifications\SameTracksGrabSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RawDiskSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
+    <Compile Include="DecisionEngine\UpgradableSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
     <Compile Include="Download\AlbumGrabbedEvent.cs" />
@@ -506,6 +509,7 @@
     <Compile Include="Download\TrackedDownloads\DownloadMonitoringService.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownload.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadService.cs" />
+    <Compile Include="Download\TrackedDownloads\TrackedDownloadsRemovedEvent.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadStatusMessage.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadRefreshedEvent.cs" />
     <Compile Include="Download\UsenetClientBase.cs" />
@@ -614,6 +618,7 @@
     <Compile Include="IndexerSearch\AlbumSearchService.cs" />
     <Compile Include="IndexerSearch\ArtistSearchCommand.cs" />
     <Compile Include="IndexerSearch\ArtistSearchService.cs" />
+    <Compile Include="IndexerSearch\CutoffUnmetAlbumSearchCommand.cs" />
     <Compile Include="IndexerSearch\Definitions\AlbumSearchCriteria.cs" />
     <Compile Include="IndexerSearch\Definitions\ArtistSearchCriteria.cs" />
     <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
@@ -708,6 +713,9 @@
     <Compile Include="Jobs\ScheduledTask.cs" />
     <Compile Include="Jobs\Scheduler.cs" />
     <Compile Include="Jobs\TaskManager.cs" />
+    <Compile Include="Languages\Language.cs" />
+    <Compile Include="Languages\LanguageComparer.cs" />
+    <Compile Include="Languages\LanguagesBelowCutoff.cs" />
     <Compile Include="Lifecycle\ApplicationShutdownRequested.cs" />
     <Compile Include="Lifecycle\ApplicationStartedEvent.cs" />
     <Compile Include="Lifecycle\Commands\RestartCommand.cs" />
@@ -851,6 +859,7 @@
     <Compile Include="Extras\Metadata\MetadataRepository.cs" />
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
+    <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\Commands\MoveArtistCommand.cs" />
     <Compile Include="Music\Events\ArtistMovedEvent.cs" />
     <Compile Include="Music\MonitoringOptions.cs" />
@@ -954,10 +963,17 @@
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
-    <Compile Include="Profiles\ProfileRepository.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfile.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileInUseException.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileRepository.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileService.cs" />
+    <Compile Include="Profiles\Languages\ProfileLanguageItem.cs" />
+    <Compile Include="Profiles\Quality\ProfileRepository.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
     <Compile Include="Qualities\Revision.cs" />
+    <Compile Include="Queue\EstimatedCompletionTimeComparer.cs" />
+    <Compile Include="Queue\TimeleftComparer.cs" />
     <Compile Include="RemotePathMappings\RemotePathMapping.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingRepository.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingService.cs" />
@@ -1061,7 +1077,6 @@
     <Compile Include="Organizer\NamingConfigService.cs" />
     <Compile Include="Organizer\SampleResult.cs" />
     <Compile Include="Parser\InvalidDateException.cs" />
-    <Compile Include="Parser\Language.cs" />
     <Compile Include="Parser\Model\LocalEpisode.cs" />
     <Compile Include="Parser\Model\ParsedEpisodeInfo.cs" />
     <Compile Include="Parser\Model\ReleaseInfo.cs" />
@@ -1072,11 +1087,11 @@
     <Compile Include="Parser\ParsingService.cs" />
     <Compile Include="Parser\SceneChecker.cs" />
     <Compile Include="Parser\QualityParser.cs" />
-    <Compile Include="Profiles\Profile.cs" />
-    <Compile Include="Profiles\ProfileInUseException.cs" />
-    <Compile Include="Profiles\ProfileQualityItem.cs" />
+    <Compile Include="Profiles\Quality\Profile.cs" />
+    <Compile Include="Profiles\Quality\ProfileInUseException.cs" />
+    <Compile Include="Profiles\Quality\ProfileQualityItem.cs" />
     <Compile Include="Profiles\Delay\DelayProfileRepository.cs" />
-    <Compile Include="Profiles\ProfileService.cs" />
+    <Compile Include="Profiles\Quality\ProfileService.cs" />
     <Compile Include="ProgressMessaging\CommandUpdatedEvent.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1115,6 +1130,7 @@
     <Compile Include="SeriesStats\SeriesStatisticsRepository.cs" />
     <Compile Include="SeriesStats\SeriesStatisticsService.cs" />
     <Compile Include="Tags\Tag.cs" />
+    <Compile Include="Tags\TagDetails.cs" />
     <Compile Include="Tags\TagRepository.cs" />
     <Compile Include="Tags\TagService.cs" />
     <Compile Include="Tags\TagsUpdatedEvent.cs" />
@@ -1148,6 +1164,7 @@
     <Compile Include="Tv\Events\SeriesAddedEvent.cs" />
     <Compile Include="Tv\Events\SeriesDeletedEvent.cs" />
     <Compile Include="Tv\Events\SeriesEditedEvent.cs" />
+    <Compile Include="Tv\Events\SeriesImportedEvent.cs" />
     <Compile Include="Tv\Events\SeriesRefreshStartingEvent.cs" />
     <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
     <Compile Include="Tv\MonitoringOptions.cs" />
@@ -1183,15 +1200,15 @@
     <Compile Include="Update\UpdateVerificationFailedException.cs" />
     <Compile Include="Validation\FolderValidator.cs" />
     <Compile Include="Validation\IpValidation.cs" />
-    <Compile Include="Validation\LanguageValidator.cs" />
+    <Compile Include="Validation\LanguageProfileExistsValidator.cs" />
     <Compile Include="Validation\NzbDroneValidationExtensions.cs" />
     <Compile Include="Validation\NzbDroneValidationFailure.cs" />
     <Compile Include="Validation\NzbDroneValidationResult.cs" />
     <Compile Include="Validation\NzbDroneValidationState.cs" />
+    <Compile Include="Validation\NzbDroneValidator.cs" />
     <Compile Include="Validation\Paths\ArtistExistsValidator.cs" />
     <Compile Include="Validation\Paths\ArtistPathValidator.cs" />
     <Compile Include="Validation\Paths\MappedNetworkDriveValidator.cs" />
-    <Compile Include="Validation\Paths\DroneFactoryValidator.cs" />
     <Compile Include="Validation\Paths\FolderWritableValidator.cs" />
     <Compile Include="Validation\Paths\PathExistsValidator.cs" />
     <Compile Include="Validation\Paths\PathValidator.cs" />

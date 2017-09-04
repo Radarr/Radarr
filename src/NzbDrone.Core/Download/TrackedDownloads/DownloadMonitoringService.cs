@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -13,7 +13,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 {
     public class DownloadMonitoringService : IExecute<CheckForFinishedDownloadCommand>,
                                              IHandle<AlbumGrabbedEvent>,
-                                             IHandle<EpisodeImportedEvent>
+                                             IHandle<EpisodeImportedEvent>,
+                                             IHandle<TrackedDownloadsRemovedEvent>
+
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
         private readonly IEventAggregator _eventAggregator;
@@ -64,10 +66,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 {
                     var clientTrackedDownloads = ProcessClientDownloads(downloadClient);
 
-                    // Only track completed downloads if 
                     trackedDownloads.AddRange(clientTrackedDownloads.Where(DownloadIsTrackable));
                 }
 
+                _trackedDownloadService.UpdateTrackable(trackedDownloads);
                 _eventAggregator.PublishEvent(new TrackedDownloadRefreshedEvent(trackedDownloads));
             }
             finally
@@ -171,6 +173,13 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         public void Handle(EpisodeImportedEvent message)
         {
             _refreshDebounce.Execute();
+        }
+
+        public void Handle(TrackedDownloadsRemovedEvent message)
+        {
+            var trackedDownloads = _trackedDownloadService.GetTrackedDownloads().Where(t => t.IsTrackable && DownloadIsTrackable(t)).ToList();
+
+            _eventAggregator.PublishEvent(new TrackedDownloadRefreshedEvent(trackedDownloads));
         }
     }
 }

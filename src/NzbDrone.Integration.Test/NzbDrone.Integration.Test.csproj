@@ -164,6 +164,10 @@
       <Project>{CADDFCE0-7509-4430-8364-2074E1EEFCA2}</Project>
       <Name>NzbDrone.Test.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sonarr.Http\Lidarr.Http.csproj">
+      <Project>{5370bff7-1bd7-46bc-af06-7d9ea5cda1d6}</Project>
+      <Name>Lidarr.Http</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Libraries\Sqlite\sqlite3.dll">

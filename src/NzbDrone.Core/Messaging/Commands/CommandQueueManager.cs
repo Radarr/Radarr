@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +15,12 @@ namespace NzbDrone.Core.Messaging.Commands
 {
     public interface IManageCommandQueue
     {
+        List<CommandModel> PushMany<TCommand>(List<TCommand> commands) where TCommand : Command;
         CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified) where TCommand : Command;
         CommandModel Push(string commandName, DateTime? lastExecutionTime, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified);
         IEnumerable<CommandModel> Queue(CancellationToken cancellationToken);
         CommandModel Get(int id);
-        List<CommandModel> GetStarted(); 
+        List<CommandModel> GetStarted();
         void SetMessage(CommandModel command, string message);
         void Start(CommandModel command);
         void Complete(CommandModel command, string message);
@@ -35,9 +36,9 @@ namespace NzbDrone.Core.Messaging.Commands
         private readonly Logger _logger;
 
         private readonly ICached<CommandModel> _commandCache;
-        private readonly BlockingCollection<CommandModel> _commandQueue; 
+        private readonly BlockingCollection<CommandModel> _commandQueue;
 
-        public CommandQueueManager(ICommandRepository repo, 
+        public CommandQueueManager(ICommandRepository repo,
                                    IServiceFactory serviceFactory,
                                    ICacheManager cacheManager,
                                    Logger logger)
@@ -49,6 +50,49 @@ namespace NzbDrone.Core.Messaging.Commands
             _commandCache = cacheManager.GetCache<CommandModel>(GetType());
             _commandQueue = new BlockingCollection<CommandModel>(new CommandQueue());
         }
+
+        public List<CommandModel> PushMany<TCommand>(List<TCommand> commands) where TCommand : Command
+        {
+            _logger.Trace("Publishing {0} commands", commands.Count);
+
+            var commandModels = new List<CommandModel>();
+            var existingCommands = _commandCache.Values.Where(q => q.Status == CommandStatus.Queued ||
+                                                              q.Status == CommandStatus.Started).ToList();
+
+            foreach (var command in commands)
+            {
+                var existing = existingCommands.SingleOrDefault(c => c.Name == command.Name && CommandEqualityComparer.Instance.Equals(c.Body, command));
+
+                if (existing != null)
+                {
+                    continue;
+                }
+
+                var commandModel = new CommandModel
+
+                {
+                    Name = command.Name,
+                    Body = command,
+                    QueuedAt = DateTime.UtcNow,
+                    Trigger = CommandTrigger.Unspecified,
+                    Priority = CommandPriority.Normal,
+                    Status = CommandStatus.Queued
+                };
+
+                commandModels.Add(commandModel);
+            }
+
+            _repo.InsertMany(commandModels);
+
+            foreach (var commandModel in commandModels)
+            {
+                _commandCache.Set(commandModel.Id.ToString(), commandModel);
+                _commandQueue.Add(commandModel);
+            }
+
+            return commandModels;
+        }
+
 
         public CommandModel Push<TCommand>(TCommand command, CommandPriority priority = CommandPriority.Normal, CommandTrigger trigger = CommandTrigger.Unspecified) where TCommand : Command
         {
@@ -123,7 +167,7 @@ namespace NzbDrone.Core.Messaging.Commands
             command.Status = CommandStatus.Started;
 
             _logger.Trace("Marking command as started: {0}", command.Name);
-            _commandCache.Set(command.Id.ToString(), command);         
+            _commandCache.Set(command.Id.ToString(), command);
             _repo.Start(command);
         }
 
@@ -135,7 +179,7 @@ namespace NzbDrone.Core.Messaging.Commands
         public void Fail(CommandModel command, string message, Exception e)
         {
             command.Exception = e.ToString();
-            
+
             Update(command, CommandStatus.Failed, message);
         }
 
@@ -150,7 +194,7 @@ namespace NzbDrone.Core.Messaging.Commands
         public void CleanCommands()
         {
             _logger.Trace("Cleaning up old commands");
-            
+
             var old = _commandCache.Values.Where(c => c.EndedAt < DateTime.UtcNow.AddMinutes(-5));
 
             foreach (var command in old)

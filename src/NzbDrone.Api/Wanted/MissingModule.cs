@@ -1,10 +1,12 @@
-﻿using NzbDrone.Api.Episodes;
+using NzbDrone.Api.Episodes;
 using NzbDrone.Api.Albums;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Tv;
 using NzbDrone.SignalR;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Wanted
 {
@@ -13,7 +15,7 @@ namespace NzbDrone.Api.Wanted
         public MissingModule(IAlbumService albumService,
                              IArtistStatisticsService artistStatisticsService,
                              IArtistService artistService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification qualityUpgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
             : base(albumService, artistStatisticsService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "wanted/missing")
         {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Api.TrackFiles;
 using NzbDrone.Api.Music;
@@ -10,39 +10,41 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Tracks
 {
-    public abstract class TrackModuleWithSignalR : NzbDroneRestModuleWithSignalR<TrackResource, Track>,
+    public abstract class TrackModuleWithSignalR : LidarrRestModuleWithSignalR<TrackResource, Track>,
         IHandle<TrackDownloadedEvent>
     {
         protected readonly ITrackService _trackService;
         protected readonly IArtistService _artistService;
-        protected readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        protected readonly IUpgradableSpecification _upgradableSpecification;
 
         protected TrackModuleWithSignalR(ITrackService trackService,
                                            IArtistService artistService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification upgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
             _trackService = trackService;
             _artistService = artistService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
 
             GetResourceById = GetTrack;
         }
 
         protected TrackModuleWithSignalR(ITrackService trackService,
                                            IArtistService artistService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification upgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
             : base(signalRBroadcaster, resource)
         {
             _trackService = trackService;
             _artistService = artistService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
 
             GetResourceById = GetTrack;
         }
@@ -68,7 +70,7 @@ namespace NzbDrone.Api.Tracks
                 }
                 if (includeTrackFile && track.TrackFileId != 0)
                 {
-                    resource.TrackFile = track.TrackFile.Value.ToResource(artist, _qualityUpgradableSpecification);
+                    resource.TrackFile = track.TrackFile.Value.ToResource(artist, _upgradableSpecification);
                 }
             }
 
@@ -96,7 +98,7 @@ namespace NzbDrone.Api.Tracks
                     }
                     if (includeTrackFile && tracks[i].TrackFileId != 0)
                     {
-                        resource.TrackFile = tracks[i].TrackFile.Value.ToResource(artist, _qualityUpgradableSpecification);
+                        resource.TrackFile = tracks[i].TrackFile.Value.ToResource(artist, _upgradableSpecification);
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Api.EpisodeFiles;
 using NzbDrone.Api.Series;
@@ -9,20 +9,21 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Tv;
 using NzbDrone.SignalR;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Episodes
 {
-    public abstract class EpisodeModuleWithSignalR : NzbDroneRestModuleWithSignalR<EpisodeResource, Episode>,
+    public abstract class EpisodeModuleWithSignalR : LidarrRestModuleWithSignalR<EpisodeResource, Episode>,
         IHandle<EpisodeGrabbedEvent>,
         IHandle<EpisodeDownloadedEvent>
     {
         protected readonly IEpisodeService _episodeService;
         protected readonly ISeriesService _seriesService;
-        protected readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        protected readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         protected EpisodeModuleWithSignalR(IEpisodeService episodeService,
                                            ISeriesService seriesService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
@@ -35,7 +36,7 @@ namespace NzbDrone.Api.Episodes
 
         protected EpisodeModuleWithSignalR(IEpisodeService episodeService,
                                            ISeriesService seriesService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
             : base(signalRBroadcaster, resource)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace NzbDrone.Core.Annotations
 {
@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Annotations
         Tag,
         Action,
         Url,
-        Captcha
+        Captcha,
+        OAuth
     }
 }

@@ -1,5 +1,4 @@
-﻿using NzbDrone.Api.REST;
-using NzbDrone.Api.Series;
+using Lidarr.Http.REST;
 using NzbDrone.Api.Albums;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Music;
@@ -44,6 +43,7 @@ namespace NzbDrone.Api.Music
         //View & Edit
         public string Path { get; set; }
         public int ProfileId { get; set; }
+        public int LanguageProfileId { get; set; }
 
         //Editing Only
         public bool AlbumFolder { get; set; }
@@ -97,6 +97,7 @@ namespace NzbDrone.Api.Music
 
                 Path = model.Path,
                 ProfileId = model.ProfileId,
+                LanguageProfileId = model.LanguageProfileId,
 
                 Monitored = model.Monitored,
                 AlbumFolder = model.AlbumFolder,
@@ -154,6 +155,7 @@ namespace NzbDrone.Api.Music
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,
+                LanguageProfileId = resource.LanguageProfileId,
                 AlbumFolder = resource.AlbumFolder,
 
                 Monitored = resource.Monitored,

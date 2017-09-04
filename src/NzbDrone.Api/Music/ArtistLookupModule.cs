@@ -1,15 +1,16 @@
-﻿using Nancy;
-using NzbDrone.Api.Extensions;
+using Nancy;
+using Lidarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Music
 {
-    public class ArtistLookupModule : NzbDroneRestModule<ArtistResource>
+    public class ArtistLookupModule : LidarrRestModule<ArtistResource>
     {
         private readonly ISearchForNewArtist _searchProxy;
 

@@ -9,11 +9,14 @@ using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Profiles.Qualities;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Test.Languages;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -24,8 +27,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private RemoteAlbum _parseResultMulti;
         private RemoteAlbum _parseResultSingle;
-        private QualityModel _upgradableQuality;
-        private QualityModel _notupgradableQuality;
+        private Tuple<QualityModel, Language> _upgradableQuality;
+        private Tuple<QualityModel, Language> _notupgradableQuality;
         private Artist _fakeArtist;
         private const int FIRST_ALBUM_ID = 1;
         private const int SECOND_ALBUM_ID = 2;
@@ -33,7 +36,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            Mocker.Resolve<QualityUpgradableSpecification>();
+            Mocker.Resolve<UpgradableSpecification>();
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
             var singleAlbumList = new List<Album> { new Album { Id = FIRST_ALBUM_ID} };
@@ -45,34 +48,35 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _fakeArtist = Builder<Artist>.CreateNew()
                          .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(l => l.LanguageProfile = new LanguageProfile { Cutoff = Language.Spanish, Languages = LanguageFixture.GetDefaultLanguages() })
                          .Build();
 
             _parseResultMulti = new RemoteAlbum
             {
                 Artist = _fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)), Language = Language.English },
                 Albums = doubleAlbumList
             };
 
             _parseResultSingle = new RemoteAlbum
             {
                 Artist = _fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)), Language = Language.English },
                 Albums = singleAlbumList
             };
 
-            _upgradableQuality = new QualityModel(Quality.MP3_192, new Revision(version: 1));
-            _notupgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 2));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_192, new Revision(version: 1)), Language.English);
+            _notupgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 2)), Language.English);
 
             Mocker.GetMock<IConfigService>()
                   .SetupGet(s => s.EnableCompletedDownloadHandling)
                   .Returns(true);
         }
 
-        private void GivenMostRecentForAlbum(int albumId, string downloadId, QualityModel quality, DateTime date, HistoryEventType eventType)
+        private void GivenMostRecentForAlbum(int albumId, string downloadId, Tuple<QualityModel, Language> quality, DateTime date, HistoryEventType eventType)
         {
             Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForAlbum(albumId))
-                  .Returns(new History.History { DownloadId = downloadId, Quality = quality, Date = date, EventType = eventType });
+                  .Returns(new History.History { DownloadId = downloadId, Quality = quality.Item1, Date = date, EventType = eventType, Language = quality.Item2 });
         }
 
         private void GivenCdhDisabled()
@@ -160,7 +164,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.English);
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -172,7 +176,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.Spanish);
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -200,7 +204,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenCdhDisabled();
             _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.Spanish);
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, "test", _upgradableQuality, DateTime.UtcNow.AddDays(-100), HistoryEventType.Grabbed);
 

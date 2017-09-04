@@ -1,4 +1,4 @@
-﻿using Nancy;
+using Nancy;
 using Nancy.ModelBinding;
 using FluentValidation;
 using NzbDrone.Core.DecisionEngine;
@@ -6,7 +6,7 @@ using NzbDrone.Core.Download;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Api.Extensions;
+using Lidarr.Http.Extensions;
 using NLog;
 
 namespace NzbDrone.Api.Indexers

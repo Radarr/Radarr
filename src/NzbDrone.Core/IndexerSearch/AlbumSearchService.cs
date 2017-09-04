@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Messaging.Commands;
@@ -6,6 +6,8 @@ using NzbDrone.Core.Messaging.Commands;
 namespace NzbDrone.Core.IndexerSearch
 {
     class AlbumSearchService : IExecute<AlbumSearchCommand>
+                               //IExecute<MissingAlbumSearchCommand>,
+                               //IExecute<CutoffUnmetAlbumSearchCommand>
     {
         private readonly ISearchForNzb _nzbSearchService;
         private readonly IProcessDownloadDecisions _processDownloadDecisions;

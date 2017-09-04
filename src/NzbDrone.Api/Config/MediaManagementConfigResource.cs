@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 

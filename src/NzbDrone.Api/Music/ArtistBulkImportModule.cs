@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Nancy;
-using NzbDrone.Api.REST;
-using NzbDrone.Api.Extensions;
+using Lidarr.Http.REST;
+using Lidarr.Http.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
@@ -16,6 +16,7 @@ using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Music;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Music
 {
@@ -28,7 +29,7 @@ namespace NzbDrone.Api.Music
         }
     }
 
-    public class MusicBulkImportModule : NzbDroneRestModule<ArtistResource>
+    public class MusicBulkImportModule : LidarrRestModule<ArtistResource>
     {
         private readonly ISearchForNewArtist _searchProxy;
         private readonly IRootFolderService _rootFolderService;

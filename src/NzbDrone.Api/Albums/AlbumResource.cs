@@ -1,9 +1,9 @@
-﻿using NzbDrone.Core.Music;
+using NzbDrone.Core.Music;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Api.Music;
 using NzbDrone.Core.MediaCover;
 

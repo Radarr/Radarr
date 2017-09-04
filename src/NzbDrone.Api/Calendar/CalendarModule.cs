@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Episodes;
@@ -16,9 +16,9 @@ namespace NzbDrone.Api.Calendar
         public CalendarModule(IAlbumService albumService,
                               IArtistStatisticsService artistStatisticsService,
                               IArtistService artistService,
-                              IQualityUpgradableSpecification qualityUpgradableSpecification,
+                              IUpgradableSpecification upgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, artistService, qualityUpgradableSpecification, signalRBroadcaster, "calendar")
+            : base(albumService, artistStatisticsService, artistService, upgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }

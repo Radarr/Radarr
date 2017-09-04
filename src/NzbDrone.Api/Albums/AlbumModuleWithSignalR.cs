@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -13,20 +13,21 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Albums
 {
-    public abstract class AlbumModuleWithSignalR : NzbDroneRestModuleWithSignalR<AlbumResource, Track>
+    public abstract class AlbumModuleWithSignalR : LidarrRestModuleWithSignalR<AlbumResource, Album>
     {
         protected readonly IAlbumService _albumService;
         protected readonly IArtistStatisticsService _artistStatisticsService;
         protected readonly IArtistService _artistService;
-        protected readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        protected readonly IUpgradableSpecification _qualityUpgradableSpecification;
 
         protected AlbumModuleWithSignalR(IAlbumService albumService,
                                            IArtistStatisticsService artistStatisticsService,
                                            IArtistService artistService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
@@ -41,7 +42,7 @@ namespace NzbDrone.Api.Albums
         protected AlbumModuleWithSignalR(IAlbumService albumService,
                                            IArtistStatisticsService artistStatisticsService,
                                            IArtistService artistService,
-                                           IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                           IUpgradableSpecification qualityUpgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
             : base(signalRBroadcaster, resource)

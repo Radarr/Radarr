@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -145,8 +145,9 @@ namespace NzbDrone.Core.Download.Pending
                                     Timeleft = ect.Subtract(DateTime.UtcNow),
                                     EstimatedCompletionTime = ect,
                                     Status = "Pending",
-                                    Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol
-                                };
+                                    Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol,
+                                    Indexer = pendingRelease.RemoteAlbum.Release.Indexer
+                    };
                     queued.Add(queue);
                 }
             }

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             SeriesMetadata = true;
         }
 
-        [FieldDefinition(0, Label = "Series Metadata", Type = FieldType.Checkbox)]
+        [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox, HelpText = "series.xml")]
         public bool SeriesMetadata { get; set; }
 
         public bool IsValid => true;

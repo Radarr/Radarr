@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -14,10 +14,12 @@ using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Music
 {
-    public class ArtistModule : NzbDroneRestModuleWithSignalR<ArtistResource, Core.Music.Artist>,
+    public class ArtistModule : LidarrRestModuleWithSignalR<ArtistResource, Artist>,
                                 IHandle<TrackImportedEvent>,
                                 IHandle<TrackFileDeletedEvent>,
                                 IHandle<ArtistUpdatedEvent>,
@@ -39,9 +41,9 @@ namespace NzbDrone.Api.Music
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator seriesPathValidator,
                             ArtistExistsValidator artistExistsValidator,
-                            DroneFactoryValidator droneFactoryValidator,
                             SeriesAncestorValidator seriesAncestorValidator,
-                            ProfileExistsValidator profileExistsValidator
+                            ProfileExistsValidator profileExistsValidator,
+                            LanguageProfileExistsValidator languageProfileExistsValidator
             )
             : base(signalRBroadcaster)
         {
@@ -56,19 +58,20 @@ namespace NzbDrone.Api.Music
             CreateResource = AddArtist;
             UpdateResource = UpdatArtist;
             DeleteResource = DeleteArtist;
-
-            Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.ProfileId));
+           
+            SharedValidator.RuleFor(s => s.ProfileId).ValidId();
+            SharedValidator.RuleFor(s => s.LanguageProfileId);
 
             SharedValidator.RuleFor(s => s.Path)
                            .Cascade(CascadeMode.StopOnFirstFailure)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
                            .SetValidator(seriesPathValidator)
-                           .SetValidator(droneFactoryValidator)
                            .SetValidator(seriesAncestorValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 
             SharedValidator.RuleFor(s => s.ProfileId).SetValidator(profileExistsValidator);
+            SharedValidator.RuleFor(s => s.LanguageProfileId).SetValidator(languageProfileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());

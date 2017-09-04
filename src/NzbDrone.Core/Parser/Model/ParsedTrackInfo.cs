@@ -1,9 +1,10 @@
-﻿using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Qualities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -16,7 +17,7 @@ namespace NzbDrone.Core.Parser.Model
         public ArtistTitleInfo ArtistTitleInfo { get; set; }
         public QualityModel Quality { get; set; }
         public int[] TrackNumbers { get; set; }
-        //public Language Language { get; set; }
+        public Language Language { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
 

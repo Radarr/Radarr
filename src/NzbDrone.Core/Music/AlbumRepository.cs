@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Marr.Data.QGen;
 using NzbDrone.Core.Datastore;
@@ -20,13 +20,17 @@ namespace NzbDrone.Core.Music
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
         void SetMonitoredFlat(Album album, bool monitored);
+        void SetMonitored(IEnumerable<int> ids, bool monitored);
     }
 
     public class AlbumRepository : BasicRepository<Album>, IAlbumRepository
     {
+        private readonly IMainDatabase _database;
+
         public AlbumRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
+            _database = database;
         }
        
 
@@ -141,6 +145,19 @@ namespace NzbDrone.Core.Music
         {
             album.Monitored = monitored;
             SetFields(album, p => p.Monitored);
+        }
+
+        public void SetMonitored(IEnumerable<int> ids, bool monitored)
+        {
+            var mapper = _database.GetDataMapper();
+
+            mapper.AddParameter("monitored", monitored);
+
+            var sql = "UPDATE Albums " +
+                      "SET Monitored = @monitored " +
+                      $"WHERE Id IN ({string.Join(", ", ids)})";
+
+            mapper.ExecuteNonQuery(sql);
         }
 
         public Album FindByName(string cleanTitle)

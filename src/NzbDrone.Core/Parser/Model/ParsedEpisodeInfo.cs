@@ -1,6 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser.Model
 {

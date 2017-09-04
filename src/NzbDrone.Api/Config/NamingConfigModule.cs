@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
@@ -6,11 +6,13 @@ using Nancy.Responses;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Organizer;
 using Nancy.ModelBinding;
-using NzbDrone.Api.Extensions;
+using Lidarr.Http.Extensions;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Config
 {
-    public class NamingConfigModule : NzbDroneRestModule<NamingConfigResource>
+    public class NamingConfigModule : LidarrRestModule<NamingConfigResource>
     {
         private readonly INamingConfigService _namingConfigService;
         private readonly IFilenameSampleService _filenameSampleService;

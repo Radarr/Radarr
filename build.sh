@@ -39,9 +39,6 @@ CleanFolder()
     find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
     find $path -name "App.config" -exec rm "{}" \;
 
-    echo "Removing .less files"
-    find $path -name "*.less" -exec rm "{}" \;
-
     echo "Removing vshost files"
     find $path -name "*.vshost.exe" -exec rm "{}" \;
 
@@ -102,11 +99,11 @@ Build()
 RunGulp()
 {
     echo "##teamcity[progressStart 'npm install']"
-    npm-cache install npm || CheckExitCode npm install
+    npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
     echo "##teamcity[progressFinish 'npm install']"
 
     echo "##teamcity[progressStart 'Running gulp']"
-    CheckExitCode npm run build
+    CheckExitCode npm run build -- --production
     echo "##teamcity[progressFinish 'Running gulp']"
 }
 

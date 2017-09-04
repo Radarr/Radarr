@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Crypto;
@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Queue
     {
         List<Queue> GetQueue();
         Queue Find(int id);
+        void Remove(int id);
     }
 
     public class QueueService : IQueueService, IHandle<TrackedDownloadRefreshedEvent>
@@ -32,6 +33,11 @@ namespace NzbDrone.Core.Queue
         public Queue Find(int id)
         {
             return _queue.SingleOrDefault(q => q.Id == id);
+        }
+
+        public void Remove(int id)
+        {
+            _queue.Remove(Find(id));
         }
 
         public void Handle(TrackedDownloadRefreshedEvent message)
@@ -72,9 +78,12 @@ namespace NzbDrone.Core.Queue
                 Status = trackedDownload.DownloadItem.Status.ToString(),
                 TrackedDownloadStatus = trackedDownload.Status.ToString(),
                 StatusMessages = trackedDownload.StatusMessages.ToList(),
+                ErrorMessage = trackedDownload.DownloadItem.Message,
                 RemoteAlbum = trackedDownload.RemoteAlbum,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
-                Protocol = trackedDownload.Protocol
+                Protocol = trackedDownload.Protocol,
+                DownloadClient = trackedDownload.DownloadItem.DownloadClient,
+                Indexer = trackedDownload.Indexer
             };
 
             if (queue.Timeleft.HasValue)

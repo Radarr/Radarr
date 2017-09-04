@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -12,11 +12,13 @@ using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -36,6 +38,11 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             var artist = Builder<Artist>.CreateNew()
                                         .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                                        .With(l => l.LanguageProfile = new LanguageProfile
+                                        {
+                                            Cutoff = Language.Spanish,
+                                            Languages = Languages.LanguageFixture.GetDefaultLanguages()
+                                        })
                                         .With(s => s.Path = @"C:\Test\Music\Alien Ant Farm".AsOsAgnostic())
                                         .Build();
 
@@ -53,16 +60,16 @@ namespace NzbDrone.Core.Test.MediaFiles
                 _approvedDecisions.Add(new ImportDecision
                                            (
                                            new LocalTrack
+                                           {
+                                               Artist = artist,
+                                               Tracks = new List<Track> { track },
+                                               Path = Path.Combine(artist.Path, "30 Rock - S01E01 - Pilot.avi"),
+                                               Quality = new QualityModel(Quality.MP3_256),
+                                               ParsedTrackInfo = new ParsedTrackInfo
                                                {
-                                                   Artist = artist,
-                                                   Tracks = new List<Track> { track },
-                                                   Path = Path.Combine(artist.Path, "30 Rock - S01E01 - Pilot.avi"),
-                                                   Quality = new QualityModel(Quality.MP3_256),
-                                                   ParsedTrackInfo = new ParsedTrackInfo
-                                                                       {
-                                                                           ReleaseGroup = "DRONE"
-                                                                       }
-                                               }));
+                                                   ReleaseGroup = "DRONE"
+                                               }
+                                           }));
             }
 
             Mocker.GetMock<IUpgradeMediaFiles>()
@@ -203,13 +210,13 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             var sampleDecision = new ImportDecision
                 (new LocalTrack
-                 {
-                     Artist = fileDecision.LocalTrack.Artist,
-                     Tracks = new List<Track> { fileDecision.LocalTrack.Tracks.First() },
-                     Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
-                     Quality = new QualityModel(Quality.MP3_256),
-                     Size = 80.Megabytes()
-                 });
+                {
+                    Artist = fileDecision.LocalTrack.Artist,
+                    Tracks = new List<Track> { fileDecision.LocalTrack.Tracks.First() },
+                    Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
+                    Quality = new QualityModel(Quality.MP3_256),
+                    Size = 80.Megabytes()
+                });
 
 
             var all = new List<ImportDecision>();

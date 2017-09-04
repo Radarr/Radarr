@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Profiles
 {
-    public class ProfileSchemaModule : NzbDroneRestModule<ProfileResource>
+    public class ProfileSchemaModule : LidarrRestModule<ProfileResource>
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
 
@@ -28,7 +30,6 @@ namespace NzbDrone.Api.Profiles
             var profile = new Profile();
             profile.Cutoff = Quality.Unknown;
             profile.Items = items;
-            profile.Language = Language.English;
 
             return new List<ProfileResource> { profile.ToResource() };
         }

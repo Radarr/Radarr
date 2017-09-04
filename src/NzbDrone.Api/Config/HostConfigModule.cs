@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using FluentValidation;
 using NzbDrone.Common.EnvironmentInfo;
@@ -8,10 +8,11 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Update;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Config
 {
-    public class HostConfigModule : NzbDroneRestModule<HostConfigResource>
+    public class HostConfigModule : LidarrRestModule<HostConfigResource>
     {
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IConfigService _configService;

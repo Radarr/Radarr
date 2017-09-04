@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Update;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Update
 {
-    public class UpdateModule : NzbDroneRestModule<UpdateResource>
+    public class UpdateModule : LidarrRestModule<UpdateResource>
     {
         private readonly IRecentUpdateProvider _recentUpdateProvider;
 

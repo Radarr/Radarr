@@ -1,0 +1,19 @@
+.qualityProfile {
+  composes: card from 'Components/Card.css';
+
+  width: 300px;
+}
+
+.name {
+  composes: truncate from 'Styles/Mixins/truncate.css';
+
+  margin-bottom: 20px;
+  font-weight: 300;
+  font-size: 24px;
+}
+
+.qualities {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}

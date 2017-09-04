@@ -1,0 +1,18 @@
+.title {
+  line-height: 1.528571429;
+}
+
+.title {
+  font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .title {
+    composes: truncate from 'Styles/Mixins/truncate.css';
+
+    float: left;
+    clear: left;
+    width: 160px;
+    text-align: right;
+  }
+}

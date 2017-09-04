@@ -4,6 +4,9 @@ using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles.Qualities;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
@@ -19,7 +22,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         public Decision IsSatisfiedBy(LocalTrack localTrack)
         {
             var qualityComparer = new QualityModelComparer(localTrack.Artist.Profile);
-            if (localTrack.Tracks.Any(e => e.TrackFileId != 0 && qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) > 0))
+            var languageComparer = new LanguageComparer(localTrack.Artist.LanguageProfile);
+            var profile = localTrack.Artist.Profile.Value;
+
+            if (localTrack.Tracks.Any(e => e.TrackFileId != 0 &&
+                                      languageComparer.Compare(e.TrackFile.Value.Language, localTrack.Language) > 0 &&
+                                      qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) == 0))
             {
                 _logger.Debug("This file isn't an upgrade for all tracks. Skipping {0}", localTrack.Path);
                 return Decision.Reject("Not an upgrade for existing track file(s)");

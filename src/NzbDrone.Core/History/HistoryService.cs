@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +10,9 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music.Events;
 
@@ -18,7 +20,6 @@ namespace NzbDrone.Core.History
 {
     public interface IHistoryService
     {
-        QualityModel GetBestQualityInHistory(Profile profile, int episodeId);
         PagingSpec<History> Paged(PagingSpec<History> pagingSpec);
         History MostRecentForAlbum(int episodeId);
         History MostRecentForDownloadId(string downloadId);
@@ -71,14 +72,6 @@ namespace NzbDrone.Core.History
         public List<History> FindByDownloadId(string downloadId)
         {
             return _historyRepository.FindByDownloadId(downloadId);
-        }
-
-        public QualityModel GetBestQualityInHistory(Profile profile, int albumId)
-        {
-            var comparer = new QualityModelComparer(profile);
-            return _historyRepository.GetBestQualityInHistory(albumId)
-                .OrderByDescending(q => q, comparer)
-                .FirstOrDefault();
         }
 
         [Obsolete("Used for Sonarr, not Lidarr")]
@@ -139,7 +132,8 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.Album.Release.Title,
                     ArtistId = album.ArtistId,
                     AlbumId = album.Id,
-                    DownloadId = message.DownloadId
+                    DownloadId = message.DownloadId,
+                    Language = message.Album.ParsedAlbumInfo.Language
                 };
 
                 history.Data.Add("Indexer", message.Album.Release.Indexer);
@@ -196,8 +190,9 @@ namespace NzbDrone.Core.History
                         SourceTitle = message.ImportedEpisode.SceneName ?? Path.GetFileNameWithoutExtension(message.EpisodeInfo.Path),
                         ArtistId = message.ImportedEpisode.SeriesId,
                         AlbumId = episode.Id,
-                        DownloadId = downloadId
-                    };
+                        DownloadId = downloadId,
+                        Language = message.EpisodeInfo.Language
+                };
 
                 //Won't have a value since we publish this event before saving to DB.
                 //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
@@ -221,7 +216,8 @@ namespace NzbDrone.Core.History
                     SourceTitle = message.SourceTitle,
                     ArtistId = message.ArtistId,
                     AlbumId = albumId,
-                    DownloadId = message.DownloadId
+                    DownloadId = message.DownloadId,
+                    Language = message.Language
                 };
 
                 history.Data.Add("DownloadClient", message.DownloadClient);

@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
 {

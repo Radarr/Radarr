@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,12 +21,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
+        private readonly IArtistService _artistService;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
 
-        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, Logger logger)
+        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IArtistService artistService, Logger logger)
         {
             _httpClient = httpClient;
-             _requestBuilder = requestBuilder.Search;
+            _requestBuilder = requestBuilder.Search;
+            _artistService = artistService;
             _logger = logger;
         }
 
@@ -45,13 +47,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                             .SetSegment("route", "artists/" + foreignArtistId)
                                             .Build();
 
-            
+
 
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
             var httpResponse = _httpClient.Get<ArtistResource>(httpRequest);
-            
+
 
             if (httpResponse.HasHttpError)
             {
@@ -106,8 +108,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
 
                 var httpResponse = _httpClient.Get<List<ArtistResource>>(httpRequest);
-                
-                return httpResponse.Resource.SelectList(MapArtist);
+
+                return httpResponse.Resource.SelectList(MapSearhResult);
             }
             catch (HttpException)
             {
@@ -118,6 +120,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Warn(ex, ex.Message);
                 throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
             }
+        }
+
+        private Artist MapSearhResult(ArtistResource resource)
+        {
+            var artist = _artistService.FindById(resource.Id);
+
+            if (artist == null)
+            {
+                artist = MapArtist(resource);
+            }
+
+            return artist;
         }
 
         private static Album MapAlbum(AlbumResource resource)
@@ -132,7 +146,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var tracks = resource.Tracks.Select(MapTrack);
             album.Tracks = tracks.ToList();
-            
+
 
             return album;
         }
@@ -149,7 +163,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private static Artist MapArtist(ArtistResource resource)
         {
-            
+
             Artist artist = new Artist();
 
             artist.Name = resource.ArtistName;
@@ -158,8 +172,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.Overview = resource.Overview;
             artist.NameSlug = Parser.Parser.CleanArtistTitle(artist.Name);
             artist.CleanName = Parser.Parser.CleanArtistTitle(artist.Name);
-            artist.SortName = SeriesTitleNormalizer.Normalize(artist.Name,0);
+            artist.SortName = SeriesTitleNormalizer.Normalize(artist.Name, 0);
             artist.Images = resource.Images.Select(MapImage).ToList();
+            artist.Status = ArtistStatusType.Continuing; // TODO: Remove HACK when we get from Metadata
+            artist.Ratings = MapRatings(null); // TODO: Remove HACK when we get from Metadata
 
             return artist;
         }
@@ -183,14 +199,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return newActor;
         }
 
-        private static SeriesStatusType MapArtistStatus(string status)
+        private static ArtistStatusType MapArtistStatus(string status)
         {
             if (status.Equals("ended", StringComparison.InvariantCultureIgnoreCase))
             {
-                return SeriesStatusType.Ended;
+                return ArtistStatusType.Ended;
             }
 
-            return SeriesStatusType.Continuing;
+            return ArtistStatusType.Continuing;
         }
 
         private static Core.Music.Ratings MapRatings(RatingResource rating)

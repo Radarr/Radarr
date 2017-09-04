@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.DecisionEngine;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Indexers
 {
-    public abstract class ReleaseModuleBase : NzbDroneRestModule<ReleaseResource>
+    public abstract class ReleaseModuleBase : LidarrRestModule<ReleaseResource>
     {
         protected virtual List<ReleaseResource> MapDecisions(IEnumerable<DownloadDecision> decisions)
         {

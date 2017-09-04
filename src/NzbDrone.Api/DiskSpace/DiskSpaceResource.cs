@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 
 namespace NzbDrone.Api.DiskSpace
 {

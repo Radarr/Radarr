@@ -1,0 +1,28 @@
+.scroller {
+  composes: scrollbar from 'Styles/Mixins/scroller.css';
+  composes: scrollbarTrack from 'Styles/Mixins/scroller.css';
+  composes: scrollbarThumb from 'Styles/Mixins/scroller.css';
+}
+
+.none {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.vertical {
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  &.autoScroll {
+    overflow-y: auto;
+  }
+}
+
+.horizontal {
+  overflow-x: scroll;
+  overflow-y: hidden;
+
+  &.autoScroll {
+    overflow-x: auto;
+  }
+}

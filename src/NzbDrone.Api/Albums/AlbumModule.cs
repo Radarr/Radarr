@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using System.Collections.Generic;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.DecisionEngine;
@@ -12,7 +12,7 @@ namespace NzbDrone.Api.Albums
         public AlbumModule(IArtistService artistService,
                              IArtistStatisticsService artistStatisticsService,
                              IAlbumService albumService,
-                             IQualityUpgradableSpecification qualityUpgradableSpecification,
+                             IUpgradableSpecification qualityUpgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
             : base(albumService, artistStatisticsService, artistService, qualityUpgradableSpecification, signalRBroadcaster)
         {

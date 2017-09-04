@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 
@@ -16,7 +15,6 @@ namespace NzbDrone.Common.Disk
     public class FileSystemLookupService : IFileSystemLookupService
     {
         private readonly IDiskProvider _diskProvider;
-        private readonly Logger _logger;
 
         private readonly HashSet<string> _setToRemove = new HashSet<string>
                                                         {
@@ -48,10 +46,9 @@ namespace NzbDrone.Common.Disk
                                                             "@eadir"
                                                         };
 
-        public FileSystemLookupService(IDiskProvider diskProvider, Logger logger)
+        public FileSystemLookupService(IDiskProvider diskProvider)
         {
             _diskProvider = diskProvider;
-            _logger = logger;
         }
 
         public FileSystemResult LookupContents(string query, bool includeFiles)
@@ -154,6 +151,16 @@ namespace NzbDrone.Common.Disk
                                 .ToList();
         }
 
+        private static string GetVolumeName(IMount mountInfo)
+        {
+            if (mountInfo.VolumeLabel.IsNullOrWhiteSpace())
+            {
+                return mountInfo.Name;
+            }
+ 
+            return $"{mountInfo.Name} ({mountInfo.VolumeLabel})";
+        }
+
         private string GetDirectoryPath(string path)
         {
             if (path.Last() != Path.DirectorySeparatorChar)
@@ -164,7 +171,7 @@ namespace NzbDrone.Common.Disk
             return path;
         }
 
-        private string GetParent(string path)
+        private static string GetParent(string path)
         {
             var di = new DirectoryInfo(path);
 

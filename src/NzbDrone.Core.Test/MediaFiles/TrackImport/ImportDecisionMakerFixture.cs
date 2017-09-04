@@ -8,12 +8,14 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 {
@@ -54,6 +56,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             _artist = Builder<Artist>.CreateNew()
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                                     .With(e => e.LanguageProfile = new LanguageProfile { Languages = Languages.LanguageFixture.GetDefaultLanguages() })
                                      .Build();
 
             _quality = new QualityModel(Quality.MP3_256);
@@ -62,15 +65,16 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             { 
                 Artist = _artist,
                 Quality = _quality,
+                Language = Language.Spanish,
                 Tracks = new List<Track> { new Track() },
-                Path = @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV.avi"
+                Path = @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.Spanish.XviD-OSiTV.avi"
             };
 
             Mocker.GetMock<IParsingService>()
                   .Setup(c => c.GetLocalTrack(It.IsAny<string>(), It.IsAny<Artist>(), It.IsAny<ParsedTrackInfo>()))
                   .Returns(_localTrack);
 
-            GivenVideoFiles(new List<string> { @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV.avi".AsOsAgnostic() });
+            GivenVideoFiles(new List<string> { @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.Spanish.XviD-OSiTV.avi".AsOsAgnostic() });
         }
 
         private void GivenSpecifications(params Mock<IImportDecisionEngineSpecification>[] mocks)
@@ -179,6 +183,17 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         }
 
         [Test]
+        public void should_use_file_language_if_folder_language_is_null()
+        {
+            GivenSpecifications(_pass1, _pass2, _pass3);
+            var expectedLanguage = Parser.Parser.ParseLanguage(_audioFiles.Single());
+
+            var result = Subject.GetImportDecisions(_audioFiles, _artist);
+
+            result.Single().LocalTrack.Language.Should().Be(expectedLanguage);
+        }
+
+    [Test]
         public void should_use_file_quality_if_file_quality_was_determined_by_name()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
@@ -223,6 +238,23 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         }
 
         [Test]
+        public void should_use_folder_language_when_greater_than_file_language()
+        {
+            GivenSpecifications(_pass1, _pass2, _pass3);
+            GivenVideoFiles(new string[] { @"C:\Test\Unsorted\The.Office.S03E115.Spanish.mkv".AsOsAgnostic() });
+
+            _localTrack.Path = _audioFiles.Single();
+            _localTrack.Quality.Quality = Quality.MP3_320;
+            _localTrack.Language = Language.Spanish;
+
+            var expectedLanguage = Language.French;
+
+            var result = Subject.GetImportDecisions(_audioFiles, _artist, new ParsedTrackInfo { Language = expectedLanguage, Quality = new QualityModel(Quality.MP3_192) });
+
+            result.Single().LocalTrack.Language.Should().Be(expectedLanguage);
+        }
+
+[Test]
         public void should_not_throw_if_episodes_are_not_found()
         {
             GivenSpecifications(_pass1);

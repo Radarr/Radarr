@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
-using NzbDrone.Api.REST;
+using Lidarr.Http.REST;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Api.TrackFiles
 {
@@ -12,6 +13,7 @@ namespace NzbDrone.Api.TrackFiles
         public string RelativePath { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
+        public Language Language { get; set; }
         public DateTime DateAdded { get; set; }
         //public string SceneName { get; set; }
         public QualityModel Quality { get; set; }
@@ -41,7 +43,7 @@ namespace NzbDrone.Api.TrackFiles
             };
         }
 
-        public static TrackFileResource ToResource(this Core.MediaFiles.TrackFile model, Core.Music.Artist artist, Core.DecisionEngine.IQualityUpgradableSpecification qualityUpgradableSpecification)
+        public static TrackFileResource ToResource(this Core.MediaFiles.TrackFile model, Core.Music.Artist artist, Core.DecisionEngine.IUpgradableSpecification upgradableSpecification)
         {
             if (model == null) return null;
 
@@ -57,7 +59,8 @@ namespace NzbDrone.Api.TrackFiles
                 DateAdded = model.DateAdded,
                 //SceneName = model.SceneName,
                 Quality = model.Quality,
-                QualityCutoffNotMet = qualityUpgradableSpecification.CutoffNotMet(artist.Profile.Value, model.Quality)
+                Language = model.Language,
+                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(artist.Profile.Value, artist.LanguageProfile.Value, model.Quality, model.Language)
             };
         }
     }

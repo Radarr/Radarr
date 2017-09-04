@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.History
 {
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.History
         public Artist Artist { get; set; }
         public HistoryEventType EventType { get; set; }
         public Dictionary<string, string> Data { get; set; }
+        public Language Language { get; set; }
 
         public string DownloadId { get; set; }
 

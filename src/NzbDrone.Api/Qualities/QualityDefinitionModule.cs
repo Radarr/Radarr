@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Qualities
 {
-    public class QualityDefinitionModule : NzbDroneRestModule<QualityDefinitionResource>
+    public class QualityDefinitionModule : LidarrRestModule<QualityDefinitionResource>
     {
         private readonly IQualityDefinitionService _qualityDefinitionService;
 

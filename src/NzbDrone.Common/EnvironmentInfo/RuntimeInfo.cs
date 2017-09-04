@@ -1,20 +1,23 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Principal;
 using System.ServiceProcess;
 using NLog;
+using NzbDrone.Common.Processes;
 
 namespace NzbDrone.Common.EnvironmentInfo
 {
     public class RuntimeInfo : IRuntimeInfo
     {
         private readonly Logger _logger;
+        private readonly DateTime _startTime = DateTime.UtcNow;
 
         public RuntimeInfo(IServiceProvider serviceProvider, Logger logger)
         {
             _logger = logger;
+            
 
             IsWindowsService = !IsUserInteractive &&
                                OsInfo.IsWindows &&
@@ -33,6 +36,14 @@ namespace NzbDrone.Common.EnvironmentInfo
         static RuntimeInfo()
         {
             IsProduction = InternalIsProduction();
+        }
+
+        public DateTime StartTime
+        {
+            get
+            {
+                return _startTime;
+            }
         }
 
         public static bool IsUserInteractive => Environment.UserInteractive;
@@ -59,6 +70,39 @@ namespace NzbDrone.Common.EnvironmentInfo
         public bool IsWindowsService { get; private set; }
 
         public bool IsExiting { get; set; }
+
+        public bool IsTray
+        {
+            get
+            {
+                if (OsInfo.IsWindows)
+                {
+                    return IsUserInteractive && Process.GetCurrentProcess().ProcessName.Equals(ProcessProvider.NZB_DRONE_PROCESS_NAME, StringComparison.InvariantCultureIgnoreCase);
+                }
+
+                return false;
+            }
+        }
+
+        public RuntimeMode Mode
+        {
+            get
+            {
+                if (IsWindowsService)
+                {
+                    return RuntimeMode.Service;
+                }
+
+                if (IsTray)
+                {
+                    return RuntimeMode.Tray;
+                }
+
+                return RuntimeMode.Console;
+            }
+        }
+
+
         public bool RestartPending { get; set; }
         public string ExecutingApplication { get; }
 

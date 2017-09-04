@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -95,7 +95,8 @@ namespace NzbDrone.Core.Download
                 DownloadId = historyItem.DownloadId,
                 Message = message,
                 Data = historyItem.Data,
-                TrackedDownload = trackedDownload
+                TrackedDownload = trackedDownload,
+                Language = historyItem.Language
             };
 
             _eventAggregator.PublishEvent(downloadFailedEvent);

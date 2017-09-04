@@ -1,19 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.Extensions;
-using NzbDrone.Api.Validation;
+using Lidarr.Http.Extensions;
 using NzbDrone.Common;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.ProgressMessaging;
 using NzbDrone.SignalR;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
+using Lidarr.Http.Validation;
 
 
 namespace NzbDrone.Api.Commands
 {
-    public class CommandModule : NzbDroneRestModuleWithSignalR<CommandResource, CommandModel>, IHandle<CommandUpdatedEvent>
+    public class CommandModule : LidarrRestModuleWithSignalR<CommandResource, CommandModel>, IHandle<CommandUpdatedEvent>
     {
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IServiceFactory _serviceFactory;

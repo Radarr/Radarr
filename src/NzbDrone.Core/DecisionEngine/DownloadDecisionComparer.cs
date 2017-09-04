@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Indexers;
@@ -23,6 +23,7 @@ namespace NzbDrone.Core.DecisionEngine
             var comparers = new List<CompareDelegate>
             {
                 CompareQuality,
+                CompareLanguage,
                 CompareProtocol,
                 ComparePeersIfTorrent,
                 CompareAlbumCount,
@@ -45,7 +46,7 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareByReverse<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
             where TValue : IComparable<TValue>
         {
-            return CompareBy(left, right, funcValue)*-1;
+            return CompareBy(left, right, funcValue) * -1;
         }
 
         private int CompareAll(params int[] comparers)
@@ -58,6 +59,11 @@ namespace NzbDrone.Core.DecisionEngine
             return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.Profile.Value.Items.FindIndex(v => v.Quality == remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
                            CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Real),
                            CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Version));
+        }
+
+        private int CompareLanguage(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.LanguageProfile.Value.Languages.FindIndex(l => l.Language == remoteAlbum.ParsedAlbumInfo.Language));
         }
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)

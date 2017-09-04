@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Restrictions;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Restrictions
 {
-    public class RestrictionModule : NzbDroneRestModule<RestrictionResource>
+    public class RestrictionModule : LidarrRestModule<RestrictionResource>
     {
         private readonly IRestrictionService _restrictionService;
 

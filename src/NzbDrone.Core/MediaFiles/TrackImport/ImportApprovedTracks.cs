@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -51,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalTrack.Artist.Id, (i, s) => s
                    .OrderByDescending(c => c.LocalTrack.Quality, new QualityModelComparer(s.First().LocalTrack.Artist.Profile))
+                   .ThenByDescending(c => c.LocalTrack.Language, new LanguageComparer(s.First().LocalTrack.Artist.LanguageProfile))
                    .ThenByDescending(c => c.LocalTrack.Size))
                .SelectMany(c => c)
                .ToList();
@@ -85,6 +87,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     trackFile.AlbumId = _albumRepository.FindByArtistAndName(localTrack.Artist.Name, Parser.Parser.CleanArtistTitle(localTrack.ParsedTrackInfo.AlbumTitle)).Id;
                     trackFile.ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup;
                     trackFile.Tracks = localTrack.Tracks;
+                    trackFile.Language = localTrack.Language;
 
                     bool copyOnly;
                     switch (importMode)

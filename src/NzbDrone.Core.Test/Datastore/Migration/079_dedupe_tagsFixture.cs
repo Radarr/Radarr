@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Migration;
@@ -14,38 +14,15 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
-                c.Insert.IntoTable("Series").Row(new
+                c.Insert.IntoTable("Profiles").Row(new
+
                 {
-                    Tvdbid = 1,
-                    TvRageId = 1,
-                    Title = "Title1",
-                    CleanTitle = "CleanTitle1",
-                    Status = 1,
-                    Images = "",
-                    Path = "c:\\test",
-                    Monitored = 1,
-                    SeasonFolder = 1,
-                    Runtime = 0,
-                    SeriesType = 0,
-                    UseSceneNumbering = 0,
-                    LastInfoSync = "2000-01-01 00:00:00"
+                    Name = "Profile1",
+                    CutOff = 0,
+                    Items = "[]",
+                    Language = 1
                 });
 
-                c.Insert.IntoTable("Tags").Row(new
-                {
-                    Label = "test"                 
-                });
-            });
-
-            var tags = db.Query<Tag69>("SELECT * FROM Tags");
-            tags.Should().HaveCount(1);
-        }
-
-        [Test]
-        public void should_not_fail_if_series_tags_are_empty()
-        {
-            var db = WithMigrationTestDb(c =>
-            {
                 c.Insert.IntoTable("Series").Row(new
                 {
                     Tvdbid = 1,
@@ -61,7 +38,49 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     SeriesType = 0,
                     UseSceneNumbering = 0,
                     LastInfoSync = "2000-01-01 00:00:00",
-                    Tags = "[]"
+                    ProfileId = 1
+                });
+
+                c.Insert.IntoTable("Tags").Row(new
+                {
+                    Label = "test"
+                });
+            });
+
+            var tags = db.Query<Tag69>("SELECT * FROM Tags");
+            tags.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void should_not_fail_if_series_tags_are_empty()
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                c.Insert.IntoTable("Profiles").Row(new
+
+                {
+                    Name = "Profile1",
+                    CutOff = 0,
+                    Items = "[]",
+                    Language = 1
+                });
+                c.Insert.IntoTable("Series").Row(new
+                {
+                    Tvdbid = 1,
+                    TvRageId = 1,
+                    Title = "Title1",
+                    CleanTitle = "CleanTitle1",
+                    Status = 1,
+                    Images = "",
+                    Path = "c:\\test",
+                    Monitored = 1,
+                    SeasonFolder = 1,
+                    Runtime = 0,
+                    SeriesType = 0,
+                    UseSceneNumbering = 0,
+                    LastInfoSync = "2000-01-01 00:00:00",
+                    Tags = "[]",
+                    ProfileId = 1
                 });
 
                 c.Insert.IntoTable("Tags").Row(new
@@ -113,6 +132,14 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
+                c.Insert.IntoTable("Profiles").Row(new
+
+                {
+                    Name = "Profile1",
+                    CutOff = 0,
+                    Items = "[]",
+                    Language = 1
+                });
                 c.Insert.IntoTable("Series").Row(new
                 {
                     Tvdbid = 1,
@@ -128,7 +155,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     SeriesType = 0,
                     UseSceneNumbering = 0,
                     LastInfoSync = "2000-01-01 00:00:00",
-                    Tags = "[2]"
+                    Tags = "[2]",
+                    ProfileId = 1
                 });
 
                 c.Insert.IntoTable("Tags").Row(new
@@ -151,6 +179,15 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         {
             var db = WithMigrationTestDb(c =>
             {
+                c.Insert.IntoTable("Profiles").Row(new
+
+                {
+                    Name = "Profile1",
+                    CutOff = 0,
+                    Items = "[]",
+                    Language = 1
+                });
+
                 c.Insert.IntoTable("Series").Row(new
                 {
                     Tvdbid = 1,
@@ -166,7 +203,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     SeriesType = 0,
                     UseSceneNumbering = 0,
                     LastInfoSync = "2000-01-01 00:00:00",
-                    Tags = "[2]"
+                    Tags = "[2]",
+                    ProfileId = 1
                 });
 
                 c.Insert.IntoTable("Series").Row(new
@@ -184,7 +222,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     SeriesType = 0,
                     UseSceneNumbering = 0,
                     LastInfoSync = "2000-01-01 00:00:00",
-                    Tags = "[]"
+                    Tags = "[]",
+                    ProfileId = 1
                 });
 
                 c.Insert.IntoTable("Tags").Row(new

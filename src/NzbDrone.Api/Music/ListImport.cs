@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using Nancy.Extensions;
-using NzbDrone.Api.Extensions;
+using Lidarr.Http.Extensions;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Api.Music

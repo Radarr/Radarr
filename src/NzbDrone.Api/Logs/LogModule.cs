@@ -1,8 +1,10 @@
-﻿using NzbDrone.Core.Instrumentation;
+using NzbDrone.Core.Instrumentation;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Logs
 {
-    public class LogModule : NzbDroneRestModule<LogResource>
+    public class LogModule : LidarrRestModule<LogResource>
     {
         private readonly ILogService _logService;
 

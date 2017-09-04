@@ -1,0 +1,8 @@
+.modalHeader {
+  composes: truncate from 'Styles/Mixins/truncate.css';
+
+  flex-shrink: 0;
+  padding: 15px 50px 15px 30px;
+  border-bottom: 1px solid $borderColor;
+  font-size: 18px;
+}

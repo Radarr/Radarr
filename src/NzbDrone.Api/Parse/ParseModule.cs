@@ -1,10 +1,11 @@
-﻿using NzbDrone.Api.Albums;
+using NzbDrone.Api.Albums;
 using NzbDrone.Api.Music;
 using NzbDrone.Core.Parser;
+using Lidarr.Http;
 
 namespace NzbDrone.Api.Parse
 {
-    public class ParseModule : NzbDroneRestModule<ParseResource>
+    public class ParseModule : LidarrRestModule<ParseResource>
     {
         private readonly IParsingService _parsingService;
 

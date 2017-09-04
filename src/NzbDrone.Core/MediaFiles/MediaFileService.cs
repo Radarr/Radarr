@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -15,9 +15,11 @@ namespace NzbDrone.Core.MediaFiles
     {
         TrackFile Add(TrackFile trackFile);
         void Update(TrackFile trackFile);
+        void Update(List<TrackFile> trackFile);
         void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int artistId, int albumId);
+        List<TrackFile> GetFiles(IEnumerable<int> ids);
         List<TrackFile> GetFilesWithoutMediaInfo();
         List<string> FilterExistingFiles(List<string> files, Artist artist);
         TrackFile Get(int id);
@@ -50,6 +52,12 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileRepository.Update(trackFile);
         }
 
+        public void Update(List<TrackFile> trackFiles)
+        {
+            _mediaFileRepository.UpdateMany(trackFiles);
+        }
+
+
         public void Delete(TrackFile trackFile, DeleteMediaFileReason reason)
         {
             //Little hack so we have the tracks and artist attached for the event consumers
@@ -58,6 +66,11 @@ namespace NzbDrone.Core.MediaFiles
 
             _mediaFileRepository.Delete(trackFile);
             _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+        }
+
+        public List<TrackFile> GetFiles(IEnumerable<int> ids)
+        {
+            return _mediaFileRepository.Get(ids).ToList();
         }
 
 

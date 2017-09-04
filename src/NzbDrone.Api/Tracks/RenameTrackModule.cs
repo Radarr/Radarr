@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using NzbDrone.Api.REST;
+using System.Collections.Generic;
+using Lidarr.Http.REST;
 using NzbDrone.Core.MediaFiles;
+using Lidarr.Http;
+using Lidarr.Http.Mapping;
 
 namespace NzbDrone.Api.Tracks
 {
-    public class RenameTrackModule : NzbDroneRestModule<RenameTrackResource>
+    public class RenameTrackModule : LidarrRestModule<RenameTrackResource>
     {
         private readonly IRenameTrackFileService _renameTrackFileService;
 

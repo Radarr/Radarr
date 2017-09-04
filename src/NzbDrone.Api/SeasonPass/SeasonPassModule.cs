@@ -1,5 +1,5 @@
-﻿using Nancy;
-using NzbDrone.Api.Extensions;
+using Nancy;
+using Lidarr.Http.Extensions;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Api.SeasonPass
