@@ -7,8 +7,8 @@
     <ProjectGuid>{7140FF1F-79BE-492F-9188-B21A050BF708}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sonarr.Api.V3</RootNamespace>
-    <AssemblyName>Sonarr.Api.V3</AssemblyName>
+    <RootNamespace>Lidarr.Api.V3</RootNamespace>
+    <AssemblyName>Lidarr.Api.V3</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -225,7 +225,7 @@
       <Project>{7C2CC69F-5CA0-4E5C-85CB-983F9F6C3B36}</Project>
       <Name>NzbDrone.SignalR</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sonarr.Http\Lidarr.Http.csproj">
+    <ProjectReference Include="..\Lidarr.Http\Lidarr.Http.csproj">
       <Project>{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}</Project>
       <Name>Lidarr.Http</Name>
     </ProjectReference>

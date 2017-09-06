@@ -10,7 +10,7 @@ var outputFolderOsxApp = outputFolderOsx + "_app";
 var testPackageFolder = "./_tests";
 var testSearchPattern = "*.Test/bin/x86/Release";
 var sourceFolder = "./src";
-var solutionFile = sourceFolder + "/NzbDrone.sln";
+var solutionFile = sourceFolder + "/Lidarr.sln";
 var updateFolder = outputFolder + "/NzbDrone.Update";
 var updateFolderMono = outputFolderMono + "/NzbDrone.Update";
 

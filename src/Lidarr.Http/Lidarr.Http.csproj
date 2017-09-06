@@ -7,8 +7,8 @@
     <ProjectGuid>{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sonarr.Http</RootNamespace>
-    <AssemblyName>Sonarr.Http</AssemblyName>
+    <RootNamespace>Lidarr.Http</RootNamespace>
+    <AssemblyName>Lidarr.Http</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
