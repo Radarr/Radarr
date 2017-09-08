@@ -19,33 +19,26 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             var wantedLanguage = subject.Series.Profile.Value.Language;
 
-            if (subject.ParsedEpisodeInfo.Language == wantedLanguage || subject.ParsedEpisodeInfo.Language == Parser.Language.Hungarian)
-            {
-
-                return Decision.Accept();
-            }
-            else
+            if (subject.ParsedEpisodeInfo.Language != wantedLanguage && subject.ParsedEpisodeInfo.Language != Parser.Language.Hungarian)
             {
                 _logger.Debug("Report Language: {0} rejected because it is not wanted", subject.ParsedEpisodeInfo.Language);
                 return Decision.Reject("{0} isn't wanted!", subject.ParsedEpisodeInfo.Language);
             }
+
+            return Decision.Accept();
         }
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var wantedLanguage = Parser.Language.English;
 
-            if (subject.ParsedMovieInfo.Language == wantedLanguage || subject.ParsedMovieInfo.Language == Parser.Language.Hungarian)
-            {
-
-                return Decision.Accept();
-            }
-            else
+            if (subject.ParsedMovieInfo.Language != wantedLanguage && subject.ParsedMovieInfo.Language != Parser.Language.Hungarian)
             {
                 _logger.Debug("Report Language: {0} rejected because it is not wanted", subject.ParsedMovieInfo.Language);
                 return Decision.Reject("{0} isn't wanted!", subject.ParsedMovieInfo.Language);
             }
 
+            return Decision.Accept();
         }
     }
 }

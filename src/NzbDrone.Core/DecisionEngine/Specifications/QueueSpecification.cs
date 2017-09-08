@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -10,14 +10,18 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     {
         private readonly IQueueService _queueService;
         private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly LanguageUpgradableSpecification _languageUpgradableSpecification;
         private readonly Logger _logger;
 
         public QueueSpecification(IQueueService queueService,
                                        QualityUpgradableSpecification qualityUpgradableSpecification,
+                                       LanguageUpgradableSpecification languageUpgradableSpecification,
                                        Logger logger)
         {
             _queueService = queueService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _languageUpgradableSpecification = languageUpgradableSpecification;
+
             _logger = logger;
         }
 
@@ -60,6 +64,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             foreach (var remoteEpisode in matchingSeries)
             {
+                _logger.Debug("Checking if existing release in queue meets cutoff. Queued language is: {0}", remoteEpisode.ParsedMovieInfo.Language);
+
+                if (!_languageUpgradableSpecification.IsUpgradable(subject.Movie.Profile, remoteEpisode.ParsedMovieInfo.Language, subject.ParsedMovieInfo.Language))
+                {
+                    return Decision.Reject("Language for release in queue is of equal or higher preference: {0}", remoteEpisode.ParsedMovieInfo.Language);
+                }
+
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteEpisode.ParsedMovieInfo.Quality);
 
                 if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Movie.Profile, remoteEpisode.ParsedMovieInfo.Quality, subject.ParsedMovieInfo.Quality))

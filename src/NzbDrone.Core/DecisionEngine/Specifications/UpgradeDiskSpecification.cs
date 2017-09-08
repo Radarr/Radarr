@@ -8,11 +8,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
     public class UpgradeDiskSpecification : IDecisionEngineSpecification
     {
         private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly LanguageUpgradableSpecification _languageUpgradableSpecification;
         private readonly Logger _logger;
 
-        public UpgradeDiskSpecification(QualityUpgradableSpecification qualityUpgradableSpecification, Logger logger)
+        public UpgradeDiskSpecification(QualityUpgradableSpecification qualityUpgradableSpecification, LanguageUpgradableSpecification languageUpgradableSpecification, Logger logger)
         {
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _languageUpgradableSpecification = languageUpgradableSpecification;
             _logger = logger;
         }
 
@@ -41,14 +43,28 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             var file = subject.Movie.MovieFile.Value;
+
+            // TODO :: 
+            Parser.Language currentLanguage;
+            if (file.MediaInfo.AudioLanguages.Contains("Hungarian"))
+            {
+                currentLanguage = Parser.Language.Hungarian;
+            }
+            else
+            {
+                currentLanguage = Parser.Language.English;
+            }
+
+            if (!_languageUpgradableSpecification.IsUpgradable(subject.Movie.Profile, currentLanguage, subject.ParsedMovieInfo.Language))
+            {
+                    return Decision.Reject("Language for existing file on disk is of equal or higher preference: {0}", file.MediaInfo.AudioLanguages);
+            }
+
             _logger.Debug("Comparing file quality with report. Existing file is {0}", file.Quality);
 
             if (!_qualityUpgradableSpecification.IsUpgradable(subject.Movie.Profile, file.Quality, subject.ParsedMovieInfo.Quality))
             {
-                if (subject.ParsedMovieInfo.Language != Parser.Language.Hungarian)
-                {
-                    return Decision.Reject("Quality for existing file on disk is of equal or higher preference: {0}", file.Quality);
-                }
+                return Decision.Reject("Quality for existing file on disk is of equal or higher preference: {0}", file.Quality);
             }
 
 
