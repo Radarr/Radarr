@@ -177,7 +177,7 @@ class Naming extends Component {
 
     return (
       <FieldSet
-        legend="Episode Naming"
+        legend="Track Naming"
       >
         {
           isFetching &&
@@ -193,14 +193,14 @@ class Naming extends Component {
           hasSettings && !isFetching && !error &&
             <Form>
               <FormGroup size={sizes.MEDIUM}>
-                <FormLabel>Rename Episodes</FormLabel>
+                <FormLabel>Rename Tracks</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
-                  name="renameEpisodes"
-                  helpText="Sonarr will use the existing file name if renaming is disabled"
+                  name="renameTracks"
+                  helpText="Lidarr will use the existing file name if renaming is disabled"
                   onChange={onInputChange}
-                  {...settings.renameEpisodes}
+                  {...settings.renameTracks}
                 />
               </FormGroup>
 

@@ -9,7 +9,7 @@ import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import EpisodeQuality from 'Episode/EpisodeQuality';
-import SelectSeriesModal from 'InteractiveImport/Series/SelectSeriesModal';
+import SelectArtistModal from 'InteractiveImport/Series/SelectArtistModal';
 import SelectSeasonModal from 'InteractiveImport/Season/SelectSeasonModal';
 import SelectEpisodeModal from 'InteractiveImport/Episode/SelectEpisodeModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
@@ -25,7 +25,7 @@ class InteractiveImportRow extends Component {
     super(props, context);
 
     this.state = {
-      isSelectSeriesModalOpen: false,
+      isSelectArtistModalOpen: false,
       isSelectSeasonModalOpen: false,
       isSelectEpisodeModalOpen: false,
       isSelectQualityModalOpen: false
@@ -87,8 +87,8 @@ class InteractiveImportRow extends Component {
   //
   // Listeners
 
-  onSelectSeriesPress = () => {
-    this.setState({ isSelectSeriesModalOpen: true });
+  onSelectArtistPress = () => {
+    this.setState({ isSelectArtistModalOpen: true });
   }
 
   onSelectSeasonPress = () => {
@@ -103,8 +103,8 @@ class InteractiveImportRow extends Component {
     this.setState({ isSelectQualityModalOpen: true });
   }
 
-  onSelectSeriesModalClose = (changed) => {
-    this.setState({ isSelectSeriesModalOpen: false });
+  onSelectArtistModalClose = (changed) => {
+    this.setState({ isSelectArtistModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
@@ -141,7 +141,7 @@ class InteractiveImportRow extends Component {
     } = this.props;
 
     const {
-      isSelectSeriesModalOpen,
+      isSelectArtistModalOpen,
       isSelectSeasonModalOpen,
       isSelectEpisodeModalOpen,
       isSelectQualityModalOpen
@@ -171,7 +171,7 @@ class InteractiveImportRow extends Component {
         </TableRowCell>
 
         <TableRowCellButton
-          onPress={this.onSelectSeriesPress}
+          onPress={this.onSelectArtistPress}
         >
           {
             showSeriesPlaceholder ? <InteractiveImportRowCellPlaceholder /> : seriesTitle
@@ -238,10 +238,10 @@ class InteractiveImportRow extends Component {
           }
         </TableRowCell>
 
-        <SelectSeriesModal
-          isOpen={isSelectSeriesModalOpen}
+        <SelectArtistModal
+          isOpen={isSelectArtistModalOpen}
           ids={[id]}
-          onModalClose={this.onSelectSeriesModalClose}
+          onModalClose={this.onSelectArtistModalClose}
         />
 
         <SelectSeasonModal

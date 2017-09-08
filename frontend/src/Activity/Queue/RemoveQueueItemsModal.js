@@ -79,7 +79,7 @@ class RemoveQueueItemsModal extends Component {
                 type={inputTypes.CHECK}
                 name="blacklist"
                 value={blacklist}
-                helpText="Prevents Sonarr from automatically grabbing this episode again"
+                helpText="Prevents Lidarr from automatically grabbing this episode again"
                 onChange={this.onBlacklistChange}
               />
             </FormGroup>

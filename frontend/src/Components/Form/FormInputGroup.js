@@ -5,7 +5,7 @@ import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
-import MonitorEpisodesSelectInput from './MonitorEpisodesSelectInput';
+import MonitorAlbumsSelectInput from './MonitorAlbumsSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
@@ -29,8 +29,8 @@ function getComponent(type) {
     case inputTypes.CHECK:
       return CheckInput;
 
-    case inputTypes.MONITOR_EPISODES_SELECT:
-      return MonitorEpisodesSelectInput;
+    case inputTypes.MONITOR_ALBUMS_SELECT:
+      return MonitorAlbumsSelectInput;
 
     case inputTypes.NUMBER:
       return NumberInput;

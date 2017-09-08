@@ -81,7 +81,7 @@ function EditQualityProfileModalContent(props) {
                   {...cutoff}
                   value={cutoff ? cutoff.value.id : 0}
                   values={qualities}
-                  helpText="Once this quality is reached Sonarr will no longer download episodes"
+                  helpText="Once this quality is reached Lidarr will no longer download episodes"
                   onChange={onCutoffChange}
                 />
               </FormGroup>

@@ -47,26 +47,26 @@ class CalendarEvent extends Component {
   render() {
     const {
       id,
-      series,
+      artist,
       title,
-      seasonNumber,
-      episodeNumber,
-      absoluteEpisodeNumber,
-      airDateUtc,
+      // seasonNumber,
+      // episodeNumber,
+      // absoluteEpisodeNumber,
+      releaseDate,
       monitored,
       hasFile,
       grabbed,
       queueItem,
-      timeFormat,
+      // timeFormat,
       colorImpairedMode
     } = this.props;
 
-    const startTime = moment(airDateUtc);
-    const endTime = startTime.add(series.runtime, 'minutes');
+    const startTime = moment(releaseDate);
+    // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
-    const isMonitored = series.monitored && monitored;
-    const statusStyle = getStatusStyle(episodeNumber, hasFile, downloading, startTime, endTime, isMonitored);
-    const missingAbsoluteNumber = series.seriesType === 'anime' && seasonNumber > 0 && !absoluteEpisodeNumber;
+    const isMonitored = artist.monitored && monitored;
+    const statusStyle = getStatusStyle(id, hasFile, downloading, startTime, isMonitored);
+    // const missingAbsoluteNumber = artist.seriesType === 'anime' && seasonNumber > 0 && !absoluteEpisodeNumber;
 
     return (
       <div>
@@ -80,17 +80,9 @@ class CalendarEvent extends Component {
           onPress={this.onPress}
         >
           <div className={styles.info}>
-            <div className={styles.seriesTitle}>
-              {series.title}
+            <div className={styles.artistName}>
+              {artist.artistName}
             </div>
-
-            {
-              missingAbsoluteNumber &&
-                <Icon
-                  name={icons.WARNING}
-                  title="Episode does not have an absolute episode number"
-                />
-            }
 
             {
               !!queueItem &&
@@ -106,28 +98,15 @@ class CalendarEvent extends Component {
                 <Icon
                   className={styles.statusIcon}
                   name={icons.DOWNLOADING}
-                  title="Episode is downloading"
+                  title="Album is downloading"
                 />
             }
           </div>
 
-          <div className={styles.episodeInfo}>
-            <div className={styles.episodeTitle}>
+          <div className={styles.albumInfo}>
+            <div className={styles.albumTitle}>
               {title}
             </div>
-
-            <div>
-              {seasonNumber}x{padNumber(episodeNumber, 2)}
-
-              {
-                series.seriesType === 'anime' && absoluteEpisodeNumber &&
-                  <span className={styles.absoluteEpisodeNumber}>({absoluteEpisodeNumber})</span>
-              }
-            </div>
-          </div>
-
-          <div>
-            {formatTime(airDateUtc, timeFormat)} - {formatTime(endTime.toISOString(), timeFormat, { includeMinuteZero: true })}
           </div>
         </Link>
 
@@ -135,7 +114,7 @@ class CalendarEvent extends Component {
           isOpen={this.state.isDetailsModalOpen}
           episodeId={id}
           episodeEntity={episodeEntities.CALENDAR}
-          artistId={series.id}
+          artistId={artist.id}
           episodeTitle={title}
           showOpenSeriesButton={true}
           onModalClose={this.onDetailsModalClose}
@@ -147,17 +126,17 @@ class CalendarEvent extends Component {
 
 CalendarEvent.propTypes = {
   id: PropTypes.number.isRequired,
-  series: PropTypes.object.isRequired,
+  artist: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
-  absoluteEpisodeNumber: PropTypes.number,
-  airDateUtc: PropTypes.string.isRequired,
+  // seasonNumber: PropTypes.number.isRequired,
+  // episodeNumber: PropTypes.number.isRequired,
+  // absoluteEpisodeNumber: PropTypes.number,
+  releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
-  timeFormat: PropTypes.string.isRequired,
+  // timeFormat: PropTypes.string.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   onEventModalOpenToggle: PropTypes.func.isRequired
 };

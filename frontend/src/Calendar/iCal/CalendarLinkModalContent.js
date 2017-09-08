@@ -22,7 +22,7 @@ function getUrls(state) {
     tags
   } = state;
 
-  let icalUrl = `${window.location.host}${window.Sonarr.urlBase}/feed/calendar/Sonarr.ics?`;
+  let icalUrl = `${window.location.host}${window.Sonarr.urlBase}/feed/calendar/Lidarr.ics?`;
 
   if (unmonitored) {
     icalUrl += 'unmonitored=true&';
@@ -115,7 +115,7 @@ class CalendarLinkModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Sonarr Calendar Feed
+          Lidarr Calendar Feed
         </ModalHeader>
 
         <ModalBody>
@@ -127,7 +127,7 @@ class CalendarLinkModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="unmonitored"
                 value={unmonitored}
-                helpText="Include unmonitored episodes in the iCal feed"
+                helpText="Include unmonitored albums in the iCal feed"
                 onChange={this.onInputChange}
               />
             </FormGroup>
@@ -139,7 +139,7 @@ class CalendarLinkModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="premieresOnly"
                 value={premieresOnly}
-                helpText="Only the first episode in a season will be in the feed"
+                helpText="Only the first album from an artist will be in the feed"
                 onChange={this.onInputChange}
               />
             </FormGroup>
@@ -163,7 +163,7 @@ class CalendarLinkModalContent extends Component {
                 type={inputTypes.TAG}
                 name="tags"
                 value={tags}
-                helpText="Feed will only contain series with at least one matching tag"
+                helpText="Feed will only contain artists with at least one matching tag"
                 onChange={this.onInputChange}
               />
             </FormGroup>

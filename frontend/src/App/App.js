@@ -9,8 +9,8 @@ import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
 import PageConnector from 'Components/Page/PageConnector';
 import ArtistIndexConnector from 'Artist/Index/ArtistIndexConnector';
-import AddNewSeriesConnector from 'AddArtist/AddNewSeries/AddNewSeriesConnector';
-import ImportSeries from 'AddArtist/ImportSeries/ImportSeries';
+import AddNewArtistConnector from 'AddArtist/AddNewArtist/AddNewArtistConnector';
+import ImportArtist from 'AddArtist/ImportArtist/ImportArtist';
 import SeriesEditorConnector from 'Artist/Editor/SeriesEditorConnector';
 import SeasonPassConnector from 'SeasonPass/SeasonPassConnector';
 import SeriesDetailsPageConnector from 'Artist/Details/SeriesDetailsPageConnector';
@@ -72,12 +72,12 @@ function App({ store, history }) {
 
               <Route
                 path="/add/new"
-                component={AddNewSeriesConnector}
+                component={AddNewArtistConnector}
               />
 
               <Route
                 path="/add/import"
-                component={ImportSeries}
+                component={ImportArtist}
               />
 
               <Route

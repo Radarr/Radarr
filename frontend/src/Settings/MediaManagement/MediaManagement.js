@@ -103,7 +103,7 @@ class MediaManagement extends Component {
                             <FormInputGroup
                               type={inputTypes.CHECK}
                               name="skipFreeSpaceCheckWhenImporting"
-                              helpText="Use when Sonarr is unable to detect free space from your series root folder"
+                              helpText="Use when Lidarr is unable to detect free space from your series root folder"
                               onChange={onInputChange}
                               {...settings.skipFreeSpaceCheckWhenImporting}
                             />
@@ -121,7 +121,7 @@ class MediaManagement extends Component {
                           type={inputTypes.CHECK}
                           name="copyUsingHardlinks"
                           helpText="Use Hardlinks when trying to copy files from torrents that are still being seeded"
-                          helpTextWarning="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Sonarr's rename function as a work around."
+                          helpTextWarning="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Lidarr's rename function as a work around."
                           onChange={onInputChange}
                           {...settings.copyUsingHardlinks}
                         />
@@ -168,7 +168,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="autoUnmonitorPreviouslyDownloadedEpisodes"
-                      helpText="Episodes deleted from disk are automatically unmonitored in Sonarr"
+                      helpText="Episodes deleted from disk are automatically unmonitored in Lidarr"
                       onChange={onInputChange}
                       {...settings.autoUnmonitorPreviouslyDownloadedEpisodes}
                     />
@@ -184,7 +184,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="autoDownloadPropers"
-                      helpText="Should Sonarr automatically upgrade to propers when available?"
+                      helpText="Should Lidarr automatically upgrade to propers when available?"
                       onChange={onInputChange}
                       {...settings.autoDownloadPropers}
                     />
@@ -200,7 +200,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableMediaInfo"
-                      helpText="Extract video information such as resolution, runtime and codec information from files. This requires Sonarr to read parts of the file which may cause high disk or network activity during scans."
+                      helpText="Extract video information such as resolution, runtime and codec information from files. This requires Lidarr to read parts of the file which may cause high disk or network activity during scans."
                       onChange={onInputChange}
                       {...settings.enableMediaInfo}
                     />
@@ -269,7 +269,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="fileChmod"
-                          helpText="Octal, applied to media files when imported/renamed by Sonarr"
+                          helpText="Octal, applied to media files when imported/renamed by Lidarr"
                           onChange={onInputChange}
                           {...settings.fileChmod}
                         />
@@ -284,7 +284,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="folderChmod"
-                          helpText="Octal, applied to series/season folders created by Sonarr"
+                          helpText="Octal, applied to series/season folders created by Lidarr"
                           values={fileDateOptions}
                           onChange={onInputChange}
                           {...settings.folderChmod}

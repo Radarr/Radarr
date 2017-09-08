@@ -6,25 +6,25 @@ function getNewSeries(series, payload) {
     monitor,
     qualityProfileId,
     languageProfileId,
-    seriesType,
+    // seriesType,
     albumFolder,
     tags,
-    searchForMissingEpisodes = false
+    searchForMissingAlbums = false
   } = payload;
 
-  //const {
-    //seasons,
-    //options: addOptions
-  //} = getMonitoringOptions(series.seasons, monitor);
+  // const {
+    // seasons,
+    // options: addOptions
+  // } = getMonitoringOptions(series.seasons, monitor);
 
-  //addOptions.searchForMissingEpisodes = searchForMissingEpisodes;
-  //series.addOptions = addOptions;
-  //series.seasons = seasons;
+  // addOptions.searchForMissingAlbums = searchForMissingAlbums;
+  // series.addOptions = addOptions;
+  // series.seasons = seasons;
   series.monitored = true;
   series.qualityProfileId = qualityProfileId;
   series.languageProfileId = languageProfileId;
   series.rootFolderPath = rootFolderPath;
-  //series.seriesType = seriesType;
+  // series.seriesType = seriesType;
   series.albumFolder = albumFolder;
   series.tags = tags;
 

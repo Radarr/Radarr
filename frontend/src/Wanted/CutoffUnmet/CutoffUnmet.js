@@ -248,7 +248,7 @@ class CutoffUnmet extends Component {
                         Are you sure you want to search for all {totalRecords} Cutoff Unmet episodes?
                       </div>
                       <div>
-                        This cannot be cancelled once started without restarting Sonarr.
+                        This cannot be cancelled once started without restarting Lidarr.
                       </div>
                     </div>
                   }

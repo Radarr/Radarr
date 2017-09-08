@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-function getStatusStyle(episodeNumber, hasFile, downloading, startTime, endTime, isMonitored) {
+function getStatusStyle(episodeNumber, hasFile, downloading, startTime, isMonitored) {
   const currentTime = moment();
 
   if (hasFile) {
@@ -15,16 +15,8 @@ function getStatusStyle(episodeNumber, hasFile, downloading, startTime, endTime,
     return 'unmonitored';
   }
 
-  if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) {
-    return 'onAir';
-  }
-
-  if (endTime.isBefore(currentTime) && !hasFile) {
+  if (currentTime.isAfter(startTime)) {
     return 'missing';
-  }
-
-  if (episodeNumber === 1) {
-    return 'premiere';
   }
 
   return 'unaired';

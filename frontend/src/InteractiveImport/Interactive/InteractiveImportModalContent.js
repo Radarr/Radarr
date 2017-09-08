@@ -15,7 +15,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import SelectSeriesModal from 'InteractiveImport/Series/SelectSeriesModal';
+import SelectArtistModal from 'InteractiveImport/Series/SelectArtistModal';
 import SelectSeasonModal from 'InteractiveImport/Season/SelectSeasonModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
@@ -78,7 +78,7 @@ class InteractiveImportModalContent extends Component {
       lastToggled: null,
       selectedState: {},
       invalidRowsSelected: [],
-      isSelectSeriesModalOpen: false,
+      isSelectArtistModalOpen: false,
       isSelectSeasonModalOpen: false
     };
   }
@@ -127,16 +127,16 @@ class InteractiveImportModalContent extends Component {
     this.props.onImportModeChange(value);
   }
 
-  onSelectSeriesPress = () => {
-    this.setState({ isSelectSeriesModalOpen: true });
+  onSelectArtistPress = () => {
+    this.setState({ isSelectArtistModalOpen: true });
   }
 
   onSelectSeasonPress = () => {
     this.setState({ isSelectSeasonModalOpen: true });
   }
 
-  onSelectSeriesModalClose = () => {
-    this.setState({ isSelectSeriesModalOpen: false });
+  onSelectArtistModalClose = () => {
+    this.setState({ isSelectArtistModalOpen: false });
   }
 
   onSelectSeasonModalClose = () => {
@@ -168,7 +168,7 @@ class InteractiveImportModalContent extends Component {
       allUnselected,
       selectedState,
       invalidRowsSelected,
-      isSelectSeriesModalOpen,
+      isSelectArtistModalOpen,
       isSelectSeasonModalOpen
     } = this.state;
 
@@ -249,7 +249,7 @@ class InteractiveImportModalContent extends Component {
           }
 
           <div className={downloadId ? styles.leftButtons : styles.centerButtons}>
-            <Button onPress={this.onSelectSeriesPress}>
+            <Button onPress={this.onSelectArtistPress}>
               Select Series
             </Button>
 
@@ -278,10 +278,10 @@ class InteractiveImportModalContent extends Component {
           </div>
         </ModalFooter>
 
-        <SelectSeriesModal
-          isOpen={isSelectSeriesModalOpen}
+        <SelectArtistModal
+          isOpen={isSelectArtistModalOpen}
           ids={selectedIds}
-          onModalClose={this.onSelectSeriesModalClose}
+          onModalClose={this.onSelectArtistModalClose}
         />
 
         <SelectSeasonModal

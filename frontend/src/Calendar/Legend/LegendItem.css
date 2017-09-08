@@ -32,10 +32,6 @@
   composes: missing from 'Calendar/Events/CalendarEvent.css';
 }
 
-.premiere {
-  composes: premiere from 'Calendar/Events/CalendarEvent.css';
-}
-
 .unaired {
   composes: unaired from 'Calendar/Events/CalendarEvent.css';
 }

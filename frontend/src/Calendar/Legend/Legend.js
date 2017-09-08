@@ -8,44 +8,28 @@ function Legend({ colorImpairedMode }) {
     <div className={styles.legend}>
       <div>
         <LegendItem
-          name="Unaired Premiere"
-          status="premiere"
-          tooltip="Premiere episode hasn't aired yet"
-          colorImpairedMode={colorImpairedMode}
-        />
-
-        <LegendItem
-          status="unaired"
-          tooltip="Episode hasn't aired yet"
-          colorImpairedMode={colorImpairedMode}
-        />
-      </div>
-
-      <div>
-        <LegendItem
           status="downloading"
-          tooltip="Episode is currently downloading"
+          tooltip="Album is currently downloading"
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           status="downloaded"
-          tooltip="Episode was downloaded and sorted"
+          tooltip="Album was downloaded and sorted"
           colorImpairedMode={colorImpairedMode}
         />
       </div>
 
       <div>
         <LegendItem
-          name="On Air"
-          status="onAir"
-          tooltip="Episode is currently airing"
+          status="unaired"
+          tooltip="Album hasn't released yet"
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           status="missing"
-          tooltip="Episode file has not been found"
+          tooltip="Track file has not been found"
           colorImpairedMode={colorImpairedMode}
         />
       </div>
@@ -53,7 +37,7 @@ function Legend({ colorImpairedMode }) {
       <div>
         <LegendItem
           status="unmonitored"
-          tooltip="Episode is unmonitored"
+          tooltip="Album is unmonitored"
           colorImpairedMode={colorImpairedMode}
         />
       </div>

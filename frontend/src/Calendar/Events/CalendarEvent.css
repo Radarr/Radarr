@@ -8,19 +8,19 @@
 }
 
 .info,
-.episodeInfo {
+.albumInfo {
   display: flex;
 }
 
-.seriesTitle,
-.episodeTitle {
+.artistName,
+.albumTitle {
   composes: truncate from 'Styles/Mixins/truncate.css';
 
   flex: 1 0 1px;
   margin-right: 10px;
 }
 
-.seriesTitle {
+.artistName {
   color: #3a3f51;
   font-size: 14px;
 }
@@ -53,24 +53,8 @@
   }
 }
 
-.onAir {
-  border-left-color: $warningColor;
-
-  &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, transparent, transparent 5px, #eee 5px, #eee 10px);
-  }
-}
-
 .missing {
   border-left-color: $dangerColor;
-
-  &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, transparent, transparent 5px, #eee 5px, #eee 10px);
-  }
-}
-
-.premiere {
-  border-left-color: $sonarrBlue;
 
   &:global(.colorImpaired) {
     background: repeating-linear-gradient(90deg, transparent, transparent 5px, #eee 5px, #eee 10px);

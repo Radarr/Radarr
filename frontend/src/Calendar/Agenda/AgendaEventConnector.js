@@ -10,9 +10,9 @@ function createMapStateToProps() {
     createArtistSelector(),
     createQueueItemSelector(),
     createUISettingsSelector(),
-    (series, queueItem, uiSettings) => {
+    (artist, queueItem, uiSettings) => {
       return {
-        series,
+        artist,
         queueItem,
         timeFormat: uiSettings.timeFormat,
         longDateFormat: uiSettings.longDateFormat

@@ -27,11 +27,11 @@ function ConnectionLostModal(props) {
 
         <ModalBody>
           <div>
-            Sonarr has lost it's connection to the backend and will need to be reloaded to restore functionality.
+            Lidarr has lost it's connection to the backend and will need to be reloaded to restore functionality.
           </div>
 
           <div className={styles.automatic}>
-            Sonarr will try to connect automatically, or you can click reload below.
+            Lidarr will try to connect automatically, or you can click reload below.
           </div>
         </ModalBody>
         <ModalFooter>

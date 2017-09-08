@@ -111,7 +111,7 @@ class SeriesSearchInput extends Component {
     } = this._autosuggest.state;
 
     if (!suggestions.length || highlightedSectionIndex) {
-      this.props.onGoToAddNewSeries(value);
+      this.props.onGoToAddNewArtist(value);
       this._autosuggest.input.blur();
 
       return;
@@ -153,7 +153,7 @@ class SeriesSearchInput extends Component {
 
   onSuggestionSelected = (event, { suggestion, sectionIndex }) => {
     if (suggestion.type === ADD_NEW_TYPE) {
-      this.props.onGoToAddNewSeries(this.state.value);
+      this.props.onGoToAddNewArtist(this.state.value);
     } else {
       this.goToSeries(suggestion);
     }
@@ -243,7 +243,7 @@ class SeriesSearchInput extends Component {
 SeriesSearchInput.propTypes = {
   series: PropTypes.arrayOf(PropTypes.object).isRequired,
   onGoToSeries: PropTypes.func.isRequired,
-  onGoToAddNewSeries: PropTypes.func.isRequired,
+  onGoToAddNewArtist: PropTypes.func.isRequired,
   bindShortcut: PropTypes.func.isRequired
 };
 

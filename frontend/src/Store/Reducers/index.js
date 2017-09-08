@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import { routerReducer } from 'react-router-redux';
 import app, { defaultState as defaultappState } from './appReducers';
-import addSeries, { defaultState as defaultAddSeriesState } from './addSeriesReducers';
-import importSeries, { defaultState as defaultImportSeriesState } from './importSeriesReducers';
+import addArtist, { defaultState as defaultAddSeriesState } from './addArtistReducers';
+import importArtist, { defaultState as defaultImportArtistState } from './importArtistReducers';
 import series, { defaultState as defaultSeriesState } from './seriesReducers';
 import seriesIndex, { defaultState as defaultSeriesIndexState } from './artistIndexReducers';
 import seriesEditor, { defaultState as defaultSeriesEditorState } from './seriesEditorReducers';
@@ -30,8 +30,8 @@ import organizePreview, { defaultState as defaultOrganizePreviewState } from './
 
 export const defaultState = {
   app: defaultappState,
-  addSeries: defaultAddSeriesState,
-  importSeries: defaultImportSeriesState,
+  addArtist: defaultAddSeriesState,
+  importArtist: defaultImportArtistState,
   series: defaultSeriesState,
   seriesIndex: defaultSeriesIndexState,
   seriesEditor: defaultSeriesEditorState,
@@ -59,8 +59,8 @@ export const defaultState = {
 
 export default enableBatching(combineReducers({
   app,
-  addSeries,
-  importSeries,
+  addArtist,
+  importArtist,
   series,
   seriesIndex,
   seriesEditor,

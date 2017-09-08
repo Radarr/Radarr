@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import persistState from 'redux-localstorage';
-import * as addSeriesReducers from 'Store/Reducers/addSeriesReducers';
+import * as addArtistReducers from 'Store/Reducers/addArtistReducers';
 import * as episodeReducers from 'Store/Reducers/episodeReducers';
 import * as artistIndexReducers from 'Store/Reducers/artistIndexReducers';
 import * as seriesEditorReducers from 'Store/Reducers/seriesEditorReducers';
@@ -15,7 +15,7 @@ import * as interactiveImportReducers from 'Store/Reducers/interactiveImportRedu
 import * as queueReducers from 'Store/Reducers/queueReducers';
 
 const reducers = [
-  addSeriesReducers,
+  addArtistReducers,
   episodeReducers,
   artistIndexReducers,
   seriesEditorReducers,

@@ -42,12 +42,12 @@ class AgendaEvent extends Component {
   render() {
     const {
       id,
-      series,
+      artist,
       title,
-      seasonNumber,
-      episodeNumber,
-      absoluteEpisodeNumber,
-      airDateUtc,
+      // seasonNumber,
+      // episodeNumber,
+      // absoluteEpisodeNumber,
+      releaseDate,
       monitored,
       hasFile,
       grabbed,
@@ -57,11 +57,11 @@ class AgendaEvent extends Component {
       longDateFormat
     } = this.props;
 
-    const startTime = moment(airDateUtc);
-    const endTime = startTime.add(series.runtime, 'minutes');
+    const startTime = moment(releaseDate);
+    // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
-    const isMonitored = series.monitored && monitored;
-    const statusStyle = getStatusStyle(episodeNumber, hasFile, downloading, startTime, endTime, isMonitored);
+    const isMonitored = artist.monitored && monitored;
+    const statusStyle = getStatusStyle(id, hasFile, downloading, startTime, isMonitored);
 
     return (
       <div>
@@ -85,34 +85,25 @@ class AgendaEvent extends Component {
           />
 
           <div className={styles.time}>
-            {formatTime(airDateUtc, timeFormat)} - {formatTime(endTime.toISOString(), timeFormat, { includeMinuteZero: true })}
+            {formatTime(releaseDate, timeFormat)}
           </div>
 
-          <div className={styles.seriesTitle}>
-            {series.title}
+          <div className={styles.artistName}>
+            {artist.artistName}
           </div>
 
-          <div className={styles.seasonEpisodeNumber}>
-            {seasonNumber}x{padNumber(episodeNumber, 2)}
+          <div className={styles.episodeSeparator}> - </div>
 
-            {
-              series.seriesType === 'anime' && absoluteEpisodeNumber &&
-                <span className={styles.absoluteEpisodeNumber}>({absoluteEpisodeNumber})</span>
-            }
-
-            <div className={styles.episodeSeparator}> - </div>
-          </div>
-
-          <div className={styles.episodeTitle}>
+          <div className={styles.albumTitle}>
             {title}
           </div>
 
           {
             !!queueItem &&
               <CalendarEventQueueDetails
-                seriesType={series.seriesType}
-                seasonNumber={seasonNumber}
-                absoluteEpisodeNumber={absoluteEpisodeNumber}
+                seriesType={artist.seriesType}
+                // seasonNumber={seasonNumber}
+                // absoluteEpisodeNumber={absoluteEpisodeNumber}
                 {...queueItem}
               />
           }
@@ -121,7 +112,7 @@ class AgendaEvent extends Component {
             !queueItem && grabbed &&
               <Icon
                 name={icons.DOWNLOADING}
-                title="Episode is downloading"
+                title="Album is downloading"
               />
           }
         </Link>
@@ -130,7 +121,7 @@ class AgendaEvent extends Component {
           isOpen={this.state.isDetailsModalOpen}
           episodeId={id}
           episodeEntity={episodeEntities.CALENDAR}
-          artistId={series.id}
+          artistId={artist.id}
           episodeTitle={title}
           showOpenSeriesButton={true}
           onModalClose={this.onDetailsModalClose}
@@ -142,12 +133,12 @@ class AgendaEvent extends Component {
 
 AgendaEvent.propTypes = {
   id: PropTypes.number.isRequired,
-  series: PropTypes.object.isRequired,
+  artist: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
-  absoluteEpisodeNumber: PropTypes.number,
-  airDateUtc: PropTypes.string.isRequired,
+  // seasonNumber: PropTypes.number.isRequired,
+  // episodeNumber: PropTypes.number.isRequired,
+  // absoluteEpisodeNumber: PropTypes.number,
+  releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,

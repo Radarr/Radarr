@@ -22,7 +22,7 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(push(`${window.Sonarr.urlBase}/series/${titleSlug}`));
     },
 
-    onGoToAddNewSeries(query) {
+    onGoToAddNewArtist(query) {
       dispatch(push(`${window.Sonarr.urlBase}/add/new?term=${encodeURIComponent(query)}`));
     }
   };

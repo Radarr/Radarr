@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Http;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Common.Cloud
 {
@@ -14,7 +14,7 @@ namespace NzbDrone.Common.Cloud
     {
         public LidarrCloudRequestBuilder()
         {
-            Services = new HttpRequestBuilder("http://services.lidarr.tv/v1/")
+            Services = new HttpRequestBuilder("http://services.lidarr.audio/v1/")
                 .CreateFactory();
 
             Search = new HttpRequestBuilder("http://localhost:5000/{route}/") // TODO: Add {version} once LidarrAPI.Metadata is released. 

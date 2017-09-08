@@ -168,7 +168,7 @@ function HistoryDetails(props) {
         reasonMessage = 'File was deleted by via UI';
         break;
       case 'MissingFromDisk':
-        reasonMessage = 'Sonarr was unable to find the file on disk so it was removed';
+        reasonMessage = 'Lidarr was unable to find the file on disk so it was removed';
         break;
       case 'Upgrade':
         reasonMessage = 'File was deleted to import an upgrade';

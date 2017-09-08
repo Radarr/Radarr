@@ -26,7 +26,7 @@ namespace Lidarr.Api.V3.Calendar
             _albumService = albumService;
             _tagService = tagService;
 
-            Get["/Sonarr.ics"] = options => GetCalendarFeed();
+            Get["/Lidarr.ics"] = options => GetCalendarFeed();
         }
 
         private Response GetCalendarFeed()
@@ -36,7 +36,6 @@ namespace Lidarr.Api.V3.Calendar
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var unmonitored = Request.GetBooleanQueryParameter("unmonitored");
-            var premiersOnly = Request.GetBooleanQueryParameter("premiersOnly");
             var asAllDay = Request.GetBooleanQueryParameter("asAllDay");
             var tags = new List<int>();
 
@@ -62,20 +61,15 @@ namespace Lidarr.Api.V3.Calendar
                 tags.AddRange(tagInput.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
             }
 
-            var episodes = _albumService.AlbumsBetweenDates(start, end, unmonitored);
+            var albums = _albumService.AlbumsBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
-                ProductId = "-//sonarr.tv//Sonarr//EN"
+                ProductId = "-//lidarr.audio//Lidarr//EN"
             };
 
 
-            foreach (var album in episodes.OrderBy(v => v.ReleaseDate.Value))
+            foreach (var album in albums.OrderBy(v => v.ReleaseDate.Value))
             {
-                //if (premiersOnly && (album.SeasonNumber == 0 || album.EpisodeNumber != 1))
-                //{
-                //    continue;
-                //}
-
                 if (tags.Any() && tags.None(album.Artist.Tags.Contains))
                 {
                     continue;

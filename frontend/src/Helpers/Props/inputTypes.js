@@ -1,6 +1,6 @@
 export const CAPTCHA = 'captcha';
 export const CHECK = 'check';
-export const MONITOR_EPISODES_SELECT = 'monitorEpisodesSelect';
+export const MONITOR_ALBUMS_SELECT = 'monitorAlbumsSelect';
 export const NUMBER = 'number';
 export const OAUTH = 'oauth';
 export const PASSWORD = 'password';
@@ -17,7 +17,7 @@ export const TEXT_TAG = 'textTag';
 export const all = [
   CAPTCHA,
   CHECK,
-  MONITOR_EPISODES_SELECT,
+  MONITOR_ALBUMS_SELECT,
   NUMBER,
   OAUTH,
   PASSWORD,

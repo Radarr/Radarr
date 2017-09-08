@@ -26,15 +26,15 @@
   margin-right: 10px;
 }
 
-.seriesTitle,
-.episodeTitle {
+.artistName,
+.albumTitle {
   composes: truncate from 'Styles/Mixins/truncate.css';
 
   flex: 0 1 300px;
   margin-right: 10px;
 }
 
-.episodeTitle {
+.albumTitle {
   flex: 1 1 1px;
 }
 
@@ -66,16 +66,8 @@
   composes: unmonitored from 'Calendar/Events/CalendarEvent.css';
 }
 
-.onAir {
-  composes: onAir from 'Calendar/Events/CalendarEvent.css';
-}
-
 .missing {
   composes: missing from 'Calendar/Events/CalendarEvent.css';
-}
-
-.premiere {
-  composes: premiere from 'Calendar/Events/CalendarEvent.css';
 }
 
 .unaired {
@@ -98,7 +90,7 @@
 
   .date,
   .time,
-  .seriesTitle {
+  .artistName {
     flex: 0 0 100%;
   }
 

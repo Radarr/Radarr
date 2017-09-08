@@ -12,10 +12,10 @@ function createCalendarEventsConnector() {
     (state) => state.calendar,
     (date, calendar) => {
       const filtered = _.filter(calendar.items, (item) => {
-        return moment(date).isSame(moment(item.airDateUtc), 'day');
+        return moment(date).isSame(moment(item.releaseDate), 'day');
       });
 
-      return _.sortBy(filtered, (item) => moment(item.airDateUtc).unix());
+      return _.sortBy(filtered, (item) => moment(item.releaseDate).unix());
     }
   );
 }

@@ -13,7 +13,7 @@ function ErrorPage(props) {
     uiSettingsError
   } = props;
 
-  let errorMessage = 'Failed to load Sonarr';
+  let errorMessage = 'Failed to load Lidarr';
 
   if (!isLocalStorageSupported) {
     errorMessage = 'Local Storage is not supported or disabled. A plugin or private browsing may have disabled it.';
