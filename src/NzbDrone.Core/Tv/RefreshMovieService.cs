@@ -121,9 +121,14 @@ namespace NzbDrone.Core.Tv
                 var mappingsTitles = mappings.Item1;
 
                 movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
+                
+                _titleService.DeleteNotEnoughVotes(mappingsTitles);
 
                 mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
                     t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
+                
+
+                mappingsTitles = mappingsTitles.Where(t => t.Votes > 3).ToList();
 
                 movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(mappingsTitles, movie));
 
@@ -132,10 +137,19 @@ namespace NzbDrone.Core.Tv
                     movie.SecondaryYear = mappings.Item2.Year;
                     movie.SecondaryYearSourceId = mappings.Item2.SourceId;
                 }
+                else
+                {
+                    movie.SecondaryYear = null;
+                    movie.SecondaryYearSourceId = 0;
+                }
             }
             catch (RadarrAPIException ex)
             {
                 //Not that wild, could just be a 404.
+            }
+            catch (Exception ex)
+            {
+                _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
             
 

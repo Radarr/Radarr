@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie);
         List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, Movie movie);
         AlternativeTitle GetById(int id);
+        void DeleteNotEnoughVotes(List<AlternativeTitle> mappingsTitles);
     }
 
     public class AlternativeTitleService : IAlternativeTitleService
@@ -65,6 +66,18 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         public AlternativeTitle GetById(int id)
         {
             return _titleRepo.Get(id);
+        }
+
+        public void RemoveTitle(AlternativeTitle title)
+        {
+            _titleRepo.Delete(title);
+        }
+
+        public void DeleteNotEnoughVotes(List<AlternativeTitle> mappingsTitles)
+        {
+            var toRemove = mappingsTitles.Where(t => t.SourceType == SourceType.Mappings && t.Votes < 4);
+            var realT = _titleRepo.FindBySourceIds(toRemove.Select(t => t.SourceId).ToList());
+            _titleRepo.DeleteMany(realT);
         }
     }
 }
