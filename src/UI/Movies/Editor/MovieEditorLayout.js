@@ -97,16 +97,17 @@ module.exports = Marionette.Layout.extend({
 		this.leftSideButtons = {
             type       : 'default',
                 storeState : false,
+                collapse: true,
                 items      : [
                 {
-                    title          : 'Update Library',
+                    title          : 'Update library',
                     icon           : 'icon-sonarr-refresh',
                     command        : 'refreshmovie',
                     successMessage : 'Library was updated!',
                     errorMessage   : 'Library update failed!'
                 },
                 {
-                    title : 'Delete Selected',
+                    title : 'Delete selected',
                     icon : 'icon-radarr-delete-white',
                     className: 'btn-danger',
                     callback : this._deleteSelected
