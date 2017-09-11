@@ -519,7 +519,7 @@ class GeneralSettings extends Component {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="analyticsEnabled"
-                      helpText="Send anonymous usage and error information to Sonarr's servers. This includes information on your browser, which Sonarr WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes."
+                      helpText="Send anonymous usage and error information to Lidarr's servers. This includes information on your browser, which Lidarr WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes."
                       helpTextWarning="Requires restart to take effect"
                       onChange={onInputChange}
                       {...analyticsEnabled}
@@ -541,7 +541,7 @@ class GeneralSettings extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="branch"
-                          helpText="Branch to use to update Sonarr"
+                          helpText="Branch to use to update Lidarr"
                           helpLink="https://github.com/Sonarr/Sonarr/wiki/Release-Branches"
                           onChange={onInputChange}
                           {...branch}
@@ -622,8 +622,8 @@ class GeneralSettings extends Component {
         <ConfirmModal
           isOpen={isRestartRequiredModalOpen}
           kind={kinds.DANGER}
-          title="Restart Sonarr"
-          message="Sonarr requires a restart to apply changes, do you want to restart now?"
+          title="Restart Lidarr"
+          message="Lidarr requires a restart to apply changes, do you want to restart now?"
           cancelLabel="I'll restart later"
           confirmLabel="Restart Now"
           onConfirm={this.onConfirmRestart}

@@ -42,10 +42,8 @@ class NamingModal extends Component {
       value,
       isOpen,
       advancedSettings,
-      season,
-      episode,
-      daily,
-      anime,
+      album,
+      track,
       additional,
       onInputChange,
       onModalClose
@@ -59,61 +57,55 @@ class NamingModal extends Component {
 
     const fileNameTokens = [
       {
-        token: '{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}',
-        example: 'Series Title (2010) - S01E01 - Episode Title HDTV-720p Proper'
+        token: '{Artist Name} - {Album Title} - {track:00} - {Track Title} {Quality Full}',
+        example: 'Artist Name - Album Title - 01 - Track Title MP3-320 Proper'
       },
       {
-        token: '{Series Title} - {season:0}x{episode:00} - {Episode Title} {Quality Full}',
-        example: 'Series Title (2010) - 1x01 - Episode Title HDTV-720p Proper'
-      },
-      {
-        token: '{Series.Title}.S{season:00}E{episode:00}.{EpisodeClean.Title}.{Quality.Full}',
-        example: 'Series.Title.(2010).S01E01.Episode.Title.HDTV-720p'
+        token: '{Artist.Name}.{Album.Title}.{track:00}.{TrackClean.Title}.{Quality.Full}',
+        example: 'Artist.Name.Album.Title.01.Track.Title.MP3-320'
       }
     ];
 
-    const seriesTokens = [
-      { token: '{Series Title}', example: 'Series Title (2010)' },
-      { token: '{Series.Title}', example: 'Series.Title.(2010)' },
-      { token: '{Series_Title}', example: 'Series_Title_(2010)' },
+    const artistTokens = [
+      { token: '{Artist Name}', example: 'Artist Name' },
+      { token: '{Artist.Name}', example: 'Artist.Name' },
+      { token: '{Artist_Name}', example: 'Artist_Name' },
 
-      { token: '{Series TitleThe}', example: 'Series Title, The (2010)' },
+      { token: '{Artist NameThe}', example: 'Artist Name, The' },
 
-      { token: '{Series CleanTitle}', example: 'Series Title 2010' },
-      { token: '{Series.CleanTitle}', example: 'Series.Title.2010' },
-      { token: '{Series_CleanTitle}', example: 'Series_Title_2010' }
+      { token: '{Artist CleanName}', example: 'Artist Name' },
+      { token: '{Artist.CleanName}', example: 'Artist.Name' },
+      { token: '{Artist_CleanName}', example: 'Artist_Name' }
     ];
 
-    const seasonTokens = [
-      { token: '{season:0}', example: '1' },
-      { token: '{season:00}', example: '01' }
+    const albumTokens = [
+      { token: '{Album Title}', example: 'Album Title' },
+      { token: '{Album.Title}', example: 'Album.Title' },
+      { token: '{Album_Name}', example: 'Album_Name' },
+
+      { token: '{Album TitleThe}', example: 'Album Title, The' },
+
+      { token: '{Album CleanTitle}', example: 'Album Title' },
+      { token: '{Album.CleanTitle}', example: 'Album.Title' },
+      { token: '{Album_CleanTitle}', example: 'Album_Title' }
     ];
 
-    const episodeTokens = [
-      { token: '{episode:0}', example: '1' },
-      { token: '{episode:00}', example: '01' }
+    const trackTokens = [
+      { token: '{track:0}', example: '1' },
+      { token: '{track:00}', example: '01' }
     ];
 
-    const airDateTokens = [
-      { token: '{Air-Date}', example: '2016-03-20' },
-      { token: '{Air Date}', example: '2016 03 20' },
-      { token: '{Air.Date}', example: '2016.03.20' },
-      { token: '{Air_Date}', example: '2016_03_20' }
+    const releaseDateTokens = [
+      { token: '{Release Year}', example: '2016' }
     ];
 
-    const absoluteTokens = [
-      { token: '{absolute:0}', example: '1' },
-      { token: '{absolute:00}', example: '01' },
-      { token: '{absolute:000}', example: '001' }
-    ];
-
-    const episodeTitleTokens = [
-      { token: '{Episode Title}', example: 'Episode Title' },
-      { token: '{Episode.Title}', example: 'Episode.Title' },
-      { token: '{Episode_Title}', example: 'Episode_Title' },
-      { token: '{Episode CleanTitle}', example: 'Episode Title' },
-      { token: '{Episode.CleanTitle}', example: 'Episode.Title' },
-      { token: '{Episode_CleanTitle}', example: 'Episode_Title' }
+    const trackTitleTokens = [
+      { token: '{Track Title}', example: 'Track Title' },
+      { token: '{Track.Title}', example: 'Track.Title' },
+      { token: '{Track_Title}', example: 'Track_Title' },
+      { token: '{Track CleanTitle}', example: 'Track Title' },
+      { token: '{Track.CleanTitle}', example: 'Track.Title' },
+      { token: '{Track_CleanTitle}', example: 'Track_Title' }
     ];
 
     const qualityTokens = [
@@ -146,8 +138,8 @@ class NamingModal extends Component {
     ];
 
     const originalTokens = [
-      { token: '{Original Title}', example: 'Series.Title.S01E01.HDTV.x264-EVOLVE' },
-      { token: '{Original Filename}', example: 'series.title.s01e01.hdtv.x264-EVOLVE' }
+      { token: '{Original Title}', example: 'Artist.Name.S01E01.HDTV.x264-EVOLVE' },
+      { token: '{Original Filename}', example: 'artist.name.s01e01.hdtv.x264-EVOLVE' }
     ];
 
     return (
@@ -197,10 +189,10 @@ class NamingModal extends Component {
                 </FieldSet>
             }
 
-            <FieldSet legend="Series">
+            <FieldSet legend="Artist">
               <div className={styles.groups}>
                 {
-                    seriesTokens.map(({ token, example }) => {
+                    artistTokens.map(({ token, example }) => {
                       return (
                         <NamingOption
                           key={token}
@@ -219,11 +211,12 @@ class NamingModal extends Component {
             </FieldSet>
 
             {
-              season &&
-                <FieldSet legend="Season">
-                  <div className={styles.groups}>
+              album &&
+                <div>
+                  <FieldSet legend="Album">
+                    <div className={styles.groups}>
                     {
-                        seasonTokens.map(({ token, example }) => {
+                        albumTokens.map(({ token, example }) => {
                           return (
                             <NamingOption
                               key={token}
@@ -238,17 +231,39 @@ class NamingModal extends Component {
                         }
                       )
                     }
-                  </div>
-                </FieldSet>
+                    </div>
+                  </FieldSet>
+
+                  <FieldSet legend="Release Date">
+                    <div className={styles.groups}>
+                    {
+                        releaseDateTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
+                      )
+                    }
+                    </div>
+                  </FieldSet>
+                </div>
             }
 
             {
-              episode &&
+              track &&
                 <div>
-                  <FieldSet legend="Episode">
+                  <FieldSet legend="Track">
                     <div className={styles.groups}>
                       {
-                          episodeTokens.map(({ token, example }) => {
+                          trackTokens.map(({ token, example }) => {
                             return (
                               <NamingOption
                                 key={token}
@@ -266,63 +281,16 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  {
-                    daily &&
-                      <FieldSet legend="Air-Date">
-                        <div className={styles.groups}>
-                          {
-                              airDateTokens.map(({ token, example }) => {
-                                return (
-                                  <NamingOption
-                                    key={token}
-                                    name={name}
-                                    value={value}
-                                    token={token}
-                                    example={example}
-                                    tokenCase={this.state.case}
-                                    onInputChange={onInputChange}
-                                  />
-                                );
-                              }
-                            )
-                          }
-                        </div>
-                      </FieldSet>
-                  }
-
-                  {
-                    anime &&
-                      <FieldSet legend="Absolute Episode Number">
-                        <div className={styles.groups}>
-                          {
-                              absoluteTokens.map(({ token, example }) => {
-                                return (
-                                  <NamingOption
-                                    key={token}
-                                    name={name}
-                                    value={value}
-                                    token={token}
-                                    example={example}
-                                    tokenCase={this.state.case}
-                                    onInputChange={onInputChange}
-                                  />
-                                );
-                              }
-                            )
-                          }
-                        </div>
-                      </FieldSet>
-                  }
                 </div>
             }
 
             {
               additional &&
                 <div>
-                  <FieldSet legend="Episode Title">
+                  <FieldSet legend="Track Title">
                     <div className={styles.groups}>
                       {
-                          episodeTitleTokens.map(({ token, example }) => {
+                          trackTitleTokens.map(({ token, example }) => {
                             return (
                               <NamingOption
                                 key={token}
@@ -449,20 +417,16 @@ NamingModal.propTypes = {
   value: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   advancedSettings: PropTypes.bool.isRequired,
-  season: PropTypes.bool.isRequired,
-  episode: PropTypes.bool.isRequired,
-  daily: PropTypes.bool.isRequired,
-  anime: PropTypes.bool.isRequired,
+  album: PropTypes.bool.isRequired,
+  track: PropTypes.bool.isRequired,
   additional: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 NamingModal.defaultProps = {
-  season: false,
-  episode: false,
-  daily: false,
-  anime: false,
+  album: false,
+  track: false,
   additional: false
 };
 

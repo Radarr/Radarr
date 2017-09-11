@@ -60,10 +60,10 @@ namespace NzbDrone.Core.Organizer
         public static readonly Regex SeriesTitleRegex = new Regex(@"(?<token>\{(?:Series)(?<separator>[- ._])(Clean)?Title\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex ArtistNameRegex = new Regex(@"(?<token>\{(?:Artist)(?<separator>[- ._])(Clean)?Name\})",
+        public static readonly Regex ArtistNameRegex = new Regex(@"(?<token>\{(?:Artist)(?<separator>[- ._])(Clean)?Name(The)\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex AlbumTitleRegex = new Regex(@"(?<token>\{(?:Album)(?<separator>[- ._])(Clean)?Title\})",
+        public static readonly Regex AlbumTitleRegex = new Regex(@"(?<token>\{(?:Album)(?<separator>[- ._])(Clean)?Title(The)\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -76,6 +76,8 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex MultiPartCleanupRegex = new Regex(@"(?:\(\d+\)|(Part|Pt\.?)\s?\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly char[] EpisodeTitleTrimCharacters = new[] { ' ', '.', '?' };
+
+        private static readonly Regex TitlePrefixRegex = new Regex(@"^(The|An|A) (.*?)((?: *\([^)]+\))*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
@@ -110,10 +112,10 @@ namespace NzbDrone.Core.Organizer
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             tracks = tracks.OrderBy(e => e.AlbumId).ThenBy(e => e.TrackNumber).ToList();
-            
+
             pattern = FormatTrackNumberTokens(pattern, "", tracks);
             //pattern = AddAbsoluteNumberingTokens(pattern, tokenHandlers, series, episodes, namingConfig);
-            
+
             AddArtistTokens(tokenHandlers, artist);
             AddAlbumTokens(tokenHandlers, album);
             AddTrackTokens(tokenHandlers, tracks);
@@ -143,13 +145,13 @@ namespace NzbDrone.Core.Organizer
 
             if (artist.AlbumFolder)
             {
-                
+
                 var albumFolder = GetAlbumFolder(artist, album);
 
                 albumFolder = CleanFileName(albumFolder);
 
                 path = Path.Combine(path, albumFolder);
-                
+
             }
 
             return path;
@@ -165,9 +167,9 @@ namespace NzbDrone.Core.Organizer
             }
 
             var basicNamingConfig = new BasicNamingConfig
-                                    {
-                                        Separator = trackFormat.Separator
-                                    };
+            {
+                Separator = trackFormat.Separator
+            };
 
             var titleTokens = TitleRegex.Matches(nameSpec.StandardTrackFormat);
 
@@ -238,6 +240,11 @@ namespace NzbDrone.Core.Organizer
             return title;
         }
 
+        public static string TitleThe(string title)
+        {
+            return TitlePrefixRegex.Replace(title, "$2, $1$3");
+        }
+
         public static string CleanFileName(string name, bool replace = true)
         {
             string result = name;
@@ -262,12 +269,14 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Artist Name}"] = m => artist.Name;
             tokenHandlers["{Artist CleanName}"] = m => CleanTitle(artist.Name);
+            tokenHandlers["{Artist NameThe}"] = m => TitleThe(artist.Name);
         }
 
         private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Album album)
         {
             tokenHandlers["{Album Title}"] = m => album.Title;
             tokenHandlers["{Album CleanTitle}"] = m => CleanTitle(album.Title);
+            tokenHandlers["{Album TitleThe}"] = m => TitleThe(album.Title);
             if (album.ReleaseDate.HasValue)
             {
                 tokenHandlers["{Release Year}"] = m => album.ReleaseDate.Value.Year.ToString();
@@ -321,7 +330,7 @@ namespace NzbDrone.Core.Organizer
             {
                 return;
             }
-            
+
             var audioCodec = MediaInfoFormatter.FormatAudioCodec(trackFile.MediaInfo);
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(trackFile.MediaInfo);
 
@@ -468,7 +477,7 @@ namespace NzbDrone.Core.Organizer
 
         private AbsoluteTrackFormat[] GetAbsoluteFormat(string pattern)
         {
-            return _absoluteTrackFormatCache.Get(pattern, () =>  AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
+            return _absoluteTrackFormatCache.Get(pattern, () => AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
                 .Select(match => new AbsoluteTrackFormat
                 {
                     Separator = match.Groups["separator"].Value.IsNotNullOrWhiteSpace() ? match.Groups["separator"].Value : "-",

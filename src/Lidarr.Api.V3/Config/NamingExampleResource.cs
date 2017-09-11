@@ -5,10 +5,6 @@ namespace Lidarr.Api.V3.Config
     public class NamingExampleResource
     {
         public string SingleTrackExample { get; set; }
-        public string MultiEpisodeExample { get; set; }
-        public string DailyEpisodeExample { get; set; }
-        public string AnimeEpisodeExample { get; set; }
-        public string AnimeMultiEpisodeExample { get; set; }
         public string ArtistFolderExample { get; set; }
         public string AlbumFolderExample { get; set; }
     }

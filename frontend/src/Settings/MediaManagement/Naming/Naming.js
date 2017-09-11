@@ -32,55 +32,29 @@ class Naming extends Component {
     this.setState({
       isNamingModalOpen: true,
       namingModalOptions: {
-        name: 'standardEpisodeFormat',
-        season: true,
-        episode: true,
+        name: 'standardTrackFormat',
+        album: true,
+        track: true,
         additional: true
       }
     });
   }
 
-  onDailyNamingModalOpenClick = () => {
+  onArtistFolderNamingModalOpenClick = () => {
     this.setState({
       isNamingModalOpen: true,
       namingModalOptions: {
-        name: 'dailyEpisodeFormat',
-        season: true,
-        episode: true,
-        daily: true,
-        additional: true
+        name: 'artistFolderFormat'
       }
     });
   }
 
-  onAnimeNamingModalOpenClick = () => {
+  onAlbumFolderNamingModalOpenClick = () => {
     this.setState({
       isNamingModalOpen: true,
       namingModalOptions: {
-        name: 'animeEpisodeFormat',
-        season: true,
-        episode: true,
-        anime: true,
-        additional: true
-      }
-    });
-  }
-
-  onSeriesFolderNamingModalOpenClick = () => {
-    this.setState({
-      isNamingModalOpen: true,
-      namingModalOptions: {
-        name: 'seriesFolderFormat'
-      }
-    });
-  }
-
-  onSeasonFolderNamingModalOpenClick = () => {
-    this.setState({
-      isNamingModalOpen: true,
-      namingModalOptions: {
-        name: 'seasonFolderFormat',
-        season: true
+        name: 'albumFolderFormat',
+        album: true
       }
     });
   }
@@ -109,69 +83,56 @@ class Naming extends Component {
       namingModalOptions
     } = this.state;
 
-    const renameEpisodes = hasSettings && settings.renameEpisodes.value;
+    const renameTracks = hasSettings && settings.renameTracks.value;
 
-    const multiEpisodeStyleOptions = [
-      { key: 0, value: 'Extend' },
-      { key: 1, value: 'Duplicate' },
-      { key: 2, value: 'Repeat' },
-      { key: 3, value: 'Scene' },
-      { key: 4, value: 'Range' },
-      { key: 5, value: 'Prefixed Range' }
-    ];
-
-    const standardEpisodeFormatHelpTexts = [];
-    const standardEpisodeFormatErrors = [];
-    const dailyEpisodeFormatHelpTexts = [];
-    const dailyEpisodeFormatErrors = [];
-    const animeEpisodeFormatHelpTexts = [];
-    const animeEpisodeFormatErrors = [];
-    const seriesFolderFormatHelpTexts = [];
-    const seriesFolderFormatErrors = [];
-    const seasonFolderFormatHelpTexts = [];
-    const seasonFolderFormatErrors = [];
+    const standardTrackFormatHelpTexts = [];
+    const standardTrackFormatErrors = [];
+    const artistFolderFormatHelpTexts = [];
+    const artistFolderFormatErrors = [];
+    const albumFolderFormatHelpTexts = [];
+    const albumFolderFormatErrors = [];
 
     if (examplesPopulated) {
-      if (examples.singleEpisodeExample) {
-        standardEpisodeFormatHelpTexts.push(`Single Episode: ${examples.singleEpisodeExample}`);
+      if (examples.singleTrackExample) {
+        standardTrackFormatHelpTexts.push(`Single Track: ${examples.singleTrackExample}`);
       } else {
-        standardEpisodeFormatErrors.push('Single Episode: Invalid Format');
+        standardTrackFormatErrors.push('Single Track: Invalid Format');
       }
 
-      if (examples.multiEpisodeExample) {
-        standardEpisodeFormatHelpTexts.push(`Multi Episode: ${examples.multiEpisodeExample}`);
+      // if (examples.multiEpisodeExample) {
+      //   standardTrackFormatHelpTexts.push(`Multi Episode: ${examples.multiEpisodeExample}`);
+      // } else {
+      //   standardTrackFormatErrors.push('Multi Episode: Invalid Format');
+      // }
+
+      // if (examples.dailyEpisodeExample) {
+      //  dailyEpisodeFormatHelpTexts.push(`Example: ${examples.dailyEpisodeExample}`);
+      // } else {
+      //  dailyEpisodeFormatErrors.push('Invalid Format');
+      // }
+
+      // if (examples.animeEpisodeExample) {
+      //   animeEpisodeFormatHelpTexts.push(`Single Episode: ${examples.animeEpisodeExample}`);
+      // } else {
+      //   animeEpisodeFormatErrors.push('Single Episode: Invalid Format');
+      // }
+
+      // if (examples.animeMultiEpisodeExample) {
+      //   animeEpisodeFormatHelpTexts.push(`Multi Episode: ${examples.animeMultiEpisodeExample}`);
+      // } else {
+      //   animeEpisodeFormatErrors.push('Multi Episode: Invalid Format');
+      // }
+
+      if (examples.artistFolderExample) {
+        artistFolderFormatHelpTexts.push(`Example: ${examples.artistFolderExample}`);
       } else {
-        standardEpisodeFormatErrors.push('Multi Episode: Invalid Format');
+        artistFolderFormatErrors.push('Invalid Format');
       }
 
-      if (examples.dailyEpisodeExample) {
-        dailyEpisodeFormatHelpTexts.push(`Example: ${examples.dailyEpisodeExample}`);
+      if (examples.albumFolderExample) {
+        albumFolderFormatHelpTexts.push(`Example: ${examples.albumFolderExample}`);
       } else {
-        dailyEpisodeFormatErrors.push('Invalid Format');
-      }
-
-      if (examples.animeEpisodeExample) {
-        animeEpisodeFormatHelpTexts.push(`Single Episode: ${examples.animeEpisodeExample}`);
-      } else {
-        animeEpisodeFormatErrors.push('Single Episode: Invalid Format');
-      }
-
-      if (examples.animeMultiEpisodeExample) {
-        animeEpisodeFormatHelpTexts.push(`Multi Episode: ${examples.animeMultiEpisodeExample}`);
-      } else {
-        animeEpisodeFormatErrors.push('Multi Episode: Invalid Format');
-      }
-
-      if (examples.seriesFolderExample) {
-        seriesFolderFormatHelpTexts.push(`Example: ${examples.seriesFolderExample}`);
-      } else {
-        seriesFolderFormatErrors.push('Invalid Format');
-      }
-
-      if (examples.seasonFolderExample) {
-        seasonFolderFormatHelpTexts.push(`Example: ${examples.seasonFolderExample}`);
-      } else {
-        seasonFolderFormatErrors.push('Invalid Format');
+        albumFolderFormatErrors.push('Invalid Format');
       }
     }
 
@@ -217,52 +178,23 @@ class Naming extends Component {
               </FormGroup>
 
               {
-                renameEpisodes &&
+                renameTracks &&
                   <div>
                     <FormGroup size={sizes.LARGE}>
-                      <FormLabel>Standard Episode Format</FormLabel>
+                      <FormLabel>Standard Track Format</FormLabel>
 
                       <FormInputGroup
                         inputClassName={styles.namingInput}
                         type={inputTypes.TEXT}
-                        name="standardEpisodeFormat"
+                        name="standardTrackFormat"
                         buttons={<FormInputButton onPress={this.onStandardNamingModalOpenClick}>?</FormInputButton>}
                         onChange={onInputChange}
-                        {...settings.standardEpisodeFormat}
-                        helpTexts={standardEpisodeFormatHelpTexts}
-                        errors={[...standardEpisodeFormatErrors, ...settings.standardEpisodeFormat.errors]}
+                        {...settings.standardTrackFormat}
+                        helpTexts={standardTrackFormatHelpTexts}
+                        errors={[...standardTrackFormatErrors, ...settings.standardTrackFormat.errors]}
                       />
                     </FormGroup>
 
-                    <FormGroup size={sizes.LARGE}>
-                      <FormLabel>Daily Episode Format</FormLabel>
-
-                      <FormInputGroup
-                        inputClassName={styles.namingInput}
-                        type={inputTypes.TEXT}
-                        name="dailyEpisodeFormat"
-                        buttons={<FormInputButton onPress={this.onDailyNamingModalOpenClick}>?</FormInputButton>}
-                        onChange={onInputChange}
-                        {...settings.dailyEpisodeFormat}
-                        helpTexts={dailyEpisodeFormatHelpTexts}
-                        errors={[...dailyEpisodeFormatErrors, ...settings.dailyEpisodeFormat.errors]}
-                      />
-                    </FormGroup>
-
-                    <FormGroup size={sizes.LARGE}>
-                      <FormLabel>Anime Episode Format</FormLabel>
-
-                      <FormInputGroup
-                        inputClassName={styles.namingInput}
-                        type={inputTypes.TEXT}
-                        name="animeEpisodeFormat"
-                        buttons={<FormInputButton onPress={this.onAnimeNamingModalOpenClick}>?</FormInputButton>}
-                        onChange={onInputChange}
-                        {...settings.animeEpisodeFormat}
-                        helpTexts={animeEpisodeFormatHelpTexts}
-                        errors={[...animeEpisodeFormatErrors, ...settings.animeEpisodeFormat.errors]}
-                      />
-                    </FormGroup>
                   </div>
               }
 
@@ -270,45 +202,32 @@ class Naming extends Component {
                 advancedSettings={advancedSettings}
                 isAdvanced={true}
               >
-                <FormLabel>Series Folder Format</FormLabel>
+                <FormLabel>Artist Folder Format</FormLabel>
 
                 <FormInputGroup
                   inputClassName={styles.namingInput}
                   type={inputTypes.TEXT}
-                  name="seriesFolderFormat"
-                  buttons={<FormInputButton onPress={this.onSeriesFolderNamingModalOpenClick}>?</FormInputButton>}
+                  name="artistFolderFormat"
+                  buttons={<FormInputButton onPress={this.onArtistFolderNamingModalOpenClick}>?</FormInputButton>}
                   onChange={onInputChange}
-                  {...settings.seriesFolderFormat}
-                  helpTexts={['Only used when adding a new series', ...seriesFolderFormatHelpTexts]}
-                  errors={[...seriesFolderFormatErrors, ...settings.seriesFolderFormat.errors]}
+                  {...settings.artistFolderFormat}
+                  helpTexts={['Only used when adding a new artist', ...artistFolderFormatHelpTexts]}
+                  errors={[...artistFolderFormatErrors, ...settings.artistFolderFormat.errors]}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Season Folder Format</FormLabel>
+                <FormLabel>Album Folder Format</FormLabel>
 
                 <FormInputGroup
                   inputClassName={styles.namingInput}
                   type={inputTypes.TEXT}
-                  name="seasonFolderFormat"
-                  buttons={<FormInputButton onPress={this.onSeasonFolderNamingModalOpenClick}>?</FormInputButton>}
+                  name="albumFolderFormat"
+                  buttons={<FormInputButton onPress={this.onAlbumFolderNamingModalOpenClick}>?</FormInputButton>}
                   onChange={onInputChange}
-                  {...settings.seasonFolderFormat}
-                  helpTexts={seasonFolderFormatHelpTexts}
-                  errors={[...seasonFolderFormatErrors, ...settings.seasonFolderFormat.errors]}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel>Multi-Episode Style</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.SELECT}
-                  name="multiEpisodeStyle"
-                  helpText="Change file date on import/rescan"
-                  values={multiEpisodeStyleOptions}
-                  onChange={onInputChange}
-                  {...settings.multiEpisodeStyle}
+                  {...settings.albumFolderFormat}
+                  helpTexts={albumFolderFormatHelpTexts}
+                  errors={[...albumFolderFormatErrors, ...settings.albumFolderFormat.errors]}
                 />
               </FormGroup>
 

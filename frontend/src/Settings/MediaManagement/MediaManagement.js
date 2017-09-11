@@ -73,14 +73,14 @@ class MediaManagement extends Component {
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Create empty series folders</FormLabel>
+                        <FormLabel>Create empty artist folders</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
-                          name="createEmptySeriesFolders"
+                          name="createEmptyArtistFolders"
                           helpText="Create missing series folders during disk scan"
                           onChange={onInputChange}
-                          {...settings.createEmptySeriesFolders}
+                          {...settings.createEmptyArtistFolders}
                         />
                       </FormGroup>
                     </FieldSet>
@@ -103,7 +103,7 @@ class MediaManagement extends Component {
                             <FormInputGroup
                               type={inputTypes.CHECK}
                               name="skipFreeSpaceCheckWhenImporting"
-                              helpText="Use when Lidarr is unable to detect free space from your series root folder"
+                              helpText="Use when Lidarr is unable to detect free space from your artist root folder"
                               onChange={onInputChange}
                               {...settings.skipFreeSpaceCheckWhenImporting}
                             />
@@ -133,7 +133,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="importExtraFiles"
-                          helpText="Import matching extra files (subtitles, nfo, etc) after importing an episode file"
+                          helpText="Import matching extra files (subtitles, nfo, etc) after importing an track file"
                           onChange={onInputChange}
                           {...settings.importExtraFiles}
                         />
@@ -163,14 +163,14 @@ class MediaManagement extends Component {
                   legend="File Management"
                 >
                   <FormGroup size={sizes.MEDIUM}>
-                    <FormLabel>Ignore Deleted Episodes</FormLabel>
+                    <FormLabel>Ignore Deleted Tracks</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}
-                      name="autoUnmonitorPreviouslyDownloadedEpisodes"
-                      helpText="Episodes deleted from disk are automatically unmonitored in Lidarr"
+                      name="autoUnmonitorPreviouslyDownloadedTracks"
+                      helpText="Tracks deleted from disk are automatically unmonitored in Lidarr"
                       onChange={onInputChange}
-                      {...settings.autoUnmonitorPreviouslyDownloadedEpisodes}
+                      {...settings.autoUnmonitorPreviouslyDownloadedTracks}
                     />
                   </FormGroup>
 
@@ -195,12 +195,12 @@ class MediaManagement extends Component {
                     isAdvanced={true}
                     size={sizes.MEDIUM}
                   >
-                    <FormLabel>Analyse video files</FormLabel>
+                    <FormLabel>Analyse audio files</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableMediaInfo"
-                      helpText="Extract video information such as resolution, runtime and codec information from files. This requires Lidarr to read parts of the file which may cause high disk or network activity during scans."
+                      helpText="Extract audio information such as bitrate, runtime and codec information from files. This requires Lidarr to read parts of the file which may cause high disk or network activity during scans."
                       onChange={onInputChange}
                       {...settings.enableMediaInfo}
                     />
@@ -231,7 +231,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.PATH}
                       name="recycleBin"
-                      helpText="Episode files will go here when deleted instead of being permanently deleted"
+                      helpText="Track files will go here when deleted instead of being permanently deleted"
                       onChange={onInputChange}
                       {...settings.recycleBin}
                     />

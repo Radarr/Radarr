@@ -36,9 +36,9 @@ namespace Lidarr.Api.V3.Config
             Get["/examples"] = x => GetExamples(this.Bind<NamingConfigResource>());
 
 
-            SharedValidator.RuleFor(c => c.StandardTrackFormat).ValidEpisodeFormat();
-            SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidSeriesFolderFormat();
-            SharedValidator.RuleFor(c => c.AlbumFolderFormat).ValidSeasonFolderFormat();
+            SharedValidator.RuleFor(c => c.StandardTrackFormat).ValidTrackFormat();
+            SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidArtistFolderFormat();
+            SharedValidator.RuleFor(c => c.AlbumFolderFormat).ValidAlbumFolderFormat();
         }
 
         private void UpdateNamingConfig(NamingConfigResource resource)
@@ -99,7 +99,7 @@ namespace Lidarr.Api.V3.Config
         {
             var singleTrackSampleResult = _filenameSampleService.GetStandardTrackSample(nameSpec);
 
-            var singleTrackValidationResult = _filenameValidationService.ValidateStandardFilename(singleTrackSampleResult);
+            var singleTrackValidationResult = _filenameValidationService.ValidateTrackFilename(singleTrackSampleResult);
 
             var validationFailures = new List<ValidationFailure>();
 
