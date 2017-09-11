@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getNewSeries from 'Utilities/Series/getNewSeries';
 import * as types from './actionTypes';
 import { set, update, updateItem } from './baseActions';
 
-let currentXHR = null;
-let xhrCancelled = false;
+let abortCurrentRequest = null;
 const section = 'addArtist';
 
 const addArtistActionHandlers = {
@@ -14,24 +14,20 @@ const addArtistActionHandlers = {
     return function(dispatch, getState) {
       dispatch(set({ section, isFetching: true }));
 
-      if (currentXHR) {
-        xhrCancelled = true;
-        currentXHR.abort();
-        currentXHR = null;
+      if (abortCurrentRequest) {
+        abortCurrentRequest();
       }
 
-      currentXHR = new window.XMLHttpRequest();
-      xhrCancelled = false;
-
-      const promise = $.ajax({
+      const { request, abortRequest } = createAjaxRequest()({
         url: '/artist/lookup',
-        xhr: () => currentXHR,
         data: {
           term: payload.term
         }
       });
 
-      promise.done((data) => {
+      abortCurrentRequest = abortRequest;
+
+      request.done((data) => {
         dispatch(batchActions([
           update({ section, data }),
 
@@ -44,12 +40,12 @@ const addArtistActionHandlers = {
         ]));
       });
 
-      promise.fail((xhr) => {
+      request.fail((xhr) => {
         dispatch(set({
           section,
           isFetching: false,
           isPopulated: false,
-          error: xhrCancelled ? null : xhr
+          error: xhr.aborted ? null : xhr
         }));
       });
     };

@@ -2,11 +2,24 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { cancelTestIndexer, cancelSaveIndexer } from 'Store/Actions/settingsActions';
 import EditIndexerModal from './EditIndexerModal';
 
-const mapDispatchToProps = {
-  clearPendingChanges
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchClearPendingChanges() {
+      dispatch(clearPendingChanges);
+    },
+
+    dispatchCancelTestIndexer() {
+      dispatch(cancelTestIndexer);
+    },
+
+    dispatchCancelSaveIndexer() {
+      dispatch(cancelSaveIndexer);
+    }
+  };
+}
 
 class EditIndexerModalConnector extends Component {
 
@@ -14,7 +27,9 @@ class EditIndexerModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'indexers' });
+    this.props.dispatchClearPendingChanges({ section: 'indexers' });
+    this.props.dispatchCancelTestIndexer({ section: 'indexers' });
+    this.props.dispatchCancelSaveIndexer({ section: 'indexers' });
     this.props.onModalClose();
   }
 
@@ -22,9 +37,16 @@ class EditIndexerModalConnector extends Component {
   // Render
 
   render() {
+    const {
+      dispatchClearPendingChanges,
+      dispatchCancelTestIndexer,
+      dispatchCancelSaveIndexer,
+      ...otherProps
+    } = this.props;
+
     return (
       <EditIndexerModal
-        {...this.props}
+        {...otherProps}
         onModalClose={this.onModalClose}
       />
     );
@@ -33,7 +55,9 @@ class EditIndexerModalConnector extends Component {
 
 EditIndexerModalConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired
+  dispatchClearPendingChanges: PropTypes.func.isRequired,
+  dispatchCancelTestIndexer: PropTypes.func.isRequired,
+  dispatchCancelSaveIndexer: PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(EditIndexerModalConnector);
+export default connect(null, createMapDispatchToProps)(EditIndexerModalConnector);

@@ -2,11 +2,24 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { cancelTestDownloadClient, cancelSaveDownloadClient } from 'Store/Actions/settingsActions';
 import EditDownloadClientModal from './EditDownloadClientModal';
 
-const mapDispatchToProps = {
-  clearPendingChanges
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchClearPendingChanges() {
+      dispatch(clearPendingChanges);
+    },
+
+    dispatchCancelTestDownloadClient() {
+      dispatch(cancelTestDownloadClient);
+    },
+
+    dispatchCancelSaveDownloadClient() {
+      dispatch(cancelSaveDownloadClient);
+    }
+  };
+}
 
 class EditDownloadClientModalConnector extends Component {
 
@@ -14,7 +27,9 @@ class EditDownloadClientModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'downloadClients' });
+    this.props.dispatchClearPendingChanges({ section: 'downloadClients' });
+    this.props.dispatchCancelTestDownloadClient({ section: 'downloadClients' });
+    this.props.dispatchCancelSaveDownloadClient({ section: 'downloadClients' });
     this.props.onModalClose();
   }
 
@@ -22,9 +37,16 @@ class EditDownloadClientModalConnector extends Component {
   // Render
 
   render() {
+    const {
+      dispatchClearPendingChanges,
+      dispatchCancelTestDownloadClient,
+      dispatchCancelSaveDownloadClient,
+      ...otherProps
+    } = this.props;
+
     return (
       <EditDownloadClientModal
-        {...this.props}
+        {...otherProps}
         onModalClose={this.onModalClose}
       />
     );
@@ -33,7 +55,9 @@ class EditDownloadClientModalConnector extends Component {
 
 EditDownloadClientModalConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired
+  dispatchClearPendingChanges: PropTypes.func.isRequired,
+  dispatchCancelTestDownloadClient: PropTypes.func.isRequired,
+  dispatchCancelSaveDownloadClient: PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(EditDownloadClientModalConnector);
+export default connect(null, createMapDispatchToProps)(EditDownloadClientModalConnector);

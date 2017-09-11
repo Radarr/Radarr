@@ -20,7 +20,7 @@ import QueueConnector from 'Activity/Queue/QueueConnector';
 import BlacklistConnector from 'Activity/Blacklist/BlacklistConnector';
 import MissingConnector from 'Wanted/Missing/MissingConnector';
 import CutoffUnmetConnector from 'Wanted/CutoffUnmet/CutoffUnmetConnector';
-import UISettingsConnector from 'Settings/UI/UISettingsConnector';
+import Settings from 'Settings/Settings';
 import MediaManagementConnector from 'Settings/MediaManagement/MediaManagementConnector';
 import Profiles from 'Settings/Profiles/Profiles';
 import Quality from 'Settings/Quality/Quality';
@@ -29,6 +29,7 @@ import DownloadClientSettings from 'Settings/DownloadClients/DownloadClientSetti
 import NotificationSettings from 'Settings/Notifications/NotificationSettings';
 import MetadataSettings from 'Settings/Metadata/MetadataSettings';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
+import UISettingsConnector from 'Settings/UI/UISettingsConnector';
 import Status from 'System/Status/Status';
 import TasksConnector from 'System/Tasks/TasksConnector';
 import BackupsConnector from 'System/Backup/BackupsConnector';
@@ -142,8 +143,9 @@ function App({ store, history }) {
               */}
 
               <Route
-                path="/settings/ui"
-                component={UISettingsConnector}
+                exact={true}
+                path="/settings"
+                component={Settings}
               />
 
               <Route
@@ -184,6 +186,11 @@ function App({ store, history }) {
               <Route
                 path="/settings/general"
                 component={GeneralSettingsConnector}
+              />
+
+              <Route
+                path="/settings/ui"
+                component={UISettingsConnector}
               />
 
               {/*

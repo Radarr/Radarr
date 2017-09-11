@@ -79,8 +79,10 @@ export const fetchIndexerSchema = settingsActionHandlers[types.FETCH_INDEXER_SCH
 export const selectIndexerSchema = createAction(types.SELECT_INDEXER_SCHEMA);
 
 export const saveIndexer = settingsActionHandlers[types.SAVE_INDEXER];
+export const cancelSaveIndexer = settingsActionHandlers[types.CANCEL_SAVE_INDEXER];
 export const deleteIndexer = settingsActionHandlers[types.DELETE_INDEXER];
 export const testIndexer = settingsActionHandlers[types.TEST_INDEXER];
+export const cancelTestIndexer = settingsActionHandlers[types.CANCEL_TEST_INDEXER];
 
 export const setIndexerValue = createAction(types.SET_INDEXER_VALUE, (payload) => {
   return {
@@ -121,8 +123,10 @@ export const fetchDownloadClientSchema = settingsActionHandlers[types.FETCH_DOWN
 export const selectDownloadClientSchema = createAction(types.SELECT_DOWNLOAD_CLIENT_SCHEMA);
 
 export const saveDownloadClient = settingsActionHandlers[types.SAVE_DOWNLOAD_CLIENT];
+export const cancelSaveDownloadClient = settingsActionHandlers[types.CANCEL_SAVE_DOWNLOAD_CLIENT];
 export const deleteDownloadClient = settingsActionHandlers[types.DELETE_DOWNLOAD_CLIENT];
 export const testDownloadClient = settingsActionHandlers[types.TEST_DOWNLOAD_CLIENT];
+export const cancelTestDownloadClient = settingsActionHandlers[types.CANCEL_TEST_DOWNLOAD_CLIENT];
 
 export const setDownloadClientValue = createAction(types.SET_DOWNLOAD_CLIENT_VALUE, (payload) => {
   return {
@@ -163,8 +167,10 @@ export const fetchNotificationSchema = settingsActionHandlers[types.FETCH_NOTIFI
 export const selectNotificationSchema = createAction(types.SELECT_NOTIFICATION_SCHEMA);
 
 export const saveNotification = settingsActionHandlers[types.SAVE_NOTIFICATION];
+export const cancelSaveNotification = settingsActionHandlers[types.CANCEL_SAVE_NOTIFICATION];
 export const deleteNotification = settingsActionHandlers[types.DELETE_NOTIFICATION];
 export const testNotification = settingsActionHandlers[types.TEST_NOTIFICATION];
+export const cancelTestNotification = settingsActionHandlers[types.CANCEL_TEST_NOTIFICATION];
 
 export const setNotificationValue = createAction(types.SET_NOTIFICATION_VALUE, (payload) => {
   return {

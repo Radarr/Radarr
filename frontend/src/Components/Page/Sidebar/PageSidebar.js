@@ -89,12 +89,8 @@ const links = [
   {
     iconName: icons.SETTINGS,
     title: 'Settings',
-    to: '/settings/ui',
+    to: '/settings',
     children: [
-      {
-        title: 'UI',
-        to: '/settings/ui'
-      },
       {
         title: 'Media Management',
         to: '/settings/mediamanagement'
@@ -126,6 +122,10 @@ const links = [
       {
         title: 'General',
         to: '/settings/general'
+      },
+      {
+        title: 'UI',
+        to: '/settings/ui'
       }
     ]
   },

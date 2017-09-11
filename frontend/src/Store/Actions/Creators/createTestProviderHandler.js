@@ -1,6 +1,17 @@
-import $ from 'jquery';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getProviderState from 'Utilities/State/getProviderState';
 import { set } from '../baseActions';
+
+const abortCurrentRequests = {};
+
+export function createCancelTestProviderHandler(section) {
+  return function(payload) {
+    if (abortCurrentRequests[section]) {
+      abortCurrentRequests[section]();
+      abortCurrentRequests[section] = null;
+    }
+  };
+}
 
 function createTestProviderHandler(section, url, getFromState) {
   return function(payload) {
@@ -17,9 +28,11 @@ function createTestProviderHandler(section, url, getFromState) {
         data: JSON.stringify(testData)
       };
 
-      const promise = $.ajax(ajaxOptions);
+      const { request, abortRequest } = createAjaxRequest()(ajaxOptions);
 
-      promise.done((data) => {
+      abortCurrentRequests[section] = abortRequest;
+
+      request.done((data) => {
         dispatch(set({
           section,
           isTesting: false,
@@ -27,11 +40,11 @@ function createTestProviderHandler(section, url, getFromState) {
         }));
       });
 
-      promise.fail((xhr) => {
+      request.fail((xhr) => {
         dispatch(set({
           section,
           isTesting: false,
-          saveError: xhr
+          saveError: xhr.aborted ? null : xhr
         }));
       });
     };

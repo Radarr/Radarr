@@ -1,7 +1,18 @@
-import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getProviderState from 'Utilities/State/getProviderState';
 import { set, updateItem } from '../baseActions';
+
+const abortCurrentRequests = {};
+
+export function createCancelSaveProviderHandler(section) {
+  return function(payload) {
+    if (abortCurrentRequests[section]) {
+      abortCurrentRequests[section]();
+      abortCurrentRequests[section] = null;
+    }
+  };
+}
 
 function createSaveProviderHandler(section, url, getFromState) {
   return function(payload) {
@@ -24,9 +35,11 @@ function createSaveProviderHandler(section, url, getFromState) {
         ajaxOptions.method = 'PUT';
       }
 
-      const promise = $.ajax(ajaxOptions);
+      const { request, abortRequest } = createAjaxRequest()(ajaxOptions);
 
-      promise.done((data) => {
+      abortCurrentRequests[section] = abortRequest;
+
+      request.done((data) => {
         dispatch(batchActions([
           updateItem({ section, ...data }),
 
@@ -39,11 +52,11 @@ function createSaveProviderHandler(section, url, getFromState) {
         ]));
       });
 
-      promise.fail((xhr) => {
+      request.fail((xhr) => {
         dispatch(set({
           section,
           isSaving: false,
-          saveError: xhr
+          saveError: xhr.aborted ? null : xhr
         }));
       });
     };

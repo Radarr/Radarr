@@ -5,9 +5,9 @@ import * as types from './actionTypes';
 import createFetchHandler from './Creators/createFetchHandler';
 import createFetchSchemaHandler from './Creators/createFetchSchemaHandler';
 import createSaveHandler from './Creators/createSaveHandler';
-import createSaveProviderHandler from './Creators/createSaveProviderHandler';
+import createSaveProviderHandler, { createCancelSaveProviderHandler } from './Creators/createSaveProviderHandler';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
-import createTestProviderHandler from './Creators/createTestProviderHandler';
+import createTestProviderHandler, { createCancelTestProviderHandler } from './Creators/createTestProviderHandler';
 import { set, update, clearPendingChanges } from './baseActions';
 
 const settingsActionHandlers = {
@@ -161,6 +161,8 @@ const settingsActionHandlers = {
                                                   '/indexer',
                                                   (state) => state.settings.indexers),
 
+  [types.CANCEL_SAVE_INDEXER]: createCancelSaveProviderHandler('indexers'),
+
   [types.DELETE_INDEXER]: createRemoveItemHandler('indexers',
                                                       '/indexer',
                                                       (state) => state.settings.indexers),
@@ -168,6 +170,8 @@ const settingsActionHandlers = {
   [types.TEST_INDEXER]: createTestProviderHandler('indexers',
                                                   '/indexer',
                                                   (state) => state.settings.indexers),
+
+  [types.CANCEL_TEST_INDEXER]: createCancelTestProviderHandler('indexers'),
 
   [types.FETCH_INDEXER_OPTIONS]: createFetchHandler('indexerOptions', '/config/indexer'),
   [types.SAVE_INDEXER_OPTIONS]: createSaveHandler('indexerOptions', '/config/indexer', (state) => state.settings.indexerOptions),
@@ -189,6 +193,8 @@ const settingsActionHandlers = {
                                                           '/downloadclient',
                                                           (state) => state.settings.downloadClients),
 
+  [types.CANCEL_SAVE_DOWNLOAD_CLIENT]: createCancelSaveProviderHandler('downloadClients'),
+
   [types.DELETE_DOWNLOAD_CLIENT]: createRemoveItemHandler('downloadClients',
                                                                 '/downloadclient',
                                                               (state) => state.settings.downloadClients),
@@ -196,6 +202,8 @@ const settingsActionHandlers = {
   [types.TEST_DOWNLOAD_CLIENT]: createTestProviderHandler('downloadClients',
                                                           '/downloadclient',
                                                           (state) => state.settings.downloadClients),
+
+  [types.CANCEL_TEST_DOWNLOAD_CLIENT]: createCancelTestProviderHandler('downloadClients'),
 
   [types.FETCH_DOWNLOAD_CLIENT_OPTIONS]: createFetchHandler('downloadClientOptions', '/config/downloadclient'),
   [types.SAVE_DOWNLOAD_CLIENT_OPTIONS]: createSaveHandler('downloadClientOptions', '/config/downloadclient', (state) => state.settings.downloadClientOptions),
@@ -217,6 +225,8 @@ const settingsActionHandlers = {
                                                        '/notification',
                                                        (state) => state.settings.notifications),
 
+  [types.CANCEL_SAVE_NOTIFICATION]: createCancelSaveProviderHandler('notifications'),
+
   [types.DELETE_NOTIFICATION]: createRemoveItemHandler('notifications',
                                                            '/notification',
                                                            (state) => state.settings.notifications),
@@ -224,6 +234,8 @@ const settingsActionHandlers = {
   [types.TEST_NOTIFICATION]: createTestProviderHandler('notifications',
                                                        '/notification',
                                                        (state) => state.settings.notifications),
+
+  [types.CANCEL_TEST_NOTIFICATION]: createCancelTestProviderHandler('notifications'),
 
   [types.FETCH_METADATA]: createFetchHandler('metadata', '/metadata'),
 

@@ -120,8 +120,6 @@ _tests/
 setup/Output/
 *.~is
 
-UI/
-
 #VS outout folders
 bin
 obj

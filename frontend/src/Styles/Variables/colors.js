@@ -1,6 +1,7 @@
 module.exports = {
   defaultColor: '#333',
   disabledColor: '#999',
+  dimColor: '#555',
   black: '#000',
   white: '#fff',
   primaryColor: '#0b8750',
@@ -84,6 +85,7 @@ module.exports = {
   dangerHoverBorderColor: '#ec2626;',
 
   iconButtonHoverColor: '#666',
+  iconButtonHoverLightColor: '#ccc',
 
   //
   // Modal
