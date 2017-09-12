@@ -3,20 +3,20 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import padNumber from 'Utilities/Number/padNumber';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import styles from './SeasonPassSeason.css';
+import styles from './AlbumStudioAlbum.css';
 
-class SeasonPassSeason extends Component {
+class AlbumStudioAlbum extends Component {
 
   //
   // Listeners
 
   onSeasonMonitoredPress = () => {
     const {
-      seasonNumber,
+      id,
       monitored
     } = this.props;
 
-    this.props.onSeasonMonitoredPress(seasonNumber, !monitored);
+    this.props.onSeasonMonitoredPress(id, !monitored);
   }
 
   //
@@ -24,16 +24,17 @@ class SeasonPassSeason extends Component {
 
   render() {
     const {
-      seasonNumber,
+      id,
+      title,
       monitored,
       statistics,
       isSaving
     } = this.props;
 
     const {
-      episodeFileCount,
-      totalEpisodeCount,
-      percentOfEpisodes
+      trackFileCount,
+      totalTrackCount,
+      percentOfTracks
     } = statistics;
 
     return (
@@ -47,7 +48,7 @@ class SeasonPassSeason extends Component {
 
           <span>
             {
-              seasonNumber === 0 ? 'Specials' : `S${padNumber(seasonNumber, 2)}`
+              `${title}`
             }
           </span>
         </div>
@@ -55,12 +56,12 @@ class SeasonPassSeason extends Component {
         <div
           className={classNames(
             styles.episodes,
-            percentOfEpisodes === 100 && styles.allEpisodes
+            percentOfTracks === 100 && styles.allEpisodes
           )}
-          title={`${episodeFileCount}/${totalEpisodeCount} episodes downloaded`}
+          title={`${trackFileCount}/${totalTrackCount} tracks downloaded`}
         >
           {
-            totalEpisodeCount === 0 ? '0/0' : `${episodeFileCount}/${totalEpisodeCount}`
+            totalTrackCount === 0 ? '0/0' : `${trackFileCount}/${totalTrackCount}`
           }
         </div>
       </div>
@@ -68,21 +69,22 @@ class SeasonPassSeason extends Component {
   }
 }
 
-SeasonPassSeason.propTypes = {
-  seasonNumber: PropTypes.number.isRequired,
+AlbumStudioAlbum.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,
   onSeasonMonitoredPress: PropTypes.func.isRequired
 };
 
-SeasonPassSeason.defaultProps = {
+AlbumStudioAlbum.defaultProps = {
   isSaving: false,
   statistics: {
-    episodeFileCount: 0,
-    totalEpisodeCount: 0,
-    percentOfEpisodes: 0
+    trackFileCount: 0,
+    totalTrackCount: 0,
+    percentOfTracks: 0
   }
 };
 
-export default SeasonPassSeason;
+export default AlbumStudioAlbum;

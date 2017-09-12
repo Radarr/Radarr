@@ -76,7 +76,7 @@ class ImportArtistTable extends Component {
       const isSelected = selectedState[id];
 
       const isExistingArtist = !!selectedSeries &&
-        _.some(prevProps.allSeries, { tvdbId: selectedSeries.tvdbId });
+        _.some(prevProps.allSeries, { foreignArtistId: selectedSeries.foreignArtistId });
 
       // Props doesn't have a selected series or
       // the selected series is an existing series.

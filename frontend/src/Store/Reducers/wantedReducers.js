@@ -14,7 +14,7 @@ export const defaultState = {
     isFetching: false,
     isPopulated: false,
     pageSize: 20,
-    sortKey: 'airDateUtc',
+    sortKey: 'releaseDate',
     sortDirection: sortDirections.DESCENDING,
     filterKey: 'monitored',
     filterValue: 'true',
@@ -23,32 +23,32 @@ export const defaultState = {
 
     columns: [
       {
-        name: 'series.sortTitle',
-        label: 'Series Title',
+        name: 'artist.sortName',
+        label: 'Artist Name',
         isSortable: true,
         isVisible: true
       },
+      // {
+      //   name: 'episode',
+      //   label: 'Episode',
+      //   isVisible: true
+      // },
       {
-        name: 'episode',
-        label: 'Episode',
+        name: 'albumTitle',
+        label: 'Album Title',
         isVisible: true
       },
       {
-        name: 'episodeTitle',
-        label: 'Episode Title',
-        isVisible: true
-      },
-      {
-        name: 'airDateUtc',
-        label: 'Air Date',
+        name: 'releaseDate',
+        label: 'Release Date',
         isSortable: true,
         isVisible: true
       },
-      {
-        name: 'status',
-        label: 'Status',
-        isVisible: true
-      },
+      // {
+      //   name: 'status',
+      //   label: 'Status',
+      //   isVisible: true
+      // },
       {
         name: 'actions',
         columnLabel: 'Actions',

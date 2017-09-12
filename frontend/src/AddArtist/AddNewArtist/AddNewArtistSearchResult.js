@@ -58,7 +58,7 @@ class AddNewArtistSearchResult extends Component {
       isSmallScreen
     } = this.props;
 
-    const linkProps = isExistingArtist ? { to: `/series/${nameSlug}` } : { onPress: this.onPress };
+    const linkProps = isExistingArtist ? { to: `/artist/${nameSlug}` } : { onPress: this.onPress };
     let seasons = '1 Season';
 
     if (seasonCount > 1) {

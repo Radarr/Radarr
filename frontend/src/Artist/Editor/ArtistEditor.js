@@ -15,33 +15,56 @@ import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import NoArtist from 'Artist/NoArtist';
-import SeasonPassRowConnector from './SeasonPassRowConnector';
-import SeasonPassFooter from './SeasonPassFooter';
+import ArtistEditorRowConnector from './ArtistEditorRowConnector';
+import ArtistEditorFooter from './ArtistEditorFooter';
+import OrganizeArtistModal from './Organize/OrganizeArtistModal';
 
-const columns = [
-  {
-    name: 'status',
-    isVisible: true
-  },
-  {
-    name: 'sortTitle',
-    label: 'Title',
-    isSortable: true,
-    isVisible: true
-  },
-  {
-    name: 'monitored',
-    isVisible: true
-  },
-  {
-    name: 'seasonCount',
-    label: 'Seasons',
-    isSortable: true,
-    isVisible: true
-  }
-];
+function getColumns(showLanguageProfile) {
+  return [
+    {
+      name: 'status',
+      isVisible: true
+    },
+    {
+      name: 'sortName',
+      label: 'Name',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'qualityProfileId',
+      label: 'Quality Profile',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'languageProfileId',
+      label: 'Language Profile',
+      isSortable: true,
+      isVisible: showLanguageProfile
+    },
+    {
+      name: 'albumFolder',
+      label: 'Album Folder',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'path',
+      label: 'Path',
+      isSortable: true,
+      isVisible: true
+    },
+    {
+      name: 'tags',
+      label: 'Tags',
+      isSortable: false,
+      isVisible: true
+    }
+  ];
+}
 
-class SeasonPass extends Component {
+class ArtistEditor extends Component {
 
   //
   // Lifecycle
@@ -53,17 +76,23 @@ class SeasonPass extends Component {
       allSelected: false,
       allUnselected: false,
       lastToggled: null,
-      selectedState: {}
+      selectedState: {},
+      isOrganizingArtistModalOpen: false,
+      columns: getColumns(props.showLanguageProfile)
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
-      isSaving,
-      saveError
+      isDeleting,
+      deleteError
     } = this.props;
 
-    if (prevProps.isSaving && !isSaving && !saveError) {
+    const hasFinishedDeleting = prevProps.isDeleting &&
+                                !isDeleting &&
+                                !deleteError;
+
+    if (hasFinishedDeleting) {
       this.onSelectAllChange({ value: false });
     }
   }
@@ -88,11 +117,23 @@ class SeasonPass extends Component {
     });
   }
 
-  onUpdateSelectedPress = (changes) => {
-    this.props.onUpdateSelectedPress({
+  onSaveSelected = (changes) => {
+    this.props.onSaveSelected({
       artistIds: this.getSelectedIds(),
       ...changes
     });
+  }
+
+  onOrganizeArtistPress = () => {
+    this.setState({ isOrganizingArtistModalOpen: true });
+  }
+
+  onOrganizeArtistModalClose = (organized) => {
+    this.setState({ isOrganizingArtistModalOpen: false });
+
+    if (organized === true) {
+      this.onSelectAllChange({ value: false });
+    }
   }
 
   //
@@ -110,6 +151,10 @@ class SeasonPass extends Component {
       sortDirection,
       isSaving,
       saveError,
+      isDeleting,
+      deleteError,
+      isOrganizingArtist,
+      showLanguageProfile,
       onSortPress,
       onFilterSelect
     } = this.props;
@@ -117,11 +162,14 @@ class SeasonPass extends Component {
     const {
       allSelected,
       allUnselected,
-      selectedState
+      selectedState,
+      columns
     } = this.state;
 
+    const selectedArtistIds = this.getSelectedIds();
+
     return (
-      <PageContent title="Season Pass">
+      <PageContent title="Artist Editor">
         <PageToolbar>
           <PageToolbarSection />
           <PageToolbarSection alignContent={align.RIGHT}>
@@ -207,9 +255,10 @@ class SeasonPass extends Component {
                     {
                       items.map((item) => {
                         return (
-                          <SeasonPassRowConnector
+                          <ArtistEditorRowConnector
                             key={item.id}
-                            artistId={item.id}
+                            {...item}
+                            columns={columns}
                             isSelected={selectedState[item.id]}
                             onSelectedChange={this.onSelectedChange}
                           />
@@ -227,18 +276,30 @@ class SeasonPass extends Component {
           }
         </PageContentBodyConnector>
 
-        <SeasonPassFooter
-          selectedCount={this.getSelectedIds().length}
+        <ArtistEditorFooter
+          artistIds={selectedArtistIds}
+          selectedCount={selectedArtistIds.length}
           isSaving={isSaving}
           saveError={saveError}
-          onUpdateSelectedPress={this.onUpdateSelectedPress}
+          isDeleting={isDeleting}
+          deleteError={deleteError}
+          isOrganizingArtist={isOrganizingArtist}
+          showLanguageProfile={showLanguageProfile}
+          onSaveSelected={this.onSaveSelected}
+          onOrganizeArtistPress={this.onOrganizeArtistPress}
+        />
+
+        <OrganizeArtistModal
+          isOpen={this.state.isOrganizingArtistModalOpen}
+          artistIds={selectedArtistIds}
+          onModalClose={this.onOrganizeArtistModalClose}
         />
       </PageContent>
     );
   }
 }
 
-SeasonPass.propTypes = {
+ArtistEditor.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -249,9 +310,13 @@ SeasonPass.propTypes = {
   filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
+  isDeleting: PropTypes.bool.isRequired,
+  deleteError: PropTypes.object,
+  isOrganizingArtist: PropTypes.bool.isRequired,
+  showLanguageProfile: PropTypes.bool.isRequired,
   onSortPress: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
-  onUpdateSelectedPress: PropTypes.func.isRequired
+  onSaveSelected: PropTypes.func.isRequired
 };
 
-export default SeasonPass;
+export default ArtistEditor;

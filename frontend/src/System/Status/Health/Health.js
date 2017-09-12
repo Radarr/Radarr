@@ -32,8 +32,8 @@ function getInternalLink(source) {
     case 'RootFolderCheck':
       return (
         <div>
-          <Link to="/serieseditor">
-            Series Editor
+          <Link to="/artisteditor">
+            Artist Editor
           </Link>
         </div>
       );

@@ -7,7 +7,7 @@ import styles from './SeriesDetailsLinks.css';
 
 function SeriesDetailsLinks(props) {
   const {
-    tvdbId,
+    foreignArtistId,
     tvMazeId,
     imdbId
   } = props;
@@ -16,7 +16,7 @@ function SeriesDetailsLinks(props) {
     <div className={styles.links}>
       <Link
         className={styles.link}
-        to={`http://www.thetvdb.com/?tab=series&id=${tvdbId}`}
+        to={`http://www.thetvdb.com/?tab=series&id=${foreignArtistId}`}
       >
         <Label
           className={styles.linkLabel}
@@ -29,7 +29,7 @@ function SeriesDetailsLinks(props) {
 
       <Link
         className={styles.link}
-        to={`http://trakt.tv/search/tvdb/${tvdbId}?id_type=show`}
+        to={`http://trakt.tv/search/tvdb/${foreignArtistId}?id_type=show`}
       >
         <Label
           className={styles.linkLabel}
@@ -76,7 +76,7 @@ function SeriesDetailsLinks(props) {
 }
 
 SeriesDetailsLinks.propTypes = {
-  tvdbId: PropTypes.number.isRequired,
+  foreignArtistId: PropTypes.string.isRequired,
   tvMazeId: PropTypes.number,
   imdbId: PropTypes.string
 };

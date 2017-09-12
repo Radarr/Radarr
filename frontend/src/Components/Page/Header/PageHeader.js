@@ -4,7 +4,7 @@ import { icons } from 'Helpers/Props';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
-import SeriesSearchInputConnector from './SeriesSearchInputConnector';
+import ArtistSearchInputConnector from './ArtistSearchInputConnector';
 import PageHeaderActionsMenuConnector from './PageHeaderActionsMenuConnector';
 import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import styles from './PageHeader.css';
@@ -68,7 +68,7 @@ class PageHeader extends Component {
           />
         </div>
 
-        <SeriesSearchInputConnector />
+        <ArtistSearchInputConnector />
 
         <div className={styles.right}>
           <IconButton

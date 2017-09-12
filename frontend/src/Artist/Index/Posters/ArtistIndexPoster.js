@@ -45,7 +45,7 @@ class ArtistIndexPoster extends Component {
     });
   }
 
-  onDeleteSeriesModalClose = () => {
+  onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
   }
 
@@ -74,7 +74,7 @@ class ArtistIndexPoster extends Component {
       shortDateFormat,
       timeFormat,
       isRefreshingSeries,
-      onRefreshSeriesPress,
+      onRefreshArtistPress,
       ...otherProps
     } = this.props;
 
@@ -83,7 +83,7 @@ class ArtistIndexPoster extends Component {
       isDeleteArtistModalOpen
     } = this.state;
 
-    const link = `/series/${nameSlug}`;
+    const link = `/artist/${nameSlug}`;
 
     const elementStyle = {
       width: `${posterWidth}px`,
@@ -100,7 +100,7 @@ class ArtistIndexPoster extends Component {
                 name={icons.REFRESH}
                 title="Refresh Artist"
                 isSpinning={isRefreshingSeries}
-                onPress={onRefreshSeriesPress}
+                onPress={onRefreshArtistPress}
               />
 
               <IconButton
@@ -190,7 +190,7 @@ class ArtistIndexPoster extends Component {
           <DeleteArtistModal
             isOpen={isDeleteArtistModalOpen}
             artistId={id}
-            onModalClose={this.onDeleteSeriesModalClose}
+            onModalClose={this.onDeleteArtistModalClose}
           />
         </div>
       </div>
@@ -219,7 +219,7 @@ ArtistIndexPoster.propTypes = {
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   isRefreshingSeries: PropTypes.bool.isRequired,
-  onRefreshSeriesPress: PropTypes.func.isRequired
+  onRefreshArtistPress: PropTypes.func.isRequired
 };
 
 ArtistIndexPoster.defaultProps = {

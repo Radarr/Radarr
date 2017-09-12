@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import dimensions from 'Styles/Variables/dimensions';
 import createCommandSelector from 'Store/Selectors/createCommandSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchArtist } from 'Store/Actions/seriesActions';
+import { fetchArtist } from 'Store/Actions/artistActions';
 import scrollPositions from 'Store/scrollPositions';
 import { setArtistSort, setArtistFilter, setArtistView } from 'Store/Actions/artistIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -41,7 +41,7 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.series,
     (state) => state.seriesIndex,
-    createCommandSelector(commandNames.REFRESH_SERIES),
+    createCommandSelector(commandNames.REFRESH_ARTIST),
     createCommandSelector(commandNames.RSS_SYNC),
     createDimensionsSelector(),
     (series, seriesIndex, isRefreshingSeries, isRssSyncExecuting, dimensionsState) => {
@@ -113,9 +113,9 @@ class ArtistIndexConnector extends Component {
     });
   }
 
-  onRefreshSeriesPress = () => {
+  onRefreshArtistPress = () => {
     this.props.executeCommand({
-      name: commandNames.REFRESH_SERIES
+      name: commandNames.REFRESH_ARTIST
     });
   }
 
@@ -137,7 +137,7 @@ class ArtistIndexConnector extends Component {
         onFilterSelect={this.onFilterSelect}
         onViewSelect={this.onViewSelect}
         onScroll={this.onScroll}
-        onRefreshSeriesPress={this.onRefreshSeriesPress}
+        onRefreshArtistPress={this.onRefreshArtistPress}
         onRssSyncPress={this.onRssSyncPress}
       />
     );

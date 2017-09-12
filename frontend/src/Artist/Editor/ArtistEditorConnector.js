@@ -4,19 +4,19 @@ import { createSelector } from 'reselect';
 import connectSection from 'Store/connectSection';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createCommandSelector from 'Store/Selectors/createCommandSelector';
-import { setSeriesEditorSort, setSeriesEditorFilter, saveArtistEditor } from 'Store/Actions/seriesEditorActions';
+import { setArtistEditorSort, setArtistEditorFilter, saveArtistEditor } from 'Store/Actions/artistEditorActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import * as commandNames from 'Commands/commandNames';
-import SeriesEditor from './SeriesEditor';
+import ArtistEditor from './ArtistEditor';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.languageProfiles,
     createClientSideCollectionSelector(),
-    createCommandSelector(commandNames.RENAME_SERIES),
-    (languageProfiles, series, isOrganizingSeries) => {
+    createCommandSelector(commandNames.RENAME_ARTIST),
+    (languageProfiles, series, isOrganizingArtist) => {
       return {
-        isOrganizingSeries,
+        isOrganizingArtist,
         showLanguageProfile: languageProfiles.items.length > 1,
         ...series
       };
@@ -25,13 +25,13 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setSeriesEditorSort,
-  setSeriesEditorFilter,
+  setArtistEditorSort,
+  setArtistEditorFilter,
   saveArtistEditor,
   fetchRootFolders
 };
 
-class SeriesEditorConnector extends Component {
+class ArtistEditorConnector extends Component {
 
   //
   // Lifecycle
@@ -44,11 +44,11 @@ class SeriesEditorConnector extends Component {
   // Listeners
 
   onSortPress = (sortKey) => {
-    this.props.setSeriesEditorSort({ sortKey });
+    this.props.setArtistEditorSort({ sortKey });
   }
 
   onFilterSelect = (filterKey, filterValue, filterType) => {
-    this.props.setSeriesEditorFilter({ filterKey, filterValue, filterType });
+    this.props.setArtistEditorFilter({ filterKey, filterValue, filterType });
   }
 
   onSaveSelected = (payload) => {
@@ -60,7 +60,7 @@ class SeriesEditorConnector extends Component {
 
   render() {
     return (
-      <SeriesEditor
+      <ArtistEditor
         {...this.props}
         onSortPress={this.onSortPress}
         onFilterSelect={this.onFilterSelect}
@@ -70,9 +70,9 @@ class SeriesEditorConnector extends Component {
   }
 }
 
-SeriesEditorConnector.propTypes = {
-  setSeriesEditorSort: PropTypes.func.isRequired,
-  setSeriesEditorFilter: PropTypes.func.isRequired,
+ArtistEditorConnector.propTypes = {
+  setArtistEditorSort: PropTypes.func.isRequired,
+  setArtistEditorFilter: PropTypes.func.isRequired,
   saveArtistEditor: PropTypes.func.isRequired,
   fetchRootFolders: PropTypes.func.isRequired
 };
@@ -82,5 +82,5 @@ export default connectSection(
                 mapDispatchToProps,
                 undefined,
                 undefined,
-                { section: 'series', uiSection: 'seriesEditor' }
-              )(SeriesEditorConnector);
+                { section: 'series', uiSection: 'artistEditor' }
+              )(ArtistEditorConnector);

@@ -11,8 +11,8 @@ import PageConnector from 'Components/Page/PageConnector';
 import ArtistIndexConnector from 'Artist/Index/ArtistIndexConnector';
 import AddNewArtistConnector from 'AddArtist/AddNewArtist/AddNewArtistConnector';
 import ImportArtist from 'AddArtist/ImportArtist/ImportArtist';
-import SeriesEditorConnector from 'Artist/Editor/SeriesEditorConnector';
-import SeasonPassConnector from 'SeasonPass/SeasonPassConnector';
+import ArtistEditorConnector from 'Artist/Editor/ArtistEditorConnector';
+import AlbumStudioConnector from 'AlbumStudio/AlbumStudioConnector';
 import SeriesDetailsPageConnector from 'Artist/Details/SeriesDetailsPageConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
 import HistoryConnector from 'Activity/History/HistoryConnector';
@@ -82,17 +82,17 @@ function App({ store, history }) {
               />
 
               <Route
-                path="/serieseditor"
-                component={SeriesEditorConnector}
+                path="/artisteditor"
+                component={ArtistEditorConnector}
               />
 
               <Route
-                path="/seasonpass"
-                component={SeasonPassConnector}
+                path="/albumstudio"
+                component={AlbumStudioConnector}
               />
 
               <Route
-                path="/series/:titleSlug"
+                path="/artist/:nameSlug"
                 component={SeriesDetailsPageConnector}
               />
 

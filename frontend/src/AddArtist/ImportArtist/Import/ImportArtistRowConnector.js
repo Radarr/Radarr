@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { queueLookupSeries, setImportArtistValue } from 'Store/Actions/importArtistActions';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import ImportArtistRow from './ImportArtistRow';
 
 function createImportArtistItemSelector() {
@@ -20,7 +20,7 @@ function createImportArtistItemSelector() {
 function createMapStateToProps() {
   return createSelector(
     createImportArtistItemSelector(),
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (item, series) => {
       const selectedSeries = item && item.selectedSeries;
       const isExistingArtist = !!selectedSeries && _.some(series, { foreignArtistId: selectedSeries.foreignArtistId });

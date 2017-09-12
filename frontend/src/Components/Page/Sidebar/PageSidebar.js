@@ -34,11 +34,11 @@ const links = [
       },
       {
         title: 'Mass Editor',
-        to: '/serieseditor'
+        to: '/artisteditor'
       },
       {
         title: 'Album Studio',
-        to: '/seasonpass'
+        to: '/albumstudio'
       }
     ]
   },

@@ -5,11 +5,11 @@ import SpinnerButton from 'Components/Link/SpinnerButton';
 import MonitorAlbumsSelectInput from 'Components/Form/MonitorAlbumsSelectInput';
 import SelectInput from 'Components/Form/SelectInput';
 import PageContentFooter from 'Components/Page/PageContentFooter';
-import styles from './SeasonPassFooter.css';
+import styles from './AlbumStudioFooter.css';
 
 const NO_CHANGE = 'noChange';
 
-class SeasonPassFooter extends Component {
+class AlbumStudioFooter extends Component {
 
   //
   // Lifecycle
@@ -89,7 +89,7 @@ class SeasonPassFooter extends Component {
       <PageContentFooter>
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Monitor Series
+            Monitor Artist
           </div>
 
           <SelectInput
@@ -103,7 +103,7 @@ class SeasonPassFooter extends Component {
 
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Monitor Episodes
+            Monitor Albums
           </div>
 
           <MonitorAlbumsSelectInput
@@ -117,7 +117,7 @@ class SeasonPassFooter extends Component {
 
         <div>
           <div className={styles.label}>
-            {selectedCount} Series Selected
+            {selectedCount} Artist(s) Selected
           </div>
 
           <SpinnerButton
@@ -135,11 +135,11 @@ class SeasonPassFooter extends Component {
   }
 }
 
-SeasonPassFooter.propTypes = {
+AlbumStudioFooter.propTypes = {
   selectedCount: PropTypes.number.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   onUpdateSelectedPress: PropTypes.func.isRequired
 };
 
-export default SeasonPassFooter;
+export default AlbumStudioFooter;

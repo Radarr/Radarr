@@ -168,7 +168,7 @@ class ArtistIndex extends Component {
       onSortSelect,
       onFilterSelect,
       onViewSelect,
-      onRefreshSeriesPress,
+      onRefreshArtistPress,
       onRssSyncPress,
       ...otherProps
     } = this.props;
@@ -192,7 +192,7 @@ class ArtistIndex extends Component {
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               isSpinning={isRefreshingSeries}
-              onPress={onRefreshSeriesPress}
+              onPress={onRefreshArtistPress}
             />
 
             <PageToolbarButton
@@ -257,7 +257,7 @@ class ArtistIndex extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to load series</div>
+                <div>Unable to load artist</div>
             }
 
             {
@@ -318,7 +318,7 @@ ArtistIndex.propTypes = {
   onSortSelect: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onViewSelect: PropTypes.func.isRequired,
-  onRefreshSeriesPress: PropTypes.func.isRequired,
+  onRefreshArtistPress: PropTypes.func.isRequired,
   onRssSyncPress: PropTypes.func.isRequired,
   onScroll: PropTypes.func.isRequired
 };

@@ -3,11 +3,11 @@ import $ from 'jquery';
 import getMonitoringOptions from 'Utilities/Series/getMonitoringOptions';
 import * as types from './actionTypes';
 import { set } from './baseActions';
-import { fetchArtist } from './seriesActions';
+import { fetchArtist } from './artistActions';
 
-const section = 'seasonPass';
+const section = 'albumStudio';
 
-const seasonPassActionHandlers = {
+const albumStudioActionHandlers = {
   [types.SAVE_SEASON_PASS]: function(payload) {
     return function(dispatch, getState) {
       const {
@@ -50,7 +50,7 @@ const seasonPassActionHandlers = {
       }));
 
       const promise = $.ajax({
-        url: '/seasonPass',
+        url: '/albumStudio',
         method: 'POST',
         data: JSON.stringify({
           series,
@@ -80,4 +80,4 @@ const seasonPassActionHandlers = {
   }
 };
 
-export default seasonPassActionHandlers;
+export default albumStudioActionHandlers;

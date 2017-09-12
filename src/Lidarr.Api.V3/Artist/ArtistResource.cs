@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Music;
+using Lidarr.Api.V3.Albums;
 using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V3.Artist
@@ -97,7 +98,7 @@ namespace Lidarr.Api.V3.Artist
         public List<Member> Members { get; set; }
 
         public string RemotePoster { get; set; }
-        //public List<AlbumResource> Albums { get; set; }
+        public List<AlbumResource> Albums { get; set; }
 
 
         //View & Edit
@@ -149,7 +150,7 @@ namespace Lidarr.Api.V3.Artist
                        //AirTime = model.AirTime,
                        Images = model.Images,
 
-                       //Albums = model.Albums.ToResource(),
+                       Albums = model.Albums.ToResource(),
                        //Year = model.Year,
 
                        Path = model.Path,

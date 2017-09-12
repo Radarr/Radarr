@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { queueLookupSeries, setImportArtistValue } from 'Store/Actions/importArtistActions';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import ImportArtistTable from './ImportArtistTable';
 
 function createMapStateToProps() {
@@ -9,7 +9,7 @@ function createMapStateToProps() {
     (state) => state.addArtist,
     (state) => state.importArtist,
     (state) => state.app.dimensions,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (addArtist, importArtist, dimensions, allSeries) => {
       return {
         defaultMonitor: addArtist.defaults.monitor,

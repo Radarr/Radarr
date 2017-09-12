@@ -3,9 +3,9 @@ import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import { set, updateItem } from './baseActions';
 
-const section = 'seriesEditor';
+const section = 'artistEditor';
 
-const seriesEditorActionHandlers = {
+const artistEditorActionHandlers = {
   [types.SAVE_ARTIST_EDITOR]: function(payload) {
     return function(dispatch, getState) {
       dispatch(set({
@@ -14,7 +14,7 @@ const seriesEditorActionHandlers = {
       }));
 
       const promise = $.ajax({
-        url: '/series/editor',
+        url: '/artist/editor',
         method: 'PUT',
         data: JSON.stringify(payload),
         dataType: 'json'
@@ -56,7 +56,7 @@ const seriesEditorActionHandlers = {
       }));
 
       const promise = $.ajax({
-        url: '/series/editor',
+        url: '/artist/editor',
         method: 'DELETE',
         data: JSON.stringify(payload),
         dataType: 'json'
@@ -83,4 +83,4 @@ const seriesEditorActionHandlers = {
   }
 };
 
-export default seriesEditorActionHandlers;
+export default artistEditorActionHandlers;

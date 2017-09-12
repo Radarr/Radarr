@@ -15,15 +15,15 @@ import styles from './MissingRow.css';
 function MissingRow(props) {
   const {
     id,
-    episodeFileId,
-    series,
-    seasonNumber,
-    episodeNumber,
-    absoluteEpisodeNumber,
-    sceneSeasonNumber,
-    sceneEpisodeNumber,
-    sceneAbsoluteEpisodeNumber,
-    airDateUtc,
+    // episodeFileId,
+    artist,
+    // seasonNumber,
+    // episodeNumber,
+    // absoluteEpisodeNumber,
+    // sceneSeasonNumber,
+    // sceneEpisodeNumber,
+    // sceneAbsoluteEpisodeNumber,
+    releaseDate,
     title,
     isSelected,
     columns,
@@ -49,42 +49,42 @@ function MissingRow(props) {
             return null;
           }
 
-          if (name === 'series.sortTitle') {
+          if (name === 'artist.sortName') {
             return (
               <TableRowCell key={name}>
                 <ArtistNameLink
-                  titleSlug={series.titleSlug}
-                  title={series.title}
+                  nameSlug={artist.nameSlug}
+                  artistName={artist.artistName}
                 />
               </TableRowCell>
             );
           }
 
-          if (name === 'episode') {
-            return (
-              <TableRowCell
-                key={name}
-                className={styles.episode}
-              >
-                <SeasonEpisodeNumber
-                  seasonNumber={seasonNumber}
-                  episodeNumber={episodeNumber}
-                  absoluteEpisodeNumber={absoluteEpisodeNumber}
-                  seriesType={series.seriesType}
-                  sceneSeasonNumber={sceneSeasonNumber}
-                  sceneEpisodeNumber={sceneEpisodeNumber}
-                  sceneAbsoluteEpisodeNumber={sceneAbsoluteEpisodeNumber}
-                />
-              </TableRowCell>
-            );
-          }
+          // if (name === 'episode') {
+          //   return (
+          //     <TableRowCell
+          //       key={name}
+          //       className={styles.episode}
+          //     >
+          //       <SeasonEpisodeNumber
+          //         seasonNumber={seasonNumber}
+          //         episodeNumber={episodeNumber}
+          //         absoluteEpisodeNumber={absoluteEpisodeNumber}
+          //         seriesType={series.seriesType}
+          //         sceneSeasonNumber={sceneSeasonNumber}
+          //         sceneEpisodeNumber={sceneEpisodeNumber}
+          //         sceneAbsoluteEpisodeNumber={sceneAbsoluteEpisodeNumber}
+          //       />
+          //     </TableRowCell>
+          //   );
+          // }
 
-          if (name === 'episodeTitle') {
+          if (name === 'albumTitle') {
             return (
               <TableRowCell key={name}>
                 <EpisodeTitleLink
                   episodeId={id}
-                  artistId={series.id}
+                  artistId={artist.id}
                   episodeEntity={episodeEntities.WANTED_MISSING}
                   episodeTitle={title}
                   showOpenSeriesButton={true}
@@ -93,36 +93,36 @@ function MissingRow(props) {
             );
           }
 
-          if (name === 'airDateUtc') {
+          if (name === 'releaseDate') {
             return (
               <RelativeDateCellConnector
                 key={name}
-                date={airDateUtc}
+                date={releaseDate}
               />
             );
           }
 
-          if (name === 'status') {
-            return (
-              <TableRowCell
-                key={name}
-                className={styles.status}
-              >
-                <EpisodeStatusConnector
-                  episodeId={id}
-                  episodeFileId={episodeFileId}
-                  episodeEntity={episodeEntities.WANTED_MISSING}
-                />
-              </TableRowCell>
-            );
-          }
+          // if (name === 'status') {
+          //   return (
+          //     <TableRowCell
+          //       key={name}
+          //       className={styles.status}
+          //     >
+          //       <EpisodeStatusConnector
+          //         episodeId={id}
+          //         episodeFileId={episodeFileId}
+          //         episodeEntity={episodeEntities.WANTED_MISSING}
+          //       />
+          //     </TableRowCell>
+          //   );
+          // }
 
           if (name === 'actions') {
             return (
               <EpisodeSearchCellConnector
                 key={name}
                 episodeId={id}
-                artistId={series.id}
+                artistId={artist.id}
                 episodeTitle={title}
                 episodeEntity={episodeEntities.WANTED_MISSING}
                 showOpenSeriesButton={true}
@@ -137,15 +137,15 @@ function MissingRow(props) {
 
 MissingRow.propTypes = {
   id: PropTypes.number.isRequired,
-  episodeFileId: PropTypes.number,
-  series: PropTypes.object.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
-  absoluteEpisodeNumber: PropTypes.number,
-  sceneSeasonNumber: PropTypes.number,
-  sceneEpisodeNumber: PropTypes.number,
-  sceneAbsoluteEpisodeNumber: PropTypes.number,
-  airDateUtc: PropTypes.string.isRequired,
+  // episodeFileId: PropTypes.number,
+  artist: PropTypes.object.isRequired,
+  // seasonNumber: PropTypes.number.isRequired,
+  // episodeNumber: PropTypes.number.isRequired,
+  // absoluteEpisodeNumber: PropTypes.number,
+  // sceneSeasonNumber: PropTypes.number,
+  // sceneEpisodeNumber: PropTypes.number,
+  // sceneAbsoluteEpisodeNumber: PropTypes.number,
+  releaseDate: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

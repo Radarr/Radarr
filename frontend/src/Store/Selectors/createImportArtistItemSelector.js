@@ -1,17 +1,17 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import createAllSeriesSelector from './createAllSeriesSelector';
+import createAllArtistSelector from './createAllArtistSelector';
 
 function createImportArtistItemSelector() {
   return createSelector(
     (state, { id }) => id,
     (state) => state.addArtist,
     (state) => state.importArtist,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (id, addArtist, importArtist, series) => {
       const item = _.find(importArtist.items, { id }) || {};
       const selectedSeries = item && item.selectedSeries;
-      const isExistingArtist = !!selectedSeries && _.some(series, { tvdbId: selectedSeries.tvdbId });
+      const isExistingArtist = !!selectedSeries && _.some(series, { foreignArtistId: selectedSeries.foreignArtistId });
 
       return {
         defaultMonitor: addArtist.defaults.monitor,

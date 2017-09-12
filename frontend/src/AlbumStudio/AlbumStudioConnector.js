@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { createSelector } from 'reselect';
 import connectSection from 'Store/connectSection';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import { setSeasonPassSort, setSeasonPassFilter, saveSeasonPass } from 'Store/Actions/seasonPassActions';
-import SeasonPass from './SeasonPass';
+import { setAlbumStudioSort, setAlbumStudioFilter, saveAlbumStudio } from 'Store/Actions/albumStudioActions';
+import AlbumStudio from './AlbumStudio';
 
 function createMapStateToProps() {
   return createSelector(
@@ -18,26 +18,26 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setSeasonPassSort,
-  setSeasonPassFilter,
-  saveSeasonPass
+  setAlbumStudioSort,
+  setAlbumStudioFilter,
+  saveAlbumStudio
 };
 
-class SeasonPassConnector extends Component {
+class AlbumStudioConnector extends Component {
 
   //
   // Listeners
 
   onSortPress = (sortKey) => {
-    this.props.setSeasonPassSort({ sortKey });
+    this.props.setAlbumStudioSort({ sortKey });
   }
 
   onFilterSelect = (filterKey, filterValue, filterType) => {
-    this.props.setSeasonPassFilter({ filterKey, filterValue, filterType });
+    this.props.setAlbumStudioFilter({ filterKey, filterValue, filterType });
   }
 
   onUpdateSelectedPress = (payload) => {
-    this.props.saveSeasonPass(payload);
+    this.props.saveAlbumStudio(payload);
   }
 
   //
@@ -45,7 +45,7 @@ class SeasonPassConnector extends Component {
 
   render() {
     return (
-      <SeasonPass
+      <AlbumStudio
         {...this.props}
         onSortPress={this.onSortPress}
         onFilterSelect={this.onFilterSelect}
@@ -55,10 +55,10 @@ class SeasonPassConnector extends Component {
   }
 }
 
-SeasonPassConnector.propTypes = {
-  setSeasonPassSort: PropTypes.func.isRequired,
-  setSeasonPassFilter: PropTypes.func.isRequired,
-  saveSeasonPass: PropTypes.func.isRequired
+AlbumStudioConnector.propTypes = {
+  setAlbumStudioSort: PropTypes.func.isRequired,
+  setAlbumStudioFilter: PropTypes.func.isRequired,
+  saveAlbumStudio: PropTypes.func.isRequired
 };
 
 export default connectSection(
@@ -66,5 +66,5 @@ export default connectSection(
                 mapDispatchToProps,
                 undefined,
                 undefined,
-                { section: 'series', uiSection: 'seasonPass' }
-              )(SeasonPassConnector);
+                { section: 'series', uiSection: 'albumStudio' }
+              )(AlbumStudioConnector);

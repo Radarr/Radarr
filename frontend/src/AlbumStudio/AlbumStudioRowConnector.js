@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import { toggleSeriesMonitored, toggleSeasonMonitored } from 'Store/Actions/seriesActions';
-import SeasonPassRow from './SeasonPassRow';
+import { toggleSeriesMonitored, toggleSeasonMonitored } from 'Store/Actions/artistActions';
+import AlbumStudioRow from './AlbumStudioRow';
 
 function createMapStateToProps() {
   return createSelector(
@@ -13,10 +13,10 @@ function createMapStateToProps() {
     (series) => {
       return _.pick(series, [
         'status',
-        'titleSlug',
-        'title',
+        'nameSlug',
+        'artistName',
         'monitored',
-        'seasons',
+        'albums',
         'isSaving'
       ]);
     }
@@ -28,7 +28,7 @@ const mapDispatchToProps = {
   toggleSeasonMonitored
 };
 
-class SeasonPassRowConnector extends Component {
+class AlbumStudioRowConnector extends Component {
 
   //
   // Listeners
@@ -58,7 +58,7 @@ class SeasonPassRowConnector extends Component {
 
   render() {
     return (
-      <SeasonPassRow
+      <AlbumStudioRow
         {...this.props}
         onSeriesMonitoredPress={this.onSeriesMonitoredPress}
         onSeasonMonitoredPress={this.onSeasonMonitoredPress}
@@ -67,11 +67,11 @@ class SeasonPassRowConnector extends Component {
   }
 }
 
-SeasonPassRowConnector.propTypes = {
+AlbumStudioRowConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   toggleSeriesMonitored: PropTypes.func.isRequired,
   toggleSeasonMonitored: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SeasonPassRowConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(AlbumStudioRowConnector);

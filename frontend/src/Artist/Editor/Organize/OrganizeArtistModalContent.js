@@ -8,24 +8,24 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import styles from './OrganizeSeriesModalContent.css';
+import styles from './OrganizeArtistModalContent.css';
 
-function OrganizeSeriesModalContent(props) {
+function OrganizeArtistModalContent(props) {
   const {
-    seriesTitles,
+    artistNames,
     onModalClose,
-    onOrganizeSeriesPress
+    onOrganizeArtistPress
   } = props;
 
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Organize Selected Series
+        Organize Selected Artist
       </ModalHeader>
 
       <ModalBody>
         <Alert>
-          Tip: To preview a rename... select "Cancel" then any series title and use the
+          Tip: To preview a rename... select "Cancel" then click any artist name and use the
           <Icon
             className={styles.renameIcon}
             name={icons.ORGANIZE}
@@ -33,15 +33,15 @@ function OrganizeSeriesModalContent(props) {
         </Alert>
 
         <div className={styles.message}>
-          Are you sure you want to organize all files in the {seriesTitles.length} selected series?
+          Are you sure you want to organize all files in the {artistNames.length} selected artist?
         </div>
 
         <ul>
           {
-            seriesTitles.map((title) => {
+            artistNames.map((artistName) => {
               return (
-                <li key={title}>
-                  {title}
+                <li key={artistName}>
+                  {artistName}
                 </li>
               );
             })
@@ -56,7 +56,7 @@ function OrganizeSeriesModalContent(props) {
 
         <Button
           kind={kinds.DANGER}
-          onPress={onOrganizeSeriesPress}
+          onPress={onOrganizeArtistPress}
         >
           Organize
         </Button>
@@ -65,10 +65,10 @@ function OrganizeSeriesModalContent(props) {
   );
 }
 
-OrganizeSeriesModalContent.propTypes = {
-  seriesTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
+OrganizeArtistModalContent.propTypes = {
+  artistNames: PropTypes.arrayOf(PropTypes.string).isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onOrganizeSeriesPress: PropTypes.func.isRequired
+  onOrganizeArtistPress: PropTypes.func.isRequired
 };
 
-export default OrganizeSeriesModalContent;
+export default OrganizeArtistModalContent;

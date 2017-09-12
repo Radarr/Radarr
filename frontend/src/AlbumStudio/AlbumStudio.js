@@ -15,62 +15,33 @@ import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import NoArtist from 'Artist/NoArtist';
-import SeriesEditorRowConnector from './SeriesEditorRowConnector';
-import SeriesEditorFooter from './SeriesEditorFooter';
-import OrganizeSeriesModal from './Organize/OrganizeSeriesModal';
+import AlbumStudioRowConnector from './AlbumStudioRowConnector';
+import AlbumStudioFooter from './AlbumStudioFooter';
 
-function getColumns(showLanguageProfile) {
-  return [
-    {
-      name: 'status',
-      isVisible: true
-    },
-    {
-      name: 'sortTitle',
-      label: 'Title',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'qualityProfileId',
-      label: 'Quality Profile',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'languageProfileId',
-      label: 'Language Profile',
-      isSortable: true,
-      isVisible: showLanguageProfile
-    },
-    {
-      name: 'seriesType',
-      label: 'Series Type',
-      isSortable: false,
-      isVisible: true
-    },
-    {
-      name: 'seasonFolder',
-      label: 'Season Folder',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'path',
-      label: 'Path',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'tags',
-      label: 'Tags',
-      isSortable: false,
-      isVisible: true
-    }
-  ];
-}
+const columns = [
+  {
+    name: 'status',
+    isVisible: true
+  },
+  {
+    name: 'sortName',
+    label: 'Name',
+    isSortable: true,
+    isVisible: true
+  },
+  {
+    name: 'monitored',
+    isVisible: true
+  },
+  {
+    name: 'albumCount',
+    label: 'Albums',
+    isSortable: true,
+    isVisible: true
+  }
+];
 
-class SeriesEditor extends Component {
+class AlbumStudio extends Component {
 
   //
   // Lifecycle
@@ -82,23 +53,17 @@ class SeriesEditor extends Component {
       allSelected: false,
       allUnselected: false,
       lastToggled: null,
-      selectedState: {},
-      isOrganizingSeriesModalOpen: false,
-      columns: getColumns(props.showLanguageProfile)
+      selectedState: {}
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
-      isDeleting,
-      deleteError
+      isSaving,
+      saveError
     } = this.props;
 
-    const hasFinishedDeleting = prevProps.isDeleting &&
-                                !isDeleting &&
-                                !deleteError;
-
-    if (hasFinishedDeleting) {
+    if (prevProps.isSaving && !isSaving && !saveError) {
       this.onSelectAllChange({ value: false });
     }
   }
@@ -123,23 +88,11 @@ class SeriesEditor extends Component {
     });
   }
 
-  onSaveSelected = (changes) => {
-    this.props.onSaveSelected({
+  onUpdateSelectedPress = (changes) => {
+    this.props.onUpdateSelectedPress({
       artistIds: this.getSelectedIds(),
       ...changes
     });
-  }
-
-  onOrganizeSeriesPress = () => {
-    this.setState({ isOrganizingSeriesModalOpen: true });
-  }
-
-  onOrganizeSeriesModalClose = (organized) => {
-    this.setState({ isOrganizingSeriesModalOpen: false });
-
-    if (organized === true) {
-      this.onSelectAllChange({ value: false });
-    }
   }
 
   //
@@ -157,10 +110,6 @@ class SeriesEditor extends Component {
       sortDirection,
       isSaving,
       saveError,
-      isDeleting,
-      deleteError,
-      isOrganizingSeries,
-      showLanguageProfile,
       onSortPress,
       onFilterSelect
     } = this.props;
@@ -168,14 +117,11 @@ class SeriesEditor extends Component {
     const {
       allSelected,
       allUnselected,
-      selectedState,
-      columns
+      selectedState
     } = this.state;
 
-    const selectedSeriesIds = this.getSelectedIds();
-
     return (
-      <PageContent title="Series Editor">
+      <PageContent title="Album Studio">
         <PageToolbar>
           <PageToolbarSection />
           <PageToolbarSection alignContent={align.RIGHT}>
@@ -261,10 +207,9 @@ class SeriesEditor extends Component {
                     {
                       items.map((item) => {
                         return (
-                          <SeriesEditorRowConnector
+                          <AlbumStudioRowConnector
                             key={item.id}
-                            {...item}
-                            columns={columns}
+                            artistId={item.id}
                             isSelected={selectedState[item.id]}
                             onSelectedChange={this.onSelectedChange}
                           />
@@ -282,30 +227,18 @@ class SeriesEditor extends Component {
           }
         </PageContentBodyConnector>
 
-        <SeriesEditorFooter
-          artistIds={selectedSeriesIds}
-          selectedCount={selectedSeriesIds.length}
+        <AlbumStudioFooter
+          selectedCount={this.getSelectedIds().length}
           isSaving={isSaving}
           saveError={saveError}
-          isDeleting={isDeleting}
-          deleteError={deleteError}
-          isOrganizingSeries={isOrganizingSeries}
-          showLanguageProfile={showLanguageProfile}
-          onSaveSelected={this.onSaveSelected}
-          onOrganizeSeriesPress={this.onOrganizeSeriesPress}
-        />
-
-        <OrganizeSeriesModal
-          isOpen={this.state.isOrganizingSeriesModalOpen}
-          artistIds={selectedSeriesIds}
-          onModalClose={this.onOrganizeSeriesModalClose}
+          onUpdateSelectedPress={this.onUpdateSelectedPress}
         />
       </PageContent>
     );
   }
 }
 
-SeriesEditor.propTypes = {
+AlbumStudio.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -316,13 +249,9 @@ SeriesEditor.propTypes = {
   filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
-  isDeleting: PropTypes.bool.isRequired,
-  deleteError: PropTypes.object,
-  isOrganizingSeries: PropTypes.bool.isRequired,
-  showLanguageProfile: PropTypes.bool.isRequired,
   onSortPress: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
-  onSaveSelected: PropTypes.func.isRequired
+  onUpdateSelectedPress: PropTypes.func.isRequired
 };
 
-export default SeriesEditor;
+export default AlbumStudio;

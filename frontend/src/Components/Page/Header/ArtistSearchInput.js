@@ -6,12 +6,12 @@ import jdu from 'jdu';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
-import SeriesSearchResult from './SeriesSearchResult';
-import styles from './SeriesSearchInput.css';
+import ArtistSearchResult from './ArtistSearchResult';
+import styles from './ArtistSearchInput.css';
 
 const ADD_NEW_TYPE = 'addNew';
 
-class SeriesSearchInput extends Component {
+class ArtistSearchInput extends Component {
 
   //
   // Lifecycle
@@ -28,7 +28,7 @@ class SeriesSearchInput extends Component {
   }
 
   componentDidMount() {
-    this.props.bindShortcut(shortcuts.SERIES_SEARCH_INPUT.key, this.focusInput);
+    this.props.bindShortcut(shortcuts.ARTIST_SEARCH_INPUT.key, this.focusInput);
   }
 
   //
@@ -69,7 +69,7 @@ class SeriesSearchInput extends Component {
     }
 
     return (
-      <SeriesSearchResult
+      <ArtistSearchResult
         query={query}
         {...item}
       />
@@ -78,7 +78,7 @@ class SeriesSearchInput extends Component {
 
   goToSeries(series) {
     this.setState({ value: '' });
-    this.props.onGoToSeries(series.titleSlug);
+    this.props.onGoToSeries(series.nameSlug);
   }
 
   reset() {
@@ -137,7 +137,7 @@ class SeriesSearchInput extends Component {
     const suggestions = _.filter(this.props.series, (series) => {
       // Check the title first and if there isn't a match fallback to the alternate titles
 
-      const titleMatch = jdu.replace(series.title).toLowerCase().contains(lowerCaseValue);
+      const titleMatch = jdu.replace(series.artistName).toLowerCase().contains(lowerCaseValue);
 
       return titleMatch || _.some(series.alternateTitles, (alternateTitle) => {
         return jdu.replace(alternateTitle.title).toLowerCase().contains(lowerCaseValue);
@@ -172,14 +172,14 @@ class SeriesSearchInput extends Component {
 
     if (suggestions.length) {
       suggestionGroups.push({
-        title: 'Existing Series',
+        title: 'Existing Artist',
         suggestions
       });
     }
 
     if (suggestions.length <= 3) {
       suggestionGroups.push({
-        title: 'Add New Series',
+        title: 'Add New Artist',
         suggestions: [
           {
             type: ADD_NEW_TYPE,
@@ -240,11 +240,11 @@ class SeriesSearchInput extends Component {
   }
 }
 
-SeriesSearchInput.propTypes = {
+ArtistSearchInput.propTypes = {
   series: PropTypes.arrayOf(PropTypes.object).isRequired,
   onGoToSeries: PropTypes.func.isRequired,
   onGoToAddNewArtist: PropTypes.func.isRequired,
   bindShortcut: PropTypes.func.isRequired
 };
 
-export default keyboardShortcuts(SeriesSearchInput);
+export default keyboardShortcuts(ArtistSearchInput);

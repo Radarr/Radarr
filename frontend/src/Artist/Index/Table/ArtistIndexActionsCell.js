@@ -39,7 +39,7 @@ class ArtistIndexActionsCell extends Component {
     });
   }
 
-  onDeleteSeriesModalClose = () => {
+  onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
   }
 
@@ -50,7 +50,7 @@ class ArtistIndexActionsCell extends Component {
     const {
       id,
       isRefreshingSeries,
-      onRefreshSeriesPress,
+      onRefreshArtistPress,
       ...otherProps
     } = this.props;
 
@@ -67,7 +67,7 @@ class ArtistIndexActionsCell extends Component {
           name={icons.REFRESH}
           title="Refresh Artist"
           isSpinning={isRefreshingSeries}
-          onPress={onRefreshSeriesPress}
+          onPress={onRefreshArtistPress}
         />
 
         <IconButton
@@ -86,7 +86,7 @@ class ArtistIndexActionsCell extends Component {
         <DeleteArtistModal
           isOpen={isDeleteArtistModalOpen}
           artistId={id}
-          onModalClose={this.onDeleteSeriesModalClose}
+          onModalClose={this.onDeleteArtistModalClose}
         />
       </VirtualTableRowCell>
     );
@@ -96,7 +96,7 @@ class ArtistIndexActionsCell extends Component {
 ArtistIndexActionsCell.propTypes = {
   id: PropTypes.number.isRequired,
   isRefreshingSeries: PropTypes.bool.isRequired,
-  onRefreshSeriesPress: PropTypes.func.isRequired
+  onRefreshArtistPress: PropTypes.func.isRequired
 };
 
 export default ArtistIndexActionsCell;

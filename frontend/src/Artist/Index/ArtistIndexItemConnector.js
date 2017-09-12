@@ -18,7 +18,7 @@ function createMapStateToProps() {
     createCommandsSelector(),
     (artistId, seasons, qualityProfile, languageProfile, commands) => {
       const isRefreshingSeries = _.some(commands, (command) => {
-        return command.name === commandNames.REFRESH_SERIES &&
+        return command.name === commandNames.REFRESH_ARTIST &&
           command.body.artistId === artistId;
       });
 
@@ -43,9 +43,9 @@ class ArtistIndexItemConnector extends Component {
   //
   // Listeners
 
-  onRefreshSeriesPress = () => {
+  onRefreshArtistPress = () => {
     this.props.executeCommand({
-      name: commandNames.REFRESH_SERIES,
+      name: commandNames.REFRESH_ARTIST,
       artistId: this.props.id
     });
   }
@@ -62,7 +62,7 @@ class ArtistIndexItemConnector extends Component {
     return (
       <ItemComponent
         {...otherProps}
-        onRefreshSeriesPress={this.onRefreshSeriesPress}
+        onRefreshArtistPress={this.onRefreshArtistPress}
       />
     );
   }

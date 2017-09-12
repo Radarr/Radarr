@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import selectSettings from 'Store/Selectors/selectSettings';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import { setSeriesValue, saveArtist } from 'Store/Actions/seriesActions';
+import { setSeriesValue, saveArtist } from 'Store/Actions/artistActions';
 import EditArtistModalContent from './EditArtistModalContent';
 
 function createMapStateToProps() {

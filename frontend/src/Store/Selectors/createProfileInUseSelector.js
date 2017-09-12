@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import createAllSeriesSelector from './createAllSeriesSelector';
+import createAllArtistSelector from './createAllArtistSelector';
 
 function createProfileInUseSelector(profileProp) {
   return createSelector(
     (state, { id }) => id,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (id, series) => {
       if (!id) {
         return false;

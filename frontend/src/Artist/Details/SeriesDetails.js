@@ -99,7 +99,7 @@ class SeriesDetails extends Component {
     });
   }
 
-  onDeleteSeriesModalClose = () => {
+  onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
   }
 
@@ -132,10 +132,10 @@ class SeriesDetails extends Component {
   render() {
     const {
       id,
-      tvdbId,
+      foreignArtistId,
       tvMazeId,
       imdbId,
-      title,
+      artistName,
       runtime,
       ratings,
       sizeOnDisk,
@@ -146,7 +146,7 @@ class SeriesDetails extends Component {
       network,
       overview,
       images,
-      seasons,
+      albums,
       alternateTitles,
       tags,
       isRefreshing,
@@ -190,7 +190,7 @@ class SeriesDetails extends Component {
     }
 
     return (
-      <PageContent title={title}>
+      <PageContent title={artistName}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
@@ -269,7 +269,7 @@ class SeriesDetails extends Component {
               <div className={styles.info}>
                 <div className={styles.titleContainer}>
                   <div className={styles.title}>
-                    {title}
+                    {artistName}
 
                     {
                       !!alternateTitles.length &&
@@ -294,16 +294,16 @@ class SeriesDetails extends Component {
                       className={styles.seriesNavigationButton}
                       name={icons.ARROW_LEFT}
                       size={30}
-                      title={`Go to ${previousSeries.title}`}
-                      to={`/series/${previousSeries.titleSlug}`}
+                      title={`Go to ${previousSeries.artistName}`}
+                      to={`/artist/${previousSeries.nameSlug}`}
                     />
 
                     <IconButton
                       className={styles.seriesNavigationButton}
                       name={icons.ARROW_RIGHT}
                       size={30}
-                      title={`Go to ${nextSeries.title}`}
-                      to={`/series/${nextSeries.titleSlug}`}
+                      title={`Go to ${nextSeries.artistName}`}
+                      to={`/artist/${nextSeries.nameSlug}`}
                     />
                   </div>
                 </div>
@@ -426,7 +426,7 @@ class SeriesDetails extends Component {
                     }
                     tooltip={
                       <SeriesDetailsLinks
-                        tvdbId={tvdbId}
+                        foreignArtistId={foreignArtistId}
                         tvMazeId={tvMazeId}
                         imdbId={imdbId}
                       />
@@ -485,10 +485,10 @@ class SeriesDetails extends Component {
             }
 
             {
-              isPopulated && !!seasons.length &&
+              isPopulated && !!albums.length &&
                 <div>
                   {
-                    seasons.slice(0).reverse().map((season) => {
+                    albums.slice(0).reverse().map((season) => {
                       return (
                         <SeriesDetailsSeasonConnector
                           key={season.seasonNumber}
@@ -504,7 +504,7 @@ class SeriesDetails extends Component {
             }
 
             {
-              isPopulated && !seasons.length &&
+              isPopulated && !albums.length &&
                 <div>
                   No episode information is available.
                 </div>
@@ -534,7 +534,7 @@ class SeriesDetails extends Component {
           <DeleteArtistModal
             isOpen={isDeleteArtistModalOpen}
             artistId={id}
-            onModalClose={this.onDeleteSeriesModalClose}
+            onModalClose={this.onDeleteArtistModalClose}
           />
         </PageContentBodyConnector>
       </PageContent>
@@ -544,10 +544,10 @@ class SeriesDetails extends Component {
 
 SeriesDetails.propTypes = {
   id: PropTypes.number.isRequired,
-  tvdbId: PropTypes.number.isRequired,
+  foreignArtistId: PropTypes.string.isRequired,
   tvMazeId: PropTypes.number,
   imdbId: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  artistName: PropTypes.string.isRequired,
   runtime: PropTypes.number.isRequired,
   ratings: PropTypes.object.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,
@@ -558,7 +558,7 @@ SeriesDetails.propTypes = {
   network: PropTypes.string,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
-  seasons: PropTypes.arrayOf(PropTypes.object).isRequired,
+  albums: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
   isRefreshing: PropTypes.bool.isRequired,

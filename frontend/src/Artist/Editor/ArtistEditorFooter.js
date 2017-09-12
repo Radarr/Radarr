@@ -10,12 +10,12 @@ import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import TagsModal from './Tags/TagsModal';
 import DeleteArtistModal from './Delete/DeleteArtistModal';
-import SeriesEditorFooterLabel from './SeriesEditorFooterLabel';
-import styles from './SeriesEditorFooter.css';
+import ArtistEditorFooterLabel from './ArtistEditorFooterLabel';
+import styles from './ArtistEditorFooter.css';
 
 const NO_CHANGE = 'noChange';
 
-class SeriesEditorFooter extends Component {
+class ArtistEditorFooter extends Component {
 
   //
   // Lifecycle
@@ -27,8 +27,7 @@ class SeriesEditorFooter extends Component {
       monitored: NO_CHANGE,
       qualityProfileId: NO_CHANGE,
       languageProfileId: NO_CHANGE,
-      seriesType: NO_CHANGE,
-      seasonFolder: NO_CHANGE,
+      albumFolder: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
       savingTags: false,
       isDeleteArtistModalOpen: false,
@@ -47,8 +46,7 @@ class SeriesEditorFooter extends Component {
         monitored: NO_CHANGE,
         qualityProfileId: NO_CHANGE,
         languageProfileId: NO_CHANGE,
-        seriesType: NO_CHANGE,
-        seasonFolder: NO_CHANGE,
+        albumFolder: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
         savingTags: false
       });
@@ -93,7 +91,7 @@ class SeriesEditorFooter extends Component {
     this.setState({ isDeleteArtistModalOpen: true });
   }
 
-  onDeleteSeriesModalClose = () => {
+  onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
   }
 
@@ -114,17 +112,16 @@ class SeriesEditorFooter extends Component {
       selectedCount,
       isSaving,
       isDeleting,
-      isOrganizingSeries,
+      isOrganizingArtist,
       showLanguageProfile,
-      onOrganizeSeriesPress
+      onOrganizeArtistPress
     } = this.props;
 
     const {
       monitored,
       qualityProfileId,
       languageProfileId,
-      seriesType,
-      seasonFolder,
+      albumFolder,
       rootFolderPath,
       savingTags,
       isTagsModalOpen,
@@ -137,7 +134,7 @@ class SeriesEditorFooter extends Component {
       { key: 'unmonitored', value: 'Unmonitored' }
     ];
 
-    const seasonFolderOptions = [
+    const albumFolderOptions = [
       { key: NO_CHANGE, value: 'No Change', disabled: true },
       { key: 'yes', value: 'Yes' },
       { key: 'no', value: 'No' }
@@ -146,8 +143,8 @@ class SeriesEditorFooter extends Component {
     return (
       <PageContentFooter>
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
-            label="Monitor Series"
+          <ArtistEditorFooterLabel
+            label="Monitor Artist"
             isSaving={isSaving && monitored !== NO_CHANGE}
           />
 
@@ -161,7 +158,7 @@ class SeriesEditorFooter extends Component {
         </div>
 
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
+          <ArtistEditorFooterLabel
             label="Quality Profile"
             isSaving={isSaving && qualityProfileId !== NO_CHANGE}
           />
@@ -178,7 +175,7 @@ class SeriesEditorFooter extends Component {
         {
           showLanguageProfile &&
             <div className={styles.inputContainer}>
-              <SeriesEditorFooterLabel
+              <ArtistEditorFooterLabel
                 label="Language Profile"
                 isSaving={isSaving && languageProfileId !== NO_CHANGE}
               />
@@ -194,37 +191,22 @@ class SeriesEditorFooter extends Component {
         }
 
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
-            label="Series Type"
-            isSaving={isSaving && seriesType !== NO_CHANGE}
-          />
-
-          <SeriesTypeSelectInput
-            name="seriesType"
-            value={seriesType}
-            includeNoChange={true}
-            isDisabled={!selectedCount}
-            onChange={this.onInputChange}
-          />
-        </div>
-
-        <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
-            label="Season Folder"
-            isSaving={isSaving && seasonFolder !== NO_CHANGE}
+          <ArtistEditorFooterLabel
+            label="Album Folder"
+            isSaving={isSaving && albumFolder !== NO_CHANGE}
           />
 
           <SelectInput
-            name="seasonFolder"
-            value={seasonFolder}
-            values={seasonFolderOptions}
+            name="albumFolder"
+            value={albumFolder}
+            values={albumFolderOptions}
             isDisabled={!selectedCount}
             onChange={this.onInputChange}
           />
         </div>
 
         <div className={styles.inputContainer}>
-          <SeriesEditorFooterLabel
+          <ArtistEditorFooterLabel
             label="Root Folder"
             isSaving={isSaving && rootFolderPath !== NO_CHANGE}
           />
@@ -241,8 +223,8 @@ class SeriesEditorFooter extends Component {
 
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
-            <SeriesEditorFooterLabel
-              label={`${selectedCount} Series Selected`}
+            <ArtistEditorFooterLabel
+              label={`${selectedCount} Artist(s) Selected`}
               isSaving={false}
             />
 
@@ -251,9 +233,9 @@ class SeriesEditorFooter extends Component {
                 <SpinnerButton
                   className={styles.organizeSelectedButton}
                   kind={kinds.WARNING}
-                  isSpinning={isOrganizingSeries}
-                  isDisabled={!selectedCount || isOrganizingSeries}
-                  onPress={onOrganizeSeriesPress}
+                  isSpinning={isOrganizingArtist}
+                  isDisabled={!selectedCount || isOrganizingArtist}
+                  onPress={onOrganizeArtistPress}
                 >
                   Rename Files
                 </SpinnerButton>
@@ -261,7 +243,7 @@ class SeriesEditorFooter extends Component {
                 <SpinnerButton
                   className={styles.tagsButton}
                   isSpinning={isSaving && savingTags}
-                  isDisabled={!selectedCount || isOrganizingSeries}
+                  isDisabled={!selectedCount || isOrganizingArtist}
                   onPress={this.onTagsPress}
                 >
                   Set Tags
@@ -291,24 +273,24 @@ class SeriesEditorFooter extends Component {
         <DeleteArtistModal
           isOpen={isDeleteArtistModalOpen}
           artistIds={artistIds}
-          onModalClose={this.onDeleteSeriesModalClose}
+          onModalClose={this.onDeleteArtistModalClose}
         />
       </PageContentFooter>
     );
   }
 }
 
-SeriesEditorFooter.propTypes = {
+ArtistEditorFooter.propTypes = {
   artistIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedCount: PropTypes.number.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,
   deleteError: PropTypes.object,
-  isOrganizingSeries: PropTypes.bool.isRequired,
+  isOrganizingArtist: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   onSaveSelected: PropTypes.func.isRequired,
-  onOrganizeSeriesPress: PropTypes.func.isRequired
+  onOrganizeArtistPress: PropTypes.func.isRequired
 };
 
-export default SeriesEditorFooter;
+export default ArtistEditorFooter;

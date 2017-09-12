@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
-import { fetchArtist } from 'Store/Actions/seriesActions';
+import { fetchArtist } from 'Store/Actions/artistActions';
 import { fetchTags } from 'Store/Actions/tagActions';
 import { fetchQualityProfiles, fetchLanguageProfiles, fetchUISettings } from 'Store/Actions/settingsActions';
 import { fetchStatus } from 'Store/Actions/systemActions';

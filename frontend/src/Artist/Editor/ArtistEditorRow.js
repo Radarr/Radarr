@@ -9,9 +9,9 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import ArtistStatusCell from 'Artist/Index/Table/ArtistStatusCell';
-import styles from './SeriesEditorRow.css';
+import styles from './ArtistEditorRow.css';
 
-class SeriesEditorRow extends Component {
+class ArtistEditorRow extends Component {
 
   //
   // Listeners
@@ -28,13 +28,12 @@ class SeriesEditorRow extends Component {
     const {
       id,
       status,
-      titleSlug,
-      title,
+      nameSlug,
+      artistName,
       monitored,
       languageProfile,
       qualityProfile,
-      seriesType,
-      seasonFolder,
+      albumFolder,
       path,
       tags,
       columns,
@@ -57,8 +56,8 @@ class SeriesEditorRow extends Component {
 
         <TableRowCell className={styles.title}>
           <ArtistNameLink
-            titleSlug={titleSlug}
-            title={title}
+            nameSlug={nameSlug}
+            artistName={artistName}
           />
         </TableRowCell>
 
@@ -73,14 +72,10 @@ class SeriesEditorRow extends Component {
             </TableRowCell>
         }
 
-        <TableRowCell>
-          {titleCase(seriesType)}
-        </TableRowCell>
-
-        <TableRowCell className={styles.seasonFolder}>
+        <TableRowCell className={styles.albumFolder}>
           <CheckInput
-            name="seasonFolder"
-            value={seasonFolder}
+            name="albumFolder"
+            value={albumFolder}
             isDisabled={true}
             onChange={this.onSeasonFolderChange}
           />
@@ -100,16 +95,15 @@ class SeriesEditorRow extends Component {
   }
 }
 
-SeriesEditorRow.propTypes = {
+ArtistEditorRow.propTypes = {
   id: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
-  titleSlug: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  nameSlug: PropTypes.string.isRequired,
+  artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   languageProfile: PropTypes.object.isRequired,
   qualityProfile: PropTypes.object.isRequired,
-  seriesType: PropTypes.string.isRequired,
-  seasonFolder: PropTypes.bool.isRequired,
+  albumFolder: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -117,4 +111,4 @@ SeriesEditorRow.propTypes = {
   onSelectedChange: PropTypes.func.isRequired
 };
 
-export default SeriesEditorRow;
+export default ArtistEditorRow;

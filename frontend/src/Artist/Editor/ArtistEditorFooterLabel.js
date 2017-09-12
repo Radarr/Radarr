@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { icons } from 'Helpers/Props';
 import SpinnerIcon from 'Components/SpinnerIcon';
-import styles from './SeriesEditorFooterLabel.css';
+import styles from './ArtistEditorFooterLabel.css';
 
-function SeriesEditorFooterLabel(props) {
+function ArtistEditorFooterLabel(props) {
   const {
     className,
     label,
@@ -27,14 +27,14 @@ function SeriesEditorFooterLabel(props) {
   );
 }
 
-SeriesEditorFooterLabel.propTypes = {
+ArtistEditorFooterLabel.propTypes = {
   className: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired
 };
 
-SeriesEditorFooterLabel.defaultProps = {
+ArtistEditorFooterLabel.defaultProps = {
   className: styles.label
 };
 
-export default SeriesEditorFooterLabel;
+export default ArtistEditorFooterLabel;

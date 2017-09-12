@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-function createAllSeriesSelector() {
+function createAllArtistSelector() {
   return createSelector(
     (state) => state.series,
     (series) => {
@@ -9,4 +9,4 @@ function createAllSeriesSelector() {
   );
 }
 
-export default createAllSeriesSelector;
+export default createAllArtistSelector;

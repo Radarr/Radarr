@@ -4,21 +4,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { push } from 'react-router-redux';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import NotFound from 'Components/NotFound';
 import SeriesDetailsConnector from './SeriesDetailsConnector';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { match }) => match,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (match, allSeries) => {
-      const titleSlug = match.params.titleSlug;
-      const seriesIndex = _.findIndex(allSeries, { titleSlug });
+      const nameSlug = match.params.nameSlug;
+      const seriesIndex = _.findIndex(allSeries, { nameSlug });
 
       if (seriesIndex > -1) {
         return {
-          titleSlug
+          nameSlug
         };
       }
 
@@ -37,7 +37,7 @@ class SeriesDetailsPageConnector extends Component {
   // Lifecycle
 
   componentDidUpdate(prevProps) {
-    if (!this.props.titleSlug) {
+    if (!this.props.nameSlug) {
       this.props.push(`${window.Sonarr.urlBase}/`);
       return;
     }
@@ -48,10 +48,10 @@ class SeriesDetailsPageConnector extends Component {
 
   render() {
     const {
-      titleSlug
+      nameSlug
     } = this.props;
 
-    if (!titleSlug) {
+    if (!nameSlug) {
       return (
         <NotFound
           message="Sorry, that series cannot be found."
@@ -61,15 +61,15 @@ class SeriesDetailsPageConnector extends Component {
 
     return (
       <SeriesDetailsConnector
-        titleSlug={titleSlug}
+        nameSlug={nameSlug}
       />
     );
   }
 }
 
 SeriesDetailsPageConnector.propTypes = {
-  titleSlug: PropTypes.string,
-  match: PropTypes.shape({ params: PropTypes.shape({ titleSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
+  nameSlug: PropTypes.string,
+  match: PropTypes.shape({ params: PropTypes.shape({ nameSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired
 };
 

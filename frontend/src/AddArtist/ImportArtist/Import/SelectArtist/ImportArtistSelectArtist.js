@@ -99,10 +99,10 @@ class ImportArtistSelectArtist extends Component {
     });
   }
 
-  onSeriesSelect = (tvdbId) => {
+  onSeriesSelect = (foreignArtistId) => {
     this.setState({ isOpen: false });
 
-    this.props.onSeriesSelect(tvdbId);
+    this.props.onSeriesSelect(foreignArtistId);
   }
 
   //

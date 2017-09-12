@@ -17,12 +17,12 @@ function createMapStateToProps() {
     (state) => state.wanted.missing,
     createCommandsSelector(),
     (missing, commands) => {
-      const isSearchingForEpisodes = _.some(commands, { name: commandNames.EPISODE_SEARCH });
-      const isSearchingForMissingEpisodes = _.some(commands, { name: commandNames.MISSING_EPISODE_SEARCH });
+      const isSearchingForAlbums = _.some(commands, { name: commandNames.EPISODE_SEARCH });
+      const isSearchingForMissingAlbums = _.some(commands, { name: commandNames.MISSING_EPISODE_SEARCH });
 
       return {
-        isSearchingForEpisodes,
-        isSearchingForMissingEpisodes,
+        isSearchingForAlbums,
+        isSearchingForMissingAlbums,
         isSaving: _.some(missing.items, { isSaving: true }),
         ...missing
       };

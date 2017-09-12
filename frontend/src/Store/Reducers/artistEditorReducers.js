@@ -20,22 +20,22 @@ export const defaultState = {
 };
 
 export const persistState = [
-  'seriesEditor.sortKey',
-  'seriesEditor.sortDirection',
-  'seriesEditor.filterKey',
-  'seriesEditor.filterValue',
-  'seriesEditor.filterType'
+  'artistEditor.sortKey',
+  'artistEditor.sortDirection',
+  'artistEditor.filterKey',
+  'artistEditor.filterValue',
+  'artistEditor.filterType'
 ];
 
-const reducerSection = 'seriesEditor';
+const reducerSection = 'artistEditor';
 
-const seriesEditorReducers = handleActions({
+const artistEditorReducers = handleActions({
 
   [types.SET]: createSetReducer(reducerSection),
 
-  [types.SET_SERIES_EDITOR_SORT]: createSetClientSideCollectionSortReducer(reducerSection),
-  [types.SET_SERIES_EDITOR_FILTER]: createSetClientSideCollectionFilterReducer(reducerSection)
+  [types.SET_ARTIST_EDITOR_SORT]: createSetClientSideCollectionSortReducer(reducerSection),
+  [types.SET_ARTIST_EDITOR_FILTER]: createSetClientSideCollectionFilterReducer(reducerSection)
 
 }, defaultState);
 
-export default seriesEditorReducers;
+export default artistEditorReducers;

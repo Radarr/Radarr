@@ -116,7 +116,7 @@ const importArtistActionHandlers = {
 
         // Make sure we have a selected series and
         // the same series hasn't been added yet.
-        if (selectedSeries && !_.some(acc, { tvdbId: selectedSeries.tvdbId })) {
+        if (selectedSeries && !_.some(acc, { foreignArtistId: selectedSeries.foreignArtistId })) {
           const newSeries = getNewSeries(_.cloneDeep(selectedSeries), item);
           newSeries.path = item.path;
 

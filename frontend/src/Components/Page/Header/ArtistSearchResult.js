@@ -2,7 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ArtistPoster from 'Artist/ArtistPoster';
-import styles from './SeriesSearchResult.css';
+import styles from './ArtistSearchResult.css';
 
 function getMatchingAlternateTile(alternateTitles, query) {
   return _.first(alternateTitles, (alternateTitle) => {
@@ -10,18 +10,18 @@ function getMatchingAlternateTile(alternateTitles, query) {
   });
 }
 
-function SeriesSearchResult(props) {
+function ArtistSearchResult(props) {
   const {
     query,
-    title,
-    alternateTitles,
+    artistName,
+    // alternateTitles,
     images
   } = props;
 
-  const index = title.toLowerCase().indexOf(query.toLowerCase());
-  const alternateTitle = index === -1 ?
-    getMatchingAlternateTile(alternateTitles, query) :
-    null;
+  const index = artistName.toLowerCase().indexOf(query.toLowerCase());
+  // const alternateTitle = index === -1 ?
+  //   getMatchingAlternateTile(alternateTitles, query) :
+  //   null;
 
   return (
     <div className={styles.result}>
@@ -35,25 +35,25 @@ function SeriesSearchResult(props) {
 
       <div className={styles.titles}>
         <div className={styles.title}>
-          {title}
+          {artistName}
         </div>
 
         {
-          !!alternateTitle &&
-          <div className={styles.alternateTitle}>
-            {alternateTitle.title}
-          </div>
+          // !!alternateTitle &&
+          // <div className={styles.alternateTitle}>
+          //   {alternateTitle.title}
+          // </div>
         }
       </div>
     </div>
   );
 }
 
-SeriesSearchResult.propTypes = {
+ArtistSearchResult.propTypes = {
   query: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
+  artistName: PropTypes.string.isRequired,
+  // alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default SeriesSearchResult;
+export default ArtistSearchResult;

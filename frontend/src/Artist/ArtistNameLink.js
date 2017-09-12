@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'Components/Link/Link';
 
 function ArtistNameLink({ nameSlug, artistName }) {
-  const link = `/series/${nameSlug}`;
+  const link = `/artist/${nameSlug}`;
 
   return (
     <Link to={link}>

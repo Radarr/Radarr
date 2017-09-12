@@ -14,6 +14,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
+using Lidarr.Api.V3.Albums;
 using NzbDrone.SignalR;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
@@ -35,12 +36,14 @@ namespace Lidarr.Api.V3.Artist
         private readonly IAddArtistService _addArtistService;
         private readonly IArtistStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
+        private readonly IAlbumService _albumService;
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IArtistService artistService,
                             IAddArtistService addArtistService,
                             IArtistStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
+                            IAlbumService albumService,
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
@@ -55,6 +58,7 @@ namespace Lidarr.Api.V3.Artist
             _artistStatisticsService = artistStatisticsService;
 
             _coverMapper = coverMapper;
+            _albumService = albumService;
 
             GetResourceAll = AllArtists;
             GetResourceById = GetArtist;
@@ -95,6 +99,7 @@ namespace Lidarr.Api.V3.Artist
 
             var resource = artist.ToResource();
             MapCoversToLocal(resource);
+            MapAlbums(resource);
             FetchAndLinkArtistStatistics(resource);
             //PopulateAlternateTitles(resource);
 
@@ -107,6 +112,7 @@ namespace Lidarr.Api.V3.Artist
             var artistsResources = _artistService.GetAllArtists().ToResource();
 
             MapCoversToLocal(artistsResources.ToArray());
+            MapAlbums(artistsResources.ToArray());
             LinkArtistStatistics(artistsResources, artistStats);
             //PopulateAlternateTitles(seriesResources);
 
@@ -144,6 +150,14 @@ namespace Lidarr.Api.V3.Artist
             }
         }
 
+        private void MapAlbums(params ArtistResource[] artists)
+        {
+            foreach (var artistResource in artists)
+            {
+                artistResource.Albums = _albumService.GetAlbumsByArtist(artistResource.Id).ToResource();
+            }
+        }
+
         private void FetchAndLinkArtistStatistics(ArtistResource resource)
         {
             LinkArtistStatistics(resource, _artistStatisticsService.ArtistStatistics(resource.Id));
@@ -168,13 +182,13 @@ namespace Lidarr.Api.V3.Artist
             resource.SizeOnDisk = artistStatistics.SizeOnDisk;
             resource.AlbumCount = artistStatistics.AlbumCount;
 
-            //if (seriesStatistics.AlbumStatistics != null)
-            //{
-            //   foreach (var album in resource.Albums)
-            //    {
-            //        album.Statistics = seriesStatistics.AlbumStatistics.SingleOrDefault(s => s.AlbumId == album.Id).ToResource();
-            //    }
-            //}
+            if (artistStatistics.AlbumStatistics != null)
+            {
+               foreach (var album in resource.Albums)
+                {
+                    album.Statistics = artistStatistics.AlbumStatistics.SingleOrDefault(s => s.AlbumId == album.Id).ToResource();
+                }
+            }
         }
 
         //private void PopulateAlternateTitles(List<ArtistResource> resources)

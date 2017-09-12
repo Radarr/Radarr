@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createLanguageProfileSelector from 'Store/Selectors/createLanguageProfileSelector';
 import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
-import SeriesEditorRow from './SeriesEditorRow';
+import ArtistEditorRow from './ArtistEditorRow';
 
 function createMapStateToProps() {
   return createSelector(
@@ -19,16 +19,16 @@ function createMapStateToProps() {
   );
 }
 
-function SeriesEditorRowConnector(props) {
+function ArtistEditorRowConnector(props) {
   return (
-    <SeriesEditorRow
+    <ArtistEditorRow
       {...props}
     />
   );
 }
 
-SeriesEditorRowConnector.propTypes = {
+ArtistEditorRowConnector.propTypes = {
   qualityProfileId: PropTypes.number.isRequired
 };
 
-export default connect(createMapStateToProps)(SeriesEditorRowConnector);
+export default connect(createMapStateToProps)(ArtistEditorRowConnector);

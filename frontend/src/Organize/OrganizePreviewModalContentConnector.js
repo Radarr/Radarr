@@ -20,7 +20,7 @@ function createMapStateToProps() {
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
       props.renameTracks = naming.item.renameTracks;
-      props.episodeFormat = naming.item[`${series.seriesType}EpisodeFormat`];
+      props.trackFormat = naming.item['standardTrackFormat'];
       props.path = series.path;
 
       return props;
@@ -41,13 +41,13 @@ class OrganizePreviewModalContentConnector extends Component {
 
   componentDidMount() {
     const {
-      seriesId,
-      seasonNumber
+      artistId,
+      albumId
     } = this.props;
 
     this.props.fetchOrganizePreview({
-      seriesId,
-      seasonNumber
+      artistId,
+      albumId
     });
 
     this.props.fetchNamingSettings();
@@ -59,7 +59,7 @@ class OrganizePreviewModalContentConnector extends Component {
   onOrganizePress = (files) => {
     this.props.executeCommand({
       name: commandNames.RENAME_FILES,
-      seriesId: this.props.seriesId,
+      artistId: this.props.artistId,
       files
     });
 
@@ -80,8 +80,8 @@ class OrganizePreviewModalContentConnector extends Component {
 }
 
 OrganizePreviewModalContentConnector.propTypes = {
-  seriesId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number,
+  artistId: PropTypes.number.isRequired,
+  albumId: PropTypes.number,
   fetchOrganizePreview: PropTypes.func.isRequired,
   fetchNamingSettings: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,

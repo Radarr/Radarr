@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import { deleteArtist } from 'Store/Actions/seriesActions';
+import { deleteArtist } from 'Store/Actions/artistActions';
 import DeleteArtistModalContent from './DeleteArtistModalContent';
 
 function createMapStateToProps() {

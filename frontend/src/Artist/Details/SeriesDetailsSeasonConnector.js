@@ -7,7 +7,7 @@ import { findCommand } from 'Utilities/Command';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { toggleSeasonMonitored } from 'Store/Actions/seriesActions';
+import { toggleSeasonMonitored } from 'Store/Actions/artistActions';
 import { toggleEpisodesMonitored, setEpisodesTableOption } from 'Store/Actions/episodeActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';

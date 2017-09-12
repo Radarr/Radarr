@@ -18,9 +18,9 @@ function ErrorPage(props) {
   if (!isLocalStorageSupported) {
     errorMessage = 'Local Storage is not supported or disabled. A plugin or private browsing may have disabled it.';
   } else if (seriesError) {
-    errorMessage = getErrorMessage(seriesError, 'Failed to load series from API');
+    errorMessage = getErrorMessage(seriesError, 'Failed to load artist from API');
   } else if (tagsError) {
-    errorMessage = getErrorMessage(seriesError, 'Failed to load series from API');
+    errorMessage = getErrorMessage(seriesError, 'Failed to load artist from API');
   } else if (qualityProfilesError) {
     errorMessage = getErrorMessage(qualityProfilesError, 'Failed to load quality profiles from API');
   } else if (uiSettingsError) {

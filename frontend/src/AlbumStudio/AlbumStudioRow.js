@@ -7,10 +7,10 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ArtistNameLink from 'Artist/ArtistNameLink';
-import SeasonPassSeason from './SeasonPassSeason';
-import styles from './SeasonPassRow.css';
+import AlbumStudioAlbum from './AlbumStudioAlbum';
+import styles from './AlbumStudioRow.css';
 
-class SeasonPassRow extends Component {
+class AlbumStudioRow extends Component {
 
   //
   // Render
@@ -19,10 +19,10 @@ class SeasonPassRow extends Component {
     const {
       artistId,
       status,
-      titleSlug,
-      title,
+      nameSlug,
+      artistName,
       monitored,
-      seasons,
+      albums,
       isSaving,
       isSelected,
       onSelectedChange,
@@ -49,8 +49,8 @@ class SeasonPassRow extends Component {
 
         <TableRowCell className={styles.title}>
           <ArtistNameLink
-            titleSlug={titleSlug}
-            title={title}
+            nameSlug={nameSlug}
+            artistName={artistName}
           />
         </TableRowCell>
 
@@ -64,10 +64,10 @@ class SeasonPassRow extends Component {
 
         <TableRowCell className={styles.seasons}>
           {
-            seasons.map((season) => {
+            albums.map((season) => {
               return (
-                <SeasonPassSeason
-                  key={season.seasonNumber}
+                <AlbumStudioAlbum
+                  key={season.id}
                   {...season}
                   onSeasonMonitoredPress={onSeasonMonitoredPress}
                 />
@@ -80,13 +80,13 @@ class SeasonPassRow extends Component {
   }
 }
 
-SeasonPassRow.propTypes = {
+AlbumStudioRow.propTypes = {
   artistId: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
-  titleSlug: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  nameSlug: PropTypes.string.isRequired,
+  artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  seasons: PropTypes.arrayOf(PropTypes.object).isRequired,
+  albums: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
@@ -94,8 +94,8 @@ SeasonPassRow.propTypes = {
   onSeasonMonitoredPress: PropTypes.func.isRequired
 };
 
-SeasonPassRow.defaultProps = {
+AlbumStudioRow.defaultProps = {
   isSaving: false
 };
 
-export default SeasonPassRow;
+export default AlbumStudioRow;

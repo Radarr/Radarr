@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { findCommand } from 'Utilities/Command';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
 import { fetchEpisodeFiles, clearEpisodeFiles } from 'Store/Actions/episodeFileActions';
@@ -15,28 +15,28 @@ import SeriesDetails from './SeriesDetails';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { titleSlug }) => titleSlug,
+    (state, { nameSlug }) => nameSlug,
     (state) => state.episodes,
     (state) => state.episodeFiles,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     createCommandsSelector(),
-    (titleSlug, episodes, episodeFiles, allSeries, commands) => {
-      const sortedSeries = _.orderBy(allSeries, 'sortTitle');
-      const seriesIndex = _.findIndex(sortedSeries, { titleSlug });
-      const series = sortedSeries[seriesIndex];
+    (nameSlug, episodes, episodeFiles, allSeries, commands) => {
+      const sortedArtist = _.orderBy(allSeries, 'sortTitle');
+      const seriesIndex = _.findIndex(sortedArtist, { nameSlug });
+      const series = sortedArtist[seriesIndex];
 
       if (!series) {
         return {};
       }
 
-      const previousSeries = sortedSeries[seriesIndex - 1] || _.last(sortedSeries);
-      const nextSeries = sortedSeries[seriesIndex + 1] || _.first(sortedSeries);
-      const isSeriesRefreshing = !!findCommand(commands, { name: commandNames.REFRESH_SERIES, artistId: series.id });
-      const allSeriesRefreshing = _.some(commands, (command) => command.name === commandNames.REFRESH_SERIES && !command.body.artistId);
+      const previousSeries = sortedArtist[seriesIndex - 1] || _.last(sortedArtist);
+      const nextSeries = sortedArtist[seriesIndex + 1] || _.first(sortedArtist);
+      const isSeriesRefreshing = !!findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: series.id });
+      const allSeriesRefreshing = _.some(commands, (command) => command.name === commandNames.REFRESH_ARTIST && !command.body.artistId);
       const isRefreshing = isSeriesRefreshing || allSeriesRefreshing;
-      const isSearching = !!findCommand(commands, { name: commandNames.SERIES_SEARCH, artistId: series.id });
+      const isSearching = !!findCommand(commands, { name: commandNames.ARTIST_SEARCH, artistId: series.id });
       const isRenamingFiles = !!findCommand(commands, { name: commandNames.RENAME_FILES, artistId: series.id });
-      const isRenamingSeriesCommand = findCommand(commands, { name: commandNames.RENAME_SERIES });
+      const isRenamingSeriesCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
       const isRenamingSeries = !!(isRenamingSeriesCommand && isRenamingSeriesCommand.body.artistId.indexOf(series.id) > -1);
 
       const isFetching = episodes.isFetching || episodeFiles.isFetching;
@@ -140,14 +140,14 @@ class SeriesDetailsConnector extends Component {
 
   onRefreshPress = () => {
     this.props.executeCommand({
-      name: commandNames.REFRESH_SERIES,
+      name: commandNames.REFRESH_ARTIST,
       artistId: this.props.id
     });
   }
 
   onSearchPress = () => {
     this.props.executeCommand({
-      name: commandNames.SERIES_SEARCH,
+      name: commandNames.ARTIST_SEARCH,
       artistId: this.props.id
     });
   }
@@ -168,7 +168,7 @@ class SeriesDetailsConnector extends Component {
 
 SeriesDetailsConnector.propTypes = {
   id: PropTypes.number.isRequired,
-  titleSlug: PropTypes.string.isRequired,
+  nameSlug: PropTypes.string.isRequired,
   isRefreshing: PropTypes.bool.isRequired,
   isRenamingFiles: PropTypes.bool.isRequired,
   isRenamingSeries: PropTypes.bool.isRequired,

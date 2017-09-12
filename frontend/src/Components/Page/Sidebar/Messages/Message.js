@@ -17,7 +17,7 @@ function getIconName(name) {
       return icons.SEARCH;
     case 'Housekeeping':
       return icons.HOUSEKEEPING;
-    case 'RefreshSeries':
+    case 'RefreshArtist':
       return icons.REFRESH;
     case 'RssSync':
       return icons.RSS;

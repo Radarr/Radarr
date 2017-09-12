@@ -18,11 +18,11 @@ function createMapStateToProps() {
     (state) => state.wanted.cutoffUnmet,
     createCommandsSelector(),
     (cutoffUnmet, commands) => {
-      const isSearchingForEpisodes = _.some(commands, { name: commandNames.EPISODE_SEARCH });
+      const isSearchingForAlbums = _.some(commands, { name: commandNames.EPISODE_SEARCH });
       const isSearchingForCutoffUnmetEpisodes = _.some(commands, { name: commandNames.CUTOFF_UNMET_EPISODE_SEARCH });
 
       return {
-        isSearchingForEpisodes,
+        isSearchingForAlbums,
         isSearchingForCutoffUnmetEpisodes,
         isSaving: _.some(cutoffUnmet.items, { isSaving: true }),
         ...cutoffUnmet

@@ -2,15 +2,15 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { createSelector } from 'reselect';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
-import SeriesSearchInput from './SeriesSearchInput';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
+import ArtistSearchInput from './ArtistSearchInput';
 
 function createMapStateToProps() {
   return createSelector(
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (series) => {
       return {
-        series: _.sortBy(series, 'sortTitle')
+        series: _.sortBy(series, 'sortName')
       };
     }
   );
@@ -18,8 +18,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onGoToSeries(titleSlug) {
-      dispatch(push(`${window.Sonarr.urlBase}/series/${titleSlug}`));
+    onGoToSeries(nameSlug) {
+      dispatch(push(`${window.Sonarr.urlBase}/artist/${nameSlug}`));
     },
 
     onGoToAddNewArtist(query) {
@@ -28,4 +28,4 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(SeriesSearchInput);
+export default connect(createMapStateToProps, createMapDispatchToProps)(ArtistSearchInput);

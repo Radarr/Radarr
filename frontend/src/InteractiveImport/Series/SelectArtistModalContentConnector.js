@@ -4,12 +4,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import SelectArtistModalContent from './SelectArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (items) => {
       return {
         items

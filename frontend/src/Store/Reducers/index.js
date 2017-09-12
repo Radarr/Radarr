@@ -4,10 +4,10 @@ import { routerReducer } from 'react-router-redux';
 import app, { defaultState as defaultappState } from './appReducers';
 import addArtist, { defaultState as defaultAddSeriesState } from './addArtistReducers';
 import importArtist, { defaultState as defaultImportArtistState } from './importArtistReducers';
-import series, { defaultState as defaultSeriesState } from './seriesReducers';
+import series, { defaultState as defaultSeriesState } from './artistReducers';
 import seriesIndex, { defaultState as defaultSeriesIndexState } from './artistIndexReducers';
-import seriesEditor, { defaultState as defaultSeriesEditorState } from './seriesEditorReducers';
-import seasonPass, { defaultState as defaultSeasonPassState } from './seasonPassReducers';
+import artistEditor, { defaultState as defaultArtistEditorState } from './artistEditorReducers';
+import albumStudio, { defaultState as defaultAlbumStudioState } from './albumStudioReducers';
 import calendar, { defaultState as defaultCalendarState } from './calendarReducers';
 import history, { defaultState as defaultHistoryState } from './historyReducers';
 import queue, { defaultState as defaultQueueState } from './queueReducers';
@@ -34,8 +34,8 @@ export const defaultState = {
   importArtist: defaultImportArtistState,
   series: defaultSeriesState,
   seriesIndex: defaultSeriesIndexState,
-  seriesEditor: defaultSeriesEditorState,
-  seasonPass: defaultSeasonPassState,
+  artistEditor: defaultArtistEditorState,
+  albumStudio: defaultAlbumStudioState,
   calendar: defaultCalendarState,
   history: defaultHistoryState,
   queue: defaultQueueState,
@@ -63,8 +63,8 @@ export default enableBatching(combineReducers({
   importArtist,
   series,
   seriesIndex,
-  seriesEditor,
-  seasonPass,
+  artistEditor,
+  albumStudio,
   calendar,
   history,
   queue,

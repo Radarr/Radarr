@@ -21,9 +21,9 @@ namespace Lidarr.Api.V3.Tracks
         {
             int artistId;
 
-            if (Request.Query.SeriesId.HasValue)
+            if (Request.Query.ArtistId.HasValue)
             {
-                artistId = (int)Request.Query.SeriesId;
+                artistId = (int)Request.Query.ArtistId;
             }
 
             else

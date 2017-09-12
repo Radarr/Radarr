@@ -18,16 +18,16 @@ export const defaultState = {
 };
 
 export const persistState = [
-  'seasonPass.sortKey',
-  'seasonPass.sortDirection',
-  'seasonPass.filterKey',
-  'seasonPass.filterValue',
-  'seasonPass.filterType'
+  'albumStudio.sortKey',
+  'albumStudio.sortDirection',
+  'albumStudio.filterKey',
+  'albumStudio.filterValue',
+  'albumStudio.filterType'
 ];
 
-const reducerSection = 'seasonPass';
+const reducerSection = 'albumStudio';
 
-const seasonPassReducers = handleActions({
+const albumStudioReducers = handleActions({
 
   [types.SET]: createSetReducer(reducerSection),
 
@@ -36,4 +36,4 @@ const seasonPassReducers = handleActions({
 
 }, defaultState);
 
-export default seasonPassReducers;
+export default albumStudioReducers;

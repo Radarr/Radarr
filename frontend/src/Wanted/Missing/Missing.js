@@ -117,8 +117,8 @@ class Missing extends Component {
       items,
       columns,
       totalRecords,
-      isSearchingForEpisodes,
-      isSearchingForMissingEpisodes,
+      isSearchingForAlbums,
+      isSearchingForMissingAlbums,
       isSaving,
       filterKey,
       filterValue,
@@ -143,7 +143,7 @@ class Missing extends Component {
               label="Search Selected"
               iconName={icons.SEARCH}
               isDisabled={!itemsSelected}
-              isSpinning={isSearchingForEpisodes}
+              isSpinning={isSearchingForAlbums}
               onPress={this.onSearchSelectedPress}
             />
 
@@ -160,7 +160,7 @@ class Missing extends Component {
             <PageToolbarButton
               label="Search All"
               iconName={icons.SEARCH}
-              isSpinning={isSearchingForMissingEpisodes}
+              isSpinning={isSearchingForMissingAlbums}
               onPress={this.onSearchAllMissingPress}
             />
 
@@ -258,11 +258,11 @@ class Missing extends Component {
                 <ConfirmModal
                   isOpen={isConfirmSearchAllMissingModalOpen}
                   kind={kinds.DANGER}
-                  title="Search for all missing episodes"
+                  title="Search for all missing albums"
                   message={
                     <div>
                       <div>
-                        Are you sure you want to search for all {totalRecords} missing episodes?
+                        Are you sure you want to search for all {totalRecords} missing albums?
                       </div>
                       <div>
                         This cannot be cancelled once started without restarting Lidarr.
@@ -293,8 +293,8 @@ Missing.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
-  isSearchingForEpisodes: PropTypes.bool.isRequired,
-  isSearchingForMissingEpisodes: PropTypes.bool.isRequired,
+  isSearchingForAlbums: PropTypes.bool.isRequired,
+  isSearchingForMissingAlbums: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   filterKey: PropTypes.string,
   filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),

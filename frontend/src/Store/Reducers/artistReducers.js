@@ -22,7 +22,7 @@ export const defaultState = {
 
 const reducerSection = 'series';
 
-const seriesReducers = handleActions({
+const artistReducers = handleActions({
 
   [types.SET]: createSetReducer(reducerSection),
   [types.UPDATE]: createUpdateReducer(reducerSection),
@@ -34,4 +34,4 @@ const seriesReducers = handleActions({
 
 }, defaultState);
 
-export default seriesReducers;
+export default artistReducers;

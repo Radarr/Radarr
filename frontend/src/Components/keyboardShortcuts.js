@@ -8,7 +8,7 @@ export const shortcuts = {
     name: 'Open This Modal'
   },
 
-  SERIES_SEARCH_INPUT: {
+  ARTIST_SEARCH_INPUT: {
     key: 's',
     name: 'Focus Search Box'
   },

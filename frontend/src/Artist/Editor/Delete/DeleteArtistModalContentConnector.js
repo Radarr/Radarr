@@ -1,23 +1,23 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
-import { bulkDeleteArtist } from 'Store/Actions/seriesEditorActions';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
+import { bulkDeleteArtist } from 'Store/Actions/artistEditorActions';
 import DeleteArtistModalContent from './DeleteArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { artistIds }) => artistIds,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (artistIds, allSeries) => {
       const selectedSeries = _.intersectionWith(allSeries, artistIds, (s, id) => {
         return s.id === id;
       });
 
-      const sortedSeries = _.orderBy(selectedSeries, 'sortTitle');
-      const series = _.map(sortedSeries, (s) => {
+      const sortedArtist = _.orderBy(selectedSeries, 'sortName');
+      const series = _.map(sortedArtist, (s) => {
         return {
-          title: s.title,
+          artistName: s.artistName,
           path: s.path
         };
       });

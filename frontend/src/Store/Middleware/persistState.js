@@ -3,8 +3,8 @@ import persistState from 'redux-localstorage';
 import * as addArtistReducers from 'Store/Reducers/addArtistReducers';
 import * as episodeReducers from 'Store/Reducers/episodeReducers';
 import * as artistIndexReducers from 'Store/Reducers/artistIndexReducers';
-import * as seriesEditorReducers from 'Store/Reducers/seriesEditorReducers';
-import * as seasonPassReducers from 'Store/Reducers/seasonPassReducers';
+import * as artistEditorReducers from 'Store/Reducers/artistEditorReducers';
+import * as albumStudioReducers from 'Store/Reducers/albumStudioReducers';
 import * as calendarReducers from 'Store/Reducers/calendarReducers';
 import * as historyReducers from 'Store/Reducers/historyReducers';
 import * as blacklistReducers from 'Store/Reducers/blacklistReducers';
@@ -18,8 +18,8 @@ const reducers = [
   addArtistReducers,
   episodeReducers,
   artistIndexReducers,
-  seriesEditorReducers,
-  seasonPassReducers,
+  artistEditorReducers,
+  albumStudioReducers,
   calendarReducers,
   historyReducers,
   blacklistReducers,

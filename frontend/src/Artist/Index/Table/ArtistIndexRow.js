@@ -46,7 +46,7 @@ class ArtistIndexRow extends Component {
     });
   }
 
-  onDeleteSeriesModalClose = () => {
+  onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
   }
 
@@ -83,7 +83,7 @@ class ArtistIndexRow extends Component {
       // useSceneNumbering,
       columns,
       isRefreshingSeries,
-      onRefreshSeriesPress
+      onRefreshArtistPress
     } = this.props;
 
     const {
@@ -321,7 +321,7 @@ class ArtistIndexRow extends Component {
                     name={icons.REFRESH}
                     title="Refresh Artist"
                     isSpinning={isRefreshingSeries}
-                    onPress={onRefreshSeriesPress}
+                    onPress={onRefreshArtistPress}
                   />
 
                   <IconButton
@@ -347,7 +347,7 @@ class ArtistIndexRow extends Component {
         <DeleteArtistModal
           isOpen={isDeleteArtistModalOpen}
           artistId={id}
-          onModalClose={this.onDeleteSeriesModalClose}
+          onModalClose={this.onDeleteArtistModalClose}
         />
       </VirtualTableRow>
     );
@@ -378,7 +378,7 @@ ArtistIndexRow.propTypes = {
   // useSceneNumbering: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRefreshingSeries: PropTypes.bool.isRequired,
-  onRefreshSeriesPress: PropTypes.func.isRequired
+  onRefreshArtistPress: PropTypes.func.isRequired
 };
 
 ArtistIndexRow.defaultProps = {

@@ -3,25 +3,25 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAllSeriesSelector from 'Store/Selectors/createAllSeriesSelector';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
-import OrganizeSeriesModalContent from './OrganizeSeriesModalContent';
+import OrganizeArtistModalContent from './OrganizeArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { artistIds }) => artistIds,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (artistIds, allSeries) => {
       const series = _.intersectionWith(allSeries, artistIds, (s, id) => {
         return s.id === id;
       });
 
-      const sortedSeries = _.orderBy(series, 'sortTitle');
-      const seriesTitles = _.map(sortedSeries, 'title');
+      const sortedArtist = _.orderBy(series, 'sortName');
+      const artistNames = _.map(sortedArtist, 'artistName');
 
       return {
-        seriesTitles
+        artistNames
       };
     }
   );
@@ -31,14 +31,14 @@ const mapDispatchToProps = {
   executeCommand
 };
 
-class OrganizeSeriesModalContentConnector extends Component {
+class OrganizeArtistModalContentConnector extends Component {
 
   //
   // Listeners
 
-  onOrganizeSeriesPress = () => {
+  onOrganizeArtistPress = () => {
     this.props.executeCommand({
-      name: commandNames.RENAME_SERIES,
+      name: commandNames.RENAME_ARTIST,
       artistIds: this.props.artistIds
     });
 
@@ -50,18 +50,18 @@ class OrganizeSeriesModalContentConnector extends Component {
 
   render(props) {
     return (
-      <OrganizeSeriesModalContent
+      <OrganizeArtistModalContent
         {...this.props}
-        onOrganizeSeriesPress={this.onOrganizeSeriesPress}
+        onOrganizeArtistPress={this.onOrganizeArtistPress}
       />
     );
   }
 }
 
-OrganizeSeriesModalContentConnector.propTypes = {
+OrganizeArtistModalContentConnector.propTypes = {
   artistIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onModalClose: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(OrganizeSeriesModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(OrganizeArtistModalContentConnector);

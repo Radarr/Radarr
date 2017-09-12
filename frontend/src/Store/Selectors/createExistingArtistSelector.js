@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import createAllSeriesSelector from './createAllSeriesSelector';
+import createAllArtistSelector from './createAllArtistSelector';
 
 function createExistingArtistSelector() {
   return createSelector(
     (state, { foreignArtistId }) => foreignArtistId,
-    createAllSeriesSelector(),
+    createAllArtistSelector(),
     (foreignArtistId, series) => {
       return _.some(series, { foreignArtistId });
     }

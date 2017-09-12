@@ -108,7 +108,7 @@ class CutoffUnmet extends Component {
       items,
       columns,
       totalRecords,
-      isSearchingForEpisodes,
+      isSearchingForAlbums,
       isSearchingForCutoffUnmetEpisodes,
       isSaving,
       filterKey,
@@ -133,7 +133,7 @@ class CutoffUnmet extends Component {
               label="Search Selected"
               iconName={icons.SEARCH}
               isDisabled={!itemsSelected}
-              isSpinning={isSearchingForEpisodes}
+              isSpinning={isSearchingForAlbums}
               onPress={this.onSearchSelectedPress}
             />
 
@@ -271,7 +271,7 @@ CutoffUnmet.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
-  isSearchingForEpisodes: PropTypes.bool.isRequired,
+  isSearchingForAlbums: PropTypes.bool.isRequired,
   isSearchingForCutoffUnmetEpisodes: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   filterKey: PropTypes.string,
