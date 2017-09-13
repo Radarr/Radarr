@@ -6,7 +6,7 @@ import connectSection from 'Store/connectSection';
 import { fetchEpisodes, setEpisodesSort, clearEpisodes } from 'Store/Actions/episodeActions';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import SelectEpisodeModalContent from './SelectEpisodeModalContent';
+import SelectTrackModalContent from './SelectTrackModalContent';
 
 function createMapStateToProps() {
   return createSelector(
@@ -24,7 +24,7 @@ const mapDispatchToProps = {
   updateInteractiveImportItem
 };
 
-class SelectEpisodeModalContentConnector extends Component {
+class SelectTrackModalContentConnector extends Component {
 
   //
   // Lifecycle
@@ -32,10 +32,10 @@ class SelectEpisodeModalContentConnector extends Component {
   componentDidMount() {
     const {
       artistId,
-      seasonNumber
+      albumId
     } = this.props;
 
-    this.props.fetchEpisodes({ artistId, seasonNumber });
+    this.props.fetchEpisodes({ artistId, albumId });
   }
 
   componentWillUnmount() {
@@ -51,8 +51,8 @@ class SelectEpisodeModalContentConnector extends Component {
     this.props.setEpisodesSort({ sortKey, sortDirection });
   }
 
-  onEpisodesSelect = (episodeIds) => {
-    const episodes = _.reduce(this.props.items, (acc, item) => {
+  onTracksSelect = (episodeIds) => {
+    const tracks = _.reduce(this.props.items, (acc, item) => {
       if (episodeIds.indexOf(item.id) > -1) {
         acc.push(item);
       }
@@ -62,7 +62,7 @@ class SelectEpisodeModalContentConnector extends Component {
 
     this.props.updateInteractiveImportItem({
       id: this.props.id,
-      episodes: _.sortBy(episodes, 'episodeNumber')
+      tracks: _.sortBy(tracks, 'trackNumber')
     });
 
     this.props.onModalClose(true);
@@ -73,19 +73,19 @@ class SelectEpisodeModalContentConnector extends Component {
 
   render() {
     return (
-      <SelectEpisodeModalContent
+      <SelectTrackModalContent
         {...this.props}
         onSortPress={this.onSortPress}
-        onEpisodesSelect={this.onEpisodesSelect}
+        onTracksSelect={this.onTracksSelect}
       />
     );
   }
 }
 
-SelectEpisodeModalContentConnector.propTypes = {
+SelectTrackModalContentConnector.propTypes = {
   id: PropTypes.number.isRequired,
   artistId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchEpisodes: PropTypes.func.isRequired,
   setEpisodesSort: PropTypes.func.isRequired,
@@ -100,4 +100,4 @@ export default connectSection(
                 undefined,
                 undefined,
                 { section: 'episodes' }
-               )(SelectEpisodeModalContentConnector);
+               )(SelectTrackModalContentConnector);

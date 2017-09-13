@@ -9,7 +9,7 @@ class SelectArtistRow extends Component {
   // Listeners
 
   onPress = () => {
-    this.props.onSeriesSelect(this.props.id);
+    this.props.onArtistSelect(this.props.id);
   }
 
   //
@@ -18,11 +18,11 @@ class SelectArtistRow extends Component {
   render() {
     return (
       <Link
-        className={styles.series}
+        className={styles.artist}
         component="div"
         onPress={this.onPress}
       >
-        {this.props.title}
+        {this.props.artistName}
       </Link>
     );
   }
@@ -30,8 +30,8 @@ class SelectArtistRow extends Component {
 
 SelectArtistRow.propTypes = {
   id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  onSeriesSelect: PropTypes.func.isRequired
+  artistName: PropTypes.string.isRequired,
+  onArtistSelect: PropTypes.func.isRequired
 };
 
 export default SelectArtistRow;

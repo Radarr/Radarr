@@ -71,31 +71,32 @@ class InteractiveImportModalContentConnector extends Component {
 
       if (isSelected) {
         const {
-          series,
-          seasonNumber,
-          episodes,
+          artist,
+          album,
+          tracks,
           quality
         } = item;
 
-        if (!series) {
-          this.setState({ interactiveImportErrorMessage: 'Series must be chosen for each selected file' });
+        if (!artist) {
+          this.setState({ interactiveImportErrorMessage: 'Artist must be chosen for each selected file' });
           return false;
         }
 
-        if (isNaN(seasonNumber)) {
-          this.setState({ interactiveImportErrorMessage: 'Season must be chosen for each selected file' });
+        if (!album) {
+          this.setState({ interactiveImportErrorMessage: 'Album must be chosen for each selected file' });
           return false;
         }
 
-        if (!episodes || !episodes.length) {
-          this.setState({ interactiveImportErrorMessage: 'One or more episodes must be chosen for each selected file' });
+        if (!tracks || !tracks.length) {
+          this.setState({ interactiveImportErrorMessage: 'One or more tracks must be chosen for each selected file' });
           return false;
         }
 
         files.push({
           path: item.path,
-          artistId: series.id,
-          episodeIds: _.map(episodes, 'id'),
+          artistId: artist.id,
+          albumId: album.id,
+          trackIds: _.map(tracks, 'id'),
           quality,
           downloadId: this.props.downloadId
         });

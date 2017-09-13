@@ -5,9 +5,9 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import SelectSeasonRow from './SelectSeasonRow';
+import SelectAlbumRow from './SelectAlbumRow';
 
-class SelectSeasonModalContent extends Component {
+class SelectAlbumModalContent extends Component {
 
   //
   // Render
@@ -15,24 +15,25 @@ class SelectSeasonModalContent extends Component {
   render() {
     const {
       items,
-      onSeasonSelect,
+      onAlbumSelect,
       onModalClose
     } = this.props;
 
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Season
+          Manual Import - Select Album
         </ModalHeader>
 
         <ModalBody>
           {
             items.map((item) => {
               return (
-                <SelectSeasonRow
-                  key={item.seasonNumber}
-                  seasonNumber={item.seasonNumber}
-                  onSeasonSelect={onSeasonSelect}
+                <SelectAlbumRow
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  onAlbumSelect={onAlbumSelect}
                 />
               );
             })
@@ -49,10 +50,10 @@ class SelectSeasonModalContent extends Component {
   }
 }
 
-SelectSeasonModalContent.propTypes = {
+SelectAlbumModalContent.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onSeasonSelect: PropTypes.func.isRequired,
+  onAlbumSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default SelectSeasonModalContent;
+export default SelectAlbumModalContent;

@@ -71,7 +71,7 @@ class ImportArtistRowConnector extends Component {
       <ImportArtistRow
         {...this.props}
         onInputChange={this.onInputChange}
-        onSeriesSelect={this.onSeriesSelect}
+        onArtistSelect={this.onArtistSelect}
       />
     );
   }

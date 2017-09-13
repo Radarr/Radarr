@@ -15,8 +15,8 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import SelectArtistModal from 'InteractiveImport/Series/SelectArtistModal';
-import SelectSeasonModal from 'InteractiveImport/Season/SelectSeasonModal';
+import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
+import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
 
@@ -28,19 +28,19 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'series',
-    label: 'Series',
+    name: 'artist',
+    label: 'Artist',
     isSortable: true,
     isVisible: true
   },
   {
-    name: 'season',
-    label: 'Season',
+    name: 'album',
+    label: 'Album',
     isVisible: true
   },
   {
-    name: 'episodes',
-    label: 'Episode(s)',
+    name: 'tracks',
+    label: 'Track(s)',
     isVisible: true
   },
   {
@@ -79,7 +79,7 @@ class InteractiveImportModalContent extends Component {
       selectedState: {},
       invalidRowsSelected: [],
       isSelectArtistModalOpen: false,
-      isSelectSeasonModalOpen: false
+      isSelectAlbumModalOpen: false
     };
   }
 
@@ -131,16 +131,16 @@ class InteractiveImportModalContent extends Component {
     this.setState({ isSelectArtistModalOpen: true });
   }
 
-  onSelectSeasonPress = () => {
-    this.setState({ isSelectSeasonModalOpen: true });
+  onSelectAlbumPress = () => {
+    this.setState({ isSelectAlbumModalOpen: true });
   }
 
   onSelectArtistModalClose = () => {
     this.setState({ isSelectArtistModalOpen: false });
   }
 
-  onSelectSeasonModalClose = () => {
-    this.setState({ isSelectSeasonModalOpen: false });
+  onSelectAlbumModalClose = () => {
+    this.setState({ isSelectAlbumModalOpen: false });
   }
 
   //
@@ -169,7 +169,7 @@ class InteractiveImportModalContent extends Component {
       selectedState,
       invalidRowsSelected,
       isSelectArtistModalOpen,
-      isSelectSeasonModalOpen
+      isSelectAlbumModalOpen
     } = this.state;
 
     const selectedIds = this.getSelectedIds();
@@ -250,11 +250,11 @@ class InteractiveImportModalContent extends Component {
 
           <div className={downloadId ? styles.leftButtons : styles.centerButtons}>
             <Button onPress={this.onSelectArtistPress}>
-              Select Series
+              Select Artist
             </Button>
 
-            <Button onPress={this.onSelectSeasonPress}>
-              Select Season
+            <Button onPress={this.onSelectAlbumPress}>
+              Select Album
             </Button>
           </div>
 
@@ -284,11 +284,11 @@ class InteractiveImportModalContent extends Component {
           onModalClose={this.onSelectArtistModalClose}
         />
 
-        <SelectSeasonModal
-          isOpen={isSelectSeasonModalOpen}
+        <SelectAlbumModal
+          isOpen={isSelectAlbumModalOpen}
           ids={selectedIds}
           artistId={selectedItem && selectedItem.series && selectedItem.series.id}
-          onModalClose={this.onSelectSeasonModalClose}
+          onModalClose={this.onSelectAlbumModalClose}
         />
       </ModalContent>
     );

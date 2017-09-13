@@ -4,7 +4,7 @@ import TableRowButton from 'Components/Table/TableRowButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 
-class SelectEpisodeRow extends Component {
+class SelectTrackRow extends Component {
 
   //
   // Listeners
@@ -24,9 +24,8 @@ class SelectEpisodeRow extends Component {
   render() {
     const {
       id,
-      episodeNumber,
+      trackNumber,
       title,
-      airDate,
       isSelected,
       onSelectedChange
     } = this.props;
@@ -40,28 +39,24 @@ class SelectEpisodeRow extends Component {
         />
 
         <TableRowCell>
-          {episodeNumber}
+          {trackNumber}
         </TableRowCell>
 
         <TableRowCell>
           {title}
         </TableRowCell>
 
-        <TableRowCell>
-          {airDate}
-        </TableRowCell>
       </TableRowButton>
     );
   }
 }
 
-SelectEpisodeRow.propTypes = {
+SelectTrackRow.propTypes = {
   id: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
+  trackNumber: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  airDate: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired
 };
 
-export default SelectEpisodeRow;
+export default SelectTrackRow;

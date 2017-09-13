@@ -112,7 +112,7 @@ class SeriesDetails extends Component {
     this.setState(getExpandedState(selectAll(expandedState, !allExpanded)));
   }
 
-  onExpandPress = (seasonNumber, isExpanded) => {
+  onExpandPress = (albumId, isExpanded) => {
     this.setState((state) => {
       const convertedState = {
         allSelected: state.allExpanded,
@@ -120,7 +120,7 @@ class SeriesDetails extends Component {
         selectedState: state.expandedState
       };
 
-      const newState = toggleSelected(convertedState, [], seasonNumber, isExpanded, false);
+      const newState = toggleSelected(convertedState, [], albumId, isExpanded, false);
 
       return getExpandedState(newState);
     });
@@ -136,10 +136,9 @@ class SeriesDetails extends Component {
       tvMazeId,
       imdbId,
       artistName,
-      runtime,
       ratings,
       sizeOnDisk,
-      episodeFileCount,
+      trackFileCount,
       qualityProfileId,
       monitored,
       status,
@@ -175,10 +174,10 @@ class SeriesDetails extends Component {
 
     let episodeFilesCountMessage = 'No episode files';
 
-    if (episodeFileCount === 1) {
+    if (trackFileCount === 1) {
       episodeFilesCountMessage = '1 episode file';
-    } else if (episodeFileCount > 1) {
-      episodeFilesCountMessage = `${episodeFileCount} episode files`;
+    } else if (trackFileCount > 1) {
+      episodeFilesCountMessage = `${trackFileCount} episode files`;
     }
 
     let expandIcon = icons.EXPAND_INDETERMINATE;
@@ -310,13 +309,6 @@ class SeriesDetails extends Component {
 
                 <div className={styles.details}>
                   <div>
-                    {
-                      !!runtime &&
-                        <span className={styles.runtime}>
-                          {runtime} Minutes
-                        </span>
-                    }
-
                     <HeartRating
                       rating={ratings.value}
                       iconSize={20}
@@ -491,10 +483,12 @@ class SeriesDetails extends Component {
                     albums.slice(0).reverse().map((season) => {
                       return (
                         <SeriesDetailsSeasonConnector
-                          key={season.seasonNumber}
+                          key={season.id}
                           artistId={id}
+                          albumId={season.id}
+                          statistics={season.statistics}
                           {...season}
-                          isExpanded={expandedState[season.seasonNumber]}
+                          isExpanded={expandedState[season.id]}
                           onExpandPress={this.onExpandPress}
                         />
                       );
@@ -548,10 +542,9 @@ SeriesDetails.propTypes = {
   tvMazeId: PropTypes.number,
   imdbId: PropTypes.string,
   artistName: PropTypes.string.isRequired,
-  runtime: PropTypes.number.isRequired,
   ratings: PropTypes.object.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,
-  episodeFileCount: PropTypes.number,
+  trackFileCount: PropTypes.number,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,

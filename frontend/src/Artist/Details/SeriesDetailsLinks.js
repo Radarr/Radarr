@@ -16,30 +16,16 @@ function SeriesDetailsLinks(props) {
     <div className={styles.links}>
       <Link
         className={styles.link}
-        to={`http://www.thetvdb.com/?tab=series&id=${foreignArtistId}`}
+        to={`https://musicbrainz.org/artist/${foreignArtistId}`}
       >
         <Label
           className={styles.linkLabel}
           kind={kinds.INFO}
           size={sizes.LARGE}
         >
-          The TVDB
+          Musicbrainz
         </Label>
       </Link>
-
-      <Link
-        className={styles.link}
-        to={`http://trakt.tv/search/tvdb/${foreignArtistId}?id_type=show`}
-      >
-        <Label
-          className={styles.linkLabel}
-          kind={kinds.INFO}
-          size={sizes.LARGE}
-        >
-          Trakt
-        </Label>
-      </Link>
-
       {
         !!tvMazeId &&
           <Link

@@ -23,30 +23,6 @@ import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnecto
 import EpisodeRowConnector from './EpisodeRowConnector';
 import styles from './SeriesDetailsSeason.css';
 
-function getSeasonStatistics(episodes) {
-  let episodeCount = 0;
-  let episodeFileCount = 0;
-  let totalEpisodeCount = 0;
-
-  episodes.forEach((episode) => {
-    if (episode.episodeFileId || (episode.monitored && isBefore(episode.airDateUtc))) {
-      episodeCount++;
-    }
-
-    if (episode.episodeFileId) {
-      episodeFileCount++;
-    }
-
-    totalEpisodeCount++;
-  });
-
-  return {
-    episodeCount,
-    episodeFileCount,
-    totalEpisodeCount
-  };
-}
-
 function getEpisodeCountKind(monitored, episodeFileCount, episodeCount) {
   if (episodeFileCount === episodeCount && episodeCount > 0) {
     return kinds.SUCCESS;
@@ -89,7 +65,7 @@ class SeriesDetailsSeason extends Component {
 
   _expandByDefault() {
     const {
-      seasonNumber,
+      albumId,
       onExpandPress,
       items
     } = this.props;
@@ -99,7 +75,7 @@ class SeriesDetailsSeason extends Component {
              isAfter(item.airDateUtc, { days: -30 });
     });
 
-    onExpandPress(seasonNumber, expand && seasonNumber > 0);
+    onExpandPress(albumId, expand && albumId > 0);
   }
 
   //
@@ -123,11 +99,11 @@ class SeriesDetailsSeason extends Component {
 
   onExpandPress = () => {
     const {
-      seasonNumber,
+      albumId,
       isExpanded
     } = this.props;
 
-    this.props.onExpandPress(seasonNumber, !isExpanded);
+    this.props.onExpandPress(albumId, !isExpanded);
   }
 
   onMonitorEpisodePress = (episodeId, monitored, { shiftKey }) => {
@@ -155,7 +131,10 @@ class SeriesDetailsSeason extends Component {
     const {
       artistId,
       monitored,
-      seasonNumber,
+      title,
+      releaseDate,
+      albumId,
+      statistics,
       items,
       columns,
       isSaving,
@@ -169,10 +148,10 @@ class SeriesDetailsSeason extends Component {
     } = this.props;
 
     const {
-      episodeCount,
-      episodeFileCount,
-      totalEpisodeCount
-    } = getSeasonStatistics(items);
+      trackCount,
+      trackFileCount,
+      totalTrackCount
+    } = statistics;
 
     const {
       isOrganizeModalOpen,
@@ -194,22 +173,22 @@ class SeriesDetailsSeason extends Component {
             />
 
             {
-              seasonNumber === 0 ?
+              albumId === 0 ?
                 <span className={styles.seasonNumber}>
                   Specials
                 </span> :
                 <span className={styles.seasonNumber}>
-                  Season {seasonNumber}
+                  {title}
                 </span>
             }
 
             <Label
-              title={`${totalEpisodeCount} episodes total. ${episodeFileCount} episodes with files.`}
-              kind={getEpisodeCountKind(monitored, episodeFileCount, episodeCount)}
+              title={`${totalTrackCount} tracks total. ${trackFileCount} tracks with files.`}
+              kind={getEpisodeCountKind(monitored, trackFileCount, trackCount)}
               size={sizes.LARGE}
             >
               {
-                <span>{episodeFileCount} / {episodeCount}</span>
+                <span>{trackFileCount} / {trackCount}</span>
               }
             </Label>
           </div>
@@ -218,12 +197,7 @@ class SeriesDetailsSeason extends Component {
             className={styles.expandButton}
             onPress={this.onExpandPress}
           >
-            <Icon
-              className={styles.expandButtonIcon}
-              name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
-              title={isExpanded ? 'Hide episodes' : 'Show episodes'}
-              size={24}
-            />
+
             {
               !isSmallScreen &&
                 <span>&nbsp;</span>
@@ -277,7 +251,7 @@ class SeriesDetailsSeason extends Component {
                       name={icons.EPISODE_FILE}
                     />
 
-                    Manage Episodes
+                    Manage Tracks
                   </MenuItem>
                 </MenuContent>
               </Menu> :
@@ -286,7 +260,7 @@ class SeriesDetailsSeason extends Component {
                 <SpinnerIconButton
                   className={styles.actionButton}
                   name={icons.SEARCH}
-                  title="Search for monitored episodes in this seasons"
+                  title="Search for album"
                   size={24}
                   isSpinning={isSearching}
                   onPress={onSearchPress}
@@ -295,7 +269,7 @@ class SeriesDetailsSeason extends Component {
                 <IconButton
                   className={styles.actionButton}
                   name={icons.ORGANIZE}
-                  title="Preview rename for this season"
+                  title="Preview rename for this album"
                   size={24}
                   onPress={this.onOrganizePress}
                 />
@@ -303,7 +277,7 @@ class SeriesDetailsSeason extends Component {
                 <IconButton
                   className={styles.actionButton}
                   name={icons.EPISODE_FILE}
-                  title="Manage episode files in this series"
+                  title="Manage track files in this artist"
                   size={24}
                   onPress={this.onManageEpisodesPress}
                 />
@@ -312,59 +286,17 @@ class SeriesDetailsSeason extends Component {
 
         </div>
 
-        <div>
-          {
-            isExpanded &&
-              <div className={styles.episodes}>
-                {
-                  items.length ?
-                    <Table
-                      columns={columns}
-                      onTableOptionChange={onTableOptionChange}
-                    >
-                      <TableBody>
-                        {
-                          items.map((item) => {
-                            return (
-                              <EpisodeRowConnector
-                                key={item.id}
-                                columns={columns}
-                                {...item}
-                                onMonitorEpisodePress={this.onMonitorEpisodePress}
-                              />
-                            );
-                          })
-                        }
-                      </TableBody>
-                    </Table> :
-
-                    <div className={styles.noEpisodes}>
-                      No episodes in this season
-                    </div>
-                }
-                <div className={styles.collapseButtonContainer}>
-                  <IconButton
-                    name={icons.COLLAPSE}
-                    size={20}
-                    title="Hide episodes"
-                    onPress={this.onExpandPress}
-                  />
-                </div>
-              </div>
-          }
-        </div>
-
         <OrganizePreviewModalConnector
           isOpen={isOrganizeModalOpen}
           artistId={artistId}
-          seasonNumber={seasonNumber}
+          albumId={albumId}
           onModalClose={this.onOrganizeModalClose}
         />
 
         <EpisodeFileEditorModal
           isOpen={isManageEpisodesOpen}
           artistId={artistId}
-          seasonNumber={seasonNumber}
+          albumId={albumId}
           onModalClose={this.onManageEpisodesModalClose}
         />
       </div>
@@ -375,7 +307,10 @@ class SeriesDetailsSeason extends Component {
 SeriesDetailsSeason.propTypes = {
   artistId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  releaseDate: PropTypes.string.isRequired,
+  albumId: PropTypes.number.isRequired,
+  statistics: PropTypes.object.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool,
@@ -388,6 +323,14 @@ SeriesDetailsSeason.propTypes = {
   onExpandPress: PropTypes.func.isRequired,
   onMonitorEpisodePress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired
+};
+
+SeriesDetailsSeason.defaultProps = {
+  statistics: {
+    trackFileCount: 0,
+    totalTrackCount: 0,
+    percentOfTracks: 0
+  }
 };
 
 export default SeriesDetailsSeason;

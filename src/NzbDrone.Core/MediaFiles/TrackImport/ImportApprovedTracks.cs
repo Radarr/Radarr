@@ -84,7 +84,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     trackFile.Size = _diskProvider.GetFileSize(localTrack.Path);
                     trackFile.Quality = localTrack.Quality;
                     trackFile.MediaInfo = localTrack.MediaInfo;
-                    trackFile.AlbumId = _albumRepository.FindByArtistAndName(localTrack.Artist.Name, Parser.Parser.CleanArtistTitle(localTrack.ParsedTrackInfo.AlbumTitle)).Id;
+                    trackFile.AlbumId = localTrack.Album.Id;
                     trackFile.ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup;
                     trackFile.Tracks = localTrack.Tracks;
                     trackFile.Language = localTrack.Language;

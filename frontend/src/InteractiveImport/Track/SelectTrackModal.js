@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Modal from 'Components/Modal/Modal';
-import SelectSeasonModalContentConnector from './SelectSeasonModalContentConnector';
+import SelectTrackModalContentConnector from './SelectTrackModalContentConnector';
 
-class SelectSeasonModal extends Component {
+class SelectTrackModal extends Component {
 
   //
   // Render
@@ -20,7 +20,7 @@ class SelectSeasonModal extends Component {
         isOpen={isOpen}
         onModalClose={onModalClose}
       >
-        <SelectSeasonModalContentConnector
+        <SelectTrackModalContentConnector
           {...otherProps}
           onModalClose={onModalClose}
         />
@@ -29,9 +29,9 @@ class SelectSeasonModal extends Component {
   }
 }
 
-SelectSeasonModal.propTypes = {
+SelectTrackModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default SelectSeasonModal;
+export default SelectTrackModal;

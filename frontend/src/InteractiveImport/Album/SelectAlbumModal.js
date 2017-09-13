@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Modal from 'Components/Modal/Modal';
-import SelectEpisodeModalContentConnector from './SelectEpisodeModalContentConnector';
+import SelectAlbumModalContentConnector from './SelectAlbumModalContentConnector';
 
-class SelectEpisodeModal extends Component {
+class SelectAlbumModal extends Component {
 
   //
   // Render
@@ -20,7 +20,7 @@ class SelectEpisodeModal extends Component {
         isOpen={isOpen}
         onModalClose={onModalClose}
       >
-        <SelectEpisodeModalContentConnector
+        <SelectAlbumModalContentConnector
           {...otherProps}
           onModalClose={onModalClose}
         />
@@ -29,9 +29,9 @@ class SelectEpisodeModal extends Component {
   }
 }
 
-SelectEpisodeModal.propTypes = {
+SelectAlbumModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default SelectEpisodeModal;
+export default SelectAlbumModal;

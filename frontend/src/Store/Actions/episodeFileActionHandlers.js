@@ -8,10 +8,10 @@ import * as types from './actionTypes';
 import { set, removeItem, updateItem } from './baseActions';
 
 const section = 'episodeFiles';
-const deleteEpisodeFile = createRemoveItemHandler(section, '/episodeFile');
+const deleteEpisodeFile = createRemoveItemHandler(section, '/trackFile');
 
 const episodeFileActionHandlers = {
-  [types.FETCH_EPISODE_FILES]: createFetchHandler(section, '/episodeFile'),
+  [types.FETCH_EPISODE_FILES]: createFetchHandler(section, '/trackFile'),
 
   [types.DELETE_EPISODE_FILE]: function(payload) {
     return function(dispatch, getState) {

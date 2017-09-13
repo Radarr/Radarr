@@ -12,11 +12,11 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import SelectEpisodeRow from './SelectEpisodeRow';
+import SelectTrackRow from './SelectTrackRow';
 
 const columns = [
   {
-    name: 'episodeNumber',
+    name: 'trackNumber',
     label: '#',
     isSortable: true,
     isVisible: true
@@ -25,15 +25,10 @@ const columns = [
     name: 'title',
     label: 'Title',
     isVisible: true
-  },
-  {
-    name: 'airDate',
-    label: 'Air Date',
-    isVisible: true
   }
 ];
 
-class SelectEpisodeModalContent extends Component {
+class SelectTrackModalContent extends Component {
 
   //
   // Lifecycle
@@ -69,8 +64,8 @@ class SelectEpisodeModalContent extends Component {
     });
   }
 
-  onEpisodesSelect = () => {
-    this.props.onEpisodesSelect(this.getSelectedIds());
+  onTracksSelect = () => {
+    this.props.onTracksSelect(this.getSelectedIds());
   }
 
   //
@@ -94,12 +89,12 @@ class SelectEpisodeModalContent extends Component {
       selectedState
     } = this.state;
 
-    const errorMessage = error && error.message || 'Unable to load episodes';
+    const errorMessage = error && error.message || 'Unable to load tracks';
 
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Episode(s)
+          Manual Import - Select Track(s)
         </ModalHeader>
 
         <ModalBody>
@@ -129,12 +124,11 @@ class SelectEpisodeModalContent extends Component {
                   {
                     items.map((item) => {
                       return (
-                        <SelectEpisodeRow
+                        <SelectTrackRow
                           key={item.id}
                           id={item.id}
-                          episodeNumber={item.episodeNumber}
+                          trackNumber={item.trackNumber}
                           title={item.title}
-                          airDate={item.airDate}
                           isSelected={selectedState[item.id]}
                           onSelectedChange={this.onSelectedChange}
                         />
@@ -147,7 +141,7 @@ class SelectEpisodeModalContent extends Component {
 
           {
             isPopulated && !items.length &&
-              'No episodes were found for the selected season'
+              'No tracks were found for the selected album'
           }
         </ModalBody>
 
@@ -158,9 +152,9 @@ class SelectEpisodeModalContent extends Component {
 
           <Button
             kind={kinds.SUCCESS}
-            onPress={this.onEpisodesSelect}
+            onPress={this.onTracksSelect}
           >
-            Select Episodes
+            Select Tracks
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -168,7 +162,7 @@ class SelectEpisodeModalContent extends Component {
   }
 }
 
-SelectEpisodeModalContent.propTypes = {
+SelectTrackModalContent.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -176,8 +170,8 @@ SelectEpisodeModalContent.propTypes = {
   sortKey: PropTypes.string,
   sortDirection: PropTypes.string,
   onSortPress: PropTypes.func.isRequired,
-  onEpisodesSelect: PropTypes.func.isRequired,
+  onTracksSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default SelectEpisodeModalContent;
+export default SelectTrackModalContent;

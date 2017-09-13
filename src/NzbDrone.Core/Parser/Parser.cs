@@ -336,9 +336,16 @@ namespace NzbDrone.Core.Parser
             var trackName = file.Tag.Title;
             var trackNumber = file.Tag.Track;
 
+            var artist = file.Tag.FirstAlbumArtist;
+
+            if (artist.IsNotNullOrWhiteSpace())
+            {
+                artist = file.Tag.FirstPerformer;
+            }
+
             var artistTitleInfo = new ArtistTitleInfo
             {
-                Title = file.Tag.Title,
+                Title = artist,
                 Year = (int)file.Tag.Year
             };
 
@@ -348,7 +355,10 @@ namespace NzbDrone.Core.Parser
             {
                 Language = Language.English, //TODO Parse from Tag/Mediainfo
                 AlbumTitle = file.Tag.Album,
-                ArtistTitle = file.Tag.FirstAlbumArtist,
+                ArtistTitle = artist,
+                ArtistMBId = file.Tag.MusicBrainzArtistId,
+                AlbumMBId = file.Tag.MusicBrainzReleaseId,
+                TrackMBId = file.Tag.MusicBrainzReleaseType,
                 Quality = QualityParser.ParseQuality(trackName),
                 TrackNumbers = temp,
                 ArtistTitleInfo = artistTitleInfo,

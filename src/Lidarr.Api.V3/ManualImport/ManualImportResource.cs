@@ -3,6 +3,7 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
 using Lidarr.Api.V3.Artist;
+using Lidarr.Api.V3.Albums;
 using Lidarr.Api.V3.Tracks;
 using Lidarr.Http.REST;
 using System.Collections.Generic;
@@ -16,9 +17,9 @@ namespace Lidarr.Api.V3.ManualImport
         public string RelativePath { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
-        //public ArtistResource Artist { get; set; }
-        public int? SeasonNumber { get; set; }
-        public List<TrackResource> Episodes { get; set; }
+        public ArtistResource Artist { get; set; }
+        public AlbumResource Album { get; set; }
+        public List<TrackResource> Tracks { get; set; }
         public QualityModel Quality { get; set; }
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
@@ -38,9 +39,9 @@ namespace Lidarr.Api.V3.ManualImport
                 RelativePath = model.RelativePath,
                 Name = model.Name,
                 Size = model.Size,
-                //Artist = model.,
-                SeasonNumber = model.SeasonNumber,
-                //Episodes = model.Episodes.ToResource(),
+                Artist = model.Artist.ToResource(),
+                Album = model.Album.ToResource(),
+                Tracks = model.Tracks.ToResource(),
                 Quality = model.Quality,
                 //QualityWeight
                 DownloadId = model.DownloadId,

@@ -13,8 +13,8 @@ export default function(history) {
     isProduction
   } = window.Sonarr;
 
-  const dsn = isProduction ? 'https://b80ca60625b443c38b242e0d21681eb7@sentry.sonarr.tv/13' :
-                            'https://8dbaacdfe2ff4caf97dc7945aecf9ace@sentry.sonarr.tv/12';
+  const dsn = isProduction ? 'https://c3a5b33e08de4e18b7d0505e942dbc95:e35e6d535b034995a6896022c6bfed04@sentry.io/216290' :
+                            'https://c3a5b33e08de4e18b7d0505e942dbc95:e35e6d535b034995a6896022c6bfed04@sentry.io/216290';
 
   const middlewares = [];
 

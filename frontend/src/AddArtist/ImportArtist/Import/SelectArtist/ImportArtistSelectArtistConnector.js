@@ -33,7 +33,7 @@ class ImportArtistSelectArtistConnector extends Component {
     });
   }
 
-  onSeriesSelect = (foreignArtistId) => {
+  onArtistSelect = (foreignArtistId) => {
     const {
       id,
       items
@@ -53,7 +53,7 @@ class ImportArtistSelectArtistConnector extends Component {
       <ImportArtistSelectArtist
         {...this.props}
         onSearchInputChange={this.onSearchInputChange}
-        onSeriesSelect={this.onSeriesSelect}
+        onArtistSelect={this.onArtistSelect}
       />
     );
   }

@@ -15,5 +15,5 @@ export const RENAME_FILES = 'RenameFiles';
 export const RENAME_ARTIST = 'RenameArtist';
 export const RESET_API_KEY = 'ResetApiKey';
 export const RSS_SYNC = 'RssSync';
-export const SEASON_SEARCH = 'SeasonSearch';
+export const SEASON_SEARCH = 'AlbumSearch';
 export const ARTIST_SEARCH = 'ArtistSearch';

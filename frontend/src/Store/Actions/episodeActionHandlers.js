@@ -9,7 +9,7 @@ import { updateItem } from './baseActions';
 const section = 'episodes';
 
 const episodeActionHandlers = {
-  [types.FETCH_EPISODES]: createFetchHandler(section, '/episode'),
+  [types.FETCH_EPISODES]: createFetchHandler(section, '/track'),
 
   [types.TOGGLE_EPISODE_MONITORED]: function(payload) {
     return function(dispatch, getState) {

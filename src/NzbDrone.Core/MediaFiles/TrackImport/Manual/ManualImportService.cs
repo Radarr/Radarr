@@ -14,7 +14,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
@@ -29,10 +29,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         private readonly IParsingService _parsingService;
         private readonly IDiskScanService _diskScanService;
         private readonly IMakeImportDecision _importDecisionMaker;
-        private readonly ISeriesService _seriesService;
-        private readonly IEpisodeService _episodeService;
+        private readonly IArtistService _artistService;
+        private readonly IAlbumService _albumService;
+        private readonly ITrackService _trackService;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
-        private readonly IImportApprovedEpisodes _importApprovedEpisodes;
+        private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
         private readonly IEventAggregator _eventAggregator;
@@ -42,10 +43,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                                    IParsingService parsingService,
                                    IDiskScanService diskScanService,
                                    IMakeImportDecision importDecisionMaker,
-                                   ISeriesService seriesService,
-                                   IEpisodeService episodeService,
+                                   IArtistService artistService,
+                                   IAlbumService albumService,
+                                   ITrackService trackService,
                                    IVideoFileInfoReader videoFileInfoReader,
-                                   IImportApprovedEpisodes importApprovedEpisodes,
+                                   IImportApprovedTracks importApprovedTracks,
                                    ITrackedDownloadService trackedDownloadService,
                                    IDownloadedEpisodesImportService downloadedEpisodesImportService,
                                    IEventAggregator eventAggregator,
@@ -55,10 +57,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             _parsingService = parsingService;
             _diskScanService = diskScanService;
             _importDecisionMaker = importDecisionMaker;
-            _seriesService = seriesService;
-            _episodeService = episodeService;
+            _artistService = artistService;
+            _albumService = albumService;
+            _trackService = trackService;
             _videoFileInfoReader = videoFileInfoReader;
-            _importApprovedEpisodes = importApprovedEpisodes;
+            _importApprovedTracks = importApprovedTracks;
             _trackedDownloadService = trackedDownloadService;
             _downloadedEpisodesImportService = downloadedEpisodesImportService;
             _eventAggregator = eventAggregator;
@@ -94,179 +97,176 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
         private List<ManualImportItem> ProcessFolder(string folder, string downloadId)
         {
-            throw new System.NotImplementedException("TODO: This will be rewritten for Music");
-            //var directoryInfo = new DirectoryInfo(folder);
-            //var series = _parsingService.GetSeries(directoryInfo.Name);
+            var directoryInfo = new DirectoryInfo(folder);
+            var artist = _parsingService.GetArtist(directoryInfo.Name);
 
-            //if (series == null && downloadId.IsNotNullOrWhiteSpace())
-            //{
-            //    var trackedDownload = _trackedDownloadService.Find(downloadId);
-            //    series = trackedDownload.RemoteEpisode.Series;
-            //}
+            if (artist == null && downloadId.IsNotNullOrWhiteSpace())
+            {
+                var trackedDownload = _trackedDownloadService.Find(downloadId);
+                artist = trackedDownload.RemoteAlbum.Artist;
+            }
 
-            //if (series == null)
-            //{
-            //    var files = _diskScanService.GetVideoFiles(folder);
+            if (artist == null)
+            {
+                var files = _diskScanService.GetAudioFiles(folder);
 
-            //    return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
-            //}
+                return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
+            }
 
-            //var folderInfo = Parser.Parser.ParseTitle(directoryInfo.Name);
-            //var seriesFiles = _diskScanService.GetVideoFiles(folder).ToList();
-            //var decisions = _importDecisionMaker.GetImportDecisions(seriesFiles, series, folderInfo, SceneSource(series, folder));
+            var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
+            var artistFiles = _diskScanService.GetAudioFiles(folder).ToList();
+            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo);
 
-            //return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
+            return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
         }
 
         private ManualImportItem ProcessFile(string file, string downloadId, string folder = null)
         {
-            throw new System.NotImplementedException("TODO: This will be rewritten for Music");
-            //if (folder.IsNullOrWhiteSpace())
-            //{
-            //    folder = new FileInfo(file).Directory.FullName;
-            //}
+            if (folder.IsNullOrWhiteSpace())
+            {
+                folder = new FileInfo(file).Directory.FullName;
+            }
 
-            //var relativeFile = folder.GetRelativePath(file);
+            var relativeFile = folder.GetRelativePath(file);
 
-            //var series = _parsingService.GetSeries(relativeFile.Split('\\', '/')[0]);
+            var artist = _parsingService.GetArtist(relativeFile.Split('\\', '/')[0]);
 
-            //if (series == null)
-            //{
-            //    series = _parsingService.GetSeries(relativeFile);
-            //}
+            if (artist == null)
+            {
+                artist = _parsingService.GetArtistFromTag(file);
+            }
 
-            //if (series == null && downloadId.IsNotNullOrWhiteSpace())
-            //{
-            //    var trackedDownload = _trackedDownloadService.Find(downloadId);
-            //    series = trackedDownload.RemoteEpisode.Series;
-            //}
+            if (artist == null && downloadId.IsNotNullOrWhiteSpace())
+            {
+                var trackedDownload = _trackedDownloadService.Find(downloadId);
+                artist = trackedDownload.RemoteAlbum.Artist;
+            }
 
-            //if (series == null)
-            //{
-            //    var localEpisode = new LocalEpisode();
-            //    localEpisode.Path = file;
-            //    localEpisode.Quality = QualityParser.ParseQuality(file);
-            //    localEpisode.Size = _diskProvider.GetFileSize(file);
+            if (artist == null)
+            {
+                var localTrack = new LocalTrack();
+                localTrack.Path = file;
+                localTrack.Quality = QualityParser.ParseQuality(file);
+                localTrack.Size = _diskProvider.GetFileSize(file);
 
-            //    return MapItem(new ImportDecision(localEpisode, new Rejection("Unknown Series")), folder, downloadId);
-            //}
+                return MapItem(new ImportDecision(localTrack, new Rejection("Unknown Artist")), folder, downloadId);
+            }
 
-            //var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> {file},
-            //    series, null, SceneSource(series, folder));
+            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file },
+                artist, null);
 
-            //return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : null;
+            return importDecisions.Any() ? MapItem(importDecisions.First(), folder, downloadId) : null;
         }
 
-        private bool SceneSource(Series series, string folder)
+        private bool SceneSource(Artist artist, string folder)
         {
-            return !(series.Path.PathEquals(folder) || series.Path.IsParentPath(folder));
+            return !(artist.Path.PathEquals(folder) || artist.Path.IsParentPath(folder));
         }
 
         private ManualImportItem MapItem(ImportDecision decision, string folder, string downloadId)
         {
-            throw new System.NotImplementedException("TODO: This will be rewritten for Music");
-            //var item = new ManualImportItem();
+            var item = new ManualImportItem();
 
-            //item.Path = decision.LocalEpisode.Path;
-            //item.RelativePath = folder.GetRelativePath(decision.LocalEpisode.Path);
-            //item.Name = Path.GetFileNameWithoutExtension(decision.LocalEpisode.Path);
-            //item.DownloadId = downloadId;
+            item.Path = decision.LocalTrack.Path;
+            item.RelativePath = folder.GetRelativePath(decision.LocalTrack.Path);
+            item.Name = Path.GetFileNameWithoutExtension(decision.LocalTrack.Path);
+            item.DownloadId = downloadId;
 
-            //if (decision.LocalEpisode.Series != null)
-            //{
-            //    item.Series = decision.LocalEpisode.Series;
-            //}
+            if (decision.LocalTrack.Artist != null)
+            {
+                item.Artist = decision.LocalTrack.Artist;
+            }
 
-            //if (decision.LocalEpisode.Episodes.Any())
-            //{
-            //    item.SeasonNumber = decision.LocalEpisode.SeasonNumber;
-            //    item.Episodes = decision.LocalEpisode.Episodes;
-            //}
+            if (decision.LocalTrack.Tracks.Any())
+            {
+                item.Tracks = decision.LocalTrack.Tracks;
+            }
 
-            //item.Quality = decision.LocalEpisode.Quality;
-            //item.Size = _diskProvider.GetFileSize(decision.LocalEpisode.Path);
-            //item.Rejections = decision.Rejections;
+            item.Quality = decision.LocalTrack.Quality;
+            item.Size = _diskProvider.GetFileSize(decision.LocalTrack.Path);
+            item.Rejections = decision.Rejections;
 
-            //return item;
+            return item;
         }
 
         public void Execute(ManualImportCommand message)
         {
             _logger.ProgressTrace("Manually importing {0} files using mode {1}", message.Files.Count, message.ImportMode);
-            throw new System.NotImplementedException("TODO: This will be rewritten for Music");
 
-            //var imported = new List<ImportResult>();
-            //var importedTrackedDownload = new List<ManuallyImportedFile>();
+            var imported = new List<ImportResult>();
+            var importedTrackedDownload = new List<ManuallyImportedFile>();
 
-            //for (int i = 0; i < message.Files.Count; i++)
-            //{
-            //    _logger.ProgressTrace("Processing file {0} of {1}", i + 1, message.Files.Count);
+            for (int i = 0; i < message.Files.Count; i++)
+            {
+                _logger.ProgressTrace("Processing file {0} of {1}", i + 1, message.Files.Count);
 
-            //    var file = message.Files[i];
-            //    var series = _seriesService.GetSeries(file.SeriesId);
-            //    var episodes = _episodeService.GetEpisodes(file.EpisodeIds);
-            //    var parsedEpisodeInfo = Parser.Parser.ParsePath(file.Path) ?? new ParsedEpisodeInfo();
-            //    var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
-            //    var existingFile = series.Path.IsParentPath(file.Path);
+                var file = message.Files[i];
+                var artist = _artistService.GetArtist(file.ArtistId);
+                var album = _albumService.GetAlbum(file.AlbumId);
+                var tracks = _trackService.GetTracks(file.TrackIds);
+                var parsedTrackInfo = Parser.Parser.ParseMusicPath(file.Path) ?? new ParsedTrackInfo();
+                var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
+                var existingFile = artist.Path.IsParentPath(file.Path);
 
-            //    var localEpisode = new LocalEpisode
-            //    {
-            //        ExistingFile = false,
-            //        Episodes = episodes,
-            //        MediaInfo = mediaInfo,
-            //        ParsedEpisodeInfo = parsedEpisodeInfo,
-            //        Path = file.Path,
-            //        Quality = file.Quality,
-            //        Series = series,
-            //        Size = 0
-            //    };
+                var localTrack = new LocalTrack
+                {
+                    ExistingFile = false,
+                    Tracks = tracks,
+                    MediaInfo = mediaInfo,
+                    ParsedTrackInfo = parsedTrackInfo,
+                    Path = file.Path,
+                    Quality = file.Quality,
+                    Artist = artist,
+                    Album = album,
+                    Size = 0
+                };
 
-            //    //TODO: Cleanup non-tracked downloads
+                //TODO: Cleanup non-tracked downloads
 
-            //    var importDecision = new ImportDecision(localEpisode);
+                var importDecision = new ImportDecision(localTrack);
 
-            //    if (file.DownloadId.IsNullOrWhiteSpace())
-            //    {
-            //        imported.AddRange(_importApprovedEpisodes.Import(new List<ImportDecision> { importDecision }, !existingFile, null, message.ImportMode));
-            //    }
+                if (file.DownloadId.IsNullOrWhiteSpace())
+                {
+                    imported.AddRange(_importApprovedTracks.Import(new List<ImportDecision> { importDecision }, !existingFile, null, message.ImportMode));
+                }
 
-            //    else
-            //    {
-            //        var trackedDownload = _trackedDownloadService.Find(file.DownloadId);
-            //        var importResult = _importApprovedEpisodes.Import(new List<ImportDecision> { importDecision }, true, trackedDownload.DownloadItem, message.ImportMode).First();
+                else
+                {
+                    var trackedDownload = _trackedDownloadService.Find(file.DownloadId);
+                    var importResult = _importApprovedTracks.Import(new List<ImportDecision> { importDecision }, true, trackedDownload.DownloadItem, message.ImportMode).First();
 
-            //        imported.Add(importResult);
+                    imported.Add(importResult);
 
-            //        importedTrackedDownload.Add(new ManuallyImportedFile
-            //                                    {
-            //                                        TrackedDownload = trackedDownload,
-            //                                        ImportResult = importResult
-            //                                    });
-            //    }
-            //}
+                    importedTrackedDownload.Add(new ManuallyImportedFile
+                    {
+                        TrackedDownload = trackedDownload,
+                        ImportResult = importResult
+                    });
+                }
+            }
 
-            //_logger.ProgressTrace("Manually imported {0} files", imported.Count);
+            _logger.ProgressTrace("Manually imported {0} files", imported.Count);
 
-            //foreach (var groupedTrackedDownload in importedTrackedDownload.GroupBy(i => i.TrackedDownload.DownloadItem.DownloadId).ToList())
-            //{
-            //    var trackedDownload = groupedTrackedDownload.First().TrackedDownload;
+            foreach (var groupedTrackedDownload in importedTrackedDownload.GroupBy(i => i.TrackedDownload.DownloadItem.DownloadId).ToList())
+            {
+                var trackedDownload = groupedTrackedDownload.First().TrackedDownload;
 
-            //    if (_diskProvider.FolderExists(trackedDownload.DownloadItem.OutputPath.FullPath))
-            //    {
-            //        if (_downloadedEpisodesImportService.ShouldDeleteFolder(
-            //                new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
-            //                trackedDownload.RemoteEpisode.Series) && !trackedDownload.DownloadItem.IsReadOnly)
-            //        {
-            //            _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
-            //        }
-            //    }
+                if (_diskProvider.FolderExists(trackedDownload.DownloadItem.OutputPath.FullPath))
+                {
+                    if (_downloadedEpisodesImportService.ShouldDeleteFolder(
+                            new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
+                            trackedDownload.RemoteEpisode.Series) && !trackedDownload.DownloadItem.IsReadOnly)
+                    {
+                        _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
+                    }
+                }
 
-            //    if (groupedTrackedDownload.Select(c => c.ImportResult).Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteEpisode.Episodes.Count))
-            //    {
-            //        trackedDownload.State = TrackedDownloadStage.Imported;
-            //        _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
-            //    }
-            //}
+                if (groupedTrackedDownload.Select(c => c.ImportResult).Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Count))
+                {
+                    trackedDownload.State = TrackedDownloadStage.Imported;
+                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                }
+            }
         }
     }
 }

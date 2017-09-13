@@ -60,11 +60,6 @@ namespace Lidarr.Api.V3.Artist
         //public bool SeasonFolder { get; set; }
         //public bool Monitored { get; set; }
 
-        //public bool UseSceneNumbering { get; set; }
-        //public int Runtime { get; set; }
-        //public int TvdbId { get; set; }
-        //public int TvRageId { get; set; }
-        //public int TvMazeId { get; set; }
         //public DateTime? FirstAired { get; set; }
         public DateTime? LastInfoSync { get; set; }
         ////public SeriesTypes SeriesType { get; set; }
@@ -138,10 +133,6 @@ namespace Lidarr.Api.V3.Artist
                        //AlternateTitles
                        SortName = model.SortName,
 
-                       //TotalEpisodeCount
-                       //EpisodeCount
-                       //EpisodeFileCount
-                       //SizeOnDisk
                        Status = model.Status,
                        Overview = model.Overview,
                        //NextAiring
@@ -160,12 +151,6 @@ namespace Lidarr.Api.V3.Artist
                        AlbumFolder = model.AlbumFolder,
                        Monitored = model.Monitored,
 
-                       //UseSceneNumbering = model.UseSceneNumbering,
-                       //Runtime = model.Runtime,
-                       //TvdbId = model.TvdbId,
-                       //TvRageId = model.TvRageId,
-                       //TvMazeId = model.TvMazeId,
-                       //FirstAired = model.FirstAired,
                        LastInfoSync = model.LastInfoSync,
                        //SeriesType = model.SeriesType,
                        CleanName = model.CleanName,
@@ -193,10 +178,6 @@ namespace Lidarr.Api.V3.Artist
                        //AlternateTitles
                        SortName = resource.SortName,
 
-                       //TotalEpisodeCount
-                       //EpisodeCount
-                       //EpisodeFileCount
-                       //SizeOnDisk
                        Status = resource.Status,
                        Overview = resource.Overview,
                        //NextAiring
@@ -215,12 +196,6 @@ namespace Lidarr.Api.V3.Artist
                        AlbumFolder = resource.AlbumFolder,
                        Monitored = resource.Monitored,
 
-                       //UseSceneNumbering = resource.UseSceneNumbering,
-                       //Runtime = resource.Runtime,
-                       //TvdbId = resource.TvdbId,
-                       //TvRageId = resource.TvRageId,
-                       //TvMazeId = resource.TvMazeId,
-                       //FirstAired = resource.FirstAired,
                        LastInfoSync = resource.LastInfoSync,
                        //SeriesType = resource.SeriesType,
                        CleanName = resource.CleanName,

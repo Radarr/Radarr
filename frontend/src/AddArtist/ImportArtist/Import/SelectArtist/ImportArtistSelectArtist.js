@@ -99,10 +99,10 @@ class ImportArtistSelectArtist extends Component {
     });
   }
 
-  onSeriesSelect = (foreignArtistId) => {
+  onArtistSelect = (foreignArtistId) => {
     this.setState({ isOpen: false });
 
-    this.props.onSeriesSelect(foreignArtistId);
+    this.props.onArtistSelect(foreignArtistId);
   }
 
   //
@@ -117,7 +117,7 @@ class ImportArtistSelectArtist extends Component {
       error,
       items,
       queued,
-      onSeriesSelect
+      onArtistSelect
     } = this.props;
 
     const errorMessage = error &&
@@ -233,7 +233,7 @@ class ImportArtistSelectArtist extends Component {
                           overview={item.overview}
                           // year={item.year}
                           // network={item.network}
-                          onPress={this.onSeriesSelect}
+                          onPress={this.onArtistSelect}
                         />
                       );
                     })
@@ -257,7 +257,7 @@ ImportArtistSelectArtist.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   queued: PropTypes.bool.isRequired,
   onSearchInputChange: PropTypes.func.isRequired,
-  onSeriesSelect: PropTypes.func.isRequired
+  onArtistSelect: PropTypes.func.isRequired
 };
 
 ImportArtistSelectArtist.defaultProps = {

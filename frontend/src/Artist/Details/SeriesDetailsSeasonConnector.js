@@ -60,12 +60,12 @@ class SeriesDetailsSeasonConnector extends Component {
   onMonitorSeasonPress = (monitored) => {
     const {
       artistId,
-      seasonNumber
+      albumId
     } = this.props;
 
     this.props.toggleSeasonMonitored({
       artistId,
-      seasonNumber,
+      albumId,
       monitored
     });
   }
@@ -73,13 +73,13 @@ class SeriesDetailsSeasonConnector extends Component {
   onSearchPress = () => {
     const {
       artistId,
-      seasonNumber
+      albumId
     } = this.props;
 
     this.props.executeCommand({
       name: commandNames.SEASON_SEARCH,
       artistId,
-      seasonNumber
+      albumIds: [albumId]
     });
   }
 
@@ -108,7 +108,7 @@ class SeriesDetailsSeasonConnector extends Component {
 
 SeriesDetailsSeasonConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   toggleSeasonMonitored: PropTypes.func.isRequired,
   toggleEpisodesMonitored: PropTypes.func.isRequired,
   setEpisodesTableOption: PropTypes.func.isRequired,

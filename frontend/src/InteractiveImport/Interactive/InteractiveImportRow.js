@@ -9,9 +9,9 @@ import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import EpisodeQuality from 'Episode/EpisodeQuality';
-import SelectArtistModal from 'InteractiveImport/Series/SelectArtistModal';
-import SelectSeasonModal from 'InteractiveImport/Season/SelectSeasonModal';
-import SelectEpisodeModal from 'InteractiveImport/Episode/SelectEpisodeModal';
+import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
+import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
+import SelectTrackModal from 'InteractiveImport/Track/SelectTrackModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
@@ -26,8 +26,8 @@ class InteractiveImportRow extends Component {
 
     this.state = {
       isSelectArtistModalOpen: false,
-      isSelectSeasonModalOpen: false,
-      isSelectEpisodeModalOpen: false,
+      isSelectAlbumModalOpen: false,
+      isSelectTrackModalOpen: false,
       isSelectQualityModalOpen: false
     };
   }
@@ -35,13 +35,13 @@ class InteractiveImportRow extends Component {
   componentDidMount() {
     const {
       id,
-      series,
-      seasonNumber,
-      episodes,
+      artist,
+      album,
+      tracks,
       quality
     } = this.props;
 
-    if (series && seasonNumber !== undefined && episodes.length && quality) {
+    if (artist && album !== undefined && tracks.length && quality) {
       this.props.onSelectedChange({ id, value: true });
     }
   }
@@ -49,9 +49,9 @@ class InteractiveImportRow extends Component {
   componentDidUpdate(prevProps) {
     const {
       id,
-      series,
-      seasonNumber,
-      episodes,
+      artist,
+      album,
+      tracks,
       quality,
       isSelected,
       onValidRowChange
@@ -61,7 +61,7 @@ class InteractiveImportRow extends Component {
       return;
     }
 
-    const isValid = !!(series && seasonNumber != null && episodes.length && quality);
+    const isValid = !!(artist && album != null && tracks.length && quality);
 
     if (isSelected && !isValid) {
       onValidRowChange(id, false);
@@ -91,12 +91,12 @@ class InteractiveImportRow extends Component {
     this.setState({ isSelectArtistModalOpen: true });
   }
 
-  onSelectSeasonPress = () => {
-    this.setState({ isSelectSeasonModalOpen: true });
+  onSelectAlbumPress = () => {
+    this.setState({ isSelectAlbumModalOpen: true });
   }
 
-  onSelectEpisodePress = () => {
-    this.setState({ isSelectEpisodeModalOpen: true });
+  onSelectTrackPress = () => {
+    this.setState({ isSelectTrackModalOpen: true });
   }
 
   onSelectQualityPress = () => {
@@ -108,13 +108,13 @@ class InteractiveImportRow extends Component {
     this.selectRowAfterChange(changed);
   }
 
-  onSelectSeasonModalClose = (changed) => {
-    this.setState({ isSelectSeasonModalOpen: false });
+  onSelectAlbumModalClose = (changed) => {
+    this.setState({ isSelectAlbumModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
-  onSelectEpisodeModalClose = (changed) => {
-    this.setState({ isSelectEpisodeModalOpen: false });
+  onSelectTrackModalClose = (changed) => {
+    this.setState({ isSelectTrackModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
@@ -130,9 +130,9 @@ class InteractiveImportRow extends Component {
     const {
       id,
       relativePath,
-      series,
-      seasonNumber,
-      episodes,
+      artist,
+      album,
+      tracks,
       quality,
       size,
       rejections,
@@ -142,18 +142,19 @@ class InteractiveImportRow extends Component {
 
     const {
       isSelectArtistModalOpen,
-      isSelectSeasonModalOpen,
-      isSelectEpisodeModalOpen,
+      isSelectAlbumModalOpen,
+      isSelectTrackModalOpen,
       isSelectQualityModalOpen
     } = this.state;
 
-    const seriesTitle = series ? series.title : '';
-    const episodeNumbers = episodes.map((episode) => episode.episodeNumber)
+    const seriesTitle = artist ? artist.artistName : '';
+    const albumTitle = album ? album.title : '';
+    const trackNumbers = tracks.map((episode) => episode.trackNumber)
                                    .join(', ');
 
-    const showSeriesPlaceholder = isSelected && !series;
-    const showSeasonNumberPlaceholder = isSelected && !!series && isNaN(seasonNumber);
-    const showEpisodeNumbersPlaceholder = isSelected && Number.isInteger(seasonNumber) && !episodes.length;
+    const showSeriesPlaceholder = isSelected && !artist;
+    const showSeasonNumberPlaceholder = isSelected && !!artist && !album;
+    const showEpisodeNumbersPlaceholder = isSelected && !!album && !tracks.length;
 
     return (
       <TableRow>
@@ -179,20 +180,20 @@ class InteractiveImportRow extends Component {
         </TableRowCellButton>
 
         <TableRowCellButton
-          isDisabled={!series}
-          onPress={this.onSelectSeasonPress}
+          isDisabled={!artist}
+          onPress={this.onSelectAlbumPress}
         >
           {
-            showSeasonNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : seasonNumber
+            showSeasonNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : albumTitle
           }
         </TableRowCellButton>
 
         <TableRowCellButton
-          isDisabled={!series || isNaN(seasonNumber)}
-          onPress={this.onSelectEpisodePress}
+          isDisabled={!artist || !album}
+          onPress={this.onSelectTrackPress}
         >
           {
-            showEpisodeNumbersPlaceholder ? <InteractiveImportRowCellPlaceholder /> : episodeNumbers
+            showEpisodeNumbersPlaceholder ? <InteractiveImportRowCellPlaceholder /> : trackNumbers
           }
         </TableRowCellButton>
 
@@ -244,19 +245,19 @@ class InteractiveImportRow extends Component {
           onModalClose={this.onSelectArtistModalClose}
         />
 
-        <SelectSeasonModal
-          isOpen={isSelectSeasonModalOpen}
+        <SelectAlbumModal
+          isOpen={isSelectAlbumModalOpen}
           ids={[id]}
-          artistId={series && series.id}
-          onModalClose={this.onSelectSeasonModalClose}
+          artistId={artist && artist.id}
+          onModalClose={this.onSelectAlbumModalClose}
         />
 
-        <SelectEpisodeModal
-          isOpen={isSelectEpisodeModalOpen}
+        <SelectTrackModal
+          isOpen={isSelectTrackModalOpen}
           id={id}
-          artistId={series && series.id}
-          seasonNumber={seasonNumber}
-          onModalClose={this.onSelectEpisodeModalClose}
+          artistId={artist && artist.id}
+          albumId={album && album.id}
+          onModalClose={this.onSelectTrackModalClose}
         />
 
         <SelectQualityModal
@@ -276,9 +277,9 @@ class InteractiveImportRow extends Component {
 InteractiveImportRow.propTypes = {
   id: PropTypes.number.isRequired,
   relativePath: PropTypes.string.isRequired,
-  series: PropTypes.object,
-  seasonNumber: PropTypes.number,
-  episodes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  artist: PropTypes.object,
+  album: PropTypes.object,
+  tracks: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object,
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -288,7 +289,7 @@ InteractiveImportRow.propTypes = {
 };
 
 InteractiveImportRow.defaultProps = {
-  episodes: []
+  tracks: []
 };
 
 export default InteractiveImportRow;

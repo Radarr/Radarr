@@ -37,7 +37,7 @@ class SelectArtistModalContent extends Component {
   render() {
     const {
       items,
-      onSeriesSelect,
+      onArtistSelect,
       onModalClose
     } = this.props;
 
@@ -46,7 +46,7 @@ class SelectArtistModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Series
+          Manual Import - Select Artist
         </ModalHeader>
 
         <ModalBody
@@ -55,7 +55,7 @@ class SelectArtistModalContent extends Component {
         >
           <TextInput
             className={styles.filterInput}
-            placeholder="Filter series"
+            placeholder="Filter artist"
             name="filter"
             value={filter}
             autoFocus={true}
@@ -65,13 +65,13 @@ class SelectArtistModalContent extends Component {
           <Scroller className={styles.scroller}>
             {
               items.map((item) => {
-                return item.title.toLowerCase().includes(filter) ?
+                return item.artistName.toLowerCase().includes(filter) ?
                 (
                   <SelectArtistRow
                     key={item.id}
                     id={item.id}
-                    title={item.title}
-                    onSeriesSelect={onSeriesSelect}
+                    artistName={item.artistName}
+                    onArtistSelect={onArtistSelect}
                   />
                 ) :
                 null;
@@ -92,7 +92,7 @@ class SelectArtistModalContent extends Component {
 
 SelectArtistModalContent.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onSeriesSelect: PropTypes.func.isRequired,
+  onArtistSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

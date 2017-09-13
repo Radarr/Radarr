@@ -15,9 +15,6 @@ namespace NzbDrone.Api.ManualImport
         public string RelativePath { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
-        public SeriesResource Series { get; set; }
-        public int? SeasonNumber { get; set; }
-        public List<EpisodeResource> Episodes { get; set; }
         public QualityModel Quality { get; set; }
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
@@ -38,9 +35,6 @@ namespace NzbDrone.Api.ManualImport
                 RelativePath = model.RelativePath,
                 Name = model.Name,
                 Size = model.Size,
-                Series = model.Series.ToResource(),
-                SeasonNumber = model.SeasonNumber,
-                Episodes = model.Episodes.ToResource(),
                 Quality = model.Quality,
                 //QualityWeight
                 DownloadId = model.DownloadId,

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
@@ -11,9 +11,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public string RelativePath { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
-        public Series Series { get; set; }
-        public int? SeasonNumber { get; set; }
-        public List<Episode> Episodes { get; set; }
+        public Artist Artist { get; set; }
+        public Album Album { get; set; }
+        public List<Track> Tracks { get; set; }
         public QualityModel Quality { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }

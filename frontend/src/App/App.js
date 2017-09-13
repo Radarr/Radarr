@@ -45,7 +45,7 @@ function App({ store, history }) {
           <PageConnector>
             <Switch>
               {/*
-                Series
+                Artist
               */}
 
               <Route

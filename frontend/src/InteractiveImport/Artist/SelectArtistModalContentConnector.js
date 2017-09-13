@@ -1,17 +1,18 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
-import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import SelectSeasonModalContent from './SelectSeasonModalContent';
+import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
+import SelectArtistModalContent from './SelectArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createArtistSelector(),
-    (series) => {
+    createAllArtistSelector(),
+    (items) => {
       return {
-        items: series.seasons
+        items
       };
     }
   );
@@ -21,17 +22,20 @@ const mapDispatchToProps = {
   updateInteractiveImportItem
 };
 
-class SelectSeasonModalContentConnector extends Component {
+class SelectArtistModalContentConnector extends Component {
 
   //
   // Listeners
 
-  onSeasonSelect = (seasonNumber) => {
+  onArtistSelect = (artistId) => {
+    const artist = _.find(this.props.items, { id: artistId });
+
     this.props.ids.forEach((id) => {
       this.props.updateInteractiveImportItem({
         id,
-        seasonNumber,
-        episodes: []
+        artist,
+        album: undefined,
+        tracks: []
       });
     });
 
@@ -43,20 +47,19 @@ class SelectSeasonModalContentConnector extends Component {
 
   render() {
     return (
-      <SelectSeasonModalContent
+      <SelectArtistModalContent
         {...this.props}
-        onSeasonSelect={this.onSeasonSelect}
+        onArtistSelect={this.onArtistSelect}
       />
     );
   }
 }
 
-SelectSeasonModalContentConnector.propTypes = {
+SelectArtistModalContentConnector.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number).isRequired,
-  artistId: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SelectSeasonModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(SelectArtistModalContentConnector);
