@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/pu08kh1avj2gl1av?svg=true)](https://ci.appveyor.com/project/majora2007/lidarr)
+[![Build status](https://ci.appveyor.com/api/projects/status/tpm5mj5milne88nc?svg=true)](https://ci.appveyor.com/project/lidarr/lidarr)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43c18ff049df442fab086cea020c4642)](https://www.codacy.com/app/majora2007/Lidarr?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lidarr/Lidarr&amp;utm_campaign=Badge_Grade)
 
