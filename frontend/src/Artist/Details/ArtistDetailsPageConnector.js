@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import { push } from 'react-router-redux';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import NotFound from 'Components/NotFound';
-import SeriesDetailsConnector from './SeriesDetailsConnector';
+import ArtistDetailsConnector from './ArtistDetailsConnector';
 
 function createMapStateToProps() {
   return createSelector(
@@ -31,7 +31,7 @@ const mapDispatchToProps = {
   push
 };
 
-class SeriesDetailsPageConnector extends Component {
+class ArtistDetailsPageConnector extends Component {
 
   //
   // Lifecycle
@@ -60,17 +60,17 @@ class SeriesDetailsPageConnector extends Component {
     }
 
     return (
-      <SeriesDetailsConnector
+      <ArtistDetailsConnector
         nameSlug={nameSlug}
       />
     );
   }
 }
 
-SeriesDetailsPageConnector.propTypes = {
+ArtistDetailsPageConnector.propTypes = {
   nameSlug: PropTypes.string,
   match: PropTypes.shape({ params: PropTypes.shape({ nameSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SeriesDetailsPageConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(ArtistDetailsPageConnector);

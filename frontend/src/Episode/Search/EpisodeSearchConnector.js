@@ -47,7 +47,7 @@ class EpisodeSearchConnector extends Component {
   onQuickSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.EPISODE_SEARCH,
-      episodeIds: [this.props.episodeId]
+      albumIds: [this.props.albumId]
     });
 
     this.props.onModalClose();
@@ -80,7 +80,7 @@ class EpisodeSearchConnector extends Component {
 }
 
 EpisodeSearchConnector.propTypes = {
-  episodeId: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   startInteractiveSearch: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,

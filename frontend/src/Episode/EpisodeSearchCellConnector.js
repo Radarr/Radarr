@@ -21,11 +21,11 @@ function createMapStateToProps() {
           return false;
         }
 
-        return command.body.episodeIds.indexOf(episodeId) > -1;
+        return command.body.albumIds.indexOf(episodeId) > -1;
       });
 
       return {
-        seriesMonitored: series.monitored,
+        artistMonitored: series.monitored,
         seriesType: series.seriesType,
         isSearching
       };
@@ -38,7 +38,7 @@ function createMapDispatchToProps(dispatch, props) {
     onSearchPress(name, path) {
       dispatch(executeCommand({
         name: commandNames.EPISODE_SEARCH,
-        episodeIds: [props.episodeId]
+        albumIds: [props.episodeId]
       }));
     }
   };

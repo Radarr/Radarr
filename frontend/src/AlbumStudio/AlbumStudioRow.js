@@ -26,8 +26,8 @@ class AlbumStudioRow extends Component {
       isSaving,
       isSelected,
       onSelectedChange,
-      onSeriesMonitoredPress,
-      onSeasonMonitoredPress
+      onArtistMonitoredPress,
+      onAlbumMonitoredPress
     } = this.props;
 
     return (
@@ -41,7 +41,7 @@ class AlbumStudioRow extends Component {
         <TableRowCell className={styles.status}>
           <Icon
             className={styles.statusIcon}
-            name={status === 'ended' ? icons.SERIES_ENDED : icons.SERIES_CONTINUING}
+            name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
             title={status === 'ended' ? 'Ended' : 'Continuing'}
 
           />
@@ -58,7 +58,7 @@ class AlbumStudioRow extends Component {
           <MonitorToggleButton
             monitored={monitored}
             isSaving={isSaving}
-            onPress={onSeriesMonitoredPress}
+            onPress={onArtistMonitoredPress}
           />
         </TableRowCell>
 
@@ -69,7 +69,7 @@ class AlbumStudioRow extends Component {
                 <AlbumStudioAlbum
                   key={season.id}
                   {...season}
-                  onSeasonMonitoredPress={onSeasonMonitoredPress}
+                  onAlbumMonitoredPress={onAlbumMonitoredPress}
                 />
               );
             })
@@ -90,8 +90,8 @@ AlbumStudioRow.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
-  onSeriesMonitoredPress: PropTypes.func.isRequired,
-  onSeasonMonitoredPress: PropTypes.func.isRequired
+  onArtistMonitoredPress: PropTypes.func.isRequired,
+  onAlbumMonitoredPress: PropTypes.func.isRequired
 };
 
 AlbumStudioRow.defaultProps = {

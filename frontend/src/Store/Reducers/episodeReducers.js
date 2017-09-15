@@ -11,7 +11,7 @@ export const defaultState = {
   isFetching: false,
   isPopulated: false,
   error: null,
-  sortKey: 'episodeNumber',
+  sortKey: 'releaseDate',
   sortDirection: sortDirections.DESCENDING,
   items: [],
 
@@ -21,11 +21,6 @@ export const defaultState = {
       columnLabel: 'Monitored',
       isVisible: true,
       isModifiable: false
-    },
-    {
-      name: 'episodeNumber',
-      label: '#',
-      isVisible: true
     },
     {
       name: 'title',
@@ -38,28 +33,18 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'relativePath',
-      label: 'Relative Path',
-      isVisible: false
-    },
-    {
-      name: 'airDateUtc',
-      label: 'Air Date',
+      name: 'releaseDate',
+      label: 'Release Date',
       isVisible: true
     },
     {
-      name: 'language',
-      label: 'Language',
+      name: 'trackCount',
+      label: 'Track Count',
       isVisible: false
     },
     {
-      name: 'audioInfo',
-      label: 'Audio Info',
-      isVisible: false
-    },
-    {
-      name: 'videoCodec',
-      label: 'Video Codec',
+      name: 'duration',
+      label: 'Duration',
       isVisible: false
     },
     {

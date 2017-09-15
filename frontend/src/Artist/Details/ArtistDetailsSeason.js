@@ -7,9 +7,7 @@ import getToggledRange from 'Utilities/Table/getToggledRange';
 import { align, icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
-import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
 import SpinnerIcon from 'Components/SpinnerIcon';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import Menu from 'Components/Menu/Menu';
@@ -20,22 +18,10 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import EpisodeFileEditorModal from 'EpisodeFile/Editor/EpisodeFileEditorModal';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
-import EpisodeRowConnector from './EpisodeRowConnector';
-import styles from './SeriesDetailsSeason.css';
+import AlbumRowConnector from './AlbumRowConnector';
+import styles from './ArtistDetailsSeason.css';
 
-function getEpisodeCountKind(monitored, episodeFileCount, episodeCount) {
-  if (episodeFileCount === episodeCount && episodeCount > 0) {
-    return kinds.SUCCESS;
-  }
-
-  if (!monitored) {
-    return kinds.WARNING;
-  }
-
-  return kinds.DANGER;
-}
-
-class SeriesDetailsSeason extends Component {
+class ArtistDetailsSeason extends Component {
 
   //
   // Lifecycle
@@ -65,7 +51,7 @@ class SeriesDetailsSeason extends Component {
 
   _expandByDefault() {
     const {
-      albumId,
+      name,
       onExpandPress,
       items
     } = this.props;
@@ -75,7 +61,7 @@ class SeriesDetailsSeason extends Component {
              isAfter(item.airDateUtc, { days: -30 });
     });
 
-    onExpandPress(albumId, expand && albumId > 0);
+    onExpandPress(name, expand && name > 0);
   }
 
   //
@@ -99,29 +85,29 @@ class SeriesDetailsSeason extends Component {
 
   onExpandPress = () => {
     const {
-      albumId,
+      name,
       isExpanded
     } = this.props;
 
-    this.props.onExpandPress(albumId, !isExpanded);
+    this.props.onExpandPress(name, !isExpanded);
   }
 
-  onMonitorEpisodePress = (episodeId, monitored, { shiftKey }) => {
+  onMonitorAlbumPress = (albumId, monitored, { shiftKey }) => {
     const lastToggled = this.state.lastToggledEpisode;
-    const episodeIds = [episodeId];
+    const albumIds = [albumId];
 
     if (shiftKey && lastToggled) {
-      const { lower, upper } = getToggledRange(this.props.items, episodeId, lastToggled);
+      const { lower, upper } = getToggledRange(this.props.items, albumId, lastToggled);
       const items = this.props.items;
 
       for (let i = lower; i < upper; i++) {
-        episodeIds.push(items[i].id);
+        albumIds.push(items[i].id);
       }
     }
 
-    this.setState({ lastToggledEpisode: episodeId });
+    this.setState({ lastToggledEpisode: albumId });
 
-    this.props.onMonitorEpisodePress(_.uniq(episodeIds), monitored);
+    this.props.onMonitorAlbumPress(_.uniq(albumIds), monitored);
   }
 
   //
@@ -130,28 +116,18 @@ class SeriesDetailsSeason extends Component {
   render() {
     const {
       artistId,
-      monitored,
-      title,
-      releaseDate,
-      albumId,
-      statistics,
+      label,
       items,
       columns,
       isSaving,
       isExpanded,
       isSearching,
-      seriesMonitored,
+      artistMonitored,
       isSmallScreen,
       onTableOptionChange,
       onMonitorSeasonPress,
       onSearchPress
     } = this.props;
-
-    const {
-      trackCount,
-      trackFileCount,
-      totalTrackCount
-    } = statistics;
 
     const {
       isOrganizeModalOpen,
@@ -160,43 +136,35 @@ class SeriesDetailsSeason extends Component {
 
     return (
       <div
-        className={styles.season}
+        className={styles.albumType}
       >
         <div className={styles.header}>
           <div className={styles.left}>
-            <MonitorToggleButton
-              monitored={monitored}
-              isDisabled={!seriesMonitored}
-              isSaving={isSaving}
-              size={24}
-              onPress={onMonitorSeasonPress}
-            />
-
             {
-              albumId === 0 ?
-                <span className={styles.seasonNumber}>
-                  Specials
-                </span> :
-                <span className={styles.seasonNumber}>
-                  {title}
+              <div>
+                <span className={styles.albumTypeLabel}>
+                  {label}
                 </span>
+
+                <span className={styles.albumCount}>
+                  ({items.length} Releases)
+                </span>
+              </div>
             }
 
-            <Label
-              title={`${totalTrackCount} tracks total. ${trackFileCount} tracks with files.`}
-              kind={getEpisodeCountKind(monitored, trackFileCount, trackCount)}
-              size={sizes.LARGE}
-            >
-              {
-                <span>{trackFileCount} / {trackCount}</span>
-              }
-            </Label>
           </div>
 
           <Link
             className={styles.expandButton}
             onPress={this.onExpandPress}
           >
+
+            <Icon
+              className={styles.expandButtonIcon}
+              name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
+              title={isExpanded ? 'Hide albums' : 'Show albums'}
+              size={24}
+            />
 
             {
               !isSmallScreen &&
@@ -266,37 +234,62 @@ class SeriesDetailsSeason extends Component {
                   onPress={onSearchPress}
                 />
 
-                <IconButton
-                  className={styles.actionButton}
-                  name={icons.ORGANIZE}
-                  title="Preview rename for this album"
-                  size={24}
-                  onPress={this.onOrganizePress}
-                />
-
-                <IconButton
-                  className={styles.actionButton}
-                  name={icons.EPISODE_FILE}
-                  title="Manage track files in this artist"
-                  size={24}
-                  onPress={this.onManageEpisodesPress}
-                />
               </div>
           }
 
         </div>
 
+        <div>
+          {
+            isExpanded &&
+              <div className={styles.episodes}>
+                {
+                  items.length ?
+                    <Table
+                      columns={columns}
+                      onTableOptionChange={onTableOptionChange}
+                    >
+                      <TableBody>
+                        {
+                          items.map((item) => {
+                            return (
+                              <AlbumRowConnector
+                                key={item.id}
+                                columns={columns}
+                                {...item}
+                                onMonitorAlbumPress={this.onMonitorAlbumPress}
+                              />
+                            );
+                          })
+                        }
+                      </TableBody>
+                    </Table> :
+
+                    <div className={styles.noEpisodes}>
+                      No albums in this group
+                    </div>
+                }
+                <div className={styles.collapseButtonContainer}>
+                  <IconButton
+                    name={icons.COLLAPSE}
+                    size={20}
+                    title="Hide episodes"
+                    onPress={this.onExpandPress}
+                  />
+                </div>
+              </div>
+          }
+        </div>
+
         <OrganizePreviewModalConnector
           isOpen={isOrganizeModalOpen}
           artistId={artistId}
-          albumId={albumId}
           onModalClose={this.onOrganizeModalClose}
         />
 
         <EpisodeFileEditorModal
           isOpen={isManageEpisodesOpen}
           artistId={artistId}
-          albumId={albumId}
           onModalClose={this.onManageEpisodesModalClose}
         />
       </div>
@@ -304,33 +297,22 @@ class SeriesDetailsSeason extends Component {
   }
 }
 
-SeriesDetailsSeason.propTypes = {
+ArtistDetailsSeason.propTypes = {
   artistId: PropTypes.number.isRequired,
-  monitored: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  releaseDate: PropTypes.string.isRequired,
-  albumId: PropTypes.number.isRequired,
-  statistics: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool,
   isExpanded: PropTypes.bool,
   isSearching: PropTypes.bool.isRequired,
-  seriesMonitored: PropTypes.bool.isRequired,
+  artistMonitored: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onTableOptionChange: PropTypes.func.isRequired,
   onMonitorSeasonPress: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
-  onMonitorEpisodePress: PropTypes.func.isRequired,
+  onMonitorAlbumPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired
 };
 
-SeriesDetailsSeason.defaultProps = {
-  statistics: {
-    trackFileCount: 0,
-    totalTrackCount: 0,
-    percentOfTracks: 0
-  }
-};
-
-export default SeriesDetailsSeason;
+export default ArtistDetailsSeason;

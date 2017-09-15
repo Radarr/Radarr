@@ -61,13 +61,13 @@ class EpisodeHistory extends Component {
 
     if (!isFetching && !!error) {
       return (
-        <div>Unable to load episode history.</div>
+        <div>Unable to load album history.</div>
       );
     }
 
     if (isPopulated && !hasItems && !error) {
       return (
-        <div>No episode history.</div>
+        <div>No album history.</div>
       );
     }
 

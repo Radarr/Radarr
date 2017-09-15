@@ -61,11 +61,11 @@
   line-height: 50px;
 }
 
-.seriesNavigationButtons {
+.artistNavigationButtons {
   white-space: no-wrap;
 }
 
-.seriesNavigationButton {
+.artistNavigationButton {
   composes: button from 'Components/Link/IconButton.css';
 
   margin-left: 5px;
@@ -90,7 +90,6 @@
 
 .sizeOnDisk,
 .qualityProfileName,
-.network,
 .links,
 .tags {
   margin-left: 8px;

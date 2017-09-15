@@ -9,7 +9,7 @@ import { updateItem } from './baseActions';
 const section = 'episodes';
 
 const episodeActionHandlers = {
-  [types.FETCH_EPISODES]: createFetchHandler(section, '/track'),
+  [types.FETCH_EPISODES]: createFetchHandler(section, '/album'),
 
   [types.TOGGLE_EPISODE_MONITORED]: function(payload) {
     return function(dispatch, getState) {
@@ -28,7 +28,7 @@ const episodeActionHandlers = {
       }));
 
       const promise = $.ajax({
-        url: `/episode/${id}`,
+        url: `/album/${id}`,
         method: 'PUT',
         data: JSON.stringify({ monitored }),
         dataType: 'json'
@@ -56,7 +56,7 @@ const episodeActionHandlers = {
   [types.TOGGLE_EPISODES_MONITORED]: function(payload) {
     return function(dispatch, getState) {
       const {
-        episodeIds,
+        albumIds,
         episodeEntity = episodeEntities.EPISODES,
         monitored
       } = payload;
@@ -64,7 +64,7 @@ const episodeActionHandlers = {
       const episodeSection = _.last(episodeEntity.split('.'));
 
       dispatch(batchActions(
-        episodeIds.map((episodeId) => {
+        albumIds.map((episodeId) => {
           return updateItem({
             id: episodeId,
             section: episodeSection,
@@ -74,15 +74,15 @@ const episodeActionHandlers = {
       ));
 
       const promise = $.ajax({
-        url: '/episode/monitor',
+        url: '/album/monitor',
         method: 'PUT',
-        data: JSON.stringify({ episodeIds, monitored }),
+        data: JSON.stringify({ albumIds, monitored }),
         dataType: 'json'
       });
 
       promise.done((data) => {
         dispatch(batchActions(
-          episodeIds.map((episodeId) => {
+          albumIds.map((episodeId) => {
             return updateItem({
               id: episodeId,
               section: episodeSection,
@@ -95,7 +95,7 @@ const episodeActionHandlers = {
 
       promise.fail((xhr) => {
         dispatch(batchActions(
-          episodeIds.map((episodeId) => {
+          albumIds.map((episodeId) => {
             return updateItem({
               id: episodeId,
               section: episodeSection,

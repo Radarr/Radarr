@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { kinds, sizes } from 'Helpers/Props';
 import Label from 'Components/Label';
-import styles from './SeriesTags.css';
+import styles from './ArtistTags.css';
 
-function SeriesTags({ tags }) {
+function ArtistTags({ tags }) {
   return (
     <div>
       {
@@ -24,8 +24,8 @@ function SeriesTags({ tags }) {
   );
 }
 
-SeriesTags.propTypes = {
+ArtistTags.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
-export default SeriesTags;
+export default ArtistTags;

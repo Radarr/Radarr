@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
-import SeriesTags from './SeriesTags';
+import ArtistTags from './ArtistTags';
 
 function createMapStateToProps() {
   return createSelector(
@@ -27,4 +27,4 @@ function createMapStateToProps() {
   );
 }
 
-export default connect(createMapStateToProps)(SeriesTags);
+export default connect(createMapStateToProps)(ArtistTags);

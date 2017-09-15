@@ -18,7 +18,7 @@ function createMapStateToProps() {
     createCommandsSelector(),
     (missing, commands) => {
       const isSearchingForAlbums = _.some(commands, { name: commandNames.EPISODE_SEARCH });
-      const isSearchingForMissingAlbums = _.some(commands, { name: commandNames.MISSING_EPISODE_SEARCH });
+      const isSearchingForMissingAlbums = _.some(commands, { name: commandNames.MISSING_ALBUM_SEARCH });
 
       return {
         isSearchingForAlbums,
@@ -100,7 +100,7 @@ class MissingConnector extends Component {
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
       name: commandNames.EPISODE_SEARCH,
-      episodeIds: selected
+      albumIds: selected
     });
   }
 
@@ -118,7 +118,7 @@ class MissingConnector extends Component {
 
   onSearchAllMissingPress = () => {
     this.props.executeCommand({
-      name: commandNames.MISSING_EPISODE_SEARCH
+      name: commandNames.MISSING_ALBUM_SEARCH
     });
   }
 

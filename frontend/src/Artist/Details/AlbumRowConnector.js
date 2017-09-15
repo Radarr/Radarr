@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createEpisodeFileSelector from 'Store/Selectors/createEpisodeFileSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import EpisodeRow from './EpisodeRow';
+import AlbumRow from './AlbumRow';
 
 function createMapStateToProps() {
   return createSelector(
@@ -17,7 +17,7 @@ function createMapStateToProps() {
       const alternateTitles = sceneSeasonNumber ? _.filter(series.alternateTitles, { sceneSeasonNumber }) : [];
 
       return {
-        seriesMonitored: series.monitored,
+        artistMonitored: series.monitored,
         seriesType: series.seriesType,
         episodeFilePath: episodeFile ? episodeFile.path : null,
         episodeFileRelativePath: episodeFile ? episodeFile.relativePath : null,
@@ -26,4 +26,4 @@ function createMapStateToProps() {
     }
   );
 }
-export default connect(createMapStateToProps)(EpisodeRow);
+export default connect(createMapStateToProps)(AlbumRow);

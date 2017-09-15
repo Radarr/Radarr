@@ -24,11 +24,29 @@ import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfil
 import ArtistPoster from 'Artist/ArtistPoster';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
-import SeriesAlternateTitles from './SeriesAlternateTitles';
-import SeriesDetailsSeasonConnector from './SeriesDetailsSeasonConnector';
-import SeriesTagsConnector from './SeriesTagsConnector';
-import SeriesDetailsLinks from './SeriesDetailsLinks';
-import styles from './SeriesDetails.css';
+import ArtistAlternateTitles from './ArtistAlternateTitles';
+import ArtistDetailsSeasonConnector from './ArtistDetailsSeasonConnector';
+import ArtistTagsConnector from './ArtistTagsConnector';
+import ArtistDetailsLinks from './ArtistDetailsLinks';
+import styles from './ArtistDetails.css';
+
+const albumTypes = [
+  {
+    name: 'album',
+    label: 'Album',
+    isVisible: true
+  },
+  {
+    name: 'single',
+    label: 'Single',
+    isVisible: true
+  },
+  {
+    name: 'ep',
+    label: 'EP',
+    isVisible: true
+  }
+];
 
 function getFanartUrl(images) {
   const fanartImage = _.find(images, { coverType: 'fanart' });
@@ -46,7 +64,7 @@ function getExpandedState(newState) {
   };
 }
 
-class SeriesDetails extends Component {
+class ArtistDetails extends Component {
 
   //
   // Lifecycle
@@ -133,8 +151,6 @@ class SeriesDetails extends Component {
     const {
       id,
       foreignArtistId,
-      tvMazeId,
-      imdbId,
       artistName,
       ratings,
       sizeOnDisk,
@@ -142,7 +158,6 @@ class SeriesDetails extends Component {
       qualityProfileId,
       monitored,
       status,
-      network,
       overview,
       images,
       albums,
@@ -154,8 +169,8 @@ class SeriesDetails extends Component {
       isPopulated,
       episodesError,
       episodeFilesError,
-      previousSeries,
-      nextSeries,
+      previousArtist,
+      nextArtist,
       onRefreshPress,
       onSearchPress
     } = this.props;
@@ -172,12 +187,12 @@ class SeriesDetails extends Component {
 
     const continuing = status === 'continuing';
 
-    let episodeFilesCountMessage = 'No episode files';
+    let episodeFilesCountMessage = 'No track files';
 
     if (trackFileCount === 1) {
-      episodeFilesCountMessage = '1 episode file';
+      episodeFilesCountMessage = '1 track file';
     } else if (trackFileCount > 1) {
-      episodeFilesCountMessage = `${trackFileCount} episode files`;
+      episodeFilesCountMessage = `${trackFileCount} track files`;
     }
 
     let expandIcon = icons.EXPAND_INDETERMINATE;
@@ -217,7 +232,7 @@ class SeriesDetails extends Component {
             />
 
             <PageToolbarButton
-              label="Manage Episodes"
+              label="Manage Tracks"
               iconName={icons.EPISODE_FILE}
               onPress={this.onManageEpisodesPress}
             />
@@ -281,28 +296,28 @@ class SeriesDetails extends Component {
                               />
                             }
                             title="Alternate Titles"
-                            body={<SeriesAlternateTitles alternateTitles={alternateTitles} />}
+                            body={<ArtistAlternateTitles alternateTitles={alternateTitles} />}
                             position={tooltipPositions.BOTTOM}
                           />
                         </span>
                     }
                   </div>
 
-                  <div className={styles.seriesNavigationButtons}>
+                  <div className={styles.artistNavigationButtons}>
                     <IconButton
-                      className={styles.seriesNavigationButton}
+                      className={styles.artistNavigationButton}
                       name={icons.ARROW_LEFT}
                       size={30}
-                      title={`Go to ${previousSeries.artistName}`}
-                      to={`/artist/${previousSeries.nameSlug}`}
+                      title={`Go to ${previousArtist.artistName}`}
+                      to={`/artist/${previousArtist.nameSlug}`}
                     />
 
                     <IconButton
-                      className={styles.seriesNavigationButton}
+                      className={styles.artistNavigationButton}
                       name={icons.ARROW_RIGHT}
                       size={30}
-                      title={`Go to ${nextSeries.artistName}`}
-                      to={`/artist/${nextSeries.nameSlug}`}
+                      title={`Go to ${nextArtist.artistName}`}
+                      to={`/artist/${nextArtist.nameSlug}`}
                     />
                   </div>
                 </div>
@@ -369,11 +384,11 @@ class SeriesDetails extends Component {
 
                   <Label
                     className={styles.detailsLabel}
-                    title={continuing ? 'More episodes/another season is expected' : 'No additional episodes or or another season is expected'}
+                    title={continuing ? 'More albums are expected' : 'No additional albums are expected'}
                     size={sizes.LARGE}
                   >
                     <Icon
-                      name={continuing ? icons.SERIES_CONTINUING : icons.SERIES_ENDED}
+                      name={continuing ? icons.ARTIST_CONTINUING : icons.ARTIST_ENDED}
                       size={17}
                     />
 
@@ -381,24 +396,6 @@ class SeriesDetails extends Component {
                       {continuing ? 'Continuing' : 'Ended'}
                     </span>
                   </Label>
-
-                  {
-                    !!network &&
-                      <Label
-                        className={styles.detailsLabel}
-                        title="Network"
-                        size={sizes.LARGE}
-                      >
-                        <Icon
-                          name={icons.NETWORK}
-                          size={17}
-                        />
-
-                        <span className={styles.qualityProfileName}>
-                          {network}
-                        </span>
-                      </Label>
-                  }
 
                   <Tooltip
                     anchor={
@@ -417,10 +414,8 @@ class SeriesDetails extends Component {
                       </Label>
                     }
                     tooltip={
-                      <SeriesDetailsLinks
+                      <ArtistDetailsLinks
                         foreignArtistId={foreignArtistId}
-                        tvMazeId={tvMazeId}
-                        imdbId={imdbId}
                       />
                       }
                     kind={kinds.INVERSE}
@@ -445,7 +440,7 @@ class SeriesDetails extends Component {
                             </span>
                           </Label>
                         }
-                        tooltip={<SeriesTagsConnector artistId={id} />}
+                        tooltip={<ArtistTagsConnector artistId={id} />}
                         kind={kinds.INVERSE}
                         position={tooltipPositions.BOTTOM}
                       />
@@ -477,18 +472,17 @@ class SeriesDetails extends Component {
             }
 
             {
-              isPopulated && !!albums.length &&
+              isPopulated && !!albumTypes.length &&
                 <div>
                   {
-                    albums.slice(0).reverse().map((season) => {
+                    albumTypes.slice(0).map((season) => {
                       return (
-                        <SeriesDetailsSeasonConnector
-                          key={season.id}
+                        <ArtistDetailsSeasonConnector
+                          key={season.name}
                           artistId={id}
-                          albumId={season.id}
-                          statistics={season.statistics}
+                          label={season.label}
                           {...season}
-                          isExpanded={expandedState[season.id]}
+                          isExpanded={expandedState[season.name]}
                           onExpandPress={this.onExpandPress}
                         />
                       );
@@ -536,11 +530,9 @@ class SeriesDetails extends Component {
   }
 }
 
-SeriesDetails.propTypes = {
+ArtistDetails.propTypes = {
   id: PropTypes.number.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
-  tvMazeId: PropTypes.number,
-  imdbId: PropTypes.string,
   artistName: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,
@@ -548,7 +540,6 @@ SeriesDetails.propTypes = {
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
-  network: PropTypes.string,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -560,10 +551,10 @@ SeriesDetails.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   episodesError: PropTypes.object,
   episodeFilesError: PropTypes.object,
-  previousSeries: PropTypes.object.isRequired,
-  nextSeries: PropTypes.object.isRequired,
+  previousArtist: PropTypes.object.isRequired,
+  nextArtist: PropTypes.object.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired
 };
 
-export default SeriesDetails;
+export default ArtistDetails;

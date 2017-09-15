@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './SeriesAlternateTitles.css';
+import styles from './ArtistAlternateTitles.css';
 
-function SeriesAlternateTitles({ alternateTitles }) {
+function ArtistAlternateTitles({ alternateTitles }) {
   return (
     <ul>
       {
@@ -21,8 +21,8 @@ function SeriesAlternateTitles({ alternateTitles }) {
   );
 }
 
-SeriesAlternateTitles.propTypes = {
+ArtistAlternateTitles.propTypes = {
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
-export default SeriesAlternateTitles;
+export default ArtistAlternateTitles;

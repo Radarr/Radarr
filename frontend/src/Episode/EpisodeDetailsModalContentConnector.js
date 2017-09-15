@@ -15,16 +15,16 @@ function createMapStateToProps() {
     createArtistSelector(),
     (episode, series) => {
       const {
-        title: seriesTitle,
-        titleSlug,
-        monitored: seriesMonitored,
+        artistName: seriesTitle,
+        nameSlug,
+        monitored: artistMonitored,
         seriesType
       } = series;
 
       return {
         seriesTitle,
-        titleSlug,
-        seriesMonitored,
+        nameSlug,
+        artistMonitored,
         seriesType,
         ...episode
       };
@@ -52,7 +52,7 @@ class EpisodeDetailsModalContentConnector extends Component {
   //
   // Listeners
 
-  onMonitorEpisodePress = (monitored) => {
+  onMonitorAlbumPress = (monitored) => {
     const {
       episodeId,
       episodeEntity
@@ -72,7 +72,7 @@ class EpisodeDetailsModalContentConnector extends Component {
     return (
       <EpisodeDetailsModalContent
         {...this.props}
-        onMonitorEpisodePress={this.onMonitorEpisodePress}
+        onMonitorAlbumPress={this.onMonitorAlbumPress}
       />
     );
   }

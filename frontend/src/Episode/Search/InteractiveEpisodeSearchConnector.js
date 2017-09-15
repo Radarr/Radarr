@@ -34,7 +34,7 @@ class InteractiveEpisodeSearchConnector extends Component {
 
   componentDidMount() {
     const {
-      episodeId,
+      albumId,
       isPopulated
     } = this.props;
 
@@ -43,7 +43,7 @@ class InteractiveEpisodeSearchConnector extends Component {
 
     if (!isPopulated) {
       this.props.fetchReleases({
-        episodeId
+        albumId
       });
     }
   }
@@ -74,7 +74,7 @@ class InteractiveEpisodeSearchConnector extends Component {
 }
 
 InteractiveEpisodeSearchConnector.propTypes = {
-  episodeId: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   fetchReleases: PropTypes.func.isRequired,
   setReleasesSort: PropTypes.func.isRequired,

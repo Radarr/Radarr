@@ -10,13 +10,13 @@ class AlbumStudioAlbum extends Component {
   //
   // Listeners
 
-  onSeasonMonitoredPress = () => {
+  onAlbumMonitoredPress = () => {
     const {
       id,
       monitored
     } = this.props;
 
-    this.props.onSeasonMonitoredPress(id, !monitored);
+    this.props.onAlbumMonitoredPress(id, !monitored);
   }
 
   //
@@ -43,7 +43,7 @@ class AlbumStudioAlbum extends Component {
           <MonitorToggleButton
             monitored={monitored}
             isSaving={isSaving}
-            onPress={this.onSeasonMonitoredPress}
+            onPress={this.onAlbumMonitoredPress}
           />
 
           <span>
@@ -75,7 +75,7 @@ AlbumStudioAlbum.propTypes = {
   monitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,
-  onSeasonMonitoredPress: PropTypes.func.isRequired
+  onAlbumMonitoredPress: PropTypes.func.isRequired
 };
 
 AlbumStudioAlbum.defaultProps = {

@@ -45,9 +45,9 @@ class EpisodeSummary extends Component {
   render() {
     const {
       qualityProfileId,
-      network,
       overview,
-      airDateUtc,
+      releaseDate,
+      albumLabel,
       path,
       size,
       quality,
@@ -59,11 +59,11 @@ class EpisodeSummary extends Component {
     return (
       <div>
         <div>
-          <span className={styles.infoTitle}>Airs</span>
+          <span className={styles.infoTitle}>Releases</span>
 
           <EpisodeAiringConnector
-            airDateUtc={airDateUtc}
-            network={network}
+            releaseDate={releaseDate}
+            albumLabel={albumLabel}
           />
         </div>
 
@@ -84,7 +84,7 @@ class EpisodeSummary extends Component {
           {
             hasOverview ?
             overview :
-            'No episode overview.'
+            'No album overview.'
           }
         </div>
 
@@ -151,11 +151,10 @@ class EpisodeSummary extends Component {
 }
 
 EpisodeSummary.propTypes = {
-  episodeFileId: PropTypes.number.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
-  network: PropTypes.string.isRequired,
   overview: PropTypes.string,
-  airDateUtc: PropTypes.string.isRequired,
+  albumLabel: PropTypes.string,
+  releaseDate: PropTypes.string.isRequired,
   path: PropTypes.string,
   size: PropTypes.number,
   quality: PropTypes.object,

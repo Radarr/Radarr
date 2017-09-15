@@ -10,15 +10,6 @@
   width: 42px;
 }
 
-.episodeNumber {
-  composes: cell from 'Components/Table/Cells/TableRowCell.css';
-
-  width: 50px;
-}
-
-.language,
-.audio,
-.video,
 .status {
   composes: cell from 'Components/Table/Cells/TableRowCell.css';
 

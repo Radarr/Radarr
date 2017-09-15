@@ -13,7 +13,7 @@ import AddNewArtistConnector from 'AddArtist/AddNewArtist/AddNewArtistConnector'
 import ImportArtist from 'AddArtist/ImportArtist/ImportArtist';
 import ArtistEditorConnector from 'Artist/Editor/ArtistEditorConnector';
 import AlbumStudioConnector from 'AlbumStudio/AlbumStudioConnector';
-import SeriesDetailsPageConnector from 'Artist/Details/SeriesDetailsPageConnector';
+import ArtistDetailsPageConnector from 'Artist/Details/ArtistDetailsPageConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
 import HistoryConnector from 'Activity/History/HistoryConnector';
 import QueueConnector from 'Activity/Queue/QueueConnector';
@@ -93,7 +93,7 @@ function App({ store, history }) {
 
               <Route
                 path="/artist/:nameSlug"
-                component={SeriesDetailsPageConnector}
+                component={ArtistDetailsPageConnector}
               />
 
               {/*

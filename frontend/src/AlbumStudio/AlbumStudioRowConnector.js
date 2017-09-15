@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import { toggleSeriesMonitored, toggleSeasonMonitored } from 'Store/Actions/artistActions';
+import { toggleEpisodeMonitored } from 'Store/Actions/episodeActions';
 import AlbumStudioRow from './AlbumStudioRow';
 
 function createMapStateToProps() {
@@ -25,7 +26,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   toggleSeriesMonitored,
-  toggleSeasonMonitored
+  toggleSeasonMonitored,
+  toggleEpisodeMonitored
 };
 
 class AlbumStudioRowConnector extends Component {
@@ -33,7 +35,7 @@ class AlbumStudioRowConnector extends Component {
   //
   // Listeners
 
-  onSeriesMonitoredPress = () => {
+  onArtistMonitoredPress = () => {
     const {
       artistId,
       monitored
@@ -45,11 +47,10 @@ class AlbumStudioRowConnector extends Component {
     });
   }
 
-  onSeasonMonitoredPress = (seasonNumber, monitored) => {
-    this.props.toggleSeasonMonitored({
-      artistId: this.props.artistId,
-      seasonNumber,
-      monitored
+  onAlbumMonitoredPress = (episodeId, monitored) => {
+    this.props.toggleEpisodeMonitored({
+      episodeId,
+      monitored: !monitored
     });
   }
 
@@ -60,8 +61,8 @@ class AlbumStudioRowConnector extends Component {
     return (
       <AlbumStudioRow
         {...this.props}
-        onSeriesMonitoredPress={this.onSeriesMonitoredPress}
-        onSeasonMonitoredPress={this.onSeasonMonitoredPress}
+        onArtistMonitoredPress={this.onArtistMonitoredPress}
+        onAlbumMonitoredPress={this.onAlbumMonitoredPress}
       />
     );
   }
@@ -71,7 +72,8 @@ AlbumStudioRowConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   toggleSeriesMonitored: PropTypes.func.isRequired,
-  toggleSeasonMonitored: PropTypes.func.isRequired
+  toggleSeasonMonitored: PropTypes.func.isRequired,
+  toggleEpisodeMonitored: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AlbumStudioRowConnector);

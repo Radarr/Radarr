@@ -11,30 +11,30 @@ import { toggleSeasonMonitored } from 'Store/Actions/artistActions';
 import { toggleEpisodesMonitored, setEpisodesTableOption } from 'Store/Actions/episodeActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
-import SeriesDetailsSeason from './SeriesDetailsSeason';
+import ArtistDetailsSeason from './ArtistDetailsSeason';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { seasonNumber }) => seasonNumber,
+    (state, { label }) => label,
     (state) => state.episodes,
     createArtistSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (seasonNumber, episodes, series, commands, dimensions) => {
+    (label, episodes, series, commands, dimensions) => {
       const isSearching = !!findCommand(commands, {
         name: commandNames.SEASON_SEARCH,
         artistId: series.id,
-        seasonNumber
+        label
       });
 
-      const episodesInSeason = _.filter(episodes.items, { seasonNumber });
-      const sortedEpisodes = _.orderBy(episodesInSeason, 'episodeNumber', 'desc');
+      const episodesInSeason = _.filter(episodes.items, { albumType: label });
+      const sortedEpisodes = _.orderBy(episodesInSeason, 'releaseDate', 'desc');
 
       return {
         items: sortedEpisodes,
         columns: episodes.columns,
         isSearching,
-        seriesMonitored: series.monitored,
+        artistMonitored: series.monitored,
         isSmallScreen: dimensions.isSmallScreen
       };
     }
@@ -48,7 +48,7 @@ const mapDispatchToProps = {
   executeCommand
 };
 
-class SeriesDetailsSeasonConnector extends Component {
+class ArtistDetailsSeasonConnector extends Component {
 
   //
   // Listeners
@@ -59,33 +59,29 @@ class SeriesDetailsSeasonConnector extends Component {
 
   onMonitorSeasonPress = (monitored) => {
     const {
-      artistId,
-      albumId
+      artistId
     } = this.props;
 
     this.props.toggleSeasonMonitored({
       artistId,
-      albumId,
       monitored
     });
   }
 
   onSearchPress = () => {
     const {
-      artistId,
-      albumId
+      artistId
     } = this.props;
 
     this.props.executeCommand({
       name: commandNames.SEASON_SEARCH,
-      artistId,
-      albumIds: [albumId]
+      artistId
     });
   }
 
-  onMonitorEpisodePress = (episodeIds, monitored) => {
+  onMonitorAlbumPress = (albumIds, monitored) => {
     this.props.toggleEpisodesMonitored({
-      episodeIds,
+      albumIds,
       monitored
     });
   }
@@ -95,24 +91,23 @@ class SeriesDetailsSeasonConnector extends Component {
 
   render() {
     return (
-      <SeriesDetailsSeason
+      <ArtistDetailsSeason
         {...this.props}
         onTableOptionChange={this.onTableOptionChange}
         onMonitorSeasonPress={this.onMonitorSeasonPress}
         onSearchPress={this.onSearchPress}
-        onMonitorEpisodePress={this.onMonitorEpisodePress}
+        onMonitorAlbumPress={this.onMonitorAlbumPress}
       />
     );
   }
 }
 
-SeriesDetailsSeasonConnector.propTypes = {
+ArtistDetailsSeasonConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
-  albumId: PropTypes.number.isRequired,
   toggleSeasonMonitored: PropTypes.func.isRequired,
   toggleEpisodesMonitored: PropTypes.func.isRequired,
   setEpisodesTableOption: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SeriesDetailsSeasonConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(ArtistDetailsSeasonConnector);

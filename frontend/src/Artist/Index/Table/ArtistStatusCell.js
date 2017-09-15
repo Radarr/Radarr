@@ -27,7 +27,7 @@ function ArtistStatusCell(props) {
 
       <Icon
         className={styles.statusIcon}
-        name={status === 'ended' ? icons.SERIES_ENDED : icons.SERIES_CONTINUING}
+        name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
         title={status === 'ended' ? 'Ended' : 'Continuing'}
 
       />

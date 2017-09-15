@@ -10,8 +10,8 @@ import Label from 'Components/Label';
 
 function EpisodeAiring(props) {
   const {
-    airDateUtc,
-    network,
+    releaseDate,
+    albumLabel,
     shortDateFormat,
     showRelativeDates,
     timeFormat
@@ -22,11 +22,11 @@ function EpisodeAiring(props) {
       kind={kinds.INFO}
       size={sizes.MEDIUM}
     >
-      {network}
+      {albumLabel}
     </Label>
   );
 
-  if (!airDateUtc) {
+  if (!releaseDate) {
     return (
       <span>
         TBA on {networkLabel}
@@ -34,50 +34,48 @@ function EpisodeAiring(props) {
     );
   }
 
-  const time = formatTime(airDateUtc, timeFormat);
-
   if (!showRelativeDates) {
     return (
       <span>
-        {moment(airDateUtc).format(shortDateFormat)} at {time} on {networkLabel}
+        {moment(releaseDate).format(shortDateFormat)} on {networkLabel}
       </span>
     );
   }
 
-  if (isToday(airDateUtc)) {
+  if (isToday(releaseDate)) {
     return (
       <span>
-        {time} on {networkLabel}
+        Today on {networkLabel}
       </span>
     );
   }
 
-  if (isTomorrow(airDateUtc)) {
+  if (isTomorrow(releaseDate)) {
     return (
       <span>
-        Tomorrow at {time} on {networkLabel}
+        Tomorrow on {networkLabel}
       </span>
     );
   }
 
-  if (isInNextWeek(airDateUtc)) {
+  if (isInNextWeek(releaseDate)) {
     return (
       <span>
-        {moment(airDateUtc).format('dddd')} at {time} on {networkLabel}
+        {moment(releaseDate).format('dddd')} on {networkLabel}
       </span>
     );
   }
 
   return (
     <span>
-      {moment(airDateUtc).format(shortDateFormat)} at {time} on {networkLabel}
+      {moment(releaseDate).format(shortDateFormat)} on {networkLabel}
     </span>
   );
 }
 
 EpisodeAiring.propTypes = {
-  airDateUtc: PropTypes.string.isRequired,
-  network: PropTypes.string.isRequired,
+  releaseDate: PropTypes.string.isRequired,
+  albumLabel: PropTypes.string.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired

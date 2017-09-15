@@ -11,7 +11,6 @@ import MonitorToggleButton from 'Components/MonitorToggleButton';
 import EpisodeSummaryConnector from './Summary/EpisodeSummaryConnector';
 import EpisodeHistoryConnector from './History/EpisodeHistoryConnector';
 import EpisodeSearchConnector from './Search/EpisodeSearchConnector';
-import SeasonEpisodeNumber from './SeasonEpisodeNumber';
 import styles from './EpisodeDetailsModalContent.css';
 
 const tabs = [
@@ -47,26 +46,22 @@ class EpisodeDetailsModalContent extends Component {
     const {
       episodeId,
       episodeEntity,
-      episodeFileId,
       artistId,
       seriesTitle,
-      titleSlug,
-      seriesMonitored,
-      seriesType,
-      seasonNumber,
-      episodeNumber,
-      absoluteEpisodeNumber,
+      nameSlug,
+      albumLabel,
+      artistMonitored,
       episodeTitle,
-      airDate,
+      releaseDate,
       monitored,
       isSaving,
       showOpenSeriesButton,
       startInteractiveSearch,
-      onMonitorEpisodePress,
+      onMonitorAlbumPress,
       onModalClose
     } = this.props;
 
-    const seriesLink = `/artist/${titleSlug}`;
+    const seriesLink = `/artist/${nameSlug}`;
 
     return (
       <ModalContent
@@ -78,24 +73,14 @@ class EpisodeDetailsModalContent extends Component {
             id={episodeId}
             monitored={monitored}
             size={18}
-            isDisabled={!seriesMonitored}
+            isDisabled={!artistMonitored}
             isSaving={isSaving}
-            onPress={onMonitorEpisodePress}
+            onPress={onMonitorAlbumPress}
           />
 
           <span className={styles.seriesTitle}>
             {seriesTitle}
           </span>
-
-          <span className={styles.separator}>-</span>
-
-          <SeasonEpisodeNumber
-            seasonNumber={seasonNumber}
-            episodeNumber={episodeNumber}
-            absoluteEpisodeNumber={absoluteEpisodeNumber}
-            airDate={airDate}
-            seriesType={seriesType}
-          />
 
           <span className={styles.separator}>-</span>
 
@@ -137,7 +122,8 @@ class EpisodeDetailsModalContent extends Component {
               <EpisodeSummaryConnector
                 episodeId={episodeId}
                 episodeEntity={episodeEntity}
-                episodeFileId={episodeFileId}
+                releaseDate={releaseDate}
+                albumLabel={albumLabel}
                 artistId={artistId}
               />
             </TabPanel>
@@ -150,7 +136,7 @@ class EpisodeDetailsModalContent extends Component {
 
             <TabPanel className={styles.tabPanel}>
               <EpisodeSearchConnector
-                episodeId={episodeId}
+                albumId={episodeId}
                 startInteractiveSearch={startInteractiveSearch}
                 onModalClose={onModalClose}
               />
@@ -166,7 +152,7 @@ class EpisodeDetailsModalContent extends Component {
                 to={seriesLink}
                 onPress={onModalClose}
               >
-                Open Series
+                Open Artist
               </Button>
           }
 
@@ -184,28 +170,25 @@ class EpisodeDetailsModalContent extends Component {
 EpisodeDetailsModalContent.propTypes = {
   episodeId: PropTypes.number.isRequired,
   episodeEntity: PropTypes.string.isRequired,
-  episodeFileId: PropTypes.number,
   artistId: PropTypes.number.isRequired,
   seriesTitle: PropTypes.string.isRequired,
-  titleSlug: PropTypes.string.isRequired,
-  seriesMonitored: PropTypes.bool.isRequired,
-  seriesType: PropTypes.string.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
-  absoluteEpisodeNumber: PropTypes.number,
-  airDate: PropTypes.string.isRequired,
+  nameSlug: PropTypes.string.isRequired,
+  artistMonitored: PropTypes.bool.isRequired,
+  releaseDate: PropTypes.string.isRequired,
+  albumLabel: PropTypes.string.isRequired,
   episodeTitle: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool,
   showOpenSeriesButton: PropTypes.bool,
   selectedTab: PropTypes.string.isRequired,
   startInteractiveSearch: PropTypes.bool.isRequired,
-  onMonitorEpisodePress: PropTypes.func.isRequired,
+  onMonitorAlbumPress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 EpisodeDetailsModalContent.defaultProps = {
   selectedTab: 'details',
+  albumLabel: 'Unknown',
   episodeEntity: episodeEntities.EPISODES,
   startInteractiveSearch: false
 };

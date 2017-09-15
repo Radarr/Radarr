@@ -11,7 +11,7 @@ import { fetchEpisodeFiles, clearEpisodeFiles } from 'Store/Actions/episodeFileA
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
-import SeriesDetails from './SeriesDetails';
+import ArtistDetails from './ArtistDetails';
 
 function createMapStateToProps() {
   return createSelector(
@@ -21,7 +21,7 @@ function createMapStateToProps() {
     createAllArtistSelector(),
     createCommandsSelector(),
     (nameSlug, episodes, episodeFiles, allSeries, commands) => {
-      const sortedArtist = _.orderBy(allSeries, 'sortTitle');
+      const sortedArtist = _.orderBy(allSeries, 'sortName');
       const seriesIndex = _.findIndex(sortedArtist, { nameSlug });
       const series = sortedArtist[seriesIndex];
 
@@ -29,15 +29,15 @@ function createMapStateToProps() {
         return {};
       }
 
-      const previousSeries = sortedArtist[seriesIndex - 1] || _.last(sortedArtist);
-      const nextSeries = sortedArtist[seriesIndex + 1] || _.first(sortedArtist);
-      const isSeriesRefreshing = !!findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: series.id });
-      const allSeriesRefreshing = _.some(commands, (command) => command.name === commandNames.REFRESH_ARTIST && !command.body.artistId);
-      const isRefreshing = isSeriesRefreshing || allSeriesRefreshing;
+      const previousArtist = sortedArtist[seriesIndex - 1] || _.last(sortedArtist);
+      const nextArtist = sortedArtist[seriesIndex + 1] || _.first(sortedArtist);
+      const isArtistRefreshing = !!findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: series.id });
+      const allArtistRefreshing = _.some(commands, (command) => command.name === commandNames.REFRESH_ARTIST && !command.body.artistId);
+      const isRefreshing = isArtistRefreshing || allArtistRefreshing;
       const isSearching = !!findCommand(commands, { name: commandNames.ARTIST_SEARCH, artistId: series.id });
       const isRenamingFiles = !!findCommand(commands, { name: commandNames.RENAME_FILES, artistId: series.id });
-      const isRenamingSeriesCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
-      const isRenamingSeries = !!(isRenamingSeriesCommand && isRenamingSeriesCommand.body.artistId.indexOf(series.id) > -1);
+      const isRenamingArtistCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
+      const isRenamingArtist = !!(isRenamingArtistCommand && isRenamingArtistCommand.body.artistId.indexOf(series.id) > -1);
 
       const isFetching = episodes.isFetching || episodeFiles.isFetching;
       const isPopulated = episodes.isPopulated && episodeFiles.isPopulated;
@@ -58,13 +58,13 @@ function createMapStateToProps() {
         isRefreshing,
         isSearching,
         isRenamingFiles,
-        isRenamingSeries,
+        isRenamingArtist,
         isFetching,
         isPopulated,
         episodesError,
         episodeFilesError,
-        previousSeries,
-        nextSeries
+        previousArtist,
+        nextArtist
       };
     }
   );
@@ -80,7 +80,7 @@ const mapDispatchToProps = {
   executeCommand
 };
 
-class SeriesDetailsConnector extends Component {
+class ArtistDetailsConnector extends Component {
 
   //
   // Lifecycle
@@ -94,13 +94,13 @@ class SeriesDetailsConnector extends Component {
       id,
       isRefreshing,
       isRenamingFiles,
-      isRenamingSeries
+      isRenamingArtist
     } = this.props;
 
     if (
       (prevProps.isRefreshing && !isRefreshing) ||
       (prevProps.isRenamingFiles && !isRenamingFiles) ||
-      (prevProps.isRenamingSeries && !isRenamingSeries)
+      (prevProps.isRenamingArtist && !isRenamingArtist)
     ) {
       this._populate();
     }
@@ -157,7 +157,7 @@ class SeriesDetailsConnector extends Component {
 
   render() {
     return (
-      <SeriesDetails
+      <ArtistDetails
         {...this.props}
         onRefreshPress={this.onRefreshPress}
         onSearchPress={this.onSearchPress}
@@ -166,12 +166,12 @@ class SeriesDetailsConnector extends Component {
   }
 }
 
-SeriesDetailsConnector.propTypes = {
+ArtistDetailsConnector.propTypes = {
   id: PropTypes.number.isRequired,
   nameSlug: PropTypes.string.isRequired,
   isRefreshing: PropTypes.bool.isRequired,
   isRenamingFiles: PropTypes.bool.isRequired,
-  isRenamingSeries: PropTypes.bool.isRequired,
+  isRenamingArtist: PropTypes.bool.isRequired,
   fetchEpisodes: PropTypes.func.isRequired,
   clearEpisodes: PropTypes.func.isRequired,
   fetchEpisodeFiles: PropTypes.func.isRequired,
@@ -181,4 +181,4 @@ SeriesDetailsConnector.propTypes = {
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SeriesDetailsConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(ArtistDetailsConnector);

@@ -1,4 +1,4 @@
-.season {
+.albumType {
   margin-bottom: 20px;
   border: 1px solid $borderColor;
   border-radius: 4px;
@@ -17,9 +17,15 @@
   font-size: 24px;
 }
 
-.seasonNumber {
-  margin-right: 10px;
+.albumTypeLabel {
+  margin-right: 5px;
   margin-left: 5px;
+}
+
+.albumCount {
+  font-size: 18px;
+  font-style: italic;
+  color: #8895aa;
 }
 
 .episodeCountContainer {
@@ -38,7 +44,7 @@
 .left {
   display: flex;
   align-items: center;
-  flex: 0 1 600px;
+  flex: 0 1 300px;
 }
 
 .left,
