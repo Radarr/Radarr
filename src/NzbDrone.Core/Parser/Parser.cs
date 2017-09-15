@@ -338,7 +338,7 @@ namespace NzbDrone.Core.Parser
 
             var artist = file.Tag.FirstAlbumArtist;
 
-            if (artist.IsNotNullOrWhiteSpace())
+            if (artist.IsNullOrWhiteSpace())
             {
                 artist = file.Tag.FirstPerformer;
             }

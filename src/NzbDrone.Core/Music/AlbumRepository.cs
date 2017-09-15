@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Music
 
             return Query.Where(s => s.CleanTitle == title)
                         .AndWhere(s => s.ArtistId == artistId)
-                        .SingleOrDefault();
+                        .FirstOrDefault();
         }
 
         public Album FindByArtistAndName(string artistName, string cleanTitle)

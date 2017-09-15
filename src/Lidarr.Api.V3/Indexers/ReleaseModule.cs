@@ -53,9 +53,9 @@ namespace Lidarr.Api.V3.Indexers
 
         private Response DownloadRelease(ReleaseResource release)
         {
-            var remoteEpisode = _remoteAlbumCache.Find(release.Guid);
+            var remoteAlbum = _remoteAlbumCache.Find(release.Guid);
 
-            if (remoteEpisode == null)
+            if (remoteAlbum == null)
             {
                 _logger.Debug("Couldn't find requested release in cache, cache timeout probably expired.");
 
@@ -64,7 +64,7 @@ namespace Lidarr.Api.V3.Indexers
 
             try
             {
-                _downloadService.DownloadReport(remoteEpisode);
+                _downloadService.DownloadReport(remoteAlbum);
             }
             catch (ReleaseDownloadException ex)
             {
@@ -77,15 +77,15 @@ namespace Lidarr.Api.V3.Indexers
 
         private List<ReleaseResource> GetReleases()
         {
-            if (Request.Query.episodeId.HasValue)
+            if (Request.Query.albumId.HasValue)
             {
-                return GetEpisodeReleases(Request.Query.episodeId);
+                return GetAlbumReleases(Request.Query.albumId);
             }
 
             return GetRss();
         }
 
-        private List<ReleaseResource> GetEpisodeReleases(int albumId)
+        private List<ReleaseResource> GetAlbumReleases(int albumId)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Lidarr.Api.V3.Indexers
             }
             catch (Exception ex)
             {
-                _logger.ErrorException("Episode search failed: " + ex.Message, ex);
+                _logger.ErrorException("Album search failed: " + ex.Message, ex);
             }
 
             return new List<ReleaseResource>();

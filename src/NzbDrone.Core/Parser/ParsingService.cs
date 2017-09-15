@@ -38,8 +38,6 @@ namespace NzbDrone.Core.Parser
     {
         private readonly IEpisodeService _episodeService;
         private readonly ISeriesService _seriesService;
-
-        private readonly IAlbumRepository _albumRepository;
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly ITrackService _trackService;
@@ -49,14 +47,12 @@ namespace NzbDrone.Core.Parser
                               ISeriesService seriesService,
                               ITrackService trackService,
                               IArtistService artistService,
-                              IAlbumRepository albumRepository,
                               IAlbumService albumService,
                               // ISceneMappingService sceneMappingService,
                               Logger logger)
         {
             _episodeService = episodeService;
             _seriesService = seriesService;
-            _albumRepository = albumRepository;
             _albumService = albumService;
             _artistService = artistService;
             // _sceneMappingService = sceneMappingService;
@@ -694,11 +690,6 @@ namespace NzbDrone.Core.Parser
                 parsedTrackInfo = Parser.ParseMusicPath(filename);
             }
 
-            //if (parsedTrackInfo == null)
-            //{
-            //    var title = Path.GetFileNameWithoutExtension(filename);
-            //}
-
             if (parsedTrackInfo == null)
             {
                 if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
@@ -734,6 +725,28 @@ namespace NzbDrone.Core.Parser
         {
             var result = new List<Track>();
 
+            if (parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace())
+            {
+                return new List<Track>();
+            }
+
+            var album = _albumService.FindByTitle(artist.Id, parsedTrackInfo.AlbumTitle);
+
+            if (album == null)
+            {
+                return new List<Track>();
+            }
+
+            Track trackInfo = null;
+
+            trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.Title);
+
+            if (trackInfo !=null)
+            {
+                result.Add(trackInfo);
+                return result;
+            }
+
             if (parsedTrackInfo.TrackNumbers == null)
             {
                 return new List<Track>();
@@ -741,26 +754,13 @@ namespace NzbDrone.Core.Parser
 
             foreach (var trackNumber in parsedTrackInfo.TrackNumbers)
             {
-                Track trackInfo = null;
+                Track trackInfoByNumber = null;
 
-                //if (searchCriteria != null)
-                //{
-                //    trackInfo = searchCriteria.Episodes.SingleOrDefault(e => e.SeasonNumber == seasonNumber && e.EpisodeNumber == trackNumber);
-                //}
+                trackInfoByNumber = _trackService.FindTrack(artist.Id, album.Id, trackNumber);
 
-                if (trackInfo == null)
+                if (trackInfoByNumber != null)
                 {
-                    var album = _albumRepository.FindByArtistAndName(parsedTrackInfo.ArtistTitle, Parser.CleanArtistTitle(parsedTrackInfo.AlbumTitle));
-                    if (album == null)
-                    {
-                        return new List<Track>();
-                    }
-                    trackInfo = _trackService.FindTrack(artist.Id, album.Id, trackNumber);
-                }
-
-                if (trackInfo != null)
-                {
-                    result.Add(trackInfo);
+                    result.Add(trackInfoByNumber);
                 }
 
                 else

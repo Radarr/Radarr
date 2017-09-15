@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Tv
 
             if (series.AddOptions.SearchForMissingEpisodes)
             {
-                _commandQueueManager.Push(new MissingEpisodeSearchCommand(series.Id));
+                _commandQueueManager.Push(new MissingAlbumSearchCommand(series.Id));
             }
 
             series.AddOptions = null;

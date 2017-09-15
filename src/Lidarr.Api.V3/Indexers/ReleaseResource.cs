@@ -64,7 +64,7 @@ namespace Lidarr.Api.V3.Indexers
         public static ReleaseResource ToResource(this DownloadDecision model)
         {
             var releaseInfo = model.RemoteAlbum.Release;
-            var parsedEpisodeInfo = model.RemoteAlbum.ParsedAlbumInfo;
+            var parsedAlbumInfo = model.RemoteAlbum.ParsedAlbumInfo;
             var remoteEpisode = model.RemoteAlbum;
             var torrentInfo = (model.RemoteAlbum.Release as TorrentInfo) ?? new TorrentInfo();
 
@@ -72,7 +72,7 @@ namespace Lidarr.Api.V3.Indexers
             return new ReleaseResource
             {
                 Guid = releaseInfo.Guid,
-                Quality = parsedEpisodeInfo.Quality,
+                Quality = parsedAlbumInfo.Quality,
                 //QualityWeight
                 Age = releaseInfo.Age,
                 AgeHours = releaseInfo.AgeHours,
@@ -80,14 +80,14 @@ namespace Lidarr.Api.V3.Indexers
                 Size = releaseInfo.Size,
                 IndexerId = releaseInfo.IndexerId,
                 Indexer = releaseInfo.Indexer,
-                ReleaseGroup = parsedEpisodeInfo.ReleaseGroup,
-                ReleaseHash = parsedEpisodeInfo.ReleaseHash,
+                ReleaseGroup = parsedAlbumInfo.ReleaseGroup,
+                ReleaseHash = parsedAlbumInfo.ReleaseHash,
                 Title = releaseInfo.Title,
                 //FullSeason = parsedEpisodeInfo.FullSeason,
                 //SeasonNumber = parsedEpisodeInfo.SeasonNumber,
-                Language = parsedEpisodeInfo.Language,
+                Language = parsedAlbumInfo.Language,
                 //AirDate = parsedEpisodeInfo.AirDate,
-                ArtistName = parsedEpisodeInfo.ArtistName,
+                ArtistName = parsedAlbumInfo.ArtistName,
                 
                 //EpisodeNumbers = parsedEpisodeInfo.EpisodeNumbers,
                 //AbsoluteEpisodeNumbers = parsedEpisodeInfo.AbsoluteEpisodeNumbers,

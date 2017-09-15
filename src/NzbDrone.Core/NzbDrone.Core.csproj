@@ -697,7 +697,7 @@
     <Compile Include="Indexers\Torznab\TorznabSettings.cs" />
     <Compile Include="Indexers\XElementExtensions.cs" />
     <Compile Include="IndexerSearch\Definitions\SearchCriteriaBase.cs" />
-    <Compile Include="IndexerSearch\MissingEpisodeSearchCommand.cs" />
+    <Compile Include="IndexerSearch\MissingAlbumSearchCommand.cs" />
     <Compile Include="IndexerSearch\NzbSearchService.cs" />
     <Compile Include="Instrumentation\Commands\ClearLogCommand.cs" />
     <Compile Include="Instrumentation\Commands\DeleteLogFilesCommand.cs" />
@@ -865,6 +865,7 @@
     <Compile Include="Music\MonitoringOptions.cs" />
     <Compile Include="Music\AlbumMonitoredService.cs" />
     <Compile Include="Music\MoveArtistService.cs" />
+    <Compile Include="Music\ArtistScannedHandler.cs" />
     <Compile Include="Music\TrackMonitoredService.cs" />
     <Compile Include="Music\Member.cs" />
     <Compile Include="Music\AddArtistOptions.cs" />
