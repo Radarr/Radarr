@@ -3603,10 +3603,15 @@
       "from": "randomatic@>=1.1.3 <2.0.0",
       "resolved": "https://registry.npmjs.org/randomatic/-/randomatic-1.1.5.tgz"
     },
+    "raven-for-redux": {
+      "version": "1.0.0",
+      "from": "raven-for-redux@latest",
+      "resolved": "https://registry.npmjs.org/raven-for-redux/-/raven-for-redux-1.0.0.tgz"
+    },
     "raven-js": {
-      "version": "3.9.2",
+      "version": "3.17.0",
       "from": "raven-js@>=3.1.1 <4.0.0",
-      "resolved": "https://registry.npmjs.org/raven-js/-/raven-js-3.9.2.tgz"
+      "resolved": "https://registry.npmjs.org/raven-js/-/raven-js-3.17.0.tgz"
     },
     "raw-body": {
       "version": "2.1.6",
@@ -3946,11 +3951,6 @@
       "version": "0.4.1",
       "from": "redux-localstorage@0.4.1",
       "resolved": "https://registry.npmjs.org/redux-localstorage/-/redux-localstorage-0.4.1.tgz"
-    },
-    "redux-raven-middleware": {
-      "version": "1.2.0",
-      "from": "redux-raven-middleware@latest",
-      "resolved": "https://registry.npmjs.org/redux-raven-middleware/-/redux-raven-middleware-1.2.0.tgz"
     },
     "redux-thunk": {
       "version": "2.2.0",

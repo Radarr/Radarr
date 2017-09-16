@@ -30,7 +30,7 @@ function getLatest(cb) {
     }
   });
 
-  var url = 'http://services.sonarr.tv/v1/update/' + branch + '?os=osx';
+  var url = 'http://services.lidarr.audio/v1/update/' + branch + '?os=osx';
 
   console.log('Checking for latest version:', url);
 
@@ -80,7 +80,7 @@ gulp.task('getSonarr', function() {
         console.log('Cleaning old binaries');
         del.sync(['./_output/*', '!./_output/UI/']);
         console.log('copying binaries to target');
-        gulp.src(dirName + '/NzbDrone/*.*')
+        gulp.src(dirName + '/Lidarr/*.*')
           .pipe(gulp.dest('./_output/'));
       });
     });
@@ -88,7 +88,7 @@ gulp.task('getSonarr', function() {
 });
 
 gulp.task('startSonarr', function() {
-  var ls = spawn('mono', ['--debug', './_output/NzbDrone.exe']);
+  var ls = spawn('mono', ['--debug', './_output/Lidarr.exe']);
 
   ls.stdout.on('data', function(data) {
     process.stdout.write(data);

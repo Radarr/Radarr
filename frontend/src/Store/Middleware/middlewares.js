@@ -1,5 +1,7 @@
 import { applyMiddleware, compose } from 'redux';
-import ravenMiddleware from 'redux-raven-middleware';
+import Raven from 'raven-js';
+import createRavenMiddleware from 'raven-for-redux';
+// import ravenMiddleware from 'redux-raven-middleware';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import persistState from './persistState';
@@ -13,13 +15,15 @@ export default function(history) {
     isProduction
   } = window.Sonarr;
 
-  const dsn = isProduction ? 'https://c3a5b33e08de4e18b7d0505e942dbc95:e35e6d535b034995a6896022c6bfed04@sentry.io/216290' :
-                            'https://c3a5b33e08de4e18b7d0505e942dbc95:e35e6d535b034995a6896022c6bfed04@sentry.io/216290';
+  const dsn = isProduction ? 'https://c3a5b33e08de4e18b7d0505e942dbc95@sentry.io/216290' :
+                             'https://c3a5b33e08de4e18b7d0505e942dbc95@sentry.io/216290';
+
+  Raven.config(dsn).install();
 
   const middlewares = [];
 
   if (analytics) {
-    middlewares.push(ravenMiddleware(dsn, {
+    middlewares.push(createRavenMiddleware(Raven, {
       environment: isProduction ? 'production' : 'development',
       release,
       tags: {
