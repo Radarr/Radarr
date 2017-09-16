@@ -19,8 +19,8 @@ export const defaultState = {
 
   columns: [
     {
-      name: 'series.sortTitle',
-      label: 'Series Title',
+      name: 'series.sortName',
+      label: 'Artist Name',
       isSortable: true,
       isVisible: true
     },

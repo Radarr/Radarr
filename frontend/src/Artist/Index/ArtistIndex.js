@@ -85,7 +85,7 @@ class ArtistIndex extends Component {
       sortDirection
     } = this.props;
 
-    // Reset if not sorting by sortTitle
+    // Reset if not sorting by sortName
     if (sortKey !== 'sortName') {
       this.setState({ jumpBarItems: [] });
       return;
@@ -162,7 +162,7 @@ class ArtistIndex extends Component {
       sortKey,
       sortDirection,
       view,
-      isRefreshingSeries,
+      isRefreshingArtist,
       isRssSyncExecuting,
       scrollTop,
       onSortSelect,
@@ -191,7 +191,7 @@ class ArtistIndex extends Component {
               label="Update all"
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
-              isSpinning={isRefreshingSeries}
+              isSpinning={isRefreshingArtist}
               onPress={onRefreshArtistPress}
             />
 
@@ -311,7 +311,7 @@ ArtistIndex.propTypes = {
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   view: PropTypes.string.isRequired,
-  isRefreshingSeries: PropTypes.bool.isRequired,
+  isRefreshingArtist: PropTypes.bool.isRequired,
   isRssSyncExecuting: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,

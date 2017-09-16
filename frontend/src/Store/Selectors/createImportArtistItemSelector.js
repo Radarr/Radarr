@@ -10,8 +10,8 @@ function createImportArtistItemSelector() {
     createAllArtistSelector(),
     (id, addArtist, importArtist, series) => {
       const item = _.find(importArtist.items, { id }) || {};
-      const selectedSeries = item && item.selectedSeries;
-      const isExistingArtist = !!selectedSeries && _.some(series, { foreignArtistId: selectedSeries.foreignArtistId });
+      const selectedArtist = item && item.selectedArtist;
+      const isExistingArtist = !!selectedArtist && _.some(series, { foreignArtistId: selectedArtist.foreignArtistId });
 
       return {
         defaultMonitor: addArtist.defaults.monitor,

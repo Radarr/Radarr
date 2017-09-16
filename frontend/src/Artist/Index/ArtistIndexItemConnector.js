@@ -12,23 +12,23 @@ import * as commandNames from 'Commands/commandNames';
 function createMapStateToProps() {
   return createSelector(
     (state, { id }) => id,
-    (state, { seasons }) => seasons,
+    (state, { albums }) => albums,
     createQualityProfileSelector(),
     createLanguageProfileSelector(),
     createCommandsSelector(),
-    (artistId, seasons, qualityProfile, languageProfile, commands) => {
-      const isRefreshingSeries = _.some(commands, (command) => {
+    (artistId, albums, qualityProfile, languageProfile, commands) => {
+      const isRefreshingArtist = _.some(commands, (command) => {
         return command.name === commandNames.REFRESH_ARTIST &&
           command.body.artistId === artistId;
       });
 
-      const latestSeason = _.maxBy(seasons, (season) => season.seasonNumber);
+      const latestAlbum = _.first(_.orderBy(albums, 'releaseDate', 'desc'));
 
       return {
         qualityProfile,
         languageProfile,
-        latestSeason,
-        isRefreshingSeries
+        latestAlbum,
+        isRefreshingArtist
       };
     }
   );

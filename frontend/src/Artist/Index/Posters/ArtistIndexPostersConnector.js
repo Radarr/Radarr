@@ -7,7 +7,7 @@ import ArtistIndexPosters from './ArtistIndexPosters';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.seriesIndex.posterOptions,
+    (state) => state.artistIndex.posterOptions,
     createClientSideCollectionSelector(),
     createUISettingsSelector(),
     createDimensionsSelector(),
@@ -29,5 +29,5 @@ export default connectSection(
                 undefined,
                 undefined,
                 { withRef: true },
-                { section: 'series', uiSection: 'seriesIndex' }
+                { section: 'series', uiSection: 'artistIndex' }
               )(ArtistIndexPosters);

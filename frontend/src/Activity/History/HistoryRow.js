@@ -115,7 +115,7 @@ class HistoryRow extends Component {
                     episodeEntity={episodeEntities.EPISODES}
                     artistId={artist.id}
                     episodeTitle={album.title}
-                    showOpenSeriesButton={true}
+                    showOpenArtistButton={true}
                   />
                 </TableRowCell>
               );

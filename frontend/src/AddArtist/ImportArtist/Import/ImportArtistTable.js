@@ -72,30 +72,30 @@ class ImportArtistTable extends Component {
         return;
       }
 
-      const selectedSeries = item.selectedSeries;
+      const selectedArtist = item.selectedArtist;
       const isSelected = selectedState[id];
 
-      const isExistingArtist = !!selectedSeries &&
-        _.some(prevProps.allSeries, { foreignArtistId: selectedSeries.foreignArtistId });
+      const isExistingArtist = !!selectedArtist &&
+        _.some(prevProps.allArtists, { foreignArtistId: selectedArtist.foreignArtistId });
 
-      // Props doesn't have a selected series or
-      // the selected series is an existing series.
-      if ((selectedSeries && !prevItem.selectedSeries) || (isExistingArtist && !prevItem.selectedSeries)) {
+      // Props doesn't have a selected artist or
+      // the selected artist is an existing artist.
+      if ((selectedArtist && !prevItem.selectedArtist) || (isExistingArtist && !prevItem.selectedArtist)) {
         onSelectedChange({ id, value: false });
 
         return;
       }
 
-      // State is selected, but a series isn't selected or
-      // the selected series is an existing series.
-      if (isSelected && (!selectedSeries || isExistingArtist)) {
+      // State is selected, but a artist isn't selected or
+      // the selected artist is an existing artist.
+      if (isSelected && (!selectedArtist || isExistingArtist)) {
         onSelectedChange({ id, value: false });
 
         return;
       }
 
-      // A series is being selected that wasn't previously selected.
-      if (selectedSeries && selectedSeries !== prevItem.selectedSeries) {
+      // A artist is being selected that wasn't previously selected.
+      if (selectedArtist && selectedArtist !== prevItem.selectedArtist) {
         onSelectedChange({ id, value: true });
 
         return;
@@ -198,7 +198,7 @@ ImportArtistTable.propTypes = {
   allUnselected: PropTypes.bool.isRequired,
   selectedState: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  allSeries: PropTypes.arrayOf(PropTypes.object),
+  allArtists: PropTypes.arrayOf(PropTypes.object),
   contentBody: PropTypes.object.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,

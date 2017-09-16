@@ -33,7 +33,7 @@ class DeleteArtistModalContent extends Component {
     this.setState({ deleteFiles: value });
   }
 
-  onDeleteSeriesConfirmed = () => {
+  onDeleteArtistConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
 
     this.setState({ deleteFiles: false });
@@ -113,7 +113,7 @@ class DeleteArtistModalContent extends Component {
 
           <Button
             kind={kinds.DANGER}
-            onPress={this.onDeleteSeriesConfirmed}
+            onPress={this.onDeleteArtistConfirmed}
           >
             Delete
           </Button>

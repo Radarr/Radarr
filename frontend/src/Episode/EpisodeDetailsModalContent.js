@@ -47,7 +47,7 @@ class EpisodeDetailsModalContent extends Component {
       episodeId,
       episodeEntity,
       artistId,
-      seriesTitle,
+      artistName,
       nameSlug,
       albumLabel,
       artistMonitored,
@@ -55,7 +55,7 @@ class EpisodeDetailsModalContent extends Component {
       releaseDate,
       monitored,
       isSaving,
-      showOpenSeriesButton,
+      showOpenArtistButton,
       startInteractiveSearch,
       onMonitorAlbumPress,
       onModalClose
@@ -78,8 +78,8 @@ class EpisodeDetailsModalContent extends Component {
             onPress={onMonitorAlbumPress}
           />
 
-          <span className={styles.seriesTitle}>
-            {seriesTitle}
+          <span className={styles.artistName}>
+            {artistName}
           </span>
 
           <span className={styles.separator}>-</span>
@@ -146,7 +146,7 @@ class EpisodeDetailsModalContent extends Component {
 
         <ModalFooter>
           {
-            showOpenSeriesButton &&
+            showOpenArtistButton &&
               <Button
                 className={styles.openSeriesButton}
                 to={seriesLink}
@@ -171,7 +171,7 @@ EpisodeDetailsModalContent.propTypes = {
   episodeId: PropTypes.number.isRequired,
   episodeEntity: PropTypes.string.isRequired,
   artistId: PropTypes.number.isRequired,
-  seriesTitle: PropTypes.string.isRequired,
+  artistName: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
   artistMonitored: PropTypes.bool.isRequired,
   releaseDate: PropTypes.string.isRequired,
@@ -179,7 +179,7 @@ EpisodeDetailsModalContent.propTypes = {
   episodeTitle: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool,
-  showOpenSeriesButton: PropTypes.bool,
+  showOpenArtistButton: PropTypes.bool,
   selectedTab: PropTypes.string.isRequired,
   startInteractiveSearch: PropTypes.bool.isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired,

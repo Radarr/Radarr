@@ -10,12 +10,6 @@
   flex: 4 0 110px;
 }
 
-.network {
-  composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
-
-  flex: 2 0 90px;
-}
-
 .qualityProfileId,
 .languageProfileId {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
@@ -38,7 +32,7 @@
 }
 
 .trackProgress,
-.latestSeason {
+.latestAlbum {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
   display: flex;

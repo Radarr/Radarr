@@ -4,8 +4,8 @@ import { routerReducer } from 'react-router-redux';
 import app, { defaultState as defaultappState } from './appReducers';
 import addArtist, { defaultState as defaultAddSeriesState } from './addArtistReducers';
 import importArtist, { defaultState as defaultImportArtistState } from './importArtistReducers';
-import series, { defaultState as defaultSeriesState } from './artistReducers';
-import seriesIndex, { defaultState as defaultSeriesIndexState } from './artistIndexReducers';
+import series, { defaultState as defaultArtistState } from './artistReducers';
+import artistIndex, { defaultState as defaultArtistIndexState } from './artistIndexReducers';
 import artistEditor, { defaultState as defaultArtistEditorState } from './artistEditorReducers';
 import albumStudio, { defaultState as defaultAlbumStudioState } from './albumStudioReducers';
 import calendar, { defaultState as defaultCalendarState } from './calendarReducers';
@@ -32,8 +32,8 @@ export const defaultState = {
   app: defaultappState,
   addArtist: defaultAddSeriesState,
   importArtist: defaultImportArtistState,
-  series: defaultSeriesState,
-  seriesIndex: defaultSeriesIndexState,
+  series: defaultArtistState,
+  artistIndex: defaultArtistIndexState,
   artistEditor: defaultArtistEditorState,
   albumStudio: defaultAlbumStudioState,
   calendar: defaultCalendarState,
@@ -62,7 +62,7 @@ export default enableBatching(combineReducers({
   addArtist,
   importArtist,
   series,
-  seriesIndex,
+  artistIndex,
   artistEditor,
   albumStudio,
   calendar,

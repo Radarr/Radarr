@@ -45,7 +45,7 @@ class CutoffUnmet extends Component {
       this.setState((state) => {
         return removeOldSelectedState(state, prevProps.items);
       });
-    }s;
+    }
   }
 
   //

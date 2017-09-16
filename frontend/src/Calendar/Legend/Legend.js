@@ -22,7 +22,7 @@ function Legend({ colorImpairedMode }) {
 
       <div>
         <LegendItem
-          status="unaired"
+          status="unreleased"
           tooltip="Album hasn't released yet"
           colorImpairedMode={colorImpairedMode}
         />

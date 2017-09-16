@@ -124,13 +124,13 @@ class ArtistIndexPosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Title</FormLabel>
+              <FormLabel>Show Name</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="showTitle"
                 value={showTitle}
-                helpText="Show series title under poster"
+                helpText="Show artist name under poster"
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>

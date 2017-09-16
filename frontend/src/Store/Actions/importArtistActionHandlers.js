@@ -80,7 +80,7 @@ const importArtistActionHandlers = {
           error: null,
           items: data,
           queued: false,
-          selectedSeries: queued.selectedSeries || data[0]
+          selectedArtist: queued.selectedArtist || data[0]
         }));
       });
 
@@ -112,12 +112,12 @@ const importArtistActionHandlers = {
 
       const allNewSeries = ids.reduce((acc, id) => {
         const item = _.find(items, { id });
-        const selectedSeries = item.selectedSeries;
+        const selectedArtist = item.selectedArtist;
 
         // Make sure we have a selected series and
         // the same series hasn't been added yet.
-        if (selectedSeries && !_.some(acc, { foreignArtistId: selectedSeries.foreignArtistId })) {
-          const newSeries = getNewSeries(_.cloneDeep(selectedSeries), item);
+        if (selectedArtist && !_.some(acc, { foreignArtistId: selectedArtist.foreignArtistId })) {
+          const newSeries = getNewSeries(_.cloneDeep(selectedArtist), item);
           newSeries.path = item.path;
 
           addedIds.push(id);

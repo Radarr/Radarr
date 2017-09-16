@@ -30,15 +30,15 @@ class ArtistIndexPoster extends Component {
   //
   // Listeners
 
-  onEditSeriesPress = () => {
+  onEditArtistPress = () => {
     this.setState({ isEditArtistModalOpen: true });
   }
 
-  onEditSeriesModalClose = () => {
+  onEditArtistModalClose = () => {
     this.setState({ isEditArtistModalOpen: false });
   }
 
-  onDeleteSeriesPress = () => {
+  onDeleteArtistPress = () => {
     this.setState({
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: true
@@ -73,7 +73,7 @@ class ArtistIndexPoster extends Component {
       showRelativeDates,
       shortDateFormat,
       timeFormat,
-      isRefreshingSeries,
+      isRefreshingArtist,
       onRefreshArtistPress,
       ...otherProps
     } = this.props;
@@ -99,7 +99,7 @@ class ArtistIndexPoster extends Component {
                 className={styles.action}
                 name={icons.REFRESH}
                 title="Refresh Artist"
-                isSpinning={isRefreshingSeries}
+                isSpinning={isRefreshingArtist}
                 onPress={onRefreshArtistPress}
               />
 
@@ -107,7 +107,7 @@ class ArtistIndexPoster extends Component {
                 className={styles.action}
                 name={icons.EDIT}
                 title="Edit Artist"
-                onPress={this.onEditSeriesPress}
+                onPress={this.onEditArtistPress}
               />
             </Label>
 
@@ -183,8 +183,8 @@ class ArtistIndexPoster extends Component {
           <EditArtistModalConnector
             isOpen={isEditArtistModalOpen}
             artistId={id}
-            onModalClose={this.onEditSeriesModalClose}
-            onDeleteSeriesPress={this.onDeleteSeriesPress}
+            onModalClose={this.onEditArtistModalClose}
+            onDeleteArtistPress={this.onDeleteArtistPress}
           />
 
           <DeleteArtistModal
@@ -218,7 +218,7 @@ ArtistIndexPoster.propTypes = {
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
-  isRefreshingSeries: PropTypes.bool.isRequired,
+  isRefreshingArtist: PropTypes.bool.isRequired,
   onRefreshArtistPress: PropTypes.func.isRequired
 };
 

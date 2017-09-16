@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import selectSettings from 'Store/Selectors/selectSettings';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import { setSeriesValue, saveArtist } from 'Store/Actions/artistActions';
+import { setArtistValue, saveArtist } from 'Store/Actions/artistActions';
 import EditArtistModalContent from './EditArtistModalContent';
 
 function createMapStateToProps() {
@@ -46,7 +46,7 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setSeriesValue,
+  setArtistValue,
   saveArtist
 };
 
@@ -65,7 +65,7 @@ class EditArtistModalContentConnector extends Component {
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setSeriesValue({ name, value });
+    this.props.setArtistValue({ name, value });
   }
 
   onSavePress = () => {
@@ -90,7 +90,7 @@ EditArtistModalContentConnector.propTypes = {
   artistId: PropTypes.number,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
-  setSeriesValue: PropTypes.func.isRequired,
+  setArtistValue: PropTypes.func.isRequired,
   saveArtist: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

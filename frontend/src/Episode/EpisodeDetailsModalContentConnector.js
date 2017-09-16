@@ -15,14 +15,14 @@ function createMapStateToProps() {
     createArtistSelector(),
     (episode, series) => {
       const {
-        artistName: seriesTitle,
+        artistName,
         nameSlug,
         monitored: artistMonitored,
         seriesType
       } = series;
 
       return {
-        seriesTitle,
+        artistName,
         nameSlug,
         artistMonitored,
         seriesType,

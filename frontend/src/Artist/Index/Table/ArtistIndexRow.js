@@ -31,15 +31,15 @@ class ArtistIndexRow extends Component {
     };
   }
 
-  onEditSeriesPress = () => {
+  onEditArtistPress = () => {
     this.setState({ isEditArtistModalOpen: true });
   }
 
-  onEditSeriesModalClose = () => {
+  onEditArtistModalClose = () => {
     this.setState({ isEditArtistModalOpen: false });
   }
 
-  onDeleteSeriesPress = () => {
+  onDeleteArtistPress = () => {
     this.setState({
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: true
@@ -66,7 +66,6 @@ class ArtistIndexRow extends Component {
       status,
       artistName,
       nameSlug,
-      network,
       qualityProfile,
       languageProfile,
       nextAiring,
@@ -76,13 +75,13 @@ class ArtistIndexRow extends Component {
       trackCount,
       trackFileCount,
       totalTrackCount,
-      latestSeason,
+      latestAlbum,
       path,
       sizeOnDisk,
       tags,
       // useSceneNumbering,
       columns,
-      isRefreshingSeries,
+      isRefreshingArtist,
       onRefreshArtistPress
     } = this.props;
 
@@ -126,17 +125,6 @@ class ArtistIndexRow extends Component {
                     nameSlug={nameSlug}
                     artistName={artistName}
                   />
-                </VirtualTableRowCell>
-              );
-            }
-
-            if (name === 'network') {
-              return (
-                <VirtualTableRowCell
-                  key={name}
-                  className={styles[name]}
-                >
-                  {network}
                 </VirtualTableRowCell>
               );
             }
@@ -227,9 +215,9 @@ class ArtistIndexRow extends Component {
               );
             }
 
-            if (name === 'latestSeason') {
-              const seasonStatistics = latestSeason.statistics;
-              const progress = seasonStatistics.episodeCount ? seasonStatistics.episodeFileCount / seasonStatistics.episodeCount * 100 : 100;
+            if (name === 'latestAlbum') {
+              const albumStatistics = latestAlbum.statistics;
+              const progress = albumStatistics.trackCount ? albumStatistics.trackFileCount / albumStatistics.trackCount * 100 : 100;
 
               return (
                 <VirtualTableRowCell
@@ -240,8 +228,8 @@ class ArtistIndexRow extends Component {
                     progress={progress}
                     kind={getProgressBarKind(status, monitored, progress)}
                     showText={true}
-                    text={`${seasonStatistics.episodeFileCount} / ${seasonStatistics.episodeCount}`}
-                    title={`${seasonStatistics.episodeFileCount} / ${seasonStatistics.episodeCount} (Total: ${seasonStatistics.totalEpisodeCount})`}
+                    text={`${albumStatistics.trackFileCount} / ${albumStatistics.trackCount}`}
+                    title={`${albumStatistics.trackFileCount} / ${albumStatistics.trackCount} (Total: ${albumStatistics.totalTrackCount})`}
                     width={125}
                   />
                 </VirtualTableRowCell>
@@ -320,14 +308,14 @@ class ArtistIndexRow extends Component {
                   <SpinnerIconButton
                     name={icons.REFRESH}
                     title="Refresh Artist"
-                    isSpinning={isRefreshingSeries}
+                    isSpinning={isRefreshingArtist}
                     onPress={onRefreshArtistPress}
                   />
 
                   <IconButton
                     name={icons.EDIT}
                     title="Edit Artist"
-                    onPress={this.onEditSeriesPress}
+                    onPress={this.onEditArtistPress}
                   />
                 </VirtualTableRowCell>
               );
@@ -340,8 +328,8 @@ class ArtistIndexRow extends Component {
         <EditArtistModalConnector
           isOpen={isEditArtistModalOpen}
           artistId={id}
-          onModalClose={this.onEditSeriesModalClose}
-          onDeleteSeriesPress={this.onDeleteSeriesPress}
+          onModalClose={this.onEditArtistModalClose}
+          onDeleteArtistPress={this.onDeleteArtistPress}
         />
 
         <DeleteArtistModal
@@ -361,7 +349,6 @@ ArtistIndexRow.propTypes = {
   status: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
-  network: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   languageProfile: PropTypes.object.isRequired,
   nextAiring: PropTypes.string,
@@ -371,13 +358,13 @@ ArtistIndexRow.propTypes = {
   trackCount: PropTypes.number,
   trackFileCount: PropTypes.number,
   totalTrackCount: PropTypes.number,
-  latestSeason: PropTypes.object,
+  latestAlbum: PropTypes.object,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
   // useSceneNumbering: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isRefreshingSeries: PropTypes.bool.isRequired,
+  isRefreshingArtist: PropTypes.bool.isRequired,
   onRefreshArtistPress: PropTypes.func.isRequired
 };
 

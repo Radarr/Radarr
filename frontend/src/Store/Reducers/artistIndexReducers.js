@@ -8,9 +8,9 @@ import createSetClientSideCollectionSortReducer from './Creators/createSetClient
 import createSetClientSideCollectionFilterReducer from './Creators/createSetClientSideCollectionFilterReducer';
 
 export const defaultState = {
-  sortKey: 'sortTitle',
+  sortKey: 'sortName',
   sortDirection: sortDirections.ASCENDING,
-  secondarySortKey: 'sortTitle',
+  secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
   filterKey: null,
   filterValue: null,
@@ -37,12 +37,6 @@ export const defaultState = {
       isSortable: true,
       isVisible: true,
       isModifiable: false
-    },
-    {
-      name: 'network',
-      label: 'Network',
-      isSortable: true,
-      isVisible: true
     },
     {
       name: 'qualityProfileId',
@@ -93,8 +87,8 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'latestSeason',
-      label: 'Latest Season',
+      name: 'latestAlbum',
+      label: 'Latest Album',
       isSortable: true,
       isVisible: false
     },
@@ -117,12 +111,6 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'useSceneNumbering',
-      label: 'Scene Numbering',
-      isSortable: true,
-      isVisible: false
-    },
-    {
       name: 'actions',
       columnLabel: 'Actions',
       isVisible: true,
@@ -131,12 +119,6 @@ export const defaultState = {
   ],
 
   sortPredicates: {
-    network: function(item) {
-      const network = item.network;
-
-      return network ? network.toLowerCase() : '';
-    },
-
     nextAiring: function(item, direction) {
       const nextAiring = item.nextAiring;
 
@@ -151,37 +133,37 @@ export const defaultState = {
       return Number.MAX_VALUE;
     },
 
-    episodeProgress: function(item) {
+    trackProgress: function(item) {
       const {
-        episodeCount = 0,
-        episodeFileCount
+        trackCount = 0,
+        trackFileCount
       } = item;
 
-      const progress = episodeCount ? episodeFileCount / episodeCount * 100 : 100;
+      const progress = trackCount ? trackFileCount / trackCount * 100 : 100;
 
-      return progress + episodeCount / 1000000;
+      return progress + trackCount / 1000000;
     }
   },
 
   filterPredicates: {
     missing: function(item) {
-      return item.episodeCount - item.episodeFileCount > 0;
+      return item.trackCount - item.trackFileCount > 0;
     }
   }
 };
 
 export const persistState = [
-  'seriesIndex.sortKey',
-  'seriesIndex.sortDirection',
-  'seriesIndex.filterKey',
-  'seriesIndex.filterValue',
-  'seriesIndex.filterType',
-  'seriesIndex.view',
-  'seriesIndex.columns',
-  'seriesIndex.posterOptions'
+  'artistIndex.sortKey',
+  'artistIndex.sortDirection',
+  'artistIndex.filterKey',
+  'artistIndex.filterValue',
+  'artistIndex.filterType',
+  'artistIndex.view',
+  'artistIndex.columns',
+  'artistIndex.posterOptions'
 ];
 
-const reducerSection = 'seriesIndex';
+const reducerSection = 'artistIndex';
 
 const artistIndexReducers = handleActions({
 

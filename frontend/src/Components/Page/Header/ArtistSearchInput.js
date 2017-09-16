@@ -76,7 +76,7 @@ class ArtistSearchInput extends Component {
     );
   }
 
-  goToSeries(series) {
+  goToArtist(series) {
     this.setState({ value: '' });
     this.props.onGoToSeries(series.nameSlug);
   }
@@ -121,9 +121,9 @@ class ArtistSearchInput extends Component {
     // otherwise go to the selected series.
 
     if (highlightedSuggestionIndex == null) {
-      this.goToSeries(suggestions[0]);
+      this.goToArtist(suggestions[0]);
     } else {
-      this.goToSeries(suggestions[highlightedSuggestionIndex]);
+      this.goToArtist(suggestions[highlightedSuggestionIndex]);
     }
   }
 
@@ -155,7 +155,7 @@ class ArtistSearchInput extends Component {
     if (suggestion.type === ADD_NEW_TYPE) {
       this.props.onGoToAddNewArtist(this.state.value);
     } else {
-      this.goToSeries(suggestion);
+      this.goToArtist(suggestion);
     }
   }
 

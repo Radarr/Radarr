@@ -12,11 +12,11 @@ function createMapStateToProps() {
   return createSelector(
     (state, { match }) => match,
     createAllArtistSelector(),
-    (match, allSeries) => {
+    (match, allArtists) => {
       const nameSlug = match.params.nameSlug;
-      const seriesIndex = _.findIndex(allSeries, { nameSlug });
+      const artistIndex = _.findIndex(allArtists, { nameSlug });
 
-      if (seriesIndex > -1) {
+      if (artistIndex > -1) {
         return {
           nameSlug
         };

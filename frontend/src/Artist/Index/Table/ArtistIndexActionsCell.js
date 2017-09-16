@@ -24,15 +24,15 @@ class ArtistIndexActionsCell extends Component {
   //
   // Listeners
 
-  onEditSeriesPress = () => {
+  onEditArtistPress = () => {
     this.setState({ isEditArtistModalOpen: true });
   }
 
-  onEditSeriesModalClose = () => {
+  onEditArtistModalClose = () => {
     this.setState({ isEditArtistModalOpen: false });
   }
 
-  onDeleteSeriesPress = () => {
+  onDeleteArtistPress = () => {
     this.setState({
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: true
@@ -49,7 +49,7 @@ class ArtistIndexActionsCell extends Component {
   render() {
     const {
       id,
-      isRefreshingSeries,
+      isRefreshingArtist,
       onRefreshArtistPress,
       ...otherProps
     } = this.props;
@@ -66,21 +66,21 @@ class ArtistIndexActionsCell extends Component {
         <SpinnerIconButton
           name={icons.REFRESH}
           title="Refresh Artist"
-          isSpinning={isRefreshingSeries}
+          isSpinning={isRefreshingArtist}
           onPress={onRefreshArtistPress}
         />
 
         <IconButton
           name={icons.EDIT}
           title="Edit Artist"
-          onPress={this.onEditSeriesPress}
+          onPress={this.onEditArtistPress}
         />
 
         <EditArtistModalConnector
           isOpen={isEditArtistModalOpen}
           artistId={id}
-          onModalClose={this.onEditSeriesModalClose}
-          onDeleteSeriesPress={this.onDeleteSeriesPress}
+          onModalClose={this.onEditArtistModalClose}
+          onDeleteArtistPress={this.onDeleteArtistPress}
         />
 
         <DeleteArtistModal
@@ -95,7 +95,7 @@ class ArtistIndexActionsCell extends Component {
 
 ArtistIndexActionsCell.propTypes = {
   id: PropTypes.number.isRequired,
-  isRefreshingSeries: PropTypes.bool.isRequired,
+  isRefreshingArtist: PropTypes.bool.isRequired,
   onRefreshArtistPress: PropTypes.func.isRequired
 };
 

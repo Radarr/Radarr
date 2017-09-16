@@ -163,7 +163,7 @@ class QueueRow extends Component {
                     episodeFileId={episode.episodeFileId}
                     episodeEntity={episodeEntity}
                     episodeTitle={episode.title}
-                    showOpenSeriesButton={true}
+                    showOpenArtistButton={true}
                   />
                 </TableRowCell>
               );

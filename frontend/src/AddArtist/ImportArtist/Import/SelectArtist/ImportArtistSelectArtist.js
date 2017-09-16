@@ -110,7 +110,7 @@ class ImportArtistSelectArtist extends Component {
 
   render() {
     const {
-      selectedSeries,
+      selectedArtist,
       isExistingArtist,
       isFetching,
       isPopulated,
@@ -146,7 +146,7 @@ class ImportArtistSelectArtist extends Component {
           }
 
           {
-            isPopulated && selectedSeries && isExistingArtist &&
+            isPopulated && selectedArtist && isExistingArtist &&
               <Icon
                 className={styles.warningIcon}
                 name={icons.WARNING}
@@ -155,18 +155,17 @@ class ImportArtistSelectArtist extends Component {
           }
 
           {
-            isPopulated && selectedSeries &&
+            isPopulated && selectedArtist &&
               <ImportArtistName
-                artistName={selectedSeries.artistName}
-                overview={selectedSeries.overview}
-                // year={selectedSeries.year}
-                // network={selectedSeries.network}
+                artistName={selectedArtist.artistName}
+                overview={selectedArtist.overview}
+                // year={selectedArtist.year}
                 isExistingArtist={isExistingArtist}
               />
           }
 
           {
-            isPopulated && !selectedSeries &&
+            isPopulated && !selectedArtist &&
               <div>
                 <Icon
                   className={styles.warningIcon}
@@ -230,9 +229,8 @@ class ImportArtistSelectArtist extends Component {
                           key={item.foreignArtistId}
                           foreignArtistId={item.foreignArtistId}
                           artistName={item.artistName}
-                          overview={item.overview}
+                          // overview={item.overview}
                           // year={item.year}
-                          // network={item.network}
                           onPress={this.onArtistSelect}
                         />
                       );
@@ -249,7 +247,7 @@ class ImportArtistSelectArtist extends Component {
 
 ImportArtistSelectArtist.propTypes = {
   id: PropTypes.string.isRequired,
-  selectedSeries: PropTypes.object,
+  selectedArtist: PropTypes.object,
   isExistingArtist: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,

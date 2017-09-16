@@ -40,17 +40,17 @@ function getScrollTop(view, scrollTop, isSmallScreen) {
 function createMapStateToProps() {
   return createSelector(
     (state) => state.series,
-    (state) => state.seriesIndex,
+    (state) => state.artistIndex,
     createCommandSelector(commandNames.REFRESH_ARTIST),
     createCommandSelector(commandNames.RSS_SYNC),
     createDimensionsSelector(),
-    (series, seriesIndex, isRefreshingSeries, isRssSyncExecuting, dimensionsState) => {
+    (series, artistIndex, isRefreshingArtist, isRssSyncExecuting, dimensionsState) => {
       return {
-        isRefreshingSeries,
+        isRefreshingArtist,
         isRssSyncExecuting,
         isSmallScreen: dimensionsState.isSmallScreen,
         ...series,
-        ...seriesIndex
+        ...artistIndex
       };
     }
   );
@@ -109,7 +109,7 @@ class ArtistIndexConnector extends Component {
     this.setState({
       scrollTop
     }, () => {
-      scrollPositions.seriesIndex = scrollTop;
+      scrollPositions.artistIndex = scrollTop;
     });
   }
 
@@ -156,5 +156,5 @@ ArtistIndexConnector.propTypes = {
 
 export default withScrollPosition(
   connect(createMapStateToProps, mapDispatchToProps)(ArtistIndexConnector),
-  'seriesIndex'
+  'artistIndex'
 );

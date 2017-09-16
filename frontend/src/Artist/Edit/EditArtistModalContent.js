@@ -27,7 +27,7 @@ class EditArtistModalContent extends Component {
       onInputChange,
       onSavePress,
       onModalClose,
-      onDeleteSeriesPress,
+      onDeleteArtistPress,
       ...otherProps
     } = this.props;
 
@@ -127,7 +127,7 @@ class EditArtistModalContent extends Component {
           <Button
             className={styles.deleteButton}
             kind={kinds.DANGER}
-            onPress={onDeleteSeriesPress}
+            onPress={onDeleteArtistPress}
           >
             Delete
           </Button>
@@ -159,7 +159,7 @@ EditArtistModalContent.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  onDeleteSeriesPress: PropTypes.func.isRequired
+  onDeleteArtistPress: PropTypes.func.isRequired
 };
 
 export default EditArtistModalContent;

@@ -60,7 +60,6 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
   }
 
   switch (sortKey) {
-    case 'network':
     case 'seasons':
     case 'previousAiring':
     case 'added':
@@ -79,7 +78,7 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
 }
 
 function calculatePosterHeight(posterWidth) {
-  return Math.ceil((250 / 170) * posterWidth);
+  return Math.ceil(posterWidth);
 }
 
 class ArtistIndexPosters extends Component {
@@ -94,7 +93,7 @@ class ArtistIndexPosters extends Component {
       width: 0,
       columnWidth: 182,
       columnCount: 1,
-      posterWidth: 162,
+      posterWidth: 238,
       posterHeight: 238,
       rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
     };
@@ -149,7 +148,7 @@ class ArtistIndexPosters extends Component {
     } = this.state;
 
     const index = _.findIndex(items, (item) => {
-      const firstCharacter = item.sortTitle.charAt(0);
+      const firstCharacter = item.sortName.charAt(0);
 
       if (character === '#') {
         return !isNaN(firstCharacter);

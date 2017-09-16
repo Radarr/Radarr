@@ -15,7 +15,7 @@ export const defaultState = {
   isSaving: false,
   saveError: null,
   items: [],
-  sortKey: 'sortTitle',
+  sortKey: 'sortName',
   sortDirection: sortDirections.ASCENDING,
   pendingChanges: {}
 };

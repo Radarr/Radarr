@@ -23,7 +23,6 @@ export default function artistIndexCellRenderers(cellProps) {
     status,
     name,
     nameSlug,
-    network,
     qualityProfileId,
     nextAiring,
     previousAiring,
@@ -46,7 +45,7 @@ export default function artistIndexCellRenderers(cellProps) {
     );
   }
 
-  if (dataKey === 'sortTitle') {
+  if (dataKey === 'sortName') {
     return (
       <VirtualTableRowCell
         key={cellKey}
@@ -56,18 +55,6 @@ export default function artistIndexCellRenderers(cellProps) {
           nameSlug={nameSlug}
           name={name}
         />
-      </VirtualTableRowCell>
-
-    );
-  }
-
-  if (dataKey === 'network') {
-    return (
-      <VirtualTableRowCell
-        key={cellKey}
-        {...otherProps}
-      >
-        {network}
       </VirtualTableRowCell>
 
     );
@@ -97,7 +84,7 @@ export default function artistIndexCellRenderers(cellProps) {
     );
   }
 
-  if (dataKey === 'seasonCount') {
+  if (dataKey === 'albumCount') {
     return (
       <VirtualTableRowCell
         key={cellKey}
@@ -108,7 +95,7 @@ export default function artistIndexCellRenderers(cellProps) {
     );
   }
 
-  if (dataKey === 'episodeProgress') {
+  if (dataKey === 'trackProgress') {
     return (
       <VirtualTableRowCell
         key={cellKey}

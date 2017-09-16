@@ -87,7 +87,7 @@ function MissingRow(props) {
                   artistId={artist.id}
                   episodeEntity={episodeEntities.WANTED_MISSING}
                   episodeTitle={title}
-                  showOpenSeriesButton={true}
+                  showOpenArtistButton={true}
                 />
               </TableRowCell>
             );
@@ -125,7 +125,7 @@ function MissingRow(props) {
                 artistId={artist.id}
                 episodeTitle={title}
                 episodeEntity={episodeEntities.WANTED_MISSING}
-                showOpenSeriesButton={true}
+                showOpenArtistButton={true}
               />
             );
           }

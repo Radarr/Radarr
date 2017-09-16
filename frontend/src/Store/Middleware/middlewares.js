@@ -1,7 +1,6 @@
 import { applyMiddleware, compose } from 'redux';
 import Raven from 'raven-js';
 import createRavenMiddleware from 'raven-for-redux';
-// import ravenMiddleware from 'redux-raven-middleware';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import persistState from './persistState';

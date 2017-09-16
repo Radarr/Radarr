@@ -172,7 +172,7 @@ class AlbumStudio extends Component {
                   filterValue={filterValue}
                   onPress={onFilterSelect}
                 >
-                  Missing Episodes
+                  Missing Albums
                 </FilterMenuItem>
               </MenuContent>
             </FilterMenu>

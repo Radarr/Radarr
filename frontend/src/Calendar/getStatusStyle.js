@@ -19,7 +19,7 @@ function getStatusStyle(episodeNumber, downloading, startTime, isMonitored) {
     return 'missing';
   }
 
-  return 'unaired';
+  return 'unreleased';
 }
 
 export default getStatusStyle;

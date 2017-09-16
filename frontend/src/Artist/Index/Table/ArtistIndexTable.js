@@ -45,7 +45,7 @@ class ArtistIndexTable extends Component {
     const items = this.props.items;
 
     const row = _.findIndex(items, (item) => {
-      const firstCharacter = item.sortTitle.charAt(0);
+      const firstCharacter = item.sortName.charAt(0);
 
       if (character === '#') {
         return !isNaN(firstCharacter);

@@ -17,7 +17,7 @@ function ImportArtistRow(props) {
     languageProfileId,
     albumFolder,
     // seriesType,
-    selectedSeries,
+    selectedArtist,
     isExistingArtist,
     showLanguageProfile,
     isSelected,
@@ -31,7 +31,7 @@ function ImportArtistRow(props) {
         inputClassName={styles.selectInput}
         id={id}
         isSelected={isSelected}
-        isDisabled={!selectedSeries || isExistingArtist}
+        isDisabled={!selectedArtist || isExistingArtist}
         onSelectedChange={onSelectedChange}
       />
 
@@ -95,7 +95,7 @@ ImportArtistRow.propTypes = {
   languageProfileId: PropTypes.number.isRequired,
   // seriesType: PropTypes.string.isRequired,
   albumFolder: PropTypes.bool.isRequired,
-  selectedSeries: PropTypes.object,
+  selectedArtist: PropTypes.object,
   isExistingArtist: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   queued: PropTypes.bool.isRequired,

@@ -6,7 +6,6 @@ import styles from './ArtistIndexPosterInfo.css';
 
 function ArtistIndexPosterInfo(props) {
   const {
-    network,
     qualityProfile,
     previousAiring,
     added,
@@ -18,14 +17,6 @@ function ArtistIndexPosterInfo(props) {
     shortDateFormat,
     timeFormat
   } = props;
-
-  if (sortKey === 'network' && network) {
-    return (
-      <div className={styles.info}>
-        {network}
-      </div>
-    );
-  }
 
   if (sortKey === 'qualityProfileId') {
     return (
@@ -72,17 +63,17 @@ function ArtistIndexPosterInfo(props) {
   }
 
   if (sortKey === 'albumCount') {
-    let seasons = '1 season';
+    let albums = '1 album';
 
     if (albumCount === 0) {
-      seasons = 'No seasons';
+      albums = 'No albums';
     } else if (albumCount > 1) {
-      seasons = `${albumCount} seasons`;
+      albums = `${albumCount} albums`;
     }
 
     return (
       <div className={styles.info}>
-        {seasons}
+        {albums}
       </div>
     );
   }
@@ -107,7 +98,6 @@ function ArtistIndexPosterInfo(props) {
 }
 
 ArtistIndexPosterInfo.propTypes = {
-  network: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   previousAiring: PropTypes.string,
   added: PropTypes.string,

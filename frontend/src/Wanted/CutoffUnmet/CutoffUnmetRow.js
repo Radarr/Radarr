@@ -50,7 +50,7 @@ function CutoffUnmetRow(props) {
             return null;
           }
 
-          if (name === 'series.sortTitle') {
+          if (name === 'series.sortName') {
             return (
               <TableRowCell key={name}>
                 <ArtistNameLink
@@ -88,7 +88,7 @@ function CutoffUnmetRow(props) {
                   artistId={series.id}
                   episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
                   episodeTitle={title}
-                  showOpenSeriesButton={true}
+                  showOpenArtistButton={true}
                 />
               </TableRowCell>
             );
@@ -139,7 +139,7 @@ function CutoffUnmetRow(props) {
                 artistId={series.id}
                 episodeTitle={title}
                 episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
-                showOpenSeriesButton={true}
+                showOpenArtistButton={true}
               />
             );
           }

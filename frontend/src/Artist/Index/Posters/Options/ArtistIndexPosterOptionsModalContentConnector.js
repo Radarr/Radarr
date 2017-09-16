@@ -5,9 +5,9 @@ import ArtistIndexPosterOptionsModalContent from './ArtistIndexPosterOptionsModa
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.seriesIndex,
-    (seriesIndex) => {
-      return seriesIndex.posterOptions;
+    (state) => state.artistIndex,
+    (artistIndex) => {
+      return artistIndex.posterOptions;
     }
   );
 }

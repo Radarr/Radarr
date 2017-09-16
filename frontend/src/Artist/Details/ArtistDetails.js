@@ -102,15 +102,15 @@ class ArtistDetails extends Component {
     this.setState({ isManageEpisodesOpen: false });
   }
 
-  onEditSeriesPress = () => {
+  onEditArtistPress = () => {
     this.setState({ isEditArtistModalOpen: true });
   }
 
-  onEditSeriesModalClose = () => {
+  onEditArtistModalClose = () => {
     this.setState({ isEditArtistModalOpen: false });
   }
 
-  onDeleteSeriesPress = () => {
+  onDeleteArtistPress = () => {
     this.setState({
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: true
@@ -243,13 +243,13 @@ class ArtistDetails extends Component {
             <PageToolbarButton
               label="Edit"
               iconName={icons.EDIT}
-              onPress={this.onEditSeriesPress}
+              onPress={this.onEditArtistPress}
             />
 
             <PageToolbarButton
               label="Delete"
               iconName={icons.DELETE}
-              onPress={this.onDeleteSeriesPress}
+              onPress={this.onDeleteArtistPress}
             />
           </PageToolbarSection>
 
@@ -517,8 +517,8 @@ class ArtistDetails extends Component {
           <EditArtistModalConnector
             isOpen={isEditArtistModalOpen}
             artistId={id}
-            onModalClose={this.onEditSeriesModalClose}
-            onDeleteSeriesPress={this.onDeleteSeriesPress}
+            onModalClose={this.onEditArtistModalClose}
+            onDeleteArtistPress={this.onDeleteArtistPress}
           />
 
           <DeleteArtistModal

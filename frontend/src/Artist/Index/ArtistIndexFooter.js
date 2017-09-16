@@ -6,15 +6,15 @@ import styles from './ArtistIndexFooter.css';
 
 function ArtistIndexFooter({ series }) {
   const count = series.length;
-  let episodes = 0;
-  let episodeFiles = 0;
+  let tracks = 0;
+  let trackFiles = 0;
   let ended = 0;
   let continuing = 0;
   let monitored = 0;
 
   series.forEach((s) => {
-    episodes += s.trackCount || 0;
-    episodeFiles += s.trackFileCount || 0;
+    tracks += s.trackCount || 0;
+    trackFiles += s.trackFileCount || 0;
 
     if (s.status === 'ended') {
       ended++;
@@ -84,12 +84,12 @@ function ArtistIndexFooter({ series }) {
         <DescriptionList>
           <DescriptionListItem
             title="Tracks"
-            data={episodes}
+            data={tracks}
           />
 
           <DescriptionListItem
             title="Files"
-            data={episodeFiles}
+            data={trackFiles}
           />
         </DescriptionList>
       </div>

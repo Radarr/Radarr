@@ -1,5 +1,5 @@
 const scrollPositions = {
-  seriesIndex: 0
+  artistIndex: 0
 };
 
 export default scrollPositions;

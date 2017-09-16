@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { queueLookupSeries, setImportArtistValue } from 'Store/Actions/importArtistActions';
+import { queueLookupArtist, setImportArtistValue } from 'Store/Actions/importArtistActions';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import ImportArtistTable from './ImportArtistTable';
 
@@ -10,7 +10,7 @@ function createMapStateToProps() {
     (state) => state.importArtist,
     (state) => state.app.dimensions,
     createAllArtistSelector(),
-    (addArtist, importArtist, dimensions, allSeries) => {
+    (addArtist, importArtist, dimensions, allArtists) => {
       return {
         defaultMonitor: addArtist.defaults.monitor,
         defaultQualityProfileId: addArtist.defaults.qualityProfileId,
@@ -19,7 +19,7 @@ function createMapStateToProps() {
         defaultAlbumFolder: addArtist.defaults.albumFolder,
         items: importArtist.items,
         isSmallScreen: dimensions.isSmallScreen,
-        allSeries
+        allArtists
       };
     }
   );
@@ -28,7 +28,7 @@ function createMapStateToProps() {
 function createMapDispatchToProps(dispatch, props) {
   return {
     onSeriesLookup(name, path) {
-      dispatch(queueLookupSeries({
+      dispatch(queueLookupArtist({
         name,
         path,
         term: name

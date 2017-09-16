@@ -12,8 +12,8 @@ function createMapStateToProps() {
   return createSelector(
     (state, { artistIds }) => artistIds,
     createAllArtistSelector(),
-    (artistIds, allSeries) => {
-      const series = _.intersectionWith(allSeries, artistIds, (s, id) => {
+    (artistIds, allArtists) => {
+      const series = _.intersectionWith(allArtists, artistIds, (s, id) => {
         return s.id === id;
       });
 

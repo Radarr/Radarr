@@ -147,14 +147,14 @@ class InteractiveImportRow extends Component {
       isSelectQualityModalOpen
     } = this.state;
 
-    const seriesTitle = artist ? artist.artistName : '';
+    const artistName = artist ? artist.artistName : '';
     const albumTitle = album ? album.title : '';
     const trackNumbers = tracks.map((episode) => episode.trackNumber)
                                    .join(', ');
 
-    const showSeriesPlaceholder = isSelected && !artist;
-    const showSeasonNumberPlaceholder = isSelected && !!artist && !album;
-    const showEpisodeNumbersPlaceholder = isSelected && !!album && !tracks.length;
+    const showArtistPlaceholder = isSelected && !artist;
+    const showAlbumNumberPlaceholder = isSelected && !!artist && !album;
+    const showTrackNumbersPlaceholder = isSelected && !!album && !tracks.length;
 
     return (
       <TableRow>
@@ -175,7 +175,7 @@ class InteractiveImportRow extends Component {
           onPress={this.onSelectArtistPress}
         >
           {
-            showSeriesPlaceholder ? <InteractiveImportRowCellPlaceholder /> : seriesTitle
+            showArtistPlaceholder ? <InteractiveImportRowCellPlaceholder /> : artistName
           }
         </TableRowCellButton>
 
@@ -184,7 +184,7 @@ class InteractiveImportRow extends Component {
           onPress={this.onSelectAlbumPress}
         >
           {
-            showSeasonNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : albumTitle
+            showAlbumNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : albumTitle
           }
         </TableRowCellButton>
 
@@ -193,7 +193,7 @@ class InteractiveImportRow extends Component {
           onPress={this.onSelectTrackPress}
         >
           {
-            showEpisodeNumbersPlaceholder ? <InteractiveImportRowCellPlaceholder /> : trackNumbers
+            showTrackNumbersPlaceholder ? <InteractiveImportRowCellPlaceholder /> : trackNumbers
           }
         </TableRowCellButton>
 

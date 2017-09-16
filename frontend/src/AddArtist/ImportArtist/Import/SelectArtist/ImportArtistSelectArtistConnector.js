@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { queueLookupSeries, setImportArtistValue } from 'Store/Actions/importArtistActions';
+import { queueLookupArtist, setImportArtistValue } from 'Store/Actions/importArtistActions';
 import createImportArtistItemSelector from 'Store/Selectors/createImportArtistItemSelector';
 import ImportArtistSelectArtist from './ImportArtistSelectArtist';
 
@@ -17,7 +17,7 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  queueLookupSeries,
+  queueLookupArtist,
   setImportArtistValue
 };
 
@@ -27,7 +27,7 @@ class ImportArtistSelectArtistConnector extends Component {
   // Listeners
 
   onSearchInputChange = (term) => {
-    this.props.queueLookupSeries({
+    this.props.queueLookupArtist({
       name: this.props.id,
       term
     });
@@ -41,7 +41,7 @@ class ImportArtistSelectArtistConnector extends Component {
 
     this.props.setImportArtistValue({
       id,
-      selectedSeries: _.find(items, { foreignArtistId })
+      selectedArtist: _.find(items, { foreignArtistId })
     });
   }
 
@@ -62,9 +62,9 @@ class ImportArtistSelectArtistConnector extends Component {
 ImportArtistSelectArtistConnector.propTypes = {
   id: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object),
-  selectedSeries: PropTypes.object,
+  selectedArtist: PropTypes.object,
   isSelected: PropTypes.bool,
-  queueLookupSeries: PropTypes.func.isRequired,
+  queueLookupArtist: PropTypes.func.isRequired,
   setImportArtistValue: PropTypes.func.isRequired
 };
 

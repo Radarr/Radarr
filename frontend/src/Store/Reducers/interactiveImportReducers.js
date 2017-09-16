@@ -20,7 +20,7 @@ export const defaultState = {
     series: function(item, direction) {
       const series = item.series;
 
-      return series ? series.sortTitle : '';
+      return series ? series.sortName : '';
     },
 
     quality: function(item, direction) {

@@ -8,9 +8,9 @@ import createSetClientSideCollectionFilterReducer from './Creators/createSetClie
 export const defaultState = {
   isSaving: false,
   saveError: null,
-  sortKey: 'sortTitle',
+  sortKey: 'sortName',
   sortDirection: sortDirections.ASCENDING,
-  secondarySortKey: 'sortTitle',
+  secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
   filterKey: null,
   filterValue: null,

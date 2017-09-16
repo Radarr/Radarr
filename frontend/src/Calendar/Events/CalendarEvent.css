@@ -61,7 +61,7 @@
   }
 }
 
-.unaired {
+.unreleased {
   border-left-color: $primaryColor;
 
   &:global(.colorImpaired) {

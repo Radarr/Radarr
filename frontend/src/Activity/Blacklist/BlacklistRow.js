@@ -64,12 +64,12 @@ class BlacklistRow extends Component {
               return null;
             }
 
-            if (name === 'series.sortTitle') {
+            if (name === 'series.sortName') {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    titleSlug={series.titleSlug}
-                    title={series.title}
+                    nameSlug={series.nameSlug}
+                    artistName={series.artistName}
                   />
                 </TableRowCell>
               );

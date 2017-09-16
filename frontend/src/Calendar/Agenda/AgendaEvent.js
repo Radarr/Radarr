@@ -123,7 +123,7 @@ class AgendaEvent extends Component {
           episodeEntity={episodeEntities.CALENDAR}
           artistId={artist.id}
           episodeTitle={title}
-          showOpenSeriesButton={true}
+          showOpenArtistButton={true}
           onModalClose={this.onDetailsModalClose}
         />
       </div>

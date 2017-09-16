@@ -25,15 +25,6 @@ function ArtistIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="network"
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onPress={onSortSelect}
-        >
-          Network
-        </SortMenuItem>
-
-        <SortMenuItem
           name="qualityProfileId"
           sortKey={sortKey}
           sortDirection={sortDirection}
@@ -106,12 +97,12 @@ function ArtistIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="latestSeason"
+          name="latestAlbum"
           sortKey={sortKey}
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Latest Season
+          Latest Album
         </SortMenuItem>
 
         <SortMenuItem

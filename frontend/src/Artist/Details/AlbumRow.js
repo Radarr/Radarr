@@ -115,7 +115,7 @@ class AlbumRow extends Component {
                     episodeId={id}
                     artistId={artistId}
                     episodeTitle={title}
-                    showOpenSeriesButton={false}
+                    showOpenArtistButton={false}
                   />
                 </TableRowCell>
               );
@@ -214,6 +214,13 @@ AlbumRow.propTypes = {
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired
+};
+
+AlbumRow.defaultProps = {
+  statistics: {
+    trackCount: 0,
+    trackFileCount: 0
+  }
 };
 
 export default AlbumRow;

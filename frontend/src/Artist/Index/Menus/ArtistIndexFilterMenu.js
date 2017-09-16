@@ -60,7 +60,7 @@ function ArtistIndexFilterMenu(props) {
           filterValue={filterValue}
           onPress={onFilterSelect}
         >
-          Missing Episodes
+          Missing Albums
         </FilterMenuItem>
       </MenuContent>
     </FilterMenu>

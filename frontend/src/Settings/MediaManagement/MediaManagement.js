@@ -78,7 +78,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="createEmptyArtistFolders"
-                          helpText="Create missing series folders during disk scan"
+                          helpText="Create missing artist folders during disk scan"
                           onChange={onInputChange}
                           {...settings.createEmptyArtistFolders}
                         />
@@ -284,7 +284,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="folderChmod"
-                          helpText="Octal, applied to series/season folders created by Lidarr"
+                          helpText="Octal, applied to artist/album folders created by Lidarr"
                           values={fileDateOptions}
                           onChange={onInputChange}
                           {...settings.folderChmod}

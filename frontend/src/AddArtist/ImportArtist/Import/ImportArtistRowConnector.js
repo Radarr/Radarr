@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { queueLookupSeries, setImportArtistValue } from 'Store/Actions/importArtistActions';
+import { queueLookupArtist, setImportArtistValue } from 'Store/Actions/importArtistActions';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import ImportArtistRow from './ImportArtistRow';
 
@@ -22,8 +22,8 @@ function createMapStateToProps() {
     createImportArtistItemSelector(),
     createAllArtistSelector(),
     (item, series) => {
-      const selectedSeries = item && item.selectedSeries;
-      const isExistingArtist = !!selectedSeries && _.some(series, { foreignArtistId: selectedSeries.foreignArtistId });
+      const selectedArtist = item && item.selectedArtist;
+      const isExistingArtist = !!selectedArtist && _.some(series, { foreignArtistId: selectedArtist.foreignArtistId });
 
       return {
         ...item,
@@ -34,7 +34,7 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  queueLookupSeries,
+  queueLookupArtist,
   setImportArtistValue
 };
 
@@ -84,7 +84,7 @@ ImportArtistRowConnector.propTypes = {
   // seriesType: PropTypes.string,
   albumFolder: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.object),
-  queueLookupSeries: PropTypes.func.isRequired,
+  queueLookupArtist: PropTypes.func.isRequired,
   setImportArtistValue: PropTypes.func.isRequired
 };
 

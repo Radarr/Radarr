@@ -18,7 +18,7 @@ class AddNewArtistSearchResult extends Component {
     super(props, context);
 
     this.state = {
-      isNewAddSeriesModalOpen: false
+      isNewAddArtistModalOpen: false
     };
   }
 
@@ -32,11 +32,11 @@ class AddNewArtistSearchResult extends Component {
   // Listeners
 
   onPress = () => {
-    this.setState({ isNewAddSeriesModalOpen: true });
+    this.setState({ isNewAddArtistModalOpen: true });
   }
 
   onAddSerisModalClose = () => {
-    this.setState({ isNewAddSeriesModalOpen: false });
+    this.setState({ isNewAddArtistModalOpen: false });
   }
 
   //
@@ -51,7 +51,7 @@ class AddNewArtistSearchResult extends Component {
       network,
       status,
       overview,
-      seasonCount,
+      albumCount,
       ratings,
       images,
       isExistingArtist,
@@ -61,8 +61,8 @@ class AddNewArtistSearchResult extends Component {
     const linkProps = isExistingArtist ? { to: `/artist/${nameSlug}` } : { onPress: this.onPress };
     let seasons = '1 Season';
 
-    if (seasonCount > 1) {
-      seasons = `${seasonCount} Seasons`;
+    if (albumCount > 1) {
+      seasons = `${albumCount} Seasons`;
     }
 
     return (
@@ -115,7 +115,7 @@ class AddNewArtistSearchResult extends Component {
             }
 
             {
-              !!seasonCount &&
+              !!albumCount &&
                 <Label size={sizes.LARGE}>
                   {seasons}
                 </Label>
@@ -138,7 +138,7 @@ class AddNewArtistSearchResult extends Component {
         </div>
 
         <AddNewArtistModal
-          isOpen={this.state.isNewAddSeriesModalOpen && !isExistingArtist}
+          isOpen={this.state.isNewAddArtistModalOpen && !isExistingArtist}
           foreignArtistId={foreignArtistId}
           artistName={artistName}
           year={year}
@@ -159,7 +159,7 @@ AddNewArtistSearchResult.propTypes = {
   network: PropTypes.string,
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
-  seasonCount: PropTypes.number,
+  albumCount: PropTypes.number,
   ratings: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingArtist: PropTypes.bool.isRequired,

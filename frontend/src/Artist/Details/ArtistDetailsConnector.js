@@ -20,17 +20,17 @@ function createMapStateToProps() {
     (state) => state.episodeFiles,
     createAllArtistSelector(),
     createCommandsSelector(),
-    (nameSlug, episodes, episodeFiles, allSeries, commands) => {
-      const sortedArtist = _.orderBy(allSeries, 'sortName');
-      const seriesIndex = _.findIndex(sortedArtist, { nameSlug });
-      const series = sortedArtist[seriesIndex];
+    (nameSlug, episodes, episodeFiles, allArtists, commands) => {
+      const sortedArtist = _.orderBy(allArtists, 'sortName');
+      const artistIndex = _.findIndex(sortedArtist, { nameSlug });
+      const series = sortedArtist[artistIndex];
 
       if (!series) {
         return {};
       }
 
-      const previousArtist = sortedArtist[seriesIndex - 1] || _.last(sortedArtist);
-      const nextArtist = sortedArtist[seriesIndex + 1] || _.first(sortedArtist);
+      const previousArtist = sortedArtist[artistIndex - 1] || _.last(sortedArtist);
+      const nextArtist = sortedArtist[artistIndex + 1] || _.first(sortedArtist);
       const isArtistRefreshing = !!findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: series.id });
       const allArtistRefreshing = _.some(commands, (command) => command.name === commandNames.REFRESH_ARTIST && !command.body.artistId);
       const isRefreshing = isArtistRefreshing || allArtistRefreshing;

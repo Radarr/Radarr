@@ -19,9 +19,8 @@ class ImportArtistSearchResult extends Component {
   render() {
     const {
       artistName,
-      overview,
+      // overview,
       // year,
-      // network,
       isExistingArtist
     } = this.props;
 
@@ -32,9 +31,8 @@ class ImportArtistSearchResult extends Component {
       >
         <ImportArtistName
           artistName={artistName}
-          overview={overview}
+          // overview={overview}
           // year={year}
-          // network={network}
           isExistingArtist={isExistingArtist}
         />
       </Link>
@@ -45,9 +43,8 @@ class ImportArtistSearchResult extends Component {
 ImportArtistSearchResult.propTypes = {
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
-  overview: PropTypes.string.isRequired,
+  // overview: PropTypes.string.isRequired,
   // year: PropTypes.number.isRequired,
-  // network: PropTypes.string,
   isExistingArtist: PropTypes.bool.isRequired,
   onPress: PropTypes.func.isRequired
 };

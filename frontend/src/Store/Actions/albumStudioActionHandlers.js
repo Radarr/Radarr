@@ -18,10 +18,10 @@ const albumStudioActionHandlers = {
 
       let monitoringOptions = null;
       const series = [];
-      const allSeries = getState().series.items;
+      const allArtists = getState().series.items;
 
       artistIds.forEach((id) => {
-        const s = _.find(allSeries, { id });
+        const s = _.find(allArtists, { id });
         const seriesToUpdate = { id };
 
         if (payload.hasOwnProperty('monitored')) {
