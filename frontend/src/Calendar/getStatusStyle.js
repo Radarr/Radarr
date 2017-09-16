@@ -1,11 +1,11 @@
 import moment from 'moment';
 
-function getStatusStyle(episodeNumber, hasFile, downloading, startTime, isMonitored) {
+function getStatusStyle(episodeNumber, downloading, startTime, isMonitored) {
   const currentTime = moment();
 
-  if (hasFile) {
-    return 'downloaded';
-  }
+  // if (hasFile) {
+  //   return 'downloaded';
+  // }
 
   if (downloading) {
     return 'downloading';

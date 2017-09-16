@@ -132,12 +132,12 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'series.sortTitle') {
+            if (name === 'series.sortName') {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    titleSlug={series.titleSlug}
-                    title={series.title}
+                    nameSlug={series.nameSlug}
+                    artistName={series.artistName}
                   />
                 </TableRowCell>
               );
@@ -147,24 +147,8 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    titleSlug={series.titleSlug}
-                    title={series.title}
-                  />
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'episode') {
-              return (
-                <TableRowCell key={name}>
-                  <SeasonEpisodeNumber
-                    seasonNumber={episode.seasonNumber}
-                    episodeNumber={episode.episodeNumber}
-                    absoluteEpisodeNumber={episode.absoluteEpisodeNumber}
-                    seriesType={series.seriesType}
-                    sceneSeasonNumber={episode.sceneSeasonNumber}
-                    sceneEpisodeNumber={episode.sceneEpisodeNumber}
-                    sceneAbsoluteEpisodeNumber={episode.sceneAbsoluteEpisodeNumber}
+                    nameSlug={series.nameSlug}
+                    artistName={series.artistName}
                   />
                 </TableRowCell>
               );
@@ -316,7 +300,7 @@ QueueRow.propTypes = {
   status: PropTypes.string.isRequired,
   trackedDownloadStatus: PropTypes.string,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
-  errorMessage: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string,
   series: PropTypes.object.isRequired,
   episode: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,

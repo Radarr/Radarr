@@ -45,19 +45,14 @@ export const defaultState = {
         isModifiable: false
       },
       {
-        name: 'series.sortTitle',
-        label: 'Series',
+        name: 'series.sortName',
+        label: 'Artist',
         isSortable: true,
         isVisible: true
       },
       {
-        name: 'episode',
-        label: 'Episode',
-        isVisible: true
-      },
-      {
         name: 'episodeTitle',
-        label: 'Episode Title',
+        label: 'Album Title',
         isVisible: true
       },
       {

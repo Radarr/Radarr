@@ -14,8 +14,8 @@ function createMapStateToProps() {
     (state) => state.episodes,
     (history, episodes) => {
       return {
-        isEpisodesFetching: episodes.isFetching,
-        isEpisodesPopulated: episodes.isPopulated,
+        isAlbumsFetching: episodes.isFetching,
+        isAlbumsPopulated: episodes.isPopulated,
         episodesError: episodes.error,
         ...history
       };
@@ -40,8 +40,8 @@ class HistoryConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
-      const episodeIds = selectUniqueIds(this.props.items, 'episodeId');
-      this.props.fetchEpisodes({ episodeIds });
+      const albumIds = selectUniqueIds(this.props.items, 'albumId');
+      this.props.fetchEpisodes({ albumIds });
     }
   }
 

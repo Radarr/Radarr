@@ -6,7 +6,6 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import episodeEntities from 'Episode/episodeEntities';
-import SeasonEpisodeNumber from 'Episode/SeasonEpisodeNumber';
 import EpisodeTitleLink from 'Episode/EpisodeTitleLink';
 import EpisodeLanguage from 'Episode/EpisodeLanguage';
 import EpisodeQuality from 'Episode/EpisodeQuality';
@@ -54,9 +53,9 @@ class HistoryRow extends Component {
 
   render() {
     const {
-      episodeId,
-      series,
-      episode,
+      albumId,
+      artist,
+      album,
       language,
       quality,
       eventType,
@@ -70,7 +69,7 @@ class HistoryRow extends Component {
       onMarkAsFailedPress
     } = this.props;
 
-    if (!episode) {
+    if (!album) {
       return null;
     }
 
@@ -97,28 +96,12 @@ class HistoryRow extends Component {
               );
             }
 
-            if (name === 'series.sortTitle') {
+            if (name === 'artist.sortName') {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    titleSlug={series.titleSlug}
-                    title={series.title}
-                  />
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'episode') {
-              return (
-                <TableRowCell key={name}>
-                  <SeasonEpisodeNumber
-                    seasonNumber={episode.seasonNumber}
-                    episodeNumber={episode.episodeNumber}
-                    absoluteEpisodeNumber={episode.absoluteEpisodeNumber}
-                    seriesType={series.seriesType}
-                    sceneSeasonNumber={episode.sceneSeasonNumber}
-                    sceneEpisodeNumber={episode.sceneEpisodeNumber}
-                    sceneAbsoluteEpisodeNumber={episode.sceneAbsoluteEpisodeNumber}
+                    nameSlug={artist.nameSlug}
+                    artistName={artist.artistName}
                   />
                 </TableRowCell>
               );
@@ -128,10 +111,10 @@ class HistoryRow extends Component {
               return (
                 <TableRowCell key={name}>
                   <EpisodeTitleLink
-                    episodeId={episodeId}
+                    episodeId={albumId}
                     episodeEntity={episodeEntities.EPISODES}
-                    artistId={series.id}
-                    episodeTitle={episode.title}
+                    artistId={artist.id}
+                    episodeTitle={album.title}
                     showOpenSeriesButton={true}
                   />
                 </TableRowCell>
@@ -234,9 +217,9 @@ class HistoryRow extends Component {
 }
 
 HistoryRow.propTypes = {
-  episodeId: PropTypes.number,
-  series: PropTypes.object.isRequired,
-  episode: PropTypes.object,
+  albumId: PropTypes.number,
+  artist: PropTypes.object.isRequired,
+  album: PropTypes.object,
   language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   eventType: PropTypes.string.isRequired,

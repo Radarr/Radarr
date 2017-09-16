@@ -33,23 +33,23 @@ namespace Lidarr.Api.V3.Queue
             var pending = _pendingReleaseService.GetPendingQueue();
             var fullQueue = queue.Concat(pending);
 
-            var seriesIdQuery = Request.Query.SeriesId;
-            var episodeIdsQuery = Request.Query.EpisodeIds;
+            var artistIdQuery = Request.Query.ArtistId;
+            var albumIdsQuery = Request.Query.AlbumIds;
 
-            if (seriesIdQuery.HasValue)
+            if (artistIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Artist.Id == (int)seriesIdQuery).ToResource(includeSeries, includeEpisode);
+                return fullQueue.Where(q => q.Artist.Id == (int)artistIdQuery).ToResource(includeSeries, includeEpisode);
             }
 
-            if (episodeIdsQuery.HasValue)
+            if (albumIdsQuery.HasValue)
             {
-                string episodeIdsValue = episodeIdsQuery.Value.ToString();
+                string albumIdsValue = albumIdsQuery.Value.ToString();
 
-                var episodeIds = episodeIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                var albumIds = albumIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                                 .Select(e => Convert.ToInt32(e))
                                                 .ToList();
 
-                return fullQueue.Where(q => episodeIds.Contains(q.Episode.Id)).ToResource(includeSeries, includeEpisode);
+                return fullQueue.Where(q => albumIds.Contains(q.Album.Id)).ToResource(includeSeries, includeEpisode);
             }
 
             return fullQueue.ToResource(includeSeries, includeEpisode);

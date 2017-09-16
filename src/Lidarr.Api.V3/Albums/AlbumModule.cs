@@ -27,16 +27,28 @@ namespace Lidarr.Api.V3.Albums
 
         private List<AlbumResource> GetAlbums()
         {
-            if (!Request.Query.ArtistId.HasValue)
+            var artistIdQuery = Request.Query.ArtistId;
+            var albumIdsQuery = Request.Query.AlbumIds;
+
+            if (!Request.Query.ArtistId.HasValue && !albumIdsQuery.HasValue)
             {
-                throw new BadRequestException("artistId is missing");
+                throw new BadRequestException("artistId or albumIds must be provided");
             }
 
-            var artistId = (int)Request.Query.ArtistId;
+            if (artistIdQuery.HasValue)
+            {
+                int artistId = Convert.ToInt32(artistIdQuery.Value);
 
-            var resources = MapToResource(_albumService.GetAlbumsByArtist(artistId), false);
+                return MapToResource(_albumService.GetAlbumsByArtist(artistId), false);
+            }
 
-            return resources;
+            string episodeIdsValue = albumIdsQuery.Value.ToString();
+
+            var episodeIds = episodeIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                            .Select(e => Convert.ToInt32(e))
+                                            .ToList();
+
+            return MapToResource(_albumService.GetAlbums(episodeIds), false);
         }
 
         private Response SetAlbumMonitored(int id)

@@ -11,7 +11,7 @@ function createQueueItemSelector() {
       }
 
       return _.find(details.items, (item) => {
-        return item.episode.id === episodeId;
+        return item.album.id === episodeId;
       });
     }
   );

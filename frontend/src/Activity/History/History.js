@@ -30,16 +30,16 @@ class History extends Component {
       filterKey,
       filterValue,
       totalRecords,
-      isEpisodesFetching,
-      isEpisodesPopulated,
+      isAlbumsFetching,
+      isAlbumsPopulated,
       episodesError,
       onFilterSelect,
       onFirstPagePress,
       ...otherProps
     } = this.props;
 
-    const isFetchingAny = isFetching || isEpisodesFetching;
-    const isAllPopulated = isPopulated && (isEpisodesPopulated || !items.length);
+    const isFetchingAny = isFetching || isAlbumsFetching;
+    const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
     const hasError = error || episodesError;
 
     return (
@@ -132,7 +132,7 @@ class History extends Component {
 
           {
             // If history isPopulated and it's empty show no history found and don't
-            // wait for the episodes to populate because they are never coming.
+            // wait for the albums to populate because they are never coming.
 
             isPopulated && !hasError && !items.length &&
               <div>
@@ -185,8 +185,8 @@ History.propTypes = {
   filterKey: PropTypes.string,
   filterValue: PropTypes.string,
   totalRecords: PropTypes.number,
-  isEpisodesFetching: PropTypes.bool.isRequired,
-  isEpisodesPopulated: PropTypes.bool.isRequired,
+  isAlbumsFetching: PropTypes.bool.isRequired,
+  isAlbumsPopulated: PropTypes.bool.isRequired,
   episodesError: PropTypes.object,
   onFilterSelect: PropTypes.func.isRequired,
   onFirstPagePress: PropTypes.func.isRequired

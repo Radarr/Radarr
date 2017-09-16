@@ -54,7 +54,7 @@ class CalendarEvent extends Component {
       // absoluteEpisodeNumber,
       releaseDate,
       monitored,
-      hasFile,
+      // hasFile,
       grabbed,
       queueItem,
       // timeFormat,
@@ -65,7 +65,7 @@ class CalendarEvent extends Component {
     // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
     const isMonitored = artist.monitored && monitored;
-    const statusStyle = getStatusStyle(id, hasFile, downloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored);
     // const missingAbsoluteNumber = artist.seriesType === 'anime' && seasonNumber > 0 && !absoluteEpisodeNumber;
 
     return (
@@ -133,7 +133,7 @@ CalendarEvent.propTypes = {
   // absoluteEpisodeNumber: PropTypes.number,
   releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  hasFile: PropTypes.bool.isRequired,
+  // hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   // timeFormat: PropTypes.string.isRequired,

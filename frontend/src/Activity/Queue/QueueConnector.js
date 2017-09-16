@@ -21,7 +21,7 @@ function createMapStateToProps() {
 
       return {
         isCheckForFinishedDownloadExecuting,
-        isEpisodesPopulated: queueEpisodes.isPopulated,
+        isAlbumsPopulated: queueEpisodes.isPopulated,
         ...queue
       };
     }
@@ -46,7 +46,7 @@ class QueueConnector extends Component {
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       const episodes = _.uniqBy(_.reduce(this.props.items, (result, item) => {
-        result.push(item.episode);
+        result.push(item.album);
 
         return result;
       }, []), ({ id }) => id);

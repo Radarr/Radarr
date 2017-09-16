@@ -100,7 +100,7 @@ class Queue extends Component {
       isPopulated,
       error,
       items,
-      isEpisodesPopulated,
+      isAlbumsPopulated,
       columns,
       totalRecords,
       isGrabbing,
@@ -119,7 +119,7 @@ class Queue extends Component {
     } = this.state;
 
     const isRefreshing = isFetching || isCheckForFinishedDownloadExecuting;
-    const isAllPopulated = isPopulated && (isEpisodesPopulated || !items.length);
+    const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
     const selectedCount = this.getSelectedIds().length;
     const disableSelectedActions = selectedCount === 0;
 
@@ -191,7 +191,7 @@ class Queue extends Component {
                         return (
                           <QueueRowConnector
                             key={item.id}
-                            episodeId={item.episode.id}
+                            episodeId={item.album.id}
                             episodeEntity={episodeEntities.QUEUE_EPISODES}
                             isSelected={selectedState[item.id]}
                             columns={columns}
@@ -229,7 +229,7 @@ Queue.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isEpisodesPopulated: PropTypes.bool.isRequired,
+  isAlbumsPopulated: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   isGrabbing: PropTypes.bool.isRequired,

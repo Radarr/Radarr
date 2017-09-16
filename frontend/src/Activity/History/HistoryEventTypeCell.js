@@ -36,17 +36,17 @@ function getIconKind(eventType) {
 function getTooltip(eventType, data) {
   switch (eventType) {
     case 'grabbed':
-      return `Episode grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
+      return `Album grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
     case 'seriesFolderImported':
-      return 'Episode imported from series folder';
+      return 'Album imported from artist folder';
     case 'downloadFolderImported':
-      return 'Episode downloaded successfully and picked up from download client';
+      return 'Album downloaded successfully and picked up from download client';
     case 'downloadFailed':
-      return 'Episode download failed';
+      return 'Album download failed';
     case 'episodeFileDeleted':
-      return 'Episode file deleted';
+      return 'Track file deleted';
     case 'episodeFileRenamed':
-      return 'Episode file renamed';
+      return 'Track file renamed';
     default:
       return 'Unknown event';
   }

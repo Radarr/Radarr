@@ -51,10 +51,10 @@ class CutoffUnmetConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
-      const episodeIds = selectUniqueIds(this.props.items, 'id');
+      const albumIds = selectUniqueIds(this.props.items, 'id');
       const episodeFileIds = selectUniqueIds(this.props.items, 'episodeFileId');
 
-      this.props.fetchQueueDetails({ episodeIds });
+      this.props.fetchQueueDetails({ albumIds });
 
       if (episodeFileIds.length) {
         this.props.fetchEpisodeFiles({ episodeFileIds });

@@ -48,8 +48,8 @@ class MissingConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
-      const episodeIds = selectUniqueIds(this.props.items, 'id');
-      this.props.fetchQueueDetails({ episodeIds });
+      const albumIds = selectUniqueIds(this.props.items, 'id');
+      this.props.fetchQueueDetails({ albumIds });
     }
   }
 
