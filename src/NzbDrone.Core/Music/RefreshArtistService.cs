@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
@@ -79,6 +79,7 @@ namespace NzbDrone.Core.Music
             artist.LastInfoSync = DateTime.UtcNow;
             artist.Images = artistInfo.Images;
             artist.Genres = artistInfo.Genres;
+            artist.Links = artistInfo.Links;
 
             try
             {

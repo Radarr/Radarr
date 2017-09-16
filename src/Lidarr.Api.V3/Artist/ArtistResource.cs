@@ -81,6 +81,7 @@ namespace Lidarr.Api.V3.Artist
         public int DiscogsId { get; set; }
         public string AllMusicId { get; set; }
         public string Overview { get; set; }
+        public List<Links> Links { get; set; }
 
         public int? AlbumCount { get; set; }
         public int? TotalTrackCount { get; set; }
@@ -126,44 +127,45 @@ namespace Lidarr.Api.V3.Artist
             if (model == null) return null;
 
             return new ArtistResource
-                   {
-                       Id = model.Id,
+            {
+                Id = model.Id,
 
-                       ArtistName = model.Name,
-                       //AlternateTitles
-                       SortName = model.SortName,
+                ArtistName = model.Name,
+                //AlternateTitles
+                SortName = model.SortName,
 
-                       Status = model.Status,
-                       Overview = model.Overview,
-                       //NextAiring
-                       //PreviousAiring
-                       //Network = model.Network,
-                       //AirTime = model.AirTime,
-                       Images = model.Images,
+                Status = model.Status,
+                Overview = model.Overview,
+                //NextAiring
+                //PreviousAiring
+                //Network = model.Network,
+                //AirTime = model.AirTime,
+                Images = model.Images,
 
-                       Albums = model.Albums.ToResource(),
-                       //Year = model.Year,
+                Albums = model.Albums.ToResource(),
+                //Year = model.Year,
 
-                       Path = model.Path,
-                       QualityProfileId = model.ProfileId,
-                       LanguageProfileId = model.LanguageProfileId,
+                Path = model.Path,
+                QualityProfileId = model.ProfileId,
+                LanguageProfileId = model.LanguageProfileId,
+                Links = model.Links,
 
-                       AlbumFolder = model.AlbumFolder,
-                       Monitored = model.Monitored,
+                AlbumFolder = model.AlbumFolder,
+                Monitored = model.Monitored,
 
-                       LastInfoSync = model.LastInfoSync,
-                       //SeriesType = model.SeriesType,
-                       CleanName = model.CleanName,
-                       ForeignArtistId = model.ForeignArtistId,
-                       NameSlug = model.NameSlug,
-                       RootFolderPath = model.RootFolderPath,
-                       //Certification = model.Certification,
-                       Genres = model.Genres,
-                       Tags = model.Tags,
-                       Added = model.Added,
-                       AddOptions = model.AddOptions,
-                       Ratings = model.Ratings
-                   };
+                LastInfoSync = model.LastInfoSync,
+                //SeriesType = model.SeriesType,
+                CleanName = model.CleanName,
+                ForeignArtistId = model.ForeignArtistId,
+                NameSlug = model.NameSlug,
+                RootFolderPath = model.RootFolderPath,
+                //Certification = model.Certification,
+                Genres = model.Genres,
+                Tags = model.Tags,
+                Added = model.Added,
+                AddOptions = model.AddOptions,
+                Ratings = model.Ratings
+            };
         }
 
         public static NzbDrone.Core.Music.Artist ToModel(this ArtistResource resource)
@@ -171,44 +173,45 @@ namespace Lidarr.Api.V3.Artist
             if (resource == null) return null;
 
             return new NzbDrone.Core.Music.Artist
-                   {
-                       Id = resource.Id,
+            {
+                Id = resource.Id,
 
-                       Name = resource.ArtistName,
-                       //AlternateTitles
-                       SortName = resource.SortName,
+                Name = resource.ArtistName,
+                //AlternateTitles
+                SortName = resource.SortName,
 
-                       Status = resource.Status,
-                       Overview = resource.Overview,
-                       //NextAiring
-                       //PreviousAiring
-                      // Network = resource.Network,
-                       //AirTime = resource.AirTime,
-                       Images = resource.Images,
+                Status = resource.Status,
+                Overview = resource.Overview,
+                //NextAiring
+                //PreviousAiring
+                // Network = resource.Network,
+                //AirTime = resource.AirTime,
+                Images = resource.Images,
 
-                       //Albums = resource.Albums.ToModel(),
-                       //Year = resource.Year,
+                //Albums = resource.Albums.ToModel(),
+                //Year = resource.Year,
 
-                       Path = resource.Path,
-                       ProfileId = resource.QualityProfileId,
-                       LanguageProfileId = resource.LanguageProfileId,
+                Path = resource.Path,
+                ProfileId = resource.QualityProfileId,
+                LanguageProfileId = resource.LanguageProfileId,
+                Links = resource.Links,
 
-                       AlbumFolder = resource.AlbumFolder,
-                       Monitored = resource.Monitored,
+                AlbumFolder = resource.AlbumFolder,
+                Monitored = resource.Monitored,
 
-                       LastInfoSync = resource.LastInfoSync,
-                       //SeriesType = resource.SeriesType,
-                       CleanName = resource.CleanName,
-                       ForeignArtistId = resource.ForeignArtistId,
-                       NameSlug = resource.NameSlug,
-                       RootFolderPath = resource.RootFolderPath,
-                       //Certification = resource.Certification,
-                       Genres = resource.Genres,
-                       Tags = resource.Tags,
-                       Added = resource.Added,
-                       AddOptions = resource.AddOptions,
-                       Ratings = resource.Ratings
-                   };
+                LastInfoSync = resource.LastInfoSync,
+                //SeriesType = resource.SeriesType,
+                CleanName = resource.CleanName,
+                ForeignArtistId = resource.ForeignArtistId,
+                NameSlug = resource.NameSlug,
+                RootFolderPath = resource.RootFolderPath,
+                //Certification = resource.Certification,
+                Genres = resource.Genres,
+                Tags = resource.Tags,
+                Added = resource.Added,
+                AddOptions = resource.AddOptions,
+                Ratings = resource.Ratings
+            };
         }
 
         public static NzbDrone.Core.Music.Artist ToModel(this ArtistResource resource, NzbDrone.Core.Music.Artist artist)

@@ -174,8 +174,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.CleanName = Parser.Parser.CleanArtistTitle(artist.Name);
             artist.SortName = SeriesTitleNormalizer.Normalize(artist.Name, 0);
             artist.Images = resource.Images.Select(MapImage).ToList();
-            artist.Status = ArtistStatusType.Continuing; // TODO: Remove HACK when we get from Metadata
-            artist.Ratings = MapRatings(null); // TODO: Remove HACK when we get from Metadata
+            artist.Status = MapArtistStatus(resource.Status);
+            artist.Ratings = MapRatings(resource.Rating);
+            artist.Links = resource.Links.Select(MapLink).ToList();
 
             return artist;
         }
@@ -201,6 +202,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private static ArtistStatusType MapArtistStatus(string status)
         {
+            if (status == null)
+            {
+                return ArtistStatusType.Continuing;
+            }
+
             if (status.Equals("ended", StringComparison.InvariantCultureIgnoreCase))
             {
                 return ArtistStatusType.Ended;
@@ -209,14 +215,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return ArtistStatusType.Continuing;
         }
 
-        private static Core.Music.Ratings MapRatings(RatingResource rating)
+        private static Music.Ratings MapRatings(RatingResource rating)
         {
             if (rating == null)
             {
-                return new Core.Music.Ratings();
+                return new Music.Ratings();
             }
 
-            return new Core.Music.Ratings
+            return new Music.Ratings
             {
                 Votes = rating.Count,
                 Value = rating.Value
@@ -229,6 +235,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 Url = arg.Url,
                 CoverType = MapCoverType(arg.CoverType)
+            };
+        }
+
+        private static Music.Links MapLink(LinkResource arg)
+        {
+            return new Music.Links
+            {
+                Url = arg.Target,
+                Name = arg.Type
             };
         }
 

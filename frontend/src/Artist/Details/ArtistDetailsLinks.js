@@ -7,11 +7,13 @@ import styles from './ArtistDetailsLinks.css';
 
 function ArtistDetailsLinks(props) {
   const {
-    foreignArtistId
+    foreignArtistId,
+    links
   } = props;
 
   return (
     <div className={styles.links}>
+
       <Link
         className={styles.link}
         to={`https://musicbrainz.org/artist/${foreignArtistId}`}
@@ -25,12 +27,37 @@ function ArtistDetailsLinks(props) {
         </Label>
       </Link>
 
+      {links.map((link, index) => {
+        return (
+          <span key={index}>
+            <Link className={styles.link}
+              to={link.url}
+              key={index}
+            >
+              <Label
+                className={styles.linkLabel}
+                kind={kinds.INFO}
+                size={sizes.LARGE}
+              >
+                {link.name}
+              </Label>
+            </Link>
+            {(index > 0 && index % 5 === 0) &&
+              <br></br>
+            }
+
+          </span>
+        );
+      })}
+
     </div>
+
   );
 }
 
 ArtistDetailsLinks.propTypes = {
-  foreignArtistId: PropTypes.string.isRequired
+  foreignArtistId: PropTypes.string.isRequired,
+  links: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default ArtistDetailsLinks;

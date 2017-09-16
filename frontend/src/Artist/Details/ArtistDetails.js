@@ -159,6 +159,7 @@ class ArtistDetails extends Component {
       monitored,
       status,
       overview,
+      links,
       images,
       albums,
       alternateTitles,
@@ -416,6 +417,7 @@ class ArtistDetails extends Component {
                     tooltip={
                       <ArtistDetailsLinks
                         foreignArtistId={foreignArtistId}
+                        links={links}
                       />
                       }
                     kind={kinds.INVERSE}
@@ -541,6 +543,7 @@ ArtistDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
+  links: PropTypes.arrayOf(PropTypes.object).isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,

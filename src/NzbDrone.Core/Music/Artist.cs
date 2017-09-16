@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Music
             Members = new List<Member>();
             Albums = new List<Album>();
             Tags = new HashSet<int>();
+            Links = new List<Links>();
 
         }
 
@@ -40,6 +41,7 @@ namespace NzbDrone.Core.Music
         public ArtistStatusType Status { get; set; }
         public string Path { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
+        public List<Links> Links { get; set; }
         public List<string> Genres { get; set; }
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
