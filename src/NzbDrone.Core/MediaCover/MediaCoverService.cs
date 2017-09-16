@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -128,6 +128,9 @@ namespace NzbDrone.Core.MediaCover
                     return;
 
                 case MediaCoverTypes.Poster:
+                case MediaCoverTypes.Cover:
+                case MediaCoverTypes.Disc:
+                case MediaCoverTypes.Logo:
                 case MediaCoverTypes.Headshot:
                     heights = new[] { 500, 250 };
                     break;
