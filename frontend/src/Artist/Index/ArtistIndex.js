@@ -15,6 +15,8 @@ import NoArtist from 'Artist/NoArtist';
 import ArtistIndexTableConnector from './Table/ArtistIndexTableConnector';
 import ArtistIndexPosterOptionsModal from './Posters/Options/ArtistIndexPosterOptionsModal';
 import ArtistIndexPostersConnector from './Posters/ArtistIndexPostersConnector';
+import ArtistIndexBannerOptionsModal from './Banners/Options/ArtistIndexBannerOptionsModal';
+import ArtistIndexBannersConnector from './Banners/ArtistIndexBannersConnector';
 import ArtistIndexFooter from './ArtistIndexFooter';
 import ArtistIndexFilterMenu from './Menus/ArtistIndexFilterMenu';
 import ArtistIndexSortMenu from './Menus/ArtistIndexSortMenu';
@@ -24,6 +26,10 @@ import styles from './ArtistIndex.css';
 function getViewComponent(view) {
   if (view === 'posters') {
     return ArtistIndexPostersConnector;
+  }
+
+  if (view === 'banners') {
+    return ArtistIndexBannersConnector;
   }
 
   return ArtistIndexTableConnector;
@@ -43,6 +49,7 @@ class ArtistIndex extends Component {
       contentBody: null,
       jumpBarItems: [],
       isPosterOptionsModalOpen: false,
+      isBannerOptionsModalOpen: false,
       isRendered: false
     };
   }
@@ -122,6 +129,14 @@ class ArtistIndex extends Component {
     this.setState({ isPosterOptionsModalOpen: false });
   }
 
+  onBannerOptionsPress = () => {
+    this.setState({ isBannerOptionsModalOpen: true });
+  }
+
+  onBannerOptionsModalClose = () => {
+    this.setState({ isBannerOptionsModalOpen: false });
+  }
+
   onJumpBarItemPress = (item) => {
     const viewComponent = this._viewComponent.getWrappedInstance();
     viewComponent.scrollToFirstCharacter(item);
@@ -177,6 +192,7 @@ class ArtistIndex extends Component {
       contentBody,
       jumpBarItems,
       isPosterOptionsModalOpen,
+      isBannerOptionsModalOpen,
       isRendered
     } = this.state;
 
@@ -220,6 +236,20 @@ class ArtistIndex extends Component {
 
             {
               view === 'posters' &&
+                <PageToolbarSeparator />
+            }
+
+            {
+              view === 'banners' &&
+                <PageToolbarButton
+                  label="Options"
+                  iconName={icons.POSTER}
+                  onPress={this.onBannerOptionsPress}
+                />
+            }
+
+            {
+              view === 'banners' &&
                 <PageToolbarSeparator />
             }
 
@@ -295,6 +325,11 @@ class ArtistIndex extends Component {
         <ArtistIndexPosterOptionsModal
           isOpen={isPosterOptionsModalOpen}
           onModalClose={this.onPosterOptionsModalClose}
+        />
+
+        <ArtistIndexBannerOptionsModal
+          isOpen={isBannerOptionsModalOpen}
+          onModalClose={this.onBannerOptionsModalClose}
         />
       </PageContent>
     );

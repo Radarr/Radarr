@@ -29,6 +29,14 @@ function ArtistIndexViewMenu(props) {
         >
           Posters
         </ViewMenuItem>
+
+        <ViewMenuItem
+          name="banners"
+          selectedView={view}
+          onPress={onViewSelect}
+        >
+          Banners
+        </ViewMenuItem>
       </MenuContent>
     </ViewMenu>
   );

@@ -6,3 +6,4 @@ export const setArtistFilter = createAction(types.SET_ARTIST_FILTER);
 export const setArtistView = createAction(types.SET_ARTIST_VIEW);
 export const setArtistTableOption = createAction(types.SET_ARTIST_TABLE_OPTION);
 export const setArtistPosterOption = createAction(types.SET_ARTIST_POSTER_OPTION);
+export const setArtistBannerOption = createAction(types.SET_ARTIST_BANNER_OPTION);

@@ -22,6 +22,17 @@
   padding: calc($pageContentBodyPadding - 5px);
 }
 
+.bannersInnerContentBody {
+  composes: innerContentBody from 'Components/Page/PageContentBody.css';
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  /* 5px less padding than normal to handle poster's 5px margin */
+  padding: calc($pageContentBodyPadding - 5px);
+}
+
 .tableInnerContentBody {
   composes: innerContentBody from 'Components/Page/PageContentBody.css';
 
@@ -46,6 +57,10 @@
   }
 
   .postersInnerContentBody {
+    padding: calc($pageContentBodyPaddingSmallScreen - 5px);
+  }
+
+  .bannersInnerContentBody {
     padding: calc($pageContentBodyPaddingSmallScreen - 5px);
   }
 }

@@ -16,6 +16,8 @@ import ArtistIndex from './ArtistIndex';
 
 const POSTERS_PADDING = 15;
 const POSTERS_PADDING_SMALL_SCREEN = 5;
+const BANNERS_PADDING = 15;
+const BANNERS_PADDING_SMALL_SCREEN = 5;
 const TABLE_PADDING = parseInt(dimensions.pageContentBodyPadding);
 const TABLE_PADDING_SMALL_SCREEN = parseInt(dimensions.pageContentBodyPaddingSmallScreen);
 
@@ -32,6 +34,10 @@ function getScrollTop(view, scrollTop, isSmallScreen) {
 
   if (view === 'posters') {
     padding = isSmallScreen ? POSTERS_PADDING_SMALL_SCREEN : POSTERS_PADDING;
+  }
+
+  if (view === 'banners') {
+    padding = isSmallScreen ? BANNERS_PADDING_SMALL_SCREEN : BANNERS_PADDING;
   }
 
   return scrollTop + padding;

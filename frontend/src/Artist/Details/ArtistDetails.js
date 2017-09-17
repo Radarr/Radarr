@@ -45,6 +45,16 @@ const albumTypes = [
     name: 'ep',
     label: 'EP',
     isVisible: true
+  },
+  {
+    name: 'broadcast',
+    label: 'Broadcast',
+    isVisible: true
+  },
+  {
+    name: 'other',
+    label: 'Other',
+    isVisible: true
   }
 ];
 

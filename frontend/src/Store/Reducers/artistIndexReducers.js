@@ -24,6 +24,13 @@ export const defaultState = {
     showQualityProfile: false
   },
 
+  bannerOptions: {
+    detailedProgressBar: false,
+    size: 'large',
+    showTitle: false,
+    showQualityProfile: false
+  },
+
   columns: [
     {
       name: 'status',
@@ -160,7 +167,8 @@ export const persistState = [
   'artistIndex.filterType',
   'artistIndex.view',
   'artistIndex.columns',
-  'artistIndex.posterOptions'
+  'artistIndex.posterOptions',
+  'artistIndex.bannerOptions'
 ];
 
 const reducerSection = 'artistIndex';
@@ -185,6 +193,18 @@ const artistIndexReducers = handleActions({
       ...state,
       posterOptions: {
         ...posterOptions,
+        ...payload
+      }
+    };
+  },
+
+  [types.SET_ARTIST_BANNER_OPTION]: function(state, { payload }) {
+    const bannerOptions = state.bannerOptions;
+
+    return {
+      ...state,
+      bannerOptions: {
+        ...bannerOptions,
         ...payload
       }
     };
