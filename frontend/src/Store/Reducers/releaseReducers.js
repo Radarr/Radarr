@@ -49,6 +49,12 @@ const releaseReducers = handleActions({
     const guid = payload.guid;
     const newState = Object.assign({}, state);
     const items = newState.items;
+
+    // Return early if there aren't any items (the user closed the modal)
+    if (!items.length) {
+      return;
+    }
+
     const index = _.findIndex(items, { guid });
     const item = Object.assign({}, items[index], payload);
 

@@ -147,6 +147,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 var localTrack = new LocalTrack();
                 localTrack.Path = file;
                 localTrack.Quality = QualityParser.ParseQuality(file);
+                localEpisode.Language = LanguageParser.ParseLanguage(file);
                 localTrack.Size = _diskProvider.GetFileSize(file);
 
                 return MapItem(new ImportDecision(localTrack, new Rejection("Unknown Artist")), folder, downloadId);
@@ -183,6 +184,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             }
 
             item.Quality = decision.LocalTrack.Quality;
+            item.Language = decision.LocalTrack.Language;
             item.Size = _diskProvider.GetFileSize(decision.LocalTrack.Path);
             item.Rejections = decision.Rejections;
 
@@ -216,6 +218,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                     ParsedTrackInfo = parsedTrackInfo,
                     Path = file.Path,
                     Quality = file.Quality,
+                    Language = file.Language,
                     Artist = artist,
                     Album = album,
                     Size = 0

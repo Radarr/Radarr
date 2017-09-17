@@ -50,6 +50,12 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'language',
+    label: 'Language',
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'size',
     label: 'Size',
     isVisible: true

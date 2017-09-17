@@ -570,4 +570,8 @@ ArtistDetails.propTypes = {
   onSearchPress: PropTypes.func.isRequired
 };
 
+ArtistDetails.defaultProps = {
+  isSaving: false
+};
+
 export default ArtistDetails;

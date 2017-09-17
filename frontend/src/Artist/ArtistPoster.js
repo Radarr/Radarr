@@ -40,8 +40,8 @@ class ArtistPoster extends Component {
       pixelRatio,
       poster,
       posterUrl: getPosterUrl(poster, pixelRatio * size),
-      hasError: false,
-      isLoaded: false
+      isLoaded: false,
+      hasError: false
     };
   }
 
@@ -52,17 +52,18 @@ class ArtistPoster extends Component {
     } = this.props;
 
     const {
+      poster,
       pixelRatio
     } = this.state;
 
-    const poster = findPoster(images);
+    const nextPoster = findPoster(images);
 
-    if (poster && poster.url !== this.state.poster.url) {
+    if (nextPoster && (!poster || nextPoster.url !== poster.url)) {
       this.setState({
-        poster,
-        posterUrl: getPosterUrl(poster, pixelRatio * size),
-        hasError: false,
-        isLoaded: false
+        poster: nextPoster,
+        posterUrl: getPosterUrl(nextPoster, pixelRatio * size),
+        isLoaded: false,
+        hasError: false
       });
     }
   }
@@ -75,7 +76,10 @@ class ArtistPoster extends Component {
   }
 
   onLoad = () => {
-    this.setState({ isLoaded: true });
+    this.setState({
+      isLoaded: true,
+      hasError: false
+    });
   }
 
   //

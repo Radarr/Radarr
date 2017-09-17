@@ -173,7 +173,10 @@ class SignalRConnector extends Component {
     const resource = body.resource;
     const state = resource.state;
 
-    if (state === 'completed') {
+    // Both sucessful and failed commands need to be
+    // completed, otherwise they spin until they timeout.
+
+    if (state === 'completed' || state === 'failed') {
       this.props.finishCommand(resource);
     } else {
       this.props.updateCommand(resource);

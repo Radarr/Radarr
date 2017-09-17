@@ -139,7 +139,7 @@ class Updates extends Component {
 
 Updates.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
-  error: PropTypes.object.isRequired,
+  error: PropTypes.object,
   items: PropTypes.array.isRequired,
   isInstallingUpdate: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

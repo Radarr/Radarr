@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
@@ -10,6 +11,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public int AlbumId { get; set; }
         public List<int> TrackIds { get; set; }
         public QualityModel Quality { get; set; }
+        public Language Language { get; set; }
         public string DownloadId { get; set; }
     }
 }

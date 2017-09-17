@@ -40,8 +40,8 @@ class ArtistBanner extends Component {
       pixelRatio,
       banner,
       bannerUrl: getBannerUrl(banner, pixelRatio * size),
-      hasError: false,
-      isLoaded: false
+      isLoaded: false,
+      hasError: false
     };
   }
 
@@ -52,17 +52,18 @@ class ArtistBanner extends Component {
     } = this.props;
 
     const {
+      banner,
       pixelRatio
     } = this.state;
 
-    const banner = findBanner(images);
+    const nextBanner = findBanner(images);
 
-    if (banner && banner.url !== this.state.banner.url) {
+    if (nextBanner && (!banner || nextBanner.url !== banner.url)) {
       this.setState({
-        banner,
-        bannerUrl: getBannerUrl(banner, pixelRatio * size),
-        hasError: false,
-        isLoaded: false
+        banner: nextBanner,
+        posterUrl: getBannerUrl(nextBanner, pixelRatio * size),
+        isLoaded: false,
+        hasError: false
       });
     }
   }
@@ -75,7 +76,10 @@ class ArtistBanner extends Component {
   }
 
   onLoad = () => {
-    this.setState({ isLoaded: true });
+    this.setState({
+      isLoaded: true,
+      hasError: false
+    });
   }
 
   //

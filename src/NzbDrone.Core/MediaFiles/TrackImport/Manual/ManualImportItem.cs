@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public Album Album { get; set; }
         public List<Track> Tracks { get; set; }
         public QualityModel Quality { get; set; }
+        public Language Language { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
     }

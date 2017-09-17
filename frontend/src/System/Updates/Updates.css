@@ -20,10 +20,10 @@
 
 .info {
   display: flex;
+  align-items: center;
   margin-bottom: 10px;
   padding-bottom: 5px;
   border-bottom: 1px solid #e5e5e5;
-  line-height: 21px;
 }
 
 .version {

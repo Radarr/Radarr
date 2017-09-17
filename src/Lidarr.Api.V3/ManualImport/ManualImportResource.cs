@@ -2,6 +2,7 @@ using NzbDrone.Common.Crypto;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Languages;
 using Lidarr.Api.V3.Artist;
 using Lidarr.Api.V3.Albums;
 using Lidarr.Api.V3.Tracks;
@@ -21,6 +22,7 @@ namespace Lidarr.Api.V3.ManualImport
         public AlbumResource Album { get; set; }
         public List<TrackResource> Tracks { get; set; }
         public QualityModel Quality { get; set; }
+        public Language Language { get; set; }
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
@@ -43,6 +45,7 @@ namespace Lidarr.Api.V3.ManualImport
                 Album = model.Album.ToResource(),
                 Tracks = model.Tracks.ToResource(),
                 Quality = model.Quality,
+                Language = model.Language,
                 //QualityWeight
                 DownloadId = model.DownloadId,
                 Rejections = model.Rejections

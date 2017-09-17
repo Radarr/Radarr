@@ -74,7 +74,8 @@ class InteractiveImportModalContentConnector extends Component {
           artist,
           album,
           tracks,
-          quality
+          quality,
+          language
         } = item;
 
         if (!artist) {
@@ -98,6 +99,7 @@ class InteractiveImportModalContentConnector extends Component {
           albumId: album.id,
           trackIds: _.map(tracks, 'id'),
           quality,
+          language,
           downloadId: this.props.downloadId
         });
       }
