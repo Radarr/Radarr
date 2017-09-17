@@ -26,21 +26,21 @@ namespace NzbDrone.Api.Series
                                 IHandle<SeriesUpdatedEvent>,       
                                 IHandle<SeriesEditedEvent>,  
                                 IHandle<SeriesDeletedEvent>,
-                                IHandle<SeriesRenamedEvent>,
-                                IHandle<MediaCoversUpdatedEvent>
+                                IHandle<SeriesRenamedEvent>
+                                //IHandle<MediaCoversUpdatedEvent>
 
     {
         private readonly ISeriesService _seriesService;
         private readonly IAddSeriesService _addSeriesService;
         private readonly ISeriesStatisticsService _seriesStatisticsService;
-        // private readonly ISceneMappingService _sceneMappingService;
+        //private readonly ISceneMappingService _sceneMappingService;
         private readonly IMapCoversToLocal _coverMapper;
 
         public SeriesModule(IBroadcastSignalRMessage signalRBroadcaster,
                             ISeriesService seriesService,
                             IAddSeriesService addSeriesService,
                             ISeriesStatisticsService seriesStatisticsService,
-                            // ISceneMappingService sceneMappingService,
+                            //ISceneMappingService sceneMappingService,
                             IMapCoversToLocal coverMapper,
                             RootFolderValidator rootFolderValidator,
                             SeriesPathValidator seriesPathValidator,
@@ -96,7 +96,7 @@ namespace NzbDrone.Api.Series
             if (series == null) return null;
 
             var resource = series.ToResource();
-            MapCoversToLocal(resource);
+            //MapCoversToLocal(resource);
             FetchAndLinkSeriesStatistics(resource);
             PopulateAlternateTitles(resource);
 
@@ -108,7 +108,7 @@ namespace NzbDrone.Api.Series
             var seriesStats = _seriesStatisticsService.SeriesStatistics();
             var seriesResources = _seriesService.GetAllSeries().ToResource();
 
-            MapCoversToLocal(seriesResources.ToArray());
+            //MapCoversToLocal(seriesResources.ToArray());
             LinkSeriesStatistics(seriesResources, seriesStats);
             PopulateAlternateTitles(seriesResources);
 
@@ -144,13 +144,13 @@ namespace NzbDrone.Api.Series
             _seriesService.DeleteSeries(id, deleteFiles);
         }
 
-        private void MapCoversToLocal(params SeriesResource[] series)
-        {
-            foreach (var seriesResource in series)
-            {
-                _coverMapper.ConvertToLocalUrls(seriesResource.Id, seriesResource.Images);
-            }
-        }
+        //private void MapCoversToLocal(params SeriesResource[] series)
+       // {
+        //    foreach (var seriesResource in series)
+        //    {
+        //        _coverMapper.ConvertToLocalUrls(seriesResource.Id, seriesResource.Images);
+        //    }
+        //}
 
         private void FetchAndLinkSeriesStatistics(SeriesResource resource)
         {
@@ -239,9 +239,9 @@ namespace NzbDrone.Api.Series
             BroadcastResourceChange(ModelAction.Updated, message.Series.Id);
         }
 
-        public void Handle(MediaCoversUpdatedEvent message)
-        {
-            BroadcastResourceChange(ModelAction.Updated, message.Series.Id);
-        }
+        //public void Handle(MediaCoversUpdatedEvent message)
+        //{
+        //    BroadcastResourceChange(ModelAction.Updated, message.Series.Id);
+        //}
     }
 }

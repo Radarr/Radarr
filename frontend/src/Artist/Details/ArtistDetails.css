@@ -32,11 +32,18 @@
   color: $white;
 }
 
+.logo {
+  flex-shrink: 0;
+  margin-right: 35px;
+  width: 250px;
+  height: 97px;
+}
+
 .poster {
   flex-shrink: 0;
   margin-right: 35px;
   width: 250px;
-  height: 368px;
+  height: 250px;
 }
 
 .info {

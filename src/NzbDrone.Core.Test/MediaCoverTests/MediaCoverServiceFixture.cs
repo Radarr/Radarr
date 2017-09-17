@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -9,24 +9,30 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.Test.MediaCoverTests
 {
     [TestFixture]
     public class MediaCoverServiceFixture : CoreTest<MediaCoverService>
     {
-        Series _series;
+        Artist _artist;
+        Album _album;
 
         [SetUp]
         public void Setup()
         {
             Mocker.SetConstant<IAppFolderInfo>(new AppFolderInfo(Mocker.Resolve<IStartupContext>()));
 
-            _series = Builder<Series>.CreateNew()
+            _artist = Builder<Artist>.CreateNew()
                 .With(v => v.Id = 2)
                 .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
+                .Build();
+
+            _album = Builder<Album>.CreateNew()
+                .With(v => v.Id = 4)
+                .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Cover, "") })
                 .Build();
         }
 
@@ -48,6 +54,26 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
 
             covers.Single().Url.Should().Be("/MediaCover/12/banner.jpg?lastWrite=1234");
+        }
+
+        [Test]
+        public void should_convert_album_cover_urls_to_local()
+        {
+            var covers = new List<MediaCover.MediaCover>
+                {
+                    new MediaCover.MediaCover {CoverType = MediaCoverTypes.Disc}
+                };
+
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileGetLastWrite(It.IsAny<string>()))
+                  .Returns(new DateTime(1234));
+
+            Mocker.GetMock<IDiskProvider>().Setup(c => c.FileExists(It.IsAny<string>()))
+                  .Returns(true);
+
+            Subject.ConvertToLocalUrls(12, covers, 6);
+
+
+            covers.Single().Url.Should().Be("/MediaCover/12/6/disc.jpg?lastWrite=1234");
         }
 
         [Test]
@@ -76,7 +102,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(true);
 
-            Subject.HandleAsync(new SeriesUpdatedEvent(_series));
+            Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
                   .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
@@ -93,7 +119,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.FileExists(It.IsAny<string>()))
                   .Returns(false);
 
-            Subject.HandleAsync(new SeriesUpdatedEvent(_series));
+            Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
                   .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
@@ -114,7 +140,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.GetFileSize(It.IsAny<string>()))
                   .Returns(1000);
 
-            Subject.HandleAsync(new SeriesUpdatedEvent(_series));
+            Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
                   .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never());
@@ -135,7 +161,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.GetFileSize(It.IsAny<string>()))
                   .Returns(0);
 
-            Subject.HandleAsync(new SeriesUpdatedEvent(_series));
+            Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
                   .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));
@@ -156,7 +182,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                   .Setup(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))
                   .Throws<ApplicationException>();
 
-            Subject.HandleAsync(new SeriesUpdatedEvent(_series));
+            Subject.HandleAsync(new ArtistUpdatedEvent(_artist));
 
             Mocker.GetMock<IImageResizer>()
                   .Verify(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(2));

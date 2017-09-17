@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -105,13 +105,13 @@ namespace NzbDrone.Core.Extras
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            var series = message.Series;
-            var episodeFiles = GetEpisodeFiles(series.Id);
+            //var artist = message.Artist;
+            //var episodeFiles = GetEpisodeFiles(artist.Id);
 
-            foreach (var extraFileManager in _extraFileManagers)
-            {
-                extraFileManager.CreateAfterSeriesScan(series, episodeFiles);
-            }
+            //foreach (var extraFileManager in _extraFileManagers)
+            //{
+            //    extraFileManager.CreateAfterSeriesScan(artist, episodeFiles);
+            //}
         }
 
         public void Handle(EpisodeFolderCreatedEvent message)

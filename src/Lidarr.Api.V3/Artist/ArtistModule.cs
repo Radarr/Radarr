@@ -28,8 +28,8 @@ namespace Lidarr.Api.V3.Artist
                                 IHandle<ArtistUpdatedEvent>,       
                                 IHandle<ArtistEditedEvent>,  
                                 IHandle<ArtistDeletedEvent>,
-                                IHandle<ArtistRenamedEvent>
-                                //IHandle<MediaCoversUpdatedEvent>
+                                IHandle<ArtistRenamedEvent>,
+                                IHandle<MediaCoversUpdatedEvent>
 
     {
         private readonly IArtistService _artistService;
@@ -240,9 +240,9 @@ namespace Lidarr.Api.V3.Artist
             BroadcastResourceChange(ModelAction.Updated, message.Artist.Id);
         }
 
-        //public void Handle(MediaCoversUpdatedEvent message)
-        //{
-        //    BroadcastResourceChange(ModelAction.Updated, message.Series.Id);
-        //}
+        public void Handle(MediaCoversUpdatedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, message.Artist.Id);
+        }
     }
 }
