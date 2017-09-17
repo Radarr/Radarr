@@ -147,7 +147,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 var localTrack = new LocalTrack();
                 localTrack.Path = file;
                 localTrack.Quality = QualityParser.ParseQuality(file);
-                localEpisode.Language = LanguageParser.ParseLanguage(file);
+                localTrack.Language = LanguageParser.ParseLanguage(file);
                 localTrack.Size = _diskProvider.GetFileSize(file);
 
                 return MapItem(new ImportDecision(localTrack, new Rejection("Unknown Artist")), folder, downloadId);
