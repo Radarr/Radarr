@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
@@ -113,25 +113,14 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         private string WriteStrmFile(string title, string nzbFile)
         {
-            string folder;
 
             if (Settings.StrmFolder.IsNullOrWhiteSpace())
             {
-                folder = _configService.DownloadedAlbumsFolder;
-
-                if (folder.IsNullOrWhiteSpace())
-                {
-                    throw new DownloadClientException("Strm Folder needs to be set for Pneumatic Downloader");
-                }
-            }
-
-            else
-            {
-                folder = Settings.StrmFolder;
+                throw new DownloadClientException("Strm Folder needs to be set for Pneumatic Downloader");
             }
 
             var contents = string.Format("plugin://plugin.program.pneumatic/?mode=strm&type=add_file&nzb={0}&nzbname={1}", nzbFile, title);
-            var filename = Path.Combine(folder, title + ".strm");
+            var filename = Path.Combine(Settings.StrmFolder, title + ".strm");
 
             _diskProvider.WriteAllText(filename, contents);
 

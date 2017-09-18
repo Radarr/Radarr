@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -93,35 +93,6 @@ namespace NzbDrone.Core.Test.DiskSpace
         public void should_not_check_diskspace_for_missing_series_folders()
         {
             GivenSeries(new Series { Path = _seriesFolder });
-
-            var freeSpace = Subject.GetFreeSpace();
-
-            freeSpace.Should().BeEmpty();
-
-            Mocker.GetMock<IDiskProvider>()
-                  .Verify(v => v.GetAvailableSpace(It.IsAny<string>()), Times.Never());
-        }
-
-        [Test]
-        public void should_check_diskspace_for_dronefactory_folder()
-        {
-            Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedAlbumsFolder)
-                  .Returns(_droneFactoryFolder);
-
-            GivenExistingFolder(_droneFactoryFolder);
-
-            var freeSpace = Subject.GetFreeSpace();
-
-            freeSpace.Should().NotBeEmpty();
-        }
-
-        [Test]
-        public void should_not_check_diskspace_for_missing_dronefactory_folder()
-        {
-            Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.DownloadedAlbumsFolder)
-                  .Returns(_droneFactoryFolder);
 
             var freeSpace = Subject.GetFreeSpace();
 

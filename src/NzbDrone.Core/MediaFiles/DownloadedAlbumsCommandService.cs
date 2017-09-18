@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -9,47 +9,26 @@ using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Common.Instrumentation.Extensions;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public class DownloadedAlbumsCommandService : IExecute<DownloadedAlbumsScanCommand>
     {
-        private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
+        private readonly IDownloadedTracksImportService _downloadedTracksImportService;
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDiskProvider _diskProvider;
-        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public DownloadedAlbumsCommandService(IDownloadedEpisodesImportService downloadedEpisodesImportService,
+        public DownloadedAlbumsCommandService(IDownloadedTracksImportService downloadedTracksImportService,
                                                 ITrackedDownloadService trackedDownloadService,
                                                 IDiskProvider diskProvider,
-                                                IConfigService configService,
                                                 Logger logger)
         {
-            _downloadedEpisodesImportService = downloadedEpisodesImportService;
+            _downloadedTracksImportService = downloadedTracksImportService;
             _trackedDownloadService = trackedDownloadService;
             _diskProvider = diskProvider;
-            _configService = configService;
             _logger = logger;
-        }
-
-        private List<ImportResult> ProcessDroneFactoryFolder()
-        {
-            var downloadedAlbumsFolder = _configService.DownloadedAlbumsFolder;
-
-            if (string.IsNullOrEmpty(downloadedAlbumsFolder))
-            {
-                _logger.Trace("Drone Factory folder is not configured");
-                return new List<ImportResult>();
-            }
-
-            if (!_diskProvider.FolderExists(downloadedAlbumsFolder))
-            {
-                _logger.Warn("Drone Factory folder [{0}] doesn't exist.", downloadedAlbumsFolder);
-                return new List<ImportResult>();
-            }
-
-            return _downloadedEpisodesImportService.ProcessRootFolder(new DirectoryInfo(downloadedAlbumsFolder));
         }
 
         private List<ImportResult> ProcessPath(DownloadedAlbumsScanCommand message)
@@ -68,17 +47,17 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     _logger.Debug("External directory scan request for known download {0}. [{1}]", message.DownloadClientId, message.Path);
 
-                    return _downloadedEpisodesImportService.ProcessPath(message.Path, message.ImportMode, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
+                    return _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode, trackedDownload.RemoteAlbum.Artist, trackedDownload.DownloadItem);
                 }
                 else
                 {
                     _logger.Warn("External directory scan request for unknown download {0}, attempting normal import. [{1}]", message.DownloadClientId, message.Path);
 
-                    return _downloadedEpisodesImportService.ProcessPath(message.Path, message.ImportMode);
+                    return _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode);
                 }
             }
 
-            return _downloadedEpisodesImportService.ProcessPath(message.Path, message.ImportMode);
+            return _downloadedTracksImportService.ProcessPath(message.Path, message.ImportMode);
         }
 
         public void Execute(DownloadedAlbumsScanCommand message)
@@ -91,7 +70,7 @@ namespace NzbDrone.Core.MediaFiles
             }
             else
             {
-                importResults = ProcessDroneFactoryFolder();
+                throw new ArgumentException("A path must be provided", "path");
             }
 
             if (importResults == null || importResults.All(v => v.Result != ImportResultType.Imported))

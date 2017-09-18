@@ -219,7 +219,6 @@
     <Compile Include="HealthCheck\Checks\DeleteBadMediaCovers.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationFixture.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheckFixture.cs" />
-    <Compile Include="HealthCheck\Checks\DroneFactoryCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\HealthCheckFixtureExtensions.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerSearchCheckFixture.cs" />
@@ -283,7 +282,7 @@
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
     <Compile Include="MediaFiles\DiskScanServiceTests\ScanFixture.cs" />
     <Compile Include="MediaFiles\DownloadedAlbumsCommandServiceFixture.cs" />
-    <Compile Include="MediaFiles\DownloadedEpisodesImportServiceFixture.cs" />
+    <Compile Include="MediaFiles\DownloadedTracksImportServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IImportApprovedTracks _importApprovedTracks;
         private readonly ITrackedDownloadService _trackedDownloadService;
-        private readonly IDownloadedEpisodesImportService _downloadedEpisodesImportService;
+        private readonly IDownloadedTracksImportService _downloadedEpisodesImportService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                                    IVideoFileInfoReader videoFileInfoReader,
                                    IImportApprovedTracks importApprovedTracks,
                                    ITrackedDownloadService trackedDownloadService,
-                                   IDownloadedEpisodesImportService downloadedEpisodesImportService,
+                                   IDownloadedTracksImportService downloadedEpisodesImportService,
                                    IEventAggregator eventAggregator,
                                    Logger logger)
         {
@@ -258,7 +258,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 {
                     if (_downloadedEpisodesImportService.ShouldDeleteFolder(
                             new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
-                            trackedDownload.RemoteEpisode.Series) && !trackedDownload.DownloadItem.IsReadOnly)
+                            trackedDownload.RemoteAlbum.Artist) && !trackedDownload.DownloadItem.IsReadOnly)
                     {
                         _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
                     }

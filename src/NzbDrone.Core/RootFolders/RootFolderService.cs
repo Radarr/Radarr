@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -105,11 +105,6 @@ namespace NzbDrone.Core.RootFolders
             if (all.Exists(r => r.Path.PathEquals(rootFolder.Path)))
             {
                 throw new InvalidOperationException("Recent directory already exists.");
-            }
-
-            if (_configService.DownloadedAlbumsFolder.IsNotNullOrWhiteSpace() && _configService.DownloadedAlbumsFolder.PathEquals(rootFolder.Path))
-            {
-                throw new InvalidOperationException("Drone Factory folder cannot be used.");
             }
 
             if (!_diskProvider.FolderWritable(rootFolder.Path))

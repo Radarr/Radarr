@@ -571,7 +571,6 @@
     <Compile Include="HealthCheck\CheckHealthCommand.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
-    <Compile Include="HealthCheck\Checks\DroneFactoryCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheck.cs" />
@@ -748,7 +747,7 @@
     <Compile Include="MediaFiles\DiskScanService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MediaFiles\DownloadedEpisodesImportService.cs">
+    <Compile Include="MediaFiles\DownloadedTracksImportService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MediaFiles\DownloadedAlbumsCommandService.cs" />

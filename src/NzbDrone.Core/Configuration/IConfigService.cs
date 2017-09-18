@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
 
@@ -11,9 +11,7 @@ namespace NzbDrone.Core.Configuration
         bool IsDefined(string key);
 
         //Download Client
-        string DownloadedAlbumsFolder { get; set; }
         string DownloadClientWorkingFolders { get; set; }
-        int DownloadedAlbumsScanInterval { get; set; }
         int DownloadClientHistoryLimit { get; set; }
 
         //Completed/Failed Download Handling (Download client)
