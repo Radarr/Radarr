@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string Title { get; set; } // In case of a takedown, this may be empty
         public string Overview { get; set; }
         public List<string> Genres { get; set; }
-        public string Label { get; set; }
+        public List<string> Label { get; set; }
         public string Type { get; set; }
         public List<TrackResource> Tracks { get; set; }
     }

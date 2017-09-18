@@ -13,7 +13,7 @@ namespace Lidarr.Api.V3.Albums
     {
         public string Title { get; set; }
         public int ArtistId { get; set; }
-        public string AlbumLabel { get; set; }
+        public List<string> AlbumLabel { get; set; }
         public bool Monitored { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }

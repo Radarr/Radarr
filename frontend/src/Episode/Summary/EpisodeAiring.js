@@ -75,7 +75,7 @@ function EpisodeAiring(props) {
 
 EpisodeAiring.propTypes = {
   releaseDate: PropTypes.string.isRequired,
-  albumLabel: PropTypes.string.isRequired,
+  albumLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired

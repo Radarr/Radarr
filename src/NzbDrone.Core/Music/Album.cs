@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Tv;
 using System;
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Music
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public DateTime? ReleaseDate { get; set; }
-        public string Label { get; set; }
+        public List<string> Label { get; set; }
         //public int TrackCount { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }

@@ -175,7 +175,7 @@ EpisodeDetailsModalContent.propTypes = {
   nameSlug: PropTypes.string.isRequired,
   artistMonitored: PropTypes.bool.isRequired,
   releaseDate: PropTypes.string.isRequired,
-  albumLabel: PropTypes.string.isRequired,
+  albumLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
   episodeTitle: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool,

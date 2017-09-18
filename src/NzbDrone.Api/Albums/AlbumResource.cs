@@ -14,7 +14,7 @@ namespace NzbDrone.Api.Albums
         
         public string Title { get; set; }
         public int ArtistId { get; set; }
-        public string Label { get; set; }
+        public List<string> Label { get; set; }
         public bool Monitored { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }

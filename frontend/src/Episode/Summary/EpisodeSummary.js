@@ -153,7 +153,7 @@ class EpisodeSummary extends Component {
 EpisodeSummary.propTypes = {
   qualityProfileId: PropTypes.number.isRequired,
   overview: PropTypes.string,
-  albumLabel: PropTypes.string,
+  albumLabel: PropTypes.arrayOf(PropTypes.string),
   releaseDate: PropTypes.string.isRequired,
   path: PropTypes.string,
   size: PropTypes.number,
