@@ -9,7 +9,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import EpisodeSummaryConnector from './Summary/EpisodeSummaryConnector';
-import EpisodeHistoryConnector from './History/EpisodeHistoryConnector';
+import AlbumHistoryConnector from './History/AlbumHistoryConnector';
 import EpisodeSearchConnector from './Search/EpisodeSearchConnector';
 import styles from './EpisodeDetailsModalContent.css';
 
@@ -129,8 +129,8 @@ class EpisodeDetailsModalContent extends Component {
             </TabPanel>
 
             <TabPanel className={styles.tabPanel}>
-              <EpisodeHistoryConnector
-                episodeId={episodeId}
+              <AlbumHistoryConnector
+                albumId={episodeId}
               />
             </TabPanel>
 

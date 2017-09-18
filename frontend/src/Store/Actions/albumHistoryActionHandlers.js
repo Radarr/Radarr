@@ -3,11 +3,11 @@ import { batchActions } from 'redux-batched-actions';
 import { sortDirections } from 'Helpers/Props';
 import * as types from './actionTypes';
 import { set, update } from './baseActions';
-import { fetchEpisodeHistory } from './episodeHistoryActions';
+import { fetchAlbumHistory } from './albumHistoryActions';
 
-const episodeHistoryActionHandlers = {
-  [types.FETCH_EPISODE_HISTORY]: function(payload) {
-    const section = 'episodeHistory';
+const albumHistoryActionHandlers = {
+  [types.FETCH_ALBUM_HISTORY]: function(payload) {
+    const section = 'albumHistory';
 
     return function(dispatch, getState) {
       dispatch(set({ section, isFetching: true }));
@@ -15,8 +15,8 @@ const episodeHistoryActionHandlers = {
       const queryParams = {
         pageSize: 1000,
         page: 1,
-        filterKey: 'episodeId',
-        filterValue: payload.episodeId,
+        filterKey: 'albumId',
+        filterValue: payload.albumId,
         sortKey: 'date',
         sortDirection: sortDirections.DESCENDING
       };
@@ -50,11 +50,11 @@ const episodeHistoryActionHandlers = {
     };
   },
 
-  [types.EPISODE_HISTORY_MARK_AS_FAILED]: function(payload) {
+  [types.ALBUM_HISTORY_MARK_AS_FAILED]: function(payload) {
     return function(dispatch, getState) {
       const {
         historyId,
-        episodeId
+        albumId
       } = payload;
 
       const promise = $.ajax({
@@ -66,10 +66,10 @@ const episodeHistoryActionHandlers = {
       });
 
       promise.done(() => {
-        dispatch(fetchEpisodeHistory({ episodeId }));
+        dispatch(fetchAlbumHistory({ albumId }));
       });
     };
   }
 };
 
-export default episodeHistoryActionHandlers;
+export default albumHistoryActionHandlers;

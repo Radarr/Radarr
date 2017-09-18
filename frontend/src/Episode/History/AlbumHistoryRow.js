@@ -12,9 +12,9 @@ import Popover from 'Components/Tooltip/Popover';
 import EpisodeQuality from 'Episode/EpisodeQuality';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
-import styles from './EpisodeHistoryRow.css';
+import styles from './AlbumHistoryRow.css';
 
-class EpisodeHistoryRow extends Component {
+class AlbumHistoryRow extends Component {
 
   //
   // Lifecycle
@@ -125,7 +125,7 @@ class EpisodeHistoryRow extends Component {
   }
 }
 
-EpisodeHistoryRow.propTypes = {
+AlbumHistoryRow.propTypes = {
   id: PropTypes.number.isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
@@ -136,4 +136,4 @@ EpisodeHistoryRow.propTypes = {
   onMarkAsFailedPress: PropTypes.func.isRequired
 };
 
-export default EpisodeHistoryRow;
+export default AlbumHistoryRow;

@@ -10,17 +10,17 @@ export const defaultState = {
   items: []
 };
 
-const reducerSection = 'episodeHistory';
+const reducerSection = 'albumHistory';
 
-const episodeHistoryReducers = handleActions({
+const albumHistoryReducers = handleActions({
 
   [types.SET]: createSetReducer(reducerSection),
   [types.UPDATE]: createUpdateReducer(reducerSection),
 
-  [types.CLEAR_EPISODE_HISTORY]: (state) => {
+  [types.CLEAR_ALBUM_HISTORY]: (state) => {
     return Object.assign({}, state, defaultState);
   }
 
 }, defaultState);
 
-export default episodeHistoryReducers;
+export default albumHistoryReducers;

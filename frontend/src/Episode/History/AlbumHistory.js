@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import EpisodeHistoryRow from './EpisodeHistoryRow';
+import AlbumHistoryRow from './AlbumHistoryRow';
 
 const columns = [
   {
@@ -37,7 +37,7 @@ const columns = [
   }
 ];
 
-class EpisodeHistory extends Component {
+class AlbumHistory extends Component {
 
   //
   // Render
@@ -80,7 +80,7 @@ class EpisodeHistory extends Component {
             {
               items.map((item) => {
                 return (
-                  <EpisodeHistoryRow
+                  <AlbumHistoryRow
                     key={item.id}
                     {...item}
                     onMarkAsFailedPress={onMarkAsFailedPress}
@@ -97,7 +97,7 @@ class EpisodeHistory extends Component {
   }
 }
 
-EpisodeHistory.propTypes = {
+AlbumHistory.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -105,8 +105,8 @@ EpisodeHistory.propTypes = {
   onMarkAsFailedPress: PropTypes.func.isRequired
 };
 
-EpisodeHistory.defaultProps = {
+AlbumHistory.defaultProps = {
   selectedTab: 'details'
 };
 
-export default EpisodeHistory;
+export default AlbumHistory;
