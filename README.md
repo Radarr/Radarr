@@ -46,7 +46,7 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 
 ### Development
 
-* Open `NzbDrone.sln` in Visual Studio
+* Open `Lidarr.sln` in Visual Studio
 * Make sure `NzbDrone.Console` is set as the startup project
 * Change build to 'Debug x86'
 
