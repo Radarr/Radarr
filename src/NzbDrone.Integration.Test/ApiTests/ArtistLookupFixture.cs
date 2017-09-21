@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace NzbDrone.Integration.Test.ApiTests
@@ -13,7 +13,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artist = Artist.Lookup(term);
 
             artist.Should().NotBeEmpty();
-            artist.Should().Contain(c => c.Name == name);
+            artist.Should().Contain(c => c.ArtistName == name);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artist = Artist.Lookup("lidarr:266189");
 
             artist.Should().NotBeEmpty();
-            artist.Should().Contain(c => c.Name == "The Blacklist");
+            artist.Should().Contain(c => c.ArtistName == "The Blacklist");
         }
 
         [Test]

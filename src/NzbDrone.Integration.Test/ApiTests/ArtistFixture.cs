@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
 using System.IO;
@@ -17,8 +17,8 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var artist = Artist.Lookup("lidarr:266189").Single();
 
-            artist.ProfileId = 1;
-            artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
+            artist.QualityProfileId = 1;
+            artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
             artist.Tags = new HashSet<int>();
             artist.Tags.Add(tag.Id);
 
@@ -35,7 +35,7 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var artist = Artist.Lookup("lidarr:266189").Single();
 
-            artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
+            artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
 
             Artist.InvalidPost(artist);
         }
@@ -47,7 +47,7 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var artist = Artist.Lookup("lidarr:266189").Single();
 
-            artist.ProfileId = 1;
+            artist.QualityProfileId = 1;
 
             Artist.InvalidPost(artist);
         }
@@ -59,15 +59,15 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var artist = Artist.Lookup("lidarr:266189").Single();
 
-            artist.ProfileId = 1;
-            artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
+            artist.QualityProfileId = 1;
+            artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
 
             var result = Artist.Post(artist);
 
             result.Should().NotBeNull();
             result.Id.Should().NotBe(0);
-            result.ProfileId.Should().Be(1);
-            result.Path.Should().Be(Path.Combine(ArtistRootFolder, artist.Name));
+            result.QualityProfileId.Should().Be(1);
+            result.Path.Should().Be(Path.Combine(ArtistRootFolder, artist.ArtistName));
         }
 
 
@@ -104,16 +104,16 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artist = EnsureArtist("266189", "Alien Ant Farm");
 
             var profileId = 1;
-            if (artist.ProfileId == profileId)
+            if (artist.QualityProfileId == profileId)
             {
                 profileId = 2;
             }
 
-            artist.ProfileId = profileId;
+            artist.QualityProfileId = profileId;
 
             var result = Artist.Put(artist);
 
-            Artist.Get(artist.Id).ProfileId.Should().Be(profileId);
+            Artist.Get(artist.Id).QualityProfileId.Should().Be(profileId);
         }
 
         [Test, Order(3)]

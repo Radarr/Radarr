@@ -25,7 +25,7 @@ namespace NzbDrone.Integration.Test
 
         protected override void InitializeTestTarget()
         {
-            Indexers.Post(new Api.Indexers.IndexerResource
+            Indexers.Post(new Lidarr.Api.V3.Indexers.IndexerResource
             {
                 EnableRss = false,
                 EnableSearch = false,

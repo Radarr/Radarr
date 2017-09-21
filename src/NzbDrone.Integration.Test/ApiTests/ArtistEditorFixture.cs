@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
 using NzbDrone.Test.Common;
@@ -14,7 +14,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             {
                 var newArtist = Artist.Lookup(name).First();
 
-                newArtist.ProfileId = 1;
+                newArtist.QualityProfileId = 1;
                 newArtist.Path = string.Format(@"C:\Test\{0}", name).AsOsAgnostic();
 
                 Artist.Post(newArtist);
@@ -30,13 +30,13 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             foreach (var s in artist)
             {
-                s.ProfileId = 2;
+                s.QualityProfileId = 2;
             }
 
             var result = Artist.Editor(artist);
 
             result.Should().HaveCount(2);
-            result.TrueForAll(s => s.ProfileId == 2).Should().BeTrue();
+            result.TrueForAll(s => s.QualityProfileId == 2).Should().BeTrue();
         }
     }
 }

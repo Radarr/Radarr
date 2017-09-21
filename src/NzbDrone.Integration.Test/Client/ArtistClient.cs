@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
-using NzbDrone.Api.Music;
+using Lidarr.Api.V3.Artist;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

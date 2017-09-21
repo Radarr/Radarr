@@ -167,10 +167,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NzbDrone.Api\NzbDrone.Api.csproj">
-      <Project>{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}</Project>
-      <Name>NzbDrone.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
       <Project>{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}</Project>
       <Name>NzbDrone.Common</Name>

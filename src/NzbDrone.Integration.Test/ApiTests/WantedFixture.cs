@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Qualities;
@@ -35,8 +35,8 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var result = WantedMissing.GetPaged(0, 15, "releaseDate", "desc");
 
-            result.Records.First().Series.Should().NotBeNull();
-            result.Records.First().Series.Title.Should().Be("The Blacklist");
+            result.Records.First().Artist.Should().NotBeNull();
+            result.Records.First().Artist.ArtistName.Should().Be("The Blacklist");
         }
 
         [Test, Order(1)]
@@ -82,8 +82,8 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "releaseDate", "desc");
 
-            result.Records.First().Series.Should().NotBeNull();
-            result.Records.First().Series.Title.Should().Be("The Blacklist");
+            result.Records.First().Artist.Should().NotBeNull();
+            result.Records.First().Artist.ArtistName.Should().Be("The Blacklist");
         }
 
         [Test, Order(2)]

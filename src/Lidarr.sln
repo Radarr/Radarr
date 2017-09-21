@@ -47,8 +47,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1E6B3C
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NzbDrone.Api", "NzbDrone.Api\NzbDrone.Api.csproj", "{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{486ADF86-DD89-4E19-B805-9D94F19800D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NzbDrone.Console", "NzbDrone.Console\NzbDrone.Console.csproj", "{3DCA7B58-B8B3-49AC-9D9E-56F4A0460976}"
@@ -185,12 +183,6 @@ Global
 		{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}.Mono|x86.Build.0 = Release|x86
 		{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}.Release|x86.ActiveCfg = Release|x86
 		{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}.Release|x86.Build.0 = Release|x86
-		{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}.Debug|x86.ActiveCfg = Debug|x86
-		{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}.Debug|x86.Build.0 = Debug|x86
-		{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}.Mono|x86.ActiveCfg = Release|x86
-		{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}.Mono|x86.Build.0 = Release|x86
-		{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}.Release|x86.ActiveCfg = Release|x86
-		{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}.Release|x86.Build.0 = Release|x86
 		{3DCA7B58-B8B3-49AC-9D9E-56F4A0460976}.Debug|x86.ActiveCfg = Debug|x86
 		{3DCA7B58-B8B3-49AC-9D9E-56F4A0460976}.Debug|x86.Build.0 = Debug|x86
 		{3DCA7B58-B8B3-49AC-9D9E-56F4A0460976}.Mono|x86.ActiveCfg = Debug|x86

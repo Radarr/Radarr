@@ -1,8 +1,8 @@
-﻿using System.Threading;
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Series;
-using NzbDrone.Api.Music;
+using Lidarr.Api.V3.Series;
+using Lidarr.Api.V3.Artist;
 using System.Linq;
 using NzbDrone.Test.Common;
 
@@ -23,7 +23,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             var newArtist = Artist.Lookup("archer").Single(c => c.ForeignArtistId == "110381");
 
-            newArtist.ProfileId = 1;
+            newArtist.QualityProfileId = 1;
             newArtist.Path = @"C:\Test\Archer".AsOsAgnostic();
 
             newArtist = Artist.Post(newArtist);

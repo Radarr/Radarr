@@ -106,7 +106,7 @@
     <Compile Include="ApiTests\WantedFixture.cs" />
     <Compile Include="Client\ClientBase.cs" />
     <Compile Include="Client\TrackClient.cs" />
-    <Compile Include="Client\EpisodeClient.cs" />
+    <Compile Include="Client\AlbumClient.cs" />
     <Compile Include="Client\IndexerClient.cs" />
     <Compile Include="Client\DownloadClientClient.cs" />
     <Compile Include="Client\NotificationClient.cs" />
@@ -136,9 +136,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NzbDrone.Api\NzbDrone.Api.csproj">
-      <Project>{FD286DF8-2D3A-4394-8AD5-443FADE55FB2}</Project>
-      <Name>NzbDrone.Api</Name>
+    <ProjectReference Include="..\Lidarr.Api.V3\Lidarr.Api.V3.csproj">
+      <Project>{7140ff1f-79be-492f-9188-b21a050bf708}</Project>
+      <Name>Lidarr.Api.V3</Name>
     </ProjectReference>
     <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
       <Project>{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}</Project>

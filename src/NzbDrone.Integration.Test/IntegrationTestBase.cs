@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,18 +10,17 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
-using NzbDrone.Api.Blacklist;
-using NzbDrone.Api.Commands;
-using NzbDrone.Api.Config;
-using NzbDrone.Api.DownloadClient;
-using NzbDrone.Api.TrackFiles;
-using NzbDrone.Api.Episodes;
-using NzbDrone.Api.History;
-using NzbDrone.Api.Profiles;
-using NzbDrone.Api.RootFolders;
-using NzbDrone.Api.Music;
-using NzbDrone.Api.Albums;
-using NzbDrone.Api.Tags;
+using Lidarr.Api.V3.Blacklist;
+using Lidarr.Api.V3.Commands;
+using Lidarr.Api.V3.Config;
+using Lidarr.Api.V3.DownloadClient;
+using Lidarr.Api.V3.TrackFiles;
+using Lidarr.Api.V3.History;
+using Lidarr.Api.V3.Profiles.Quality;
+using Lidarr.Api.V3.RootFolders;
+using Lidarr.Api.V3.Artist;
+using Lidarr.Api.V3.Albums;
+using Lidarr.Api.V3.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Qualities;
@@ -41,20 +40,20 @@ namespace NzbDrone.Integration.Test
         public ClientBase<BlacklistResource> Blacklist;
         public CommandClient Commands;
         public DownloadClientClient DownloadClients;
-        public EpisodeClient Episodes;
+        public AlbumClient Episodes;
         public TrackClient Tracks;
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
         public IndexerClient Indexers;
         public ClientBase<NamingConfigResource> NamingConfig;
         public NotificationClient Notifications;
-        public ClientBase<ProfileResource> Profiles;
+        public ClientBase<QualityProfileResource> Profiles;
         public ReleaseClient Releases;
         public ClientBase<RootFolderResource> RootFolders;
         public ArtistClient Artist;
         public ClientBase<TagResource> Tags;
-        public ClientBase<EpisodeResource> WantedMissing;
-        public ClientBase<EpisodeResource> WantedCutoffUnmet;
+        public ClientBase<AlbumResource> WantedMissing;
+        public ClientBase<AlbumResource> WantedCutoffUnmet;
 
         private List<SignalRMessage> _signalRReceived;
         private Connection _signalrConnection;
@@ -102,19 +101,19 @@ namespace NzbDrone.Integration.Test
             Blacklist = new ClientBase<BlacklistResource>(RestClient, ApiKey);
             Commands = new CommandClient(RestClient, ApiKey);
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);
-            Episodes = new EpisodeClient(RestClient, ApiKey);
+            Episodes = new AlbumClient(RestClient, ApiKey);
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);
             NamingConfig = new ClientBase<NamingConfigResource>(RestClient, ApiKey, "config/naming");
             Notifications = new NotificationClient(RestClient, ApiKey);
-            Profiles = new ClientBase<ProfileResource>(RestClient, ApiKey);
+            Profiles = new ClientBase<QualityProfileResource>(RestClient, ApiKey);
             Releases = new ReleaseClient(RestClient, ApiKey);
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
             Artist = new ArtistClient(RestClient, ApiKey);
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
-            WantedMissing = new ClientBase<EpisodeResource>(RestClient, ApiKey, "wanted/missing");
-            WantedCutoffUnmet = new ClientBase<EpisodeResource>(RestClient, ApiKey, "wanted/cutoff");
+            WantedMissing = new ClientBase<AlbumResource>(RestClient, ApiKey, "wanted/missing");
+            WantedCutoffUnmet = new ClientBase<AlbumResource>(RestClient, ApiKey, "wanted/cutoff");
         }
 
         [OneTimeTearDown]
@@ -212,8 +211,8 @@ namespace NzbDrone.Integration.Test
             {
                 var lookup = Artist.Lookup("lidarr:" + lidarrId);
                 var artist = lookup.First();
-                artist.ProfileId = 1;
-                artist.Path = Path.Combine(ArtistRootFolder, artist.Name);
+                artist.QualityProfileId = 1;
+                artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
                 artist.Monitored = true;
                 artist.AddOptions = new Core.Music.AddArtistOptions();
                 Directory.CreateDirectory(artist.Path);
@@ -267,12 +266,12 @@ namespace NzbDrone.Integration.Test
 
             if (result.TrackFile == null)
             {
-                var path = Path.Combine(ArtistRootFolder, artist.Name, string.Format("{0} - {1} - Track.mp3", track, artist.Name));
+                var path = Path.Combine(ArtistRootFolder, artist.ArtistName, string.Format("{0} - {1} - Track.mp3", track, artist.ArtistName));
 
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path, "Fake Track");
 
-                Commands.PostAndWait(new CommandResource { Name = "refreshseries", Body = new RefreshArtistCommand(artist.Id) });
+                Commands.PostAndWait(new CommandResource { Name = "refreshartist", Body = new RefreshArtistCommand(artist.Id) });
                 Commands.WaitAll();
                 
                 result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.TrackNumber == track);
@@ -283,7 +282,7 @@ namespace NzbDrone.Integration.Test
             return result.TrackFile;
         }
 
-        public ProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
+        public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
         {
             var profile = Profiles.Get(profileId);
 

@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Albums;
+using Lidarr.Api.V3.Albums;
 using NzbDrone.Integration.Test.Client;
 using System;
 using System.Collections.Generic;

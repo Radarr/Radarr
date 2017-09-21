@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using FluentAssertions;
 using NLog;
-using NzbDrone.Api;
+using Lidarr.Api.V3;
 using Lidarr.Http.REST;
 using NzbDrone.Common.Serializer;
 using RestSharp;
