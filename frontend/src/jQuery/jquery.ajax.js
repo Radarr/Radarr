@@ -1,4 +1,4 @@
-const $ = require('JsLibraries/jquery');
+import $ from 'jquery';
 
 const absUrlRegex = /^(https?:)?\/\//i;
 const apiRoot = window.Sonarr.apiRoot;
@@ -34,9 +34,9 @@ function addApiKey(xhr) {
   xhr.headers['X-Api-Key'] = window.Sonarr.apiKey;
 }
 
-module.exports = function(jQuery) {
-  const originalAjax = jQuery.ajax;
-  jQuery.ajax = function(xhr) {
+export default function() {
+  const originalAjax = $.ajax;
+  $.ajax = function(xhr) {
     if (xhr && isRelative(xhr)) {
       moveBodyToQuery(xhr);
       addRootUrl(xhr);
@@ -44,4 +44,4 @@ module.exports = function(jQuery) {
     }
     return originalAjax.apply(this, arguments);
   };
-};
+}

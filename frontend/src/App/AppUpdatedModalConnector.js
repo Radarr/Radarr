@@ -1,17 +1,5 @@
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import AppUpdatedModal from './AppUpdatedModal';
-
-function createMapStateToProps() {
-  return createSelector(
-    (state) => state.app.version,
-    (version) => {
-      return {
-        version
-      };
-    }
-  );
-}
 
 function createMapDispatchToProps(dispatch, props) {
   return {
@@ -21,4 +9,4 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(AppUpdatedModal);
+export default connect(null, createMapDispatchToProps)(AppUpdatedModal);

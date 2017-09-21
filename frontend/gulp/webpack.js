@@ -41,9 +41,11 @@ const config = {
   resolve: {
     root: [
       root,
-      path.join(root, 'Shims'),
-      path.join(root, 'JsLibraries')
-    ]
+      path.join(root, 'Shims')
+    ],
+    alias: {
+      jquery: 'jquery/src/jquery'
+    }
   },
   output: {
     filename: path.join('_output', uiFolder, '[name].js'),

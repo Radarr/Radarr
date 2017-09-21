@@ -50,5 +50,9 @@ namespace NzbDrone.SignalR
         public IPerformanceCounter ScaleoutErrorsTotal => _counter;
         public IPerformanceCounter ScaleoutErrorsPerSec => _counter;
         public IPerformanceCounter ScaleoutSendQueueLength => _counter;
+        public IPerformanceCounter ConnectionsCurrentForeverFrame => _counter;
+        public IPerformanceCounter ConnectionsCurrentLongPolling => _counter;
+        public IPerformanceCounter ConnectionsCurrentServerSentEvents => _counter;
+        public IPerformanceCounter ConnectionsCurrentWebSockets => _counter;
     }
 }

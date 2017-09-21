@@ -43,8 +43,14 @@ class AppUpdatedModalContentConnector extends Component {
   //
   // Lifecycle
 
-  componentDidUpdate() {
+  componentDidMount() {
     this.props.dispatchFetchUpdates();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.version !== this.props.version) {
+      this.props.dispatchFetchUpdates();
+    }
   }
 
   //
@@ -63,6 +69,7 @@ class AppUpdatedModalContentConnector extends Component {
 }
 
 AppUpdatedModalContentConnector.propTypes = {
+  version: PropTypes.string.isRequired,
   dispatchFetchUpdates: PropTypes.func.isRequired
 };
 

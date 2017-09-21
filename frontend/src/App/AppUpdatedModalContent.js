@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { kinds } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Button from 'Components/Link/Button';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -88,10 +87,9 @@ function AppUpdatedModalContent(props) {
 }
 
 AppUpdatedModalContent.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   version: PropTypes.string.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  error: PropTypes.object.isRequired,
+  error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSeeChangesPress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

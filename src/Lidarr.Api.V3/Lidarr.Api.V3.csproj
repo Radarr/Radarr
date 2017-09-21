@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lidarr.Api.V3</RootNamespace>
     <AssemblyName>Lidarr.Api.V3</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -28,6 +28,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\..\_output\</OutputPath>
@@ -38,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="antlr.runtime, Version=2.7.6.2, Culture=neutral, processorArchitecture=MSIL">
@@ -53,9 +55,8 @@
     <Reference Include="Ical.Net.Collections, Version=2.1.0.18775, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ical.Net.2.2.32\lib\net40\Ical.Net.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Nancy, Version=1.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nancy.1.4.4\lib\net40\Nancy.dll</HintPath>
     </Reference>
     <Reference Include="Nancy.Authentication.Basic, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nancy.Authentication.Basic.1.4.1\lib\net40\Nancy.Authentication.Basic.dll</HintPath>
@@ -213,21 +214,21 @@
       <Project>{F6FC6BE7-0847-4817-A1ED-223DC647C3D7}</Project>
       <Name>Marr.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
-      <Project>{F2BE0FDF-6E47-4827-A420-DD4EF82407F8}</Project>
-      <Name>NzbDrone.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NzbDrone.Core\NzbDrone.Core.csproj">
-      <Project>{FF5EE3B6-913B-47CE-9CEB-11C51B4E1205}</Project>
-      <Name>NzbDrone.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NzbDrone.SignalR\NzbDrone.SignalR.csproj">
-      <Project>{7C2CC69F-5CA0-4E5C-85CB-983F9F6C3B36}</Project>
-      <Name>NzbDrone.SignalR</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lidarr.Http\Lidarr.Http.csproj">
       <Project>{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}</Project>
       <Name>Lidarr.Http</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NzbDrone.Common\NzbDrone.Common.csproj">
+      <Project>{f2be0fdf-6e47-4827-a420-dd4ef82407f8}</Project>
+      <Name>NzbDrone.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NzbDrone.Core\NzbDrone.Core.csproj">
+      <Project>{ff5ee3b6-913b-47ce-9ceb-11c51b4e1205}</Project>
+      <Name>NzbDrone.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NzbDrone.SignalR\NzbDrone.SignalR.csproj">
+      <Project>{7c2cc69f-5ca0-4e5c-85cb-983f9f6c3b36}</Project>
+      <Name>NzbDrone.SignalR</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

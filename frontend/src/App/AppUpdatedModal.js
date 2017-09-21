@@ -23,7 +23,6 @@ function AppUpdatedModal(props) {
 
 AppUpdatedModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  version: PropTypes.string.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import 'signalr';
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
@@ -8,7 +9,6 @@ import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import { fetchQueue, fetchQueueDetails } from 'Store/Actions/queueActions';
-require('signalR');
 
 function getState(status) {
   switch (status) {
@@ -59,7 +59,7 @@ class SignalRConnector extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.signalRconnectionOptions = { transport: ['longPolling'] };
+    this.signalRconnectionOptions = { transport: ['webSockets', 'longPolling'] };
     this.signalRconnection = null;
     this.retryInterval = 5;
     this.retryTimeoutId = null;
@@ -230,7 +230,7 @@ class SignalRConnector extends Component {
   }
 
   handleVersion = (body) => {
-    const version = body.version;
+    const version = body.Version;
 
     this.props.setVersion({ version });
   }

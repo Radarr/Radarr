@@ -1,8 +1,8 @@
-var jquery = require('JsLibraries/jquery');
-var ajax = require('jQuery/jquery.ajax');
+import $ from 'jquery';
+import ajax from 'jQuery/jquery.ajax';
 
-ajax(jquery);
+ajax($);
 
-window.$ = jquery;
-window.jQuery = jquery;
-module.exports = jquery;
+window.$ = $;
+window.jQuery = $;
+export default $;
