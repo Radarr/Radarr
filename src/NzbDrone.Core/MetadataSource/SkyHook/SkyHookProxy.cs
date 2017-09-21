@@ -13,6 +13,7 @@ using NzbDrone.Core.Tv;
 using Newtonsoft.Json.Linq;
 using NzbDrone.Core.Music;
 using Newtonsoft.Json;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -23,15 +24,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private readonly IArtistService _artistService;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
+        private readonly IConfigService _configService;
 
-        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IArtistService artistService, Logger logger)
+        private IHttpRequestBuilderFactory customerRequestBuilder;
+
+        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IArtistService artistService, Logger logger, IConfigService configService)
         {
             _httpClient = httpClient;
+            _configService = configService;
             _requestBuilder = requestBuilder.Search;
             _artistService = artistService;
             _logger = logger;
         }
 
+        [Obsolete("Used for Sonarr, not Lidarr")]
         public Tuple<Series, List<Episode>> GetSeriesInfo(int tvdbSeriesId)
         {
             throw new NotImplementedException();
@@ -42,8 +48,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
 
-            // We need to perform a direct lookup of the artist
-            var httpRequest = _requestBuilder.Create()
+            SetCustomProvider();
+            
+            var httpRequest = customerRequestBuilder.Create()
                                             .SetSegment("route", "artists/" + foreignArtistId)
                                             .Build();
 
@@ -99,7 +106,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
-                var httpRequest = _requestBuilder.Create()
+                SetCustomProvider();
+
+                var httpRequest = customerRequestBuilder.Create()
                                     .SetSegment("route", "search")
                                     .AddQueryParam("type", "artist")
                                     .AddQueryParam("query", title.ToLower().Trim())
@@ -113,12 +122,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
             catch (HttpException)
             {
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with SkyHook.", title);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with LidarrAPI.", title);
             }
             catch (Exception ex)
             {
                 _logger.Warn(ex, ex.Message);
-                throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from LidarrAPI.", title);
             }
         }
 
@@ -266,6 +275,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     return MediaCoverTypes.Logo;
                 default:
                     return MediaCoverTypes.Unknown;
+            }
+        }
+
+        private void SetCustomProvider()
+        {
+            if (_configService.MetadataSource.IsNotNullOrWhiteSpace())
+            {
+                customerRequestBuilder = new HttpRequestBuilder(_configService.MetadataSource + "{route}/").CreateFactory();
+            }
+            else
+            {
+                customerRequestBuilder = _requestBuilder;
             }
         }
     }

@@ -14,7 +14,7 @@ function Metadatas(props) {
 
   return (
     <FieldSet
-      legend="Metadata"
+      legend="Metadata Consumers"
     >
       <PageSectionContent
         errorMessage="Unable to load Metadata"

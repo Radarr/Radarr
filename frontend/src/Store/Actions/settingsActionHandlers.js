@@ -243,6 +243,9 @@ const settingsActionHandlers = {
                                                    '/metadata',
                                                    (state) => state.settings.metadata),
 
+  [types.FETCH_METADATA_PROVIDER]: createFetchHandler('metadataProvider', '/config/metadataProvider'),
+  [types.SAVE_METADATA_PROVIDER]: createSaveHandler('metadataProvider', '/config/metadataProvider', (state) => state.settings.metadataProvider),
+
   [types.FETCH_GENERAL_SETTINGS]: createFetchHandler('general', '/config/host'),
   [types.SAVE_GENERAL_SETTINGS]: createSaveHandler('general', '/config/host', (state) => state.settings.general)
 };

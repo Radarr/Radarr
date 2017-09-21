@@ -203,6 +203,15 @@ export const setMetadataFieldValue = createAction(types.SET_METADATA_FIELD_VALUE
   };
 });
 
+export const fetchMetadataProvider = settingsActionHandlers[types.FETCH_METADATA_PROVIDER];
+export const saveMetadataProvider = settingsActionHandlers[types.SAVE_METADATA_PROVIDER];
+export const setMetadataProviderValue = createAction(types.SET_METADATA_PROVIDER_VALUE, (payload) => {
+  return {
+    section: 'metadataProvider',
+    ...payload
+  };
+});
+
 export const fetchGeneralSettings = settingsActionHandlers[types.FETCH_GENERAL_SETTINGS];
 export const saveGeneralSettings = settingsActionHandlers[types.SAVE_GENERAL_SETTINGS];
 export const setGeneralSettingsValue = createAction(types.SET_GENERAL_SETTINGS_VALUE, (payload) => {

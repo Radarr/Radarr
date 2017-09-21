@@ -201,6 +201,16 @@ export const defaultState = {
     pendingChanges: {}
   },
 
+  metadataProvider: {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    pendingChanges: {},
+    isSaving: false,
+    saveError: null,
+    item: {}
+  },
+
   general: {
     isFetching: false,
     isPopulated: false,
@@ -226,7 +236,8 @@ const propertyNames = [
   'qualityDefinitions',
   'indexerOptions',
   'downloadClientOptions',
-  'general'
+  'general',
+  'metadataProvider'
 ];
 
 const providerPropertyNames = [
@@ -329,6 +340,8 @@ const settingsReducers = handleActions({
 
   [types.SET_METADATA_VALUE]: createSetSettingValueReducer('metadata'),
   [types.SET_METADATA_FIELD_VALUE]: createSetProviderFieldValueReducer('metadata'),
+
+  [types.SET_METADATA_PROVIDER_VALUE]: createSetSettingValueReducer('metadataProvider'),
 
   [types.SET_GENERAL_SETTINGS_VALUE]: createSetSettingValueReducer('general')
 

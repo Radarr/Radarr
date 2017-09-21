@@ -58,6 +58,9 @@ namespace NzbDrone.Core.Configuration
         //Internal
         bool CleanupMetadataImages { get; set; }
 
+        //MetadataSource
+        string MetadataSource { get; set; }
+
 
         //Forms Auth
         string RijndaelPassphrase { get; }

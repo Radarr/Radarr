@@ -238,6 +238,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("ChownGroup", value); }
         }
 
+        public string MetadataSource
+        {
+            get { return GetValue("MetadataSource", ""); }
+
+            set { SetValue("MetadataSource", value); }
+        }
+
         public int FirstDayOfWeek
         {
             get { return GetValueInt("FirstDayOfWeek", (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek); }
