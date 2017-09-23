@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.DiskSpace
 {
@@ -16,22 +16,22 @@ namespace NzbDrone.Core.DiskSpace
 
     public class DiskSpaceService : IDiskSpaceService
     {
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         private static readonly Regex _regexSpecialDrive = new Regex("^/var/lib/(docker|rancher|kubelet)(/|$)|^/boot(/|$)|/docker(/var)?/aufs(/|$)", RegexOptions.Compiled);
 
-        public DiskSpaceService(ISeriesService seriesService, IDiskProvider diskProvider, Logger logger)
+        public DiskSpaceService(IArtistService artistService, IDiskProvider diskProvider, Logger logger)
         {
-            _seriesService = seriesService;
+            _artistService = artistService;
             _diskProvider = diskProvider;
             _logger = logger;
         }
 
         public List<DiskSpace> GetFreeSpace()
         {
-            var importantRootFolders = GetSeriesRootPaths().Distinct().ToList();
+            var importantRootFolders = GetArtistRootPaths().Distinct().ToList();
 
             var optionalRootFolders = GetFixedDisksRootPaths().Except(importantRootFolders).Distinct().ToList();
 
@@ -40,9 +40,9 @@ namespace NzbDrone.Core.DiskSpace
             return diskSpace;
         }
 
-        private IEnumerable<string> GetSeriesRootPaths()
+        private IEnumerable<string> GetArtistRootPaths()
         {
-            return _seriesService.GetAllSeries()
+            return _artistService.GetAllArtists()
                 .Where(s => _diskProvider.FolderExists(s.Path))
                 .Select(s => _diskProvider.GetPathRoot(s.Path))
                 .Distinct();

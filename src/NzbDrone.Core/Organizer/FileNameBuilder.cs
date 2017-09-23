@@ -37,14 +37,8 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex EpisodeRegex = new Regex(@"(?<episode>\{episode(?:\:0+)?})",
-                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         private static readonly Regex TrackRegex = new Regex(@"(?<track>\{track(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly Regex SeasonRegex = new Regex(@"(?<season>\{season(?:\:0+)?})",
-                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex AbsoluteEpisodeRegex = new Regex(@"(?<absolute>\{absolute(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -300,18 +294,6 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Group}"] = m => trackFile.ReleaseGroup ?? m.DefaultValue("Lidarr");
         }
 
-        private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Series series, EpisodeFile episodeFile)
-        {
-            var qualityTitle = _qualityDefinitionService.Get(episodeFile.Quality.Quality).Title;
-            var qualityProper = GetQualityProper(series, episodeFile.Quality);
-            var qualityReal = GetQualityReal(series, episodeFile.Quality);
-
-            tokenHandlers["{Quality Full}"] = m => String.Format("{0} {1} {2}", qualityTitle, qualityProper, qualityReal);
-            tokenHandlers["{Quality Title}"] = m => qualityTitle;
-            tokenHandlers["{Quality Proper}"] = m => qualityProper;
-            tokenHandlers["{Quality Real}"] = m => qualityReal;
-        }
-
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist, TrackFile trackFile)
         {
             var qualityTitle = _qualityDefinitionService.Get(trackFile.Quality.Quality).Title;
@@ -515,40 +497,31 @@ namespace NzbDrone.Core.Organizer
             return MultiPartCleanupRegex.Replace(title, string.Empty).Trim();
         }
 
-        private string GetQualityProper(Series series, QualityModel quality)
-        {
-            if (quality.Revision.Version > 1)
-            {
-                if (series.SeriesType == SeriesTypes.Anime)
-                {
-                    return "v" + quality.Revision.Version;
-                }
+        // TODO: DO WE NEED FOR MUSIC?
+        //private string GetQualityProper(Series series, QualityModel quality)
+        //{
+        //    if (quality.Revision.Version > 1)
+        //    {
+        //        if (series.SeriesType == SeriesTypes.Anime)
+        //        {
+        //            return "v" + quality.Revision.Version;
+        //        }
 
-                return "Proper";
-            }
+        //        return "Proper";
+        //    }
 
-            return String.Empty;
-        }
+        //    return String.Empty;
+        //}
 
-        private string GetQualityReal(Series series, QualityModel quality)
-        {
-            if (quality.Revision.Real > 0)
-            {
-                return "REAL";
-            }
+        //private string GetQualityReal(Series series, QualityModel quality)
+        //{
+        //    if (quality.Revision.Real > 0)
+        //    {
+        //        return "REAL";
+        //    }
 
-            return string.Empty;
-        }
-
-        private string GetOriginalTitle(EpisodeFile episodeFile)
-        {
-            if (episodeFile.SceneName.IsNullOrWhiteSpace())
-            {
-                return GetOriginalFileName(episodeFile);
-            }
-
-            return episodeFile.SceneName;
-        }
+        //    return string.Empty;
+        //}
 
         private string GetOriginalTitle(TrackFile trackFile)
         {
@@ -558,16 +531,6 @@ namespace NzbDrone.Core.Organizer
             }
 
             return trackFile.SceneName;
-        }
-
-        private string GetOriginalFileName(EpisodeFile episodeFile)
-        {
-            if (episodeFile.RelativePath.IsNullOrWhiteSpace())
-            {
-                return Path.GetFileNameWithoutExtension(episodeFile.Path);
-            }
-
-            return Path.GetFileNameWithoutExtension(episodeFile.RelativePath);
         }
 
         private string GetOriginalFileName(TrackFile trackFile)
