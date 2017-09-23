@@ -1,5 +1,5 @@
-﻿using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {
@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Notifications
 
         void OnGrab(GrabMessage grabMessage);
         void OnDownload(DownloadMessage message);
-        void OnRename(Series series);
+        void OnRename(Artist artist);
         bool SupportsOnGrab { get; }
         bool SupportsOnDownload { get; }
         bool SupportsOnUpgrade { get; }

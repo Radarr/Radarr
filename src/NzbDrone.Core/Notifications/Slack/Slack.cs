@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Rest;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Validation;
 using RestSharp;
 
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Notifications.Slack
                     new Attachment
                     {
                         Fallback = message.Message,
-                        Title = message.Series.Title,
+                        Title = message.Artist.Name,
                         Text = message.Message,
                         Color = "warning"
                     }
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Notifications.Slack
                     new Attachment
                     {
                         Fallback = message.Message,
-                        Title = message.Series.Title,
+                        Title = message.Artist.Name,
                         Text = message.Message,
                         Color = "good"
                     }
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Notifications.Slack
             NotifySlack(payload);
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
             var payload = new SlackPayload
             {
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Notifications.Slack
                 {
                     new Attachment
                     {
-                        Title = series.Title,
+                        Title = artist.Name,
                     }
                 }
             };

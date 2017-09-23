@@ -19,12 +19,12 @@ namespace NzbDrone.Core.Notifications.Pushalot
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(EPISODE_GRABBED_TITLE, grabMessage.Message, Settings);
+            _proxy.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(EPISODE_DOWNLOADED_TITLE, message.Message, Settings);
+            _proxy.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, Settings);
         }
 
 

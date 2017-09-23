@@ -1,18 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {
     public abstract class NotificationBase<TSettings> : INotification where TSettings : IProviderConfig, new()
     {
-        protected const string EPISODE_GRABBED_TITLE = "Episode Grabbed";
-        protected const string EPISODE_DOWNLOADED_TITLE = "Episode Downloaded";
+        protected const string ALBUM_GRABBED_TITLE = "Album Grabbed";
+        protected const string TRACK_DOWNLOADED_TITLE = "Track Downloaded";
 
-        protected const string EPISODE_GRABBED_TITLE_BRANDED = "Lidarr - " + EPISODE_GRABBED_TITLE;
-        protected const string EPISODE_DOWNLOADED_TITLE_BRANDED = "Lidarr - " + EPISODE_DOWNLOADED_TITLE;
+        protected const string ALBUM_GRABBED_TITLE_BRANDED = "Lidarr - " + ALBUM_GRABBED_TITLE;
+        protected const string TRACK_DOWNLOADED_TITLE_BRANDED = "Lidarr - " + TRACK_DOWNLOADED_TITLE;
 
         public abstract string Name { get; }
 
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Notifications
 
         }
 
-        public virtual void OnRename(Series series)
+        public virtual void OnRename(Artist series)
         {
 
         }

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Plex
 {
@@ -19,19 +19,19 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnDownload(DownloadMessage message)
         {
-            UpdateIfEnabled(message.Series);
+            UpdateIfEnabled(message.Artist);
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
-            UpdateIfEnabled(series);
+            UpdateIfEnabled(artist);
         }
 
-        private void UpdateIfEnabled(Series series)
+        private void UpdateIfEnabled(Artist artist)
         {
             if (Settings.UpdateLibrary)
             {
-                _plexServerService.UpdateLibrary(series, Settings);
+                _plexServerService.UpdateLibrary(artist, Settings);
             }
         }
 

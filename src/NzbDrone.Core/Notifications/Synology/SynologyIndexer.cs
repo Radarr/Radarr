@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Synology
 {
@@ -26,24 +26,24 @@ namespace NzbDrone.Core.Notifications.Synology
             {
                 foreach (var oldFile in message.OldFiles)
                 {
-                    var fullPath = Path.Combine(message.Series.Path, oldFile.RelativePath);
+                    var fullPath = Path.Combine(message.Artist.Path, oldFile.RelativePath);
 
                     _indexerProxy.DeleteFile(fullPath);
                 }
 
                 {
-                    var fullPath = Path.Combine(message.Series.Path, message.EpisodeFile.RelativePath);
+                    var fullPath = Path.Combine(message.Artist.Path, message.TrackFile.RelativePath);
 
                     _indexerProxy.AddFile(fullPath);
                 }
             }
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
             if (Settings.UpdateLibrary)
             {
-                _indexerProxy.UpdateFolder(series.Path);
+                _indexerProxy.UpdateFolder(artist.Path);
             }
         }
 

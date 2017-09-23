@@ -1,6 +1,6 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Rest;
 using RestSharp;
@@ -12,53 +12,53 @@ namespace NzbDrone.Core.Notifications.Webhook
 {
     public interface IWebhookService
     {
-        void OnDownload(Series series, EpisodeFile episodeFile, WebhookSettings settings);
-        void OnRename(Series series, WebhookSettings settings);
-        void OnGrab(Series series, RemoteEpisode episode, QualityModel quality, WebhookSettings settings);
+        void OnDownload(Artist artist, TrackFile trackFile, WebhookSettings settings);
+        void OnRename(Artist artist, WebhookSettings settings);
+        void OnGrab(Artist artist, RemoteAlbum album, QualityModel quality, WebhookSettings settings);
         ValidationFailure Test(WebhookSettings settings);
     }
 
     public class WebhookService : IWebhookService
     {
-        public void OnDownload(Series series, EpisodeFile episodeFile, WebhookSettings settings)
+        public void OnDownload(Artist artist, TrackFile trackFile, WebhookSettings settings)
         {
             var payload = new WebhookPayload
             {
                 EventType = "Download",
-                Series = new WebhookSeries(series),
-                Episodes = episodeFile.Episodes.Value.ConvertAll(x => new WebhookEpisode(x) {
-                    Quality = episodeFile.Quality.Quality.Name,
-                    QualityVersion = episodeFile.Quality.Revision.Version,
-                    ReleaseGroup = episodeFile.ReleaseGroup,
-                    SceneName = episodeFile.SceneName
+                Artist = new WebhookArtist(artist),
+                Albums = trackFile.Tracks.Value.ConvertAll(x => new WebhookAlbum(x.Album) {
+                    Quality = trackFile.Quality.Quality.Name,
+                    QualityVersion = trackFile.Quality.Revision.Version,
+                    ReleaseGroup = trackFile.ReleaseGroup,
+                    SceneName = trackFile.SceneName
                 })
             };
 
             NotifyWebhook(payload, settings);
         }
 
-        public void OnRename(Series series, WebhookSettings settings)
+        public void OnRename(Artist artist, WebhookSettings settings)
         {
             var payload = new WebhookPayload
             {
                 EventType = "Rename",
-                Series = new WebhookSeries(series)
+                Artist = new WebhookArtist(artist)
             };
 
             NotifyWebhook(payload, settings);
         }
 
-        public void OnGrab(Series series, RemoteEpisode episode, QualityModel quality, WebhookSettings settings)
+        public void OnGrab(Artist artist, RemoteAlbum album, QualityModel quality, WebhookSettings settings)
         {
             var payload = new WebhookPayload
             {
                 EventType = "Grab",
-                Series = new WebhookSeries(series),
-                Episodes = episode.Episodes.ConvertAll(x => new WebhookEpisode(x)
+                Artist = new WebhookArtist(artist),
+                Albums = album.Albums.ConvertAll(x => new WebhookAlbum(x)
                 {
                     Quality = quality.Quality.Name,
                     QualityVersion = quality.Revision.Version,
-                    ReleaseGroup = episode.ParsedEpisodeInfo.ReleaseGroup
+                    ReleaseGroup = album.ParsedAlbumInfo.ReleaseGroup
                 })
             };
             NotifyWebhook(payload, settings);
@@ -87,19 +87,17 @@ namespace NzbDrone.Core.Notifications.Webhook
                     new WebhookPayload
                     {
                         EventType = "Test",
-                        Series = new WebhookSeries()
+                        Artist = new WebhookArtist()
                         {
                             Id = 1,
                             Title = "Test Title",
                             Path = "C:\\testpath",
-                            TvdbId = 1234
+                            MBId = "1234"
                         },
-                        Episodes = new List<WebhookEpisode>() {
-                            new WebhookEpisode()
+                        Albums = new List<WebhookAlbum>() {
+                            new WebhookAlbum()
                             {
                                 Id = 123,
-                                EpisodeNumber = 1,
-                                SeasonNumber = 1,
                                 Title = "Test title"
                             }
                         }

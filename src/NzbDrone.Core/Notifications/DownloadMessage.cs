@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {
     public class DownloadMessage
     {
         public string Message { get; set; }
-        public Series Series { get; set; }
-        public EpisodeFile EpisodeFile { get; set; }
-        public List<EpisodeFile> OldFiles { get; set; }
+        public Artist Artist { get; set; }
+        public TrackFile TrackFile { get; set; }
+        public List<TrackFile> OldFiles { get; set; }
         public string SourcePath { get; set; }
 
         public override string ToString()

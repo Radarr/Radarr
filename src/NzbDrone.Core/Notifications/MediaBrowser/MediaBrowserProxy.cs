@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 
@@ -31,9 +31,9 @@ namespace NzbDrone.Core.Notifications.Emby
             ProcessRequest(request, settings);
         }
 
-        public void Update(MediaBrowserSettings settings, int tvdbId)
+        public void Update(MediaBrowserSettings settings, string mbId)
         {
-            var path = string.Format("/Library/Series/Updated?tvdbid={0}", tvdbId);            
+            var path = string.Format("/Library/Artist/Updated?tvdbid={0}", mbId); //TODO: Get Emby to add a new Library Route           
             var request = BuildRequest(path, settings);
             request.Headers.Add("Content-Length", "0");
 

@@ -19,12 +19,12 @@ namespace NzbDrone.Core.Notifications.PushBullet
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message, Settings);
+            _proxy.SendNotification(ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+            _proxy.SendNotification(TRACK_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
         }
 
         public override ValidationResult Test()

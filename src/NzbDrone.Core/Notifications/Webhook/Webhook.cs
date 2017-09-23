@@ -1,7 +1,7 @@
-﻿
+
 using System.Collections.Generic;
 using FluentValidation.Results;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Notifications.Webhook
@@ -19,17 +19,17 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnGrab(GrabMessage message)
         {
-            _service.OnGrab(message.Series, message.Episode, message.Quality, Settings);
+            _service.OnGrab(message.Artist, message.Album, message.Quality, Settings);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _service.OnDownload(message.Series, message.EpisodeFile, Settings);
+            _service.OnDownload(message.Artist, message.TrackFile, Settings);
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
-            _service.OnRename(series, Settings);
+            _service.OnRename(artist, Settings);
         }
 
         public override string Name => "Webhook";

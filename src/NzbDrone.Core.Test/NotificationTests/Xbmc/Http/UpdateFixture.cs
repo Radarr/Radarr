@@ -1,9 +1,9 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
 {
@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
     {
         private XbmcSettings _settings;
         private string _seriesQueryUrl = "http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryVideoDatabase(select path.strPath from path, tvshow, tvshowlinkpath where tvshow.c12 = 79488 and tvshowlinkpath.idShow = tvshow.idShow and tvshowlinkpath.idPath = path.idPath)";
-        private Series _fakeSeries;
+        private Artist _fakeSeries;
 
         [SetUp]
         public void Setup()
@@ -28,9 +28,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
                 UpdateLibrary = true
             };
 
-            _fakeSeries = Builder<Series>.CreateNew()
-                                         .With(s => s.TvdbId = 79488)
-                                         .With(s => s.Title = "30 Rock")
+            _fakeSeries = Builder<Artist>.CreateNew()
+                                         .With(s => s.ForeignArtistId = "79488")
+                                         .With(s => s.Name = "30 Rock")
                                          .Build();
         }
 

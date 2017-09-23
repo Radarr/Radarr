@@ -24,12 +24,12 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            Notify(Settings, EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message);
+            Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            Notify(Settings, EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message);
+            Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
         }
 
         public override ValidationResult Test()

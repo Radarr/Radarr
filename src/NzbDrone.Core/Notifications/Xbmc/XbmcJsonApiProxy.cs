@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         string UpdateLibrary(XbmcSettings settings, string path);
         void CleanLibrary(XbmcSettings settings);
         List<ActivePlayer> GetActivePlayers(XbmcSettings settings);
-        List<TvShow> GetSeries(XbmcSettings settings);
+        List<TvShow> GetArtist(XbmcSettings settings);
     }
 
     public class XbmcJsonApiProxy : IXbmcJsonApiProxy
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return Json.Deserialize<ActivePlayersEdenResult>(response).Result;
         }
 
-        public List<TvShow> GetSeries(XbmcSettings settings)
+        public List<TvShow> GetArtist(XbmcSettings settings)
         {
             var request = new RestRequest();
             var parameters = new Dictionary<string, object>();

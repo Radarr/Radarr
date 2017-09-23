@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
@@ -7,7 +7,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 {
@@ -19,16 +19,16 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         [SetUp]
         public void Setup()
         {
-            var series = Builder<Series>.CreateNew()
+            var artist = Builder<Artist>.CreateNew()
                                         .Build();
 
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
+            var trackFile = Builder<TrackFile>.CreateNew()
                                                    .Build();
 
             _downloadMessage = Builder<DownloadMessage>.CreateNew()
-                                                       .With(d => d.Series = series)
-                                                       .With(d => d.EpisodeFile = episodeFile)
-                                                       .With(d => d.OldFiles = new List<EpisodeFile>())
+                                                       .With(d => d.Artist = artist)
+                                                       .With(d => d.TrackFile = trackFile)
+                                                       .With(d => d.OldFiles = new List<TrackFile>())
                                                        .Build();
 
             Subject.Definition = new NotificationDefinition();
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
         private void GivenOldFiles()
         {
-            _downloadMessage.OldFiles = Builder<EpisodeFile>.CreateListOfSize(1)
+            _downloadMessage.OldFiles = Builder<TrackFile>.CreateListOfSize(1)
                                                             .Build()
                                                             .ToList();
 
