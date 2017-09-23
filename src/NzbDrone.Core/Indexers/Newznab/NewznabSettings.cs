@@ -39,9 +39,9 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             Custom(newznab =>
             {
-                if (newznab.Categories.Empty() && newznab.AnimeCategories.Empty())
+                if (newznab.Categories.Empty())
                 {
-                    return new ValidationFailure("", "Either 'Categories' or 'Anime Categories' must be provided");
+                    return new ValidationFailure("", "'Categories' must be provided");
                 }
 
                 return null;
@@ -61,7 +61,6 @@ namespace NzbDrone.Core.Indexers.Newznab
         public NewznabSettings()
         {
             Categories = new[] { 3000, 3010, 3020, 3030, 3040 };
-            AnimeCategories = Enumerable.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "URL")]
@@ -72,9 +71,6 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         [FieldDefinition(2, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
         public IEnumerable<int> Categories { get; set; }
-
-        [FieldDefinition(3, Label = "Anime Categories", HelpText = "Comma Separated list, leave blank to disable anime", Advanced = true)]
-        public IEnumerable<int> AnimeCategories { get; set; }
 
         [FieldDefinition(4, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]
         public string AdditionalParameters { get; set; }

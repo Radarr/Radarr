@@ -31,9 +31,9 @@ namespace NzbDrone.Core.Indexers.Torznab
         {
             Custom(newznab =>
             {
-                if (newznab.Categories.Empty() && newznab.AnimeCategories.Empty())
+                if (newznab.Categories.Empty())
                 {
-                    return new ValidationFailure("", "Either 'Categories' or 'Anime Categories' must be provided");
+                    return new ValidationFailure("", "'Categories' must be provided");
                 }
 
                 return null;
