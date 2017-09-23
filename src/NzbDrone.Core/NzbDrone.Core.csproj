@@ -616,6 +616,12 @@
     <Compile Include="IndexerSearch\CutoffUnmetAlbumSearchCommand.cs" />
     <Compile Include="IndexerSearch\Definitions\AlbumSearchCriteria.cs" />
     <Compile Include="IndexerSearch\Definitions\ArtistSearchCriteria.cs" />
+    <Compile Include="Indexers\Gazelle\Gazelle.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleApi.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleInfo.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleParser.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleRequestGenerator.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleSettings.cs" />
     <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
     <Compile Include="Indexers\Waffles\Waffles.cs" />
     <Compile Include="Indexers\Waffles\WafflesRequestGenerator.cs" />
