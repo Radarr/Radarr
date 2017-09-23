@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Tags;
 using Lidarr.Api.V3.Notifications;
@@ -14,7 +14,7 @@ namespace Lidarr.Api.V3.Tags
         public List<DelayProfileResource> DelayProfiles { get; set; }
         public List<NotificationResource> Notifications { get; set; }
         public List<RestrictionResource> Restrictions { get; set; }
-        public List<int> SeriesIds { get; set; }
+        public List<int> ArtistIds { get; set; }
     }
 
     public static class TagDetailsResourceMapper
@@ -32,7 +32,7 @@ namespace Lidarr.Api.V3.Tags
                 DelayProfiles = model.DelayProfiles.ToResource(),
                 Notifications = model.Notifications.Select(NotificationResourceMapper.ToResource).ToList(),
                 Restrictions = model.Restrictions.ToResource(),
-                SeriesIds = model.Series.Select(s => s.Id).ToList()
+                ArtistIds = model.Artist.Select(s => s.Id).ToList()
             };
         }
 

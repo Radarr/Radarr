@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Restrictions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Tags
 {
@@ -26,21 +26,21 @@ namespace NzbDrone.Core.Tags
         private readonly IDelayProfileService _delayProfileService;
         private readonly INotificationFactory _notificationFactory;
         private readonly IRestrictionService _restrictionService;
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
 
         public TagService(ITagRepository repo,
                           IEventAggregator eventAggregator,
                           IDelayProfileService delayProfileService,
                           INotificationFactory notificationFactory,
                           IRestrictionService restrictionService,
-                          ISeriesService seriesService)
+                          IArtistService artistService)
         {
             _repo = repo;
             _eventAggregator = eventAggregator;
             _delayProfileService = delayProfileService;
             _notificationFactory = notificationFactory;
             _restrictionService = restrictionService;
-            _seriesService = seriesService;
+            _artistService = artistService;
         }
 
         public Tag GetTag(int tagId)
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Tags
             var delayProfiles = _delayProfileService.AllForTag(tagId);
             var notifications = _notificationFactory.AllForTag(tagId);
             var restrictions = _restrictionService.AllForTag(tagId);
-            var series = _seriesService.AllForTag(tagId);
+            var artist = _artistService.AllForTag(tagId);
 
             return new TagDetails
                    {
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Tags
                        DelayProfiles = delayProfiles,
                        Notifications = notifications,
                        Restrictions = restrictions,
-                       Series = series
+                       Artist = artist
                    };
         }
 

@@ -15,10 +15,10 @@ function createMapStateToProps() {
         return s.id === id;
       });
 
-      const seriesTags = _.uniq(_.concat(..._.map(series, 'tags')));
+      const artistTags = _.uniq(_.concat(..._.map(series, 'tags')));
 
       return {
-        seriesTags,
+        artistTags,
         tagList
       };
     }
