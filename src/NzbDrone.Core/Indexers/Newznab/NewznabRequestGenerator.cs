@@ -55,6 +55,10 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "music", ""));
             }
+            else if (capabilities.SupportedSearchParameters != null)
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", ""));
+            }
 
             return pageableRequests;
         }
