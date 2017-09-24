@@ -188,7 +188,7 @@ EpisodeDetailsModalContent.propTypes = {
 
 EpisodeDetailsModalContent.defaultProps = {
   selectedTab: 'details',
-  albumLabel: 'Unknown',
+  albumLabel: ['Unknown'],
   episodeEntity: episodeEntities.EPISODES,
   startInteractiveSearch: false
 };

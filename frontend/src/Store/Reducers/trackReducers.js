@@ -18,7 +18,7 @@ export const defaultState = {
   columns: [
     {
       name: 'trackNumber',
-      label: 'Track Number',
+      label: '#',
       isVisible: true
     },
     {
@@ -29,6 +29,16 @@ export const defaultState = {
     {
       name: 'duration',
       label: 'Duration',
+      isVisible: true
+    },
+    {
+      name: 'audioInfo',
+      label: 'Audio Info',
+      isVisible: true
+    },
+    {
+      name: 'status',
+      label: 'Status',
       isVisible: true
     },
     {

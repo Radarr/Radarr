@@ -118,7 +118,7 @@ function EpisodeStatus(props) {
 
 EpisodeStatus.propTypes = {
   airDateUtc: PropTypes.string,
-  monitored: PropTypes.bool.isRequired,
+  monitored: PropTypes.bool,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   episodeFile: PropTypes.object

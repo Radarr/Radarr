@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles
         {
 
             var artist = _artistService.GetArtist(artistId);
-            var tracks = _trackService.GetTracksByAlbum(artistId, albumId);
+            var tracks = _trackService.GetTracksByAlbum(albumId);
             var files = _mediaFileService.GetFilesByAlbum(artistId, albumId);
 
             return GetPreviews(artist, tracks, files)

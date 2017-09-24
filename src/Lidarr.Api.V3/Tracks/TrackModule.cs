@@ -24,24 +24,26 @@ namespace Lidarr.Api.V3.Tracks
         private List<TrackResource> GetEpisodes()
         {
             var artistIdQuery = Request.Query.ArtistId;
+            var albumIdQuery = Request.Query.AlbumId;
             var trackIdsQuery = Request.Query.TrackIds;
 
-            if (!artistIdQuery.HasValue && !trackIdsQuery.HasValue)
+            if (!artistIdQuery.HasValue && !trackIdsQuery.HasValue && !albumIdQuery.HasValue)
             {
                 throw new BadRequestException("artistId or trackIds must be provided");
             }
 
-            if (artistIdQuery.HasValue)
+            if (artistIdQuery.HasValue && !albumIdQuery.HasValue)
             {
                 int artistId = Convert.ToInt32(artistIdQuery.Value);
-                var albumId = Request.Query.AlbumId.HasValue ? (int)Request.Query.AlbumId : (int?)null;
-
-                if (albumId.HasValue)
-                {
-                    return MapToResource(_trackService.GetTracksByAlbum(artistId, albumId.Value), false, false);
-                }
 
                 return MapToResource(_trackService.GetTracksByArtist(artistId), false, false);
+            }
+
+            if (albumIdQuery.HasValue)
+            {
+                int albumId = Convert.ToInt32(albumIdQuery.Value);
+
+                return MapToResource(_trackService.GetTracksByAlbum(albumId), false, false);
             }
 
             string trackIdsValue = trackIdsQuery.Value.ToString();

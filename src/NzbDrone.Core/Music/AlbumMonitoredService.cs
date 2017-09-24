@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Music
             foreach (var album in albums)
             {
                 album.Monitored = monitored;
-                var tracks = _trackService.GetTracksByAlbum(album.ArtistId, album.Id);
+                var tracks = _trackService.GetTracksByAlbum(album.Id);
                 foreach (var track in tracks)
                 {
                     track.Monitored = monitored;

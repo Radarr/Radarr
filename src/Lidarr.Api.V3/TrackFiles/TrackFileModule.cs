@@ -24,6 +24,7 @@ namespace Lidarr.Api.V3.TrackFiles
         private readonly IMediaFileService _mediaFileService;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IArtistService _artistService;
+        private readonly IAlbumService _albumService;
         private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly Logger _logger;
 
@@ -31,6 +32,7 @@ namespace Lidarr.Api.V3.TrackFiles
                              IMediaFileService mediaFileService,
                              IRecycleBinProvider recycleBinProvider,
                              IArtistService artistService,
+                             IAlbumService albumService,
                              IUpgradableSpecification upgradableSpecification,
                              Logger logger)
             : base(signalRBroadcaster)
@@ -38,6 +40,7 @@ namespace Lidarr.Api.V3.TrackFiles
             _mediaFileService = mediaFileService;
             _recycleBinProvider = recycleBinProvider;
             _artistService = artistService;
+            _albumService = albumService;
             _upgradableSpecification = upgradableSpecification;
             _logger = logger;
 
@@ -62,10 +65,11 @@ namespace Lidarr.Api.V3.TrackFiles
         {
             var artistIdQuery = Request.Query.ArtistId;
             var trackFileIdsQuery = Request.Query.TrackFileIds;
+            var albumIdQuery = Request.Query.AlbumId;
 
-            if (!artistIdQuery.HasValue && !trackFileIdsQuery.HasValue)
+            if (!artistIdQuery.HasValue && !trackFileIdsQuery.HasValue && !albumIdQuery.HasValue)
             {
-                throw new BadRequestException("artistId or trackFileIds must be provided");
+                throw new BadRequestException("artistId, albumId, or trackFileIds must be provided");
             }
 
             if (artistIdQuery.HasValue)
@@ -74,6 +78,14 @@ namespace Lidarr.Api.V3.TrackFiles
                 var artist = _artistService.GetArtist(artistId);
 
                 return _mediaFileService.GetFilesByArtist(artistId).ConvertAll(f => f.ToResource(artist, _upgradableSpecification));
+            }
+
+            if (albumIdQuery.HasValue)
+            {
+                int albumId = Convert.ToInt32(albumIdQuery.Value);
+                var album = _albumService.GetAlbum(albumId);
+
+                return _mediaFileService.GetFilesByAlbum(album.ArtistId, album.Id).ConvertAll(f => f.ToResource(album.Artist, _upgradableSpecification));
             }
 
             else

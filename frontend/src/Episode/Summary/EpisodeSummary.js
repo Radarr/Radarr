@@ -7,7 +7,10 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import Label from 'Components/Label';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import EpisodeQuality from 'Episode/EpisodeQuality';
+import Table from 'Components/Table/Table';
+import TableBody from 'Components/Table/TableBody';
 import EpisodeAiringConnector from './EpisodeAiringConnector';
+import TrackDetailRow from './TrackDetailRow';
 import styles from './EpisodeSummary.css';
 
 class EpisodeSummary extends Component {
@@ -49,9 +52,11 @@ class EpisodeSummary extends Component {
       releaseDate,
       albumLabel,
       path,
+      items,
       size,
       quality,
-      qualityCutoffNotMet
+      qualityCutoffNotMet,
+      columns
     } = this.props;
 
     const hasOverview = !!overview;
@@ -88,53 +93,36 @@ class EpisodeSummary extends Component {
           }
         </div>
 
-        {
-          path &&
-            <div className={styles.files}>
-              <div className={styles.filesHeader}>
-                <div className={styles.path}>
-                  Path
-                </div>
+        <div>
+          {
+            <div className={styles.episodes}>
+              {
+                items.length ?
+                  <Table
+                    columns={columns}
+                  >
+                    <TableBody>
+                      {
+                        items.map((item) => {
+                          return (
+                            <TrackDetailRow
+                              key={item.id}
+                              columns={columns}
+                              {...item}
+                            />
+                          );
+                        })
+                      }
+                    </TableBody>
+                  </Table> :
 
-                <div className={styles.size}>
-                  Size
-                </div>
-
-                <div className={styles.quality}>
-                  Quality
-                </div>
-
-                <div className={styles.actions}></div>
-              </div>
-
-              <div className={styles.fileRow}>
-                <div
-                  className={styles.path}
-                  title={path}
-                >
-                  {path}
-                </div>
-
-                <div className={styles.size}>
-                  {formatBytes(size)}
-                </div>
-
-                <div className={styles.quality}>
-                  <EpisodeQuality
-                    quality={quality}
-                    isCutoffNotMet={qualityCutoffNotMet}
-                  />
-                </div>
-
-                <div className={styles.actions}>
-                  <IconButton
-                    name={icons.REMOVE}
-                    onPress={this.onRemoveEpisodeFilePress}
-                  />
-                </div>
-              </div>
+                  <div className={styles.noEpisodes}>
+                    No tracks in this group
+                  </div>
+              }
             </div>
-        }
+          }
+        </div>
 
         <ConfirmModal
           isOpen={this.state.isRemoveEpisodeFileModalOpen}
@@ -155,6 +143,8 @@ EpisodeSummary.propTypes = {
   overview: PropTypes.string,
   albumLabel: PropTypes.arrayOf(PropTypes.string),
   releaseDate: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   path: PropTypes.string,
   size: PropTypes.number,
   quality: PropTypes.object,

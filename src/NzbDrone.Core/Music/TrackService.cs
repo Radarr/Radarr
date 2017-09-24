@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
         Track FindTrack(int artistId, int albumId, int trackNumber);
         Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
         List<Track> GetTracksByArtist(int artistId);
-        List<Track> GetTracksByAlbum(int artistId, int albumId);
+        List<Track> GetTracksByAlbum(int albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
         List<Track> TracksWithFiles(int artistId);
         //PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
@@ -70,16 +70,16 @@ namespace NzbDrone.Core.Music
             return _trackRepository.GetTracks(artistId).ToList();
         }
 
-        public List<Track> GetTracksByAlbum(int artistId, int albumId)
+        public List<Track> GetTracksByAlbum(int albumId)
         {
-            return _trackRepository.GetTracks(artistId, albumId);
+            return _trackRepository.GetTracksByAlbum(albumId);
         }
 
         public Track FindTrackByTitle(int artistId, int albumId, string releaseTitle)
         {
             // TODO: can replace this search mechanism with something smarter/faster/better
             var normalizedReleaseTitle = Parser.Parser.NormalizeEpisodeTitle(releaseTitle).Replace(".", " ");
-            var tracks = _trackRepository.GetTracks(artistId, albumId);
+            var tracks = _trackRepository.GetTracksByAlbum(albumId);
 
             var matches = tracks.Select(
                 track => new

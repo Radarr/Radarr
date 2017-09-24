@@ -2,42 +2,28 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { deleteEpisodeFile } from 'Store/Actions/episodeFileActions';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
+import createTrackSelector from 'Store/Selectors/createTrackSelector';
 import createEpisodeFileSelector from 'Store/Selectors/createEpisodeFileSelector';
+import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
+import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import EpisodeSummary from './EpisodeSummary';
 
 function createMapStateToProps() {
   return createSelector(
-    createArtistSelector(),
+    (state, { episode }) => episode,
+    (state) => state.tracks,
     createEpisodeSelector(),
-    createEpisodeFileSelector(),
-    (series, episode, episodeFile) => {
-      const {
-        qualityProfileId,
-        network
-      } = series;
-
-      const {
-        airDateUtc,
-        overview
-      } = episode;
-
-      const {
-        path,
-        size,
-        quality,
-        qualityCutoffNotMet
-      } = episodeFile || {};
-
+    createCommandsSelector(),
+    createDimensionsSelector(),
+    (albumId, tracks, episode, commands, dimensions) => {
       return {
-        network,
-        qualityProfileId,
-        airDateUtc,
-        overview,
-        path,
-        size,
-        quality,
-        qualityCutoffNotMet
+        network: episode.label,
+        qualityProfileId: episode.profileId,
+        airDateUtc: episode.releaseDate,
+        overview: episode.overview,
+        items: tracks.items,
+        columns: tracks.columns
       };
     }
   );

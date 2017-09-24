@@ -14,6 +14,7 @@ namespace Lidarr.Api.V3.Albums
         public string Title { get; set; }
         public int ArtistId { get; set; }
         public List<string> AlbumLabel { get; set; }
+        public string ForeignAlbumId { get; set; }
         public bool Monitored { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }
@@ -42,6 +43,7 @@ namespace Lidarr.Api.V3.Albums
                 Id = model.Id,
                 ArtistId = model.ArtistId,
                 AlbumLabel = model.Label,
+                ForeignAlbumId = model.ForeignAlbumId,
                 Path = model.Path,
                 ProfileId = model.ProfileId,
                 Monitored = model.Monitored,
