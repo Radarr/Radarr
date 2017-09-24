@@ -17,10 +17,10 @@ case "$(uname -s)" in
 esac
 
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  VERSION="`date +%H:%M:%S`"
-  YEAR="`date +%Y`"
-  MONTH="`date +%m`"
-  DAY="`date +%d`"
+  VERSION="$(date +%H:%M:%S)"
+  YEAR="$(date +%Y)"
+  MONTH="$(date +%m)"
+  DAY="$(date +%d)"
 else
   VERSION=$1
   BRANCH=$2
