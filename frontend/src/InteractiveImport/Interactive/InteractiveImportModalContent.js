@@ -293,7 +293,7 @@ class InteractiveImportModalContent extends Component {
         <SelectAlbumModal
           isOpen={isSelectAlbumModalOpen}
           ids={selectedIds}
-          artistId={selectedItem && selectedItem.series && selectedItem.series.id}
+          artistId={selectedItem && selectedItem.artist && selectedItem.artist.id}
           onModalClose={this.onSelectAlbumModalClose}
         />
       </ModalContent>

@@ -114,6 +114,11 @@ class SignalRConnector extends Component {
       return;
     }
 
+    if (name === 'track') {
+      this.handleTrack(body);
+      return;
+    }
+
     if (name === 'episodefile') {
       this.handleEpisodeFile(body);
       return;
@@ -187,6 +192,15 @@ class SignalRConnector extends Component {
     if (body.action === 'updated') {
       this.props.updateItem({
         section: 'episodes',
+        updateOnly: true,
+        ...body.resource });
+    }
+  }
+
+  handleTrack = (body) => {
+    if (body.action === 'updated') {
+      this.props.updateItem({
+        section: 'tracks',
         updateOnly: true,
         ...body.resource });
     }

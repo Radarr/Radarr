@@ -5,6 +5,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import SelectAlbumRow from './SelectAlbumRow';
 
 class SelectAlbumModalContent extends Component {
@@ -16,7 +17,8 @@ class SelectAlbumModalContent extends Component {
     const {
       items,
       onAlbumSelect,
-      onModalClose
+      onModalClose,
+      isFetching
     } = this.props;
 
     return (
@@ -26,6 +28,10 @@ class SelectAlbumModalContent extends Component {
         </ModalHeader>
 
         <ModalBody>
+          {
+            isFetching &&
+              <LoadingIndicator />
+          }
           {
             items.map((item) => {
               return (
@@ -52,6 +58,7 @@ class SelectAlbumModalContent extends Component {
 
 SelectAlbumModalContent.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFetching: PropTypes.bool.isRequired,
   onAlbumSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

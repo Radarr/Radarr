@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { createSelector } from 'reselect';
 import connectSection from 'Store/connectSection';
-import { fetchEpisodes, setEpisodesSort, clearEpisodes } from 'Store/Actions/episodeActions';
+import { fetchTracks, setTracksSort, clearTracks } from 'Store/Actions/trackActions';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import SelectTrackModalContent from './SelectTrackModalContent';
@@ -11,16 +11,16 @@ import SelectTrackModalContent from './SelectTrackModalContent';
 function createMapStateToProps() {
   return createSelector(
     createClientSideCollectionSelector(),
-    (episodes) => {
-      return episodes;
+    (tracks) => {
+      return tracks;
     }
   );
 }
 
 const mapDispatchToProps = {
-  fetchEpisodes,
-  setEpisodesSort,
-  clearEpisodes,
+  fetchTracks,
+  setTracksSort,
+  clearTracks,
   updateInteractiveImportItem
 };
 
@@ -35,25 +35,25 @@ class SelectTrackModalContentConnector extends Component {
       albumId
     } = this.props;
 
-    this.props.fetchEpisodes({ artistId, albumId });
+    this.props.fetchTracks({ artistId, albumId });
   }
 
   componentWillUnmount() {
-    // This clears the episodes for the queue and hides the queue
-    // We'll need another place to store episodes for manual import
-    this.props.clearEpisodes();
+    // This clears the tracks for the queue and hides the queue
+    // We'll need another place to store tracks for manual import
+    this.props.clearTracks();
   }
 
   //
   // Listeners
 
   onSortPress = (sortKey, sortDirection) => {
-    this.props.setEpisodesSort({ sortKey, sortDirection });
+    this.props.setTracksSort({ sortKey, sortDirection });
   }
 
-  onTracksSelect = (episodeIds) => {
+  onTracksSelect = (trackIds) => {
     const tracks = _.reduce(this.props.items, (acc, item) => {
-      if (episodeIds.indexOf(item.id) > -1) {
+      if (trackIds.indexOf(item.id) > -1) {
         acc.push(item);
       }
 
@@ -87,9 +87,9 @@ SelectTrackModalContentConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   albumId: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fetchEpisodes: PropTypes.func.isRequired,
-  setEpisodesSort: PropTypes.func.isRequired,
-  clearEpisodes: PropTypes.func.isRequired,
+  fetchTracks: PropTypes.func.isRequired,
+  setTracksSort: PropTypes.func.isRequired,
+  clearTracks: PropTypes.func.isRequired,
   updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
@@ -99,5 +99,5 @@ export default connectSection(
                 mapDispatchToProps,
                 undefined,
                 undefined,
-                { section: 'episodes' }
+                { section: 'tracks' }
                )(SelectTrackModalContentConnector);

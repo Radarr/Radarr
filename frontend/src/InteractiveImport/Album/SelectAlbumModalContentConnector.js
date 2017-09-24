@@ -2,27 +2,47 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import connectSection from 'Store/connectSection';
 import { createSelector } from 'reselect';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
-import createArtistSelector from 'Store/Selectors/createArtistSelector';
+import { fetchEpisodes, setEpisodesSort, clearEpisodes } from 'Store/Actions/episodeActions';
+import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import SelectAlbumModalContent from './SelectAlbumModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createArtistSelector(),
-    (series) => {
-      return {
-        items: series.albums
-      };
+    createClientSideCollectionSelector(),
+    (episodes) => {
+      return episodes;
     }
   );
 }
 
 const mapDispatchToProps = {
+  fetchEpisodes,
+  setEpisodesSort,
+  clearEpisodes,
   updateInteractiveImportItem
 };
 
 class SelectAlbumModalContentConnector extends Component {
+
+  //
+  // Lifecycle
+
+  componentDidMount() {
+    const {
+      artistId
+    } = this.props;
+
+    this.props.fetchEpisodes({ artistId });
+  }
+
+  componentWillUnmount() {
+    // This clears the albums for the queue and hides the queue
+    // We'll need another place to store albums for manual import
+    this.props.clearEpisodes();
+  }
 
   //
   // Listeners
@@ -58,8 +78,17 @@ SelectAlbumModalContentConnector.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number).isRequired,
   artistId: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchEpisodes: PropTypes.func.isRequired,
+  setEpisodesSort: PropTypes.func.isRequired,
+  clearEpisodes: PropTypes.func.isRequired,
   updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(SelectAlbumModalContentConnector);
+export default connectSection(
+                createMapStateToProps,
+                mapDispatchToProps,
+                undefined,
+                undefined,
+                { section: 'episodes' }
+              )(SelectAlbumModalContentConnector);
