@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createEpisodeFileSelector from 'Store/Selectors/createEpisodeFileSelector';
+import createTrackFileSelector from 'Store/Selectors/createTrackFileSelector';
 import MediaInfo from './MediaInfo';
 
 function createMapStateToProps() {
   return createSelector(
-    createEpisodeFileSelector(),
-    (episodeFile) => {
-      if (episodeFile) {
+    createTrackFileSelector(),
+    (trackFile) => {
+      if (trackFile) {
         return {
-          ...episodeFile.mediaInfo
+          ...trackFile.mediaInfo
         };
       }
 

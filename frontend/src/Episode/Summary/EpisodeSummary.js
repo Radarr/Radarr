@@ -22,24 +22,24 @@ class EpisodeSummary extends Component {
     super(props, context);
 
     this.state = {
-      isRemoveEpisodeFileModalOpen: false
+      isRemoveTrackFileModalOpen: false
     };
   }
 
   //
   // Listeners
 
-  onRemoveEpisodeFilePress = () => {
-    this.setState({ isRemoveEpisodeFileModalOpen: true });
+  onRemoveTrackFilePress = () => {
+    this.setState({ isRemoveTrackFileModalOpen: true });
   }
 
-  onConfirmRemoveEpisodeFile = () => {
-    this.props.onDeleteEpisodeFile();
-    this.setState({ isRemoveEpisodeFileModalOpen: false });
+  onConfirmRemoveTrackFile = () => {
+    this.props.onDeleteTrackFile();
+    this.setState({ isRemoveTrackFileModalOpen: false });
   }
 
-  onRemoveEpisodeFileModalClose = () => {
-    this.setState({ isRemoveEpisodeFileModalOpen: false });
+  onRemoveTrackFileModalClose = () => {
+    this.setState({ isRemoveTrackFileModalOpen: false });
   }
 
   //
@@ -125,13 +125,13 @@ class EpisodeSummary extends Component {
         </div>
 
         <ConfirmModal
-          isOpen={this.state.isRemoveEpisodeFileModalOpen}
+          isOpen={this.state.isRemoveTrackFileModalOpen}
           kind={kinds.DANGER}
           title="Delete Episode File"
           message={`Are you sure you want to delete '${path}'?`}
           confirmLabel="Delete"
-          onConfirm={this.onConfirmRemoveEpisodeFile}
-          onCancel={this.onRemoveEpisodeFileModalClose}
+          onConfirm={this.onConfirmRemoveTrackFile}
+          onCancel={this.onRemoveTrackFileModalClose}
         />
       </div>
     );
@@ -149,7 +149,7 @@ EpisodeSummary.propTypes = {
   size: PropTypes.number,
   quality: PropTypes.object,
   qualityCutoffNotMet: PropTypes.bool,
-  onDeleteEpisodeFile: PropTypes.func.isRequired
+  onDeleteTrackFile: PropTypes.func.isRequired
 };
 
 export default EpisodeSummary;

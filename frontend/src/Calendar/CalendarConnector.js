@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import * as calendarActions from 'Store/Actions/calendarActions';
-import { fetchEpisodeFiles, clearEpisodeFiles } from 'Store/Actions/episodeFileActions';
+import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
 import Calendar from './Calendar';
 
@@ -22,8 +22,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   ...calendarActions,
-  fetchEpisodeFiles,
-  clearEpisodeFiles,
+  fetchTrackFiles,
+  clearTrackFiles,
   fetchQueueDetails,
   clearQueueDetails
 };
@@ -52,12 +52,12 @@ class CalendarConnector extends Component {
 
     if (hasDifferentItems(prevProps.items, items)) {
       const albumIds = selectUniqueIds(items, 'id');
-      // const episodeFileIds = selectUniqueIds(items, 'episodeFileId');
+      // const trackFileIds = selectUniqueIds(items, 'trackFileId');
 
       this.props.fetchQueueDetails({ albumIds });
 
-      // if (episodeFileIds.length) {
-      //   this.props.fetchEpisodeFiles({ episodeFileIds });
+      // if (trackFileIds.length) {
+      //   this.props.fetchTrackFiles({ trackFileIds });
       // }
     }
 
@@ -69,7 +69,7 @@ class CalendarConnector extends Component {
   componentWillUnmount() {
     this.props.clearCalendar();
     this.props.clearQueueDetails();
-    this.props.clearEpisodeFiles();
+    this.props.clearTrackFiles();
     this.clearUpdateTimeout();
   }
 
@@ -136,8 +136,8 @@ CalendarConnector.propTypes = {
   gotoCalendarPreviousRange: PropTypes.func.isRequired,
   gotoCalendarNextRange: PropTypes.func.isRequired,
   clearCalendar: PropTypes.func.isRequired,
-  fetchEpisodeFiles: PropTypes.func.isRequired,
-  clearEpisodeFiles: PropTypes.func.isRequired,
+  fetchTrackFiles: PropTypes.func.isRequired,
+  clearTrackFiles: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired
 };

@@ -11,7 +11,6 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
-using Lidarr.Api.V3.Series;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
 using Lidarr.Http.REST;
@@ -49,16 +48,16 @@ namespace Lidarr.Api.V3.TrackFiles
             UpdateResource = SetQuality;
             DeleteResource = DeleteTrackFile;
 
-            Put["/editor"] = episodeFiles => SetQuality();
-            Delete["/bulk"] = episodeFiles => DeleteTrackFiles();
+            Put["/editor"] = trackFiles => SetQuality();
+            Delete["/bulk"] = trackFiles => DeleteTrackFiles();
         }
 
         private TrackFileResource GetTrackFile(int id)
         {
             var trackFile = _mediaFileService.Get(id);
-            var series = _artistService.GetArtist(trackFile.ArtistId);
+            var artist = _artistService.GetArtist(trackFile.ArtistId);
 
-            return trackFile.ToResource(series, _upgradableSpecification);
+            return trackFile.ToResource(artist, _upgradableSpecification);
         }
 
         private List<TrackFileResource> GetTrackFiles()
@@ -72,7 +71,7 @@ namespace Lidarr.Api.V3.TrackFiles
                 throw new BadRequestException("artistId, albumId, or trackFileIds must be provided");
             }
 
-            if (artistIdQuery.HasValue)
+            if (artistIdQuery.HasValue && !albumIdQuery.HasValue)
             {
                 int artistId = Convert.ToInt32(artistIdQuery.Value);
                 var artist = _artistService.GetArtist(artistId);

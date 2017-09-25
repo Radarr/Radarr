@@ -7,17 +7,13 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import EpisodeQuality from 'Episode/EpisodeQuality';
-import styles from './EpisodeFileEditorRow';
+import styles from './TrackFileEditorRow';
 
-function EpisodeFileEditorRow(props) {
+function TrackFileEditorRow(props) {
   const {
     id,
-    seriesType,
-    seasonNumber,
-    episodeNumber,
-    absoluteEpisodeNumber,
+    trackNumber,
     relativePath,
-    airDateUtc,
     language,
     quality,
     isSelected,
@@ -33,23 +29,12 @@ function EpisodeFileEditorRow(props) {
       />
 
       <TableRowCell>
-        {seasonNumber}x{padNumber(episodeNumber, 2)}
-
-        {
-          seriesType === 'anime' && !!absoluteEpisodeNumber &&
-            <span className={styles.absoluteEpisodeNumber}>
-              ({absoluteEpisodeNumber})
-            </span>
-        }
+        {padNumber(trackNumber, 2)}
       </TableRowCell>
 
       <TableRowCell>
         {relativePath}
       </TableRowCell>
-
-      <RelativeDateCellConnector
-        date={airDateUtc}
-      />
 
       <TableRowCell>
         <Label>
@@ -66,18 +51,14 @@ function EpisodeFileEditorRow(props) {
   );
 }
 
-EpisodeFileEditorRow.propTypes = {
+TrackFileEditorRow.propTypes = {
   id: PropTypes.number.isRequired,
-  seriesType: PropTypes.string.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
-  absoluteEpisodeNumber: PropTypes.number,
+  trackNumber: PropTypes.number.isRequired,
   relativePath: PropTypes.string.isRequired,
-  airDateUtc: PropTypes.string.isRequired,
   language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired
 };
 
-export default EpisodeFileEditorRow;
+export default TrackFileEditorRow;

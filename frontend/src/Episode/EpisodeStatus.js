@@ -14,10 +14,10 @@ function EpisodeStatus(props) {
     monitored,
     grabbed,
     queueItem,
-    episodeFile
+    trackFile
   } = props;
 
-  const hasEpisodeFile = !!episodeFile;
+  const hasTrackFile = !!trackFile;
   const isQueued = !!queueItem;
   const hasAired = isBefore(airDateUtc);
 
@@ -57,15 +57,15 @@ function EpisodeStatus(props) {
     );
   }
 
-  if (hasEpisodeFile) {
-    const quality = episodeFile.quality;
-    const isCutoffNotMet = episodeFile.qualityCutoffNotMet;
+  if (hasTrackFile) {
+    const quality = trackFile.quality;
+    const isCutoffNotMet = trackFile.qualityCutoffNotMet;
 
     return (
       <div className={styles.center}>
         <EpisodeQuality
           quality={quality}
-          size={episodeFile.size}
+          size={trackFile.size}
           isCutoffNotMet={isCutoffNotMet}
           title="Episode Downloaded"
         />
@@ -121,7 +121,7 @@ EpisodeStatus.propTypes = {
   monitored: PropTypes.bool,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
-  episodeFile: PropTypes.object
+  trackFile: PropTypes.object
 };
 
 export default EpisodeStatus;

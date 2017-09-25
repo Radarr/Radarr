@@ -9,7 +9,7 @@ import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import * as wantedActions from 'Store/Actions/wantedActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
-import { fetchEpisodeFiles, clearEpisodeFiles } from 'Store/Actions/episodeFileActions';
+import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import * as commandNames from 'Commands/commandNames';
 import CutoffUnmet from './CutoffUnmet';
 
@@ -36,8 +36,8 @@ const mapDispatchToProps = {
   executeCommand,
   fetchQueueDetails,
   clearQueueDetails,
-  fetchEpisodeFiles,
-  clearEpisodeFiles
+  fetchTrackFiles,
+  clearTrackFiles
 };
 
 class CutoffUnmetConnector extends Component {
@@ -52,12 +52,12 @@ class CutoffUnmetConnector extends Component {
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       const albumIds = selectUniqueIds(this.props.items, 'id');
-      const episodeFileIds = selectUniqueIds(this.props.items, 'episodeFileId');
+      const trackFileIds = selectUniqueIds(this.props.items, 'trackFileId');
 
       this.props.fetchQueueDetails({ albumIds });
 
-      if (episodeFileIds.length) {
-        this.props.fetchEpisodeFiles({ episodeFileIds });
+      if (trackFileIds.length) {
+        this.props.fetchTrackFiles({ trackFileIds });
       }
     }
   }
@@ -65,7 +65,7 @@ class CutoffUnmetConnector extends Component {
   componentWillUnmount() {
     this.props.clearCutoffUnmet();
     this.props.clearQueueDetails();
-    this.props.clearEpisodeFiles();
+    this.props.clearTrackFiles();
   }
 
   //
@@ -173,8 +173,8 @@ CutoffUnmetConnector.propTypes = {
   executeCommand: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
-  fetchEpisodeFiles: PropTypes.func.isRequired,
-  clearEpisodeFiles: PropTypes.func.isRequired
+  fetchTrackFiles: PropTypes.func.isRequired,
+  clearTrackFiles: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(CutoffUnmetConnector);

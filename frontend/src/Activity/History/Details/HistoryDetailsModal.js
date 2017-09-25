@@ -19,9 +19,9 @@ function getHeaderTitle(eventType) {
       return 'Download Failed';
     case 'downloadFolderImported':
       return 'Episode Imported';
-    case 'episodeFileDeleted':
+    case 'trackFileDeleted':
       return 'Episode File Deleted';
-    case 'episodeFileRenamed':
+    case 'trackFileRenamed':
       return 'Episode File Renamed';
     default:
       return 'Unknown';

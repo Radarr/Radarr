@@ -120,7 +120,7 @@ class SignalRConnector extends Component {
     }
 
     if (name === 'episodefile') {
-      this.handleEpisodeFile(body);
+      this.handleTrackFile(body);
       return;
     }
 
@@ -206,10 +206,10 @@ class SignalRConnector extends Component {
     }
   }
 
-  handleEpisodeFile = (body) => {
+  handleTrackFile = (body) => {
     if (body.action === 'updated') {
       this.props.updateItem({
-        section: 'episodeFiles',
+        section: 'trackFiles',
         ...body.resource });
     }
   }

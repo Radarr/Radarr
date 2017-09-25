@@ -16,7 +16,7 @@ import MenuContent from 'Components/Menu/MenuContent';
 import MenuItem from 'Components/Menu/MenuItem';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import EpisodeFileEditorModal from 'EpisodeFile/Editor/EpisodeFileEditorModal';
+import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import AlbumRowConnector from './AlbumRowConnector';
 import styles from './ArtistDetailsSeason.css';
@@ -287,7 +287,7 @@ class ArtistDetailsSeason extends Component {
           onModalClose={this.onOrganizeModalClose}
         />
 
-        <EpisodeFileEditorModal
+        <TrackFileEditorModal
           isOpen={isManageEpisodesOpen}
           artistId={artistId}
           onModalClose={this.onManageEpisodesModalClose}

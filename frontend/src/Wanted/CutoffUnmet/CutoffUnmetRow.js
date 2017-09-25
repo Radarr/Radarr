@@ -5,7 +5,7 @@ import EpisodeTitleLink from 'Episode/EpisodeTitleLink';
 import EpisodeStatusConnector from 'Episode/EpisodeStatusConnector';
 import SeasonEpisodeNumber from 'Episode/SeasonEpisodeNumber';
 import EpisodeSearchCellConnector from 'Episode/EpisodeSearchCellConnector';
-import EpisodeFileLanguageConnector from 'EpisodeFile/EpisodeFileLanguageConnector';
+import TrackFileLanguageConnector from 'TrackFile/TrackFileLanguageConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
@@ -16,7 +16,7 @@ import styles from './CutoffUnmetRow.css';
 function CutoffUnmetRow(props) {
   const {
     id,
-    episodeFileId,
+    trackFileId,
     series,
     seasonNumber,
     episodeNumber,
@@ -109,8 +109,8 @@ function CutoffUnmetRow(props) {
                 key={name}
                 className={styles.language}
               >
-                <EpisodeFileLanguageConnector
-                  episodeFileId={episodeFileId}
+                <TrackFileLanguageConnector
+                  trackFileId={trackFileId}
                 />
               </TableRowCell>
             );
@@ -124,7 +124,7 @@ function CutoffUnmetRow(props) {
               >
                 <EpisodeStatusConnector
                   episodeId={id}
-                  episodeFileId={episodeFileId}
+                  trackFileId={trackFileId}
                   episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
                 />
               </TableRowCell>
@@ -151,7 +151,7 @@ function CutoffUnmetRow(props) {
 
 CutoffUnmetRow.propTypes = {
   id: PropTypes.number.isRequired,
-  episodeFileId: PropTypes.number,
+  trackFileId: PropTypes.number,
   series: PropTypes.object.isRequired,
   seasonNumber: PropTypes.number.isRequired,
   episodeNumber: PropTypes.number.isRequired,

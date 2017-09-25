@@ -14,7 +14,7 @@ import queue, { defaultState as defaultQueueState } from './queueReducers';
 import blacklist, { defaultState as defaultBlacklistState } from './blacklistReducers';
 import episodes, { defaultState as defaultEpisodesState } from './episodeReducers';
 import tracks, { defaultState as defaultTracksState } from './trackReducers';
-import episodeFiles, { defaultState as defaultEpisodeFilesState } from './episodeFileReducers';
+import trackFiles, { defaultState as defaultTrackFilesState } from './trackFileReducers';
 import albumHistory, { defaultState as defaultAlbumHistoryState } from './albumHistoryReducers';
 import releases, { defaultState as defaultReleasesState } from './releaseReducers';
 import wanted, { defaultState as defaultWantedState } from './wantedReducers';
@@ -43,7 +43,7 @@ export const defaultState = {
   blacklist: defaultBlacklistState,
   episodes: defaultEpisodesState,
   tracks: defaultTracksState,
-  episodeFiles: defaultEpisodeFilesState,
+  trackFiles: defaultTrackFilesState,
   albumHistory: defaultAlbumHistoryState,
   releases: defaultReleasesState,
   wanted: defaultWantedState,
@@ -73,7 +73,7 @@ export default enableBatching(combineReducers({
   blacklist,
   episodes,
   tracks,
-  episodeFiles,
+  trackFiles,
   albumHistory,
   releases,
   wanted,

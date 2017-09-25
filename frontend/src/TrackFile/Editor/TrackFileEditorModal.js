@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from 'Components/Modal/Modal';
-import EpisodeFileEditorModalContentConnector from './EpisodeFileEditorModalContentConnector';
+import TrackFileEditorModalContentConnector from './TrackFileEditorModalContentConnector';
 
-function EpisodeFileEditorModal(props) {
+function TrackFileEditorModal(props) {
   const {
     isOpen,
     onModalClose,
@@ -17,7 +17,7 @@ function EpisodeFileEditorModal(props) {
     >
       {
         isOpen &&
-          <EpisodeFileEditorModalContentConnector
+          <TrackFileEditorModalContentConnector
             {...otherProps}
             onModalClose={onModalClose}
           />
@@ -26,9 +26,9 @@ function EpisodeFileEditorModal(props) {
   );
 }
 
-EpisodeFileEditorModal.propTypes = {
+TrackFileEditorModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default EpisodeFileEditorModal;
+export default TrackFileEditorModal;

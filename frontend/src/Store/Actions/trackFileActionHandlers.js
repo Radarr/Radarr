@@ -7,33 +7,33 @@ import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import * as types from './actionTypes';
 import { set, removeItem, updateItem } from './baseActions';
 
-const section = 'episodeFiles';
-const deleteEpisodeFile = createRemoveItemHandler(section, '/trackFile');
+const section = 'trackFiles';
+const deleteTrackFile = createRemoveItemHandler(section, '/trackFile');
 
-const episodeFileActionHandlers = {
-  [types.FETCH_EPISODE_FILES]: createFetchHandler(section, '/trackFile'),
+const trackFileActionHandlers = {
+  [types.FETCH_TRACK_FILES]: createFetchHandler(section, '/trackFile'),
 
-  [types.DELETE_EPISODE_FILE]: function(payload) {
+  [types.DELETE_TRACK_FILE]: function(payload) {
     return function(dispatch, getState) {
       const {
-        id: episodeFileId,
+        id: trackFileId,
         episodeEntity = episodeEntities.EPISODES
       } = payload;
 
       const episodeSection = _.last(episodeEntity.split('.'));
 
-      const deletePromise = deleteEpisodeFile(payload)(dispatch, getState);
+      const deletePromise = deleteTrackFile(payload)(dispatch, getState);
 
       deletePromise.done(() => {
         const episodes = getState().episodes.items;
-        const episodesWithRemovedFiles = _.filter(episodes, { episodeFileId });
+        const episodesWithRemovedFiles = _.filter(episodes, { trackFileId });
 
         dispatch(batchActions([
           ...episodesWithRemovedFiles.map((episode) => {
             return updateItem({
               section: episodeSection,
               ...episode,
-              episodeFileId: 0,
+              trackFileId: 0,
               hasFile: false
             });
           })
@@ -42,31 +42,31 @@ const episodeFileActionHandlers = {
     };
   },
 
-  [types.DELETE_EPISODE_FILES]: function(payload) {
+  [types.DELETE_TRACK_FILES]: function(payload) {
     return function(dispatch, getState) {
       const {
-        episodeFileIds
+        trackFileIds
       } = payload;
 
       dispatch(set({ section, isDeleting: true }));
 
       const promise = $.ajax({
-        url: '/episodeFile/bulk',
+        url: '/trackFile/bulk',
         method: 'DELETE',
         dataType: 'json',
-        data: JSON.stringify({ episodeFileIds })
+        data: JSON.stringify({ trackFileIds })
       });
 
       promise.done(() => {
         const episodes = getState().episodes.items;
-        const episodesWithRemovedFiles = episodeFileIds.reduce((acc, episodeFileId) => {
-          acc.push(..._.filter(episodes, { episodeFileId }));
+        const episodesWithRemovedFiles = trackFileIds.reduce((acc, trackFileId) => {
+          acc.push(..._.filter(episodes, { trackFileId }));
 
           return acc;
         }, []);
 
         dispatch(batchActions([
-          ...episodeFileIds.map((id) => {
+          ...trackFileIds.map((id) => {
             return removeItem({ section, id });
           }),
 
@@ -74,7 +74,7 @@ const episodeFileActionHandlers = {
             return updateItem({
               section: 'episodes',
               ...episode,
-              episodeFileId: 0,
+              trackFileId: 0,
               hasFile: false
             });
           }),
@@ -97,10 +97,10 @@ const episodeFileActionHandlers = {
     };
   },
 
-  [types.UPDATE_EPISODE_FILES]: function(payload) {
+  [types.UPDATE_TRACK_FILES]: function(payload) {
     return function(dispatch, getState) {
       const {
-        episodeFileIds,
+        trackFileIds,
         language,
         quality
       } = payload;
@@ -108,7 +108,7 @@ const episodeFileActionHandlers = {
       dispatch(set({ section, isSaving: true }));
 
       const data = {
-        episodeFileIds
+        trackFileIds
       };
 
       if (language) {
@@ -120,7 +120,7 @@ const episodeFileActionHandlers = {
       }
 
       const promise = $.ajax({
-        url: '/episodeFile/editor',
+        url: '/trackFile/editor',
         method: 'PUT',
         dataType: 'json',
         data: JSON.stringify(data)
@@ -128,7 +128,7 @@ const episodeFileActionHandlers = {
 
       promise.done(() => {
         dispatch(batchActions([
-          ...episodeFileIds.map((id) => {
+          ...trackFileIds.map((id) => {
             const props = {};
 
             if (language) {
@@ -161,4 +161,4 @@ const episodeFileActionHandlers = {
   }
 };
 
-export default episodeFileActionHandlers;
+export default trackFileActionHandlers;

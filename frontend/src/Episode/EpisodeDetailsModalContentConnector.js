@@ -8,7 +8,7 @@ import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import episodeEntities from 'Episode/episodeEntities';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
-import { fetchEpisodeFiles, clearEpisodeFiles } from 'Store/Actions/episodeFileActions';
+import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import EpisodeDetailsModalContent from './EpisodeDetailsModalContent';
 
 function createMapStateToProps() {
@@ -38,8 +38,8 @@ const mapDispatchToProps = {
   clearReleases,
   fetchTracks,
   clearTracks,
-  fetchEpisodeFiles,
-  clearEpisodeFiles,
+  fetchTrackFiles,
+  clearTrackFiles,
   toggleEpisodeMonitored
 };
 
@@ -65,14 +65,13 @@ class EpisodeDetailsModalContentConnector extends Component {
     const artistId = this.props.artistId;
     const albumId = this.props.episodeId;
     this.props.fetchTracks({ artistId, albumId });
-    // this.props.fetchEpisodeFiles({ artistId, albumId });
+    // this.props.fetchTrackFiles({ artistId, albumId });
   }
 
   _unpopulate() {
     this.props.clearTracks();
-    // this.props.clearEpisodeFiles();
+    // this.props.clearTrackFiles();
   }
-
 
   //
   // Listeners
@@ -109,8 +108,8 @@ EpisodeDetailsModalContentConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   fetchTracks: PropTypes.func.isRequired,
   clearTracks: PropTypes.func.isRequired,
-  fetchEpisodeFiles: PropTypes.func.isRequired,
-  clearEpisodeFiles: PropTypes.func.isRequired,
+  fetchTrackFiles: PropTypes.func.isRequired,
+  clearTrackFiles: PropTypes.func.isRequired,
   clearReleases: PropTypes.func.isRequired,
   toggleEpisodeMonitored: PropTypes.func.isRequired
 };

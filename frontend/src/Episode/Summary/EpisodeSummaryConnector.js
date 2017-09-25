@@ -1,9 +1,8 @@
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { deleteEpisodeFile } from 'Store/Actions/episodeFileActions';
+import { deleteTrackFile } from 'Store/Actions/trackFileActions';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
-import createTrackSelector from 'Store/Selectors/createTrackSelector';
-import createEpisodeFileSelector from 'Store/Selectors/createEpisodeFileSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -11,18 +10,19 @@ import EpisodeSummary from './EpisodeSummary';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { episode }) => episode,
     (state) => state.tracks,
     createEpisodeSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (albumId, tracks, episode, commands, dimensions) => {
+    (tracks, episode, commands, dimensions) => {
+      const items = _.filter(tracks.items, { albumId: episode.id });
+
       return {
         network: episode.label,
         qualityProfileId: episode.profileId,
         airDateUtc: episode.releaseDate,
         overview: episode.overview,
-        items: tracks.items,
+        items,
         columns: tracks.columns
       };
     }
@@ -31,9 +31,9 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onDeleteEpisodeFile() {
-      dispatch(deleteEpisodeFile({
-        id: props.episodeFileId,
+    onDeleteTrackFile() {
+      dispatch(deleteTrackFile({
+        id: props.trackFileId,
         episodeEntity: props.episodeEntity
       }));
     }

@@ -156,7 +156,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'episodeFileDeleted') {
+  if (eventType === 'trackFileDeleted') {
     const {
       reason
     } = data;
@@ -192,7 +192,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'episodeFileRenamed') {
+  if (eventType === 'trackFileRenamed') {
     const {
       sourcePath,
       sourceRelativePath,

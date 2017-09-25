@@ -236,7 +236,7 @@ class InteractiveImportModalContent extends Component {
 
           {
             isPopulated && !items.length &&
-              'No video files were found in the selected folder'
+              'No audio files were found in the selected folder'
           }
         </ModalBody>
 

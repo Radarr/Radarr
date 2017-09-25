@@ -39,7 +39,6 @@ function MediaInfo(props) {
     );
   }
 
-
   return null;
 }
 

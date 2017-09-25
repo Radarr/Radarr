@@ -15,23 +15,18 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import EpisodeFileEditorRow from './EpisodeFileEditorRow';
-import styles from './EpisodeFileEditorModalContent.css';
+import TrackFileEditorRow from './TrackFileEditorRow';
+import styles from './TrackFileEditorModalContent.css';
 
 const columns = [
   {
-    name: 'episodeNumber',
-    label: 'Episode',
+    name: 'trackNumber',
+    label: 'Track',
     isVisible: true
   },
   {
     name: 'relativePath',
     label: 'Relative Path',
-    isVisible: true
-  },
-  {
-    name: 'airDateUtc',
-    label: 'Air Date',
     isVisible: true
   },
   {
@@ -46,7 +41,7 @@ const columns = [
   }
 ];
 
-class EpisodeFileEditorModalContent extends Component {
+class TrackFileEditorModalContent extends Component {
 
   //
   // Lifecycle
@@ -76,7 +71,7 @@ class EpisodeFileEditorModalContent extends Component {
     const selectedIds = getSelectedIds(this.state.selectedState);
 
     return _.uniq(_.map(selectedIds, (id) => {
-      return _.find(this.props.items, { id }).episodeFileId;
+      return _.find(this.props.items, { id }).trackFileId;
     }));
   }
 
@@ -135,7 +130,6 @@ class EpisodeFileEditorModalContent extends Component {
       items,
       languages,
       qualities,
-      seriesType,
       onModalClose
     } = this.props;
 
@@ -169,14 +163,14 @@ class EpisodeFileEditorModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manage Episodes
+          Manage Tracks
         </ModalHeader>
 
         <ModalBody>
           {
             !items.length &&
               <div>
-                No episode files to manage.
+                No track files to manage.
               </div>
           }
 
@@ -193,9 +187,8 @@ class EpisodeFileEditorModalContent extends Component {
                   {
                     items.map((item) => {
                       return (
-                        <EpisodeFileEditorRow
+                        <TrackFileEditorRow
                           key={item.id}
-                          seriesType={seriesType}
                           isSelected={selectedState[item.id]}
                           {...item}
                           onSelectedChange={this.onSelectedChange}
@@ -250,8 +243,8 @@ class EpisodeFileEditorModalContent extends Component {
         <ConfirmModal
           isOpen={isConfirmDeleteModalOpen}
           kind={kinds.DANGER}
-          title="Delete Selected Episode Files"
-          message={'Are you sure you want to delete the selected episode files?'}
+          title="Delete Selected Track Files"
+          message={'Are you sure you want to delete the selected track files?'}
           confirmLabel="Delete"
           onConfirm={this.onConfirmDelete}
           onCancel={this.onConfirmDeleteModalClose}
@@ -261,16 +254,15 @@ class EpisodeFileEditorModalContent extends Component {
   }
 }
 
-EpisodeFileEditorModalContent.propTypes = {
+TrackFileEditorModalContent.propTypes = {
   isDeleting: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  seriesType: PropTypes.string.isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onLanguageChange: PropTypes.func.isRequired,
   onQualityChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default EpisodeFileEditorModalContent;
+export default TrackFileEditorModalContent;

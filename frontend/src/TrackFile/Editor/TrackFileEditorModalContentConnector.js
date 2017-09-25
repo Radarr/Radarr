@@ -4,48 +4,49 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import { deleteEpisodeFiles, updateEpisodeFiles } from 'Store/Actions/episodeFileActions';
+import { deleteTrackFiles, updateTrackFiles } from 'Store/Actions/trackFileActions';
+import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
 import { fetchLanguageProfileSchema, fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
-import EpisodeFileEditorModalContent from './EpisodeFileEditorModalContent';
+import TrackFileEditorModalContent from './TrackFileEditorModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { seasonNumber }) => seasonNumber,
-    (state) => state.episodes,
-    (state) => state.episodeFiles,
+    (state, { albumId }) => albumId,
+    (state) => state.tracks,
+    (state) => state.trackFiles,
     (state) => state.settings.languageProfiles.schema,
     (state) => state.settings.qualityProfiles.schema,
     createArtistSelector(),
     (
-      seasonNumber,
-      episodes,
-      episodeFiles,
+      albumId,
+      tracks,
+      trackFiles,
       languageProfilesSchema,
       qualityProfileSchema,
       series
     ) => {
-      const filtered = _.filter(episodes.items, (episode) => {
-        if (seasonNumber >= 0 && episode.seasonNumber !== seasonNumber) {
+      const filtered = _.filter(tracks.items, (track) => {
+        if (albumId >= 0 && track.albumId !== albumId) {
           return false;
         }
 
-        if (!episode.episodeFileId) {
+        if (!track.trackFileId) {
           return false;
         }
 
-        return _.some(episodeFiles.items, { id: episode.episodeFileId });
+        return _.some(trackFiles.items, { id: track.trackFileId });
       });
 
-      const sorted = _.orderBy(filtered, ['seasonNumber', 'episodeNumber'], ['desc', 'desc']);
+      const sorted = _.orderBy(filtered, ['albumId', 'trackNumber'], ['desc', 'asc']);
 
-      const items = _.map(sorted, (episode) => {
-        const episodeFile = _.find(episodeFiles.items, { id: episode.episodeFileId });
+      const items = _.map(sorted, (track) => {
+        const trackFile = _.find(trackFiles.items, { id: track.trackFileId });
 
         return {
-          relativePath: episodeFile.relativePath,
-          language: episodeFile.language,
-          quality: episodeFile.quality,
-          ...episode
+          relativePath: trackFile.relativePath,
+          language: trackFile.language,
+          quality: trackFile.quality,
+          ...track
         };
       });
 
@@ -55,8 +56,8 @@ function createMapStateToProps() {
       return {
         items,
         seriesType: series.seriesType,
-        isDeleting: episodeFiles.isDeleting,
-        isSaving: episodeFiles.isSaving,
+        isDeleting: trackFiles.isDeleting,
+        isSaving: trackFiles.isSaving,
         languages,
         qualities
       };
@@ -66,6 +67,14 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
+    dispatchClearTracks() {
+      dispatch(clearTracks());
+    },
+
+    dispatchFetchTracks(updateProps) {
+      dispatch(fetchTracks(updateProps));
+    },
+
     dispatchFetchLanguageProfileSchema(name, path) {
       dispatch(fetchLanguageProfileSchema());
     },
@@ -74,16 +83,15 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(fetchQualityProfileSchema());
     },
 
-    dispatchUpdateEpisodeFiles(updateProps) {
-      dispatch(updateEpisodeFiles(updateProps));
+    dispatchUpdateTrackFiles(updateProps) {
+      dispatch(updateTrackFiles(updateProps));
     },
 
-    onDeletePress(episodeFileIds) {
-      dispatch(deleteEpisodeFiles({ episodeFileIds }));
+    onDeletePress(trackFileIds) {
+      dispatch(deleteTrackFiles({ trackFileIds }));
     },
 
-
-    onQualityChange(episodeFileIds, qualityId) {
+    onQualityChange(trackFileIds, qualityId) {
       const quality = {
         quality: _.find(this.props.qualities, { id: qualityId }),
         revision: {
@@ -92,19 +100,27 @@ function createMapDispatchToProps(dispatch, props) {
         }
       };
 
-      dispatch(updateEpisodeFiles({ episodeFileIds, quality }));
+      dispatch(updateTrackFiles({ trackFileIds, quality }));
     }
   };
 }
 
-class EpisodeFileEditorModalContentConnector extends Component {
+class TrackFileEditorModalContentConnector extends Component {
 
   //
   // Lifecycle
 
   componentDidMount() {
+    const artistId = this.props.artistId;
+
+    this.props.dispatchFetchTracks({ artistId });
+
     this.props.dispatchFetchLanguageProfileSchema();
     this.props.dispatchFetchQualityProfileSchema();
+  }
+
+  componentWillUnmount() {
+    this.props.dispatchClearTracks();
   }
 
   //
@@ -113,13 +129,13 @@ class EpisodeFileEditorModalContentConnector extends Component {
   //
   // Listeners
 
-  onLanguageChange = (episodeFileIds, languageId) => {
+  onLanguageChange = (trackFileIds, languageId) => {
     const language = _.find(this.props.languages, { id: languageId });
 
-    this.props.dispatchUpdateEpisodeFiles({ episodeFileIds, language });
+    this.props.dispatchUpdateTrackFiles({ trackFileIds, language });
   }
 
-  onQualityChange = (episodeFileIds, qualityId) => {
+  onQualityChange = (trackFileIds, qualityId) => {
     const quality = {
       quality: _.find(this.props.qualities, { id: qualityId }),
       revision: {
@@ -128,19 +144,21 @@ class EpisodeFileEditorModalContentConnector extends Component {
       }
     };
 
-    this.props.dispatchUpdateEpisodeFiles({ episodeFileIds, quality });
+    this.props.dispatchUpdateTrackFiles({ trackFileIds, quality });
   }
 
   render() {
     const {
       dispatchFetchLanguageProfileSchema,
       dispatchFetchQualityProfileSchema,
-      dispatchUpdateEpisodeFiles,
+      dispatchUpdateTrackFiles,
+      dispatchFetchTracks,
+      dispatchClearTracks,
       ...otherProps
     } = this.props;
 
     return (
-      <EpisodeFileEditorModalContent
+      <TrackFileEditorModalContent
         {...otherProps}
         onLanguageChange={this.onLanguageChange}
         onQualityChange={this.onQualityChange}
@@ -149,14 +167,16 @@ class EpisodeFileEditorModalContentConnector extends Component {
   }
 }
 
-EpisodeFileEditorModalContentConnector.propTypes = {
+TrackFileEditorModalContentConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number,
+  albumId: PropTypes.number,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatchFetchTracks: PropTypes.func.isRequired,
+  dispatchClearTracks: PropTypes.func.isRequired,
   dispatchFetchLanguageProfileSchema: PropTypes.func.isRequired,
   dispatchFetchQualityProfileSchema: PropTypes.func.isRequired,
-  dispatchUpdateEpisodeFiles: PropTypes.func.isRequired
+  dispatchUpdateTrackFiles: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(EpisodeFileEditorModalContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(TrackFileEditorModalContentConnector);

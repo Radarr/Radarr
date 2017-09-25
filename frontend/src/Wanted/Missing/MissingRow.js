@@ -15,7 +15,7 @@ import styles from './MissingRow.css';
 function MissingRow(props) {
   const {
     id,
-    // episodeFileId,
+    // trackFileId,
     artist,
     // seasonNumber,
     // episodeNumber,
@@ -110,7 +110,7 @@ function MissingRow(props) {
           //     >
           //       <EpisodeStatusConnector
           //         episodeId={id}
-          //         episodeFileId={episodeFileId}
+          //         trackFileId={trackFileId}
           //         episodeEntity={episodeEntities.WANTED_MISSING}
           //       />
           //     </TableRowCell>
@@ -137,7 +137,7 @@ function MissingRow(props) {
 
 MissingRow.propTypes = {
   id: PropTypes.number.isRequired,
-  // episodeFileId: PropTypes.number,
+  // trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   // seasonNumber: PropTypes.number.isRequired,
   // episodeNumber: PropTypes.number.isRequired,

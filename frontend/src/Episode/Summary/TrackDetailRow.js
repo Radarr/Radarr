@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
-import MediaInfoConnector from 'EpisodeFile/MediaInfoConnector';
-import * as mediaInfoTypes from 'EpisodeFile/mediaInfoTypes';
+import MediaInfoConnector from 'TrackFile/MediaInfoConnector';
+import * as mediaInfoTypes from 'TrackFile/mediaInfoTypes';
 import EpisodeStatusConnector from 'Episode/EpisodeStatusConnector';
 
 import styles from './TrackDetailRow.css';
@@ -83,7 +83,7 @@ class TrackDetailRow extends Component {
                 >
                   <MediaInfoConnector
                     type={mediaInfoTypes.AUDIO}
-                    episodeFileId={trackFileId}
+                    trackFileId={trackFileId}
                   />
                 </TableRowCell>
               );
@@ -97,7 +97,7 @@ class TrackDetailRow extends Component {
                 >
                   <EpisodeStatusConnector
                     episodeId={id}
-                    episodeFileId={trackFileId}
+                    trackFileId={trackFileId}
                   />
                 </TableRowCell>
               );

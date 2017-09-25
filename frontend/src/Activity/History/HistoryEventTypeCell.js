@@ -15,9 +15,9 @@ function getIconName(eventType) {
       return icons.DOWNLOADED;
     case 'downloadFailed':
       return icons.DOWNLOADING;
-    case 'episodeFileDeleted':
+    case 'trackFileDeleted':
       return icons.DELETE;
-    case 'episodeFileRenamed':
+    case 'trackFileRenamed':
       return icons.ORGANIZE;
     default:
       return icons.UNKNOWN;
@@ -43,9 +43,9 @@ function getTooltip(eventType, data) {
       return 'Album downloaded successfully and picked up from download client';
     case 'downloadFailed':
       return 'Album download failed';
-    case 'episodeFileDeleted':
+    case 'trackFileDeleted':
       return 'Track file deleted';
-    case 'episodeFileRenamed':
+    case 'trackFileRenamed':
       return 'Track file renamed';
     default:
       return 'Unknown event';

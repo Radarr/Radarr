@@ -12,8 +12,8 @@ import EpisodeTitleLink from 'Episode/EpisodeTitleLink';
 
 import styles from './AlbumRow.css';
 
-function getEpisodeCountKind(monitored, episodeFileCount, episodeCount) {
-  if (episodeFileCount === episodeCount && episodeCount > 0) {
+function getEpisodeCountKind(monitored, trackFileCount, episodeCount) {
+  if (trackFileCount === episodeCount && episodeCount > 0) {
     return kinds.SUCCESS;
   }
 

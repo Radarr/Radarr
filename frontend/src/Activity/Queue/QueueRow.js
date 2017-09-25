@@ -160,7 +160,7 @@ class QueueRow extends Component {
                   <EpisodeTitleLink
                     episodeId={episode.id}
                     artistId={series.id}
-                    episodeFileId={episode.episodeFileId}
+                    trackFileId={episode.trackFileId}
                     episodeEntity={episodeEntity}
                     episodeTitle={episode.title}
                     showOpenArtistButton={true}

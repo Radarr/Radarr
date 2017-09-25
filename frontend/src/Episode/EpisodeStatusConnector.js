@@ -5,15 +5,15 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
 import createQueueItemSelector from 'Store/Selectors/createQueueItemSelector';
-import createEpisodeFileSelector from 'Store/Selectors/createEpisodeFileSelector';
+import createTrackFileSelector from 'Store/Selectors/createTrackFileSelector';
 import EpisodeStatus from './EpisodeStatus';
 
 function createMapStateToProps() {
   return createSelector(
     createEpisodeSelector(),
     createQueueItemSelector(),
-    createEpisodeFileSelector(),
-    (episode, queueItem, episodeFile) => {
+    createTrackFileSelector(),
+    (episode, queueItem, trackFile) => {
       const result = _.pick(episode, [
         'airDateUtc',
         'monitored',
@@ -21,7 +21,7 @@ function createMapStateToProps() {
       ]);
 
       result.queueItem = queueItem;
-      result.episodeFile = episodeFile;
+      result.trackFile = trackFile;
 
       return result;
     }
@@ -47,7 +47,7 @@ class EpisodeStatusConnector extends Component {
 
 EpisodeStatusConnector.propTypes = {
   episodeId: PropTypes.number.isRequired,
-  episodeFileId: PropTypes.number.isRequired
+  trackFileId: PropTypes.number.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(EpisodeStatusConnector);

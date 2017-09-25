@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createEpisodeFileSelector from 'Store/Selectors/createEpisodeFileSelector';
+import createTrackFileSelector from 'Store/Selectors/createTrackFileSelector';
 import EpisodeLanguage from 'Episode/EpisodeLanguage';
 
 function createMapStateToProps() {
   return createSelector(
-    createEpisodeFileSelector(),
-    (episodeFile) => {
+    createTrackFileSelector(),
+    (trackFile) => {
       return {
-        language: episodeFile ? episodeFile.language : undefined
+        language: trackFile ? trackFile.language : undefined
       };
     }
   );

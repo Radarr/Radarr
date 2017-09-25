@@ -16,19 +16,19 @@ export const defaultState = {
   items: []
 };
 
-const reducerSection = 'episodeFiles';
+const reducerSection = 'trackFiles';
 
-const episodeFileReducers = handleActions({
+const trackFileReducers = handleActions({
 
   [types.SET]: createSetReducer(reducerSection),
   [types.UPDATE]: createUpdateReducer(reducerSection),
   [types.UPDATE_ITEM]: createUpdateItemReducer(reducerSection),
   [types.REMOVE_ITEM]: createRemoveItemReducer(reducerSection),
 
-  [types.CLEAR_EPISODE_FILES]: (state) => {
+  [types.CLEAR_TRACK_FILES]: (state) => {
     return Object.assign({}, state, defaultState);
   }
 
 }, defaultState);
 
-export default episodeFileReducers;
+export default trackFileReducers;

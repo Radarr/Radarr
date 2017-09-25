@@ -18,7 +18,7 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import EpisodeFileEditorModal from 'EpisodeFile/Editor/EpisodeFileEditorModal';
+import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import ArtistPoster from 'Artist/ArtistPoster';
@@ -179,7 +179,7 @@ class ArtistDetails extends Component {
       isFetching,
       isPopulated,
       episodesError,
-      episodeFilesError,
+      trackFilesError,
       previousArtist,
       nextArtist,
       onRefreshPress,
@@ -198,12 +198,12 @@ class ArtistDetails extends Component {
 
     const continuing = status === 'continuing';
 
-    let episodeFilesCountMessage = 'No track files';
+    let trackFilesCountMessage = 'No track files';
 
     if (trackFileCount === 1) {
-      episodeFilesCountMessage = '1 track file';
+      trackFilesCountMessage = '1 track file';
     } else if (trackFileCount > 1) {
-      episodeFilesCountMessage = `${trackFileCount} track files`;
+      trackFilesCountMessage = `${trackFileCount} track files`;
     }
 
     let expandIcon = icons.EXPAND_INDETERMINATE;
@@ -345,7 +345,7 @@ class ArtistDetails extends Component {
                 <div className={styles.detailsLabels}>
                   <Label
                     className={styles.detailsLabel}
-                    title={episodeFilesCountMessage}
+                    title={trackFilesCountMessage}
                     size={sizes.LARGE}
                   >
                     <Icon
@@ -469,7 +469,7 @@ class ArtistDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !episodesError && !episodeFilesError &&
+              !isPopulated && !episodesError && !trackFilesError &&
                 <LoadingIndicator />
             }
 
@@ -479,7 +479,7 @@ class ArtistDetails extends Component {
             }
 
             {
-              !isFetching && episodeFilesError &&
+              !isFetching && trackFilesError &&
                 <div>Loading episode files failed</div>
             }
 
@@ -518,7 +518,7 @@ class ArtistDetails extends Component {
             onModalClose={this.onOrganizeModalClose}
           />
 
-          <EpisodeFileEditorModal
+          <TrackFileEditorModal
             isOpen={isManageEpisodesOpen}
             artistId={id}
             onModalClose={this.onManageEpisodesModalClose}
@@ -563,7 +563,7 @@ ArtistDetails.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   episodesError: PropTypes.object,
-  episodeFilesError: PropTypes.object,
+  trackFilesError: PropTypes.object,
   previousArtist: PropTypes.object.isRequired,
   nextArtist: PropTypes.object.isRequired,
   onRefreshPress: PropTypes.func.isRequired,

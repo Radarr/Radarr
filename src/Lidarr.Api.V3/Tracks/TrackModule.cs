@@ -18,10 +18,10 @@ namespace Lidarr.Api.V3.Tracks
                              IBroadcastSignalRMessage signalRBroadcaster)
             : base(trackService, artistService, upgradableSpecification, signalRBroadcaster)
         {
-            GetResourceAll = GetEpisodes;
+            GetResourceAll = GetTracks;
         }
 
-        private List<TrackResource> GetEpisodes()
+        private List<TrackResource> GetTracks()
         {
             var artistIdQuery = Request.Query.ArtistId;
             var albumIdQuery = Request.Query.AlbumId;
