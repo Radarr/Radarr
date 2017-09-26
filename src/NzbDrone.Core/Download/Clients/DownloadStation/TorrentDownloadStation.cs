@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -90,7 +90,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                     RemainingTime = GetRemainingTime(torrent),
                     Status = GetStatus(torrent),
                     Message = GetMessage(torrent),
-                    IsReadOnly = !IsFinished(torrent)
+                    CanMoveFiles = IsCompleted(torrent),
+                    CanBeRemoved = IsFinished(torrent)
                 };
 
                 if (item.Status == DownloadItemStatus.Completed || item.Status == DownloadItemStatus.Failed)
@@ -199,7 +200,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return torrent.Status == DownloadStationTaskStatus.Finished;
         }
 
-        protected string GetMessage(DownloadStationTask torrent)
+        protected bool IsCompleted(DownloadStationTask torrent)
+        {
+            return torrent.Status == DownloadStationTaskStatus.Seeding || IsFinished(torrent) ||  (torrent.Status == DownloadStationTaskStatus.Waiting && torrent.Size != 0 && GetRemainingSize(torrent) <= 0);
+        }
+
+    protected string GetMessage(DownloadStationTask torrent)
         {
             if (torrent.StatusExtra != null)
             {

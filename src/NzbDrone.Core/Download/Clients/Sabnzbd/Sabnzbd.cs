@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -160,6 +160,8 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 else if (sabHistoryItem.Status == SabnzbdDownloadStatus.Completed)
                 {
                     historyItem.Status = DownloadItemStatus.Completed;
+                    historyItem.CanBeRemoved = true;
+                    historyItem.CanMoveFiles = true;
                 }
                 else // Verifying/Moving etc
                 {

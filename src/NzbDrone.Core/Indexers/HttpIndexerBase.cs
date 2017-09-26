@@ -46,9 +46,7 @@ namespace NzbDrone.Core.Indexers
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetRecentRequests(), true);
+            return FetchReleases(g => g.GetRecentRequests(), true);
         }
 
         public override IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria)
@@ -58,9 +56,7 @@ namespace NzbDrone.Core.Indexers
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+            return FetchReleases(g => g.GetSearchRequests(searchCriteria));
         }
 
         public override IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria)
@@ -70,20 +66,22 @@ namespace NzbDrone.Core.Indexers
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+            return FetchReleases(g => g.GetSearchRequests(searchCriteria));
         }
 
-        protected virtual IList<ReleaseInfo> FetchReleases(IndexerPageableRequestChain pageableRequestChain, bool isRecent = false)
+        protected virtual IList<ReleaseInfo> FetchReleases(Func<IIndexerRequestGenerator, IndexerPageableRequestChain> pageableRequestChainSelector, bool isRecent = false)
         {
             var releases = new List<ReleaseInfo>();
             var url = string.Empty;
 
-            var parser = GetParser();
-
             try
             {
+                var generator = GetRequestGenerator();
+                var parser = GetParser();
+
+                var pageableRequestChain = pageableRequestChainSelector(generator);
+
+
                 var fullyUpdated = false;
                 ReleaseInfo lastReleaseInfo = null;
                 if (isRecent)
@@ -186,18 +184,22 @@ namespace NzbDrone.Core.Indexers
                     _logger.Warn("{0} {1} {2}", this, url, webException.Message);
                 }
             }
-            catch (HttpException httpException)
+            catch (TooManyRequestsException ex)
             {
-                if ((int)httpException.Response.StatusCode == 429)
+                if (ex.RetryAfter != TimeSpan.Zero)
                 {
-                    _indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
-                    _logger.Warn("API Request Limit reached for {0}", this);
+                    _indexerStatusService.RecordFailure(Definition.Id, ex.RetryAfter);
                 }
                 else
                 {
-                    _indexerStatusService.RecordFailure(Definition.Id);
-                    _logger.Warn("{0} {1}", this, httpException.Message);
+                    _indexerStatusService.RecordFailure(Definition.Id, TimeSpan.FromHours(1));
                 }
+                _logger.Warn("API Request Limit reached for {0}", this);
+            }
+            catch (HttpException ex)
+            {
+                _indexerStatusService.RecordFailure(Definition.Id);
+                _logger.Warn("{0} {1}", this, ex.Message);
             }
             catch (RequestLimitReachedException)
             {

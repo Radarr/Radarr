@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -72,7 +72,10 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 queueItem.TotalSize = vortexQueueItem.TotalDownloadSize;
                 queueItem.RemainingSize = vortexQueueItem.TotalDownloadSize - vortexQueueItem.DownloadedSize;
                 queueItem.RemainingTime = null;
-                
+
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
+
                 if (vortexQueueItem.IsPaused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
@@ -132,7 +135,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 {
                     _proxy.Remove(queueItem.Id, deleteData, Settings);
                 }
-            }            
+            }
         }
 
         protected List<NzbVortexGroup> GetGroups()

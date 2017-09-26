@@ -263,7 +263,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 {
                     if (_downloadedEpisodesImportService.ShouldDeleteFolder(
                             new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
-                            trackedDownload.RemoteAlbum.Artist) && !trackedDownload.DownloadItem.IsReadOnly)
+                            trackedDownload.RemoteAlbum.Artist) && trackedDownload.DownloadItem.CanMoveFiles)
                     {
                         _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
                     }

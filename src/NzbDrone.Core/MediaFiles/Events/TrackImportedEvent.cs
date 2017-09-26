@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Messaging;
+using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Parser.Model;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,6 @@ namespace NzbDrone.Core.MediaFiles.Events
         public bool NewDownload { get; private set; }
         public string DownloadClient { get; private set; }
         public string DownloadId { get; private set; }
-        public bool IsReadOnly { get; set; }
 
         public TrackImportedEvent(LocalTrack trackInfo, TrackFile importedTrack, bool newDownload)
         {
@@ -23,14 +22,13 @@ namespace NzbDrone.Core.MediaFiles.Events
             NewDownload = newDownload;
         }
 
-        public TrackImportedEvent(LocalTrack trackInfo, TrackFile importedTrack, bool newDownload, string downloadClient, string downloadId, bool isReadOnly)
+        public TrackImportedEvent(LocalTrack trackInfo, TrackFile importedTrack, bool newDownload, string downloadClient, string downloadId)
         {
             TrackInfo = trackInfo;
             ImportedTrack = importedTrack;
             NewDownload = newDownload;
             DownloadClient = downloadClient;
             DownloadId = downloadId;
-            IsReadOnly = isReadOnly;
         }
     }
 }

@@ -94,7 +94,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     {
                         default:
                         case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && downloadClientItem.IsReadOnly;
+                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles;
                             break;
                         case ImportMode.Move:
                             copyOnly = false;
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                     if (downloadClientItem != null)
                     {
-                        _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId, downloadClientItem.IsReadOnly));
+                        _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId));
                     }
                     else
                     {

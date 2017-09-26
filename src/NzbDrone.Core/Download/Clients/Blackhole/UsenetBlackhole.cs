@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
@@ -68,7 +68,10 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                     OutputPath = item.OutputPath,
 
-                    Status = item.Status
+                    Status = item.Status,
+                    
+                    CanBeRemoved = true,
+                    CanMoveFiles = true
                 };
             }
         }

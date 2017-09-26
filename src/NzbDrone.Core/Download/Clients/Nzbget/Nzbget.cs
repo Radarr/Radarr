@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -145,6 +145,8 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 historyItem.Message = $"PAR Status: {item.ParStatus} - Unpack Status: {item.UnpackStatus} - Move Status: {item.MoveStatus} - Script Status: {item.ScriptStatus} - Delete Status: {item.DeleteStatus} - Mark Status: {item.MarkStatus}";
                 historyItem.Status = DownloadItemStatus.Completed;
                 historyItem.RemainingTime = TimeSpan.Zero;
+                historyItem.CanMoveFiles = true;
+                historyItem.CanBeRemoved = true;
 
                 if (item.DeleteStatus == "MANUAL")
                 {
