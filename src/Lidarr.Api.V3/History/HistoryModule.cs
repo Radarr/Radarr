@@ -6,6 +6,7 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using Lidarr.Api.V3.Albums;
 using Lidarr.Api.V3.Artist;
+using Lidarr.Api.V3.Tracks;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
 
@@ -35,6 +36,7 @@ namespace Lidarr.Api.V3.History
 
             resource.Artist = model.Artist.ToResource();
             resource.Album = model.Album.ToResource();
+            resource.Track = model.Track.ToResource();
 
             if (model.Artist != null)
             {

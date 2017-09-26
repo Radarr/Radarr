@@ -5,6 +5,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using Lidarr.Api.V3.Albums;
 using Lidarr.Api.V3.Artist;
+using Lidarr.Api.V3.Tracks;
 using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V3.History
@@ -13,6 +14,7 @@ namespace Lidarr.Api.V3.History
     {
         public int AlbumId { get; set; }
         public int ArtistId { get; set; }
+        public int TrackId { get; set; }
         public string SourceTitle { get; set; }
         public Language Language { get; set; }
         public QualityModel Quality { get; set; }
@@ -26,6 +28,7 @@ namespace Lidarr.Api.V3.History
 
         public AlbumResource Album { get; set; }
         public ArtistResource Artist { get; set; }
+        public TrackResource Track { get; set; }
     }
 
     public static class HistoryResourceMapper
@@ -40,6 +43,7 @@ namespace Lidarr.Api.V3.History
 
                 AlbumId = model.AlbumId,
                 ArtistId = model.ArtistId,
+                TrackId = model.TrackId,
                 SourceTitle = model.SourceTitle,
                 Language = model.Language,
                 Quality = model.Quality,

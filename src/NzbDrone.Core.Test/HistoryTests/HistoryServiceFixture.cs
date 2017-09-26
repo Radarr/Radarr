@@ -11,7 +11,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Qualities;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
 
@@ -54,23 +54,23 @@ namespace NzbDrone.Core.Test.HistoryTests
         [Test]
         public void should_use_file_name_for_source_title_if_scene_name_is_null()
         {
-            var series = Builder<Series>.CreateNew().Build();
-            var episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
+            var artist = Builder<Artist>.CreateNew().Build();
+            var tracks = Builder<Track>.CreateListOfSize(1).Build().ToList();
+            var trackFile = Builder<TrackFile>.CreateNew()
                                                   .With(f => f.SceneName = null)
                                                   .Build();
 
-            var localEpisode = new LocalEpisode
+            var localTrack = new LocalTrack
             {
-                Series = series,
-                Episodes = episodes,
-                Path = @"C:\Test\Unsorted\Series.s01e01.mkv"
+                Artist = artist,
+                Tracks = tracks,
+                Path = @"C:\Test\Unsorted\Artist.01.Hymn.mp3"
             };
 
-            Subject.Handle(new EpisodeImportedEvent(localEpisode, episodeFile, true, "sab", "abcd"));
+            Subject.Handle(new TrackImportedEvent(localTrack, trackFile, true, "sab", "abcd"));
 
             Mocker.GetMock<IHistoryRepository>()
-                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localEpisode.Path))));
+                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localTrack.Path))));
         }
     }
 }

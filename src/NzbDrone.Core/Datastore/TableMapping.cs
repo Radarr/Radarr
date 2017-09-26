@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Datastore
                   .Relationships.AutoMapICollectionOrComplexProperties()
                   .For("Tracks")
                   .LazyLoad(condition: parent => parent.Id > 0,
-                            query: (db, parent) => db.Query<Track>().Where(c => c.ArtistId == parent.Id).ToList()) // TODO: Figure what the hell to do here
+                            query: (db, parent) => db.Query<Track>().Where(c => c.TrackFileId == parent.Id).ToList()) // TODO: Figure what the hell to do here
                   .HasOne(file => file.Artist, file => file.ArtistId); 
 
             Mapper.Entity<Track>().RegisterModel("Tracks")

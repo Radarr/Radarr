@@ -56,6 +56,7 @@ class HistoryRow extends Component {
       albumId,
       artist,
       album,
+      track,
       language,
       quality,
       eventType,
@@ -117,6 +118,14 @@ class HistoryRow extends Component {
                     episodeTitle={album.title}
                     showOpenArtistButton={true}
                   />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'trackTitle') {
+              return (
+                <TableRowCell key={name}>
+                  {track.title}
                 </TableRowCell>
               );
             }
@@ -220,6 +229,7 @@ HistoryRow.propTypes = {
   albumId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   album: PropTypes.object,
+  track: PropTypes.object,
   language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   eventType: PropTypes.string.isRequired,
@@ -232,6 +242,12 @@ HistoryRow.propTypes = {
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onMarkAsFailedPress: PropTypes.func.isRequired
+};
+
+HistoryRow.defaultProps = {
+  track: {
+    title: ''
+  }
 };
 
 export default HistoryRow;

@@ -38,6 +38,11 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'trackTitle',
+      label: 'Track Title',
+      isVisible: true
+    },
+    {
       name: 'language',
       label: 'Language',
       isVisible: false

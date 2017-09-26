@@ -30,9 +30,9 @@ namespace NzbDrone.Core.History
 
     public class HistoryService : IHistoryService,
                                   IHandle<AlbumGrabbedEvent>,
-                                  IHandle<EpisodeImportedEvent>,
+                                  IHandle<TrackImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
-                                  IHandle<EpisodeFileDeletedEvent>,
+                                  IHandle<TrackFileDeletedEvent>,
                                   IHandle<ArtistDeletedEvent>
     {
         private readonly IHistoryRepository _historyRepository;
@@ -74,14 +74,13 @@ namespace NzbDrone.Core.History
             return _historyRepository.FindByDownloadId(downloadId);
         }
 
-        [Obsolete("Used for Sonarr, not Lidarr")]
-        private string FindDownloadId(EpisodeImportedEvent trackedDownload)
+        private string FindDownloadId(TrackImportedEvent trackedDownload)
         {
-            _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedEpisode.Path);
+            _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedTrack.Path);
 
-            var albumIds = trackedDownload.EpisodeInfo.Episodes.Select(c => c.Id).ToList();
+            var albumIds = trackedDownload.TrackInfo.Tracks.Select(c => c.AlbumId).ToList();
 
-            var allHistory = _historyRepository.FindDownloadHistory(trackedDownload.EpisodeInfo.Series.Id, trackedDownload.ImportedEpisode.Quality);
+            var allHistory = _historyRepository.FindDownloadHistory(trackedDownload.TrackInfo.Artist.Id, trackedDownload.ImportedTrack.Quality);
 
 
             //Find download related items for these episdoes
@@ -97,7 +96,7 @@ namespace NzbDrone.Core.History
 
             if (stillDownloading.Any())
             {
-                foreach (var matchingHistory in trackedDownload.EpisodeInfo.Episodes.Select(e => stillDownloading.Where(c => c.AlbumId == e.Id).ToList()))
+                foreach (var matchingHistory in trackedDownload.TrackInfo.Tracks.Select(e => stillDownloading.Where(c => c.AlbumId == e.AlbumId).ToList()))
                 {
                     if (matchingHistory.Count != 1)
                     {
@@ -165,8 +164,7 @@ namespace NzbDrone.Core.History
             }
         }
 
-        [Obsolete("Used for Sonarr, not Lidarr")]
-        public void Handle(EpisodeImportedEvent message)
+        public void Handle(TrackImportedEvent message)
         {
             if (!message.NewDownload)
             {
@@ -180,24 +178,25 @@ namespace NzbDrone.Core.History
                 downloadId = FindDownloadId(message);
             }
 
-            foreach (var episode in message.EpisodeInfo.Episodes)
+            foreach (var track in message.TrackInfo.Tracks)
             {
                 var history = new History
                     {
                         EventType = HistoryEventType.DownloadFolderImported,
                         Date = DateTime.UtcNow,
-                        Quality = message.EpisodeInfo.Quality,
-                        SourceTitle = message.ImportedEpisode.SceneName ?? Path.GetFileNameWithoutExtension(message.EpisodeInfo.Path),
-                        ArtistId = message.ImportedEpisode.SeriesId,
-                        AlbumId = episode.Id,
+                        Quality = message.TrackInfo.Quality,
+                        SourceTitle = message.ImportedTrack.SceneName ?? Path.GetFileNameWithoutExtension(message.TrackInfo.Path),
+                        ArtistId = message.ImportedTrack.ArtistId,
+                        AlbumId = message.ImportedTrack.AlbumId,
+                        TrackId = track.Id,
                         DownloadId = downloadId,
-                        Language = message.EpisodeInfo.Language
+                        Language = message.TrackInfo.Language
                 };
 
                 //Won't have a value since we publish this event before saving to DB.
                 //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
-                history.Data.Add("DroppedPath", message.EpisodeInfo.Path);
-                history.Data.Add("ImportedPath", Path.Combine(message.EpisodeInfo.Series.Path, message.ImportedEpisode.RelativePath));
+                history.Data.Add("DroppedPath", message.TrackInfo.Path);
+                history.Data.Add("ImportedPath", Path.Combine(message.TrackInfo.Artist.Path, message.ImportedTrack.RelativePath));
                 history.Data.Add("DownloadClient", message.DownloadClient);
 
                 _historyRepository.Insert(history);
@@ -227,25 +226,25 @@ namespace NzbDrone.Core.History
             }
         }
 
-        [Obsolete("Used for Sonarr, not Lidarr")]
-        public void Handle(EpisodeFileDeletedEvent message)
+        public void Handle(TrackFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
-                _logger.Debug("Removing episode file from DB as part of cleanup routine, not creating history event.");
+                _logger.Debug("Removing track file from DB as part of cleanup routine, not creating history event.");
                 return;
             }
 
-            foreach (var episode in message.EpisodeFile.Episodes.Value)
+            foreach (var track in message.TrackFile.Tracks.Value)
             {
                 var history = new History
                 {
-                    EventType = HistoryEventType.EpisodeFileDeleted,
+                    EventType = HistoryEventType.TrackFileDeleted,
                     Date = DateTime.UtcNow,
-                    Quality = message.EpisodeFile.Quality,
-                    SourceTitle = message.EpisodeFile.Path,
-                    ArtistId = message.EpisodeFile.SeriesId,
-                    AlbumId = episode.Id,
+                    Quality = message.TrackFile.Quality,
+                    SourceTitle = message.TrackFile.Path,
+                    ArtistId = message.TrackFile.ArtistId,
+                    AlbumId = message.TrackFile.AlbumId,
+                    TrackId = track.Id,
                 };
 
                 history.Data.Add("Reason", message.Reason.ToString());
