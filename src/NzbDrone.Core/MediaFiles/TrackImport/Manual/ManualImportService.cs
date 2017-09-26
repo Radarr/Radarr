@@ -178,6 +178,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 item.Artist = decision.LocalTrack.Artist;
             }
 
+            if (decision.LocalTrack.Album != null)
+            {
+                item.Album = decision.LocalTrack.Album;
+            }
+
             if (decision.LocalTrack.Tracks.Any())
             {
                 item.Tracks = decision.LocalTrack.Tracks;
