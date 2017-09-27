@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -90,7 +90,6 @@ namespace NzbDrone.Core.Extras.Files
                 filenameBuilder.Append(fileNameSuffix);
             }
 
-            filenameBuilder.Append(".");
             filenameBuilder.Append(extraFile.Extension);
 
             var existingFileName = Path.Combine(series.Path, extraFile.RelativePath);
