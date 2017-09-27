@@ -57,7 +57,7 @@ namespace NzbDrone.Update.UpdateEngine
         private void StartService()
         {
             _logger.Info("Starting Lidarr service");
-            _serviceProvider.Start(ServiceProvider.NZBDRONE_SERVICE_NAME);
+            _serviceProvider.Start(ServiceProvider.SERVICE_NAME);
         }
 
         private void StartWinform(string installationFolder)

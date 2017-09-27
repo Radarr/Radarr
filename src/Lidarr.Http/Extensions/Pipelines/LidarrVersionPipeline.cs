@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Nancy;
 using Nancy.Bootstrapper;
 using NzbDrone.Common.EnvironmentInfo;
 
 namespace Lidarr.Http.Extensions.Pipelines
 {
-    public class SonarrVersionPipeline : IRegisterNancyPipeline
+    public class LidarrVersionPipeline : IRegisterNancyPipeline
     {
         public int Order => 0;
 

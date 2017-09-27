@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -32,12 +32,7 @@ namespace NzbDrone.Test.Common
         {
             AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + DateTime.Now.Ticks);
 
-            var nzbdroneConsoleExe = "Lidarr.Console.exe";
-
-            if (OsInfo.IsNotWindows)
-            {
-                nzbdroneConsoleExe = "Lidarr.exe";
-            }
+            var lidarrConsoleExe = OsInfo.IsWindows ? "Lidarr.Console.exe" : "Lidarr.exe";
 
             if (BuildInfo.IsDebug)
             {
@@ -45,7 +40,7 @@ namespace NzbDrone.Test.Common
             }
             else
             {
-                Start(Path.Combine("bin", nzbdroneConsoleExe));
+                Start(Path.Combine("bin", lidarrConsoleExe));
             }
 
             while (true)
@@ -84,8 +79,8 @@ namespace NzbDrone.Test.Common
                 _processProvider.Kill(_nzbDroneProcess.Id);                
             }
 
-            _processProvider.KillAll(ProcessProvider.NZB_DRONE_CONSOLE_PROCESS_NAME);
-            _processProvider.KillAll(ProcessProvider.NZB_DRONE_PROCESS_NAME);
+            _processProvider.KillAll(ProcessProvider.LIDARR_CONSOLE_PROCESS_NAME);
+            _processProvider.KillAll(ProcessProvider.LIDARR_PROCESS_NAME);
         }
 
         private void Start(string outputNzbdroneConsoleExe)

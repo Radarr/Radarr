@@ -17,9 +17,9 @@ namespace NzbDrone.Api.Extensions.Pipelines
 
         private static int _requestSequenceID;
 
-        private readonly SonarrErrorPipeline _errorPipeline;
+        private readonly LidarrErrorPipeline _errorPipeline;
 
-        public RequestLoggingPipeline(SonarrErrorPipeline errorPipeline)
+        public RequestLoggingPipeline(LidarrErrorPipeline errorPipeline)
         {
             _errorPipeline = errorPipeline;
         }

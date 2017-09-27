@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Backup
             {
                 unitOfWork.BeginTransaction(IsolationLevel.Serializable);
 
-                var databaseFile = _appFolderInfo.GetNzbDroneDatabase();
+                var databaseFile = _appFolderInfo.GetDatabase();
                 var tempDatabaseFile = Path.Combine(_backupTempFolder, Path.GetFileName(databaseFile));
 
                 _diskTransferService.TransferFile(databaseFile, tempDatabaseFile, TransferMode.Copy);

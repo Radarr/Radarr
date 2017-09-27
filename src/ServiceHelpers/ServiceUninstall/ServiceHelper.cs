@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -8,7 +8,7 @@ namespace ServiceUninstall
 {
     public static class ServiceHelper
     {
-        private static string NzbDroneExe => Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Lidarr.Console.exe");
+        private static string LidarrExe => Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName, "Lidarr.Console.exe");
 
         private static bool IsAnAdministrator()
         {
@@ -18,7 +18,7 @@ namespace ServiceUninstall
 
         public static void Run(string arg)
         {
-            if (!File.Exists(NzbDroneExe))
+            if (!File.Exists(LidarrExe))
             {
                 Console.WriteLine("Unable to find Lidarr.exe in the current directory.");
                 return;
@@ -32,7 +32,7 @@ namespace ServiceUninstall
 
             var startInfo = new ProcessStartInfo
                                 {
-                                    FileName = NzbDroneExe,
+                                    FileName = LidarrExe,
                                     Arguments = arg,
                                     UseShellExecute = false,
                                     RedirectStandardOutput = true,

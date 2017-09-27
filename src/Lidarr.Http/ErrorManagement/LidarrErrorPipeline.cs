@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SQLite;
 using FluentValidation;
 using Nancy;
@@ -10,11 +10,11 @@ using HttpStatusCode = Nancy.HttpStatusCode;
 
 namespace Lidarr.Http.ErrorManagement
 {
-    public class SonarrErrorPipeline
+    public class LidarrErrorPipeline
     {
         private readonly Logger _logger;
 
-        public SonarrErrorPipeline(Logger logger)
+        public LidarrErrorPipeline(Logger logger)
         {
             _logger = logger;
         }
