@@ -1,7 +1,8 @@
-﻿using FluentValidation.Validators;
+using System.Linq;
+using FluentValidation.Validators;
+using NzbDrone.Common.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NzbDrone.Core.Music
@@ -23,7 +24,9 @@ namespace NzbDrone.Core.Music
             dynamic instance = context.ParentContext.InstanceToValidate;
             var instanceId = (int)instance.Id;
 
-            return !_artistService.GetAllArtists().Exists(s => s.NameSlug.Equals(context.PropertyValue.ToString()) && s.Id != instanceId);
+            return !_artistService.GetAllArtists().Where(s => s.NameSlug.IsNotNullOrWhiteSpace())
+                                                 .ToList()
+                                                 .Exists(s => s.NameSlug.Equals(context.PropertyValue.ToString()) && s.Id != instanceId);
         }
     }
 }
