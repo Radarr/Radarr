@@ -328,6 +328,7 @@
     <Compile Include="DecisionEngine\RejectionType.cs" />
     <Compile Include="DecisionEngine\SameEpisodesSpecification.cs" />
     <Compile Include="DecisionEngine\SameTracksSpecification.cs" />
+    <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\BlacklistSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\DiscographySpecification.cs" />
@@ -341,6 +342,7 @@
     <Compile Include="DecisionEngine\Specifications\MinimumAgeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RetentionSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\DelaySpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\RssSync\DeletedTrackFileSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\HistorySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredAlbumSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />

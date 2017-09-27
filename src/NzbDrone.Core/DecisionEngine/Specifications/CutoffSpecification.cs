@@ -20,6 +20,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _mediaFileService = mediaFileService;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)

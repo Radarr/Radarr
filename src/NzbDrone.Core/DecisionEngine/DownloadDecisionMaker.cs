@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -111,9 +111,16 @@ namespace NzbDrone.Core.DecisionEngine
 
         private DownloadDecision GetDecisionForReport(RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteria = null)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteAlbum, searchCriteria))
-                                         .Where(c => c != null);
+            var reasons = new Rejection[0];
 
+            foreach (var specifications in _specifications.GroupBy(v => v.Priority).OrderBy(v => v.Key))
+            {
+                reasons = specifications.Select(c => EvaluateSpec(c, remoteAlbum, searchCriteria))
+                                                        .Where(c => c != null)
+                                                        .ToArray();
+
+                if (reasons.Any()) break;
+            }
             return new DownloadDecision(remoteAlbum, reasons.ToArray());
         }
 
