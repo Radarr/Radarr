@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './Form.css';
+import { kinds } from 'Helpers/Props';
+import Alert from 'Components/Alert';
 
 function Form({ children, validationErrors, validationWarnings, ...otherProps }) {
   return (
@@ -9,12 +10,12 @@ function Form({ children, validationErrors, validationWarnings, ...otherProps })
         {
           validationErrors.map((error, index) => {
             return (
-              <div
+              <Alert
                 key={index}
-                className={styles.error}
+                kind={kinds.DANGER}
               >
                 {error.errorMessage}
-              </div>
+              </Alert>
             );
           })
         }
@@ -22,12 +23,12 @@ function Form({ children, validationErrors, validationWarnings, ...otherProps })
         {
           validationWarnings.map((warning, index) => {
             return (
-              <div
+              <Alert
                 key={index}
-                className={styles.error}
+                kind={kinds.WARNING}
               >
                 {warning.errorMessage}
-              </div>
+              </Alert>
             );
           })
         }

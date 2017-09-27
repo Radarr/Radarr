@@ -2,11 +2,26 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { cancelTestNotification, cancelSaveNotification } from 'Store/Actions/settingsActions';
 import EditNotificationModal from './EditNotificationModal';
 
-const mapDispatchToProps = {
-  clearPendingChanges
-};
+function createMapDispatchToProps(dispatch, props) {
+  const section = 'notifications';
+
+  return {
+    dispatchClearPendingChanges() {
+      dispatch(clearPendingChanges({ section }));
+    },
+
+    dispatchCancelTestNotification() {
+      dispatch(cancelTestNotification({ section }));
+    },
+
+    dispatchCancelSaveNotification() {
+      dispatch(cancelSaveNotification({ section }));
+    }
+  };
+}
 
 class EditNotificationModalConnector extends Component {
 
@@ -14,7 +29,9 @@ class EditNotificationModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'notifications' });
+    this.props.dispatchClearPendingChanges();
+    this.props.dispatchCancelTestNotification();
+    this.props.dispatchCancelSaveNotification();
     this.props.onModalClose();
   }
 
@@ -22,9 +39,16 @@ class EditNotificationModalConnector extends Component {
   // Render
 
   render() {
+    const {
+      dispatchClearPendingChanges,
+      dispatchCancelTestNotification,
+      dispatchCancelSaveNotification,
+      ...otherProps
+    } = this.props;
+
     return (
       <EditNotificationModal
-        {...this.props}
+        {...otherProps}
         onModalClose={this.onModalClose}
       />
     );
@@ -33,7 +57,9 @@ class EditNotificationModalConnector extends Component {
 
 EditNotificationModalConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired
+  dispatchClearPendingChanges: PropTypes.func.isRequired,
+  dispatchCancelTestNotification: PropTypes.func.isRequired,
+  dispatchCancelSaveNotification: PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(EditNotificationModalConnector);
+export default connect(null, createMapDispatchToProps)(EditNotificationModalConnector);

@@ -247,9 +247,9 @@ class PageSidebar extends Component {
       window.addEventListener('click', this.onWindowClick, { capture: true });
       window.addEventListener('scroll', this.onWindowScroll);
       window.addEventListener('touchstart', this.onTouchStart);
+      window.addEventListener('touchmove', this.onTouchMove);
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
-      window.addEventListener('touchmove', this.onTouchMove);
     }
   }
 
@@ -274,9 +274,9 @@ class PageSidebar extends Component {
       window.removeEventListener('click', this.onWindowClick, { capture: true });
       window.removeEventListener('scroll', this.onWindowScroll);
       window.removeEventListener('touchstart', this.onTouchStart);
+      window.removeEventListener('touchmove', this.onTouchMove);
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
-      window.removeEventListener('touchmove', this.onTouchMove);
     }
   }
 
@@ -322,20 +322,22 @@ class PageSidebar extends Component {
 
   onTouchStart = (event) => {
     const touches = event.touches;
-    const touchStart = touches[0].pageX;
+    const touchStartX = touches[0].pageX;
+    const touchStartY = touches[0].pageY;
     const isSidebarVisible = this.props.isSidebarVisible;
 
     if (touches.length !== 1) {
       return;
     }
 
-    if (isSidebarVisible && (touchStart > 210 || touchStart < 50)) {
+    if (isSidebarVisible && (touchStartX > 210 || touchStartX < 50)) {
       return;
-    } else if (!isSidebarVisible && touchStart > 50) {
+    } else if (!isSidebarVisible && touchStartX > 50) {
       return;
     }
 
-    this._touchStartX = touchStart;
+    this._touchStartX = touchStartX;
+    this._touchStartY = touchStartY;
   }
 
   onTouchEnd = (event) => {

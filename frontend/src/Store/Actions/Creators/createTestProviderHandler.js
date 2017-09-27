@@ -6,10 +6,12 @@ const abortCurrentRequests = {};
 
 export function createCancelTestProviderHandler(section) {
   return function(payload) {
-    if (abortCurrentRequests[section]) {
-      abortCurrentRequests[section]();
-      abortCurrentRequests[section] = null;
-    }
+    return function(dispatch, getState) {
+      if (abortCurrentRequests[section]) {
+        abortCurrentRequests[section]();
+        abortCurrentRequests[section] = null;
+      }
+    };
   };
 }
 

@@ -4,9 +4,15 @@ import { connect } from 'react-redux';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
 import EditMetadataModal from './EditMetadataModal';
 
-const mapDispatchToProps = {
-  clearPendingChanges
-};
+function createMapDispatchToProps(dispatch, props) {
+  const section = 'metadata';
+
+  return {
+    dispatchClearPendingChanges() {
+      dispatch(clearPendingChanges)({ section });
+    }
+  };
+}
 
 class EditMetadataModalConnector extends Component {
 
@@ -36,4 +42,4 @@ EditMetadataModalConnector.propTypes = {
   clearPendingChanges: PropTypes.func.isRequired
 };
 
-export default connect(null, mapDispatchToProps)(EditMetadataModalConnector);
+export default connect(null, createMapDispatchToProps)(EditMetadataModalConnector);

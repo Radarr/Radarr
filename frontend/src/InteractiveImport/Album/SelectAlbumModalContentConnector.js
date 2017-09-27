@@ -54,7 +54,7 @@ class SelectAlbumModalContentConnector extends Component {
       this.props.updateInteractiveImportItem({
         id,
         album,
-        episodes: []
+        tracks: []
       });
     });
 

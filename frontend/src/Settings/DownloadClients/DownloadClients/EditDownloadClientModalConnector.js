@@ -6,17 +6,19 @@ import { cancelTestDownloadClient, cancelSaveDownloadClient } from 'Store/Action
 import EditDownloadClientModal from './EditDownloadClientModal';
 
 function createMapDispatchToProps(dispatch, props) {
+  const section = 'downloadClients';
+
   return {
     dispatchClearPendingChanges() {
-      dispatch(clearPendingChanges);
+      dispatch(clearPendingChanges({ section }));
     },
 
     dispatchCancelTestDownloadClient() {
-      dispatch(cancelTestDownloadClient);
+      dispatch(cancelTestDownloadClient({ section }));
     },
 
     dispatchCancelSaveDownloadClient() {
-      dispatch(cancelSaveDownloadClient);
+      dispatch(cancelSaveDownloadClient({ section }));
     }
   };
 }
@@ -27,9 +29,9 @@ class EditDownloadClientModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.dispatchClearPendingChanges({ section: 'downloadClients' });
-    this.props.dispatchCancelTestDownloadClient({ section: 'downloadClients' });
-    this.props.dispatchCancelSaveDownloadClient({ section: 'downloadClients' });
+    this.props.dispatchClearPendingChanges();
+    this.props.dispatchCancelTestDownloadClient();
+    this.props.dispatchCancelSaveDownloadClient();
     this.props.onModalClose();
   }
 

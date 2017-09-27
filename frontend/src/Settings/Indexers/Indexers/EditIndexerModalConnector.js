@@ -6,17 +6,19 @@ import { cancelTestIndexer, cancelSaveIndexer } from 'Store/Actions/settingsActi
 import EditIndexerModal from './EditIndexerModal';
 
 function createMapDispatchToProps(dispatch, props) {
+  const section = 'indexers';
+
   return {
     dispatchClearPendingChanges() {
-      dispatch(clearPendingChanges);
+      dispatch(clearPendingChanges)({ section });
     },
 
     dispatchCancelTestIndexer() {
-      dispatch(cancelTestIndexer);
+      dispatch(cancelTestIndexer({ section }));
     },
 
     dispatchCancelSaveIndexer() {
-      dispatch(cancelSaveIndexer);
+      dispatch(cancelSaveIndexer({ section }));
     }
   };
 }
@@ -27,9 +29,9 @@ class EditIndexerModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.dispatchClearPendingChanges({ section: 'indexers' });
-    this.props.dispatchCancelTestIndexer({ section: 'indexers' });
-    this.props.dispatchCancelSaveIndexer({ section: 'indexers' });
+    this.props.dispatchClearPendingChanges();
+    this.props.dispatchCancelTestIndexer();
+    this.props.dispatchCancelSaveIndexer();
     this.props.onModalClose();
   }
 

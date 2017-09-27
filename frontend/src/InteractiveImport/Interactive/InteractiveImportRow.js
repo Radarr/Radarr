@@ -74,7 +74,7 @@ class InteractiveImportRow extends Component {
 
     const isValid = !!(
       artist &&
-      album != null &&
+      album &&
       tracks.length &&
       quality &&
       language

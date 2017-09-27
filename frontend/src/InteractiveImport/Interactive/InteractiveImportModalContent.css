@@ -33,6 +33,24 @@
 
 @media only screen and (max-width: $breakpointSmall) {
   .footer {
+    .leftButtons,
+    .centerButtons,
+    .rightButtons {
+      flex-direction: column;
+    }
+
+    .leftButtons {
+      align-items: flex-start;
+    }
+
+    .centerButtons {
+      align-items: center;
+    }
+
+    .rightButtons {
+      align-items: flex-end;
+    }
+
     a,
     button {
       margin-left: 0;
