@@ -11,8 +11,8 @@ var testPackageFolder = "./_tests";
 var testSearchPattern = "*.Test/bin/x86/Release";
 var sourceFolder = "./src";
 var solutionFile = sourceFolder + "/Lidarr.sln";
-var updateFolder = outputFolder + "/NzbDrone.Update";
-var updateFolderMono = outputFolderMono + "/NzbDrone.Update";
+var updateFolder = outputFolder + "/Lidarr.Update";
+var updateFolderMono = outputFolderMono + "/Lidarr.Update";
 
 // Artifact variables
 var artifactsFolder = "./_artifacts";
