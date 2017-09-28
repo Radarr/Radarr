@@ -10,7 +10,7 @@ function createMapDispatchToProps(dispatch, props) {
 
   return {
     dispatchClearPendingChanges() {
-      dispatch(clearPendingChanges)({ section });
+      dispatch(clearPendingChanges({ section }));
     },
 
     dispatchCancelTestIndexer() {
