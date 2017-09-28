@@ -89,7 +89,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                 });
         }
 
-        protected void GivenMaxRatio(float maxRatio, bool removeOnMaxRatio = true)
+        protected void GivenHighPriority()
+        {
+            Subject.Definition.Settings.As<QBittorrentSettings>().OlderTvPriority = (int) QBittorrentPriority.First;
+            Subject.Definition.Settings.As<QBittorrentSettings>().RecentTvPriority = (int) QBittorrentPriority.First;
+        }
+
+    protected void GivenMaxRatio(float maxRatio, bool removeOnMaxRatio = true)
         {
             Mocker.GetMock<IQBittorrentProxy>()
                 .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
@@ -266,6 +272,39 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
+        public void Download_should_set_top_priority()
+        {
+            GivenHighPriority();
+            GivenSuccessfulDownload();
+
+            var remoteAlbum = CreateRemoteAlbum();
+
+            var id = Subject.Download(remoteAlbum);
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
+        }
+
+        [Test]
+        public void Download_should_not_fail_if_top_priority_not_available()
+        {
+            GivenHighPriority();
+            GivenSuccessfulDownload();
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()))
+                  .Throws(new HttpException(new HttpResponse(new HttpRequest("http://me.local/"), new HttpHeader(), new byte[0], System.Net.HttpStatusCode.Forbidden)));
+
+            var remoteAlbum = CreateRemoteAlbum();
+
+            var id = Subject.Download(remoteAlbum);
+
+            id.Should().NotBeNullOrEmpty();
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+[Test]
         public void should_return_status_with_outputdirs()
         {
             var config = new QBittorrentPreferences
