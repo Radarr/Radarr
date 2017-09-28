@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NLog;
@@ -200,19 +200,20 @@ namespace NzbDrone.Core.Update
 
             if (latestAvailable == null)
             {
-                _logger.ProgressDebug("No update available.");
+                _logger.ProgressDebug("No update available");
                 return;
             }
 
             if (OsInfo.IsNotWindows && !_configFileProvider.UpdateAutomatically && message.Trigger != CommandTrigger.Manual)
             {
-                _logger.ProgressDebug("Auto-update not enabled, not installing available update.");
+                _logger.ProgressDebug("Auto-update not enabled, not installing available update");
                 return;
             }
 
             try
             {
                 InstallUpdate(latestAvailable);
+                _logger.ProgressDebug("Restarting Lidarr to apply updates");
             }
             catch (UpdateFolderNotWritableException ex)
             {
