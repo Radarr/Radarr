@@ -7,6 +7,7 @@ import styles from './ImportArtistName.css';
 function ImportArtistName(props) {
   const {
     artistName,
+    disambiguation,
     // year,
     isExistingArtist
   } = props;
@@ -15,6 +16,9 @@ function ImportArtistName(props) {
     <div className={styles.artistNameContainer}>
       <div className={styles.artistName}>
         {artistName}
+      </div>
+      <div className={styles.disambiguation}>
+        {disambiguation}
       </div>
 
       {
@@ -31,6 +35,7 @@ function ImportArtistName(props) {
 
 ImportArtistName.propTypes = {
   artistName: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string,
   // year: PropTypes.number.isRequired,
   isExistingArtist: PropTypes.bool.isRequired
 };

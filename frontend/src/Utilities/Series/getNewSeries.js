@@ -6,7 +6,7 @@ function getNewSeries(series, payload) {
     monitor,
     qualityProfileId,
     languageProfileId,
-    // seriesType,
+    artistType,
     albumFolder,
     tags,
     searchForMissingAlbums = false
@@ -24,7 +24,7 @@ function getNewSeries(series, payload) {
   series.qualityProfileId = qualityProfileId;
   series.languageProfileId = languageProfileId;
   series.rootFolderPath = rootFolderPath;
-  // series.seriesType = seriesType;
+  series.artistType = artistType;
   series.albumFolder = albumFolder;
   series.tags = tags;
 

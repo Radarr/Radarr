@@ -46,6 +46,13 @@ export const defaultState = {
       isModifiable: false
     },
     {
+      name: 'artistType',
+      label: 'Type',
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
       name: 'qualityProfileId',
       label: 'Quality Profile',
       isSortable: true,

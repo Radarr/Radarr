@@ -293,6 +293,7 @@
     </Compile>
     <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\111_create_language_profiles.cs" />
+    <Compile Include="Datastore\Migration\119_artist_type.cs" />
     <Compile Include="Datastore\Migration\118_history_trackid.cs" />
     <Compile Include="Datastore\Migration\117_artist_links.cs" />
     <Compile Include="Datastore\Migration\116_change_drone_factory_variable_name.cs" />

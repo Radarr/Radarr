@@ -48,7 +48,8 @@ class AddNewArtistSearchResult extends Component {
       artistName,
       nameSlug,
       year,
-      network,
+      disambiguation,
+      artistType,
       status,
       overview,
       albumCount,
@@ -59,10 +60,10 @@ class AddNewArtistSearchResult extends Component {
     } = this.props;
 
     const linkProps = isExistingArtist ? { to: `/artist/${nameSlug}` } : { onPress: this.onPress };
-    let seasons = '1 Season';
+    let albums = '1 Album';
 
     if (albumCount > 1) {
-      seasons = `${albumCount} Seasons`;
+      albums = `${albumCount} Albums`;
     }
 
     return (
@@ -89,6 +90,11 @@ class AddNewArtistSearchResult extends Component {
             }
 
             {
+              !!disambiguation &&
+                <span className={styles.year}>({disambiguation})</span>
+            }
+
+            {
               isExistingArtist &&
                 <Icon
                   className={styles.alreadyExistsIcon}
@@ -108,16 +114,16 @@ class AddNewArtistSearchResult extends Component {
             </Label>
 
             {
-              !!network &&
+              !!artistType &&
                 <Label size={sizes.LARGE}>
-                  {network}
+                  {artistType}
                 </Label>
             }
 
             {
               !!albumCount &&
                 <Label size={sizes.LARGE}>
-                  {seasons}
+                  {albums}
                 </Label>
             }
 
@@ -156,7 +162,8 @@ AddNewArtistSearchResult.propTypes = {
   artistName: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
   year: PropTypes.number,
-  network: PropTypes.string,
+  disambiguation: PropTypes.string,
+  artistType: PropTypes.string,
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
   albumCount: PropTypes.number,

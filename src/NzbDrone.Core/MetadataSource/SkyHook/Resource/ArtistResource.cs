@@ -14,6 +14,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<string> Genres { get; set; }
         public string AristUrl { get; set; }
         public string Overview { get; set; }
+        public string Type { get; set; }
+        public string Disambiguation { get; set; }
         public string Id { get; set; }
         public List<ImageResource> Images { get; set; }
         public List<LinkResource> Links { get; set; }

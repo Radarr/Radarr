@@ -38,6 +38,7 @@
   flex: 0 0 150px;
 }
 
+.artistType,
 .trackCount {
   composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
 

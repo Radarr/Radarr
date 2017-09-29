@@ -34,6 +34,8 @@ namespace NzbDrone.Core.Music
         public string CleanName { get; set; }
         public string SortName { get; set; }
         public string Overview { get; set; }
+        public string Disambiguation { get; set; }
+        public string ArtistType { get; set; }
         public bool Monitored { get; set; }
         public bool AlbumFolder { get; set; }
         public DateTime? LastInfoSync { get; set; }

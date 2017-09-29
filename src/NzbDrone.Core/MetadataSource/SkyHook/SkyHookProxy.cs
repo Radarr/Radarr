@@ -176,7 +176,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.Overview = resource.Overview;
             artist.NameSlug = Parser.Parser.CleanArtistTitle(artist.Name);
             artist.CleanName = Parser.Parser.CleanArtistTitle(artist.Name);
-            artist.SortName = SeriesTitleNormalizer.Normalize(artist.Name, 0);
+            artist.SortName = Parser.Parser.NormalizeTitle(artist.Name);
+            artist.Disambiguation = resource.Disambiguation;
+            artist.ArtistType = resource.Type;
             artist.Images = resource.Images.Select(MapImage).ToList();
             artist.Status = MapArtistStatus(resource.Status);
             artist.Ratings = MapRatings(resource.Rating);

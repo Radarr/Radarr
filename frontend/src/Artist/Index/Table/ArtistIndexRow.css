@@ -41,6 +41,7 @@
   flex-direction: column;
 }
 
+.artistType,
 .trackCount {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 

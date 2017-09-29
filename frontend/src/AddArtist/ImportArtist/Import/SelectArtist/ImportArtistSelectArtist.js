@@ -158,7 +158,7 @@ class ImportArtistSelectArtist extends Component {
             isPopulated && selectedArtist &&
               <ImportArtistName
                 artistName={selectedArtist.artistName}
-                overview={selectedArtist.overview}
+                disambiguation={selectedArtist.disambiguation}
                 // year={selectedArtist.year}
                 isExistingArtist={isExistingArtist}
               />
@@ -229,7 +229,7 @@ class ImportArtistSelectArtist extends Component {
                           key={item.foreignArtistId}
                           foreignArtistId={item.foreignArtistId}
                           artistName={item.artistName}
-                          // overview={item.overview}
+                          disambiguation={item.disambiguation}
                           // year={item.year}
                           onPress={this.onArtistSelect}
                         />

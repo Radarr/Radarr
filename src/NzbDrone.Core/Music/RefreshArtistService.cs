@@ -80,6 +80,8 @@ namespace NzbDrone.Core.Music
             artist.Images = artistInfo.Images;
             artist.Genres = artistInfo.Genres;
             artist.Links = artistInfo.Links;
+            artist.Disambiguation = artistInfo.Disambiguation;
+            artist.ArtistType = artistInfo.ArtistType;
 
             try
             {

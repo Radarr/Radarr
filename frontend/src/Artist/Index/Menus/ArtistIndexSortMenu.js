@@ -25,6 +25,15 @@ function ArtistIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
+          name="artistType"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Type
+        </SortMenuItem>
+
+        <SortMenuItem
           name="qualityProfileId"
           sortKey={sortKey}
           sortDirection={sortDirection}

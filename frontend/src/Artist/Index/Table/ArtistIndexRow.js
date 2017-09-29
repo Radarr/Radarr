@@ -66,6 +66,7 @@ class ArtistIndexRow extends Component {
       status,
       artistName,
       nameSlug,
+      artistType,
       qualityProfile,
       languageProfile,
       nextAiring,
@@ -125,6 +126,17 @@ class ArtistIndexRow extends Component {
                     nameSlug={nameSlug}
                     artistName={artistName}
                   />
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'artistType') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {artistType}
                 </VirtualTableRowCell>
               );
             }
@@ -282,23 +294,6 @@ class ArtistIndexRow extends Component {
               );
             }
 
-            // if (name === 'useSceneNumbering') {
-            //   return (
-            //     <VirtualTableRowCell
-            //       key={name}
-            //       className={styles[name]}
-            //     >
-            //       <CheckInput
-            //          className={styles.checkInput}
-            //         name="useSceneNumbering"
-            //         value={useSceneNumbering}
-            //         isDisabled={true}
-            //         onChange={this.onUseSceneNumberingChange}
-            //       />
-            //     </VirtualTableRowCell>
-            //   );
-            // }
-
             if (name === 'actions') {
               return (
                 <VirtualTableRowCell
@@ -349,6 +344,7 @@ ArtistIndexRow.propTypes = {
   status: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
+  artistType: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   languageProfile: PropTypes.object.isRequired,
   nextAiring: PropTypes.string,

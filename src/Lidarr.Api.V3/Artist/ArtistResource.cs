@@ -14,65 +14,11 @@ namespace Lidarr.Api.V3.Artist
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
 
-        ////View Only
-        //public string Title { get; set; }
-        ////public List<AlternateTitleResource> AlternateTitles { get; set; }
-        //public string SortTitle { get; set; }
-
-        //public int SeasonCount
-        //{
-        //    get
-        //    {
-        //        if (Seasons == null) return 0;
-
-        //        return Seasons.Where(s => s.SeasonNumber > 0).Count();
-        //    }
-        //}
-
-        //public int? TotalEpisodeCount { get; set; }
-        //public int? EpisodeCount { get; set; }
-        //public int? EpisodeFileCount { get; set; }
-        //public long? SizeOnDisk { get; set; }
-
-        //// V3: replace with Ended
-
         public ArtistStatusType Status { get; set; }
 
         public bool Ended => Status == ArtistStatusType.Ended;
 
-        //public string ProfileName { get; set; }
-        //public string Overview { get; set; }
-        //public DateTime? NextAiring { get; set; }
-        //public DateTime? PreviousAiring { get; set; }
-        //public string Network { get; set; }
-        //public string AirTime { get; set; }
-        //public List<MediaCover> Images { get; set; }
-
-        //public string RemotePoster { get; set; }
-        //public int Year { get; set; }
-
-        ////View & Edit
-        //public string Path { get; set; }
-        //public int QualityProfileId { get; set; }
-        //public int LanguageProfileId { get; set; }
-
-        ////Editing Only
-        //public bool SeasonFolder { get; set; }
-        //public bool Monitored { get; set; }
-
-        //public DateTime? FirstAired { get; set; }
         public DateTime? LastInfoSync { get; set; }
-        ////public SeriesTypes SeriesType { get; set; }
-        //public string CleanTitle { get; set; }
-        //public string ImdbId { get; set; }
-        //public string TitleSlug { get; set; }
-        //public string RootFolderPath { get; set; }
-        //public string Certification { get; set; }
-        //public List<string> Genres { get; set; }
-        //public HashSet<int> Tags { get; set; }
-        //public DateTime Added { get; set; }
-        //public AddSeriesOptions AddOptions { get; set; }
-        //public Ratings Ratings { get; set; }
 
         public string ArtistName { get; set; }
         public string ForeignArtistId { get; set; }
@@ -81,6 +27,8 @@ namespace Lidarr.Api.V3.Artist
         public int DiscogsId { get; set; }
         public string AllMusicId { get; set; }
         public string Overview { get; set; }
+        public string ArtistType { get; set; }
+        public string Disambiguation { get; set; }
         public List<Links> Links { get; set; }
 
         public int? AlbumCount { get; set; }
@@ -136,10 +84,9 @@ namespace Lidarr.Api.V3.Artist
 
                 Status = model.Status,
                 Overview = model.Overview,
-                //NextAiring
-                //PreviousAiring
-                //Network = model.Network,
-                //AirTime = model.AirTime,
+                ArtistType = model.ArtistType,
+                Disambiguation = model.Disambiguation,
+
                 Images = model.Images,
 
                 Albums = model.Albums.ToResource(),

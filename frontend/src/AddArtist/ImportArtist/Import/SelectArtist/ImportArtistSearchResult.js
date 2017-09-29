@@ -19,7 +19,7 @@ class ImportArtistSearchResult extends Component {
   render() {
     const {
       artistName,
-      // overview,
+      disambiguation,
       // year,
       isExistingArtist
     } = this.props;
@@ -31,7 +31,7 @@ class ImportArtistSearchResult extends Component {
       >
         <ImportArtistName
           artistName={artistName}
-          // overview={overview}
+          disambiguation={disambiguation}
           // year={year}
           isExistingArtist={isExistingArtist}
         />
@@ -43,7 +43,7 @@ class ImportArtistSearchResult extends Component {
 ImportArtistSearchResult.propTypes = {
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
-  // overview: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string,
   // year: PropTypes.number.isRequired,
   isExistingArtist: PropTypes.bool.isRequired,
   onPress: PropTypes.func.isRequired
