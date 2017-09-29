@@ -194,9 +194,9 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RescanArtistCommand message)
         {
-            if (message.ArtistId.IsNotNullOrWhiteSpace())
+            if (message.ArtistId.HasValue)
             {
-                var artist = _artistService.FindById(message.ArtistId);
+                var artist = _artistService.GetArtist(message.ArtistId.Value);
                 Scan(artist);
             }
 

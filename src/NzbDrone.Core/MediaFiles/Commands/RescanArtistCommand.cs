@@ -1,24 +1,18 @@
-﻿using NzbDrone.Core.Messaging.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using NzbDrone.Core.Messaging.Commands;
 
-namespace NzbDrone.Core.MediaFiles.Events
+namespace NzbDrone.Core.MediaFiles.Commands
 {
     public class RescanArtistCommand : Command
     {
-
-        public string ArtistId { get; set; }
+        public int? ArtistId { get; set; }
 
         public override bool SendUpdatesToClient => true;
 
         public RescanArtistCommand()
         {
-            ArtistId = "";
         }
 
-        public RescanArtistCommand(string artistId)
+        public RescanArtistCommand(int artistId)
         {
             ArtistId = artistId;
         }
