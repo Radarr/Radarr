@@ -60,11 +60,13 @@ namespace NzbDrone.Core.Parser
             _logger = logger;
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         public LocalEpisode GetLocalEpisode(string filename, Series series)
         {
             return GetLocalEpisode(filename, series, null, false);
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         public LocalEpisode GetLocalEpisode(string filename, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource)
         {
             ParsedEpisodeInfo parsedEpisodeInfo;
@@ -115,6 +117,7 @@ namespace NzbDrone.Core.Parser
             };
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         public Series GetSeries(string title)
         {
             var parsedEpisodeInfo = Parser.ParseTitle(title);
@@ -272,6 +275,7 @@ namespace NzbDrone.Core.Parser
             };
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         public List<Episode> GetEpisodes(ParsedEpisodeInfo parsedEpisodeInfo, Series series, bool sceneSource, SearchCriteriaBase searchCriteria = null)
         {
             if (parsedEpisodeInfo.FullSeason)
@@ -305,6 +309,7 @@ namespace NzbDrone.Core.Parser
             return GetStandardEpisodes(series, parsedEpisodeInfo, sceneSource, searchCriteria);
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         public ParsedEpisodeInfo ParseSpecialEpisodeTitle(string title, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria = null)
         {
             if (searchCriteria != null)
@@ -349,6 +354,7 @@ namespace NzbDrone.Core.Parser
             return ParseSpecialEpisodeTitle(title, series);
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private ParsedEpisodeInfo ParseSpecialEpisodeTitle(string title, Series series)
         {
             // find special episode in series season 0
@@ -399,7 +405,7 @@ namespace NzbDrone.Core.Parser
             return artist;
         }
 
-
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private Series GetSeries(ParsedEpisodeInfo parsedEpisodeInfo, int tvdbId, int tvRageId, SearchCriteriaBase searchCriteria)
         {
             Series series = null;
@@ -471,6 +477,7 @@ namespace NzbDrone.Core.Parser
             return series;
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private Episode GetDailyEpisode(Series series, string airDate, SearchCriteriaBase searchCriteria)
         {
             Episode episodeInfo = null;
@@ -489,6 +496,7 @@ namespace NzbDrone.Core.Parser
             return episodeInfo;
         }
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private List<Episode> GetAnimeEpisodes(Series series, ParsedEpisodeInfo parsedEpisodeInfo, bool sceneSource)
         {
             var result = new List<Episode>();
@@ -591,6 +599,7 @@ namespace NzbDrone.Core.Parser
         //    return result;
         //}
 
+        [System.Obsolete("Used for sonarr, not lidarr")]
         private List<Episode> GetStandardEpisodes(Series series, ParsedEpisodeInfo parsedEpisodeInfo, bool sceneSource, SearchCriteriaBase searchCriteria)
         {
             var result = new List<Episode>();
@@ -700,7 +709,7 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            var tracks = GetTracks(parsedTrackInfo, artist);
+            var tracks = GetTracks(artist, parsedTrackInfo);
             var album = _albumService.FindByTitle(artist.Id, parsedTrackInfo.AlbumTitle);
 
             return new LocalTrack
@@ -716,39 +725,44 @@ namespace NzbDrone.Core.Parser
             };
         }
 
-        private List<Track> GetTracks(ParsedTrackInfo parsedTrackInfo, Artist artist)
-        {
-            return GetStandardTracks(artist, parsedTrackInfo);
-        }
-
-        private List<Track> GetStandardTracks(Artist artist, ParsedTrackInfo parsedTrackInfo)
+        private List<Track> GetTracks(Artist artist, ParsedTrackInfo parsedTrackInfo)
         {
             var result = new List<Track>();
 
             if (parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace())
             {
+                _logger.Debug("Album title could not be parsed for {0}", parsedTrackInfo);
                 return new List<Track>();
             }
 
             var album = _albumService.FindByTitle(artist.Id, parsedTrackInfo.AlbumTitle);
+            _logger.Debug("Album {0} selected for {1}", album, parsedTrackInfo);
 
             if (album == null)
             {
+                _logger.Debug("Parsed album title not found in Db for {0}", parsedTrackInfo);
                 return new List<Track>();
             }
 
             Track trackInfo = null;
 
-            trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.Title);
-
-            if (trackInfo !=null)
+            if (parsedTrackInfo.Title.IsNotNullOrWhiteSpace())
             {
-                result.Add(trackInfo);
-                return result;
+                trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.Title);
+                _logger.Debug("Track {0} selected for {1}", trackInfo, parsedTrackInfo);
+
+                if (trackInfo != null)
+                {
+                    result.Add(trackInfo);
+                    return result;
+                }
             }
+
+            _logger.Debug("Track title search unsuccessful, falling back to track number for {1}", trackInfo, parsedTrackInfo);
 
             if (parsedTrackInfo.TrackNumbers == null)
             {
+                _logger.Debug("Track has no track numbers: {1}", trackInfo, parsedTrackInfo);
                 return new List<Track>();
             }
 
@@ -757,6 +771,7 @@ namespace NzbDrone.Core.Parser
                 Track trackInfoByNumber = null;
 
                 trackInfoByNumber = _trackService.FindTrack(artist.Id, album.Id, trackNumber);
+                _logger.Debug("Track {0} selected for {1}", trackInfoByNumber, parsedTrackInfo);
 
                 if (trackInfoByNumber != null)
                 {
