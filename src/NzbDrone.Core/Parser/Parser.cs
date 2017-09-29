@@ -333,8 +333,8 @@ namespace NzbDrone.Core.Parser
         {
             var fileInfo = new FileInfo(path);
             var file = TagLib.File.Create(path);
-            var trackName = file.Tag.Title;
             var trackNumber = file.Tag.Track;
+            var trackTitle = file.Tag.Title;
 
             var artist = file.Tag.FirstAlbumArtist;
 
@@ -359,14 +359,10 @@ namespace NzbDrone.Core.Parser
                 ArtistMBId = file.Tag.MusicBrainzArtistId,
                 AlbumMBId = file.Tag.MusicBrainzReleaseId,
                 TrackMBId = file.Tag.MusicBrainzReleaseType,
-                Quality = QualityParser.ParseQuality(trackName),
                 TrackNumbers = temp,
                 ArtistTitleInfo = artistTitleInfo,
-                Title = file.Tag.Title
+                Title = trackTitle
             };
-
-
-            Logger.Debug("Quality parsed: {0}", file.Tag.BeatsPerMinute);
 
             foreach (TagLib.ICodec codec in file.Properties.Codecs)
             {
@@ -381,6 +377,7 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Channels:   " + acodec.AudioChannels + "\n");
 
                     result.Quality = QualityParser.ParseQuality(acodec.Description, acodec.AudioBitrate, acodec.AudioSampleRate);
+                    Logger.Debug("Quality parsed: {0}", result.Quality);
                 }
 
 
