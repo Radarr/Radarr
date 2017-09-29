@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +11,14 @@ namespace NzbDrone.Core.Music
         bool ShouldRefresh(Artist artist);
     }
 
-    public class CheckIfArtistShouldBeRefreshed : ICheckIfArtistShouldBeRefreshed
+    public class ShouldRefreshArtist : ICheckIfArtistShouldBeRefreshed
     {
-        private readonly ITrackService _trackService;
+        private readonly IAlbumService _albumService;
         private readonly Logger _logger;
 
-        public CheckIfArtistShouldBeRefreshed(ITrackService trackService, Logger logger)
+        public ShouldRefreshArtist(IAlbumService albumService, Logger logger)
         {
-            _trackService = trackService;
+            _albumService = albumService;
             _logger = logger;
         }
 
@@ -36,7 +36,21 @@ namespace NzbDrone.Core.Music
                 return false;
             }
 
-            //_logger.Trace("Artist {0} ended long ago, should not be refreshed.", artist.Title);
+            if (artist.Status == ArtistStatusType.Continuing)
+            {
+                _logger.Trace("Artist {0} is continuing, should refresh.", artist.Name);
+                return true;
+            }
+
+            var lastAlbum = _albumService.GetAlbumsByArtist(artist.Id).OrderByDescending(e => e.ReleaseDate).FirstOrDefault();
+
+            if (lastAlbum != null && lastAlbum.ReleaseDate > DateTime.UtcNow.AddDays(-30))
+            {
+                _logger.Trace("Last album in {0} aired less than 30 days ago, should refresh.", artist.Name);
+                return true;
+            }
+
+            _logger.Trace("Artist {0} ended long ago, should not be refreshed.", artist.Name);
             return false;
         }
     }

@@ -365,13 +365,13 @@
     <Compile Include="TvTests\EpisodeRepositoryTests\FindEpisodeFixture.cs" />
     <Compile Include="MusicTests\MoveArtistServiceFixture.cs" />
     <Compile Include="TvTests\RefreshEpisodeServiceFixture.cs" />
-    <Compile Include="TvTests\RefreshSeriesServiceFixture.cs" />
+    <Compile Include="MusicTests\RefreshArtistServiceFixture.cs" />
     <Compile Include="TvTests\EpisodeMonitoredServiceTests\SetEpisodeMontitoredFixture.cs" />
     <Compile Include="TvTests\SeriesRepositoryTests\SeriesRepositoryFixture.cs" />
     <Compile Include="TvTests\SeriesServiceTests\UpdateMultipleSeriesFixture.cs" />
     <Compile Include="TvTests\SeriesServiceTests\UpdateSeriesFixture.cs" />
     <Compile Include="TvTests\SeriesTitleNormalizerFixture.cs" />
-    <Compile Include="TvTests\ShouldRefreshSeriesFixture.cs" />
+    <Compile Include="MusicTests\ShouldRefreshArtistFixture.cs" />
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />

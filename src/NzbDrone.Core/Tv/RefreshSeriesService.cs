@@ -18,101 +18,28 @@ namespace NzbDrone.Core.Tv
 {
     public class RefreshSeriesService : IExecute<RefreshSeriesCommand>
     {
-        private readonly IProvideSeriesInfo _seriesInfo;
         private readonly ISeriesService _seriesService;
         private readonly IRefreshEpisodeService _refreshEpisodeService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDailySeriesService _dailySeriesService;
         private readonly IDiskScanService _diskScanService;
-        private readonly ICheckIfSeriesShouldBeRefreshed _checkIfSeriesShouldBeRefreshed;
         private readonly Logger _logger;
 
-        public RefreshSeriesService(IProvideSeriesInfo seriesInfo,
-                                    ISeriesService seriesService,
+        public RefreshSeriesService(ISeriesService seriesService,
                                     IRefreshEpisodeService refreshEpisodeService,
                                     IEventAggregator eventAggregator,
                                     IDailySeriesService dailySeriesService,
                                     IDiskScanService diskScanService,
-                                    ICheckIfSeriesShouldBeRefreshed checkIfSeriesShouldBeRefreshed,
                                     Logger logger)
         {
-            _seriesInfo = seriesInfo;
             _seriesService = seriesService;
             _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
             _dailySeriesService = dailySeriesService;
             _diskScanService = diskScanService;
-            _checkIfSeriesShouldBeRefreshed = checkIfSeriesShouldBeRefreshed;
             _logger = logger;
         }
 
-        private void RefreshSeriesInfo(Series series)
-        {
-            _logger.ProgressInfo("Updating {0}", series.Title);
-
-            Tuple<Series, List<Episode>> tuple;
-
-            try
-            {
-                tuple = _seriesInfo.GetSeriesInfo(series.TvdbId);
-            }
-            catch (SeriesNotFoundException)
-            {
-                _logger.Error("Series '{0}' (tvdbid {1}) was not found, it may have been removed from TheTVDB.", series.Title, series.TvdbId);
-                return;
-            }
-
-            var seriesInfo = tuple.Item1;
-
-            if (series.TvdbId != seriesInfo.TvdbId)
-            {
-                _logger.Warn("Series '{0}' (tvdbid {1}) was replaced with '{2}' (tvdbid {3}), because the original was a duplicate.", series.Title, series.TvdbId, seriesInfo.Title, seriesInfo.TvdbId);
-                series.TvdbId = seriesInfo.TvdbId;
-            }
-
-            series.Title = seriesInfo.Title;
-            series.TitleSlug = seriesInfo.TitleSlug;
-            series.TvRageId = seriesInfo.TvRageId;
-            series.TvMazeId = seriesInfo.TvMazeId;
-            series.ImdbId = seriesInfo.ImdbId;
-            series.AirTime = seriesInfo.AirTime;
-            series.Overview = seriesInfo.Overview;
-            series.Status = seriesInfo.Status;
-            series.CleanTitle = seriesInfo.CleanTitle;
-            series.SortTitle = seriesInfo.SortTitle;
-            series.LastInfoSync = DateTime.UtcNow;
-            series.Runtime = seriesInfo.Runtime;
-            series.Images = seriesInfo.Images;
-            series.Network = seriesInfo.Network;
-            series.FirstAired = seriesInfo.FirstAired;
-            series.Ratings = seriesInfo.Ratings;
-            series.Actors = seriesInfo.Actors;
-            series.Genres = seriesInfo.Genres;
-            series.Certification = seriesInfo.Certification;
-
-            if (_dailySeriesService.IsDailySeries(series.TvdbId))
-            {
-                series.SeriesType = SeriesTypes.Daily;
-            }
-
-            try
-            {
-                series.Path = new DirectoryInfo(series.Path).FullName;
-                series.Path = series.Path.GetActualCasing();
-            }
-            catch (Exception e)
-            {
-                _logger.Warn(e, "Couldn't update series path for " + series.Path);
-            }
-
-            series.Seasons = UpdateSeasons(series, seriesInfo);
-
-            _seriesService.UpdateSeries(series);
-            _refreshEpisodeService.RefreshEpisodeInfo(series, tuple.Item2);
-
-            _logger.Debug("Finished series refresh for {0}", series.Title);
-            _eventAggregator.PublishEvent(new SeriesUpdatedEvent(series));
-        }
 
         private List<Season> UpdateSeasons(Series series, Series seriesInfo)
         {
@@ -151,7 +78,6 @@ namespace NzbDrone.Core.Tv
             if (message.SeriesId.HasValue)
             {
                 var series = _seriesService.GetSeries(message.SeriesId.Value);
-                RefreshSeriesInfo(series);
             }
             else
             {
@@ -159,11 +85,11 @@ namespace NzbDrone.Core.Tv
 
                 foreach (var series in allSeries)
                 {
-                    if (message.Trigger == CommandTrigger.Manual || _checkIfSeriesShouldBeRefreshed.ShouldRefresh(series))
+                    if (message.Trigger == CommandTrigger.Manual)
                     {
                         try
                         {
-                            RefreshSeriesInfo(series);
+                            //RefreshSeriesInfo(series);
                         }
                         catch (Exception e)
                         {

@@ -17,7 +17,7 @@ using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, IProvideArtistInfo, ISearchForNewArtist
+    public class SkyHookProxy : IProvideArtistInfo, ISearchForNewArtist
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -35,12 +35,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _requestBuilder = requestBuilder.Search;
             _artistService = artistService;
             _logger = logger;
-        }
-
-        [Obsolete("Used for Sonarr, not Lidarr")]
-        public Tuple<Series, List<Episode>> GetSeriesInfo(int tvdbSeriesId)
-        {
-            throw new NotImplementedException();
         }
 
         public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId)
@@ -191,23 +185,23 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return artist;
         }
 
-        private static Actor MapActors(ActorResource arg)
+        private static Member MapMembers(MemberResource arg)
         {
-            var newActor = new Actor
+            var newMember = new Member
             {
                 Name = arg.Name,
-                Character = arg.Character
+                Instrument = arg.Instrument
             };
 
             if (arg.Image != null)
             {
-                newActor.Images = new List<MediaCover.MediaCover>
+                newMember.Images = new List<MediaCover.MediaCover>
                 {
                     new MediaCover.MediaCover(MediaCoverTypes.Headshot, arg.Image)
                 };
             }
 
-            return newActor;
+            return newMember;
         }
 
         private static ArtistStatusType MapArtistStatus(string status)

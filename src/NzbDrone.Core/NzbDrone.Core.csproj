@@ -828,18 +828,13 @@
     <Compile Include="Messaging\Events\IHandle.cs" />
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
-    <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\MemberResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ArtistInfoResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\LinkResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TrackResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
@@ -1191,7 +1186,6 @@
     <Compile Include="Tv\SeriesTitleNormalizer.cs" />
     <Compile Include="Tv\SeriesTitleSlugValidator.cs" />
     <Compile Include="Tv\SeriesTypes.cs" />
-    <Compile Include="Tv\ShouldRefreshSeries.cs" />
     <Compile Include="Update\Commands\ApplicationUpdateCommand.cs" />
     <Compile Include="Update\InstallUpdateService.cs" />
     <Compile Include="Update\RecentUpdateProvider.cs" />
