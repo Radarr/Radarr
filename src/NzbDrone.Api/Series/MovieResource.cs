@@ -93,12 +93,13 @@ namespace NzbDrone.Api.Movie
             if (model == null) return null;
 
 
-            long size = 0;
-            bool downloaded = false;
-            MovieFileResource movieFile = null;
+            long size = model.MovieFile?.Size ?? 0;
+            bool downloaded = model.MovieFile != null;
+            MovieFileResource movieFile = model.MovieFile?.ToResource();
+            
 
             
-            if(model.MovieFile != null)
+            /*if(model.MovieFile != null)
             {
                 model.MovieFile.LazyLoad();
             }
@@ -108,7 +109,7 @@ namespace NzbDrone.Api.Movie
                 size = model.MovieFile.Value.Size;
                 downloaded = true;
                 movieFile = model.MovieFile.Value.ToResource();
-            }
+            }*/
             
             //model.AlternativeTitles.LazyLoad();
 

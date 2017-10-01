@@ -224,9 +224,9 @@ namespace NzbDrone.Core.Organizer
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddImdbIdTokens(tokenHandlers, movie.ImdbId);
 
-            if(movie.MovieFileId != 0)
+            if(movie.MovieFile != null)
             {
-                movieFile.LazyLoad();
+                
                 AddQualityTokens(tokenHandlers, movie, movieFile);
                 AddMediaInfoTokens(tokenHandlers, movieFile);
                 AddMovieFileTokens(tokenHandlers, movieFile);
@@ -361,9 +361,8 @@ namespace NzbDrone.Core.Organizer
             AddReleaseDateTokens(tokenHandlers, movie.Year);
             AddImdbIdTokens(tokenHandlers, movie.ImdbId);
 
-            if (movie.MovieFileId != 0)
+            if (movie.MovieFile != null)
             {
-                movieFile.LazyLoad();
                 AddQualityTokens(tokenHandlers, movie, movieFile);
                 AddMediaInfoTokens(tokenHandlers, movieFile);
                 AddMovieFileTokens(tokenHandlers, movieFile);

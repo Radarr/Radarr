@@ -297,6 +297,7 @@ namespace NzbDrone.Core.Tv
             baseQuery = base.AddJoinQueries(baseQuery);
             baseQuery = baseQuery.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
                 (m, t) => m.Id == t.MovieId);
+            baseQuery = baseQuery.Join<Movie, MovieFile>(JoinType.Left, m => m.MovieFile, (m, f) => m.Id == f.MovieId);
 
             return baseQuery;
         }

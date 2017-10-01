@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Tv
         public LazyLoaded<Profile> Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
-        public LazyLoaded<MovieFile> MovieFile { get; set; }
+        public MovieFile MovieFile { get; set; }
 		public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
         //Get Loaded via a Join Query

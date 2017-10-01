@@ -38,9 +38,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            if (subject.Movie.MovieFile.Value != null)
+            if (subject.Movie.MovieFile != null)
             {
-                if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Movie.Profile, subject.Movie.MovieFile.Value.Quality, subject.ParsedMovieInfo.Quality))
+                if (!_qualityUpgradableSpecification.CutoffNotMet(subject.Movie.Profile, subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality))
                 {
                     return Decision.Reject("Existing file meets cutoff: {0}", subject.Movie.Profile.Value.Cutoff);
                 }
