@@ -187,10 +187,5 @@ namespace NzbDrone.Core.Music
             var albums = GetAlbumsByArtist(message.Artist.Id);
             _albumRepository.DeleteMany(albums);
         }
-
-        public void Handle(ArtistDeletedEvent message)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
