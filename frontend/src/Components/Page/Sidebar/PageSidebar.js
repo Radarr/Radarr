@@ -330,9 +330,9 @@ class PageSidebar extends Component {
       return;
     }
 
-    if (isSidebarVisible && (touchStartX > 210 || touchStartX < 50)) {
+    if (isSidebarVisible && (touchStartX > 210 || touchStartX < 180)) {
       return;
-    } else if (!isSidebarVisible && touchStartX > 50) {
+    } else if (!isSidebarVisible && touchStartX > 30) {
       return;
     }
 
@@ -373,6 +373,15 @@ class PageSidebar extends Component {
     }
 
     if (Math.abs(this._touchStartY - currentTouchY) > 20) {
+      this.setState({
+        transition: 'none',
+        transform: 0
+      });
+
+      return;
+    }
+
+    if (Math.abs(this._touchStartX - currentTouchX) < 20) {
       return;
     }
 

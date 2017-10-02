@@ -42,7 +42,7 @@ $hoverScale: 1.05;
 }
 
 .title {
-  composes: truncate from 'Styles/mixins/truncate.css';
+  @add-mixin truncate;
 
   background-color: $defaultColor;
   color: $white;

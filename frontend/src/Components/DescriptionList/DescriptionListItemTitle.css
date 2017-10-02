@@ -8,7 +8,7 @@
 
 @media (min-width: 768px) {
   .title {
-    composes: truncate from 'Styles/Mixins/truncate.css';
+    @add-mixin truncate;
 
     float: left;
     clear: left;

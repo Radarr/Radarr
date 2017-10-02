@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using NLog;
@@ -18,7 +18,10 @@ namespace NzbDrone.Common.EnvironmentInfo
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public AppFolderFactory(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider)
+        public AppFolderFactory(IAppFolderInfo appFolderInfo,
+                                IStartupContext startupContext,
+                                IDiskProvider diskProvider,
+                                IDiskTransferService diskTransferService)
         {
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;

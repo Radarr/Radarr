@@ -306,15 +306,17 @@ class SignalRConnector extends Component {
   }
 
   onDisconnected = () => {
-    if (this.props.isReconnecting) {
-      this.props.setAppValue({
-        isConnected: false,
-        isReconnecting: true,
-        isDisconnected: true
-      });
-
-      this.retryConnection();
+    if (window.Sonarr.unloading) {
+      return;
     }
+
+    this.props.setAppValue({
+      isConnected: false,
+      isReconnecting: true,
+      isDisconnected: true
+    });
+
+    this.retryConnection();
   }
 
   //

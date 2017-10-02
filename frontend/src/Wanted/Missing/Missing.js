@@ -21,7 +21,7 @@ import MenuContent from 'Components/Menu/MenuContent';
 import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
-import MissingRow from './MissingRow';
+import MissingRowConnector from './MissingRowConnector';
 
 class Missing extends Component {
 
@@ -236,7 +236,7 @@ class Missing extends Component {
                     {
                       items.map((item) => {
                         return (
-                          <MissingRow
+                          <MissingRowConnector
                             key={item.id}
                             isSelected={selectedState[item.id]}
                             columns={columns}

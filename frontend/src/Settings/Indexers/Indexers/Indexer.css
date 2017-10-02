@@ -5,7 +5,7 @@
 }
 
 .name {
-  composes: truncate from 'Styles/Mixins/truncate.css';
+  @add-mixin truncate;
 
   margin-bottom: 20px;
   font-weight: 300;

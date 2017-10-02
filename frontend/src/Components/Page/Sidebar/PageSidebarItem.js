@@ -63,7 +63,7 @@ class PageSidebarItem extends Component {
               </span>
           }
 
-          <span className={isChildItem && styles.noIcon}>
+          <span className={isChildItem ? styles.noIcon : null}>
             {title}
           </span>
 

@@ -240,7 +240,6 @@
     one-var-declaration-per-line: ["error", "always"],
     operator-assignment: ["off", "never"],
     operator-linebreak: ["error", "after"],
-    padded-blocks: ["error", "never"],
     quote-props: ["error", "as-needed"],
     quotes: ["error", "single"],
     require-jsdoc: "off",
@@ -283,6 +282,6 @@
     "react/react-in-jsx-scope": 2,
     "react/self-closing-comp": 2,
     "react/sort-comp": 2,
-    "react/wrap-multilines": 2
+    "react/jsx-wrap-multilines": 2
   }
 }

@@ -1,5 +1,5 @@
-.linkOverlay {
-  composes: cover from 'Styles/Mixins/cover.css';
+@define-mixin linkOverlay {
+  @add-mixin cover;
 
   pointer-events: none;
   user-select: none;

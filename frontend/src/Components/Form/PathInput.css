@@ -24,9 +24,9 @@
 }
 
 .pathContainer {
-  composes: scrollbar from 'Styles/Mixins/scroller.css';
-  composes: scrollbarTrack from 'Styles/Mixins/scroller.css';
-  composes: scrollbarThumb from 'Styles/Mixins/scroller.css';
+  @add-mixin scrollbar;
+  @add-mixin scrollbarTrack;
+  @add-mixin scrollbarThumb;
 }
 
 .pathInputContainerOpen {

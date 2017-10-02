@@ -30,7 +30,7 @@ namespace Lidarr.Api.V3.Queue
         {
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>("timeleft", SortDirection.Ascending);
             var includeSeries = Request.GetBooleanQueryParameter("includeSeries");
-            var includeEpisode = Request.GetBooleanQueryParameter("includeEpisode", true);
+            var includeEpisode = Request.GetBooleanQueryParameter("includeEpisode");
 
             return ApplyToPage(GetQueue, pagingSpec, (q) => MapToResource(q, includeSeries, includeEpisode));
         }

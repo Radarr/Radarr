@@ -52,8 +52,8 @@
 }
 
 .addButton {
+  @add-mixin truncate;
   composes: button from 'Components/Link/SpinnerButton.css';
-  composes: truncate from 'Styles/mixins/truncate.css';
 }
 
 .hideLanguageProfile {

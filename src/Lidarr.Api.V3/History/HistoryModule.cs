@@ -30,13 +30,23 @@ namespace Lidarr.Api.V3.History
             Post["/failed"] = x => MarkAsFailed();
         }
 
-        protected HistoryResource MapToResource(NzbDrone.Core.History.History model)
+        protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeArtist, bool includeAlbum, bool includeTrack)
         {
             var resource = model.ToResource();
 
-            resource.Artist = model.Artist.ToResource();
-            resource.Album = model.Album.ToResource();
-            resource.Track = model.Track.ToResource();
+            if (includeArtist)
+            {
+                resource.Artist = model.Artist.ToResource();
+            }
+            if (includeAlbum)
+            {
+                resource.Album = model.Album.ToResource();
+            }
+            if (includeTrack)
+            {
+                resource.Track = model.Track.ToResource();
+            }
+            
 
             if (model.Artist != null)
             {
@@ -52,6 +62,9 @@ namespace Lidarr.Api.V3.History
         private PagingResource<HistoryResource> GetHistory(PagingResource<HistoryResource> pagingResource)
         {
             var pagingSpec = pagingResource.MapToPagingSpec<HistoryResource, NzbDrone.Core.History.History>("date", SortDirection.Descending);
+            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum");
+            var includeTrack = Request.GetBooleanQueryParameter("includeTrack");
 
             if (pagingResource.FilterKey == "eventType")
             {
@@ -65,7 +78,7 @@ namespace Lidarr.Api.V3.History
                 pagingSpec.FilterExpression = h => h.AlbumId == albumId;
             }
 
-            return ApplyToPage(_historyService.Paged, pagingSpec, MapToResource);
+            return ApplyToPage(_historyService.Paged, pagingSpec, h => MapToResource(h, includeArtist, includeAlbum, includeTrack));
         }
 
         private Response MarkAsFailed()

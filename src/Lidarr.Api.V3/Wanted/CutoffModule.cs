@@ -6,6 +6,7 @@ using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 using Lidarr.Api.V3.Albums;
 using Lidarr.Http;
+using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V3.Wanted
 {
@@ -35,6 +36,9 @@ namespace Lidarr.Api.V3.Wanted
                 SortDirection = pagingResource.SortDirection
             };
 
+            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeTrackFile = Request.GetBooleanQueryParameter("includeTrackFile");
+
             if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
             {
                 pagingSpec.FilterExpression = v => v.Monitored == false || v.Artist.Monitored == false;
@@ -44,7 +48,7 @@ namespace Lidarr.Api.V3.Wanted
                 pagingSpec.FilterExpression = v => v.Monitored == true && v.Artist.Monitored == true;
             }
 
-            //var resource = ApplyToPage(_episodeCutoffService.EpisodesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, true));
+            //var resource = ApplyToPage(_episodeCutoffService.EpisodesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeSeries, includeEpisodeFile));
             return null;
             //return resource;
         }

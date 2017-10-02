@@ -14,7 +14,7 @@ function Icon(props) {
   } = props;
 
   return (
-    <icon
+    <i
       className={classNames(
         name,
         className,
@@ -25,7 +25,7 @@ function Icon(props) {
         fontSize: `${size}px`
       }}
     >
-    </icon>
+    </i>
   );
 }
 

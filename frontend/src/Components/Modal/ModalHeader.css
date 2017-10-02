@@ -1,5 +1,5 @@
 .modalHeader {
-  composes: truncate from 'Styles/Mixins/truncate.css';
+  @add-mixin truncate;
 
   flex-shrink: 0;
   padding: 15px 50px 15px 30px;

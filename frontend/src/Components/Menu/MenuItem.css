@@ -1,5 +1,5 @@
 .menuItem {
-  composes: truncate from 'Styles/mixins/truncate.css';
+  @add-mixin truncate;
 
   display: block;
   flex-shrink: 0;

@@ -7,11 +7,11 @@
 }
 
 .underlay {
-  composes: cover from 'Styles/Mixins/cover.css';
+  @add-mixin cover;
 }
 
 .overlay {
-  composes: linkOverlay from 'Styles/Mixins/linkOverlay.css';
+  @add-mixin linkOverlay;
 
   padding: 10px;
 }

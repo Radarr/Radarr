@@ -1,4 +1,4 @@
-.cover {
+@define-mixin cover {
   position: absolute;
   top: 0;
   left: 0;

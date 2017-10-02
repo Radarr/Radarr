@@ -3,16 +3,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchHistory, markAsFailed } from 'Store/Actions/historyActions';
+import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import HistoryRow from './HistoryRow';
 
 function createMapStateToProps() {
   return createSelector(
+    createArtistSelector(),
     createEpisodeSelector(),
     createUISettingsSelector(),
-    (episode, uiSettings) => {
+    (artist, episode, uiSettings) => {
       return {
+        artist,
         episode,
         shortDateFormat: uiSettings.shortDateFormat,
         timeFormat: uiSettings.timeFormat
@@ -27,6 +30,9 @@ const mapDispatchToProps = {
 };
 
 class HistoryRowConnector extends Component {
+
+  //
+  // Lifecycle
 
   componentDidUpdate(prevProps) {
     if (

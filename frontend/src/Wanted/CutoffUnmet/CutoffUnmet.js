@@ -20,7 +20,7 @@ import FilterMenu from 'Components/Menu/FilterMenu';
 import MenuContent from 'Components/Menu/MenuContent';
 import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import CutoffUnmetRow from './CutoffUnmetRow';
+import CutoffUnmetRowConnector from './CutoffUnmetRowConnector';
 
 class CutoffUnmet extends Component {
 
@@ -219,7 +219,7 @@ class CutoffUnmet extends Component {
                     {
                       items.map((item) => {
                         return (
-                          <CutoffUnmetRow
+                          <CutoffUnmetRowConnector
                             key={item.id}
                             isSelected={selectedState[item.id]}
                             columns={columns}

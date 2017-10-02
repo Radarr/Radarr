@@ -14,7 +14,7 @@
 
 .artistName,
 .albumTitle {
-  composes: truncate from 'Styles/Mixins/truncate.css';
+  @add-mixin truncate;
 
   flex: 1 0 1px;
   margin-right: 10px;

@@ -29,6 +29,6 @@
   .titles,
   .title,
   .alternateTitle {
-    composes: truncate from 'Styles/Mixins/truncate.css';
+    @add-mixin truncate;
   }
 }
