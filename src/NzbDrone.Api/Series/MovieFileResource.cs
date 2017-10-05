@@ -44,14 +44,14 @@ namespace NzbDrone.Api.Movie
 
             MovieResource movie = null;
 
-            if (model.Movie != null)
+            /*if (model.Movie != null)
             {
-                model.Movie.LazyLoad();
+                //model.Movie.LazyLoad();
                 if (model.Movie.Value != null)
                 {
                     //movie = model.Movie.Value.ToResource();
                 }
-            }
+            }*/
 
             return new MovieFileResource
             {

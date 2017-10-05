@@ -70,7 +70,8 @@ namespace NzbDrone.Core.Tv
 				return "";
 			}
 			//Well what about Path = Null?
-            return new DirectoryInfo(Path).Name;
+            //return new DirectoryInfo(Path).Name;
+            return Path;
         }
 
         public bool IsAvailable(int delay = 0)
