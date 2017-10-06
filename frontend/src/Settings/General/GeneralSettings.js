@@ -306,7 +306,7 @@ class GeneralSettings extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="launchBrowser"
-                          helpText=" Open a web browser and navigate to Sonarr homepage on app start."
+                          helpText=" Open a web browser and navigate to Lidarr homepage on app start."
                           onChange={onInputChange}
                           {...launchBrowser}
                         />
@@ -325,7 +325,7 @@ class GeneralSettings extends Component {
                       type={inputTypes.SELECT}
                       name="authenticationMethod"
                       values={authenticationMethodOptions}
-                      helpText="Require Username and Password to access Sonarr"
+                      helpText="Require Username and Password to access Lidarr"
                       helpTextWarning="Requires restart to take effect"
                       onChange={onInputChange}
                       {...authenticationMethod}
@@ -542,7 +542,7 @@ class GeneralSettings extends Component {
                           type={inputTypes.TEXT}
                           name="branch"
                           helpText="Branch to use to update Lidarr"
-                          helpLink="https://github.com/Sonarr/Sonarr/wiki/Release-Branches"
+                          helpLink="https://github.com/lidarr/Lidarr/wiki/Release-Branches"
                           onChange={onInputChange}
                           {...branch}
                         />
@@ -577,8 +577,8 @@ class GeneralSettings extends Component {
                                 type={inputTypes.SELECT}
                                 name="updateMechanism"
                                 values={updateOptions}
-                                helpText="Use Sonarr's built-in updater or a script"
-                                helpLink="https://github.com/Sonarr/Sonarr/wiki/Updating"
+                                helpText="Use Lidarr's built-in updater or a script"
+                                helpLink="https://github.com/lidarr/Lidarr/wiki/Updating"
                                 onChange={onInputChange}
                                 {...updateMechanism}
                               />
@@ -602,7 +602,7 @@ class GeneralSettings extends Component {
                                 </FormGroup>
                             }
                           </div>
-                        }
+                      }
                     </FieldSet>
                 }
               </Form>
