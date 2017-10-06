@@ -6,7 +6,6 @@ import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import { icons } from 'Helpers/Props';
-import episodeEntities from 'Episode/episodeEntities';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
@@ -100,7 +99,9 @@ class Queue extends Component {
       isPopulated,
       error,
       items,
+      isAlbumsFetching,
       isAlbumsPopulated,
+      episodesError,
       columns,
       totalRecords,
       isGrabbing,
@@ -118,8 +119,9 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isCheckForFinishedDownloadExecuting;
+    const isRefreshing = isFetching || isAlbumsFetching || isCheckForFinishedDownloadExecuting;    
     const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
+    const hasError = error || episodesError;
     const selectedCount = this.getSelectedIds().length;
     const disableSelectedActions = selectedCount === 0;
 
@@ -161,21 +163,21 @@ class Queue extends Component {
           }
 
           {
-            !isRefreshing && error &&
+            !isRefreshing && hasError &&
               <div>
                 Failed to load Queue
               </div>
           }
 
           {
-            isAllPopulated && !error && !items.length &&
+            isPopulated && !hasError && !items.length &&
               <div>
                 Queue is empty
               </div>
           }
 
           {
-            isAllPopulated && !error && !!items.length &&
+            isAllPopulated && !hasError && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -191,8 +193,7 @@ class Queue extends Component {
                         return (
                           <QueueRowConnector
                             key={item.id}
-                            episodeId={item.album.id}
-                            episodeEntity={episodeEntities.QUEUE_EPISODES}
+                            episodeId={item.albumId}
                             isSelected={selectedState[item.id]}
                             columns={columns}
                             {...item}
@@ -229,7 +230,9 @@ Queue.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isAlbumsFetching: PropTypes.bool.isRequired,
   isAlbumsPopulated: PropTypes.bool.isRequired,
+  episodesError: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   isGrabbing: PropTypes.bool.isRequired,

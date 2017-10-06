@@ -1,11 +1,14 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import connectSection from 'Store/connectSection';
 import { createSelector } from 'reselect';
-import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
-import { fetchEpisodes, setEpisodesSort, clearEpisodes } from 'Store/Actions/episodeActions';
+import connectSection from 'Store/connectSection';
+import {
+  updateInteractiveImportItem,
+  fetchInteractiveImportAlbums,
+  setInteractiveImportAlbumsSort,
+  clearInteractiveImportAlbums
+} from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import SelectAlbumModalContent from './SelectAlbumModalContent';
 
@@ -19,9 +22,9 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchEpisodes,
-  setEpisodesSort,
-  clearEpisodes,
+  fetchInteractiveImportAlbums,
+  setInteractiveImportAlbumsSort,
+  clearInteractiveImportAlbums,
   updateInteractiveImportItem
 };
 
@@ -35,17 +38,21 @@ class SelectAlbumModalContentConnector extends Component {
       artistId
     } = this.props;
 
-    this.props.fetchEpisodes({ artistId });
+    this.props.fetchInteractiveImportAlbums({ artistId });
   }
 
   componentWillUnmount() {
     // This clears the albums for the queue and hides the queue
     // We'll need another place to store albums for manual import
-    this.props.clearEpisodes();
+    this.props.clearInteractiveImportAlbums();
   }
 
   //
   // Listeners
+
+  onSortPress = (sortKey, sortDirection) => {
+    this.props.setInteractiveImportAlbumsSort({ sortKey, sortDirection });
+  }
 
   onAlbumSelect = (albumId) => {
     const album = _.find(this.props.items, { id: albumId });
@@ -78,17 +85,17 @@ SelectAlbumModalContentConnector.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number).isRequired,
   artistId: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fetchEpisodes: PropTypes.func.isRequired,
-  setEpisodesSort: PropTypes.func.isRequired,
-  clearEpisodes: PropTypes.func.isRequired,
+  fetchInteractiveImportAlbums: PropTypes.func.isRequired,
+  setInteractiveImportAlbumsSort: PropTypes.func.isRequired,
+  clearInteractiveImportAlbums: PropTypes.func.isRequired,
   updateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'episodes' }
-              )(SelectAlbumModalContentConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'interactiveImport.interactiveImportAlbums' }
+)(SelectAlbumModalContentConnector);

@@ -340,29 +340,6 @@ class PageSidebar extends Component {
     this._touchStartY = touchStartY;
   }
 
-  onTouchEnd = (event) => {
-    const touches = event.changedTouches;
-    const currentTouch = touches[0].pageX;
-
-    if (!this._touchStartX) {
-      return;
-    }
-
-    if (currentTouch > this._touchStartX && currentTouch > 50) {
-      this._setSidebarTransform(true, 'none');
-    } else if (currentTouch < this._touchStartX && currentTouch < 80) {
-      this._setSidebarTransform(false, 'transform 50ms ease-in-out');
-    } else {
-      this._setSidebarTransform(this.props.isSidebarVisible);
-    }
-
-    this._touchStartX = null;
-  }
-
-  onTouchCancel = (event) => {
-    this._touchStartX = null;
-  }
-
   onTouchMove = (event) => {
     const touches = event.touches;
     const currentTouchX = touches[0].pageX;
@@ -391,6 +368,31 @@ class PageSidebar extends Component {
       transition: 'none',
       transform
     });
+  }
+
+  onTouchEnd = (event) => {
+    const touches = event.changedTouches;
+    const currentTouch = touches[0].pageX;
+
+    if (!this._touchStartX) {
+      return;
+    }
+
+    if (currentTouch > this._touchStartX && currentTouch > 50) {
+      this._setSidebarTransform(true, 'none');
+    } else if (currentTouch < this._touchStartX && currentTouch < 80) {
+      this._setSidebarTransform(false, 'transform 50ms ease-in-out');
+    } else {
+      this._setSidebarTransform(this.props.isSidebarVisible);
+    }
+
+    this._touchStartX = null;
+    this._touchStartY = null;
+  }
+
+  onTouchCancel = (event) => {
+    this._touchStartX = null;
+    this._touchStartY = null;
   }
 
   onItemPress = () => {

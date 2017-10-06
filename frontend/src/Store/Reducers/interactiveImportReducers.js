@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import moment from 'moment';
 import { handleActions } from 'redux-actions';
+import updateSectionState from 'Utilities/State/updateSectionState';
 import * as types from 'Store/Actions/actionTypes';
 import { sortDirections } from 'Helpers/Props';
 import createSetReducer from './Creators/createSetReducer';
 import createUpdateReducer from './Creators/createUpdateReducer';
+import createReducers from './Creators/createReducers';
 import createSetClientSideCollectionSortReducer from './Creators/createSetClientSideCollectionSortReducer';
 
 export const defaultState = {
@@ -26,6 +28,15 @@ export const defaultState = {
     quality: function(item, direction) {
       return item.quality.qualityWeight;
     }
+  },
+
+  interactiveImportAlbums: {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    sortKey: 'albumTitle',
+    sortDirection: sortDirections.DESCENDING,
+    items: []
   }
 };
 
@@ -35,11 +46,12 @@ export const persistState = [
 ];
 
 const reducerSection = 'interactiveImport';
+const episodesSection = 'interactiveImportAlbums';
 
 const interactiveImportReducers = handleActions({
 
-  [types.SET]: createSetReducer(reducerSection),
-  [types.UPDATE]: createUpdateReducer(reducerSection),
+  [types.SET]: createReducers([reducerSection, episodesSection], createSetReducer),
+  [types.UPDATE]: createReducers([reducerSection, episodesSection], createUpdateReducer),
 
   [types.UPDATE_INTERACTIVE_IMPORT_ITEM]: (state, { payload }) => {
     const id = payload.id;
@@ -90,6 +102,16 @@ const interactiveImportReducers = handleActions({
 
   [types.SET_INTERACTIVE_IMPORT_MODE]: function(state, { payload }) {
     return Object.assign({}, state, { importMode: payload.importMode });
+  },
+
+  [types.SET_INTERACTIVE_IMPORT_ALBUMS_SORT]: createSetClientSideCollectionSortReducer(episodesSection),
+
+  [types.CLEAR_INTERACTIVE_IMPORT_ALBUMS]: (state) => {
+    const section = episodesSection;
+
+    return updateSectionState(state, section, {
+      ...defaultState.interactiveImportAlbums
+    });
   }
 
 }, defaultState);

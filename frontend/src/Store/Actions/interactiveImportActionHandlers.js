@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
+import createFetchHandler from './Creators/createFetchHandler';
 import * as types from './actionTypes';
 import { set, update } from './baseActions';
 
@@ -42,7 +43,9 @@ const interactiveImportActionHandlers = {
         }));
       });
     };
-  }
+  },
+
+  [types.FETCH_INTERACTIVE_IMPORT_ALBUMS]: createFetchHandler('interactiveImportAlbums', '/album')
 };
 
 export default interactiveImportActionHandlers;

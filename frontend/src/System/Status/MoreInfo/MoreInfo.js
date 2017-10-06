@@ -23,7 +23,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/Lidarr/Lidarr/Wiki">wiki.lidarr.audio</Link>
+            <Link to="https://github.com/lidarr/Lidarr/wiki">wiki.lidarr.audio</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Reddit</DescriptionListItemTitle>
@@ -48,12 +48,12 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Source</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/Lidarr/Lidarr/">github.com/Lidarr/Lidarr</Link>
+            <Link to="https://github.com/lidarr/Lidarr/">github.com/Lidarr/Lidarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Feature Requests</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/Lidarr/Lidarr/issues">github.com/Lidarr/Lidarr/issues</Link>
+            <Link to="https://github.com/lidarr/Lidarr/issues">github.com/Lidarr/Lidarr/issues</Link>
           </DescriptionListItemDescription>
 
         </DescriptionList>

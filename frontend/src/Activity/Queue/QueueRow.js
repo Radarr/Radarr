@@ -63,7 +63,6 @@ class QueueRow extends Component {
     const {
       id,
       downloadId,
-      episodeEntity,
       title,
       status,
       trackedDownloadStatus,
@@ -161,7 +160,6 @@ class QueueRow extends Component {
                     episodeId={episode.id}
                     artistId={series.id}
                     trackFileId={episode.trackFileId}
-                    episodeEntity={episodeEntity}
                     episodeTitle={episode.title}
                     showOpenArtistButton={true}
                   />
@@ -295,7 +293,6 @@ class QueueRow extends Component {
 QueueRow.propTypes = {
   id: PropTypes.number.isRequired,
   downloadId: PropTypes.string,
-  episodeEntity: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   trackedDownloadStatus: PropTypes.string,

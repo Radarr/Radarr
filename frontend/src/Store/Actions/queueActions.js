@@ -17,7 +17,6 @@ export const setQueueSort = queueActionHandlers[types.SET_QUEUE_SORT];
 export const setQueueTableOption = createAction(types.SET_QUEUE_TABLE_OPTION);
 export const clearQueue = createAction(types.CLEAR_QUEUE);
 
-export const setQueueEpisodes = createAction(types.SET_QUEUE_EPISODES);
 export const grabQueueItem = queueActionHandlers[types.GRAB_QUEUE_ITEM];
 export const grabQueueItems = queueActionHandlers[types.GRAB_QUEUE_ITEMS];
 export const removeQueueItem = queueActionHandlers[types.REMOVE_QUEUE_ITEM];

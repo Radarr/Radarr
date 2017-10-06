@@ -135,25 +135,7 @@ const queueReducers = handleActions({
     isPopulated: false,
     error: null,
     items: []
-  }),
-
-  [types.SET_QUEUE_EPISODES]: function(state, { payload }) {
-    const section = 'queueEpisodes';
-
-    return updateSectionState(state, section, {
-      isPopulated: true,
-      items: payload.episodes
-    });
-  },
-
-  [types.CLEAR_EPISODES]: (state) => {
-    const section = 'queueEpisodes';
-
-    return updateSectionState(state, section, {
-      isPopulated: false,
-      items: []
-    });
-  }
+  })
 
 }, defaultState);
 

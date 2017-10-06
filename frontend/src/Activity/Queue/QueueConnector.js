@@ -4,24 +4,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as queueActions from 'Store/Actions/queueActions';
-import { clearEpisodes } from 'Store/Actions/episodeActions';
+import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
 import * as commandNames from 'Commands/commandNames';
 import Queue from './Queue';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.episodes,
     (state) => state.queue.paged,
-    (state) => state.queue.queueEpisodes,
     createCommandsSelector(),
-    (queue, queueEpisodes, commands) => {
+    (episodes, queue, commands) => {
       const isCheckForFinishedDownloadExecuting = _.some(commands, { name: commandNames.CHECK_FOR_FINISHED_DOWNLOAD });
 
       return {
+        isAlbumsFetching: episodes.isFetching,
+        isAlbumsPopulated: episodes.isPopulated,
+        episodesError: episodes.error,
         isCheckForFinishedDownloadExecuting,
-        isAlbumsPopulated: queueEpisodes.isPopulated,
         ...queue
       };
     }
@@ -30,6 +33,7 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   ...queueActions,
+  fetchEpisodes,
   clearEpisodes,
   executeCommand
 };
@@ -45,14 +49,9 @@ class QueueConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
-      const episodes = _.uniqBy(_.reduce(this.props.items, (result, item) => {
-        result.push(item.album);
+      const albumIds = selectUniqueIds(this.props.items, 'albumId');
+      this.props.fetchEpisodes({ albumIds });
 
-        return result;
-      }, []), ({ id }) => id);
-
-      this.props.clearEpisodes();
-      this.props.setQueueEpisodes({ episodes });
     }
   }
 
@@ -143,9 +142,9 @@ QueueConnector.propTypes = {
   setQueueSort: PropTypes.func.isRequired,
   setQueueTableOption: PropTypes.func.isRequired,
   clearQueue: PropTypes.func.isRequired,
-  setQueueEpisodes: PropTypes.func.isRequired,
   grabQueueItems: PropTypes.func.isRequired,
   removeQueueItems: PropTypes.func.isRequired,
+  fetchEpisodes: PropTypes.func.isRequired,
   clearEpisodes: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };

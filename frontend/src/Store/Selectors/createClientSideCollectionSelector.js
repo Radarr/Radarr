@@ -97,8 +97,8 @@ function sort(items, state) {
 
 function createClientSideCollectionSelector() {
   return createSelector(
-    (state, { section }) => state[section],
-    (state, { uiSection }) => state[uiSection],
+    (state, { section }) => _.get(state, section),
+    (state, { uiSection }) => _.get(state, uiSection),
     (sectionState, uiSectionState = {}) => {
       const state = Object.assign({}, sectionState, uiSectionState);
 
