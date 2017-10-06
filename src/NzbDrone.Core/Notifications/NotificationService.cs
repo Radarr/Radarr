@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Notifications
 
             var trackTitles = string.Join(" + ", tracks.Select(e => e.Title));
 
-            return string.Format("{0} - {1} - [{4}]",
+            return string.Format("{0} - {1} - [{2}]",
                                     artist.Name,
                                     trackTitles,
                                     qualityString);
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Notifications
 
             if (definition.Tags.Intersect(artist.Tags).Any())
             {
-                _logger.Debug("Notification and series have one or more intersecting tags.");
+                _logger.Debug("Notification and artist have one or more intersecting tags.");
                 return true;
             }
 
