@@ -13,10 +13,10 @@ function createMapStateToProps() {
     createArtistSelector(),
     createEpisodeSelector(),
     createUISettingsSelector(),
-    (artist, episode, uiSettings) => {
+    (artist, album, uiSettings) => {
       return {
         artist,
-        episode,
+        album,
         shortDateFormat: uiSettings.shortDateFormat,
         timeFormat: uiSettings.timeFormat
       };

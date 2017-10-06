@@ -38,9 +38,9 @@ function getTooltip(eventType, data) {
     case 'grabbed':
       return `Album grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
     case 'seriesFolderImported':
-      return 'Album imported from artist folder';
+      return 'Track imported from artist folder';
     case 'downloadFolderImported':
-      return 'Album downloaded successfully and picked up from download client';
+      return 'Track downloaded successfully and picked up from download client';
     case 'downloadFailed':
       return 'Album download failed';
     case 'trackFileDeleted':

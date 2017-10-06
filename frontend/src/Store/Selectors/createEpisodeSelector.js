@@ -4,10 +4,10 @@ import episodeEntities from 'Episode/episodeEntities';
 
 function createEpisodeSelector() {
   return createSelector(
-    (state, { episodeId }) => episodeId,
+    (state, { albumId }) => albumId,
     (state, { episodeEntity = episodeEntities.EPISODES }) => _.get(state, episodeEntity, { items: [] }),
-    (episodeId, episodes) => {
-      return _.find(episodes.items, { id: episodeId });
+    (albumId, episodes) => {
+      return _.find(episodes.items, { id: albumId });
     }
   );
 }
