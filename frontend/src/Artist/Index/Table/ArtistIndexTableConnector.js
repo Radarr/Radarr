@@ -8,10 +8,10 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.app.dimensions,
     createClientSideCollectionSelector(),
-    (dimensions, series) => {
+    (dimensions, artist) => {
       return {
         isSmallScreen: dimensions.isSmallScreen,
-        ...series
+        ...artist
       };
     }
   );
@@ -30,5 +30,5 @@ export default connectSection(
   createMapDispatchToProps,
   undefined,
   { withRef: true },
-  { section: 'series', uiSection: 'artistIndex' }
+  { section: 'artist', uiSection: 'artistIndex' }
 )(ArtistIndexTable);

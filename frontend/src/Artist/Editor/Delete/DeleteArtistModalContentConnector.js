@@ -15,7 +15,7 @@ function createMapStateToProps() {
       });
 
       const sortedArtist = _.orderBy(selectedArtist, 'sortName');
-      const series = _.map(sortedArtist, (s) => {
+      const artist = _.map(sortedArtist, (s) => {
         return {
           artistName: s.artistName,
           path: s.path
@@ -23,7 +23,7 @@ function createMapStateToProps() {
       });
 
       return {
-        series
+        artist
       };
     }
   );

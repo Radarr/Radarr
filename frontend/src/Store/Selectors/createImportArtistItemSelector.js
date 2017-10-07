@@ -8,16 +8,15 @@ function createImportArtistItemSelector() {
     (state) => state.addArtist,
     (state) => state.importArtist,
     createAllArtistSelector(),
-    (id, addArtist, importArtist, series) => {
+    (id, addArtist, importArtist, artist) => {
       const item = _.find(importArtist.items, { id }) || {};
       const selectedArtist = item && item.selectedArtist;
-      const isExistingArtist = !!selectedArtist && _.some(series, { foreignArtistId: selectedArtist.foreignArtistId });
+      const isExistingArtist = !!selectedArtist && _.some(artist, { foreignArtistId: selectedArtist.foreignArtistId });
 
       return {
         defaultMonitor: addArtist.defaults.monitor,
         defaultQualityProfileId: addArtist.defaults.qualityProfileId,
-        defaultSeriesType: addArtist.defaults.seriesType,
-        defaultSeasonFolder: addArtist.defaults.albumFolder,
+        defaultAlbumFolder: addArtist.defaults.albumFolder,
         ...item,
         isExistingArtist
       };

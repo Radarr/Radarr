@@ -44,7 +44,7 @@ export const defaultState = {
         isModifiable: false
       },
       {
-        name: 'series.sortName',
+        name: 'artist.sortName',
         label: 'Artist',
         isSortable: true,
         isVisible: true

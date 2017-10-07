@@ -14,11 +14,11 @@ function createMapStateToProps() {
     (state) => state.settings.languageProfiles,
     createClientSideCollectionSelector(),
     createCommandSelector(commandNames.RENAME_ARTIST),
-    (languageProfiles, series, isOrganizingArtist) => {
+    (languageProfiles, artist, isOrganizingArtist) => {
       return {
         isOrganizingArtist,
         showLanguageProfile: languageProfiles.items.length > 1,
-        ...series
+        ...artist
       };
     }
   );
@@ -82,5 +82,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'series', uiSection: 'artistEditor' }
+  { section: 'artist', uiSection: 'artistEditor' }
 )(ArtistEditorConnector);

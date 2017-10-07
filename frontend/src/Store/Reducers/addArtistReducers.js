@@ -22,7 +22,6 @@ export const defaultState = {
     monitor: 'allEpisodes',
     qualityProfileId: 0,
     languageProfileId: 0,
-    seriesType: 'standard',
     primaryAlbumTypes: ['Album'],
     secondaryAlbumTypes: ['Studio'],
     albumFolder: true,

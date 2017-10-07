@@ -15,12 +15,12 @@ function EpisodeNumber(props) {
     sceneAbsoluteEpisodeNumber,
     unverifiedSceneNumbering,
     alternateTitles,
-    seriesType
+    artistType
   } = props;
 
   const hasSceneInformation = sceneSeasonNumber !== undefined ||
     sceneEpisodeNumber !== undefined ||
-    (seriesType === 'anime' && sceneAbsoluteEpisodeNumber !== undefined) ||
+    (artistType === 'anime' && sceneAbsoluteEpisodeNumber !== undefined) ||
     !!alternateTitles.length;
 
   return (
@@ -33,7 +33,7 @@ function EpisodeNumber(props) {
                 {episodeNumber}
 
                 {
-                  seriesType === 'anime' && !!absoluteEpisodeNumber &&
+                  artistType === 'anime' && !!absoluteEpisodeNumber &&
                     <span className={styles.absoluteEpisodeNumber}>
                       ({absoluteEpisodeNumber})
                     </span>
@@ -47,7 +47,7 @@ function EpisodeNumber(props) {
                 sceneEpisodeNumber={sceneEpisodeNumber}
                 sceneAbsoluteEpisodeNumber={sceneAbsoluteEpisodeNumber}
                 alternateTitles={alternateTitles}
-                seriesType={seriesType}
+                artistType={artistType}
               />
             }
             position={tooltipPositions.RIGHT}
@@ -56,7 +56,7 @@ function EpisodeNumber(props) {
             {episodeNumber}
 
             {
-              seriesType === 'anime' && !!absoluteEpisodeNumber &&
+              artistType === 'anime' && !!absoluteEpisodeNumber &&
                 <span className={styles.absoluteEpisodeNumber}>
                   ({absoluteEpisodeNumber})
                 </span>
@@ -75,7 +75,7 @@ function EpisodeNumber(props) {
       }
 
       {
-        seriesType === 'anime' && !absoluteEpisodeNumber &&
+        artistType === 'anime' && !absoluteEpisodeNumber &&
           <Icon
             className={styles.warning}
             name={icons.WARNING}
@@ -96,7 +96,7 @@ EpisodeNumber.propTypes = {
   sceneAbsoluteEpisodeNumber: PropTypes.number,
   unverifiedSceneNumbering: PropTypes.bool.isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  seriesType: PropTypes.string
+  artistType: PropTypes.string
 };
 
 EpisodeNumber.defaultProps = {

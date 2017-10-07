@@ -17,12 +17,6 @@ function MissingRow(props) {
     id,
     // trackFileId,
     artist,
-    // seasonNumber,
-    // episodeNumber,
-    // absoluteEpisodeNumber,
-    // sceneSeasonNumber,
-    // sceneEpisodeNumber,
-    // sceneAbsoluteEpisodeNumber,
     releaseDate,
     title,
     isSelected,
@@ -70,7 +64,6 @@ function MissingRow(props) {
           //         seasonNumber={seasonNumber}
           //         episodeNumber={episodeNumber}
           //         absoluteEpisodeNumber={absoluteEpisodeNumber}
-          //         seriesType={series.seriesType}
           //         sceneSeasonNumber={sceneSeasonNumber}
           //         sceneEpisodeNumber={sceneEpisodeNumber}
           //         sceneAbsoluteEpisodeNumber={sceneAbsoluteEpisodeNumber}
@@ -141,12 +134,6 @@ MissingRow.propTypes = {
   id: PropTypes.number.isRequired,
   // trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
-  // seasonNumber: PropTypes.number.isRequired,
-  // episodeNumber: PropTypes.number.isRequired,
-  // absoluteEpisodeNumber: PropTypes.number,
-  // sceneSeasonNumber: PropTypes.number,
-  // sceneEpisodeNumber: PropTypes.number,
-  // sceneAbsoluteEpisodeNumber: PropTypes.number,
   releaseDate: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,

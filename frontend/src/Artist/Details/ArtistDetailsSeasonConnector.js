@@ -20,10 +20,10 @@ function createMapStateToProps() {
     createArtistSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (label, episodes, series, commands, dimensions) => {
+    (label, episodes, artist, commands, dimensions) => {
       const isSearching = !!findCommand(commands, {
         name: commandNames.SEASON_SEARCH,
-        artistId: series.id,
+        artistId: artist.id,
         label
       });
 
@@ -34,7 +34,7 @@ function createMapStateToProps() {
         items: sortedEpisodes,
         columns: episodes.columns,
         isSearching,
-        artistMonitored: series.monitored,
+        artistMonitored: artist.monitored,
         isSmallScreen: dimensions.isSmallScreen
       };
     }

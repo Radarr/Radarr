@@ -6,8 +6,8 @@ function createExistingArtistSelector() {
   return createSelector(
     (state, { foreignArtistId }) => foreignArtistId,
     createAllArtistSelector(),
-    (foreignArtistId, series) => {
-      return _.some(series, { foreignArtistId });
+    (foreignArtistId, artist) => {
+      return _.some(artist, { foreignArtistId });
     }
   );
 }

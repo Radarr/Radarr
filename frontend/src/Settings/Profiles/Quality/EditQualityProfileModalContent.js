@@ -101,7 +101,7 @@ function EditQualityProfileModalContent(props) {
           id &&
             <div
               className={styles.deleteButtonContainer}
-              title={isInUse && 'Can\'t delete a quality profile that is attached to a series'}
+              title={isInUse && 'Can\'t delete a quality profile that is attached to a artist'}
             >
               <Button
                 kind={kinds.DANGER}

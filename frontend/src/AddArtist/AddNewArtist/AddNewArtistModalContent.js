@@ -15,7 +15,6 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import Popover from 'Components/Tooltip/Popover';
 import ArtistPoster from 'Artist/ArtistPoster';
 import ArtistMonitoringOptionsPopoverContent from 'AddArtist/ArtistMonitoringOptionsPopoverContent';
-// import SeriesTypePopoverContent from 'AddArtist/SeriesTypePopoverContent';
 import styles from './AddNewArtistModalContent.css';
 
 class AddNewArtistModalContent extends Component {

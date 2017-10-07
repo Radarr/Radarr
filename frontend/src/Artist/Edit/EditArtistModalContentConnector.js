@@ -10,30 +10,29 @@ import EditArtistModalContent from './EditArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.series,
+    (state) => state.artist,
     (state) => state.settings.languageProfiles,
     createArtistSelector(),
-    (seriesState, languageProfiles, series) => {
+    (artistState, languageProfiles, artist) => {
       const {
         isSaving,
         saveError,
         pendingChanges
-      } = seriesState;
+      } = artistState;
 
-      const seriesSettings = _.pick(series, [
+      const artistSettings = _.pick(artist, [
         'monitored',
         'albumFolder',
         'qualityProfileId',
         'languageProfileId',
-        // 'seriesType',
         'path',
         'tags'
       ]);
 
-      const settings = selectSettings(seriesSettings, pendingChanges, saveError);
+      const settings = selectSettings(artistSettings, pendingChanges, saveError);
 
       return {
-        artistName: series.artistName,
+        artistName: artist.artistName,
         isSaving,
         saveError,
         pendingChanges,

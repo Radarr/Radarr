@@ -14,14 +14,14 @@ function createMapStateToProps() {
     createArtistSelector(),
     createEpisodeSelector(),
     createUISettingsSelector(),
-    (series, episode, uiSettings) => {
+    (artist, episode, uiSettings) => {
       const result = _.pick(uiSettings, [
         'showRelativeDates',
         'shortDateFormat',
         'timeFormat'
       ]);
 
-      result.series = series;
+      result.artist = artist;
       result.episode = episode;
 
       return result;

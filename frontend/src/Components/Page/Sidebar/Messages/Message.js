@@ -23,7 +23,7 @@ function getIconName(name) {
       return icons.RSS;
     case 'SeasonSearch':
       return icons.SEARCH;
-    case 'SeriesSearch':
+    case 'ArtistSearch':
       return icons.SEARCH;
     case 'UpdateSceneMapping':
       return icons.REFRESH;

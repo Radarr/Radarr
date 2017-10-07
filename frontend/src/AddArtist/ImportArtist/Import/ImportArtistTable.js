@@ -22,9 +22,8 @@ class ImportArtistTable extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
-      defaultSeriesType,
       defaultAlbumFolder,
-      onSeriesLookup,
+      onArtistLookup,
       onSetImportArtistValue
     } = this.props;
 
@@ -32,14 +31,13 @@ class ImportArtistTable extends Component {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
       languageProfileId: defaultLanguageProfileId,
-      seriesType: defaultSeriesType,
       albumFolder: defaultAlbumFolder
     };
 
     unmappedFolders.forEach((unmappedFolder) => {
       const id = unmappedFolder.name;
 
-      onSeriesLookup(id, unmappedFolder.path);
+      onArtistLookup(id, unmappedFolder.path);
 
       onSetImportArtistValue({
         id,
@@ -192,7 +190,6 @@ ImportArtistTable.propTypes = {
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
   defaultLanguageProfileId: PropTypes.number,
-  defaultSeriesType: PropTypes.string.isRequired,
   defaultAlbumFolder: PropTypes.bool.isRequired,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,
@@ -205,7 +202,7 @@ ImportArtistTable.propTypes = {
   onSelectAllChange: PropTypes.func.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onRemoveSelectedStateItem: PropTypes.func.isRequired,
-  onSeriesLookup: PropTypes.func.isRequired,
+  onArtistLookup: PropTypes.func.isRequired,
   onSetImportArtistValue: PropTypes.func.isRequired,
   onScroll: PropTypes.func.isRequired
 };

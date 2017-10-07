@@ -62,7 +62,7 @@ EpisodeTitleLink.propTypes = {
 };
 
 EpisodeTitleLink.defaultProps = {
-  showSeriesButton: false
+  showArtistButton: false
 };
 
 export default EpisodeTitleLink;

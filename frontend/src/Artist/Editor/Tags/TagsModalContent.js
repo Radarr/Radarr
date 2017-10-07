@@ -93,7 +93,7 @@ class TagsModalContent extends Component {
                 value={applyTags}
                 values={applyTagsOptions}
                 helpTexts={[
-                  'How to apply tags to the selected series',
+                  'How to apply tags to the selected artist',
                   'Add: Add the tags the existing list of tags',
                   'Remove: Remove the entered tags',
                   'Replace: Replace the tags with the entered tags (enter no tags to clear all tags)'

@@ -15,7 +15,6 @@ function createMapStateToProps() {
         defaultMonitor: addArtist.defaults.monitor,
         defaultQualityProfileId: addArtist.defaults.qualityProfileId,
         defaultLanguageProfileId: addArtist.defaults.languageProfileId,
-        defaultSeriesType: addArtist.defaults.seriesType,
         defaultAlbumFolder: addArtist.defaults.albumFolder,
         items: importArtist.items,
         isSmallScreen: dimensions.isSmallScreen,
@@ -27,7 +26,7 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onSeriesLookup(name, path) {
+    onArtistLookup(name, path) {
       dispatch(queueLookupArtist({
         name,
         path,

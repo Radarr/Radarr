@@ -44,9 +44,6 @@ class AgendaEvent extends Component {
       id,
       artist,
       title,
-      // seasonNumber,
-      // episodeNumber,
-      // absoluteEpisodeNumber,
       releaseDate,
       monitored,
       hasFile,
@@ -101,9 +98,6 @@ class AgendaEvent extends Component {
           {
             !!queueItem &&
               <CalendarEventQueueDetails
-                seriesType={artist.seriesType}
-                // seasonNumber={seasonNumber}
-                // absoluteEpisodeNumber={absoluteEpisodeNumber}
                 {...queueItem}
               />
           }
@@ -135,9 +129,6 @@ AgendaEvent.propTypes = {
   id: PropTypes.number.isRequired,
   artist: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  // seasonNumber: PropTypes.number.isRequired,
-  // episodeNumber: PropTypes.number.isRequired,
-  // absoluteEpisodeNumber: PropTypes.number,
   releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,

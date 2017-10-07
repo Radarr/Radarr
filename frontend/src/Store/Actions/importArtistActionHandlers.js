@@ -4,7 +4,7 @@ import { batchActions } from 'redux-batched-actions';
 import getNewSeries from 'Utilities/Series/getNewSeries';
 import * as types from './actionTypes';
 import { set, updateItem, removeItem } from './baseActions';
-import { startLookupSeries } from './importArtistActions';
+import { startLookupArtist } from './importArtistActions';
 import { fetchRootFolders } from './rootFolderActions';
 
 const section = 'importArtist';
@@ -38,7 +38,7 @@ const importArtistActionHandlers = {
       }));
 
       if (term && term.length > 2) {
-        dispatch(startLookupSeries());
+        dispatch(startLookupArtist());
       }
     };
   },
@@ -97,7 +97,7 @@ const importArtistActionHandlers = {
 
       promise.always(() => {
         concurrentLookups--;
-        dispatch(startLookupSeries());
+        dispatch(startLookupArtist());
       });
     };
   },
@@ -114,8 +114,8 @@ const importArtistActionHandlers = {
         const item = _.find(items, { id });
         const selectedArtist = item.selectedArtist;
 
-        // Make sure we have a selected series and
-        // the same series hasn't been added yet.
+        // Make sure we have a selected artist and
+        // the same artist hasn't been added yet.
         if (selectedArtist && !_.some(acc, { foreignArtistId: selectedArtist.foreignArtistId })) {
           const newSeries = getNewSeries(_.cloneDeep(selectedArtist), item);
           newSeries.path = item.path;
@@ -142,7 +142,7 @@ const importArtistActionHandlers = {
             isImported: true
           }),
 
-          ...data.map((series) => updateItem({ section: 'series', ...series })),
+          ...data.map((artist) => updateItem({ section: 'artist', ...artist })),
 
           ...addedIds.map((id) => removeItem({ section, id }))
         ]));

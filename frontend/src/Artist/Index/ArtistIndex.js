@@ -302,7 +302,7 @@ class ArtistIndex extends Component {
                   />
 
                   <ArtistIndexFooter
-                    series={items}
+                    artist={items}
                   />
                 </div>
             }

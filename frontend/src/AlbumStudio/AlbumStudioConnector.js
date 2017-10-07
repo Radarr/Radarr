@@ -9,9 +9,9 @@ import AlbumStudio from './AlbumStudio';
 function createMapStateToProps() {
   return createSelector(
     createClientSideCollectionSelector(),
-    (series) => {
+    (artist) => {
       return {
-        ...series
+        ...artist
       };
     }
   );
@@ -66,5 +66,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'series', uiSection: 'albumStudio' }
+  { section: 'artist', uiSection: 'albumStudio' }
 )(AlbumStudioConnector);

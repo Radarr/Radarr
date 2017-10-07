@@ -216,9 +216,9 @@ class ArtistIndexPosters extends Component {
       showQualityProfile
     } = posterOptions;
 
-    const series = items[rowIndex * columnCount + columnIndex];
+    const artist = items[rowIndex * columnCount + columnIndex];
 
-    if (!series) {
+    if (!artist) {
       return null;
     }
 
@@ -236,7 +236,7 @@ class ArtistIndexPosters extends Component {
         shortDateFormat={shortDateFormat}
         timeFormat={timeFormat}
         style={style}
-        {...series}
+        {...artist}
       />
     );
   }

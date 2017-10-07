@@ -68,7 +68,7 @@ const addArtistActionHandlers = {
 
       promise.done((data) => {
         dispatch(batchActions([
-          updateItem({ section: 'series', ...data }),
+          updateItem({ section: 'artist', ...data }),
 
           set({
             section,

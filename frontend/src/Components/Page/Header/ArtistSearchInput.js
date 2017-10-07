@@ -62,7 +62,7 @@ class ArtistSearchInput extends Component {
   renderSuggestion(item, { query }) {
     if (item.type === ADD_NEW_TYPE) {
       return (
-        <div className={styles.addNewSeriesSuggestion}>
+        <div className={styles.addNewArtistSuggestion}>
           Search for {query}
         </div>
       );
@@ -76,9 +76,9 @@ class ArtistSearchInput extends Component {
     );
   }
 
-  goToArtist(series) {
+  goToArtist(artist) {
     this.setState({ value: '' });
-    this.props.onGoToSeries(series.nameSlug);
+    this.props.onGoToArtist(artist.nameSlug);
   }
 
   reset() {
@@ -117,8 +117,8 @@ class ArtistSearchInput extends Component {
       return;
     }
 
-    // If an suggestion is not selected go to the first series,
-    // otherwise go to the selected series.
+    // If an suggestion is not selected go to the first artist,
+    // otherwise go to the selected artist.
 
     if (highlightedSuggestionIndex == null) {
       this.goToArtist(suggestions[0]);
@@ -134,12 +134,12 @@ class ArtistSearchInput extends Component {
   onSuggestionsFetchRequested = ({ value }) => {
     const lowerCaseValue = jdu.replace(value).toLowerCase();
 
-    const suggestions = _.filter(this.props.series, (series) => {
+    const suggestions = _.filter(this.props.artist, (artist) => {
       // Check the title first and if there isn't a match fallback to the alternate titles
 
-      const titleMatch = jdu.replace(series.artistName).toLowerCase().contains(lowerCaseValue);
+      const titleMatch = jdu.replace(artist.artistName).toLowerCase().contains(lowerCaseValue);
 
-      return titleMatch || _.some(series.alternateTitles, (alternateTitle) => {
+      return titleMatch || _.some(artist.alternateTitles, (alternateTitle) => {
         return jdu.replace(alternateTitle.title).toLowerCase().contains(lowerCaseValue);
       });
     });
@@ -192,7 +192,7 @@ class ArtistSearchInput extends Component {
     const inputProps = {
       ref: this.setInputRef,
       className: styles.input,
-      name: 'seriesSearch',
+      name: 'artistSearch',
       value,
       placeholder: 'Search',
       autoComplete: 'off',
@@ -206,7 +206,7 @@ class ArtistSearchInput extends Component {
     const theme = {
       container: styles.container,
       containerOpen: styles.containerOpen,
-      suggestionsContainer: styles.seriesContainer,
+      suggestionsContainer: styles.artistContainer,
       suggestionsList: styles.list,
       suggestion: styles.listItem,
       suggestionHighlighted: styles.highlighted
@@ -241,8 +241,8 @@ class ArtistSearchInput extends Component {
 }
 
 ArtistSearchInput.propTypes = {
-  series: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onGoToSeries: PropTypes.func.isRequired,
+  artist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onGoToArtist: PropTypes.func.isRequired,
   onGoToAddNewArtist: PropTypes.func.isRequired,
   bindShortcut: PropTypes.func.isRequired
 };

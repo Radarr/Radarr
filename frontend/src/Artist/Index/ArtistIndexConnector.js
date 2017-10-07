@@ -44,17 +44,17 @@ function getScrollTop(view, scrollTop, isSmallScreen) {
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.series,
+    (state) => state.artist,
     (state) => state.artistIndex,
     createCommandSelector(commandNames.REFRESH_ARTIST),
     createCommandSelector(commandNames.RSS_SYNC),
     createDimensionsSelector(),
-    (series, artistIndex, isRefreshingArtist, isRssSyncExecuting, dimensionsState) => {
+    (artist, artistIndex, isRefreshingArtist, isRssSyncExecuting, dimensionsState) => {
       return {
         isRefreshingArtist,
         isRssSyncExecuting,
         isSmallScreen: dimensionsState.isSmallScreen,
-        ...series,
+        ...artist,
         ...artistIndex
       };
     }

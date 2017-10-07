@@ -24,7 +24,7 @@ function createMapStateToProps() {
       trackFiles,
       languageProfilesSchema,
       qualityProfileSchema,
-      series
+      artist
     ) => {
       const filtered = _.filter(tracks.items, (track) => {
         if (albumId >= 0 && track.albumId !== albumId) {
@@ -56,7 +56,7 @@ function createMapStateToProps() {
 
       return {
         items,
-        seriesType: series.seriesType,
+        artistType: artist.artistType,
         isDeleting: trackFiles.isDeleting,
         isSaving: trackFiles.isSaving,
         languages,

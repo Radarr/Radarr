@@ -7,7 +7,7 @@ import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import { updateItem } from './baseActions';
 
-const section = 'series';
+const section = 'artist';
 
 const artistActionHandlers = {
   [types.FETCH_ARTIST]: createFetchHandler(section, '/artist'),
@@ -15,12 +15,12 @@ const artistActionHandlers = {
   [types.SAVE_ARTIST]: createSaveProviderHandler(
     section,
     '/artist',
-    (state) => state.series),
+    (state) => state.artist),
 
   [types.DELETE_ARTIST]: createRemoveItemHandler(
     section,
     '/artist',
-    (state) => state.series),
+    (state) => state.artist),
 
   [types.TOGGLE_ARTIST_MONITORED]: function(payload) {
     return function(dispatch, getState) {
@@ -29,7 +29,7 @@ const artistActionHandlers = {
         monitored
       } = payload;
 
-      const series = _.find(getState().series.items, { id });
+      const artist = _.find(getState().artist.items, { id });
 
       dispatch(updateItem({
         id,
@@ -41,7 +41,7 @@ const artistActionHandlers = {
         url: `/artist/${id}`,
         method: 'PUT',
         data: JSON.stringify({
-          ...series,
+          ...artist,
           monitored
         }),
         dataType: 'json'
@@ -74,8 +74,8 @@ const artistActionHandlers = {
         monitored
       } = payload;
 
-      const series = _.find(getState().series.items, { id });
-      const seasons = _.cloneDeep(series.seasons);
+      const artist = _.find(getState().artist.items, { id });
+      const seasons = _.cloneDeep(artist.seasons);
       const season = _.find(seasons, { seasonNumber });
 
       season.isSaving = true;
@@ -92,7 +92,7 @@ const artistActionHandlers = {
         url: `/artist/${id}`,
         method: 'PUT',
         data: JSON.stringify({
-          ...series,
+          ...artist,
           seasons
         }),
         dataType: 'json'
@@ -122,7 +122,7 @@ const artistActionHandlers = {
         dispatch(updateItem({
           id,
           section,
-          seasons: series.seasons
+          seasons: artist.seasons
         }));
       });
     };

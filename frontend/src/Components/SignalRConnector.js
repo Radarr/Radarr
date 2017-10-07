@@ -132,8 +132,8 @@ class SignalRConnector extends Component {
       return;
     }
 
-    if (name === 'series') {
-      this.handleSeries(body);
+    if (name === 'artist') {
+      this.handleArtist(body);
       return;
     }
 
@@ -225,9 +225,9 @@ class SignalRConnector extends Component {
     this.props.fetchHealth();
   }
 
-  handleSeries = (body) => {
+  handleArtist = (body) => {
     const action = body.action;
-    const section = 'series';
+    const section = 'artist';
 
     if (action === 'updated') {
       this.props.updateItem({ section, ...body.resource });

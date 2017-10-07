@@ -116,7 +116,7 @@ class ImportArtist extends Component {
           {
             !rootFoldersError && rootFoldersPopulated && !unmappedFolders.length &&
               <div>
-                All series in {path} have been imported
+                All artist in {path} have been imported
               </div>
           }
 

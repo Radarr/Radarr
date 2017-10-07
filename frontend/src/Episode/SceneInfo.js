@@ -10,7 +10,7 @@ function SceneInfo(props) {
     sceneEpisodeNumber,
     sceneAbsoluteEpisodeNumber,
     alternateTitles,
-    seriesType
+    artistType
   } = props;
 
   return (
@@ -36,7 +36,7 @@ function SceneInfo(props) {
       }
 
       {
-        seriesType === 'anime' && sceneAbsoluteEpisodeNumber !== undefined &&
+        artistType === 'anime' && sceneAbsoluteEpisodeNumber !== undefined &&
           <DescriptionListItem
             titleClassName={styles.title}
             descriptionClassName={styles.description}
@@ -77,7 +77,7 @@ SceneInfo.propTypes = {
   sceneEpisodeNumber: PropTypes.number,
   sceneAbsoluteEpisodeNumber: PropTypes.number,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  seriesType: PropTypes.string
+  artistType: PropTypes.string
 };
 
 export default SceneInfo;

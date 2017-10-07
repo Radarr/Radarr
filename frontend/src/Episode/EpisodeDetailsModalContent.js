@@ -61,7 +61,7 @@ class EpisodeDetailsModalContent extends Component {
       onModalClose
     } = this.props;
 
-    const seriesLink = `/artist/${nameSlug}`;
+    const artistLink = `/artist/${nameSlug}`;
 
     return (
       <ModalContent
@@ -149,7 +149,7 @@ class EpisodeDetailsModalContent extends Component {
             showOpenArtistButton &&
               <Button
                 className={styles.openSeriesButton}
-                to={seriesLink}
+                to={artistLink}
                 onPress={onModalClose}
               >
                 Open Artist

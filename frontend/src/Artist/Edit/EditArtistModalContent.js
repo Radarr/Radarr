@@ -36,7 +36,6 @@ class EditArtistModalContent extends Component {
       albumFolder,
       qualityProfileId,
       languageProfileId,
-      // seriesType,
       path,
       tags
     } = item;

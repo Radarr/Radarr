@@ -54,7 +54,7 @@ class ArtistDetailsPageConnector extends Component {
     if (!nameSlug) {
       return (
         <NotFound
-          message="Sorry, that series cannot be found."
+          message="Sorry, that artist cannot be found."
         />
       );
     }

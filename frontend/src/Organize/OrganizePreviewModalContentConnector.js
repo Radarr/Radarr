@@ -14,14 +14,14 @@ function createMapStateToProps() {
     (state) => state.organizePreview,
     (state) => state.settings.naming,
     createArtistSelector(),
-    (organizePreview, naming, series) => {
+    (organizePreview, naming, artist) => {
       const props = { ...organizePreview };
       props.isFetching = organizePreview.isFetching || naming.isFetching;
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
       props.renameTracks = naming.item.renameTracks;
       props.trackFormat = naming.item['standardTrackFormat'];
-      props.path = series.path;
+      props.path = artist.path;
 
       return props;
     }

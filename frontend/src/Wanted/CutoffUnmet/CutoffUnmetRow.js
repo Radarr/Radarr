@@ -17,7 +17,7 @@ function CutoffUnmetRow(props) {
   const {
     id,
     trackFileId,
-    series,
+    artist,
     seasonNumber,
     episodeNumber,
     absoluteEpisodeNumber,
@@ -50,12 +50,12 @@ function CutoffUnmetRow(props) {
             return null;
           }
 
-          if (name === 'series.sortName') {
+          if (name === 'artist.sortName') {
             return (
               <TableRowCell key={name}>
                 <ArtistNameLink
-                  titleSlug={series.titleSlug}
-                  title={series.title}
+                  titleSlug={artist.titleSlug}
+                  title={artist.title}
                 />
               </TableRowCell>
             );
@@ -71,7 +71,7 @@ function CutoffUnmetRow(props) {
                   seasonNumber={seasonNumber}
                   episodeNumber={episodeNumber}
                   absoluteEpisodeNumber={absoluteEpisodeNumber}
-                  seriesType={series.seriesType}
+                  artistType={artist.artistType}
                   sceneSeasonNumber={sceneSeasonNumber}
                   sceneEpisodeNumber={sceneEpisodeNumber}
                   sceneAbsoluteEpisodeNumber={sceneAbsoluteEpisodeNumber}
@@ -85,7 +85,7 @@ function CutoffUnmetRow(props) {
               <TableRowCell key={name}>
                 <EpisodeTitleLink
                   albumId={id}
-                  artistId={series.id}
+                  artistId={artist.id}
                   episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
                   episodeTitle={title}
                   showOpenArtistButton={true}
@@ -136,7 +136,7 @@ function CutoffUnmetRow(props) {
               <EpisodeSearchCellConnector
                 key={name}
                 albumId={id}
-                artistId={series.id}
+                artistId={artist.id}
                 episodeTitle={title}
                 episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
                 showOpenArtistButton={true}
@@ -154,7 +154,7 @@ function CutoffUnmetRow(props) {
 CutoffUnmetRow.propTypes = {
   id: PropTypes.number.isRequired,
   trackFileId: PropTypes.number,
-  series: PropTypes.object.isRequired,
+  artist: PropTypes.object.isRequired,
   seasonNumber: PropTypes.number.isRequired,
   episodeNumber: PropTypes.number.isRequired,
   absoluteEpisodeNumber: PropTypes.number,

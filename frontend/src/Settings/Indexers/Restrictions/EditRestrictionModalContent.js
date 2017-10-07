@@ -76,7 +76,7 @@ function EditRestrictionModalContent(props) {
             <FormInputGroup
               type={inputTypes.TAG}
               name="tags"
-              helpText="Restrictions will apply to series at least one matching tag. Leave blank to apply to all series"
+              helpText="Restrictions will apply to artist at least one matching tag. Leave blank to apply to all artist"
               {...tags}
               onChange={onInputChange}
             />

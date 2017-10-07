@@ -20,7 +20,7 @@ export const defaultState = {
   pendingChanges: {}
 };
 
-const reducerSection = 'series';
+const reducerSection = 'artist';
 
 const artistReducers = handleActions({
 

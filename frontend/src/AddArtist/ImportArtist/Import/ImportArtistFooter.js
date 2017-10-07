@@ -23,15 +23,13 @@ class ImportArtistFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
-      defaultAlbumFolder,
-      defaultSeriesType
+      defaultAlbumFolder
     } = props;
 
     this.state = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
       languageProfileId: defaultLanguageProfileId,
-      seriesType: defaultSeriesType,
       albumFolder: defaultAlbumFolder
     };
   }
@@ -41,12 +39,10 @@ class ImportArtistFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
-      // defaultSeriesType,
       defaultAlbumFolder,
       isMonitorMixed,
       isQualityProfileIdMixed,
       isLanguageProfileIdMixed,
-      // isSeriesTypeMixed,
       isAlbumFolderMixed
     } = this.props;
 
@@ -54,7 +50,6 @@ class ImportArtistFooter extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
-      // seriesType,
       albumFolder
     } = this.state;
 
@@ -108,7 +103,6 @@ class ImportArtistFooter extends Component {
       isMonitorMixed,
       isQualityProfileIdMixed,
       isLanguageProfileIdMixed,
-      // isSeriesTypeMixed,
       showLanguageProfile,
       onImportPress
     } = this.props;
@@ -117,7 +111,6 @@ class ImportArtistFooter extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
-      // seriesType,
       albumFolder
     } = this.state;
 
@@ -227,12 +220,10 @@ ImportArtistFooter.propTypes = {
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
   defaultLanguageProfileId: PropTypes.number,
-  defaultSeriesType: PropTypes.string.isRequired,
   defaultAlbumFolder: PropTypes.bool.isRequired,
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
   isLanguageProfileIdMixed: PropTypes.bool.isRequired,
-  // isSeriesTypeMixed: PropTypes.bool.isRequired,
   isAlbumFolderMixed: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,

@@ -11,14 +11,14 @@ function createMapStateToProps() {
     createClientSideCollectionSelector(),
     createUISettingsSelector(),
     createDimensionsSelector(),
-    (posterOptions, series, uiSettings, dimensions) => {
+    (posterOptions, artist, uiSettings, dimensions) => {
       return {
         posterOptions,
         showRelativeDates: uiSettings.showRelativeDates,
         shortDateFormat: uiSettings.shortDateFormat,
         timeFormat: uiSettings.timeFormat,
         isSmallScreen: dimensions.isSmallScreen,
-        ...series
+        ...artist
       };
     }
   );
@@ -29,5 +29,5 @@ export default connectSection(
   undefined,
   undefined,
   { withRef: true },
-  { section: 'series', uiSection: 'artistIndex' }
+  { section: 'artist', uiSection: 'artistIndex' }
 )(ArtistIndexPosters);

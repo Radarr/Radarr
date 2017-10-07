@@ -21,9 +21,9 @@ function createMapStateToProps() {
   return createSelector(
     createImportArtistItemSelector(),
     createAllArtistSelector(),
-    (item, series) => {
+    (item, artist) => {
       const selectedArtist = item && item.selectedArtist;
-      const isExistingArtist = !!selectedArtist && _.some(series, { foreignArtistId: selectedArtist.foreignArtistId });
+      const isExistingArtist = !!selectedArtist && _.some(artist, { foreignArtistId: selectedArtist.foreignArtistId });
 
       return {
         ...item,
@@ -59,7 +59,6 @@ class ImportArtistRowConnector extends Component {
     const {
       items,
       monitor,
-      // seriesType,
       albumFolder
     } = this.props;
 
@@ -81,7 +80,6 @@ ImportArtistRowConnector.propTypes = {
   rootFolderId: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   monitor: PropTypes.string,
-  // seriesType: PropTypes.string,
   albumFolder: PropTypes.bool,
   items: PropTypes.arrayOf(PropTypes.object),
   queueLookupArtist: PropTypes.func.isRequired,

@@ -28,18 +28,18 @@ function testLocalStorage() {
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.series,
+    (state) => state.artist,
     (state) => state.tags,
     (state) => state.settings,
     (state) => state.app,
     createDimensionsSelector(),
-    (series, tags, settings, app, dimensions) => {
-      const isPopulated = series.isPopulated &&
+    (artist, tags, settings, app, dimensions) => {
+      const isPopulated = artist.isPopulated &&
         tags.isPopulated &&
         settings.qualityProfiles.isPopulated &&
         settings.ui.isPopulated;
 
-      const hasError = !!series.error ||
+      const hasError = !!artist.error ||
         !!tags.error ||
         !!settings.qualityProfiles.error ||
         !!settings.ui.error;
@@ -47,7 +47,7 @@ function createMapStateToProps() {
       return {
         isPopulated,
         hasError,
-        seriesError: series.error,
+        artistError: artist.error,
         tagsError: tags.error,
         qualityProfilesError: settings.qualityProfiles.error,
         uiSettingsError: settings.ui.error,

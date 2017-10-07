@@ -22,11 +22,11 @@ const artistEditorActionHandlers = {
 
       promise.done((data) => {
         dispatch(batchActions([
-          ...data.map((series) => {
+          ...data.map((artist) => {
             return updateItem({
-              id: series.id,
-              section: 'series',
-              ...series
+              id: artist.id,
+              section: 'artist',
+              ...artist
             });
           }),
 

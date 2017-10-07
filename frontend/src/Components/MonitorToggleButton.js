@@ -39,7 +39,7 @@ class MonitorToggleButton extends Component {
           className={styles.disabledButton}
           size={size}
           name={iconName}
-          title="Cannot toogle monitored state when series is unmonitored"
+          title="Cannot toogle monitored state when artist is unmonitored"
         />
       );
     }

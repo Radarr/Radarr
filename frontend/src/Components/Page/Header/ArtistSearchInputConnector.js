@@ -8,9 +8,9 @@ import ArtistSearchInput from './ArtistSearchInput';
 function createMapStateToProps() {
   return createSelector(
     createAllArtistSelector(),
-    (series) => {
+    (artist) => {
       return {
-        series: _.sortBy(series, 'sortName')
+        artist: _.sortBy(artist, 'sortName')
       };
     }
   );
@@ -18,7 +18,7 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onGoToSeries(nameSlug) {
+    onGoToArtist(nameSlug) {
       dispatch(push(`${window.Sonarr.urlBase}/artist/${nameSlug}`));
     },
 

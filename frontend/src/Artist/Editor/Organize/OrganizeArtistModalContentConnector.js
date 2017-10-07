@@ -13,11 +13,11 @@ function createMapStateToProps() {
     (state, { artistIds }) => artistIds,
     createAllArtistSelector(),
     (artistIds, allArtists) => {
-      const series = _.intersectionWith(allArtists, artistIds, (s, id) => {
+      const artist = _.intersectionWith(allArtists, artistIds, (s, id) => {
         return s.id === id;
       });
 
-      const sortedArtist = _.orderBy(series, 'sortName');
+      const sortedArtist = _.orderBy(artist, 'sortName');
       const artistNames = _.map(sortedArtist, 'artistName');
 
       return {

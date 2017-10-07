@@ -5,7 +5,6 @@ import SelectInput from 'Components/Form/SelectInput';
 import LanguageProfileSelectInputConnector from 'Components/Form/LanguageProfileSelectInputConnector';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
-// import SeriesTypeSelectInput from 'Components/Form/SeriesTypeSelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import TagsModal from './Tags/TagsModal';

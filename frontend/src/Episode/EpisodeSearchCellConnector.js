@@ -13,7 +13,7 @@ function createMapStateToProps() {
     (state, { sceneSeasonNumber }) => sceneSeasonNumber,
     createArtistSelector(),
     createCommandsSelector(),
-    (albumId, sceneSeasonNumber, series, commands) => {
+    (albumId, sceneSeasonNumber, artist, commands) => {
       const isSearching = _.some(commands, (command) => {
         const episodeSearch = command.name === commandNames.EPISODE_SEARCH;
 
@@ -25,8 +25,8 @@ function createMapStateToProps() {
       });
 
       return {
-        artistMonitored: series.monitored,
-        seriesType: series.seriesType,
+        artistMonitored: artist.monitored,
+        artistType: artist.artistType,
         isSearching
       };
     }

@@ -42,13 +42,13 @@ namespace Lidarr.Api.V3.Albums
                 return MapToResource(_albumService.GetAlbumsByArtist(artistId), false);
             }
 
-            string episodeIdsValue = albumIdsQuery.Value.ToString();
+            string albumIdsValue = albumIdsQuery.Value.ToString();
 
-            var episodeIds = episodeIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            var albumIds = albumIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                             .Select(e => Convert.ToInt32(e))
                                             .ToList();
 
-            return MapToResource(_albumService.GetAlbums(episodeIds), false);
+            return MapToResource(_albumService.GetAlbums(albumIds), false);
         }
 
         private Response SetAlbumMonitored(int id)

@@ -40,7 +40,7 @@ class BlacklistRow extends Component {
 
   render() {
     const {
-      series,
+      artist,
       sourceTitle,
       language,
       quality,
@@ -64,12 +64,12 @@ class BlacklistRow extends Component {
               return null;
             }
 
-            if (name === 'series.sortName') {
+            if (name === 'artist.sortName') {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    nameSlug={series.nameSlug}
-                    artistName={series.artistName}
+                    nameSlug={artist.nameSlug}
+                    artistName={artist.artistName}
                   />
                 </TableRowCell>
               );
@@ -163,7 +163,7 @@ class BlacklistRow extends Component {
 
 BlacklistRow.propTypes = {
   id: PropTypes.number.isRequired,
-  series: PropTypes.object.isRequired,
+  artist: PropTypes.object.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,

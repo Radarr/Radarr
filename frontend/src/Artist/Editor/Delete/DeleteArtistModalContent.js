@@ -43,7 +43,7 @@ class DeleteArtistModalContent extends Component {
 
   render() {
     const {
-      series,
+      artist,
       onModalClose
     } = this.props;
     const deleteFiles = this.state.deleteFiles;
@@ -57,13 +57,13 @@ class DeleteArtistModalContent extends Component {
         <ModalBody>
           <div>
             <FormGroup>
-              <FormLabel>{`Delete Artist Folder${series.length > 1 ? 's' : ''}`}</FormLabel>
+              <FormLabel>{`Delete Artist Folder${artist.length > 1 ? 's' : ''}`}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="deleteFiles"
                 value={deleteFiles}
-                helpText={`Delete Artist Folder${series.length > 1 ? 's' : ''} and all contents`}
+                helpText={`Delete Artist Folder${artist.length > 1 ? 's' : ''} and all contents`}
                 kind={kinds.DANGER}
                 onChange={this.onDeleteFilesChange}
               />
@@ -71,12 +71,12 @@ class DeleteArtistModalContent extends Component {
           </div>
 
           <div className={styles.message}>
-            {`Are you sure you want to delete ${series.length} selected artist${series.length > 1 ? 's' : ''}${deleteFiles ? ' and all contents' : ''}?`}
+            {`Are you sure you want to delete ${artist.length} selected artist${artist.length > 1 ? 's' : ''}${deleteFiles ? ' and all contents' : ''}?`}
           </div>
 
           <ul>
             {
-              series.map((s) => {
+              artist.map((s) => {
                 return (
                   <li key={s.artistName}>
                     <span>{s.artistName}</span>
@@ -115,7 +115,7 @@ class DeleteArtistModalContent extends Component {
 }
 
 DeleteArtistModalContent.propTypes = {
-  series: PropTypes.arrayOf(PropTypes.object).isRequired,
+  artist: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteSelectedPress: PropTypes.func.isRequired
 };

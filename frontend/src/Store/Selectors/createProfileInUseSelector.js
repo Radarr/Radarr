@@ -6,12 +6,12 @@ function createProfileInUseSelector(profileProp) {
   return createSelector(
     (state, { id }) => id,
     createAllArtistSelector(),
-    (id, series) => {
+    (id, artist) => {
       if (!id) {
         return false;
       }
 
-      return _.some(series, { [profileProp]: id });
+      return _.some(artist, { [profileProp]: id });
     }
   );
 }

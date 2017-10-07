@@ -146,7 +146,7 @@ class AddNewArtist extends Component {
                 <div className={styles.noResults}>Couldn't find any results for '{term}'</div>
                 <div>You can also search using MusicBrainz ID of a show. eg. lidarr:71663</div>
                 <div>
-                  <Link to="https://github.com/Sonarr/Sonarr/wiki/FAQ#why-cant-i-add-a-new-series-when-i-know-the-tvdb-id">
+                  <Link to="https://github.com/Lidarr/Lidarr/wiki/FAQ#why-cant-i-add-a-new-artist-when-i-know-the-tvdb-id">
                     Why can't I find my artist?
                   </Link>
                 </div>

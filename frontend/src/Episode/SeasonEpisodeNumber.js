@@ -9,16 +9,16 @@ function SeasonEpisodeNumber(props) {
     episodeNumber,
     absoluteEpisodeNumber,
     airDate,
-    seriesType
+    artistType
   } = props;
 
-  if (seriesType === 'daily' && airDate) {
+  if (artistType === 'daily' && airDate) {
     return (
       <span>{airDate}</span>
     );
   }
 
-  if (seriesType === 'anime') {
+  if (artistType === 'anime') {
     return (
       <span>
         {seasonNumber}x{padNumber(episodeNumber, 2)}
@@ -45,7 +45,7 @@ SeasonEpisodeNumber.propTypes = {
   episodeNumber: PropTypes.number.isRequired,
   absoluteEpisodeNumber: PropTypes.number,
   airDate: PropTypes.string,
-  seriesType: PropTypes.string
+  artistType: PropTypes.string
 };
 
 export default SeasonEpisodeNumber;

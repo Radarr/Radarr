@@ -87,7 +87,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Create metadata files when episodes are imported or series are refreshed
+          Create metadata files when episodes are imported or artist are refreshed
         </div>
 
         <Link

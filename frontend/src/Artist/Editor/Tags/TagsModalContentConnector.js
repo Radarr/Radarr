@@ -11,11 +11,11 @@ function createMapStateToProps() {
     createAllArtistSelector(),
     createTagsSelector(),
     (artistIds, allArtists, tagList) => {
-      const series = _.intersectionWith(allArtists, artistIds, (s, id) => {
+      const artist = _.intersectionWith(allArtists, artistIds, (s, id) => {
         return s.id === id;
       });
 
-      const artistTags = _.uniq(_.concat(..._.map(series, 'tags')));
+      const artistTags = _.uniq(_.concat(..._.map(artist, 'tags')));
 
       return {
         artistTags,

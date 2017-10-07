@@ -216,9 +216,9 @@ class ArtistIndexBanners extends Component {
       showQualityProfile
     } = bannerOptions;
 
-    const series = items[rowIndex * columnCount + columnIndex];
+    const artist = items[rowIndex * columnCount + columnIndex];
 
-    if (!series) {
+    if (!artist) {
       return null;
     }
 
@@ -236,7 +236,7 @@ class ArtistIndexBanners extends Component {
         shortDateFormat={shortDateFormat}
         timeFormat={timeFormat}
         style={style}
-        {...series}
+        {...artist}
       />
     );
   }

@@ -17,31 +17,31 @@ const albumStudioActionHandlers = {
       } = payload;
 
       let monitoringOptions = null;
-      const series = [];
-      const allArtists = getState().series.items;
+      const artist = [];
+      const allArtists = getState().artist.items;
 
       artistIds.forEach((id) => {
         const s = _.find(allArtists, { id });
-        const seriesToUpdate = { id };
+        const artistToUpdate = { id };
 
         if (payload.hasOwnProperty('monitored')) {
-          seriesToUpdate.monitored = monitored;
+          artistToUpdate.monitored = monitored;
         }
 
         if (monitor) {
           const {
             seasons,
-            options: seriesMonitoringOptions
+            options: artistMonitoringOptions
           } = getMonitoringOptions(_.cloneDeep(s.seasons), monitor);
 
           if (!monitoringOptions) {
-            monitoringOptions = seriesMonitoringOptions;
+            monitoringOptions = artistMonitoringOptions;
           }
 
-          seriesToUpdate.seasons = seasons;
+          artistToUpdate.seasons = seasons;
         }
 
-        series.push(seriesToUpdate);
+        artist.push(artistToUpdate);
       });
 
       dispatch(set({
@@ -53,7 +53,7 @@ const albumStudioActionHandlers = {
         url: '/albumStudio',
         method: 'POST',
         data: JSON.stringify({
-          series,
+          artist,
           monitoringOptions
         }),
         dataType: 'json'

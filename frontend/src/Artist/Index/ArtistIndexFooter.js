@@ -4,15 +4,15 @@ import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import styles from './ArtistIndexFooter.css';
 
-function ArtistIndexFooter({ series }) {
-  const count = series.length;
+function ArtistIndexFooter({ artist }) {
+  const count = artist.length;
   let tracks = 0;
   let trackFiles = 0;
   let ended = 0;
   let continuing = 0;
   let monitored = 0;
 
-  series.forEach((s) => {
+  artist.forEach((s) => {
     tracks += s.trackCount || 0;
     trackFiles += s.trackFileCount || 0;
 
@@ -98,7 +98,7 @@ function ArtistIndexFooter({ series }) {
 }
 
 ArtistIndexFooter.propTypes = {
-  series: PropTypes.arrayOf(PropTypes.object).isRequired
+  artist: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default ArtistIndexFooter;

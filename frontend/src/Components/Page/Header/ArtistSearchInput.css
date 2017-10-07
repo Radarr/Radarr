@@ -36,14 +36,14 @@
   flex-grow: 1;
 }
 
-.seriesContainer {
+.artistContainer {
   @add-mixin scrollbar;
   @add-mixin scrollbarTrack;
   @add-mixin scrollbarThumb;
 }
 
 .containerOpen {
-  .seriesContainer {
+  .artistContainer {
     position: absolute;
     top: 42px;
     z-index: 1;
@@ -80,7 +80,7 @@
   color: $disabledColor;
 }
 
-.addNewSeriesSuggestion {
+.addNewArtistSuggestion {
   padding: 0 3px;
   cursor: pointer;
 }

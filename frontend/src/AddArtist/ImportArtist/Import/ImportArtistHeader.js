@@ -78,7 +78,7 @@ function ImportArtistHeader(props) {
 
       <VirtualTableHeaderCell
         className={styles.artist}
-        name="series"
+        name="artist"
       >
         Artist
       </VirtualTableHeaderCell>

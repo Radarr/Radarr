@@ -19,10 +19,10 @@ export const defaultState = {
   recentFolders: [],
   importMode: 'move',
   sortPredicates: {
-    series: function(item, direction) {
-      const series = item.series;
+    artist: function(item, direction) {
+      const artist = item.artist;
 
-      return series ? series.sortName : '';
+      return artist ? artist.sortName : '';
     },
 
     quality: function(item, direction) {

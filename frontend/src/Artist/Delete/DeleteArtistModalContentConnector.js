@@ -9,8 +9,8 @@ import DeleteArtistModalContent from './DeleteArtistModalContent';
 function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
-    (series) => {
-      return series;
+    (artist) => {
+      return artist;
     }
   );
 }

@@ -6,9 +6,9 @@ import BlacklistRow from './BlacklistRow';
 function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
-    (series) => {
+    (artist) => {
       return {
-        series
+        artist
       };
     }
   );

@@ -9,7 +9,7 @@ function getIconName(eventType) {
   switch (eventType) {
     case 'grabbed':
       return icons.DOWNLOADING;
-    case 'seriesFolderImported':
+    case 'artistFolderImported':
       return icons.DRIVE;
     case 'downloadFolderImported':
       return icons.DOWNLOADED;
@@ -37,7 +37,7 @@ function getTooltip(eventType, data) {
   switch (eventType) {
     case 'grabbed':
       return `Album grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
-    case 'seriesFolderImported':
+    case 'artistFolderImported':
       return 'Track imported from artist folder';
     case 'downloadFolderImported':
       return 'Track downloaded successfully and picked up from download client';

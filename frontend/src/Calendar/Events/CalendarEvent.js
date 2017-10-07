@@ -66,7 +66,7 @@ class CalendarEvent extends Component {
     const downloading = !!(queueItem || grabbed);
     const isMonitored = artist.monitored && monitored;
     const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored);
-    // const missingAbsoluteNumber = artist.seriesType === 'anime' && seasonNumber > 0 && !absoluteEpisodeNumber;
+    // const missingAbsoluteNumber = artist.artistType === 'anime' && seasonNumber > 0 && !absoluteEpisodeNumber;
 
     return (
       <div>

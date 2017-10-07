@@ -9,8 +9,8 @@ function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
     createTagsSelector(),
-    (series, tagList) => {
-      const tags = _.reduce(series.tags, (acc, tag) => {
+    (artist, tagList) => {
+      const tags = _.reduce(artist.tags, (acc, tag) => {
         const matchingTag = _.find(tagList, { id: tag });
 
         if (matchingTag) {

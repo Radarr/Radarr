@@ -6,8 +6,8 @@ function createArtistSelector() {
   return createSelector(
     (state, { artistId }) => artistId,
     createAllArtistSelector(),
-    (artistId, series) => {
-      return _.find(series, { id: artistId });
+    (artistId, artist) => {
+      return _.find(artist, { id: artistId });
     }
   );
 }

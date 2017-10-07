@@ -22,7 +22,7 @@ const links = [
     iconName: icons.ARTIST_CONTINUING,
     title: 'Artist',
     to: '/',
-    alias: '/series',
+    alias: '/artist',
     children: [
       {
         title: 'Add New',

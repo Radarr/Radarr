@@ -1,6 +1,6 @@
 import getMonitoringOptions from 'Utilities/Series/getMonitoringOptions';
 
-function getNewSeries(series, payload) {
+function getNewSeries(artist, payload) {
   const {
     rootFolderPath,
     monitor,
@@ -17,22 +17,22 @@ function getNewSeries(series, payload) {
   // const {
     // seasons,
     // options: addOptions
-  // } = getMonitoringOptions(series.seasons, monitor);
+  // } = getMonitoringOptions(artist.seasons, monitor);
 
   // addOptions.searchForMissingAlbums = searchForMissingAlbums;
-  // series.addOptions = addOptions;
-  // series.seasons = seasons;
-  series.monitored = true;
-  series.qualityProfileId = qualityProfileId;
-  series.languageProfileId = languageProfileId;
-  series.rootFolderPath = rootFolderPath;
-  series.artistType = artistType;
-  series.albumFolder = albumFolder;
-  series.primaryAlbumTypes = primaryAlbumTypes;
-  series.secondaryAlbumTypes = secondaryAlbumTypes;
-  series.tags = tags;
+  // artist.addOptions = addOptions;
+  // artist.seasons = seasons;
+  artist.monitored = true;
+  artist.qualityProfileId = qualityProfileId;
+  artist.languageProfileId = languageProfileId;
+  artist.rootFolderPath = rootFolderPath;
+  artist.artistType = artistType;
+  artist.albumFolder = albumFolder;
+  artist.primaryAlbumTypes = primaryAlbumTypes;
+  artist.secondaryAlbumTypes = secondaryAlbumTypes;
+  artist.tags = tags;
 
-  return series;
+  return artist;
 }
 
 export default getNewSeries;

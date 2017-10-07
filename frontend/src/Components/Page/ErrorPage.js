@@ -7,7 +7,7 @@ function ErrorPage(props) {
   const {
     version,
     isLocalStorageSupported,
-    seriesError,
+    artistError,
     tagsError,
     qualityProfilesError,
     uiSettingsError
@@ -17,10 +17,10 @@ function ErrorPage(props) {
 
   if (!isLocalStorageSupported) {
     errorMessage = 'Local Storage is not supported or disabled. A plugin or private browsing may have disabled it.';
-  } else if (seriesError) {
-    errorMessage = getErrorMessage(seriesError, 'Failed to load artist from API');
+  } else if (artistError) {
+    errorMessage = getErrorMessage(artistError, 'Failed to load artist from API');
   } else if (tagsError) {
-    errorMessage = getErrorMessage(seriesError, 'Failed to load artist from API');
+    errorMessage = getErrorMessage(artistError, 'Failed to load artist from API');
   } else if (qualityProfilesError) {
     errorMessage = getErrorMessage(qualityProfilesError, 'Failed to load quality profiles from API');
   } else if (uiSettingsError) {
@@ -43,7 +43,7 @@ function ErrorPage(props) {
 ErrorPage.propTypes = {
   version: PropTypes.string.isRequired,
   isLocalStorageSupported: PropTypes.bool.isRequired,
-  seriesError: PropTypes.object,
+  artistError: PropTypes.object,
   tagsError: PropTypes.object,
   qualityProfilesError: PropTypes.object,
   uiSettingsError: PropTypes.object

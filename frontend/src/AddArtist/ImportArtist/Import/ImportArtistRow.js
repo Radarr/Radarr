@@ -16,7 +16,6 @@ function ImportArtistRow(props) {
     qualityProfileId,
     languageProfileId,
     albumFolder,
-    // seriesType,
     selectedArtist,
     isExistingArtist,
     showLanguageProfile,
@@ -77,7 +76,7 @@ function ImportArtistRow(props) {
         />
       </VirtualTableRowCell>
 
-      <VirtualTableRowCell className={styles.series}>
+      <VirtualTableRowCell className={styles.artist}>
         <ImportArtistSelectArtistConnector
           id={id}
           isExistingArtist={isExistingArtist}
@@ -93,7 +92,6 @@ ImportArtistRow.propTypes = {
   monitor: PropTypes.string.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   languageProfileId: PropTypes.number.isRequired,
-  // seriesType: PropTypes.string.isRequired,
   albumFolder: PropTypes.bool.isRequired,
   selectedArtist: PropTypes.object,
   isExistingArtist: PropTypes.bool.isRequired,

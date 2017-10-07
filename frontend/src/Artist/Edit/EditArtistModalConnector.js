@@ -14,7 +14,7 @@ class EditArtistModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'series' });
+    this.props.clearPendingChanges({ section: 'artist' });
     this.props.onModalClose();
   }
 

@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 import { enableBatching } from 'redux-batched-actions';
 import { routerReducer } from 'react-router-redux';
 import app, { defaultState as defaultappState } from './appReducers';
-import addArtist, { defaultState as defaultAddSeriesState } from './addArtistReducers';
+import addArtist, { defaultState as defaultAddArtistState } from './addArtistReducers';
 import importArtist, { defaultState as defaultImportArtistState } from './importArtistReducers';
-import series, { defaultState as defaultArtistState } from './artistReducers';
+import artist, { defaultState as defaultArtistState } from './artistReducers';
 import artistIndex, { defaultState as defaultArtistIndexState } from './artistIndexReducers';
 import artistEditor, { defaultState as defaultArtistEditorState } from './artistEditorReducers';
 import albumStudio, { defaultState as defaultAlbumStudioState } from './albumStudioReducers';
@@ -31,9 +31,9 @@ import organizePreview, { defaultState as defaultOrganizePreviewState } from './
 
 export const defaultState = {
   app: defaultappState,
-  addArtist: defaultAddSeriesState,
+  addArtist: defaultAddArtistState,
   importArtist: defaultImportArtistState,
-  series: defaultArtistState,
+  artist: defaultArtistState,
   artistIndex: defaultArtistIndexState,
   artistEditor: defaultArtistEditorState,
   albumStudio: defaultAlbumStudioState,
@@ -63,7 +63,7 @@ export default enableBatching(combineReducers({
   app,
   addArtist,
   importArtist,
-  series,
+  artist,
   artistIndex,
   artistEditor,
   albumStudio,

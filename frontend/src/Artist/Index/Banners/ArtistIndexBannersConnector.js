@@ -11,14 +11,14 @@ function createMapStateToProps() {
     createClientSideCollectionSelector(),
     createUISettingsSelector(),
     createDimensionsSelector(),
-    (bannerOptions, series, uiSettings, dimensions) => {
+    (bannerOptions, artist, uiSettings, dimensions) => {
       return {
         bannerOptions,
         showRelativeDates: uiSettings.showRelativeDates,
         shortDateFormat: uiSettings.shortDateFormat,
         timeFormat: uiSettings.timeFormat,
         isSmallScreen: dimensions.isSmallScreen,
-        ...series
+        ...artist
       };
     }
   );
@@ -29,5 +29,5 @@ export default connectSection(
   undefined,
   undefined,
   { withRef: true },
-  { section: 'series', uiSection: 'artistIndex' }
+  { section: 'artist', uiSection: 'artistIndex' }
 )(ArtistIndexBanners);

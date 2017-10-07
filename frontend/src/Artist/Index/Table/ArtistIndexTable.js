@@ -69,7 +69,7 @@ class ArtistIndexTable extends Component {
       columns
     } = this.props;
 
-    const series = items[rowIndex];
+    const artist = items[rowIndex];
 
     return (
       <ArtistIndexItemConnector
@@ -77,7 +77,7 @@ class ArtistIndexTable extends Component {
         component={ArtistIndexRow}
         style={style}
         columns={columns}
-        {...series}
+        {...artist}
       />
     );
   }

@@ -68,7 +68,7 @@ class QueueRow extends Component {
       trackedDownloadStatus,
       statusMessages,
       errorMessage,
-      series,
+      artist,
       episode,
       quality,
       protocol,
@@ -131,23 +131,23 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'series.sortName') {
+            if (name === 'artist.sortName') {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    nameSlug={series.nameSlug}
-                    artistName={series.artistName}
+                    nameSlug={artist.nameSlug}
+                    artistName={artist.artistName}
                   />
                 </TableRowCell>
               );
             }
 
-            if (name === 'series') {
+            if (name === 'artist') {
               return (
                 <TableRowCell key={name}>
                   <ArtistNameLink
-                    nameSlug={series.nameSlug}
-                    artistName={series.artistName}
+                    nameSlug={artist.nameSlug}
+                    artistName={artist.artistName}
                   />
                 </TableRowCell>
               );
@@ -158,7 +158,7 @@ class QueueRow extends Component {
                 <TableRowCell key={name}>
                   <EpisodeTitleLink
                     albumId={episode.id}
-                    artistId={series.id}
+                    artistId={artist.id}
                     trackFileId={episode.trackFileId}
                     episodeTitle={episode.title}
                     showOpenArtistButton={true}
@@ -300,7 +300,7 @@ QueueRow.propTypes = {
   trackedDownloadStatus: PropTypes.string,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
-  series: PropTypes.object.isRequired,
+  artist: PropTypes.object.isRequired,
   episode: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   protocol: PropTypes.string.isRequired,
