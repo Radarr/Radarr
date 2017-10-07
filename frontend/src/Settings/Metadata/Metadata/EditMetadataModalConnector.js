@@ -20,7 +20,7 @@ class EditMetadataModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'metadatas' });
+    this.props.dispatchClearPendingChanges();
     this.props.onModalClose();
   }
 
@@ -39,7 +39,7 @@ class EditMetadataModalConnector extends Component {
 
 EditMetadataModalConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired
+  dispatchClearPendingChanges: PropTypes.func.isRequired
 };
 
 export default connect(null, createMapDispatchToProps)(EditMetadataModalConnector);
