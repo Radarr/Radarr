@@ -112,7 +112,7 @@ class HistoryRow extends Component {
               return (
                 <TableRowCell key={name}>
                   <EpisodeTitleLink
-                    episodeId={albumId}
+                    albumId={albumId}
                     episodeEntity={episodeEntities.EPISODES}
                     artistId={artist.id}
                     episodeTitle={album.title}

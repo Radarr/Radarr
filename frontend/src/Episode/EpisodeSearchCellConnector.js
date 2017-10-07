@@ -9,11 +9,11 @@ import EpisodeSearchCell from './EpisodeSearchCell';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { episodeId }) => episodeId,
+    (state, { albumId }) => albumId,
     (state, { sceneSeasonNumber }) => sceneSeasonNumber,
     createArtistSelector(),
     createCommandsSelector(),
-    (episodeId, sceneSeasonNumber, series, commands) => {
+    (albumId, sceneSeasonNumber, series, commands) => {
       const isSearching = _.some(commands, (command) => {
         const episodeSearch = command.name === commandNames.EPISODE_SEARCH;
 
@@ -21,7 +21,7 @@ function createMapStateToProps() {
           return false;
         }
 
-        return command.body.albumIds.indexOf(episodeId) > -1;
+        return command.body.albumIds.indexOf(albumId) > -1;
       });
 
       return {
@@ -38,7 +38,7 @@ function createMapDispatchToProps(dispatch, props) {
     onSearchPress(name, path) {
       dispatch(executeCommand({
         name: commandNames.EPISODE_SEARCH,
-        albumIds: [props.episodeId]
+        albumIds: [props.albumId]
       }));
     }
   };

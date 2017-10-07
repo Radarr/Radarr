@@ -47,9 +47,9 @@ class AlbumStudioRowConnector extends Component {
     });
   }
 
-  onAlbumMonitoredPress = (episodeId, monitored) => {
+  onAlbumMonitoredPress = (albumId, monitored) => {
     this.props.toggleEpisodeMonitored({
-      episodeId,
+      albumId,
       monitored: !monitored
     });
   }

@@ -119,7 +119,7 @@ class AgendaEvent extends Component {
 
         <EpisodeDetailsModal
           isOpen={this.state.isDetailsModalOpen}
-          episodeId={id}
+          albumId={id}
           episodeEntity={episodeEntities.CALENDAR}
           artistId={artist.id}
           episodeTitle={title}

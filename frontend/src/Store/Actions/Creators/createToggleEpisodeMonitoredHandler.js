@@ -5,32 +5,32 @@ function createToggleEpisodeMonitoredHandler(section, getFromState) {
   return function(payload) {
     return function(dispatch, getState) {
       const {
-        episodeId,
+        albumId,
         monitored
       } = payload;
 
       const state = getFromState(getState());
 
-      updateEpisodes(dispatch, section, state.items, [episodeId], {
+      updateEpisodes(dispatch, section, state.items, [albumId], {
         isSaving: true
       });
 
       const promise = $.ajax({
-        url: `/episode/${episodeId}`,
+        url: `/episode/${albumId}`,
         method: 'PUT',
         data: JSON.stringify({ monitored }),
         dataType: 'json'
       });
 
       promise.done(() => {
-        updateEpisodes(dispatch, section, state.items, [episodeId], {
+        updateEpisodes(dispatch, section, state.items, [albumId], {
           isSaving: false,
           monitored
         });
       });
 
       promise.fail(() => {
-        updateEpisodes(dispatch, section, state.items, [episodeId], {
+        updateEpisodes(dispatch, section, state.items, [albumId], {
           isSaving: false
         });
       });

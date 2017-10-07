@@ -193,7 +193,7 @@ class Queue extends Component {
                         return (
                           <QueueRowConnector
                             key={item.id}
-                            episodeId={item.albumId}
+                            albumId={item.albumId}
                             isSelected={selectedState[item.id]}
                             columns={columns}
                             {...item}

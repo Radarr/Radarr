@@ -44,7 +44,7 @@ class EpisodeDetailsModalContent extends Component {
 
   render() {
     const {
-      episodeId,
+      albumId,
       episodeEntity,
       artistId,
       artistName,
@@ -70,7 +70,7 @@ class EpisodeDetailsModalContent extends Component {
         <ModalHeader>
           <MonitorToggleButton
             className={styles.toggleButton}
-            id={episodeId}
+            id={albumId}
             monitored={monitored}
             size={18}
             isDisabled={!artistMonitored}
@@ -120,7 +120,7 @@ class EpisodeDetailsModalContent extends Component {
 
             <TabPanel className={styles.tabPanel}>
               <EpisodeSummaryConnector
-                episodeId={episodeId}
+                albumId={albumId}
                 episodeEntity={episodeEntity}
                 releaseDate={releaseDate}
                 albumLabel={albumLabel}
@@ -130,13 +130,13 @@ class EpisodeDetailsModalContent extends Component {
 
             <TabPanel className={styles.tabPanel}>
               <AlbumHistoryConnector
-                albumId={episodeId}
+                albumId={albumId}
               />
             </TabPanel>
 
             <TabPanel className={styles.tabPanel}>
               <EpisodeSearchConnector
-                albumId={episodeId}
+                albumId={albumId}
                 startInteractiveSearch={startInteractiveSearch}
                 onModalClose={onModalClose}
               />
@@ -168,7 +168,7 @@ class EpisodeDetailsModalContent extends Component {
 }
 
 EpisodeDetailsModalContent.propTypes = {
-  episodeId: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   episodeEntity: PropTypes.string.isRequired,
   artistId: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,

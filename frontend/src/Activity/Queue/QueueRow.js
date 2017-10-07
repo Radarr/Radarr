@@ -157,7 +157,7 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   <EpisodeTitleLink
-                    episodeId={episode.id}
+                    albumId={episode.id}
                     artistId={series.id}
                     trackFileId={episode.trackFileId}
                     episodeTitle={episode.title}

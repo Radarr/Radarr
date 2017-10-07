@@ -88,8 +88,8 @@ class EpisodeSummary extends Component {
         <div className={styles.overview}>
           {
             hasOverview ?
-            overview :
-            'No album overview.'
+              overview :
+              'No album overview.'
           }
         </div>
 

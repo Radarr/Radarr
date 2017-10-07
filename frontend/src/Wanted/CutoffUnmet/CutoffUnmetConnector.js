@@ -121,7 +121,7 @@ class CutoffUnmetConnector extends Component {
     } = this.props;
 
     this.props.batchToggleCutoffUnmetEpisodes({
-      episodeIds: selected,
+      albumIds: selected,
       monitored: filterKey !== 'monitored' || !filterValue
     });
   }

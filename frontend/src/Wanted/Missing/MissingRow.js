@@ -83,7 +83,7 @@ function MissingRow(props) {
             return (
               <TableRowCell key={name}>
                 <EpisodeTitleLink
-                  episodeId={id}
+                  albumId={id}
                   artistId={artist.id}
                   episodeEntity={episodeEntities.WANTED_MISSING}
                   episodeTitle={title}
@@ -109,7 +109,7 @@ function MissingRow(props) {
           //       className={styles.status}
           //     >
           //       <EpisodeStatusConnector
-          //         episodeId={id}
+          //         albumId={id}
           //         trackFileId={trackFileId}
           //         episodeEntity={episodeEntities.WANTED_MISSING}
           //       />
@@ -121,7 +121,7 @@ function MissingRow(props) {
             return (
               <EpisodeSearchCellConnector
                 key={name}
-                episodeId={id}
+                albumId={id}
                 artistId={artist.id}
                 episodeTitle={title}
                 episodeEntity={episodeEntities.WANTED_MISSING}

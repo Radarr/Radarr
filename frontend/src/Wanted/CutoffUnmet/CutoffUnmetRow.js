@@ -84,7 +84,7 @@ function CutoffUnmetRow(props) {
             return (
               <TableRowCell key={name}>
                 <EpisodeTitleLink
-                  episodeId={id}
+                  albumId={id}
                   artistId={series.id}
                   episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
                   episodeTitle={title}
@@ -123,7 +123,7 @@ function CutoffUnmetRow(props) {
                 className={styles.status}
               >
                 <EpisodeStatusConnector
-                  episodeId={id}
+                  albumId={id}
                   trackFileId={trackFileId}
                   episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}
                 />
@@ -135,7 +135,7 @@ function CutoffUnmetRow(props) {
             return (
               <EpisodeSearchCellConnector
                 key={name}
-                episodeId={id}
+                albumId={id}
                 artistId={series.id}
                 episodeTitle={title}
                 episodeEntity={episodeEntities.WANTED_CUTOFF_UNMET}

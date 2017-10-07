@@ -15,7 +15,7 @@ function createMapStateToProps() {
   return createSelector(
     createEpisodeSelector(),
     createArtistSelector(),
-    (episode, series) => {
+    (album, series) => {
       const {
         artistName,
         nameSlug,
@@ -28,7 +28,7 @@ function createMapStateToProps() {
         nameSlug,
         artistMonitored,
         seriesType,
-        ...episode
+        ...album
       };
     }
   );
@@ -63,7 +63,7 @@ class EpisodeDetailsModalContentConnector extends Component {
 
   _populate() {
     const artistId = this.props.artistId;
-    const albumId = this.props.episodeId;
+    const albumId = this.props.albumId;
     this.props.fetchTracks({ artistId, albumId });
     // this.props.fetchTrackFiles({ artistId, albumId });
   }
@@ -78,13 +78,13 @@ class EpisodeDetailsModalContentConnector extends Component {
 
   onMonitorAlbumPress = (monitored) => {
     const {
-      episodeId,
+      albumId,
       episodeEntity
     } = this.props;
 
     this.props.toggleEpisodeMonitored({
       episodeEntity,
-      episodeId,
+      albumId,
       monitored
     });
   }
@@ -103,7 +103,7 @@ class EpisodeDetailsModalContentConnector extends Component {
 }
 
 EpisodeDetailsModalContentConnector.propTypes = {
-  episodeId: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   episodeEntity: PropTypes.string.isRequired,
   artistId: PropTypes.number.isRequired,
   fetchTracks: PropTypes.func.isRequired,

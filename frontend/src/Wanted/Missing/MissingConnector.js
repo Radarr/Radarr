@@ -111,7 +111,7 @@ class MissingConnector extends Component {
     } = this.props;
 
     this.props.batchToggleMissingEpisodes({
-      episodeIds: selected,
+      albumIds: selected,
       monitored: filterKey !== 'monitored' || !filterValue
     });
   }

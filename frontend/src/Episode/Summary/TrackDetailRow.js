@@ -96,7 +96,7 @@ class TrackDetailRow extends Component {
                   className={styles.status}
                 >
                   <EpisodeStatusConnector
-                    episodeId={id}
+                    albumId={id}
                     trackFileId={trackFileId}
                   />
                 </TableRowCell>

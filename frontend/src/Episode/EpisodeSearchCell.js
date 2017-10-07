@@ -36,7 +36,7 @@ class EpisodeSearchCell extends Component {
 
   render() {
     const {
-      episodeId,
+      albumId,
       artistId,
       episodeTitle,
       isSearching,
@@ -59,7 +59,7 @@ class EpisodeSearchCell extends Component {
 
         <EpisodeDetailsModal
           isOpen={this.state.isDetailsModalOpen}
-          episodeId={episodeId}
+          albumId={albumId}
           artistId={artistId}
           episodeTitle={episodeTitle}
           selectedTab="search"
@@ -73,7 +73,7 @@ class EpisodeSearchCell extends Component {
 }
 
 EpisodeSearchCell.propTypes = {
-  episodeId: PropTypes.number.isRequired,
+  albumId: PropTypes.number.isRequired,
   artistId: PropTypes.number.isRequired,
   episodeTitle: PropTypes.string.isRequired,
   isSearching: PropTypes.bool.isRequired,

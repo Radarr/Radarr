@@ -112,7 +112,7 @@ class AlbumRow extends Component {
                   className={styles.title}
                 >
                   <EpisodeTitleLink
-                    episodeId={id}
+                    albumId={id}
                     artistId={artistId}
                     episodeTitle={title}
                     showOpenArtistButton={false}
@@ -183,7 +183,7 @@ class AlbumRow extends Component {
               return (
                 <EpisodeSearchCellConnector
                   key={name}
-                  episodeId={id}
+                  albumId={id}
                   artistId={artistId}
                   episodeTitle={title}
                 />

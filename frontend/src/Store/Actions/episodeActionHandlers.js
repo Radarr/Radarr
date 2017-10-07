@@ -14,7 +14,7 @@ const episodeActionHandlers = {
   [types.TOGGLE_EPISODE_MONITORED]: function(payload) {
     return function(dispatch, getState) {
       const {
-        episodeId: id,
+        albumId: id,
         episodeEntity = episodeEntities.EPISODES,
         monitored
       } = payload;
@@ -64,9 +64,9 @@ const episodeActionHandlers = {
       const episodeSection = _.last(episodeEntity.split('.'));
 
       dispatch(batchActions(
-        albumIds.map((episodeId) => {
+        albumIds.map((albumId) => {
           return updateItem({
-            id: episodeId,
+            id: albumId,
             section: episodeSection,
             isSaving: true
           });
@@ -82,9 +82,9 @@ const episodeActionHandlers = {
 
       promise.done((data) => {
         dispatch(batchActions(
-          albumIds.map((episodeId) => {
+          albumIds.map((albumId) => {
             return updateItem({
-              id: episodeId,
+              id: albumId,
               section: episodeSection,
               isSaving: false,
               monitored
@@ -95,9 +95,9 @@ const episodeActionHandlers = {
 
       promise.fail((xhr) => {
         dispatch(batchActions(
-          albumIds.map((episodeId) => {
+          albumIds.map((albumId) => {
             return updateItem({
-              id: episodeId,
+              id: albumId,
               section: episodeSection,
               isSaving: false
             });

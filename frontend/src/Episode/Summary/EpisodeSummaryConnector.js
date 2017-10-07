@@ -20,7 +20,7 @@ function createMapStateToProps() {
       return {
         network: episode.label,
         qualityProfileId: episode.profileId,
-        airDateUtc: episode.releaseDate,
+        releaseDate: episode.releaseDate,
         overview: episode.overview,
         items,
         columns: tracks.columns
