@@ -251,11 +251,13 @@ namespace NzbDrone.Core.MediaCover
         {
             EnsureCovers(message.Artist);
 
-            var albums = _albumService.GetAlbumsByArtist(message.Artist.Id);
-            foreach (Album album in albums)
-            {
-                EnsureAlbumCovers(album);
-            }
+            //Turn off for now, not using album images
+
+            //var albums = _albumService.GetAlbumsByArtist(message.Artist.Id);
+            //foreach (Album album in albums)
+            //{
+            //    EnsureAlbumCovers(album);
+            //}
             
             _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Artist));
         }
