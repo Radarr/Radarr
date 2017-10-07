@@ -141,6 +141,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.proper.X264-QCF", true)]
         [TestCase("Dexter - S01E01 - Title [HDTV-1080p]", false)]
         [TestCase("[HorribleSubs] Yowamushi Pedal - 32 [1080p]", false)]
+        [TestCase("Stripes (1981) 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
         public void should_parse_hdtv1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.HDTV1080p, proper);
