@@ -124,7 +124,7 @@ namespace NzbDrone.Api.REST
                 Get[ROOT_ROUTE] = options =>
                 {
 					var pagingSpec = ReadPagingResourceFromRequest();
-					if (pagingSpec.Page == 0 && pagingSpec.PageSize == 0)
+					if ((pagingSpec.Page == 0 && pagingSpec.PageSize == 0) || pagingSpec.PageSize == -1)
 					{
 						var all = GetResourceAll();
 						return all.AsResponse();

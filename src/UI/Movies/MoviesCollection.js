@@ -85,6 +85,11 @@ var Collection = PageableCollection.extend({
 	  if (this.mode === 'client') {
 	  	return {};
 	  }
+
+	  if (this.state.pageSize == -1) {
+	      return this.state;
+      }
+
       var direction = -1;
       if (resp.sortDirection.toLowerCase() === "descending") {
         direction = 1;
@@ -93,7 +98,7 @@ var Collection = PageableCollection.extend({
     },
 
     parseRecords : function(resp) {
-        if (resp && this.mode !== 'client') {
+        if (resp && this.mode !== 'client' && this.state.pageSize != 0 && this.state.pageSize != -1) {
             return resp.records;
         }
 
@@ -247,7 +252,7 @@ var Collection = PageableCollection.extend({
     },
 
     add : function(model, options) {
-      if (this.length >= this.state.pageSize) {
+      if (this.length >= this.state.pageSize && this.state.pageSize != -1) {
         return;
       }
       this.origAdd.call(this, model, options);
