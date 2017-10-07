@@ -61,6 +61,22 @@ namespace NzbDrone.Core.Parser
                 //Artist Discography
                 new Regex(@"^(?<artist>.+?)\W*(?<discograghy>Discograghy|Discografia).+(?<startyear>\d{4}).+(?<endyear>\d{4})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                 //Artist - Album (Year) Strict
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<airyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album (Year)
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<airyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album Year
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(\d{4}|\d{3})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] ReportTitleRegex = new[]

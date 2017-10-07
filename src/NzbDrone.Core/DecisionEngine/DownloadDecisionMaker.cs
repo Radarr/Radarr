@@ -62,6 +62,16 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(report.Title);
 
+                    if (!report.Artist.IsNullOrWhiteSpace())
+                    {
+                        parsedAlbumInfo.ArtistName = report.Artist;
+                    }
+
+                    if (!report.Album.IsNullOrWhiteSpace())
+                    {
+                        parsedAlbumInfo.AlbumTitle = report.Album;
+                    }
+
                     if (parsedAlbumInfo != null && !parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
                     {
                         var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);
