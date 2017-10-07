@@ -29,6 +29,8 @@ namespace Lidarr.Api.V3.Artist
         public string Overview { get; set; }
         public string ArtistType { get; set; }
         public string Disambiguation { get; set; }
+        public string PrimaryAlbumTypes { get; set; }
+        public string SecondaryAlbumTypes { get; set; }
         public List<Links> Links { get; set; }
 
         public int? AlbumCount { get; set; }
@@ -87,6 +89,9 @@ namespace Lidarr.Api.V3.Artist
                 ArtistType = model.ArtistType,
                 Disambiguation = model.Disambiguation,
 
+                PrimaryAlbumTypes = model.PrimaryAlbumTypes,
+                SecondaryAlbumTypes = model.SecondaryAlbumTypes,
+
                 Images = model.Images,
 
                 Albums = model.Albums.ToResource(),
@@ -142,6 +147,8 @@ namespace Lidarr.Api.V3.Artist
                 ProfileId = resource.QualityProfileId,
                 LanguageProfileId = resource.LanguageProfileId,
                 Links = resource.Links,
+                PrimaryAlbumTypes = resource.PrimaryAlbumTypes,
+                SecondaryAlbumTypes = resource.SecondaryAlbumTypes,
 
                 AlbumFolder = resource.AlbumFolder,
                 Monitored = resource.Monitored,

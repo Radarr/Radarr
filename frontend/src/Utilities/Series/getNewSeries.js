@@ -8,6 +8,8 @@ function getNewSeries(series, payload) {
     languageProfileId,
     artistType,
     albumFolder,
+    primaryAlbumTypes,
+    secondaryAlbumTypes,
     tags,
     searchForMissingAlbums = false
   } = payload;
@@ -26,6 +28,8 @@ function getNewSeries(series, payload) {
   series.rootFolderPath = rootFolderPath;
   series.artistType = artistType;
   series.albumFolder = albumFolder;
+  series.primaryAlbumTypes = primaryAlbumTypes;
+  series.secondaryAlbumTypes = secondaryAlbumTypes;
   series.tags = tags;
 
   return series;

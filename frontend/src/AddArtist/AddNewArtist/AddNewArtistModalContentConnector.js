@@ -60,6 +60,8 @@ class AddNewArtistModalContentConnector extends Component {
       qualityProfileId,
       languageProfileId,
       albumFolder,
+      primaryAlbumTypes,
+      secondaryAlbumTypes,
       tags
     } = this.props;
 
@@ -70,6 +72,8 @@ class AddNewArtistModalContentConnector extends Component {
       qualityProfileId: qualityProfileId.value,
       languageProfileId: languageProfileId.value,
       albumFolder: albumFolder.value,
+      primaryAlbumTypes: primaryAlbumTypes.value,
+      secondaryAlbumTypes: secondaryAlbumTypes.value,
       tags: tags.value,
       searchForMissingAlbums
     });
@@ -96,6 +100,8 @@ AddNewArtistModalContentConnector.propTypes = {
   qualityProfileId: PropTypes.object,
   languageProfileId: PropTypes.object,
   albumFolder: PropTypes.object.isRequired,
+  primaryAlbumTypes: PropTypes.object.isRequired,
+  secondaryAlbumTypes: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired,
   setAddArtistDefault: PropTypes.func.isRequired,

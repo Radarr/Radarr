@@ -56,7 +56,6 @@ class AddNewArtistModalContent extends Component {
   render() {
     const {
       artistName,
-      // year,
       overview,
       images,
       isAdding,
@@ -64,8 +63,9 @@ class AddNewArtistModalContent extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
-      // seriesType,
       albumFolder,
+      primaryAlbumTypes,
+      secondaryAlbumTypes,
       tags,
       showLanguageProfile,
       isSmallScreen,
@@ -168,6 +168,28 @@ class AddNewArtistModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
+                  <FormLabel>Primary Album Types</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.TEXT}
+                    name="primaryAlbumTypes"
+                    onChange={onInputChange}
+                    {...primaryAlbumTypes}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <FormLabel>Secondary Album Types</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.TEXT}
+                    name="secondaryAlbumTypes"
+                    onChange={onInputChange}
+                    {...secondaryAlbumTypes}
+                  />
+                </FormGroup>
+
+                <FormGroup>
                   <FormLabel>Tags</FormLabel>
 
                   <FormInputGroup
@@ -213,7 +235,6 @@ class AddNewArtistModalContent extends Component {
 
 AddNewArtistModalContent.propTypes = {
   artistName: PropTypes.string.isRequired,
-  // year: PropTypes.number.isRequired,
   overview: PropTypes.string,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isAdding: PropTypes.bool.isRequired,
@@ -222,8 +243,9 @@ AddNewArtistModalContent.propTypes = {
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   languageProfileId: PropTypes.object,
-  // seriesType: PropTypes.object.isRequired,
   albumFolder: PropTypes.object.isRequired,
+  primaryAlbumTypes: PropTypes.object.isRequired,
+  secondaryAlbumTypes: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
