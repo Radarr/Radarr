@@ -317,6 +317,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "korsub")]
         [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "korsubs")]
         [TestCase("Wonder Woman 2017 HC 720p HDRiP DD5 1 x264-LEGi0N", "Generic Hardcoded Subs")]
+        [TestCase("Ghost.In.The.Shell.2017.720p.SUBBED.HDRip.V2.XViD-26k.avi", "Generic Hardcoded Subs")]
         public void should_parse_hardcoded_subs(string postTitle, string sub)
         {
             QualityParser.ParseQuality(postTitle).HardcodedSubs.Should().Be(sub);
