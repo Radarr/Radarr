@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -44,6 +45,7 @@ class QueueConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
+    registerPagePopulator(this.repopulate);
     this.props.gotoQueueFirstPage();
   }
 
@@ -56,8 +58,16 @@ class QueueConnector extends Component {
   }
 
   componentWillUnmount() {
+    unregisterPagePopulator(this.repopulate);
     this.props.clearQueue();
     this.props.clearEpisodes();
+  }
+
+  //
+  // Control
+
+  repopulate = () => {
+    this.props.fetchQueue();
   }
 
   //

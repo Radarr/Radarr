@@ -114,6 +114,8 @@ RunGulp()
     #npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
     ProgressEnd 'npm install'
 
+    LintUI
+
     ProgressStart 'Running gulp'
     CheckExitCode npm run build -- --production
     ProgressEnd 'Running gulp'
@@ -265,7 +267,6 @@ case "$(uname -s)" in
         ;;
 esac
 
-LintUI
 Build
 RunGulp
 PackageMono

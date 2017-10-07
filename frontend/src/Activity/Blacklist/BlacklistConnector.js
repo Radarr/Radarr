@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import * as blacklistActions from 'Store/Actions/blacklistActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -35,6 +36,7 @@ class BlacklistConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
+    registerPagePopulator(this.repopulate);    
     this.props.gotoBlacklistFirstPage();
   }
 
@@ -42,6 +44,17 @@ class BlacklistConnector extends Component {
     if (prevProps.isClearingBlacklistExecuting && !this.props.isClearingBlacklistExecuting) {
       this.props.gotoBlacklistFirstPage();
     }
+  }
+
+  componentWillUnmount() {
+    unregisterPagePopulator(this.repopulate);
+  }
+
+  //
+  // Control
+
+  repopulate = () => {
+    this.props.fetchBlacklist();
   }
 
   //

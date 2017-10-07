@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -46,6 +47,7 @@ class CutoffUnmetConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
+    registerPagePopulator(this.repopulate);
     this.props.gotoCutoffUnmetFirstPage();
   }
 
@@ -63,9 +65,17 @@ class CutoffUnmetConnector extends Component {
   }
 
   componentWillUnmount() {
+    unregisterPagePopulator(this.repopulate);
     this.props.clearCutoffUnmet();
     this.props.clearQueueDetails();
     this.props.clearTrackFiles();
+  }
+
+  //
+  // Control
+
+  repopulate = () => {
+    this.props.fetchCutoffUnmet();
   }
 
   //

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { repopulatePage } from 'Utilities/pagePopulator';
 import { updateCommand, finishCommand } from 'Store/Actions/commandActions';
 import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
@@ -28,10 +29,12 @@ function getState(status) {
 function createMapStateToProps() {
   return createSelector(
     (state) => state.app.isReconnecting,
+    (state) => state.app.isDisconnected,
     (state) => state.queue.paged.isPopulated,
-    (isReconnecting, isQueuePopulated) => {
+    (isReconnecting, isDisconnected, isQueuePopulated) => {
       return {
         isReconnecting,
+        isDisconnected,
         isQueuePopulated
       };
     }
@@ -170,7 +173,8 @@ class SignalRConnector extends Component {
       this.props.updateItem({
         section: 'calendar',
         updateOnly: true,
-        ...body.resource });
+        ...body.resource
+      });
     }
   }
 
@@ -193,7 +197,8 @@ class SignalRConnector extends Component {
       this.props.updateItem({
         section: 'episodes',
         updateOnly: true,
-        ...body.resource });
+        ...body.resource
+      });
     }
   }
 
@@ -202,7 +207,8 @@ class SignalRConnector extends Component {
       this.props.updateItem({
         section: 'tracks',
         updateOnly: true,
-        ...body.resource });
+        ...body.resource
+      });
     }
   }
 
@@ -210,7 +216,8 @@ class SignalRConnector extends Component {
     if (body.action === 'updated') {
       this.props.updateItem({
         section: 'trackFiles',
-        ...body.resource });
+        ...body.resource
+      });
     }
   }
 
@@ -254,7 +261,8 @@ class SignalRConnector extends Component {
       this.props.updateItem({
         section: 'cutoffUnmet',
         updateOnly: true,
-        ...body.resource });
+        ...body.resource
+      });
     }
   }
 
@@ -263,7 +271,8 @@ class SignalRConnector extends Component {
       this.props.updateItem({
         section: 'missing',
         updateOnly: true,
-        ...body.resource });
+        ...body.resource
+      });
     }
   }
 
@@ -275,6 +284,13 @@ class SignalRConnector extends Component {
     console.log(`SignalR: [${state}]`);
 
     if (state === 'connected') {
+      // Repopulate the page (if a repopulator is set) to ensure things
+      // are in sync after reconnecting.
+
+      if (this.props.isReconnecting || this.props.isDisconnected) {
+        repopulatePage();
+      }
+
       this.props.setAppValue({
         isConnected: true,
         isReconnecting: false,
@@ -329,6 +345,7 @@ class SignalRConnector extends Component {
 
 SignalRConnector.propTypes = {
   isReconnecting: PropTypes.bool.isRequired,
+  isDisconnected: PropTypes.bool.isRequired,
   isQueuePopulated: PropTypes.bool.isRequired,
   updateCommand: PropTypes.func.isRequired,
   finishCommand: PropTypes.func.isRequired,

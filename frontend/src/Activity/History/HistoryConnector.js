@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import * as historyActions from 'Store/Actions/historyActions';
@@ -35,6 +36,7 @@ class HistoryConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
+    registerPagePopulator(this.repopulate);
     this.props.gotoHistoryFirstPage();
   }
 
@@ -46,8 +48,16 @@ class HistoryConnector extends Component {
   }
 
   componentWillUnmount() {
+    unregisterPagePopulator(this.repopulate);
     this.props.clearHistory();
     this.props.clearEpisodes();
+  }
+
+  //
+  // Control
+
+  repopulate = () => {
+    this.props.fetchHistory();
   }
 
   //

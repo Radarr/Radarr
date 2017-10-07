@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { findCommand } from 'Utilities/Command';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
@@ -86,7 +87,8 @@ class ArtistDetailsConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this._populate();
+    registerPagePopulator(this.populate);
+    this.populate();
   }
 
   componentDidUpdate(prevProps) {
@@ -102,26 +104,27 @@ class ArtistDetailsConnector extends Component {
       (prevProps.isRenamingFiles && !isRenamingFiles) ||
       (prevProps.isRenamingArtist && !isRenamingArtist)
     ) {
-      this._populate();
+      this.populate();
     }
 
     // If the id has changed we need to clear the episodes/episode
     // files and fetch from the server.
 
     if (prevProps.id !== id) {
-      this._unpopulate();
-      this._populate();
+      this.unpopulate();
+      this.populate();
     }
   }
 
   componentWillUnmount() {
-    this._unpopulate();
+    unregisterPagePopulator(this.populate);
+    this.unpopulate();
   }
 
   //
   // Control
 
-  _populate() {
+  populate = () => {
     const artistId = this.props.id;
 
     this.props.fetchEpisodes({ artistId });
@@ -129,7 +132,7 @@ class ArtistDetailsConnector extends Component {
     this.props.fetchQueueDetails({ artistId });
   }
 
-  _unpopulate() {
+  unpopulate = () => {
     this.props.clearEpisodes();
     this.props.clearTrackFiles();
     this.props.clearQueueDetails();

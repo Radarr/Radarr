@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import * as calendarActions from 'Store/Actions/calendarActions';
@@ -40,6 +41,7 @@ class CalendarConnector extends Component {
   }
 
   componentDidMount() {
+    registerPagePopulator(this.repopulate);
     this.props.gotoCalendarToday();
     this.scheduleUpdate();
   }
@@ -67,6 +69,7 @@ class CalendarConnector extends Component {
   }
 
   componentWillUnmount() {
+    unregisterPagePopulator(this.repopulate);
     this.props.clearCalendar();
     this.props.clearQueueDetails();
     this.props.clearTrackFiles();
@@ -75,11 +78,20 @@ class CalendarConnector extends Component {
 
   //
   // Control
+  repopulate = () => {
+    const {
+      time,
+      view
+    } = this.props;
+
+    this.props.fetchQueueDetails({ time, view });
+    this.props.fetchCalendar({ time, view });
+  }
 
   scheduleUpdate = () => {
     this.clearUpdateTimeout();
 
-    this.updateTimeoutId = setTimeout(this.scheduleUpdate, UPDATE_DELAY);
+    this.updateTimeoutId = setTimeout(this.updateCalendar, UPDATE_DELAY);
   }
 
   clearUpdateTimeout = () => {
@@ -130,12 +142,14 @@ class CalendarConnector extends Component {
 
 CalendarConnector.propTypes = {
   time: PropTypes.string,
+  view: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   setCalendarView: PropTypes.func.isRequired,
   gotoCalendarToday: PropTypes.func.isRequired,
   gotoCalendarPreviousRange: PropTypes.func.isRequired,
   gotoCalendarNextRange: PropTypes.func.isRequired,
   clearCalendar: PropTypes.func.isRequired,
+  fetchCalendar: PropTypes.func.isRequired,
   fetchTrackFiles: PropTypes.func.isRequired,
   clearTrackFiles: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
