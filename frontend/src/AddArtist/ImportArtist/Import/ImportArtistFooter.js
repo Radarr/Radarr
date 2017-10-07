@@ -202,7 +202,7 @@ class ImportArtistFooter extends Component {
             </SpinnerButton>
 
             {
-            isLookingUpArtist &&
+              isLookingUpArtist &&
               <LoadingIndicator
                 className={styles.loading}
                 size={24}

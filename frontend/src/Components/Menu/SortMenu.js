@@ -1,34 +1,28 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { icons } from 'Helpers/Props';
 import Menu from 'Components/Menu/Menu';
 import ToolbarMenuButton from 'Components/Menu/ToolbarMenuButton';
 
-class SortMenu extends Component {
+function SortMenu(props) {
+  const {
+    className,
+    children,
+    ...otherProps
+  } = props;
 
-  //
-  // Render
-
-  render() {
-    const {
-      className,
-      children,
-      ...otherProps
-    } = this.props;
-
-    return (
-      <Menu
-        className={className}
-        {...otherProps}
-      >
-        <ToolbarMenuButton
-          iconName={icons.SORT}
-          text="Sort"
-        />
-          {children}
-      </Menu>
-    );
-  }
+  return (
+    <Menu
+      className={className}
+      {...otherProps}
+    >
+      <ToolbarMenuButton
+        iconName={icons.SORT}
+        text="Sort"
+      />
+      {children}
+    </Menu>
+  );
 }
 
 SortMenu.propTypes = {

@@ -74,9 +74,9 @@ UISettingsConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'ui' }
-               )(UISettingsConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'ui' }
+)(UISettingsConnector);

@@ -10,9 +10,10 @@ const section = 'rootFolders';
 const rootFolderActionHandlers = {
   [types.FETCH_ROOT_FOLDERS]: createFetchHandler('rootFolders', '/rootFolder'),
 
-  [types.DELETE_ROOT_FOLDER]: createRemoveItemHandler('rootFolders',
-                                                      '/rootFolder',
-                                                      (state) => state.rootFolders),
+  [types.DELETE_ROOT_FOLDER]: createRemoveItemHandler(
+    'rootFolders',
+    '/rootFolder',
+    (state) => state.rootFolders),
 
   [types.ADD_ROOT_FOLDER]: function(payload) {
     return function(dispatch, getState) {

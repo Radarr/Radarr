@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -151,6 +150,7 @@ class ArtistIndexConnector extends Component {
 }
 
 ArtistIndexConnector.propTypes = {
+  isSmallScreen: PropTypes.bool.isRequired,
   view: PropTypes.string.isRequired,
   scrollTop: PropTypes.number.isRequired,
   fetchArtist: PropTypes.func.isRequired,

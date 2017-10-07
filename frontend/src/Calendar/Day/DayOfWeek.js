@@ -36,7 +36,8 @@ class DayOfWeek extends Component {
         styles.dayOfWeek,
         view === calendarViews.DAY && styles.isSingleDay,
         highlightToday && styles.isToday
-      )}>
+      )}
+      >
         {formatedDate}
       </div>
     );

@@ -55,22 +55,22 @@ function ProgressBar(props) {
         aria-valuemax="100"
         style={{ width: progressPercent }}
       />
-        {
-          showText &&
+      {
+        showText &&
+          <div
+            className={styles.frontTextContainer}
+            style={{ width: progressPercent }}
+          >
             <div
-              className={styles.frontTextContainer}
-              style={{ width: progressPercent }}
+              className={styles.frontText}
+              style={{ width: actualWidth }}
             >
-              <div
-                className={styles.frontText}
-                style={{ width: actualWidth }}
-              >
-                <div>
-                  {progressText}
-                </div>
+              <div>
+                {progressText}
               </div>
             </div>
-        }
+          </div>
+      }
     </div>
   );
 }

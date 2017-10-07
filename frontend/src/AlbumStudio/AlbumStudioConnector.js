@@ -62,9 +62,9 @@ AlbumStudioConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'series', uiSection: 'albumStudio' }
-              )(AlbumStudioConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'series', uiSection: 'albumStudio' }
+)(AlbumStudioConnector);

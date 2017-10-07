@@ -94,9 +94,9 @@ NamingConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'naming' }
-               )(NamingConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'naming' }
+)(NamingConnector);

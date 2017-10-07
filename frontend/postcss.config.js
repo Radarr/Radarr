@@ -3,6 +3,11 @@ const reload = require('require-nocache')(module);
 module.exports = (ctx, configPath, options) => {
   const config = {
     plugins: {
+      'postcss-mixins': {
+        mixinsDir: [
+          'frontend/src/Styles/Mixins'
+        ]
+      },
       'postcss-simple-vars': {
         variables: () =>
           ctx.options.cssVarsFiles.reduce((acc, vars) => {
@@ -10,11 +15,6 @@ module.exports = (ctx, configPath, options) => {
           }, {})
       },
       'postcss-nested': {},
-      'postcss-mixins': {
-        mixinsDir: [
-          'frontend/src/Styles/Mixins'
-        ]
-      },
       autoprefixer: {
         browsers: [
           'Chrome >= 30',

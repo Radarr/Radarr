@@ -142,9 +142,9 @@ class VirtualTable extends Component {
                   {...otherProps}
                 />
               </Scroller>
-              );
+            );
           }
-        }
+          }
         </WindowScroller>
       </Measure>
     );

@@ -78,9 +78,9 @@ ArtistEditorConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'series', uiSection: 'artistEditor' }
-              )(ArtistEditorConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'series', uiSection: 'artistEditor' }
+)(ArtistEditorConnector);

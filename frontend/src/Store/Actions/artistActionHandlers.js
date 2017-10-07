@@ -12,13 +12,15 @@ const section = 'series';
 const artistActionHandlers = {
   [types.FETCH_ARTIST]: createFetchHandler(section, '/artist'),
 
-  [types.SAVE_ARTIST]: createSaveProviderHandler(section,
-                                                 '/artist',
-                                                 (state) => state.series),
+  [types.SAVE_ARTIST]: createSaveProviderHandler(
+    section,
+    '/artist',
+    (state) => state.series),
 
-  [types.DELETE_ARTIST]: createRemoveItemHandler(section,
-                                                 '/artist',
-                                                 (state) => state.series),
+  [types.DELETE_ARTIST]: createRemoveItemHandler(
+    section,
+    '/artist',
+    (state) => state.series),
 
   [types.TOGGLE_ARTIST_MONITORED]: function(payload) {
     return function(dispatch, getState) {

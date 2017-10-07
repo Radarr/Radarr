@@ -161,9 +161,7 @@ class AddNewArtist extends Component {
               </div>
           }
 
-          <div>
-
-          </div>
+          <div />
         </PageContentBodyConnector>
       </PageContent>
     );

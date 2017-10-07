@@ -66,15 +66,15 @@ class SelectArtistModalContent extends Component {
             {
               items.map((item) => {
                 return item.artistName.toLowerCase().includes(filter) ?
-                (
-                  <SelectArtistRow
-                    key={item.id}
-                    id={item.id}
-                    artistName={item.artistName}
-                    onArtistSelect={onArtistSelect}
-                  />
-                ) :
-                null;
+                  (
+                    <SelectArtistRow
+                      key={item.id}
+                      id={item.id}
+                      artistName={item.artistName}
+                      onArtistSelect={onArtistSelect}
+                    />
+                  ) :
+                  null;
               })
             }
           </Scroller>

@@ -268,6 +268,8 @@ class QueueRow extends Component {
                 </TableRowCell>
               );
             }
+
+            return null;
           })
         }
 

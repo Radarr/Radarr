@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { kinds, sizes } from 'Helpers/Props';
+import { kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Modal from 'Components/Modal/Modal';
 import ModalContent from 'Components/Modal/ModalContent';
@@ -11,7 +11,6 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 function PendingChangesModal(props) {
   const {
     isOpen,
-    size,
     onConfirm,
     onCancel
   } = props;
@@ -52,7 +51,6 @@ PendingChangesModal.propTypes = {
   className: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
   kind: PropTypes.oneOf(kinds.all),
-  size: PropTypes.oneOf(sizes.all),
   onConfirm: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired
 };

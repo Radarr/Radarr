@@ -83,9 +83,9 @@ MediaManagementConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'mediaManagement' }
-               )(MediaManagementConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'mediaManagement' }
+)(MediaManagementConnector);

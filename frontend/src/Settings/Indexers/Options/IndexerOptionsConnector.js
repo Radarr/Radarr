@@ -84,9 +84,9 @@ IndexerOptionsConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                { withRef: true },
-                { section: 'indexerOptions' }
-               )(IndexerOptionsConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  { withRef: true },
+  { section: 'indexerOptions' }
+)(IndexerOptionsConnector);

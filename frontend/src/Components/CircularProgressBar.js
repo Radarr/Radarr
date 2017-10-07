@@ -103,8 +103,7 @@ class CircularProgressBar extends Component {
               strokeWidth,
               strokeDashoffset
             }}
-          >
-          </circle>
+          />
         </svg>
 
         {

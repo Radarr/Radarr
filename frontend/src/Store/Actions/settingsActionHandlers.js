@@ -88,34 +88,40 @@ const settingsActionHandlers = {
   [types.FETCH_QUALITY_PROFILES]: createFetchHandler('qualityProfiles', '/qualityprofile'),
   [types.FETCH_QUALITY_PROFILE_SCHEMA]: createFetchSchemaHandler('qualityProfiles', '/qualityprofile/schema'),
 
-  [types.SAVE_QUALITY_PROFILE]: createSaveProviderHandler('qualityProfiles',
-                                                          '/qualityprofile',
-                                                          (state) => state.settings.qualityProfiles),
+  [types.SAVE_QUALITY_PROFILE]: createSaveProviderHandler(
+    'qualityProfiles',
+    '/qualityprofile',
+    (state) => state.settings.qualityProfiles),
 
-  [types.DELETE_QUALITY_PROFILE]: createRemoveItemHandler('qualityProfiles',
-                                                          '/qualityprofile',
-                                                          (state) => state.settings.qualityProfiles),
+  [types.DELETE_QUALITY_PROFILE]: createRemoveItemHandler(
+    'qualityProfiles',
+    '/qualityprofile',
+    (state) => state.settings.qualityProfiles),
 
   [types.FETCH_LANGUAGE_PROFILES]: createFetchHandler('languageProfiles', '/languageprofile'),
   [types.FETCH_LANGUAGE_PROFILE_SCHEMA]: createFetchSchemaHandler('languageProfiles', '/languageprofile/schema'),
 
-  [types.SAVE_LANGUAGE_PROFILE]: createSaveProviderHandler('languageProfiles',
-                                                           '/languageprofile',
-                                                           (state) => state.settings.languageProfiles),
+  [types.SAVE_LANGUAGE_PROFILE]: createSaveProviderHandler(
+    'languageProfiles',
+    '/languageprofile',
+    (state) => state.settings.languageProfiles),
 
-  [types.DELETE_LANGUAGE_PROFILE]: createRemoveItemHandler('languageProfiles',
-                                                           '/languageprofile',
-                                                           (state) => state.settings.languageProfiles),
+  [types.DELETE_LANGUAGE_PROFILE]: createRemoveItemHandler(
+    'languageProfiles',
+    '/languageprofile',
+    (state) => state.settings.languageProfiles),
 
   [types.FETCH_DELAY_PROFILES]: createFetchHandler('delayProfiles', '/delayprofile'),
 
-  [types.SAVE_DELAY_PROFILE]: createSaveProviderHandler('delayProfiles',
-                                                        '/delayprofile',
-                                                        (state) => state.settings.delayProfiles),
+  [types.SAVE_DELAY_PROFILE]: createSaveProviderHandler(
+    'delayProfiles',
+    '/delayprofile',
+    (state) => state.settings.delayProfiles),
 
-  [types.DELETE_DELAY_PROFILE]: createRemoveItemHandler('delayProfiles',
-                                                        '/delayprofile',
-                                                        (state) => state.settings.delayProfiles),
+  [types.DELETE_DELAY_PROFILE]: createRemoveItemHandler(
+    'delayProfiles',
+    '/delayprofile',
+    (state) => state.settings.delayProfiles),
 
   [types.FETCH_QUALITY_DEFINITIONS]: createFetchHandler('qualityDefinitions', '/qualitydefinition'),
   [types.SAVE_QUALITY_DEFINITIONS]: createSaveHandler('qualityDefinitions', '/qualitydefinition', (state) => state.settings.qualitydefinitions),
@@ -157,19 +163,22 @@ const settingsActionHandlers = {
   [types.FETCH_INDEXERS]: createFetchHandler('indexers', '/indexer'),
   [types.FETCH_INDEXER_SCHEMA]: createFetchSchemaHandler('indexers', '/indexer/schema'),
 
-  [types.SAVE_INDEXER]: createSaveProviderHandler('indexers',
-                                                  '/indexer',
-                                                  (state) => state.settings.indexers),
+  [types.SAVE_INDEXER]: createSaveProviderHandler(
+    'indexers',
+    '/indexer',
+    (state) => state.settings.indexers),
 
   [types.CANCEL_SAVE_INDEXER]: createCancelSaveProviderHandler('indexers'),
 
-  [types.DELETE_INDEXER]: createRemoveItemHandler('indexers',
-                                                      '/indexer',
-                                                      (state) => state.settings.indexers),
+  [types.DELETE_INDEXER]: createRemoveItemHandler(
+    'indexers',
+    '/indexer',
+    (state) => state.settings.indexers),
 
-  [types.TEST_INDEXER]: createTestProviderHandler('indexers',
-                                                  '/indexer',
-                                                  (state) => state.settings.indexers),
+  [types.TEST_INDEXER]: createTestProviderHandler(
+    'indexers',
+    '/indexer',
+    (state) => state.settings.indexers),
 
   [types.CANCEL_TEST_INDEXER]: createCancelTestProviderHandler('indexers'),
 
@@ -178,30 +187,35 @@ const settingsActionHandlers = {
 
   [types.FETCH_RESTRICTIONS]: createFetchHandler('restrictions', '/restriction'),
 
-  [types.SAVE_RESTRICTION]: createSaveProviderHandler('restrictions',
-                                                      '/restriction',
-                                                      (state) => state.settings.restrictions),
+  [types.SAVE_RESTRICTION]: createSaveProviderHandler(
+    'restrictions',
+    '/restriction',
+    (state) => state.settings.restrictions),
 
-  [types.DELETE_RESTRICTION]: createRemoveItemHandler('restrictions',
-                                                          '/restriction',
-                                                          (state) => state.settings.restrictions),
+  [types.DELETE_RESTRICTION]: createRemoveItemHandler(
+    'restrictions',
+    '/restriction',
+    (state) => state.settings.restrictions),
 
   [types.FETCH_DOWNLOAD_CLIENTS]: createFetchHandler('downloadClients', '/downloadclient'),
   [types.FETCH_DOWNLOAD_CLIENT_SCHEMA]: createFetchSchemaHandler('downloadClients', '/downloadclient/schema'),
 
-  [types.SAVE_DOWNLOAD_CLIENT]: createSaveProviderHandler('downloadClients',
-                                                          '/downloadclient',
-                                                          (state) => state.settings.downloadClients),
+  [types.SAVE_DOWNLOAD_CLIENT]: createSaveProviderHandler(
+    'downloadClients',
+    '/downloadclient',
+    (state) => state.settings.downloadClients),
 
   [types.CANCEL_SAVE_DOWNLOAD_CLIENT]: createCancelSaveProviderHandler('downloadClients'),
 
-  [types.DELETE_DOWNLOAD_CLIENT]: createRemoveItemHandler('downloadClients',
-                                                                '/downloadclient',
-                                                              (state) => state.settings.downloadClients),
+  [types.DELETE_DOWNLOAD_CLIENT]: createRemoveItemHandler(
+    'downloadClients',
+    '/downloadclient',
+    (state) => state.settings.downloadClients),
 
-  [types.TEST_DOWNLOAD_CLIENT]: createTestProviderHandler('downloadClients',
-                                                          '/downloadclient',
-                                                          (state) => state.settings.downloadClients),
+  [types.TEST_DOWNLOAD_CLIENT]: createTestProviderHandler(
+    'downloadClients',
+    '/downloadclient',
+    (state) => state.settings.downloadClients),
 
   [types.CANCEL_TEST_DOWNLOAD_CLIENT]: createCancelTestProviderHandler('downloadClients'),
 
@@ -210,38 +224,44 @@ const settingsActionHandlers = {
 
   [types.FETCH_REMOTE_PATH_MAPPINGS]: createFetchHandler('remotePathMappings', '/remotepathmapping'),
 
-  [types.SAVE_REMOTE_PATH_MAPPING]: createSaveProviderHandler('remotePathMappings',
-                                                              '/remotepathmapping',
-                                                              (state) => state.settings.remotePathMappings),
+  [types.SAVE_REMOTE_PATH_MAPPING]: createSaveProviderHandler(
+    'remotePathMappings',
+    '/remotepathmapping',
+    (state) => state.settings.remotePathMappings),
 
-  [types.DELETE_REMOTE_PATH_MAPPING]: createRemoveItemHandler('remotePathMappings',
-                                                                  '/remotepathmapping',
-                                                                  (state) => state.settings.remotePathMappings),
+  [types.DELETE_REMOTE_PATH_MAPPING]: createRemoveItemHandler(
+    'remotePathMappings',
+    '/remotepathmapping',
+    (state) => state.settings.remotePathMappings),
 
   [types.FETCH_NOTIFICATIONS]: createFetchHandler('notifications', '/notification'),
   [types.FETCH_NOTIFICATION_SCHEMA]: createFetchSchemaHandler('notifications', '/notification/schema'),
 
-  [types.SAVE_NOTIFICATION]: createSaveProviderHandler('notifications',
-                                                       '/notification',
-                                                       (state) => state.settings.notifications),
+  [types.SAVE_NOTIFICATION]: createSaveProviderHandler(
+    'notifications',
+    '/notification',
+    (state) => state.settings.notifications),
 
   [types.CANCEL_SAVE_NOTIFICATION]: createCancelSaveProviderHandler('notifications'),
 
-  [types.DELETE_NOTIFICATION]: createRemoveItemHandler('notifications',
-                                                           '/notification',
-                                                           (state) => state.settings.notifications),
+  [types.DELETE_NOTIFICATION]: createRemoveItemHandler(
+    'notifications',
+    '/notification',
+    (state) => state.settings.notifications),
 
-  [types.TEST_NOTIFICATION]: createTestProviderHandler('notifications',
-                                                       '/notification',
-                                                       (state) => state.settings.notifications),
+  [types.TEST_NOTIFICATION]: createTestProviderHandler(
+    'notifications',
+    '/notification',
+    (state) => state.settings.notifications),
 
   [types.CANCEL_TEST_NOTIFICATION]: createCancelTestProviderHandler('notifications'),
 
   [types.FETCH_METADATA]: createFetchHandler('metadata', '/metadata'),
 
-  [types.SAVE_METADATA]: createSaveProviderHandler('metadata',
-                                                   '/metadata',
-                                                   (state) => state.settings.metadata),
+  [types.SAVE_METADATA]: createSaveProviderHandler(
+    'metadata',
+    '/metadata',
+    (state) => state.settings.metadata),
 
   [types.FETCH_METADATA_PROVIDER]: createFetchHandler('metadataProvider', '/config/metadataProvider'),
   [types.SAVE_METADATA_PROVIDER]: createSaveHandler('metadataProvider', '/config/metadataProvider', (state) => state.settings.metadataProvider),

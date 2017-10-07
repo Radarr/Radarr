@@ -74,6 +74,17 @@ BuildWithXbuild()
     CheckExitCode xbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
 }
 
+LintUI()
+{
+    ProgressStart 'ESLint'
+    CheckExitCode yarn eslint
+    ProgressEnd 'ESLint'
+
+    ProgressStart 'Stylelint'
+    CheckExitCode yarn stylelint
+    ProgressEnd 'Stylelint'
+}
+
 Build()
 {
     echo "##teamcity[progressStart 'Build']"
@@ -98,13 +109,14 @@ Build()
 
 RunGulp()
 {
-    echo "##teamcity[progressStart 'npm install']"
-    npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
-    echo "##teamcity[progressFinish 'npm install']"
+    ProgressStart 'npm install'
+    yarn install
+    #npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
+    ProgressEnd 'npm install'
 
-    echo "##teamcity[progressStart 'Running gulp']"
+    ProgressStart 'Running gulp'
     CheckExitCode npm run build -- --production
-    echo "##teamcity[progressFinish 'Running gulp']"
+    ProgressEnd 'Running gulp'
 }
 
 CreateMdbs()
@@ -253,6 +265,7 @@ case "$(uname -s)" in
         ;;
 esac
 
+LintUI
 Build
 RunGulp
 PackageMono

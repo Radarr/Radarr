@@ -178,7 +178,7 @@ class InteractiveImportRow extends Component {
     const artistName = artist ? artist.artistName : '';
     const albumTitle = album ? album.title : '';
     const trackNumbers = tracks.map((track) => track.trackNumber)
-                                   .join(', ');
+      .join(', ');
 
     const showArtistPlaceholder = isSelected && !artist;
     const showAlbumNumberPlaceholder = isSelected && !!artist && !album;

@@ -31,22 +31,22 @@ function ArtistIndexFooter({ series }) {
     <div className={styles.footer}>
       <div>
         <div className={styles.legendItem}>
-          <div className={styles.continuing}></div>
+          <div className={styles.continuing} />
           <div>Continuing (All tracks downloaded)</div>
         </div>
 
         <div className={styles.legendItem}>
-          <div className={styles.ended}></div>
+          <div className={styles.ended} />
           <div>Ended (All tracks downloaded)</div>
         </div>
 
         <div className={styles.legendItem}>
-          <div className={styles.missingMonitored}></div>
+          <div className={styles.missingMonitored} />
           <div>Missing Tracks (Artist monitored)</div>
         </div>
 
         <div className={styles.legendItem}>
-          <div className={styles.missingUnmonitored}></div>
+          <div className={styles.missingUnmonitored} />
           <div>Missing Tracks (Artist not monitored)</div>
         </div>
       </div>

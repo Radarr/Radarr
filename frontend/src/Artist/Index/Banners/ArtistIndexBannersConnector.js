@@ -25,9 +25,9 @@ function createMapStateToProps() {
 }
 
 export default connectSection(
-                createMapStateToProps,
-                undefined,
-                undefined,
-                { withRef: true },
-                { section: 'series', uiSection: 'artistIndex' }
-              )(ArtistIndexBanners);
+  createMapStateToProps,
+  undefined,
+  undefined,
+  { withRef: true },
+  { section: 'series', uiSection: 'artistIndex' }
+)(ArtistIndexBanners);

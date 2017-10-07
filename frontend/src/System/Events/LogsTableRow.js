@@ -123,6 +123,8 @@ class LogsTableRow extends Component {
                 />
               );
             }
+
+            return null;
           })
         }
 

@@ -40,7 +40,8 @@ PageContentBody.propTypes = {
   className: PropTypes.string,
   innerClassName: PropTypes.string,
   isSmallScreen: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  dispatch: PropTypes.func
 };
 
 PageContentBody.defaultProps = {

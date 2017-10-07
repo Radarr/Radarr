@@ -58,7 +58,7 @@ class QualityProfileItem extends Component {
                 name={icons.REORDER}
               />
             </div>
-            )
+          )
         }
       </div>
     );

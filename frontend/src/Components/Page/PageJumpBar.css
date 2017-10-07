@@ -1,7 +1,7 @@
 .jumpBar {
   display: flex;
-  align-items: stretch;
   align-content: stretch;
+  align-items: stretch;
   align-self: stretch;
   justify-content: center;
   flex: 0 0 30px;

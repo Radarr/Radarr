@@ -83,7 +83,6 @@ class ClipboardButton extends Component {
       ...otherProps
     } = this.props;
 
-
     const {
       showSuccess,
       showError

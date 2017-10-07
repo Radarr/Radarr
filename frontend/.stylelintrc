@@ -2,6 +2,10 @@
 "plugins": [
   "stylelint-order"
 ],
+"ignoreFiles": [
+  "frontend/src/Styles/scaffolding.css",
+  "frontend/src/Content/Fonts/font-awesome.css"
+],
 "rules": {
     "at-rule-empty-line-before": [
       "always",

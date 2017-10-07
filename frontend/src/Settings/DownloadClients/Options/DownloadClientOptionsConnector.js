@@ -84,9 +84,9 @@ DownloadClientOptionsConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                { withRef: true },
-                { section: 'downloadClientOptions' }
-               )(DownloadClientOptionsConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  { withRef: true },
+  { section: 'downloadClientOptions' }
+)(DownloadClientOptionsConnector);

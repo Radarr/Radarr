@@ -134,7 +134,8 @@ class CalendarDays extends Component {
       <div className={classNames(
         styles.days,
         styles[view]
-      )}>
+      )}
+      >
         {
           dates.map((date) => {
             return (

@@ -50,7 +50,7 @@ class SelectLanguageModalContentConnector extends Component {
   onLanguageSelect = ({ value }) => {
     const languageId = parseInt(value);
     const language = _.find(this.props.items,
-                           (item) => item.language.id === languageId).language;
+      (item) => item.language.id === languageId).language;
 
     this.props.updateInteractiveImportItem({
       id: this.props.id,

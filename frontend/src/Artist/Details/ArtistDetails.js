@@ -429,7 +429,7 @@ class ArtistDetails extends Component {
                         foreignArtistId={foreignArtistId}
                         links={links}
                       />
-                      }
+                    }
                     kind={kinds.INVERSE}
                     position={tooltipPositions.BOTTOM}
                   />

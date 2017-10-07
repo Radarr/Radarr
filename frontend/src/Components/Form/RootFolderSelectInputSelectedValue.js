@@ -18,8 +18,8 @@ function RootFolderSelectInputSelectedValue(props) {
       {...otherProps}
     >
       <div className={styles.path}>
-        {value
-      }</div>
+        {value}
+      </div>
 
       {
         freeSpace != null && includeFreeSpace &&

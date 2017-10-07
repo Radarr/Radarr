@@ -129,6 +129,8 @@ function MissingRow(props) {
               />
             );
           }
+
+          return null;
         })
       }
     </TableRow>

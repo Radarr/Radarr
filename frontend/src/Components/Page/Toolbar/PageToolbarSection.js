@@ -148,7 +148,8 @@ class PageToolbarSection extends Component {
               <div className={classNames(
                 styles.section,
                 styles[alignContent]
-              )}>
+              )}
+              >
                 {
                   buttons.map((button) => {
                     return button;

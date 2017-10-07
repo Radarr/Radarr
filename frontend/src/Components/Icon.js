@@ -24,8 +24,7 @@ function Icon(props) {
       style={{
         fontSize: `${size}px`
       }}
-    >
-    </i>
+    />
   );
 }
 

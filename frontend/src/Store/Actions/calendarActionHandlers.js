@@ -130,12 +130,12 @@ const calendarActionHandlers = {
       };
 
       const attrs = isPrePopulated ?
-      {
-        view,
-        ...basesAttrs,
-        ...dates
-      } :
-      basesAttrs;
+        {
+          view,
+          ...basesAttrs,
+          ...dates
+        } :
+        basesAttrs;
 
       dispatch(set(attrs));
 

@@ -20,8 +20,7 @@ export default function createAjaxRequest() {
       xhr.aborted = aborted;
 
       return $.Deferred().reject(xhr, textStatus, errorThrown).promise();
-    })
-    .always(() => {
+    }).always(() => {
       complete = true;
     });
 

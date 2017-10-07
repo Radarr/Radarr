@@ -3,7 +3,7 @@ import styles from './InteractiveImportRowCellPlaceholder.css';
 
 function InteractiveImportRowCellPlaceholder() {
   return (
-    <span className={styles.placeholder}></span>
+    <span className={styles.placeholder} />
   );
 }
 

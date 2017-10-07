@@ -18,7 +18,7 @@ function ViewMenu(props) {
         iconName={icons.VIEW}
         text="View"
       />
-        {children}
+      {children}
     </Menu>
   );
 }

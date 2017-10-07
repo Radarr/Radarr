@@ -1,3 +1,4 @@
+/* eslint callback-return: 0 */
 import _ from 'lodash';
 import $ from 'jquery';
 import requestAction from 'Utilities/requestAction';

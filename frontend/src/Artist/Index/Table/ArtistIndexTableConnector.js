@@ -26,9 +26,9 @@ function createMapDispatchToProps(dispatch, props) {
 }
 
 export default connectSection(
-                createMapStateToProps,
-                createMapDispatchToProps,
-                undefined,
-                { withRef: true },
-                { section: 'series', uiSection: 'artistIndex' }
-              )(ArtistIndexTable);
+  createMapStateToProps,
+  createMapDispatchToProps,
+  undefined,
+  { withRef: true },
+  { section: 'series', uiSection: 'artistIndex' }
+)(ArtistIndexTable);

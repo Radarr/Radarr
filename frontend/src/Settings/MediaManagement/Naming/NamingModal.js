@@ -168,21 +168,21 @@ class NamingModal extends Component {
                 <FieldSet legend="File Names">
                   <div className={styles.groups}>
                     {
-                        fileNameTokens.map(({ token, example }) => {
-                          return (
-                            <NamingOption
-                              key={token}
-                              name={name}
-                              value={value}
-                              token={token}
-                              example={example}
-                              isFullFilename={true}
-                              tokenCase={this.state.case}
-                              size={sizes.LARGE}
-                              onInputChange={onInputChange}
-                            />
-                          );
-                        }
+                      fileNameTokens.map(({ token, example }) => {
+                        return (
+                          <NamingOption
+                            key={token}
+                            name={name}
+                            value={value}
+                            token={token}
+                            example={example}
+                            isFullFilename={true}
+                            tokenCase={this.state.case}
+                            size={sizes.LARGE}
+                            onInputChange={onInputChange}
+                          />
+                        );
+                      }
                       )
                     }
                   </div>
@@ -192,19 +192,19 @@ class NamingModal extends Component {
             <FieldSet legend="Artist">
               <div className={styles.groups}>
                 {
-                    artistTokens.map(({ token, example }) => {
-                      return (
-                        <NamingOption
-                          key={token}
-                          name={name}
-                          value={value}
-                          token={token}
-                          example={example}
-                          tokenCase={this.state.case}
-                          onInputChange={onInputChange}
-                        />
-                      );
-                    }
+                  artistTokens.map(({ token, example }) => {
+                    return (
+                      <NamingOption
+                        key={token}
+                        name={name}
+                        value={value}
+                        token={token}
+                        example={example}
+                        tokenCase={this.state.case}
+                        onInputChange={onInputChange}
+                      />
+                    );
+                  }
                   )
                 }
               </div>
@@ -215,7 +215,7 @@ class NamingModal extends Component {
                 <div>
                   <FieldSet legend="Album">
                     <div className={styles.groups}>
-                    {
+                      {
                         albumTokens.map(({ token, example }) => {
                           return (
                             <NamingOption
@@ -229,14 +229,14 @@ class NamingModal extends Component {
                             />
                           );
                         }
-                      )
-                    }
+                        )
+                      }
                     </div>
                   </FieldSet>
 
                   <FieldSet legend="Release Date">
                     <div className={styles.groups}>
-                    {
+                      {
                         releaseDateTokens.map(({ token, example }) => {
                           return (
                             <NamingOption
@@ -250,8 +250,8 @@ class NamingModal extends Component {
                             />
                           );
                         }
-                      )
-                    }
+                        )
+                      }
                     </div>
                   </FieldSet>
                 </div>
@@ -263,19 +263,19 @@ class NamingModal extends Component {
                   <FieldSet legend="Track">
                     <div className={styles.groups}>
                       {
-                          trackTokens.map(({ token, example }) => {
-                            return (
-                              <NamingOption
-                                key={token}
-                                name={name}
-                                value={value}
-                                token={token}
-                                example={example}
-                                tokenCase={this.state.case}
-                                onInputChange={onInputChange}
-                              />
-                            );
-                          }
+                        trackTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
                         )
                       }
                     </div>
@@ -290,19 +290,19 @@ class NamingModal extends Component {
                   <FieldSet legend="Track Title">
                     <div className={styles.groups}>
                       {
-                          trackTitleTokens.map(({ token, example }) => {
-                            return (
-                              <NamingOption
-                                key={token}
-                                name={name}
-                                value={value}
-                                token={token}
-                                example={example}
-                                tokenCase={this.state.case}
-                                onInputChange={onInputChange}
-                              />
-                            );
-                          }
+                        trackTitleTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
                         )
                       }
                     </div>
@@ -311,19 +311,19 @@ class NamingModal extends Component {
                   <FieldSet legend="Quality">
                     <div className={styles.groups}>
                       {
-                          qualityTokens.map(({ token, example }) => {
-                            return (
-                              <NamingOption
-                                key={token}
-                                name={name}
-                                value={value}
-                                token={token}
-                                example={example}
-                                tokenCase={this.state.case}
-                                onInputChange={onInputChange}
-                              />
-                            );
-                          }
+                        qualityTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
                         )
                       }
                     </div>
@@ -332,19 +332,19 @@ class NamingModal extends Component {
                   <FieldSet legend="Media Info">
                     <div className={styles.groups}>
                       {
-                          mediaInfoTokens.map(({ token, example }) => {
-                            return (
-                              <NamingOption
-                                key={token}
-                                name={name}
-                                value={value}
-                                token={token}
-                                example={example}
-                                tokenCase={this.state.case}
-                                onInputChange={onInputChange}
-                              />
-                            );
-                          }
+                        mediaInfoTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
                         )
                       }
                     </div>
@@ -353,19 +353,19 @@ class NamingModal extends Component {
                   <FieldSet legend="Release Group">
                     <div className={styles.groups}>
                       {
-                          releaseGroupTokens.map(({ token, example }) => {
-                            return (
-                              <NamingOption
-                                key={token}
-                                name={name}
-                                value={value}
-                                token={token}
-                                example={example}
-                                tokenCase={this.state.case}
-                                onInputChange={onInputChange}
-                              />
-                            );
-                          }
+                        releaseGroupTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
                         )
                       }
                     </div>
@@ -374,20 +374,20 @@ class NamingModal extends Component {
                   <FieldSet legend="Original">
                     <div className={styles.groups}>
                       {
-                          originalTokens.map(({ token, example }) => {
-                            return (
-                              <NamingOption
-                                key={token}
-                                name={name}
-                                value={value}
-                                token={token}
-                                example={example}
-                                tokenCase={this.state.case}
-                                size={sizes.LARGE}
-                                onInputChange={onInputChange}
-                              />
-                            );
-                          }
+                        originalTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              size={sizes.LARGE}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
                         )
                       }
                     </div>

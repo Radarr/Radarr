@@ -12,9 +12,6 @@ $hoverScale: 1.05;
     box-shadow: 0 0 12px $black;
     transition: all 200ms ease-in;
 
-    // Transforming causes the content to shift slightly
-    // transform: scale($hoverScale);
-
     .controls {
       opacity: 0.9;
       transition: opacity 200ms linear 150ms;

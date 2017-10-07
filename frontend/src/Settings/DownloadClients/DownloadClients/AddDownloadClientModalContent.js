@@ -46,7 +46,7 @@ class AddDownloadClientModalContent extends Component {
           }
 
           {
-            !isFetching && !error &&
+            isPopulated && !error &&
               <div>
 
                 <Alert kind={kinds.INFO}>

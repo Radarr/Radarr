@@ -98,8 +98,13 @@ RootFolderSelectInput.propTypes = {
   values: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
+  includeNoChange: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onNewRootFolderSelect: PropTypes.func.isRequired
+};
+
+RootFolderSelectInput.defaultProps = {
+  includeNoChange: false
 };
 
 export default RootFolderSelectInput;

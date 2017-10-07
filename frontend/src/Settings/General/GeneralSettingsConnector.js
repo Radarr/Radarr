@@ -109,9 +109,9 @@ GeneralSettingsConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'general' }
-               )(GeneralSettingsConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'general' }
+)(GeneralSettingsConnector);

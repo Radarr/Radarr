@@ -58,8 +58,8 @@ class VirtualTableHeaderCell extends Component {
 
     const isSorting = isSortable && sortKey === name;
     const sortIcon = sortDirection === sortDirections.ASCENDING ?
-                     icons.SORT_ASCENDING :
-                     icons.SORT_DESCENDING;
+      icons.SORT_ASCENDING :
+      icons.SORT_DESCENDING;
 
     return (
       isSortable ?

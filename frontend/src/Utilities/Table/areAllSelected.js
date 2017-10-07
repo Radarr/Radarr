@@ -1,4 +1,4 @@
-export default function aareAllSelected(selectedState) {
+export default function areAllSelected(selectedState) {
   let allSelected = true;
   let allUnselected = true;
 

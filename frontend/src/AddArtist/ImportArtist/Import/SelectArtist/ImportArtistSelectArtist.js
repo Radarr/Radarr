@@ -116,8 +116,7 @@ class ImportArtistSelectArtist extends Component {
       isPopulated,
       error,
       items,
-      queued,
-      onArtistSelect
+      queued
     } = this.props;
 
     const errorMessage = error &&

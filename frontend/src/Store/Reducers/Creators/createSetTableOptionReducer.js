@@ -9,8 +9,9 @@ const whitelistedProperties = [
 
 function createSetTableOptionReducer(section) {
   return (state, { payload }) => {
-    const newState = Object.assign(getSectionState(state, section),
-                                   _.pick(payload, whitelistedProperties));
+    const newState = Object.assign(
+      getSectionState(state, section),
+      _.pick(payload, whitelistedProperties));
 
     return updateSectionState(state, section, newState);
   };

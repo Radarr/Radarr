@@ -205,6 +205,8 @@ class HistoryRow extends Component {
                 </TableRowCell>
               );
             }
+
+            return null;
           })
         }
 

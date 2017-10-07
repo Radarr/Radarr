@@ -1,4 +1,5 @@
 #addin "Cake.Npm"
+#addin "Cake.Yarn"
 #addin "SharpZipLib"
 #addin "Cake.Compression"
 

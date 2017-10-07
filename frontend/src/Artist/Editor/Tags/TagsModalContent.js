@@ -51,8 +51,7 @@ class TagsModalContent extends Component {
     const {
       artistTags,
       tagList,
-      onModalClose,
-      onApplyTagsPress
+      onModalClose
     } = this.props;
 
     const {
@@ -107,55 +106,55 @@ class TagsModalContent extends Component {
               <FormLabel>Result</FormLabel>
 
               <div className={styles.result}>
-                  {
-                    artistTags.map((t) => {
+                {
+                  artistTags.map((t) => {
+                    const tag = _.find(tagList, { id: t });
+
+                    if (!tag) {
+                      return null;
+                    }
+
+                    const removeTag = (applyTags === 'remove' && tags.indexOf(t) > -1) ||
+                      (applyTags === 'replace' && tags.indexOf(t) === -1);
+
+                    return (
+                      <Label
+                        key={tag.id}
+                        title={removeTag ? 'Removing tag' : 'Existing tag'}
+                        kind={removeTag ? kinds.INVERSE : kinds.INFO}
+                        size={sizes.LARGE}
+                      >
+                        {tag.label}
+                      </Label>
+                    );
+                  })
+                }
+
+                {
+                  (applyTags === 'add' || applyTags === 'replace') &&
+                    tags.map((t) => {
                       const tag = _.find(tagList, { id: t });
 
                       if (!tag) {
                         return null;
                       }
 
-                      const removeTag = (applyTags === 'remove' && tags.indexOf(t) > -1) ||
-                        (applyTags === 'replace' && tags.indexOf(t) === -1);
+                      if (artistTags.indexOf(t) > -1) {
+                        return null;
+                      }
 
                       return (
                         <Label
                           key={tag.id}
-                          title={removeTag ? 'Removing tag' : 'Existing tag'}
-                          kind={removeTag ? kinds.INVERSE : kinds.INFO}
+                          title={'Adding tag'}
+                          kind={kinds.SUCCESS}
                           size={sizes.LARGE}
                         >
                           {tag.label}
                         </Label>
                       );
                     })
-                  }
-
-                  {
-                    (applyTags === 'add' || applyTags === 'replace') &&
-                      tags.map((t) => {
-                        const tag = _.find(tagList, { id: t });
-
-                        if (!tag) {
-                          return null;
-                        }
-
-                        if (artistTags.indexOf(t) > -1) {
-                          return null;
-                        }
-
-                        return (
-                          <Label
-                            key={tag.id}
-                            title={'Adding tag'}
-                            kind={kinds.SUCCESS}
-                            size={sizes.LARGE}
-                          >
-                            {tag.label}
-                          </Label>
-                        );
-                      })
-                  }
+                }
               </div>
             </FormGroup>
           </Form>

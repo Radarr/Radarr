@@ -20,7 +20,8 @@ function CalendarDay(props) {
     <div className={classNames(
       styles.day,
       view === calendarViews.DAY && styles.isSingleDay
-    )}>
+    )}
+    >
       {
         view === calendarViews.MONTH &&
           <div className={classNames(

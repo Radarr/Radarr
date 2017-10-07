@@ -21,7 +21,8 @@ function RootFolderSelectInputOption(props) {
       <div className={classNames(
         styles.optionText,
         isMobile && styles.isMobile
-      )}>
+      )}
+      >
         <div>{value}</div>
 
         {

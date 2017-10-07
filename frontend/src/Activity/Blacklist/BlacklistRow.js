@@ -142,6 +142,8 @@ class BlacklistRow extends Component {
                 </TableRowCell>
               );
             }
+
+            return null;
           })
         }
 

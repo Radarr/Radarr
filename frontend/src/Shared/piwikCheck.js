@@ -1,7 +1,7 @@
 if (window.Sonarr.analytics) {
-  var d = document;
-  var g = d.createElement('script');
-  var s = d.getElementsByTagName('script')[0];
+  const d = document;
+  const g = d.createElement('script');
+  const s = d.getElementsByTagName('script')[0];
   g.type = 'text/javascript';
   g.async = true;
   g.defer = true;

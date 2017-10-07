@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-function isTomrrow(date) {
+function isTomorrow(date) {
   if (!date) {
     return false;
   }
@@ -8,4 +8,4 @@ function isTomrrow(date) {
   return moment(date).isSame(moment().add(1, 'day'), 'day');
 }
 
-export default isTomrrow;
+export default isTomorrow;

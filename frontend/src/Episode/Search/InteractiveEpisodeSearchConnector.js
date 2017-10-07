@@ -82,9 +82,9 @@ InteractiveEpisodeSearchConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'releases' }
-               )(InteractiveEpisodeSearchConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'releases' }
+)(InteractiveEpisodeSearchConnector);

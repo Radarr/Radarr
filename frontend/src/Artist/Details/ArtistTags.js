@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { kinds, sizes } from 'Helpers/Props';
 import Label from 'Components/Label';
-import styles from './ArtistTags.css';
 
 function ArtistTags({ tags }) {
   return (

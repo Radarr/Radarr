@@ -27,7 +27,7 @@ class UpdateChanges extends Component {
                 <li key={index}>
                   {change}
                 </li>
-              )
+              );
             })
           }
         </ul>
@@ -42,4 +42,4 @@ UpdateChanges.propTypes = {
   changes: PropTypes.arrayOf(PropTypes.string)
 };
 
-export default UpdateChanges
+export default UpdateChanges;

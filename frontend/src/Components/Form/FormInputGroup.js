@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons, inputTypes } from 'Helpers/Props';
-import Icon from 'Components/Icon';
+import { inputTypes } from 'Helpers/Props';
 import Link from 'Components/Link/Link';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
@@ -85,7 +84,7 @@ function FormInputGroup(props) {
     errors,
     warnings,
     ...otherProps
-   } = props;
+  } = props;
 
   const InputComponent = getComponent(type);
   const checkInput = type === inputTypes.CHECK;

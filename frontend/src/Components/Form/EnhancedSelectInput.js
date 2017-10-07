@@ -366,7 +366,7 @@ class EnhancedSelectInput extends Component {
                 }
               </ModalBody>
             </Modal>
-          }
+        }
       </div>
     );
   }

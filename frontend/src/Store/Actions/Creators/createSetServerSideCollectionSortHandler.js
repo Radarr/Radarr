@@ -12,8 +12,8 @@ function createSetServerSideCollectionSortHandler(section, getFromState, fetchHa
       if (!sortDirection) {
         if (payload.sortKey === sectionState.sortKey) {
           sortDirection = sectionState.sortDirection === sortDirections.ASCENDING ?
-                          sortDirections.DESCENDING :
-                          sortDirections.ASCENDING;
+            sortDirections.DESCENDING :
+            sortDirections.ASCENDING;
         } else {
           sortDirection = sectionState.sortDirection;
         }

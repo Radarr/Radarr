@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { push } from 'react-router-redux';
-import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import { fetchRootFolders, addRootFolder, deleteRootFolder } from 'Store/Actions/rootFolderActions';
 import ImportArtistSelectFolder from './ImportArtistSelectFolder';
 

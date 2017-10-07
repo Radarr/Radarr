@@ -147,9 +147,9 @@ InteractiveImportModalContentConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'interactiveImport' }
-               )(InteractiveImportModalContentConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'interactiveImport' }
+)(InteractiveImportModalContentConnector);

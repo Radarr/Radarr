@@ -23,7 +23,8 @@ function FormInputHelpText(props) {
       isError && styles.isError,
       isWarning && styles.isWarning,
       isCheckInput && styles.isCheckInput
-    )}>
+    )}
+    >
       {text}
 
       {

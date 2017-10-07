@@ -28,24 +28,8 @@
   position: absolute;
   border: 2px solid #3a3f51;
   border-radius: 100%;
-  animation-fill-mode: both;
   animation: rippleContainer 1.25s 0s infinite cubic-bezier(0.21, 0.53, 0.56, 0.8);
-}
-
-@-webkit-keyframes rippleContainer {
-  0% {
-    opacity: 1;
-    transform: scale(0.1);
-  }
-
-  70% {
-    opacity: 0.7;
-    transform: scale(1);
-  }
-
-  100% {
-    opacity: 0;
-  }
+  animation-fill-mode: both;
 }
 
 @keyframes rippleContainer {

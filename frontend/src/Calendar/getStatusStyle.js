@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import moment from 'moment';
 
 function getStatusStyle(episodeNumber, downloading, startTime, isMonitored) {

@@ -4,7 +4,10 @@
   "description": "Lidarr",
   "scripts": {
     "build": "gulp build",
-    "start": "gulp watch"
+    "start": "gulp watch",
+    "eslint": "esprint check",
+    "eslint-fix": "eslint start --fix",
+    "stylelint": "stylelint frontend/**/*.css --config frontend/.stylelintrc"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,7 @@
     "eslint-loader": "1.9.0",
     "eslint-plugin-filenames": "1.2.0",
     "eslint-plugin-react": "7.4.0",
+    "esprint": "0.4.0",
     "extract-text-webpack-plugin": "3.0.0",
     "file-loader": "0.11.2",
     "filesize": "3.5.10",
@@ -64,6 +68,7 @@
     "postcss-nested": "2.1.2",
     "postcss-simple-vars": "4.1.0",
     "prop-types": "15.6.0",
+    "qs": "6.5.1",
     "query-string": "5.0.0",
     "raven-for-redux": "1.0.0",
     "raven-js": "3.17.0",

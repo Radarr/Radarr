@@ -143,6 +143,8 @@ function CutoffUnmetRow(props) {
               />
             );
           }
+
+          return null;
         })
       }
     </TableRow>

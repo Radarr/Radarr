@@ -42,7 +42,7 @@ class AddNotificationModalContent extends Component {
           }
 
           {
-            !isFetching && !error &&
+            !isPopulated && !error &&
               <div>
                 <div className={styles.notifications}>
                   {

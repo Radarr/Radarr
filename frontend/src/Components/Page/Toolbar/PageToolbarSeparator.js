@@ -8,7 +8,7 @@ class PageToolbarSeparator extends Component {
 
   render() {
     return (
-      <div className={styles.separator}></div>
+      <div className={styles.separator} />
     );
   }
 

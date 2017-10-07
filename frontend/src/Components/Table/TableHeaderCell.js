@@ -5,7 +5,7 @@ import Link from 'Components/Link/Link';
 import Icon from 'Components/Icon';
 import styles from './TableHeaderCell.css';
 
-class VirtualTableHeaderCell extends Component {
+class TableHeaderCell extends Component {
 
   //
   // Listeners
@@ -43,8 +43,8 @@ class VirtualTableHeaderCell extends Component {
 
     const isSorting = isSortable && sortKey === name;
     const sortIcon = sortDirection === sortDirections.ASCENDING ?
-                     icons.SORT_ASCENDING :
-                     icons.SORT_DESCENDING;
+      icons.SORT_ASCENDING :
+      icons.SORT_DESCENDING;
 
     return (
       isSortable ?
@@ -72,7 +72,7 @@ class VirtualTableHeaderCell extends Component {
   }
 }
 
-VirtualTableHeaderCell.propTypes = {
+TableHeaderCell.propTypes = {
   className: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -86,9 +86,9 @@ VirtualTableHeaderCell.propTypes = {
   onSortPress: PropTypes.func
 };
 
-VirtualTableHeaderCell.defaultProps = {
+TableHeaderCell.defaultProps = {
   className: styles.headerCell,
   isSortable: false
 };
 
-export default VirtualTableHeaderCell;
+export default TableHeaderCell;

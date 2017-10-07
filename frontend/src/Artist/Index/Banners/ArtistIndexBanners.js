@@ -72,6 +72,8 @@ function calculateRowHeight(bannerHeight, sortKey, isSmallScreen, bannerOptions)
         heights.push(19);
       }
       break;
+    default:
+      // No need to add a height of 0
   }
 
   return heights.reduce((acc, height) => acc + height, 0);
