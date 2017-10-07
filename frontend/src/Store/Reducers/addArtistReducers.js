@@ -23,8 +23,8 @@ export const defaultState = {
     qualityProfileId: 0,
     languageProfileId: 0,
     seriesType: 'standard',
-    primaryAlbumTypes: 'Studio, Single',
-    secondaryAlbumTypes: '',
+    primaryAlbumTypes: ['Album'],
+    secondaryAlbumTypes: ['Studio'],
     albumFolder: true,
     tags: []
   }

@@ -37,7 +37,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger = logger;
         }
 
-        public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId)
+        public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId, List<string> primaryAlbumTypes, List<string> secondaryAlbumTypes)
         {
 
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
@@ -46,9 +46,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             
             var httpRequest = customerRequestBuilder.Create()
                                             .SetSegment("route", "artists/" + foreignArtistId)
+                                            .AddQueryParam("primTypes", string.Join("|",primaryAlbumTypes))
+                                            .AddQueryParam("secTypes", string.Join("|", secondaryAlbumTypes))
                                             .Build();
-
-
 
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Artist> { GetArtistInfo(slug).Item1 };
+                        return new List<Artist> { GetArtistInfo(slug, new List<string>{"Album"}, new List<string>{"Studio"}).Item1 };
                     }
                     catch (ArtistNotFoundException)
                     {

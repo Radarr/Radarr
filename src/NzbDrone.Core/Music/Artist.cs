@@ -36,8 +36,8 @@ namespace NzbDrone.Core.Music
         public string Overview { get; set; }
         public string Disambiguation { get; set; }
         public string ArtistType { get; set; }
-        public string PrimaryAlbumTypes { get; set; }
-        public string SecondaryAlbumTypes { get; set; }
+        public List<string> PrimaryAlbumTypes { get; set; }
+        public List<string> SecondaryAlbumTypes { get; set; }
         public bool Monitored { get; set; }
         public bool AlbumFolder { get; set; }
         public DateTime? LastInfoSync { get; set; }

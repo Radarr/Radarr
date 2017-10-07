@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("66c662b6-6e2f-4930-8610-912e24c63ed1", "AC/DC")]
         public void should_be_able_to_get_artist_detail(string mbId, string name)
         {
-            var details = Subject.GetArtistInfo(mbId);
+            var details = Subject.GetArtistInfo(mbId, new List<string> { "Album" }, new List<string> { "Studio" });
 
             ValidateArtist(details.Item1);
             ValidateAlbums(details.Item2);
@@ -37,13 +37,13 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [Test]
         public void getting_details_of_invalid_artist()
         {
-            Assert.Throws<ArtistNotFoundException>(() => Subject.GetArtistInfo("aaaaaa-aaa-aaaa-aaaa"));
+            Assert.Throws<ArtistNotFoundException>(() => Subject.GetArtistInfo("aaaaaa-aaa-aaaa-aaaa", new List<string> { "Album" }, new List<string> { "Studio" }));
         }
 
         [Test]
         public void should_not_have_period_at_start_of_name_slug()
         {
-            var details = Subject.GetArtistInfo("f59c5520-5f46-4d2c-b2c4-822eabf53419");
+            var details = Subject.GetArtistInfo("b6db95cd-88d9-492f-bbf6-a34e0e89b2e5", new List<string> { "Album" }, new List<string> { "Studio" });
 
             details.Item1.NameSlug.Should().Be("dothack");
         }
@@ -64,10 +64,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         private void ValidateAlbums(List<Album> albums)
         {
             albums.Should().NotBeEmpty();
-
-            var episodeGroup = albums.GroupBy(e => e.AlbumType + e.Title);
-            episodeGroup.Should().OnlyContain(c => c.Count() == 1);
-           
 
             foreach (var episode in albums)
             {

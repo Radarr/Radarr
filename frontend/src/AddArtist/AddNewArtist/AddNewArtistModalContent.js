@@ -168,28 +168,6 @@ class AddNewArtistModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Primary Album Types</FormLabel>
-
-                  <FormInputGroup
-                    type={inputTypes.TEXT}
-                    name="primaryAlbumTypes"
-                    onChange={onInputChange}
-                    {...primaryAlbumTypes}
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <FormLabel>Secondary Album Types</FormLabel>
-
-                  <FormInputGroup
-                    type={inputTypes.TEXT}
-                    name="secondaryAlbumTypes"
-                    onChange={onInputChange}
-                    {...secondaryAlbumTypes}
-                  />
-                </FormGroup>
-
-                <FormGroup>
                   <FormLabel>Tags</FormLabel>
 
                   <FormInputGroup
