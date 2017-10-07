@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Parser
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
 
-            if (RemuxRegex.IsMatch(normalizedName))
+            if (RemuxRegex.IsMatch(normalizedName) && sourceMatch?.Groups["webdl"].Success != true && sourceMatch?.Groups["hdtv"].Success != true)
             {
                 if (resolution == Resolution.R2160p)
                 {
