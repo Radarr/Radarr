@@ -46,6 +46,13 @@ namespace NzbDrone.Core.Test.ParserTests
             new object[] { "2160p Remux", Quality.Remux2160p },
         };
 
+        [TestCase("Despicable.Me.3.2017.720p.TSRip.x264.AAC-Ozlem", false)]
+        [TestCase("IT.2017.HDTSRip.x264.AAC-Ozlem[ETRG]", false)]
+        public void should_parse_ts(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Quality.TELESYNC, proper);
+        }
+
         [TestCase("S07E23 .avi ", false)]
         [TestCase("The.Shield.S01E13.x264-CtrlSD", false)]
         [TestCase("Nikita S02E01 HDTV XviD 2HD", false)]

@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<dsr>WS[-_. ]DSR|DSR)|
                                                                 (?<regional>R[0-9]{1})|
                                                                 (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
-                                                                (?<ts>TS|TELESYNC|HD-TS|HDTS|PDVD)|
+                                                                (?<ts>TS|TELESYNC|HD-TS|HDTS|PDVD|TSRip|HDTSRip)|
                                                                 (?<tc>TC|TELECINE|HD-TC|HDTC)|
                                                                 (?<cam>CAMRIP|CAM|HDCAM|HD-CAM)|
                                                                 (?<wp>WORKPRINT|WP)|
