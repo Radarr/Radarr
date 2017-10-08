@@ -1132,10 +1132,6 @@
     <Compile Include="ArtistStats\ArtistStatistics.cs" />
     <Compile Include="ArtistStats\ArtistStatisticsRepository.cs" />
     <Compile Include="ArtistStats\ArtistStatisticsService.cs" />
-    <Compile Include="SeriesStats\SeasonStatistics.cs" />
-    <Compile Include="SeriesStats\SeriesStatistics.cs" />
-    <Compile Include="SeriesStats\SeriesStatisticsRepository.cs" />
-    <Compile Include="SeriesStats\SeriesStatisticsService.cs" />
     <Compile Include="Tags\Tag.cs" />
     <Compile Include="Tags\TagDetails.cs" />
     <Compile Include="Tags\TagRepository.cs" />
