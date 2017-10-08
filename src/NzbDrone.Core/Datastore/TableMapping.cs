@@ -24,10 +24,8 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Restrictions;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.ArtistStats;
-using NzbDrone.Core.SeriesStats;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Extras.Metadata;
@@ -77,28 +75,6 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<History.History>().RegisterModel("History")
                   .AutoMapChildModels();
-
-            Mapper.Entity<Series>().RegisterModel("Series")
-                  .Ignore(s => s.RootFolderPath)
-                  .Relationship()
-                  .HasOne(s => s.Profile, s => s.ProfileId)
-                  .HasOne(s => s.LanguageProfile, s => s.LanguageProfileId);
-
-
-            Mapper.Entity<EpisodeFile>().RegisterModel("EpisodeFiles")
-                  .Ignore(f => f.Path)
-                  .Relationships.AutoMapICollectionOrComplexProperties()
-                  .For("Episodes")
-                  .LazyLoad(condition: parent => parent.Id > 0, 
-                            query: (db, parent) => db.Query<Episode>().Where(c => c.EpisodeFileId == parent.Id).ToList())
-                  .HasOne(file => file.Series, file => file.SeriesId);
-
-            Mapper.Entity<Episode>().RegisterModel("Episodes")
-                  .Ignore(e => e.SeriesTitle)
-                  .Ignore(e => e.Series)
-                  .Ignore(e => e.HasFile)
-                  .Relationship()
-                  .HasOne(episode => episode.EpisodeFile, episode => episode.EpisodeFileId);
 
             Mapper.Entity<Artist>().RegisterModel("Artists")
                   .Ignore(s => s.RootFolderPath)
