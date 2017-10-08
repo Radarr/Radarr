@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Music
         private readonly IArtistService _artistService;
 
         public ArtistSlugValidator(IArtistService artistService)
-            : base("Title slug is in use by another artist with a similar name")
+            : base("Name slug '{slug}' is in use by artist '{artistName}'")
         {
             _artistService = artistService;
         }
@@ -23,10 +23,22 @@ namespace NzbDrone.Core.Music
 
             dynamic instance = context.ParentContext.InstanceToValidate;
             var instanceId = (int)instance.Id;
+            var slug = context.PropertyValue.ToString();
 
-            return !_artistService.GetAllArtists().Where(s => s.NameSlug.IsNotNullOrWhiteSpace())
-                                                 .ToList()
-                                                 .Exists(s => s.NameSlug.Equals(context.PropertyValue.ToString()) && s.Id != instanceId);
+            var conflictingArtist = _artistService.GetAllArtists()
+                                                               .FirstOrDefault(s => s.NameSlug.IsNotNullOrWhiteSpace() &&
+             s.NameSlug.Equals(context.PropertyValue.ToString()) &&
+             s.Id != instanceId);
+
+            if (conflictingArtist == null)
+            {
+                return true;
+            }
+
+            context.MessageFormatter.AppendArgument("slug", slug);
+            context.MessageFormatter.AppendArgument("artistName", conflictingArtist.Name);
+
+            return false;
         }
     }
 }
