@@ -1216,9 +1216,7 @@
     <Compile Include="Validation\Paths\PathValidator.cs" />
     <Compile Include="Validation\Paths\StartupFolderValidator.cs" />
     <Compile Include="Validation\Paths\RootFolderValidator.cs" />
-    <Compile Include="Validation\Paths\SeriesAncestorValidator.cs" />
-    <Compile Include="Validation\Paths\SeriesExistsValidator.cs" />
-    <Compile Include="Validation\Paths\SeriesPathValidator.cs" />
+    <Compile Include="Validation\Paths\ArtistAncestorValidator.cs" />
     <Compile Include="Validation\ProfileExistsValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />

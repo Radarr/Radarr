@@ -16,15 +16,15 @@ namespace NzbDrone.Core.Music
     public class AddArtistValidator : AbstractValidator<Artist>, IAddArtistValidator
     {
         public AddArtistValidator(RootFolderValidator rootFolderValidator,
-                                  SeriesPathValidator seriesPathValidator,
-                                  SeriesAncestorValidator seriesAncestorValidator,
+                                  ArtistPathValidator artistPathValidator,
+                                  ArtistAncestorValidator artistAncestorValidator,
                                   ArtistSlugValidator artistTitleSlugValidator)
         {
             RuleFor(c => c.Path).Cascade(CascadeMode.StopOnFirstFailure)
                                 .IsValidPath()
                                 .SetValidator(rootFolderValidator)
-                                .SetValidator(seriesPathValidator)
-                                .SetValidator(seriesAncestorValidator);
+                                .SetValidator(artistPathValidator)
+                                .SetValidator(artistAncestorValidator);
 
             RuleFor(c => c.NameSlug).SetValidator(artistTitleSlugValidator);// TODO: Check if we are going to use a slug or artistName
         }

@@ -47,7 +47,7 @@ namespace Lidarr.Api.V3.Artist
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
-                            SeriesAncestorValidator seriesAncestorValidator,
+                            ArtistAncestorValidator artistAncestorValidator,
                             ProfileExistsValidator profileExistsValidator,
                             LanguageProfileExistsValidator languageProfileExistsValidator
             )
@@ -73,7 +73,7 @@ namespace Lidarr.Api.V3.Artist
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
                            .SetValidator(artistPathValidator)
-                           .SetValidator(seriesAncestorValidator)
+                           .SetValidator(artistAncestorValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 
             SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(profileExistsValidator);

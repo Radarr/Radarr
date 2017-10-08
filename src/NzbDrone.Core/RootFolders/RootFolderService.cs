@@ -7,7 +7,7 @@ using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.RootFolders
 {
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.RootFolders
     {
         private readonly IRootFolderRepository _rootFolderRepository;
         private readonly IDiskProvider _diskProvider;
-        private readonly ISeriesRepository _seriesRepository;
+        private readonly IArtistRepository _artistRepository;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
@@ -44,13 +44,13 @@ namespace NzbDrone.Core.RootFolders
 
         public RootFolderService(IRootFolderRepository rootFolderRepository,
                                  IDiskProvider diskProvider,
-                                 ISeriesRepository seriesRepository,
+                                 IArtistRepository artistRepository,
                                  IConfigService configService,
                                  Logger logger)
         {
             _rootFolderRepository = rootFolderRepository;
             _diskProvider = diskProvider;
-            _seriesRepository = seriesRepository;
+            _artistRepository = artistRepository;
             _configService = configService;
             _logger = logger;
         }
@@ -134,7 +134,7 @@ namespace NzbDrone.Core.RootFolders
             }
 
             var results = new List<UnmappedFolder>();
-            var series = _seriesRepository.All().ToList();
+            var artist = _artistRepository.All().ToList();
 
             if (!_diskProvider.FolderExists(path))
             {
@@ -142,8 +142,8 @@ namespace NzbDrone.Core.RootFolders
                 return results;
             }
 
-            var possibleSeriesFolders = _diskProvider.GetDirectories(path).ToList();
-            var unmappedFolders = possibleSeriesFolders.Except(series.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
+            var possibleArtistFolders = _diskProvider.GetDirectories(path).ToList();
+            var unmappedFolders = possibleArtistFolders.Except(artist.Select(s => s.Path), PathEqualityComparer.Instance).ToList();
 
             foreach (string unmappedFolder in unmappedFolders)
             {
