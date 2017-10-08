@@ -53,7 +53,7 @@ namespace Lidarr.Api.V3.Indexers
 
         private Response DownloadRelease(ReleaseResource release)
         {
-            var remoteAlbum = _remoteAlbumCache.Find(release.Guid);
+            var remoteAlbum = _remoteAlbumCache.Find(GetCacheKey(release));
 
             if (remoteAlbum == null)
             {
@@ -68,7 +68,7 @@ namespace Lidarr.Api.V3.Indexers
             }
             catch (ReleaseDownloadException ex)
             {
-                _logger.ErrorException(ex.Message, ex);
+                _logger.Error(ex, ex.Message);
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
             }
 
@@ -96,7 +96,7 @@ namespace Lidarr.Api.V3.Indexers
             }
             catch (Exception ex)
             {
-                _logger.ErrorException("Album search failed: " + ex.Message, ex);
+                _logger.Error(ex, "Album search failed: " + ex.Message);
             }
 
             return new List<ReleaseResource>();
@@ -113,8 +113,14 @@ namespace Lidarr.Api.V3.Indexers
 
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
-            _remoteAlbumCache.Set(decision.RemoteAlbum.Release.Guid, decision.RemoteAlbum, TimeSpan.FromMinutes(30));
-           return base.MapDecision(decision, initialWeight);
+            var resource = base.MapDecision(decision, initialWeight);
+            _remoteAlbumCache.Set(GetCacheKey(resource), decision.RemoteAlbum, TimeSpan.FromMinutes(30));
+            return resource;
+        }
+
+        private string GetCacheKey(ReleaseResource resource)
+        {
+            return string.Concat(resource.IndexerId, "_", resource.Guid);
         }
     }
 }
