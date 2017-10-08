@@ -1,5 +1,4 @@
 using NzbDrone.Common.Messaging;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaCover

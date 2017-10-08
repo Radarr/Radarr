@@ -9,7 +9,6 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
-using NzbDrone.Core.Tv;
 using Newtonsoft.Json.Linq;
 using NzbDrone.Core.Music;
 using Newtonsoft.Json;

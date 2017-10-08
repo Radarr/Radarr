@@ -5,7 +5,6 @@ using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Queue
@@ -14,7 +13,6 @@ namespace NzbDrone.Core.Queue
     {
         public Artist Artist { get; set; }
         public Album Album { get; set; }
-        public Episode Episode { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }

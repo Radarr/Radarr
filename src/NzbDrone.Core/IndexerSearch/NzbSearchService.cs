@@ -9,7 +9,6 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
 using System.Linq;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Music;

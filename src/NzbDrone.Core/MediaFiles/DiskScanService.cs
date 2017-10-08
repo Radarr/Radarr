@@ -13,7 +13,6 @@ using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;

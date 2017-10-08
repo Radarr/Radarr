@@ -8,7 +8,6 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
 using System;
 using System.Collections.Generic;
 using System.IO;

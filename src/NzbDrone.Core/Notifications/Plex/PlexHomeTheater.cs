@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Notifications.Xbmc;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Notifications.Plex
 {

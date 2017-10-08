@@ -11,7 +11,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Organizer
