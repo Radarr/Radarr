@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Nancy;
-using NLog;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.MediaFiles;
@@ -13,7 +12,8 @@ using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
-using Lidarr.Http.REST;
+using NzbDrone.Core.Exceptions;
+using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Lidarr.Api.V3.TrackFiles
 {
@@ -21,27 +21,24 @@ namespace Lidarr.Api.V3.TrackFiles
                                  IHandle<TrackFileAddedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
-        private readonly IRecycleBinProvider _recycleBinProvider;
+        private readonly IDeleteMediaFiles _mediaFileDeletionService;
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly IUpgradableSpecification _upgradableSpecification;
-        private readonly Logger _logger;
 
         public TrackModule(IBroadcastSignalRMessage signalRBroadcaster,
                              IMediaFileService mediaFileService,
-                             IRecycleBinProvider recycleBinProvider,
+                             IDeleteMediaFiles mediaFileDeletionService,
                              IArtistService artistService,
                              IAlbumService albumService,
-                             IUpgradableSpecification upgradableSpecification,
-                             Logger logger)
+                             IUpgradableSpecification upgradableSpecification)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
-            _recycleBinProvider = recycleBinProvider;
+            _mediaFileDeletionService = mediaFileDeletionService;
             _artistService = artistService;
             _albumService = albumService;
             _upgradableSpecification = upgradableSpecification;
-            _logger = logger;
 
             GetResourceById = GetTrackFile;
             GetResourceAll = GetTrackFiles;
@@ -68,7 +65,7 @@ namespace Lidarr.Api.V3.TrackFiles
 
             if (!artistIdQuery.HasValue && !trackFileIdsQuery.HasValue && !albumIdQuery.HasValue)
             {
-                throw new BadRequestException("artistId, albumId, or trackFileIds must be provided");
+                throw new Lidarr.Http.REST.BadRequestException("artistId, albumId, or trackFileIds must be provided");
             }
 
             if (artistIdQuery.HasValue && !albumIdQuery.HasValue)
@@ -89,9 +86,9 @@ namespace Lidarr.Api.V3.TrackFiles
 
             else
             {
-                string episodeFileIdsValue = trackFileIdsQuery.Value.ToString();
+                string trackFileIdsValue = trackFileIdsQuery.Value.ToString();
 
-                var trackFileIds = episodeFileIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                var trackFileIds = trackFileIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                                         .Select(e => Convert.ToInt32(e))
                                                         .ToList();
 
@@ -99,7 +96,7 @@ namespace Lidarr.Api.V3.TrackFiles
 
                 return trackFiles.GroupBy(e => e.ArtistId)
                                    .SelectMany(f => f.ToList()
-                                                     .ConvertAll( e => e.ToResource(_artistService.GetArtist(f.Key), _upgradableSpecification)))
+                                                     .ConvertAll(e => e.ToResource(_artistService.GetArtist(f.Key), _upgradableSpecification)))
                                    .ToList();
             }
         }
@@ -131,21 +128,25 @@ namespace Lidarr.Api.V3.TrackFiles
 
             _mediaFileService.Update(trackFiles);
 
-            var series = _artistService.GetArtist(trackFiles.First().ArtistId);
+            var artist = _artistService.GetArtist(trackFiles.First().ArtistId);
 
-            return trackFiles.ConvertAll(f => f.ToResource(series, _upgradableSpecification))
-                               .AsResponse(HttpStatusCode.Accepted);
+            return trackFiles.ConvertAll(f => f.ToResource(artist, _upgradableSpecification))
+                               .AsResponse(Nancy.HttpStatusCode.Accepted);
         }
 
         private void DeleteTrackFile(int id)
         {
             var trackFile = _mediaFileService.Get(id);
+
+            if (trackFile == null)
+            {
+                throw new NzbDroneClientException(HttpStatusCode.NotFound, "Track file not found");
+            }
+
             var artist = _artistService.GetArtist(trackFile.ArtistId);
             var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
 
-            _logger.Info("Deleting track file: {0}", fullPath);
-            _recycleBinProvider.DeleteFile(fullPath);
-            _mediaFileService.Delete(trackFile, DeleteMediaFileReason.Manual);
+            _mediaFileDeletionService.DeleteTrackFile(artist, trackFile);
         }
 
         private Response DeleteTrackFiles()
@@ -158,9 +159,7 @@ namespace Lidarr.Api.V3.TrackFiles
             {
                 var fullPath = Path.Combine(artist.Path, trackFile.RelativePath);
 
-                _logger.Info("Deleting track file: {0}", fullPath);
-                _recycleBinProvider.DeleteFile(fullPath);
-                _mediaFileService.Delete(trackFile, DeleteMediaFileReason.Manual);
+                _mediaFileDeletionService.DeleteTrackFile(artist, trackFile);
             }
 
             return new object().AsResponse();

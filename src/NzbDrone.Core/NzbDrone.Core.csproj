@@ -744,6 +744,7 @@
     <Compile Include="MediaFiles\Events\EpisodeFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackDownloadedEvent.cs" />
+    <Compile Include="MediaFiles\MediaFileDeletionService.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatter.cs" />
     <Compile Include="MediaFiles\RenameTrackFilePreview.cs" />
     <Compile Include="MediaFiles\RenameTrackFileService.cs" />
