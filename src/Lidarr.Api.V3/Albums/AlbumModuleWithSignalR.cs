@@ -98,12 +98,9 @@ namespace Lidarr.Api.V3.Albums
                 }
             }
 
-            for (var i = 0; i < albums.Count; i++)
-            {
-                var resource = result[i];
-                FetchAndLinkAlbumStatistics(resource);
-            }
-
+            var artistList = albums.DistinctBy(a => a.ArtistId).ToList();
+            var artistStats = _artistStatisticsService.ArtistStatistics();
+            LinkArtistStatistics(result, artistStats);
 
             return result;
         }
@@ -111,6 +108,15 @@ namespace Lidarr.Api.V3.Albums
         private void FetchAndLinkAlbumStatistics(AlbumResource resource)
         {
             LinkArtistStatistics(resource, _artistStatisticsService.ArtistStatistics(resource.ArtistId));
+        }
+
+        private void LinkArtistStatistics(List<AlbumResource> resources, List<ArtistStatistics> artistStatistics)
+        {
+            foreach (var album in resources)
+            {
+                var stats = artistStatistics.SingleOrDefault(ss => ss.ArtistId == album.ArtistId);
+                LinkArtistStatistics(album, stats);
+            }
         }
 
         private void LinkArtistStatistics(AlbumResource resource, ArtistStatistics artistStatistics)

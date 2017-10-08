@@ -31,7 +31,7 @@ namespace Lidarr.Api.V3.Wanted
                 SortDirection = pagingResource.SortDirection
             };
 
-            var includeArtist = Request.GetBooleanQueryParameter("includeSeries");
+            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
 
             if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
             {

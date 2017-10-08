@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Music
         {
             _database = database;
         }
-       
+
 
         public bool AlbumPathExists(string path)
         {
@@ -80,35 +80,39 @@ namespace NzbDrone.Core.Music
         private QueryBuilder<Album> GetMissingAlbumsQuery(PagingSpec<Album> pagingSpec, DateTime currentTime)
         {
             string sortKey;
-            string monitored = "([t0].[Monitored] = 0) OR ([t1].[Monitored] = 0)";
+            string monitored = "(Albums.[Monitored] = 0) OR (Artists.[Monitored] = 0)";
 
             if (pagingSpec.FilterExpression.ToString().Contains("True"))
             {
-                monitored = "([t0].[Monitored] = 1) AND ([t1].[Monitored] = 1)";
+                monitored = "(Albums.[Monitored] = 1) AND (Artists.[Monitored] = 1)";
             }
 
             if (pagingSpec.SortKey == "releaseDate")
             {
-                sortKey = "[t0]." + pagingSpec.SortKey;
+                sortKey = "Albums." + pagingSpec.SortKey;
             }
             else if (pagingSpec.SortKey == "artist.sortName")
             {
-                sortKey = "[t1]." + pagingSpec.SortKey.Split('.').Last();
+                sortKey = "Artists." + pagingSpec.SortKey.Split('.').Last();
             }
             else
             {
-                sortKey = "[t0].releaseDate";
+                sortKey = "Albums.releaseDate";
             }
 
-                string query = string.Format("SELECT * FROM Albums [t0] INNER JOIN Artists [t1] ON ([t0].[ArtistId] = [t1].[Id])" +
-                    "WHERE ({0}) AND {1}" +
-                    " AND NOT EXISTS (SELECT 1 from Tracks [t2] WHERE [t2].albumId = [t0].id AND [t2].trackFileId <> 0) ORDER BY {2} {3} LIMIT {4} OFFSET {5}",
-                    monitored, BuildReleaseDateCutoffWhereClause(currentTime), sortKey, pagingSpec.ToSortDirection(), pagingSpec.PageSize, pagingSpec.PagingOffset());
+            string query = string.Format("SELECT Albums.* FROM (SELECT Tracks.AlbumId, COUNT(*) AS TotalTrackCount," + "" +
+                "SUM(CASE WHEN TrackFileId > 0 THEN 1 ELSE 0 END) AS AvailableTrackCount FROM Tracks GROUP BY Tracks.ArtistId, Tracks.AlbumId) as Tracks" +
+                 " LEFT OUTER JOIN Albums ON Tracks.AlbumId == Albums.Id" +
+                 " LEFT OUTER JOIN Artists ON Albums.ArtistId == Artists.Id" +
+                 " WHERE Tracks.TotalTrackCount != Tracks.AvailableTrackCount AND ({0}) AND {1}" +
+                 " GROUP BY Tracks.AlbumId" +
+                 " ORDER BY {2} {3} LIMIT {4} OFFSET {5}",
+                 monitored, BuildReleaseDateCutoffWhereClause(currentTime), sortKey, pagingSpec.ToSortDirection(), pagingSpec.PageSize, pagingSpec.PagingOffset());
 
-                return Query.QueryText(query);
+            return Query.QueryText(query);
 
             //Use Manual Query until we find a way to "NOT EXIST(SELECT 1 from Tracks WHERE [t2].trackFileId <> 0)"
-            
+
             //return Query.Join<Album, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
             //                .Where<Album>(pagingSpec.FilterExpression)
             //                .AndWhere(BuildReleaseDateCutoffWhereClause(currentTime))
@@ -126,10 +130,13 @@ namespace NzbDrone.Core.Music
             {
                 monitored = 1;
             }
-            
-            string query = string.Format("SELECT * FROM Albums [t0] INNER JOIN Artists [t1] ON ([t0].[ArtistId] = [t1].[Id])" +
-                "WHERE (([t0].[Monitored] = {0}) AND ([t1].[Monitored] = {0})) AND {1}" +
-                " AND NOT EXISTS (SELECT 1 from Tracks [t2] WHERE [t2].albumId = [t0].id AND [t2].trackFileId <> 0)",
+
+            string query = string.Format("SELECT Albums.* FROM (SELECT Tracks.AlbumId, COUNT(*) AS TotalTrackCount," +
+                " SUM(CASE WHEN TrackFileId > 0 THEN 1 ELSE 0 END) AS AvailableTrackCount FROM Tracks GROUP BY Tracks.ArtistId, Tracks.AlbumId) as Tracks" +
+                " LEFT OUTER JOIN Albums ON Tracks.AlbumId == Albums.Id" +
+                " LEFT OUTER JOIN Artists ON Albums.ArtistId == Artists.Id" +
+                " WHERE Tracks.TotalTrackCount != Tracks.AvailableTrackCount AND ({0}) AND {1}" +
+                " GROUP BY Tracks.AlbumId",
                 monitored, BuildReleaseDateCutoffWhereClause(currentTime));
 
             return Query.QueryText(query).Count();
@@ -137,7 +144,7 @@ namespace NzbDrone.Core.Music
 
         private string BuildReleaseDateCutoffWhereClause(DateTime currentTime)
         {
-            return string.Format("datetime(strftime('%s', [t0].[ReleaseDate]),  'unixepoch') <= '{0}'",
+            return string.Format("datetime(strftime('%s', Albums.[ReleaseDate]),  'unixepoch') <= '{0}'",
                                  currentTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
@@ -184,7 +191,7 @@ namespace NzbDrone.Core.Music
             var query = Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id)
                         .Where<Artist>(artist => artist.CleanName == cleanArtistName)
                         .Where<Album>(album => album.CleanTitle == cleanTitle);
-            return Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id )
+            return Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id)
                         .Where<Artist>(artist => artist.CleanName == cleanArtistName)
                         .Where<Album>(album => album.CleanTitle == cleanTitle)
                         .SingleOrDefault();
