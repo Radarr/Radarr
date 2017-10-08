@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
@@ -61,6 +62,14 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_remove_request_info_from_title(string postTitle, string title)
         {
             Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
+        }
+
+        [TestCase("Revolution.S01E02.Chained.Heat.mkv")]
+        [TestCase("Dexter - S01E01 - Title.avi")]
+        public void should_parse_quality_from_extension(string title)
+        {
+            Parser.Parser.ParseTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
+            Parser.Parser.ParseTitle(title).Quality.QualitySource.Should().Be(QualitySource.Extension);
         }
 
         [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "The Best 101 Love Ballads")]

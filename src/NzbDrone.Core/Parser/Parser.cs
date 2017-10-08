@@ -457,9 +457,9 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
 
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+                var releaseTitle = RemoveFileExtension(title);
 
-                simpleTitle = RemoveFileExtension(simpleTitle);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
 
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
@@ -568,9 +568,9 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
 
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+                var releaseTitle = RemoveFileExtension(title);
 
-                simpleTitle = RemoveFileExtension(simpleTitle);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
 
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
@@ -611,13 +611,13 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                result.Language = LanguageParser.ParseLanguage(title);
+                                result.Language = LanguageParser.ParseLanguage(releaseTitle);
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
-                                result.ReleaseGroup = ParseReleaseGroup(title);
+                                result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
 
                                 var subGroup = GetSubGroup(match);
                                 if (!subGroup.IsNullOrWhiteSpace())

@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Indexers.Waffles
         }
     }
 
-    public class WafflesSettings : IProviderConfig
+    public class WafflesSettings : IIndexerSettings
     {
         private static readonly WafflesSettingsValidator Validator = new WafflesSettingsValidator();
 

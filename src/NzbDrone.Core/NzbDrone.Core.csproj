@@ -303,6 +303,7 @@
     <Compile Include="Datastore\Migration\114_music_blacklist.cs" />
     <Compile Include="Datastore\Migration\113_music_history.cs" />
     <Compile Include="Datastore\Migration\112_setup_music.cs" />
+    <Compile Include="Datastore\Migration\122_consolidate_indexer_baseurl.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -522,7 +523,7 @@
     <Compile Include="Download\DownloadClientItem.cs" />
     <Compile Include="Download\DownloadClientProvider.cs" />
     <Compile Include="Download\DownloadClientRepository.cs" />
-    <Compile Include="Download\DownloadClientStatus.cs" />
+    <Compile Include="Download\DownloadClientInfo.cs" />
     <Compile Include="Download\DownloadClientType.cs" />
     <Compile Include="Download\DownloadFailedEvent.cs" />
     <Compile Include="Download\DownloadItemStatus.cs" />
@@ -629,6 +630,7 @@
     <Compile Include="Indexers\Gazelle\GazelleParser.cs" />
     <Compile Include="Indexers\Gazelle\GazelleRequestGenerator.cs" />
     <Compile Include="Indexers\Gazelle\GazelleSettings.cs" />
+    <Compile Include="Indexers\IIndexerSettings.cs" />
     <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
     <Compile Include="Indexers\Waffles\Waffles.cs" />
     <Compile Include="Indexers\Waffles\WafflesRequestGenerator.cs" />

@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         }
     }
 
-    public class RarbgSettings : IProviderConfig
+    public class RarbgSettings : IIndexerSettings
     {
         private static readonly RarbgSettingsValidator Validator = new RarbgSettingsValidator();
 

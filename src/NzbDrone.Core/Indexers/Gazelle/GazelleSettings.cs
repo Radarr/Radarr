@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Indexers.Gazelle
         }
     }
 
-    public class GazelleSettings : IProviderConfig
+    public class GazelleSettings : IIndexerSettings
     {
         private static readonly GazelleSettingsValidator Validator = new GazelleSettingsValidator();
 
