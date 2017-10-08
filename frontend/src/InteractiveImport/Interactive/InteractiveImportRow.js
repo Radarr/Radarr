@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import formatBytes from 'Utilities/Number/formatBytes';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import TableRow from 'Components/Table/TableRow';
@@ -68,7 +69,14 @@ class InteractiveImportRow extends Component {
       onValidRowChange
     } = this.props;
 
-    if (prevProps.isSelected === isSelected) {
+    if (
+      prevProps.artist === artist &&
+      prevProps.album === album &&
+      !hasDifferentItems(prevProps.tracks, tracks) &&
+      prevProps.quality === quality &&
+      prevProps.language === language &&
+      prevProps.isSelected === isSelected
+    ) {
       return;
     }
 
