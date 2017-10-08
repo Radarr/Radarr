@@ -19,7 +19,9 @@ function createMapStateToProps() {
         monitor: defaultMonitor,
         qualityProfileId: defaultQualityProfileId,
         languageProfileId: defaultLanguageProfileId,
-        albumFolder: defaultAlbumFolder
+        albumFolder: defaultAlbumFolder,
+        primaryAlbumTypes: defaultPrimaryAlbumTypes,
+        secondaryAlbumTypes: defaultSecondaryAlbumTypes
       } = addArtist.defaults;
 
       const items = importArtist.items;
@@ -32,6 +34,8 @@ function createMapStateToProps() {
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
       const isLanguageProfileIdMixed = isMixed(items, selectedIds, defaultLanguageProfileId, 'languageProfileId');
       const isAlbumFolderMixed = isMixed(items, selectedIds, defaultAlbumFolder, 'albumFolder');
+      const isPrimaryAlbumTypesMixed = isMixed(items, selectedIds, defaultPrimaryAlbumTypes, 'primaryAlbumTypes');
+      const isSecondaryAlbumTypesMixed = isMixed(items, selectedIds, defaultSecondaryAlbumTypes, 'secondaryAlbumTypes');
 
       return {
         selectedCount: selectedIds.length,
@@ -41,10 +45,14 @@ function createMapStateToProps() {
         defaultQualityProfileId,
         defaultLanguageProfileId,
         defaultAlbumFolder,
+        defaultPrimaryAlbumTypes,
+        defaultSecondaryAlbumTypes,
         isMonitorMixed,
         isQualityProfileIdMixed,
         isLanguageProfileIdMixed,
-        isAlbumFolderMixed
+        isAlbumFolderMixed,
+        isPrimaryAlbumTypesMixed,
+        isSecondaryAlbumTypesMixed
       };
     }
   );

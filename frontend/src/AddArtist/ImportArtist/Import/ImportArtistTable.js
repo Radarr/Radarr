@@ -23,6 +23,8 @@ class ImportArtistTable extends Component {
       defaultQualityProfileId,
       defaultLanguageProfileId,
       defaultAlbumFolder,
+      defaultPrimaryAlbumTypes,
+      defaultSecondaryAlbumTypes,
       onArtistLookup,
       onSetImportArtistValue
     } = this.props;
@@ -31,7 +33,9 @@ class ImportArtistTable extends Component {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
       languageProfileId: defaultLanguageProfileId,
-      albumFolder: defaultAlbumFolder
+      albumFolder: defaultAlbumFolder,
+      primaryAlbumTypes: defaultPrimaryAlbumTypes,
+      secondaryAlbumTypes: defaultSecondaryAlbumTypes
     };
 
     unmappedFolders.forEach((unmappedFolder) => {
@@ -191,6 +195,8 @@ ImportArtistTable.propTypes = {
   defaultQualityProfileId: PropTypes.number,
   defaultLanguageProfileId: PropTypes.number,
   defaultAlbumFolder: PropTypes.bool.isRequired,
+  defaultPrimaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  defaultSecondaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,
   selectedState: PropTypes.object.isRequired,

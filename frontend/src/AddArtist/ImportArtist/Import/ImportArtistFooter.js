@@ -23,14 +23,18 @@ class ImportArtistFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
-      defaultAlbumFolder
+      defaultAlbumFolder,
+      defaultPrimaryAlbumTypes,
+      defaultSecondaryAlbumTypes
     } = props;
 
     this.state = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
       languageProfileId: defaultLanguageProfileId,
-      albumFolder: defaultAlbumFolder
+      albumFolder: defaultAlbumFolder,
+      primaryAlbumTypes: defaultPrimaryAlbumTypes,
+      secondaryAlbumTypes: defaultSecondaryAlbumTypes
     };
   }
 
@@ -40,17 +44,23 @@ class ImportArtistFooter extends Component {
       defaultQualityProfileId,
       defaultLanguageProfileId,
       defaultAlbumFolder,
+      defaultPrimaryAlbumTypes,
+      defaultSecondaryAlbumTypes,
       isMonitorMixed,
       isQualityProfileIdMixed,
       isLanguageProfileIdMixed,
-      isAlbumFolderMixed
+      isAlbumFolderMixed,
+      isPrimaryAlbumTypesMixed,
+      isSecondaryAlbumTypesMixed
     } = this.props;
 
     const {
       monitor,
       qualityProfileId,
       languageProfileId,
-      albumFolder
+      albumFolder,
+      primaryAlbumTypes,
+      secondaryAlbumTypes
     } = this.state;
 
     const newState = {};
@@ -77,6 +87,18 @@ class ImportArtistFooter extends Component {
       newState.albumFolder = null;
     } else if (!isAlbumFolderMixed && albumFolder !== defaultAlbumFolder) {
       newState.albumFolder = defaultAlbumFolder;
+    }
+
+    if (isPrimaryAlbumTypesMixed && primaryAlbumTypes != null) {
+      newState.primaryAlbumTypes = null;
+    } else if (!isPrimaryAlbumTypesMixed && primaryAlbumTypes !== defaultPrimaryAlbumTypes) {
+      newState.primaryAlbumTypes = defaultPrimaryAlbumTypes;
+    }
+
+    if (isSecondaryAlbumTypesMixed && secondaryAlbumTypes != null) {
+      newState.secondaryAlbumTypes = null;
+    } else if (!isSecondaryAlbumTypesMixed && secondaryAlbumTypes !== defaultSecondaryAlbumTypes) {
+      newState.secondaryAlbumTypes = defaultSecondaryAlbumTypes;
     }
 
     if (!_.isEmpty(newState)) {
@@ -111,7 +133,9 @@ class ImportArtistFooter extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
-      albumFolder
+      albumFolder,
+      primaryAlbumTypes,
+      secondaryAlbumTypes
     } = this.state;
 
     return (
@@ -221,10 +245,14 @@ ImportArtistFooter.propTypes = {
   defaultQualityProfileId: PropTypes.number,
   defaultLanguageProfileId: PropTypes.number,
   defaultAlbumFolder: PropTypes.bool.isRequired,
+  defaultPrimaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  defaultSecondaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
   isLanguageProfileIdMixed: PropTypes.bool.isRequired,
   isAlbumFolderMixed: PropTypes.bool.isRequired,
+  isPrimaryAlbumTypesMixed: PropTypes.bool.isRequired,
+  isSecondaryAlbumTypesMixed: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired
