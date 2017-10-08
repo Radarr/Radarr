@@ -31,7 +31,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
                 return Decision.Accept();
             }
                 
-            if (Parser.Parser.CleanArtistTitle(singleAlbumSpec.AlbumTitle) != Parser.Parser.CleanArtistTitle(remoteAlbum.ParsedAlbumInfo.AlbumTitle))
+            if (Parser.Parser.CleanArtistName(singleAlbumSpec.AlbumTitle) != Parser.Parser.CleanArtistName(remoteAlbum.ParsedAlbumInfo.AlbumTitle))
             {
                 _logger.Debug("Album does not match searched album title, skipping.");
                 return Decision.Reject("Wrong album");

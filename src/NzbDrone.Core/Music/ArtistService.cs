@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Music
 
         public Artist FindByName(string title)
         {
-            return _artistRepository.FindByName(title.CleanArtistTitle());
+            return _artistRepository.FindByName(title.CleanArtistName());
         }
 
         public Artist FindByTitleInexact(string title)

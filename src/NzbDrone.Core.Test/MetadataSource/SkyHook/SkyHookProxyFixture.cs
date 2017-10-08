@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             artist.Should().NotBeNull();
             artist.Name.Should().NotBeNullOrWhiteSpace();
-            artist.CleanName.Should().Be(Parser.Parser.CleanSeriesTitle(artist.Name));
+            artist.CleanName.Should().Be(Parser.Parser.CleanArtistName(artist.Name));
             artist.SortName.Should().Be(Parser.Parser.NormalizeTitle(artist.Name));
             artist.Overview.Should().NotBeNullOrWhiteSpace();
             artist.Images.Should().NotBeEmpty();

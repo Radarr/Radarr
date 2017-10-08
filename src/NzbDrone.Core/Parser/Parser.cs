@@ -789,15 +789,15 @@ namespace NzbDrone.Core.Parser
             return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
         }
 
-        public static string CleanArtistTitle(this string title)
+        public static string CleanArtistName(this string name)
         {
             long number = 0;
 
             //If Title only contains numbers return it as is.
-            if (long.TryParse(title, out number))
-                return title;
+            if (long.TryParse(name, out number))
+                return name;
 
-            return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
+            return NormalizeRegex.Replace(name, string.Empty).ToLower().RemoveAccent();
         }
 
         public static string NormalizeEpisodeTitle(string title)

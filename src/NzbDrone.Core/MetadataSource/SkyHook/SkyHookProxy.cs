@@ -43,7 +43,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
 
             SetCustomProvider();
-            
+
+            if (primaryAlbumTypes == null)
+            {
+                primaryAlbumTypes = new List<string>();
+            }
+
+            if (secondaryAlbumTypes == null)
+            {
+                secondaryAlbumTypes = new List<string>();
+            }
+
             var httpRequest = customerRequestBuilder.Create()
                                             .SetSegment("route", "artists/" + foreignArtistId)
                                             .AddQueryParam("primTypes", string.Join("|",primaryAlbumTypes))
@@ -143,7 +153,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             album.Title = resource.Title;
             album.ForeignAlbumId = resource.Id;
             album.ReleaseDate = resource.ReleaseDate;
-            album.CleanTitle = Parser.Parser.CleanArtistTitle(album.Title);
+            album.CleanTitle = Parser.Parser.CleanArtistName(album.Title);
             album.AlbumType = resource.Type;
             album.Images = resource.Images.Select(MapImage).ToList();
             album.Label = resource.Label;
@@ -174,8 +184,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.ForeignArtistId = resource.Id;
             artist.Genres = resource.Genres;
             artist.Overview = resource.Overview;
-            artist.NameSlug = Parser.Parser.CleanArtistTitle(artist.Name);
-            artist.CleanName = Parser.Parser.CleanArtistTitle(artist.Name);
+            artist.NameSlug = Parser.Parser.CleanArtistName(artist.Name);
+            artist.CleanName = Parser.Parser.CleanArtistName(artist.Name);
             artist.SortName = Parser.Parser.NormalizeTitle(artist.Name);
             artist.Disambiguation = resource.Disambiguation;
             artist.ArtistType = resource.Type;

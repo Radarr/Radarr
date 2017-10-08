@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Music
                 newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
             }
 
-            newArtist.CleanName = newArtist.Name.CleanArtistTitle();
+            newArtist.CleanName = newArtist.Name.CleanArtistName();
             newArtist.SortName = ArtistNameNormalizer.Normalize(newArtist.Name, newArtist.ForeignArtistId); // There is no Sort Title
             newArtist.Added = DateTime.UtcNow;
 

@@ -177,7 +177,7 @@ namespace NzbDrone.Core.Music
 
         public Album FindByTitle(int artistId, string title)
         {
-            title = Parser.Parser.CleanArtistTitle(title);
+            title = Parser.Parser.CleanArtistName(title);
 
             return Query.Where(s => s.CleanTitle == title)
                         .AndWhere(s => s.ArtistId == artistId)
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Music
 
         public Album FindByArtistAndName(string artistName, string cleanTitle)
         {
-            var cleanArtistName = Parser.Parser.CleanArtistTitle(artistName);
+            var cleanArtistName = Parser.Parser.CleanArtistName(artistName);
             cleanTitle = cleanTitle.ToLowerInvariant();
             var query = Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id)
                         .Where<Artist>(artist => artist.CleanName == cleanArtistName)
