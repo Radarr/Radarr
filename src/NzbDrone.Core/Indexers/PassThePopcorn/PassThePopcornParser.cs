@@ -73,8 +73,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     }
 
                     // Only add approved torrents
-                        if (_settings.RequireApproved && torrent.Checked)
-                        {
+                       
                             torrentInfos.Add(new PassThePopcornInfo()
                             {
                                 Guid = string.Format("PassThePopcorn-{0}", id),
@@ -91,67 +90,10 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                                 ImdbId = (result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0),
                                 IndexerFlags = flags
                             });
-                        }
-
-                        // Add all torrents
-                        else if (!_settings.RequireApproved)
-                        {
-                            torrentInfos.Add(new PassThePopcornInfo()
-                            {
-                                Guid = string.Format("PassThePopcorn-{0}", id),
-                                Title = title,
-                                Size = long.Parse(torrent.Size),
-                                DownloadUrl = GetDownloadUrl(id, jsonResponse.AuthKey, jsonResponse.PassKey),
-                                InfoUrl = GetInfoUrl(result.GroupId, id),
-                                Seeders = int.Parse(torrent.Seeders),
-                                Peers = int.Parse(torrent.Leechers) + int.Parse(torrent.Seeders),
-                                PublishDate = torrent.UploadTime.ToUniversalTime(),
-                                Golden = torrent.GoldenPopcorn,
-                                Scene = torrent.Scene,
-                                Approved = torrent.Checked,
-                                ImdbId = (result.ImdbId.IsNotNullOrWhiteSpace() ? int.Parse(result.ImdbId) : 0),
-                                IndexerFlags = flags
-                            });
-                        }
-                        // Don't add any torrents
-                        else if (_settings.RequireApproved && !torrent.Checked)
-                        {
-                            continue;
-                        }
                 }
             }
-
-            // prefer golden
-            if (_settings.Golden)
-            {
-                if (_settings.Scene)
-                {
-                    return
-                        torrentInfos.OrderByDescending(o => o.PublishDate)
-                            .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
-                            .ThenBy(o => ((dynamic)o).Scene ? 0 : 1)
-                            .ToArray();
-                }
-                return
-                    torrentInfos.OrderByDescending(o => o.PublishDate)
-                        .ThenBy(o => ((dynamic)o).Golden ? 0 : 1)
-                        .ToArray();
-            }
-
-            // prefer scene
-            if (_settings.Scene)
-            {
-                return
-                    torrentInfos.OrderByDescending(o => o.PublishDate)
-                        .ThenBy(o => ((dynamic)o).Scene ? 0 : 1)
-                        .ToArray();
-            }
-
-            // order by date
             return
-                torrentInfos
-                    .OrderByDescending(o => o.PublishDate)
-                    .ToArray();
+                torrentInfos;
 
         }
 

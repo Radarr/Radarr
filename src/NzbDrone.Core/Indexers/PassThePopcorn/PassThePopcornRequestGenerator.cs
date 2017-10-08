@@ -40,10 +40,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             var filter = "";
             if (searchParameters == null)
             {
-                if (Settings.RequireGolden)
-                {
-                    filter = "&scene=2";
-                }
+
+
             }
 
             var request =
