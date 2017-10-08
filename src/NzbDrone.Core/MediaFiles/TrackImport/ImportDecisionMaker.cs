@@ -114,6 +114,19 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 decision = new ImportDecision(localTrack, new Rejection("Unexpected error processing file"));
             }
 
+            if (decision == null)
+            {
+                _logger.Error("Unable to make a decision on {0}", file);
+            }
+            else if (decision.Rejections.Any())
+            {
+                _logger.Debug("File rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
+            }
+            else
+            {
+                _logger.Debug("File accepted");
+            }
+
             return decision;
         }
 
@@ -191,35 +204,35 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         }
 
         private Language GetLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
-         {
-             if (UseFolderLanguage (folderInfo, fileLanguage, artist))
-             {
-                 _logger.Debug("Using language from folder: {0}", folderInfo.Language);
-                 return folderInfo.Language;
-             }
- 
-             return fileLanguage;
-         }
- 
-         private bool UseFolderLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
-         {
-             if (folderInfo == null)
-             {
-                 return false;
-             }
- 
-             if (folderInfo.Language == Language.Unknown)
-             {
-                 return false;
-             }
- 
-             if (new LanguageComparer(artist.LanguageProfile).Compare(folderInfo.Language, fileLanguage) > 0)
-             {
-                 return true;
-             }
- 
-             return false;
-         }
+        {
+            if (UseFolderLanguage(folderInfo, fileLanguage, artist))
+            {
+                _logger.Debug("Using language from folder: {0}", folderInfo.Language);
+                return folderInfo.Language;
+            }
+
+            return fileLanguage;
+        }
+
+        private bool UseFolderLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
+        {
+            if (folderInfo == null)
+            {
+                return false;
+            }
+
+            if (folderInfo.Language == Language.Unknown)
+            {
+                return false;
+            }
+
+            if (new LanguageComparer(artist.LanguageProfile).Compare(folderInfo.Language, fileLanguage) > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         private bool UseFolderQuality(ParsedTrackInfo folderInfo, QualityModel fileQuality, Artist artist)
         {
