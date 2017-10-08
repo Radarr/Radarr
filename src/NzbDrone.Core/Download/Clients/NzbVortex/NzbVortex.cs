@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBVortex");
                 return new ValidationFailure("Host", "Unable to connect to NZBVortex");
             }
 
@@ -190,7 +190,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBVortex");
                 return new ValidationFailure("Host", "Unable to connect to NZBVortex");
             }
 
