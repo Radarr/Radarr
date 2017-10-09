@@ -82,7 +82,7 @@ ignore_regexps = [
 ## whenever you are tweaking this variable.
 ##
 section_regexps = [
-    ('**New Features**', [
+    ('**New features**', [
         r'^[aA]dded?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[uU]pdated?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[cC]hanged?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
