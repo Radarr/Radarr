@@ -82,9 +82,10 @@ namespace NzbDrone.Api.Calendar
             }
 
             var movies = _movieService.GetMoviesBetweenDates(start, end, unmonitored);
-            var calendar = new Ical.Net.Calendar();
-
-            calendar.ProductId = "-//radarr.video//Radarr//EN";
+            var calendar = new Ical.Net.Calendar
+            {
+                ProductId = "-//radarr.video//Radarr//EN"
+            };
 
             var calendarName = "Radarr Movies Calendar";
             calendar.AddProperty(new CalendarProperty("NAME", calendarName));
