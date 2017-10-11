@@ -136,10 +136,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                     _logger.Debug("Size: {0}", localMovie.Size);
 					var current = localMovie.Quality;
+                    localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
                     //TODO: make it so media info doesn't ruin the import process of a new series
 					if (sceneSource && ShouldCheckQualityForParsedQuality(current.Quality))
                     {
-                        localMovie.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
+                        
                         if (shouldCheckQuality)
                         {
 							_logger.Debug("Checking quality for this video file to make sure nothing mismatched.");
