@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Notifications
 
             var albumTitles = string.Join(" + ", albums.Select(e => e.Title));
 
-            return string.Format("{0} - {1} - [{4}]",
+            return string.Format("{0} - {1} - [{2}]",
                                     artist.Name,
                                     albumTitles,
                                     qualityString);
