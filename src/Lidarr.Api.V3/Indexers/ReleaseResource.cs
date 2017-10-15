@@ -27,12 +27,10 @@ namespace Lidarr.Api.V3.Indexers
         public string Title { get; set; }
         public bool FullSeason { get; set; }
         public bool SceneSource { get; set; }
-        public int SeasonNumber { get; set; }
         public Language Language { get; set; }
         public string AirDate { get; set; }
         public string ArtistName { get; set; }
-        public int[] EpisodeNumbers { get; set; }
-        public int[] AbsoluteEpisodeNumbers { get; set; }
+        public string AlbumTitle { get; set; }
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
         public bool Rejected { get; set; }
@@ -65,7 +63,7 @@ namespace Lidarr.Api.V3.Indexers
         {
             var releaseInfo = model.RemoteAlbum.Release;
             var parsedAlbumInfo = model.RemoteAlbum.ParsedAlbumInfo;
-            var remoteEpisode = model.RemoteAlbum;
+            var remoteAlbum = model.RemoteAlbum;
             var torrentInfo = (model.RemoteAlbum.Release as TorrentInfo) ?? new TorrentInfo();
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
@@ -83,14 +81,10 @@ namespace Lidarr.Api.V3.Indexers
                 ReleaseGroup = parsedAlbumInfo.ReleaseGroup,
                 ReleaseHash = parsedAlbumInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                //FullSeason = parsedEpisodeInfo.FullSeason,
-                //SeasonNumber = parsedEpisodeInfo.SeasonNumber,
                 Language = parsedAlbumInfo.Language,
-                //AirDate = parsedEpisodeInfo.AirDate,
                 ArtistName = parsedAlbumInfo.ArtistName,
+                AlbumTitle = parsedAlbumInfo.AlbumTitle,
                 
-                //EpisodeNumbers = parsedEpisodeInfo.EpisodeNumbers,
-                //AbsoluteEpisodeNumbers = parsedEpisodeInfo.AbsoluteEpisodeNumbers,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,
@@ -99,7 +93,7 @@ namespace Lidarr.Api.V3.Indexers
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
-                DownloadAllowed = remoteEpisode.DownloadAllowed,
+                DownloadAllowed = remoteAlbum.DownloadAllowed,
                 //ReleaseWeight
 
 

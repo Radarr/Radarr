@@ -45,7 +45,7 @@ class InteractiveEpisodeSearchRow extends Component {
   // Listeners
 
   onGrabPress = () => {
-    this.props.onGrabPress(this.props.guid);
+    this.props.onGrabPress(this.props.guid, this.props.indexerId);
   }
 
   //
@@ -175,6 +175,7 @@ InteractiveEpisodeSearchRow.propTypes = {
   title: PropTypes.string.isRequired,
   infoUrl: PropTypes.string.isRequired,
   indexer: PropTypes.string.isRequired,
+  indexerId: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   seeders: PropTypes.number,
   leechers: PropTypes.number,

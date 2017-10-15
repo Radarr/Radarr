@@ -55,8 +55,8 @@ class InteractiveEpisodeSearchConnector extends Component {
     this.props.setReleasesSort({ sortKey, sortDirection });
   }
 
-  onGrabPress = (guid) => {
-    this.props.grabRelease({ guid });
+  onGrabPress = (guid, indexerId) => {
+    this.props.grabRelease({ guid, indexerId });
   }
 
   //
