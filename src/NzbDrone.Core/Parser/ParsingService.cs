@@ -699,7 +699,7 @@ namespace NzbDrone.Core.Parser
                 parsedTrackInfo = Parser.ParseMusicPath(filename);
             }
 
-            if (parsedTrackInfo == null)
+            if (parsedTrackInfo == null || parsedTrackInfo.AlbumTitle.IsNullOrWhiteSpace())
             {
                 if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
                 {
