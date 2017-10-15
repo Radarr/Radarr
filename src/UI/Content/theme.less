@@ -1,4 +1,4 @@
-﻿@import "Bootstrap/variables";
+@import "Bootstrap/variables";
 @import "Bootstrap/mixins";
 @import "Bootstrap/type";
 @import "font";
@@ -73,7 +73,7 @@
 
   .page-toolbar {
     margin-top    : 5px;
-    margin-bottom : 0px;
+    margin-bottom : 0;
   }
 }
 
@@ -86,7 +86,7 @@
   i {
     .clickable;
     .opacity(0.3);
-    margin: 0px 20px;
+    margin: 0 20px;
 
     &:hover {
       .opacity(0.4);
@@ -96,7 +96,7 @@
   position  : fixed;
   z-index   : 9999;
   bottom    : 30px;
-  right     : 0px;
+  right     : 0;
   display   : none;
   font-size : 56px;
   color     : gray;
@@ -181,7 +181,7 @@ body.debug {
 .footer {
   font-size       : 13px;
   font-weight     : lighter;
-  padding-top     : 0px;
+  padding-top     : 0;
   padding-bottom  : 20px;
   color           : #999999;
   margin          : 0;
@@ -193,14 +193,14 @@ body.debug {
   }
 
   p {
-    margin-bottom : 0px;
+    margin-bottom : 0;
   }
 
   #footer-region {
     .text-center();
     position : relative;
     width    : 256px;
-    margin   : 50px auto 0px auto;
+    margin   : 50px auto 0 auto;
     display  : block;
   }
 }
@@ -212,7 +212,7 @@ body.debug {
   max-width : 1429px;
   margin    : auto;
   //  margin-top : -70px;
-  padding   : 20px 0px;
+  padding   : 20px 0;
 
   .header {
     padding-bottom : 10px;
@@ -269,7 +269,7 @@ body.debug {
 
   color            : #f5f5f5;
   background-color : #333333;
-  margin           : 0px;
+  margin           : 0;
   margin-bottom    : -100px;
   position         : fixed;
   left             : 0;
@@ -292,8 +292,8 @@ body.debug {
 
 .modal-header {
   h3 {
-    margin-top    : 0px;
-    margin-bottom : 0px;
+    margin-top    : 0;
+    margin-bottom : 0;
   }
 }
 
@@ -341,5 +341,5 @@ dl.info {
 .sort-direction-icon {
   .pull-right();
   position : relative;
-  width    : 0px;
+  width    : 0;
 }
