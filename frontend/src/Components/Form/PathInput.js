@@ -75,7 +75,6 @@ class PathInput extends Component {
 
   onInputBlur = () => {
     this.props.onClearPaths();
-    this.props.onFetchPaths('');
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
@@ -85,7 +84,6 @@ class PathInput extends Component {
   onSuggestionsClearRequested = () => {
     // Required because props aren't always rendered, but no-op
     // because we don't want to reset the paths after a path is selected.
-    // `onInputBlur` will handle clearing when the user leaves the input.
   }
 
   onSuggestionSelected = (event, { suggestionValue }) => {

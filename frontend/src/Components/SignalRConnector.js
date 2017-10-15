@@ -69,7 +69,7 @@ class SignalRConnector extends Component {
   }
 
   componentDidMount() {
-    console.log('starting signalR');
+    console.log('Starting signalR');
 
     this.signalRconnection = $.connection('/signalr', { apiKey: window.Sonarr.apiKey });
 
@@ -281,7 +281,7 @@ class SignalRConnector extends Component {
 
   onStateChanged = (change) => {
     const state = getState(change.newState);
-    console.log(`SignalR: [${state}]`);
+    console.log(`SignalR: ${state}`);
 
     if (state === 'connected') {
       // Repopulate the page (if a repopulator is set) to ensure things

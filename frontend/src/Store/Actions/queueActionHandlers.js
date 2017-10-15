@@ -206,7 +206,10 @@ const queueActionHandlers = {
       });
 
       promise.done((data) => {
-        dispatch(fetchQueue());
+        dispatch(batchActions([
+          set({ section, isRemoving: false }),
+          fetchQueue()
+        ]));
       });
 
       promise.fail((xhr) => {

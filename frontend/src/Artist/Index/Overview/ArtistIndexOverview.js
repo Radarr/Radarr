@@ -1,19 +1,37 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getRelativeDate from 'Utilities/Date/getRelativeDate';
+import Truncate from 'react-truncate';
 import { icons } from 'Helpers/Props';
+import dimensions from 'Styles/Variables/dimensions';
+import fonts from 'Styles/Variables/fonts';
 import IconButton from 'Components/Link/IconButton';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ArtistPoster from 'Artist/ArtistPoster';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
 import ArtistIndexProgressBar from 'Artist/Index/ProgressBar/ArtistIndexProgressBar';
-import ArtistIndexPosterInfo from './ArtistIndexPosterInfo';
-import styles from './ArtistIndexPoster.css';
+import ArtistIndexOverviewInfo from './ArtistIndexOverviewInfo';
+import styles from './ArtistIndexOverview.css';
 
-class ArtistIndexPoster extends Component {
+const columnPadding = parseInt(dimensions.artistIndexColumnPadding);
+const columnPaddingSmallScreen = parseInt(dimensions.artistIndexColumnPaddingSmallScreen);
+const defaultFontSize = parseInt(fonts.defaultFontSize);
+const lineHeight = parseFloat(fonts.lineHeight);
+
+function calculateHeight(rowHeight, isSmallScreen) {
+  let height = rowHeight - 45;
+
+  if (isSmallScreen) {
+    height -= columnPaddingSmallScreen;
+  } else {
+    height -= columnPadding;
+  }
+
+  return height;
+}
+
+class ArtistIndexOverview extends Component {
 
   //
   // Lifecycle
@@ -57,6 +75,7 @@ class ArtistIndexPoster extends Component {
       style,
       id,
       artistName,
+      overview,
       monitored,
       status,
       nameSlug,
@@ -66,13 +85,13 @@ class ArtistIndexPoster extends Component {
       images,
       posterWidth,
       posterHeight,
-      detailedProgressBar,
-      showTitle,
-      showQualityProfile,
       qualityProfile,
+      overviewOptions,
       showRelativeDates,
       shortDateFormat,
       timeFormat,
+      rowHeight,
+      isSmallScreen,
       isRefreshingArtist,
       onRefreshArtistPress,
       ...otherProps
@@ -90,33 +109,18 @@ class ArtistIndexPoster extends Component {
       height: `${posterHeight}px`
     };
 
+    const height = calculateHeight(rowHeight, isSmallScreen);
+
     return (
       <div className={styles.container} style={style}>
-        <div className={styles.content}>
+        <div className={styles.poster} style={elementStyle}>
           <div className={styles.posterContainer}>
-            <Label className={styles.controls}>
-              <SpinnerIconButton
-                className={styles.action}
-                name={icons.REFRESH}
-                title="Refresh Artist"
-                isSpinning={isRefreshingArtist}
-                onPress={onRefreshArtistPress}
-              />
-
-              <IconButton
-                className={styles.action}
-                name={icons.EDIT}
-                title="Edit Artist"
-                onPress={this.onEditArtistPress}
-              />
-            </Label>
-
             {
               status === 'ended' &&
-                <div
-                  className={styles.ended}
-                  title="Ended"
-                />
+              <div
+                className={styles.ended}
+                title="Ended"
+              />
             }
 
             <Link
@@ -141,68 +145,83 @@ class ArtistIndexPoster extends Component {
             trackCount={trackCount}
             trackFileCount={trackFileCount}
             posterWidth={posterWidth}
-            detailedProgressBar={detailedProgressBar}
-          />
-
-          {
-            showTitle &&
-              <div className={styles.title}>
-                {artistName}
-              </div>
-          }
-
-          {
-            showQualityProfile &&
-              <div className={styles.title}>
-                {qualityProfile.name}
-              </div>
-          }
-
-          <div className={styles.nextAiring}>
-            {
-              getRelativeDate(
-                nextAiring,
-                shortDateFormat,
-                showRelativeDates,
-                {
-                  timeFormat,
-                  timeForToday: true
-                }
-              )
-            }
-          </div>
-
-          <ArtistIndexPosterInfo
-            qualityProfile={qualityProfile}
-            showQualityProfile={showQualityProfile}
-            showRelativeDates={showRelativeDates}
-            shortDateFormat={shortDateFormat}
-            timeFormat={timeFormat}
-            {...otherProps}
-          />
-
-          <EditArtistModalConnector
-            isOpen={isEditArtistModalOpen}
-            artistId={id}
-            onModalClose={this.onEditArtistModalClose}
-            onDeleteArtistPress={this.onDeleteArtistPress}
-          />
-
-          <DeleteArtistModal
-            isOpen={isDeleteArtistModalOpen}
-            artistId={id}
-            onModalClose={this.onDeleteArtistModalClose}
+            detailedProgressBar={overviewOptions.detailedProgressBar}
           />
         </div>
+
+        <div className={styles.info}>
+          <div className={styles.titleRow}>
+            <Link
+              className={styles.title}
+              to={link}
+            >
+              {artistName}
+            </Link>
+
+            <div className={styles.actions}>
+              <SpinnerIconButton
+                name={icons.REFRESH}
+                title="Refresh artist"
+                isSpinning={isRefreshingArtist}
+                onPress={onRefreshArtistPress}
+              />
+
+              <IconButton
+                name={icons.EDIT}
+                title="Edit Artist"
+                onPress={this.onEditArtistPress}
+              />
+            </div>
+          </div>
+
+          <div className={styles.details}>
+            <Link
+              className={styles.overview}
+              style={{
+                maxHeight: `${height}px`
+              }}
+              to={link}
+            >
+              <Truncate lines={Math.floor(height / (defaultFontSize * lineHeight))}>
+                {overview}
+              </Truncate>
+            </Link>
+
+            <ArtistIndexOverviewInfo
+              height={height}
+              nextAiring={nextAiring}
+              qualityProfile={qualityProfile}
+              showRelativeDates={showRelativeDates}
+              shortDateFormat={shortDateFormat}
+              timeFormat={timeFormat}
+              {...overviewOptions}
+              {...otherProps}
+            />
+          </div>
+        </div>
+
+        <EditArtistModalConnector
+          isOpen={isEditArtistModalOpen}
+          artistId={id}
+          onModalClose={this.onEditArtistModalClose}
+          onDeleteArtistPress={this.onDeleteArtistPress}
+        />
+
+        <DeleteArtistModal
+          isOpen={isDeleteArtistModalOpen}
+          artistId={id}
+          onModalClose={this.onDeleteArtistModalClose}
+        />
       </div>
     );
   }
 }
 
-ArtistIndexPoster.propTypes = {
+ArtistIndexOverview.propTypes = {
   style: PropTypes.object.isRequired,
   id: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
+  overview: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
@@ -212,20 +231,20 @@ ArtistIndexPoster.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
-  detailedProgressBar: PropTypes.bool.isRequired,
-  showTitle: PropTypes.bool.isRequired,
-  showQualityProfile: PropTypes.bool.isRequired,
+  rowHeight: PropTypes.number.isRequired,
   qualityProfile: PropTypes.object.isRequired,
+  overviewOptions: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
   onRefreshArtistPress: PropTypes.func.isRequired
 };
 
-ArtistIndexPoster.defaultProps = {
+ArtistIndexOverview.defaultProps = {
   trackCount: 0,
   trackFileCount: 0
 };
 
-export default ArtistIndexPoster;
+export default ArtistIndexOverview;

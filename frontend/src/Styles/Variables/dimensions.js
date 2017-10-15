@@ -36,8 +36,10 @@ module.exports = {
   progressBarLargeHeight: '20px',
 
   // Jump Bar
-  jumpBarItemHeight: '25px'
+  jumpBarItemHeight: '25px',
 
-  // Series
-
+  // Artist
+  artistIndexColumnPadding: '20px',
+  artistIndexColumnPaddingSmallScreen: '10px',
+  artistIndexOverviewInfoRowHeight: '21px'
 };

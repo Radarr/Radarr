@@ -176,6 +176,10 @@ const calendarActionHandlers = {
 
   [types.SET_CALENDAR_DAYS_COUNT]: function(payload) {
     return function(dispatch, getState) {
+      if (payload.dayCount === getState().calendar.dayCount) {
+        return;
+      }
+
       dispatch(set({
         section,
         dayCount: payload.dayCount
@@ -184,10 +188,7 @@ const calendarActionHandlers = {
       const state = getState();
       const { time, view } = state.calendar;
 
-      dispatch(fetchCalendar({
-        time,
-        view
-      }));
+      dispatch(fetchCalendar({ time, view }));
     };
   },
 
@@ -201,10 +202,7 @@ const calendarActionHandlers = {
       const state = getState();
       const { time, view } = state.calendar;
 
-      dispatch(fetchCalendar({
-        time,
-        view
-      }));
+      dispatch(fetchCalendar({ time, view }));
     };
   },
 
@@ -212,7 +210,9 @@ const calendarActionHandlers = {
     return function(dispatch, getState) {
       const state = getState();
       const view = payload.view;
-      const time = view === calendarViews.FORECAST ? moment() : state.calendar.time;
+      const time = view === calendarViews.FORECAST ?
+        moment() :
+        state.calendar.time;
 
       dispatch(fetchCalendar({ time, view }));
     };

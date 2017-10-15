@@ -81,7 +81,7 @@ namespace Lidarr.Api.V3.Calendar
                 //occurrence.Description = album.Overview;
                 //occurrence.Categories = new List<string>() { album.Series.Network };
 
-                occurrence.Start = new CalDateTime(album.ReleaseDate.Value) { HasTime = false };
+                occurrence.Start = new CalDateTime(album.ReleaseDate.Value.ToLocalTime()) { HasTime = false };
 
                 occurrence.Summary = $"{album.Artist.Name} - {album.Title}";
             }

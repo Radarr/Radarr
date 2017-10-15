@@ -12,8 +12,8 @@ import ArtistIndexPoster from './ArtistIndexPoster';
 import styles from './ArtistIndexPosters.css';
 
 // Poster container dimensions
-const columnPadding = 20;
-const columnPaddingSmallScreen = 10;
+const columnPadding = parseInt(dimensions.artistIndexColumnPadding);
+const columnPaddingSmallScreen = parseInt(dimensions.artistIndexColumnPaddingSmallScreen);
 const progressBarHeight = parseInt(dimensions.progressBarSmallHeight);
 const detailedProgressBarHeight = parseInt(dimensions.progressBarMediumHeight);
 
@@ -178,7 +178,7 @@ class ArtistIndexPosters extends Component {
     } = this.props;
 
     const padding = isSmallScreen ? columnPaddingSmallScreen : columnPadding;
-    const columnWidth = calculateColumnWidth(width, this.props.posterOptions.size);
+    const columnWidth = calculateColumnWidth(width, posterOptions.size, isSmallScreen);
     const columnCount = Math.max(Math.floor(width / columnWidth), 1);
     const posterWidth = columnWidth - padding;
     const posterHeight = calculatePosterHeight(posterWidth);

@@ -33,24 +33,24 @@ class UISettings extends Component {
     ];
 
     const weekColumnOptions = [
-      { key: 'ddd M/D', value: 'Tue 3/5' },
-      { key: 'ddd MM/DD', value: 'Tue 03/05' },
-      { key: 'ddd D/M', value: 'Tue 5/3' },
-      { key: 'ddd DD/MM', value: 'Tue 05/03' }
+      { key: 'ddd M/D', value: 'Tue 3/25' },
+      { key: 'ddd MM/DD', value: 'Tue 03/25' },
+      { key: 'ddd D/M', value: 'Tue 25/3' },
+      { key: 'ddd DD/MM', value: 'Tue 25/03' }
     ];
 
     const shortDateFormatOptions = [
-      { key: 'MMM D YYYY', value: 'Mar 5 2014' },
-      { key: 'DD MMM YYYY', value: '5 Mar 2014' },
-      { key: 'MM/D/YYYY', value: '03/5/2014' },
-      { key: 'MM/DD/YYYY', value: '03/05/2014' },
-      { key: 'DD/MM/YYYY', value: '05/03/2014' },
-      { key: 'YYYY-MM-DD', value: '2014-03-05' }
+      { key: 'MMM D YYYY', value: 'Mar 25 2014' },
+      { key: 'DD MMM YYYY', value: '25 Mar 2014' },
+      { key: 'MM/D/YYYY', value: '03/25/2014' },
+      { key: 'MM/DD/YYYY', value: '03/25/2014' },
+      { key: 'DD/MM/YYYY', value: '25/03/2014' },
+      { key: 'YYYY-MM-DD', value: '2014-03-25' }
     ];
 
     const longDateFormatOptions = [
-      { key: 'dddd, MMMM D YYYY', value: 'Tuesday, March 5, 2014' },
-      { key: 'dddd, D MMMM YYYY', value: 'Tuesday, 5 March, 2014' }
+      { key: 'dddd, MMMM D YYYY', value: 'Tuesday, March 25, 2014' },
+      { key: 'dddd, D MMMM YYYY', value: 'Tuesday, 25 March, 2014' }
     ];
 
     const timeFormatOptions = [

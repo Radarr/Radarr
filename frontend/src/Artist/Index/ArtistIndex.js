@@ -17,6 +17,8 @@ import ArtistIndexPosterOptionsModal from './Posters/Options/ArtistIndexPosterOp
 import ArtistIndexPostersConnector from './Posters/ArtistIndexPostersConnector';
 import ArtistIndexBannerOptionsModal from './Banners/Options/ArtistIndexBannerOptionsModal';
 import ArtistIndexBannersConnector from './Banners/ArtistIndexBannersConnector';
+import ArtistIndexOverviewOptionsModal from './Overview/Options/ArtistIndexOverviewOptionsModal';
+import ArtistIndexOverviewsConnector from './Overview/ArtistIndexOverviewsConnector';
 import ArtistIndexFooter from './ArtistIndexFooter';
 import ArtistIndexFilterMenu from './Menus/ArtistIndexFilterMenu';
 import ArtistIndexSortMenu from './Menus/ArtistIndexSortMenu';
@@ -30,6 +32,10 @@ function getViewComponent(view) {
 
   if (view === 'banners') {
     return ArtistIndexBannersConnector;
+  }
+
+  if (view === 'overview') {
+    return ArtistIndexOverviewsConnector;
   }
 
   return ArtistIndexTableConnector;
@@ -50,6 +56,7 @@ class ArtistIndex extends Component {
       jumpBarItems: [],
       isPosterOptionsModalOpen: false,
       isBannerOptionsModalOpen: false,
+      isOverviewOptionsModalOpen: false,
       isRendered: false
     };
   }
@@ -137,6 +144,14 @@ class ArtistIndex extends Component {
     this.setState({ isBannerOptionsModalOpen: false });
   }
 
+  onOverviewOptionsPress = () => {
+    this.setState({ isOverviewOptionsModalOpen: true });
+  }
+
+  onOverviewOptionsModalClose = () => {
+    this.setState({ isOverviewOptionsModalOpen: false });
+  }
+
   onJumpBarItemPress = (item) => {
     const viewComponent = this._viewComponent.getWrappedInstance();
     viewComponent.scrollToFirstCharacter(item);
@@ -193,6 +208,7 @@ class ArtistIndex extends Component {
       jumpBarItems,
       isPosterOptionsModalOpen,
       isBannerOptionsModalOpen,
+      isOverviewOptionsModalOpen,
       isRendered
     } = this.state;
 
@@ -235,11 +251,6 @@ class ArtistIndex extends Component {
             }
 
             {
-              view === 'posters' &&
-                <PageToolbarSeparator />
-            }
-
-            {
               view === 'banners' &&
                 <PageToolbarButton
                   label="Options"
@@ -249,7 +260,17 @@ class ArtistIndex extends Component {
             }
 
             {
-              view === 'banners' &&
+              view === 'overview' &&
+              <PageToolbarButton
+                label="Options"
+                iconName={icons.OVERVIEW}
+                onPress={this.onOverviewOptionsPress}
+              />
+            }
+
+            {
+              (view === 'posters' || view === 'banners' || view === 'overview') &&
+
                 <PageToolbarSeparator />
             }
 
@@ -330,6 +351,13 @@ class ArtistIndex extends Component {
         <ArtistIndexBannerOptionsModal
           isOpen={isBannerOptionsModalOpen}
           onModalClose={this.onBannerOptionsModalClose}
+
+        />
+
+        <ArtistIndexOverviewOptionsModal
+          isOpen={isOverviewOptionsModalOpen}
+          onModalClose={this.onOverviewOptionsModalClose}
+
         />
       </PageContent>
     );

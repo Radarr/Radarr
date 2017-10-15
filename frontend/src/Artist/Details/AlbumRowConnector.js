@@ -1,4 +1,4 @@
-import _ from 'lodash';
+/* eslint max-params: 0 */
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';

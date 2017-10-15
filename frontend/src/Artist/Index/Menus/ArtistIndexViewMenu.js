@@ -37,6 +37,14 @@ function ArtistIndexViewMenu(props) {
         >
           Banners
         </ViewMenuItem>
+
+        <ViewMenuItem
+          name="overview"
+          selectedView={view}
+          onPress={onViewSelect}
+        >
+          Overview
+        </ViewMenuItem>
       </MenuContent>
     </ViewMenu>
   );

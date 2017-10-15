@@ -7,5 +7,7 @@ module.exports = {
   extraSmallFontSize: '11px',
   smallFontSize: '12px',
   defaultFontSize: '14px',
-  largeFontSize: '16px'
+  largeFontSize: '16px',
+
+  lineHeight: '1.528571429'
 };

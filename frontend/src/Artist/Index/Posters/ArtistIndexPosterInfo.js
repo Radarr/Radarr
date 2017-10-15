@@ -7,6 +7,7 @@ import styles from './ArtistIndexPosterInfo.css';
 function ArtistIndexPosterInfo(props) {
   const {
     qualityProfile,
+    showQualityProfile,
     previousAiring,
     added,
     albumCount,
@@ -18,7 +19,7 @@ function ArtistIndexPosterInfo(props) {
     timeFormat
   } = props;
 
-  if (sortKey === 'qualityProfileId') {
+  if (sortKey === 'qualityProfileId' && !showQualityProfile) {
     return (
       <div className={styles.info}>
         {qualityProfile.name}
@@ -99,6 +100,7 @@ function ArtistIndexPosterInfo(props) {
 
 ArtistIndexPosterInfo.propTypes = {
   qualityProfile: PropTypes.object.isRequired,
+  showQualityProfile: PropTypes.bool.isRequired,
   previousAiring: PropTypes.string,
   added: PropTypes.string,
   albumCount: PropTypes.number.isRequired,

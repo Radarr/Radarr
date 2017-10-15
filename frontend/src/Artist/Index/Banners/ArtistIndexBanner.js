@@ -9,7 +9,7 @@ import Link from 'Components/Link/Link';
 import ArtistBanner from 'Artist/ArtistBanner';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
-import ArtistIndexBannerProgressBar from './ArtistIndexBannerProgressBar';
+import ArtistIndexProgressBar from 'Artist/Index/ProgressBar/ArtistIndexProgressBar';
 import ArtistIndexBannerInfo from './ArtistIndexBannerInfo';
 import styles from './ArtistIndexBanner.css';
 
@@ -135,12 +135,12 @@ class ArtistIndexBanner extends Component {
             </Link>
           </div>
 
-          <ArtistIndexBannerProgressBar
+          <ArtistIndexProgressBar
             monitored={monitored}
             status={status}
             trackCount={trackCount}
             trackFileCount={trackFileCount}
-            bannerWidth={bannerWidth}
+            posterWidth={bannerWidth}
             detailedProgressBar={detailedProgressBar}
           />
 
@@ -174,6 +174,7 @@ class ArtistIndexBanner extends Component {
 
           <ArtistIndexBannerInfo
             qualityProfile={qualityProfile}
+            showQualityProfile={showQualityProfile}
             showRelativeDates={showRelativeDates}
             shortDateFormat={shortDateFormat}
             timeFormat={timeFormat}

@@ -35,11 +35,10 @@ class CalendarPage extends Component {
   // Listeners
 
   onMeasure = ({ width }) => {
-    this.setState({ width }, () => {
-      const days = Math.max(3, Math.min(7, Math.floor(width / MINIMUM_DAY_WIDTH)));
-      console.log(`${width} || ${days}`);
-      this.props.onDaysCountChange(days);
-    });
+    this.setState({ width });
+    const days = Math.max(3, Math.min(7, Math.floor(width / MINIMUM_DAY_WIDTH)));
+
+    this.props.onDaysCountChange(days);
   }
 
   onFilterMenuItemPress = (filterKey, unmonitored) => {
@@ -109,7 +108,11 @@ class CalendarPage extends Component {
             whitelist={['width']}
             onMeasure={this.onMeasure}
           >
-            <CalendarConnector />
+            {
+              this.state.width > 0 ?
+                <CalendarConnector /> :
+                <div />
+            }
           </Measure>
 
           <Legend colorImpairedMode={colorImpairedMode} />

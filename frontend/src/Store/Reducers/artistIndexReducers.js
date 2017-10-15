@@ -21,14 +21,26 @@ export const defaultState = {
     detailedProgressBar: false,
     size: 'large',
     showTitle: false,
-    showQualityProfile: false
+    showQualityProfile: true
   },
 
   bannerOptions: {
     detailedProgressBar: false,
     size: 'large',
     showTitle: false,
-    showQualityProfile: false
+    showQualityProfile: true
+  },
+
+  overviewOptions: {
+    detailedProgressBar: false,
+    size: 'medium',
+    showNetwork: true,
+    showQualityProfile: true,
+    showPreviousAiring: false,
+    showAdded: false,
+    showAlbumCount: true,
+    showPath: false,
+    showSizeOnDisk: false
   },
 
   columns: [
@@ -175,7 +187,8 @@ export const persistState = [
   'artistIndex.view',
   'artistIndex.columns',
   'artistIndex.posterOptions',
-  'artistIndex.bannerOptions'
+  'artistIndex.bannerOptions',
+  'artistIndex.overviewOptions'
 ];
 
 const reducerSection = 'artistIndex';
@@ -212,6 +225,18 @@ const artistIndexReducers = handleActions({
       ...state,
       bannerOptions: {
         ...bannerOptions,
+        ...payload
+      }
+    };
+  },
+
+  [types.SET_ARTIST_OVERVIEW_OPTION]: function(state, { payload }) {
+    const overviewOptions = state.overviewOptions;
+
+    return {
+      ...state,
+      overviewOptions: {
+        ...overviewOptions,
         ...payload
       }
     };

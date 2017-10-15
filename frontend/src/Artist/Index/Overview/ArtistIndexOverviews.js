@@ -8,82 +8,48 @@ import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import dimensions from 'Styles/Variables/dimensions';
 import { sortDirections } from 'Helpers/Props';
 import ArtistIndexItemConnector from 'Artist/Index/ArtistIndexItemConnector';
-import ArtistIndexBanner from './ArtistIndexBanner';
-import styles from './ArtistIndexBanners.css';
+import ArtistIndexOverview from './ArtistIndexOverview';
+import styles from './ArtistIndexOverviews.css';
 
-//  container dimensions
+// Poster container dimensions
 const columnPadding = parseInt(dimensions.artistIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.artistIndexColumnPaddingSmallScreen);
 const progressBarHeight = parseInt(dimensions.progressBarSmallHeight);
 const detailedProgressBarHeight = parseInt(dimensions.progressBarMediumHeight);
 
-const additionalColumnCount = {
-  small: 3,
-  medium: 2,
-  large: 1
-};
+function calculatePosterWidth(posterSize, isSmallScreen) {
+  const maxiumPosterWidth = isSmallScreen ? 192 : 202;
 
-function calculateColumnWidth(width, bannerSize, isSmallScreen) {
-  const maxiumColumnWidth = isSmallScreen ? 344 : 364;
-  const columns = Math.floor(width / maxiumColumnWidth);
-  const remainder = width % maxiumColumnWidth;
-
-  if (remainder === 0 && bannerSize === 'large') {
-    return maxiumColumnWidth;
+  if (posterSize === 'large') {
+    return maxiumPosterWidth;
   }
 
-  return Math.floor(width / (columns + additionalColumnCount[bannerSize]));
+  if (posterSize === 'medium') {
+    return Math.floor(maxiumPosterWidth * 0.75);
+  }
+
+  return Math.floor(maxiumPosterWidth * 0.5);
 }
 
-function calculateRowHeight(bannerHeight, sortKey, isSmallScreen, bannerOptions) {
+function calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions) {
   const {
-    detailedProgressBar,
-    showTitle,
-    showQualityProfile
-  } = bannerOptions;
-
-  const nextAiringHeight = 19;
+    detailedProgressBar
+  } = overviewOptions;
 
   const heights = [
-    bannerHeight,
+    posterHeight,
     detailedProgressBar ? detailedProgressBarHeight : progressBarHeight,
-    nextAiringHeight,
     isSmallScreen ? columnPaddingSmallScreen : columnPadding
   ];
-
-  if (showTitle) {
-    heights.push(19);
-  }
-
-  if (showQualityProfile) {
-    heights.push(19);
-  }
-
-  switch (sortKey) {
-    case 'seasons':
-    case 'previousAiring':
-    case 'added':
-    case 'path':
-    case 'sizeOnDisk':
-      heights.push(19);
-      break;
-    case 'qualityProfileId':
-      if (!showQualityProfile) {
-        heights.push(19);
-      }
-      break;
-    default:
-      // No need to add a height of 0
-  }
 
   return heights.reduce((acc, height) => acc + height, 0);
 }
 
-function calculateHeight(bannerWidth) {
-  return Math.ceil((88/476) * bannerWidth);
+function calculatePosterHeight(posterWidth) {
+  return posterWidth;
 }
 
-class ArtistIndexBanners extends Component {
+class ArtistIndexOverviews extends Component {
 
   //
   // Lifecycle
@@ -93,11 +59,10 @@ class ArtistIndexBanners extends Component {
 
     this.state = {
       width: 0,
-      columnWidth: 364,
       columnCount: 1,
-      bannerWidth: 476,
-      bannerHeight: 88,
-      rowHeight: calculateRowHeight(88, null, props.isSmallScreen, {})
+      posterWidth: 238,
+      posterHeight: 238,
+      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
     };
 
     this._isInitialized = false;
@@ -115,14 +80,15 @@ class ArtistIndexBanners extends Component {
       filterValue,
       sortKey,
       sortDirection,
-      bannerOptions
+      overviewOptions
     } = this.props;
 
     const itemsChanged = hasDifferentItems(prevProps.items, items);
+    const overviewOptionsChanged = !_.isMatch(prevProps.overviewOptions, overviewOptions);
 
     if (
       prevProps.sortKey !== sortKey ||
-      prevProps.bannerOptions !== bannerOptions ||
+      prevProps.overviewOptions !== overviewOptions ||
       itemsChanged
     ) {
       this.calculateGrid();
@@ -133,7 +99,8 @@ class ArtistIndexBanners extends Component {
       prevProps.filterValue !== filterValue ||
       prevProps.sortKey !== sortKey ||
       prevProps.sortDirection !== sortDirection ||
-      itemsChanged
+      itemsChanged ||
+      overviewOptionsChanged
     ) {
       this._grid.recomputeGridSize();
     }
@@ -145,12 +112,11 @@ class ArtistIndexBanners extends Component {
   scrollToFirstCharacter(character) {
     const items = this.props.items;
     const {
-      columnCount,
       rowHeight
     } = this.state;
 
     const index = _.findIndex(items, (item) => {
-      const firstCharacter = item.sortName.charAt(0);
+      const firstCharacter = item.sortTitle.charAt(0);
 
       if (character === '#') {
         return !isNaN(firstCharacter);
@@ -160,8 +126,7 @@ class ArtistIndexBanners extends Component {
     });
 
     if (index != null) {
-      const row = Math.floor(index / columnCount);
-      const scrollTop = rowHeight * row;
+      const scrollTop = rowHeight * index;
 
       this.props.onScroll({ scrollTop });
     }
@@ -174,49 +139,39 @@ class ArtistIndexBanners extends Component {
   calculateGrid = (width = this.state.width, isSmallScreen) => {
     const {
       sortKey,
-      bannerOptions
+      overviewOptions
     } = this.props;
 
-    const padding = isSmallScreen ? columnPaddingSmallScreen : columnPadding;
-    const columnWidth = calculateColumnWidth(width, bannerOptions.size, isSmallScreen);
-    const columnCount = Math.max(Math.floor(width / columnWidth), 1);
-    const bannerWidth = columnWidth - padding;
-    const bannerHeight = calculateHeight(bannerWidth);
-    const rowHeight = calculateRowHeight(bannerHeight, sortKey, isSmallScreen, bannerOptions);
+    const posterWidth = calculatePosterWidth(overviewOptions.size, isSmallScreen);
+    const posterHeight = calculatePosterHeight(posterWidth);
+    const rowHeight = calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions);
 
     this.setState({
       width,
-      columnWidth,
-      columnCount,
-      bannerWidth,
-      bannerHeight,
+      posterWidth,
+      posterHeight,
       rowHeight
     });
   }
 
-  cellRenderer = ({ key, rowIndex, columnIndex, style }) => {
+  cellRenderer = ({ key, rowIndex, style }) => {
     const {
       items,
       sortKey,
-      bannerOptions,
+      overviewOptions,
       showRelativeDates,
       shortDateFormat,
-      timeFormat
+      timeFormat,
+      isSmallScreen
     } = this.props;
 
     const {
-      bannerWidth,
-      bannerHeight,
-      columnCount
+      posterWidth,
+      posterHeight,
+      rowHeight
     } = this.state;
 
-    const {
-      detailedProgressBar,
-      showTitle,
-      showQualityProfile
-    } = bannerOptions;
-
-    const artist = items[rowIndex * columnCount + columnIndex];
+    const artist = items[rowIndex];
 
     if (!artist) {
       return null;
@@ -225,16 +180,16 @@ class ArtistIndexBanners extends Component {
     return (
       <ArtistIndexItemConnector
         key={key}
-        component={ArtistIndexBanner}
+        component={ArtistIndexOverview}
         sortKey={sortKey}
-        bannerWidth={bannerWidth}
-        bannerHeight={bannerHeight}
-        detailedProgressBar={detailedProgressBar}
-        showTitle={showTitle}
-        showQualityProfile={showQualityProfile}
+        posterWidth={posterWidth}
+        posterHeight={posterHeight}
+        rowHeight={rowHeight}
+        overviewOptions={overviewOptions}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}
         timeFormat={timeFormat}
+        isSmallScreen={isSmallScreen}
         style={style}
         {...artist}
       />
@@ -268,12 +223,8 @@ class ArtistIndexBanners extends Component {
 
     const {
       width,
-      columnWidth,
-      columnCount,
       rowHeight
     } = this.state;
-
-    const rowCount = Math.ceil(items.length / columnCount);
 
     return (
       <Measure onMeasure={this.onMeasure}>
@@ -288,9 +239,9 @@ class ArtistIndexBanners extends Component {
                 className={styles.grid}
                 autoHeight={true}
                 height={height}
-                columnCount={columnCount}
-                columnWidth={columnWidth}
-                rowCount={rowCount}
+                columnCount={1}
+                columnWidth={width}
+                rowCount={items.length}
                 rowHeight={rowHeight}
                 width={width}
                 scrollTop={scrollTop}
@@ -307,13 +258,13 @@ class ArtistIndexBanners extends Component {
   }
 }
 
-ArtistIndexBanners.propTypes = {
+ArtistIndexOverviews.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   filterKey: PropTypes.string,
   filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
-  bannerOptions: PropTypes.object.isRequired,
+  overviewOptions: PropTypes.object.isRequired,
   scrollTop: PropTypes.number.isRequired,
   contentBody: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
@@ -324,4 +275,4 @@ ArtistIndexBanners.propTypes = {
   onScroll: PropTypes.func.isRequired
 };
 
-export default ArtistIndexBanners;
+export default ArtistIndexOverviews;

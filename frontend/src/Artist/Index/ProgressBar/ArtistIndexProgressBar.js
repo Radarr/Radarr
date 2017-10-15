@@ -3,9 +3,9 @@ import React from 'react';
 import getProgressBarKind from 'Utilities/Series/getProgressBarKind';
 import { sizes } from 'Helpers/Props';
 import ProgressBar from 'Components/ProgressBar';
-import styles from './ArtistIndexPosterProgressBar.css';
+import styles from './ArtistIndexProgressBar.css';
 
-function ArtistIndexPosterProgressBar(props) {
+function ArtistIndexProgressBar(props) {
   const {
     monitored,
     status,
@@ -33,7 +33,7 @@ function ArtistIndexPosterProgressBar(props) {
   );
 }
 
-ArtistIndexPosterProgressBar.propTypes = {
+ArtistIndexProgressBar.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   trackCount: PropTypes.number.isRequired,
@@ -42,4 +42,4 @@ ArtistIndexPosterProgressBar.propTypes = {
   detailedProgressBar: PropTypes.bool.isRequired
 };
 
-export default ArtistIndexPosterProgressBar;
+export default ArtistIndexProgressBar;

@@ -163,6 +163,7 @@ class ArtistDetails extends Component {
       foreignArtistId,
       artistName,
       ratings,
+      path,
       sizeOnDisk,
       trackFileCount,
       qualityProfileId,
@@ -343,6 +344,21 @@ class ArtistDetails extends Component {
                 </div>
 
                 <div className={styles.detailsLabels}>
+                  <Label
+                    className={styles.detailsLabel}
+                    title={trackFilesCountMessage}
+                    size={sizes.LARGE}
+                  >
+                    <Icon
+                      name={icons.FOLDER}
+                      size={17}
+                    />
+
+                    <span className={styles.sizeOnDisk}>
+                      {path}
+                    </span>
+                  </Label>
+
                   <Label
                     className={styles.detailsLabel}
                     title={trackFilesCountMessage}
@@ -547,6 +563,7 @@ ArtistDetails.propTypes = {
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
+  path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,
   trackFileCount: PropTypes.number,
   qualityProfileId: PropTypes.number.isRequired,
