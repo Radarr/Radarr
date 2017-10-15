@@ -7,9 +7,9 @@ outputFolderOsxApp='./_output_osx_app'
 testPackageFolder='./_tests/'
 testSearchPattern='*.Test/bin/x86/Release'
 sourceFolder='./src'
-slnFile=$sourceFolder/NzbDrone.sln
-updateFolder=$outputFolder/NzbDrone.Update
-updateFolderMono=$outputFolderMono/NzbDrone.Update
+slnFile=$sourceFolder/Lidarr.sln
+updateFolder=$outputFolder/Lidarr.Update
+updateFolderMono=$outputFolderMono/Lidarr.Update
 
 nuget='tools/nuget/nuget.exe';
 CheckExitCode()

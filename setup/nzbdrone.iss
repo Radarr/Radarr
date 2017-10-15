@@ -14,7 +14,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{56C1065D-3523-4025-B76D-6F73F67F7F71}
+AppId={{56C1065D-3523-4025-B76D-6F73F67F7F93}
 AppName={#AppName}
 AppVersion=2.0
 AppPublisher={#AppPublisher}
@@ -25,7 +25,7 @@ DefaultDirName={commonappdata}\Lidarr\bin
 DisableDirPage=yes
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=Lidarr.{#BranchName}.{#BuildNumber}
+OutputBaseFilename=Lidarr.{#BranchName}.{#BuildNumber}.windows
 SolidCompression=yes
 AppCopyright=Creative Commons 3.0 License
 AllowUNCPath=False
@@ -40,8 +40,10 @@ VersionInfoVersion={#BuildNumber}
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-;Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "windowsService"; Description: "Install as a Windows Service"
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"
+Name: "windowsService"; Description: "Install Windows Service (Starts when the computer starts)"; GroupDescription: "Start automatically"; Flags: exclusive
+Name: "startupShortcut"; Description: "Create shortcut in Startup folder (Starts when you log into Windows)"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
+Name: "none"; Description: "Do not start automatically"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
 
 [Files]
 Source: "..\_output\Lidarr.exe"; DestDir: "{app}"; Flags: ignoreversion  
@@ -51,10 +53,13 @@ Source: "..\_output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs cr
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Parameters: "/icon"
 Name: "{commondesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Parameters: "/icon"
+Name: "{userstartup}\{#AppName}"; Filename: "{app}\Lidarr.exe"; WorkingDir: "{app}"; Tasks: startupShortcut
 
 [Run]
-Filename: "{app}\lidarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated;
-Filename: "{app}\lidarr.console.exe"; Parameters: "/i"; Flags: waituntilterminated; Tasks: windowsService
+Filename: "{app}\Lidarr.Console.exe"; Parameters: "/u"; Flags: runhidden waituntilterminated;
+Filename: "{app}\Lidarr.Console.exe"; Parameters: "/i"; Flags: runhidden waituntilterminated; Tasks: windowsService
+Filename: "{app}\Lidarr.exe"; Description: "Open Lidarr"; Flags: postinstall skipifsilent nowait; Tasks: windowsService;
+Filename: "{app}\Lidarr.exe"; Description: "Start Lidarr"; Flags: postinstall skipifsilent nowait; Tasks: startupShortcut none;
 
 [UninstallRun]
 Filename: "{app}\lidarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist
