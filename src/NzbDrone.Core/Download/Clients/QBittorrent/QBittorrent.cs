@@ -50,6 +50,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
             }
 
+            SetInitialState(hash.ToLower());
+
             return hash;
         }
 
@@ -61,6 +63,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
             }
+
+            SetInitialState(hash);
 
             return hash;
         }
@@ -260,6 +264,29 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
 
             return null;
+        }
+
+        private void SetInitialState(string hash)
+        {
+            try
+            {
+                switch ((QBittorrentState)Settings.InitialState)
+                {
+                    case QBittorrentState.ForceStart:
+                        _proxy.SetForceStart(hash, true, Settings);
+                        break;
+                    case QBittorrentState.Start:
+                        _proxy.ResumeTorrent(hash, Settings);
+                        break;
+                    case QBittorrentState.Pause:
+                        _proxy.PauseTorrent(hash, Settings);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Failed to set inital state for {0}.", hash);
+            }
         }
     }
 }
