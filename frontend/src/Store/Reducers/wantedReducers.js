@@ -76,19 +76,19 @@ export const defaultState = {
         isSortable: true,
         isVisible: true
       },
+      // {
+      //   name: 'episode',
+      //   label: 'Episode',
+      //   isVisible: true
+      // },
       {
-        name: 'episode',
-        label: 'Episode',
+        name: 'albumTitle',
+        label: 'Album Title',
         isVisible: true
       },
       {
-        name: 'episodeTitle',
-        label: 'Episode Title',
-        isVisible: true
-      },
-      {
-        name: 'airDateUtc',
-        label: 'Air Date',
+        name: 'releaseDate',
+        label: 'Release Date',
         isSortable: true,
         isVisible: true
       },
@@ -97,11 +97,11 @@ export const defaultState = {
         label: 'Language',
         isVisible: false
       },
-      {
-        name: 'status',
-        label: 'Status',
-        isVisible: true
-      },
+      // {
+      //  name: 'status',
+      //  label: 'Status',
+      //  isVisible: true
+      // },
       {
         name: 'actions',
         columnLabel: 'Actions',

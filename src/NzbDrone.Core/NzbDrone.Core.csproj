@@ -866,6 +866,7 @@
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
+    <Compile Include="Music\AlbumCutoffService.cs" />
     <Compile Include="Music\Links.cs" />
     <Compile Include="Music\Commands\MoveArtistCommand.cs" />
     <Compile Include="Music\Events\ArtistMovedEvent.cs" />

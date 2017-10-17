@@ -5,6 +5,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
 using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Qualities;
 using Marr.Data.QGen;
 
 namespace NzbDrone.Core.Music
@@ -18,6 +20,7 @@ namespace NzbDrone.Core.Music
         Album FindByArtistAndName(string artistName, string cleanTitle);
         Album FindById(string spotifyId);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
+        PagingSpec<Album> AlbumsWhereCutoffUnmet(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff);
         List<Album> AlbumsBetweenDates(DateTime startDate, DateTime endDate, bool includeUnmonitored);
         void SetMonitoredFlat(Album album, bool monitored);
         void SetMonitored(IEnumerable<int> ids, bool monitored);
@@ -57,6 +60,15 @@ namespace NzbDrone.Core.Music
 
             pagingSpec.TotalRecords = GetMissingAlbumsQueryCount(pagingSpec, currentTime);
             pagingSpec.Records = GetMissingAlbumsQuery(pagingSpec, currentTime).ToList();
+
+            return pagingSpec;
+        }
+
+        public PagingSpec<Album> AlbumsWhereCutoffUnmet(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff)
+        {
+
+            pagingSpec.TotalRecords = GetCutOffAlbumsQueryCount(pagingSpec, qualitiesBelowCutoff, languagesBelowCutoff);
+            pagingSpec.Records = GetCutOffAlbumsQuery(pagingSpec, qualitiesBelowCutoff, languagesBelowCutoff).ToList();
 
             return pagingSpec;
         }
@@ -146,6 +158,93 @@ namespace NzbDrone.Core.Music
         {
             return string.Format("datetime(strftime('%s', Albums.[ReleaseDate]),  'unixepoch') <= '{0}'",
                                  currentTime.ToString("yyyy-MM-dd HH:mm:ss"));
+        }
+
+        private QueryBuilder<Album> GetCutOffAlbumsQuery(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff)
+        {
+            string sortKey;
+            string monitored = "(Albums.[Monitored] = 0) OR (Artists.[Monitored] = 0)";
+
+            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            {
+                monitored = "(Albums.[Monitored] = 1) AND (Artists.[Monitored] = 1)";
+            }
+
+            if (pagingSpec.SortKey == "releaseDate")
+            {
+                sortKey = "Albums." + pagingSpec.SortKey;
+            }
+            else if (pagingSpec.SortKey == "artist.sortName")
+            {
+                sortKey = "Artists." + pagingSpec.SortKey.Split('.').Last();
+            }
+            else
+            {
+                sortKey = "Albums.releaseDate";
+            }
+
+            string query = string.Format("SELECT Albums.* FROM(SELECT TrackFiles.AlbumId, TrackFiles.Language, COUNT(*) AS FileCount, " +
+                " MIN(Quality) AS MinQuality FROM TrackFiles GROUP BY TrackFiles.ArtistId, TrackFiles.AlbumId) as TrackFiles" +
+                " LEFT OUTER JOIN Albums ON TrackFiles.AlbumId == Albums.Id" +
+                " LEFT OUTER JOIN Artists ON Albums.ArtistId == Artists.Id" +
+                " WHERE ({0}) AND ({1} OR {2})" +
+                " GROUP BY TrackFiles.AlbumId" +
+                " ORDER BY {3} {4} LIMIT {5} OFFSET {6}",
+                monitored, BuildQualityCutoffWhereClause(qualitiesBelowCutoff), BuildLanguageCutoffWhereClause(languagesBelowCutoff), sortKey, pagingSpec.ToSortDirection(), pagingSpec.PageSize, pagingSpec.PagingOffset());
+
+            return Query.QueryText(query);
+
+        }
+
+        private int GetCutOffAlbumsQueryCount(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff)
+        {
+            var monitored = 0;
+
+            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            {
+                monitored = 1;
+            }
+
+            string query = string.Format("SELECT Albums.* FROM (SELECT TrackFiles.AlbumId, TrackFiles.Language, COUNT(*) AS FileCount," +
+                " MIN(Quality) AS MinQuality FROM TrackFiles GROUP BY TrackFiles.ArtistId, TrackFiles.AlbumId) as TrackFiles" +
+                " LEFT OUTER JOIN Albums ON TrackFiles.AlbumId == Albums.Id" +
+                " LEFT OUTER JOIN Artists ON Albums.ArtistId == Artists.Id" +
+                " WHERE ({0}) AND ({1} OR {2})" +
+                " GROUP BY TrackFiles.AlbumId",
+                monitored, BuildQualityCutoffWhereClause(qualitiesBelowCutoff), BuildLanguageCutoffWhereClause(languagesBelowCutoff));
+
+            return Query.QueryText(query).Count();
+        }
+
+
+        private string BuildLanguageCutoffWhereClause(List<LanguagesBelowCutoff> languagesBelowCutoff)
+        {
+            var clauses = new List<String>();
+
+            foreach (var language in languagesBelowCutoff)
+            {
+                foreach (var belowCutoff in language.LanguageIds)
+                {
+                    clauses.Add(String.Format("(Artists.[LanguageProfileId] = {0} AND TrackFiles.[Language] = {1})", language.ProfileId, belowCutoff));
+                }
+            }
+
+            return String.Format("({0})", String.Join(" OR ", clauses));
+        }
+
+        private string BuildQualityCutoffWhereClause(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        {
+            var clauses = new List<string>();
+
+            foreach (var profile in qualitiesBelowCutoff)
+            {
+                foreach (var belowCutoff in profile.QualityIds)
+                {
+                    clauses.Add(string.Format("(Artists.[ProfileId] = {0} AND TrackFiles.MinQuality LIKE '%_quality_: {1},%')", profile.ProfileId, belowCutoff));
+                }
+            }
+
+            return string.Format("({0})", string.Join(" OR ", clauses));
         }
 
         public void SetMonitoredFlat(Album album, bool monitored)

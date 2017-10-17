@@ -1,7 +1,6 @@
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Tv; //TODO Remove after EpisodeCutoffService is Refactored 
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 using Lidarr.Api.V3.Albums;
@@ -12,9 +11,9 @@ namespace Lidarr.Api.V3.Wanted
 {
     public class CutoffModule : AlbumModuleWithSignalR
     {
-        private readonly IEpisodeCutoffService _episodeCutoffService;
+        private readonly IAlbumCutoffService _albumCutoffService;
 
-        public CutoffModule(IEpisodeCutoffService episodeCutoffService,
+        public CutoffModule(IAlbumCutoffService albumCutoffService,
                             IAlbumService albumService,
                             IArtistStatisticsService artistStatisticsService,
                             IArtistService artistService,
@@ -22,7 +21,7 @@ namespace Lidarr.Api.V3.Wanted
                             IBroadcastSignalRMessage signalRBroadcaster)
             : base(albumService, artistStatisticsService, artistService, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {
-            _episodeCutoffService = episodeCutoffService;
+            _albumCutoffService = albumCutoffService;
             GetResourcePaged = GetCutoffUnmetAlbums;
         }
 
@@ -37,7 +36,6 @@ namespace Lidarr.Api.V3.Wanted
             };
 
             var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
-            var includeTrackFile = Request.GetBooleanQueryParameter("includeTrackFile");
 
             if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
             {
@@ -48,9 +46,9 @@ namespace Lidarr.Api.V3.Wanted
                 pagingSpec.FilterExpression = v => v.Monitored == true && v.Artist.Monitored == true;
             }
 
-            //var resource = ApplyToPage(_episodeCutoffService.EpisodesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeSeries, includeEpisodeFile));
-            return null;
-            //return resource;
+            var resource = ApplyToPage(_albumCutoffService.AlbumsWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeArtist));
+
+            return resource;
         }
     }
 }
