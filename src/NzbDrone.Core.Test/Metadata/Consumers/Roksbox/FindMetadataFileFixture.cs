@@ -1,11 +1,11 @@
-﻿using System.IO;
+using System.IO;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Consumers.Roksbox;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Metadata.Consumers.Roksbox
@@ -13,12 +13,12 @@ namespace NzbDrone.Core.Test.Metadata.Consumers.Roksbox
     [TestFixture]
     public class FindMetadataFileFixture : CoreTest<RoksboxMetadata>
     {
-        private Series _series;
+        private Artist _series;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
+            _series = Builder<Artist>.CreateNew()
                                      .With(s => s.Path = @"C:\Test\TV\The.Series".AsOsAgnostic())
                                      .Build();
         }
@@ -38,11 +38,11 @@ namespace NzbDrone.Core.Test.Metadata.Consumers.Roksbox
         {
             var path = Path.Combine(_series.Path, folder, folder + ".jpg");
 
-            Subject.FindMetadataFile(_series, path).Type.Should().Be(MetadataType.SeasonImage);
+            Subject.FindMetadataFile(_series, path).Type.Should().Be(MetadataType.AlbumImage);
         }
 
-        [TestCase(".xml", MetadataType.EpisodeMetadata)]
-        [TestCase(".jpg", MetadataType.EpisodeImage)]
+        [TestCase(".xml", MetadataType.TrackMetadata)]
+        [TestCase(".jpg", MetadataType.TrackImage)]
         public void should_return_metadata_for_episode_if_valid_file_for_episode(string extension, MetadataType type)
         {
             var path = Path.Combine(_series.Path, "the.series.s01e01.episode" + extension);
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.Metadata.Consumers.Roksbox
         {
             var path = Path.Combine(_series.Path, new DirectoryInfo(_series.Path).Name + ".jpg");
 
-            Subject.FindMetadataFile(_series, path).Type.Should().Be(MetadataType.SeriesImage);
+            Subject.FindMetadataFile(_series, path).Type.Should().Be(MetadataType.ArtistImage);
         }
     }
 }

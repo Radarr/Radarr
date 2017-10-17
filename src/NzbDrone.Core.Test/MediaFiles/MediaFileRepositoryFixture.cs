@@ -1,4 +1,4 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     public class MediaFileRepositoryFixture : DbTest<MediaFileRepository, TrackFile>
     {
         [Test]
-        public void get_files_by_series()
+        public void get_files_by_artist()
         {
             var files = Builder<TrackFile>.CreateListOfSize(10)
                 .All()
@@ -24,10 +24,10 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Db.InsertMany(files);
 
-            var seriesFiles = Subject.GetFilesByArtist(12);
+            var artistFiles = Subject.GetFilesByArtist(12);
 
-            seriesFiles.Should().HaveCount(4);
-            seriesFiles.Should().OnlyContain(c => c.ArtistId == 12);
+            artistFiles.Should().HaveCount(4);
+            artistFiles.Should().OnlyContain(c => c.ArtistId == 12);
 
         }
     }

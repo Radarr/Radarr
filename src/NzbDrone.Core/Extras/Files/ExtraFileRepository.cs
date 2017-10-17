@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -7,12 +7,12 @@ namespace NzbDrone.Core.Extras.Files
 {
     public interface IExtraFileRepository<TExtraFile> : IBasicRepository<TExtraFile> where TExtraFile : ExtraFile, new()
     {
-        void DeleteForSeries(int seriesId);
-        void DeleteForSeason(int seriesId, int seasonNumber);
-        void DeleteForEpisodeFile(int episodeFileId);
-        List<TExtraFile> GetFilesBySeries(int seriesId);
-        List<TExtraFile> GetFilesBySeason(int seriesId, int seasonNumber);
-        List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId);
+        void DeleteForArtist(int artistId);
+        void DeleteForAlbum(int artistId, int albumId);
+        void DeleteForTrackFile(int trackFileId);
+        List<TExtraFile> GetFilesByArtist(int artistId);
+        List<TExtraFile> GetFilesByAlbum(int artistId, int albumId);
+        List<TExtraFile> GetFilesByTrackFile(int trackFileId);
         TExtraFile FindByPath(string path);
     }
 
@@ -24,34 +24,34 @@ namespace NzbDrone.Core.Extras.Files
         {
         }
 
-        public void DeleteForSeries(int seriesId)
+        public void DeleteForArtist(int artistId)
         {
-            Delete(c => c.SeriesId == seriesId);
+            Delete(c => c.ArtistId == artistId);
         }
 
-        public void DeleteForSeason(int seriesId, int seasonNumber)
+        public void DeleteForAlbum(int artistId, int albumId)
         {
-            Delete(c => c.SeriesId == seriesId && c.SeasonNumber == seasonNumber);
+            Delete(c => c.ArtistId == artistId && c.AlbumId == albumId);
         }
 
-        public void DeleteForEpisodeFile(int episodeFileId)
+        public void DeleteForTrackFile(int trackFileId)
         {
-            Delete(c => c.EpisodeFileId == episodeFileId);
+            Delete(c => c.TrackFileId == trackFileId);
         }
 
-        public List<TExtraFile> GetFilesBySeries(int seriesId)
+        public List<TExtraFile> GetFilesByArtist(int artistId)
         {
-            return Query.Where(c => c.SeriesId == seriesId);
+            return Query.Where(c => c.ArtistId == artistId);
         }
 
-        public List<TExtraFile> GetFilesBySeason(int seriesId, int seasonNumber)
+        public List<TExtraFile> GetFilesByAlbum(int artistId, int albumId)
         {
-            return Query.Where(c => c.SeriesId == seriesId && c.SeasonNumber == seasonNumber);
+            return Query.Where(c => c.ArtistId == artistId && c.AlbumId == albumId);
         }
 
-        public List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId)
+        public List<TExtraFile> GetFilesByTrackFile(int trackFileId)
         {
-            return Query.Where(c => c.EpisodeFileId == episodeFileId);
+            return Query.Where(c => c.TrackFileId == trackFileId);
         }
 
         public TExtraFile FindByPath(string path)

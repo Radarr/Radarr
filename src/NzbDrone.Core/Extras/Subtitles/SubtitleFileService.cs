@@ -1,8 +1,8 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Subtitles
 {
@@ -12,8 +12,8 @@ namespace NzbDrone.Core.Extras.Subtitles
 
     public class SubtitleFileService : ExtraFileService<SubtitleFile>, ISubtitleFileService
     {
-        public SubtitleFileService(IExtraFileRepository<SubtitleFile> repository, ISeriesService seriesService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
-            : base(repository, seriesService, diskProvider, recycleBinProvider, logger)
+        public SubtitleFileService(IExtraFileRepository<SubtitleFile> repository, IArtistService artistService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
+            : base(repository, artistService, diskProvider, recycleBinProvider, logger)
         {
         }
     }

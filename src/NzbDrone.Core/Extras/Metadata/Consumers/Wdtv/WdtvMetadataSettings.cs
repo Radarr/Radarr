@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -19,19 +19,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
         public WdtvMetadataSettings()
         {
             EpisodeMetadata = true;
-            SeriesImages = true;
-            SeasonImages = true;
+            ArtistImages = true;
+            AlbumImages = true;
             EpisodeImages = true;
         }
 
         [FieldDefinition(0, Label = "Episode Metadata", Type = FieldType.Checkbox)]
         public bool EpisodeMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Series Images", Type = FieldType.Checkbox)]
-        public bool SeriesImages { get; set; }
+        [FieldDefinition(1, Label = "Artist Images", Type = FieldType.Checkbox)]
+        public bool ArtistImages { get; set; }
 
-        [FieldDefinition(2, Label = "Season Images", Type = FieldType.Checkbox)]
-        public bool SeasonImages { get; set; }
+        [FieldDefinition(2, Label = "Album Images", Type = FieldType.Checkbox)]
+        public bool AlbumImages { get; set; }
 
         [FieldDefinition(3, Label = "Episode Images", Type = FieldType.Checkbox)]
         public bool EpisodeImages { get; set; }

@@ -7,18 +7,18 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Files
 {
     public interface IManageExtraFiles
     {
         int Order { get; }
-        IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles);
-        IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile);
-        IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
-        IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
-        ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        IEnumerable<ExtraFile> CreateAfterArtistScan(Artist artist, List<Album> albums, List<TrackFile> trackFiles);
+        IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, TrackFile trackFile);
+        IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, string artistFolder, string albumFolder);
+        IEnumerable<ExtraFile> MoveFilesAfterRename(Artist artist, List<TrackFile> trackFiles);
+        ExtraFile Import(Artist artist, TrackFile trackFile, string path, string extension, bool readOnly);
     }
 
     public abstract class ExtraFileManager<TExtraFile> : IManageExtraFiles
@@ -42,16 +42,16 @@ namespace NzbDrone.Core.Extras.Files
         }
 
         public abstract int Order { get; }
-        public abstract IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles);
-        public abstract IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile);
-        public abstract IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
-        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
-        public abstract ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        public abstract IEnumerable<ExtraFile> CreateAfterArtistScan(Artist artist, List<Album> albums, List<TrackFile> trackFiles);
+        public abstract IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, TrackFile trackFile);
+        public abstract IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, string artistFolder, string albumFolder);
+        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Artist artist, List<TrackFile> trackFiles);
+        public abstract ExtraFile Import(Artist artist, TrackFile trackFile, string path, string extension, bool readOnly);
 
-        protected TExtraFile ImportFile(Series series, EpisodeFile episodeFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
+        protected TExtraFile ImportFile(Artist artist, TrackFile trackFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(Path.Combine(series.Path, episodeFile.RelativePath));
-            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(episodeFile.RelativePath));
+            var newFolder = Path.GetDirectoryName(Path.Combine(artist.Path, trackFile.RelativePath));
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.RelativePath));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
             {
@@ -72,18 +72,18 @@ namespace NzbDrone.Core.Extras.Files
 
             return new TExtraFile
             {
-                SeriesId = series.Id,
-                SeasonNumber = episodeFile.SeasonNumber,
-                EpisodeFileId = episodeFile.Id,
-                RelativePath = series.Path.GetRelativePath(newFileName),
+                ArtistId = artist.Id,
+                AlbumId = trackFile.AlbumId,
+                TrackFileId = trackFile.Id,
+                RelativePath = artist.Path.GetRelativePath(newFileName),
                 Extension = extension
             };
         }
 
-        protected TExtraFile MoveFile(Series series, EpisodeFile episodeFile, TExtraFile extraFile, string fileNameSuffix = null)
+        protected TExtraFile MoveFile(Artist artist, TrackFile trackFile, TExtraFile extraFile, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(Path.Combine(series.Path, episodeFile.RelativePath));
-            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(episodeFile.RelativePath));
+            var newFolder = Path.GetDirectoryName(Path.Combine(artist.Path, trackFile.RelativePath));
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.RelativePath));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
             {
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Extras.Files
 
             filenameBuilder.Append(extraFile.Extension);
 
-            var existingFileName = Path.Combine(series.Path, extraFile.RelativePath);
+            var existingFileName = Path.Combine(artist.Path, extraFile.RelativePath);
             var newFileName = Path.Combine(newFolder, filenameBuilder.ToString());
 
             if (newFileName.PathNotEquals(existingFileName))
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Extras.Files
                 try
                 {
                     _diskProvider.MoveFile(existingFileName, newFileName);
-                    extraFile.RelativePath = series.Path.GetRelativePath(newFileName);
+                    extraFile.RelativePath = artist.Path.GetRelativePath(newFileName);
 
                     return extraFile;
                 }

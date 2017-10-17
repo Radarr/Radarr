@@ -18,11 +18,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
         public MediaBrowserMetadataSettings()
         {
-            SeriesMetadata = true;
+            ArtistMetadata = true;
         }
 
-        [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox, HelpText = "series.xml")]
-        public bool SeriesMetadata { get; set; }
+        [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox, HelpText = "artist.xml")]
+        public bool ArtistMetadata { get; set; }
 
         public bool IsValid => true;
 

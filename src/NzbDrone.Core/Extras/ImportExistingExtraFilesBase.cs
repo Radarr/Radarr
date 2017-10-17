@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras
 {
@@ -19,21 +19,21 @@ namespace NzbDrone.Core.Extras
         }
 
         public abstract int Order { get; }
-        public abstract IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles);
+        public abstract IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles);
 
-        public virtual ImportExistingExtraFileFilterResult<TExtraFile> FilterAndClean(Series series, List<string> filesOnDisk, List<string> importedFiles)
+        public virtual ImportExistingExtraFileFilterResult<TExtraFile> FilterAndClean(Artist artist, List<string> filesOnDisk, List<string> importedFiles)
         {
-            var seriesFiles = _extraFileService.GetFilesBySeries(series.Id);
+            var artistFiles = _extraFileService.GetFilesByArtist(artist.Id);
 
-            Clean(series, filesOnDisk, importedFiles, seriesFiles);
+            Clean(artist, filesOnDisk, importedFiles, artistFiles);
 
-            return Filter(series, filesOnDisk, importedFiles, seriesFiles);
+            return Filter(artist, filesOnDisk, importedFiles, artistFiles);
         }
 
-        private ImportExistingExtraFileFilterResult<TExtraFile> Filter(Series series, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> seriesFiles)
+        private ImportExistingExtraFileFilterResult<TExtraFile> Filter(Artist artist, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> artistFiles)
         {
-            var previouslyImported = seriesFiles.IntersectBy(s => Path.Combine(series.Path, s.RelativePath), filesOnDisk, f => f, PathEqualityComparer.Instance).ToList();
-            var filteredFiles = filesOnDisk.Except(previouslyImported.Select(f => Path.Combine(series.Path, f.RelativePath)).ToList(), PathEqualityComparer.Instance)
+            var previouslyImported = artistFiles.IntersectBy(s => Path.Combine(artist.Path, s.RelativePath), filesOnDisk, f => f, PathEqualityComparer.Instance).ToList();
+            var filteredFiles = filesOnDisk.Except(previouslyImported.Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList(), PathEqualityComparer.Instance)
                                            .Except(importedFiles, PathEqualityComparer.Instance)
                                            .ToList();
 
@@ -42,12 +42,12 @@ namespace NzbDrone.Core.Extras
             return new ImportExistingExtraFileFilterResult<TExtraFile>(previouslyImported, filteredFiles);
         }
 
-        private void Clean(Series series, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> seriesFiles)
+        private void Clean(Artist artist, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> artistFiles)
         {
-            var alreadyImportedFileIds = seriesFiles.IntersectBy(f => Path.Combine(series.Path, f.RelativePath), importedFiles, i => i, PathEqualityComparer.Instance)
+            var alreadyImportedFileIds = artistFiles.IntersectBy(f => Path.Combine(artist.Path, f.RelativePath), importedFiles, i => i, PathEqualityComparer.Instance)
                 .Select(f => f.Id);
 
-            var deletedFiles = seriesFiles.ExceptBy(f => Path.Combine(series.Path, f.RelativePath), filesOnDisk, i => i, PathEqualityComparer.Instance)
+            var deletedFiles = artistFiles.ExceptBy(f => Path.Combine(artist.Path, f.RelativePath), filesOnDisk, i => i, PathEqualityComparer.Instance)
                 .Select(f => f.Id);
 
             _extraFileService.DeleteMany(alreadyImportedFileIds);

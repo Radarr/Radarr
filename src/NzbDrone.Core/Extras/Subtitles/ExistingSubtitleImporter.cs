@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Subtitles
 {
@@ -27,12 +27,12 @@ namespace NzbDrone.Core.Extras.Subtitles
 
         public override int Order => 1;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles)
         {
-            _logger.Debug("Looking for existing subtitle files in {0}", series.Path);
+            _logger.Debug("Looking for existing subtitle files in {0}", artist.Path);
 
             var subtitleFiles = new List<SubtitleFile>();
-            var filterResult = FilterAndClean(series, filesOnDisk, importedFiles);
+            var filterResult = FilterAndClean(artist, filesOnDisk, importedFiles);
 
             foreach (var possibleSubtitleFile in filterResult.FilesOnDisk)
             {
@@ -40,21 +40,21 @@ namespace NzbDrone.Core.Extras.Subtitles
 
                 if (SubtitleFileExtensions.Extensions.Contains(extension))
                 {
-                    var localEpisode = _parsingService.GetLocalEpisode(possibleSubtitleFile, series);
+                    var localTrack = _parsingService.GetLocalTrack(possibleSubtitleFile, artist);
 
-                    if (localEpisode == null)
+                    if (localTrack == null)
                     {
                         _logger.Debug("Unable to parse subtitle file: {0}", possibleSubtitleFile);
                         continue;
                     }
 
-                    if (localEpisode.Episodes.Empty())
+                    if (localTrack.Tracks.Empty())
                     {
-                        _logger.Debug("Cannot find related episodes for: {0}", possibleSubtitleFile);
+                        _logger.Debug("Cannot find related tracks for: {0}", possibleSubtitleFile);
                         continue;
                     }
 
-                    if (localEpisode.Episodes.DistinctBy(e => e.EpisodeFileId).Count() > 1)
+                    if (localTrack.Tracks.DistinctBy(e => e.TrackFileId).Count() > 1)
                     {
                         _logger.Debug("Subtitle file: {0} does not match existing files.", possibleSubtitleFile);
                         continue;
@@ -62,10 +62,10 @@ namespace NzbDrone.Core.Extras.Subtitles
 
                     var subtitleFile = new SubtitleFile
                                        {
-                                           SeriesId = series.Id,
-                                           SeasonNumber = localEpisode.SeasonNumber,
-                                           EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
-                                           RelativePath = series.Path.GetRelativePath(possibleSubtitleFile),
+                                           ArtistId = artist.Id,
+                                           AlbumId = localTrack.Album.Id,
+                                           TrackFileId = localTrack.Tracks.First().TrackFileId,
+                                           RelativePath = artist.Path.GetRelativePath(possibleSubtitleFile),
                                            Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
                                            Extension = extension
                                        };

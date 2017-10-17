@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using FizzWare.NBuilder;
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_delete_files_that_dont_belong_to_any_episodes()
+        public void should_delete_files_that_dont_belong_to_any_tracks()
         {
             var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
                                 .Random(10)
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_unlink_episode_when_episodeFile_does_not_exist()
+        public void should_unlink_track_when_trackFile_does_not_exist()
         {
             GivenTrackFiles(new List<TrackFile>());
 
