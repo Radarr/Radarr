@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Core.Parser
@@ -137,6 +138,11 @@ namespace NzbDrone.Core.Parser
             }
             
             return Language.Unknown;
+        }
+
+        public static bool IsMulti(string title)
+        {
+            return title.ContainsIgnoreCase("MULTI");
         }
     }
 }

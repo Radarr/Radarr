@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -442,6 +442,9 @@ namespace NzbDrone.Core.Parser
                                 result.Language = LanguageParser.ParseLanguage(languageTitle);
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
+                                result.IsMulti = LanguageParser.IsMulti(title);
+                                Logger.Debug("Is Multi : {0}", result.IsMulti);
+
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
@@ -499,6 +502,9 @@ namespace NzbDrone.Core.Parser
             
             result.Language = LanguageParser.ParseLanguage(title);
             Logger.Debug("Language parsed: {0}", result.Language);
+
+            result.IsMulti = LanguageParser.IsMulti(title);
+            Logger.Debug("Is Multi : {0}", result.IsMulti);
 
             result.Quality = QualityParser.ParseQuality(title);
             Logger.Debug("Quality parsed: {0}", result.Quality);
@@ -641,6 +647,9 @@ namespace NzbDrone.Core.Parser
 
                                 result.Language = LanguageParser.ParseLanguage(title);
                                 Logger.Debug("Language parsed: {0}", result.Language);
+
+                                result.IsMulti = LanguageParser.IsMulti(title);
+                                Logger.Debug("Is Multi : {0}", result.IsMulti);
 
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);

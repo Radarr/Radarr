@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Parser.Model
         public bool Special { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
+        public bool IsMulti { get; set; }
 
         public ParsedEpisodeInfo()
         {
