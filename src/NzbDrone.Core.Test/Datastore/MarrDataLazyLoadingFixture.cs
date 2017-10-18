@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Languages;
@@ -38,30 +38,30 @@ namespace NzbDrone.Core.Test.Datastore
             profile = Db.Insert(profile);
             languageProfile = Db.Insert(languageProfile);
 
-            var series = Builder<Series>.CreateListOfSize(1)
+            var artist = Builder<Artist>.CreateListOfSize(1)
                 .All()
                 .With(v => v.ProfileId = profile.Id)
                 .With(v => v.LanguageProfileId = languageProfile.Id)
                 .BuildListOfNew();
 
-            Db.InsertMany(series);
+            Db.InsertMany(artist);
 
-            var episodeFiles = Builder<EpisodeFile>.CreateListOfSize(1)
+            var trackFiles = Builder<TrackFile>.CreateListOfSize(1)
                 .All()
-                .With(v => v.SeriesId = series[0].Id)
+                .With(v => v.ArtistId = artist[0].Id)
                 .With(v => v.Quality = new QualityModel())
                 .BuildListOfNew();
 
-            Db.InsertMany(episodeFiles);
+            Db.InsertMany(trackFiles);
 
-            var episodes = Builder<Episode>.CreateListOfSize(10)
+            var tracks = Builder<Track>.CreateListOfSize(10)
                 .All()
                 .With(v => v.Monitored = true)
-                .With(v => v.EpisodeFileId = episodeFiles[0].Id)
-                .With(v => v.SeriesId = series[0].Id)
+                .With(v => v.TrackFileId = trackFiles[0].Id)
+                .With(v => v.ArtistId = artist[0].Id)
                 .BuildListOfNew();
 
-            Db.InsertMany(episodes);
+            Db.InsertMany(tracks);
         }
 
         [Test]
@@ -70,32 +70,32 @@ namespace NzbDrone.Core.Test.Datastore
             var db = Mocker.Resolve<IDatabase>();
             var DataMapper = db.GetDataMapper();
 
-            var episodes = DataMapper.Query<Episode>()
-                .Join<Episode, Series>(Marr.Data.QGen.JoinType.Inner, v => v.Series, (l, r) => l.SeriesId == r.Id)
+            var tracks = DataMapper.Query<Track>()
+                .Join<Track, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
                 .ToList();
 
-            foreach (var episode in episodes)
+            foreach (var track in tracks)
             {
-                Assert.IsNotNull(episode.Series);
-                Assert.IsFalse(episode.Series.Profile.IsLoaded);
-                Assert.IsFalse(episode.Series.LanguageProfile.IsLoaded);
+                Assert.IsNotNull(track.Artist);
+                Assert.IsFalse(track.Artist.Profile.IsLoaded);
+                Assert.IsFalse(track.Artist.LanguageProfile.IsLoaded);
             }
         }
 
         [Test]
-        public void should_explicit_load_episodefile_if_joined()
+        public void should_explicit_load_trackfile_if_joined()
         {
             var db = Mocker.Resolve<IDatabase>();
             var DataMapper = db.GetDataMapper();
 
-            var episodes = DataMapper.Query<Episode>()
-                .Join<Episode, EpisodeFile>(Marr.Data.QGen.JoinType.Inner, v => v.EpisodeFile, (l, r) => l.EpisodeFileId == r.Id)
+            var tracks = DataMapper.Query<Track>()
+                .Join<Track, TrackFile>(Marr.Data.QGen.JoinType.Inner, v => v.TrackFile, (l, r) => l.TrackFileId == r.Id)
                 .ToList();
 
-            foreach (var episode in episodes)
+            foreach (var track in tracks)
             {
-                Assert.IsNull(episode.Series);
-                Assert.IsTrue(episode.EpisodeFile.IsLoaded);
+                Assert.IsNull(track.Artist);
+                Assert.IsTrue(track.TrackFile.IsLoaded);
             }
         }
 
@@ -105,16 +105,16 @@ namespace NzbDrone.Core.Test.Datastore
             var db = Mocker.Resolve<IDatabase>();
             var DataMapper = db.GetDataMapper();
 
-            var episodes = DataMapper.Query<Episode>()
-                .Join<Episode, Series>(Marr.Data.QGen.JoinType.Inner, v => v.Series, (l, r) => l.SeriesId == r.Id)
-                .Join<Series, Profile>(Marr.Data.QGen.JoinType.Inner, v => v.Profile, (l, r) => l.ProfileId == r.Id)
+            var tracks = DataMapper.Query<Track>()
+                .Join<Track, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
+                .Join<Artist, Profile>(Marr.Data.QGen.JoinType.Inner, v => v.Profile, (l, r) => l.ProfileId == r.Id)
                 .ToList();
 
-            foreach (var episode in episodes)
+            foreach (var track in tracks)
             {
-                Assert.IsNotNull(episode.Series);
-                Assert.IsTrue(episode.Series.Profile.IsLoaded);
-                Assert.IsFalse(episode.Series.LanguageProfile.IsLoaded);
+                Assert.IsNotNull(track.Artist);
+                Assert.IsTrue(track.Artist.Profile.IsLoaded);
+                Assert.IsFalse(track.Artist.LanguageProfile.IsLoaded);
             }
         }
 
@@ -124,16 +124,16 @@ namespace NzbDrone.Core.Test.Datastore
             var db = Mocker.Resolve<IDatabase>();
             var DataMapper = db.GetDataMapper();
 
-            var episodes = DataMapper.Query<Episode>()
-                                     .Join<Episode, Series>(Marr.Data.QGen.JoinType.Inner, v => v.Series, (l, r) => l.SeriesId == r.Id)
-                                     .Join<Series, LanguageProfile>(Marr.Data.QGen.JoinType.Inner, v => v.LanguageProfile, (l, r) => l.ProfileId == r.Id)
+            var tracks = DataMapper.Query<Track>()
+                                     .Join<Track, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
+                                     .Join<Artist, LanguageProfile>(Marr.Data.QGen.JoinType.Inner, v => v.LanguageProfile, (l, r) => l.ProfileId == r.Id)
                                      .ToList();
 
-            foreach (var episode in episodes)
+            foreach (var track in tracks)
             {
-                Assert.IsNotNull(episode.Series);
-                Assert.IsFalse(episode.Series.Profile.IsLoaded);
-                Assert.IsTrue(episode.Series.LanguageProfile.IsLoaded);
+                Assert.IsNotNull(track.Artist);
+                Assert.IsFalse(track.Artist.Profile.IsLoaded);
+                Assert.IsTrue(track.Artist.LanguageProfile.IsLoaded);
             }
         }
 

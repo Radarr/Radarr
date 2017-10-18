@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.IndexerSearch.Definitions
@@ -15,11 +14,8 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         private static readonly Regex BeginningThe = new Regex(@"^the\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public Series Series { get; set; }
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
         public List<string> SceneTitles { get; set; }
-        [System.Obsolete("Sonarr TV Stuff -- Shouldn't be needed for Lidarr")]
-        public List<Episode> Episodes { get; set; }
+
         public virtual bool MonitoredEpisodesOnly { get; set; }
         public virtual bool UserInvokedSearch { get; set; }
 

@@ -1,10 +1,10 @@
-﻿using System.Linq;
+using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Test.Languages
@@ -39,15 +39,15 @@ namespace NzbDrone.Core.Test.Languages
 
 
         [Test]
-        public void should_not_be_able_to_delete_profile_if_assigned_to_series()
+        public void should_not_be_able_to_delete_profile_if_assigned_to_artist()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .Random(1)
                                             .With(c => c.LanguageProfileId = 2)
                                             .Build().ToList();
 
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
 
             Assert.Throws<LanguageProfileInUseException>(() => Subject.Delete(2));
 
@@ -59,13 +59,13 @@ namespace NzbDrone.Core.Test.Languages
         [Test]
         public void should_delete_profile_if_not_assigned_to_series()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.LanguageProfileId = 2)
                                             .Build().ToList();
 
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
 
             Subject.Delete(1);
 

@@ -39,8 +39,8 @@ namespace NzbDrone.Core.Tv
     }
 
     public class EpisodeService : IEpisodeService,
-                                  IHandle<EpisodeFileDeletedEvent>,
-                                  IHandle<EpisodeFileAddedEvent>,
+                                  //IHandle<EpisodeFileDeletedEvent>,
+                                  //IHandle<EpisodeFileAddedEvent>,
                                   IHandleAsync<SeriesDeletedEvent>
     {
         private readonly IEpisodeRepository _episodeRepository;
@@ -203,29 +203,29 @@ namespace NzbDrone.Core.Tv
             _episodeRepository.DeleteMany(episodes);
         }
 
-        public void Handle(EpisodeFileDeletedEvent message)
-        {
-            foreach (var episode in GetEpisodesByFileId(message.EpisodeFile.Id))
-            {
-                _logger.Debug("Detaching episode {0} from file.", episode.Id);
-                episode.EpisodeFileId = 0;
+        //public void Handle(EpisodeFileDeletedEvent message)
+        //{
+        //    foreach (var episode in GetEpisodesByFileId(message.EpisodeFile.Id))
+        //    {
+        //        _logger.Debug("Detaching episode {0} from file.", episode.Id);
+        //        episode.EpisodeFileId = 0;
 
-                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedTracks)
-                {
-                    episode.Monitored = false;
-                }
+        //        if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedTracks)
+        //        {
+        //            episode.Monitored = false;
+        //        }
 
-                UpdateEpisode(episode);
-            }
-        }
+        //        UpdateEpisode(episode);
+        //    }
+        //}
 
-        public void Handle(EpisodeFileAddedEvent message)
-        {
-            foreach (var episode in message.EpisodeFile.Episodes.Value)
-            {
-                _episodeRepository.SetFileId(episode.Id, message.EpisodeFile.Id);
-                _logger.Debug("Linking [{0}] > [{1}]", message.EpisodeFile.RelativePath, episode);
-            }
-        }
+        //public void Handle(EpisodeFileAddedEvent message)
+        //{
+        //    foreach (var episode in message.EpisodeFile.Episodes.Value)
+        //    {
+        //        _episodeRepository.SetFileId(episode.Id, message.EpisodeFile.Id);
+        //        _logger.Debug("Linking [{0}] > [{1}]", message.EpisodeFile.RelativePath, episode);
+        //    }
+        //}
     }
 }

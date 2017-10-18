@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 {
     public class DownloadMonitoringService : IExecute<CheckForFinishedDownloadCommand>,
                                              IHandle<AlbumGrabbedEvent>,
-                                             IHandle<EpisodeImportedEvent>,
+                                             IHandle<TrackImportedEvent>,
                                              IHandle<TrackedDownloadsRemovedEvent>
 
     {
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             _refreshDebounce.Execute();
         }
 
-        public void Handle(EpisodeImportedEvent message)
+        public void Handle(TrackImportedEvent message)
         {
             _refreshDebounce.Execute();
         }

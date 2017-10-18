@@ -128,14 +128,14 @@ namespace NzbDrone.Core.Test.MediaFiles
                           Times.Once());
         }
 
-        [Test]
-        public void should_publish_EpisodeImportedEvent_for_new_downloads()
-        {
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
+        //[Test]
+        //public void should_publish_EpisodeImportedEvent_for_new_downloads()
+        //{
+        //    Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
 
-            Mocker.GetMock<IEventAggregator>()
-                .Verify(v => v.PublishEvent(It.IsAny<EpisodeImportedEvent>()), Times.Once());
-        }
+        //    Mocker.GetMock<IEventAggregator>()
+        //        .Verify(v => v.PublishEvent(It.IsAny<EpisodeImportedEvent>()), Times.Once());
+        //}
 
         [Test]
         public void should_not_move_existing_files()

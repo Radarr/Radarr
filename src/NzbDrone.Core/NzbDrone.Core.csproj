@@ -742,7 +742,6 @@
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedAlbumsScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackDownloadedEvent.cs" />
     <Compile Include="MediaFiles\MediaFileDeletionService.cs" />
@@ -778,14 +777,7 @@
     <Compile Include="MediaFiles\Events\ArtistRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScannedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScanSkippedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeDownloadedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFileAddedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFileDeletedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeImportedEvent.cs" />
     <Compile Include="MediaFiles\Commands\RescanArtistCommand.cs" />
-    <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
-    <Compile Include="MediaFiles\Events\SeriesScanSkippedEvent.cs" />
-    <Compile Include="MediaFiles\Events\SeriesScannedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileAddedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileDeletedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportedEvent.cs" />
@@ -1180,7 +1172,6 @@
     <Compile Include="Tv\Season.cs" />
     <Compile Include="Tv\Series.cs" />
     <Compile Include="Tv\SeriesAddedHandler.cs" />
-    <Compile Include="Tv\SeriesScannedHandler.cs" />
     <Compile Include="Tv\SeriesEditedService.cs" />
     <Compile Include="Tv\SeriesRepository.cs" />
     <Compile Include="Tv\SeriesService.cs">
