@@ -27,7 +27,6 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IParsingService _parsingService;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IImportApprovedTracks _importApprovedTracks;
-        private readonly IDetectSample _detectSample;
         private readonly Logger _logger;
 
         public DownloadedTracksImportService(IDiskProvider diskProvider,
@@ -36,7 +35,6 @@ namespace NzbDrone.Core.MediaFiles
                                                IParsingService parsingService,
                                                IMakeImportDecision importDecisionMaker,
                                                IImportApprovedTracks importApprovedTracks,
-                                               IDetectSample detectSample,
                                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -45,7 +43,6 @@ namespace NzbDrone.Core.MediaFiles
             _parsingService = parsingService;
             _importDecisionMaker = importDecisionMaker;
             _importApprovedTracks = importApprovedTracks;
-            _detectSample = detectSample;
             _logger = logger;
         }
 

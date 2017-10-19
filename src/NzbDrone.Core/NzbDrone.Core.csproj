@@ -151,11 +151,6 @@
     <Compile Include="DataAugmentation\Scene\SceneMappingsUpdatedEvent.cs" />
     <Compile Include="DataAugmentation\Scene\ServicesProvider.cs" />
     <Compile Include="DataAugmentation\Scene\UpdateSceneMappingCommand.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemResult.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemSceneTvdbMapping.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemValues.cs" />
-    <Compile Include="DataAugmentation\Xem\XemProxy.cs" />
-    <Compile Include="DataAugmentation\Xem\XemService.cs" />
     <Compile Include="Datastore\BasicRepository.cs" />
     <Compile Include="Datastore\ConnectionStringFactory.cs" />
     <Compile Include="Datastore\Converters\BooleanIntConverter.cs" />
@@ -331,7 +326,6 @@
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
     <Compile Include="DecisionEngine\RejectionType.cs" />
-    <Compile Include="DecisionEngine\SameEpisodesSpecification.cs" />
     <Compile Include="DecisionEngine\SameTracksSpecification.cs" />
     <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
@@ -529,7 +523,6 @@
     <Compile Include="Download\DownloadFailedEvent.cs" />
     <Compile Include="Download\DownloadItemStatus.cs" />
     <Compile Include="Download\DownloadService.cs" />
-    <Compile Include="Download\EpisodeGrabbedEvent.cs" />
     <Compile Include="Download\FailedDownloadService.cs" />
     <Compile Include="Download\IDownloadClient.cs" />
     <Compile Include="Download\Pending\PendingRelease.cs" />
@@ -760,16 +753,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MediaFiles\DownloadedAlbumsCommandService.cs" />
-    <Compile Include="MediaFiles\EpisodeFile.cs" />
     <Compile Include="MediaFiles\TrackImport\IImportDecisionEngineSpecification.cs" />
-    <Compile Include="MediaFiles\TrackImport\ImportApprovedEpisodes.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMaker.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportResultType.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportFile.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportCommand.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportItem.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportService.cs" />
-    <Compile Include="MediaFiles\TrackImport\DetectSample.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManuallyImportedFile.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecification.cs" />
@@ -836,7 +826,7 @@
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TrackResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
-    <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
+    <Compile Include="MetadataSource\SearchArtistComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />
     <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadata.cs" />
     <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadataSettings.cs" />
@@ -1079,11 +1069,7 @@
     <Compile Include="Organizer\NamingConfigService.cs" />
     <Compile Include="Organizer\SampleResult.cs" />
     <Compile Include="Parser\InvalidDateException.cs" />
-    <Compile Include="Parser\Model\LocalEpisode.cs" />
-    <Compile Include="Parser\Model\ParsedEpisodeInfo.cs" />
     <Compile Include="Parser\Model\ReleaseInfo.cs" />
-    <Compile Include="Parser\Model\RemoteEpisode.cs" />
-    <Compile Include="Parser\Model\SeriesTitleInfo.cs" />
     <Compile Include="Parser\Model\TorrentInfo.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParsingService.cs" />
@@ -1145,42 +1131,6 @@
     <Compile Include="ThingiProvider\ProviderMessage.cs" />
     <Compile Include="ThingiProvider\ProviderRepository.cs" />
     <Compile Include="TinyTwitter.cs" />
-    <Compile Include="Tv\Actor.cs" />
-    <Compile Include="Tv\AddSeriesOptions.cs" />
-    <Compile Include="Tv\AddSeriesService.cs" />
-    <Compile Include="Tv\AddSeriesValidator.cs" />
-    <Compile Include="Tv\Commands\RefreshSeriesCommand.cs" />
-    <Compile Include="Tv\Episode.cs" />
-    <Compile Include="Tv\EpisodeAddedService.cs" />
-    <Compile Include="Tv\EpisodeCutoffService.cs" />
-    <Compile Include="Tv\EpisodeMonitoredService.cs" />
-    <Compile Include="Tv\EpisodeRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tv\EpisodeService.cs" />
-    <Compile Include="Tv\Events\EpisodeInfoRefreshedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesAddedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesDeletedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesEditedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesImportedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesRefreshStartingEvent.cs" />
-    <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
-    <Compile Include="Tv\MonitoringOptions.cs" />
-    <Compile Include="Tv\Ratings.cs" />
-    <Compile Include="Tv\RefreshEpisodeService.cs" />
-    <Compile Include="Tv\RefreshSeriesService.cs" />
-    <Compile Include="Tv\Season.cs" />
-    <Compile Include="Tv\Series.cs" />
-    <Compile Include="Tv\SeriesAddedHandler.cs" />
-    <Compile Include="Tv\SeriesEditedService.cs" />
-    <Compile Include="Tv\SeriesRepository.cs" />
-    <Compile Include="Tv\SeriesService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tv\SeriesStatusType.cs" />
-    <Compile Include="Tv\SeriesTitleNormalizer.cs" />
-    <Compile Include="Tv\SeriesTitleSlugValidator.cs" />
-    <Compile Include="Tv\SeriesTypes.cs" />
     <Compile Include="Update\Commands\ApplicationUpdateCommand.cs" />
     <Compile Include="Update\InstallUpdateService.cs" />
     <Compile Include="Update\RecentUpdateProvider.cs" />

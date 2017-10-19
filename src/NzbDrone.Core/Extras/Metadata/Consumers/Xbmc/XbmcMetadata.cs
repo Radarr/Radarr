@@ -115,10 +115,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            var parseResult = Parser.Parser.ParseTitle(filename);
+            var parseResult = Parser.Parser.ParseMusicTitle(filename);
 
             if (parseResult != null &&
-                !parseResult.FullSeason &&
                 Path.GetExtension(filename) == ".nfo")
             {
                 metadata.Type = MetadataType.TrackMetadata;

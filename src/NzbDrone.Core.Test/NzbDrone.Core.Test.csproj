@@ -104,7 +104,6 @@
     <Compile Include="BulkImport\BulkImportFixture.cs" />
     <Compile Include="Configuration\ConfigCachingFixture.cs" />
     <Compile Include="Configuration\ConfigServiceFixture.cs" />
-    <Compile Include="DataAugmentation\SceneNumbering\XemServiceFixture.cs" />
     <Compile Include="DataAugmentation\Scene\SceneMappingProxyFixture.cs" />
     <Compile Include="DataAugmentation\Scene\SceneMappingServiceFixture.cs" />
     <Compile Include="DataAugmentation\DailySeries\DailySeriesDataProxyFixture.cs" />
@@ -155,7 +154,6 @@
     <Compile Include="DecisionEngineTests\RssSync\DeletedTrackFileSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RssSync\ProperSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\Search\ArtistSpecificationFixture.cs" />
-    <Compile Include="DecisionEngineTests\SameEpisodesSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RawDiskSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeDiskSpecificationFixture.cs" />
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
@@ -274,7 +272,6 @@
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />
-    <Compile Include="MediaFiles\TrackImport\SampleServiceFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecificationFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecificationFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecificationFixture.cs" />
@@ -282,7 +279,7 @@
     <Compile Include="MediaFiles\MediaFileRepositoryFixture.cs" />
     <Compile Include="Messaging\Commands\CommandQueueManagerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
-    <Compile Include="MetadataSource\SearchSeriesComparerFixture.cs" />
+    <Compile Include="MetadataSource\SearchArtistComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
     <Compile Include="MusicTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\ArtistNameSlugValidatorFixture.cs" />
@@ -290,7 +287,6 @@
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\TitleTheFixture.cs" />
-    <Compile Include="ParserTests\MiniSeriesEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\MusicParserFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
@@ -320,15 +316,10 @@
     <Compile Include="OrganizerTests\GetAlbumFolderFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\FileNameBuilderFixture.cs" />
     <Compile Include="OrganizerTests\GetArtistFolderFixture.cs" />
-    <Compile Include="ParserTests\AbsoluteEpisodeNumberParserFixture.cs" />
-    <Compile Include="ParserTests\AnimeMetadataParserFixture.cs" />
     <Compile Include="ParserTests\ExtendedQualityParserRegex.cs" />
     <Compile Include="ParserTests\CrapParserFixture.cs" />
-    <Compile Include="ParserTests\DailyEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\HashedReleaseFixture.cs" />
-    <Compile Include="ParserTests\IsPossibleSpecialEpisodeFixture.cs" />
     <Compile Include="ParserTests\LanguageParserFixture.cs" />
-    <Compile Include="ParserTests\MultiEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\NormalizeTitleFixture.cs" />
     <Compile Include="ParserTests\ParserFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\GetArtistFixture.cs" />
@@ -336,13 +327,12 @@
     <Compile Include="ParserTests\QualityParserFixture.cs" />
     <Compile Include="ParserTests\ReleaseGroupParserFixture.cs" />
     <Compile Include="ParserTests\SeasonParserFixture.cs" />
-    <Compile Include="ParserTests\SeriesTitleInfoFixture.cs" />
+    <Compile Include="ParserTests\ArtistTitleInfoFixture.cs" />
     <Compile Include="ParserTests\SingleEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\SceneCheckerFixture.cs" />
     <Compile Include="Profiles\ProfileRepositoryFixture.cs" />
     <Compile Include="Profiles\ProfileServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\XemProxyFixture.cs" />
     <Compile Include="ProviderTests\DiskProviderTests\ArchiveProviderFixture.cs" />
     <Compile Include="ProviderTests\DiskScanProviderTests\GetAudioFilesFixture.cs" />
     <Compile Include="ProviderTests\RecycleBinProviderTests\CleanupFixture.cs" />
@@ -355,23 +345,8 @@
     <Compile Include="RootFolderTests\RootFolderServiceFixture.cs" />
     <Compile Include="ThingiProvider\ProviderBaseFixture.cs" />
     <Compile Include="ThingiProviderTests\NullConfigFixture.cs" />
-    <Compile Include="TvTests\EpisodeServiceTests\FindEpisodeByTitleFixture.cs" />
-    <Compile Include="TvTests\EpisodeServiceTests\HandleEpisodeFileDeletedFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\ByAirDateFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesBetweenDatesFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesRepositoryReadFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesWhereCutoffUnmetFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesWithFilesFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesWithoutFilesFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\FindEpisodeFixture.cs" />
     <Compile Include="MusicTests\MoveArtistServiceFixture.cs" />
-    <Compile Include="TvTests\RefreshEpisodeServiceFixture.cs" />
     <Compile Include="MusicTests\RefreshArtistServiceFixture.cs" />
-    <Compile Include="TvTests\EpisodeMonitoredServiceTests\SetEpisodeMontitoredFixture.cs" />
-    <Compile Include="TvTests\SeriesRepositoryTests\SeriesRepositoryFixture.cs" />
-    <Compile Include="TvTests\SeriesServiceTests\UpdateMultipleSeriesFixture.cs" />
-    <Compile Include="TvTests\SeriesServiceTests\UpdateSeriesFixture.cs" />
-    <Compile Include="TvTests\SeriesTitleNormalizerFixture.cs" />
     <Compile Include="MusicTests\ShouldRefreshArtistFixture.cs" />
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
@@ -563,6 +538,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="InstrumentationTests\" />
+    <Folder Include="Providers\" />
     <Folder Include="ProviderTests\UpdateProviderTests\" />
   </ItemGroup>
   <ItemGroup>

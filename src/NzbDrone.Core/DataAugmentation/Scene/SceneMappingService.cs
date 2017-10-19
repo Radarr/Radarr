@@ -7,7 +7,6 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using System.Collections.Generic;
-using NzbDrone.Core.Tv.Events;
 
 namespace NzbDrone.Core.DataAugmentation.Scene
 {
@@ -23,7 +22,7 @@ namespace NzbDrone.Core.DataAugmentation.Scene
     }
 
     public class SceneMappingService : ISceneMappingService,
-                                       IHandle<SeriesRefreshStartingEvent>,
+                                       // IHandle<SeriesRefreshStartingEvent>,
                                        IExecute<UpdateSceneMappingCommand>
     {
         private readonly ISceneMappingRepository _repository;
@@ -237,13 +236,13 @@ namespace NzbDrone.Core.DataAugmentation.Scene
             return titles.Where(title => title.All(c => c <= 255)).ToList();
         }
 
-        public void Handle(SeriesRefreshStartingEvent message)
-        {
-            if (message.ManualTrigger && _findByTvdbIdCache.IsExpired(TimeSpan.FromMinutes(1)))
-            {
-                UpdateMappings();
-            }
-        }
+        //public void Handle(SeriesRefreshStartingEvent message)
+        //{
+        //    if (message.ManualTrigger && _findByTvdbIdCache.IsExpired(TimeSpan.FromMinutes(1)))
+        //    {
+        //        UpdateMappings();
+        //    }
+        //}
 
         public void Execute(UpdateSceneMappingCommand message)
         {

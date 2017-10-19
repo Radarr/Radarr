@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [Test, TestCaseSource(nameof(HashedReleaseParserCases))]
         public void should_properly_parse_hashed_releases(string path, string title, Quality quality, string releaseGroup)
         {
-            var result = Parser.Parser.ParsePath(path);
+            var result = Parser.Parser.ParseMusicPath(path);
             //result.SeriesTitle.Should().Be(title);
             result.Quality.Quality.Should().Be(quality);
         }

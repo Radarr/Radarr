@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.Download
             Subject.DownloadReport(_parseResult);
 
             Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
-            VerifyEventNotPublished<EpisodeGrabbedEvent>();
+            VerifyEventNotPublished<AlbumGrabbedEvent>();
 
             ExceptionVerification.ExpectedWarns(1);
         }

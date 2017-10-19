@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Parser.Model;
 
@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Download.Pending
         public ReleaseInfo Release { get; set; }
 
         //Not persisted
-        public RemoteEpisode RemoteEpisode { get; set; }
         public RemoteAlbum RemoteAlbum { get; set; }
     }
 }

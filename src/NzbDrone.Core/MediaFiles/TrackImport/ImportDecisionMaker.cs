@@ -28,7 +28,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IMediaFileService _mediaFileService;
         private readonly IDiskProvider _diskProvider;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
-        private readonly IDetectSample _detectSample;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -36,7 +35,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                                    IMediaFileService mediaFileService,
                                    IDiskProvider diskProvider,
                                    IVideoFileInfoReader videoFileInfoReader,
-                                   IDetectSample detectSample,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -44,7 +42,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             _mediaFileService = mediaFileService;
             _diskProvider = diskProvider;
             _videoFileInfoReader = videoFileInfoReader;
-            _detectSample = detectSample;
             _logger = logger;
         }
 

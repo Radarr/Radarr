@@ -94,10 +94,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 return metadata;
             }
 
-            var parseResult = Parser.Parser.ParseTitle(filename);
+            var parseResult = Parser.Parser.ParseMusicTitle(filename);
 
-            if (parseResult != null &&
-                !parseResult.FullSeason)
+            if (parseResult != null)
             {
                 var extension = Path.GetExtension(filename).ToLowerInvariant();
 

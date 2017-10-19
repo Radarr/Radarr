@@ -8,7 +8,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
@@ -418,27 +417,6 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        public static ParsedEpisodeInfo ParsePath(string path)
-        {
-            var fileInfo = new FileInfo(path);
-
-            var result = ParseTitle(fileInfo.Name);
-
-            if (result == null)
-            {
-                Logger.Debug("Attempting to parse episode info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
-            }
-
-            if (result == null)
-            {
-                Logger.Debug("Attempting to parse episode info using directory name. {0}", fileInfo.Directory.Name);
-                result = ParseTitle(fileInfo.Directory.Name + fileInfo.Extension);
-            }
-
-            return result;
-        }
-
         public static ParsedTrackInfo ParseMusicTitle(string title)
         {
             try
@@ -654,130 +632,6 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public static ParsedEpisodeInfo ParseTitle(string title)
-        {
-            try
-            {
-                if (!ValidateBeforeParsing(title)) return null;
-
-                Logger.Debug("Parsing string '{0}'", title);
-
-                if (ReversedTitleRegex.IsMatch(title))
-                {
-                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
-                    Array.Reverse(titleWithoutExtension);
-
-                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
-
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
-                }
-
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
-
-                simpleTitle = RemoveFileExtension(simpleTitle);
-
-                // TODO: Quick fix stripping [url] - prefixes.
-                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
-
-                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
-
-                var airDateMatch = AirDateRegex.Match(simpleTitle);
-                if (airDateMatch.Success)
-                {
-                    simpleTitle = airDateMatch.Groups[1].Value + airDateMatch.Groups["airyear"].Value + "." + airDateMatch.Groups["airmonth"].Value + "." + airDateMatch.Groups["airday"].Value;
-                }
-
-                var sixDigitAirDateMatch = SixDigitAirDateRegex.Match(simpleTitle);
-                if (sixDigitAirDateMatch.Success)
-                {
-                    var airYear = sixDigitAirDateMatch.Groups["airyear"].Value;
-                    var airMonth = sixDigitAirDateMatch.Groups["airmonth"].Value;
-                    var airDay = sixDigitAirDateMatch.Groups["airday"].Value;
-
-                    if (airMonth != "00" || airDay != "00")
-                    {
-                        var fixedDate = string.Format("20{0}.{1}.{2}", airYear, airMonth, airDay);
-
-                        simpleTitle = simpleTitle.Replace(sixDigitAirDateMatch.Groups["airdate"].Value, fixedDate);
-                    }
-                }
-
-                foreach (var regex in ReportTitleRegex)
-                {
-                    var match = regex.Matches(simpleTitle);
-
-                    if (match.Count != 0)
-                    {
-                        Logger.Trace(regex);
-                        try
-                        {
-                            var result = ParseMatchCollection(match);
-
-                            if (result != null)
-                            {
-                                if (result.FullSeason && title.ContainsIgnoreCase("Special"))
-                                {
-                                    result.FullSeason = false;
-                                    result.Special = true;
-                                }
-
-                                result.Language = LanguageParser.ParseLanguage(title);
-                                Logger.Debug("Language parsed: {0}", result.Language);
-
-                                result.Quality = QualityParser.ParseQuality(title);
-                                Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                                result.ReleaseGroup = ParseReleaseGroup(title);
-
-                                var subGroup = GetSubGroup(match);
-                                if (!subGroup.IsNullOrWhiteSpace())
-                                {
-                                    result.ReleaseGroup = subGroup;
-                                }
-
-                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
-
-                                result.ReleaseHash = GetReleaseHash(match);
-                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
-                                {
-                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
-                                }
-
-                                return result;
-                            }
-                        }
-                        catch (InvalidDateException ex)
-                        {
-                            Logger.Debug(ex, ex.Message);
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
-                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
-            }
-
-            Logger.Debug("Unable to parse {0}", title);
-            return null;
-        }
-
-        public static string ParseSeriesName(string title)
-        {
-            Logger.Debug("Parsing string '{0}'", title);
-
-            var parseResult = ParseTitle(title);
-
-            if (parseResult == null)
-            {
-                return CleanSeriesTitle(title);
-            }
-
-            return parseResult.SeriesTitle;
-        }
-
         public static string CleanSeriesTitle(this string title)
         {
             long number = 0;
@@ -961,27 +815,6 @@ namespace NzbDrone.Core.Parser
             return Language.English;
         }
 
-        private static SeriesTitleInfo GetSeriesTitleInfo(string title)
-        {
-            var seriesTitleInfo = new SeriesTitleInfo();
-            seriesTitleInfo.Title = title;
-
-            var match = YearInTitleRegex.Match(title);
-
-            if (!match.Success)
-            {
-                seriesTitleInfo.TitleWithoutYear = title;
-            }
-
-            else
-            {
-                seriesTitleInfo.TitleWithoutYear = match.Groups["title"].Value;
-                seriesTitleInfo.Year = Convert.ToInt32(match.Groups["year"].Value);
-            }
-
-            return seriesTitleInfo;
-        }
-
         private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)
         {
             var artistName = matchCollection[0].Groups["artist"].Value./*Removed for cases like Will.I.Am Replace('.', ' ').*/Replace('_', ' ');
@@ -1057,6 +890,20 @@ namespace NzbDrone.Core.Parser
             return artistTitleInfo;
         }
 
+        public static string ParseArtistName(string title)
+        {
+            Logger.Debug("Parsing string '{0}'", title);
+
+            var parseResult = ParseAlbumTitle(title);
+
+            if (parseResult == null)
+            {
+                return CleanSeriesTitle(title);
+            }
+
+            return parseResult.ArtistName;
+        }
+
         private static ParsedAlbumInfo ParseAlbumMatchCollection(MatchCollection matchCollection)
         {
             var artistName = matchCollection[0].Groups["artist"].Value.Replace('.', ' ').Replace('_', ' ');
@@ -1076,141 +923,6 @@ namespace NzbDrone.Core.Parser
             result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistName);
 
             Logger.Debug("Album Parsed. {0}", result);
-
-            return result;
-        }
-
-
-        private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)
-        {
-            var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');
-            seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
-
-            int airYear;
-            int.TryParse(matchCollection[0].Groups["airyear"].Value, out airYear);
-
-            ParsedEpisodeInfo result;
-
-            if (airYear < 1900)
-            {
-                var seasons = new List<int>();
-
-                foreach (Capture seasonCapture in matchCollection[0].Groups["season"].Captures)
-                {
-                    int parsedSeason;
-                    if (int.TryParse(seasonCapture.Value, out parsedSeason))
-                        seasons.Add(parsedSeason);
-                }
-
-                //If no season was found it should be treated as a mini series and season 1
-                if (seasons.Count == 0) seasons.Add(1);
-
-                //If more than 1 season was parsed go to the next REGEX (A multi-season release is unlikely)
-                if (seasons.Distinct().Count() > 1) return null;
-
-                result = new ParsedEpisodeInfo
-                {
-                    SeasonNumber = seasons.First(),
-                    EpisodeNumbers = new int[0],
-                    AbsoluteEpisodeNumbers = new int[0]
-                };
-
-                foreach (Match matchGroup in matchCollection)
-                {
-                    var episodeCaptures = matchGroup.Groups["episode"].Captures.Cast<Capture>().ToList();
-                    var absoluteEpisodeCaptures = matchGroup.Groups["absoluteepisode"].Captures.Cast<Capture>().ToList();
-
-                    //Allows use to return a list of 0 episodes (We can handle that as a full season release)
-                    if (episodeCaptures.Any())
-                    {
-                        var first = ParseNumber(episodeCaptures.First().Value);
-                        var last = ParseNumber(episodeCaptures.Last().Value);
-
-                        if (first > last)
-                        {
-                            return null;
-                        }
-
-                        var count = last - first + 1;
-                        result.EpisodeNumbers = Enumerable.Range(first, count).ToArray();
-                    }
-
-                    if (absoluteEpisodeCaptures.Any())
-                    {
-                        var first = Convert.ToInt32(absoluteEpisodeCaptures.First().Value);
-                        var last = Convert.ToInt32(absoluteEpisodeCaptures.Last().Value);
-
-                        if (first > last)
-                        {
-                            return null;
-                        }
-
-                        var count = last - first + 1;
-                        result.AbsoluteEpisodeNumbers = Enumerable.Range(first, count).ToArray();
-
-                        if (matchGroup.Groups["special"].Success)
-                        {
-                            result.Special = true;
-                        }
-                    }
-
-                    if (!episodeCaptures.Any() && !absoluteEpisodeCaptures.Any())
-                    {
-                        //Check to see if this is an "Extras" or "SUBPACK" release, if it is, return NULL
-                        //Todo: Set a "Extras" flag in EpisodeParseResult if we want to download them ever
-                        if (!matchCollection[0].Groups["extras"].Value.IsNullOrWhiteSpace()) return null;
-
-                        result.FullSeason = true;
-                    }
-                }
-
-                if (result.AbsoluteEpisodeNumbers.Any() && !result.EpisodeNumbers.Any())
-                {
-                    result.SeasonNumber = 0;
-                }
-            }
-
-            else
-            {
-                //Try to Parse as a daily show
-                var airmonth = Convert.ToInt32(matchCollection[0].Groups["airmonth"].Value);
-                var airday = Convert.ToInt32(matchCollection[0].Groups["airday"].Value);
-
-                //Swap day and month if month is bigger than 12 (scene fail)
-                if (airmonth > 12)
-                {
-                    var tempDay = airday;
-                    airday = airmonth;
-                    airmonth = tempDay;
-                }
-
-                DateTime airDate;
-
-                try
-                {
-                    airDate = new DateTime(airYear, airmonth, airday);
-                }
-                catch (Exception)
-                {
-                    throw new InvalidDateException("Invalid date found: {0}-{1}-{2}", airYear, airmonth, airday);
-                }
-
-                //Check if episode is in the future (most likely a parse error)
-                if (airDate > DateTime.Now.AddDays(1).Date || airDate < new DateTime(1970, 1, 1))
-                {
-                    throw new InvalidDateException("Invalid date found: {0}", airDate);
-                }
-
-                result = new ParsedEpisodeInfo
-                {
-                    AirDate = airDate.ToString(Episode.AIR_DATE_FORMAT),
-                };
-            }
-
-            result.SeriesTitle = seriesName;
-            result.SeriesTitleInfo = GetSeriesTitleInfo(result.SeriesTitle);
-
-            Logger.Debug("Episode Parsed. {0}", result);
 
             return result;
         }

@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MetadataSource
 {
-    public class SearchSeriesComparer : IComparer<Series>
+    public class SearchArtistComparer : IComparer<Artist>
     {
         private static readonly Regex RegexCleanPunctuation = new Regex("[-._:]", RegexOptions.Compiled);
         private static readonly Regex RegexCleanCountryYearPostfix = new Regex(@"(?<=.+)( \([A-Z]{2}\)| \(\d{4}\)| \([A-Z]{2}\) \(\d{4}\))$", RegexOptions.Compiled);
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.MetadataSource
         private readonly string _searchQueryWithoutYear;
         private int? _year;
 
-        public SearchSeriesComparer(string searchQuery)
+        public SearchArtistComparer(string searchQuery)
         {
             SearchQuery = searchQuery;
             
@@ -33,59 +33,32 @@ namespace NzbDrone.Core.MetadataSource
             }
         }
 
-        public int Compare(Series x, Series y)
+        public int Compare(Artist x, Artist y)
         {
             int result = 0;
 
             // Prefer exact matches
-            result = Compare(x, y, s => CleanPunctuation(s.Title).Equals(CleanPunctuation(SearchQuery)));
+            result = Compare(x, y, s => CleanPunctuation(s.Name).Equals(CleanPunctuation(SearchQuery)));
             if (result != 0) return -result;
 
             // Remove Articles (a/an/the)
-            result = Compare(x, y, s => CleanArticles(s.Title).Equals(CleanArticles(SearchQuery)));
+            result = Compare(x, y, s => CleanArticles(s.Name).Equals(CleanArticles(SearchQuery)));
             if (result != 0) return -result;
 
             // Prefer close matches
-            result = Compare(x, y, s => CleanPunctuation(s.Title).LevenshteinDistance(CleanPunctuation(SearchQuery)) <= 1);
-            if (result != 0) return -result;
-
-            // Compare clean matches by year "Battlestar Galactica 1978"
-            result = CompareWithYear(x, y, s => CleanTitle(s.Title).LevenshteinDistance(_searchQueryWithoutYear) <= 1);
-            if (result != 0) return -result;
-
-            // Compare prefix matches by year "(CSI: ..."
-            result = CompareWithYear(x, y, s => s.Title.ToLowerInvariant().StartsWith(_searchQueryWithoutYear + ":"));
+            result = Compare(x, y, s => CleanPunctuation(s.Name).LevenshteinDistance(CleanPunctuation(SearchQuery)) <= 1);
             if (result != 0) return -result;
          
-            return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Title) - GetYearFactor(s));
+            return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Name));
         }
         
-        public int Compare<T>(Series x, Series y, Func<Series,T> keySelector)
+        public int Compare<T>(Artist x, Artist y, Func<Artist, T> keySelector)
             where T : IComparable<T>
         {
             var keyX = keySelector(x);
             var keyY = keySelector(y);
 
             return keyX.CompareTo(keyY);
-        }
-
-        public int CompareWithYear(Series x, Series y, Predicate<Series> canMatch)
-        {
-            var matchX = canMatch(x);
-            var matchY = canMatch(y);
-
-            if (matchX && matchY)
-            {
-                if (_year.HasValue)
-                {
-                    var result = Compare(x, y, s => s.Year == _year.Value);
-                    if (result != 0) return result;
-                }
-
-                return Compare(x, y, s => s.Year);
-            }
-
-            return matchX.CompareTo(matchY);
         }
 
         private string CleanPunctuation(string title)
@@ -110,18 +83,5 @@ namespace NzbDrone.Core.MetadataSource
             return title.Trim().ToLowerInvariant();
         }
 
-        private int GetYearFactor(Series series)
-        {
-            if (_year.HasValue)
-            {
-                var offset = Math.Abs(series.Year - _year.Value);
-                if (offset <= 1)
-                {
-                    return 20 - 10 * offset;
-                }
-            }
-
-            return 0;
-        }
     }
 }
