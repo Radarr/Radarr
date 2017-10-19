@@ -6,7 +6,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
-import EpisodeQuality from 'Episode/EpisodeQuality';
+import EpisodeQuality from 'Album/EpisodeQuality';
 import styles from './TrackFileEditorRow';
 
 function TrackFileEditorRow(props) {

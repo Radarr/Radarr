@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
-import episodeEntities from 'Episode/episodeEntities';
+import episodeEntities from 'Album/episodeEntities';
 import createFetchHandler from './Creators/createFetchHandler';
 import * as types from './actionTypes';
 import { updateItem } from './baseActions';

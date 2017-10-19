@@ -6,7 +6,7 @@ import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import Label from 'Components/Label';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
-import EpisodeQuality from 'Episode/EpisodeQuality';
+import EpisodeQuality from 'Album/EpisodeQuality';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import EpisodeAiringConnector from './EpisodeAiringConnector';

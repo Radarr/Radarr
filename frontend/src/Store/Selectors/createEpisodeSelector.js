@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import episodeEntities from 'Episode/episodeEntities';
+import episodeEntities from 'Album/episodeEntities';
 
 function createEpisodeSelector() {
   return createSelector(

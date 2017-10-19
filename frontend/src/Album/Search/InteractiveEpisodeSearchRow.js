@@ -10,7 +10,7 @@ import Link from 'Components/Link/Link';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
-import EpisodeQuality from 'Episode/EpisodeQuality';
+import EpisodeQuality from 'Album/EpisodeQuality';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
 import styles from './InteractiveEpisodeSearchRow.css';

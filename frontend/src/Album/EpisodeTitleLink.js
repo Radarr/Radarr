@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Link from 'Components/Link/Link';
-import EpisodeDetailsModal from 'Episode/EpisodeDetailsModal';
+import EpisodeDetailsModal from 'Album/EpisodeDetailsModal';
 import styles from './EpisodeTitleLink.css';
 
 class EpisodeTitleLink extends Component {

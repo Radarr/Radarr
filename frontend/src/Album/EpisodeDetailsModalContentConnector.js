@@ -6,7 +6,7 @@ import { clearReleases } from 'Store/Actions/releaseActions';
 import { toggleEpisodeMonitored } from 'Store/Actions/episodeActions';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import episodeEntities from 'Episode/episodeEntities';
+import episodeEntities from 'Album/episodeEntities';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
 import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import EpisodeDetailsModalContent from './EpisodeDetailsModalContent';

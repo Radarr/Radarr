@@ -6,10 +6,10 @@ import { icons } from 'Helpers/Props';
 import formatTime from 'Utilities/Date/formatTime';
 import padNumber from 'Utilities/Number/padNumber';
 import getStatusStyle from 'Calendar/getStatusStyle';
-import episodeEntities from 'Episode/episodeEntities';
+import episodeEntities from 'Album/episodeEntities';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import EpisodeDetailsModal from 'Episode/EpisodeDetailsModal';
+import EpisodeDetailsModal from 'Album/EpisodeDetailsModal';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
 import styles from './CalendarEvent.css';
 

@@ -5,7 +5,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
 import MediaInfoConnector from 'TrackFile/MediaInfoConnector';
 import * as mediaInfoTypes from 'TrackFile/mediaInfoTypes';
-import EpisodeStatusConnector from 'Episode/EpisodeStatusConnector';
+import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
 
 import styles from './TrackDetailRow.css';
 

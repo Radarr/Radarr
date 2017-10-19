@@ -7,8 +7,8 @@ import TableRow from 'Components/Table/TableRow';
 import Label from 'Components/Label';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
-import EpisodeSearchCellConnector from 'Episode/EpisodeSearchCellConnector';
-import EpisodeTitleLink from 'Episode/EpisodeTitleLink';
+import EpisodeSearchCellConnector from 'Album/EpisodeSearchCellConnector';
+import EpisodeTitleLink from 'Album/EpisodeTitleLink';
 
 import styles from './AlbumRow.css';
 

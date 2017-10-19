@@ -8,8 +8,8 @@ import { icons } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import episodeEntities from 'Episode/episodeEntities';
-import EpisodeDetailsModal from 'Episode/EpisodeDetailsModal';
+import episodeEntities from 'Album/episodeEntities';
+import EpisodeDetailsModal from 'Album/EpisodeDetailsModal';
 import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
 import styles from './AgendaEvent.css';
 
