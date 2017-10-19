@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Download");
-            environmentVariables.Add("Radarr_IsUpgrade", message.OldFiles.Any().ToString());
+            environmentVariables.Add("Radarr_IsUpgrade", message.OldMovieFiles.Any().ToString());
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
             environmentVariables.Add("Radarr_Movie_Path", movie.Path);
@@ -70,10 +70,10 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             environmentVariables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
 
-            if (message.OldFiles.Any())
+            if (message.OldMovieFiles.Any())
             {
-                environmentVariables.Add("Radarr_DeletedRelativePaths", string.Join("|", message.OldFiles.Select(e => e.RelativePath)));
-                environmentVariables.Add("Radarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => Path.Combine(movie.Path, e.RelativePath))));
+                environmentVariables.Add("Radarr_DeletedRelativePaths", string.Join("|", message.OldMovieFiles.Select(e => e.RelativePath)));
+                environmentVariables.Add("Radarr_DeletedPaths", string.Join("|", message.OldMovieFiles.Select(e => Path.Combine(movie.Path, e.RelativePath))));
             }
             ExecuteScript(environmentVariables);
         }
