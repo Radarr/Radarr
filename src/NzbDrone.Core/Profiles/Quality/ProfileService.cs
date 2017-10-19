@@ -85,6 +85,8 @@ namespace NzbDrone.Core.Profiles.Qualities
             _logger.Info("Setting up default quality profiles");
 
             AddDefaultProfile("Any", 
+                Quality.Unknown,
+                Quality.Unknown,
                 Quality.MP3_192,
                 Quality.MP3_256,
                 Quality.MP3_320,
@@ -93,9 +95,11 @@ namespace NzbDrone.Core.Profiles.Qualities
                 Quality.FLAC);
 
             AddDefaultProfile("Lossless",
+                Quality.FLAC,
                 Quality.FLAC);
 
             AddDefaultProfile("Standard",
+                Quality.MP3_192,
                 Quality.MP3_192,
                 Quality.MP3_256,
                 Quality.MP3_320);
