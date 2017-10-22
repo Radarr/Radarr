@@ -8,7 +8,7 @@ import { fetchArtist } from './artistActions';
 const section = 'albumStudio';
 
 const albumStudioActionHandlers = {
-  [types.SAVE_SEASON_PASS]: function(payload) {
+  [types.SAVE_ALBUM_STUDIO]: function(payload) {
     return function(dispatch, getState) {
       const {
         artistIds,
@@ -30,15 +30,15 @@ const albumStudioActionHandlers = {
 
         if (monitor) {
           const {
-            seasons,
+            albums,
             options: artistMonitoringOptions
-          } = getMonitoringOptions(_.cloneDeep(s.seasons), monitor);
+          } = getMonitoringOptions(_.cloneDeep(s.albums), monitor);
 
           if (!monitoringOptions) {
             monitoringOptions = artistMonitoringOptions;
           }
 
-          artistToUpdate.seasons = seasons;
+          artistToUpdate.albums = albums;
         }
 
         artist.push(artistToUpdate);

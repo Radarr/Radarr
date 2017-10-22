@@ -10,10 +10,10 @@ function monitorSeasons(seasons, startingSeason) {
   });
 }
 
-function getMonitoringOptions(seasons, monitor) {
-  if (!seasons.length) {
+function getMonitoringOptions(albums, monitor) {
+  if (!albums.length) {
     return {
-      seasons: [],
+      albums: [],
       options: {
         ignoreEpisodesWithFiles: false,
         ignoreEpisodesWithoutFiles: false
@@ -21,10 +21,10 @@ function getMonitoringOptions(seasons, monitor) {
     };
   }
 
-  const firstSeason = _.minBy(_.reject(seasons, { seasonNumber: 0 }), 'seasonNumber').seasonNumber;
-  const lastSeason = _.maxBy(seasons, 'seasonNumber').seasonNumber;
+  const firstSeason = _.minBy(_.reject(albums, { seasonNumber: 0 }), 'seasonNumber').seasonNumber;
+  const lastSeason = _.maxBy(albums, 'seasonNumber').seasonNumber;
 
-  monitorSeasons(seasons, firstSeason);
+  monitorSeasons(albums, firstSeason);
 
   const monitoringOptions = {
     ignoreEpisodesWithFiles: false,
@@ -37,11 +37,11 @@ function getMonitoringOptions(seasons, monitor) {
       monitoringOptions.ignoreEpisodesWithoutFiles = true;
       break;
     case 'latest':
-      monitorSeasons(seasons, lastSeason);
+      monitorSeasons(albums, lastSeason);
       break;
     case 'first':
-      monitorSeasons(seasons, lastSeason + 1);
-      _.find(seasons, { seasonNumber: firstSeason }).monitored = true;
+      monitorSeasons(albums, lastSeason + 1);
+      _.find(albums, { seasonNumber: firstSeason }).monitored = true;
       break;
     case 'missing':
       monitoringOptions.ignoreEpisodesWithFiles = true;
@@ -50,14 +50,14 @@ function getMonitoringOptions(seasons, monitor) {
       monitoringOptions.ignoreEpisodesWithoutFiles = true;
       break;
     case 'none':
-      monitorSeasons(seasons, lastSeason + 1);
+      monitorSeasons(albums, lastSeason + 1);
       break;
     default:
       break;
   }
 
   return {
-    seasons: _.map(seasons, (season) => {
+    seasons: _.map(albums, (season) => {
       return _.pick(season, [
         'seasonNumber',
         'monitored'

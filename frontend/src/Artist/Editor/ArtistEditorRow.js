@@ -16,7 +16,7 @@ class ArtistEditorRow extends Component {
   //
   // Listeners
 
-  onSeasonFolderChange = () => {
+  onAlbumFolderChange = () => {
     // Mock handler to satisfy `onChange` being required for `CheckInput`.
     //
   }
@@ -77,7 +77,7 @@ class ArtistEditorRow extends Component {
             name="albumFolder"
             value={albumFolder}
             isDisabled={true}
-            onChange={this.onSeasonFolderChange}
+            onChange={this.onAlbumFolderChange}
           />
         </TableRowCell>
 

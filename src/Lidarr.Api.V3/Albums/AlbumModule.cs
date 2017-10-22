@@ -32,7 +32,7 @@ namespace Lidarr.Api.V3.Albums
 
             if (!Request.Query.ArtistId.HasValue && !albumIdsQuery.HasValue)
             {
-                throw new BadRequestException("artistId or albumIds must be provided");
+                return MapToResource(_albumService.GetAllAlbums(), false);
             }
 
             if (artistIdQuery.HasValue)

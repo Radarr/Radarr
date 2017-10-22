@@ -66,7 +66,7 @@ class ArtistEditorFooter extends Component {
       case 'monitored':
         this.props.onSaveSelected({ [name]: value === 'monitored' });
         break;
-      case 'seasonFolder':
+      case 'albumFolder':
         this.props.onSaveSelected({ [name]: value === 'yes' });
         break;
       default:

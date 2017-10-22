@@ -15,7 +15,7 @@ namespace Lidarr.Api.V3.Artist
         {
             _artistService = artistService;
             Put["/"] = artist => SaveAll();
-            Delete["/"] = artist => DeleteSeries();
+            Delete["/"] = artist => DeleteArtist();
         }
 
         private Response SaveAll()
@@ -70,7 +70,7 @@ namespace Lidarr.Api.V3.Artist
                                  .AsResponse(HttpStatusCode.Accepted);
         }
 
-        private Response DeleteSeries()
+        private Response DeleteArtist()
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
 

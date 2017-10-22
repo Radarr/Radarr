@@ -10,16 +10,22 @@ import AlbumStudioRow from './AlbumStudioRow';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.episodes,
     createArtistSelector(),
-    (artist) => {
-      return _.pick(artist, [
-        'status',
-        'nameSlug',
-        'artistName',
-        'monitored',
-        'albums',
-        'isSaving'
-      ]);
+    (episodes, artist) => {
+      const albumsInArtist = _.filter(episodes.items, { artistId: artist.id });
+      const sortedAlbums = _.orderBy(albumsInArtist, 'releaseDate', 'desc');
+
+      return {
+        ...artist,
+        artistId: artist.id,
+        artistName: artist.artistName,
+        nameSlug: artist.nameSlug,
+        monitored: artist.monitored,
+        status: artist.status,
+        isSaving: artist.isSaving,
+        albums: sortedAlbums
+      };
     }
   );
 }
@@ -50,7 +56,7 @@ class AlbumStudioRowConnector extends Component {
   onAlbumMonitoredPress = (albumId, monitored) => {
     this.props.toggleEpisodeMonitored({
       albumId,
-      monitored: !monitored
+      monitored
     });
   }
 

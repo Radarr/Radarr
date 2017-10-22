@@ -31,8 +31,8 @@ const albumStudioReducers = handleActions({
 
   [types.SET]: createSetReducer(reducerSection),
 
-  [types.SET_SEASON_PASS_SORT]: createSetClientSideCollectionSortReducer(reducerSection),
-  [types.SET_SEASON_PASS_FILTER]: createSetClientSideCollectionFilterReducer(reducerSection)
+  [types.SET_ALBUM_STUDIO_SORT]: createSetClientSideCollectionSortReducer(reducerSection),
+  [types.SET_ALBUM_STUDIO_FILTER]: createSetClientSideCollectionFilterReducer(reducerSection)
 
 }, defaultState);
 

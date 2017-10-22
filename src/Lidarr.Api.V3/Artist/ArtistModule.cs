@@ -99,7 +99,7 @@ namespace Lidarr.Api.V3.Artist
 
             var resource = artist.ToResource();
             MapCoversToLocal(resource);
-            MapAlbums(resource);
+            //MapAlbums(resource);
             FetchAndLinkArtistStatistics(resource);
             //PopulateAlternateTitles(resource);
 
@@ -112,7 +112,7 @@ namespace Lidarr.Api.V3.Artist
             var artistsResources = _artistService.GetAllArtists().ToResource();
 
             MapCoversToLocal(artistsResources.ToArray());
-            MapAlbums(artistsResources.ToArray());
+            //MapAlbums(artistsResources.ToArray());
             LinkArtistStatistics(artistsResources, artistStats);
             //PopulateAlternateTitles(seriesResources);
 

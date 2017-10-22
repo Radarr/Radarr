@@ -14,7 +14,7 @@ const episodeActionHandlers = {
   [types.TOGGLE_EPISODE_MONITORED]: function(payload) {
     return function(dispatch, getState) {
       const {
-        albumId: id,
+        albumId,
         episodeEntity = episodeEntities.EPISODES,
         monitored
       } = payload;
@@ -22,13 +22,13 @@ const episodeActionHandlers = {
       const episodeSection = _.last(episodeEntity.split('.'));
 
       dispatch(updateItem({
-        id,
+        id: albumId,
         section: episodeSection,
         isSaving: true
       }));
 
       const promise = $.ajax({
-        url: `/album/${id}`,
+        url: `/album/${albumId}`,
         method: 'PUT',
         data: JSON.stringify({ monitored }),
         dataType: 'json'
@@ -36,7 +36,7 @@ const episodeActionHandlers = {
 
       promise.done((data) => {
         dispatch(updateItem({
-          id,
+          id: albumId,
           section: episodeSection,
           isSaving: false,
           monitored
@@ -45,7 +45,7 @@ const episodeActionHandlers = {
 
       promise.fail((xhr) => {
         dispatch(updateItem({
-          id,
+          id: albumId,
           section: episodeSection,
           isSaving: false
         }));

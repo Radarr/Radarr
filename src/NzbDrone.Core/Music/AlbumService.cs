@@ -164,12 +164,28 @@ namespace NzbDrone.Core.Music
             var album = _albumRepository.Get(albumId);
             _albumRepository.SetMonitoredFlat(album, monitored);
 
+            var tracks = _trackService.GetTracksByAlbum(albumId);
+            foreach (var track in tracks)
+            {
+                track.Monitored = monitored;
+            }
+            _trackService.UpdateTracks(tracks);
+
             _logger.Debug("Monitored flag for Album:{0} was set to {1}", albumId, monitored);
         }
 
         public void SetMonitored(IEnumerable<int> ids, bool monitored)
         {
             _albumRepository.SetMonitored(ids, monitored);
+            foreach (var id in ids)
+            {
+                var tracks = _trackService.GetTracksByAlbum(id);
+                foreach (var track in tracks)
+                {
+                    track.Monitored = monitored;
+                }
+                _trackService.UpdateTracks(tracks);
+            }
         }
 
         public List<Album> UpdateAlbums(List<Album> album)
