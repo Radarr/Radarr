@@ -45,7 +45,13 @@ class InteractiveEpisodeSearchRow extends Component {
   // Listeners
 
   onGrabPress = () => {
-    this.props.onGrabPress(this.props.guid, this.props.indexerId);
+    const {
+      guid,
+      indexerId,
+      onGrabPress
+    }= this.props;
+
+    onGrabPress(guid, indexerId);
   }
 
   //

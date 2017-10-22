@@ -61,9 +61,11 @@ class ArtistBanner extends Component {
     if (nextBanner && (!banner || nextBanner.url !== banner.url)) {
       this.setState({
         banner: nextBanner,
-        posterUrl: getBannerUrl(nextBanner, pixelRatio * size),
-        isLoaded: false,
+        bannerUrl: getBannerUrl(nextBanner, pixelRatio * size),
         hasError: false
+        // Don't reset isLoaded, as we want to immediately try to
+        // show the new image, whether an image was shown previously
+        // or the placeholder was shown.
       });
     }
   }

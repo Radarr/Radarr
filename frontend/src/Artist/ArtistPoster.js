@@ -62,8 +62,10 @@ class ArtistPoster extends Component {
       this.setState({
         poster: nextPoster,
         posterUrl: getPosterUrl(nextPoster, pixelRatio * size),
-        isLoaded: false,
         hasError: false
+        // Don't reset isLoaded, as we want to immediately try to
+        // show the new image, whether an image was shown previously
+        // or the placeholder was shown.
       });
     }
   }

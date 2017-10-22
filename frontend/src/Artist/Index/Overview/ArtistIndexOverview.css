@@ -1,7 +1,16 @@
 $hoverScale: 1.05;
 
 .container {
+  &:hover {
+    .content {
+      background-color: $tableRowHoverBackgroundColor;
+    }
+  }
+}
+
+.content {
   display: flex;
+  flex-grow: 1;
 }
 
 .poster {

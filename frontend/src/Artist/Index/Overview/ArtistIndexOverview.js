@@ -113,90 +113,92 @@ class ArtistIndexOverview extends Component {
 
     return (
       <div className={styles.container} style={style}>
-        <div className={styles.poster} style={elementStyle}>
-          <div className={styles.posterContainer}>
-            {
-              status === 'ended' &&
-              <div
-                className={styles.ended}
-                title="Ended"
-              />
-            }
+        <div className={styles.content}>
+          <div className={styles.poster}>
+            <div className={styles.posterContainer}>
+              {
+                status === 'ended' &&
+                <div
+                  className={styles.ended}
+                  title="Ended"
+                />
+              }
 
-            <Link
-              className={styles.link}
-              style={elementStyle}
-              to={link}
-            >
-              <ArtistPoster
-                className={styles.poster}
+              <Link
+                className={styles.link}
                 style={elementStyle}
-                images={images}
-                size={250}
-                lazy={false}
-                overflow={true}
-              />
-            </Link>
+                to={link}
+              >
+                <ArtistPoster
+                  className={styles.poster}
+                  style={elementStyle}
+                  images={images}
+                  size={250}
+                  lazy={false}
+                  overflow={true}
+                />
+              </Link>
+            </div>
+
+            <ArtistIndexProgressBar
+              monitored={monitored}
+              status={status}
+              trackCount={trackCount}
+              trackFileCount={trackFileCount}
+              posterWidth={posterWidth}
+              detailedProgressBar={overviewOptions.detailedProgressBar}
+            />
           </div>
 
-          <ArtistIndexProgressBar
-            monitored={monitored}
-            status={status}
-            trackCount={trackCount}
-            trackFileCount={trackFileCount}
-            posterWidth={posterWidth}
-            detailedProgressBar={overviewOptions.detailedProgressBar}
-          />
-        </div>
+          <div className={styles.info}>
+            <div className={styles.titleRow}>
+              <Link
+                className={styles.title}
+                to={link}
+              >
+                {artistName}
+              </Link>
 
-        <div className={styles.info}>
-          <div className={styles.titleRow}>
-            <Link
-              className={styles.title}
-              to={link}
-            >
-              {artistName}
-            </Link>
+              <div className={styles.actions}>
+                <SpinnerIconButton
+                  name={icons.REFRESH}
+                  title="Refresh Artist"
+                  isSpinning={isRefreshingArtist}
+                  onPress={onRefreshArtistPress}
+                />
 
-            <div className={styles.actions}>
-              <SpinnerIconButton
-                name={icons.REFRESH}
-                title="Refresh artist"
-                isSpinning={isRefreshingArtist}
-                onPress={onRefreshArtistPress}
-              />
+                <IconButton
+                  name={icons.EDIT}
+                  title="Edit Artist"
+                  onPress={this.onEditArtistPress}
+                />
+              </div>
+            </div>
 
-              <IconButton
-                name={icons.EDIT}
-                title="Edit Artist"
-                onPress={this.onEditArtistPress}
+            <div className={styles.details}>
+              <Link
+                className={styles.overview}
+                style={{
+                  maxHeight: `${height}px`
+                }}
+                to={link}
+              >
+                <Truncate lines={Math.floor(height / (defaultFontSize * lineHeight))}>
+                  {overview}
+                </Truncate>
+              </Link>
+
+              <ArtistIndexOverviewInfo
+                height={height}
+                nextAiring={nextAiring}
+                qualityProfile={qualityProfile}
+                showRelativeDates={showRelativeDates}
+                shortDateFormat={shortDateFormat}
+                timeFormat={timeFormat}
+                {...overviewOptions}
+                {...otherProps}
               />
             </div>
-          </div>
-
-          <div className={styles.details}>
-            <Link
-              className={styles.overview}
-              style={{
-                maxHeight: `${height}px`
-              }}
-              to={link}
-            >
-              <Truncate lines={Math.floor(height / (defaultFontSize * lineHeight))}>
-                {overview}
-              </Truncate>
-            </Link>
-
-            <ArtistIndexOverviewInfo
-              height={height}
-              nextAiring={nextAiring}
-              qualityProfile={qualityProfile}
-              showRelativeDates={showRelativeDates}
-              shortDateFormat={shortDateFormat}
-              timeFormat={timeFormat}
-              {...overviewOptions}
-              {...otherProps}
-            />
           </div>
         </div>
 
