@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -477,7 +478,11 @@ class ArtistDetails extends Component {
                 </div>
 
                 <div>
-                  {overview}
+                  <TextTruncate
+                    truncateText="…"
+                    line={8}
+                    text={overview}
+                  />
                 </div>
               </div>
             </div>

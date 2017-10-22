@@ -36,5 +36,7 @@
 }
 
 .overview {
+  overflow: hidden;
   margin-top: 20px;
+  text-align: justify;
 }

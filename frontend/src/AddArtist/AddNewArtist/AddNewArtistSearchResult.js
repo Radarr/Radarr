@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextTruncate from 'react-text-truncate';
+import dimensions from 'Styles/Variables/dimensions';
+import fonts from 'Styles/Variables/fonts';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
@@ -8,6 +11,23 @@ import Link from 'Components/Link/Link';
 import ArtistPoster from 'Artist/ArtistPoster';
 import AddNewArtistModal from './AddNewArtistModal';
 import styles from './AddNewArtistSearchResult.css';
+
+const columnPadding = parseInt(dimensions.artistIndexColumnPadding);
+const columnPaddingSmallScreen = parseInt(dimensions.artistIndexColumnPaddingSmallScreen);
+const defaultFontSize = parseInt(fonts.defaultFontSize);
+const lineHeight = parseFloat(fonts.lineHeight);
+
+function calculateHeight(rowHeight, isSmallScreen) {
+  let height = rowHeight - 45;
+
+  if (isSmallScreen) {
+    height -= columnPaddingSmallScreen;
+  } else {
+    height -= columnPadding;
+  }
+
+  return height;
+}
 
 class AddNewArtistSearchResult extends Component {
 
@@ -65,6 +85,8 @@ class AddNewArtistSearchResult extends Component {
     if (albumCount > 1) {
       albums = `${albumCount} Albums`;
     }
+
+    const height = calculateHeight(230, isSmallScreen);
 
     return (
       <Link
@@ -138,8 +160,19 @@ class AddNewArtistSearchResult extends Component {
             }
           </div>
 
-          <div className={styles.overview}>
-            {overview}
+          <div>
+            <div
+              className={styles.overview}
+              style={{
+                maxHeight: `${height}px`
+              }}
+            >
+              <TextTruncate
+                truncateText="…"
+                line={Math.floor(height / (defaultFontSize * lineHeight))}
+                text={overview}
+              />
+            </div>
           </div>
         </div>
 

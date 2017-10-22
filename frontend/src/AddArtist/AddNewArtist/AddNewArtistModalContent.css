@@ -19,6 +19,8 @@
 
 .overview {
   margin-bottom: 30px;
+  max-height: 230px;
+  text-align: justify;
 }
 
 .labelIcon {

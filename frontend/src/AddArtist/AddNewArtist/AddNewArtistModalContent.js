@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextTruncate from 'react-text-truncate';
 import { icons, kinds, inputTypes, tooltipPositions } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -93,7 +94,11 @@ class AddNewArtistModalContent extends Component {
 
             <div className={styles.info}>
               <div className={styles.overview}>
-                {overview}
+                <TextTruncate
+                  truncateText="…"
+                  line={8}
+                  text={overview}
+                />
               </div>
 
               <Form>
