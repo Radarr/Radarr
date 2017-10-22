@@ -60,7 +60,7 @@ class Notifications extends Component {
 
     return (
       <FieldSet
-        legend="Notifications"
+        legend="Connections"
       >
         <PageSectionContent
           errorMessage="Unable to load Notifications"

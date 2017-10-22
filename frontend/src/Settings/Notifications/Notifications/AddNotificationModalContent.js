@@ -42,7 +42,7 @@ class AddNotificationModalContent extends Component {
           }
 
           {
-            !isPopulated && !error &&
+            isPopulated && !error &&
               <div>
                 <div className={styles.notifications}>
                   {
