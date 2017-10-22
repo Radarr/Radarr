@@ -287,7 +287,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (_configService.MetadataSource.IsNotNullOrWhiteSpace())
             {
-                customerRequestBuilder = new HttpRequestBuilder(_configService.MetadataSource + "{route}/").CreateFactory();
+                customerRequestBuilder = new HttpRequestBuilder(_configService.MetadataSource.TrimEnd("/") + "/{route}/").CreateFactory();
             }
             else
             {
