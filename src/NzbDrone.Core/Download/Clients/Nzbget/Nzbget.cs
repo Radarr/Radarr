@@ -283,7 +283,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
                 if (Version.Parse(version) < Version.Parse("12.0"))
                 {
-                    return new ValidationFailure(string.Empty, "Nzbget version too low, need 12.0 or higher");
+                    return new ValidationFailure(string.Empty, "NZBGet version too low, need 12.0 or higher");
                 }
             }
             catch (Exception ex)
@@ -309,7 +309,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 return new NzbDroneValidationFailure("MovieCategory", "Category does not exist")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
-                    DetailedDescription = "The Category your entered doesn't exist in NzbGet. Go to NzbGet to create it."
+                    DetailedDescription = "The category you entered doesn't exist in NZBGet. Go to NZBGet to create it."
                 };
             }
 
@@ -323,10 +323,10 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             var keepHistory = config.GetValueOrDefault("KeepHistory");
             if (keepHistory == "0")
             {
-                return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be greater than 0")
+                return new NzbDroneValidationFailure(string.Empty, "NZBGet setting KeepHistory should be greater than 0")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
-                    DetailedDescription = "NzbGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
+                    DetailedDescription = "NZBGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
                 };
             }
 
