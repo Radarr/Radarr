@@ -452,7 +452,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("MovieCategory", "Category does not exist")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
-                        DetailedDescription = "The category your entered doesn't exist in SABnzbd. Go to SABnzbd to create it."
+                        DetailedDescription = "The category you entered doesn't exist in SABnzbd. Go to SABnzbd to create it."
                     };
                 }
             }
