@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NzbDrone.Core.Parser
@@ -28,8 +28,9 @@ namespace NzbDrone.Core.Parser
 //                                                             new IsoLanguage("nl", "nld", Language.Flemish),
                                                                new IsoLanguage("el", "ell", Language.Greek),
                                                                new IsoLanguage("ko", "kor", Language.Korean),
-                                                               new IsoLanguage("hu", "hun", Language.Hungarian)//,
+                                                               new IsoLanguage("hu", "hun", Language.Hungarian),
                                                                //new IsoLanguage("he", "heb", Language.Hebrew)
+                                                               new IsoLanguage("cs", "cse", Language.Czech)
                                                            };
 
         public static IsoLanguage Find(string isoCode)
