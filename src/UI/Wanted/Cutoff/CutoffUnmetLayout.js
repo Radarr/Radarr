@@ -97,6 +97,7 @@ module.exports = Marionette.Layout.extend({
         var leftSideButtons = {
             type       : 'default',
             storeState : false,
+            collapse: true,
             items      : [
                 {
                     title        : 'Search Selected',
@@ -228,7 +229,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     _searchMissing  : function() {
-        if (window.confirm('Are you sure you want to search for {0} filtered missing movies?'.format(this.collection.state.totalRecords) +
+        if (window.confirm('Are you sure you want to search for {0} filtered missing movies? '.format(this.collection.state.totalRecords) +
                            'One API request to each indexer will be used for each movie. ' + 'This cannot be stopped once started.')) {
             CommandController.Execute('cutOffUnmetMoviesSearch', { name : 'cutOffUnmetMoviesSearch',
                                                            filterKey : this.collection.state.filterKey,

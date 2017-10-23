@@ -59,7 +59,7 @@
                         <label>Monitor <i class="icon-sonarr-form-info monitor-tooltip x-monitor-tooltip"></i></label>
                         <select class="form-control col-md-2 x-monitor">
                             <option value="all">Yes</option>
-                            <!-- <option value="missing">Missing</option> -->
+                            {{!--<option value="missing">Missing</option>--}}
                             <option value="none">No</option>
                         </select>
                     </div>
@@ -98,7 +98,6 @@
                 {{#unless existing}}
                     {{#if title}}
                     <div class="form-group col-md-2">
-                        <!--Uncomment if we need to add even more controls to add Movies-->
                         <label style="visibility: hidden">Add</label>
                         <div class="btn-group">
                             <button class="btn btn-success add x-add" title="Add">

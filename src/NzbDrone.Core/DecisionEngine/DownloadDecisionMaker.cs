@@ -113,11 +113,11 @@ namespace NzbDrone.Core.DecisionEngine
                     var remoteMovie = result.RemoteMovie;
 
                     remoteMovie.Release = report;
+                    remoteMovie.MappingResult = result.MappingResultType;
 
                     if (result.MappingResultType != MappingResultType.Success && result.MappingResultType != MappingResultType.SuccessLenientMapping)
                     {
                         var rejection = result.ToRejection();
-                        remoteMovie.Movie = null; // HACK: For now!
                         decision = new DownloadDecision(remoteMovie, rejection);
 
                     }
@@ -125,7 +125,7 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
                         {
-                            remoteMovie.DownloadAllowed = true;
+                            //remoteMovie.DownloadAllowed = true;
                             if (_configService.AllowHardcodedSubs)
                             {
                                 decision = GetDecisionForReport(remoteMovie, searchCriteria);
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.DecisionEngine
                         }
                         else
                         {
-                            remoteMovie.DownloadAllowed = true;
+                            //remoteMovie.DownloadAllowed = true;
                             decision = GetDecisionForReport(remoteMovie, searchCriteria);
                         }
 

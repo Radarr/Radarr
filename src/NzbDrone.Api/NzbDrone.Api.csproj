@@ -119,6 +119,9 @@
     <Compile Include="Frontend\Mappers\RobotsTxtMapper.cs" />
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
     <Compile Include="Indexers\ReleasePushModule.cs" />
+    <Compile Include="Movies\AlternativeTitleModule.cs" />
+    <Compile Include="Movies\AlternativeYearResource.cs" />
+    <Compile Include="Movies\AlternativeYearModule.cs" />
     <Compile Include="Movies\MovieModuleWithSignalR.cs" />
     <Compile Include="Movies\MovieBulkImportModule.cs" />
     <Compile Include="Movies\MovieFileModule.cs" />
@@ -240,7 +243,7 @@
     <Compile Include="RootFolders\RootFolderModule.cs" />
     <Compile Include="RootFolders\RootFolderResource.cs" />
     <Compile Include="SeasonPass\SeasonPassResource.cs" />
-    <Compile Include="Series\AlternateTitleResource.cs" />
+    <Compile Include="Series\AlternativeTitleResource.cs" />
     <Compile Include="Series\MovieFileResource.cs" />
     <Compile Include="Series\FetchMovieListModule.cs" />
     <Compile Include="Series\SeasonResource.cs" />

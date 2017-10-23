@@ -21,10 +21,10 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 ## Downloads
 
 [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)
-[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/build/artifacts)
+[![AppVeyor Builds](https://img.shields.io/badge/downloads-continuous-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)
 
 [![Docker release](https://img.shields.io/badge/docker-release-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/linuxserver/radarr)
-[![Docker nightly](https://img.shields.io/badge/docker-nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/hotio/radarr)
+[![Docker nightly](https://img.shields.io/badge/docker-release/nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/hotio/suitarr)
 [![Docker armhf](https://img.shields.io/badge/docker-armhf-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr)
 [![Docker aarch64](https://img.shields.io/badge/docker-aarch64-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://store.docker.com/community/images/lsioarmhf/radarr-aarch64)
 
@@ -50,7 +50,12 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 | AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1) |
 | Travis   | [![Travis](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) | [![Travis](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) |
 
-**This project works independently of Sonarr and will not interfere with it.**
+### [Site and API Status](https://status.radarr.video)
+
+| API | Updates | Sites  |
+|-------|:----:|:----:|
+| [![API V2](http://status.radarr.video/component/1/shield?style=flat-square)](https://api.radarr.video/v2/) | [![Update Server](http://status.radarr.video/component/4/shield?style=flat-square)](https://radarr.aeonlucid.com) | [![Radarr Mappings](http://status.radarr.video/component/6/shield?style=flat-square)](https://mappings.radarr.video/)
+| [![API Staging](http://status.radarr.video/component/2/shield?style=flat-square)](https://staging.api.radarr.video/) | [![Github Updates](http://status.radarr.video/component/5/shield?style=flat-square)](https://api.github.com/v3/) | [![Main Site](http://status.radarr.video/component/7/shield?style=flat-square)](https://radarr.video/)
 
 Radarr is currently undergoing rapid development and pull requests are actively added into the repository.
 

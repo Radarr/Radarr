@@ -132,8 +132,8 @@ namespace NzbDrone.Api.Movie
 
             var resource = movies.ToResource();
             MapCoversToLocal(resource);
-            FetchAndLinkMovieStatistics(resource);
-            PopulateAlternateTitles(resource);
+            //FetchAndLinkMovieStatistics(resource);
+            //PopulateAlternateTitles(resource);
 
             return resource;
         }

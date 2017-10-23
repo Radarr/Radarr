@@ -52,24 +52,29 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (SupportsMovieSearch && searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
+            if (!Settings.SearchByTitle && SupportsMovieSearch && searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie", $"&imdbid={searchCriteria.Movie.ImdbId.Substring(2)}"));
             }
             else
             {
-                var searchTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(searchCriteria.Movie.Title)));
-                var altTitles = searchCriteria.Movie.AlternativeTitles.DistinctBy(t => Parser.Parser.CleanSeriesTitle(t)).Take(5).ToList();
+                var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
+                altTitles.Add(searchCriteria.Movie.Title);
 
-                var realMaxPages = (int)MaxPages / (altTitles.Count() + 1);
+                var realMaxPages = (int)MaxPages / (altTitles.Count());
 
-                pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
+                //pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
 
                 //Also use alt titles for searching.
                 foreach (String altTitle in altTitles)
                 {
                     var searchAltTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(altTitle)));
-                    pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search", $"&q={searchAltTitle}%20{searchCriteria.Movie.Year}"));
+                    var queryString = $"&q={searchAltTitle}";
+                    if (!Settings.RemoveYear)
+                    {
+                        queryString += $"%20{searchCriteria.Movie.Year}";
+                    }
+                    pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search", queryString));
                 }
             }
 

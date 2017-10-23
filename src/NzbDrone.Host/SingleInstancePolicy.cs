@@ -10,6 +10,7 @@ namespace Radarr.Host
     {
         void PreventStartIfAlreadyRunning();
         void KillAllOtherInstance();
+        void WarnIfAlreadyRunning();
     }
 
     public class SingleInstancePolicy : ISingleInstancePolicy
@@ -45,6 +46,14 @@ namespace Radarr.Host
             }
         }
 
+        public void WarnIfAlreadyRunning()
+        {
+            if (IsAlreadyRunning())
+            {
+                _logger.Debug("Another instance of Radarr is already running.");
+            }
+        }
+
         private bool IsAlreadyRunning()
         {
             return GetOtherNzbDroneProcessIds().Any();
@@ -64,14 +73,14 @@ namespace Radarr.Host
 
                 if (otherProcesses.Any())
                 {
-                    _logger.Info("{0} instance(s) of Sonarr are running", otherProcesses.Count);
+                    _logger.Info("{0} instance(s) of Radarr are running", otherProcesses.Count);
                 }
 
                 return otherProcesses;
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, "Failed to check for multiple instances of Sonarr.");
+                _logger.Warn(ex, "Failed to check for multiple instances of Radarr.");
                 return new List<int>();
             }
         }

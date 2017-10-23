@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -36,13 +37,13 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> PrioritizeDecisionsForMovies(List<DownloadDecision> decisions)
         {
-            return decisions.Where(c => c.RemoteMovie.Movie != null)
+            return decisions.Where(c => c.RemoteMovie.MappingResult == MappingResultType.Success || c.RemoteMovie.MappingResult == MappingResultType.SuccessLenientMapping)
                             .GroupBy(c => c.RemoteMovie.Movie.Id, (movieId, downloadDecisions) =>
                             {
                                 return downloadDecisions.OrderByDescending(decision => decision, new DownloadDecisionComparer(_delayProfileService, _configService));
                             })
                             .SelectMany(c => c)
-                            .Union(decisions.Where(c => c.RemoteMovie.Movie == null))
+                            .Union(decisions.Where(c => c.RemoteMovie.MappingResult != MappingResultType.Success || c.RemoteMovie.MappingResult != MappingResultType.SuccessLenientMapping))
                             .ToList();
         }
     }

@@ -43,7 +43,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
 
             foreach (var item in responseData)
             {
-                int tmdbid = item.info.tmdb_id ?? 0;
+                int tmdbid = item.info?.tmdb_id ?? 0;
 
                 // Fix weird error reported by Madmanali93
                 if (item.type != null && item.releases != null)

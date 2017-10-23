@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using FluentValidation.Validators;
 using NzbDrone.Core.Parser;
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Validation
 
         public static IRuleBuilderOptions<T, string> ValidUrlBase<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new RegularExpressionValidator(@"^(?!\/?https?://[-_a-z0-9.]+)", RegexOptions.IgnoreCase)).WithMessage("Must be a valid URL path (ie: '/sonarr')");
+            return ruleBuilder.SetValidator(new RegularExpressionValidator(@"^(?!\/?https?://[-_a-z0-9.]+)", RegexOptions.IgnoreCase)).WithMessage("Must be a valid URL path (ie: '/radarr')");
         }
 
         public static IRuleBuilderOptions<T, int> ValidPort<T>(this IRuleBuilder<T, int> ruleBuilder)

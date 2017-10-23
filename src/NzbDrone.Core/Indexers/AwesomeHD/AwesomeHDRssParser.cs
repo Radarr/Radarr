@@ -71,9 +71,14 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                     var title = $"{torrent.Name}.{torrent.Year}.{torrent.Resolution}.{torrent.Media}.{torrent.Encoding}.{torrent.AudioFormat}-{torrent.ReleaseGroup}";
                     IndexerFlags flags = 0;
 
-                    if (torrent.Freeleech == "1.00")
+                    if (torrent.Freeleech == "0.00" || torrent.Freeleech == "0.25")
                     {
                         flags |= IndexerFlags.G_Freeleech;
+                    }
+
+                    if (torrent.Freeleech == "0.50")
+                    {
+                        flags |= IndexerFlags.G_Halfleech;
                     }
 
                     torrentInfos.Add(new TorrentInfo()

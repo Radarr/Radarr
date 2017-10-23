@@ -35,12 +35,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            if (subject.Movie.MovieFile.Value == null)
+            if (subject.Movie.MovieFile == null)
             {
                 return Decision.Accept();
             }
 
-            var file = subject.Movie.MovieFile.Value;
+            var file = subject.Movie.MovieFile;
                 _logger.Debug("Comparing file quality with report. Existing file is {0}", file.Quality);
 
                 if (!_qualityUpgradableSpecification.IsUpgradable(subject.Movie.Profile, file.Quality, subject.ParsedMovieInfo.Quality))

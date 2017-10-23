@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -345,7 +345,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
-                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Sonarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
+                    DetailedDescription = $"Please verify your username and password. Also verify if the host running Radarr isn't blocked from accessing {Name} by WhiteList limitations in the {Name} configuration."
                 };
             }
             catch (WebException ex)

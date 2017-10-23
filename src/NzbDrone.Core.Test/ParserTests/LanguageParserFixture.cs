@@ -54,6 +54,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", Language.German)]
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", Language.German)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", Language.French)]
+        [TestCase("Smurfs.​The.​Lost.​Village.​2017.​1080p.​BluRay.​HebDub.​x264-​iSrael",Language.Hebrew)]
         public void should_parse_language(string postTitle, Language language)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);

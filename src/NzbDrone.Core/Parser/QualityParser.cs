@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<dsr>WS[-_. ]DSR|DSR)|
                                                                 (?<regional>R[0-9]{1})|
                                                                 (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
-                                                                (?<ts>TS|TELESYNC|HD-TS|HDTS|PDVD)|
+                                                                (?<ts>TS|TELESYNC|HD-TS|HDTS|PDVD|TSRip|HDTSRip)|
                                                                 (?<tc>TC|TELECINE|HD-TC|HDTC)|
                                                                 (?<cam>CAMRIP|CAM|HDCAM|HD-CAM)|
                                                                 (?<wp>WORKPRINT|WP)|
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Parser
                                                                 )\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+SUBS?)\b)|(?<hc>(HC|SUBBED))\b", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD)?Remux)\b",
                                                         RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RealRegex = new Regex(@"\b(?<real>REAL)\b",
                                                                 RegexOptions.Compiled);
 
-        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480p|640x480|848x480)|(?<R576p>576p)|(?<R720p>720p|1280x720)|(?<R1080p>1080p|1920x1080)|(?<R2160p>2160p))\b",
+        private static readonly Regex ResolutionRegex = new Regex(@"\b(?:(?<R480p>480(i|p)|640x480|848x480)|(?<R576p>576(i|p))|(?<R720p>720(i|p)|1280x720)|(?<R1080p>1080(i|p)|1920x1080)|(?<R2160p>2160(i|p)|UHD))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<x264>x264)|(?<h264>h264)|(?<xvidhd>XvidHD)|(?<xvid>X-?vid)|(?<divx>divx))\b",
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Parser
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
 
-            if (RemuxRegex.IsMatch(normalizedName))
+            if (RemuxRegex.IsMatch(normalizedName) && sourceMatch?.Groups["webdl"].Success != true && sourceMatch?.Groups["hdtv"].Success != true)
             {
                 if (resolution == Resolution.R2160p)
                 {

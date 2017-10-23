@@ -44,7 +44,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Trace("Upgrading existing movie file.");
             var moveFileResult = new MovieFileMoveResult();
 
-            var existingFile = localMovie.Movie.MovieFile.Value;
+            var existingFile = localMovie.Movie.MovieFile;
 
             if (existingFile != null)
             {

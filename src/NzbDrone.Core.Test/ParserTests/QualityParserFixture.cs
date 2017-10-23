@@ -46,6 +46,13 @@ namespace NzbDrone.Core.Test.ParserTests
             new object[] { "2160p Remux", Quality.Remux2160p },
         };
 
+        [TestCase("Despicable.Me.3.2017.720p.TSRip.x264.AAC-Ozlem", false)]
+        [TestCase("IT.2017.HDTSRip.x264.AAC-Ozlem[ETRG]", false)]
+        public void should_parse_ts(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Quality.TELESYNC, proper);
+        }
+
         [TestCase("S07E23 .avi ", false)]
         [TestCase("The.Shield.S01E13.x264-CtrlSD", false)]
         [TestCase("Nikita S02E01 HDTV XviD 2HD", false)]
@@ -134,6 +141,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.proper.X264-QCF", true)]
         [TestCase("Dexter - S01E01 - Title [HDTV-1080p]", false)]
         [TestCase("[HorribleSubs] Yowamushi Pedal - 32 [1080p]", false)]
+        [TestCase("Stripes (1981) 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
         public void should_parse_hdtv1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.HDTV1080p, proper);
@@ -174,6 +182,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Series Title S06E08 No One PROPER 1080p WEB DD5 1 H 264-EXCLUSIVE", true)]
         [TestCase("Series Title S06E08 No One PROPER 1080p WEB H 264-EXCLUSIVE", true)]
         [TestCase("The.Simpsons.S25E21.Pay.Pal.1080p.WEB-DL.DD5.1.H.264-NTb", false)]
+        [TestCase("The.Simpsons.2017.1080p.WEB-DL.DD5.1.H.264.Remux.-NTb", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBDL1080p, proper);
@@ -307,6 +316,8 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "korsub")]
         [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "korsubs")]
+        [TestCase("Wonder Woman 2017 HC 720p HDRiP DD5 1 x264-LEGi0N", "Generic Hardcoded Subs")]
+        [TestCase("Ghost.In.The.Shell.2017.720p.SUBBED.HDRip.V2.XViD-26k.avi", "Generic Hardcoded Subs")]
         public void should_parse_hardcoded_subs(string postTitle, string sub)
         {
             QualityParser.ParseQuality(postTitle).HardcodedSubs.Should().Be(sub);

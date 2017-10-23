@@ -13,6 +13,7 @@ var ToolbarLayout = require('../../Shared/Toolbar/ToolbarLayout');
 var FooterView = require('./MovieEditorFooterView');
 var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
+var DeleteSelectedView = require('./Delete/DeleteSelectedView');
 var Config = require('../../Config');
 
 window.shownOnce = false;
@@ -68,20 +69,6 @@ module.exports = Marionette.Layout.extend({
         }
     ],
 
-    leftSideButtons : {
-        type       : 'default',
-        storeState : false,
-        items      : [
-            {
-                title          : 'Update Library',
-                icon           : 'icon-sonarr-refresh',
-                command        : 'refreshmovie',
-                successMessage : 'Library was updated!',
-                errorMessage   : 'Library update failed!'
-            }
-        ]
-    },
-
     initialize : function() {
 
 		this.movieCollection = MoviesCollection.clone();
@@ -106,6 +93,27 @@ module.exports = Marionette.Layout.extend({
 		this.listenTo(this.movieCollection.fullCollection, 'sync', function() {
 			});
 
+
+		this.leftSideButtons = {
+            type       : 'default',
+                storeState : false,
+                collapse: true,
+                items      : [
+                {
+                    title          : 'Update library',
+                    icon           : 'icon-sonarr-refresh',
+                    command        : 'refreshmovie',
+                    successMessage : 'Library was updated!',
+                    errorMessage   : 'Library update failed!'
+                },
+                {
+                    title : 'Delete selected',
+                    icon : 'icon-radarr-delete-white',
+                    className: 'btn-danger',
+                    callback : this._deleteSelected
+                }
+            ]
+        };
 		//this.listenTo(FullMovieCollection, 'save', function() {
 		//	window.alert('Done Saving');
 		//});
@@ -230,5 +238,12 @@ module.exports = Marionette.Layout.extend({
     _setFilter : function(buttonContext) {
         var mode = buttonContext.model.get('key');
         this.movieCollection.setFilterMode(mode);
+    },
+
+    _deleteSelected: function() {
+        var selected = FullMovieCollection.where({ selected : true });
+        var updateFilesMoviesView = new DeleteSelectedView({ movies : selected });
+
+        vent.trigger(vent.Commands.OpenModalCommand, updateFilesMoviesView);
     }
 });

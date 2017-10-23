@@ -72,11 +72,11 @@ namespace NzbDrone.Core.MediaCover
 
                 mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + seriesId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
 
-                if (_diskProvider.FileExists(filePath))
+                /*if (_diskProvider.FileExists(filePath))
                 {
                     var lastWrite = _diskProvider.FileGetLastWrite(filePath);
                     mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
-                }
+                }*/
             }
         }
 

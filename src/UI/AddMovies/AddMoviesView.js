@@ -79,7 +79,7 @@ module.exports = Marionette.Layout.extend({
 
 				if (options.action === "search") {
 					this.search({term: options.query});
-				} else if (options.action == "discover") {
+				} else if (options.action === "discover") {
 					this.isDiscover = true;
 				}
 
@@ -254,7 +254,7 @@ module.exports = Marionette.Layout.extend({
 
 		_discover : function(action) {
 			if (this.collection.action === action) {
-				return
+				return;
 			}
 
 			if (this.collection.specialProperty === "special") {

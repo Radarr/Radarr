@@ -12,6 +12,7 @@ var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEdito
 var HistoryLayout = require('../History/MovieHistoryLayout');
 var SearchLayout = require('../Search/MovieSearchLayout');
 var FilesLayout = require("../Files/FilesLayout");
+var TitlesLayout = require("../Titles/TitlesLayout");
 require('backstrech');
 require('../../Mixins/backbone.signalr.mixin');
 
@@ -24,7 +25,8 @@ module.exports = Marionette.Layout.extend({
 				info    : '#info',
 				search  : '#movie-search',
 				history : '#movie-history',
-				files : "#movie-files"
+				files : "#movie-files",
+				titles: "#movie-titles",
 		},
 
 
@@ -39,7 +41,8 @@ module.exports = Marionette.Layout.extend({
 				manualSearch : '.x-manual-search',
 				history   : '.x-movie-history',
 				search    : '.x-movie-search',
-				files : ".x-movie-files"
+				files : ".x-movie-files",
+				titles: ".x-movie-titles",
 		},
 
 		events : {
@@ -53,6 +56,7 @@ module.exports = Marionette.Layout.extend({
 				'click .x-movie-history'     : '_showHistory',
 				'click .x-movie-search'      : '_showSearch',
 				"click .x-movie-files" : "_showFiles",
+				"click .x-movie-titles" : "_showTitles",
 		},
 
 		initialize : function() {
@@ -83,6 +87,7 @@ module.exports = Marionette.Layout.extend({
 				this.searchLayout.startManualSearch = true;
 
 				this.filesLayout = new FilesLayout({ model : this.model });
+            	this.titlesLayout = new TitlesLayout({ model : this.model });
 
 				this._showBackdrop();
 				this._showSeasons();
@@ -168,6 +173,15 @@ module.exports = Marionette.Layout.extend({
 
 				this.ui.files.tab('show');
 				this.files.show(this.filesLayout);
+		},
+
+		_showTitles : function(e) {
+            if (e) {
+                e.preventDefault();
+            }
+
+            this.ui.titles.tab("show");
+            this.titles.show(this.titlesLayout);
 		},
 
 		_toggleMonitored : function() {

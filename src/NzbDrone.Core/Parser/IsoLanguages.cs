@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly HashSet<IsoLanguage> All = new HashSet<IsoLanguage>
                                                            {
-                                                               new IsoLanguage("en", "eng", Language.English),
+                                                               new IsoLanguage(new List<string> {"en", "us", "uk"}, "eng", Language.English),
                                                                new IsoLanguage("fr", "fra", Language.French),
                                                                new IsoLanguage("es", "spa", Language.Spanish),
                                                                new IsoLanguage("de", "deu", Language.German),
@@ -28,7 +28,8 @@ namespace NzbDrone.Core.Parser
 //                                                             new IsoLanguage("nl", "nld", Language.Flemish),
                                                                new IsoLanguage("el", "ell", Language.Greek),
                                                                new IsoLanguage("ko", "kor", Language.Korean),
-                                                               new IsoLanguage("hu", "hun", Language.Hungarian)
+                                                               new IsoLanguage("hu", "hun", Language.Hungarian)//,
+                                                               //new IsoLanguage("he", "heb", Language.Hebrew)
                                                            };
 
         public static IsoLanguage Find(string isoCode)
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.Parser
             if (isoCode.Length == 2)
             {
                 //Lookup ISO639-1 code
-                return All.SingleOrDefault(l => l.TwoLetterCode == isoCode);
+                return All.SingleOrDefault(l => l.TwoLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
             }
             else if (isoCode.Length == 3)
             {

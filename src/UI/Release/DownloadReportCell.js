@@ -1,4 +1,6 @@
 var Backgrid = require('backgrid');
+var AppLayout = require('../AppLayout');
+var ForceDownloadView = require('./ForceDownloadView');
 
 module.exports = Backgrid.Cell.extend({
     className : 'download-report-cell',
@@ -8,7 +10,12 @@ module.exports = Backgrid.Cell.extend({
     },
 
     _onClick : function() {
-        if (!this.model.get('downloadAllowed')) {
+        if (!this.model.downloadOk()) {
+            var view = new ForceDownloadView({
+                release            : this.model
+            });
+            AppLayout.modalRegion.show(view);
+
             return;
         }
 
@@ -38,8 +45,11 @@ module.exports = Backgrid.Cell.extend({
 
         if (this.model.get('queued')) {
             this.$el.html('<i class="icon-sonarr-downloading" title="Added to downloaded queue" />');
-        } else if (this.model.get('downloadAllowed')) {
+        } else if (this.model.downloadOk()) {
             this.$el.html('<i class="icon-sonarr-download" title="Add to download queue" />');
+        } else if (this.model.forceDownloadOk()){
+            this.$el.html('<i class="icon-radarr-download-warning" title="Force add to download queue."/>');
+            this.className = 'force-download-report-cell';
         } else {
             this.className = 'no-download-report-cell';
         }

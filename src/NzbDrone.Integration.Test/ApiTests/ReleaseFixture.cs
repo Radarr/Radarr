@@ -47,7 +47,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             releaseResource.Age.Should().BeGreaterOrEqualTo(-1);
             releaseResource.Title.Should().NotBeNullOrWhiteSpace();
             releaseResource.DownloadUrl.Should().NotBeNullOrWhiteSpace();
-            releaseResource.SeriesTitle.Should().NotBeNullOrWhiteSpace();
+            releaseResource.MovieTitle.Should().NotBeNullOrWhiteSpace();
             //TODO: uncomment these after moving to restsharp for rss
             //releaseResource.NzbInfoUrl.Should().NotBeNullOrWhiteSpace();
             //releaseResource.Size.Should().BeGreaterThan(0);

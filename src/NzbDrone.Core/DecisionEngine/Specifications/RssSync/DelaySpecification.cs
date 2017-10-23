@@ -66,11 +66,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && subject.Movie.MovieFile != null) && (preferredCount > 0 || preferredWords == null))
             {
-                    var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, subject.Movie.MovieFile.Value.Quality, subject.ParsedMovieInfo.Quality);
+                    var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
 
                     if (upgradable)
                     {
-                        var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(subject.Movie.MovieFile.Value.Quality, subject.ParsedMovieInfo.Quality);
+                        var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
 
                         if (revisionUpgrade)
                         {
