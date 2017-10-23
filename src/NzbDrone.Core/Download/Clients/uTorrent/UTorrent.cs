@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Common.Disk;
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
 
             /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
 
@@ -58,6 +58,8 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }*/
+
+            _proxy.SetState(hash, (UTorrentState)Settings.IntialState, Settings);
 
             return hash;
         }
@@ -65,7 +67,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
 
             /*var isRecentEpisode = remoteEpisode.IsRecentEpisode();
 
@@ -74,6 +76,8 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }*/
+
+            _proxy.SetState(hash, (UTorrentState)Settings.IntialState, Settings);
 
             return hash;
         }
@@ -86,7 +90,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
             try
             {
-                var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.TvCategory);
+                var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.MovieCategory);
                 var cache = _torrentCache.Find(cacheKey);
 
                 var response = _proxy.GetTorrents(cache == null ? null : cache.CacheID, Settings);
@@ -123,7 +127,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
             foreach (var torrent in torrents)
             {
-                if (torrent.Label != Settings.TvCategory)
+                if (torrent.Label != Settings.MovieCategory)
                 {
                     continue;
                 }
@@ -205,7 +209,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
                 if (config.GetValueOrDefault("dir_add_label") == "true")
                 {
-                    destDir = destDir + Settings.TvCategory;
+                    destDir = destDir + Settings.MovieCategory;
                 }
             }
 
