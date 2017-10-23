@@ -366,7 +366,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
                 if (rawVersion.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return new NzbDroneValidationFailure("Version", "Sabnzbd develop version, assuming version 1.1.0 or higher.")
+                    return new NzbDroneValidationFailure("Version", "SABnzbd develop version, assuming version 1.1.0 or higher.")
                     {
                         IsWarning = true,
                         DetailedDescription = "Radarr may not be able to support new features added to SABnzbd when running develop versions."
@@ -419,10 +419,10 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             var config = _proxy.GetConfig(Settings);
             if (config.Misc.pre_check && !HasVersion(1, 1))
             {
-                return new NzbDroneValidationFailure("", "Disable 'Check before download' option in Sabnbzd")
+                return new NzbDroneValidationFailure("", "Disable 'Check before download' option in SABnzbd")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/switches/", Settings.Host, Settings.Port),
-                    DetailedDescription = "Using Check before download affects Radarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
+                    DetailedDescription = "Using Check before download affects Radarr ability to track new downloads. Also SABnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
                 };
             }
 
@@ -441,7 +441,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("MovieCategory", "Enable Job folders")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
-                        DetailedDescription = "Radarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
+                        DetailedDescription = "Radarr prefers each download to have a separate folder. With * appended to the Folder/Path SABnzbd will not create these job folders. Go to SABnzbd to fix it."
                     };
                 }
             }
@@ -452,7 +452,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return new NzbDroneValidationFailure("MovieCategory", "Category does not exist")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
-                        DetailedDescription = "The Category your entered doesn't exist in Sabnzbd. Go to Sabnzbd to create it."
+                        DetailedDescription = "The category your entered doesn't exist in SABnzbd. Go to SABnzbd to create it."
                     };
                 }
             }
@@ -461,7 +461,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("MovieCategory", "Disable TV Sorting")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                    DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                    DetailedDescription = "You must disable SABnzbd TV Sorting for the category Radarr uses to prevent import issues. Go to SABnzbd to fix it."
                 };
             }
             if (config.Misc.enable_movie_sorting && ContainsCategory(config.Misc.movie_categories, Settings.MovieCategory))
@@ -469,7 +469,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("MovieCategory", "Disable Movie Sorting")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                    DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                    DetailedDescription = "You must disable SABnzbd Movie Sorting for the category Radarr uses to prevent import issues. Go to SABnzbd to fix it."
                 };
             }
             if (config.Misc.enable_date_sorting && ContainsCategory(config.Misc.date_categories, Settings.MovieCategory))
@@ -477,7 +477,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 return new NzbDroneValidationFailure("MovieCategory", "Disable Date Sorting")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
-                    DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Radarr uses to prevent import issues. Go to Sabnzbd to fix it."
+                    DetailedDescription = "You must disable SABnzbd Date Sorting for the category Radarr uses to prevent import issues. Go to SABnzbd to fix it."
                 };
             }
 
