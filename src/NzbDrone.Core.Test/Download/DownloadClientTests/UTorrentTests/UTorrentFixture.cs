@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                                               Port = 2222,
                                               Username = "admin",
                                               Password = "pass",
-                                              TvCategory = "tv"
+                                              MovieCategory = "movie"
                                           };
 
             _queued = new UTorrentTorrent
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 1000,
                         Progress = 0,
-                        Label = "tv",
+                        Label = "movie",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 100,
                         Progress = 0.9,
-                        Label = "tv",
+                        Label = "movie",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 100,
                         Progress = 0.9,
-                        Label = "tv",
+                        Label = "movie",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
                         Size = 1000,
                         Remaining = 0,
                         Progress = 1.0,
-                        Label = "tv",
+                        Label = "movie",
                         DownloadUrl = _downloadUrl,
                         RootDownloadPath = "somepath"
                     };

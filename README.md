@@ -115,10 +115,17 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 > **Notice**  
 > Gulp must be running at all times while you are working with Radarr client source files.
 
+### Build
+
+* To build run `sh build.sh`
+
+**Note:** Windows users must have bash available to do this. [cmder](http://cmder.net/) which is a console emulator for windows has bash as part of it's default installation.
+
 ### Development
 
 * Open `NzbDrone.sln` in Visual Studio or run the build.sh script, if Mono is installed
 * Make sure `NzbDrone.Console` is set as the startup project
+* Run `build.sh` before running
 
 ### License
 
