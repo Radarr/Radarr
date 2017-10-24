@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                                               Port = 2222,
                                               Username = "admin",
                                               Password = "pass",
-                                              MovieCategory = "movie",
+                                              TvCategory = "tv",
                                               RecentTvPriority = (int)NzbgetPriority.High
                                           };
 
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                 {
                     FileSizeLo = 1000,
                     RemainingSizeLo = 10,
-                    Category = "movie",
+                    Category = "tv",
                     NzbName = "Droned.1998.1080p.WEB-DL-DRONE",
                     Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } }
                 };
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             _failed = new NzbgetHistoryItem
                 {
                     FileSizeLo = 1000,
-                    Category = "movie",
+                    Category = "tv",
                     Name = "Droned.1998.1080p.WEB-DL-DRONE",
                     DestDir = "somedirectory",
                     Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             _completed = new NzbgetHistoryItem
                 {
                     FileSizeLo = 1000,
-                    Category = "movie",
+                    Category = "tv",
                     Name = "Droned.1998.1080p.WEB-DL-DRONE",
                     DestDir = "/remote/mount/tv/Droned.1998.1080p.WEB-DL-DRONE",
                     Parameters = new List<NzbgetParameter> { new NzbgetParameter { Name = "drone", Value = "id" } },
@@ -81,8 +81,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                 });
 
             var configItems = new Dictionary<string, string>();
-            configItems.Add("Category1.Name", "movie");
-            configItems.Add("Category1.DestDir", @"/remote/mount/movie");
+            configItems.Add("Category1.Name", "tv");
+            configItems.Add("Category1.DestDir", @"/remote/mount/tv");
 
             Mocker.GetMock<INzbgetProxy>()
                 .Setup(v => v.GetConfig(It.IsAny<NzbgetSettings>()))

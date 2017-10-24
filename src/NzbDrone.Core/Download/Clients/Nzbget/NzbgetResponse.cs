@@ -1,4 +1,4 @@
-namespace NzbDrone.Core.Download.Clients.Nzbget
+﻿namespace NzbDrone.Core.Download.Clients.Nzbget
 {
     public class NzbgetResponse<T>
     {
