@@ -35,7 +35,7 @@ function EpisodeStatus(props) {
           {...queueItem}
           progressBar={
             <ProgressBar
-              title={`Episode is downloading - ${progress.toFixed(1)}% ${queueItem.title}`}
+              title={`Album is downloading - ${progress.toFixed(1)}% ${queueItem.title}`}
               progress={progress}
               kind={kinds.PURPLE}
               size={sizes.MEDIUM}
@@ -51,7 +51,7 @@ function EpisodeStatus(props) {
       <div className={styles.center}>
         <Icon
           name={icons.DOWNLOADING}
-          title="Episode is downloading"
+          title="Album is downloading"
         />
       </div>
     );
@@ -67,7 +67,7 @@ function EpisodeStatus(props) {
           quality={quality}
           size={trackFile.size}
           isCutoffNotMet={isCutoffNotMet}
-          title="Episode Downloaded"
+          title="Track Downloaded"
         />
       </div>
     );
@@ -89,7 +89,7 @@ function EpisodeStatus(props) {
       <div className={styles.center}>
         <Icon
           name={icons.UNMONITORED}
-          title="Episode is not monitored"
+          title="Album is not monitored"
         />
       </div>
     );
@@ -100,7 +100,7 @@ function EpisodeStatus(props) {
       <div className={styles.center}>
         <Icon
           name={icons.MISSING}
-          title="Episode missing from disk"
+          title="Track missing from disk"
         />
       </div>
     );
@@ -110,7 +110,7 @@ function EpisodeStatus(props) {
     <div className={styles.center}>
       <Icon
         name={icons.NOT_AIRED}
-        title="Episode has not aired"
+        title="Album has not aired"
       />
     </div>
   );

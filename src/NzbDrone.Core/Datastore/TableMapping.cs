@@ -5,7 +5,6 @@ using Marr.Data.Mapping;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
@@ -31,7 +30,7 @@ using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
-using NzbDrone.Core.Extras.Subtitles;
+using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
@@ -71,8 +70,6 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(d => d.Protocol)
                   .Ignore(d => d.Tags);
 
-            Mapper.Entity<SceneMapping>().RegisterModel("SceneMappings");
-
             Mapper.Entity<History.History>().RegisterModel("History")
                   .AutoMapChildModels();
 
@@ -110,7 +107,7 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<AlbumStatistics>().MapResultSet();
             Mapper.Entity<Blacklist>().RegisterModel("Blacklist");
             Mapper.Entity<MetadataFile>().RegisterModel("MetadataFiles");
-            Mapper.Entity<SubtitleFile>().RegisterModel("SubtitleFiles");
+            Mapper.Entity<LyricFile>().RegisterModel("LyricFiles");
             Mapper.Entity<OtherExtraFile>().RegisterModel("ExtraFiles");
 
             Mapper.Entity<PendingRelease>().RegisterModel("PendingReleases")

@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
-using NzbDrone.Core.Extras.Subtitles;
+using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Music;
 
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 // Don't process files that have known Subtitle file extensions (saves a bit of unecessary processing)
 
-                if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
+                if (LyricFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
                 {
                     continue;
                 }

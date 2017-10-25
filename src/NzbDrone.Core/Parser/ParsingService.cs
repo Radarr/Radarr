@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
@@ -167,7 +166,7 @@ namespace NzbDrone.Core.Parser
 
             if (artist == null)
             {
-                _logger.Debug("No matching series {0}", parsedAlbumInfo.ArtistName);
+                _logger.Debug("No matching artist {0}", parsedAlbumInfo.ArtistName);
                 return null;
             }
 
