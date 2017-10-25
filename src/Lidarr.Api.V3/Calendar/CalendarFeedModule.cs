@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ical.Net;
 using Ical.Net.DataTypes;
+using Ical.Net.General;
 using Ical.Net.Interfaces.Serialization;
 using Ical.Net.Serialization;
 using Ical.Net.Serialization.iCalendar.Factory;
@@ -67,6 +68,9 @@ namespace Lidarr.Api.V3.Calendar
                 ProductId = "-//lidarr.audio//Lidarr//EN"
             };
 
+            var calendarName = "Lidarr Music Schedule";
+            calendar.AddProperty(new CalendarProperty("NAME", calendarName));
+            calendar.AddProperty(new CalendarProperty("X-WR-CALNAME", calendarName));
 
             foreach (var album in albums.OrderBy(v => v.ReleaseDate.Value))
             {

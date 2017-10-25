@@ -30,6 +30,8 @@ namespace NzbDrone.Common.EnvironmentInfo
             if (entry != null)
             {
                 ExecutingApplication = entry.Location;
+                IsWindowsTray = OsInfo.IsWindows && entry.ManifestModule.Name == $"{ProcessProvider.LIDARR_PROCESS_NAME}.exe";
+
             }
         }
 
@@ -146,5 +148,7 @@ namespace NzbDrone.Common.EnvironmentInfo
 
             return true;
         }
+
+        public bool IsWindowsTray { get; private set; }
     }
 }

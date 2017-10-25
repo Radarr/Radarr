@@ -14,9 +14,9 @@ namespace NzbDrone.Host
         {
             var assemblies = new List<string>
                              {
-                                 "NzbDrone.Host",
-                                 "NzbDrone.Core",
-                                 "NzbDrone.SignalR",
+                                 "Lidarr.Host",
+                                 "Lidarr.Core",
+                                 "Lidarr.SignalR",
                                  "Lidarr.Api.V3",
                                  "Lidarr.Http"
                              };

@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Processes;
 using NzbDrone.Host;
 using NzbDrone.Test.Common;
 
@@ -22,9 +23,12 @@ namespace NzbDrone.App.Test
         public void Route_should_call_install_service_when_application_mode_is_install()
         {
             var serviceProviderMock = Mocker.GetMock<IServiceProvider>(MockBehavior.Strict);
-            serviceProviderMock.Setup(c => c.Install(ServiceProvider.SERVICE_NAME));
             serviceProviderMock.Setup(c => c.ServiceExist(ServiceProvider.SERVICE_NAME)).Returns(false);
-            serviceProviderMock.Setup(c => c.Start(ServiceProvider.SERVICE_NAME));
+            serviceProviderMock.Setup(c => c.Install(ServiceProvider.SERVICE_NAME));
+            serviceProviderMock.Setup(c => c.SetPermissions(ServiceProvider.SERVICE_NAME));
+
+            Mocker.GetMock<IProcessProvider>()
+                  .Setup(c => c.SpawnNewProcess("sc.exe", It.IsAny<string>(), null, true));
             Mocker.GetMock<IRuntimeInfo>().SetupGet(c => c.IsUserInteractive).Returns(true);
 
             Subject.Route(ApplicationModes.InstallService);
@@ -37,13 +41,13 @@ namespace NzbDrone.App.Test
         public void Route_should_call_uninstall_service_when_application_mode_is_uninstall()
         {
             var serviceProviderMock = Mocker.GetMock<IServiceProvider>();
-            serviceProviderMock.Setup(c => c.UnInstall(ServiceProvider.SERVICE_NAME));
+            serviceProviderMock.Setup(c => c.Uninstall(ServiceProvider.SERVICE_NAME));
             Mocker.GetMock<IRuntimeInfo>().SetupGet(c => c.IsUserInteractive).Returns(true);
             serviceProviderMock.Setup(c => c.ServiceExist(ServiceProvider.SERVICE_NAME)).Returns(true);
 
             Subject.Route(ApplicationModes.UninstallService);
 
-            serviceProviderMock.Verify(c => c.UnInstall(ServiceProvider.SERVICE_NAME), Times.Once());
+            serviceProviderMock.Verify(c => c.Uninstall(ServiceProvider.SERVICE_NAME), Times.Once());
         }
 
         [Test]

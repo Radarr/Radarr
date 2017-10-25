@@ -1,5 +1,10 @@
-﻿using NLog;
+using System;
+using NLog;
 using NzbDrone.Common;
+using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Processes;
+using IServiceProvider = NzbDrone.Common.IServiceProvider;
+
 
 namespace NzbDrone.Host
 {
@@ -8,14 +13,19 @@ namespace NzbDrone.Host
         private readonly INzbDroneServiceFactory _nzbDroneServiceFactory;
         private readonly IServiceProvider _serviceProvider;
         private readonly IConsoleService _consoleService;
+        private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;
 
-        public Router(INzbDroneServiceFactory nzbDroneServiceFactory, IServiceProvider serviceProvider,
-                        IConsoleService consoleService, Logger logger)
+        public Router(INzbDroneServiceFactory nzbDroneServiceFactory,
+                      IServiceProvider serviceProvider,
+                      IConsoleService consoleService,
+                      IProcessProvider processProvider,
+                      Logger logger)
         {
             _nzbDroneServiceFactory = nzbDroneServiceFactory;
             _serviceProvider = serviceProvider;
             _consoleService = consoleService;
+            _processProvider = processProvider;
             _logger = logger;
         }
 
@@ -48,7 +58,11 @@ namespace NzbDrone.Host
                         else
                         {
                             _serviceProvider.Install(ServiceProvider.SERVICE_NAME);
-                            _serviceProvider.Start(ServiceProvider.SERVICE_NAME);
+                            _serviceProvider.SetPermissions(ServiceProvider.SERVICE_NAME);
+
+                            // Start the service and exit.
+                            // Ensures that there isn't an instance of Sonarr already running that the service account cannot stop.
+                            _processProvider.SpawnNewProcess("sc.exe", $"start {ServiceProvider.SERVICE_NAME}", null, true);
                         }
                         break;
                     }
@@ -61,7 +75,7 @@ namespace NzbDrone.Host
                         }
                         else
                         {
-                            _serviceProvider.UnInstall(ServiceProvider.SERVICE_NAME);
+                            _serviceProvider.Uninstall(ServiceProvider.SERVICE_NAME);
                         }
 
                         break;

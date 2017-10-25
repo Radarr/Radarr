@@ -158,8 +158,8 @@ PackageMono()
     rm -f $outputFolderMono/sqlite3.*
     rm -f $outputFolderMono/MediaInfo.*
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $outputFolderMono
+    echo "Adding Lidarr.Core.dll.config (for dllmap)"
+    cp $sourceFolder/NzbDrone.Core/Lidarr.Core.dll.config $outputFolderMono
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
@@ -170,11 +170,11 @@ PackageMono()
         mv "$file" "${file//.Console/}"
     done
 
-    echo "Removing NzbDrone.Windows"
-    rm $outputFolderMono/NzbDrone.Windows.*
+    echo "Removing Lidarr.Windows"
+    rm $outputFolderMono/Lidarr.Windows.*
 
-    echo "Adding NzbDrone.Mono to UpdatePackage"
-    cp $outputFolderMono/NzbDrone.Mono.* $updateFolderMono
+    echo "Adding Lidarr.Mono to UpdatePackage"
+    cp $outputFolderMono/Lidarr.Mono.* $updateFolderMono
 
     echo "##teamcity[progressFinish 'Creating Mono Package']"
 }
@@ -234,8 +234,8 @@ PackageTests()
 
     CleanFolder $testPackageFolder true
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $testPackageFolder
+    echo "Adding Lidarr.Core.dll.config (for dllmap)"
+    cp $sourceFolder/NzbDrone.Core/Lidarr.Core.dll.config $testPackageFolder
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
@@ -248,11 +248,11 @@ PackageTests()
 
 CleanupWindowsPackage()
 {
-    echo "Removing NzbDrone.Mono"
-    rm -f $outputFolder/NzbDrone.Mono.*
+    echo "Removing Lidarr.Mono"
+    rm -f $outputFolder/Lidarr.Mono.*
 
-    echo "Adding NzbDrone.Windows to UpdatePackage"
-    cp $outputFolder/NzbDrone.Windows.* $updateFolder
+    echo "Adding Lidarr.Windows to UpdatePackage"
+    cp $outputFolder/Lidarr.Windows.* $updateFolder
 }
 
 # Use mono or .net depending on OS

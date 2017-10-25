@@ -40,7 +40,7 @@ namespace NzbDrone.Integration.Test
         public ClientBase<BlacklistResource> Blacklist;
         public CommandClient Commands;
         public DownloadClientClient DownloadClients;
-        public AlbumClient Episodes;
+        public AlbumClient Albums;
         public TrackClient Tracks;
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
@@ -101,7 +101,7 @@ namespace NzbDrone.Integration.Test
             Blacklist = new ClientBase<BlacklistResource>(RestClient, ApiKey);
             Commands = new CommandClient(RestClient, ApiKey);
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);
-            Episodes = new AlbumClient(RestClient, ApiKey);
+            Albums = new AlbumClient(RestClient, ApiKey);
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);
@@ -212,6 +212,7 @@ namespace NzbDrone.Integration.Test
                 var lookup = Artist.Lookup("lidarr:" + lidarrId);
                 var artist = lookup.First();
                 artist.QualityProfileId = 1;
+                artist.LanguageProfileId = 1;
                 artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
                 artist.Monitored = true;
                 artist.AddOptions = new Core.Music.AddArtistOptions();

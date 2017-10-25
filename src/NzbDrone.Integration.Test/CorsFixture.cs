@@ -10,7 +10,7 @@ namespace NzbDrone.Integration.Test
     {
         private RestRequest BuildRequest()
         {
-            var request = new RestRequest("series");
+            var request = new RestRequest("artist");
             request.AddHeader(AccessControlHeaders.RequestMethod, "POST");
 
             return request;

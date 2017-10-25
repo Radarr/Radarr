@@ -12,10 +12,10 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_with_tags_should_store_them()
         {
-            EnsureNoArtist("266189", "Alien Ant Farm");
+            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
             var tag = EnsureTag("abc");
 
-            var artist = Artist.Lookup("lidarr:266189").Single();
+            var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.QualityProfileId = 1;
             artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
@@ -31,9 +31,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_without_profileid_should_return_badrequest()
         {
-            EnsureNoArtist("266189", "Alien Ant Farm");
+            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
 
-            var artist = Artist.Lookup("lidarr:266189").Single();
+            var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
 
@@ -43,9 +43,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_artist_without_path_should_return_badrequest()
         {
-            EnsureNoArtist("266189", "Alien Ant Farm");
+            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
 
-            var artist = Artist.Lookup("lidarr:266189").Single();
+            var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.QualityProfileId = 1;
 
@@ -55,9 +55,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void add_artist()
         {
-            EnsureNoArtist("266189", "Alien Ant Farm");
+            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
 
-            var artist = Artist.Lookup("lidarr:266189").Single();
+            var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.QualityProfileId = 1;
             artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
@@ -119,7 +119,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(3)]
         public void update_artist_monitored()
         {
-            var artist = EnsureArtist("266189", "Alien Ant Farm", false);
+            var artist = EnsureArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park", false);
 
             artist.Monitored.Should().BeFalse();
             //artist.Seasons.First().Monitored.Should().BeFalse();
