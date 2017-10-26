@@ -20,6 +20,7 @@ using Lidarr.Api.V3.Profiles.Quality;
 using Lidarr.Api.V3.RootFolders;
 using Lidarr.Api.V3.Artist;
 using Lidarr.Api.V3.Albums;
+using Lidarr.Api.V3.Tracks;
 using Lidarr.Api.V3.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
@@ -94,7 +95,7 @@ namespace NzbDrone.Integration.Test
 
         protected virtual void InitRestClients()
         {
-            RestClient = new RestClient(RootUrl + "api/");
+            RestClient = new RestClient(RootUrl + "api/v3/");
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 
@@ -102,6 +103,7 @@ namespace NzbDrone.Integration.Test
             Commands = new CommandClient(RestClient, ApiKey);
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);
             Albums = new AlbumClient(RestClient, ApiKey);
+            Tracks = new TrackClient(RestClient, ApiKey);
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);

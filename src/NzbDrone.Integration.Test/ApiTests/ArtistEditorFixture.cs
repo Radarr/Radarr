@@ -1,5 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
+using Lidarr.Api.V3.Artist;
 using System.Linq;
 using NzbDrone.Test.Common;
 
@@ -10,11 +11,12 @@ namespace NzbDrone.Integration.Test.ApiTests
     {
         private void GivenExistingArtist()
         {
-            foreach (var name in new[] { "90210", "Dexter" })
+            foreach (var name in new[] { "Alien Ant Farm", "Kiss" })
             {
                 var newArtist = Artist.Lookup(name).First();
 
                 newArtist.QualityProfileId = 1;
+                newArtist.LanguageProfileId = 1;
                 newArtist.Path = string.Format(@"C:\Test\{0}", name).AsOsAgnostic();
 
                 Artist.Post(newArtist);
@@ -28,12 +30,13 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var artist = Artist.All();
 
-            foreach (var s in artist)
+            var artistEditor = new ArtistEditorResource
             {
-                s.QualityProfileId = 2;
-            }
+                QualityProfileId = 2,
+                ArtistIds = artist.Select(o => o.Id).ToList()
+            };
 
-            var result = Artist.Editor(artist);
+            var result = Artist.Editor(artistEditor);
 
             result.Should().HaveCount(2);
             result.TrueForAll(s => s.QualityProfileId == 2).Should().BeTrue();

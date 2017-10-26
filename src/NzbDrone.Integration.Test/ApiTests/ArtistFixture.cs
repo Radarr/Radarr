@@ -18,6 +18,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.QualityProfileId = 1;
+            artist.LanguageProfileId = 1;
             artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
             artist.Tags = new HashSet<int>();
             artist.Tags.Add(tag.Id);
@@ -48,6 +49,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.QualityProfileId = 1;
+            artist.LanguageProfileId = 1;
 
             Artist.InvalidPost(artist);
         }
@@ -60,6 +62,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artist = Artist.Lookup("lidarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
 
             artist.QualityProfileId = 1;
+            artist.LanguageProfileId = 1;
             artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
 
             var result = Artist.Post(artist);
@@ -67,6 +70,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.Should().NotBeNull();
             result.Id.Should().NotBe(0);
             result.QualityProfileId.Should().Be(1);
+            result.LanguageProfileId.Should().Be(1);
             result.Path.Should().Be(Path.Combine(ArtistRootFolder, artist.ArtistName));
         }
 
@@ -74,22 +78,24 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void get_all_artist()
         {
-            EnsureArtist("266189", "Alien Ant Farm");
-            EnsureArtist("73065", "Coldplay");
+            EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            EnsureArtist("cc197bad-dc9c-440d-a5b5-d52ba2e14234", "Coldplay");
 
-            Artist.All().Should().NotBeNullOrEmpty();
-            Artist.All().Should().Contain(v => v.ForeignArtistId == "73065");
-            Artist.All().Should().Contain(v => v.ForeignArtistId == "266189");
+            var artists = Artist.All();
+
+            artists.Should().NotBeNullOrEmpty();
+            artists.Should().Contain(v => v.ForeignArtistId == "8ac6cc32-8ddf-43b1-9ac4-4b04f9053176");
+            artists.Should().Contain(v => v.ForeignArtistId == "cc197bad-dc9c-440d-a5b5-d52ba2e14234");
         }
 
         [Test, Order(2)]
         public void get_artist_by_id()
         {
-            var artist = EnsureArtist("266189", "Alien Ant Farm");
+            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
 
             var result = Artist.Get(artist.Id);
 
-            result.ForeignArtistId.Should().Be("266189");
+            result.ForeignArtistId.Should().Be("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176");
         }
 
         [Test]
@@ -101,7 +107,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void update_artist_profile_id()
         {
-            var artist = EnsureArtist("266189", "Alien Ant Farm");
+            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
 
             var profileId = 1;
             if (artist.QualityProfileId == profileId)
@@ -110,6 +116,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             }
 
             artist.QualityProfileId = profileId;
+            artist.LanguageProfileId = profileId;
 
             var result = Artist.Put(artist);
 
@@ -139,7 +146,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(3)]
         public void update_artist_tags()
         {
-            var artist = EnsureArtist("266189", "Alien Ant Farm");
+            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
             var tag = EnsureTag("abc");
 
             if (artist.Tags.Contains(tag.Id))
@@ -161,13 +168,13 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(4)]
         public void delete_artist()
         {
-            var artist = EnsureArtist("266189", "Alien Ant Farm");
+            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
 
             Artist.Get(artist.Id).Should().NotBeNull();
 
             Artist.Delete(artist.Id);
 
-            Artist.All().Should().NotContain(v => v.ForeignArtistId == "266189");
+            Artist.All().Should().NotContain(v => v.ForeignArtistId == "8ac6cc32-8ddf-43b1-9ac4-4b04f9053176");
         }
     }
 }
