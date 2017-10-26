@@ -47,6 +47,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             });
 
             RuleFor(c => c.BaseUrl).ValidRootUrl();
+            RuleFor(c => c.ApiPath).ValidUrlBase("/api");
             RuleFor(c => c.ApiKey).NotEmpty().When(ShouldHaveApiKey);
             RuleFor(c => c.AdditionalParameters).Matches(AdditionalParametersRegex)
                                                 .When(c => !c.AdditionalParameters.IsNullOrWhiteSpace());
@@ -59,16 +60,20 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         public NewznabSettings()
         {
+            ApiPath = "/api";
             Categories = new[] { 3000, 3010, 3020, 3030, 3040 };
         }
 
         [FieldDefinition(0, Label = "URL")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "API Key")]
+        [FieldDefinition(1, Label = "API Path", HelpText = "Path to the api, usually /api", Advanced = true)]
+        public string ApiPath { get; set; }
+
+        [FieldDefinition(2, Label = "API Key")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(2, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
+        [FieldDefinition(3, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable standard/daily shows", Advanced = true)]
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(4, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]

@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var capabilities = new NewznabCapabilities();
 
-            var url = string.Format("{0}/api?t=caps", indexerSettings.BaseUrl.TrimEnd('/'));
+            var url = string.Format("{0}{1}?t=caps", indexerSettings.BaseUrl.TrimEnd('/'), indexerSettings.ApiPath.TrimEnd('/'));
 
             if (indexerSettings.ApiKey.IsNotNullOrWhiteSpace())
             {
@@ -68,13 +68,13 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             catch (XmlException ex)
             {
-                _logger.Debug(ex, "Failed to parse newznab api capabilities for {0}.", indexerSettings.BaseUrl);
+                _logger.Debug(ex, "Failed to parse newznab api capabilities for {0}", indexerSettings.BaseUrl);
                 ex.WithData(response);
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Lidarr restarts.", indexerSettings.BaseUrl);
+                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Lidarr restarts", indexerSettings.BaseUrl);
             }
 
             return capabilities;
@@ -84,7 +84,19 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var capabilities = new NewznabCapabilities();
 
-            var xmlRoot = XDocument.Parse(response.Content).Element("caps");
+            var xDoc = XDocument.Parse(response.Content);
+
+            if (xDoc == null)
+            {
+                throw new XmlException("Invalid XML");
+            }
+
+            var xmlRoot = xDoc.Element("caps");
+
+            if (xmlRoot == null)
+            {
+                throw new XmlException("Unexpected XML");
+            }
 
             var xmlLimits = xmlRoot.Element("limits");
             if (xmlLimits != null)
