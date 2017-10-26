@@ -220,7 +220,7 @@
     <Compile Include="DecisionEngine\Specifications\Search\SeasonMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\ArtistSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\SingleAlbumSearchMatchSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\Search\TorrentSeedingSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\TorrentSeedingSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\SameTracksGrabSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RawDiskSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
@@ -495,6 +495,8 @@
     <Compile Include="Indexers\Gazelle\GazelleRequestGenerator.cs" />
     <Compile Include="Indexers\Gazelle\GazelleSettings.cs" />
     <Compile Include="Indexers\IIndexerSettings.cs" />
+    <Compile Include="Indexers\IndexerDefaults.cs" />
+    <Compile Include="Indexers\ITorrentIndexerSettings.cs" />
     <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
     <Compile Include="Indexers\Waffles\Waffles.cs" />
     <Compile Include="Indexers\Waffles\WafflesRequestGenerator.cs" />

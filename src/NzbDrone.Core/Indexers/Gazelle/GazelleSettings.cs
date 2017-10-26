@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 using System.Text.RegularExpressions;
 
@@ -16,13 +15,13 @@ namespace NzbDrone.Core.Indexers.Gazelle
         }
     }
 
-    public class GazelleSettings : IIndexerSettings
+    public class GazelleSettings : ITorrentIndexerSettings
     {
         private static readonly GazelleSettingsValidator Validator = new GazelleSettingsValidator();
 
         public GazelleSettings()
         {
-
+            MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
         }
 
         public string AuthKey;
@@ -36,6 +35,9 @@ namespace NzbDrone.Core.Indexers.Gazelle
 
         [FieldDefinition(2, Label = "Password", Type = FieldType.Password, HelpText = "Password")]
         public string Password { get; set; }
+
+        [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        public int MinimumSeeders { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
