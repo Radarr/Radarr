@@ -83,21 +83,21 @@ namespace NzbDrone.Core.Notifications.Webhook
                 var payload = new WebhookGrabPayload
                 {
                     EventType = "Test",
-                    Movie = new WebhookMovie()
+                    Movie = new WebhookMovie
                     {
                         Id = 1,
                         Title = "Test Title",
                         FilePath = "C:\\testpath",
                         ReleaseDate = "1970-01-01"
                     },
-                    RemoteMovie = new WebhookRemoteMovie()
+                    RemoteMovie = new WebhookRemoteMovie
                     {
                         TmdbId = 1234,
                         ImdbId = "5678",
                         Title = "Test title",
                         Year = 1970
                     },
-                    Release = new WebhookRelease()
+                    Release = new WebhookRelease
                     {
                         Indexer = "Test Indexer",
                         Quality = "Test Quality",
