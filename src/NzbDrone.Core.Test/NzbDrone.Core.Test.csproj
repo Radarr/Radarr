@@ -254,6 +254,7 @@
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecificationFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\SameFileSpecificationFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecificationFixture.cs" />
     <Compile Include="MediaFiles\ImportApprovedEpisodesFixture.cs" />
     <Compile Include="MediaFiles\MediaFileRepositoryFixture.cs" />

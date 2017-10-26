@@ -633,6 +633,7 @@
     <Compile Include="MediaFiles\TrackImport\Manual\ManuallyImportedFile.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecification.cs" />
     <Compile Include="MediaFiles\Events\ArtistRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScannedEvent.cs" />
