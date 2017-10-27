@@ -11,11 +11,13 @@ function findBanner(images) {
 
 function getBannerUrl(banner, size) {
   if (banner) {
+    if (banner.url.contains('lastWrite')) {
     // Remove protocol
-    let url = banner.url.replace(/^https?:/, '');
-    url = url.replace('banner.jpg', `banner-${size}.jpg`);
+      let url = banner.url.replace(/^https?:/, '');
+      url = url.replace('banner.jpg', `banner-${size}.jpg`);
 
-    return url;
+      return url;
+    }
   }
 }
 

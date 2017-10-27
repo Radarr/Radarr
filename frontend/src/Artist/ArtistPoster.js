@@ -11,11 +11,13 @@ function findPoster(images) {
 
 function getPosterUrl(poster, size) {
   if (poster) {
-    // Remove protocol
-    let url = poster.url.replace(/^https?:/, '');
-    url = url.replace('poster.jpg', `poster-${size}.jpg`);
+    if (poster.url.contains('lastWrite')) {
+      // Remove protocol
+      let url = poster.url.replace(/^https?:/, '');
+      url = url.replace('poster.jpg', `poster-${size}.jpg`);
 
-    return url;
+      return url;
+    }
   }
 }
 
