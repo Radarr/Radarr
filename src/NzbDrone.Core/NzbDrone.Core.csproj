@@ -170,6 +170,7 @@
     <Compile Include="Datastore\MainDatabase.cs" />
     <Compile Include="Datastore\LogDatabase.cs" />
     <Compile Include="Datastore\Migration\001_initial_setup.cs" />
+    <Compile Include="Datastore\Migration\002_add_release_to_pending_releases.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\BlacklistSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\BlockedIndexerSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\DiscographySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\CutoffSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\ProtocolSpecification.cs" />
@@ -242,6 +244,7 @@
     <Compile Include="Download\Clients\Deluge\DelugeUpdateUIResult.cs" />
     <Compile Include="Download\Clients\DownloadClientAuthenticationException.cs" />
     <Compile Include="Download\Clients\DownloadClientException.cs" />
+    <Compile Include="Download\Clients\DownloadClientUnavailableException.cs" />
     <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationInfoProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\TorrentDownloadStation.cs" />
     <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationTaskProxy.cs" />
@@ -373,7 +376,11 @@
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrentStatus.cs" />
     <Compile Include="Download\Clients\Vuze\Vuze.cs" />
     <Compile Include="Download\CompletedDownloadService.cs" />
+    <Compile Include="Download\DownloadClientStatus.cs" />
+    <Compile Include="Download\DownloadClientStatusRepository.cs" />
+    <Compile Include="Download\DownloadClientStatusService.cs" />
     <Compile Include="Download\DownloadEventHub.cs" />
+    <Compile Include="Download\Pending\PendingReleaseReason.cs" />
     <Compile Include="Download\TrackedDownloads\DownloadMonitoringService.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownload.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadService.cs" />
@@ -435,8 +442,10 @@
     <Compile Include="Extras\Lyrics\LyricService.cs" />
     <Compile Include="Fluent.cs" />
     <Compile Include="HealthCheck\CheckHealthCommand.cs" />
+    <Compile Include="HealthCheck\CheckOnAttribute.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
+    <Compile Include="HealthCheck\Checks\DownloadClientStatusCheck.cs" />
     <Compile Include="HealthCheck\Checks\MountCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
@@ -459,9 +468,11 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalNamingSpecs.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupCommandQueue.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFiles.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupDownloadClientUnavailablePendingReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFiles.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbums.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklist.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedDownloadClientStatus.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTrackFiles.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTracks.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedIndexerStatus.cs" />
@@ -994,6 +1005,7 @@
     <Compile Include="Tags\TagsUpdatedEvent.cs" />
     <Compile Include="ThingiProvider\ConfigContractNotFoundException.cs" />
     <Compile Include="ThingiProvider\Events\ProviderDeletedEvent.cs" />
+    <Compile Include="ThingiProvider\Events\ProviderStatusChangedEvent.cs" />
     <Compile Include="ThingiProvider\Events\ProviderUpdatedEvent.cs" />
     <Compile Include="ThingiProvider\IProvider.cs" />
     <Compile Include="ThingiProvider\IProviderConfig.cs" />
@@ -1004,6 +1016,9 @@
     <Compile Include="ThingiProvider\ProviderFactory.cs" />
     <Compile Include="ThingiProvider\ProviderMessage.cs" />
     <Compile Include="ThingiProvider\ProviderRepository.cs" />
+    <Compile Include="ThingiProvider\Status\ProviderStatusBase.cs" />
+    <Compile Include="ThingiProvider\Status\ProviderStatusRepository.cs" />
+    <Compile Include="ThingiProvider\Status\ProviderStatusServiceBase.cs" />
     <Compile Include="TinyTwitter.cs" />
     <Compile Include="Update\Commands\ApplicationUpdateCommand.cs" />
     <Compile Include="Update\InstallUpdateService.cs" />

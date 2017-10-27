@@ -1,13 +1,12 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.ThingiProvider
+namespace NzbDrone.Core.Test.ThingiProviderTests
 {
-
     public class ProviderRepositoryFixture : DbTest<IndexerRepository, IndexerDefinition>
     {
         [Test]

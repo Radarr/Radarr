@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                   .Returns(_indexers);
 
             Mocker.GetMock<IIndexerStatusService>()
-                   .Setup(v => v.GetBlockedIndexers())
+                   .Setup(v => v.GetBlockedProviders())
                    .Returns(_blockedIndexers);
         }
 
@@ -55,13 +55,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_not_return_error_when_no_indexers()
         {
-            Subject.Check().ShouldBeOk();
-        }
-        [Test]
-        public void should_not_return_error_when_indexer_failed_less_than_an_hour()
-        {
-            GivenIndexer(1, 0.1, 0.5);
-
             Subject.Check().ShouldBeOk();
         }
 

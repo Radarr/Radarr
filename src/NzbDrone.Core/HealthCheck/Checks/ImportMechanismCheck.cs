@@ -2,13 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Clients.Nzbget;
 using NzbDrone.Core.Download.Clients.Sabnzbd;
+using NzbDrone.Core.ThingiProvider.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(ProviderUpdatedEvent<IDownloadClient>))]
+    [CheckOn(typeof(ProviderDeletedEvent<IDownloadClient>))]
+    [CheckOn(typeof(ConfigSavedEvent))]
     public class ImportMechanismCheck : HealthCheckBase
     {
         private readonly IConfigService _configService;
@@ -33,7 +38,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     Status = v.GetStatus()
                 }).ToList();
             }
-            catch (DownloadClientException)
+            catch (Exception)
             {
                 // One or more download clients failed, assume the health is okay and verify later
                 return new HealthCheck(GetType());

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Newtonsoft.Json.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             catch (WebException ex)
             {
-                throw new DownloadClientException("Unable to connect to SABnzbd, please check your settings", ex);
+                throw new DownloadClientUnavailableException("Unable to connect to SABnzbd, please check your settings", ex);
             }
 
             CheckForError(response);

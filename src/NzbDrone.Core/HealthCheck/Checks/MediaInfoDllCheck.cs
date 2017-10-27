@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.CompilerServices;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 
@@ -20,7 +20,5 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType());
         }
-
-        public override bool CheckOnConfigChange => false;
     }
 }

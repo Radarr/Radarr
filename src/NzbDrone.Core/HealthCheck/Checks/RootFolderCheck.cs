@@ -1,9 +1,12 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(ArtistDeletedEvent))]
+    [CheckOn(typeof(ArtistMovedEvent))]
     public class RootFolderCheck : HealthCheckBase
     {
         private readonly IArtistService _artistService;
@@ -36,7 +39,5 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType());
         }
-
-        public override bool CheckOnConfigChange => false;
     }
 }

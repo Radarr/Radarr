@@ -123,6 +123,7 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(c => c.Message);
 
             Mapper.Entity<IndexerStatus>().RegisterModel("IndexerStatus");
+            Mapper.Entity<DownloadClientStatus>().RegisterModel("DownloadClientStatus");
         }
 
         private static void RegisterMappers()

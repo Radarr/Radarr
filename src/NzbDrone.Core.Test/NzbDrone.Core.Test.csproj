@@ -117,6 +117,7 @@
     <Compile Include="Datastore\ReflectionStrategyFixture\Benchmarks.cs" />
     <Compile Include="Datastore\SqliteSchemaDumperTests\SqliteSchemaDumperFixture.cs" />
     <Compile Include="DecisionEngineTests\AcceptableSizeSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\BlockedIndexerSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\ProtocolSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\CutoffSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\DownloadDecisionMakerFixture.cs" />
@@ -135,10 +136,12 @@
     <Compile Include="DecisionEngineTests\RssSync\ProperSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\Search\ArtistSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RawDiskSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\Search\TorrentSeedingSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeDiskSpecificationFixture.cs" />
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
     <Compile Include="Download\CompletedDownloadServiceFixture.cs" />
     <Compile Include="Download\DownloadApprovedReportsTests\DownloadApprovedFixture.cs" />
+    <Compile Include="Download\DownloadClientStatusServiceFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\ScanWatchFolderFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\TorrentBlackholeFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\UsenetBlackholeFixture.cs" />
@@ -198,6 +201,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalUsersFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalNamingSpecsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFilesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupDownloadClientUnavailablePendingReleasesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbumsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklistFixture.cs" />
@@ -324,11 +328,12 @@
     <Compile Include="Qualities\QualityFixture.cs" />
     <Compile Include="Qualities\QualityModelComparerFixture.cs" />
     <Compile Include="RootFolderTests\RootFolderServiceFixture.cs" />
-    <Compile Include="ThingiProvider\ProviderBaseFixture.cs" />
+    <Compile Include="ThingiProviderTests\ProviderBaseFixture.cs" />
     <Compile Include="ThingiProviderTests\NullConfigFixture.cs" />
     <Compile Include="MusicTests\MoveArtistServiceFixture.cs" />
     <Compile Include="MusicTests\RefreshArtistServiceFixture.cs" />
     <Compile Include="MusicTests\ShouldRefreshArtistFixture.cs" />
+    <Compile Include="ThingiProviderTests\ProviderStatusServiceFixture.cs" />
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />
@@ -522,6 +527,7 @@
     <Folder Include="InstrumentationTests\" />
     <Folder Include="Providers\" />
     <Folder Include="ProviderTests\UpdateProviderTests\" />
+    <Folder Include="ThingiProvider\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

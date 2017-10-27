@@ -33,17 +33,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            List<TransmissionTorrent> torrents;
-
-            try
-            {
-                torrents = _proxy.GetTorrents(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex, ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var torrents = _proxy.GetTorrents(Settings);
 
             var items = new List<DownloadClientItem>();
 
@@ -211,17 +201,13 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                     DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Lidarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
                 };
             }
-            catch (WebException ex)
+            catch (DownloadClientUnavailableException ex)
             {
                 _logger.Error(ex, ex.Message);
-                if (ex.Status == WebExceptionStatus.ConnectFailure)
+                return new NzbDroneValidationFailure("Host", "Unable to connect")
                 {
-                    return new NzbDroneValidationFailure("Host", "Unable to connect")
-                    {
-                        DetailedDescription = "Please verify the hostname and port."
-                    };
-                }
-                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+                    DetailedDescription = "Please verify the hostname and port."
+                };
             }
             catch (Exception ex)
             {
