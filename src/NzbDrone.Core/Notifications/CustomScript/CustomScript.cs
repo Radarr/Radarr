@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Release_Size", remoteMovie.Release.Size.ToString());
             environmentVariables.Add("Radarr_Release_ReleaseGroup", remoteMovie.ParsedMovieInfo.ReleaseGroup ?? string.Empty);
             environmentVariables.Add("Radarr_Release_Quality", quality.Quality.Name);
-            environmentVariables.Add("Radarr_Release_QualityVersion", quality.Revision.Version);
+            environmentVariables.Add("Radarr_Release_QualityVersion", quality.Revision.Version.ToString());
 
             ExecuteScript(environmentVariables);
         }
