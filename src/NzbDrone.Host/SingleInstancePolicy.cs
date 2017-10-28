@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -10,6 +10,7 @@ namespace NzbDrone.Host
     {
         void PreventStartIfAlreadyRunning();
         void KillAllOtherInstance();
+        void WarnIfAlreadyRunning();
     }
 
     public class SingleInstancePolicy : ISingleInstancePolicy
@@ -42,6 +43,14 @@ namespace NzbDrone.Host
             foreach (var processId in GetOtherNzbDroneProcessIds())
             {
                 _processProvider.Kill(processId);
+            }
+        }
+
+        public void WarnIfAlreadyRunning()
+        {
+            if (IsAlreadyRunning())
+            {
+                _logger.Debug("Another instance of Lidarr is already running.");
             }
         }
 
