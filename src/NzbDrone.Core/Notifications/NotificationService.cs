@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
         : IHandle<AlbumGrabbedEvent>,
-          IHandle<TrackDownloadedEvent>,
+          IHandle<TrackImportedEvent>,
           IHandle<ArtistRenamedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
@@ -88,7 +88,9 @@ namespace NzbDrone.Core.Notifications
                 Message = GetMessage(message.Album.Artist, message.Album.Albums, message.Album.ParsedAlbumInfo.Quality),
                 Artist = message.Album.Artist,
                 Quality = message.Album.ParsedAlbumInfo.Quality,
-                Album = message.Album
+                Album = message.Album,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             foreach (var notification in _notificationFactory.OnGrabEnabled())
@@ -106,20 +108,30 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(TrackDownloadedEvent message)
+        public void Handle(TrackImportedEvent message)
         {
-            var downloadMessage = new DownloadMessage();
-            downloadMessage.Message = GetTrackMessage(message.Track.Artist, message.Track.Tracks, message.Track.Quality);
-            downloadMessage.Artist = message.Track.Artist;
-            downloadMessage.TrackFile = message.TrackFile;
-            downloadMessage.OldFiles = message.OldFiles;
-            downloadMessage.SourcePath = message.Track.Path;
+            if (!message.NewDownload)
+            {
+                return;
+            }
+
+            var downloadMessage = new DownloadMessage
+
+            {
+                Message = GetTrackMessage(message.TrackInfo.Artist, message.TrackInfo.Tracks, message.TrackInfo.Quality),
+                Artist = message.TrackInfo.Artist,
+                TrackFile = message.ImportedTrack,
+                OldFiles = message.OldFiles,
+                SourcePath = message.TrackInfo.Path,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
+            };
 
             foreach (var notification in _notificationFactory.OnDownloadEnabled())
             {
                 try
                 {
-                    if (ShouldHandleArtist(notification.Definition, message.Track.Artist))
+                    if (ShouldHandleArtist(notification.Definition, message.TrackInfo.Artist))
                     {
                         if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {

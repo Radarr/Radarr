@@ -124,19 +124,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     //    _extraService.ImportExtraFiles(localTrack, trackFile, copyOnly); // TODO: Import Music Extras
                     //}
 
-                    if (downloadClientItem != null)
-                    {
-                        _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId));
-                    }
-                    else
-                    {
-                        _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, newDownload));
-                    }
+                    _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, newDownload, downloadClientItem));
 
-                    if (newDownload)
-                    {
-                        _eventAggregator.PublishEvent(new TrackDownloadedEvent(localTrack, trackFile, oldFiles));
-                    }
                 }
                 catch (Exception e)
                 {

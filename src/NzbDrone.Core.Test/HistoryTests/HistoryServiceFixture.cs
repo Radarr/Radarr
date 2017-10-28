@@ -10,7 +10,9 @@ using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
+using System.Collections.Generic;
 using NzbDrone.Core.Test.Qualities;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Languages;
@@ -67,7 +69,13 @@ namespace NzbDrone.Core.Test.HistoryTests
                 Path = @"C:\Test\Unsorted\Artist.01.Hymn.mp3"
             };
 
-            Subject.Handle(new TrackImportedEvent(localTrack, trackFile, true, "sab", "abcd"));
+            var downloadClientItem = new DownloadClientItem
+                                     {
+                                        DownloadClient = "sab",
+                                        DownloadId = "abcd"
+                                     };
+            
+            Subject.Handle(new TrackImportedEvent(localTrack, trackFile, new List<TrackFile>(), true, downloadClientItem));
 
             Mocker.GetMock<IHistoryRepository>()
                 .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localTrack.Path))));
