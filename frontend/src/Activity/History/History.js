@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { align, icons } from 'Helpers/Props';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
@@ -16,6 +17,27 @@ import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import HistoryRowConnector from './HistoryRowConnector';
 
 class History extends Component {
+
+  //
+  // Lifecycle
+
+  shouldComponentUpdate(nextProps) {
+    // Don't update when fetching has completed if items have changed,
+    // before albums start fetching or when albums start fetching.
+
+    if (
+      (
+        this.props.isFetching &&
+        nextProps.isPopulated &&
+        hasDifferentItems(this.props.items, nextProps.items)
+      ) ||
+      (!this.props.isAlbumsFetching && nextProps.isAlbumsFetching)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
 
   //
   // Render

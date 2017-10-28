@@ -37,6 +37,24 @@ class Queue extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps) {
+    // Don't update when fetching has completed if items have changed,
+    // before albums start fetching or when albums start fetching.
+
+    if (
+      (
+        this.props.isFetching &&
+        nextProps.isPopulated &&
+        hasDifferentItems(this.props.items, nextProps.items)
+      ) ||
+      (!this.props.isAlbumsFetching && nextProps.isAlbumsFetching)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       this.setState({ selectedState: {} });

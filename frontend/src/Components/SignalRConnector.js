@@ -90,6 +90,12 @@ class SignalRConnector extends Component {
   // Control
 
   retryConnection = () => {
+    if (this.retryInterval >= 30) {
+      this.setState({
+        isDisconnected: true
+      });
+    }
+
     this.retryTimeoutId = setTimeout(() => {
       this.signalRconnection.start(this.signalRconnectionOptions);
       this.retryInterval = Math.min(this.retryInterval + 5, 30);
@@ -328,8 +334,9 @@ class SignalRConnector extends Component {
 
     this.props.setAppValue({
       isConnected: false,
-      isReconnecting: true,
-      isDisconnected: true
+      isReconnecting: true
+      // Don't set isDisconnected yet, it'll be set it if it's disconnected
+      // for ~105 seconds (retry interval reaches 30 seconds)
     });
 
     this.retryConnection();

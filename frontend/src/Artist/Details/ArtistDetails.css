@@ -95,6 +95,7 @@
   margin: 5px 10px 5px 0;
 }
 
+.path,
 .sizeOnDisk,
 .qualityProfileName,
 .links,
@@ -102,6 +103,12 @@
   margin-left: 8px;
   font-weight: 300;
   font-size: 17px;
+}
+
+.path {
+  vertical-align: text-top;
+  font-size: $defaultFontSize;
+  font-family: $monoSpaceFontFamily;
 }
 
 .contentContainer {

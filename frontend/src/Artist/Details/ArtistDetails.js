@@ -347,7 +347,6 @@ class ArtistDetails extends Component {
                 <div className={styles.detailsLabels}>
                   <Label
                     className={styles.detailsLabel}
-                    title={trackFilesCountMessage}
                     size={sizes.LARGE}
                   >
                     <Icon
@@ -355,7 +354,7 @@ class ArtistDetails extends Component {
                       size={17}
                     />
 
-                    <span className={styles.sizeOnDisk}>
+                    <span className={styles.path}>
                       {path}
                     </span>
                   </Label>

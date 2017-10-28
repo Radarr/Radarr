@@ -56,6 +56,8 @@ function createMapStateToProps() {
       return {
         ...artist,
         alternateTitles,
+        isArtistRefreshing,
+        allArtistRefreshing,
         isRefreshing,
         isSearching,
         isRenamingFiles,
@@ -94,13 +96,15 @@ class ArtistDetailsConnector extends Component {
   componentDidUpdate(prevProps) {
     const {
       id,
-      isRefreshing,
+      isArtistRefreshing,
+      allArtistRefreshing,
       isRenamingFiles,
       isRenamingArtist
     } = this.props;
 
     if (
-      (prevProps.isRefreshing && !isRefreshing) ||
+      (prevProps.isArtistRefreshing && !isArtistRefreshing) ||
+      (prevProps.allArtistRefreshing && !allArtistRefreshing) ||
       (prevProps.isRenamingFiles && !isRenamingFiles) ||
       (prevProps.isRenamingArtist && !isRenamingArtist)
     ) {
@@ -172,6 +176,8 @@ class ArtistDetailsConnector extends Component {
 ArtistDetailsConnector.propTypes = {
   id: PropTypes.number.isRequired,
   nameSlug: PropTypes.string.isRequired,
+  isArtistRefreshing: PropTypes.bool.isRequired,
+  allArtistRefreshing: PropTypes.bool.isRequired,
   isRefreshing: PropTypes.bool.isRequired,
   isRenamingFiles: PropTypes.bool.isRequired,
   isRenamingArtist: PropTypes.bool.isRequired,
