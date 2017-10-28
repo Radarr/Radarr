@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.MediaFiles.TrackImport;
-using NzbDrone.Core.Parser;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
@@ -98,7 +99,7 @@ namespace NzbDrone.Core.MediaFiles
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Artist artist)
         {
             var audioFiles = _diskScanService.GetNonAudioFiles(directoryInfo.FullName);
-            var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f) == ".rar");
+            var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
 
             foreach (var audioFile in audioFiles)
             {

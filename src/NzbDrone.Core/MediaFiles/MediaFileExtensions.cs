@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
 
 
@@ -10,7 +11,7 @@ namespace NzbDrone.Core.MediaFiles
 
         static MediaFileExtensions()
         {
-            _fileExtensions = new Dictionary<string, Quality>
+            _fileExtensions = new Dictionary<string, Quality>(StringComparer.OrdinalIgnoreCase)
             {
                 { ".mp3", Quality.Unknown },
                 { ".m4a", Quality.Unknown },
@@ -19,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
             };
         }
 
-        public static HashSet<string> Extensions => new HashSet<string>(_fileExtensions.Keys);
+        public static HashSet<string> Extensions => new HashSet<string>(_fileExtensions.Keys, StringComparer.OrdinalIgnoreCase);
 
         public static Quality GetQualityForExtension(string extension)
         {

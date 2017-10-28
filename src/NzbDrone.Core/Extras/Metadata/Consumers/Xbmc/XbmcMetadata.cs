@@ -103,13 +103,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            if (filename.Equals("artist.nfo", StringComparison.InvariantCultureIgnoreCase))
+            if (filename.Equals("artist.nfo", StringComparison.OrdinalIgnoreCase))
             {
                 metadata.Type = MetadataType.ArtistMetadata;
                 return metadata;
             }
 
-            if (filename.Equals("album.nfo", StringComparison.InvariantCultureIgnoreCase))
+            if (filename.Equals("album.nfo", StringComparison.OrdinalIgnoreCase))
             {
                 metadata.Type = MetadataType.AlbumMetadata;
                 return metadata;
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             var parseResult = Parser.Parser.ParseMusicTitle(filename);
 
             if (parseResult != null &&
-                Path.GetExtension(filename) == ".nfo")
+                Path.GetExtension(filename).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
             {
                 metadata.Type = MetadataType.TrackMetadata;
                 return metadata;

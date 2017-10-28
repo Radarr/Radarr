@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Extras.Lyrics
@@ -8,7 +9,7 @@ namespace NzbDrone.Core.Extras.Lyrics
 
         static LyricFileExtensions()
         {
-            _fileExtensions = new HashSet<string>
+            _fileExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                               {
                                   ".lrc",
                                   ".txt",

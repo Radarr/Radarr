@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,18 +43,18 @@ namespace NzbDrone.Core.Extras.Others
             return Enumerable.Empty<ExtraFile>();
         }
 
-        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Artist artist, List<TrackFile> episodeFiles)
+        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Artist artist, List<TrackFile> trackFiles)
         {
             var extraFiles = _otherExtraFileService.GetFilesByArtist(artist.Id);
             var movedFiles = new List<OtherExtraFile>();
 
-            foreach (var episodeFile in episodeFiles)
+            foreach (var trackFile in trackFiles)
             {
-                var extraFilesForEpisodeFile = extraFiles.Where(m => m.TrackFileId == episodeFile.Id).ToList();
+                var extraFilesForTrackFile = extraFiles.Where(m => m.TrackFileId == trackFile.Id).ToList();
 
-                foreach (var extraFile in extraFilesForEpisodeFile)
+                foreach (var extraFile in extraFilesForTrackFile)
                 {
-                    movedFiles.AddIfNotNull(MoveFile(artist, episodeFile, extraFile));
+                    movedFiles.AddIfNotNull(MoveFile(artist, trackFile, extraFile));
                 }
             }
 
@@ -65,7 +66,7 @@ namespace NzbDrone.Core.Extras.Others
         public override ExtraFile Import(Artist artist, TrackFile trackFile, string path, string extension, bool readOnly)
         {
             // If the extension is .nfo we need to change it to .nfo-orig
-            if (Path.GetExtension(path).Equals(".nfo"))
+            if (Path.GetExtension(path).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
             {
                 extension += "-orig";
             }
