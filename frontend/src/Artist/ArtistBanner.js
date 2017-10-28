@@ -11,7 +11,7 @@ function findBanner(images) {
 
 function getBannerUrl(banner, size) {
   if (banner) {
-    if (banner.url.contains('lastWrite')) {
+    if (banner.url.contains('lastWrite=') || (/^https?:/).test(banner.url)) {
     // Remove protocol
       let url = banner.url.replace(/^https?:/, '');
       url = url.replace('banner.jpg', `banner-${size}.jpg`);

@@ -22,7 +22,7 @@ export const defaultState = {
     monitor: 'allEpisodes',
     qualityProfileId: 0,
     languageProfileId: 0,
-    primaryAlbumTypes: ['Album'],
+    primaryAlbumTypes: ['Album', 'EP'],
     secondaryAlbumTypes: ['Studio'],
     albumFolder: true,
     tags: []

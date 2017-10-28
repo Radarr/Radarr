@@ -57,8 +57,8 @@ class ArtistDetailsSeason extends Component {
     } = this.props;
 
     const expand = _.some(items, (item) => {
-      return isAfter(item.airDateUtc) ||
-             isAfter(item.airDateUtc, { days: -30 });
+      return isAfter(item.releaseDate) ||
+             isAfter(item.releaseDate, { days: -30 });
     });
 
     onExpandPress(name, expand && name > 0);
@@ -273,7 +273,7 @@ class ArtistDetailsSeason extends Component {
                   <IconButton
                     name={icons.COLLAPSE}
                     size={20}
-                    title="Hide episodes"
+                    title="Hide albums"
                     onPress={this.onExpandPress}
                   />
                 </div>

@@ -11,7 +11,7 @@ function findPoster(images) {
 
 function getPosterUrl(poster, size) {
   if (poster) {
-    if (poster.url.contains('lastWrite')) {
+    if (poster.url.contains('lastWrite=') || (/^https?:/).test(poster.url)) {
       // Remove protocol
       let url = poster.url.replace(/^https?:/, '');
       url = url.replace('poster.jpg', `poster-${size}.jpg`);

@@ -38,13 +38,13 @@ const albumTypes = [
     isVisible: true
   },
   {
-    name: 'single',
-    label: 'Single',
+    name: 'ep',
+    label: 'EP',
     isVisible: true
   },
   {
-    name: 'ep',
-    label: 'EP',
+    name: 'single',
+    label: 'Single',
     isVisible: true
   },
   {
@@ -521,13 +521,6 @@ class ArtistDetails extends Component {
                       );
                     })
                   }
-                </div>
-            }
-
-            {
-              isPopulated && !albums.length &&
-                <div>
-                  No episode information is available.
                 </div>
             }
 
