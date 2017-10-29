@@ -170,6 +170,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         public override List<ImageFileResult> ArtistImages(Artist artist)
         {
+            if (!Settings.AlbumImages)
+            {
+                return new List<ImageFileResult>();
+            }
+
             var image = artist.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? artist.Images.FirstOrDefault();
             if (image == null)
             {
@@ -185,12 +190,17 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         public override List<ImageFileResult> AlbumImages(Artist artist, Album album)
         {
-            var seasonFolders = GetAlbumFolders(artist);
-
-            string seasonFolder;
-            if (!seasonFolders.TryGetValue(album.ArtistId, out seasonFolder))
+            if (!Settings.AlbumImages)
             {
-                _logger.Trace("Failed to find season folder for series {0}, season {1}.", artist.Name, album.Title);
+                return new List<ImageFileResult>();
+            }
+
+            var albumFolders = GetAlbumFolders(artist);
+
+            string albumFolder;
+            if (!albumFolders.TryGetValue(album.ArtistId, out albumFolder))
+            {
+                _logger.Trace("Failed to find album folder for artit {0}, album {1}.", artist.Name, album.Title);
                 return new List<ImageFileResult>();
             }
 
@@ -198,18 +208,23 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             var image = album.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? album.Images.FirstOrDefault();
             if (image == null)
             {
-                _logger.Trace("Failed to find suitable season image for series {0}, season {1}.", artist.Name, album.Title);
+                _logger.Trace("Failed to find suitable album image for artist {0}, album {1}.", artist.Name, album.Title);
                 return new List<ImageFileResult>();
             }
 
-            var filename = Path.GetFileName(seasonFolder) + ".jpg";
-            var path = artist.Path.GetRelativePath(Path.Combine(artist.Path, seasonFolder, filename));
+            var filename = Path.GetFileName(albumFolder) + ".jpg";
+            var path = artist.Path.GetRelativePath(Path.Combine(artist.Path, albumFolder, filename));
 
             return new List<ImageFileResult> { new ImageFileResult(path, image.Url) };
         }
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
         {
+            //if (!Settings.EpisodeImages)
+            //{
+            //    return new List<ImageFileResult>();
+            //}
+
             //var screenshot = episodeFile.Tracks.Value.First().Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
 
             //if (screenshot == null)
