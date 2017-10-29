@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Notifications
             downloadMessage.OldFiles = null;
             downloadMessage.OldMovieFiles = message.OldFiles;
             downloadMessage.SourcePath = message.Movie.Path;
-			downloadMessage.DownloadId = message.DownloadId;
+            downloadMessage.DownloadId = message.DownloadId;
 
             foreach (var notification in _notificationFactory.OnDownloadEnabled())
             {
