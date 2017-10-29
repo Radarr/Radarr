@@ -5,6 +5,7 @@ var Backgrid = require('backgrid');
 var MoviesCollection = require('../../Movies/MoviesCollection');
 var SelectRow = require('./SelectMovieRow');
 var FullMovieCollection = require('../../Movies/FullMovieCollection');
+var Backbone = require('backbone');
 
 module.exports = Marionette.Layout.extend({
     template  : 'ManualImport/Movie/SelectMovieLayoutTemplate',
@@ -33,7 +34,8 @@ module.exports = Marionette.Layout.extend({
     ],
 
     initialize : function() {
-        this.movieCollection = FullMovieCollection;
+        this.fullMovieCollection = FullMovieCollection;
+        this.movieCollection = new Backbone.Collection(this.fullMovieCollection.first(20));
         this._setModelCollection();
 
         this.listenTo(this.movieCollection, 'row:selected', this._onSelected);
@@ -84,11 +86,16 @@ module.exports = Marionette.Layout.extend({
     },
 
     _filter : function (term) {
-        this.movieCollection.setFilter(['title', term, 'contains']);
+        this.movieCollection.reset(this.fullMovieCollection.filter(function(model){
+            return model.get("title").toLowerCase().indexOf(term.toLowerCase()) != -1;
+        }).slice(0, 20));
+
         this._setModelCollection();
+        //this.movieView.render();
     },
 
     _onSelected : function (e) {
+        debugger;
         this.trigger('manualimport:selected:movie', { model: e.model });
 
         vent.trigger(vent.Commands.CloseModal2Command);
@@ -97,10 +104,10 @@ module.exports = Marionette.Layout.extend({
     _setFocus : function () {
         this.ui.filter.focus();
     },
-    
+
     _setModelCollection: function () {
         var self = this;
-        
+
         _.each(this.movieCollection.models, function (model) {
             model.collection = self.movieCollection;
         });
