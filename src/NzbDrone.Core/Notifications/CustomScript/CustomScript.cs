@@ -72,6 +72,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
             environmentVariables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             environmentVariables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
+            environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
 
             if (message.OldMovieFiles.Any())
             {
