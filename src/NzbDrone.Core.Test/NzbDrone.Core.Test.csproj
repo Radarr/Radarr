@@ -253,6 +253,7 @@
     <Compile Include="MediaFiles\DownloadedAlbumsCommandServiceFixture.cs" />
     <Compile Include="MediaFiles\DownloadedTracksImportServiceFixture.cs" />
     <Compile Include="MediaFiles\MediaFileDeletionService\DeleteTrackFileFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioChannelsFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />
