@@ -139,7 +139,7 @@ namespace Lidarr.Api.V3.Indexers
             model.IndexerId = resource.IndexerId;
             model.Indexer = resource.Indexer;
             model.DownloadProtocol = resource.DownloadProtocol;
-            model.PublishDate = resource.PublishDate;
+            model.PublishDate = resource.PublishDate.ToUniversalTime();
 
             return model;
         }

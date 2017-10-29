@@ -99,12 +99,14 @@
     <Compile Include="ApiTests\CalendarFixture.cs" />
     <Compile Include="ApiTests\BlacklistFixture.cs" />
     <Compile Include="ApiTests\DownloadClientFixture.cs" />
+    <Compile Include="ApiTests\ReleasePushFixture.cs" />
     <Compile Include="ApiTests\TrackFileFixture.cs" />
     <Compile Include="ApiTests\FileSystemFixture.cs" />
     <Compile Include="ApiTests\ArtistFixture.cs" />
     <Compile Include="ApiTests\ArtistLookupFixture.cs" />
     <Compile Include="ApiTests\WantedFixture.cs" />
     <Compile Include="Client\ClientBase.cs" />
+    <Compile Include="Client\ReleasePushClient.cs" />
     <Compile Include="Client\TrackClient.cs" />
     <Compile Include="Client\AlbumClient.cs" />
     <Compile Include="Client\IndexerClient.cs" />

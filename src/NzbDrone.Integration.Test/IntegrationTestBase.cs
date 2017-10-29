@@ -50,6 +50,7 @@ namespace NzbDrone.Integration.Test
         public NotificationClient Notifications;
         public ClientBase<QualityProfileResource> Profiles;
         public ReleaseClient Releases;
+        public ReleasePushClient ReleasePush;
         public ClientBase<RootFolderResource> RootFolders;
         public ArtistClient Artist;
         public ClientBase<TagResource> Tags;
@@ -111,6 +112,7 @@ namespace NzbDrone.Integration.Test
             Notifications = new NotificationClient(RestClient, ApiKey);
             Profiles = new ClientBase<QualityProfileResource>(RestClient, ApiKey);
             Releases = new ReleaseClient(RestClient, ApiKey);
+            ReleasePush = new ReleasePushClient(RestClient, ApiKey);
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
             Artist = new ArtistClient(RestClient, ApiKey);
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
