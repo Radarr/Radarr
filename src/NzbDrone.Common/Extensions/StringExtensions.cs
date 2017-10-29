@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -63,7 +64,12 @@ namespace NzbDrone.Common.Extensions
             return text;
         }
 
-        public static string CleanSpaces(this string text)
+        public static string Join(this IEnumerable<string> values, string separator)
+        {
+            return string.Join(separator, values);
+        }
+
+    public static string CleanSpaces(this string text)
         {
             return CollapseSpace.Replace(text, " ").Trim();
         }

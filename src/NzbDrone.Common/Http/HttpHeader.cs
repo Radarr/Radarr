@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -37,7 +37,7 @@ namespace NzbDrone.Common.Http
             }
             if (values.Length > 1)
             {
-                throw new ApplicationException(string.Format("Expected {0} to occur only once.", key));
+                throw new ApplicationException($"Expected {key} to occur only once, but was {values.Join("|")}.");
             }
 
             return values[0];
