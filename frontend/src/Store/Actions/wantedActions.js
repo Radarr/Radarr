@@ -16,7 +16,7 @@ export const setMissingFilter = wantedActionHandlers[types.SET_MISSING_FILTER];
 export const setMissingTableOption = createAction(types.SET_MISSING_TABLE_OPTION);
 export const clearMissing = createAction(types.CLEAR_MISSING);
 
-export const batchToggleMissingEpisodes = wantedActionHandlers[types.BATCH_TOGGLE_MISSING_EPISODES];
+export const batchToggleMissingAlbums = wantedActionHandlers[types.BATCH_TOGGLE_MISSING_ALBUMS];
 
 //
 // Cutoff Unmet
@@ -32,4 +32,4 @@ export const setCutoffUnmetFilter = wantedActionHandlers[types.SET_CUTOFF_UNMET_
 export const setCutoffUnmetTableOption= createAction(types.SET_CUTOFF_UNMET_TABLE_OPTION);
 export const clearCutoffUnmet= createAction(types.CLEAR_CUTOFF_UNMET);
 
-export const batchToggleCutoffUnmetEpisodes = wantedActionHandlers[types.BATCH_TOGGLE_CUTOFF_UNMET_EPISODES];
+export const batchToggleCutoffUnmetAlbums = wantedActionHandlers[types.BATCH_TOGGLE_CUTOFF_UNMET_ALBUMS];

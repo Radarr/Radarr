@@ -1,36 +1,36 @@
 import $ from 'jquery';
-import updateEpisodes from 'Utilities/Episode/updateEpisodes';
+import updateAlbums from 'Utilities/Album/updateAlbums';
 
-function createBatchToggleEpisodeMonitoredHandler(section, getFromState) {
+function createToggleAlbumMonitoredHandler(section, getFromState) {
   return function(payload) {
     return function(dispatch, getState) {
       const {
-        albumIds,
+        albumId,
         monitored
       } = payload;
 
       const state = getFromState(getState());
 
-      updateEpisodes(dispatch, section, state.items, albumIds, {
+      updateAlbums(dispatch, section, state.items, [albumId], {
         isSaving: true
       });
 
       const promise = $.ajax({
-        url: '/episode/monitor',
+        url: `/album/${albumId}`,
         method: 'PUT',
-        data: JSON.stringify({ albumIds, monitored }),
+        data: JSON.stringify({ monitored }),
         dataType: 'json'
       });
 
       promise.done(() => {
-        updateEpisodes(dispatch, section, state.items, albumIds, {
+        updateAlbums(dispatch, section, state.items, [albumId], {
           isSaving: false,
           monitored
         });
       });
 
       promise.fail(() => {
-        updateEpisodes(dispatch, section, state.items, albumIds, {
+        updateAlbums(dispatch, section, state.items, [albumId], {
           isSaving: false
         });
       });
@@ -38,4 +38,4 @@ function createBatchToggleEpisodeMonitoredHandler(section, getFromState) {
   };
 }
 
-export default createBatchToggleEpisodeMonitoredHandler;
+export default createToggleAlbumMonitoredHandler;

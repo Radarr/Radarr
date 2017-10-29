@@ -18,7 +18,7 @@ function createMapStateToProps() {
     (state) => state.wanted.missing,
     createCommandsSelector(),
     (missing, commands) => {
-      const isSearchingForAlbums = _.some(commands, { name: commandNames.EPISODE_SEARCH });
+      const isSearchingForAlbums = _.some(commands, { name: commandNames.ALBUM_SEARCH });
       const isSearchingForMissingAlbums = _.some(commands, { name: commandNames.MISSING_ALBUM_SEARCH });
 
       return {
@@ -109,7 +109,7 @@ class MissingConnector extends Component {
 
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
-      name: commandNames.EPISODE_SEARCH,
+      name: commandNames.ALBUM_SEARCH,
       albumIds: selected
     });
   }
@@ -120,7 +120,7 @@ class MissingConnector extends Component {
       filterValue
     } = this.props;
 
-    this.props.batchToggleMissingEpisodes({
+    this.props.batchToggleMissingAlbums({
       albumIds: selected,
       monitored: filterKey !== 'monitored' || !filterValue
     });
@@ -169,7 +169,7 @@ MissingConnector.propTypes = {
   setMissingFilter: PropTypes.func.isRequired,
   setMissingTableOption: PropTypes.func.isRequired,
   clearMissing: PropTypes.func.isRequired,
-  batchToggleMissingEpisodes: PropTypes.func.isRequired,
+  batchToggleMissingAlbums: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired

@@ -15,7 +15,7 @@ function createMapStateToProps() {
     createCommandsSelector(),
     (albumId, sceneSeasonNumber, artist, commands) => {
       const isSearching = _.some(commands, (command) => {
-        const episodeSearch = command.name === commandNames.EPISODE_SEARCH;
+        const episodeSearch = command.name === commandNames.ALBUM_SEARCH;
 
         if (!episodeSearch) {
           return false;
@@ -37,7 +37,7 @@ function createMapDispatchToProps(dispatch, props) {
   return {
     onSearchPress(name, path) {
       dispatch(executeCommand({
-        name: commandNames.EPISODE_SEARCH,
+        name: commandNames.ALBUM_SEARCH,
         albumIds: [props.albumId]
       }));
     }

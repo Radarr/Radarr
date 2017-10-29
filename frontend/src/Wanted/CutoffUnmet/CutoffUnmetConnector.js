@@ -19,12 +19,12 @@ function createMapStateToProps() {
     (state) => state.wanted.cutoffUnmet,
     createCommandsSelector(),
     (cutoffUnmet, commands) => {
-      const isSearchingForAlbums = _.some(commands, { name: commandNames.EPISODE_SEARCH });
-      const isSearchingForCutoffUnmetEpisodes = _.some(commands, { name: commandNames.CUTOFF_UNMET_EPISODE_SEARCH });
+      const isSearchingForAlbums = _.some(commands, { name: commandNames.ALBUM_SEARCH });
+      const isSearchingForCutoffUnmetAlbums = _.some(commands, { name: commandNames.CUTOFF_UNMET_ALBUM_SEARCH });
 
       return {
         isSearchingForAlbums,
-        isSearchingForCutoffUnmetEpisodes,
+        isSearchingForCutoffUnmetAlbums,
         isSaving: _.some(cutoffUnmet.items, { isSaving: true }),
         ...cutoffUnmet
       };
@@ -119,7 +119,7 @@ class CutoffUnmetConnector extends Component {
 
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
-      name: commandNames.EPISODE_SEARCH,
+      name: commandNames.ALBUM_SEARCH,
       albumIds: selected
     });
   }
@@ -130,7 +130,7 @@ class CutoffUnmetConnector extends Component {
       filterValue
     } = this.props;
 
-    this.props.batchToggleCutoffUnmetEpisodes({
+    this.props.batchToggleCutoffUnmetAlbums({
       albumIds: selected,
       monitored: filterKey !== 'monitored' || !filterValue
     });
@@ -138,7 +138,7 @@ class CutoffUnmetConnector extends Component {
 
   onSearchAllCutoffUnmetPress = () => {
     this.props.executeCommand({
-      name: commandNames.CUTOFF_UNMET_EPISODE_SEARCH
+      name: commandNames.CUTOFF_UNMET_ALBUM_SEARCH
     });
   }
 
@@ -178,7 +178,7 @@ CutoffUnmetConnector.propTypes = {
   setCutoffUnmetSort: PropTypes.func.isRequired,
   setCutoffUnmetFilter: PropTypes.func.isRequired,
   setCutoffUnmetTableOption: PropTypes.func.isRequired,
-  batchToggleCutoffUnmetEpisodes: PropTypes.func.isRequired,
+  batchToggleCutoffUnmetAlbums: PropTypes.func.isRequired,
   clearCutoffUnmet: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,

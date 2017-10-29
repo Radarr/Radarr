@@ -1,5 +1,5 @@
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
-import createBatchToggleEpisodeMonitoredHandler from './Creators/createBatchToggleEpisodeMonitoredHandler';
+import createBatchToggleAlbumMonitoredHandler from './Creators/createBatchToggleAlbumMonitoredHandler';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
 import * as types from './actionTypes';
 
@@ -15,7 +15,7 @@ const wantedActionHandlers = {
     [serverSideCollectionHandlers.FILTER]: types.SET_MISSING_FILTER
   }),
 
-  [types.BATCH_TOGGLE_MISSING_EPISODES]: createBatchToggleEpisodeMonitoredHandler('missing', (state) => state.wanted.missing),
+  [types.BATCH_TOGGLE_MISSING_ALBUMS]: createBatchToggleAlbumMonitoredHandler('missing', (state) => state.wanted.missing),
 
   ...createServerSideCollectionHandlers('cutoffUnmet', '/wanted/cutoff', (state) => state.wanted, {
     [serverSideCollectionHandlers.FETCH]: types.FETCH_CUTOFF_UNMET,
@@ -28,7 +28,7 @@ const wantedActionHandlers = {
     [serverSideCollectionHandlers.FILTER]: types.SET_CUTOFF_UNMET_FILTER
   }),
 
-  [types.BATCH_TOGGLE_CUTOFF_UNMET_EPISODES]: createBatchToggleEpisodeMonitoredHandler('cutoffUnmet', (state) => state.wanted.cutoffUnmet)
+  [types.BATCH_TOGGLE_CUTOFF_UNMET_ALBUMS]: createBatchToggleAlbumMonitoredHandler('cutoffUnmet', (state) => state.wanted.cutoffUnmet)
 };
 
 export default wantedActionHandlers;

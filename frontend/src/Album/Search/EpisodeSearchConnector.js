@@ -46,7 +46,7 @@ class EpisodeSearchConnector extends Component {
 
   onQuickSearchPress = () => {
     this.props.executeCommand({
-      name: commandNames.EPISODE_SEARCH,
+      name: commandNames.ALBUM_SEARCH,
       albumIds: [this.props.albumId]
     });
 
