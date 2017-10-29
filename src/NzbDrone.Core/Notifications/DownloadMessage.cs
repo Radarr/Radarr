@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Tv;
 
@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Notifications
         public MovieFile MovieFile { get; set; }
         public List<MovieFile> OldMovieFiles { get; set; }
         public string SourcePath { get; set; }
+		public string DownloadId { get; set; }
 
         public override string ToString()
         {

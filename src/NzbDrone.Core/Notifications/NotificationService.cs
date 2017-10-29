@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -221,6 +221,7 @@ namespace NzbDrone.Core.Notifications
             downloadMessage.OldFiles = null;
             downloadMessage.OldMovieFiles = message.OldFiles;
             downloadMessage.SourcePath = message.Movie.Path;
+			downloadMessage.DownloadId = message.DownloadId;
 
             foreach (var notification in _notificationFactory.OnDownloadEnabled())
             {
