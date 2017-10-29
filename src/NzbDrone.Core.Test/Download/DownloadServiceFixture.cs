@@ -182,12 +182,10 @@ namespace NzbDrone.Core.Test.Download
         [Test]
         public void should_not_attempt_download_if_client_isnt_configure()
         {
-            Subject.DownloadReport(_parseResult);
+            Assert.Throws<DownloadClientUnavailableException>(() => Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
             VerifyEventNotPublished<AlbumGrabbedEvent>();
-
-            ExceptionVerification.ExpectedWarns(1);
         }
 
         [Test]
