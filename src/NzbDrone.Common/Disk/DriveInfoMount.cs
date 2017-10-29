@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using NzbDrone.Common.Extensions;
 
@@ -51,7 +51,7 @@ namespace NzbDrone.Common.Disk
         {
             get
             {
-                if (VolumeLabel.IsNullOrWhiteSpace())
+                if (VolumeLabel.IsNullOrWhiteSpace() || VolumeLabel.StartsWith("UUID=") || Name == VolumeLabel)
                 {
                     return Name;
                 }
