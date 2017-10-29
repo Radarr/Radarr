@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var movie = message.Movie;
             var remoteMovie = message.RemoteMovie;
+            var quality = message.Quality;
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Grab");
@@ -42,6 +43,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Release_Indexer", remoteMovie.Release.Indexer);
             environmentVariables.Add("Radarr_Release_Size", remoteMovie.Release.Size.ToString());
             environmentVariables.Add("Radarr_Release_ReleaseGroup", remoteMovie.ParsedMovieInfo.ReleaseGroup ?? string.Empty);
+            environmentVariables.Add("Radarr_Release_Quality", quality.Quality.Name);
+            environmentVariables.Add("Radarr_Release_QualityVersion", quality.Revision.Version.ToString());
 
             ExecuteScript(environmentVariables);
         }
@@ -54,6 +57,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Download");
+            environmentVariables.Add("Radarr_IsUpgrade", message.OldMovieFiles.Any().ToString());
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
             environmentVariables.Add("Radarr_Movie_Path", movie.Path);
@@ -69,6 +73,11 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             environmentVariables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
 
+            if (message.OldMovieFiles.Any())
+            {
+                environmentVariables.Add("Radarr_DeletedRelativePaths", string.Join("|", message.OldMovieFiles.Select(e => e.RelativePath)));
+                environmentVariables.Add("Radarr_DeletedPaths", string.Join("|", message.OldMovieFiles.Select(e => Path.Combine(movie.Path, e.RelativePath))));
+            }
             ExecuteScript(environmentVariables);
         }
 

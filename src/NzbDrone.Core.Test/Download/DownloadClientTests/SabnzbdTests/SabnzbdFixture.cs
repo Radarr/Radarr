@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                                               ApiKey = "5c770e3197e4fe763423ee7c392c25d1",
                                               Username = "admin",
                                               Password = "pass",
-                                              TvCategory = "tv",
+                                              MovieCategory = "movie",
                                               RecentTvPriority = (int)SabnzbdPriority.High
                                           };
             _queued = new SabnzbdQueue
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                             Size = 1000,
                             Sizeleft = 10,
                             Timeleft = TimeSpan.FromSeconds(10),
-                            Category = "tv",
+                            Category = "movie",
                             Id = "sabnzbd_nzb12345",
                             Title = "Droned.1998.1080p.WEB-DL-DRONE"
                         }
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                         {
                             Status = SabnzbdDownloadStatus.Failed,
                             Size = 1000,
-                            Category = "tv",
+                            Category = "movie",
                             Id = "sabnzbd_nzb12345",
                             Title = "Droned.1998.1080p.WEB-DL-DRONE"
                         }
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                         {
                             Status = SabnzbdDownloadStatus.Completed,
                             Size = 1000,
-                            Category = "tv",
+                            Category = "movie",
                             Id = "sabnzbd_nzb12345",
                             Title = "Droned.1998.1080p.WEB-DL-DRONE",
                             Storage = "/remote/mount/vv/Droned.1998.1080p.WEB-DL-DRONE"
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                         },
                     Categories = new List<SabnzbdCategory>
                         {
-                            new SabnzbdCategory  { Name = "tv", Dir = "vv" }
+                            new SabnzbdCategory  { Name = "movie", Dir = "vv" }
                         }
                 };
 
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
 
             _fullStatus = new SabnzbdFullStatus
                 {
-                    CompleteDir = @"Y:\nzbget\root\complete".AsOsAgnostic()
+                    CompleteDir = @"Y:\sabnzbd\root\complete".AsOsAgnostic()
                 };
 
             Mocker.GetMock<ISabnzbdProxy>()
@@ -408,10 +408,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             result.OutputPath.Should().Be(@"C:\sorted\somewhere\asdfasdf\asdfasdf.mkv".AsOsAgnostic());
         }
 
-        [TestCase(@"Y:\nzbget\root", @"completed\downloads", @"vv", @"Y:\nzbget\root\completed\downloads", @"Y:\nzbget\root\completed\downloads\vv")]
-        [TestCase(@"Y:\nzbget\root", @"completed", @"vv", @"Y:\nzbget\root\completed", @"Y:\nzbget\root\completed\vv")]
-        [TestCase(@"/nzbget/root", @"completed/downloads", @"vv", @"/nzbget/root/completed/downloads", @"/nzbget/root/completed/downloads/vv")]
-        [TestCase(@"/nzbget/root", @"completed", @"vv", @"/nzbget/root/completed", @"/nzbget/root/completed/vv")]
+        [TestCase(@"Y:\sabnzbd\root", @"completed\downloads", @"vv", @"Y:\sabnzbd\root\completed\downloads", @"Y:\sabnzbd\root\completed\downloads\vv")]
+        [TestCase(@"Y:\sabnzbd\root", @"completed", @"vv", @"Y:\sabnzbd\root\completed", @"Y:\sabnzbd\root\completed\vv")]
+        [TestCase(@"/sabnzbd/root", @"completed/downloads", @"vv", @"/sabnzbd/root/completed/downloads", @"/sabnzbd/root/completed/downloads/vv")]
+        [TestCase(@"/sabnzbd/root", @"completed", @"vv", @"/sabnzbd/root/completed", @"/sabnzbd/root/completed/vv")]
         public void should_return_status_with_outputdir_for_version_lt_2(string rootFolder, string completeDir, string categoryDir, string fullCompleteDir, string fullCategoryDir)
         {
             _fullStatus.CompleteDir = null;
@@ -429,10 +429,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
             result.OutputRootFolders.First().Should().Be(fullCategoryDir);
         }
 
-        [TestCase(@"Y:\nzbget\root", @"completed\downloads", @"vv", @"Y:\nzbget\root\completed\downloads", @"Y:\nzbget\root\completed\downloads\vv")]
-        [TestCase(@"Y:\nzbget\root", @"completed", @"vv", @"Y:\nzbget\root\completed", @"Y:\nzbget\root\completed\vv")]
-        [TestCase(@"/nzbget/root", @"completed/downloads", @"vv", @"/nzbget/root/completed/downloads", @"/nzbget/root/completed/downloads/vv")]
-        [TestCase(@"/nzbget/root", @"completed", @"vv", @"/nzbget/root/completed", @"/nzbget/root/completed/vv")]
+        [TestCase(@"Y:\sabnzbd\root", @"completed\downloads", @"vv", @"Y:\sabnzbd\root\completed\downloads", @"Y:\sabnzbd\root\completed\downloads\vv")]
+        [TestCase(@"Y:\sabnzbd\root", @"completed", @"vv", @"Y:\sabnzbd\root\completed", @"Y:\sabnzbd\root\completed\vv")]
+        [TestCase(@"/sabnzbd/root", @"completed/downloads", @"vv", @"/sabnzbd/root/completed/downloads", @"/sabnzbd/root/completed/downloads/vv")]
+        [TestCase(@"/sabnzbd/root", @"completed", @"vv", @"/sabnzbd/root/completed", @"/sabnzbd/root/completed/vv")]
         public void should_return_status_with_outputdir_for_version_gte_2(string rootFolder, string completeDir, string categoryDir, string fullCompleteDir, string fullCategoryDir)
         {
             _fullStatus.CompleteDir = fullCompleteDir;
@@ -554,7 +554,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         [Test]
         public void should_test_failed_if_tv_sorting_default_category()
         {
-            Subject.Definition.Settings.As<SabnzbdSettings>().TvCategory = null;
+            Subject.Definition.Settings.As<SabnzbdSettings>().MovieCategory = null;
 
             _config.Misc.enable_tv_sorting = true;
             _config.Misc.tv_categories = new[] { "Default" };
