@@ -197,7 +197,12 @@ namespace NzbDrone.Core.MediaFiles
             var decisions = _importDecisionMaker.GetImportDecisions(audioFiles.ToList(), artist, trackInfo);
             var importResults = _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
 
-            if ((downloadClientItem == null || downloadClientItem.CanMoveFiles) &&
+            if (importMode == ImportMode.Auto)
+            {
+                importMode = (downloadClientItem == null || downloadClientItem.CanMoveFiles) ? ImportMode.Move : ImportMode.Copy;
+            }
+
+            if (importMode == ImportMode.Move &&
                 importResults.Any(i => i.Result == ImportResultType.Imported) &&
                 ShouldDeleteFolder(directoryInfo, artist))
             {
