@@ -108,7 +108,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             if (artist == null)
             {
-                var files = _diskScanService.GetAudioFiles(folder);
+                var files = _diskScanService.FilterFiles(folder, _diskScanService.GetAudioFiles(folder));
 
                 return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
             }

@@ -176,7 +176,7 @@ namespace NzbDrone.Core.MediaFiles
                 };
             }
 
-            var audioFiles = _diskScanService.GetAudioFiles(directoryInfo.FullName);
+            var audioFiles = _diskScanService.FilterFiles(directoryInfo.FullName, _diskScanService.GetAudioFiles(directoryInfo.FullName));
 
             if (downloadClientItem == null)
             {

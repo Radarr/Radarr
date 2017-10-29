@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles
         void Scan(Artist artist);
         string[] GetAudioFiles(string path, bool allDirectories = true);
         string[] GetNonAudioFiles(string path, bool allDirectories = true);
-        List<string> FilterFiles(Artist artist, IEnumerable<string> files);
+        List<string> FilterFiles(string basePath, IEnumerable<string> files);
     }
 
     public class DiskScanService :
@@ -59,9 +59,8 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
-
-        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(extras|@eadir|extrafanart|plex\sversions|\..+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|Thumbs\.db", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/|$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public void Scan(Artist artist)
         {
@@ -101,7 +100,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var musicFilesStopwatch = Stopwatch.StartNew();
-            var mediaFileList = FilterFiles(artist, GetAudioFiles(artist.Path)).ToList();
+            var mediaFileList = FilterFiles(artist.Path, GetAudioFiles(artist.Path)).ToList();
             musicFilesStopwatch.Stop();
             _logger.Trace("Finished getting track files for: {0} [{1}]", artist, musicFilesStopwatch.Elapsed);
 
@@ -158,9 +157,9 @@ namespace NzbDrone.Core.MediaFiles
             return mediaFileList.ToArray();
         }
 
-        public List<string> FilterFiles(Artist artist, IEnumerable<string> files)
+        public List<string> FilterFiles(string basePath, IEnumerable<string> files)
         {
-            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(artist.Path.GetRelativePath(file)))
+            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
                         .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
                         .ToList();
         }
