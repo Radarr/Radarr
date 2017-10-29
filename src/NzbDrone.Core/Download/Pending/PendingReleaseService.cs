@@ -86,8 +86,7 @@ namespace NzbDrone.Core.Download.Pending
                 {
                     if (matchingReport.Reason != reason)
                     {
-                        _logger.Debug("This release is already pending with reason {0}, changing to {1}", matchingReport.Reason, reason);
-                        matchingReport.Reason = reason;
+                        _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteAlbum, matchingReport.Reason, reason); matchingReport.Reason = reason;
                         _repository.Update(matchingReport);
                         sameReason = false;
                     }
@@ -95,13 +94,11 @@ namespace NzbDrone.Core.Download.Pending
 
                 if (sameReason)
                 {
-                    _logger.Debug("This release is already pending with reason {0}, not adding again", reason);
-                    return;
+                    _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteAlbum, reason); return;
                 }
             }
 
-            _logger.Debug("Adding release to pending releases with reason {0}", reason);
-            Insert(decision, reason);
+            _logger.Debug("Adding release {0} to pending releases with reason {1}", decision.RemoteAlbum, reason); Insert(decision, reason);
         }
 
         public List<ReleaseInfo> GetPending()
