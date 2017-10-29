@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Marr.Data;
 using NLog;
 using NzbDrone.Common.Instrumentation;
@@ -24,7 +24,6 @@ namespace NzbDrone.Core.Datastore
             _databaseName = databaseName;
             _datamapperFactory = datamapperFactory;
         }
-
 
         public IDataMapper GetDataMapper()
         {
