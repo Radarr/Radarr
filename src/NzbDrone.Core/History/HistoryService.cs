@@ -33,6 +33,7 @@ namespace NzbDrone.Core.History
                                   IHandle<TrackImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<TrackFileDeletedEvent>,
+                                  IHandle<TrackFileRenamedEvent>,
                                   IHandle<ArtistDeletedEvent>
     {
         private readonly IHistoryRepository _historyRepository;
@@ -248,6 +249,35 @@ namespace NzbDrone.Core.History
                 };
 
                 history.Data.Add("Reason", message.Reason.ToString());
+
+                _historyRepository.Insert(history);
+            }
+        }
+
+        public void Handle(TrackFileRenamedEvent message)
+        {
+            var sourcePath = message.OriginalPath;
+            var sourceRelativePath = message.Artist.Path.GetRelativePath(message.OriginalPath);
+            var path = Path.Combine(message.Artist.Path, message.TrackFile.RelativePath);
+            var relativePath = message.TrackFile.RelativePath;
+
+            foreach (var track in message.TrackFile.Tracks.Value)
+            {
+                var history = new History
+                {
+                    EventType = HistoryEventType.TrackFileRenamed,
+                    Date = DateTime.UtcNow,
+                    Quality = message.TrackFile.Quality,
+                    SourceTitle = message.OriginalPath,
+                    ArtistId = message.TrackFile.ArtistId,
+                    AlbumId = message.TrackFile.AlbumId,
+                    TrackId = track.Id,
+                };
+
+                history.Data.Add("SourcePath", sourcePath);
+                history.Data.Add("SourceRelativePath", sourceRelativePath);
+                history.Data.Add("Path", path);
+                history.Data.Add("RelativePath", relativePath);
 
                 _historyRepository.Insert(history);
             }

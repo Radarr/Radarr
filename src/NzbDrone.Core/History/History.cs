@@ -40,6 +40,7 @@ namespace NzbDrone.Core.History
         SeriesFolderImported = 2,
         DownloadFolderImported = 3,
         DownloadFailed = 4,
-        TrackFileDeleted = 5
+        TrackFileDeleted = 5,
+        TrackFileRenamed = 6
     }
 }

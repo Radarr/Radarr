@@ -129,6 +129,8 @@ namespace NzbDrone.Core.MediaFiles
                     renamed.Add(trackFile);
 
                     _logger.Debug("Renamed track file: {0}", trackFile);
+
+                    _eventAggregator.PublishEvent(new TrackFileRenamedEvent(artist, trackFile, trackFilePath));
                 }
                 catch (SameFilenameException ex)
                 {
