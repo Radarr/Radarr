@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         public UTorrentSettings()
         {
             Host = "localhost";
-            Port = 9091;
+            Port = 8080;
             TvCategory = "lidarr";
         }
 
