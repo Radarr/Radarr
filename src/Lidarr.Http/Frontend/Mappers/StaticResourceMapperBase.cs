@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Nancy;
 using Nancy.Responses;
@@ -21,10 +21,7 @@ namespace Lidarr.Http.Frontend.Mappers
             _diskProvider = diskProvider;
             _logger = logger;
 
-            if (!RuntimeInfo.IsProduction)
-            {
-                _caseSensitive = StringComparison.OrdinalIgnoreCase;
-            }
+            _caseSensitive = RuntimeInfo.IsProduction ? DiskProviderBase.PathStringComparison : StringComparison.OrdinalIgnoreCase;
         }
 
         public abstract string Map(string resourceUrl);
