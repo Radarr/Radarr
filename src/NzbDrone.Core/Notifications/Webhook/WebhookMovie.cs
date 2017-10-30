@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             Id = movie.Id;
             Title = movie.Title;
             ReleaseDate = movie.PhysicalReleaseDate().ToString("yyyy-MM-dd");
+            FilePath = movie.Path;
         }
 
         public WebhookMovie(Movie movie, MovieFile movieFile) : this(movie)
