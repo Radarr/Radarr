@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 
 namespace NzbDrone.Common.Processes
 {
@@ -30,7 +31,7 @@ namespace NzbDrone.Common.Processes
                 return;
             }
 
-            var filename = Path.Combine(_appFolderInfo.AppDataFolder, "nzbdrone.pid");
+            var filename = Path.Combine(_appFolderInfo.AppDataFolder, "lidarr.pid");
             try
             {
                 File.WriteAllText(filename, _processProvider.GetCurrentProcessId().ToString());
@@ -38,7 +39,7 @@ namespace NzbDrone.Common.Processes
             catch (Exception ex)
             {
                 _logger.Error(ex, "Unable to write PID file {0}", filename);
-                throw;
+                throw new LidarrStartupException(ex, "Unable to write PID file {0}", filename);
             }
         }
     }

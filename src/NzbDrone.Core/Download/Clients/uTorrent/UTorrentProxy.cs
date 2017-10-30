@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using NLog;
@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         void RemoveTorrent(string hash, bool removeData, UTorrentSettings settings);
         void SetTorrentLabel(string hash, string label, UTorrentSettings settings);
         void MoveTorrentToTopInQueue(string hash, UTorrentSettings settings);
+        void SetState(string hash, UTorrentState state, UTorrentSettings settings);
     }
 
     public class UTorrentProxy : IUTorrentProxy
@@ -157,6 +158,15 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             ProcessRequest(requestBuilder, settings);
         }
 
+        public void SetState(string hash, UTorrentState state, UTorrentSettings settings)
+        {
+            var requestBuilder = BuildRequest(settings)
+                .AddQueryParam("action", state.ToString().ToLowerInvariant())
+                .AddQueryParam("hash", hash);
+
+            ProcessRequest(requestBuilder, settings);
+        }
+ 
         private HttpRequestBuilder BuildRequest(UTorrentSettings settings)
         {
             var requestBuilder = new HttpRequestBuilder(false, settings.Host, settings.Port)
@@ -244,7 +254,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 }
                 catch (WebException ex)
                 {
-                    throw new DownloadClientException("Unable to connect to uTorrent, please check your settings", ex);
+                    throw new DownloadClientUnavailableException("Unable to connect to uTorrent, please check your settings", ex);
                 }
 
                 cookies = response.GetCookies();

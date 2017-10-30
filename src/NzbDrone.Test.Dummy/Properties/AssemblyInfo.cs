@@ -1,14 +1,14 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NzbDrone.Test.Dummy")]
+[assembly: AssemblyTitle("Lidarr.Test.Dummy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("NzbDrone.Test.Dummy")]
+[assembly: AssemblyProduct("Lidarr.Test.Dummy")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,4 +21,3 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("7b773a86-574d-48c3-9e89-6f2e0dff714b")]
 
-[assembly: AssemblyVersion("10.0.0.*")]

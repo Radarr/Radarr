@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FizzWare.NBuilder;
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenValidArtist(string lidarrId)
         {
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(lidarrId))
+                  .Setup(s => s.GetArtistInfo(lidarrId, It.IsAny<List<string>>(), It.IsAny<List<string>>()))
                   .Returns(new Tuple<Artist, List<Album>>(_fakeArtist, new List<Album>()));
         }
 
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtist = new Artist
             {
-                ForeignArtistId = "123456",
+                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 RootFolderPath = @"C:\Test\Music"
             };
 
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtist = new Artist
                             {
-                                ForeignArtistId = "123456",
+                                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                                 RootFolderPath = @"C:\Test\Music"
                             };
 
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtist = new Artist
             {
-                ForeignArtistId = "123456",
+                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1"
             };
 
@@ -108,12 +108,12 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtist = new Artist
             {
-                ForeignArtistId = "123456",
+                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1"
             };
 
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(newArtist.ForeignArtistId))
+                  .Setup(s => s.GetArtistInfo(newArtist.ForeignArtistId, newArtist.PrimaryAlbumTypes, newArtist.SecondaryAlbumTypes))
                   .Throws(new ArtistNotFoundException(newArtist.ForeignArtistId));
 
             Mocker.GetMock<IAddArtistValidator>()

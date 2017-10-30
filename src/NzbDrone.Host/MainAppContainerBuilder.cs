@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Nancy.Bootstrapper;
-using NzbDrone.Api;
+using Lidarr.Http;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http.Dispatchers;
@@ -14,10 +14,11 @@ namespace NzbDrone.Host
         {
             var assemblies = new List<string>
                              {
-                                 "NzbDrone.Host",
-                                 "NzbDrone.Core",
-                                 "NzbDrone.Api",
-                                 "NzbDrone.SignalR"
+                                 "Lidarr.Host",
+                                 "Lidarr.Core",
+                                 "Lidarr.SignalR",
+                                 "Lidarr.Api.V3",
+                                 "Lidarr.Http"
                              };
 
             return new MainAppContainerBuilder(args, assemblies).Container;
@@ -28,7 +29,7 @@ namespace NzbDrone.Host
         {
             AutoRegisterImplementations<NzbDronePersistentConnection>();
 
-            Container.Register<INancyBootstrapper, NancyBootstrapper>();
+            Container.Register<INancyBootstrapper, LidarrBootstrapper>();
             Container.Register<IHttpDispatcher, FallbackHttpDispatcher>();
         }
     }

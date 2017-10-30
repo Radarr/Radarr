@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
@@ -10,12 +10,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
     public class ProperSpecification : IDecisionEngineSpecification
     {
-        private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly UpgradableSpecification _qualityUpgradableSpecification;
         private readonly IConfigService _configService;
         private readonly IMediaFileService _mediaFileService;
         private readonly Logger _logger;
 
-        public ProperSpecification(QualityUpgradableSpecification qualityUpgradableSpecification, IConfigService configService, IMediaFileService mediaFileService, Logger logger)
+        public ProperSpecification(UpgradableSpecification qualityUpgradableSpecification, IConfigService configService, IMediaFileService mediaFileService, Logger logger)
         {
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
             _configService = configService;
@@ -23,6 +23,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)

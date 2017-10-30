@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Notifications.Plex
 {
@@ -19,12 +18,12 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _plexClientService.Notify(Settings, EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message);
+            _plexClientService.Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _plexClientService.Notify(Settings, EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message);
+            _plexClientService.Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
         }
 
 

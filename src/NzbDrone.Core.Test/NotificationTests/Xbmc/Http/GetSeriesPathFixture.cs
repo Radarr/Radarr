@@ -1,9 +1,9 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
 {
@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
     public class GetSeriesPathFixture : CoreTest<HttpApiProvider>
     {
         private XbmcSettings _settings;
-        private Series _series;
+        private Artist _artist;
 
         [SetUp]
         public void Setup()
@@ -27,10 +27,10 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
                 UpdateLibrary = true
             };
 
-            _series = new Series
+            _artist = new Artist
             {
-                TvdbId = 79488,
-                Title = "30 Rock"
+                ForeignArtistId = "123d45d-d154f5d-1f5d1-5df18d5",
+                Name = "30 Rock"
             };
 
             const string setResponseUrl = "http://localhost:8080/xbmcCmds/xbmcHttp?command=SetResponseFormat(webheader;false;webfooter;false;header;<xml>;footer;</xml>;opentag;<tag>;closetag;</tag>;closefinaltag;false)";
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
                   .Setup(s => s.DownloadString(query, _settings.Username, _settings.Password))
                   .Returns(queryResult);
 
-            Subject.GetSeriesPath(_settings, _series)
+            Subject.GetSeriesPath(_settings, _artist)
                    .Should().Be("smb://xbmc:xbmc@HOMESERVER/TV/30 Rock/");
         }
 
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
                   .Returns(queryResult);
 
 
-            Subject.GetSeriesPath(_settings, _series)
+            Subject.GetSeriesPath(_settings, _artist)
                    .Should().BeNull();
         }
 
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
                   .Returns(queryResult);
 
 
-            Subject.GetSeriesPath(_settings, _series)
+            Subject.GetSeriesPath(_settings, _artist)
                    .Should().Be("smb://xbmc:xbmc@HOMESERVER/TV/Law & Order- Special Victims Unit/");
         }
     }

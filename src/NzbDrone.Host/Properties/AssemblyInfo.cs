@@ -8,4 +8,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Lidarr.exe")]
 [assembly: Guid("C2172AF4-F9A6-4D91-BAEE-C2E4EE680613")]
 
-[assembly: AssemblyVersion("10.0.0.*")]

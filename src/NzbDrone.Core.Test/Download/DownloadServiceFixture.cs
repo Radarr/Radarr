@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -180,14 +180,27 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_not_attempt_download_if_client_isnt_configure()
+        public void should_not_attempt_download_if_client_isnt_configured()
         {
-            Subject.DownloadReport(_parseResult);
+            Assert.Throws<DownloadClientUnavailableException>(() => Subject.DownloadReport(_parseResult));
 
             Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
-            VerifyEventNotPublished<EpisodeGrabbedEvent>();
+            VerifyEventNotPublished<AlbumGrabbedEvent>();
+        }
 
-            ExceptionVerification.ExpectedWarns(1);
+        [Test]
+        public void should_not_attempt_download_if_client_is_disabled()
+        {
+            WithUsenetClient();
+
+            Mocker.GetMock<IDownloadClientStatusService>()
+                  .Setup(v => v.IsDisabled(It.IsAny<int>()))
+                  .Returns(true);
+
+            Assert.Throws<DownloadClientUnavailableException>(() => Subject.DownloadReport(_parseResult));
+
+            Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
+            VerifyEventNotPublished<AlbumGrabbedEvent>();
         }
 
         [Test]

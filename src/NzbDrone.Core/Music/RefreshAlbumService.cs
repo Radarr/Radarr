@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
@@ -76,10 +76,11 @@ namespace NzbDrone.Core.Music
                     albumToUpdate.LastInfoSync = DateTime.UtcNow;
                     albumToUpdate.CleanTitle = album.CleanTitle;
                     albumToUpdate.Title = album.Title ?? "Unknown";
-                    albumToUpdate.CleanTitle = Parser.Parser.CleanArtistTitle(albumToUpdate.Title);
+                    albumToUpdate.CleanTitle = Parser.Parser.CleanArtistName(albumToUpdate.Title);
                     albumToUpdate.ArtistId = artist.Id;
                     albumToUpdate.AlbumType = album.AlbumType;
                     albumToUpdate.Genres = album.Genres;
+                    albumToUpdate.Label = album.Label;
                     albumToUpdate.Images = album.Images;
                     albumToUpdate.ReleaseDate = album.ReleaseDate;
                     albumToUpdate.Duration = album.Tracks.Sum(track => track.Duration);

@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles

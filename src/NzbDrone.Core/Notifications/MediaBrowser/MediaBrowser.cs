@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Emby
 {
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             if (Settings.Notify)
             {
-                _mediaBrowserService.Notify(Settings, EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message);
+                _mediaBrowserService.Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
             }
         }
 
@@ -30,20 +30,20 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             if (Settings.Notify)
             {
-                _mediaBrowserService.Notify(Settings, EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message);
+                _mediaBrowserService.Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
             }
 
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, message.Series);
+                _mediaBrowserService.Update(Settings, message.Artist);
             }
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
             if (Settings.UpdateLibrary)
             {
-                _mediaBrowserService.Update(Settings, series);
+                _mediaBrowserService.Update(Settings, artist);
             }
         }
 

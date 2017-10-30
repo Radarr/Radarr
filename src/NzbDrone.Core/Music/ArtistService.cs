@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Organizer;
@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Music
         Artist FindByTitleInexact(string title);
         void DeleteArtist(int artistId, bool deleteFiles);
         List<Artist> GetAllArtists();
+        List<Artist> AllForTag(int tagId);
         Artist UpdateArtist(Artist artist);
         List<Artist> UpdateArtists(List<Artist> artist);
         bool ArtistPathExists(string folder);
@@ -76,7 +77,7 @@ namespace NzbDrone.Core.Music
 
         public Artist FindByName(string title)
         {
-            return _artistRepository.FindByName(title.CleanArtistTitle());
+            return _artistRepository.FindByName(title.CleanArtistName());
         }
 
         public Artist FindByTitleInexact(string title)
@@ -87,6 +88,12 @@ namespace NzbDrone.Core.Music
         public List<Artist> GetAllArtists()
         {
             return _artistRepository.All().ToList();
+        }
+
+        public List<Artist> AllForTag(int tagId)
+        {
+            return GetAllArtists().Where(s => s.Tags.Contains(tagId))
+                                 .ToList();
         }
 
         public Artist GetArtist(int artistDBId)

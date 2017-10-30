@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Notifications.Xbmc;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Notifications.Plex
 {
@@ -24,12 +23,12 @@ namespace NzbDrone.Core.Notifications.Plex
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            Notify(Settings, EPISODE_GRABBED_TITLE_BRANDED, grabMessage.Message);
+            Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            Notify(Settings, EPISODE_DOWNLOADED_TITLE_BRANDED, message.Message);
+            Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
         }
 
         public override ValidationResult Test()

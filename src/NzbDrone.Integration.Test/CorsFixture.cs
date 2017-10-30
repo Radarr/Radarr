@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Extensions;
+using Lidarr.Http.Extensions;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test
@@ -10,7 +10,7 @@ namespace NzbDrone.Integration.Test
     {
         private RestRequest BuildRequest()
         {
-            var request = new RestRequest("series");
+            var request = new RestRequest("artist");
             request.AddHeader(AccessControlHeaders.RequestMethod, "POST");
 
             return request;

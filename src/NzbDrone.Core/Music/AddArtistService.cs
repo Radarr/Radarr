@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Music
                 newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
             }
 
-            newArtist.CleanName = newArtist.Name.CleanArtistTitle();
+            newArtist.CleanName = newArtist.Name.CleanArtistName();
             newArtist.SortName = ArtistNameNormalizer.Normalize(newArtist.Name, newArtist.ForeignArtistId); // There is no Sort Title
             newArtist.Added = DateTime.UtcNow;
 
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Music
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(newArtist.ForeignArtistId);
+                tuple = _artistInfo.GetArtistInfo(newArtist.ForeignArtistId, newArtist.PrimaryAlbumTypes, newArtist.SecondaryAlbumTypes);
             }
             catch (ArtistNotFoundException)
             {

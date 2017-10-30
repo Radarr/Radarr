@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -62,23 +62,36 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(report.Title);
 
-                    if (parsedAlbumInfo != null && !parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
+                    if (parsedAlbumInfo != null)
                     {
-                        var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);
-                        remoteAlbum.Release = report;
+                        if (!report.Artist.IsNullOrWhiteSpace())
+                        {
+                            parsedAlbumInfo.ArtistName = report.Artist;
+                        }
 
-                        if (remoteAlbum.Artist == null)
+                        if (!report.Album.IsNullOrWhiteSpace())
                         {
-                            decision = new DownloadDecision(remoteAlbum, new Rejection("Unknown Artist"));
+                            parsedAlbumInfo.AlbumTitle = report.Album;
                         }
-                        else if (remoteAlbum.Albums.Empty())
+
+                        if (!parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
                         {
-                            decision = new DownloadDecision(remoteAlbum, new Rejection("Unable to parse albums from release name"));
-                        }
-                        else
-                        {
-                            remoteAlbum.DownloadAllowed = remoteAlbum.Albums.Any();
-                            decision = GetDecisionForReport(remoteAlbum, searchCriteria);
+                            var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);
+                            remoteAlbum.Release = report;
+
+                            if (remoteAlbum.Artist == null)
+                            {
+                                decision = new DownloadDecision(remoteAlbum, new Rejection("Unknown Artist"));
+                            }
+                            else if (remoteAlbum.Albums.Empty())
+                            {
+                                decision = new DownloadDecision(remoteAlbum, new Rejection("Unable to parse albums from release name"));
+                            }
+                            else
+                            {
+                                remoteAlbum.DownloadAllowed = remoteAlbum.Albums.Any();
+                                decision = GetDecisionForReport(remoteAlbum, searchCriteria);
+                            }
                         }
                     }
                 }
@@ -111,9 +124,16 @@ namespace NzbDrone.Core.DecisionEngine
 
         private DownloadDecision GetDecisionForReport(RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteria = null)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteAlbum, searchCriteria))
-                                         .Where(c => c != null);
+            var reasons = new Rejection[0];
 
+            foreach (var specifications in _specifications.GroupBy(v => v.Priority).OrderBy(v => v.Key))
+            {
+                reasons = specifications.Select(c => EvaluateSpec(c, remoteAlbum, searchCriteria))
+                                                        .Where(c => c != null)
+                                                        .ToArray();
+
+                if (reasons.Any()) break;
+            }
             return new DownloadDecision(remoteAlbum, reasons.ToArray());
         }
 

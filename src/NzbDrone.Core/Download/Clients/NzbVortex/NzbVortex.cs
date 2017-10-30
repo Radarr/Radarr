@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,17 +47,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            List<NzbVortexQueueItem> vortexQueue;
-
-            try
-            {
-                vortexQueue = _proxy.GetQueue(30, Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Warn("Couldn't get download queue. {0}", ex.Message);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var vortexQueue = _proxy.GetQueue(30, Settings);
 
             var queueItems = new List<DownloadClientItem>();
 
@@ -72,7 +62,10 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 queueItem.TotalSize = vortexQueueItem.TotalDownloadSize;
                 queueItem.RemainingSize = vortexQueueItem.TotalDownloadSize - vortexQueueItem.DownloadedSize;
                 queueItem.RemainingTime = null;
-                
+
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
+
                 if (vortexQueueItem.IsPaused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
@@ -132,7 +125,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 {
                     _proxy.Remove(queueItem.Id, deleteData, Settings);
                 }
-            }            
+            }
         }
 
         protected List<NzbVortexGroup> GetGroups()
@@ -140,9 +133,9 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             return _proxy.GetGroups(Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -166,7 +159,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBVortex");
                 return new ValidationFailure("Host", "Unable to connect to NZBVortex");
             }
 
@@ -187,7 +180,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBVortex");
                 return new ValidationFailure("Host", "Unable to connect to NZBVortex");
             }
 

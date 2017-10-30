@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -6,16 +6,16 @@ using NUnit.Framework;
 using NzbDrone.Core.Notifications.Xbmc;
 using NzbDrone.Core.Notifications.Xbmc.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
 {
     [TestFixture]
     public class GetSeriesPathFixture : CoreTest<JsonApiProvider>
     {
-        private const int TVDB_ID = 5;
+        private const string MB_ID = "5";
         private XbmcSettings _settings;
-        private Series _series;
+        private Artist _artist;
         private List<TvShow> _xbmcSeries;
 
         [SetUp]
@@ -28,39 +28,39 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
                                          .All()
                                          .With(s => s.ImdbNumber = "0")
                                          .TheFirst(1)
-                                         .With(s => s.ImdbNumber = TVDB_ID.ToString())
+                                         .With(s => s.ImdbNumber = MB_ID.ToString())
                                          .Build()
                                          .ToList();
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
-                  .Setup(s => s.GetSeries(_settings))
+                  .Setup(s => s.GetArtist(_settings))
                   .Returns(_xbmcSeries);
         }
 
         private void GivenMatchingTvdbId()
         {
-            _series = new Series
-                          {
-                              TvdbId = TVDB_ID,
-                              Title = "TV Show"
+            _artist = new Artist
+            {
+                              ForeignArtistId = MB_ID,
+                              Name = "TV Show"
                           };
         }
 
         private void GivenMatchingTitle()
         {
-            _series = new Series
+            _artist = new Artist
             {
-                TvdbId = 1000,
-                Title = _xbmcSeries.First().Label
+                ForeignArtistId = "1000",
+                Name = _xbmcSeries.First().Label
             };
         }
 
         private void GivenMatchingSeries()
         {
-            _series = new Series
+            _artist = new Artist
             {
-                TvdbId = 1000,
-                Title = "Does not exist"
+                ForeignArtistId = "1000",
+                Name = "Does not exist"
             }; 
         }
 
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
         {
             GivenMatchingSeries();
 
-            Subject.GetSeriesPath(_settings, _series).Should().BeNull();
+            Subject.GetSeriesPath(_settings, _artist).Should().BeNull();
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
         {
             GivenMatchingTvdbId();
 
-            Subject.GetSeriesPath(_settings, _series).Should().Be(_xbmcSeries.First().File);
+            Subject.GetSeriesPath(_settings, _artist).Should().Be(_xbmcSeries.First().File);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
         {
             GivenMatchingTitle();
 
-            Subject.GetSeriesPath(_settings, _series).Should().Be(_xbmcSeries.First().File);
+            Subject.GetSeriesPath(_settings, _artist).Should().Be(_xbmcSeries.First().File);
         }
 
         [Test]
@@ -94,13 +94,13 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
             GivenMatchingTvdbId();
 
             _xbmcSeries.ForEach(s => s.ImdbNumber = "tt12345");
-            _xbmcSeries.Last().ImdbNumber = TVDB_ID.ToString();
+            _xbmcSeries.Last().ImdbNumber = MB_ID.ToString();
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
-                  .Setup(s => s.GetSeries(_settings))
+                  .Setup(s => s.GetArtist(_settings))
                   .Returns(_xbmcSeries);
 
-            Subject.GetSeriesPath(_settings, _series).Should().NotBeNull();
+            Subject.GetSeriesPath(_settings, _artist).Should().NotBeNull();
         }
     }
 }

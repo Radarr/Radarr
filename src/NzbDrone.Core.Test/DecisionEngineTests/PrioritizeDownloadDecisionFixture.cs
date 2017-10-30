@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.DecisionEngine;
@@ -14,6 +14,9 @@ using FluentAssertions;
 using FizzWare.NBuilder;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Test.Languages;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -33,11 +36,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                             .Build();
         }
 
-        private RemoteAlbum GivenRemoteAlbum(List<Album> albums, QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
+        private RemoteAlbum GivenRemoteAlbum(List<Album> albums, QualityModel quality, Language language, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
         {
             var remoteAlbum = new RemoteAlbum();
             remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
             remoteAlbum.ParsedAlbumInfo.Quality = quality;
+            remoteAlbum.ParsedAlbumInfo.Language = language;
 
             remoteAlbum.Albums = new List<Album>();
             remoteAlbum.Albums.AddRange(albums);
@@ -48,8 +52,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteAlbum.Release.DownloadProtocol = downloadProtocol;
 
             remoteAlbum.Artist = Builder<Artist>.CreateNew()
-                                                  .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
-                                                  .Build();
+                                                .With(e => e.Profile = new Profile
+                                                {
+                                                    Items = Qualities.QualityFixture.GetDefaultQualities()
+                                                })
+                                                .With(l => l.LanguageProfile = new LanguageProfile
+                                                {
+                                                    Languages = LanguageFixture.GetDefaultLanguages(),
+                                                    Cutoff = Language.Spanish
+                                                }).Build();
 
             return remoteAlbum;
         }
@@ -67,8 +78,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_put_propers_before_non_propers()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256, new Revision(version: 1)));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256, new Revision(version: 2)));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256, new Revision(version: 1)), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256, new Revision(version: 2)), Language.English);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -81,8 +92,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_put_higher_quality_before_lower()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -95,10 +106,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_order_by_age_then_largest_rounded_to_200mb()
         {
-            var remoteAlbumSd = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192), size: 100.Megabytes(), age: 1);
-            var remoteAlbumHdSmallOld = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), size: 1200.Megabytes(), age: 1000);
-            var remoteAlbumSmallYoung = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), size: 1250.Megabytes(), age: 10);
-            var remoteAlbumHdLargeYoung = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), size: 3000.Megabytes(), age: 1);
+            var remoteAlbumSd = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192), Language.English, size: 100.Megabytes(), age: 1);
+            var remoteAlbumHdSmallOld = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 1200.Megabytes(), age: 1000);
+            var remoteAlbumSmallYoung = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 1250.Megabytes(), age: 10);
+            var remoteAlbumHdLargeYoung = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 3000.Megabytes(), age: 1);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbumSd));
@@ -113,8 +124,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_order_by_youngest()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), age: 10);
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), age: 5);
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, age: 10);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, age: 5);
 
 
             var decisions = new List<DownloadDecision>();
@@ -128,8 +139,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_throw_if_no_episodes_are_found()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), size: 500.Megabytes());
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), size: 500.Megabytes());
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 500.Megabytes());
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 500.Megabytes());
 
             remoteAlbum1.Albums = new List<Album>();
 
@@ -145,8 +156,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPreferredDownloadProtocol(DownloadProtocol.Usenet);
 
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), downloadProtocol: DownloadProtocol.Torrent);
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), downloadProtocol: DownloadProtocol.Usenet);
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, downloadProtocol: DownloadProtocol.Torrent);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, downloadProtocol: DownloadProtocol.Usenet);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -161,8 +172,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPreferredDownloadProtocol(DownloadProtocol.Torrent);
 
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), downloadProtocol: DownloadProtocol.Torrent);
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), downloadProtocol: DownloadProtocol.Usenet);
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, downloadProtocol: DownloadProtocol.Torrent);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, downloadProtocol: DownloadProtocol.Usenet);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -175,8 +186,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_single_album_over_multi_album()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1), GivenAlbum(2) }, new QualityModel(Quality.MP3_256));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1), GivenAlbum(2) }, new QualityModel(Quality.MP3_256), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -189,8 +200,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_releases_with_more_seeders()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -209,14 +220,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo) qualifiedReports.First().RemoteAlbum.Release).Seeders.Should().Be(torrentInfo2.Seeders);
+            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Seeders.Should().Be(torrentInfo2.Seeders);
         }
 
         [Test]
         public void should_prefer_releases_with_more_peers_given_equal_number_of_seeds()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -243,8 +254,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_releases_with_more_peers_no_seeds()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -272,8 +283,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_first_release_if_peers_and_size_are_too_similar()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -295,14 +306,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo) qualifiedReports.First().RemoteAlbum.Release).Should().Be(torrentInfo1);
+            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Should().Be(torrentInfo1);
         }
 
         [Test]
         public void should_prefer_first_release_if_age_and_size_are_too_similar()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English);
 
             remoteAlbum1.Release.PublishDate = DateTime.UtcNow.AddDays(-100);
             remoteAlbum1.Release.Size = 200.Megabytes();
@@ -321,8 +332,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_quality_over_the_number_of_peers()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_512));
-            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192));
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_512), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192), Language.English);
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -345,6 +356,38 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
             ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Should().Be(torrentInfo1);
+        }
+
+        [Test]
+        public void should_order_by_language()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), Language.French);
+            var remoteAlbum3 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), Language.German);
+
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+            decisions.Add(new DownloadDecision(remoteAlbum3));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Language.Should().Be(Language.French);
+            qualifiedReports.Last().RemoteAlbum.ParsedAlbumInfo.Language.Should().Be(Language.German);
+        }
+
+        [Test]
+        public void should_put_higher_quality_before_lower_allways()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.French);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), Language.German);
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.MP3_320);
         }
     }
 }

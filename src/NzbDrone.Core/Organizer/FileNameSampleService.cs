@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Music;
@@ -30,12 +30,12 @@ namespace NzbDrone.Core.Organizer
 
             _standardArtist = new Artist
             {
-                Name = "Artist Name"
+                Name = "The Artist Name"
             };
 
             _standardAlbum = new Album
             {
-                Title = "Album Title",
+                Title = "The Album Title",
                 ReleaseDate = System.DateTime.Today
             };
 

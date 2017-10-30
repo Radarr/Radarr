@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Music
 
             album = _albumService.FindById(album.ForeignAlbumId);
 
-            var existingTracks = _trackService.GetTracksByAlbum(album.ArtistId, album.Id);
+            var existingTracks = _trackService.GetTracksByAlbum(album.Id);
 
             var updateList = new List<Track>();
             var newList = new List<Track>();

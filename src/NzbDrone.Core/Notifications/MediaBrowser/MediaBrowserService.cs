@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Rest;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Emby
 {
     public interface IMediaBrowserService
     {
         void Notify(MediaBrowserSettings settings, string title, string message);
-        void Update(MediaBrowserSettings settings, Series series);
+        void Update(MediaBrowserSettings settings, Artist artist);
         ValidationFailure Test(MediaBrowserSettings settings);
     }
 
@@ -30,9 +30,9 @@ namespace NzbDrone.Core.Notifications.Emby
             _proxy.Notify(settings, title, message);
         }
 
-        public void Update(MediaBrowserSettings settings, Series series)
+        public void Update(MediaBrowserSettings settings, Artist artist)
         {
-            _proxy.Update(settings, series.TvdbId);
+            _proxy.Update(settings, artist.ForeignArtistId);
         }
 
         public ValidationFailure Test(MediaBrowserSettings settings)

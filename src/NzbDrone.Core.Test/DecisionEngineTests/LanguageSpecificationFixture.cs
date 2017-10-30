@@ -1,10 +1,11 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Test.Languages;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 
@@ -19,19 +20,25 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
+
+            LanguageProfile _profile = new LazyLoaded<LanguageProfile>(new LanguageProfile
+            {
+                Languages = LanguageFixture.GetDefaultLanguages(Language.English, Language.Spanish),
+                Cutoff = Language.Spanish
+            });
+
+
             _remoteAlbum = new RemoteAlbum
             {
                 ParsedAlbumInfo = new ParsedAlbumInfo
                 {
                     Language = Language.English
                 },
+
                 Artist = new Artist
-                         {
-                             Profile = new LazyLoaded<Profile>(new Profile
-                                                               {
-                                                                   Language = Language.English
-                                                               })
-                         }
+                {
+                    LanguageProfile = _profile
+                }
             };
         }
 
@@ -42,7 +49,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithGermanRelease()
         {
-            _remoteAlbum.ParsedAlbumInfo.Language = Language.German;            
+            _remoteAlbum.ParsedAlbumInfo.Language = Language.German;
         }
 
         [Test]

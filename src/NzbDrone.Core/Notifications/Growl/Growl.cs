@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Notifications.Growl
 {
@@ -21,12 +20,12 @@ namespace NzbDrone.Core.Notifications.Growl
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _growlService.SendNotification(EPISODE_GRABBED_TITLE, grabMessage.Message, "GRAB", Settings.Host, Settings.Port, Settings.Password);
+            _growlService.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, "GRAB", Settings.Host, Settings.Port, Settings.Password);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _growlService.SendNotification(EPISODE_DOWNLOADED_TITLE, message.Message, "DOWNLOAD", Settings.Host, Settings.Port, Settings.Password);
+            _growlService.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, "DOWNLOAD", Settings.Host, Settings.Port, Settings.Password);
         }
 
 

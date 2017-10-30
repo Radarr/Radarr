@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -15,6 +15,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteria)
@@ -30,7 +31,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
                 return Decision.Accept();
             }
                 
-            if (Parser.Parser.CleanArtistTitle(singleAlbumSpec.AlbumTitle) != Parser.Parser.CleanArtistTitle(remoteAlbum.ParsedAlbumInfo.AlbumTitle))
+            if (Parser.Parser.CleanArtistName(singleAlbumSpec.AlbumTitle) != Parser.Parser.CleanArtistName(remoteAlbum.ParsedAlbumInfo.AlbumTitle))
             {
                 _logger.Debug("Album does not match searched album title, skipping.");
                 return Decision.Reject("Wrong album");

@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Organizer;
@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Music
         Album UpdateAlbum(Album album);
         List<Album> UpdateAlbums(List<Album> album);
         void SetAlbumMonitored(int albumId, bool monitored);
+        void SetMonitored(IEnumerable<int> ids, bool monitored);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         List<Album> AlbumsBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         void InsertMany(List<Album> albums);
@@ -163,7 +164,28 @@ namespace NzbDrone.Core.Music
             var album = _albumRepository.Get(albumId);
             _albumRepository.SetMonitoredFlat(album, monitored);
 
+            var tracks = _trackService.GetTracksByAlbum(albumId);
+            foreach (var track in tracks)
+            {
+                track.Monitored = monitored;
+            }
+            _trackService.UpdateTracks(tracks);
+
             _logger.Debug("Monitored flag for Album:{0} was set to {1}", albumId, monitored);
+        }
+
+        public void SetMonitored(IEnumerable<int> ids, bool monitored)
+        {
+            _albumRepository.SetMonitored(ids, monitored);
+            foreach (var id in ids)
+            {
+                var tracks = _trackService.GetTracksByAlbum(id);
+                foreach (var track in tracks)
+                {
+                    track.Monitored = monitored;
+                }
+                _trackService.UpdateTracks(tracks);
+            }
         }
 
         public List<Album> UpdateAlbums(List<Album> album)
@@ -180,11 +202,6 @@ namespace NzbDrone.Core.Music
         {
             var albums = GetAlbumsByArtist(message.Artist.Id);
             _albumRepository.DeleteMany(albums);
-        }
-
-        public void Handle(ArtistDeletedEvent message)
-        {
-            throw new NotImplementedException();
         }
     }
 }

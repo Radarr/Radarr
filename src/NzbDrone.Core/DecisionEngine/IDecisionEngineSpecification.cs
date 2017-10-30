@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine
@@ -6,6 +6,8 @@ namespace NzbDrone.Core.DecisionEngine
     public interface IDecisionEngineSpecification
     {
         RejectionType Type { get; }
+
+        SpecificationPriority Priority { get; }
 
         Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria);
     }

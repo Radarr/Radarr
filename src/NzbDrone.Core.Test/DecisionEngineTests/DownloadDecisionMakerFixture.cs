@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -28,6 +28,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private Mock<IDecisionEngineSpecification> _fail2;
         private Mock<IDecisionEngineSpecification> _fail3;
 
+        private Mock<IDecisionEngineSpecification> _failDelayed1;
+
         [SetUp]
         public void Setup()
         {
@@ -39,6 +41,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _fail2 = new Mock<IDecisionEngineSpecification>();
             _fail3 = new Mock<IDecisionEngineSpecification>();
 
+            _failDelayed1 = new Mock<IDecisionEngineSpecification>();
+
             _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
             _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
             _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
@@ -46,6 +50,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail1"));
             _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail2"));
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail3"));
+
+            _failDelayed1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("failDelayed1"));
+            _failDelayed1.SetupGet(c => c.Priority).Returns(SpecificationPriority.Disk);
 
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" } };
             _remoteAlbum = new RemoteAlbum {
@@ -76,6 +83,25 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _pass1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
             _pass2.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
             _pass3.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
+        }
+
+        [Test]
+        public void should_call_delayed_specifications_if_non_delayed_passed()
+        {
+            GivenSpecifications(_pass1, _failDelayed1);
+
+            Subject.GetRssDecision(_reports).ToList();
+            _failDelayed1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
+        }
+
+        [Test]
+        public void should_not_call_delayed_specifications_if_non_delayed_failed()
+        {
+            GivenSpecifications(_fail1, _failDelayed1);
+
+            Subject.GetRssDecision(_reports).ToList();
+
+            _failDelayed1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Never());
         }
 
         [Test]

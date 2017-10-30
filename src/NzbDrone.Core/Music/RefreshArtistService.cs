@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Music
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(artist.ForeignArtistId);
+                tuple = _artistInfo.GetArtistInfo(artist.ForeignArtistId, artist.PrimaryAlbumTypes, artist.SecondaryAlbumTypes);
             }
             catch (ArtistNotFoundException)
             {
@@ -79,6 +79,9 @@ namespace NzbDrone.Core.Music
             artist.LastInfoSync = DateTime.UtcNow;
             artist.Images = artistInfo.Images;
             artist.Genres = artistInfo.Genres;
+            artist.Links = artistInfo.Links;
+            artist.Disambiguation = artistInfo.Disambiguation;
+            artist.ArtistType = artistInfo.ArtistType;
 
             try
             {

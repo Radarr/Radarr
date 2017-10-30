@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -11,21 +11,22 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
     public class HistorySpecification : IDecisionEngineSpecification
     {
         private readonly IHistoryService _historyService;
-        private readonly QualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly UpgradableSpecification _upgradableSpecification;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public HistorySpecification(IHistoryService historyService,
-                                           QualityUpgradableSpecification qualityUpgradableSpecification,
+                                           UpgradableSpecification qualityUpgradableSpecification,
                                            IConfigService configService,
                                            Logger logger)
         {
             _historyService = historyService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = qualityUpgradableSpecification;
             _configService = configService;
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
@@ -47,8 +48,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
                 {
                     var recent = mostRecent.Date.After(DateTime.UtcNow.AddHours(-12));
-                    var cutoffUnmet = _qualityUpgradableSpecification.CutoffNotMet(subject.Artist.Profile, mostRecent.Quality, subject.ParsedAlbumInfo.Quality);
-                    var upgradeable = _qualityUpgradableSpecification.IsUpgradable(subject.Artist.Profile, mostRecent.Quality, subject.ParsedAlbumInfo.Quality);
+                    var cutoffUnmet = _upgradableSpecification.CutoffNotMet(subject.Artist.Profile, subject.Artist.LanguageProfile, mostRecent.Quality, mostRecent.Language, subject.ParsedAlbumInfo.Quality);
+                    var upgradeable = _upgradableSpecification.IsUpgradable(subject.Artist.Profile, subject.Artist.LanguageProfile, mostRecent.Quality, mostRecent.Language, subject.ParsedAlbumInfo.Quality, subject.ParsedAlbumInfo.Language);
 
                     if (!recent && cdhEnabled)
                     {

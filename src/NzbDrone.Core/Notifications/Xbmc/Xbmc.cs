@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
@@ -33,12 +33,12 @@ namespace NzbDrone.Core.Notifications.Xbmc
             const string header = "Lidarr - Downloaded";
 
             Notify(Settings, header, message.Message);
-            UpdateAndClean(message.Series, message.OldFiles.Any());
+            UpdateAndClean(message.Artist, message.OldFiles.Any());
         }
 
-        public override void OnRename(Series series)
+        public override void OnRename(Artist artist)
         {
-            UpdateAndClean(series);
+            UpdateAndClean(artist);
         }
 
         public override string Name => "Kodi (XBMC)";
@@ -68,13 +68,13 @@ namespace NzbDrone.Core.Notifications.Xbmc
             }
         }
 
-        private void UpdateAndClean(Series series, bool clean = true)
+        private void UpdateAndClean(Artist artist, bool clean = true)
         {
             try
             {
                 if (Settings.UpdateLibrary)
                 {
-                    _xbmcService.Update(Settings, series);
+                    _xbmcService.Update(Settings, artist);
                 }
 
                 if (clean && Settings.CleanLibrary)

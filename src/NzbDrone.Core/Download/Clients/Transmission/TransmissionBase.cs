@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -33,17 +33,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            List<TransmissionTorrent> torrents;
-
-            try
-            {
-                torrents = _proxy.GetTorrents(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var torrents = _proxy.GetTorrents(Settings);
 
             var items = new List<DownloadClientItem>();
 
@@ -86,8 +76,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                     item.Status = DownloadItemStatus.Warning;
                     item.Message = torrent.ErrorString;
                 }
-                else if (torrent.Status == TransmissionTorrentStatus.Seeding ||
-                         torrent.Status == TransmissionTorrentStatus.SeedingWait)
+                else if (torrent.LeftUntilDone == 0 && (torrent.Status == TransmissionTorrentStatus.Stopped ||
+                                                        torrent.Status == TransmissionTorrentStatus.Seeding ||
+                                                        torrent.Status == TransmissionTorrentStatus.SeedingWait))
                 {
                     item.Status = DownloadItemStatus.Completed;
                 }
@@ -105,7 +96,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                item.IsReadOnly = torrent.Status != TransmissionTorrentStatus.Stopped;
+                item.CanMoveFiles = item.CanBeRemoved = torrent.Status == TransmissionTorrentStatus.Stopped;
 
                 items.Add(item);
             }
@@ -118,7 +109,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _proxy.RemoveTorrent(downloadId.ToLower(), deleteData, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var destDir = config.GetValueOrDefault("download-dir") as string;
@@ -128,7 +119,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 destDir = string.Format("{0}/.{1}", destDir, Settings.TvCategory);
             }
 
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost",
                 OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(destDir)) }
@@ -204,27 +195,23 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             }
             catch (DownloadClientAuthenticationException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure("Username", "Authentication failure")
                 {
                     DetailedDescription = string.Format("Please verify your username and password. Also verify if the host running Lidarr isn't blocked from accessing {0} by WhiteList limitations in the {0} configuration.", Name)
                 };
             }
-            catch (WebException ex)
+            catch (DownloadClientUnavailableException ex)
             {
-                _logger.Error(ex);
-                if (ex.Status == WebExceptionStatus.ConnectFailure)
+                _logger.Error(ex, ex.Message);
+                return new NzbDroneValidationFailure("Host", "Unable to connect")
                 {
-                    return new NzbDroneValidationFailure("Host", "Unable to connect")
-                    {
-                        DetailedDescription = "Please verify the hostname and port."
-                    };
-                }
-                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+                    DetailedDescription = "Please verify the hostname and port."
+                };
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Failed to test");
                 return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
             }
         }
@@ -239,7 +226,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Failed to get torrents");
                 return new NzbDroneValidationFailure(string.Empty, "Failed to get the list of torrents: " + ex.Message);
             }
 

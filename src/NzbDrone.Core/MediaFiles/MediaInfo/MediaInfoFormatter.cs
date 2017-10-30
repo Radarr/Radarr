@@ -35,8 +35,14 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return mediaInfo.AudioChannelPositionsText.ContainsIgnoreCase("LFE") ? audioChannels - 1 + 0.1m : audioChannels;
             }
 
+            if (audioChannelPositions.Contains("+"))
+            {
+                return audioChannelPositions.Split('+')
+                                            .Sum(s => decimal.Parse(s.Trim(), CultureInfo.InvariantCulture));
+            }
+
             return audioChannelPositions.Replace("Object Based / ", "")
-                                        .Split(new [] { " / " }, StringSplitOptions.None)
+                                        .Split(new[] { " / " }, StringSplitOptions.RemoveEmptyEntries)
                                         .First()
                                         .Split('/')
                                         .Sum(s => decimal.Parse(s, CultureInfo.InvariantCulture));

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -7,7 +8,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Others
 {
@@ -27,33 +28,33 @@ namespace NzbDrone.Core.Extras.Others
 
         public override int Order => 2;
 
-        public override IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles)
+        public override IEnumerable<ExtraFile> CreateAfterArtistScan(Artist artist, List<Album> albums, List<TrackFile> trackFiles)
         {
             return Enumerable.Empty<ExtraFile>();
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile)
+        public override IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, TrackFile trackFile)
         {
             return Enumerable.Empty<ExtraFile>();
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder)
+        public override IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, string artistFolder, string albumFolder)
         {
             return Enumerable.Empty<ExtraFile>();
         }
 
-        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles)
+        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Artist artist, List<TrackFile> trackFiles)
         {
-            var extraFiles = _otherExtraFileService.GetFilesBySeries(series.Id);
+            var extraFiles = _otherExtraFileService.GetFilesByArtist(artist.Id);
             var movedFiles = new List<OtherExtraFile>();
 
-            foreach (var episodeFile in episodeFiles)
+            foreach (var trackFile in trackFiles)
             {
-                var extraFilesForEpisodeFile = extraFiles.Where(m => m.EpisodeFileId == episodeFile.Id).ToList();
+                var extraFilesForTrackFile = extraFiles.Where(m => m.TrackFileId == trackFile.Id).ToList();
 
-                foreach (var extraFile in extraFilesForEpisodeFile)
+                foreach (var extraFile in extraFilesForTrackFile)
                 {
-                    movedFiles.AddIfNotNull(MoveFile(series, episodeFile, extraFile));
+                    movedFiles.AddIfNotNull(MoveFile(artist, trackFile, extraFile));
                 }
             }
 
@@ -62,15 +63,15 @@ namespace NzbDrone.Core.Extras.Others
             return movedFiles;
         }
 
-        public override ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
+        public override ExtraFile Import(Artist artist, TrackFile trackFile, string path, string extension, bool readOnly)
         {
             // If the extension is .nfo we need to change it to .nfo-orig
-            if (Path.GetExtension(path).Equals(".nfo"))
+            if (Path.GetExtension(path).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
             {
                 extension += "-orig";
             }
 
-            var extraFile = ImportFile(series, episodeFile, path, readOnly, extension, null);
+            var extraFile = ImportFile(artist, trackFile, path, readOnly, extension, null);
 
             _otherExtraFileService.Upsert(extraFile);
 

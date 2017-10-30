@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
@@ -8,7 +8,6 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Configuration;

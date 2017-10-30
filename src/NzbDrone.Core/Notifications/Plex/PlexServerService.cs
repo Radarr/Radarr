@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,13 +7,13 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Notifications.Plex.Models;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Plex
 {
     public interface IPlexServerService
     {
-        void UpdateLibrary(Series series, PlexServerSettings settings);
+        void UpdateLibrary(Artist artist, PlexServerSettings settings);
         ValidationFailure Test(PlexServerSettings settings);
     }
 
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Notifications.Plex
             _logger = logger;
         }
 
-        public void UpdateLibrary(Series series, PlexServerSettings settings)
+        public void UpdateLibrary(Artist artist, PlexServerSettings settings)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Notifications.Plex
 
                 if (partialUpdates)
                 {
-                    UpdatePartialSection(series, sections, settings);
+                    UpdatePartialSection(artist, sections, settings);
                 }
 
                 else
@@ -130,17 +130,17 @@ namespace NzbDrone.Core.Notifications.Plex
             _plexServerProxy.Update(sectionId, settings);
         }
 
-        private void UpdatePartialSection(Series series, List<PlexSection> sections, PlexServerSettings settings)
+        private void UpdatePartialSection(Artist artist, List<PlexSection> sections, PlexServerSettings settings)
         {
             var partiallyUpdated = false;
 
             foreach (var section in sections)
             {
-                var metadataId = GetMetadataId(section.Id, series, section.Language, settings);
+                var metadataId = GetMetadataId(section.Id, artist, section.Language, settings);
 
                 if (metadataId.HasValue)
                 {
-                    _logger.Debug("Updating Plex host: {0}, Section: {1}, Series: {2}", settings.Host, section.Id, series);
+                    _logger.Debug("Updating Plex host: {0}, Section: {1}, Artist: {2}", settings.Host, section.Id, artist);
                     _plexServerProxy.UpdateSeries(metadataId.Value, settings);
 
                     partiallyUpdated = true;
@@ -150,16 +150,16 @@ namespace NzbDrone.Core.Notifications.Plex
             // Only update complete sections if all partial updates failed
             if (!partiallyUpdated)
             {
-                _logger.Debug("Unable to update partial section, updating all TV sections");
+                _logger.Debug("Unable to update partial section, updating all Music sections");
                 sections.ForEach(s => UpdateSection(s.Id, settings));
             }
         }
 
-        private int? GetMetadataId(int sectionId, Series series, string language, PlexServerSettings settings)
+        private int? GetMetadataId(int sectionId, Artist artist, string language, PlexServerSettings settings)
         {
-            _logger.Debug("Getting metadata from Plex host: {0} for series: {1}", settings.Host, series);
+            _logger.Debug("Getting metadata from Plex host: {0} for series: {1}", settings.Host, artist);
 
-            return _plexServerProxy.GetMetadataId(sectionId, series.TvdbId, language, settings);
+            return _plexServerProxy.GetMetadataId(sectionId, artist.ForeignArtistId, language, settings);
         }
 
         public ValidationFailure Test(PlexServerSettings settings)
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Notifications.Plex
 
                 if (sections.Empty())
                 {
-                    return new ValidationFailure("Host", "At least one TV library is required");
+                    return new ValidationFailure("Host", "At least one Music library is required");
                 }
             }
             catch(PlexAuthenticationException ex)

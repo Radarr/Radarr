@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
 namespace NzbDrone.Test.Dummy
 {
     public class DummyApp
     {
-        public const string DUMMY_PROCCESS_NAME = "NzbDrone.Test.Dummy";
+        public const string DUMMY_PROCCESS_NAME = "Lidarr.Test.Dummy";
 
         static void Main(string[] args)
         {

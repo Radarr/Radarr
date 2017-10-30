@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System.IO;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Marr.Data;
@@ -8,7 +9,6 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
@@ -36,6 +36,10 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(true);
+
+            Mocker.GetMock<IDiskProvider>()
+                 .Setup(c => c.GetParentFolder(It.IsAny<string>()))
+                 .Returns<string>(c => Path.GetDirectoryName(c));
         }
 
         private void GivenSingleTrackWithSingleTrackFile()

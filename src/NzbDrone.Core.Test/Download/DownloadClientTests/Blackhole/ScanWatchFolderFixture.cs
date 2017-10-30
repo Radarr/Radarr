@@ -1,15 +1,17 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Download;
-using NzbDrone.Test.Common;
-using System.Threading;
-using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Download.Clients.Blackhole;
+using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Test.Framework;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 {
@@ -33,6 +35,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.GetFileSize(It.IsAny<string>()))
                 .Returns(1000000);
+
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
+                  .Returns<string, IEnumerable<string>>((b, s) => s.ToList());
         }
 
         protected void GivenChangedItem()

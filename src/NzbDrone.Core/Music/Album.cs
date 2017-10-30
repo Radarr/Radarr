@@ -1,6 +1,5 @@
-﻿using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Tv;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +21,7 @@ namespace NzbDrone.Core.Music
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public DateTime? ReleaseDate { get; set; }
-        public string Label { get; set; }
+        public List<string> Label { get; set; }
         //public int TrackCount { get; set; }
         public string Path { get; set; }
         public int ProfileId { get; set; }
@@ -39,7 +38,7 @@ namespace NzbDrone.Core.Music
         public String AlbumType { get; set; } // TODO: Turn this into a type similar to Series Type in TV
         //public string ArtworkUrl { get; set; }
         //public string Explicitness { get; set; }
-        public AddSeriesOptions AddOptions { get; set; }
+        public AddArtistOptions AddOptions { get; set; }
         public Artist Artist { get; set; }
         public Ratings Ratings { get; set; }
 

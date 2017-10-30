@@ -1,10 +1,11 @@
-﻿using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Parser.Model
         public Album Album { get; set; }
         public List<Track> Tracks { get; set; }
         public QualityModel Quality { get; set; }
+        public Language Language { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
         public bool ExistingFile { get; set; }
 

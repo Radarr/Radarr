@@ -11,6 +11,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -27,7 +28,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IMediaFileService _mediaFileService;
         private readonly IDiskProvider _diskProvider;
         private readonly IVideoFileInfoReader _videoFileInfoReader;
-        private readonly IDetectSample _detectSample;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -35,7 +35,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                                    IMediaFileService mediaFileService,
                                    IDiskProvider diskProvider,
                                    IVideoFileInfoReader videoFileInfoReader,
-                                   IDetectSample detectSample,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -43,7 +42,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             _mediaFileService = mediaFileService;
             _diskProvider = diskProvider;
             _videoFileInfoReader = videoFileInfoReader;
-            _detectSample = detectSample;
             _logger = logger;
         }
 
@@ -80,6 +78,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 if (localTrack != null)
                 {
                     localTrack.Quality = GetQuality(folderInfo, localTrack.Quality, artist);
+                    localTrack.Language = GetLanguage(folderInfo, localTrack.Language, artist);
                     localTrack.Size = _diskProvider.GetFileSize(file);
 
                     _logger.Debug("Size: {0}", localTrack.Size);
@@ -110,6 +109,19 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                 var localTrack = new LocalTrack { Path = file };
                 decision = new ImportDecision(localTrack, new Rejection("Unexpected error processing file"));
+            }
+
+            if (decision == null)
+            {
+                _logger.Error("Unable to make a decision on {0}", file);
+            }
+            else if (decision.Rejections.Any())
+            {
+                _logger.Debug("File rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
+            }
+            else
+            {
+                _logger.Debug("File accepted");
             }
 
             return decision;
@@ -186,6 +198,37 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             }
 
             return fileQuality;
+        }
+
+        private Language GetLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
+        {
+            if (UseFolderLanguage(folderInfo, fileLanguage, artist))
+            {
+                _logger.Debug("Using language from folder: {0}", folderInfo.Language);
+                return folderInfo.Language;
+            }
+
+            return fileLanguage;
+        }
+
+        private bool UseFolderLanguage(ParsedTrackInfo folderInfo, Language fileLanguage, Artist artist)
+        {
+            if (folderInfo == null)
+            {
+                return false;
+            }
+
+            if (folderInfo.Language == Language.Unknown)
+            {
+                return false;
+            }
+
+            if (new LanguageComparer(artist.LanguageProfile).Compare(folderInfo.Language, fileLanguage) > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private bool UseFolderQuality(ParsedTrackInfo folderInfo, QualityModel fileQuality, Artist artist)

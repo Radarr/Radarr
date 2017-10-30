@@ -1,0 +1,22 @@
+.artistNameContainer {
+  display: flex;
+  align-items: center;
+}
+
+.artistName {
+  margin-right: 5px;
+}
+
+.disambiguation {
+  margin-right: 5px;
+  color: $disabledColor;
+}
+
+.year {
+  margin-left: 5px;
+  color: $disabledColor;
+}
+
+.existing {
+  margin-left: 5px;
+}

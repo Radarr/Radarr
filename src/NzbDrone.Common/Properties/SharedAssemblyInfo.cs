@@ -1,11 +1,12 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Gets updated at build time by TeamCity to branch name
 [assembly: AssemblyConfiguration("debug")]
 
 [assembly: AssemblyCompany("lidarr.audio")]
-[assembly: AssemblyProduct("NzbDrone")]
+[assembly: AssemblyProduct("Lidarr")]
+[assembly: AssemblyVersion("10.0.0.*")]
 [assembly: AssemblyCopyright("GNU General Public v3")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

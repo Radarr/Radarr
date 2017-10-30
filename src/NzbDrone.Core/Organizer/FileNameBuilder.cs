@@ -11,7 +11,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Organizer
@@ -37,14 +36,8 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex EpisodeRegex = new Regex(@"(?<episode>\{episode(?:\:0+)?})",
-                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         private static readonly Regex TrackRegex = new Regex(@"(?<track>\{track(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly Regex SeasonRegex = new Regex(@"(?<season>\{season(?:\:0+)?})",
-                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex AbsoluteEpisodeRegex = new Regex(@"(?<absolute>\{absolute(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -60,10 +53,10 @@ namespace NzbDrone.Core.Organizer
         public static readonly Regex SeriesTitleRegex = new Regex(@"(?<token>\{(?:Series)(?<separator>[- ._])(Clean)?Title\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex ArtistNameRegex = new Regex(@"(?<token>\{(?:Artist)(?<separator>[- ._])(Clean)?Name\})",
+        public static readonly Regex ArtistNameRegex = new Regex(@"(?<token>\{(?:Artist)(?<separator>[- ._])(Clean)?Name(The)?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex AlbumTitleRegex = new Regex(@"(?<token>\{(?:Album)(?<separator>[- ._])(Clean)?Title\})",
+        public static readonly Regex AlbumTitleRegex = new Regex(@"(?<token>\{(?:Album)(?<separator>[- ._])(Clean)?Title(The)?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -76,6 +69,8 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex MultiPartCleanupRegex = new Regex(@"(?:\(\d+\)|(Part|Pt\.?)\s?\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly char[] EpisodeTitleTrimCharacters = new[] { ' ', '.', '?' };
+
+        private static readonly Regex TitlePrefixRegex = new Regex(@"^(The|An|A) (.*?)((?: *\([^)]+\))*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
@@ -110,10 +105,10 @@ namespace NzbDrone.Core.Organizer
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             tracks = tracks.OrderBy(e => e.AlbumId).ThenBy(e => e.TrackNumber).ToList();
-            
+
             pattern = FormatTrackNumberTokens(pattern, "", tracks);
             //pattern = AddAbsoluteNumberingTokens(pattern, tokenHandlers, series, episodes, namingConfig);
-            
+
             AddArtistTokens(tokenHandlers, artist);
             AddAlbumTokens(tokenHandlers, album);
             AddTrackTokens(tokenHandlers, tracks);
@@ -143,13 +138,13 @@ namespace NzbDrone.Core.Organizer
 
             if (artist.AlbumFolder)
             {
-                
+
                 var albumFolder = GetAlbumFolder(artist, album);
 
                 albumFolder = CleanFileName(albumFolder);
 
                 path = Path.Combine(path, albumFolder);
-                
+
             }
 
             return path;
@@ -165,9 +160,9 @@ namespace NzbDrone.Core.Organizer
             }
 
             var basicNamingConfig = new BasicNamingConfig
-                                    {
-                                        Separator = trackFormat.Separator
-                                    };
+            {
+                Separator = trackFormat.Separator
+            };
 
             var titleTokens = TitleRegex.Matches(nameSpec.StandardTrackFormat);
 
@@ -238,6 +233,11 @@ namespace NzbDrone.Core.Organizer
             return title;
         }
 
+        public static string TitleThe(string title)
+        {
+            return TitlePrefixRegex.Replace(title, "$2, $1$3");
+        }
+
         public static string CleanFileName(string name, bool replace = true)
         {
             string result = name;
@@ -262,12 +262,14 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Artist Name}"] = m => artist.Name;
             tokenHandlers["{Artist CleanName}"] = m => CleanTitle(artist.Name);
+            tokenHandlers["{Artist NameThe}"] = m => TitleThe(artist.Name);
         }
 
         private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Album album)
         {
             tokenHandlers["{Album Title}"] = m => album.Title;
             tokenHandlers["{Album CleanTitle}"] = m => CleanTitle(album.Title);
+            tokenHandlers["{Album TitleThe}"] = m => TitleThe(album.Title);
             if (album.ReleaseDate.HasValue)
             {
                 tokenHandlers["{Release Year}"] = m => album.ReleaseDate.Value.Year.ToString();
@@ -291,18 +293,6 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Release Group}"] = m => trackFile.ReleaseGroup ?? m.DefaultValue("Lidarr");
         }
 
-        private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Series series, EpisodeFile episodeFile)
-        {
-            var qualityTitle = _qualityDefinitionService.Get(episodeFile.Quality.Quality).Title;
-            var qualityProper = GetQualityProper(series, episodeFile.Quality);
-            var qualityReal = GetQualityReal(series, episodeFile.Quality);
-
-            tokenHandlers["{Quality Full}"] = m => String.Format("{0} {1} {2}", qualityTitle, qualityProper, qualityReal);
-            tokenHandlers["{Quality Title}"] = m => qualityTitle;
-            tokenHandlers["{Quality Proper}"] = m => qualityProper;
-            tokenHandlers["{Quality Real}"] = m => qualityReal;
-        }
-
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist, TrackFile trackFile)
         {
             var qualityTitle = _qualityDefinitionService.Get(trackFile.Quality.Quality).Title;
@@ -321,7 +311,7 @@ namespace NzbDrone.Core.Organizer
             {
                 return;
             }
-            
+
             var audioCodec = MediaInfoFormatter.FormatAudioCodec(trackFile.MediaInfo);
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(trackFile.MediaInfo);
 
@@ -468,7 +458,7 @@ namespace NzbDrone.Core.Organizer
 
         private AbsoluteTrackFormat[] GetAbsoluteFormat(string pattern)
         {
-            return _absoluteTrackFormatCache.Get(pattern, () =>  AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
+            return _absoluteTrackFormatCache.Get(pattern, () => AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
                 .Select(match => new AbsoluteTrackFormat
                 {
                     Separator = match.Groups["separator"].Value.IsNotNullOrWhiteSpace() ? match.Groups["separator"].Value : "-",
@@ -506,40 +496,31 @@ namespace NzbDrone.Core.Organizer
             return MultiPartCleanupRegex.Replace(title, string.Empty).Trim();
         }
 
-        private string GetQualityProper(Series series, QualityModel quality)
-        {
-            if (quality.Revision.Version > 1)
-            {
-                if (series.SeriesType == SeriesTypes.Anime)
-                {
-                    return "v" + quality.Revision.Version;
-                }
+        // TODO: DO WE NEED FOR MUSIC?
+        //private string GetQualityProper(Series series, QualityModel quality)
+        //{
+        //    if (quality.Revision.Version > 1)
+        //    {
+        //        if (series.SeriesType == SeriesTypes.Anime)
+        //        {
+        //            return "v" + quality.Revision.Version;
+        //        }
 
-                return "Proper";
-            }
+        //        return "Proper";
+        //    }
 
-            return String.Empty;
-        }
+        //    return String.Empty;
+        //}
 
-        private string GetQualityReal(Series series, QualityModel quality)
-        {
-            if (quality.Revision.Real > 0)
-            {
-                return "REAL";
-            }
+        //private string GetQualityReal(Series series, QualityModel quality)
+        //{
+        //    if (quality.Revision.Real > 0)
+        //    {
+        //        return "REAL";
+        //    }
 
-            return string.Empty;
-        }
-
-        private string GetOriginalTitle(EpisodeFile episodeFile)
-        {
-            if (episodeFile.SceneName.IsNullOrWhiteSpace())
-            {
-                return GetOriginalFileName(episodeFile);
-            }
-
-            return episodeFile.SceneName;
-        }
+        //    return string.Empty;
+        //}
 
         private string GetOriginalTitle(TrackFile trackFile)
         {
@@ -549,16 +530,6 @@ namespace NzbDrone.Core.Organizer
             }
 
             return trackFile.SceneName;
-        }
-
-        private string GetOriginalFileName(EpisodeFile episodeFile)
-        {
-            if (episodeFile.RelativePath.IsNullOrWhiteSpace())
-            {
-                return Path.GetFileNameWithoutExtension(episodeFile.Path);
-            }
-
-            return Path.GetFileNameWithoutExtension(episodeFile.RelativePath);
         }
 
         private string GetOriginalFileName(TrackFile trackFile)

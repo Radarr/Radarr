@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.Commands;
+using Lidarr.Api.V3.Commands;
 using RestSharp;
 using NzbDrone.Core.Messaging.Commands;
 using FluentAssertions;

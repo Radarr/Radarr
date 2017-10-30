@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -20,8 +20,7 @@ namespace NzbDrone.Core.Download.Pending
 {
     public interface IPendingReleaseService
     {
-        void Add(DownloadDecision decision);
-
+        void Add(DownloadDecision decision, PendingReleaseReason reason);
         List<ReleaseInfo> GetPending();
         List<RemoteAlbum> GetPendingRemoteAlbums(int artistId);
         List<Queue.Queue> GetPendingQueue();
@@ -67,7 +66,7 @@ namespace NzbDrone.Core.Download.Pending
         }
 
 
-        public void Add(DownloadDecision decision)
+        public void Add(DownloadDecision decision, PendingReleaseReason reason)
         {
             var alreadyPending = GetPendingReleases();
 
@@ -77,14 +76,29 @@ namespace NzbDrone.Core.Download.Pending
                                                              .Intersect(albumIds)
                                                              .Any());
 
-            if (existingReports.Any(MatchingReleasePredicate(decision.RemoteAlbum.Release)))
+            var matchingReports = existingReports.Where(MatchingReleasePredicate(decision.RemoteAlbum.Release)).ToList();
+
+            if (matchingReports.Any())
             {
-                _logger.Debug("This release is already pending, not adding again");
-                return;
+                var sameReason = true;
+
+                foreach (var matchingReport in matchingReports)
+                {
+                    if (matchingReport.Reason != reason)
+                    {
+                        _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteAlbum, matchingReport.Reason, reason); matchingReport.Reason = reason;
+                        _repository.Update(matchingReport);
+                        sameReason = false;
+                    }
+                }
+
+                if (sameReason)
+                {
+                    _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteAlbum, reason); return;
+                }
             }
 
-            _logger.Debug("Adding release to pending releases");
-            Insert(decision);
+            _logger.Debug("Adding release {0} to pending releases with reason {1}", decision.RemoteAlbum, reason); Insert(decision, reason);
         }
 
         public List<ReleaseInfo> GetPending()
@@ -101,7 +115,7 @@ namespace NzbDrone.Core.Download.Pending
 
         private List<ReleaseInfo> FilterBlockedIndexers(List<ReleaseInfo> releases)
         {
-            var blockedIndexers = new HashSet<int>(_indexerStatusService.GetBlockedIndexers().Select(v => v.IndexerId));
+            var blockedIndexers = new HashSet<int>(_indexerStatusService.GetBlockedProviders().Select(v => v.ProviderId));
 
             return releases.Where(release => !blockedIndexers.Contains(release.IndexerId)).ToList();
         }
@@ -117,7 +131,7 @@ namespace NzbDrone.Core.Download.Pending
 
             var nextRssSync = new Lazy<DateTime>(() => _taskManager.GetNextExecution(typeof(RssSyncCommand)));
 
-            foreach (var pendingRelease in GetPendingReleases())
+            foreach (var pendingRelease in GetPendingReleases().Where(p => p.Reason != PendingReleaseReason.Fallback))
             {
                 foreach (var album in pendingRelease.RemoteAlbum.Albums)
                 {
@@ -132,6 +146,13 @@ namespace NzbDrone.Core.Download.Pending
                         ect = ect.AddMinutes(_configService.RssSyncInterval);
                     }
 
+                    var timeleft = ect.Subtract(DateTime.UtcNow);
+
+                    if (timeleft.TotalSeconds < 0)
+                    {
+                        timeleft = TimeSpan.Zero;
+                    }
+
                     var queue = new Queue.Queue
                                 {
                                     Id = GetQueueId(pendingRelease, album),
@@ -142,11 +163,13 @@ namespace NzbDrone.Core.Download.Pending
                                     Size = pendingRelease.RemoteAlbum.Release.Size,
                                     Sizeleft = pendingRelease.RemoteAlbum.Release.Size,
                                     RemoteAlbum = pendingRelease.RemoteAlbum,
-                                    Timeleft = ect.Subtract(DateTime.UtcNow),
+                                    Timeleft = timeleft,
                                     EstimatedCompletionTime = ect,
-                                    Status = "Pending",
-                                    Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol
-                                };
+                                    Status = pendingRelease.Reason.ToString(),
+                                    Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol,
+                                    Indexer = pendingRelease.RemoteAlbum.Release.Indexer
+                    };
+
                     queued.Add(queue);
                 }
             }
@@ -229,7 +252,7 @@ namespace NzbDrone.Core.Download.Pending
             };
         }
 
-        private void Insert(DownloadDecision decision)
+        private void Insert(DownloadDecision decision, PendingReleaseReason reason)
         {
             _repository.Insert(new PendingRelease
             {
@@ -237,7 +260,8 @@ namespace NzbDrone.Core.Download.Pending
                 ParsedAlbumInfo = decision.RemoteAlbum.ParsedAlbumInfo,
                 Release = decision.RemoteAlbum.Release,
                 Title = decision.RemoteAlbum.Release.Title,
-                Added = DateTime.UtcNow
+                Added = DateTime.UtcNow,
+                Reason = reason
             });
 
             _eventAggregator.PublishEvent(new PendingReleasesUpdatedEvent());

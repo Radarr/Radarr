@@ -13,7 +13,7 @@ using NzbDrone.Core.ThingiProvider;
 namespace NzbDrone.Core.Indexers
 {
     public abstract class IndexerBase<TSettings> : IIndexer
-        where TSettings : IProviderConfig, new()
+        where TSettings : IIndexerSettings, new()
     {
         protected readonly IIndexerStatusService _indexerStatusService;
         protected readonly IConfigService _configService;
@@ -72,6 +72,7 @@ namespace NzbDrone.Core.Indexers
 
             result.ForEach(c =>
             {
+                c.Guid = string.Concat(Definition.Id, "_", c.Guid);
                 c.IndexerId = Definition.Id;
                 c.Indexer = Definition.Name;
                 c.DownloadProtocol = Protocol;
@@ -92,11 +93,6 @@ namespace NzbDrone.Core.Indexers
             {
                 _logger.Error(ex, "Test aborted due to exception");
                 failures.Add(new ValidationFailure(string.Empty, "Test was aborted due to an error: " + ex.Message));
-            }
-
-            if (Definition.Id != 0)
-            {
-                _indexerStatusService.RecordSuccess(Definition.Id);
             }
 
             return new ValidationResult(failures);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         private TorznabSettings GetSettings(string url, params int[] categories)
         {
-            var settings = new TorznabSettings { Url = url };
+            var settings = new TorznabSettings { BaseUrl = url };
 
             if (categories.Any())
             {
@@ -80,6 +80,7 @@ namespace NzbDrone.Core.Indexers.Torznab
         {
             base.Test(failures);
 
+            if (failures.Any()) return;
             failures.AddIfNotNull(TestCapabilities());
         }
 
@@ -94,9 +95,8 @@ namespace NzbDrone.Core.Indexers.Torznab
                     return null;
                 }
 
-                if (capabilities.SupportedTvSearchParameters != null &&
-                    new[] { "q", "tvdbid", "rid" }.Any(v => capabilities.SupportedTvSearchParameters.Contains(v)) &&
-                    new[] { "season", "ep" }.All(v => capabilities.SupportedTvSearchParameters.Contains(v)))
+                if (capabilities.SupportedAudioSearchParameters != null &&
+                    new[] { "artist", "album" }.All(v => capabilities.SupportedAudioSearchParameters.Contains(v)))
                 {
                     return null;
                 }

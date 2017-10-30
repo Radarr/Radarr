@@ -9,8 +9,8 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Core.Test</RootNamespace>
-    <AssemblyName>NzbDrone.Core.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>Lidarr.Core.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -47,50 +47,45 @@
   <ItemGroup>
     <Reference Include="AutoMoq, Version=1.8.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMoq.1.8.1.0\lib\net40\AutoMoq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FizzWare.NBuilder, Version=4.0.0.115, Culture=neutral, PublicKeyToken=5651b03e12e42c12, processorArchitecture=MSIL">
       <HintPath>..\packages\NBuilder.4.0.0\lib\net40\FizzWare.NBuilder.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FluentAssertions, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.4.19.0\lib\net40\FluentAssertions.dll</HintPath>
+      <HintPath>..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions.Core, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.4.19.0\lib\net40\FluentAssertions.Core.dll</HintPath>
+      <HintPath>..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentMigrator.1.6.2\lib\40\FluentMigrator.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FluentMigrator.Runner, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentMigrator.Runner.1.6.2\lib\40\FluentMigrator.Runner.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\portable-net40+sl50+wp80+win8+wpa81\FluentValidation.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.3\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.0\lib\net40\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.3.6.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Prowlin, Version=0.9.4456.26422, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -101,15 +96,6 @@
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Prowlin">
-      <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.runner.utility.net35, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.runner.utility.2.2.0\lib\net35\xunit.runner.utility.net35.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtistStatsTests\ArtistStatisticsFixture.cs" />
@@ -118,9 +104,6 @@
     <Compile Include="BulkImport\BulkImportFixture.cs" />
     <Compile Include="Configuration\ConfigCachingFixture.cs" />
     <Compile Include="Configuration\ConfigServiceFixture.cs" />
-    <Compile Include="DataAugmentation\SceneNumbering\XemServiceFixture.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMappingProxyFixture.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMappingServiceFixture.cs" />
     <Compile Include="DataAugmentation\DailySeries\DailySeriesDataProxyFixture.cs" />
     <Compile Include="Datastore\BasicRepositoryFixture.cs" />
     <Compile Include="Datastore\Converters\ProviderSettingConverterFixture.cs" />
@@ -128,30 +111,13 @@
     <Compile Include="Datastore\DatabaseRelationshipFixture.cs" />
     <Compile Include="Datastore\MappingExtentionFixture.cs" />
     <Compile Include="Datastore\MarrDataLazyLoadingFixture.cs" />
-    <Compile Include="Datastore\Migration\108_fix_metadata_file_extensionsFixture.cs" />
-    <Compile Include="Datastore\Migration\109_import_extra_files_configFixture.cs" />
-    <Compile Include="Datastore\Migration\110_fix_extra_files_configFixture.cs" />
-    <Compile Include="Datastore\Migration\106_update_btn_urlFixture.cs" />
-    <Compile Include="Datastore\Migration\103_fix_metadata_file_extensionsFixture.cs" />
-    <Compile Include="Datastore\Migration\099_extra_and_subtitle_filesFixture.cs" />
-    <Compile Include="Datastore\Migration\101_add_ultrahd_quality_in_profilesFixture.cs" />
-    <Compile Include="Datastore\Migration\071_unknown_quality_in_profileFixture.cs" />
-    <Compile Include="Datastore\Migration\072_history_downloadIdFixture.cs" />
-    <Compile Include="Datastore\Migration\070_delay_profileFixture.cs" />
-    <Compile Include="Datastore\Migration\088_pushbullet_devices_channels_listFixture.cs" />
-    <Compile Include="Datastore\Migration\086_pushbullet_device_idsFixture.cs" />
-    <Compile Include="Datastore\Migration\085_expand_transmission_urlbaseFixture.cs" />
-    <Compile Include="Datastore\Migration\084_update_quality_minmax_sizeFixture.cs" />
-    <Compile Include="Datastore\Migration\081_move_dot_prefix_to_transmission_categoryFixture.cs" />
-    <Compile Include="Datastore\Migration\079_dedupe_tagsFixture.cs" />
-    <Compile Include="Datastore\Migration\075_force_lib_updateFixture.cs" />
-    <Compile Include="Datastore\Migration\090_update_kickass_urlFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />
     <Compile Include="Datastore\ReflectionStrategyFixture\Benchmarks.cs" />
     <Compile Include="Datastore\SqliteSchemaDumperTests\SqliteSchemaDumperFixture.cs" />
     <Compile Include="DecisionEngineTests\AcceptableSizeSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\BlockedIndexerSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\ProtocolSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\CutoffSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\DownloadDecisionMakerFixture.cs" />
@@ -166,14 +132,16 @@
     <Compile Include="DecisionEngineTests\MinimumAgeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RetentionSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RssSync\DelaySpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\RssSync\DeletedTrackFileSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RssSync\ProperSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\Search\ArtistSpecificationFixture.cs" />
-    <Compile Include="DecisionEngineTests\SameEpisodesSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\RawDiskSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\Search\TorrentSeedingSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeDiskSpecificationFixture.cs" />
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
     <Compile Include="Download\CompletedDownloadServiceFixture.cs" />
     <Compile Include="Download\DownloadApprovedReportsTests\DownloadApprovedFixture.cs" />
+    <Compile Include="Download\DownloadClientStatusServiceFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\ScanWatchFolderFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\TorrentBlackholeFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\UsenetBlackholeFixture.cs" />
@@ -219,7 +187,6 @@
     <Compile Include="HealthCheck\Checks\DeleteBadMediaCovers.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationFixture.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheckFixture.cs" />
-    <Compile Include="HealthCheck\Checks\DroneFactoryCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\HealthCheckFixtureExtensions.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerSearchCheckFixture.cs" />
@@ -234,6 +201,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalUsersFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalNamingSpecsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFilesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupDownloadClientUnavailablePendingReleasesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbumsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklistFixture.cs" />
@@ -244,7 +212,8 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupUnusedTagsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedPendingReleasesFixture.cs" />
-    <Compile Include="Housekeeping\Housekeepers\FixFutureRunScheduledTasksFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureDownloadClientStatusTimesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureIndexerStatusTimesFixture.cs" />
     <Compile Include="Http\HttpProxySettingsProviderFixture.cs" />
     <Compile Include="Http\TorCacheHttpRequestInterceptorFixture.cs" />
     <Compile Include="IndexerSearchTests\ArtistSearchServiceFixture.cs" />
@@ -275,30 +244,36 @@
     <Compile Include="Instrumentation\DatabaseTargetFixture.cs" />
     <Compile Include="JobTests\JobRepositoryFixture.cs" />
     <Compile Include="JobTests\TestJobs.cs" />
+    <Compile Include="Languages\LanguageFixture.cs" />
+    <Compile Include="Languages\LanguageProfileRepositoryFixture.cs" />
+    <Compile Include="Languages\LanguageProfileServiceFixture.cs" />
     <Compile Include="MediaCoverTests\CoverExistsSpecificationFixture.cs" />
     <Compile Include="MediaCoverTests\ImageResizerFixture.cs" />
     <Compile Include="MediaCoverTests\MediaCoverServiceFixture.cs" />
     <Compile Include="MediaFiles\DiskScanServiceTests\ScanFixture.cs" />
     <Compile Include="MediaFiles\DownloadedAlbumsCommandServiceFixture.cs" />
-    <Compile Include="MediaFiles\DownloadedEpisodesImportServiceFixture.cs" />
+    <Compile Include="MediaFiles\DownloadedTracksImportServiceFixture.cs" />
+    <Compile Include="MediaFiles\MediaFileDeletionService\DeleteTrackFileFixture.cs" />
+    <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioChannelsFixture.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatterTests\FormatAudioCodecFixture.cs" />
     <Compile Include="MediaFiles\TrackFileMovingServiceTests\MoveTrackFileFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMakerFixture.cs" />
-    <Compile Include="MediaFiles\TrackImport\SampleServiceFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecificationFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\SameFileSpecificationFixture.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecificationFixture.cs" />
     <Compile Include="MediaFiles\ImportApprovedEpisodesFixture.cs" />
     <Compile Include="MediaFiles\MediaFileRepositoryFixture.cs" />
     <Compile Include="Messaging\Commands\CommandQueueManagerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxySearchFixture.cs" />
-    <Compile Include="MetadataSource\SearchSeriesComparerFixture.cs" />
+    <Compile Include="MetadataSource\SearchArtistComparerFixture.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxyFixture.cs" />
     <Compile Include="MusicTests\AddArtistFixture.cs" />
+    <Compile Include="MusicTests\ArtistNameSlugValidatorFixture.cs" />
     <Compile Include="NotificationTests\NotificationBaseFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
-    <Compile Include="ParserTests\MiniSeriesEpisodeParserFixture.cs" />
+    <Compile Include="OrganizerTests\FileNameBuilderTests\TitleTheFixture.cs" />
     <Compile Include="ParserTests\MusicParserFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
@@ -328,29 +303,23 @@
     <Compile Include="OrganizerTests\GetAlbumFolderFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\FileNameBuilderFixture.cs" />
     <Compile Include="OrganizerTests\GetArtistFolderFixture.cs" />
-    <Compile Include="ParserTests\AbsoluteEpisodeNumberParserFixture.cs" />
-    <Compile Include="ParserTests\AnimeMetadataParserFixture.cs" />
     <Compile Include="ParserTests\ExtendedQualityParserRegex.cs" />
     <Compile Include="ParserTests\CrapParserFixture.cs" />
-    <Compile Include="ParserTests\DailyEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\HashedReleaseFixture.cs" />
-    <Compile Include="ParserTests\IsPossibleSpecialEpisodeFixture.cs" />
     <Compile Include="ParserTests\LanguageParserFixture.cs" />
-    <Compile Include="ParserTests\MultiEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\NormalizeTitleFixture.cs" />
     <Compile Include="ParserTests\ParserFixture.cs" />
-    <Compile Include="ParserTests\ParsingServiceTests\GetSeriesFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\GetArtistFixture.cs" />
     <Compile Include="ParserTests\PathParserFixture.cs" />
     <Compile Include="ParserTests\QualityParserFixture.cs" />
     <Compile Include="ParserTests\ReleaseGroupParserFixture.cs" />
     <Compile Include="ParserTests\SeasonParserFixture.cs" />
-    <Compile Include="ParserTests\SeriesTitleInfoFixture.cs" />
+    <Compile Include="ParserTests\ArtistTitleInfoFixture.cs" />
     <Compile Include="ParserTests\SingleEpisodeParserFixture.cs" />
     <Compile Include="ParserTests\SceneCheckerFixture.cs" />
     <Compile Include="Profiles\ProfileRepositoryFixture.cs" />
     <Compile Include="Profiles\ProfileServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\XemProxyFixture.cs" />
     <Compile Include="ProviderTests\DiskProviderTests\ArchiveProviderFixture.cs" />
     <Compile Include="ProviderTests\DiskScanProviderTests\GetAudioFilesFixture.cs" />
     <Compile Include="ProviderTests\RecycleBinProviderTests\CleanupFixture.cs" />
@@ -361,29 +330,16 @@
     <Compile Include="Qualities\QualityFixture.cs" />
     <Compile Include="Qualities\QualityModelComparerFixture.cs" />
     <Compile Include="RootFolderTests\RootFolderServiceFixture.cs" />
-    <Compile Include="ThingiProvider\ProviderBaseFixture.cs" />
+    <Compile Include="ThingiProviderTests\ProviderBaseFixture.cs" />
     <Compile Include="ThingiProviderTests\NullConfigFixture.cs" />
-    <Compile Include="TvTests\EpisodeServiceTests\FindEpisodeByTitleFixture.cs" />
-    <Compile Include="TvTests\EpisodeServiceTests\HandleEpisodeFileDeletedFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\ByAirDateFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesBetweenDatesFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesRepositoryReadFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesWhereCutoffUnmetFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesWithFilesFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\EpisodesWithoutFilesFixture.cs" />
-    <Compile Include="TvTests\EpisodeRepositoryTests\FindEpisodeFixture.cs" />
     <Compile Include="MusicTests\MoveArtistServiceFixture.cs" />
-    <Compile Include="TvTests\RefreshEpisodeServiceFixture.cs" />
-    <Compile Include="TvTests\RefreshSeriesServiceFixture.cs" />
-    <Compile Include="TvTests\EpisodeMonitoredServiceTests\SetEpisodeMontitoredFixture.cs" />
-    <Compile Include="TvTests\SeriesRepositoryTests\SeriesRepositoryFixture.cs" />
-    <Compile Include="TvTests\SeriesServiceTests\UpdateMultipleSeriesFixture.cs" />
-    <Compile Include="TvTests\SeriesServiceTests\UpdateSeriesFixture.cs" />
-    <Compile Include="TvTests\SeriesTitleNormalizerFixture.cs" />
-    <Compile Include="TvTests\ShouldRefreshSeriesFixture.cs" />
+    <Compile Include="MusicTests\RefreshArtistServiceFixture.cs" />
+    <Compile Include="MusicTests\ShouldRefreshArtistFixture.cs" />
+    <Compile Include="ThingiProviderTests\ProviderStatusServiceFixture.cs" />
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj">
@@ -414,6 +370,10 @@
     </Content>
     <Content Include="..\Libraries\Sqlite\sqlite3.dll">
       <Link>sqlite3.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Indexers\TorrentRss\EvolutionWorld.xml">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\Indexers\TorrentRss\AlphaRatio.xml">
@@ -567,11 +527,13 @@
     <Content Include="Files\Xem\Names.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Datastore\Migration\" />
     <Folder Include="InstrumentationTests\" />
+    <Folder Include="Providers\" />
     <Folder Include="ProviderTests\UpdateProviderTests\" />
+    <Folder Include="ThingiProvider\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

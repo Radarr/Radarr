@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.HealthCheck.Checks;
@@ -10,8 +10,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     [TestFixture]
     public class ImportMechanismCheckFixture : CoreTest<ImportMechanismCheck>
     {
-        private const string DRONE_FACTORY_FOLDER = @"C:\Test\Unsorted";
-
 
         private void GivenCompletedDownloadHandling(bool? enabled = null)
         {
@@ -25,17 +23,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                       .SetupGet(s => s.EnableCompletedDownloadHandling)
                       .Returns(enabled.Value);
             }
-        }
-
-        private void GivenDroneFactoryFolder(bool exists = false)
-        {
-            Mocker.GetMock<IConfigService>()
-                  .SetupGet(s => s.DownloadedAlbumsFolder)
-                  .Returns(DRONE_FACTORY_FOLDER.AsOsAgnostic());
-
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.FolderExists(DRONE_FACTORY_FOLDER.AsOsAgnostic()))
-                  .Returns(exists);
         }
 
         [Test]
@@ -56,7 +43,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_ok_when_no_issues_found()
         {
             GivenCompletedDownloadHandling(true);
-            GivenDroneFactoryFolder(true);
 
             Subject.Check().ShouldBeOk();
         }

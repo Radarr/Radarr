@@ -3,11 +3,12 @@ namespace NzbDrone.Common.Http
     public enum HttpMethod
     {
         GET,
-        PUT,
         POST,
-        HEAD,
+        PUT,
         DELETE,
+        HEAD,
+        OPTIONS,
         PATCH,
-        OPTIONS
+        MERGE
     }
 }

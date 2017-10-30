@@ -251,6 +251,22 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
+        public void should_scan_files_that_start_with_period()
+        {
+            GivenArtistFolder();
+
+            GivenFiles(new List<string>
+                       {
+                           Path.Combine(_artist.Path, "Album 1", ".t01.mp3").AsOsAgnostic()
+                       });
+
+            Subject.Scan(_artist);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 1), _artist), Times.Once());
+        }
+
+        [Test]
         public void should_not_scan_subfolders_that_start_with_period()
         {
             GivenArtistFolder();

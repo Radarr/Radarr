@@ -1,0 +1,11 @@
+.form {
+  
+}
+
+.error {
+  color: $dangerColor;
+}
+
+.warning {
+  color: $warningColor;
+}

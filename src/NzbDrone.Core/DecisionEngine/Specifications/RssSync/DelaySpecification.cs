@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -6,30 +6,32 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
     public class DelaySpecification : IDecisionEngineSpecification
     {
         private readonly IPendingReleaseService _pendingReleaseService;
-        private readonly IQualityUpgradableSpecification _qualityUpgradableSpecification;
+        private readonly IUpgradableSpecification _upgradableSpecification;
         private readonly IDelayProfileService _delayProfileService;
         private readonly IMediaFileService _mediaFileService;
         private readonly Logger _logger;
 
         public DelaySpecification(IPendingReleaseService pendingReleaseService,
-                                  IQualityUpgradableSpecification qualityUpgradableSpecification,
+                                  IUpgradableSpecification qualityUpgradableSpecification,
                                   IDelayProfileService delayProfileService,
                                   IMediaFileService mediaFileService,
                                   Logger logger)
         {
             _pendingReleaseService = pendingReleaseService;
-            _qualityUpgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = qualityUpgradableSpecification;
             _delayProfileService = delayProfileService;
             _mediaFileService = mediaFileService;
             _logger = logger;
         }
 
+        public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Temporary;
 
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
@@ -41,6 +43,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             var profile = subject.Artist.Profile.Value;
+            var languageProfile = subject.Artist.LanguageProfile.Value;
             var delayProfile = _delayProfileService.BestForTags(subject.Artist.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
@@ -52,6 +55,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             var comparer = new QualityModelComparer(profile);
+            var comparerLanguage = new LanguageComparer(languageProfile);
 
             if (isPreferredProtocol)
             {
@@ -62,17 +66,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                     if (trackFiles.Any())
                     {
                         var lowestQuality = trackFiles.Select(c => c.Quality).OrderBy(c => c.Quality.Id).First();
-                        var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile, lowestQuality, subject.ParsedAlbumInfo.Quality);
-
+                        var upgradable = _upgradableSpecification.IsUpgradable(profile,
+                                                                               languageProfile,
+                                                                               lowestQuality,
+                                                                               trackFiles[0].Language,
+                                                                               subject.ParsedAlbumInfo.Quality,
+                                                                               subject.ParsedAlbumInfo.Language);
                         if (upgradable)
                         {
-                            var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(lowestQuality, subject.ParsedAlbumInfo.Quality);
-
-                            if (revisionUpgrade)
-                            {
-                                _logger.Debug("New quality is a better revision for existing quality, skipping delay");
-                                return Decision.Accept();
-                            }
+                            _logger.Debug("New quality is a better revision for existing quality, skipping delay");
+                            return Decision.Accept();
                         }
                     }
                 }
@@ -81,10 +84,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
             var bestQualityInProfile = new QualityModel(profile.LastAllowedQuality());
             var isBestInProfile = comparer.Compare(subject.ParsedAlbumInfo.Quality, bestQualityInProfile) >= 0;
+            var isBestInProfileLanguage = comparerLanguage.Compare(subject.ParsedAlbumInfo.Language, languageProfile.LastAllowedLanguage()) >= 0;
 
-            if (isBestInProfile && isPreferredProtocol)
+            if (isBestInProfile && isBestInProfileLanguage && isPreferredProtocol)
             {
-                _logger.Debug("Quality is highest in profile for preferred protocol, will not delay");
+                _logger.Debug("Quality and language is highest in profile for preferred protocol, will not delay");
                 return Decision.Accept();
             }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using FluentAssertions;
 using Moq;
@@ -113,6 +113,7 @@ namespace NzbDrone.Common.Test
         [TestCase(@"C:\Test\", @"C:\Test\mydir")]
         [TestCase(@"C:\Test\", @"C:\Test\mydir\")]
         [TestCase(@"C:\Test", @"C:\Test\30.Rock.S01E01.Pilot.avi")]
+        [TestCase(@"C:\", @"C:\Test\30.Rock.S01E01.Pilot.avi")]
         public void path_should_be_parent(string parentPath, string childPath)
         {
             parentPath.AsOsAgnostic().IsParentPath(childPath.AsOsAgnostic()).Should().BeTrue();
@@ -257,7 +258,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void GetUpdateClientFolder()
         {
-            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr\NzbDrone.Update\".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientFolder().Should().BeEquivalentTo(@"C:\Temp\lidarr_update\Lidarr\Lidarr.Update\".AsOsAgnostic());
         }
 
         [Test]

@@ -1,11 +1,12 @@
-﻿using System.Linq;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -15,40 +16,41 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void one_to_one()
         {
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
+            var trackFile = Builder<TrackFile>.CreateNew()
                            .With(c => c.Quality = new QualityModel())
+                           .With(c => c.Language = Language.English)
                            .BuildNew();
 
-            Db.Insert(episodeFile);
+            Db.Insert(trackFile);
 
-            var episode = Builder<Episode>.CreateNew()
-                .With(c => c.EpisodeFileId = episodeFile.Id)
+            var track = Builder<Track>.CreateNew()
+                .With(c => c.TrackFileId = trackFile.Id)
                 .BuildNew();
 
-            Db.Insert(episode);
+            Db.Insert(track);
 
-            var loadedEpisodeFile = Db.Single<Episode>().EpisodeFile.Value;
+            var loadedTrackFile = Db.Single<Track>().TrackFile.Value;
 
-            loadedEpisodeFile.Should().NotBeNull();
-            loadedEpisodeFile.ShouldBeEquivalentTo(episodeFile,
+            loadedTrackFile.Should().NotBeNull();
+            loadedTrackFile.ShouldBeEquivalentTo(trackFile,
                 options => options
                     .IncludingAllRuntimeProperties()
                     .Excluding(c => c.DateAdded)
                     .Excluding(c => c.Path)
-                    .Excluding(c => c.Series)
-                    .Excluding(c => c.Episodes));
+                    .Excluding(c => c.Artist)
+                    .Excluding(c => c.Tracks));
         }
 
         [Test]
         public void one_to_one_should_not_query_db_if_foreign_key_is_zero()
         {
-            var episode = Builder<Episode>.CreateNew()
-                .With(c => c.EpisodeFileId = 0)
+            var track = Builder<Track>.CreateNew()
+                .With(c => c.TrackFileId = 0)
                 .BuildNew();
 
-            Db.Insert(episode);
+            Db.Insert(track);
 
-            Db.Single<Episode>().EpisodeFile.Value.Should().BeNull();
+            Db.Single<Track>().TrackFile.Value.Should().BeNull();
         }
 
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
         private NzbgetQueueItem _queued;
         private NzbgetHistoryItem _failed;
         private NzbgetHistoryItem _completed;
+        private Dictionary<string, string> _configItems;
 
         [SetUp]
         public void Setup()
@@ -80,13 +81,17 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                     DownloadRate = 7000000
                 });
 
-            var configItems = new Dictionary<string, string>();
-            configItems.Add("Category1.Name", "music");
-            configItems.Add("Category1.DestDir", @"/remote/mount/music");
+            Mocker.GetMock<INzbgetProxy>()
+                .Setup(v => v.GetVersion(It.IsAny<NzbgetSettings>()))
+                .Returns("14.0");
+
+            _configItems = new Dictionary<string, string>();
+            _configItems.Add("Category1.Name", "music");
+            _configItems.Add("Category1.DestDir", @"/remote/mount/music");
 
             Mocker.GetMock<INzbgetProxy>()
                 .Setup(v => v.GetConfig(It.IsAny<NzbgetSettings>()))
-                .Returns(configItems);
+                .Returns(_configItems);
         }
 
         protected void GivenFailedDownload()
@@ -167,6 +172,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             var result = Subject.GetItems().Single();
 
             VerifyQueued(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -180,6 +188,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             var result = Subject.GetItems().Single();
 
             VerifyPaused(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -193,6 +204,25 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             var result = Subject.GetItems().Single();
 
             VerifyDownloading(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
+        }
+
+        [Test]
+        public void post_processing_item_should_have_required_properties()
+        {
+            _queued.ActiveDownloads = 1;
+
+            GivenQueue(_queued);
+            GivenHistory(null);
+
+            _queued.RemainingSizeLo = 0;
+
+            var result = Subject.GetItems().Single();
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -204,6 +234,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             var result = Subject.GetItems().Single();
 
             VerifyCompleted(result);
+
+            result.CanBeRemoved.Should().BeTrue();
+            result.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]
@@ -381,6 +414,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
             Mocker.GetMock<INzbgetProxy>()
                 .Setup(v => v.GetVersion(It.IsAny<NzbgetSettings>()))
                 .Returns(version);
+
+            var error = Subject.Test();
+
+            error.IsValid.Should().Be(expected);
+        }
+
+        [TestCase("0", false)]
+        [TestCase("1", true)]
+        [TestCase(" 7", false)]
+        [TestCase("5000000", false)]
+        public void should_test_keephistory(string keephistory, bool expected)
+        {
+            _configItems["KeepHistory"] = keephistory;
 
             var error = Subject.Test();
 

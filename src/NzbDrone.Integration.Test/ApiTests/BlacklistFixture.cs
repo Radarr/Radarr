@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Music;
+using Lidarr.Api.V3.Artist;
+using Lidarr.Api.V3.Blacklist;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
@@ -15,7 +16,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             _artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
             
-            Blacklist.Post(new Api.Blacklist.BlacklistResource
+            Blacklist.Post(new BlacklistResource
             {
                 ArtistId = _artist.Id,
                 SourceTitle = "Blacklist - Album 1 [2015 FLAC]"

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NLog.Config;
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Instrumentation
             var rules = LogManager.Configuration.LoggingRules;
 
             //Console
-            SetMinimumLogLevel(rules, "consoleLogger", minimumLogLevel);
+            SetMinimumLogLevel(rules, "consoleLogger", LogLevel.Trace);
 
             //Log Files
             SetMinimumLogLevel(rules, "appFileInfo", minimumLogLevel <= LogLevel.Info ? LogLevel.Info : LogLevel.Off);

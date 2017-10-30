@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Marr.Data;
 using Marr.Data.Mapping;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
@@ -19,23 +18,23 @@ using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Restrictions;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.ArtistStats;
-using NzbDrone.Core.SeriesStats;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
-using NzbDrone.Core.Extras.Subtitles;
+using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
+using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -55,7 +54,8 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.Enable)
                   .Ignore(i => i.Protocol)
                   .Ignore(i => i.SupportsRss)
-                  .Ignore(i => i.SupportsSearch);
+                  .Ignore(i => i.SupportsSearch)
+                  .Ignore(d => d.Tags);
 
             Mapper.Entity<NotificationDefinition>().RegisterDefinition("Notifications")
                   .Ignore(i => i.SupportsOnGrab)
@@ -63,40 +63,21 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsOnUpgrade)
                   .Ignore(i => i.SupportsOnRename);
             
-            Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata");
+            Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata")
+                  .Ignore(d => d.Tags);
 
             Mapper.Entity<DownloadClientDefinition>().RegisterDefinition("DownloadClients")
-                  .Ignore(d => d.Protocol);
-
-            Mapper.Entity<SceneMapping>().RegisterModel("SceneMappings");
+                  .Ignore(d => d.Protocol)
+                  .Ignore(d => d.Tags);
 
             Mapper.Entity<History.History>().RegisterModel("History")
                   .AutoMapChildModels();
 
-            Mapper.Entity<Series>().RegisterModel("Series")
-                  .Ignore(s => s.RootFolderPath)
-                  .Relationship()
-                  .HasOne(s => s.Profile, s => s.ProfileId);
-
-            Mapper.Entity<EpisodeFile>().RegisterModel("EpisodeFiles")
-                  .Ignore(f => f.Path)
-                  .Relationships.AutoMapICollectionOrComplexProperties()
-                  .For("Episodes")
-                  .LazyLoad(condition: parent => parent.Id > 0, 
-                            query: (db, parent) => db.Query<Episode>().Where(c => c.EpisodeFileId == parent.Id).ToList())
-                  .HasOne(file => file.Series, file => file.SeriesId);
-
-            Mapper.Entity<Episode>().RegisterModel("Episodes")
-                  .Ignore(e => e.SeriesTitle)
-                  .Ignore(e => e.Series)
-                  .Ignore(e => e.HasFile)
-                  .Relationship()
-                  .HasOne(episode => episode.EpisodeFile, episode => episode.EpisodeFileId);
-
             Mapper.Entity<Artist>().RegisterModel("Artists")
                   .Ignore(s => s.RootFolderPath)
                   .Relationship()
-                  .HasOne(a => a.Profile, a => a.ProfileId);
+                  .HasOne(a => a.Profile, a => a.ProfileId)
+                  .HasOne(s => s.LanguageProfile, s => s.LanguageProfileId);
 
             Mapper.Entity<Album>().RegisterModel("Albums");
 
@@ -105,7 +86,7 @@ namespace NzbDrone.Core.Datastore
                   .Relationships.AutoMapICollectionOrComplexProperties()
                   .For("Tracks")
                   .LazyLoad(condition: parent => parent.Id > 0,
-                            query: (db, parent) => db.Query<Track>().Where(c => c.ArtistId == parent.Id).ToList()) // TODO: Figure what the hell to do here
+                            query: (db, parent) => db.Query<Track>().Where(c => c.TrackFileId == parent.Id).ToList()) // TODO: Figure what the hell to do here
                   .HasOne(file => file.Artist, file => file.ArtistId); 
 
             Mapper.Entity<Track>().RegisterModel("Tracks")
@@ -120,16 +101,17 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(d => d.Weight);
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");
+            Mapper.Entity<LanguageProfile>().RegisterModel("LanguageProfiles");
             Mapper.Entity<Log>().RegisterModel("Logs");
             Mapper.Entity<NamingConfig>().RegisterModel("NamingConfig");
             Mapper.Entity<AlbumStatistics>().MapResultSet();
             Mapper.Entity<Blacklist>().RegisterModel("Blacklist");
             Mapper.Entity<MetadataFile>().RegisterModel("MetadataFiles");
-            Mapper.Entity<SubtitleFile>().RegisterModel("SubtitleFiles");
+            Mapper.Entity<LyricFile>().RegisterModel("LyricFiles");
             Mapper.Entity<OtherExtraFile>().RegisterModel("ExtraFiles");
 
             Mapper.Entity<PendingRelease>().RegisterModel("PendingReleases")
-                  .Ignore(e => e.RemoteEpisode);
+                  .Ignore(e => e.RemoteAlbum);
 
             Mapper.Entity<RemotePathMapping>().RegisterModel("RemotePathMappings");
             Mapper.Entity<Tag>().RegisterModel("Tags");
@@ -141,6 +123,7 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(c => c.Message);
 
             Mapper.Entity<IndexerStatus>().RegisterModel("IndexerStatus");
+            Mapper.Entity<DownloadClientStatus>().RegisterModel("DownloadClientStatus");
         }
 
         private static void RegisterMappers()
@@ -158,8 +141,11 @@ namespace NzbDrone.Core.Datastore
             MapRepository.Instance.RegisterTypeConverter(typeof(QualityModel), new EmbeddedDocumentConverter(new QualityIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(Dictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<int>), new EmbeddedDocumentConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(Language), new LanguageIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<string>), new EmbeddedDocumentConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(ParsedEpisodeInfo), new EmbeddedDocumentConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileLanguageItem>), new EmbeddedDocumentConverter(new LanguageIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(ParsedAlbumInfo), new EmbeddedDocumentConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(ParsedTrackInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ReleaseInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(HashSet<int>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(OsPath), new OsPathConverter());

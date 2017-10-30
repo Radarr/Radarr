@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using NzbDrone.Core.Datastore;
@@ -58,7 +58,8 @@ namespace NzbDrone.Core.ArtistStats
                      (SELECT
                      Tracks.ArtistId,
                      Tracks.AlbumId,
-                     SUM(CASE WHEN TrackFileId > 0 THEN 1 ELSE 0 END) AS TotalTrackCount,
+                     COUNT(*) AS TotalTrackCount,
+                     SUM(CASE WHEN TrackFileId > 0 THEN 1 ELSE 0 END) AS AvailableTrackCount,
                      SUM(CASE WHEN Monitored = 1 OR TrackFileId > 0 THEN 1 ELSE 0 END) AS TrackCount,
                      SUM(CASE WHEN TrackFileId > 0 THEN 1 ELSE 0 END) AS TrackFileCount
                      FROM Tracks

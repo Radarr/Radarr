@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Messaging.Events;
@@ -20,18 +21,21 @@ namespace NzbDrone.Core.Download
     public class DownloadService : IDownloadService
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
+        private readonly IDownloadClientStatusService _downloadClientStatusService;
         private readonly IIndexerStatusService _indexerStatusService;
         private readonly IRateLimitService _rateLimitService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public DownloadService(IProvideDownloadClient downloadClientProvider,
-            IIndexerStatusService indexerStatusService,
-            IRateLimitService rateLimitService,
-            IEventAggregator eventAggregator,
-            Logger logger)
+                               IDownloadClientStatusService downloadClientStatusService,
+                               IIndexerStatusService indexerStatusService,
+                               IRateLimitService rateLimitService,
+                               IEventAggregator eventAggregator,
+                               Logger logger)
         {
             _downloadClientProvider = downloadClientProvider;
+            _downloadClientStatusService = downloadClientStatusService;
             _indexerStatusService = indexerStatusService;
             _rateLimitService = rateLimitService;
             _eventAggregator = eventAggregator;
@@ -48,8 +52,12 @@ namespace NzbDrone.Core.Download
 
             if (downloadClient == null)
             {
-                _logger.Warn("{0} Download client isn't configured yet.", remoteAlbum.Release.DownloadProtocol);
-                return;
+                throw new DownloadClientUnavailableException($"{remoteAlbum.Release.DownloadProtocol} Download client isn't configured yet");
+            }
+
+            if (_downloadClientStatusService.IsDisabled(downloadClient.Definition.Id))
+            {
+                throw new DownloadClientUnavailableException($"{downloadClient.Name} is disabled due to recent failues");
             }
 
             // Limit grabs to 2 per second.
@@ -63,6 +71,7 @@ namespace NzbDrone.Core.Download
             try
             {
                 downloadClientId = downloadClient.Download(remoteAlbum);
+                _downloadClientStatusService.RecordSuccess(downloadClient.Definition.Id);
                 _indexerStatusService.RecordSuccess(remoteAlbum.Release.IndexerId);
             }
             catch (ReleaseDownloadException ex)

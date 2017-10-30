@@ -3,9 +3,9 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Profiles
 {
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.Profiles
             Subject.Handle(new ApplicationStartedEvent());
 
             Mocker.GetMock<IProfileRepository>()
-                .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Exactly(6));
+                .Verify(v => v.Insert(It.IsAny<Profile>()), Times.Exactly(3));
         }
 
         [Test]
@@ -39,15 +39,15 @@ namespace NzbDrone.Core.Test.Profiles
 
 
         [Test]
-        public void should_not_be_able_to_delete_profile_if_assigned_to_series()
+        public void should_not_be_able_to_delete_profile_if_assigned_to_artist()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .Random(1)
                                             .With(c => c.ProfileId = 2)
                                             .Build().ToList();
 
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
 
             Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
 
@@ -57,15 +57,15 @@ namespace NzbDrone.Core.Test.Profiles
 
 
         [Test]
-        public void should_delete_profile_if_not_assigned_to_series()
+        public void should_delete_profile_if_not_assigned_to_artist()
         {
-            var seriesList = Builder<Series>.CreateListOfSize(3)
+            var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.ProfileId = 2)
                                             .Build().ToList();
 
 
-            Mocker.GetMock<ISeriesService>().Setup(c => c.GetAllSeries()).Returns(seriesList);
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
 
             Subject.Delete(1);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         private NewznabSettings GetSettings(string url, params int[] categories)
         {
-            var settings = new NewznabSettings { Url = url };
+            var settings = new NewznabSettings { BaseUrl = url };
 
             if (categories.Any())
             {
@@ -92,6 +92,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             base.Test(failures);
 
+            if (failures.Any()) return;
             failures.AddIfNotNull(TestCapabilities());
         }
 

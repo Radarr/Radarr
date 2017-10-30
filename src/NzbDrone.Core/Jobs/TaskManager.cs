@@ -5,16 +5,13 @@ using NLog;
 using NzbDrone.Core.Backup;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Housekeeping;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv.Commands;
 using NzbDrone.Core.Update.Commands;
 using NzbDrone.Core.Music.Commands;
 
@@ -74,13 +71,7 @@ namespace NzbDrone.Core.Jobs
                     { 
                         Interval = GetRssSyncInterval(),
                         TypeName = typeof(RssSyncCommand).FullName
-                    },
-
-                    new ScheduledTask
-                    { 
-                        Interval = _configService.DownloadedAlbumsScanInterval,
-                        TypeName = typeof(DownloadedAlbumsScanCommand).FullName
-                    },
+                    }
                 };
 
             var currentTasks = _scheduledTaskRepository.All().ToList();
@@ -144,10 +135,7 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var downloadedAlbums = _scheduledTaskRepository.GetDefinition(typeof(DownloadedAlbumsScanCommand));
-            downloadedAlbums.Interval = _configService.DownloadedAlbumsScanInterval;
-
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, downloadedAlbums });
+            _scheduledTaskRepository.Update(rss);
         }
     }
 }

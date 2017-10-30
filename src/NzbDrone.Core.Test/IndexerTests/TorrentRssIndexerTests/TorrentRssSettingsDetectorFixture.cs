@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -253,12 +253,9 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
             });
         }
 
-        [TestCase("BitMeTv/BitMeTv.xml")]
-        [TestCase("Fanzub/fanzub.xml")]
         [TestCase("IPTorrents/IPTorrents.xml")]
         [TestCase("Newznab/newznab_nzb_su.xml")]
         [TestCase("Nyaa/Nyaa.xml")]
-        [TestCase("Omgwtfnzbs/Omgwtfnzbs.xml")]
         [TestCase("Torznab/torznab_hdaccess_net.xml")]
         [TestCase("Torznab/torznab_tpb.xml")]
         public void should_detect_recent_feed(string rssXmlFile)

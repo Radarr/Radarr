@@ -74,13 +74,6 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public string DownloadedAlbumsFolder
-        {
-            get { return GetValue(ConfigKey.DownloadedAlbumsFolder.ToString()); }
-
-            set { SetValue(ConfigKey.DownloadedAlbumsFolder.ToString(), value); }
-        }
-
         public bool AutoUnmonitorPreviouslyDownloadedTracks
         {
             get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedTracks"); }
@@ -168,13 +161,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("DownloadClientWorkingFolders", value); }
         }
 
-        public int DownloadedAlbumsScanInterval
-        {
-            get { return GetValueInt("DownloadedAlbumsScanInterval", 1); }
-
-            set { SetValue("DownloadedAlbumsScanInterval", value); }
-        }
-
         public int DownloadClientHistoryLimit
         {
             get { return GetValueInt("DownloadClientHistoryLimit", 30); }
@@ -250,6 +236,13 @@ namespace NzbDrone.Core.Configuration
             get { return GetValue("ChownGroup", ""); }
 
             set { SetValue("ChownGroup", value); }
+        }
+
+        public string MetadataSource
+        {
+            get { return GetValue("MetadataSource", ""); }
+
+            set { SetValue("MetadataSource", value); }
         }
 
         public int FirstDayOfWeek

@@ -18,12 +18,12 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(EPISODE_GRABBED_TITLE, grabMessage.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
+            _proxy.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(EPISODE_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
+            _proxy.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
         }
 
         public override ValidationResult Test()

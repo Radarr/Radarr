@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
 using Prowlin;
 
 namespace NzbDrone.Core.Notifications.Prowl
@@ -20,12 +19,12 @@ namespace NzbDrone.Core.Notifications.Prowl
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _prowlService.SendNotification(EPISODE_GRABBED_TITLE, grabMessage.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
+            _prowlService.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _prowlService.SendNotification(EPISODE_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
+            _prowlService.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
         }
 
         public override ValidationResult Test()

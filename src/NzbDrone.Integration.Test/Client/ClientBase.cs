@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using FluentAssertions;
 using NLog;
-using NzbDrone.Api;
-using NzbDrone.Api.REST;
+using Lidarr.Api.V3;
+using Lidarr.Http.REST;
 using NzbDrone.Common.Serializer;
 using RestSharp;
 using System.Linq;
+using Lidarr.Http;
 
 namespace NzbDrone.Integration.Test.Client
 {

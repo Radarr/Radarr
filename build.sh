@@ -7,9 +7,9 @@ outputFolderOsxApp='./_output_osx_app'
 testPackageFolder='./_tests/'
 testSearchPattern='*.Test/bin/x86/Release'
 sourceFolder='./src'
-slnFile=$sourceFolder/NzbDrone.sln
-updateFolder=$outputFolder/NzbDrone.Update
-updateFolderMono=$outputFolderMono/NzbDrone.Update
+slnFile=$sourceFolder/Lidarr.sln
+updateFolder=$outputFolder/Lidarr.Update
+updateFolderMono=$outputFolderMono/Lidarr.Update
 
 nuget='tools/nuget/nuget.exe';
 CheckExitCode()
@@ -38,9 +38,6 @@ CleanFolder()
     echo "Removing FluentValidation.Resources files"
     find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
     find $path -name "App.config" -exec rm "{}" \;
-
-    echo "Removing .less files"
-    find $path -name "*.less" -exec rm "{}" \;
 
     echo "Removing vshost files"
     find $path -name "*.vshost.exe" -exec rm "{}" \;
@@ -77,6 +74,17 @@ BuildWithXbuild()
     CheckExitCode xbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
 }
 
+LintUI()
+{
+    ProgressStart 'ESLint'
+    CheckExitCode yarn eslint
+    ProgressEnd 'ESLint'
+
+    ProgressStart 'Stylelint'
+    CheckExitCode yarn stylelint
+    ProgressEnd 'Stylelint'
+}
+
 Build()
 {
     echo "##teamcity[progressStart 'Build']"
@@ -101,13 +109,16 @@ Build()
 
 RunGulp()
 {
-    echo "##teamcity[progressStart 'npm install']"
-    npm-cache install npm || CheckExitCode npm install
-    echo "##teamcity[progressFinish 'npm install']"
+    ProgressStart 'npm install'
+    yarn install
+    #npm-cache install npm || CheckExitCode npm install --no-optional --no-bin-links
+    ProgressEnd 'npm install'
 
-    echo "##teamcity[progressStart 'Running gulp']"
-    CheckExitCode npm run build
-    echo "##teamcity[progressFinish 'Running gulp']"
+    LintUI
+
+    ProgressStart 'Running gulp'
+    CheckExitCode npm run build -- --production
+    ProgressEnd 'Running gulp'
 }
 
 CreateMdbs()
@@ -147,8 +158,8 @@ PackageMono()
     rm -f $outputFolderMono/sqlite3.*
     rm -f $outputFolderMono/MediaInfo.*
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $outputFolderMono
+    echo "Adding Lidarr.Core.dll.config (for dllmap)"
+    cp $sourceFolder/NzbDrone.Core/Lidarr.Core.dll.config $outputFolderMono
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
@@ -159,11 +170,11 @@ PackageMono()
         mv "$file" "${file//.Console/}"
     done
 
-    echo "Removing NzbDrone.Windows"
-    rm $outputFolderMono/NzbDrone.Windows.*
+    echo "Removing Lidarr.Windows"
+    rm $outputFolderMono/Lidarr.Windows.*
 
-    echo "Adding NzbDrone.Mono to UpdatePackage"
-    cp $outputFolderMono/NzbDrone.Mono.* $updateFolderMono
+    echo "Adding Lidarr.Mono to UpdatePackage"
+    cp $outputFolderMono/Lidarr.Mono.* $updateFolderMono
 
     echo "##teamcity[progressFinish 'Creating Mono Package']"
 }
@@ -223,8 +234,8 @@ PackageTests()
 
     CleanFolder $testPackageFolder true
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $testPackageFolder
+    echo "Adding Lidarr.Core.dll.config (for dllmap)"
+    cp $sourceFolder/NzbDrone.Core/Lidarr.Core.dll.config $testPackageFolder
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
@@ -237,11 +248,11 @@ PackageTests()
 
 CleanupWindowsPackage()
 {
-    echo "Removing NzbDrone.Mono"
-    rm -f $outputFolder/NzbDrone.Mono.*
+    echo "Removing Lidarr.Mono"
+    rm -f $outputFolder/Lidarr.Mono.*
 
-    echo "Adding NzbDrone.Windows to UpdatePackage"
-    cp $outputFolder/NzbDrone.Windows.* $updateFolder
+    echo "Adding Lidarr.Windows to UpdatePackage"
+    cp $outputFolder/Lidarr.Windows.* $updateFolder
 }
 
 # Use mono or .net depending on OS

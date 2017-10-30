@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
@@ -138,8 +138,9 @@ namespace NzbDrone.Core.Blacklisting
                                 Indexer = message.Data.GetValueOrDefault("indexer"),
                                 Protocol = (DownloadProtocol)Convert.ToInt32(message.Data.GetValueOrDefault("protocol")),
                                 Message = message.Message,
-                                TorrentInfoHash = message.Data.GetValueOrDefault("torrentInfoHash")
-                            };
+                                TorrentInfoHash = message.Data.GetValueOrDefault("torrentInfoHash"),
+                                Language = message.Language
+            };
 
             _blacklistRepository.Insert(blacklist);
         }

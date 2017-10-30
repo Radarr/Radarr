@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using FluentValidation.Results;
 using NUnit.Framework;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Validation;
 using NzbDrone.Test.Common;
 
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnDownload was called");
             }
 
-            public override void OnRename(Series series)
+            public override void OnRename(Artist artist)
             {
                 TestLogger.Info("OnRename was called");
             }

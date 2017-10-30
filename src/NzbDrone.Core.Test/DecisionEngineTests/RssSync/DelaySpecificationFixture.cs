@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -13,7 +13,9 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Qualities;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -25,6 +27,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     public class DelaySpecificationFixture : CoreTest<DelaySpecification>
     {
         private Profile _profile;
+        private LanguageProfile _langProfile;
         private DelayProfile _delayProfile;
         private RemoteAlbum _remoteAlbum;
 
@@ -34,12 +37,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _profile = Builder<Profile>.CreateNew()
                                        .Build();
 
+            _langProfile = Builder<LanguageProfile>.CreateNew()
+                                                    .Build();
+
+
             _delayProfile = Builder<DelayProfile>.CreateNew()
-                                                 .With(d => d.PreferredProtocol = DownloadProtocol.Usenet)
-                                                 .Build();
+                                      .With(d => d.PreferredProtocol = DownloadProtocol.Usenet)
+                                      .Build();
 
             var artist = Builder<Artist>.CreateNew()
                                         .With(s => s.Profile = _profile)
+                                        .With(s => s.LanguageProfile = _langProfile)
                                         .Build();
 
             _remoteAlbum = Builder<RemoteAlbum>.CreateNew()
@@ -53,6 +61,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _profile.Cutoff = Quality.MP3_320;
 
+            _langProfile.Cutoff = Language.Spanish;
+            _langProfile.Languages = Languages.LanguageFixture.GetDefaultLanguages();
+
             _remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
             _remoteAlbum.Release = new ReleaseInfo();
             _remoteAlbum.Release.DownloadProtocol = DownloadProtocol.Usenet;
@@ -61,7 +72,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<TrackFile> {});
+                .Returns(new List<TrackFile> { });
 
             Mocker.GetMock<IDelayProfileService>()
                   .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
@@ -72,17 +83,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                   .Returns(new List<RemoteAlbum>());
         }
 
-        private void GivenExistingFile(QualityModel quality)
+        private void GivenExistingFile(QualityModel quality, Language language)
         {
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
-                .Returns(new List<TrackFile> { new TrackFile { Quality = quality } });
+                .Returns(new List<TrackFile> { new TrackFile {
+                                                                Quality = quality,
+                                                                Language = language
+                                                              } });
         }
 
         private void GivenUpgradeForExistingFile()
         {
-            Mocker.GetMock<IQualityUpgradableSpecification>()
-                  .Setup(s => s.IsUpgradable(It.IsAny<Profile>(), It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
+            Mocker.GetMock<IUpgradableSpecification>()
+                  .Setup(s => s.IsUpgradable(It.IsAny<Profile>(), It.IsAny<LanguageProfile>(), It.IsAny<QualityModel>(), It.IsAny<Language>(), It.IsAny<QualityModel>(), It.IsAny<Language>()))
                   .Returns(true);
         }
 
@@ -112,9 +126,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         }
 
         [Test]
-        public void should_be_true_when_quality_is_last_allowed_in_profile()
+        public void should_be_true_when_quality_and_language_is_last_allowed_in_profile()
         {
             _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
+            _remoteAlbum.ParsedAlbumInfo.Language = Language.French;
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
@@ -147,10 +162,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3_256));
+            GivenExistingFile(new QualityModel(Quality.MP3_256), Language.English);
             GivenUpgradeForExistingFile();
 
-            Mocker.GetMock<IQualityUpgradableSpecification>()
+            Mocker.GetMock<IUpgradableSpecification>()
                   .Setup(s => s.IsRevisionUpgrade(It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
                   .Returns(true);
 
@@ -165,10 +180,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(real: 1));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3_256));
+            GivenExistingFile(new QualityModel(Quality.MP3_256), Language.English);
             GivenUpgradeForExistingFile();
 
-            Mocker.GetMock<IQualityUpgradableSpecification>()
+            Mocker.GetMock<IUpgradableSpecification>()
                   .Setup(s => s.IsRevisionUpgrade(It.IsAny<QualityModel>(), It.IsAny<QualityModel>()))
                   .Returns(true);
 
@@ -183,7 +198,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3_192));
+            GivenExistingFile(new QualityModel(Quality.MP3_192), Language.English);
 
             _delayProfile.UsenetDelay = 720;
 

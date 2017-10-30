@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Indexers.IPTorrents
 
         private IEnumerable<IndexerRequest> GetRssRequests()
         {
-            yield return new IndexerRequest(Settings.Url, HttpAccept.Rss);
+            yield return new IndexerRequest(Settings.BaseUrl, HttpAccept.Rss);
         }
     }
 }

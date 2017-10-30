@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -8,14 +8,14 @@ using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
-        : IHandle<EpisodeGrabbedEvent>,
-          IHandle<EpisodeDownloadedEvent>,
-          IHandle<SeriesRenamedEvent>
+        : IHandle<AlbumGrabbedEvent>,
+          IHandle<TrackImportedEvent>,
+          IHandle<ArtistRenamedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -26,83 +26,78 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
-        private string GetMessage(Series series, List<Episode> episodes, QualityModel quality)
+        private string GetMessage(Artist artist, List<Album> albums, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
 
             if (quality.Revision.Version > 1)
             {
-                if (series.SeriesType == SeriesTypes.Anime)
-                {
-                    qualityString += " v" + quality.Revision.Version;
-                }
-
-                else
-                {
-                    qualityString += " Proper";
-                }
+                qualityString += " Proper";
             }
 
-            if (series.SeriesType == SeriesTypes.Daily)
-            {
-                var episode = episodes.First();
 
-                return string.Format("{0} - {1} - {2} [{3}]",
-                                         series.Title,
-                                         episode.AirDate,
-                                         episode.Title,
-                                         qualityString);
-            }
+            var albumTitles = string.Join(" + ", albums.Select(e => e.Title));
 
-            var episodeNumbers = string.Concat(episodes.Select(e => e.EpisodeNumber)
-                                                       .Select(i => string.Format("x{0:00}", i)));
-
-            var episodeTitles = string.Join(" + ", episodes.Select(e => e.Title));
-
-            return string.Format("{0} - {1}{2} - {3} [{4}]",
-                                    series.Title,
-                                    episodes.First().SeasonNumber,
-                                    episodeNumbers,
-                                    episodeTitles,
+            return string.Format("{0} - {1} - [{2}]",
+                                    artist.Name,
+                                    albumTitles,
                                     qualityString);
         }
 
-        private bool ShouldHandleSeries(ProviderDefinition definition, Series series)
+        private string GetTrackMessage(Artist artist, List<Track> tracks, QualityModel quality)
         {
-            var notificationDefinition = (NotificationDefinition)definition;
+            var qualityString = quality.Quality.ToString();
 
-            if (notificationDefinition.Tags.Empty())
+            if (quality.Revision.Version > 1)
+            {
+                qualityString += " Proper";
+            }
+
+
+            var trackTitles = string.Join(" + ", tracks.Select(e => e.Title));
+
+            return string.Format("{0} - {1} - [{2}]",
+                                    artist.Name,
+                                    trackTitles,
+                                    qualityString);
+        }
+
+        private bool ShouldHandleArtist(ProviderDefinition definition, Artist artist)
+        {
+            if (definition.Tags.Empty())
             {
                 _logger.Debug("No tags set for this notification.");
                 return true;
             }
 
-            if (notificationDefinition.Tags.Intersect(series.Tags).Any())
+            if (definition.Tags.Intersect(artist.Tags).Any())
             {
-                _logger.Debug("Notification and series have one or more matching tags.");
+                _logger.Debug("Notification and artist have one or more intersecting tags.");
                 return true;
             }
 
             //TODO: this message could be more clear
-            _logger.Debug("{0} does not have any tags that match {1}'s tags", notificationDefinition.Name, series.Title);
+            _logger.Debug("{0} does not have any intersecting tags with {1}. Notification will not be sent.", definition.Name, artist.Name);
             return false;
         }
 
-        public void Handle(EpisodeGrabbedEvent message)
+        public void Handle(AlbumGrabbedEvent message)
         {
             var grabMessage = new GrabMessage
             {
-                Message = GetMessage(message.Episode.Series, message.Episode.Episodes, message.Episode.ParsedEpisodeInfo.Quality),
-                Series = message.Episode.Series,
-                Quality = message.Episode.ParsedEpisodeInfo.Quality,
-                Episode = message.Episode
+                Message = GetMessage(message.Album.Artist, message.Album.Albums, message.Album.ParsedAlbumInfo.Quality),
+                Artist = message.Album.Artist,
+                Quality = message.Album.ParsedAlbumInfo.Quality,
+                Album = message.Album,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             foreach (var notification in _notificationFactory.OnGrabEnabled())
             {
                 try
                 {
-                    if (!ShouldHandleSeries(notification.Definition, message.Episode.Series)) continue;
+                    if (!ShouldHandleArtist(notification.Definition, message.Album.Artist)) continue;
                     notification.OnGrab(grabMessage);
                 }
 
@@ -113,20 +108,30 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(EpisodeDownloadedEvent message)
+        public void Handle(TrackImportedEvent message)
         {
-            var downloadMessage = new DownloadMessage();
-            downloadMessage.Message = GetMessage(message.Episode.Series, message.Episode.Episodes, message.Episode.Quality);
-            downloadMessage.Series = message.Episode.Series;
-            downloadMessage.EpisodeFile = message.EpisodeFile;
-            downloadMessage.OldFiles = message.OldFiles;
-            downloadMessage.SourcePath = message.Episode.Path;
+            if (!message.NewDownload)
+            {
+                return;
+            }
+
+            var downloadMessage = new DownloadMessage
+
+            {
+                Message = GetTrackMessage(message.TrackInfo.Artist, message.TrackInfo.Tracks, message.TrackInfo.Quality),
+                Artist = message.TrackInfo.Artist,
+                TrackFile = message.ImportedTrack,
+                OldFiles = message.OldFiles,
+                SourcePath = message.TrackInfo.Path,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
+            };
 
             foreach (var notification in _notificationFactory.OnDownloadEnabled())
             {
                 try
                 {
-                    if (ShouldHandleSeries(notification.Definition, message.Episode.Series))
+                    if (ShouldHandleArtist(notification.Definition, message.TrackInfo.Artist))
                     {
                         if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
@@ -142,15 +147,15 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(SeriesRenamedEvent message)
+        public void Handle(ArtistRenamedEvent message)
         {
             foreach (var notification in _notificationFactory.OnRenameEnabled())
             {
                 try
                 {
-                    if (ShouldHandleSeries(notification.Definition, message.Series))
+                    if (ShouldHandleArtist(notification.Definition, message.Artist))
                     {
-                        notification.OnRename(message.Series);
+                        notification.OnRename(message.Artist);
                     }
                 }
 

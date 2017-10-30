@@ -13,7 +13,6 @@ using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
@@ -25,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles
         void Scan(Artist artist);
         string[] GetAudioFiles(string path, bool allDirectories = true);
         string[] GetNonAudioFiles(string path, bool allDirectories = true);
-        List<string> FilterFiles(Artist artist, IEnumerable<string> files);
+        List<string> FilterFiles(string basePath, IEnumerable<string> files);
     }
 
     public class DiskScanService :
@@ -60,9 +59,8 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
-
-        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(extras|@eadir|extrafanart|plex\sversions|\..+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|Thumbs\.db", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public void Scan(Artist artist)
         {
@@ -82,7 +80,7 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            _logger.ProgressInfo("Scanning disk for {0}", artist.Name);
+            _logger.ProgressInfo("Scanning {0}", artist.Name);
 
             if (!_diskProvider.FolderExists(artist.Path))
             {
@@ -102,7 +100,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var musicFilesStopwatch = Stopwatch.StartNew();
-            var mediaFileList = FilterFiles(artist, GetAudioFiles(artist.Path)).ToList();
+            var mediaFileList = FilterFiles(artist.Path, GetAudioFiles(artist.Path)).ToList();
             musicFilesStopwatch.Stop();
             _logger.Trace("Finished getting track files for: {0} [{1}]", artist, musicFilesStopwatch.Elapsed);
 
@@ -136,7 +134,7 @@ namespace NzbDrone.Core.MediaFiles
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var filesOnDisk = _diskProvider.GetFiles(path, searchOption).ToList();
 
-            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
+            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
@@ -151,7 +149,7 @@ namespace NzbDrone.Core.MediaFiles
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var filesOnDisk = _diskProvider.GetFiles(path, searchOption).ToList();
 
-            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
+            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
@@ -159,9 +157,9 @@ namespace NzbDrone.Core.MediaFiles
             return mediaFileList.ToArray();
         }
 
-        public List<string> FilterFiles(Artist artist, IEnumerable<string> files)
+        public List<string> FilterFiles(string basePath, IEnumerable<string> files)
         {
-            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(artist.Path.GetRelativePath(file)))
+            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
                         .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
                         .ToList();
         }
@@ -194,9 +192,9 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RescanArtistCommand message)
         {
-            if (message.ArtistId.IsNotNullOrWhiteSpace())
+            if (message.ArtistId.HasValue)
             {
-                var artist = _artistService.FindById(message.ArtistId);
+                var artist = _artistService.GetArtist(message.ArtistId.Value);
                 Scan(artist);
             }
 

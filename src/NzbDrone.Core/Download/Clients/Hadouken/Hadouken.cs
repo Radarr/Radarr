@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -35,17 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            HadoukenTorrent[] torrents;
-
-            try
-            {
-                torrents = _proxy.GetTorrents(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.ErrorException(ex.Message, ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var torrents = _proxy.GetTorrents(Settings);
 
             var items = new List<DownloadClientItem>();
 
@@ -97,14 +87,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                if (torrent.IsFinished && torrent.State == HadoukenTorrentState.Paused)
-                {
-                    item.IsReadOnly = false;
-                }
-                else
-                {
-                    item.IsReadOnly = true;
-                }
+                item.CanMoveFiles = item.CanBeRemoved = (torrent.IsFinished && torrent.State == HadoukenTorrentState.Paused);
 
                 items.Add(item);
             }
@@ -124,12 +107,12 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
             }
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var destDir = new OsPath(config.GetValueOrDefault("bittorrent.defaultSavePath") as string);
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -170,7 +153,7 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
                 if (version < new Version("5.1"))
                 {
-                    return new ValidationFailure(string.Empty, "Old Hadouken client with unsupported API, need 5.1 or higher");                    
+                    return new ValidationFailure(string.Empty, "Old Hadouken client with unsupported API, need 5.1 or higher");
                 }
             }
             catch (DownloadClientAuthenticationException ex)

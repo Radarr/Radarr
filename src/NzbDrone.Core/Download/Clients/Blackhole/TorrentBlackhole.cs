@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -103,7 +103,8 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                     Status = item.Status,
 
-                    IsReadOnly = Settings.ReadOnly
+                    CanMoveFiles = !Settings.ReadOnly,
+                    CanBeRemoved = !Settings.ReadOnly
                 };
             }
         }
@@ -118,9 +119,9 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             DeleteItemData(downloadId);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
-            return new DownloadClientStatus
+            return new DownloadClientInfo
             {
                 IsLocalhost = true,
                 OutputRootFolders = new List<OsPath> { new OsPath(Settings.WatchFolder) }

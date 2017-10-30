@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using NzbDrone.Common.Extensions;
@@ -10,6 +11,11 @@ namespace NzbDrone.Core.Indexers.Torznab
     public class TorznabRssParser : TorrentRssParser
     {
         public const string ns = "{http://torznab.com/schemas/2015/feed}";
+
+        public TorznabRssParser()
+        {
+            UseEnclosureUrl = true;
+        }
 
         protected override bool PreProcess(IndexerResponse indexerResponse)
         {
@@ -36,15 +42,22 @@ namespace NzbDrone.Core.Indexers.Torznab
             throw new TorznabException("Torznab error detected: {0}", errorMessage);
         }
 
-        protected override ReleaseInfo PostProcess(XElement item, ReleaseInfo releaseInfo)
+        protected override bool PostProcess(IndexerResponse indexerResponse, List<XElement> items, List<ReleaseInfo> releases)
         {
-            var enclosureType = item.Element("enclosure").Attribute("type").Value;
-            if (!enclosureType.Contains("application/x-bittorrent"))
+            var enclosureTypes = items.SelectMany(GetEnclosures).Select(v => v.Type).Distinct().ToArray();
+            if (enclosureTypes.Any() && enclosureTypes.Intersect(PreferredEnclosureMimeTypes).Empty())
             {
-                throw new UnsupportedFeedException("Feed contains {0} instead of application/x-bittorrent", enclosureType);
+                if (enclosureTypes.Intersect(UsenetEnclosureMimeTypes).Any())
+                {
+                    _logger.Warn("Feed does not contain {0}, found {1}, did you intend to add a Newznab indexer?", TorrentEnclosureMimeType, enclosureTypes[0]);
+                }
+                else
+                {
+                    _logger.Warn("Feed does not contain {0}, found {1}.", TorrentEnclosureMimeType, enclosureTypes[0]);
+                }
             }
 
-            return base.PostProcess(item, releaseInfo);
+            return true;
         }
 
 
@@ -134,11 +147,14 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         protected string TryGetTorznabAttribute(XElement item, string key, string defaultValue = "")
         {
-            var attr = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.CurrentCultureIgnoreCase));
-
-            if (attr != null)
+            var attrElement = item.Elements(ns + "attr").FirstOrDefault(e => e.Attribute("name").Value.Equals(key, StringComparison.OrdinalIgnoreCase));
+            if (attrElement != null)
             {
-                return attr.Attribute("value").Value;
+                var attrValue = attrElement.Attribute("value");
+                if (attrValue != null)
+                {
+                    return attrValue.Value;
+                }
             }
 
             return defaultValue;

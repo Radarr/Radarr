@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Indexers.Fanzub
         }
     }
 
-    public class FanzubSettings : IProviderConfig
+    public class FanzubSettings : IIndexerSettings
     {
         private static readonly FanzubSettingsValidator Validator = new FanzubSettingsValidator();
 

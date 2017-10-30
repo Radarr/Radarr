@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             catch (DownloadClientException ex)
             {
-                _logger.Warn("Couldn't get download queue. {0}", ex.Message);
+                _logger.Warn(ex, "Couldn't get download queue. {0}", ex.Message);
                 return Enumerable.Empty<DownloadClientItem>();
             }
 
@@ -78,8 +78,11 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 queueItem.TotalSize = (long)(sabQueueItem.Size * 1024 * 1024);
                 queueItem.RemainingSize = (long)(sabQueueItem.Sizeleft * 1024 * 1024);
                 queueItem.RemainingTime = sabQueueItem.Timeleft;
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
 
-                if (sabQueue.Paused || sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
+                if ((sabQueue.Paused && sabQueueItem.Priority != SabnzbdPriority.Force) ||
+                    sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
 
@@ -110,17 +113,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         private IEnumerable<DownloadClientItem> GetHistory()
         {
-            SabnzbdHistory sabHistory;
-
-            try
-            {
-                sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.TvCategory, Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.TvCategory, Settings);
 
             var historyItems = new List<DownloadClientItem>();
 
@@ -142,7 +135,10 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     RemainingSize = 0,
                     RemainingTime = TimeSpan.Zero,
 
-                    Message = sabHistoryItem.FailMessage
+                    Message = sabHistoryItem.FailMessage,
+
+                    CanBeRemoved = true,
+                    CanMoveFiles = true
                 };
 
                 if (sabHistoryItem.Status == SabnzbdDownloadStatus.Failed)
@@ -244,7 +240,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
             var categories = GetCategories(config).ToArray();
@@ -256,7 +252,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 category = categories.FirstOrDefault(v => v.Name == "*");
             }
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -319,6 +315,11 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         private Version ParseVersion(string version)
         {
+            if (version.IsNullOrWhiteSpace())
+            {
+                return null;
+            }
+
             var parsed = VersionRegex.Match(version);
 
             int major;
@@ -356,7 +357,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
                 if (version == null)
                 {
-                    return new ValidationFailure("Version", "Unknown Version: " + version);
+                    return new ValidationFailure("Version", "Unknown Version: " + rawVersion);
                 }
 
                 if (rawVersion.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
@@ -382,7 +383,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, ex.Message);
                 return new ValidationFailure("Host", "Unable to connect to SABnzbd");
             }
         }

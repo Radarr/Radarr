@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Music
     {
         Track Find(int artistId, int albumId, int trackNumber);
         List<Track> GetTracks(int artistId);
-        List<Track> GetTracks(int artistId, int albumId);
+        List<Track> GetTracksByAlbum(int albumId);
         List<Track> GetTracksByFileId(int fileId);
         List<Track> TracksWithFiles(int artistId);
         PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
@@ -51,10 +51,9 @@ namespace NzbDrone.Core.Music
             return Query.Where(s => s.ArtistId == artistId).ToList();
         }
 
-        public List<Track> GetTracks(int artistId, int albumId)
+        public List<Track> GetTracksByAlbum(int albumId)
         {
-            return Query.Where(s => s.ArtistId == artistId)
-                        .AndWhere(s => s.AlbumId == albumId)
+            return Query.Where(s => s.AlbumId == albumId)
                         .ToList();
         }
 

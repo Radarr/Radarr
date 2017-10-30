@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
@@ -39,7 +40,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Reno.911.S01.DVDRip.DD2.0.x264-DEEP", "Reno 911")]
         public void should_parse_series_name(string postTitle, string title)
         {
-            var result = Parser.Parser.ParseSeriesName(postTitle).CleanSeriesTitle();
+            var result = Parser.Parser.ParseArtistName(postTitle).CleanSeriesTitle();
             result.Should().Be(title.CleanSeriesTitle());
         }
 
@@ -54,13 +55,21 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Discovery TV - Gold Rush : 02 Road From Hell [S04].mp4")]
         public void should_clean_up_invalid_path_characters(string postTitle)
         {
-            Parser.Parser.ParseTitle(postTitle);
+            Parser.Parser.ParseAlbumTitle(postTitle);
         }
 
         [TestCase("[scnzbefnet][509103] 2.Broke.Girls.S03E18.720p.HDTV.X264-DIMENSION", "2 Broke Girls")]
         public void should_remove_request_info_from_title(string postTitle, string title)
         {
-            Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
+            Parser.Parser.ParseAlbumTitle(postTitle).ArtistName.Should().Be(title);
+        }
+
+        [TestCase("Revolution.S01E02.Chained.Heat.mkv")]
+        [TestCase("Dexter - S01E01 - Title.avi")]
+        public void should_parse_quality_from_extension(string title)
+        {
+            Parser.Parser.ParseAlbumTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
+            Parser.Parser.ParseAlbumTitle(title).Quality.QualitySource.Should().Be(QualitySource.Extension);
         }
 
         [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "The Best 101 Love Ballads")]

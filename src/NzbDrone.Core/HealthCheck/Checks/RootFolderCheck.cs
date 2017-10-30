@@ -1,23 +1,26 @@
-﻿using System.Linq;
+using System.Linq;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
+    [CheckOn(typeof(ArtistDeletedEvent))]
+    [CheckOn(typeof(ArtistMovedEvent))]
     public class RootFolderCheck : HealthCheckBase
     {
-        private readonly ISeriesService _seriesService;
+        private readonly IArtistService _artistService;
         private readonly IDiskProvider _diskProvider;
 
-        public RootFolderCheck(ISeriesService seriesService, IDiskProvider diskProvider)
+        public RootFolderCheck(IArtistService artistService, IDiskProvider diskProvider)
         {
-            _seriesService = seriesService;
+            _artistService = artistService;
             _diskProvider = diskProvider;
         }
 
         public override HealthCheck Check()
         {
-            var missingRootFolders = _seriesService.GetAllSeries()
+            var missingRootFolders = _artistService.GetAllArtists()
                                                    .Select(s => _diskProvider.GetParentFolder(s.Path))
                                                    .Distinct()
                                                    .Where(s => !_diskProvider.FolderExists(s))
@@ -36,7 +39,5 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType());
         }
-
-        public override bool CheckOnConfigChange => false;
     }
 }

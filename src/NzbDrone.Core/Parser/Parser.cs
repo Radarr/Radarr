@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,7 +8,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser
 {
@@ -59,6 +59,22 @@ namespace NzbDrone.Core.Parser
 
                 //Artist Discography
                 new Regex(@"^(?<artist>.+?)\W*(?<discograghy>Discograghy|Discografia).+(?<startyear>\d{4}).+(?<endyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                 //Artist - Album (Year) Strict
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<airyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album (Year)
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<airyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist - Album Year
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(\d{4}|\d{3})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
@@ -300,7 +316,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex SixDigitAirDateRegex = new Regex(@"(?<=[_.-])(?<airdate>(?<!\d)(?<airyear>[1-9]\d{1})(?<airmonth>[0-1][0-9])(?<airday>[0-3][0-9]))(?=[_.-])",
                                                                         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ](S\d+E\d+)[-._ ])|(-(RP|1|NZBGeek|Obfuscated|sample))+$",
+        private static readonly Regex CleanReleaseGroupRegex = new Regex(@"^(.*?[-._ ](S\d+E\d+)[-._ ])|(-(RP|1|NZBGeek|Obfuscated|Scrambled|sample))+$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex CleanTorrentSuffixRegex = new Regex(@"\[(?:ettv|rartv|rarbg|cttv)\]$",
@@ -310,6 +326,9 @@ namespace NzbDrone.Core.Parser
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex AnimeReleaseGroupRegex = new Regex(@"^(?:\[(?<subgroup>(?!\s).+?(?<!\s))\](?:_|-|\s|\.)?)",
+                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_)(?<italian>\b(?:ita|italian)\b)|(?<german>german\b|videomann)|(?<flemish>flemish)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VOSTFR)(?:\W|_))|(?<russian>\brus\b)|(?<dutch>nl\W?subs?)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<spanish>\b(?:español|castellano)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex YearInTitleRegex = new Regex(@"^(?<title>.+?)(?:\W|_)?(?<year>\d{4})",
@@ -329,29 +348,36 @@ namespace NzbDrone.Core.Parser
         {
             var fileInfo = new FileInfo(path);
             var file = TagLib.File.Create(path);
-            var trackName = file.Tag.Title;
             var trackNumber = file.Tag.Track;
+            var trackTitle = file.Tag.Title;
+
+            var artist = file.Tag.FirstAlbumArtist;
+
+            if (artist.IsNullOrWhiteSpace())
+            {
+                artist = file.Tag.FirstPerformer;
+            }
 
             var artistTitleInfo = new ArtistTitleInfo
             {
-                Title = file.Tag.Title,
-                Year = (int) file.Tag.Year
+                Title = artist,
+                Year = (int)file.Tag.Year
             };
 
             var temp = new int[1];
-            temp[0] = (int) trackNumber;
+            temp[0] = (int)trackNumber;
             var result = new ParsedTrackInfo
             {
+                Language = Language.English, //TODO Parse from Tag/Mediainfo
                 AlbumTitle = file.Tag.Album,
-                ArtistTitle = file.Tag.FirstAlbumArtist, 
-                Quality = QualityParser.ParseQuality(trackName),
+                ArtistTitle = artist,
+                ArtistMBId = file.Tag.MusicBrainzArtistId,
+                AlbumMBId = file.Tag.MusicBrainzReleaseId,
+                TrackMBId = file.Tag.MusicBrainzReleaseType,
                 TrackNumbers = temp,
                 ArtistTitleInfo = artistTitleInfo,
-                Title = file.Tag.Title
+                Title = trackTitle
             };
-
-
-            Logger.Debug("Quality parsed: {0}", file.Tag.BeatsPerMinute);
 
             foreach (TagLib.ICodec codec in file.Properties.Codecs)
             {
@@ -366,6 +392,7 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Channels:   " + acodec.AudioChannels + "\n");
 
                     result.Quality = QualityParser.ParseQuality(acodec.Description, acodec.AudioBitrate, acodec.AudioSampleRate);
+                    Logger.Debug("Quality parsed: {0}", result.Quality);
                 }
 
 
@@ -390,27 +417,6 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        public static ParsedEpisodeInfo ParsePath(string path)
-        {
-            var fileInfo = new FileInfo(path);
-
-            var result = ParseTitle(fileInfo.Name);
-
-            if (result == null)
-            {
-                Logger.Debug("Attempting to parse episode info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
-            }
-
-            if (result == null)
-            {
-                Logger.Debug("Attempting to parse episode info using directory name. {0}", fileInfo.Directory.Name);
-                result = ParseTitle(fileInfo.Directory.Name + fileInfo.Extension);
-            }
-
-            return result;
-        }
-
         public static ParsedTrackInfo ParseMusicTitle(string title)
         {
             try
@@ -429,9 +435,9 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
 
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+                var releaseTitle = RemoveFileExtension(title);
 
-                simpleTitle = RemoveFileExtension(simpleTitle);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
 
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
@@ -540,9 +546,9 @@ namespace NzbDrone.Core.Parser
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
 
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
+                var releaseTitle = RemoveFileExtension(title);
 
-                simpleTitle = RemoveFileExtension(simpleTitle);
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
 
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
@@ -583,13 +589,13 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                result.Language = LanguageParser.ParseLanguage(title);
+                                result.Language = LanguageParser.ParseLanguage(releaseTitle);
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
-                                result.ReleaseGroup = ParseReleaseGroup(title);
+                                result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
 
                                 var subGroup = GetSubGroup(match);
                                 if (!subGroup.IsNullOrWhiteSpace())
@@ -624,130 +630,6 @@ namespace NzbDrone.Core.Parser
 
             Logger.Debug("Unable to parse {0}", title);
             return null;
-        }
-
-        public static ParsedEpisodeInfo ParseTitle(string title)
-        {
-            try
-            {
-                if (!ValidateBeforeParsing(title)) return null;
-
-                Logger.Debug("Parsing string '{0}'", title);
-
-                if (ReversedTitleRegex.IsMatch(title))
-                {
-                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
-                    Array.Reverse(titleWithoutExtension);
-
-                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
-
-                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
-                }
-
-                var simpleTitle = SimpleTitleRegex.Replace(title, string.Empty);
-
-                simpleTitle = RemoveFileExtension(simpleTitle);
-
-                // TODO: Quick fix stripping [url] - prefixes.
-                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
-
-                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
-
-                var airDateMatch = AirDateRegex.Match(simpleTitle);
-                if (airDateMatch.Success)
-                {
-                    simpleTitle = airDateMatch.Groups[1].Value + airDateMatch.Groups["airyear"].Value + "." + airDateMatch.Groups["airmonth"].Value + "." + airDateMatch.Groups["airday"].Value;
-                }
-
-                var sixDigitAirDateMatch = SixDigitAirDateRegex.Match(simpleTitle);
-                if (sixDigitAirDateMatch.Success)
-                {
-                    var airYear = sixDigitAirDateMatch.Groups["airyear"].Value;
-                    var airMonth = sixDigitAirDateMatch.Groups["airmonth"].Value;
-                    var airDay = sixDigitAirDateMatch.Groups["airday"].Value;
-
-                    if (airMonth != "00" || airDay != "00")
-                    {
-                        var fixedDate = string.Format("20{0}.{1}.{2}", airYear, airMonth, airDay);
-
-                        simpleTitle = simpleTitle.Replace(sixDigitAirDateMatch.Groups["airdate"].Value, fixedDate);
-                    }
-                }
-
-                foreach (var regex in ReportTitleRegex)
-                {
-                    var match = regex.Matches(simpleTitle);
-
-                    if (match.Count != 0)
-                    {
-                        Logger.Trace(regex);
-                        try
-                        {
-                            var result = ParseMatchCollection(match);
-
-                            if (result != null)
-                            {
-                                if (result.FullSeason && title.ContainsIgnoreCase("Special"))
-                                {
-                                    result.FullSeason = false;
-                                    result.Special = true;
-                                }
-
-                                result.Language = LanguageParser.ParseLanguage(title);
-                                Logger.Debug("Language parsed: {0}", result.Language);
-
-                                result.Quality = QualityParser.ParseQuality(title);
-                                Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                                result.ReleaseGroup = ParseReleaseGroup(title);
-
-                                var subGroup = GetSubGroup(match);
-                                if (!subGroup.IsNullOrWhiteSpace())
-                                {
-                                    result.ReleaseGroup = subGroup;
-                                }
-
-                                Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
-
-                                result.ReleaseHash = GetReleaseHash(match);
-                                if (!result.ReleaseHash.IsNullOrWhiteSpace())
-                                {
-                                    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
-                                }
-
-                                return result;
-                            }
-                        }
-                        catch (InvalidDateException ex)
-                        {
-                            Logger.Debug(ex, ex.Message);
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
-                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
-            }
-
-            Logger.Debug("Unable to parse {0}", title);
-            return null;
-        }
-
-        public static string ParseSeriesName(string title)
-        {
-            Logger.Debug("Parsing string '{0}'", title);
-
-            var parseResult = ParseTitle(title);
-
-            if (parseResult == null)
-            {
-                return CleanSeriesTitle(title);
-            }
-
-            return parseResult.SeriesTitle;
         }
 
         public static string CleanSeriesTitle(this string title)
@@ -761,15 +643,15 @@ namespace NzbDrone.Core.Parser
             return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
         }
 
-        public static string CleanArtistTitle(this string title)
+        public static string CleanArtistName(this string name)
         {
             long number = 0;
 
             //If Title only contains numbers return it as is.
-            if (long.TryParse(title, out number))
-                return title;
+            if (long.TryParse(name, out number))
+                return name;
 
-            return NormalizeRegex.Replace(title, string.Empty).ToLower().RemoveAccent();
+            return NormalizeRegex.Replace(name, string.Empty).ToLower().RemoveAccent();
         }
 
         public static string NormalizeEpisodeTitle(string title)
@@ -840,25 +722,97 @@ namespace NzbDrone.Core.Parser
             return title;
         }
 
-        private static SeriesTitleInfo GetSeriesTitleInfo(string title)
+        public static Language ParseLanguage(string title)
         {
-            var seriesTitleInfo = new SeriesTitleInfo();
-            seriesTitleInfo.Title = title;
+            var lowerTitle = title.ToLower();
 
-            var match = YearInTitleRegex.Match(title);
+            if (lowerTitle.Contains("english"))
+                return Language.English;
 
-            if (!match.Success)
-            {
-                seriesTitleInfo.TitleWithoutYear = title;
-            }
+            if (lowerTitle.Contains("french"))
+                return Language.French;
 
-            else
-            {
-                seriesTitleInfo.TitleWithoutYear = match.Groups["title"].Value;
-                seriesTitleInfo.Year = Convert.ToInt32(match.Groups["year"].Value);
-            }
+            if (lowerTitle.Contains("spanish"))
+                return Language.Spanish;
 
-            return seriesTitleInfo;
+            if (lowerTitle.Contains("danish"))
+                return Language.Danish;
+
+            if (lowerTitle.Contains("dutch"))
+                return Language.Dutch;
+
+            if (lowerTitle.Contains("japanese"))
+                return Language.Japanese;
+
+            if (lowerTitle.Contains("cantonese"))
+                return Language.Cantonese;
+
+            if (lowerTitle.Contains("mandarin"))
+                return Language.Mandarin;
+
+            if (lowerTitle.Contains("korean"))
+                return Language.Korean;
+
+            if (lowerTitle.Contains("russian"))
+                return Language.Russian;
+
+            if (lowerTitle.Contains("polish"))
+                return Language.Polish;
+
+            if (lowerTitle.Contains("vietnamese"))
+                return Language.Vietnamese;
+
+            if (lowerTitle.Contains("swedish"))
+                return Language.Swedish;
+
+            if (lowerTitle.Contains("norwegian"))
+                return Language.Norwegian;
+
+            if (lowerTitle.Contains("nordic"))
+                return Language.Norwegian;
+
+            if (lowerTitle.Contains("finnish"))
+                return Language.Finnish;
+
+            if (lowerTitle.Contains("turkish"))
+                return Language.Turkish;
+
+            if (lowerTitle.Contains("portuguese"))
+                return Language.Portuguese;
+
+            if (lowerTitle.Contains("hungarian"))
+                return Language.Hungarian;
+
+            var match = LanguageRegex.Match(title);
+
+            if (match.Groups["italian"].Captures.Cast<Capture>().Any())
+                return Language.Italian;
+
+            if (match.Groups["german"].Captures.Cast<Capture>().Any())
+                return Language.German;
+
+            if (match.Groups["flemish"].Captures.Cast<Capture>().Any())
+                return Language.Flemish;
+
+            if (match.Groups["greek"].Captures.Cast<Capture>().Any())
+                return Language.Greek;
+
+            if (match.Groups["spanish"].Captures.Cast<Capture>().Any())
+                return Language.Spanish;
+
+            if (match.Groups["french"].Success)
+                return Language.French;
+
+            if (match.Groups["russian"].Success)
+                return Language.Russian;
+
+            if (match.Groups["dutch"].Success)
+                return Language.Dutch;
+
+            if (match.Groups["hungarian"].Success)
+                return Language.Hungarian;
+
+            return Language.English;
         }
 
         private static ParsedTrackInfo ParseMatchMusicCollection(MatchCollection matchCollection)
@@ -868,7 +822,7 @@ namespace NzbDrone.Core.Parser
 
             // Coppied from Radarr (https://github.com/Radarr/Radarr/blob/develop/src/NzbDrone.Core/Parser/Parser.cs)
             // TODO: Split into separate method and write unit tests for. 
-            var parts = artistName.Split('.'); 
+            var parts = artistName.Split('.');
             artistName = "";
             int n = 0;
             bool previousAcronym = false;
@@ -936,6 +890,20 @@ namespace NzbDrone.Core.Parser
             return artistTitleInfo;
         }
 
+        public static string ParseArtistName(string title)
+        {
+            Logger.Debug("Parsing string '{0}'", title);
+
+            var parseResult = ParseAlbumTitle(title);
+
+            if (parseResult == null)
+            {
+                return CleanSeriesTitle(title);
+            }
+
+            return parseResult.ArtistName;
+        }
+
         private static ParsedAlbumInfo ParseAlbumMatchCollection(MatchCollection matchCollection)
         {
             var artistName = matchCollection[0].Groups["artist"].Value.Replace('.', ' ').Replace('_', ' ');
@@ -955,141 +923,6 @@ namespace NzbDrone.Core.Parser
             result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistName);
 
             Logger.Debug("Album Parsed. {0}", result);
-
-            return result;
-        }
-
-
-        private static ParsedEpisodeInfo ParseMatchCollection(MatchCollection matchCollection)
-        {
-            var seriesName = matchCollection[0].Groups["title"].Value.Replace('.', ' ').Replace('_', ' ');
-            seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
-
-            int airYear;
-            int.TryParse(matchCollection[0].Groups["airyear"].Value, out airYear);
-
-            ParsedEpisodeInfo result;
-
-            if (airYear < 1900)
-            {
-                var seasons = new List<int>();
-
-                foreach (Capture seasonCapture in matchCollection[0].Groups["season"].Captures)
-                {
-                    int parsedSeason;
-                    if (int.TryParse(seasonCapture.Value, out parsedSeason))
-                        seasons.Add(parsedSeason);
-                }
-
-                //If no season was found it should be treated as a mini series and season 1
-                if (seasons.Count == 0) seasons.Add(1);
-
-                //If more than 1 season was parsed go to the next REGEX (A multi-season release is unlikely)
-                if (seasons.Distinct().Count() > 1) return null;
-
-                result = new ParsedEpisodeInfo
-                {
-                    SeasonNumber = seasons.First(),
-                    EpisodeNumbers = new int[0],
-                    AbsoluteEpisodeNumbers = new int[0]
-                };
-
-                foreach (Match matchGroup in matchCollection)
-                {
-                    var episodeCaptures = matchGroup.Groups["episode"].Captures.Cast<Capture>().ToList();
-                    var absoluteEpisodeCaptures = matchGroup.Groups["absoluteepisode"].Captures.Cast<Capture>().ToList();
-
-                    //Allows use to return a list of 0 episodes (We can handle that as a full season release)
-                    if (episodeCaptures.Any())
-                    {
-                        var first = ParseNumber(episodeCaptures.First().Value);
-                        var last = ParseNumber(episodeCaptures.Last().Value);
-
-                        if (first > last)
-                        {
-                            return null;
-                        }
-
-                        var count = last - first + 1;
-                        result.EpisodeNumbers = Enumerable.Range(first, count).ToArray();
-                    }
-
-                    if (absoluteEpisodeCaptures.Any())
-                    {
-                        var first = Convert.ToInt32(absoluteEpisodeCaptures.First().Value);
-                        var last = Convert.ToInt32(absoluteEpisodeCaptures.Last().Value);
-
-                        if (first > last)
-                        {
-                            return null;
-                        }
-
-                        var count = last - first + 1;
-                        result.AbsoluteEpisodeNumbers = Enumerable.Range(first, count).ToArray();
-
-                        if (matchGroup.Groups["special"].Success)
-                        {
-                            result.Special = true;
-                        }
-                    }
-
-                    if (!episodeCaptures.Any() && !absoluteEpisodeCaptures.Any())
-                    {
-                        //Check to see if this is an "Extras" or "SUBPACK" release, if it is, return NULL
-                        //Todo: Set a "Extras" flag in EpisodeParseResult if we want to download them ever
-                        if (!matchCollection[0].Groups["extras"].Value.IsNullOrWhiteSpace()) return null;
-
-                        result.FullSeason = true;
-                    }
-                }
-
-                if (result.AbsoluteEpisodeNumbers.Any() && !result.EpisodeNumbers.Any())
-                {
-                    result.SeasonNumber = 0;
-                }
-            }
-
-            else
-            {
-                //Try to Parse as a daily show
-                var airmonth = Convert.ToInt32(matchCollection[0].Groups["airmonth"].Value);
-                var airday = Convert.ToInt32(matchCollection[0].Groups["airday"].Value);
-
-                //Swap day and month if month is bigger than 12 (scene fail)
-                if (airmonth > 12)
-                {
-                    var tempDay = airday;
-                    airday = airmonth;
-                    airmonth = tempDay;
-                }
-
-                DateTime airDate;
-
-                try
-                {
-                    airDate = new DateTime(airYear, airmonth, airday);
-                }
-                catch (Exception)
-                {
-                    throw new InvalidDateException("Invalid date found: {0}-{1}-{2}", airYear, airmonth, airday);
-                }
-
-                //Check if episode is in the future (most likely a parse error)
-                if (airDate > DateTime.Now.AddDays(1).Date || airDate < new DateTime(1970, 1, 1))
-                {
-                    throw new InvalidDateException("Invalid date found: {0}", airDate);
-                }
-
-                result = new ParsedEpisodeInfo
-                {
-                    AirDate = airDate.ToString(Episode.AIR_DATE_FORMAT),
-                };
-            }
-
-            result.SeriesTitle = seriesName;
-            result.SeriesTitleInfo = GetSeriesTitleInfo(result.SeriesTitle);
-
-            Logger.Debug("Episode Parsed. {0}", result);
 
             return result;
         }

@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.Update.Commands
 {
@@ -6,6 +6,6 @@ namespace NzbDrone.Core.Update.Commands
     {
         public override bool SendUpdatesToClient => true;
 
-        public override string CompletionMessage => "Restarting Lidarr to apply updates";
+        public override string CompletionMessage => null;
     }
 }

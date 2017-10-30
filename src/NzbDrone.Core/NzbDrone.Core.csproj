@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -9,8 +9,8 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NzbDrone.Core</RootNamespace>
-    <AssemblyName>NzbDrone.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>Lidarr.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -50,19 +51,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CookComputing.XmlRpcV2, Version=2.5.0.0, Culture=neutral, PublicKeyToken=a7d6e17aa302004d, processorArchitecture=MSIL">
+      <HintPath>..\packages\xmlrpcnet.2.5.0\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
+    </Reference>
     <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentMigrator.1.6.2\lib\40\FluentMigrator.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FluentMigrator.Runner, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentMigrator.Runner.1.6.2\lib\40\FluentMigrator.Runner.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\portable-net40+sl50+wp80+win8+wpa81\FluentValidation.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Growl.Connector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=980c2339411be384, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,29 +76,25 @@
     </Reference>
     <Reference Include="ImageResizer, Version=3.4.3.103, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.3.4.3\lib\ImageResizer.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.3\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="OAuth">
+    <Reference Include="OAuth, Version=1.0.0.0, Culture=neutral, PublicKeyToken=75b3c62967edc2a2, processorArchitecture=MSIL">
       <HintPath>..\packages\OAuth.1.0.3\lib\net40\OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="CookComputing.XmlRpc, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\xmlrpcnet.2.5.0\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
+    <Reference Include="Prowlin, Version=0.9.4456.26422, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
     </Reference>
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -108,9 +106,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Prowlin">
-      <HintPath>..\packages\Prowlin.0.9.4456.26422\lib\net40\Prowlin.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
@@ -132,6 +127,7 @@
     <Compile Include="Backup\Backup.cs" />
     <Compile Include="Backup\BackupCommand.cs" />
     <Compile Include="Backup\BackupService.cs" />
+    <Compile Include="Backup\MakeDatabaseBackup.cs" />
     <Compile Include="Blacklisting\Blacklist.cs" />
     <Compile Include="Blacklisting\BlacklistRepository.cs" />
     <Compile Include="Blacklisting\BlacklistService.cs" />
@@ -148,25 +144,13 @@
     <Compile Include="DataAugmentation\DailySeries\DailySeries.cs" />
     <Compile Include="DataAugmentation\DailySeries\DailySeriesDataProxy.cs" />
     <Compile Include="DataAugmentation\DailySeries\DailySeriesService.cs" />
-    <Compile Include="DataAugmentation\Scene\ISceneMappingProvider.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMapping.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMappingProxy.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMappingRepository.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMappingService.cs" />
-    <Compile Include="DataAugmentation\Scene\SceneMappingsUpdatedEvent.cs" />
-    <Compile Include="DataAugmentation\Scene\ServicesProvider.cs" />
-    <Compile Include="DataAugmentation\Scene\UpdateSceneMappingCommand.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemResult.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemSceneTvdbMapping.cs" />
-    <Compile Include="DataAugmentation\Xem\Model\XemValues.cs" />
-    <Compile Include="DataAugmentation\Xem\XemProxy.cs" />
-    <Compile Include="DataAugmentation\Xem\XemService.cs" />
     <Compile Include="Datastore\BasicRepository.cs" />
     <Compile Include="Datastore\ConnectionStringFactory.cs" />
     <Compile Include="Datastore\Converters\BooleanIntConverter.cs" />
     <Compile Include="Datastore\Converters\DoubleConverter.cs" />
     <Compile Include="Datastore\Converters\EmbeddedDocumentConverter.cs" />
     <Compile Include="Datastore\Converters\EnumIntConverter.cs" />
+    <Compile Include="Datastore\Converters\LanguageIntConverter.cs" />
     <Compile Include="Datastore\Converters\TimeSpanConverter.cs" />
     <Compile Include="Datastore\Converters\Int32Converter.cs" />
     <Compile Include="Datastore\Converters\GuidConverter.cs" />
@@ -187,119 +171,7 @@
     <Compile Include="Datastore\MainDatabase.cs" />
     <Compile Include="Datastore\LogDatabase.cs" />
     <Compile Include="Datastore\Migration\001_initial_setup.cs" />
-    <Compile Include="Datastore\Migration\002_remove_tvrage_imdb_unique_constraint.cs" />
-    <Compile Include="Datastore\Migration\003_remove_clean_title_from_scene_mapping.cs" />
-    <Compile Include="Datastore\Migration\004_updated_history.cs" />
-    <Compile Include="Datastore\Migration\005_added_eventtype_to_history.cs" />
-    <Compile Include="Datastore\Migration\006_add_index_to_log_time.cs" />
-    <Compile Include="Datastore\Migration\007_add_renameEpisodes_to_naming.cs" />
-    <Compile Include="Datastore\Migration\008_remove_backlog.cs" />
-    <Compile Include="Datastore\Migration\009_fix_renameEpisodes.cs" />
-    <Compile Include="Datastore\Migration\010_add_monitored.cs" />
-    <Compile Include="Datastore\Migration\011_remove_ignored.cs" />
-    <Compile Include="Datastore\Migration\012_remove_custom_start_date.cs" />
-    <Compile Include="Datastore\Migration\013_add_air_date_utc.cs" />
-    <Compile Include="Datastore\Migration\014_drop_air_date.cs" />
-    <Compile Include="Datastore\Migration\015_add_air_date_as_string.cs" />
-    <Compile Include="Datastore\Migration\016_updated_imported_history_item.cs" />
-    <Compile Include="Datastore\Migration\017_reset_scene_names.cs" />
-    <Compile Include="Datastore\Migration\018_remove_duplicates.cs" />
-    <Compile Include="Datastore\Migration\019_restore_unique_constraints.cs" />
-    <Compile Include="Datastore\Migration\020_add_year_and_seasons_to_series.cs" />
-    <Compile Include="Datastore\Migration\021_drop_seasons_table.cs" />
-    <Compile Include="Datastore\Migration\022_move_indexer_to_generic_provider.cs" />
-    <Compile Include="Datastore\Migration\023_add_config_contract_to_indexers.cs" />
-    <Compile Include="Datastore\Migration\024_drop_tvdb_episodeid.cs" />
-    <Compile Include="Datastore\Migration\025_move_notification_to_generic_provider.cs" />
-    <Compile Include="Datastore\Migration\026_add_config_contract_to_notifications.cs" />
-    <Compile Include="Datastore\Migration\027_fix_omgwtfnzbs.cs" />
-    <Compile Include="Datastore\Migration\028_add_blacklist_table.cs" />
-    <Compile Include="Datastore\Migration\029_add_formats_to_naming_config.cs" />
-    <Compile Include="Datastore\Migration\030_add_season_folder_format_to_naming_config.cs" />
-    <Compile Include="Datastore\Migration\031_delete_old_naming_config_columns.cs" />
-    <Compile Include="Datastore\Migration\032_set_default_release_group.cs" />
-    <Compile Include="Datastore\Migration\033_add_api_key_to_pushover.cs" />
-    <Compile Include="Datastore\Migration\034_remove_series_contraints.cs" />
-    <Compile Include="Datastore\Migration\035_add_series_folder_format_to_naming_config.cs" />
-    <Compile Include="Datastore\Migration\036_update_with_quality_converters.cs" />
-    <Compile Include="Datastore\Migration\037_add_configurable_qualities.cs" />
-    <Compile Include="Datastore\Migration\038_add_on_upgrade_to_notifications.cs" />
-    <Compile Include="Datastore\Migration\039_add_metadata_tables.cs" />
-    <Compile Include="Datastore\Migration\040_add_metadata_to_episodes_and_series.cs" />
-    <Compile Include="Datastore\Migration\041_fix_xbmc_season_images_metadata.cs" />
-    <Compile Include="Datastore\Migration\042_add_download_clients_table.cs" />
-    <Compile Include="Datastore\Migration\043_convert_config_to_download_clients.cs" />
-    <Compile Include="Datastore\Migration\044_fix_xbmc_episode_metadata.cs" />
-    <Compile Include="Datastore\Migration\045_add_indexes.cs" />
-    <Compile Include="Datastore\Migration\046_fix_nzb_su_url.cs" />
-    <Compile Include="Datastore\Migration\047_add_published_date_blacklist_column.cs" />
-    <Compile Include="Datastore\Migration\048_add_title_to_scenemappings.cs" />
-    <Compile Include="Datastore\Migration\049_fix_dognzb_url.cs" />
-    <Compile Include="Datastore\Migration\050_add_hash_to_metadata_files.cs" />
-    <Compile Include="Datastore\Migration\051_download_client_import.cs" />
-    <Compile Include="Datastore\Migration\052_add_columns_for_anime.cs" />
-    <Compile Include="Datastore\Migration\053_add_series_sorttitle.cs" />
-    <Compile Include="Datastore\Migration\054_rename_profiles.cs" />
-    <Compile Include="Datastore\Migration\055_drop_old_profile_columns.cs" />
-    <Compile Include="Datastore\Migration\056_add_mediainfo_to_episodefile.cs" />
-    <Compile Include="Datastore\Migration\057_convert_episode_file_path_to_relative.cs" />
-    <Compile Include="Datastore\Migration\058_drop_epsiode_file_path.cs" />
-    <Compile Include="Datastore\Migration\059_add_enable_options_to_indexers.cs" />
-    <Compile Include="Datastore\Migration\060_remove_enable_from_indexers.cs" />
-    <Compile Include="Datastore\Migration\061_clear_bad_scene_names.cs" />
-    <Compile Include="Datastore\Migration\062_convert_quality_models.cs" />
-    <Compile Include="Datastore\Migration\063_add_remotepathmappings.cs" />
-    <Compile Include="Datastore\Migration\064_add_remove_method_from_logs.cs" />
-    <Compile Include="Datastore\Migration\065_make_scene_numbering_nullable.cs" />
-    <Compile Include="Datastore\Migration\066_add_tags.cs" />
-    <Compile Include="Datastore\Migration\067_add_added_to_series.cs" />
-    <Compile Include="Datastore\Migration\068_add_release_restrictions.cs" />
-    <Compile Include="Datastore\Migration\069_quality_proper.cs" />
-    <Compile Include="Datastore\Migration\070_delay_profile.cs" />
-    <Compile Include="Datastore\Migration\110_fix_extra_files_config.cs" />
-    <Compile Include="Datastore\Migration\109_import_extra_files.cs" />
-    <Compile Include="Datastore\Migration\108_fix_extra_file_extension.cs" />
-    <Compile Include="Datastore\Migration\107_remove_wombles.cs" />
-    <Compile Include="Datastore\Migration\106_update_btn_url.cs" />
-    <Compile Include="Datastore\Migration\096_disable_kickass.cs" />
-    <Compile Include="Datastore\Migration\095_add_additional_episodes_index.cs" />
-    <Compile Include="Datastore\Migration\104_remove_kickass.cs" />
-    <Compile Include="Datastore\Migration\103_fix_metadata_file_extensions.cs" />
-    <Compile Include="Datastore\Migration\101_add_ultrahd_quality_in_profiles.cs" />
-    <Compile Include="Datastore\Migration\071_unknown_quality_in_profile.cs" />
-    <Compile Include="Datastore\Migration\072_history_grabid.cs" />
-    <Compile Include="Datastore\Migration\073_clear_ratings.cs" />
-    <Compile Include="Datastore\Migration\074_disable_eztv.cs" />
-    <Compile Include="Datastore\Migration\075_force_lib_update.cs" />
-    <Compile Include="Datastore\Migration\076_add_users_table.cs" />
-    <Compile Include="Datastore\Migration\077_add_add_options_to_series.cs" />
-    <Compile Include="Datastore\Migration\078_add_commands_table.cs" />
-    <Compile Include="Datastore\Migration\079_dedupe_tags.cs" />
-    <Compile Include="Datastore\Migration\081_move_dot_prefix_to_transmission_category.cs" />
-    <Compile Include="Datastore\Migration\082_add_fanzub_settings.cs" />
-    <Compile Include="Datastore\Migration\083_additonal_blacklist_columns.cs" />
-    <Compile Include="Datastore\Migration\084_update_quality_minmax_size.cs" />
-    <Compile Include="Datastore\Migration\085_expand_transmission_urlbase.cs" />
-    <Compile Include="Datastore\Migration\086_pushbullet_device_ids.cs" />
-    <Compile Include="Datastore\Migration\087_remove_eztv.cs" />
-    <Compile Include="Datastore\Migration\088_pushbullet_devices_channels_list.cs" />
-    <Compile Include="Datastore\Migration\089_add_on_rename_to_notifcations.cs" />
-    <Compile Include="Datastore\Migration\090_update_kickass_url.cs" />
-    <Compile Include="Datastore\Migration\091_added_indexerstatus.cs" />
-    <Compile Include="Datastore\Migration\093_naming_config_replace_characters.cs" />
-    <Compile Include="Datastore\Migration\092_add_unverifiedscenenumbering.cs" />
-    <Compile Include="Datastore\Migration\100_add_scene_season_number.cs" />
-    <Compile Include="Datastore\Migration\099_extra_and_subtitle_files.cs" />
-    <Compile Include="Datastore\Migration\094_add_tvmazeid.cs" />
-    <Compile Include="Datastore\Migration\098_remove_titans_of_tv.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Datastore\Migration\105_rename_torrent_downloadstation.cs" />
-    <Compile Include="Datastore\Migration\115_change_drone_factory_variable_name.cs" />
-    <Compile Include="Datastore\Migration\114_remove_tv_naming.cs" />
-    <Compile Include="Datastore\Migration\113_music_blacklist.cs" />
-    <Compile Include="Datastore\Migration\112_music_history.cs" />
-    <Compile Include="Datastore\Migration\111_setup_music.cs" />
+    <Compile Include="Datastore\Migration\002_add_release_to_pending_releases.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -324,13 +196,13 @@
     <Compile Include="DecisionEngine\DownloadDecisionPriorizationService.cs" />
     <Compile Include="DecisionEngine\IDecisionEngineSpecification.cs" />
     <Compile Include="DecisionEngine\IRejectWithReason.cs" />
-    <Compile Include="DecisionEngine\QualityUpgradableSpecification.cs" />
     <Compile Include="DecisionEngine\Rejection.cs" />
     <Compile Include="DecisionEngine\RejectionType.cs" />
-    <Compile Include="DecisionEngine\SameEpisodesSpecification.cs" />
     <Compile Include="DecisionEngine\SameTracksSpecification.cs" />
+    <Compile Include="DecisionEngine\SpecificationPriority.cs" />
     <Compile Include="DecisionEngine\Specifications\AcceptableSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\BlacklistSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\BlockedIndexerSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\DiscographySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\CutoffSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\ProtocolSpecification.cs" />
@@ -342,6 +214,7 @@
     <Compile Include="DecisionEngine\Specifications\MinimumAgeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RetentionSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\DelaySpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\RssSync\DeletedTrackFileSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\HistorySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredAlbumSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />
@@ -350,10 +223,11 @@
     <Compile Include="DecisionEngine\Specifications\Search\SeasonMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\ArtistSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\SingleAlbumSearchMatchSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\Search\TorrentSeedingSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\TorrentSeedingSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\SameTracksGrabSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RawDiskSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
+    <Compile Include="DecisionEngine\UpgradableSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
     <Compile Include="Download\AlbumGrabbedEvent.cs" />
@@ -371,6 +245,7 @@
     <Compile Include="Download\Clients\Deluge\DelugeUpdateUIResult.cs" />
     <Compile Include="Download\Clients\DownloadClientAuthenticationException.cs" />
     <Compile Include="Download\Clients\DownloadClientException.cs" />
+    <Compile Include="Download\Clients\DownloadClientUnavailableException.cs" />
     <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationInfoProxy.cs" />
     <Compile Include="Download\Clients\DownloadStation\TorrentDownloadStation.cs" />
     <Compile Include="Download\Clients\DownloadStation\Proxies\DownloadStationTaskProxy.cs" />
@@ -446,6 +321,7 @@
     <Compile Include="Download\Clients\Pneumatic\Pneumatic.cs" />
     <Compile Include="Download\Clients\Pneumatic\PneumaticSettings.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentPreferences.cs" />
+    <Compile Include="Download\Clients\QBittorrent\QBittorrentState.cs" />
     <Compile Include="Download\Clients\rTorrent\RTorrentDirectoryValidator.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrent.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentPriority.cs" />
@@ -497,15 +373,21 @@
     <Compile Include="Download\Clients\uTorrent\UTorrentProxy.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentResponse.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentSettings.cs" />
+    <Compile Include="Download\Clients\uTorrent\UtorrentState.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrent.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrentCache.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrentStatus.cs" />
     <Compile Include="Download\Clients\Vuze\Vuze.cs" />
     <Compile Include="Download\CompletedDownloadService.cs" />
+    <Compile Include="Download\DownloadClientStatus.cs" />
+    <Compile Include="Download\DownloadClientStatusRepository.cs" />
+    <Compile Include="Download\DownloadClientStatusService.cs" />
     <Compile Include="Download\DownloadEventHub.cs" />
+    <Compile Include="Download\Pending\PendingReleaseReason.cs" />
     <Compile Include="Download\TrackedDownloads\DownloadMonitoringService.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownload.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadService.cs" />
+    <Compile Include="Download\TrackedDownloads\TrackedDownloadsRemovedEvent.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadStatusMessage.cs" />
     <Compile Include="Download\TrackedDownloads\TrackedDownloadRefreshedEvent.cs" />
     <Compile Include="Download\UsenetClientBase.cs" />
@@ -516,12 +398,11 @@
     <Compile Include="Download\DownloadClientItem.cs" />
     <Compile Include="Download\DownloadClientProvider.cs" />
     <Compile Include="Download\DownloadClientRepository.cs" />
-    <Compile Include="Download\DownloadClientStatus.cs" />
+    <Compile Include="Download\DownloadClientInfo.cs" />
     <Compile Include="Download\DownloadClientType.cs" />
     <Compile Include="Download\DownloadFailedEvent.cs" />
     <Compile Include="Download\DownloadItemStatus.cs" />
     <Compile Include="Download\DownloadService.cs" />
-    <Compile Include="Download\EpisodeGrabbedEvent.cs" />
     <Compile Include="Download\FailedDownloadService.cs" />
     <Compile Include="Download\IDownloadClient.cs" />
     <Compile Include="Download\Pending\PendingRelease.cs" />
@@ -555,18 +436,21 @@
     <Compile Include="Extras\Others\OtherExtraFileService.cs" />
     <Compile Include="Extras\Others\OtherExtraFile.cs" />
     <Compile Include="Extras\Others\OtherExtraService.cs" />
-    <Compile Include="Extras\Subtitles\ExistingSubtitleImporter.cs" />
-    <Compile Include="Extras\Subtitles\SubtitleFileRepository.cs" />
-    <Compile Include="Extras\Subtitles\SubtitleFileService.cs" />
-    <Compile Include="Extras\Subtitles\SubtitleFile.cs" />
-    <Compile Include="Extras\Subtitles\SubtitleFileExtensions.cs" />
-    <Compile Include="Extras\Subtitles\ImportedSubtitleFiles.cs" />
-    <Compile Include="Extras\Subtitles\SubtitleService.cs" />
+    <Compile Include="Extras\Lyrics\ExistingLyricImporter.cs" />
+    <Compile Include="Extras\Lyrics\LyricFileRepository.cs" />
+    <Compile Include="Extras\Lyrics\LyricFileService.cs" />
+    <Compile Include="Extras\Lyrics\LyricFile.cs" />
+    <Compile Include="Extras\Lyrics\LyricFileExtensions.cs" />
+    <Compile Include="Extras\Lyrics\ImportedLyricFiles.cs" />
+    <Compile Include="Extras\Lyrics\LyricService.cs" />
     <Compile Include="Fluent.cs" />
     <Compile Include="HealthCheck\CheckHealthCommand.cs" />
+    <Compile Include="HealthCheck\CheckOnAttribute.cs" />
     <Compile Include="HealthCheck\Checks\AppDataLocationCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
-    <Compile Include="HealthCheck\Checks\DroneFactoryCheck.cs" />
+    <Compile Include="HealthCheck\Checks\DownloadClientStatusCheck.cs" />
+    <Compile Include="HealthCheck\Checks\MonoTlsCheck.cs" />
+    <Compile Include="HealthCheck\Checks\MountCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerRssCheck.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheck.cs" />
@@ -588,9 +472,11 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupAdditionalNamingSpecs.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupCommandQueue.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupAbsolutePathMetadataFiles.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupDownloadClientUnavailablePendingReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFiles.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbums.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklist.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedDownloadClientStatus.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTrackFiles.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTracks.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedIndexerStatus.cs" />
@@ -599,9 +485,12 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupUnusedTags.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedPendingReleases.cs" />
     <Compile Include="Housekeeping\Housekeepers\DeleteBadMediaCovers.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureDownloadClientStatusTimes.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureIndexerStatusTimes.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureProviderStatusTimes.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureRunScheduledTasks.cs" />
     <Compile Include="Housekeeping\Housekeepers\TrimLogDatabase.cs" />
-    <Compile Include="Housekeeping\Housekeepers\UpdateCleanTitleForSeries.cs" />
+    <Compile Include="Housekeeping\Housekeepers\UpdateCleanTitleForArtist.cs" />
     <Compile Include="Housekeeping\HousekeepingCommand.cs" />
     <Compile Include="Housekeeping\HousekeepingService.cs" />
     <Compile Include="Housekeeping\IHousekeepingTask.cs" />
@@ -614,8 +503,19 @@
     <Compile Include="IndexerSearch\AlbumSearchService.cs" />
     <Compile Include="IndexerSearch\ArtistSearchCommand.cs" />
     <Compile Include="IndexerSearch\ArtistSearchService.cs" />
+    <Compile Include="IndexerSearch\CutoffUnmetAlbumSearchCommand.cs" />
     <Compile Include="IndexerSearch\Definitions\AlbumSearchCriteria.cs" />
     <Compile Include="IndexerSearch\Definitions\ArtistSearchCriteria.cs" />
+    <Compile Include="Indexers\Gazelle\Gazelle.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleApi.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleInfo.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleParser.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleRequestGenerator.cs" />
+    <Compile Include="Indexers\Gazelle\GazelleSettings.cs" />
+    <Compile Include="Indexers\IIndexerSettings.cs" />
+    <Compile Include="Indexers\IndexerDefaults.cs" />
+    <Compile Include="Indexers\ITorrentIndexerSettings.cs" />
+    <Compile Include="Indexers\RssEnclosure.cs" />
     <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
     <Compile Include="Indexers\Waffles\Waffles.cs" />
     <Compile Include="Indexers\Waffles\WafflesRequestGenerator.cs" />
@@ -692,7 +592,7 @@
     <Compile Include="Indexers\Torznab\TorznabSettings.cs" />
     <Compile Include="Indexers\XElementExtensions.cs" />
     <Compile Include="IndexerSearch\Definitions\SearchCriteriaBase.cs" />
-    <Compile Include="IndexerSearch\MissingEpisodeSearchCommand.cs" />
+    <Compile Include="IndexerSearch\MissingAlbumSearchCommand.cs" />
     <Compile Include="IndexerSearch\NzbSearchService.cs" />
     <Compile Include="Instrumentation\Commands\ClearLogCommand.cs" />
     <Compile Include="Instrumentation\Commands\DeleteLogFilesCommand.cs" />
@@ -708,6 +608,9 @@
     <Compile Include="Jobs\ScheduledTask.cs" />
     <Compile Include="Jobs\Scheduler.cs" />
     <Compile Include="Jobs\TaskManager.cs" />
+    <Compile Include="Languages\Language.cs" />
+    <Compile Include="Languages\LanguageComparer.cs" />
+    <Compile Include="Languages\LanguagesBelowCutoff.cs" />
     <Compile Include="Lifecycle\ApplicationShutdownRequested.cs" />
     <Compile Include="Lifecycle\ApplicationStartedEvent.cs" />
     <Compile Include="Lifecycle\Commands\RestartCommand.cs" />
@@ -723,9 +626,9 @@
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedAlbumsScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFolderCreatedEvent.cs" />
+    <Compile Include="MediaFiles\Events\TrackFileRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
-    <Compile Include="MediaFiles\Events\TrackDownloadedEvent.cs" />
+    <Compile Include="MediaFiles\MediaFileDeletionService.cs" />
     <Compile Include="MediaFiles\MediaInfo\MediaInfoFormatter.cs" />
     <Compile Include="MediaFiles\RenameTrackFilePreview.cs" />
     <Compile Include="MediaFiles\RenameTrackFileService.cs" />
@@ -733,41 +636,31 @@
     <Compile Include="MediaFiles\TrackFileMoveResult.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportMode.cs" />
     <Compile Include="MediaFiles\Commands\RenameFilesCommand.cs" />
-    <Compile Include="MediaFiles\Commands\RenameSeriesCommand.cs" />
-    <Compile Include="MediaFiles\Commands\RescanSeriesCommand.cs" />
     <Compile Include="MediaFiles\DeleteMediaFileReason.cs" />
     <Compile Include="MediaFiles\DiskScanService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MediaFiles\DownloadedEpisodesImportService.cs">
+    <Compile Include="MediaFiles\DownloadedTracksImportService.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MediaFiles\DownloadedAlbumsCommandService.cs" />
-    <Compile Include="MediaFiles\EpisodeFile.cs" />
     <Compile Include="MediaFiles\TrackImport\IImportDecisionEngineSpecification.cs" />
-    <Compile Include="MediaFiles\TrackImport\ImportApprovedEpisodes.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportDecisionMaker.cs" />
     <Compile Include="MediaFiles\TrackImport\ImportResultType.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportFile.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportCommand.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportItem.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManualImportService.cs" />
-    <Compile Include="MediaFiles\TrackImport\DetectSample.cs" />
     <Compile Include="MediaFiles\TrackImport\Manual\ManuallyImportedFile.cs" />
+    <Compile Include="MediaFiles\TrackImport\RootFolderNotFoundException.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\FreeSpaceSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\NotUnpackingSpecification.cs" />
+    <Compile Include="MediaFiles\TrackImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\TrackImport\Specifications\UpgradeSpecification.cs" />
     <Compile Include="MediaFiles\Events\ArtistRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScannedEvent.cs" />
     <Compile Include="MediaFiles\Events\ArtistScanSkippedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeDownloadedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFileAddedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeFileDeletedEvent.cs" />
-    <Compile Include="MediaFiles\Events\EpisodeImportedEvent.cs" />
     <Compile Include="MediaFiles\Commands\RescanArtistCommand.cs" />
-    <Compile Include="MediaFiles\Events\SeriesRenamedEvent.cs" />
-    <Compile Include="MediaFiles\Events\SeriesScanSkippedEvent.cs" />
-    <Compile Include="MediaFiles\Events\SeriesScannedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileAddedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileDeletedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportedEvent.cs" />
@@ -816,21 +709,17 @@
     <Compile Include="Messaging\Events\IHandle.cs" />
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
-    <Compile Include="MetadataSource\IProvideSeriesInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ActorResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\MemberResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ArtistInfoResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\EpisodeResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\LinkResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\SeasonResource.cs" />
-    <Compile Include="MetadataSource\SkyHook\Resource\ShowResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TrackResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
-    <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
+    <Compile Include="MetadataSource\SearchArtistComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />
     <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadata.cs" />
     <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadataSettings.cs" />
@@ -851,11 +740,16 @@
     <Compile Include="Extras\Metadata\MetadataRepository.cs" />
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
+    <Compile Include="Music\ArtistStatusType.cs" />
+    <Compile Include="Music\AlbumCutoffService.cs" />
+    <Compile Include="Music\Links.cs" />
     <Compile Include="Music\Commands\MoveArtistCommand.cs" />
     <Compile Include="Music\Events\ArtistMovedEvent.cs" />
     <Compile Include="Music\MonitoringOptions.cs" />
     <Compile Include="Music\AlbumMonitoredService.cs" />
     <Compile Include="Music\MoveArtistService.cs" />
+    <Compile Include="Music\ArtistScannedHandler.cs" />
+    <Compile Include="Music\ArtistEditedService.cs" />
     <Compile Include="Music\TrackMonitoredService.cs" />
     <Compile Include="Music\Member.cs" />
     <Compile Include="Music\AddArtistOptions.cs" />
@@ -918,6 +812,7 @@
     <Compile Include="Notifications\Slack\Payloads\SlackPayload.cs" />
     <Compile Include="Notifications\Slack\Slack.cs" />
     <Compile Include="Notifications\Slack\SlackExeption.cs" />
+    <Compile Include="Notifications\Slack\SlackProxy.cs" />
     <Compile Include="Notifications\Slack\SlackSettings.cs" />
     <Compile Include="Notifications\Synology\SynologyException.cs" />
     <Compile Include="Notifications\Synology\SynologyIndexer.cs" />
@@ -929,14 +824,19 @@
     <Compile Include="Notifications\Telegram\TelegramSettings.cs" />
     <Compile Include="Notifications\Twitter\OAuthToken.cs" />
     <Compile Include="Notifications\Twitter\TwitterException.cs" />
-    <Compile Include="Notifications\Webhook\WebhookEpisode.cs" />
+    <Compile Include="Notifications\Webhook\WebhookAlbum.cs" />
     <Compile Include="Notifications\Webhook\WebhookException.cs" />
+    <Compile Include="Notifications\Webhook\WebhookGrabPayload.cs" />
+    <Compile Include="Notifications\Webhook\WebhookImportPayload.cs" />
     <Compile Include="Notifications\Webhook\WebhookMethod.cs" />
     <Compile Include="Notifications\Webhook\WebhookPayload.cs" />
-    <Compile Include="Notifications\Webhook\WebhookSeries.cs" />
-    <Compile Include="Notifications\Webhook\WebhookService.cs" />
+    <Compile Include="Notifications\Webhook\WebhookArtist.cs" />
+    <Compile Include="Notifications\Webhook\WebhookProxy.cs" />
+    <Compile Include="Notifications\Webhook\WebhookRelease.cs" />
     <Compile Include="Notifications\Webhook\WebhookSettings.cs" />
     <Compile Include="Notifications\Webhook\Webhook.cs" />
+    <Compile Include="Notifications\Webhook\WebhookTrack.cs" />
+    <Compile Include="Notifications\Webhook\WebhookTrackFile.cs" />
     <Compile Include="Organizer\AbsoluteTrackFormat.cs" />
     <Compile Include="Organizer\TrackFormat.cs" />
     <Compile Include="Organizer\NamingConfigRepository.cs" />
@@ -954,10 +854,17 @@
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
-    <Compile Include="Profiles\ProfileRepository.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfile.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileInUseException.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileRepository.cs" />
+    <Compile Include="Profiles\Languages\LanguageProfileService.cs" />
+    <Compile Include="Profiles\Languages\ProfileLanguageItem.cs" />
+    <Compile Include="Profiles\Quality\ProfileRepository.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
     <Compile Include="Qualities\Revision.cs" />
+    <Compile Include="Queue\EstimatedCompletionTimeComparer.cs" />
+    <Compile Include="Queue\TimeleftComparer.cs" />
     <Compile Include="RemotePathMappings\RemotePathMapping.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingRepository.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingService.cs" />
@@ -1061,22 +968,17 @@
     <Compile Include="Organizer\NamingConfigService.cs" />
     <Compile Include="Organizer\SampleResult.cs" />
     <Compile Include="Parser\InvalidDateException.cs" />
-    <Compile Include="Parser\Language.cs" />
-    <Compile Include="Parser\Model\LocalEpisode.cs" />
-    <Compile Include="Parser\Model\ParsedEpisodeInfo.cs" />
     <Compile Include="Parser\Model\ReleaseInfo.cs" />
-    <Compile Include="Parser\Model\RemoteEpisode.cs" />
-    <Compile Include="Parser\Model\SeriesTitleInfo.cs" />
     <Compile Include="Parser\Model\TorrentInfo.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\ParsingService.cs" />
     <Compile Include="Parser\SceneChecker.cs" />
     <Compile Include="Parser\QualityParser.cs" />
-    <Compile Include="Profiles\Profile.cs" />
-    <Compile Include="Profiles\ProfileInUseException.cs" />
-    <Compile Include="Profiles\ProfileQualityItem.cs" />
+    <Compile Include="Profiles\Quality\Profile.cs" />
+    <Compile Include="Profiles\Quality\ProfileInUseException.cs" />
+    <Compile Include="Profiles\Quality\ProfileQualityItem.cs" />
     <Compile Include="Profiles\Delay\DelayProfileRepository.cs" />
-    <Compile Include="Profiles\ProfileService.cs" />
+    <Compile Include="Profiles\Quality\ProfileService.cs" />
     <Compile Include="ProgressMessaging\CommandUpdatedEvent.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1110,16 +1012,14 @@
     <Compile Include="ArtistStats\ArtistStatistics.cs" />
     <Compile Include="ArtistStats\ArtistStatisticsRepository.cs" />
     <Compile Include="ArtistStats\ArtistStatisticsService.cs" />
-    <Compile Include="SeriesStats\SeasonStatistics.cs" />
-    <Compile Include="SeriesStats\SeriesStatistics.cs" />
-    <Compile Include="SeriesStats\SeriesStatisticsRepository.cs" />
-    <Compile Include="SeriesStats\SeriesStatisticsService.cs" />
     <Compile Include="Tags\Tag.cs" />
+    <Compile Include="Tags\TagDetails.cs" />
     <Compile Include="Tags\TagRepository.cs" />
     <Compile Include="Tags\TagService.cs" />
     <Compile Include="Tags\TagsUpdatedEvent.cs" />
     <Compile Include="ThingiProvider\ConfigContractNotFoundException.cs" />
     <Compile Include="ThingiProvider\Events\ProviderDeletedEvent.cs" />
+    <Compile Include="ThingiProvider\Events\ProviderStatusChangedEvent.cs" />
     <Compile Include="ThingiProvider\Events\ProviderUpdatedEvent.cs" />
     <Compile Include="ThingiProvider\IProvider.cs" />
     <Compile Include="ThingiProvider\IProviderConfig.cs" />
@@ -1130,44 +1030,11 @@
     <Compile Include="ThingiProvider\ProviderFactory.cs" />
     <Compile Include="ThingiProvider\ProviderMessage.cs" />
     <Compile Include="ThingiProvider\ProviderRepository.cs" />
+    <Compile Include="ThingiProvider\Status\EscalationBackOff.cs" />
+    <Compile Include="ThingiProvider\Status\ProviderStatusBase.cs" />
+    <Compile Include="ThingiProvider\Status\ProviderStatusRepository.cs" />
+    <Compile Include="ThingiProvider\Status\ProviderStatusServiceBase.cs" />
     <Compile Include="TinyTwitter.cs" />
-    <Compile Include="Tv\Actor.cs" />
-    <Compile Include="Tv\AddSeriesOptions.cs" />
-    <Compile Include="Tv\AddSeriesService.cs" />
-    <Compile Include="Tv\AddSeriesValidator.cs" />
-    <Compile Include="Tv\Commands\RefreshSeriesCommand.cs" />
-    <Compile Include="Tv\Episode.cs" />
-    <Compile Include="Tv\EpisodeAddedService.cs" />
-    <Compile Include="Tv\EpisodeCutoffService.cs" />
-    <Compile Include="Tv\EpisodeMonitoredService.cs" />
-    <Compile Include="Tv\EpisodeRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tv\EpisodeService.cs" />
-    <Compile Include="Tv\Events\EpisodeInfoRefreshedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesAddedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesDeletedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesEditedEvent.cs" />
-    <Compile Include="Tv\Events\SeriesRefreshStartingEvent.cs" />
-    <Compile Include="Tv\Events\SeriesUpdatedEvent.cs" />
-    <Compile Include="Tv\MonitoringOptions.cs" />
-    <Compile Include="Tv\Ratings.cs" />
-    <Compile Include="Tv\RefreshEpisodeService.cs" />
-    <Compile Include="Tv\RefreshSeriesService.cs" />
-    <Compile Include="Tv\Season.cs" />
-    <Compile Include="Tv\Series.cs" />
-    <Compile Include="Tv\SeriesAddedHandler.cs" />
-    <Compile Include="Tv\SeriesScannedHandler.cs" />
-    <Compile Include="Tv\SeriesEditedService.cs" />
-    <Compile Include="Tv\SeriesRepository.cs" />
-    <Compile Include="Tv\SeriesService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tv\SeriesStatusType.cs" />
-    <Compile Include="Tv\SeriesTitleNormalizer.cs" />
-    <Compile Include="Tv\SeriesTitleSlugValidator.cs" />
-    <Compile Include="Tv\SeriesTypes.cs" />
-    <Compile Include="Tv\ShouldRefreshSeries.cs" />
     <Compile Include="Update\Commands\ApplicationUpdateCommand.cs" />
     <Compile Include="Update\InstallUpdateService.cs" />
     <Compile Include="Update\RecentUpdateProvider.cs" />
@@ -1183,23 +1050,21 @@
     <Compile Include="Update\UpdateVerificationFailedException.cs" />
     <Compile Include="Validation\FolderValidator.cs" />
     <Compile Include="Validation\IpValidation.cs" />
-    <Compile Include="Validation\LanguageValidator.cs" />
+    <Compile Include="Validation\LanguageProfileExistsValidator.cs" />
     <Compile Include="Validation\NzbDroneValidationExtensions.cs" />
     <Compile Include="Validation\NzbDroneValidationFailure.cs" />
     <Compile Include="Validation\NzbDroneValidationResult.cs" />
     <Compile Include="Validation\NzbDroneValidationState.cs" />
+    <Compile Include="Validation\NzbDroneValidator.cs" />
     <Compile Include="Validation\Paths\ArtistExistsValidator.cs" />
     <Compile Include="Validation\Paths\ArtistPathValidator.cs" />
     <Compile Include="Validation\Paths\MappedNetworkDriveValidator.cs" />
-    <Compile Include="Validation\Paths\DroneFactoryValidator.cs" />
     <Compile Include="Validation\Paths\FolderWritableValidator.cs" />
     <Compile Include="Validation\Paths\PathExistsValidator.cs" />
     <Compile Include="Validation\Paths\PathValidator.cs" />
     <Compile Include="Validation\Paths\StartupFolderValidator.cs" />
     <Compile Include="Validation\Paths\RootFolderValidator.cs" />
-    <Compile Include="Validation\Paths\SeriesAncestorValidator.cs" />
-    <Compile Include="Validation\Paths\SeriesExistsValidator.cs" />
-    <Compile Include="Validation\Paths\SeriesPathValidator.cs" />
+    <Compile Include="Validation\Paths\ArtistAncestorValidator.cs" />
     <Compile Include="Validation\ProfileExistsValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />
@@ -1228,7 +1093,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="NzbDrone.Core.dll.config">
+    <None Include="Lidarr.Core.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

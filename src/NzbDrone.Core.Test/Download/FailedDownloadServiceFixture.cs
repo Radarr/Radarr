@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -10,7 +10,7 @@ using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download
@@ -27,21 +27,21 @@ namespace NzbDrone.Core.Test.Download
             var completed = Builder<DownloadClientItem>.CreateNew()
                                                     .With(h => h.Status = DownloadItemStatus.Completed)
                                                     .With(h => h.OutputPath = new OsPath(@"C:\DropFolder\MyDownload".AsOsAgnostic()))
-                                                    .With(h => h.Title = "Drone.S01E01.HDTV")
+                                                    .With(h => h.Title = "Drone.DroneTheAlbum.FLAC")
                                                     .Build();
 
             _grabHistory = Builder<History.History>.CreateListOfSize(2).BuildList();
 
-            var remoteEpisode = new RemoteEpisode
+            var remoteAlbum = new RemoteAlbum
             {
-                Series = new Series(),
-                Episodes = new List<Episode> { new Episode { Id = 1 } }
+                Artist = new Artist(),
+                Albums = new List<Album> { new Album { Id = 1 } }
             };
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadStage.Downloading)
                     .With(c => c.DownloadItem = completed)
-                    .With(c => c.RemoteEpisode = remoteEpisode)
+                    .With(c => c.RemoteAlbum = remoteAlbum)
                     .Build();
 
 

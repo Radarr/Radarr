@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Marr.Data.Converters;
 using Marr.Data.Mapping;
 

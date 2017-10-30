@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Threading;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Processes;
 using NzbDrone.Common.Security;
-using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Instrumentation;
 
 namespace NzbDrone.Host
@@ -49,9 +50,13 @@ namespace NzbDrone.Host
                     SpinToExit(appMode);
                 }
             }
-            catch (TerminateApplicationException e)
+            catch (InvalidConfigFileException ex)
             {
-                Logger.Info(e.Message);
+                throw new LidarrStartupException(ex);
+            }
+            catch (TerminateApplicationException ex)
+            {
+                Logger.Info(ex.Message);
                 LogManager.Configuration = null;
             }
         }
@@ -70,7 +75,6 @@ namespace NzbDrone.Host
                 EnsureSingleInstance(applicationModes == ApplicationModes.Service, startupContext);
             }
 
-            DbFactory.RegisterDatabase(_container);
             _container.Resolve<Router>().Route(applicationModes);
         }
 
@@ -88,11 +92,15 @@ namespace NzbDrone.Host
         {
             var instancePolicy = _container.Resolve<ISingleInstancePolicy>();
 
-            if (isService)
+            if (startupContext.Flags.Contains(StartupContext.TERMINATE))
             {
                 instancePolicy.KillAllOtherInstance();
             }
-            else if (startupContext.Flags.Contains(StartupContext.TERMINATE))
+            else if (startupContext.Args.ContainsKey(StartupContext.APPDATA))
+            {
+                instancePolicy.WarnIfAlreadyRunning();
+            }
+            else if (isService)
             {
                 instancePolicy.KillAllOtherInstance();
             }

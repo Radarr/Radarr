@@ -1,7 +1,8 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -9,8 +10,8 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Download.Clients.Nzbget
 {
@@ -51,19 +52,8 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         private IEnumerable<DownloadClientItem> GetQueue()
         {
-            NzbgetGlobalStatus globalStatus;
-            List<NzbgetQueueItem> queue;
-
-            try
-            {
-                globalStatus = _proxy.GetGlobalStatus(Settings);
-                queue = _proxy.GetQueue(Settings);
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var globalStatus = _proxy.GetGlobalStatus(Settings);
+            var queue = _proxy.GetQueue(Settings);
 
             var queueItems = new List<DownloadClientItem>();
 
@@ -83,6 +73,8 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 queueItem.TotalSize = totalSize;
                 queueItem.Category = item.Category;
                 queueItem.DownloadClient = Definition.Name;
+                queueItem.CanMoveFiles = true;
+                queueItem.CanBeRemoved = true;
 
                 if (globalStatus.DownloadPaused || remainingSize == pausedSize && remainingSize != 0)
                 {
@@ -117,17 +109,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         private IEnumerable<DownloadClientItem> GetHistory()
         {
-            List<NzbgetHistoryItem> history;
-
-            try
-            {
-                history = _proxy.GetHistory(Settings).Take(_configService.DownloadClientHistoryLimit).ToList();
-            }
-            catch (DownloadClientException ex)
-            {
-                _logger.Error(ex);
-                return Enumerable.Empty<DownloadClientItem>();
-            }
+            var history = _proxy.GetHistory(Settings).Take(_configService.DownloadClientHistoryLimit).ToList();
 
             var historyItems = new List<DownloadClientItem>();
 
@@ -145,6 +127,8 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 historyItem.Message = $"PAR Status: {item.ParStatus} - Unpack Status: {item.UnpackStatus} - Move Status: {item.MoveStatus} - Script Status: {item.ScriptStatus} - Delete Status: {item.DeleteStatus} - Mark Status: {item.MarkStatus}";
                 historyItem.Status = DownloadItemStatus.Completed;
                 historyItem.RemainingTime = TimeSpan.Zero;
+                historyItem.CanMoveFiles = true;
+                historyItem.CanBeRemoved = true;
 
                 if (item.DeleteStatus == "MANUAL")
                 {
@@ -210,13 +194,13 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _proxy.RemoveItem(downloadId, Settings);
         }
 
-        public override DownloadClientStatus GetStatus()
+        public override DownloadClientInfo GetStatus()
         {
             var config = _proxy.GetConfig(Settings);
 
             var category = GetCategories(config).FirstOrDefault(v => v.Name == Settings.TvCategory);
 
-            var status = new DownloadClientStatus
+            var status = new DownloadClientInfo
             {
                 IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost"
             };
@@ -285,7 +269,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                 {
                     return new ValidationFailure("Username", "Authentication failed");
                 }
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to NZBGet");
                 return new ValidationFailure("Host", "Unable to connect to NZBGet");
             }
 
@@ -313,13 +297,22 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             var config = _proxy.GetConfig(Settings);
 
-            var keepHistory = config.GetValueOrDefault("KeepHistory");
-            if (keepHistory == "0")
+            var keepHistory = config.GetValueOrDefault("KeepHistory", "7");
+            int value;
+            if (!int.TryParse(keepHistory, NumberStyles.None, CultureInfo.InvariantCulture, out value) || value == 0)
             {
                 return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be greater than 0")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
                     DetailedDescription = "NzbGet setting KeepHistory is set to 0. Which prevents Lidarr from seeing completed downloads."
+                };
+            }
+            else if (value > 25000)
+            {
+                return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be less than 25000")
+                {
+                    InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
+                    DetailedDescription = "NzbGet setting KeepHistory is set too high."
                 };
             }
 

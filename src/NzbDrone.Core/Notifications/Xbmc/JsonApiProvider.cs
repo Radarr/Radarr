@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Notifications.Xbmc.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             _proxy.Notify(settings, title, message);
         }
 
-        public void Update(XbmcSettings settings, Series series)
+        public void Update(XbmcSettings settings, Artist artist)
         {
             if (!settings.AlwaysUpdate)
             {
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 }
             }
 
-            UpdateLibrary(settings, series);
+            UpdateLibrary(settings, artist);
         }
         
         public void Clean(XbmcSettings settings)
@@ -55,22 +55,22 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return _proxy.GetActivePlayers(settings); 
         }
 
-        public string GetSeriesPath(XbmcSettings settings, Series series)
+        public string GetSeriesPath(XbmcSettings settings, Artist artist)
         {
-            var allSeries = _proxy.GetSeries(settings);
+            var allSeries = _proxy.GetArtist(settings);
 
             if (!allSeries.Any())
             {
-                _logger.Debug("No TV shows returned from XBMC");
+                _logger.Debug("No Artists returned from XBMC");
                 return null;
             }
 
             var matchingSeries = allSeries.FirstOrDefault(s =>
             {
-                var tvdbId = 0;
-                int.TryParse(s.ImdbNumber, out tvdbId);
+                var tvdbId = "0";
+                //int.TryParse(s.ImdbNumber, out tvdbId);
 
-                return tvdbId == series.TvdbId || s.Label == series.Title;
+                return tvdbId == artist.ForeignArtistId || s.Label == artist.Name;
             });
 
             if (matchingSeries != null) return matchingSeries.File;
@@ -78,20 +78,20 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return null;
         }
 
-        private void UpdateLibrary(XbmcSettings settings, Series series)
+        private void UpdateLibrary(XbmcSettings settings, Artist artist)
         {
             try
             {
-                var seriesPath = GetSeriesPath(settings, series);
+                var seriesPath = GetSeriesPath(settings, artist);
 
                 if (seriesPath != null)
                 {
-                    _logger.Debug("Updating series {0} (Path: {1}) on XBMC host: {2}", series, seriesPath, settings.Address);
+                    _logger.Debug("Updating artist {0} (Path: {1}) on XBMC host: {2}", artist, seriesPath, settings.Address);
                 }
 
                 else
                 {
-                    _logger.Debug("Series {0} doesn't exist on XBMC host: {1}, Updating Entire Library", series,
+                    _logger.Debug("Artist {0} doesn't exist on XBMC host: {1}, Updating Entire Library", artist,
                                  settings.Address);
                 }
 

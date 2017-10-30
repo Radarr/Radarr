@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -18,28 +18,32 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public XbmcMetadataSettings()
         {
-            SeriesMetadata = true;
-            EpisodeMetadata = true;
-            SeriesImages = true;
-            SeasonImages = true;
+            ArtistMetadata = true;
+            AlbumMetadata = true;
+            TrackMetadata = true;
+            ArtistImages = true;
+            AlbumImages = true;
             EpisodeImages = true;
         }
 
-        [FieldDefinition(0, Label = "Series Metadata", Type = FieldType.Checkbox)]
-        public bool SeriesMetadata { get; set; }
+        [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox)]
+        public bool ArtistMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Episode Metadata", Type = FieldType.Checkbox)]
-        public bool EpisodeMetadata { get; set; }
+        [FieldDefinition(1, Label = "Album Metadata", Type = FieldType.Checkbox)]
+        public bool AlbumMetadata { get; set; }
 
-        [FieldDefinition(2, Label = "Series Images", Type = FieldType.Checkbox)]
-        public bool SeriesImages { get; set; }
+        [FieldDefinition(2, Label = "Track Metadata", Type = FieldType.Checkbox)]
+        public bool TrackMetadata { get; set; }
 
-        [FieldDefinition(3, Label = "Season Images", Type = FieldType.Checkbox)]
-        public bool SeasonImages { get; set; }
+        [FieldDefinition(3, Label = "Artist Images", Type = FieldType.Checkbox)]
+        public bool ArtistImages { get; set; }
 
-        [FieldDefinition(4, Label = "Episode Images", Type = FieldType.Checkbox)]
+        [FieldDefinition(4, Label = "Album Images", Type = FieldType.Checkbox)]
+        public bool AlbumImages { get; set; }
+
+        [FieldDefinition(5, Label = "Episode Images", Type = FieldType.Checkbox)]
         public bool EpisodeImages { get; set; }
-        
+
         public bool IsValid => true;
 
         public NzbDroneValidationResult Validate()

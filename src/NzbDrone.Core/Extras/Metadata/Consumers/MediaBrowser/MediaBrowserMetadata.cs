@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +9,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 {
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
         public override string Name => "Emby (Legacy)";
 
-        public override MetadataFile FindMetadataFile(Series series, string path)
+        public override MetadataFile FindMetadataFile(Artist artist, string path)
         {
             var filename = Path.GetFileName(path);
 
@@ -33,28 +33,28 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
             var metadata = new MetadataFile
                            {
-                               SeriesId = series.Id,
+                               ArtistId = artist.Id,
                                Consumer = GetType().Name,
-                               RelativePath = series.Path.GetRelativePath(path)
+                               RelativePath = artist.Path.GetRelativePath(path)
                            };
 
-            if (filename.Equals("series.xml", StringComparison.InvariantCultureIgnoreCase))
+            if (filename.Equals("artist.xml", StringComparison.InvariantCultureIgnoreCase))
             {
-                metadata.Type = MetadataType.SeriesMetadata;
+                metadata.Type = MetadataType.ArtistMetadata;
                 return metadata;
             }
 
             return null;
         }
 
-        public override MetadataFileResult SeriesMetadata(Series series)
+        public override MetadataFileResult ArtistMetadata(Artist artist)
         {
-            if (!Settings.SeriesMetadata)
+            if (!Settings.ArtistMetadata)
             {
                 return null;
             }
 
-            _logger.Debug("Generating series.xml for: {0}", series.Title);
+            _logger.Debug("Generating artist.xml for: {0}", artist.Name);
             var sb = new StringBuilder();
             var xws = new XmlWriterSettings();
             xws.OmitXmlDeclaration = true;
@@ -62,85 +62,73 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
             using (var xw = XmlWriter.Create(sb, xws))
             {
-                var tvShow = new XElement("Series");
+                var artistElement = new XElement("Artist");
 
-                tvShow.Add(new XElement("id", series.TvdbId));
-                tvShow.Add(new XElement("Status", series.Status));
-                tvShow.Add(new XElement("Network", series.Network));
-                tvShow.Add(new XElement("Airs_Time", series.AirTime));
+                artistElement.Add(new XElement("id", artist.ForeignArtistId));
+                artistElement.Add(new XElement("Status", artist.Status));
 
-                if (series.FirstAired.HasValue)
-                {
-                    tvShow.Add(new XElement("FirstAired", series.FirstAired.Value.ToString("yyyy-MM-dd")));
-                }
+                artistElement.Add(new XElement("Added", artist.Added.ToString("MM/dd/yyyy HH:mm:ss tt"))); 
+                artistElement.Add(new XElement("LockData", "false"));
+                artistElement.Add(new XElement("Overview", artist.Overview));
+                artistElement.Add(new XElement("LocalTitle", artist.Name));
 
-                tvShow.Add(new XElement("ContentRating", series.Certification));
-                tvShow.Add(new XElement("Added", series.Added.ToString("MM/dd/yyyy HH:mm:ss tt"))); 
-                tvShow.Add(new XElement("LockData", "false"));
-                tvShow.Add(new XElement("Overview", series.Overview));
-                tvShow.Add(new XElement("LocalTitle", series.Title));
-
-                if (series.FirstAired.HasValue)
-                {
-                    tvShow.Add(new XElement("PremiereDate", series.FirstAired.Value.ToString("yyyy-MM-dd")));
-                }
-
-                tvShow.Add(new XElement("Rating", series.Ratings.Value));
-                tvShow.Add(new XElement("ProductionYear", series.Year));
-                tvShow.Add(new XElement("RunningTime", series.Runtime));
-                tvShow.Add(new XElement("IMDB", series.ImdbId));
-                tvShow.Add(new XElement("TVRageId", series.TvRageId));
-                tvShow.Add(new XElement("Genres", series.Genres.Select(genre => new XElement("Genre", genre))));
+                artistElement.Add(new XElement("Rating", artist.Ratings.Value));
+                artistElement.Add(new XElement("Genres", artist.Genres.Select(genre => new XElement("Genre", genre))));
 
                 var persons   = new XElement("Persons");
 
-                foreach (var person in series.Actors)
+                foreach (var person in artist.Members)
                 {
                     persons.Add(new XElement("Person",
                         new XElement("Name", person.Name),
                         new XElement("Type", "Actor"),
-                        new XElement("Role", person.Character)
+                        new XElement("Role", person.Instrument)
                         ));
                 }
 
-                tvShow.Add(persons);
+                artistElement.Add(persons);
 
 
-                var doc = new XDocument(tvShow);
+                var doc = new XDocument(artistElement);
                 doc.Save(xw);
 
-                _logger.Debug("Saving series.xml for {0}", series.Title);
+                _logger.Debug("Saving artist.xml for {0}", artist.Name);
 
-                return new MetadataFileResult("series.xml", doc.ToString());
+                return new MetadataFileResult("artist.xml", doc.ToString());
             }
         }
- 
-        public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
+
+        public override MetadataFileResult AlbumMetadata(Artist artist, Album album)
+        {
+            return null;
+        }
+
+        public override MetadataFileResult TrackMetadata(Artist artist, TrackFile trackFile)
         {
             return null;
         }
             
-        public override List<ImageFileResult> SeriesImages(Series series)
+        public override List<ImageFileResult> ArtistImages(Artist artist)
         {
             return new List<ImageFileResult>();
         }
 
-        public override List<ImageFileResult> SeasonImages(Series series, Season season)
+        public override List<ImageFileResult> AlbumImages(Artist artist, Album season)
         {
             return new List<ImageFileResult>();
         }
 
-        public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
+        public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
         {
             return new List<ImageFileResult>();
         }
 
-        private IEnumerable<ImageFileResult> ProcessSeriesImages(Series series)
+        private IEnumerable<ImageFileResult> ProcessArtistImages(Artist artist)
         {
             return new List<ImageFileResult>();
         }
 
-        private IEnumerable<ImageFileResult> ProcessSeasonImages(Series series, Season season)
+        private IEnumerable<ImageFileResult> ProcessAlbumImages(Artist artist, Album album)
         {
             return new List<ImageFileResult>();
         }

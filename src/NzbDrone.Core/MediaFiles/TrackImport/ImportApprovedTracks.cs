@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -51,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalTrack.Artist.Id, (i, s) => s
                    .OrderByDescending(c => c.LocalTrack.Quality, new QualityModelComparer(s.First().LocalTrack.Artist.Profile))
+                   .ThenByDescending(c => c.LocalTrack.Language, new LanguageComparer(s.First().LocalTrack.Artist.LanguageProfile))
                    .ThenByDescending(c => c.LocalTrack.Size))
                .SelectMany(c => c)
                .ToList();
@@ -82,16 +84,17 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     trackFile.Size = _diskProvider.GetFileSize(localTrack.Path);
                     trackFile.Quality = localTrack.Quality;
                     trackFile.MediaInfo = localTrack.MediaInfo;
-                    trackFile.AlbumId = _albumRepository.FindByArtistAndName(localTrack.Artist.Name, Parser.Parser.CleanArtistTitle(localTrack.ParsedTrackInfo.AlbumTitle)).Id;
+                    trackFile.AlbumId = localTrack.Album.Id;
                     trackFile.ReleaseGroup = localTrack.ParsedTrackInfo.ReleaseGroup;
                     trackFile.Tracks = localTrack.Tracks;
+                    trackFile.Language = localTrack.Language;
 
                     bool copyOnly;
                     switch (importMode)
                     {
                         default:
                         case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && downloadClientItem.IsReadOnly;
+                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles;
                             break;
                         case ImportMode.Move:
                             copyOnly = false;
@@ -121,19 +124,18 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     //    _extraService.ImportExtraFiles(localTrack, trackFile, copyOnly); // TODO: Import Music Extras
                     //}
 
-                    if (downloadClientItem != null)
-                    {
-                        _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId, downloadClientItem.IsReadOnly));
-                    }
-                    else
-                    {
-                        _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, newDownload));
-                    }
+                    _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, newDownload, downloadClientItem));
 
-                    if (newDownload)
-                    {
-                        _eventAggregator.PublishEvent(new TrackDownloadedEvent(localTrack, trackFile, oldFiles));
-                    }
+                }
+                catch (RootFolderNotFoundException e)
+                {
+                    _logger.Warn(e, "Couldn't import track " + localTrack);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import track, Root folder missing."));
+                }
+                catch (DestinationAlreadyExistsException e)
+                {
+                    _logger.Warn(e, "Couldn't import track " + localTrack);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import track, Destination already exists."));
                 }
                 catch (Exception e)
                 {
