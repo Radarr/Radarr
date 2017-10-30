@@ -109,7 +109,16 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.DownloadPath));
                 item.OutputPath = outputPath + torrent.Name;
                 item.RemainingSize = torrent.Size - torrent.BytesDownloaded;
-                item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                try
+                {
+                    item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                }
+                catch (OverflowException ex)
+                {
+                    _logger.Debug(ex, "ETA for {0} is too long: {1}", torrent.Name, torrent.Eta);
+                    item.RemainingTime = TimeSpan.MaxValue;
+                }
+
                 item.TotalSize = torrent.Size;
 
                 if (torrent.State == DelugeTorrentStatus.Error)
