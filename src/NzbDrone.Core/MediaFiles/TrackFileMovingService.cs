@@ -1,4 +1,5 @@
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
@@ -165,7 +166,7 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
-                throw new DirectoryNotFoundException(string.Format("Root folder '{0}' was not found.", rootFolder));
+                throw new TrackImport.RootFolderNotFoundException(string.Format("Root folder '{0}' was not found.", rootFolder));
             }
 
             var changed = false;

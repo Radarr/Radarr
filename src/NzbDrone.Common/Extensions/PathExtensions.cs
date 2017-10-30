@@ -59,7 +59,7 @@ namespace NzbDrone.Common.Extensions
         {
             if (!parentPath.IsParentPath(childPath))
             {
-                throw new Exceptions.NotParentException("{0} is not a child of {1}", childPath, parentPath);
+                throw new NotParentException("{0} is not a child of {1}", childPath, parentPath);
             }
 
             return childPath.Substring(parentPath.Length).Trim(Path.DirectorySeparatorChar);

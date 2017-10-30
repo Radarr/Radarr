@@ -1,4 +1,6 @@
-﻿namespace NzbDrone.Common.Exceptions
+using NzbDrone.Common.Exceptions;
+
+namespace NzbDrone.Common.Disk
 {
     public class NotParentException : NzbDroneException
     {

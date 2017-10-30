@@ -85,6 +85,7 @@
     <Compile Include="ConsoleService.cs" />
     <Compile Include="ConvertBase32.cs" />
     <Compile Include="Crypto\HashProvider.cs" />
+    <Compile Include="Disk\DestinationAlreadyExistsException.cs" />
     <Compile Include="Disk\FileSystemLookupService.cs" />
     <Compile Include="Disk\DriveInfoMount.cs" />
     <Compile Include="Disk\IMount.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="EnvironmentInfo\IRuntimeInfo.cs" />
     <Compile Include="EnvironmentInfo\RuntimeInfo.cs" />
     <Compile Include="EnvironmentInfo\StartupContext.cs" />
-    <Compile Include="Exceptions\NotParentException.cs" />
+    <Compile Include="Disk\NotParentException.cs" />
     <Compile Include="Exceptions\NzbDroneException.cs" />
     <Compile Include="Expansive\CircularReferenceException.cs" />
     <Compile Include="Expansive\Expansive.cs" />

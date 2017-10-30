@@ -127,6 +127,16 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, newDownload, downloadClientItem));
 
                 }
+                catch (RootFolderNotFoundException e)
+                {
+                    _logger.Warn(e, "Couldn't import track " + localTrack);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import track, Root folder missing."));
+                }
+                catch (DestinationAlreadyExistsException e)
+                {
+                    _logger.Warn(e, "Couldn't import track " + localTrack);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import track, Destination already exists."));
+                }
                 catch (Exception e)
                 {
                     _logger.Warn(e, "Couldn't import track " + localTrack);
