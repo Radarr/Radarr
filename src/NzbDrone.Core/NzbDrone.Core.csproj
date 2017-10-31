@@ -171,7 +171,7 @@
     <Compile Include="Datastore\MainDatabase.cs" />
     <Compile Include="Datastore\LogDatabase.cs" />
     <Compile Include="Datastore\Migration\001_initial_setup.cs" />
-    <Compile Include="Datastore\Migration\002_add_release_to_pending_releases.cs" />
+    <Compile Include="Datastore\Migration\002_add_reason_to_pending_releases.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
