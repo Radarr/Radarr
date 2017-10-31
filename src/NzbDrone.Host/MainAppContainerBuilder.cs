@@ -17,7 +17,7 @@ namespace NzbDrone.Host
                                  "Lidarr.Host",
                                  "Lidarr.Core",
                                  "Lidarr.SignalR",
-                                 "Lidarr.Api.V3",
+                                 "Lidarr.Api.V1",
                                  "Lidarr.Http"
                              };
 

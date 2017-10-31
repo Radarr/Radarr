@@ -84,9 +84,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogentriesNLog", "Logentrie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurlSharp", "ExternalModules\CurlSharp\CurlSharp\CurlSharp.csproj", "{74420A79-CC16-442C-8B1E-7C1B913844F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidarr.Api.V3", "Lidarr.Api.V3\Lidarr.Api.V3.csproj", "{7140FF1F-79BE-492F-9188-B21A050BF708}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidarr.Http", "Lidarr.Http\Lidarr.Http.csproj", "{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidarr.Api.V1", "Lidarr.Api.V1\Lidarr.Api.V1.csproj", "{7140FF1F-79BE-492F-9188-B21A050BF708}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -256,18 +256,18 @@ Global
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Mono|x86.Build.0 = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{74420A79-CC16-442C-8B1E-7C1B913844F0}.Release|x86.Build.0 = Release|Any CPU
-		{7140FF1F-79BE-492F-9188-B21A050BF708}.Debug|x86.ActiveCfg = Debug|x86
-		{7140FF1F-79BE-492F-9188-B21A050BF708}.Debug|x86.Build.0 = Debug|x86
-		{7140FF1F-79BE-492F-9188-B21A050BF708}.Mono|x86.ActiveCfg = Release|x86
-		{7140FF1F-79BE-492F-9188-B21A050BF708}.Mono|x86.Build.0 = Release|x86
-		{7140FF1F-79BE-492F-9188-B21A050BF708}.Release|x86.ActiveCfg = Release|x86
-		{7140FF1F-79BE-492F-9188-B21A050BF708}.Release|x86.Build.0 = Release|x86
 		{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}.Debug|x86.ActiveCfg = Debug|x86
 		{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}.Debug|x86.Build.0 = Debug|x86
 		{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}.Mono|x86.ActiveCfg = Release|x86
 		{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}.Mono|x86.Build.0 = Release|x86
 		{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}.Release|x86.ActiveCfg = Release|x86
 		{5370BFF7-1BD7-46BC-AF06-7D9EA5CDA1D6}.Release|x86.Build.0 = Release|x86
+		{7140FF1F-79BE-492F-9188-B21A050BF708}.Debug|x86.ActiveCfg = Debug|x86
+		{7140FF1F-79BE-492F-9188-B21A050BF708}.Debug|x86.Build.0 = Debug|x86
+		{7140FF1F-79BE-492F-9188-B21A050BF708}.Mono|x86.ActiveCfg = Release|x86
+		{7140FF1F-79BE-492F-9188-B21A050BF708}.Mono|x86.Build.0 = Release|x86
+		{7140FF1F-79BE-492F-9188-B21A050BF708}.Release|x86.ActiveCfg = Release|x86
+		{7140FF1F-79BE-492F-9188-B21A050BF708}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -301,8 +301,8 @@ Global
 		{74420A79-CC16-442C-8B1E-7C1B913844F0} = {F6E3A728-AE77-4D02-BAC8-82FBC1402DDA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35
 		SolutionGuid = {2C047BC5-490F-4DCE-962F-141370D23765}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = NzbDrone.Console\NzbDrone.Console.csproj

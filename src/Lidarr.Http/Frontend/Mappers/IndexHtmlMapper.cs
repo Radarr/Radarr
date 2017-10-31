@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Nancy;
@@ -102,7 +102,7 @@ namespace Lidarr.Http.Frontend.Mappers
                 return string.Format("{0}=\"{1}{2}\"", match.Groups["attribute"].Value, URL_BASE, url);
             });
 
-            text = text.Replace("API_ROOT", URL_BASE + "/api/v3");
+            text = text.Replace("API_ROOT", URL_BASE + "/api/v1");
             text = text.Replace("API_KEY", API_KEY);
             text = text.Replace("RELEASE", BuildInfo.Release);
             text = text.Replace("APP_VERSION", BuildInfo.Version.ToString());

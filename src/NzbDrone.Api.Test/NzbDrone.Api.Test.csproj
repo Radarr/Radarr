@@ -70,9 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lidarr.Api.V3\Lidarr.Api.V3.csproj">
+    <ProjectReference Include="..\Lidarr.Api.V1\Lidarr.Api.V1.csproj">
       <Project>{7140ff1f-79be-492f-9188-b21a050bf708}</Project>
-      <Name>Lidarr.Api.V3</Name>
+      <Name>Lidarr.Api.V1</Name>
     </ProjectReference>
     <ProjectReference Include="..\Marr.Data\Marr.Data.csproj">
       <Project>{F6FC6BE7-0847-4817-A1ED-223DC647C3D7}</Project>
