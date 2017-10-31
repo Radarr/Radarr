@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
             environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId.ToString());
-            //environmentVariables.Add("Lidarr_Artist_Type", artist.SeriesType.ToString());
+            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
             environmentVariables.Add("Lidarr_Release_AlbumCount", remoteAlbum.Albums.Count.ToString());
             environmentVariables.Add("Lidarr_Release_AlbumReleaseDates", string.Join(",", remoteAlbum.Albums.Select(e => e.ReleaseDate)));
             environmentVariables.Add("Lidarr_Release_AlbumTitles", string.Join("|", remoteAlbum.Albums.Select(e => e.Title)));
@@ -68,9 +68,9 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
             environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId.ToString());
-            //environmentVariables.Add("Lidarr_Artist_Type", artist.SeriesType.ToString());
+            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
             environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
-            environmentVariables.Add("Lidarr_TrackFile_EpisodeCount", trackFile.Tracks.Value.Count.ToString());
+            environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
             environmentVariables.Add("Lidarr_TrackFile_RelativePath", trackFile.RelativePath);
             environmentVariables.Add("Lidarr_TrackFile_Path", Path.Combine(artist.Path, trackFile.RelativePath));
             environmentVariables.Add("Lidarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
@@ -100,10 +100,10 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             environmentVariables.Add("Lidarr_EventType", "Rename");
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
-            environmentVariables.Add("Lidarr_Artist_Title", artist.Name);
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_TvdbId", artist.ForeignArtistId.ToString());
-            //environmentVariables.Add("Lidarr_Artist_Type", artist.SeriesType.ToString());
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId.ToString());
+            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
 
             ExecuteScript(environmentVariables);
         }
