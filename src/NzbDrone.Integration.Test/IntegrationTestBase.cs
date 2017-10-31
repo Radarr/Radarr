@@ -10,18 +10,18 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
-using Lidarr.Api.V3.Blacklist;
-using Lidarr.Api.V3.Commands;
-using Lidarr.Api.V3.Config;
-using Lidarr.Api.V3.DownloadClient;
-using Lidarr.Api.V3.TrackFiles;
-using Lidarr.Api.V3.History;
-using Lidarr.Api.V3.Profiles.Quality;
-using Lidarr.Api.V3.RootFolders;
-using Lidarr.Api.V3.Artist;
-using Lidarr.Api.V3.Albums;
-using Lidarr.Api.V3.Tracks;
-using Lidarr.Api.V3.Tags;
+using Lidarr.Api.V1.Blacklist;
+using Lidarr.Api.V1.Commands;
+using Lidarr.Api.V1.Config;
+using Lidarr.Api.V1.DownloadClient;
+using Lidarr.Api.V1.TrackFiles;
+using Lidarr.Api.V1.History;
+using Lidarr.Api.V1.Profiles.Quality;
+using Lidarr.Api.V1.RootFolders;
+using Lidarr.Api.V1.Artist;
+using Lidarr.Api.V1.Albums;
+using Lidarr.Api.V1.Tracks;
+using Lidarr.Api.V1.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Qualities;
@@ -96,7 +96,7 @@ namespace NzbDrone.Integration.Test
 
         protected virtual void InitRestClients()
         {
-            RestClient = new RestClient(RootUrl + "api/v3/");
+            RestClient = new RestClient(RootUrl + "api/v1/");
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 

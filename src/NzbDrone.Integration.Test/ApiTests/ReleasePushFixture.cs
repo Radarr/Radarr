@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Lidarr.Api.V3.Indexers;
+using Lidarr.Api.V1.Indexers;
 using System.Linq;
 using System.Net;
 using System.Collections.Generic;

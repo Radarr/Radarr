@@ -1,8 +1,8 @@
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
-using Lidarr.Api.V3.Series;
-using Lidarr.Api.V3.Artist;
+using Lidarr.Api.V1.Series;
+using Lidarr.Api.V1.Artist;
 using System.Linq;
 using NzbDrone.Test.Common;
 

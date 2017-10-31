@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Lidarr.Api.V3.Commands;
+using Lidarr.Api.V1.Commands;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

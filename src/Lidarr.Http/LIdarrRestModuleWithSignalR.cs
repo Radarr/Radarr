@@ -55,7 +55,7 @@ namespace Lidarr.Http
      
         protected void BroadcastResourceChange(ModelAction action)
         {
-            if (GetType().Namespace.Contains("V3"))
+            if (GetType().Namespace.Contains("V1"))
             {
                 var signalRMessage = new SignalRMessage
                 {
