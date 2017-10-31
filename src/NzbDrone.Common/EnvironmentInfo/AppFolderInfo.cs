@@ -38,7 +38,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
 
             StartUpFolder = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
-            TempFolder = Path.GetTempPath();
+            TempFolder = Path.Combine(Path.GetTempPath(), "Radarr_" + Environment.UserName);
         }
 
         public string AppDataFolder { get; private set; }
