@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -168,14 +168,14 @@ namespace NzbDrone.Common.Test.Http
             }
 
             var request = new HttpRequestBuilder($"http://{_httpBinHost}/redirect-to")
-                .AddQueryParam("url", $"https://sonarr.tv/")
+                .AddQueryParam("url", $"https://lidarr.audio/")
                 .Build();
             request.AllowAutoRedirect = true;
 
             var response = Subject.Get(request);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Should().Contain("Sonarr");
+            response.Content.Should().Contain("Lidarr");
 
             ExceptionVerification.ExpectedErrors(0);
         }

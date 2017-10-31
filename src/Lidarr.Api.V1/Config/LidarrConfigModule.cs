@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using NzbDrone.Core.Configuration;
 using Lidarr.Http;
@@ -6,16 +6,16 @@ using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Config
 {
-    public abstract class SonarrConfigModule<TResource> : LidarrRestModule<TResource> where TResource : RestResource, new()
+    public abstract class LidarrConfigModule<TResource> : LidarrRestModule<TResource> where TResource : RestResource, new()
     {
         private readonly IConfigService _configService;
 
-        protected SonarrConfigModule(IConfigService configService)
+        protected LidarrConfigModule(IConfigService configService)
             : this(new TResource().ResourceName.Replace("config", ""), configService)
         {
         }
 
-        protected SonarrConfigModule(string resource, IConfigService configService) :
+        protected LidarrConfigModule(string resource, IConfigService configService) :
             base("config/" + resource.Trim('/'))
         {
             _configService = configService;

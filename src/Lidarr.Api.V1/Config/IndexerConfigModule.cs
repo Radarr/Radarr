@@ -4,7 +4,7 @@ using Lidarr.Http.Validation;
 
 namespace Lidarr.Api.V1.Config
 {
-    public class IndexerConfigModule : SonarrConfigModule<IndexerConfigResource>
+    public class IndexerConfigModule : LidarrConfigModule<IndexerConfigResource>
     {
 
         public IndexerConfigModule(IConfigService configService)

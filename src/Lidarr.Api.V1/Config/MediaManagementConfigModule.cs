@@ -4,7 +4,7 @@ using NzbDrone.Core.Validation.Paths;
 
 namespace Lidarr.Api.V1.Config
 {
-    public class MediaManagementConfigModule : SonarrConfigModule<MediaManagementConfigResource>
+    public class MediaManagementConfigModule : LidarrConfigModule<MediaManagementConfigResource>
     {
         public MediaManagementConfigModule(IConfigService configService, PathExistsValidator pathExistsValidator)
             : base(configService)

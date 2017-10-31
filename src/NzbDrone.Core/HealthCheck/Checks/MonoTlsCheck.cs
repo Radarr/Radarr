@@ -30,7 +30,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             {
                 // Mono 5.0 still has issues in combination with libmediainfo, so disabling this check for now.
                 //_logger.Debug("Mono version 5.0.0 or higher and legacy TLS provider is selected, recommending user to switch to btls.");
-                //return new HealthCheck(GetType(), HealthCheckResult.Warning, "Sonarr now supports Mono 5.x with btls enabled, consider removing MONO_TLS_PROVIDER=legacy option");
+                //return new HealthCheck(GetType(), HealthCheckResult.Warning, "Lidarr now supports Mono 5.x with btls enabled, consider removing MONO_TLS_PROVIDER=legacy option");
             }
 
             return new HealthCheck(GetType());

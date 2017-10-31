@@ -6,7 +6,7 @@ using NzbDrone.Core.Validation;
 
 namespace Lidarr.Api.V1.Config
 {
-    public class MetadataProviderConfigModule : SonarrConfigModule<MetadataProviderConfigResource>
+    public class MetadataProviderConfigModule : LidarrConfigModule<MetadataProviderConfigResource>
     {
         public MetadataProviderConfigModule(IConfigService configService)
             : base(configService)

@@ -131,7 +131,7 @@
     <Compile Include="Config\NamingConfigModule.cs" />
     <Compile Include="Config\NamingConfigResource.cs" />
     <Compile Include="Config\NamingExampleResource.cs" />
-    <Compile Include="Config\SonarrConfigModule.cs" />
+    <Compile Include="Config\LidarrConfigModule.cs" />
     <Compile Include="FileSystem\FileSystemModule.cs" />
     <Compile Include="DiskSpace\DiskSpaceModule.cs" />
     <Compile Include="DiskSpace\DiskSpaceResource.cs" />

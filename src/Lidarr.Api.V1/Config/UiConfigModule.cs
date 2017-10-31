@@ -5,7 +5,7 @@ using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Config
 {
-    public class UiConfigModule : SonarrConfigModule<UiConfigResource>
+    public class UiConfigModule : LidarrConfigModule<UiConfigResource>
     {
         public UiConfigModule(IConfigService configService)
             : base(configService)

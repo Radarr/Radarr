@@ -1,8 +1,8 @@
-﻿using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Configuration;
 
 namespace Lidarr.Api.V1.Config
 {
-    public class DownloadClientConfigModule : SonarrConfigModule<DownloadClientConfigResource>
+    public class DownloadClientConfigModule : LidarrConfigModule<DownloadClientConfigResource>
     {
         public DownloadClientConfigModule(IConfigService configService)
             : base(configService)

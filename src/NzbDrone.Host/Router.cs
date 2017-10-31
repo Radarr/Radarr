@@ -64,7 +64,7 @@ namespace NzbDrone.Host
                             _serviceProvider.SetPermissions(ServiceProvider.SERVICE_NAME);
 
                             // Start the service and exit.
-                            // Ensures that there isn't an instance of Sonarr already running that the service account cannot stop.
+                            // Ensures that there isn't an instance of Lidarr already running that the service account cannot stop.
                             _processProvider.SpawnNewProcess("sc.exe", $"start {ServiceProvider.SERVICE_NAME}", null, true);
                         }
                         break;
