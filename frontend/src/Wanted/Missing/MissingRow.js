@@ -18,6 +18,7 @@ function MissingRow(props) {
     // trackFileId,
     artist,
     releaseDate,
+    albumType,
     title,
     isSelected,
     columns,
@@ -86,6 +87,14 @@ function MissingRow(props) {
             );
           }
 
+          if (name === 'albumType') {
+            return (
+              <TableRowCell key={name}>
+                {albumType}
+              </TableRowCell>
+            );
+          }
+
           if (name === 'releaseDate') {
             return (
               <RelativeDateCellConnector
@@ -135,6 +144,7 @@ MissingRow.propTypes = {
   // trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
+  albumType: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

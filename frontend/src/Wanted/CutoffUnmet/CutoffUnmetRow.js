@@ -18,6 +18,7 @@ function CutoffUnmetRow(props) {
     trackFileId,
     artist,
     releaseDate,
+    albumType,
     title,
     isSelected,
     columns,
@@ -64,6 +65,14 @@ function CutoffUnmetRow(props) {
                   episodeTitle={title}
                   showOpenArtistButton={true}
                 />
+              </TableRowCell>
+            );
+          }
+
+          if (name === 'albumType') {
+            return (
+              <TableRowCell key={name}>
+                {albumType}
               </TableRowCell>
             );
           }
@@ -130,6 +139,7 @@ CutoffUnmetRow.propTypes = {
   trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
+  albumType: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -39,6 +39,12 @@ export const defaultState = {
         isVisible: true
       },
       {
+        name: 'albumType',
+        label: 'Album Type',
+        isSortable: true,
+        isVisible: true
+      },
+      {
         name: 'releaseDate',
         label: 'Release Date',
         isSortable: true,
@@ -84,6 +90,12 @@ export const defaultState = {
       {
         name: 'albumTitle',
         label: 'Album Title',
+        isVisible: true
+      },
+      {
+        name: 'albumType',
+        label: 'Album Type',
+        isSortable: true,
         isVisible: true
       },
       {
