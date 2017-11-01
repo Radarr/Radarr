@@ -1,6 +1,8 @@
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Rest;
+using System.Net;
+using System;
 
 namespace NzbDrone.Core.Notifications.Webhook
 {
@@ -29,6 +31,12 @@ namespace NzbDrone.Core.Notifications.Webhook
                 request.Method = (HttpMethod)settings.Method;
                 request.Headers.ContentType = "application/json";
                 request.SetContent(body.ToJson());
+
+                if (!String.IsNullOrEmpty(settings.Username) || !String.IsNullOrEmpty(settings.Password))
+                {
+                    var networkCredential = new NetworkCredential(settings.Username, settings.Password);
+                    request.SetNetworkCredential(networkCredential);
+                }
 
                 _httpClient.Execute(request);
             }
