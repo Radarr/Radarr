@@ -175,6 +175,10 @@ namespace NzbDrone.Core.MediaFiles
                     ReleaseHash = folderInfo.ReleaseHash,
                 };
             }
+            else
+            {
+                trackInfo = null;
+            }
 
             var audioFiles = _diskScanService.FilterFiles(directoryInfo.FullName, _diskScanService.GetAudioFiles(directoryInfo.FullName));
 

@@ -38,9 +38,8 @@ namespace NzbDrone.Core.Parser.Model
             {
                 trackString = string.Format("T{0}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));
             }
-            
 
-            return string.Format("{0} - {1} {2}", ArtistTitle, trackString, Quality);
+            return string.Format("{0} - {1} - {2}: {3}", ArtistTitle, AlbumTitle, trackString, Quality);
         }
     }
 }
