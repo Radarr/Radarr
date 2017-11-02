@@ -13,10 +13,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle (2009)", "castle2009")]
         [TestCase("Parenthood.2010", "parenthood2010")]
         [TestCase("Law_and_Order_SVU", "lawordersvu")]
-        public void should_normalize_series_title(string parsedSeriesName, string seriesName)
+        public void should_normalize_artist_title(string parsedArtistName, string artistName)
         {
-            var result = parsedSeriesName.CleanSeriesTitle();
-            result.Should().Be(seriesName);
+            var result = parsedArtistName.CleanArtistName();
+            result.Should().Be(artistName);
         }
 
         [TestCase("CaPitAl", "capital")]
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("24", "24")]
         public void should_remove_special_characters_and_casing(string dirty, string clean)
         {
-            var result = dirty.CleanSeriesTitle();
+            var result = dirty.CleanArtistName();
             result.Should().Be(clean);
         }
 
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanSeriesTitle().Should().Be("wordword");
+                dirty.CleanArtistName().Should().Be("wordword");
             }
         }
 
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, "a");
-                dirty.CleanSeriesTitle().Should().Be("wordword");
+                dirty.CleanArtistName().Should().Be("wordword");
             }
         }
 
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanSeriesTitle().Should().Be(("word" + word.ToLower() + "word"));
+                dirty.CleanArtistName().Should().Be(("word" + word.ToLower() + "word"));
             }
 
         }
@@ -101,10 +101,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Office", "theoffice")]
         [TestCase("The Tonight Show With Jay Leno", "thetonightshowwithjayleno")]
         [TestCase("The.Daily.Show", "thedailyshow")]
-        public void should_not_remove_from_the_beginning_of_the_title(string parsedSeriesName, string seriesName)
+        public void should_not_remove_from_the_beginning_of_the_title(string parsedArtistName, string artistName)
         {
-            var result = parsedSeriesName.CleanSeriesTitle();
-            result.Should().Be(seriesName);
+            var result = parsedArtistName.CleanArtistName();
+            result.Should().Be(artistName);
         }
 
         [TestCase("the")]
@@ -125,14 +125,14 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanSeriesTitle().Should().Be(word + "wordword");
+                dirty.CleanArtistName().Should().Be(word + "wordword");
             }
         }
 
         [Test]
         public void should_not_clean_trailing_a()
         {
-            "Tokyo Ghoul A".CleanSeriesTitle().Should().Be("tokyoghoula");
+            "Tokyo Ghoul A".CleanArtistName().Should().Be("tokyoghoula");
         }
     }
 }

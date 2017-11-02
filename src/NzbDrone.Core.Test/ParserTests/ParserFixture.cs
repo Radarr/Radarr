@@ -40,8 +40,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Reno.911.S01.DVDRip.DD2.0.x264-DEEP", "Reno 911")]
         public void should_parse_series_name(string postTitle, string title)
         {
-            var result = Parser.Parser.ParseArtistName(postTitle).CleanSeriesTitle();
-            result.Should().Be(title.CleanSeriesTitle());
+            var result = Parser.Parser.ParseArtistName(postTitle).CleanArtistName();
+            result.Should().Be(title.CleanArtistName());
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Carniv\u00E0le";
             
-            title.CleanSeriesTitle().Should().Be("carnivale");
+            title.CleanArtistName().Should().Be("carnivale");
         }
 
         [TestCase("Discovery TV - Gold Rush : 02 Road From Hell [S04].mp4")]

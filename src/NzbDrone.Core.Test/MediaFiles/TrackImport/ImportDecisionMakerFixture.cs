@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         public void should_use_file_language_if_folder_language_is_null()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
-            var expectedLanguage = Parser.Parser.ParseLanguage(_audioFiles.Single());
+            var expectedLanguage = LanguageParser.ParseLanguage(_audioFiles.Single());
 
             var result = Subject.GetImportDecisions(_audioFiles, _artist);
 

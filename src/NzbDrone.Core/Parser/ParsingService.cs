@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Parser
 
             if (searchCriteria != null)
             {
-                if (searchCriteria.Artist.CleanName == parsedAlbumInfo.ArtistName.CleanSeriesTitle())
+                if (searchCriteria.Artist.CleanName == parsedAlbumInfo.ArtistName.CleanArtistName())
                 {
                     return searchCriteria.Artist;
                 }
