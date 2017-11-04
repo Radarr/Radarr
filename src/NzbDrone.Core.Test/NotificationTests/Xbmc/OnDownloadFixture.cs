@@ -41,8 +41,8 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         private void GivenOldFiles()
         {
             _downloadMessage.OldMovieFiles = Builder<MovieFile>.CreateListOfSize(1)
-                                                            .Build()
-                                                            .ToList();
+                                                               .Build()
+                                                               .ToList();
 
             Subject.Definition.Settings = new XbmcSettings
                                           {
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         }
 
         [Test]
-        public void should_not_clean_if_no_episode_was_replaced()
+        public void should_not_clean_if_no_movie_was_replaced()
         {
             Subject.OnDownload(_downloadMessage);
 
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         }
 
         [Test]
-        public void should_clean_if_episode_was_replaced()
+        public void should_clean_if_movie_was_replaced()
         {
             GivenOldFiles();
             Subject.OnDownload(_downloadMessage);

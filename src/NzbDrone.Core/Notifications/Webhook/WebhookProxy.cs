@@ -1,6 +1,11 @@
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Rest;
+<<<<<<< Updated upstream
+=======
+using System;
+using System.Text;
+>>>>>>> Stashed changes
 
 namespace NzbDrone.Core.Notifications.Webhook
 {
@@ -29,6 +34,13 @@ namespace NzbDrone.Core.Notifications.Webhook
                 request.Method = (HttpMethod)settings.Method;
                 request.Headers.ContentType = "application/json";
                 request.SetContent(body.ToJson());
+
+                if (!String.IsNullOrEmpty(settings.Username) || !String.IsNullOrEmpty(settings.Password))
+                {
+                    var authInfo = settings.Username + ":" + settings.Password;
+                    authInfo = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(authInfo));
+                    request.Headers.Set("Authorization", "Basic " + authInfo);
+                }
 
                 _httpClient.Execute(request);
             }

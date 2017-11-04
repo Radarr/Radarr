@@ -34,10 +34,6 @@ namespace NzbDrone.Core.Notifications.Boxcar
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Boxcar";
 
         public override bool SupportsOnRename => false;
