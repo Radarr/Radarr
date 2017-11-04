@@ -1091,7 +1091,6 @@
     <Compile Include="Notifications\Pushover\PushoverService.cs" />
     <Compile Include="Notifications\Pushover\PushoverSettings.cs" />
     <Compile Include="Notifications\Xbmc\XbmcJsonException.cs" />
-    <Compile Include="Notifications\Xbmc\HttpApiProvider.cs" />
     <Compile Include="Notifications\Xbmc\IApiProvider.cs" />
     <Compile Include="Notifications\Xbmc\InvalidXbmcVersionException.cs" />
     <Compile Include="Notifications\Xbmc\JsonApiProvider.cs" />
