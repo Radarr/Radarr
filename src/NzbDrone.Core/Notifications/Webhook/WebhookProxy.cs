@@ -1,11 +1,8 @@
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Rest;
-<<<<<<< Updated upstream
-=======
 using System;
 using System.Text;
->>>>>>> Stashed changes
 
 namespace NzbDrone.Core.Notifications.Webhook
 {
