@@ -15,8 +15,7 @@ namespace NzbDrone.Console
         {
             Normal = 0,
             UnknownFailure = 1,
-            RecoverableFailure = 2,
-            NonRecoverableFailure = 3
+            RecoverableFailure = 2
         }
 
         public static void Main(string[] args)
@@ -56,17 +55,6 @@ namespace NzbDrone.Console
                 System.Console.WriteLine("Press enter to exit...");
 
                 System.Threading.Thread.Sleep(1000);
-
-                if (exitCode == ExitCodes.NonRecoverableFailure)
-                {
-                    System.Console.WriteLine("Non-recoverable failure, waiting for user intervention...");
-                    for (int i = 0; i < 3600; i++)
-                    {
-                        System.Threading.Thread.Sleep(1000);
-
-                        if (System.Console.KeyAvailable) break;
-                    }
-                }
 
                 // Please note that ReadLine silently succeeds if there is no console, KeyAvailable does not.
                 System.Console.ReadLine();
