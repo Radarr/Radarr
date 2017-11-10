@@ -55,7 +55,7 @@ namespace Radarr.Host
                 Console.CancelKeyPress += (sender, eventArgs) => LogManager.Configuration = null;
             }
 
-            _runtimeInfo.IsRunning = true;
+            _runtimeInfo.IsExiting = false;
             _hostController.StartServer();
 
             if (!_startupContext.Flags.Contains(StartupContext.NO_BROWSER)
@@ -82,7 +82,7 @@ namespace Radarr.Host
             _logger.Info("Attempting to stop application.");
             _hostController.StopServer();
             _logger.Info("Application has finished stop routine.");
-            _runtimeInfo.IsRunning = false;
+            _runtimeInfo.IsExiting = true;
         }
 
         public void Handle(ApplicationShutdownRequested message)
