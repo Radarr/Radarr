@@ -60,6 +60,7 @@ namespace NzbDrone.Api.Movie
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,
+                SceneName = model.SceneName,
                 ReleaseGroup = model.ReleaseGroup,
                 Quality = model.Quality,
                 Movie = movie,
