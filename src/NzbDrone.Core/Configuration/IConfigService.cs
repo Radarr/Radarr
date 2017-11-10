@@ -33,6 +33,7 @@ namespace NzbDrone.Core.Configuration
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }
         bool EnableMediaInfo { get; set; }
+        bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
         bool AutoRenameFolders { get; set; }
         bool PathsDefaultStatic { get; set; }

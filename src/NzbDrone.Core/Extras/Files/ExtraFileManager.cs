@@ -16,6 +16,12 @@ namespace NzbDrone.Core.Extras.Files
         IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
         IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
         ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+
+        IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
+        IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
+        IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder);
+        IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
+        ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
     }
 
     public abstract class ExtraFileManager<TExtraFile> : IManageExtraFiles
@@ -42,6 +48,12 @@ namespace NzbDrone.Core.Extras.Files
         public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
         public abstract ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
 
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder);
+        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
+        public abstract ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
+
         protected TExtraFile ImportFile(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
         {
             var newFileName = Path.Combine(series.Path, Path.ChangeExtension(episodeFile.RelativePath, extension));
@@ -61,6 +73,28 @@ namespace NzbDrone.Core.Extras.Files
                 SeasonNumber = episodeFile.SeasonNumber,
                 EpisodeFileId = episodeFile.Id,
                 RelativePath = series.Path.GetRelativePath(newFileName),
+                Extension = Path.GetExtension(path)
+            };
+        }
+
+        protected TExtraFile ImportFile(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
+        {
+            var newFileName = Path.Combine(movie.Path, Path.ChangeExtension(movieFile.RelativePath, extension));
+
+            var transferMode = TransferMode.Move;
+
+            if (readOnly)
+            {
+                transferMode = _configService.CopyUsingHardlinks ? TransferMode.HardLinkOrCopy : TransferMode.Copy;
+            }
+
+            _diskTransferService.TransferFile(path, newFileName, transferMode, true, false);
+
+            return new TExtraFile
+            {
+                MovieId = movie.Id,
+                MovieFileId = movieFile.Id,
+                RelativePath = movie.Path.GetRelativePath(newFileName),
                 Extension = Path.GetExtension(path)
             };
         }

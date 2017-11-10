@@ -49,6 +49,21 @@ namespace NzbDrone.Core.Extras.Subtitles
             return Enumerable.Empty<SubtitleFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles)
         {
             // TODO: Remove
@@ -105,11 +120,77 @@ namespace NzbDrone.Core.Extras.Subtitles
             return movedFiles;
         }
 
+        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
+        {
+            var subtitleFiles = _subtitleFileService.GetFilesByMovie(movie.Id);
+
+            var movedFiles = new List<SubtitleFile>();
+
+            foreach (var movieFile in movieFiles)
+            {
+                var groupedExtraFilesForMovieFile = subtitleFiles.Where(m => m.MovieFileId == movieFile.Id)
+                                                            .GroupBy(s => s.Language + s.Extension).ToList();
+
+                foreach (var group in groupedExtraFilesForMovieFile)
+                {
+                    var groupCount = group.Count();
+                    var copy = 1;
+
+                    if (groupCount > 1)
+                    {
+                        _logger.Warn("Multiple subtitle files found with the same language and extension for {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+                    }
+
+                    foreach (var extraFile in group)
+                    {
+                        var existingFileName = Path.Combine(movie.Path, extraFile.RelativePath);
+                        var extension = GetExtension(extraFile, existingFileName, copy, groupCount > 1);
+                        var newFileName = Path.ChangeExtension(Path.Combine(movie.Path, movieFile.RelativePath), extension);
+
+                        if (newFileName.PathNotEquals(existingFileName))
+                        {
+                            try
+                            {
+                                _diskProvider.MoveFile(existingFileName, newFileName);
+                                extraFile.RelativePath = movie.Path.GetRelativePath(newFileName);
+                                movedFiles.Add(extraFile);
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.Warn(ex, "Unable to move subtitle file: {0}", existingFileName);
+                            }
+                        }
+
+                        copy++;
+                    }
+                }
+            }
+
+            _subtitleFileService.Upsert(movedFiles);
+
+            return movedFiles;
+        }
+
         public override ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
         {
             if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
                 var subtitleFile = ImportFile(series, episodeFile, path, extension, readOnly);
+                subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
+
+                _subtitleFileService.Upsert(subtitleFile);
+
+                return subtitleFile;
+            }
+
+            return null;
+        }
+
+        public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
+        {
+            if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
+            {
+                var subtitleFile = ImportFile(movie, movieFile, path, extension, readOnly);
                 subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
 
                 _subtitleFileService.Upsert(subtitleFile);

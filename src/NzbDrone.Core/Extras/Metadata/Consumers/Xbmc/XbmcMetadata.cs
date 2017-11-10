@@ -51,6 +51,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             return Path.Combine(series.Path, metadataFile.RelativePath);
         }
 
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFile FindMetadataFile(Series series, string path)
         {
             var filename = Path.GetFileName(path);
@@ -120,6 +125,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
 
             return null;
+        }
+
+        public override MetadataFileResult MovieMetadata(Movie movie)
+        {
+            throw new NotImplementedException();
         }
 
         public override MetadataFileResult SeriesMetadata(Series series)
@@ -292,6 +302,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
 
             return new MetadataFileResult(GetEpisodeMetadataFilename(episodeFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
+        }
+
+        public override List<ImageFileResult> MovieImages(Movie movie)
+        {
+            throw new NotImplementedException();
         }
 
         public override List<ImageFileResult> SeriesImages(Series series)

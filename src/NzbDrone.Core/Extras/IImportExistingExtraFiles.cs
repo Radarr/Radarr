@@ -8,5 +8,6 @@ namespace NzbDrone.Core.Extras
     {
         int Order { get; }
         IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles);
+        IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles);
     }
 }

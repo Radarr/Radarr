@@ -8,6 +8,9 @@ namespace NzbDrone.Core.Extras.Files
         public int SeriesId { get; set; }
         public int? EpisodeFileId { get; set; }
         public int? SeasonNumber { get; set; }
+
+        public int MovieId { get; set; }
+        public int? MovieFileId { get; set; }
         public string RelativePath { get; set; }
         public DateTime Added { get; set; }
         public DateTime LastUpdated { get; set; }

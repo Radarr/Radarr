@@ -98,5 +98,11 @@ namespace NzbDrone.Core.Extras.Metadata
 
             return metadataFiles.Concat(filterResult.PreviouslyImported);
         }
+
+        public override IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles)
+        {
+            //throw new System.NotImplementedException();
+            return new List<MetadataFile>();
+        }
     }
 }

@@ -16,5 +16,10 @@ namespace NzbDrone.Core.Extras.Subtitles
             : base(repository, seriesService, diskProvider, recycleBinProvider, logger)
         {
         }
+
+        public SubtitleFileService(IExtraFileRepository<SubtitleFile> repository, IMovieService movieService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
+            : base(repository, movieService, diskProvider, recycleBinProvider, logger)
+        {
+        }
     }
 }

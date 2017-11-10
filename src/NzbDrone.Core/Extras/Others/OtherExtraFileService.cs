@@ -16,5 +16,10 @@ namespace NzbDrone.Core.Extras.Others
             : base(repository, seriesService, diskProvider, recycleBinProvider, logger)
         {
         }
-    }
+
+        public OtherExtraFileService(IExtraFileRepository<OtherExtraFile> repository, IMovieService movieService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
+            : base(repository, movieService, diskProvider, recycleBinProvider, logger)
+        {
+        }
+}
 }

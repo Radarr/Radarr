@@ -47,6 +47,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             return null;
         }
 
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFileResult SeriesMetadata(Series series)
         {
             if (!Settings.SeriesMetadata)
@@ -115,6 +120,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             }
         }
  
+        public override MetadataFileResult MovieMetadata(Movie movie)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
         {
             return null;
@@ -131,6 +141,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
         }
 
         public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
+        {
+            return new List<ImageFileResult>();
+        }
+
+        public override List<ImageFileResult> MovieImages(Movie movie)
         {
             return new List<ImageFileResult>();
         }

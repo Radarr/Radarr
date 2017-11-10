@@ -17,6 +17,11 @@ namespace NzbDrone.Core.Extras.Metadata.Files
         {
         }
 
+        public MetadataFileService(IExtraFileRepository<MetadataFile> repository, IMovieService movieService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
+            : base(repository, movieService, diskProvider, recycleBinProvider, logger)
+        {
+        }
+
         public override bool PermanentlyDelete => true;
     }
 }

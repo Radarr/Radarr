@@ -54,6 +54,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             return Path.Combine(series.Path, metadataFile.RelativePath);
         }
 
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFile FindMetadataFile(Series series, string path)
         {
             var filename = Path.GetFileName(path);
@@ -126,6 +131,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             return null;
         }
 
+        public override MetadataFileResult MovieMetadata(Movie movie)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
         {
             if (!Settings.EpisodeMetadata)
@@ -176,6 +186,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             }
 
             return new MetadataFileResult(GetEpisodeMetadataFilename(episodeFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
+        }
+
+        public override List<ImageFileResult> MovieImages(Movie movie)
+        {
+            throw new NotImplementedException();
         }
 
         public override List<ImageFileResult> SeriesImages(Series series)
