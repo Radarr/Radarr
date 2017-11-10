@@ -61,10 +61,6 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Webhook";
 
         public override ValidationResult Test()

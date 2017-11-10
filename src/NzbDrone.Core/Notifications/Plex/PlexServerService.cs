@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Notifications.Plex
 {
     public interface IPlexServerService
     {
-        void UpdateLibrary(Series series, PlexServerSettings settings);
         void UpdateMovieSections(Movie movie, PlexServerSettings settings);
         ValidationFailure Test(PlexServerSettings settings);
     }
@@ -33,7 +32,7 @@ namespace NzbDrone.Core.Notifications.Plex
             _logger = logger;
         }
 
-        public void UpdateLibrary(Series series, PlexServerSettings settings)
+        public void UpdateMovieSections(Movie movie, PlexServerSettings settings)
         {
             try
             {
@@ -47,45 +46,13 @@ namespace NzbDrone.Core.Notifications.Plex
 
                 if (partialUpdates)
                 {
-                    UpdatePartialSection(series, sections, settings);
+                    UpdatePartialSection(movie, sections, settings);
                 }
 
                 else
                 {
                     sections.ForEach(s => UpdateSection(s.Id, settings));
                 }
-            }
-
-            catch(Exception ex)
-            {
-                _logger.Warn(ex, "Failed to Update Plex host: " + settings.Host);
-                throw;
-            }
-        }
-
-        public void UpdateMovieSections(Movie movie, PlexServerSettings settings)
-        {
-            try
-            {
-                _logger.Debug("Sending Update Request to Plex Server");
-
-                var version = _versionCache.Get(settings.Host, () => GetVersion(settings), TimeSpan.FromHours(2));
-                ValidateVersion(version);
-
-                var sections = GetSections(settings);
-                var partialUpdates = _partialUpdateCache.Get(settings.Host, () => PartialUpdatesAllowed(settings, version), TimeSpan.FromHours(2));
-
-                // TODO: Investiate partial updates later, for now just update all movie sections...
-                
-                //if (partialUpdates)
-                //{
-                //    UpdatePartialSection(series, sections, settings);
-                //}
-
-                //else
-                //{
-                    sections.ForEach(s => UpdateSection(s.Id, settings));
-                //}
             }
 
             catch (Exception ex)
@@ -163,18 +130,18 @@ namespace NzbDrone.Core.Notifications.Plex
             _plexServerProxy.Update(sectionId, settings);
         }
 
-        private void UpdatePartialSection(Series series, List<PlexSection> sections, PlexServerSettings settings)
+        private void UpdatePartialSection(Movie movie, List<PlexSection> sections, PlexServerSettings settings)
         {
             var partiallyUpdated = false;
 
             foreach (var section in sections)
             {
-                var metadataId = GetMetadataId(section.Id, series, section.Language, settings);
+                var metadataId = GetMetadataId(section.Id, movie, section.Language, settings);
 
                 if (metadataId.HasValue)
                 {
-                    _logger.Debug("Updating Plex host: {0}, Section: {1}, Series: {2}", settings.Host, section.Id, series);
-                    _plexServerProxy.UpdateSeries(metadataId.Value, settings);
+                    _logger.Debug("Updating Plex host: {0}, Section: {1}, Movie: {2}", settings.Host, section.Id, movie);
+                    _plexServerProxy.UpdateItem(metadataId.Value, settings);
 
                     partiallyUpdated = true;
                 }
@@ -188,11 +155,11 @@ namespace NzbDrone.Core.Notifications.Plex
             }
         }
 
-        private int? GetMetadataId(int sectionId, Series series, string language, PlexServerSettings settings)
+        private int? GetMetadataId(int sectionId, Movie movie, string language, PlexServerSettings settings)
         {
-            _logger.Debug("Getting metadata from Plex host: {0} for series: {1}", settings.Host, series);
+            _logger.Debug("Getting metadata from Plex host: {0} for movie: {1}", settings.Host, movie);
 
-            return _plexServerProxy.GetMetadataId(sectionId, series.TvdbId, language, settings);
+            return _plexServerProxy.GetMetadataId(sectionId, movie.ImdbId, language, settings);
         }
 
         public ValidationFailure Test(PlexServerSettings settings)

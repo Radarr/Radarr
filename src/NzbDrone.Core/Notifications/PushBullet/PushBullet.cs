@@ -33,10 +33,6 @@ namespace NzbDrone.Core.Notifications.PushBullet
         public override void OnMovieRename(Movie movie)
         {
         }
-		
-        public override void OnRename(Series series)
-        {
-        }
 
         public override string Name => "Pushbullet";
 

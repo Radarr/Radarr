@@ -28,23 +28,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
             _proxy.Notify(settings, title, message);
         }
 
-        public void Update(XbmcSettings settings, Series series)
-        {
-            if (!settings.AlwaysUpdate)
-            {
-                _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
-                var activePlayers = _proxy.GetActivePlayers(settings);
-
-                if (activePlayers.Any(a => a.Type.Equals("video")))
-                {
-                    _logger.Debug("Video is currently playing, skipping library update");
-                    return;
-                }
-            }
-
-            UpdateLibrary(settings, series);
-        }
-
         public void UpdateMovie(XbmcSettings settings, Movie movie)
         {
             if (!settings.AlwaysUpdate)
@@ -73,65 +56,45 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return _proxy.GetActivePlayers(settings); 
         }
 
-        public string GetSeriesPath(XbmcSettings settings, Series series)
+        public string GetMoviePath(XbmcSettings settings, Movie movie)
         {
-            var allSeries = _proxy.GetSeries(settings);
+            var allMovies = _proxy.GetMovies(settings);
 
-            if (!allSeries.Any())
+            if (!allMovies.Any())
             {
-                _logger.Debug("No TV shows returned from XBMC");
+                _logger.Debug("No Movies returned from XBMC");
                 return null;
             }
 
-            var matchingSeries = allSeries.FirstOrDefault(s =>
+            var matchingMovies = allMovies.FirstOrDefault(s =>
             {
-                var tvdbId = 0;
-                int.TryParse(s.ImdbNumber, out tvdbId);
+                return s.ImdbNumber == movie.ImdbId || s.Label == movie.Title;
 
-                return tvdbId == series.TvdbId || s.Label == series.Title;
             });
 
-            if (matchingSeries != null) return matchingSeries.File;
+            if (matchingMovies != null) return matchingMovies.File;
 
             return null;
-        }
-
-        private void UpdateLibrary(XbmcSettings settings, Series series)
-        {
-            try
-            {
-                var seriesPath = GetSeriesPath(settings, series);
-
-                if (seriesPath != null)
-                {
-                    _logger.Debug("Updating series {0} (Path: {1}) on XBMC host: {2}", series, seriesPath, settings.Address);
-                }
-
-                else
-                {
-                    _logger.Debug("Series {0} doesn't exist on XBMC host: {1}, Updating Entire Library", series,
-                                 settings.Address);
-                }
-
-                var response = _proxy.UpdateLibrary(settings, seriesPath);
-
-                if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    _logger.Debug("Failed to update library for: {0}", settings.Address);
-                }
-            }
-
-            catch (Exception ex)
-            {
-                _logger.Debug(ex, ex.Message);
-            }
         }
 
         private void UpdateMovieLibrary(XbmcSettings settings, Movie movie)
         {
             try
             {
-                var response = _proxy.UpdateLibrary(settings, null);
+                var moviePath = GetMoviePath(settings, movie);
+
+                if (moviePath != null)
+                {
+                    _logger.Debug("Updating movie {0} (Path: {1}) on XBMC host: {2}", movie, moviePath, settings.Address);
+                }
+
+                else
+                {
+                    _logger.Debug("Movie {0} doesn't exist on XBMC host: {1}, Updating Entire Library", movie,
+                                 settings.Address);
+                }
+
+                var response = _proxy.UpdateLibrary(settings, moviePath);
 
                 if (!response.Equals("OK", StringComparison.InvariantCultureIgnoreCase))
                 {

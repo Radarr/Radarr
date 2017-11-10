@@ -14,7 +14,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
     public interface IXbmcService
     {
         void Notify(XbmcSettings settings, string title, string message);
-        void Update(XbmcSettings settings, Series series);
         void UpdateMovie(XbmcSettings settings, Movie movie);
         void Clean(XbmcSettings settings);
         ValidationFailure Test(XbmcSettings settings, string message);
@@ -44,12 +43,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
         {
             var provider = GetApiProvider(settings);
             provider.Notify(settings, title, message);
-        }
-
-        public void Update(XbmcSettings settings, Series series)
-        {
-            var provider = GetApiProvider(settings);
-            provider.Update(settings, series);
         }
 
         public void UpdateMovie(XbmcSettings settings, Movie movie)

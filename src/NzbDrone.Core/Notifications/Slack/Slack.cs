@@ -78,21 +78,6 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnRename(Series series)
-        {
-            var attachments = new List<Attachment>
-                                {
-                                    new Attachment
-                                    {
-                                        Title = series.Title,
-                                    }
-                                };
-
-            var payload = CreatePayload("Renamed", attachments);
-
-            _proxy.SendPayload(payload, Settings);
-        }
-        
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
