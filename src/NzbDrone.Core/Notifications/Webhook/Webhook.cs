@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                     {
                         Id = 1,
                         Title = "Test Title",
-                        FilePath = "C:\\testpath",
+                        FolderPath = "C:\\testpath",
                         ReleaseDate = "1970-01-01"
                     },
                     RemoteMovie = new WebhookRemoteMovie
