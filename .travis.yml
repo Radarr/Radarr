@@ -1,0 +1,14 @@
+language: csharp
+solution: src/Lidarr.sln
+addons:
+  apt:
+    packages:
+      - nodejs
+#      - npm apparently not needed anymore.
+script:
+  - ./build.sh
+  - chmod +x test.sh
+#  - ./test.sh Linux Unit Takes far too long, maybe even crashes travis :/
+after_success:
+  - chmod +x package.sh
+  - ./package.sh
