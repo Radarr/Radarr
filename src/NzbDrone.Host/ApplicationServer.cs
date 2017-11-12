@@ -4,6 +4,7 @@ using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using Radarr.Host.Owin;
@@ -56,6 +57,7 @@ namespace Radarr.Host
             }
 
             _runtimeInfo.IsRunning = true;
+            DbFactory.RegisterDatabase(_container);
             _hostController.StartServer();
 
             if (!_startupContext.Flags.Contains(StartupContext.NO_BROWSER)
