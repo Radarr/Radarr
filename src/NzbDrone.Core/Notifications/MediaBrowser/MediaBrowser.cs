@@ -49,14 +49,6 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             }
         }
 
-        public override void OnRename(Series series)
-        {
-            if (Settings.UpdateLibrary)
-            {
-                _mediaBrowserService.Update(Settings, series);
-            }
-        }
-
         public override string Name => "Emby (Media Browser)";
 
         public override ValidationResult Test()

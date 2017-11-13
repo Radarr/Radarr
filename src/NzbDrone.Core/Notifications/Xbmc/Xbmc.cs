@@ -41,11 +41,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
             UpdateAndCleanMovie(movie);
         }
 
-        public override void OnRename(Series series)
-        {
-            UpdateAndClean(series);
-        }
-
         public override string Name => "Kodi (XBMC)";
 
         public override ValidationResult Test()
@@ -64,27 +59,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 if (Settings.Notify)
                 {
                     _xbmcService.Notify(Settings, header, message);
-                }
-            }
-            catch (SocketException ex)
-            {
-                var logMessage = string.Format("Unable to connect to XBMC Host: {0}:{1}", Settings.Host, Settings.Port);
-                _logger.Debug(ex, logMessage);
-            }
-        }
-
-        private void UpdateAndClean(Series series, bool clean = true)
-        {
-            try
-            {
-                if (Settings.UpdateLibrary)
-                {
-                    _xbmcService.Update(Settings, series);
-                }
-
-                if (clean && Settings.CleanLibrary)
-                {
-                    _xbmcService.Clean(Settings);
                 }
             }
             catch (SocketException ex)

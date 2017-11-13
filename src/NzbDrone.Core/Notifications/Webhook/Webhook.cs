@@ -61,10 +61,6 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Webhook";
 
         public override ValidationResult Test()
@@ -87,7 +83,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                     {
                         Id = 1,
                         Title = "Test Title",
-                        FilePath = "C:\\testpath",
+                        FolderPath = "C:\\testpath",
                         ReleaseDate = "1970-01-01"
                     },
                     RemoteMovie = new WebhookRemoteMovie

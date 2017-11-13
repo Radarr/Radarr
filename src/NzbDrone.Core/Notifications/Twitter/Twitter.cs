@@ -33,10 +33,6 @@ namespace NzbDrone.Core.Notifications.Twitter
         {
         }
 
-        public override void OnRename(Series series)
-        {
-        }
-
         public override object RequestAction(string action, IDictionary<string, string> query)
         {
             if (action == "startOAuth")

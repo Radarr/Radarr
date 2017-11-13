@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Threading;
 using NLog;
@@ -7,7 +7,6 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Processes;
 using NzbDrone.Common.Security;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Instrumentation;
 
 namespace Radarr.Host
@@ -43,7 +42,6 @@ namespace Radarr.Host
                 {
                     startCallback(_container);
                 }
-
                 else
                 {
                     SpinToExit(appMode);
@@ -69,8 +67,7 @@ namespace Radarr.Host
 
                 EnsureSingleInstance(applicationModes == ApplicationModes.Service, startupContext);
             }
-
-            DbFactory.RegisterDatabase(_container);
+            
             _container.Resolve<Router>().Route(applicationModes);
         }
 

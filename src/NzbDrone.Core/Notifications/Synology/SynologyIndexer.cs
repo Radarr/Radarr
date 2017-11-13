@@ -50,14 +50,6 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
-        public override void OnRename(Series series)
-        {
-            if (Settings.UpdateLibrary)
-            {
-                _indexerProxy.UpdateFolder(series.Path);
-            }
-        }
-
         public override string Name => "Synology Indexer";
 
         public override ValidationResult Test()
