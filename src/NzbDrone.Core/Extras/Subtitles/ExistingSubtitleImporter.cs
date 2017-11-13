@@ -60,13 +60,15 @@ namespace NzbDrone.Core.Extras.Subtitles
                         continue;
                     }
 
+                    string specialType;
+
                     var subtitleFile = new SubtitleFile
                                        {
                                            SeriesId = series.Id,
                                            SeasonNumber = localEpisode.SeasonNumber,
                                            EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
                                            RelativePath = series.Path.GetRelativePath(possibleSubtitleFile),
-                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out var specialType),
+                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out specialType),
                                            SpecialType = specialType,
                                            Extension = extension
                                        };
@@ -111,12 +113,14 @@ namespace NzbDrone.Core.Extras.Subtitles
                         continue;
                     }
 
+                    string specialType;
+
                     var subtitleFile = new SubtitleFile
                     {
                         MovieId = movie.Id,
                         MovieFileId = localMovie.Movie.MovieFileId,
                         RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
-                        Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out var specialType),
+                        Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out specialType),
                         SpecialType = specialType,
                         Extension = extension
                     };

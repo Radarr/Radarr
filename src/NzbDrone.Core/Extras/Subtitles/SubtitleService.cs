@@ -137,7 +137,8 @@ namespace NzbDrone.Core.Extras.Subtitles
         {
             if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
-                var language = LanguageParser.ParseSubtitleLanguage(path, out var specialType);
+                string specialType;
+                var language = LanguageParser.ParseSubtitleLanguage(path, out specialType);
                 var suffix = GetSuffix(language, 1, false, specialType);
                 var subtitleFile = ImportFile(series, episodeFile, path, readOnly, extension, suffix);
                 subtitleFile.Language = language;
@@ -155,7 +156,8 @@ namespace NzbDrone.Core.Extras.Subtitles
         {
             if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
-                var language = LanguageParser.ParseSubtitleLanguage(path, out var specialType);
+                string specialType;
+                var language = LanguageParser.ParseSubtitleLanguage(path, out specialType);
                 var suffix = GetSuffix(language, 1, false, specialType);
                 var subtitleFile = ImportFile(movie, movieFile, path, readOnly, extension, suffix);
                 subtitleFile.Language = language;
