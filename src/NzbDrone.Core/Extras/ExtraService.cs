@@ -77,10 +77,6 @@ namespace NzbDrone.Core.Extras
                 extraFileManager.CreateAfterEpisodeImport(series, episodeFile);
             }
 
-            // TODO: Remove
-            // Not importing files yet, testing that parsing is working properly first
-            return;
-
             var sourcePath = localEpisode.Path;
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
@@ -105,7 +101,8 @@ namespace NzbDrone.Core.Extras
                 {
                     foreach (var extraFileManager in _extraFileManagers)
                     {
-                        var extraFile = extraFileManager.Import(series, episodeFile, matchingFilename, matchingExtension, isReadOnly);
+                        var extension = Path.GetExtension(matchingFilename);
+                        var extraFile = extraFileManager.Import(series, episodeFile, matchingFilename, extension, isReadOnly);
 
                         if (extraFile != null)
                         {

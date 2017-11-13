@@ -86,6 +86,13 @@ namespace NzbDrone.Core.Extras.Others
 
             foreach (var possibleExtraFile in filterResult.FilesOnDisk)
             {
+                var extension = Path.GetExtension(possibleExtraFile);
+                if (extension.IsNullOrWhiteSpace())
+                {
+                    _logger.Debug("No extension for file: {0}", possibleExtraFile);
+                    continue;
+                }
+
                 var localMovie = _parsingService.GetLocalMovie(possibleExtraFile, movie);
 
                 if (localMovie == null)
@@ -105,7 +112,7 @@ namespace NzbDrone.Core.Extras.Others
                     MovieId = movie.Id,
                     MovieFileId = localMovie.Movie.MovieFileId,
                     RelativePath = movie.Path.GetRelativePath(possibleExtraFile),
-                    Extension = Path.GetExtension(possibleExtraFile)
+                    Extension = extension
                 };
 
                 extraFiles.Add(extraFile);

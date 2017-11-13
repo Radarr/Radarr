@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("SubtitleFiles")
                  .AddColumn("MovieId").AsInt32().Nullable()
                  .AddColumn("MovieFileId").AsInt32().Nullable()
+                 .AddColumn("SpecialType").AsString().Nullable()
                  .AlterColumn("SeriesId").AsInt32().Nullable()
                  .AlterColumn("SeasonNumber").AsInt32().Nullable()
                  .AlterColumn("EpisodeFileId").AsInt32().Nullable();

@@ -6,5 +6,6 @@ namespace NzbDrone.Core.Extras.Subtitles
     public class SubtitleFile : ExtraFile
     {
         public Language Language { get; set; }
+        public string SpecialType { get; set; }
     }
 }

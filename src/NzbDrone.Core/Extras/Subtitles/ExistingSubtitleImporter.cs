@@ -66,7 +66,8 @@ namespace NzbDrone.Core.Extras.Subtitles
                                            SeasonNumber = localEpisode.SeasonNumber,
                                            EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
                                            RelativePath = series.Path.GetRelativePath(possibleSubtitleFile),
-                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
+                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out var specialType),
+                                           SpecialType = specialType,
                                            Extension = extension
                                        };
 
@@ -115,7 +116,8 @@ namespace NzbDrone.Core.Extras.Subtitles
                         MovieId = movie.Id,
                         MovieFileId = localMovie.Movie.MovieFileId,
                         RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
-                        Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
+                        Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out var specialType),
+                        SpecialType = specialType,
                         Extension = extension
                     };
 
