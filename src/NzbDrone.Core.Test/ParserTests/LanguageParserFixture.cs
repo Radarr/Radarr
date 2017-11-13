@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("2 Broke Girls - S01E01 - Pilot.forced.sub", Language.Unknown, "forced")]
         public void should_parse_subtitle_language(string fileName, Language language, string specialType)
         {
-            var _specialType;
+            string _specialType;
             var result = LanguageParser.ParseSubtitleLanguage(fileName, out _specialType);
             result.Should().Be(language);
             _specialType.Should().Be(specialType);
