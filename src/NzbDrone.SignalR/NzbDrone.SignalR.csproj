@@ -83,7 +83,7 @@
     <Compile Include="NzbDronePersistentConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignalRContractResolver.cs" />
-    <Compile Include="SignalrDependencyResolver.cs" />
+    <Compile Include="SignalRDependencyResolver.cs" />
     <Compile Include="SignalRJsonSerializer.cs" />
     <Compile Include="SignalRMessage.cs" />
     <Compile Include="LidarrPerformanceCounterManager.cs" />

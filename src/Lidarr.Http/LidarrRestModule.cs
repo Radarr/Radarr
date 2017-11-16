@@ -12,8 +12,8 @@ namespace Lidarr.Http
 
         private static string BaseUrl()
         {
-            var isV3 = typeof(TResource).Namespace.Contains(".V1.");
-            if (isV3)
+            var isV1 = typeof(TResource).Namespace.Contains(".V1.");
+            if (isV1)
             {
                 return "/api/v1/";
             }

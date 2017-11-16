@@ -62,11 +62,11 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    Console.WriteLine("NzbDrone is started. Running Tests");
+                    Console.WriteLine("Lidarr is started. Running Tests");
                     return;
                 }
 
-                Console.WriteLine("Waiting for NzbDrone to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException);
+                Console.WriteLine("Waiting for Lidarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException);
 
                 Thread.Sleep(500);
             }
