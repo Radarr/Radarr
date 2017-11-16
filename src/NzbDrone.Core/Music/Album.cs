@@ -11,7 +11,9 @@ namespace NzbDrone.Core.Music
     {
         public Album()
         {
+            Genres = new List<string>();
             Images = new List<MediaCover.MediaCover>();
+            Media = new List<Medium>();
         }
 
         public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";
@@ -30,12 +32,12 @@ namespace NzbDrone.Core.Music
         //public int DiscCount { get; set; }
         public bool Monitored { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
-        //public List<Actor> Actors { get; set; } // TODO: These are band members. TODO: Refactor
         public List<string> Genres { get; set; }
+        public List<Medium> Media { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public DateTime? LastDiskSync { get; set; }
         public DateTime Added { get; set; }
-        public String AlbumType { get; set; } // TODO: Turn this into a type similar to Series Type in TV
+        public String AlbumType { get; set; }
         //public string ArtworkUrl { get; set; }
         //public string Explicitness { get; set; }
         public AddArtistOptions AddOptions { get; set; }

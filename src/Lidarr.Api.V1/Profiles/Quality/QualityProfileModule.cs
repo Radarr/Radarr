@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Profiles.Qualities;
 using Lidarr.Http;
@@ -13,8 +13,10 @@ namespace Lidarr.Api.V1.Profiles.Quality
         {
             _profileService = profileService;
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
-            SharedValidator.RuleFor(c => c.Cutoff).NotNull();
-            SharedValidator.RuleFor(c => c.Items).MustHaveAllowedQuality();
+            // TODO: Need to validate the cutoff is allowed and the ID/quality ID exists
+            // TODO: Need to validate the Items to ensure groups have names and at no item has no name, no items and no quality
+            SharedValidator.RuleFor(c => c.Cutoff).ValidCutoff();
+            SharedValidator.RuleFor(c => c.Items).ValidItems();
 
             GetResourceAll = GetAll;
             GetResourceById = GetById;

@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _profile = new Profile
                        {
                            Name = "Test",
-                           Cutoff = Quality.MP3_256,
+                           Cutoff = Quality.MP3_256.Id,
                            Items = new List<ProfileQualityItem>
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },

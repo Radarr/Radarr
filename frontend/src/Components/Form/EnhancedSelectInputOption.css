@@ -27,6 +27,10 @@
   background-color: #aaa;
 }
 
+.isHidden {
+  display: none;
+}
+
 .isMobile {
   height: 50px;
   border-bottom: 1px solid $borderColor;

@@ -39,6 +39,9 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex TrackRegex = new Regex(@"(?<track>\{track(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex MediumRegex = new Regex(@"(?<medium>\{medium(?:\:0+)?})",
+                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly Regex AbsoluteEpisodeRegex = new Regex(@"(?<absolute>\{absolute(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -107,10 +110,11 @@ namespace NzbDrone.Core.Organizer
             tracks = tracks.OrderBy(e => e.AlbumId).ThenBy(e => e.TrackNumber).ToList();
 
             pattern = FormatTrackNumberTokens(pattern, "", tracks);
-            //pattern = AddAbsoluteNumberingTokens(pattern, tokenHandlers, series, episodes, namingConfig);
+            pattern = FormatMediumNumberTokens(pattern, "", tracks);
 
             AddArtistTokens(tokenHandlers, artist);
             AddAlbumTokens(tokenHandlers, album);
+            AddMediumTokens(tokenHandlers, album.Media.SingleOrDefault(m => m.Number == tracks.First().MediumNumber));
             AddTrackTokens(tokenHandlers, tracks);
             AddTrackFileTokens(tokenHandlers, trackFile);
             AddQualityTokens(tokenHandlers, artist, trackFile);
@@ -280,6 +284,11 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
+        private void AddMediumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Medium medium)
+        {
+            tokenHandlers["{Medium Format}"] = m => medium.Format;
+        }
+
         private void AddTrackTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, List<Track> tracks)
         {
             tokenHandlers["{Track Title}"] = m => GetTrackTitle(tracks, "+");
@@ -431,7 +440,21 @@ namespace NzbDrone.Core.Organizer
             {
                 var patternToReplace = i == 0 ? basePattern : formatPattern;
 
-                pattern += TrackRegex.Replace(patternToReplace, match => ReplaceNumberToken(match.Groups["track"].Value, tracks[i].TrackNumber));
+                pattern += TrackRegex.Replace(patternToReplace, match => ReplaceNumberToken(match.Groups["track"].Value, tracks[i].AbsoluteTrackNumber));
+            }
+
+            return pattern;
+        }
+
+        private string FormatMediumNumberTokens(string basePattern, string formatPattern, List<Track> tracks)
+        {
+            var pattern = string.Empty;
+
+            for (int i = 0; i < tracks.Count; i++)
+            {
+                var patternToReplace = i == 0 ? basePattern : formatPattern;
+
+                pattern += MediumRegex.Replace(patternToReplace, match => ReplaceNumberToken(match.Groups["medium"].Value, tracks[i].MediumNumber));
             }
 
             return pattern;

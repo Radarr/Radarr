@@ -5388,10 +5388,6 @@ react-themeable@^1.1.0:
   dependencies:
     object-assign "^3.0.0"
 
-react-truncate@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-truncate/-/react-truncate-2.2.2.tgz#c13e420df82cf6d0385bb2a6eb10212743085550"
-
 react-virtualized@9.10.1:
   version "9.10.1"
   resolved "https://registry.yarnpkg.com/react-virtualized/-/react-virtualized-9.10.1.tgz#d32365d0edf49debbe25fbfe73b5f55f6d9d8c72"

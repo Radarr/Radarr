@@ -1,5 +1,5 @@
-import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import { set, update, updateItem } from '../baseActions';
 
 function createFetchHandler(section, url) {
@@ -12,13 +12,13 @@ function createFetchHandler(section, url) {
         ...otherPayload
       } = payload;
 
-      const promise = $.ajax({
+      const { request, abortRequest } = createAjaxRequest({
         url: id == null ? url : `${url}/${id}`,
         data: otherPayload,
         traditional: true
       });
 
-      promise.done((data) => {
+      request.done((data) => {
         dispatch(batchActions([
           id == null ? update({ section, data }) : updateItem({ section, ...data }),
 
@@ -31,14 +31,16 @@ function createFetchHandler(section, url) {
         ]));
       });
 
-      promise.fail((xhr) => {
+      request.fail((xhr) => {
         dispatch(set({
           section,
           isFetching: false,
           isPopulated: false,
-          error: xhr
+          error: xhr.aborted ? null : xhr
         }));
       });
+
+      return abortRequest;
     };
   };
 }

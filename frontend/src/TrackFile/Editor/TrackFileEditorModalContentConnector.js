@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import getQualities from 'Utilities/Quality/getQualities';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import { deleteTrackFiles, updateTrackFiles } from 'Store/Actions/trackFileActions';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
@@ -52,8 +53,8 @@ function createMapStateToProps() {
       });
 
       const languages = _.map(languageProfilesSchema.languages, 'language');
-      const qualities = _.map(qualityProfileSchema.items, 'quality');
-
+      const qualities = getQualities(qualityProfileSchema.items);
+      
       return {
         items,
         artistType: artist.artistType,
@@ -90,18 +91,6 @@ function createMapDispatchToProps(dispatch, props) {
 
     onDeletePress(trackFileIds) {
       dispatch(deleteTrackFiles({ trackFileIds }));
-    },
-
-    onQualityChange(trackFileIds, qualityId) {
-      const quality = {
-        quality: _.find(this.props.qualities, { id: qualityId }),
-        revision: {
-          version: 1,
-          real: 0
-        }
-      };
-
-      dispatch(updateTrackFiles({ trackFileIds, quality }));
     }
   };
 }

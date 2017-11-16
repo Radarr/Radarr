@@ -3,6 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles
@@ -39,13 +40,22 @@ namespace NzbDrone.Core.MediaFiles
             var existingFiles = localTrack.Tracks
                                             .Where(e => e.TrackFileId > 0)
                                             .Select(e => e.TrackFile.Value)
-                                            .GroupBy(e => e.Id);
+                                            .GroupBy(e => e.Id)
+                                            .ToList();
+
+            var rootFolder = _diskProvider.GetParentFolder(localTrack.Artist.Path);
+
+            // If there are existing track files and the root folder is missing, throw, so the old file isn't left behind during the import process.
+            if (existingFiles.Any() && !_diskProvider.FolderExists(rootFolder))
+            {
+                throw new RootFolderNotFoundException($"Root folder '{rootFolder}' was not found.");
+            }
 
             foreach (var existingFile in existingFiles)
             {
                 var file = existingFile.First();
                 var trackFilePath = Path.Combine(localTrack.Artist.Path, file.RelativePath);
-                var subfolder = _diskProvider.GetParentFolder(localTrack.Artist.Path).GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
+                var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
 
                 if (_diskProvider.FileExists(trackFilePath))
                 {

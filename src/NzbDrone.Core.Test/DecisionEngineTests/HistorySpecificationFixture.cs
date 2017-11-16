@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                        };
 
             _fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .With(l => l.LanguageProfile = new LanguageProfile { Cutoff = Language.Spanish, Languages = LanguageFixture.GetDefaultLanguages() })
                          .Build();
 
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_album_is_of_same_quality_as_existing()
         {
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.English);
 
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.Spanish);
 
@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
             _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.Spanish);
 

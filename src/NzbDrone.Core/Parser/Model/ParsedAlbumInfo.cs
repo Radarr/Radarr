@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Parser.Model
         public Language Language { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
+        public string ReleaseVersion { get; set; }
 
         public override string ToString()
         {

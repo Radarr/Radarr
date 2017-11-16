@@ -36,12 +36,22 @@ namespace NzbDrone.Core.Organizer
             _standardAlbum = new Album
             {
                 Title = "The Album Title",
-                ReleaseDate = System.DateTime.Today
+                ReleaseDate = System.DateTime.Today,
+                Media = new List<Medium>
+                {
+                    new Medium
+                    {
+                        Name = "CD 1: First Years",
+                        Format = "CD",
+                        Number = 1
+                    }
+                }
             };
 
             _track1 = new Track
             {
-                TrackNumber = 3,
+                AbsoluteTrackNumber = 3,
+                MediumNumber = 1,
                 
                 Title = "Track Title (1)",
                 

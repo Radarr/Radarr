@@ -11,14 +11,19 @@ export const defaultState = {
   isFetching: false,
   isPopulated: false,
   error: null,
-  sortKey: 'trackNumber',
+  sortKey: 'mediumNumber',
   sortDirection: sortDirections.DESCENDING,
   items: [],
 
   columns: [
     {
-      name: 'trackNumber',
-      label: '#',
+      name: 'medium',
+      label: 'Medium',
+      isVisible: true
+    },
+    {
+      name: 'absoluteTrackNumber',
+      label: 'Track',
       isVisible: true
     },
     {

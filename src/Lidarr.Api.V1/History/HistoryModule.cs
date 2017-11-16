@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Nancy;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
@@ -9,6 +11,7 @@ using Lidarr.Api.V1.Artist;
 using Lidarr.Api.V1.Tracks;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
+using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.History
 {
@@ -27,6 +30,7 @@ namespace Lidarr.Api.V1.History
             _failedDownloadService = failedDownloadService;
             GetResourcePaged = GetHistory;
 
+            Get["/since"] = x => GetHistorySince();
             Post["/failed"] = x => MarkAsFailed();
         }
 
@@ -79,6 +83,30 @@ namespace Lidarr.Api.V1.History
             }
 
             return ApplyToPage(_historyService.Paged, pagingSpec, h => MapToResource(h, includeArtist, includeAlbum, includeTrack));
+        }
+
+        private List<HistoryResource> GetHistorySince()
+        {
+            var queryDate = Request.Query.Date;
+            var queryEventType = Request.Query.EventType;
+
+            if (!queryDate.HasValue)
+            {
+                throw new BadRequestException("date is missing");
+            }
+
+            DateTime date = DateTime.Parse(queryDate.Value);
+            HistoryEventType? eventType = null;
+            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum");
+            var includeTrack = Request.GetBooleanQueryParameter("includeTrack");
+
+            if (queryEventType.HasValue)
+            {
+                eventType = (HistoryEventType)Convert.ToInt32(queryEventType.Value);
+            }
+
+            return _historyService.Since(date, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();
         }
 
         private Response MarkAsFailed()

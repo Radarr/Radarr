@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
 import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
@@ -13,6 +12,18 @@ import EpisodeQuality from 'Album/EpisodeQuality';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import styles from './AlbumHistoryRow.css';
+
+function getTitle(eventType) {
+  switch (eventType) {
+    case 'grabbed': return 'Grabbed';
+    case 'artistFolderImported': return 'Artist Folder Imported';
+    case 'downloadFolderImported': return 'Download Folder Imported';
+    case 'downloadFailed': return 'Download Failed';
+    case 'trackFileDeleted': return 'Track File Deleted';
+    case 'trackFileRenamed': return 'Track File Renamed';
+    default: return 'Unknown';
+  }
+}
 
 class AlbumHistoryRow extends Component {
 
@@ -89,7 +100,7 @@ class AlbumHistoryRow extends Component {
                 name={icons.INFO}
               />
             }
-            title={titleCase(eventType)}
+            title={getTitle(eventType)}
             body={
               <HistoryDetailsConnector
                 eventType={eventType}

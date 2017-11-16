@@ -98,6 +98,7 @@ namespace NzbDrone.Core.Datastore
                   .HasOne(track => track.TrackFile, track => track.TrackFileId); // TODO: Check lazy load for artists
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
+                  .Ignore(d => d.GroupName)
                   .Ignore(d => d.Weight);
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");

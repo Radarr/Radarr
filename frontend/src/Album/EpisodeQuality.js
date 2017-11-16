@@ -24,6 +24,7 @@ function getTooltip(title, quality, size) {
 
 function EpisodeQuality(props) {
   const {
+    className,
     title,
     quality,
     size,
@@ -32,6 +33,7 @@ function EpisodeQuality(props) {
 
   return (
     <Label
+      className={className}
       kind={isCutoffNotMet ? kinds.INVERSE : kinds.DEFAULT}
       title={getTooltip(title, quality, size)}
     >
@@ -41,6 +43,7 @@ function EpisodeQuality(props) {
 }
 
 EpisodeQuality.propTypes = {
+  className: PropTypes.string,
   title: PropTypes.string,
   quality: PropTypes.object.isRequired,
   size: PropTypes.number,

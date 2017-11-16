@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var profile = new Profile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
-                Cutoff = cutoff,
+                Cutoff = cutoff.Id,
             };
 
             var langProfile = new LanguageProfile

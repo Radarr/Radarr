@@ -50,11 +50,17 @@ class Tooltip extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this._closeTimeout = null;
-
     this.state = {
       isOpen: false
     };
+
+    this._closeTimeout = null;
+  }
+
+  componentWillUnmount() {
+    if (this._closeTimeout) {
+      this._closeTimeout = clearTimeout(this._closeTimeout);
+    }
   }
 
   //
@@ -83,6 +89,7 @@ class Tooltip extends Component {
 
   render() {
     const {
+      className,
       anchor,
       tooltip,
       kind,
@@ -97,6 +104,7 @@ class Tooltip extends Component {
         {...tetherOptions[position]}
       >
         <span
+          className={className}
           // onClick={this.onClick}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
@@ -137,6 +145,7 @@ class Tooltip extends Component {
 }
 
 Tooltip.propTypes = {
+  className: PropTypes.string,  
   anchor: PropTypes.node.isRequired,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   kind: PropTypes.oneOf([kinds.DEFAULT, kinds.INVERSE]),

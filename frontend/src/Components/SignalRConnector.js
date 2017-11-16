@@ -26,6 +26,14 @@ function getState(status) {
   }
 }
 
+function isAppDisconnected(disconnectedTime) {
+  if (!disconnectedTime) {
+    return false;
+  }
+
+  return Math.floor(new Date().getTime() / 1000) - disconnectedTime > 180;
+}
+
 function createMapStateToProps() {
   return createSelector(
     (state) => state.app.isReconnecting,
@@ -66,6 +74,7 @@ class SignalRConnector extends Component {
     this.signalRconnection = null;
     this.retryInterval = 5;
     this.retryTimeoutId = null;
+    this.disconnectedTime = null;
   }
 
   componentDidMount() {
@@ -90,7 +99,7 @@ class SignalRConnector extends Component {
   // Control
 
   retryConnection = () => {
-    if (this.retryInterval >= 30) {
+    if (isAppDisconnected(this.disconnectedTime)) {
       this.setState({
         isDisconnected: true
       });
@@ -290,6 +299,9 @@ class SignalRConnector extends Component {
     console.log(`SignalR: ${state}`);
 
     if (state === 'connected') {
+      // Clear disconnected time
+      this.disconnectedTime = null;
+
       // Repopulate the page (if a repopulator is set) to ensure things
       // are in sync after reconnecting.
 
@@ -322,6 +334,10 @@ class SignalRConnector extends Component {
       return;
     }
 
+    if (!this.disconnectedTime) {
+      this.disconnectedTime = Math.floor(new Date().getTime() / 1000);
+    }
+
     this.props.setAppValue({
       isReconnecting: true
     });
@@ -332,11 +348,14 @@ class SignalRConnector extends Component {
       return;
     }
 
+    if (!this.disconnectedTime) {
+      this.disconnectedTime = Math.floor(new Date().getTime() / 1000);
+    }
+
     this.props.setAppValue({
       isConnected: false,
-      isReconnecting: true
-      // Don't set isDisconnected yet, it'll be set it if it's disconnected
-      // for ~105 seconds (retry interval reaches 30 seconds)
+      isReconnecting: true,
+      isDisconnected: isAppDisconnected(this.disconnectedTime)
     });
 
     this.retryConnection();

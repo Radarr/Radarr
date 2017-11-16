@@ -82,8 +82,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
-            var bestQualityInProfile = new QualityModel(profile.LastAllowedQuality());
-            var isBestInProfile = comparer.Compare(subject.ParsedAlbumInfo.Quality, bestQualityInProfile) >= 0;
+            var bestQualityInProfile = profile.LastAllowedQuality();
+            var isBestInProfile = comparer.Compare(subject.ParsedAlbumInfo.Quality.Quality, bestQualityInProfile) >= 0;
             var isBestInProfileLanguage = comparerLanguage.Compare(subject.ParsedAlbumInfo.Language, languageProfile.LastAllowedLanguage()) >= 0;
 
             if (isBestInProfile && isBestInProfileLanguage && isPreferredProtocol)

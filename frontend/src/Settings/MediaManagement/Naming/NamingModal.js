@@ -90,6 +90,15 @@ class NamingModal extends Component {
       { token: '{Album_CleanTitle}', example: 'Album_Title' }
     ];
 
+    const mediumTokens = [
+      { token: '{medium:0}', example: '1' },
+      { token: '{medium:00}', example: '01' }
+    ];
+
+    const mediumFormatTokens = [
+      { token: '{Medium Format}', example: 'CD' }
+    ];
+
     const trackTokens = [
       { token: '{track:0}', example: '1' },
       { token: '{track:00}', example: '01' }
@@ -260,6 +269,48 @@ class NamingModal extends Component {
             {
               track &&
                 <div>
+                  <FieldSet legend="Medium">
+                    <div className={styles.groups}>
+                      {
+                        mediumTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
+                        )
+                      }
+                    </div>
+                  </FieldSet>
+
+                  <FieldSet legend="Medium Format">
+                    <div className={styles.groups}>
+                      {
+                        mediumFormatTokens.map(({ token, example }) => {
+                          return (
+                            <NamingOption
+                              key={token}
+                              name={name}
+                              value={value}
+                              token={token}
+                              example={example}
+                              tokenCase={this.state.case}
+                              onInputChange={onInputChange}
+                            />
+                          );
+                        }
+                        )
+                      }
+                    </div>
+                  </FieldSet>
+
                   <FieldSet legend="Track">
                     <div className={styles.groups}>
                       {

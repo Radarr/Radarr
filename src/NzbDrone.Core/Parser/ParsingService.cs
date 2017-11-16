@@ -122,6 +122,7 @@ namespace NzbDrone.Core.Parser
 
             if (albumInfo == null)
             {
+                // TODO: Search by Title and Year instead of just Title when matching
                 albumInfo = _albumService.FindByTitle(artist.Id, parsedAlbumInfo.AlbumTitle);
             }
 
@@ -243,7 +244,7 @@ namespace NzbDrone.Core.Parser
 
             if (parsedTrackInfo.Title.IsNotNullOrWhiteSpace())
             {
-                trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.Title);
+                trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.Title);
                 _logger.Debug("Track {0} selected for {1}", trackInfo, parsedTrackInfo);
 
                 if (trackInfo != null)
@@ -265,7 +266,7 @@ namespace NzbDrone.Core.Parser
             {
                 Track trackInfoByNumber = null;
 
-                trackInfoByNumber = _trackService.FindTrack(artist.Id, album.Id, trackNumber);
+                trackInfoByNumber = _trackService.FindTrack(artist.Id, album.Id, parsedTrackInfo.DiscNumber, trackNumber);
                 _logger.Debug("Track {0} selected for {1}", trackInfoByNumber, parsedTrackInfo);
 
                 if (trackInfoByNumber != null)

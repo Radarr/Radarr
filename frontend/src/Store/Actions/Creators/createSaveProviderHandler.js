@@ -37,8 +37,8 @@ function createSaveProviderHandler(section, url, getFromState) {
         ajaxOptions.method = 'PUT';
       }
 
-      const { request, abortRequest } = createAjaxRequest()(ajaxOptions);
-
+      const { request, abortRequest } = createAjaxRequest(ajaxOptions);
+      
       abortCurrentRequests[section] = abortRequest;
 
       request.done((data) => {

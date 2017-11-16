@@ -45,7 +45,8 @@ namespace NzbDrone.Core.Music
         {
             Ensure.That(newArtist, () => newArtist).IsNotNull();
 
-            //newArtist = AddSkyhookData(newArtist);
+            // Called for artist creation from API, duplicated call when called from Lidarr. Fix this.
+            newArtist = AddSkyhookData(newArtist);
 
             if (string.IsNullOrWhiteSpace(newArtist.Path))
             {

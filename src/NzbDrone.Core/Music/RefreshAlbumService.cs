@@ -80,6 +80,7 @@ namespace NzbDrone.Core.Music
                     albumToUpdate.ArtistId = artist.Id;
                     albumToUpdate.AlbumType = album.AlbumType;
                     albumToUpdate.Genres = album.Genres;
+                    albumToUpdate.Media = album.Media;
                     albumToUpdate.Label = album.Label;
                     albumToUpdate.Images = album.Images;
                     albumToUpdate.ReleaseDate = album.ReleaseDate;

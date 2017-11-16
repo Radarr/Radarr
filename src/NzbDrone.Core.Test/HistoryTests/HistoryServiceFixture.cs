@@ -30,14 +30,14 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             _profile = new Profile
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = QualityFixture.GetDefaultQualities(),
             };
 
             _profileCustom = new Profile
 
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = QualityFixture.GetDefaultQualities(Quality.MP3_256),
 
             };

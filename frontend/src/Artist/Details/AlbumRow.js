@@ -63,6 +63,7 @@ class AlbumRow extends Component {
       statistics,
       duration,
       releaseDate,
+      mediumCount,
       title,
       isSaving,
       artistMonitored,
@@ -126,6 +127,16 @@ class AlbumRow extends Component {
                 <TableRowCell key={name}>
                   {
                     path
+                  }
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'mediumCount') {
+              return (
+                <TableRowCell key={name}>
+                  {
+                    mediumCount
                   }
                 </TableRowCell>
               );
@@ -203,6 +214,7 @@ AlbumRow.propTypes = {
   artistId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   releaseDate: PropTypes.string.isRequired,
+  mediumCount: PropTypes.number.isRequired,
   duration: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isSaving: PropTypes.bool,

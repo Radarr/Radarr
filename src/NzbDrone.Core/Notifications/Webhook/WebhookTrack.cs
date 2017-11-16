@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public int Id { get; set; }
         public string Title { get; set; }
-        public int TrackNumber { get; set; }
+        public string TrackNumber { get; set; }
 
         public string Quality { get; set; }
         public int QualityVersion { get; set; }

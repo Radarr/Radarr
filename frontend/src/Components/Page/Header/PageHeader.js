@@ -23,13 +23,13 @@ class PageHeader extends Component {
   }
 
   componentDidMount() {
-    this.props.bindShortcut(shortcuts.OPEN_KEYBOARD_SHORTCUTS_MODAL.key, this.openKeyboardShortcutsModal);
+    this.props.bindShortcut(shortcuts.OPEN_KEYBOARD_SHORTCUTS_MODAL.key, this.onOpenKeyboardShortcutsModal);
   }
 
   //
   // Control
 
-  openKeyboardShortcutsModal = () => {
+  onOpenKeyboardShortcutsModal = () => {
     this.setState({ isKeyboardShortcutsModalOpen: true });
   }
 
@@ -76,7 +76,9 @@ class PageHeader extends Component {
             name={icons.HEART}
             to="https://lidarr.audio/donate.html"
           />
-          <PageHeaderActionsMenuConnector />
+          <PageHeaderActionsMenuConnector
+            onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
+          />
         </div>
 
         <KeyboardShortcutsModal

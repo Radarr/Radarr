@@ -28,6 +28,7 @@ class EnhancedSelectInputOption extends Component {
       className,
       isSelected,
       isDisabled,
+      isHidden,
       isMobile,
       children
     } = this.props;
@@ -38,6 +39,7 @@ class EnhancedSelectInputOption extends Component {
           className,
           isSelected && styles.isSelected,
           isDisabled && styles.isDisabled,
+          isHidden && styles.isHidden,
           isMobile && styles.isMobile
         )}
         component="div"
@@ -64,6 +66,7 @@ EnhancedSelectInputOption.propTypes = {
   id: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
+  isHidden: PropTypes.bool.isRequired,
   isMobile: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
   onSelect: PropTypes.func.isRequired
@@ -71,7 +74,8 @@ EnhancedSelectInputOption.propTypes = {
 
 EnhancedSelectInputOption.defaultProps = {
   className: styles.option,
-  isDisabled: false
+  isDisabled: false,
+  isHidden: false
 };
 
 export default EnhancedSelectInputOption;

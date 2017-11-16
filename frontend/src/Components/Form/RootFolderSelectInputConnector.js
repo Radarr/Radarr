@@ -33,7 +33,8 @@ function createMapStateToProps() {
         values.push({
           key: '',
           value: '',
-          isDisabled: true
+          isDisabled: true,
+          isHidden: true
         });
       }
 
@@ -63,6 +64,18 @@ class RootFolderSelectInputConnector extends Component {
 
   //
   // Lifecycle
+
+  componentWillMount() {
+    const {
+      value,
+      values,
+      onChange
+    } = this.props;
+
+    if (value == null && values[0].key === '') {
+      onChange({ name, value: '' });
+    }
+  }
 
   componentDidMount() {
     const {

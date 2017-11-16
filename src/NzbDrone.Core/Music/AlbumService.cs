@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Music
 {
     public interface IAlbumService
     {
-        Album GetAlbum(int albumid);
+        Album GetAlbum(int albumId);
         List<Album> GetAlbums(IEnumerable<int> albumIds);
         List<Album> GetAlbumsByArtist(int artistId);
         Album AddAlbum(Album newAlbum);

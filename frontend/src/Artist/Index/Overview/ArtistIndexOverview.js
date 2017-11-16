@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Truncate from 'react-truncate';
+import TextTruncate from 'react-text-truncate';
 import { icons } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
@@ -176,16 +176,15 @@ class ArtistIndexOverview extends Component {
             </div>
 
             <div className={styles.details}>
+
               <Link
                 className={styles.overview}
-                style={{
-                  maxHeight: `${height}px`
-                }}
                 to={link}
               >
-                <Truncate lines={Math.floor(height / (defaultFontSize * lineHeight))}>
-                  {overview}
-                </Truncate>
+                <TextTruncate
+                  line={Math.floor(height / (defaultFontSize * lineHeight))}
+                  text={overview}
+                />
               </Link>
 
               <ArtistIndexOverviewInfo

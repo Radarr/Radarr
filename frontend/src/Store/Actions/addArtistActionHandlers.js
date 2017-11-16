@@ -18,7 +18,7 @@ const addArtistActionHandlers = {
         abortCurrentRequest();
       }
 
-      const { request, abortRequest } = createAjaxRequest()({
+      const { request, abortRequest } = createAjaxRequest({
         url: '/artist/lookup',
         data: {
           term: payload.term

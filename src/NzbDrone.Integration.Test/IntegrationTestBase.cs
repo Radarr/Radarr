@@ -267,7 +267,7 @@ namespace NzbDrone.Integration.Test
 
         public TrackFileResource EnsureTrackFile(ArtistResource artist, int albumId, int track, Quality quality)
         {
-            var result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.TrackNumber == track);
+            var result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.AbsoluteTrackNumber == track);
 
             if (result.TrackFile == null)
             {
@@ -279,7 +279,7 @@ namespace NzbDrone.Integration.Test
                 Commands.PostAndWait(new CommandResource { Name = "refreshartist", Body = new RefreshArtistCommand(artist.Id) });
                 Commands.WaitAll();
                 
-                result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.TrackNumber == track);
+                result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.AlbumId == albumId && v.AbsoluteTrackNumber == track);
 
                 result.TrackFile.Should().NotBeNull();
             }
@@ -291,9 +291,9 @@ namespace NzbDrone.Integration.Test
         {
             var profile = Profiles.Get(profileId);
 
-            if (profile.Cutoff != cutoff)
+            if (profile.Cutoff != cutoff.Id)
             {
-                profile.Cutoff = cutoff;
+                profile.Cutoff = cutoff.Id;
                 profile = Profiles.Put(profile);
             }
 

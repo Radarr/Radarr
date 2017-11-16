@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "City Sushi")
-                            .With(e => e.TrackNumber = 6)
+                            .With(e => e.AbsoluteTrackNumber = 6)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "LidarrTest" };

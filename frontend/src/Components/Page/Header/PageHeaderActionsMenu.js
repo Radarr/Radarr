@@ -11,6 +11,7 @@ import styles from './PageHeaderActionsMenu.css';
 function PageHeaderActionsMenu(props) {
   const {
     formsAuth,
+    onKeyboardShortcutsPress,
     onRestartPress,
     onShutdownPress
   } = props;
@@ -25,6 +26,16 @@ function PageHeaderActionsMenu(props) {
         </MenuButton>
 
         <MenuContent>
+          <MenuItem onPress={onKeyboardShortcutsPress}>
+            <Icon
+              className={styles.itemIcon}
+              name={icons.KEYBOARD}
+            />
+            Keyboard Shortcuts
+          </MenuItem>
+
+          <div className={styles.separator} />
+
           <MenuItem onPress={onRestartPress}>
             <Icon
               className={styles.itemIcon}
@@ -68,6 +79,7 @@ function PageHeaderActionsMenu(props) {
 
 PageHeaderActionsMenu.propTypes = {
   formsAuth: PropTypes.bool.isRequired,
+  onKeyboardShortcutsPress: PropTypes.func.isRequired,
   onRestartPress: PropTypes.func.isRequired,
   onShutdownPress: PropTypes.func.isRequired
 };

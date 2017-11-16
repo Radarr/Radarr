@@ -5,8 +5,6 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Qualities;
-using System.Collections.Generic;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 {
@@ -23,7 +21,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         {
             var qualityComparer = new QualityModelComparer(localTrack.Artist.Profile);
             var languageComparer = new LanguageComparer(localTrack.Artist.LanguageProfile);
-            var profile = localTrack.Artist.Profile.Value;
 
             if (localTrack.Tracks.Any(e => e.TrackFileId != 0 &&
                                       languageComparer.Compare(e.TrackFile.Value.Language, localTrack.Language) > 0 &&

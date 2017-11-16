@@ -53,7 +53,7 @@ function TrackFileEditorRow(props) {
 
 TrackFileEditorRow.propTypes = {
   id: PropTypes.number.isRequired,
-  trackNumber: PropTypes.number.isRequired,
+  trackNumber: PropTypes.string.isRequired,
   relativePath: PropTypes.string.isRequired,
   language: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,

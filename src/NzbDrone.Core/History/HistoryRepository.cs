@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
@@ -15,6 +16,8 @@ namespace NzbDrone.Core.History
         List<History> FindByDownloadId(string downloadId);
         List<History> FindDownloadHistory(int idArtistId, QualityModel quality);
         void DeleteForArtist(int artistId);
+        List<History> Since(DateTime date, HistoryEventType? eventType);
+
     }
 
     public class HistoryRepository : BasicRepository<History>, IHistoryRepository
@@ -68,6 +71,20 @@ namespace NzbDrone.Core.History
                                  .Join<History, Track>(JoinType.Left, h => h.Track, (h, e) => h.TrackId == e.Id);
 
             return base.GetPagedQuery(baseQuery, pagingSpec);
+        }
+
+        public List<History> Since(DateTime date, HistoryEventType? eventType)
+        {
+            var query = Query.Where(h => h.Date >= date);
+
+            if (eventType.HasValue)
+            {
+                query.AndWhere(h => h.EventType == eventType);
+            }
+
+            query.OrderBy(h => h.Date);
+
+            return query;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void Setup()
         {
             var fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.MP3_512 })
+                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.MP3_512.Id })
                          .Build();
 
             remoteAlbum = new RemoteAlbum

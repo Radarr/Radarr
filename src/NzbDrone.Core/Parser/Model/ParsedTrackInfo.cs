@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Parser.Model
         public string ArtistMBId { get; set; }
         public string AlbumMBId { get; set; }
         public string TrackMBId { get; set; }
+        public int DiscNumber { get; set; }
         public QualityModel Quality { get; set; }
         public int[] TrackNumbers { get; set; }
         public Language Language { get; set; }

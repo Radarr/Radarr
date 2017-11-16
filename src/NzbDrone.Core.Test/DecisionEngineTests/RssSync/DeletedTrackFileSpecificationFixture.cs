@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             var secondTrack = new Track { TrackFile = _secondFile, TrackFileId = 2, AlbumId = 2 };
 
             var fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.FLAC })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.FLAC.Id })
                          .With(c => c.Path = @"C:\Music\My.Artist".AsOsAgnostic())
                          .Build();
 

@@ -65,6 +65,7 @@ namespace NzbDrone.Core.Music
                     // TODO: Use object mapper to automatically handle this
                     trackToUpdate.ForeignTrackId = track.ForeignTrackId;
                     trackToUpdate.TrackNumber = track.TrackNumber;
+                    trackToUpdate.AbsoluteTrackNumber = track.AbsoluteTrackNumber;
                     trackToUpdate.Title = track.Title ?? "Unknown";
                     trackToUpdate.AlbumId = album.Id;
                     trackToUpdate.Album = track.Album ?? album;
@@ -72,6 +73,7 @@ namespace NzbDrone.Core.Music
                     trackToUpdate.ArtistId = album.ArtistId;
                     trackToUpdate.Compilation = track.Compilation;
                     trackToUpdate.Duration = track.Duration;
+                    trackToUpdate.MediumNumber = track.MediumNumber;
 
 
                     successCount++;
@@ -110,7 +112,7 @@ namespace NzbDrone.Core.Music
 
         private bool GetMonitoredStatus(Track track, IEnumerable<Album> albums)
         {
-            if (track.TrackNumber == 0 /*&& track.AlbumId != 1*/)
+            if (track.AbsoluteTrackNumber == 0 /*&& track.AlbumId != 1*/)
             {
                 return false;
             }

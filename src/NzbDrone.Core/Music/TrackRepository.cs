@@ -13,9 +13,10 @@ namespace NzbDrone.Core.Music
 {
     public interface ITrackRepository : IBasicRepository<Track>
     {
-        Track Find(int artistId, int albumId, int trackNumber);
+        Track Find(int artistId, int albumId, int mediumNumber, int trackNumber);
         List<Track> GetTracks(int artistId);
         List<Track> GetTracksByAlbum(int albumId);
+        List<Track> GetTracksByMedium(int albumId, int mediumNumber);
         List<Track> GetTracksByFileId(int fileId);
         List<Track> TracksWithFiles(int artistId);
         PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec);
@@ -37,11 +38,12 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        public Track Find(int artistId, int albumId, int trackNumber)
+        public Track Find(int artistId, int albumId, int mediumNumber, int trackNumber)
         {
             return Query.Where(s => s.ArtistId == artistId)
                                .AndWhere(s => s.AlbumId == albumId)
-                               .AndWhere(s => s.TrackNumber == trackNumber)
+                               .AndWhere(s => s.MediumNumber == mediumNumber)
+                               .AndWhere(s => s.AbsoluteTrackNumber == trackNumber)
                                .SingleOrDefault();
         }
 
@@ -54,6 +56,13 @@ namespace NzbDrone.Core.Music
         public List<Track> GetTracksByAlbum(int albumId)
         {
             return Query.Where(s => s.AlbumId == albumId)
+                        .ToList();
+        }
+
+        public List<Track> GetTracksByMedium(int albumId, int mediumNumber)
+        {
+            return Query.Where(s => s.AlbumId == albumId)
+                        .AndWhere(s => s.MediumNumber == mediumNumber)
                         .ToList();
         }
 

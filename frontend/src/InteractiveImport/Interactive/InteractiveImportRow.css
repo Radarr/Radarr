@@ -4,8 +4,15 @@
   word-break: break-all;
 }
 
-.quality {
+.quality,
+.language {
   composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
   text-align: center;
+}
+
+.label {
+  composes: label from 'Components/Label.css';
+
+  pointer-events: none;
 }

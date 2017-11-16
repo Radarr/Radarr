@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "Doing Time")
-                            .With(e => e.TrackNumber = 3)
+                            .With(e => e.AbsoluteTrackNumber = 3)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };

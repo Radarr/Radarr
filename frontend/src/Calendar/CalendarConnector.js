@@ -56,7 +56,9 @@ class CalendarConnector extends Component {
       const albumIds = selectUniqueIds(items, 'id');
       // const trackFileIds = selectUniqueIds(items, 'trackFileId');
 
-      this.props.fetchQueueDetails({ albumIds });
+      if (items.length) {
+        this.props.fetchQueueDetails({ albumIds });
+      }
 
       // if (trackFileIds.length) {
       //   this.props.fetchTrackFiles({ trackFileIds });

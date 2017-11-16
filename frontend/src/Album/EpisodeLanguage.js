@@ -3,20 +3,24 @@ import React from 'react';
 import Label from 'Components/Label';
 
 function EpisodeLanguage(props) {
-  const language = props.language;
+  const {
+    className,
+    language
+  } = props;
 
   if (!language) {
     return null;
   }
 
   return (
-    <Label>
+    <Label className={className}>
       {language.name}
     </Label>
   );
 }
 
 EpisodeLanguage.propTypes = {
+  className: PropTypes.string,
   language: PropTypes.object
 };
 

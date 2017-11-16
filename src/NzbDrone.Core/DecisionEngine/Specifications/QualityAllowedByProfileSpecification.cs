@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -19,7 +20,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Checking if report meets quality requirements. {0}", subject.ParsedAlbumInfo.Quality);
-            if (!subject.Artist.Profile.Value.Items.Exists(v => v.Allowed && v.Quality == subject.ParsedAlbumInfo.Quality.Quality))
+
+            var profile = subject.Artist.Profile.Value;
+            var qualityIndex = profile.GetIndex(subject.ParsedAlbumInfo.Quality.Quality);
+            var qualityOrGroup = profile.Items[qualityIndex.Index];
+
+            if (!qualityOrGroup.Allowed)
             {
                 _logger.Debug("Quality {0} rejected by Artist's quality profile", subject.ParsedAlbumInfo.Quality);
                 return Decision.Reject("{0} is not wanted in profile", subject.ParsedAlbumInfo.Quality.Quality);

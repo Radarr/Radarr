@@ -39,12 +39,12 @@ namespace NzbDrone.Core.Music
             //Get all items less than the cutoff
             foreach (var profile in profiles)
             {
-                var cutoffIndex = profile.Items.FindIndex(v => v.Quality == profile.Cutoff);
-                var belowCutoff = profile.Items.Take(cutoffIndex).ToList();
+                var cutoffIndex = profile.GetIndex(profile.Cutoff);
+                var belowCutoff = profile.Items.Take(cutoffIndex.Index).ToList();
 
                 if (belowCutoff.Any())
                 {
-                    qualitiesBelowCutoff.Add(new QualitiesBelowCutoff(profile.Id, belowCutoff.Select(i => i.Quality.Id)));
+                    qualitiesBelowCutoff.Add(new QualitiesBelowCutoff(profile.Id, belowCutoff.SelectMany(i => i.GetQualities().Select(q => q.Id))));
                 }
             }
 

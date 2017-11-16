@@ -24,7 +24,8 @@ class TrackDetailRow extends Component {
     const {
       id,
       title,
-      trackNumber,
+      mediumNumber,
+      absoluteTrackNumber,
       duration,
       columns,
       trackFileId
@@ -43,13 +44,24 @@ class TrackDetailRow extends Component {
               return null;
             }
 
-            if (name === 'trackNumber') {
+            if (name === 'medium') {
               return (
                 <TableRowCell
                   key={name}
                   className={styles.trackNumber}
                 >
-                  {trackNumber}
+                  {mediumNumber}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'absoluteTrackNumber') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.trackNumber}
+                >
+                  {absoluteTrackNumber}
                 </TableRowCell>
               );
             }
@@ -117,7 +129,8 @@ TrackDetailRow.propTypes = {
   duration: PropTypes.number.isRequired,
   trackFileId: PropTypes.number.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  trackNumber: PropTypes.number.isRequired
+  mediumNumber: PropTypes.number.isRequired,
+  absoluteTrackNumber: PropTypes.number.isRequired
 };
 
 export default TrackDetailRow;

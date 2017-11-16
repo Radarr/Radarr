@@ -43,7 +43,11 @@ class HistoryConnector extends Component {
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       const albumIds = selectUniqueIds(this.props.items, 'albumId');
-      this.props.fetchEpisodes({ albumIds });
+      if (albumIds.length) {
+        this.props.fetchEpisodes({ albumIds });
+      } else {
+        this.props.clearEpisodes();
+      }
     }
   }
 

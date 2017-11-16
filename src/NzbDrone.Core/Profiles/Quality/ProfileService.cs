@@ -73,7 +73,9 @@ namespace NzbDrone.Core.Profiles.Qualities
                             .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) })
                             .ToList();
 
-            var profile = new Profile { Name = name, Cutoff = cutoff, Items = items};
+            var profile = new Profile { Name = name,
+                Cutoff = (int)cutoff,
+                Items = items};
 
             return Add(profile);
         }

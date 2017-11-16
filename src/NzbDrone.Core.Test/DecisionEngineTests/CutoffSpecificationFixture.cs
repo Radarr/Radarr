@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
              new Profile
 
              {
-                 Cutoff = Quality.MP3_256,
+                 Cutoff = Quality.MP3_256.Id,
                  Items = Qualities.QualityFixture.GetDefaultQualities()
              },
              new LanguageProfile
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
             new Profile
             {
-                Cutoff = Quality.MP3_256,
+                Cutoff = Quality.MP3_256.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             },
             new LanguageProfile
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new Profile
 
             {
-                Cutoff = Quality.MP3_256,
+                Cutoff = Quality.MP3_256.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             },
             new LanguageProfile
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new Profile
 
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             },
             new LanguageProfile
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new Profile
 
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             },
             new LanguageProfile
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Profile _profile = new Profile
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };
 
@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Profile _profile = new Profile
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };
 
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Profile _profile = new Profile
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };
 
@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Profile _profile = new Profile
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };
 
@@ -206,7 +206,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Profile _profile = new Profile
             {
-                Cutoff = Quality.MP3_320,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
             };
 

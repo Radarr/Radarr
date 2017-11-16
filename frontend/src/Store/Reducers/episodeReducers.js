@@ -38,6 +38,11 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'mediumCount',
+      label: 'Media Count',
+      isVisible: false
+    },
+    {
       name: 'trackCount',
       label: 'Track Count',
       isVisible: false

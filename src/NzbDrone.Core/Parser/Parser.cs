@@ -41,12 +41,22 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportAlbumTitleRegex = new[]
         {
+                //Artist-Album-Version-Source-Year
+                //ex. Imagine Dragons-Smoke And Mirrors-Deluxe Edition-2CD-FLAC-2015-JLM
+                new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?:[\(|\[]?)(?<version>.+?(?:Edition)?)(?:[\)|\]]?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+                //Artist-Album-Source-Year
+                //ex. Dani_Sbert-Togheter-WEB-2017-FURY
+                new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
                 //Artist - Album (Year) Strict
-                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[).+?(?<airyear>\d{4})",
+                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
                 //Artist - Album (Year)
-                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<airyear>\d{4})",
+                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
                 //Artist - Album
@@ -62,11 +72,11 @@ namespace NzbDrone.Core.Parser
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
                  //Artist - Album (Year) Strict
-                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<airyear>\d{4})",
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
                 //Artist - Album (Year)
-                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<airyear>\d{4})",
+                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
                 //Artist - Album
@@ -484,6 +494,7 @@ namespace NzbDrone.Core.Parser
             var file = TagLib.File.Create(path);
             var trackNumber = file.Tag.Track;
             var trackTitle = file.Tag.Title;
+            var discNumber = (file.Tag.Disc > 0) ? Convert.ToInt32(file.Tag.Disc) : 1 ;
 
             var artist = file.Tag.FirstAlbumArtist;
 
@@ -507,6 +518,7 @@ namespace NzbDrone.Core.Parser
                 ArtistTitle = artist,
                 ArtistMBId = file.Tag.MusicBrainzArtistId,
                 AlbumMBId = file.Tag.MusicBrainzReleaseId,
+                DiscNumber = discNumber,
                 TrackMBId = file.Tag.MusicBrainzReleaseType,
                 TrackNumbers = temp,
                 ArtistTitleInfo = artistTitleInfo,
@@ -626,11 +638,13 @@ namespace NzbDrone.Core.Parser
         {
             var artistName = matchCollection[0].Groups["artist"].Value.Replace('.', ' ').Replace('_', ' ');
             var albumTitle = matchCollection[0].Groups["album"].Value.Replace('.', ' ').Replace('_', ' ');
+            var releaseVersion = matchCollection[0].Groups["version"].Value.Replace('.', ' ').Replace('_', ' ');
             artistName = RequestInfoRegex.Replace(artistName, "").Trim(' ');
             albumTitle = RequestInfoRegex.Replace(albumTitle, "").Trim(' ');
+            releaseVersion = RequestInfoRegex.Replace(releaseVersion, "").Trim(' ');
 
-            int airYear;
-            int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);
+            int releaseYear;
+            int.TryParse(matchCollection[0].Groups["releaseyear"].Value, out releaseYear);
 
             ParsedAlbumInfo result;
 
@@ -639,6 +653,8 @@ namespace NzbDrone.Core.Parser
             result.ArtistName = artistName;
             result.AlbumTitle = albumTitle;
             result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistName);
+            result.ReleaseDate = releaseYear.ToString();
+            result.ReleaseVersion = releaseVersion;
 
             Logger.Debug("Album Parsed. {0}", result);
 

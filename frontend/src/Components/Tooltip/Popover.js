@@ -53,6 +53,14 @@ class Popover extends Component {
     this.state = {
       isOpen: false
     };
+
+    this._closeTimeout = null;
+  }
+
+  componentWillUnmount() {
+    if (this._closeTimeout) {
+      this._closeTimeout = clearTimeout(this._closeTimeout);
+    }
   }
 
   //
@@ -63,11 +71,17 @@ class Popover extends Component {
   }
 
   onMouseEnter = () => {
+    if (this._closeTimeout) {
+      this._closeTimeout = clearTimeout(this._closeTimeout);
+    }
+
     this.setState({ isOpen: true });
   }
 
   onMouseLeave = () => {
-    this.setState({ isOpen: false });
+    this._closeTimeout = setTimeout(() => {
+      this.setState({ isOpen: false });
+    }, 100);
   }
 
   //
@@ -98,24 +112,28 @@ class Popover extends Component {
 
         {
           this.state.isOpen &&
-            <div className={styles.popoverContainer}>
-              <div className={styles.popover}>
-                <div
-                  className={classNames(
-                    styles.arrow,
-                    styles[position]
-                  )}
-                />
+          <div
+            className={styles.popoverContainer}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+          >
+            <div className={styles.popover}>
+              <div
+                className={classNames(
+                  styles.arrow,
+                  styles[position]
+                )}
+              />
 
-                <div className={styles.title}>
-                  {title}
-                </div>
+              <div className={styles.title}>
+                {title}
+              </div>
 
-                <div className={styles.body}>
-                  {body}
-                </div>
+              <div className={styles.body}>
+                {body}
               </div>
             </div>
+          </div>
         }
       </TetherComponent>
     );

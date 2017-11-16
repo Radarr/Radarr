@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
             _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
 
-            _profile.Cutoff = Quality.MP3_320;
+            _profile.Cutoff = Quality.MP3_320.Id;
 
             _langProfile.Cutoff = Language.Spanish;
             _langProfile.Languages = Languages.LanguageFixture.GetDefaultLanguages();

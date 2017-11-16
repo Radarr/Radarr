@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using NzbDrone.Core.Music;
 using Newtonsoft.Json;
 using NzbDrone.Core.Configuration;
+using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -157,11 +158,21 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             album.Images = resource.Images.Select(MapImage).ToList();
             album.Label = resource.Label;
 
-            var tracks = resource.Tracks.Select(MapTrack);
-            album.Tracks = tracks.ToList();
+            album.Media = resource.Media.Select(MapMedium).ToList();
+            album.Tracks = resource.Tracks.Select(MapTrack).ToList();
 
 
             return album;
+        }
+
+        private static Medium MapMedium(MediumResource resource)
+        {
+            Medium medium = new Medium();
+            medium.Name = resource.Name;
+            medium.Number = resource.Position;
+            medium.Format = resource.Format;
+
+            return medium;
         }
 
         private static Track MapTrack(TrackResource resource)
@@ -170,7 +181,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             track.Title = resource.TrackName;
             track.ForeignTrackId = resource.Id;
             track.TrackNumber = resource.TrackNumber;
+            track.AbsoluteTrackNumber = resource.TrackPosition;
             track.Duration = resource.DurationMs;
+            track.MediumNumber = resource.MediumNumber;
+            
             return track;
         }
 

@@ -3,10 +3,27 @@ import createFetchHandler from './Creators/createFetchHandler';
 import * as types from './actionTypes';
 import { updateRelease } from './releaseActions';
 
+let abortCurrentRequest = null;
 const section = 'releases';
 
+const fetchReleases = createFetchHandler(section, '/release');
+
 const releaseActionHandlers = {
-  [types.FETCH_RELEASES]: createFetchHandler(section, '/release'),
+  [types.FETCH_RELEASES]: function(payload) {
+    return function(dispatch, getState) {
+      const abortRequest = fetchReleases(payload)(dispatch, getState);
+
+      abortCurrentRequest = abortRequest;
+    };
+  },
+
+  [types.CANCEL_FETCH_RELEASES]: function(payload) {
+    return function(dispatch, getState) {
+      if (abortCurrentRequest) {
+        abortCurrentRequest = abortCurrentRequest();
+      }
+    };
+  },
 
   [types.GRAB_RELEASE]: function(payload) {
     return function(dispatch, getState) {

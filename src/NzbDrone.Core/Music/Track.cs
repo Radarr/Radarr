@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using Marr.Data;
 using System;
@@ -24,7 +24,8 @@ namespace NzbDrone.Core.Music
         public int ArtistId { get; set; } // This is the DB Id of the Artist, not the SpotifyId
         //public int CompilationId { get; set; }
         public bool Compilation { get; set; }
-        public int TrackNumber { get; set; }
+        public string TrackNumber { get; set; }
+        public int AbsoluteTrackNumber { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
         //public bool Ignored { get; set; }
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.Music
         public bool Monitored { get; set; }
         public int TrackFileId { get; set; } 
         public Ratings Ratings { get; set; }
+        public int MediumNumber { get; set; }
         //public DateTime? ReleaseDate { get; set; }
 
         public LazyLoaded<TrackFile> TrackFile { get; set; }

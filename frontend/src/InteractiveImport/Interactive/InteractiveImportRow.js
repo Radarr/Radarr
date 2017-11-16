@@ -238,6 +238,7 @@ class InteractiveImportRow extends Component {
           onPress={this.onSelectQualityPress}
         >
           <EpisodeQuality
+            className={styles.label}
             quality={quality}
           />
         </TableRowCellButton>
@@ -247,6 +248,7 @@ class InteractiveImportRow extends Component {
           onPress={this.onSelectLanguagePress}
         >
           <EpisodeLanguage
+            className={styles.label}
             language={language}
           />
         </TableRowCellButton>

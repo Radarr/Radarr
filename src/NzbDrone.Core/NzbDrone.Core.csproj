@@ -172,6 +172,7 @@
     <Compile Include="Datastore\LogDatabase.cs" />
     <Compile Include="Datastore\Migration\001_initial_setup.cs" />
     <Compile Include="Datastore\Migration\002_add_reason_to_pending_releases.cs" />
+    <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -710,6 +711,7 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\MediumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MemberResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ArtistResource.cs" />
@@ -745,6 +747,7 @@
     <Compile Include="Music\Links.cs" />
     <Compile Include="Music\Commands\MoveArtistCommand.cs" />
     <Compile Include="Music\Events\ArtistMovedEvent.cs" />
+    <Compile Include="Music\Medium.cs" />
     <Compile Include="Music\MonitoringOptions.cs" />
     <Compile Include="Music\AlbumMonitoredService.cs" />
     <Compile Include="Music\MoveArtistService.cs" />
@@ -860,6 +863,7 @@
     <Compile Include="Profiles\Languages\LanguageProfileService.cs" />
     <Compile Include="Profiles\Languages\ProfileLanguageItem.cs" />
     <Compile Include="Profiles\Quality\ProfileRepository.cs" />
+    <Compile Include="Profiles\Quality\QualityIndex.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
     <Compile Include="Qualities\Revision.cs" />

@@ -44,7 +44,7 @@ class AddNewArtistSearchResult extends Component {
 
   componentDidUpdate(prevProps) {
     if (!prevProps.isExistingArtist && this.props.isExistingArtist) {
-      this.onAddSerisModalClose();
+      this.onAddArtistModalClose();
     }
   }
 
@@ -55,7 +55,7 @@ class AddNewArtistSearchResult extends Component {
     this.setState({ isNewAddArtistModalOpen: true });
   }
 
-  onAddSerisModalClose = () => {
+  onAddArtistModalClose = () => {
     this.setState({ isNewAddArtistModalOpen: false });
   }
 
@@ -183,7 +183,7 @@ class AddNewArtistSearchResult extends Component {
           year={year}
           overview={overview}
           images={images}
-          onModalClose={this.onAddSerisModalClose}
+          onModalClose={this.onAddArtistModalClose}
         />
       </Link>
     );

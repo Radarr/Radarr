@@ -30,8 +30,8 @@ function createTestProviderHandler(section, url, getFromState) {
         data: JSON.stringify(testData)
       };
 
-      const { request, abortRequest } = createAjaxRequest()(ajaxOptions);
-
+      const { request, abortRequest } = createAjaxRequest(ajaxOptions);
+      
       abortCurrentRequests[section] = abortRequest;
 
       request.done((data) => {

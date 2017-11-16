@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _track1 = Builder<Track>.CreateNew()
                             .With(e => e.Title = "City Sushi")
-                            .With(e => e.TrackNumber = 6)
+                            .With(e => e.AbsoluteTrackNumber = 6)
                             .Build();
 
             _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_256), ReleaseGroup = "LidarrTest" };
@@ -232,7 +232,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [Test]
         public void should_replace_track_number_with_single_digit()
         {
-            _track1.TrackNumber = 1;
+            _track1.AbsoluteTrackNumber = 1;
             _namingConfig.StandardTrackFormat = "{track}";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
@@ -242,7 +242,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [Test]
         public void should_replace_track00_number_with_two_digits()
         {
-            _track1.TrackNumber = 1;
+            _track1.AbsoluteTrackNumber = 1;
             _namingConfig.StandardTrackFormat = "{track:00}";
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
@@ -330,7 +330,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             var track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "Part 1")
-                            .With(e => e.TrackNumber = 6)
+                            .With(e => e.AbsoluteTrackNumber = 6)
                             .Build();
 
             Subject.BuildTrackFileName(new List<Track> { track }, new Artist { Name = "In The Woods." }, new Album { Title = "30 Rock" }, _trackFile)
@@ -344,7 +344,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             var track = Builder<Track>.CreateNew()
                             .With(e => e.Title = "Part 1")
-                            .With(e => e.TrackNumber = 6)
+                            .With(e => e.AbsoluteTrackNumber = 6)
                             .Build();
 
             Subject.BuildTrackFileName(new List<Track> { track }, new Artist { Name = "In The Woods..." }, new Album { Title = "30 Rock" }, _trackFile)

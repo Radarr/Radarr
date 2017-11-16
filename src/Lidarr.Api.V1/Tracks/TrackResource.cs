@@ -15,14 +15,15 @@ namespace Lidarr.Api.V1.Tracks
         public int TrackFileId { get; set; }
         public int AlbumId { get; set; }
         public bool Explicit { get; set; }
-        public int TrackNumber { get; set; }
+        public int AbsoluteTrackNumber { get; set; }
+        public string TrackNumber { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
         public TrackFileResource TrackFile { get; set; }
-
+        public int MediumNumber { get; set; }
         public bool HasFile { get; set; }
         public bool Monitored { get; set; }
-        //public string SeriesTitle { get; set; }
+
         public ArtistResource Artist { get; set; }
         public Ratings Ratings { get; set; }
 
@@ -45,16 +46,14 @@ namespace Lidarr.Api.V1.Tracks
                 TrackFileId = model.TrackFileId,
                 AlbumId = model.AlbumId,
                 Explicit = model.Explicit,
+                AbsoluteTrackNumber = model.AbsoluteTrackNumber,
                 TrackNumber = model.TrackNumber,
                 Title = model.Title,
                 Duration = model.Duration,
-                //EpisodeFile
-
+                MediumNumber = model.MediumNumber,
                 HasFile = model.HasFile,
                 Monitored = model.Monitored,
                 Ratings = model.Ratings,
-                //SeriesTitle = model.SeriesTitle,
-                //Series = model.Series.MapToResource(),
             };
         }
 

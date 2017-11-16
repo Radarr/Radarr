@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                     details.Add(new XElement("title", string.Format("{0} - {1} - {2}", artist.Name, track.TrackNumber, track.Title)));
                     details.Add(new XElement("artist_name", artist.Name));
                     details.Add(new XElement("track_name", track.Title));
-                    details.Add(new XElement("track_number", track.TrackNumber.ToString("00")));
+                    details.Add(new XElement("track_number", track.AbsoluteTrackNumber.ToString("00")));
                     details.Add(new XElement("genre", string.Join(" / ", artist.Genres)));
                     details.Add(new XElement("member", string.Join(" / ", artist.Members.ConvertAll(c => c.Name + " - " + c.Instrument))));
 

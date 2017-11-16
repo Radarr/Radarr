@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { clearReleases } from 'Store/Actions/releaseActions';
+import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
 import { toggleEpisodeMonitored } from 'Store/Actions/episodeActions';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import episodeEntities from 'Album/episodeEntities';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
-import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import EpisodeDetailsModalContent from './EpisodeDetailsModalContent';
 
 function createMapStateToProps() {
@@ -32,14 +31,38 @@ function createMapStateToProps() {
   );
 }
 
-const mapDispatchToProps = {
-  clearReleases,
-  fetchTracks,
-  clearTracks,
-  fetchTrackFiles,
-  clearTrackFiles,
-  toggleEpisodeMonitored
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchCancelFetchReleases() {
+      dispatch(cancelFetchReleases());
+    },
+
+    dispatchClearReleases() {
+      dispatch(clearReleases());
+    },
+
+    dispatchFetchTracks({ artistId, albumId }) {
+      dispatch(fetchTracks({ artistId, albumId }));
+    },
+
+    dispatchClearTracks() {
+      dispatch(clearTracks());
+    },
+
+    onMonitorAlbumPress(monitored) {
+      const {
+        albumId,
+        episodeEntity
+      } = this.props;
+
+      dispatch(toggleEpisodeMonitored({
+        episodeEntity,
+        albumId,
+        monitored
+      }));
+    }
+  };
+}
 
 class EpisodeDetailsModalContentConnector extends Component {
 
@@ -53,7 +76,8 @@ class EpisodeDetailsModalContentConnector extends Component {
     // Clear pending releases here so we can reshow the search
     // results even after switching tabs.
     this._unpopulate();
-    this.props.clearReleases();
+    this.props.dispatchCancelFetchReleases();
+    this.props.dispatchClearReleases();
   }
 
   //
@@ -62,40 +86,24 @@ class EpisodeDetailsModalContentConnector extends Component {
   _populate() {
     const artistId = this.props.artistId;
     const albumId = this.props.albumId;
-    this.props.fetchTracks({ artistId, albumId });
-    // this.props.fetchTrackFiles({ artistId, albumId });
+    this.props.dispatchFetchTracks({ artistId, albumId });
   }
 
   _unpopulate() {
-    this.props.clearTracks();
-    // this.props.clearTrackFiles();
-  }
-
-  //
-  // Listeners
-
-  onMonitorAlbumPress = (monitored) => {
-    const {
-      albumId,
-      episodeEntity
-    } = this.props;
-
-    this.props.toggleEpisodeMonitored({
-      episodeEntity,
-      albumId,
-      monitored
-    });
+    this.props.dispatchClearTracks();
   }
 
   //
   // Render
 
   render() {
+    const {
+      dispatchClearReleases,
+      ...otherProps
+    } = this.props;
+
     return (
-      <EpisodeDetailsModalContent
-        {...this.props}
-        onMonitorAlbumPress={this.onMonitorAlbumPress}
-      />
+      <EpisodeDetailsModalContent {...otherProps} />
     );
   }
 }
@@ -104,16 +112,14 @@ EpisodeDetailsModalContentConnector.propTypes = {
   albumId: PropTypes.number.isRequired,
   episodeEntity: PropTypes.string.isRequired,
   artistId: PropTypes.number.isRequired,
-  fetchTracks: PropTypes.func.isRequired,
-  clearTracks: PropTypes.func.isRequired,
-  fetchTrackFiles: PropTypes.func.isRequired,
-  clearTrackFiles: PropTypes.func.isRequired,
-  clearReleases: PropTypes.func.isRequired,
-  toggleEpisodeMonitored: PropTypes.func.isRequired
+  dispatchFetchTracks: PropTypes.func.isRequired,
+  dispatchClearTracks: PropTypes.func.isRequired,
+  dispatchCancelFetchReleases: PropTypes.func.isRequired,
+  dispatchClearReleases: PropTypes.func.isRequired
 };
 
 EpisodeDetailsModalContentConnector.defaultProps = {
   episodeEntity: episodeEntities.EPISODES
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(EpisodeDetailsModalContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(EpisodeDetailsModalContentConnector);

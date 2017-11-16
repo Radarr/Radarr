@@ -22,20 +22,19 @@ class RootFolderSelectInput extends Component {
   componentDidUpdate(prevProps) {
     const {
       name,
-      values,
       isSaving,
       saveError,
       onChange
     } = this.props;
 
+    const newRootFolderPath = this.state.newRootFolderPath;
+
     if (
       prevProps.isSaving &&
       !isSaving &&
       !saveError &&
-      values.length - prevProps.values.length === 1
+      newRootFolderPath
     ) {
-      const newRootFolderPath = this.state.newRootFolderPath;
-
       onChange({ name, value: newRootFolderPath });
       this.setState({ newRootFolderPath: '' });
     }

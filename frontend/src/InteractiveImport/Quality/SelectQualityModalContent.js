@@ -70,10 +70,10 @@ class SelectQualityModalContent extends Component {
       real
     } = this.state;
 
-    const qualityOptions = items.map(({ quality }) => {
+    const qualityOptions = items.map(({ id, name }) => {
       return {
-        key: quality.id,
-        value: quality.name
+        key: id,
+        value: name
       };
     });
 

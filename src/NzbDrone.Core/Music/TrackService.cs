@@ -16,8 +16,8 @@ namespace NzbDrone.Core.Music
     {
         Track GetTrack(int id);
         List<Track> GetTracks(IEnumerable<int> ids);
-        Track FindTrack(int artistId, int albumId, int trackNumber);
-        Track FindTrackByTitle(int artistId, int albumId, string releaseTitle);
+        Track FindTrack(int artistId, int albumId, int mediumNumber, int trackNumber);
+        Track FindTrackByTitle(int artistId, int albumId, int mediumNumber, string releaseTitle);
         List<Track> GetTracksByArtist(int artistId);
         List<Track> GetTracksByAlbum(int albumId);
         //List<Track> GetTracksByAlbumTitle(string artistId, string albumTitle);
@@ -59,9 +59,9 @@ namespace NzbDrone.Core.Music
             return _trackRepository.Get(ids).ToList();
         }
 
-        public Track FindTrack(int artistId, int albumId, int trackNumber)
+        public Track FindTrack(int artistId, int albumId, int mediumNumber, int trackNumber)
         {
-            return _trackRepository.Find(artistId, albumId, trackNumber);
+            return _trackRepository.Find(artistId, albumId, mediumNumber, trackNumber);
         }
 
         public List<Track> GetTracksByArtist(int artistId)
@@ -75,11 +75,11 @@ namespace NzbDrone.Core.Music
             return _trackRepository.GetTracksByAlbum(albumId);
         }
 
-        public Track FindTrackByTitle(int artistId, int albumId, string releaseTitle)
+        public Track FindTrackByTitle(int artistId, int albumId, int mediumNumber, string releaseTitle)
         {
             // TODO: can replace this search mechanism with something smarter/faster/better
             var normalizedReleaseTitle = Parser.Parser.NormalizeEpisodeTitle(releaseTitle).Replace(".", " ");
-            var tracks = _trackRepository.GetTracksByAlbum(albumId);
+            var tracks = _trackRepository.GetTracksByMedium(albumId, mediumNumber);
 
             var matches = tracks.Select(
                 track => new

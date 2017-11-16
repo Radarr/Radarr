@@ -26,6 +26,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
         {
 
+            var profile = subject.Artist.Profile.Value;
+
             foreach (var album in subject.Albums)
             {
                 var trackFiles = _mediaFileService.GetFilesByAlbum(album.ArtistId, album.Id);
@@ -36,14 +38,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                     _logger.Debug("Comparing file quality and language with report. Existing file is {0}", lowestQuality.Quality);
 
-                    if (!_upgradableSpecification.CutoffNotMet(subject.Artist.Profile,
+                    if (!_upgradableSpecification.CutoffNotMet(profile,
                                                                subject.Artist.LanguageProfile,
                                                                lowestQuality,
                                                                trackFiles[0].Language,
                                                                subject.ParsedAlbumInfo.Quality))
                     {
                         _logger.Debug("Cutoff already met, rejecting.");
-                        return Decision.Reject("Existing file meets cutoff: {0}", subject.Artist.Profile.Value.Cutoff);
+                        var qualityCutoffIndex = profile.GetIndex(profile.Cutoff);
+                        var qualityCutoff = profile.Items[qualityCutoffIndex.Index];
+
+                        return Decision.Reject("Existing file meets cutoff: {0} - {1}", qualityCutoff, subject.Artist.LanguageProfile.Value.Cutoff);
                     }
 
                 }
