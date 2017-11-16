@@ -151,7 +151,7 @@ module.exports = Marionette.ItemView.extend({
 							start = model.get("physicalRelease");
 						}
 						var runtime = model.get('runtime');
-						var end = moment(start).add('minutes', runtime).toISOString();
+						var end = moment(start).add(runtime, 'minutes').toISOString();
 
 						var event = {
 								title       : seriesTitle,
