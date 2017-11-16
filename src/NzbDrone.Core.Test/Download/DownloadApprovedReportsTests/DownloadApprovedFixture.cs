@@ -8,6 +8,7 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
@@ -261,6 +262,27 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)), Times.Once());
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Torrent)), Times.Once());
+        }
+
+        [Test]
+        public void should_add_to_rejected_if_release_unavailable_on_indexer()
+        {
+            var albums = new List<Album> { GetAlbum(1) };
+            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum));
+
+            Mocker.GetMock<IDownloadService>()
+                  .Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>()))
+                  .Throws(new ReleaseUnavailableException(remoteAlbum.Release, "That 404 Error is not just a Quirk"));
+
+            var result = Subject.ProcessDecisions(decisions);
+
+            result.Grabbed.Should().BeEmpty();
+            result.Rejected.Should().NotBeEmpty();
+
+            ExceptionVerification.ExpectedWarns(1);
         }
     }
 }

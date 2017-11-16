@@ -74,6 +74,11 @@ namespace NzbDrone.Core.Download
                 _downloadClientStatusService.RecordSuccess(downloadClient.Definition.Id);
                 _indexerStatusService.RecordSuccess(remoteAlbum.Release.IndexerId);
             }
+            catch (ReleaseUnavailableException)
+            {
+                _logger.Trace("Release {0} no longer available on indexer.", remoteAlbum);
+                throw;
+            }
             catch (ReleaseDownloadException ex)
             {
                 var http429 = ex.InnerException as TooManyRequestsException;

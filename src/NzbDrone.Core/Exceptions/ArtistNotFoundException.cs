@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Exceptions;
+using NzbDrone.Common.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +8,24 @@ namespace NzbDrone.Core.Exceptions
 {
     public class ArtistNotFoundException : NzbDroneException
     {
-        public string SpotifyId { get; set; }
+        public string MusicBrainzId { get; set; }
 
-        public ArtistNotFoundException(string spotifyId)
-            : base(string.Format("Artist with SpotifyId {0} was not found, it may have been removed from Spotify.", spotifyId))
+        public ArtistNotFoundException(string musicbrainzId)
+            : base(string.Format("Artist with MusicBrainz {0} was not found, it may have been removed from MusicBrainz.", musicbrainzId))
         {
-            SpotifyId = spotifyId;
+            MusicBrainzId = musicbrainzId;
         }
 
-        public ArtistNotFoundException(string spotifyId, string message, params object[] args)
+        public ArtistNotFoundException(string musicbrainzId, string message, params object[] args)
             : base(message, args)
         {
-            SpotifyId = spotifyId;
+            MusicBrainzId = musicbrainzId;
         }
 
-        public ArtistNotFoundException(string spotifyId, string message)
+        public ArtistNotFoundException(string musicbrainzId, string message)
             : base(message)
         {
-            SpotifyId = spotifyId;
+            MusicBrainzId = musicbrainzId;
         }
     }
 }
