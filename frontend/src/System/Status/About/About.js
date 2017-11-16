@@ -15,6 +15,7 @@ class About extends Component {
       version,
       isMonoRuntime,
       runtimeVersion,
+      migrationVersion,
       appData,
       startupPath,
       mode
@@ -37,6 +38,11 @@ class About extends Component {
                 data={runtimeVersion}
               />
           }
+
+          <DescriptionListItem
+            title="DB Migration"
+            data={migrationVersion}
+          />
 
           <DescriptionListItem
             title="AppData directory"
@@ -63,6 +69,7 @@ About.propTypes = {
   version: PropTypes.string,
   isMonoRuntime: PropTypes.bool,
   runtimeVersion: PropTypes.string,
+  migrationVersion: PropTypes.number,
   appData: PropTypes.string,
   startupPath: PropTypes.string,
   mode: PropTypes.string

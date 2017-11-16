@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Marr.Data;
 
 namespace NzbDrone.Core.Datastore
@@ -23,6 +23,8 @@ namespace NzbDrone.Core.Datastore
         }
 
         public Version Version => _database.Version;
+
+        public int Migration => _database.Migration;
 
         public void Vacuum()
         {

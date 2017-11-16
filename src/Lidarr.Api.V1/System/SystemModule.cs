@@ -1,4 +1,4 @@
-﻿using Nancy;
+using Nancy;
 using Nancy.Routing;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -67,6 +67,7 @@ namespace Lidarr.Api.V1.System
                 Branch = _configFileProvider.Branch,
                 Authentication = _configFileProvider.AuthenticationMethod,
                 SqliteVersion = _database.Version,
+                MigrationVersion = _database.Migration,
                 UrlBase = _configFileProvider.UrlBase,
                 RuntimeVersion = _platformInfo.Version,
                 RuntimeName = PlatformInfo.Platform
