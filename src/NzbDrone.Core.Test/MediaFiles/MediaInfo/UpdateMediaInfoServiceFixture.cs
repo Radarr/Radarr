@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
                 .All()
                 .With(v => v.RelativePath = "media.flac")
                 .TheFirst(1)
-                .With(v => v.MediaInfo = new MediaInfoModel { SchemaRevision = UpdateMediaInfoService.CURRENT_MEDIA_INFO_SCHEMA_REVISION })
+                .With(v => v.MediaInfo = new MediaInfoModel { SchemaRevision = VideoFileInfoReader.CURRENT_MEDIA_INFO_SCHEMA_REVISION })
                 .BuildList();
 
             Mocker.GetMock<IMediaFileService>()
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
                 .All()
                 .With(v => v.RelativePath = "media.flac")
                 .TheFirst(1)
-                .With(v => v.MediaInfo = new MediaInfoModel { SchemaRevision = UpdateMediaInfoService.MINIMUM_MEDIA_INFO_SCHEMA_REVISION })
+                .With(v => v.MediaInfo = new MediaInfoModel { SchemaRevision = VideoFileInfoReader.MINIMUM_MEDIA_INFO_SCHEMA_REVISION })
                 .BuildList();
 
             Mocker.GetMock<IMediaFileService>()
