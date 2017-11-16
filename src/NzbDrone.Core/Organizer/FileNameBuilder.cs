@@ -42,19 +42,10 @@ namespace NzbDrone.Core.Organizer
         private static readonly Regex MediumRegex = new Regex(@"(?<medium>\{medium(?:\:0+)?})",
                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex AbsoluteEpisodeRegex = new Regex(@"(?<absolute>\{absolute(?:\:0+)?})",
-                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         public static readonly Regex SeasonEpisodePatternRegex = new Regex(@"(?<separator>(?<=})[- ._]+?)?(?<seasonEpisode>s?{season(?:\:0+)?}(?<episodeSeparator>[- ._]?[ex])(?<episode>{episode(?:\:0+)?}))(?<separator>[- ._]+?(?={))?",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex AbsoluteEpisodePatternRegex = new Regex(@"(?<separator>(?<=})[- ._]+?)?(?<absolute>{absolute(?:\:0+)?})(?<separator>[- ._]+?(?={))?",
-                                                                    RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         public static readonly Regex AirDateRegex = new Regex(@"\{Air(\s|\W|_)Date\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        public static readonly Regex SeriesTitleRegex = new Regex(@"(?<token>\{(?:Series)(?<separator>[- ._])(Clean)?Title\})",
-                                                                            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static readonly Regex ArtistNameRegex = new Regex(@"(?<token>\{(?:Artist)(?<separator>[- ._])(Clean)?Name(The)?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -476,16 +467,6 @@ namespace NzbDrone.Core.Organizer
                     TrackSeparator = match.Groups["episodeSeparator"].Value,
                     Separator = match.Groups["separator"].Value,
                     TrackPattern = match.Groups["episode"].Value,
-                }).ToArray());
-        }
-
-        private AbsoluteTrackFormat[] GetAbsoluteFormat(string pattern)
-        {
-            return _absoluteTrackFormatCache.Get(pattern, () => AbsoluteEpisodePatternRegex.Matches(pattern).OfType<Match>()
-                .Select(match => new AbsoluteTrackFormat
-                {
-                    Separator = match.Groups["separator"].Value.IsNotNullOrWhiteSpace() ? match.Groups["separator"].Value : "-",
-                    AbsoluteTrackPattern = match.Groups["absolute"].Value
                 }).ToArray());
         }
 
