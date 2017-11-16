@@ -271,6 +271,8 @@
     <Compile Include="MusicTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\ArtistNameSlugValidatorFixture.cs" />
     <Compile Include="MusicTests\ArtistRepositoryTests\ArtistRepositoryFixture.cs" />
+    <Compile Include="MusicTests\ArtistServiceTests\AddArtistFixture.cs" />
+    <Compile Include="MusicTests\ArtistServiceTests\UpdateMultipleArtistFixture.cs" />
     <Compile Include="NotificationTests\NotificationBaseFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
