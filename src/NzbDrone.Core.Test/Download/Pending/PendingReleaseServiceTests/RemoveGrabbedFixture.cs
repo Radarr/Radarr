@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using Marr.Data;
 using Moq;
@@ -26,6 +27,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private ReleaseInfo _release;
         private ParsedAlbumInfo _parsedAlbumInfo;
         private RemoteAlbum _remoteAlbum;
+        private List<PendingRelease> _heldReleases;
 
         [SetUp]
         public void Setup()
@@ -63,13 +65,23 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             
             _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
 
+            _heldReleases = new List<PendingRelease>();
+
             Mocker.GetMock<IPendingReleaseRepository>()
                   .Setup(s => s.All())
-                  .Returns(new List<PendingRelease>());
+                  .Returns(_heldReleases);
+
+            Mocker.GetMock<IPendingReleaseRepository>()
+                  .Setup(s => s.AllByArtistId(It.IsAny<int>()))
+                  .Returns<int>(i => _heldReleases.Where(v => v.ArtistId == i).ToList());
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(It.IsAny<int>()))
                   .Returns(_artist);
+
+            Mocker.GetMock<IArtistService>()
+                  .Setup(s => s.GetArtists(It.IsAny<IEnumerable<int>>()))
+                  .Returns(new List<Artist> { _artist });
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), _artist, null))
@@ -92,9 +104,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                                    .With(h => h.ParsedAlbumInfo = parsedEpisodeInfo)
                                                    .Build();
 
-            Mocker.GetMock<IPendingReleaseRepository>()
-                  .Setup(s => s.All())
-                  .Returns(heldReleases);
+            _heldReleases.AddRange(heldReleases);
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Download.Pending
     {
         void DeleteByArtistId(int artistId);
         List<PendingRelease> AllByArtistId(int artistId);
+        List<PendingRelease> WithoutFallback();
     }
 
     public class PendingReleaseRepository : BasicRepository<PendingRelease>, IPendingReleaseRepository
@@ -25,6 +26,11 @@ namespace NzbDrone.Core.Download.Pending
         public List<PendingRelease> AllByArtistId(int artistId)
         {
             return Query.Where(p => p.ArtistId == artistId);
+        }
+
+        public List<PendingRelease> WithoutFallback()
+        {
+            return Query.Where(p => p.Reason != PendingReleaseReason.Fallback);
         }
     }
 }

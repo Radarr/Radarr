@@ -94,7 +94,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             var albumIds = subject.Albums.Select(e => e.Id);
 
-            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Artist.Id, albumIds);
+            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Artist.Id, albumIds.ToArray());
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)
             {

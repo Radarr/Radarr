@@ -131,6 +131,8 @@ namespace NzbDrone.Core.Download
             var pending = new List<DownloadDecision>();
             var stored = new List<DownloadDecision>();
 
+            var addQueue = new List<Tuple<DownloadDecision, PendingReleaseReason>>();
+
             foreach (var report in failed)
             {
                 // If a release was already grabbed with matching albums we should store it as a fallback
@@ -141,20 +143,25 @@ namespace NzbDrone.Core.Download
 
                 if (IsAlbumProcessed(grabbed, report))
                 {
-                    _pendingReleaseService.Add(report, PendingReleaseReason.Fallback);
+                    addQueue.Add(Tuple.Create(report, PendingReleaseReason.Fallback));
                     pending.Add(report);
                 }
                 else if (IsAlbumProcessed(stored, report))
                 {
-                    _pendingReleaseService.Add(report, PendingReleaseReason.Fallback);
+                    addQueue.Add(Tuple.Create(report, PendingReleaseReason.Fallback));
                     pending.Add(report);
                 }
                 else
                 {
-                    _pendingReleaseService.Add(report, PendingReleaseReason.DownloadClientUnavailable);
+                    addQueue.Add(Tuple.Create(report, PendingReleaseReason.DownloadClientUnavailable));
                     pending.Add(report);
                     stored.Add(report);
                 }
+            }
+
+            if (addQueue.Any())
+            {
+                _pendingReleaseService.AddMany(addQueue);
             }
 
             return pending;

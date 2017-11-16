@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _remoteAlbum.Artist = _artist;
             _remoteAlbum.ParsedAlbumInfo = _parsedAlbumInfo;
             _remoteAlbum.Release = _release;
-            
+
             _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()
@@ -72,6 +72,10 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(It.IsAny<int>()))
                   .Returns(_artist);
+
+            Mocker.GetMock<IArtistService>()
+                  .Setup(s => s.GetArtists(It.IsAny<IEnumerable<int>>()))
+                  .Returns(new List<Artist> { _artist });
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), _artist, null))
