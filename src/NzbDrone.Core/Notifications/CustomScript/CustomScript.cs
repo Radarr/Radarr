@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Lidarr_EventType", "Download");
-            environmentVariables.Add("LIdarr_IsUpgrade", message.OldFiles.Any().ToString());
+            environmentVariables.Add("Lidarr_IsUpgrade", message.OldFiles.Any().ToString());
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
