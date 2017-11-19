@@ -129,7 +129,7 @@ var Collection = PageableCollection.extend({
             url : self.url + '/editor',
 
             toJSON : function() {
-                return t.filter(function(model) {
+                return self.filter(function(model) {
                     return model.edited;
                 });
             }
