@@ -22,7 +22,7 @@ class SelectAlbumRow extends Component {
         component="div"
         onPress={this.onPress}
       >
-        {this.props.title}
+        {this.props.title} ({this.props.albumType})
       </Link>
     );
   }
@@ -31,6 +31,7 @@ class SelectAlbumRow extends Component {
 SelectAlbumRow.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
+  albumType: PropTypes.string.isRequired,
   onAlbumSelect: PropTypes.func.isRequired
 };
 

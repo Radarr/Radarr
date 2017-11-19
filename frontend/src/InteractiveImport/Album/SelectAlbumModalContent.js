@@ -39,6 +39,7 @@ class SelectAlbumModalContent extends Component {
                   key={item.id}
                   id={item.id}
                   title={item.title}
+                  albumType={item.albumType}
                   onAlbumSelect={onAlbumSelect}
                 />
               );
