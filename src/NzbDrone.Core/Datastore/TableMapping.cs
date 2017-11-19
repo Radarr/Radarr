@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Datastore
                 .Ignore(s => s.RootFolderPath)
                 .Ignore(m => m.Actors)
                 .Ignore(m => m.Genres)
-                .Ignore(m => m.Tags)
+//                .Ignore(m => m.Tags)
                 .Relationship()
                 .HasOne(s => s.Profile, s => s.ProfileId);
                 //.HasOne(m => m.MovieFile, m => m.MovieFileId);
