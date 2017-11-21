@@ -18,7 +18,6 @@ namespace NzbDrone.Core.Test.Qualities
                         new object[] {2, Quality.MP3_VBR},
                         new object[] {3, Quality.MP3_256},
                         new object[] {4, Quality.MP3_320},
-                        new object[] {5, Quality.MP3_512},
                         new object[] {6, Quality.FLAC},
                 };
 
@@ -29,7 +28,6 @@ namespace NzbDrone.Core.Test.Qualities
                         new object[] {Quality.MP3_VBR, 2},
                         new object[] {Quality.MP3_256, 3},
                         new object[] {Quality.MP3_320, 4},
-                        new object[] {Quality.MP3_512, 5},
                         new object[] {Quality.FLAC, 6},
                 };
 
@@ -56,7 +54,6 @@ namespace NzbDrone.Core.Test.Qualities
                 Quality.MP3_VBR,
                 Quality.MP3_256,
                 Quality.MP3_320,
-                Quality.MP3_512,
                 Quality.FLAC,
             };
 

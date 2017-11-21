@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var languages = Languages.LanguageFixture.GetDefaultLanguages(Language.English, Language.Spanish);
 
             var fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities()})
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities()})
                          .With(l => l.LanguageProfile = new LanguageProfile { Cutoff = Language.Spanish, Languages = languages })
                          .Build();
 
@@ -102,8 +102,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_qualities_are_the_same()
         {
-            _firstFile.Quality = new QualityModel(Quality.MP3_512);
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512);
+            _firstFile.Quality = new QualityModel(Quality.MP3_320);
+            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
 

@@ -7,6 +7,7 @@ function MediaInfo(props) {
     type,
     audioChannels,
     audioCodec,
+    audioBitRate,
     videoCodec
   } = props;
 
@@ -27,6 +28,16 @@ function MediaInfo(props) {
           !!audioChannels &&
           audioChannels.toFixed(1)
         }
+
+        {
+          ((!!audioCodec && !!audioBitRate) || (!!audioChannels && !!audioBitRate)) &&
+          ' - '
+        }
+
+        {
+          !!audioBitRate &&
+            audioBitRate
+        }
       </span>
     );
   }
@@ -46,6 +57,7 @@ MediaInfo.propTypes = {
   type: PropTypes.string.isRequired,
   audioChannels: PropTypes.number,
   audioCodec: PropTypes.string,
+  audioBitRate: PropTypes.string,
   videoCodec: PropTypes.string
 };
 

@@ -172,6 +172,7 @@
     <Compile Include="Datastore\LogDatabase.cs" />
     <Compile Include="Datastore\Migration\001_initial_setup.cs" />
     <Compile Include="Datastore\Migration\002_add_reason_to_pending_releases.cs" />
+    <Compile Include="Datastore\Migration\004_add_various_qualities_in_profile.cs" />
     <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />

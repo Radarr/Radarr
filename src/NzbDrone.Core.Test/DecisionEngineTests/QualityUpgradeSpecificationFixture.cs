@@ -22,8 +22,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new object[] { Quality.MP3_192, 1, Quality.MP3_192, 1, Quality.MP3_192, false },
             new object[] { Quality.MP3_320, 1, Quality.MP3_256, 2, Quality.MP3_320, false },
             new object[] { Quality.MP3_320, 1, Quality.MP3_256, 2, Quality.MP3_320, false },
-            new object[] { Quality.MP3_320, 1, Quality.MP3_320, 1, Quality.MP3_320, false },
-            new object[] { Quality.MP3_512, 1, Quality.MP3_512, 1, Quality.MP3_512, false }
+            new object[] { Quality.MP3_320, 1, Quality.MP3_320, 1, Quality.MP3_320, false }
         };
 
         public static object[] IsUpgradeTestCasesLanguages =

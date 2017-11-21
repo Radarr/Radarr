@@ -77,15 +77,15 @@ namespace NzbDrone.Core.Test.Datastore
                             .All().With(c => c.Id = 0)
                             .Build().ToList();
 
-            history[0].Quality = new QualityModel(Quality.MP3_512, new Revision(version: 2));
-            history[1].Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
+            history[0].Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
+            history[1].Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
 
 
             Db.InsertMany(history);
 
             var returnedHistory = Db.All<History.History>();
 
-            returnedHistory[0].Quality.Quality.Should().Be(Quality.MP3_512);
+            returnedHistory[0].Quality.Quality.Should().Be(Quality.MP3_320);
         }
     }
 }

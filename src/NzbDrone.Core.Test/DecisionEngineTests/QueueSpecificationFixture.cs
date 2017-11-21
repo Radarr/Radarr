@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_quality_in_queue_is_lower()
         {
-            _artist.Profile.Value.Cutoff = Quality.MP3_512.Id;
+            _artist.Profile.Value.Cutoff = Quality.MP3_320.Id;
             _artist.LanguageProfile.Value.Cutoff = Language.Spanish;
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
@@ -193,7 +193,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_when_quality_in_queue_is_better()
         {
-            _artist.Profile.Value.Cutoff = Quality.MP3_512.Id;
+            _artist.Profile.Value.Cutoff = Quality.MP3_320.Id;
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                                                       .With(r => r.Artist = _artist)

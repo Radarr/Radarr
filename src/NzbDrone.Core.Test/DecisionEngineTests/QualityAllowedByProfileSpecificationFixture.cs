@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             new object[] { Quality.MP3_192 },
             new object[] { Quality.MP3_256 },
-            new object[] { Quality.MP3_512 }
+            new object[] { Quality.MP3_320 }
         };
 
         public static object[] DeniedTestCases =
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void Setup()
         {
             var fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.MP3_512.Id })
+                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.MP3_320.Id })
                          .Build();
 
             remoteAlbum = new RemoteAlbum
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
             remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
-            remoteAlbum.Artist.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_512);
+            remoteAlbum.Artist.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
 
             Subject.IsSatisfiedBy(remoteAlbum, null).Accepted.Should().BeTrue();
         }
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
             remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
-            remoteAlbum.Artist.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_512);
+            remoteAlbum.Artist.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
 
             Subject.IsSatisfiedBy(remoteAlbum, null).Accepted.Should().BeFalse();
         }

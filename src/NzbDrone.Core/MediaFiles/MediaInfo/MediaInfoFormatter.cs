@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using NLog;
 using NLog.Fluent;
 using NzbDrone.Common.Extensions;
@@ -13,6 +14,13 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
     public static class MediaInfoFormatter
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(MediaInfoFormatter));
+
+        public static string FormatAudioBitrate(MediaInfoModel mediaInfo)
+        {
+            int audioBitrate = mediaInfo.AudioBitrate / 1000;
+
+            return audioBitrate + " kbps";
+        }
 
         public static decimal FormatAudioChannels(MediaInfoModel mediaInfo)
         {

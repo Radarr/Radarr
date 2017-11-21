@@ -146,7 +146,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             {
                 var localTrack = new LocalTrack();
                 localTrack.Path = file;
-                localTrack.Quality = QualityParser.ParseQuality(file);
+                localTrack.Quality = QualityParser.ParseQuality(file, null, 0);
                 localTrack.Language = LanguageParser.ParseLanguage(file);
                 localTrack.Size = _diskProvider.GetFileSize(file);
 

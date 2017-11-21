@@ -99,6 +99,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.GroupName)
+                  .Ignore(d => d.GroupWeight)
                   .Ignore(d => d.Weight);
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");

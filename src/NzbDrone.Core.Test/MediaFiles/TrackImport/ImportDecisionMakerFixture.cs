@@ -175,7 +175,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         public void should_use_file_quality_if_folder_quality_is_null()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
-            var expectedQuality = QualityParser.ParseQuality(_audioFiles.Single());
+            var expectedQuality = QualityParser.ParseQuality(_audioFiles.Single(), null, 0);
 
             var result = Subject.GetImportDecisions(_audioFiles, _artist);
             
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         public void should_use_file_quality_if_file_quality_was_determined_by_name()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
-            var expectedQuality = QualityParser.ParseQuality(_audioFiles.Single());
+            var expectedQuality = QualityParser.ParseQuality(_audioFiles.Single(), null, 0);
 
             var result = Subject.GetImportDecisions(_audioFiles, _artist, new ParsedTrackInfo{Quality = new QualityModel(Quality.MP3_256) });
 

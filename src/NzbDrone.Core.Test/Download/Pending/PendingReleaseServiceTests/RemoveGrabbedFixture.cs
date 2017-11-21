@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 },
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.MP3_512 }
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.FLAC }
                                    },
                        };
 
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_not_delete_if_the_grabbed_quality_is_the_lower()
         {
-            GivenHeldRelease(new QualityModel(Quality.MP3_512));
+            GivenHeldRelease(new QualityModel(Quality.FLAC));
 
             Subject.Handle(new AlbumGrabbedEvent(_remoteAlbum));
 

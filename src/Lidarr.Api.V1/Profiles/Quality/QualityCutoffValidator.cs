@@ -23,11 +23,11 @@ namespace Lidarr.Api.V1.Profiles.Quality
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            var cutoff = (int)context.PropertyValue;
+            int cutoff = (int)context.PropertyValue;
             dynamic instance = context.ParentContext.InstanceToValidate;
             var items = instance.Items as IList<QualityProfileQualityItemResource>;
 
-            var cutoffItem = items.SingleOrDefault(i => i.Id == cutoff || (i.Quality != null && i.Quality.Id == cutoff));
+            QualityProfileQualityItemResource cutoffItem = items.SingleOrDefault(i => (i.Quality == null && i.Id == cutoff) || i.Quality?.Id == cutoff);
 
             if (cutoffItem == null)
             {

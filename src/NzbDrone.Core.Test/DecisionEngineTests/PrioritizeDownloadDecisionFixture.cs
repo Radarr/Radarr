@@ -332,7 +332,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_quality_over_the_number_of_peers()
         {
-            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_512), Language.English);
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), Language.English);
             var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_192), Language.English);
 
             var torrentInfo1 = new TorrentInfo();

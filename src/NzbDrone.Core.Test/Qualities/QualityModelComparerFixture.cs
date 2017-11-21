@@ -41,12 +41,12 @@ namespace NzbDrone.Core.Test.Qualities
                                                           new ProfileQualityItem
                                                           {
                                                               Allowed = true,
-                                                              Quality = Quality.MP3_320
+                                                              Quality = Quality.MP3_256
                                                           },
                                                           new ProfileQualityItem
                                                           {
                                                               Allowed = true,
-                                                              Quality = Quality.MP3_512
+                                                              Quality = Quality.MP3_320
                                                           }
                                                       }
                                           },
@@ -119,8 +119,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenGroupedProfile();
 
-            var first = new QualityModel(Quality.MP3_320);
-            var second = new QualityModel(Quality.MP3_512);
+            var first = new QualityModel(Quality.MP3_256);
+            var second = new QualityModel(Quality.MP3_320);
 
             var compare = Subject.Compare(first, second);
 
@@ -132,8 +132,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenGroupedProfile();
 
-            var first = new QualityModel(Quality.MP3_320);
-            var second = new QualityModel(Quality.MP3_512);
+            var first = new QualityModel(Quality.MP3_256);
+            var second = new QualityModel(Quality.MP3_320);
 
             var compare = Subject.Compare(first, second, true);
 

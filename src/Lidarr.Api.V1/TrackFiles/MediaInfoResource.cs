@@ -6,6 +6,7 @@ namespace Lidarr.Api.V1.TrackFiles
     public class MediaInfoResource : RestResource
     {
         public decimal AudioChannels { get; set; }
+        public string AudioBitRate { get; set; }
         public string AudioCodec { get; set; }
     }
 
@@ -21,7 +22,8 @@ namespace Lidarr.Api.V1.TrackFiles
             return new MediaInfoResource
                    {
                        AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
-                       AudioCodec = MediaInfoFormatter.FormatAudioCodec(model)
+                       AudioCodec = MediaInfoFormatter.FormatAudioCodec(model),
+                       AudioBitRate = MediaInfoFormatter.FormatAudioBitrate(model)
                    };
         }
     }

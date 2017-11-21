@@ -9,6 +9,7 @@ using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Languages;
+using TagLib;
 
 namespace NzbDrone.Core.Parser
 {
@@ -264,7 +265,7 @@ namespace NzbDrone.Core.Parser
                                 //result.Language = LanguageParser.ParseLanguage(title);
                                 //Logger.Debug("Language parsed: {0}", result.Language);
 
-                                result.Quality = QualityParser.ParseQuality(title);
+                                result.Quality = QualityParser.ParseQuality(title, null, 0);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
                                 // Majora: We don't currently need Release Group for Music.
@@ -369,7 +370,7 @@ namespace NzbDrone.Core.Parser
                                 result.Language = LanguageParser.ParseLanguage(releaseTitle);
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
-                                result.Quality = QualityParser.ParseQuality(title);
+                                result.Quality = QualityParser.ParseQuality(title, null, 0);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
                                 result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
@@ -492,6 +493,8 @@ namespace NzbDrone.Core.Parser
         {
             var fileInfo = new FileInfo(path);
             var file = TagLib.File.Create(path);
+            Logger.Debug("Starting Tag Parse for {0}", file.Name);
+
             var trackNumber = file.Tag.Track;
             var trackTitle = file.Tag.Title;
             var discNumber = (file.Tag.Disc > 0) ? Convert.ToInt32(file.Tag.Disc) : 1 ;
@@ -532,12 +535,10 @@ namespace NzbDrone.Core.Parser
 
                 if (acodec != null && (acodec.MediaTypes & TagLib.MediaTypes.Audio) != TagLib.MediaTypes.None)
                 {
-                    Logger.Debug("Audio Properties : " + acodec.Description);
-                    Logger.Debug("Bitrate:    " + acodec.AudioBitrate);
-                    Logger.Debug("SampleRate: " + acodec.AudioSampleRate);
-                    Logger.Debug("Channels:   " + acodec.AudioChannels + "\n");
+                    Logger.Debug("Audio Properties : " + acodec.Description + ", Bitrate: " + acodec.AudioBitrate + ", Sample Size: " +
+                        file.Properties.BitsPerSample + ", SampleRate: " + acodec.AudioSampleRate + ", Channels: " + acodec.AudioChannels);
 
-                    result.Quality = QualityParser.ParseQuality(acodec.Description, acodec.AudioBitrate, acodec.AudioSampleRate);
+                    result.Quality = QualityParser.ParseQuality(file.Name, acodec.Description, acodec.AudioBitrate, file.Properties.BitsPerSample);
                     Logger.Debug("Quality parsed: {0}", result.Quality);
                 }
             }

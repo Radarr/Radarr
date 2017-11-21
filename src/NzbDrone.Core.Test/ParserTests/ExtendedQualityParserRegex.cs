@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Real Housewives of Some Place - S01E01 - Why are we doing this?", 0)]
         public void should_parse_reality_from_title(string title, int reality)
         {
-            QualityParser.ParseQuality(title).Revision.Real.Should().Be(reality);
+            QualityParser.ParseQuality(title, null, 0).Revision.Real.Should().Be(reality);
         }
 
         [TestCase("Chuck.S04E05.HDTV.XviD-LOL", 1)]
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Vivid-Asenshi] Akame ga Kill - 02v2 [1F67AB55]", 2)]
         public void should_parse_version_from_title(string title, int version)
         {
-            QualityParser.ParseQuality(title).Revision.Version.Should().Be(version);
+            QualityParser.ParseQuality(title, null, 0).Revision.Version.Should().Be(version);
         }
     }
 }

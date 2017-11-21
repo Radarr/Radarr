@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                        };
 
             _fakeArtist = Builder<Artist>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .With(l => l.LanguageProfile = new LanguageProfile { Cutoff = Language.Spanish, Languages = LanguageFixture.GetDefaultLanguages() })
                          .Build();
 
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             };
 
             _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_192, new Revision(version: 1)), Language.English);
-            _notupgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 2)), Language.English);
+            _notupgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 2)), Language.English);
 
             Mocker.GetMock<IConfigService>()
                   .SetupGet(s => s.EnableCompletedDownloadHandling)
@@ -162,9 +162,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_album_is_of_same_quality_as_existing()
         {
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
-            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.English);
+            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 1)), Language.English);
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -174,9 +174,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
-            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.Spanish);
+            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 1)), Language.Spanish);
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -202,9 +202,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_512.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_512, new Revision(version: 1));
-            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_512, new Revision(version: 1)), Language.Spanish);
+            _fakeArtist.Profile = new Profile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            _upgradableQuality = new Tuple<QualityModel, Language>(new QualityModel(Quality.MP3_320, new Revision(version: 1)), Language.Spanish);
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, "test", _upgradableQuality, DateTime.UtcNow.AddDays(-100), HistoryEventType.Grabbed);
 

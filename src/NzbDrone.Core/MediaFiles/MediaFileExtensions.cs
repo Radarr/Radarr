@@ -16,7 +16,9 @@ namespace NzbDrone.Core.MediaFiles
                 { ".mp3", Quality.Unknown },
                 { ".m4a", Quality.Unknown },
                 { ".ogg", Quality.Unknown },
-                { ".flac", Quality.FLAC },
+                { ".wma", Quality.WMA },
+                { ".wav", Quality.WAV },
+                { ".flac", Quality.FLAC }
             };
         }
 

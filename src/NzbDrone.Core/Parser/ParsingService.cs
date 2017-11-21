@@ -187,7 +187,7 @@ namespace NzbDrone.Core.Parser
             if (folderInfo != null)
             {
                 parsedTrackInfo = folderInfo.JsonClone();
-                parsedTrackInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
+                parsedTrackInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename), null, 0);
             }
 
             else

@@ -111,6 +111,7 @@
     <Compile Include="Datastore\DatabaseRelationshipFixture.cs" />
     <Compile Include="Datastore\MappingExtentionFixture.cs" />
     <Compile Include="Datastore\MarrDataLazyLoadingFixture.cs" />
+    <Compile Include="Datastore\Migration\004_add_various_qualities_in_profileFixture.cs" />
     <Compile Include="Datastore\ObjectDatabaseFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\PagingOffsetFixture.cs" />
     <Compile Include="Datastore\PagingSpecExtensionsTests\ToSortDirectionFixture.cs" />
@@ -534,7 +535,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Datastore\Migration\" />
     <Folder Include="InstrumentationTests\" />
     <Folder Include="Providers\" />
     <Folder Include="ProviderTests\UpdateProviderTests\" />

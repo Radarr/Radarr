@@ -110,15 +110,6 @@ namespace NzbDrone.Core.MediaFiles
                     _logger.Warn("Unable to parse file on import: [{0}]", audioFile);
                     return false;
                 }
-
-                var size = _diskProvider.GetFileSize(audioFile);
-                var quality = QualityParser.ParseQuality(audioFile);
-
-                //if (!_detectSample.IsSample(artist, quality, audioFile, size, albumParseResult.IsPossibleSpecialEpisode))
-                //{
-                //    _logger.Warn("Non-sample file detected: [{0}]", audioFile);
-                //    return false;
-                //}
             }
 
             if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
