@@ -156,7 +156,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             album.CleanTitle = Parser.Parser.CleanArtistName(album.Title);
             album.AlbumType = resource.Type;
             album.Images = resource.Images.Select(MapImage).ToList();
-            album.Label = resource.Label;
+            album.Label = resource.Labels;
 
             album.Media = resource.Media.Select(MapMedium).ToList();
             album.Tracks = resource.Tracks.Select(MapTrack).ToList();

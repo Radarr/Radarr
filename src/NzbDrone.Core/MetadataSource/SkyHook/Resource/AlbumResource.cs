@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string Title { get; set; }
         public string Overview { get; set; }
         public List<string> Genres { get; set; }
-        public List<string> Label { get; set; }
+        public List<string> Labels { get; set; }
         public string Type { get; set; }
         public List<MediumResource> Media { get; set; }
         public List<TrackResource> Tracks { get; set; }
