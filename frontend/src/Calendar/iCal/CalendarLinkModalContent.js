@@ -22,7 +22,7 @@ function getUrls(state) {
     tags
   } = state;
 
-  let icalUrl = `${window.location.host}${window.Sonarr.urlBase}/feed/calendar/Lidarr.ics?`;
+  let icalUrl = `${window.location.host}${window.Sonarr.urlBase}/feed/v1/calendar/Lidarr.ics?`;
 
   if (unmonitored) {
     icalUrl += 'unmonitored=true&';
