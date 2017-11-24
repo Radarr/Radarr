@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace NzbDrone.Common.Extensions
 {
@@ -21,6 +21,17 @@ namespace NzbDrone.Common.Extensions
             long result = 0;
 
             if (long.TryParse(source, out result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        public static float? ParseFloat(this string source) {
+            float result = 0;
+
+            if (float.TryParse(source, out result))
             {
                 return result;
             }

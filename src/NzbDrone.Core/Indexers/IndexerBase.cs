@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -9,6 +9,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Indexers
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Indexers
 
         public abstract string Name { get; }
         public abstract DownloadProtocol Protocol { get; }
+        public abstract TorrentSeedConfiguration SeedConfiguration { get; }
 
         public abstract bool SupportsRss { get; }
         public abstract bool SupportsSearch { get; }
@@ -75,6 +77,7 @@ namespace NzbDrone.Core.Indexers
                 c.IndexerId = Definition.Id;
                 c.Indexer = Definition.Name;
                 c.DownloadProtocol = Protocol;
+                c.SeedConfiguration = SeedConfiguration;
             });
 
             return result;

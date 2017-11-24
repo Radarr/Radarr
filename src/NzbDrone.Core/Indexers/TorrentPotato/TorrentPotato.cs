@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -10,6 +10,7 @@ using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Http.CloudFlare;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Indexers.TorrentPotato
 {
@@ -19,11 +20,11 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
         public override DownloadProtocol Protocol => DownloadProtocol.Torrent;
         public override TimeSpan RateLimit => TimeSpan.FromSeconds(2);
+        public override TorrentSeedConfiguration SeedConfiguration => Settings.SeedRatio.HasValue ? new TorrentSeedConfiguration { Ratio = Settings.SeedRatio, SeedTime = null } : null;
 
         public TorrentPotato(IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
-
         }
 
         private IndexerDefinition GetDefinition(string name, TorrentPotatoSettings settings)

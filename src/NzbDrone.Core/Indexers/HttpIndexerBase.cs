@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,6 +13,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Indexers
 {
@@ -25,6 +26,8 @@ namespace NzbDrone.Core.Indexers
 
         public override bool SupportsRss => true;
         public override bool SupportsSearch => true;
+        public override TorrentSeedConfiguration SeedConfiguration => null;
+
         public bool SupportsPaging => PageSize > 0;
 
         public virtual int PageSize => 0;

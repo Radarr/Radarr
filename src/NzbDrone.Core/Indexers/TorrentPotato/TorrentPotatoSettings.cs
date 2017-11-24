@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         {
             BaseUrl = "http://127.0.0.1";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
+            SeedRatio = (float?)null;
         }
 
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to TorrentPotato api.")]
@@ -34,6 +35,9 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
 
         [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
+
+        [FieldDefinition(4, Type = FieldType.Textbox, Label = "Seed ratio", HelpText = "Set seed ratio before completed, blank for downloader default", Advanced = true)]
+        public float? SeedRatio { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -89,6 +89,11 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
             _logger.Debug("Torrent Download succeeded, saved to: {0}", filepath);
 
             return null;
+        }
+
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            throw new NotImplementedException();
         }
 
         public override string Name => "Torrent Blackhole";

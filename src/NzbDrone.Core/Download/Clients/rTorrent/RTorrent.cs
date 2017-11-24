@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
@@ -79,6 +79,11 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
 
             return hash;
+        }
+
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            throw new NotImplementedException();
         }
 
         public override string Name => "rTorrent";
