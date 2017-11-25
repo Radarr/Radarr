@@ -7,6 +7,6 @@ namespace NzbDrone.Core.Music
 {
     public class AddArtistOptions : MonitoringOptions
     {
-        public bool SearchForMissingTracks { get; set; }
+        public bool SearchForMissingAlbums { get; set; }
     }
 }

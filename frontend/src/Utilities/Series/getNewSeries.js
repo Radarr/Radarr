@@ -14,13 +14,13 @@ function getNewSeries(artist, payload) {
     searchForMissingAlbums = false
   } = payload;
 
-  // const {
+  const {
     // seasons,
-    // options: addOptions
-  // } = getMonitoringOptions(artist.seasons, monitor);
+    options: addOptions
+  } = getMonitoringOptions(monitor);
 
-  // addOptions.searchForMissingAlbums = searchForMissingAlbums;
-  // artist.addOptions = addOptions;
+  addOptions.searchForMissingAlbums = searchForMissingAlbums;
+  artist.addOptions = addOptions;
   // artist.seasons = seasons;
   artist.monitored = true;
   artist.qualityProfileId = qualityProfileId;

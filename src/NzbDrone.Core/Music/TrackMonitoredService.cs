@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Music
 
                 var tracks = _trackService.GetTracksByArtist(album.Id);
 
-                if (monitoringOptions.IgnoreTracksWithFiles)
+                if (monitoringOptions.IgnoreAlbumsWithFiles)
                 {
                     _logger.Debug("Ignoring Tracks with Files");
                     ToggleTracksMonitoredState(tracks.Where(e => e.HasFile), false);
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Music
                     ToggleTracksMonitoredState(tracks.Where(e => e.HasFile), true);
                 }
 
-                if (monitoringOptions.IgnoreTracksWithoutFiles)
+                if (monitoringOptions.IgnoreAlbumsWithoutFiles)
                 {
                     _logger.Debug("Ignoring Tracks without Files");
                     ToggleTracksMonitoredState(tracks.Where(e => !e.HasFile), false);

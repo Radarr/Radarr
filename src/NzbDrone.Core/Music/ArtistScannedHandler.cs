@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Music
             _logger.Info("[{0}] was recently added, performing post-add actions", artist.Name);
             _albumMonitoredService.SetAlbumMonitoredStatus(artist, artist.AddOptions);
 
-            if (artist.AddOptions.SearchForMissingTracks)
+            if (artist.AddOptions.SearchForMissingAlbums)
             {
                 _commandQueueManager.Push(new MissingAlbumSearchCommand(artist.Id));
             }
