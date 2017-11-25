@@ -19,12 +19,14 @@ namespace Lidarr.Api.V1.Calendar
     public class CalendarFeedModule : LidarrV1FeedModule
     {
         private readonly IAlbumService _albumService;
+        private readonly IArtistService _artistService;
         private readonly ITagService _tagService;
 
-        public CalendarFeedModule(IAlbumService albumService, ITagService tagService)
+        public CalendarFeedModule(IAlbumService albumService, IArtistService artistService, ITagService tagService)
             : base("calendar")
         {
             _albumService = albumService;
+            _artistService = artistService;
             _tagService = tagService;
 
             Get["/Lidarr.ics"] = options => GetCalendarFeed();
@@ -37,7 +39,6 @@ namespace Lidarr.Api.V1.Calendar
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var unmonitored = Request.GetBooleanQueryParameter("unmonitored");
-            var asAllDay = Request.GetBooleanQueryParameter("asAllDay");
             var tags = new List<int>();
 
             var queryPastDays = Request.Query.PastDays;
@@ -74,7 +75,9 @@ namespace Lidarr.Api.V1.Calendar
 
             foreach (var album in albums.OrderBy(v => v.ReleaseDate.Value))
             {
-                if (tags.Any() && tags.None(album.Artist.Tags.Contains))
+                var artist = _artistService.GetArtist(album.ArtistId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
+
+                if (tags.Any() && tags.None(artist.Tags.Contains))
                 {
                     continue;
                 }
@@ -87,7 +90,7 @@ namespace Lidarr.Api.V1.Calendar
 
                 occurrence.Start = new CalDateTime(album.ReleaseDate.Value.ToLocalTime()) { HasTime = false };
 
-                occurrence.Summary = $"{album.Artist.Name} - {album.Title}";
+                occurrence.Summary = $"{artist.Name} - {album.Title}";
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());

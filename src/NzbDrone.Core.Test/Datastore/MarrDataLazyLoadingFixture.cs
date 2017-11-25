@@ -46,6 +46,13 @@ namespace NzbDrone.Core.Test.Datastore
 
             Db.InsertMany(artist);
 
+            var albums = Builder<Album>.CreateListOfSize(3)
+                .All()
+                .With(v => v.ArtistId = artist[0].Id)
+                .BuildListOfNew();
+
+            Db.InsertMany(albums);
+
             var trackFiles = Builder<TrackFile>.CreateListOfSize(1)
                 .All()
                 .With(v => v.ArtistId = artist[0].Id)
@@ -62,6 +69,22 @@ namespace NzbDrone.Core.Test.Datastore
                 .BuildListOfNew();
 
             Db.InsertMany(tracks);
+        }
+
+        [Test]
+        public void should_join_artist_when_query_for_albums()
+        {
+            var db = Mocker.Resolve<IDatabase>();
+            var DataMapper = db.GetDataMapper();
+
+            var albums = DataMapper.Query<Album>()
+                .Join<Album, Artist>(Marr.Data.QGen.JoinType.Inner, v => v.Artist, (l, r) => l.ArtistId == r.Id)
+                .ToList();
+
+            foreach (var album in albums)
+            {
+                Assert.IsNotNull(album.Artist);
+            }
         }
 
         [Test]
