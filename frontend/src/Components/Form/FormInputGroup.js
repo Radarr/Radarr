@@ -11,6 +11,7 @@ import PasswordInput from './PasswordInput';
 import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
 import LanguageProfileSelectInputConnector from './LanguageProfileSelectInputConnector';
+import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import SeriesTypeSelectInput from './SeriesTypeSelectInput';
 import SelectInput from './SelectInput';
@@ -48,6 +49,9 @@ function getComponent(type) {
 
     case inputTypes.LANGUAGE_PROFILE_SELECT:
       return LanguageProfileSelectInputConnector;
+
+    case inputTypes.METADATA_PROFILE_SELECT:
+      return MetadataProfileSelectInputConnector;
 
     case inputTypes.ROOT_FOLDER_SELECT:
       return RootFolderSelectInputConnector;

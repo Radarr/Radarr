@@ -111,6 +111,19 @@ const settingsActionHandlers = {
     '/languageprofile',
     (state) => state.settings.languageProfiles),
 
+  [types.FETCH_METADATA_PROFILES]: createFetchHandler('metadataProfiles', '/metadataprofile'),
+  [types.FETCH_METADATA_PROFILE_SCHEMA]: createFetchSchemaHandler('metadataProfiles', '/metadataprofile/schema'),
+
+  [types.SAVE_METADATA_PROFILE]: createSaveProviderHandler(
+    'metadataProfiles',
+    '/metadataprofile',
+    (state) => state.settings.metadataProfiles),
+
+  [types.DELETE_METADATA_PROFILE]: createRemoveItemHandler(
+    'metadataProfiles',
+    '/metadataprofile',
+    (state) => state.settings.metadataProfiles),
+
   [types.FETCH_DELAY_PROFILES]: createFetchHandler('delayProfiles', '/delayprofile'),
 
   [types.SAVE_DELAY_PROFILE]: createSaveProviderHandler(

@@ -51,6 +51,7 @@ namespace Lidarr.Api.V1.Artist
         public string Path { get; set; }
         public int QualityProfileId { get; set; }
         public int LanguageProfileId { get; set; }
+        public int MetadataProfileId { get; set; }
 
         //Editing Only
         public bool AlbumFolder { get; set; }
@@ -89,9 +90,6 @@ namespace Lidarr.Api.V1.Artist
                 ArtistType = model.ArtistType,
                 Disambiguation = model.Disambiguation,
 
-                PrimaryAlbumTypes = model.PrimaryAlbumTypes,
-                SecondaryAlbumTypes = model.SecondaryAlbumTypes,
-
                 Images = model.Images,
 
                 Albums = model.Albums.ToResource(),
@@ -100,6 +98,7 @@ namespace Lidarr.Api.V1.Artist
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
                 LanguageProfileId = model.LanguageProfileId,
+                MetadataProfileId = model.MetadataProfileId,
                 Links = model.Links,
 
                 AlbumFolder = model.AlbumFolder,
@@ -146,9 +145,8 @@ namespace Lidarr.Api.V1.Artist
                 Path = resource.Path,
                 ProfileId = resource.QualityProfileId,
                 LanguageProfileId = resource.LanguageProfileId,
+                MetadataProfileId = resource.MetadataProfileId,
                 Links = resource.Links,
-                PrimaryAlbumTypes = resource.PrimaryAlbumTypes,
-                SecondaryAlbumTypes = resource.SecondaryAlbumTypes,
 
                 AlbumFolder = resource.AlbumFolder,
                 Monitored = resource.Monitored,

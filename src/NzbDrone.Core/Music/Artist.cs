@@ -3,6 +3,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Music;
 using System;
 using System.Collections.Generic;
@@ -36,8 +37,6 @@ namespace NzbDrone.Core.Music
         public string Overview { get; set; }
         public string Disambiguation { get; set; }
         public string ArtistType { get; set; }
-        public List<string> PrimaryAlbumTypes { get; set; }
-        public List<string> SecondaryAlbumTypes { get; set; }
         public bool Monitored { get; set; }
         public bool AlbumFolder { get; set; }
         public DateTime? LastInfoSync { get; set; }
@@ -51,8 +50,10 @@ namespace NzbDrone.Core.Music
         public DateTime Added { get; set; }
         public LazyLoaded<Profile> Profile { get; set; }
         public LazyLoaded<LanguageProfile> LanguageProfile { get; set; }
+        public LazyLoaded<MetadataProfile> MetadataProfile { get; set; }
         public int ProfileId { get; set; }
         public int LanguageProfileId { get; set; }
+        public int MetadataProfileId { get; set; }
         public List<Album> Albums { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddArtistOptions AddOptions { get; set; }
@@ -73,10 +74,9 @@ namespace NzbDrone.Core.Music
 
             Profile = otherArtist.Profile;
             LanguageProfileId = otherArtist.LanguageProfileId;
+            MetadataProfileId = otherArtist.MetadataProfileId;
 
             Albums = otherArtist.Albums;
-            PrimaryAlbumTypes = otherArtist.PrimaryAlbumTypes;
-            SecondaryAlbumTypes = otherArtist.SecondaryAlbumTypes;
 
             ProfileId = otherArtist.ProfileId;
             Tags = otherArtist.Tags;

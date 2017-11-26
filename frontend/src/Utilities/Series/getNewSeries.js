@@ -6,10 +6,9 @@ function getNewSeries(artist, payload) {
     monitor,
     qualityProfileId,
     languageProfileId,
+    metadataProfileId,
     artistType,
     albumFolder,
-    primaryAlbumTypes,
-    secondaryAlbumTypes,
     tags,
     searchForMissingAlbums = false
   } = payload;
@@ -25,11 +24,10 @@ function getNewSeries(artist, payload) {
   artist.monitored = true;
   artist.qualityProfileId = qualityProfileId;
   artist.languageProfileId = languageProfileId;
+  artist.metadataProfileId = metadataProfileId;
   artist.rootFolderPath = rootFolderPath;
   artist.artistType = artistType;
   artist.albumFolder = albumFolder;
-  artist.primaryAlbumTypes = primaryAlbumTypes;
-  artist.secondaryAlbumTypes = secondaryAlbumTypes;
   artist.tags = tags;
 
   return artist;

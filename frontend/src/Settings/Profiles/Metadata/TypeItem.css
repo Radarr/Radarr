@@ -1,0 +1,25 @@
+.metadataProfileItem {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+.checkContainer {
+  position: relative;
+  margin-right: 4px;
+  margin-bottom: 7px;
+  margin-left: 8px;
+}
+
+.albumTypeName {
+  display: flex;
+  flex-grow: 1;
+  margin-bottom: 0;
+  margin-left: 2px;
+  font-weight: normal;
+  line-height: 36px;
+}
+
+.isDragging {
+  opacity: 0.25;
+}

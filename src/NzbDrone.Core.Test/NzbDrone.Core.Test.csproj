@@ -280,6 +280,8 @@
     <Compile Include="OrganizerTests\FileNameBuilderTests\TitleTheFixture.cs" />
     <Compile Include="ParserTests\MusicParserFixture.cs" />
     <Compile Include="Profiles\Delay\DelayProfileServiceFixture.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileServiceFixture.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileRepositoryFixture.cs" />
     <Compile Include="Profiles\Qualities\QualityIndexCompareToFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />

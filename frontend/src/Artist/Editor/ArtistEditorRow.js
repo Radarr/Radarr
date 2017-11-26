@@ -32,6 +32,7 @@ class ArtistEditorRow extends Component {
       artistName,
       monitored,
       languageProfile,
+      metadataProfile,
       qualityProfile,
       albumFolder,
       path,
@@ -72,6 +73,13 @@ class ArtistEditorRow extends Component {
             </TableRowCell>
         }
 
+        {
+          _.find(columns, { name: 'metadataProfileId' }).isVisible &&
+            <TableRowCell>
+              {metadataProfile.name}
+            </TableRowCell>
+        }
+
         <TableRowCell className={styles.albumFolder}>
           <CheckInput
             name="albumFolder"
@@ -102,6 +110,7 @@ ArtistEditorRow.propTypes = {
   artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   languageProfile: PropTypes.object.isRequired,
+  metadataProfile: PropTypes.object.isRequired,
   qualityProfile: PropTypes.object.isRequired,
   albumFolder: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,

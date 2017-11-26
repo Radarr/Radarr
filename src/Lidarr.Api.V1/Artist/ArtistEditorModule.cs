@@ -35,6 +35,16 @@ namespace Lidarr.Api.V1.Artist
                     artist.ProfileId = resource.QualityProfileId.Value;
                 }
 
+                if (resource.LanguageProfileId.HasValue)
+                {
+                    artist.LanguageProfileId = resource.LanguageProfileId.Value;
+                }
+
+                if (resource.MetadataProfileId.HasValue)
+                {
+                    artist.MetadataProfileId = resource.MetadataProfileId.Value;
+                }
+
                 if (resource.AlbumFolder.HasValue)
                 {
                     artist.AlbumFolder = resource.AlbumFolder.Value;

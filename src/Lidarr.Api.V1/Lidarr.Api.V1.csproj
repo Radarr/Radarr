@@ -94,6 +94,10 @@
     <Compile Include="Commands\CommandResource.cs" />
     <Compile Include="Config\MetadataProviderConfigModule.cs" />
     <Compile Include="Config\MetadataProviderConfigResource.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileModule.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileResource.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileSchemaModule.cs" />
+    <Compile Include="Profiles\Metadata\MetadataValidator.cs" />
     <Compile Include="Profiles\Quality\QualityCutoffValidator.cs" />
     <Compile Include="Profiles\Quality\QualityItemsValidator.cs" />
     <Compile Include="TrackFiles\TrackFileListResource.cs" />

@@ -18,6 +18,8 @@ using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Restrictions;
@@ -26,6 +28,7 @@ using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
@@ -34,7 +37,6 @@ using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Profiles.Languages;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -71,13 +73,14 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(d => d.Tags);
 
             Mapper.Entity<History.History>().RegisterModel("History")
-                  .AutoMapChildModels();
+                .AutoMapChildModels();
 
             Mapper.Entity<Artist>().RegisterModel("Artists")
-                  .Ignore(s => s.RootFolderPath)
-                  .Relationship()
-                  .HasOne(a => a.Profile, a => a.ProfileId)
-                  .HasOne(s => s.LanguageProfile, s => s.LanguageProfileId);
+                .Ignore(s => s.RootFolderPath)
+                .Relationship()
+                .HasOne(a => a.Profile, a => a.ProfileId)
+                .HasOne(s => s.LanguageProfile, s => s.LanguageProfileId)
+                .HasOne(s => s.MetadataProfile, s => s.MetadataProfileId);
 
             Mapper.Entity<Album>().RegisterModel("Albums");
 
@@ -104,6 +107,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");
             Mapper.Entity<LanguageProfile>().RegisterModel("LanguageProfiles");
+            Mapper.Entity<MetadataProfile>().RegisterModel("MetadataProfiles");
             Mapper.Entity<Log>().RegisterModel("Logs");
             Mapper.Entity<NamingConfig>().RegisterModel("NamingConfig");
             Mapper.Entity<AlbumStatistics>().MapResultSet();
@@ -146,6 +150,8 @@ namespace NzbDrone.Core.Datastore
             MapRepository.Instance.RegisterTypeConverter(typeof(Language), new LanguageIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileLanguageItem>), new EmbeddedDocumentConverter(new LanguageIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfilePrimaryAlbumTypeItem>), new EmbeddedDocumentConverter(new PrimaryAlbumTypeIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileSecondaryAlbumTypeItem>), new EmbeddedDocumentConverter(new SecondaryAlbumTypeIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(ParsedAlbumInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ParsedTrackInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ReleaseInfo), new EmbeddedDocumentConverter());

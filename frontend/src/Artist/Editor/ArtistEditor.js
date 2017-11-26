@@ -19,7 +19,7 @@ import ArtistEditorRowConnector from './ArtistEditorRowConnector';
 import ArtistEditorFooter from './ArtistEditorFooter';
 import OrganizeArtistModal from './Organize/OrganizeArtistModal';
 
-function getColumns(showLanguageProfile) {
+function getColumns(showLanguageProfile, showMetadataProfile) {
   return [
     {
       name: 'status',
@@ -42,6 +42,12 @@ function getColumns(showLanguageProfile) {
       label: 'Language Profile',
       isSortable: true,
       isVisible: showLanguageProfile
+    },
+    {
+      name: 'metadataProfileId',
+      label: 'Metadata Profile',
+      isSortable: true,
+      isVisible: showMetadataProfile
     },
     {
       name: 'albumFolder',
@@ -78,7 +84,7 @@ class ArtistEditor extends Component {
       lastToggled: null,
       selectedState: {},
       isOrganizingArtistModalOpen: false,
-      columns: getColumns(props.showLanguageProfile)
+      columns: getColumns(props.showLanguageProfile, props.showMetadataProfile)
     };
   }
 
@@ -155,6 +161,7 @@ class ArtistEditor extends Component {
       deleteError,
       isOrganizingArtist,
       showLanguageProfile,
+      showMetadataProfile,
       onSortPress,
       onFilterSelect
     } = this.props;
@@ -285,6 +292,7 @@ class ArtistEditor extends Component {
           deleteError={deleteError}
           isOrganizingArtist={isOrganizingArtist}
           showLanguageProfile={showLanguageProfile}
+          showMetadataProfile={showMetadataProfile}
           onSaveSelected={this.onSaveSelected}
           onOrganizeArtistPress={this.onOrganizeArtistPress}
         />
@@ -314,6 +322,7 @@ ArtistEditor.propTypes = {
   deleteError: PropTypes.object,
   isOrganizingArtist: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   onSortPress: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onSaveSelected: PropTypes.func.isRequired

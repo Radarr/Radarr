@@ -77,6 +77,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'metadataProfileId',
+      label: 'Metadata Profile',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'nextAiring',
       label: 'Next Airing',
       isSortable: true,

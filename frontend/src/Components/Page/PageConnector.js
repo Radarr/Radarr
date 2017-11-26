@@ -7,7 +7,7 @@ import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
 import { fetchArtist } from 'Store/Actions/artistActions';
 import { fetchTags } from 'Store/Actions/tagActions';
-import { fetchQualityProfiles, fetchLanguageProfiles, fetchUISettings } from 'Store/Actions/settingsActions';
+import { fetchQualityProfiles, fetchLanguageProfiles, fetchMetadataProfiles, fetchUISettings } from 'Store/Actions/settingsActions';
 import { fetchStatus } from 'Store/Actions/systemActions';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
@@ -75,6 +75,9 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchFetchLanguageProfiles() {
       dispatch(fetchLanguageProfiles());
     },
+    dispatchFetchMetadataProfiles() {
+      dispatch(fetchMetadataProfiles());
+    },
     dispatchFetchUISettings() {
       dispatch(fetchUISettings());
     },
@@ -109,6 +112,7 @@ class PageConnector extends Component {
       this.props.dispatchFetchTags();
       this.props.dispatchFetchQualityProfiles();
       this.props.dispatchFetchLanguageProfiles();
+      this.props.dispatchFetchMetadataProfiles();
       this.props.dispatchFetchUISettings();
       this.props.dispatchFetchStatus();
     }
@@ -132,6 +136,7 @@ class PageConnector extends Component {
       dispatchFetchTags,
       dispatchFetchQualityProfiles,
       dispatchFetchLanguageProfiles,
+      dispatchFetchMetadataProfiles,
       dispatchFetchUISettings,
       dispatchFetchStatus,
       ...otherProps
@@ -169,6 +174,7 @@ PageConnector.propTypes = {
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,
   dispatchFetchLanguageProfiles: PropTypes.func.isRequired,
+  dispatchFetchMetadataProfiles: PropTypes.func.isRequired,
   dispatchFetchUISettings: PropTypes.func.isRequired,
   dispatchFetchStatus: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired

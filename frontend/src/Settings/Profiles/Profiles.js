@@ -6,6 +6,7 @@ import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import LanguageProfilesConnector from './Language/LanguageProfilesConnector';
+import MetadataProfilesConnector from './Metadata/MetadataProfilesConnector';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
 
 class Profiles extends Component {
@@ -23,6 +24,7 @@ class Profiles extends Component {
         <PageContentBodyConnector>
           <QualityProfilesConnector />
           <LanguageProfilesConnector />
+          <MetadataProfilesConnector />
           <DelayProfilesConnector />
         </PageContentBodyConnector>
       </PageContent>

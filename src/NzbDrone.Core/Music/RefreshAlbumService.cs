@@ -39,7 +39,6 @@ namespace NzbDrone.Core.Music
             var failCount = 0;
 
             var existingAlbums = _albumService.GetAlbumsByArtist(artist.Id);
-            var albums = artist.Albums;
 
             var updateList = new List<Album>();
             var newList = new List<Album>();
@@ -79,6 +78,7 @@ namespace NzbDrone.Core.Music
                     albumToUpdate.CleanTitle = Parser.Parser.CleanArtistName(albumToUpdate.Title);
                     albumToUpdate.ArtistId = artist.Id;
                     albumToUpdate.AlbumType = album.AlbumType;
+                    albumToUpdate.SecondaryTypes = album.SecondaryTypes;
                     albumToUpdate.Genres = album.Genres;
                     albumToUpdate.Media = album.Media;
                     albumToUpdate.Label = album.Label;

@@ -57,6 +57,18 @@ export const setLanguageProfileValue = createAction(types.SET_LANGUAGE_PROFILE_V
   };
 });
 
+export const fetchMetadataProfiles = settingsActionHandlers[types.FETCH_METADATA_PROFILES];
+export const fetchMetadataProfileSchema = settingsActionHandlers[types.FETCH_METADATA_PROFILE_SCHEMA];
+export const saveMetadataProfile = settingsActionHandlers[types.SAVE_METADATA_PROFILE];
+export const deleteMetadataProfile = settingsActionHandlers[types.DELETE_METADATA_PROFILE];
+
+export const setMetadataProfileValue = createAction(types.SET_METADATA_PROFILE_VALUE, (payload) => {
+  return {
+    section: 'metadataProfiles',
+    ...payload
+  };
+});
+
 export const fetchDelayProfiles = settingsActionHandlers[types.FETCH_DELAY_PROFILES];
 export const saveDelayProfile = settingsActionHandlers[types.SAVE_DELAY_PROFILE];
 export const deleteDelayProfile = settingsActionHandlers[types.DELETE_DELAY_PROFILE];

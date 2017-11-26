@@ -83,6 +83,22 @@ export const defaultState = {
     pendingChanges: {}
   },
 
+  metadataProfiles: {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    isDeleting: false,
+    deleteError: null,
+    isFetchingSchema: false,
+    schemaPopulated: false,
+    schemaError: null,
+    schema: {},
+    isSaving: false,
+    saveError: null,
+    items: [],
+    pendingChanges: {}
+  },
+
   delayProfiles: {
     isFetching: false,
     isPopulated: false,
@@ -243,6 +259,7 @@ const propertyNames = [
 const providerPropertyNames = [
   'qualityProfiles',
   'languageProfiles',
+  'metadataProfiles',
   'delayProfiles',
   'indexers',
   'restrictions',
@@ -270,6 +287,7 @@ const settingsReducers = handleActions({
   [types.SET_NAMING_SETTINGS_VALUE]: createSetSettingValueReducer('naming'),
   [types.SET_QUALITY_PROFILE_VALUE]: createSetSettingValueReducer('qualityProfiles'),
   [types.SET_LANGUAGE_PROFILE_VALUE]: createSetSettingValueReducer('languageProfiles'),
+  [types.SET_METADATA_PROFILE_VALUE]: createSetSettingValueReducer('metadataProfiles'),
   [types.SET_DELAY_PROFILE_VALUE]: createSetSettingValueReducer('delayProfiles'),
 
   [types.SET_QUALITY_DEFINITION_VALUE]: function(state, { payload }) {

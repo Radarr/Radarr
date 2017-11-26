@@ -52,6 +52,15 @@ function ArtistIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
+          name="metadataProfileId"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Metadata Profile
+        </SortMenuItem>
+
+        <SortMenuItem
           name="nextAiring"
           sortKey={sortKey}
           sortDirection={sortDirection}

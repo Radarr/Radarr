@@ -11,8 +11,9 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.addArtist,
     (state) => state.settings.languageProfiles,
+    (state) => state.settings.metadataProfiles,
     createDimensionsSelector(),
-    (addArtistState, languageProfiles, dimensions) => {
+    (addArtistState, languageProfiles, metadataProfiles, dimensions) => {
       const {
         isAdding,
         addError,
@@ -28,7 +29,8 @@ function createMapStateToProps() {
       return {
         isAdding,
         addError,
-        showLanguageProfile: languageProfiles.length > 1,
+        showLanguageProfile: languageProfiles.items.length > 1,
+        showMetadataProfile: metadataProfiles.items.length > 1,
         isSmallScreen: dimensions.isSmallScreen,
         validationErrors,
         validationWarnings,
@@ -59,9 +61,8 @@ class AddNewArtistModalContentConnector extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
+      metadataProfileId,
       albumFolder,
-      primaryAlbumTypes,
-      secondaryAlbumTypes,
       tags
     } = this.props;
 
@@ -71,9 +72,8 @@ class AddNewArtistModalContentConnector extends Component {
       monitor: monitor.value,
       qualityProfileId: qualityProfileId.value,
       languageProfileId: languageProfileId.value,
+      metadataProfileId: metadataProfileId.value,
       albumFolder: albumFolder.value,
-      primaryAlbumTypes: primaryAlbumTypes.value,
-      secondaryAlbumTypes: secondaryAlbumTypes.value,
       tags: tags.value,
       searchForMissingAlbums
     });
@@ -99,9 +99,8 @@ AddNewArtistModalContentConnector.propTypes = {
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   languageProfileId: PropTypes.object,
+  metadataProfileId: PropTypes.object,
   albumFolder: PropTypes.object.isRequired,
-  primaryAlbumTypes: PropTypes.object.isRequired,
-  secondaryAlbumTypes: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired,
   setAddArtistDefault: PropTypes.func.isRequired,

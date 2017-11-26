@@ -23,18 +23,16 @@ class ImportArtistFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
-      defaultAlbumFolder,
-      defaultPrimaryAlbumTypes,
-      defaultSecondaryAlbumTypes
+      defaultMetadataProfileId,
+      defaultAlbumFolder
     } = props;
 
     this.state = {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
       languageProfileId: defaultLanguageProfileId,
-      albumFolder: defaultAlbumFolder,
-      primaryAlbumTypes: defaultPrimaryAlbumTypes,
-      secondaryAlbumTypes: defaultSecondaryAlbumTypes
+      metadataProfileId: defaultMetadataProfileId,
+      albumFolder: defaultAlbumFolder
     };
   }
 
@@ -43,24 +41,21 @@ class ImportArtistFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
+      defaultMetadataProfileId,
       defaultAlbumFolder,
-      defaultPrimaryAlbumTypes,
-      defaultSecondaryAlbumTypes,
       isMonitorMixed,
       isQualityProfileIdMixed,
       isLanguageProfileIdMixed,
-      isAlbumFolderMixed,
-      isPrimaryAlbumTypesMixed,
-      isSecondaryAlbumTypesMixed
+      isMetadataProfileIdMixed,
+      isAlbumFolderMixed
     } = this.props;
 
     const {
       monitor,
       qualityProfileId,
       languageProfileId,
-      albumFolder,
-      primaryAlbumTypes,
-      secondaryAlbumTypes
+      metadataProfileId,
+      albumFolder
     } = this.state;
 
     const newState = {};
@@ -83,22 +78,16 @@ class ImportArtistFooter extends Component {
       newState.languageProfileId = defaultLanguageProfileId;
     }
 
+    if (isMetadataProfileIdMixed && metadataProfileId !== MIXED) {
+      newState.metadataProfileId = MIXED;
+    } else if (!isMetadataProfileIdMixed && metadataProfileId !== defaultMetadataProfileId) {
+      newState.metadataProfileId = defaultMetadataProfileId;
+    }
+
     if (isAlbumFolderMixed && albumFolder != null) {
       newState.albumFolder = null;
     } else if (!isAlbumFolderMixed && albumFolder !== defaultAlbumFolder) {
       newState.albumFolder = defaultAlbumFolder;
-    }
-
-    if (isPrimaryAlbumTypesMixed && primaryAlbumTypes != null) {
-      newState.primaryAlbumTypes = null;
-    } else if (!isPrimaryAlbumTypesMixed && primaryAlbumTypes !== defaultPrimaryAlbumTypes) {
-      newState.primaryAlbumTypes = defaultPrimaryAlbumTypes;
-    }
-
-    if (isSecondaryAlbumTypesMixed && secondaryAlbumTypes != null) {
-      newState.secondaryAlbumTypes = null;
-    } else if (!isSecondaryAlbumTypesMixed && secondaryAlbumTypes !== defaultSecondaryAlbumTypes) {
-      newState.secondaryAlbumTypes = defaultSecondaryAlbumTypes;
     }
 
     if (!_.isEmpty(newState)) {
@@ -125,7 +114,9 @@ class ImportArtistFooter extends Component {
       isMonitorMixed,
       isQualityProfileIdMixed,
       isLanguageProfileIdMixed,
+      isMetadataProfileIdMixed,
       showLanguageProfile,
+      showMetadataProfile,
       onImportPress
     } = this.props;
 
@@ -133,9 +124,8 @@ class ImportArtistFooter extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
-      albumFolder,
-      primaryAlbumTypes,
-      secondaryAlbumTypes
+      metadataProfileId,
+      albumFolder
     } = this.state;
 
     return (
@@ -184,6 +174,25 @@ class ImportArtistFooter extends Component {
                 value={languageProfileId}
                 isDisabled={!selectedCount}
                 includeMixed={isLanguageProfileIdMixed}
+                onChange={this.onInputChange}
+              />
+            </div>
+        }
+
+        {
+          showMetadataProfile &&
+
+            <div className={styles.inputContainer}>
+              <div className={styles.label}>
+                Metadata Profile
+              </div>
+
+              <FormInputGroup
+                type={inputTypes.METADATA_PROFILE_SELECT}
+                name="metadataProfileId"
+                value={metadataProfileId}
+                isDisabled={!selectedCount}
+                includeMixed={isMetadataProfileIdMixed}
                 onChange={this.onInputChange}
               />
             </div>
@@ -244,16 +253,15 @@ ImportArtistFooter.propTypes = {
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
   defaultLanguageProfileId: PropTypes.number,
+  defaultMetadataProfileId: PropTypes.number,
   defaultAlbumFolder: PropTypes.bool.isRequired,
-  defaultPrimaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  defaultSecondaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
   isLanguageProfileIdMixed: PropTypes.bool.isRequired,
+  isMetadataProfileIdMixed: PropTypes.bool.isRequired,
   isAlbumFolderMixed: PropTypes.bool.isRequired,
-  isPrimaryAlbumTypesMixed: PropTypes.bool.isRequired,
-  isSecondaryAlbumTypesMixed: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired
 };

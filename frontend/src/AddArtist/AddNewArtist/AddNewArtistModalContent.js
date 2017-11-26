@@ -46,6 +46,10 @@ class AddNewArtistModalContent extends Component {
     this.props.onInputChange({ name: 'languageProfileId', value: parseInt(value) });
   }
 
+  onMetadataProfileIdChange = ({ value }) => {
+    this.props.onInputChange({ name: 'metadataProfileId', value: parseInt(value) });
+  }
+
   onAddArtistPress = () => {
     this.props.onAddArtistPress(this.state.searchForMissingAlbums);
   }
@@ -63,11 +67,11 @@ class AddNewArtistModalContent extends Component {
       monitor,
       qualityProfileId,
       languageProfileId,
+      metadataProfileId,
       albumFolder,
-      primaryAlbumTypes,
-      secondaryAlbumTypes,
       tags,
       showLanguageProfile,
+      showMetadataProfile,
       isSmallScreen,
       onModalClose,
       onInputChange
@@ -149,16 +153,33 @@ class AddNewArtistModalContent extends Component {
                   />
                 </FormGroup>
 
-                <FormGroup className={showLanguageProfile ? null : styles.hideLanguageProfile}>
-                  <FormLabel>Language Profile</FormLabel>
+                {
+                  showLanguageProfile &&
+                    <FormGroup>
+                      <FormLabel>Language Profile</FormLabel>
 
-                  <FormInputGroup
-                    type={inputTypes.LANGUAGE_PROFILE_SELECT}
-                    name="languageProfileId"
-                    onChange={this.onLanguageProfileIdChange}
-                    {...languageProfileId}
-                  />
-                </FormGroup>
+                      <FormInputGroup
+                        type={inputTypes.LANGUAGE_PROFILE_SELECT}
+                        name="languageProfileId"
+                        onChange={this.onLanguageProfileIdChange}
+                        {...languageProfileId}
+                      />
+                    </FormGroup>
+                }
+
+                {
+                  showMetadataProfile &&
+                    <FormGroup>
+                      <FormLabel>Metadata Profile</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.METADATA_PROFILE_SELECT}
+                        name="metadataProfileId"
+                        onChange={this.onMetadataProfileIdChange}
+                        {...metadataProfileId}
+                      />
+                    </FormGroup>
+                }
 
                 <FormGroup>
                   <FormLabel>Album Folder</FormLabel>
@@ -225,11 +246,11 @@ AddNewArtistModalContent.propTypes = {
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   languageProfileId: PropTypes.object,
+  metadataProfileId: PropTypes.object,
   albumFolder: PropTypes.object.isRequired,
-  primaryAlbumTypes: PropTypes.object.isRequired,
-  secondaryAlbumTypes: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,

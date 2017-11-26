@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { kinds } from 'Helpers/Props';
 import SelectInput from 'Components/Form/SelectInput';
 import LanguageProfileSelectInputConnector from 'Components/Form/LanguageProfileSelectInputConnector';
+import MetadataProfileSelectInputConnector from 'Components/Form/MetadataProfileSelectInputConnector';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -26,6 +27,7 @@ class ArtistEditorFooter extends Component {
       monitored: NO_CHANGE,
       qualityProfileId: NO_CHANGE,
       languageProfileId: NO_CHANGE,
+      metadataProfileId: NO_CHANGE,
       albumFolder: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
       savingTags: false,
@@ -45,6 +47,7 @@ class ArtistEditorFooter extends Component {
         monitored: NO_CHANGE,
         qualityProfileId: NO_CHANGE,
         languageProfileId: NO_CHANGE,
+        metadataProfileId: NO_CHANGE,
         albumFolder: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
         savingTags: false
@@ -113,6 +116,7 @@ class ArtistEditorFooter extends Component {
       isDeleting,
       isOrganizingArtist,
       showLanguageProfile,
+      showMetadataProfile,
       onOrganizeArtistPress
     } = this.props;
 
@@ -120,6 +124,7 @@ class ArtistEditorFooter extends Component {
       monitored,
       qualityProfileId,
       languageProfileId,
+      metadataProfileId,
       albumFolder,
       rootFolderPath,
       savingTags,
@@ -182,6 +187,24 @@ class ArtistEditorFooter extends Component {
               <LanguageProfileSelectInputConnector
                 name="languageProfileId"
                 value={languageProfileId}
+                includeNoChange={true}
+                isDisabled={!selectedCount}
+                onChange={this.onInputChange}
+              />
+            </div>
+        }
+
+        {
+          showMetadataProfile &&
+            <div className={styles.inputContainer}>
+              <ArtistEditorFooterLabel
+                label="Metadata Profile"
+                isSaving={isSaving && metadataProfileId !== NO_CHANGE}
+              />
+
+              <MetadataProfileSelectInputConnector
+                name="metadataProfileId"
+                value={metadataProfileId}
                 includeNoChange={true}
                 isDisabled={!selectedCount}
                 onChange={this.onInputChange}
@@ -288,6 +311,7 @@ ArtistEditorFooter.propTypes = {
   deleteError: PropTypes.object,
   isOrganizingArtist: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   onSaveSelected: PropTypes.func.isRequired,
   onOrganizeArtistPress: PropTypes.func.isRequired
 };

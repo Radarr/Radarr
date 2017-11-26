@@ -14,6 +14,7 @@ using NzbDrone.Core.Music;
 using Newtonsoft.Json;
 using NzbDrone.Core.Configuration;
 using System.Text.RegularExpressions;
+using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -25,39 +26,36 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IArtistService _artistService;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IConfigService _configService;
+        private readonly IMetadataProfileService _metadataProfileService;
 
         private IHttpRequestBuilderFactory customerRequestBuilder;
 
-        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IArtistService artistService, Logger logger, IConfigService configService)
+        public SkyHookProxy(IHttpClient httpClient, ILidarrCloudRequestBuilder requestBuilder, IArtistService artistService, Logger logger, IConfigService configService, IMetadataProfileService metadataProfileService)
         {
             _httpClient = httpClient;
             _configService = configService;
+            _metadataProfileService = metadataProfileService;
             _requestBuilder = requestBuilder.Search;
             _artistService = artistService;
             _logger = logger;
         }
 
-        public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId, List<string> primaryAlbumTypes, List<string> secondaryAlbumTypes)
+        public Tuple<Artist, List<Album>> GetArtistInfo(string foreignArtistId, int metadataProfileId)
         {
 
             _logger.Debug("Getting Artist with LidarrAPI.MetadataID of {0}", foreignArtistId);
 
             SetCustomProvider();
 
-            if (primaryAlbumTypes == null)
-            {
-                primaryAlbumTypes = new List<string>();
-            }
+            var metadataProfile = _metadataProfileService.Get(metadataProfileId);
 
-            if (secondaryAlbumTypes == null)
-            {
-                secondaryAlbumTypes = new List<string>();
-            }
+            var primaryTypes = metadataProfile.PrimaryAlbumTypes.Where(s => s.Allowed).Select(s => s.PrimaryAlbumType.Name);
+            var secondaryTypes = metadataProfile.SecondaryAlbumTypes.Where(s => s.Allowed).Select(s => s.SecondaryAlbumType.Name);
 
             var httpRequest = customerRequestBuilder.Create()
                                             .SetSegment("route", "artists/" + foreignArtistId)
-                                            .AddQueryParam("primTypes", string.Join("|",primaryAlbumTypes))
-                                            .AddQueryParam("secTypes", string.Join("|", secondaryAlbumTypes))
+                                            .AddQueryParam("primTypes", string.Join("|", primaryTypes))
+                                            .AddQueryParam("secTypes", string.Join("|", secondaryTypes))
                                             .Build();
 
             httpRequest.AllowAutoRedirect = true;
@@ -102,7 +100,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Artist> { GetArtistInfo(slug, new List<string>{"Album"}, new List<string>{"Studio"}).Item1 };
+                        var metadataProfile = _metadataProfileService.All().First().Id; //Change this to Use last Used profile?
+                        return new List<Artist> { GetArtistInfo(slug, metadataProfile).Item1 };
                     }
                     catch (ArtistNotFoundException)
                     {
@@ -160,6 +159,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             album.Media = resource.Media.Select(MapMedium).ToList();
             album.Tracks = resource.Tracks.Select(MapTrack).ToList();
+            album.SecondaryTypes = resource.SecondaryTypes.Select(MapSecondaryTypes).ToList();
 
 
             return album;
@@ -294,6 +294,35 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     return MediaCoverTypes.Logo;
                 default:
                     return MediaCoverTypes.Unknown;
+            }
+        }
+
+        private static SecondaryAlbumType MapSecondaryTypes(string albumType)
+        {
+            switch (albumType.ToLowerInvariant())
+            {
+                case "compilation":
+                    return SecondaryAlbumType.Compilation;
+                case "soundtrack":
+                    return SecondaryAlbumType.Soundtrack;
+                case "spokenword":
+                    return SecondaryAlbumType.Spokenword;
+                case "interview":
+                    return SecondaryAlbumType.Interview;
+                case "audiobook":
+                    return SecondaryAlbumType.Audiobook;
+                case "live":
+                    return SecondaryAlbumType.Live;
+                case "remix":
+                    return SecondaryAlbumType.Remix;
+                case "dj-mix":
+                    return SecondaryAlbumType.DJMix;
+                case "mixtape/street":
+                    return SecondaryAlbumType.Mixtape;
+                case "demo":
+                    return SecondaryAlbumType.Demo;
+                default:
+                    return SecondaryAlbumType.Studio;
             }
         }
 

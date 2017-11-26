@@ -38,6 +38,7 @@ namespace NzbDrone.Core.Music
         public DateTime? LastDiskSync { get; set; }
         public DateTime Added { get; set; }
         public String AlbumType { get; set; }
+        public List<SecondaryAlbumType> SecondaryTypes { get; set; }
         //public string ArtworkUrl { get; set; }
         //public string Explicitness { get; set; }
         public AddArtistOptions AddOptions { get; set; }

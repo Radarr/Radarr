@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenValidArtist(string lidarrId)
         {
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(lidarrId, It.IsAny<List<string>>(), It.IsAny<List<string>>()))
+                  .Setup(s => s.GetArtistInfo(lidarrId, It.IsAny<int>()))
                   .Returns(new Tuple<Artist, List<Album>>(_fakeArtist, new List<Album>()));
         }
 
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Test.MusicTests
             };
 
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(newArtist.ForeignArtistId, newArtist.PrimaryAlbumTypes, newArtist.SecondaryAlbumTypes))
+                  .Setup(s => s.GetArtistInfo(newArtist.ForeignArtistId, newArtist.MetadataProfileId))
                   .Throws(new ArtistNotFoundException(newArtist.ForeignArtistId));
 
             Mocker.GetMock<IAddArtistValidator>()

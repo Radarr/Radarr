@@ -38,14 +38,14 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Returns(_artist);
             
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<List<string>>()))
+                  .Setup(s => s.GetArtistInfo(It.IsAny<string>(), It.IsAny<int>()))
                   .Callback(() => { throw new ArtistNotFoundException(_artist.ForeignArtistId); });
         }
 
         private void GivenNewArtistInfo(Artist artist)
         {
             Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(_artist.ForeignArtistId, _artist.PrimaryAlbumTypes, _artist.SecondaryAlbumTypes))
+                  .Setup(s => s.GetArtistInfo(_artist.ForeignArtistId, _artist.MetadataProfileId))
                   .Returns(new Tuple<Artist, List<Album>>(artist, new List<Album>()));
         }
 

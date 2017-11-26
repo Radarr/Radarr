@@ -6,6 +6,7 @@ import { createSelector } from 'reselect';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
 import createLanguageProfileSelector from 'Store/Selectors/createLanguageProfileSelector';
+import createMetadataProfileSelector from 'Store/Selectors/createMetadataProfileSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 
@@ -15,8 +16,9 @@ function createMapStateToProps() {
     (state, { albums }) => albums,
     createQualityProfileSelector(),
     createLanguageProfileSelector(),
+    createMetadataProfileSelector(),
     createCommandsSelector(),
-    (artistId, albums, qualityProfile, languageProfile, commands) => {
+    (artistId, albums, qualityProfile, languageProfile, metadataProfile, commands) => {
       const isRefreshingArtist = _.some(commands, (command) => {
         return command.name === commandNames.REFRESH_ARTIST &&
           command.body.artistId === artistId;
@@ -27,6 +29,7 @@ function createMapStateToProps() {
       return {
         qualityProfile,
         languageProfile,
+        metadataProfile,
         latestAlbum,
         isRefreshingArtist
       };

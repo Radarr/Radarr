@@ -150,6 +150,8 @@
     <Compile Include="Datastore\Converters\DoubleConverter.cs" />
     <Compile Include="Datastore\Converters\EmbeddedDocumentConverter.cs" />
     <Compile Include="Datastore\Converters\EnumIntConverter.cs" />
+    <Compile Include="Datastore\Converters\SecondaryAlbumTypeIntConverter.cs" />
+    <Compile Include="Datastore\Converters\PrimaryAlbumTypeIntConverter.cs" />
     <Compile Include="Datastore\Converters\LanguageIntConverter.cs" />
     <Compile Include="Datastore\Converters\TimeSpanConverter.cs" />
     <Compile Include="Datastore\Converters\Int32Converter.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="Datastore\LogDatabase.cs" />
     <Compile Include="Datastore\Migration\001_initial_setup.cs" />
     <Compile Include="Datastore\Migration\002_add_reason_to_pending_releases.cs" />
+    <Compile Include="Datastore\Migration\005_metadata_profiles.cs" />
     <Compile Include="Datastore\Migration\004_add_various_qualities_in_profile.cs" />
     <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
@@ -745,6 +748,8 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\AlbumCutoffService.cs" />
+    <Compile Include="Music\SecondaryAlbumType.cs" />
+    <Compile Include="Music\PrimaryAlbumType.cs" />
     <Compile Include="Music\Links.cs" />
     <Compile Include="Music\Commands\MoveArtistCommand.cs" />
     <Compile Include="Music\Events\ArtistMovedEvent.cs" />
@@ -863,6 +868,12 @@
     <Compile Include="Profiles\Languages\LanguageProfileRepository.cs" />
     <Compile Include="Profiles\Languages\LanguageProfileService.cs" />
     <Compile Include="Profiles\Languages\ProfileLanguageItem.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileService.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileInUseException.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfile.cs" />
+    <Compile Include="Profiles\Metadata\MetadataProfileRepository.cs" />
+    <Compile Include="Profiles\Metadata\ProfileSecondaryAlbumTypeItem.cs" />
+    <Compile Include="Profiles\Metadata\ProfilePrimaryAlbumTypeItem.cs" />
     <Compile Include="Profiles\Quality\ProfileRepository.cs" />
     <Compile Include="Profiles\Quality\QualityIndex.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />

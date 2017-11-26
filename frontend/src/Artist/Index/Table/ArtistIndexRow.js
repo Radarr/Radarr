@@ -69,6 +69,7 @@ class ArtistIndexRow extends Component {
       artistType,
       qualityProfile,
       languageProfile,
+      metadataProfile,
       nextAiring,
       previousAiring,
       added,
@@ -159,6 +160,17 @@ class ArtistIndexRow extends Component {
                   className={styles[name]}
                 >
                   {languageProfile.name}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'metadataProfileId') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {metadataProfile.name}
                 </VirtualTableRowCell>
               );
             }
@@ -347,6 +359,7 @@ ArtistIndexRow.propTypes = {
   artistType: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   languageProfile: PropTypes.object.isRequired,
+  metadataProfile: PropTypes.object.isRequired,
   nextAiring: PropTypes.string,
   previousAiring: PropTypes.string,
   added: PropTypes.string,
@@ -358,7 +371,6 @@ ArtistIndexRow.propTypes = {
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
-  // useSceneNumbering: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
   onRefreshArtistPress: PropTypes.func.isRequired

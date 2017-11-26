@@ -87,7 +87,8 @@ class ImportArtist extends Component {
       rootFoldersPopulated,
       rootFoldersError,
       unmappedFolders,
-      showLanguageProfile
+      showLanguageProfile,
+      showMetadataProfile
     } = this.props;
 
     const {
@@ -130,6 +131,7 @@ class ImportArtist extends Component {
                 selectedState={selectedState}
                 contentBody={contentBody}
                 showLanguageProfile={showLanguageProfile}
+                showMetadataProfile={showMetadataProfile}
                 scrollTop={this.state.scrollTop}
                 onSelectAllChange={this.onSelectAllChange}
                 onSelectedChange={this.onSelectedChange}
@@ -144,6 +146,7 @@ class ImportArtist extends Component {
             <ImportArtistFooterConnector
               selectedIds={this.getSelectedIds()}
               showLanguageProfile={showLanguageProfile}
+              showMetadataProfile={showMetadataProfile}
               onInputChange={this.onInputChange}
               onImportPress={this.onImportPress}
             />
@@ -162,6 +165,7 @@ ImportArtist.propTypes = {
   unmappedFolders: PropTypes.arrayOf(PropTypes.object),
   items: PropTypes.arrayOf(PropTypes.object),
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired
 };

@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Music
 
             try
             {
-                tuple = _artistInfo.GetArtistInfo(newArtist.ForeignArtistId, newArtist.PrimaryAlbumTypes, newArtist.SecondaryAlbumTypes);
+                tuple = _artistInfo.GetArtistInfo(newArtist.ForeignArtistId, newArtist.MetadataProfileId);
             }
             catch (ArtistNotFoundException)
             {

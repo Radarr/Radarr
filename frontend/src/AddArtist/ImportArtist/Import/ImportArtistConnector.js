@@ -16,7 +16,8 @@ function createMapStateToProps() {
     (state) => state.addArtist,
     (state) => state.importArtist,
     (state) => state.settings.languageProfiles,
-    (match, rootFolders, addArtist, importArtistState, languageProfiles) => {
+    (state) => state.settings.metadataProfiles,
+    (match, rootFolders, addArtist, importArtistState, languageProfiles, metadataProfiles) => {
       const {
         isFetching: rootFoldersFetching,
         isPopulated: rootFoldersPopulated,
@@ -31,7 +32,8 @@ function createMapStateToProps() {
         rootFoldersFetching,
         rootFoldersPopulated,
         rootFoldersError,
-        showLanguageProfile: languageProfiles.items.length > 1
+        showLanguageProfile: languageProfiles.items.length > 1,
+        showMetadataProfile: metadataProfiles.items.length > 1
       };
 
       if (items.length) {

@@ -22,9 +22,8 @@ class ImportArtistTable extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultLanguageProfileId,
+      defaultMetadataProfileId,
       defaultAlbumFolder,
-      defaultPrimaryAlbumTypes,
-      defaultSecondaryAlbumTypes,
       onArtistLookup,
       onSetImportArtistValue
     } = this.props;
@@ -33,9 +32,8 @@ class ImportArtistTable extends Component {
       monitor: defaultMonitor,
       qualityProfileId: defaultQualityProfileId,
       languageProfileId: defaultLanguageProfileId,
-      albumFolder: defaultAlbumFolder,
-      primaryAlbumTypes: defaultPrimaryAlbumTypes,
-      secondaryAlbumTypes: defaultSecondaryAlbumTypes
+      metadataProfileId: defaultMetadataProfileId,
+      albumFolder: defaultAlbumFolder
     };
 
     unmappedFolders.forEach((unmappedFolder) => {
@@ -125,6 +123,7 @@ class ImportArtistTable extends Component {
       items,
       selectedState,
       showLanguageProfile,
+      showMetadataProfile,
       onSelectedChange
     } = this.props;
 
@@ -136,6 +135,7 @@ class ImportArtistTable extends Component {
         style={style}
         rootFolderId={rootFolderId}
         showLanguageProfile={showLanguageProfile}
+        showMetadataProfile={showMetadataProfile}
         isSelected={selectedState[item.id]}
         onSelectedChange={onSelectedChange}
         id={item.id}
@@ -154,6 +154,7 @@ class ImportArtistTable extends Component {
       isSmallScreen,
       contentBody,
       showLanguageProfile,
+      showMetadataProfile,
       scrollTop,
       onSelectAllChange,
       onScroll
@@ -176,6 +177,7 @@ class ImportArtistTable extends Component {
         header={
           <ImportArtistHeader
             showLanguageProfile={showLanguageProfile}
+            showMetadataProfile={showMetadataProfile}
             allSelected={allSelected}
             allUnselected={allUnselected}
             onSelectAllChange={onSelectAllChange}
@@ -194,9 +196,8 @@ ImportArtistTable.propTypes = {
   defaultMonitor: PropTypes.string.isRequired,
   defaultQualityProfileId: PropTypes.number,
   defaultLanguageProfileId: PropTypes.number,
+  defaultMetadataProfileId: PropTypes.number,
   defaultAlbumFolder: PropTypes.bool.isRequired,
-  defaultPrimaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  defaultSecondaryAlbumTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,
   selectedState: PropTypes.object.isRequired,
@@ -204,6 +205,7 @@ ImportArtistTable.propTypes = {
   allArtists: PropTypes.arrayOf(PropTypes.object),
   contentBody: PropTypes.object.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   scrollTop: PropTypes.number.isRequired,
   onSelectAllChange: PropTypes.func.isRequired,
   onSelectedChange: PropTypes.func.isRequired,

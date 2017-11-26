@@ -32,7 +32,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Quality, Language and Delay profiles
+          Quality, Language, Metadata, and Delay profiles
         </div>
 
         <Link

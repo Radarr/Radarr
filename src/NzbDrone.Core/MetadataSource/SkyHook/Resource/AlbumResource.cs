@@ -22,6 +22,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<string> Genres { get; set; }
         public List<string> Labels { get; set; }
         public string Type { get; set; }
+        public List<string> SecondaryTypes { get; set; }
         public List<MediumResource> Media { get; set; }
         public List<TrackResource> Tracks { get; set; }
     }

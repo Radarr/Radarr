@@ -12,8 +12,9 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.artist,
     (state) => state.settings.languageProfiles,
+    (state) => state.settings.metadataProfiles,
     createArtistSelector(),
-    (artistState, languageProfiles, artist) => {
+    (artistState, languageProfiles, metadataProfiles, artist) => {
       const {
         isSaving,
         saveError,
@@ -25,6 +26,7 @@ function createMapStateToProps() {
         'albumFolder',
         'qualityProfileId',
         'languageProfileId',
+        'metadataProfileId',
         'path',
         'tags'
       ]);
@@ -38,6 +40,7 @@ function createMapStateToProps() {
         pendingChanges,
         item: settings.settings,
         showLanguageProfile: languageProfiles.items.length > 1,
+        showMetadataProfile: metadataProfiles.items.length > 1,
         ...settings
       };
     }

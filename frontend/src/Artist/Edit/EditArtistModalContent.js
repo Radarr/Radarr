@@ -24,6 +24,7 @@ class EditArtistModalContent extends Component {
       item,
       isSaving,
       showLanguageProfile,
+      showMetadataProfile,
       onInputChange,
       onSavePress,
       onModalClose,
@@ -36,6 +37,7 @@ class EditArtistModalContent extends Component {
       albumFolder,
       qualityProfileId,
       languageProfileId,
+      metadataProfileId,
       path,
       tags
     } = item;
@@ -99,6 +101,21 @@ class EditArtistModalContent extends Component {
                 </FormGroup>
             }
 
+            {
+              showMetadataProfile &&
+                <FormGroup>
+                  <FormLabel>Metadata Profile</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.METADATA_PROFILE_SELECT}
+                    name="metadataProfileId"
+                    helpText="Changes will take place on next artist refresh"
+                    {...metadataProfileId}
+                    onChange={onInputChange}
+                  />
+                </FormGroup>
+            }
+
             <FormGroup>
               <FormLabel>Path</FormLabel>
 
@@ -155,6 +172,7 @@ EditArtistModalContent.propTypes = {
   item: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
+  showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
