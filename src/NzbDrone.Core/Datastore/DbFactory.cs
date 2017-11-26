@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SQLite;
 using Marr.Data;
 using Marr.Data.Reflection;
@@ -126,6 +126,11 @@ namespace NzbDrone.Core.Datastore
 
                     return dataMapper;
                 });
+
+            if (db.Migration > 100) //Quick DB Migration Check. This should get rid of users on old DB format
+            {
+                throw new CorruptDatabaseException("Invalid DB, Please Delete and Restart Lidarr");
+            }
 
             return db;
         }
