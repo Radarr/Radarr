@@ -331,7 +331,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return new List<ImageFileResult>();
             }
 
-            return ProcessAlbumImages(artist, album).ToList();
+            return ProcessAlbumImages(album).ToList();
         }
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
@@ -351,14 +351,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
         }
 
-        private IEnumerable<ImageFileResult> ProcessAlbumImages(Artist artist, Album album)
+        private IEnumerable<ImageFileResult> ProcessAlbumImages(Album album)
         {
             foreach (var image in album.Images)
             {
-                var destination = Path.GetFileName(album.Path);
-                var filename = string.Format("{0}\\{1}{2}", destination, image.CoverType.ToString().ToLower(), Path.GetExtension(image.Url));
+                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);
 
-                yield return new ImageFileResult(filename, image.Url);
+                yield return new ImageFileResult(destination, image.Url);
             }
         }
 

@@ -392,7 +392,7 @@ namespace NzbDrone.Core.Extras.Metadata
                                     Extension = Path.GetExtension(fullPath)
                                 };
 
-                    DownloadImage(artist, image);
+                    DownloadImage(album, image);
 
                     result.Add(metadata);
                 }
@@ -473,6 +473,32 @@ namespace NzbDrone.Core.Extras.Metadata
             catch (Exception ex)
             {
                 _logger.Error(ex, "Couldn't download image {0} for {1}. {2}", image.Url, artist, ex.Message);
+            }
+        }
+
+        private void DownloadImage(Album album, ImageFileResult image)
+        {
+            var fullPath = Path.Combine(album.Path, image.RelativePath);
+
+            try
+            {
+                if (image.Url.StartsWith("http"))
+                {
+                    _httpClient.DownloadFile(image.Url, fullPath);
+                }
+                else
+                {
+                    _diskProvider.CopyFile(image.Url, fullPath);
+                }
+                _mediaFileAttributeService.SetFilePermissions(fullPath);
+            }
+            catch (WebException ex)
+            {
+                _logger.Warn(ex, "Couldn't download image {0} for {1}. {2}", image.Url, album, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Couldn't download image {0} for {1}. {2}", image.Url, album, ex.Message);
             }
         }
 
