@@ -13,3 +13,7 @@
     color: $toobarButtonHoverColor;
   }
 }
+
+.isDisabled {
+  color: $disabledColor;
+}

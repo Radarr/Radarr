@@ -9,11 +9,15 @@ function ArtistIndexSortMenu(props) {
   const {
     sortKey,
     sortDirection,
+    isDisabled,
     onSortSelect
   } = props;
 
   return (
-    <SortMenu alignMenu={align.RIGHT}>
+    <SortMenu
+      isDisabled={isDisabled}
+      alignMenu={align.RIGHT}
+    >
       <MenuContent>
         <SortMenuItem
           name="sortName"
@@ -148,6 +152,7 @@ function ArtistIndexSortMenu(props) {
 ArtistIndexSortMenu.propTypes = {
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
+  isDisabled: PropTypes.bool.isRequired,
   onSortSelect: PropTypes.func.isRequired
 };
 

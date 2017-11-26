@@ -88,5 +88,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   { withRef: true },
-  { section: 'downloadClientOptions' }
+  { section: 'settings.downloadClientOptions' }
 )(DownloadClientOptionsConnector);

@@ -18,7 +18,7 @@ class EditLanguageProfileModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'languageProfiles' });
+    this.props.clearPendingChanges({ section: 'settings.languageProfiles' });
     this.props.onModalClose();
   }
 

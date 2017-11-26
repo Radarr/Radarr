@@ -150,6 +150,7 @@ class CutoffUnmet extends Component {
             <PageToolbarButton
               label="Search All"
               iconName={icons.SEARCH}
+              isDisabled={!items.length}
               isSpinning={isSearchingForCutoffUnmetAlbums}
               onPress={this.onSearchAllCutoffUnmetPress}
             />

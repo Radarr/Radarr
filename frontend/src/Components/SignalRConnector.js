@@ -72,7 +72,7 @@ class SignalRConnector extends Component {
 
     this.signalRconnectionOptions = { transport: ['webSockets', 'longPolling'] };
     this.signalRconnection = null;
-    this.retryInterval = 5;
+    this.retryInterval = 1;
     this.retryTimeoutId = null;
     this.disconnectedTime = null;
   }
@@ -107,7 +107,7 @@ class SignalRConnector extends Component {
 
     this.retryTimeoutId = setTimeout(() => {
       this.signalRconnection.start(this.signalRconnectionOptions);
-      this.retryInterval = Math.min(this.retryInterval + 5, 30);
+      this.retryInterval = Math.min(this.retryInterval + 1, 10);
     }, this.retryInterval * 1000);
   }
 
@@ -262,7 +262,7 @@ class SignalRConnector extends Component {
   }
 
   handleQueueStatus = (body) => {
-    this.props.update({ section: 'queueStatus', data: body.resource });
+    this.props.update({ section: 'queue.status', data: body.resource });
   }
 
   handleVersion = (body) => {

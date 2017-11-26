@@ -19,16 +19,14 @@ const columnPaddingSmallScreen = parseInt(dimensions.artistIndexColumnPaddingSma
 const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
 
-function calculateHeight(rowHeight, isSmallScreen) {
-  let height = rowHeight - 45;
+// Hardcoded height beased on line-height of 32 + bottom margin of 10.
+// Less side-effecty than using react-measure.
+const titleRowHeight = 42;
 
-  if (isSmallScreen) {
-    height -= columnPaddingSmallScreen;
-  } else {
-    height -= columnPadding;
-  }
+function getContentHeight(rowHeight, isSmallScreen) {
+  const padding = isSmallScreen ? columnPaddingSmallScreen : columnPadding;
 
-  return height;
+  return rowHeight - padding;
 }
 
 class ArtistIndexOverview extends Component {
@@ -109,7 +107,8 @@ class ArtistIndexOverview extends Component {
       height: `${posterHeight}px`
     };
 
-    const height = calculateHeight(rowHeight, isSmallScreen);
+    const contentHeight = getContentHeight(rowHeight, isSmallScreen);
+    const overviewHeight = contentHeight - titleRowHeight;
 
     return (
       <div className={styles.container} style={style}>
@@ -150,7 +149,7 @@ class ArtistIndexOverview extends Component {
             />
           </div>
 
-          <div className={styles.info}>
+          <div className={styles.info} style={{ maxHeight: contentHeight }}>
             <div className={styles.titleRow}>
               <Link
                 className={styles.title}
@@ -182,13 +181,13 @@ class ArtistIndexOverview extends Component {
                 to={link}
               >
                 <TextTruncate
-                  line={Math.floor(height / (defaultFontSize * lineHeight))}
+                  line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
                   text={overview}
                 />
               </Link>
 
               <ArtistIndexOverviewInfo
-                height={height}
+                height={overviewHeight}
                 nextAiring={nextAiring}
                 qualityProfile={qualityProfile}
                 showRelativeDates={showRelativeDates}

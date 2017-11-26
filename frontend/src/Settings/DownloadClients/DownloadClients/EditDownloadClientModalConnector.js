@@ -6,7 +6,7 @@ import { cancelTestDownloadClient, cancelSaveDownloadClient } from 'Store/Action
 import EditDownloadClientModal from './EditDownloadClientModal';
 
 function createMapDispatchToProps(dispatch, props) {
-  const section = 'downloadClients';
+  const section = 'settings.downloadClients';
 
   return {
     dispatchClearPendingChanges() {

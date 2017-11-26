@@ -87,5 +87,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'mediaManagement' }
+  { section: 'settings.mediaManagement' }
 )(MediaManagementConnector);

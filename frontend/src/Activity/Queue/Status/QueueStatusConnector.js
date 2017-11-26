@@ -8,7 +8,7 @@ import PageSidebarStatus from 'Components/Page/Sidebar/PageSidebarStatus';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.app,
-    (state) => state.queue.queueStatus,
+    (state) => state.queue.status,
     (app, status) => {
       return {
         isConnected: app.isConnected,

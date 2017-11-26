@@ -7,11 +7,12 @@ import TetherComponent from 'react-tether';
 import classNames from 'classnames';
 import isMobileUtil from 'Utilities/isMobile';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
-import { icons } from 'Helpers/Props';
+import { icons, scrollDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import Modal from 'Components/Modal/Modal';
 import ModalBody from 'Components/Modal/ModalBody';
+import Scroller from 'Components/Scroller/Scroller';
 import EnhancedSelectInputSelectedValue from './EnhancedSelectInputSelectedValue';
 import EnhancedSelectInputOption from './EnhancedSelectInputOption';
 import styles from './EnhancedSelectInput.css';
@@ -346,24 +347,28 @@ class EnhancedSelectInput extends Component {
               onModalClose={this.onOptionsModalClose}
             >
               <ModalBody
+                className={styles.optionsModalBody}
                 innerClassName={styles.optionsInnerModalBody}
+                scrollDirection={scrollDirections.NONE}
               >
-                {
-                  values.map((v, index) => {
-                    return (
-                      <OptionComponent
-                        key={v.key}
-                        id={v.key}
-                        isSelected={index === selectedIndex}
-                        {...v}
-                        isMobile={true}
-                        onSelect={this.onSelect}
-                      >
-                        {v.value}
-                      </OptionComponent>
-                    );
-                  })
-                }
+                <Scroller className={styles.optionsModalScroller}>
+                  {
+                    values.map((v, index) => {
+                      return (
+                        <OptionComponent
+                          key={v.key}
+                          id={v.key}
+                          isSelected={index === selectedIndex}
+                          {...v}
+                          isMobile={true}
+                          onSelect={this.onSelect}
+                        >
+                          {v.value}
+                        </OptionComponent>
+                      );
+                    })
+                  }
+                </Scroller>
               </ModalBody>
             </Modal>
         }

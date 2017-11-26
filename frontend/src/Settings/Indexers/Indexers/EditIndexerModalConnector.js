@@ -6,7 +6,7 @@ import { cancelTestIndexer, cancelSaveIndexer } from 'Store/Actions/settingsActi
 import EditIndexerModal from './EditIndexerModal';
 
 function createMapDispatchToProps(dispatch, props) {
-  const section = 'indexers';
+  const section = 'settings.indexers';
 
   return {
     dispatchClearPendingChanges() {

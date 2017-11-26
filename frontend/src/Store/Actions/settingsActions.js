@@ -1,234 +1,140 @@
 import { createAction } from 'redux-actions';
-import * as types from './actionTypes';
-import settingsActionHandlers from './settingsActionHandlers';
+import { handleThunks } from 'Store/thunks';
+import createHandleActions from './Creators/createHandleActions';
+import delayProfiles from './Settings/delayProfiles';
+import downloadClients from './Settings/downloadClients';
+import downloadClientOptions from './Settings/downloadClientOptions';
+import general from './Settings/general';
+import indexerOptions from './Settings/indexerOptions';
+import indexers from './Settings/indexers';
+import languageProfiles from './Settings/languageProfiles';
+import metadataProfiles from './Settings/metadataProfiles';
+import mediaManagement from './Settings/mediaManagement';
+import metadata from './Settings/metadata';
+import metadataProvider from './Settings/metadataProvider';
+import naming from './Settings/naming';
+import namingExamples from './Settings/namingExamples';
+import notifications from './Settings/notifications';
+import qualityDefinitions from './Settings/qualityDefinitions';
+import qualityProfiles from './Settings/qualityProfiles';
+import remotePathMappings from './Settings/remotePathMappings';
+import restrictions from './Settings/restrictions';
+import ui from './Settings/ui';
 
-export const toggleAdvancedSettings = createAction(types.TOGGLE_ADVANCED_SETTINGS);
+export * from './Settings/delayProfiles';
+export * from './Settings/downloadClients';
+export * from './Settings/downloadClientOptions';
+export * from './Settings/general';
+export * from './Settings/indexerOptions';
+export * from './Settings/indexers';
+export * from './Settings/languageProfiles';
+export * from './Settings/metadataProfiles';
+export * from './Settings/mediaManagement';
+export * from './Settings/metadata';
+export * from './Settings/metadataProvider';
+export * from './Settings/naming';
+export * from './Settings/namingExamples';
+export * from './Settings/notifications';
+export * from './Settings/qualityDefinitions';
+export * from './Settings/qualityProfiles';
+export * from './Settings/remotePathMappings';
+export * from './Settings/restrictions';
+export * from './Settings/ui';
 
-export const fetchUISettings = settingsActionHandlers[types.FETCH_UI_SETTINGS];
-export const saveUISettings = settingsActionHandlers[types.SAVE_UI_SETTINGS];
-export const setUISettingsValue = createAction(types.SET_UI_SETTINGS_VALUE, (payload) => {
-  return {
-    section: 'ui',
-    ...payload
-  };
+//
+// Variables
+
+export const section = 'settings';
+
+//
+// State
+
+export const defaultState = {
+  advancedSettings: false,
+
+  delayProfiles: delayProfiles.defaultState,
+  downloadClients: downloadClients.defaultState,
+  downloadClientOptions: downloadClientOptions.defaultState,
+  general: general.defaultState,
+  indexerOptions: indexerOptions.defaultState,
+  indexers: indexers.defaultState,
+  languageProfiles: languageProfiles.defaultState,
+  metadataProfiles: metadataProfiles.defaultState,
+  mediaManagement: mediaManagement.defaultState,
+  metadata: metadata.defaultState,
+  metadataProvider: metadataProvider.defaultState,
+  naming: naming.defaultState,
+  namingExamples: namingExamples.defaultState,
+  notifications: notifications.defaultState,
+  qualityDefinitions: qualityDefinitions.defaultState,
+  qualityProfiles: qualityProfiles.defaultState,
+  remotePathMappings: remotePathMappings.defaultState,
+  restrictions: restrictions.defaultState,
+  ui: ui.defaultState
+};
+
+//
+// Actions Types
+
+export const TOGGLE_ADVANCED_SETTINGS = 'settings/toggleAdvancedSettings';
+
+//
+// Action Creators
+
+export const toggleAdvancedSettings = createAction(TOGGLE_ADVANCED_SETTINGS);
+
+//
+// Action Handlers
+
+export const actionHandlers = handleThunks({
+  ...delayProfiles.actionHandlers,
+  ...downloadClients.actionHandlers,
+  ...downloadClientOptions.actionHandlers,
+  ...general.actionHandlers,
+  ...indexerOptions.actionHandlers,
+  ...indexers.actionHandlers,
+  ...languageProfiles.actionHandlers,
+  ...metadataProfiles.actionHandlers,
+  ...mediaManagement.actionHandlers,
+  ...metadata.actionHandlers,
+  ...metadataProvider.actionHandlers,
+  ...naming.actionHandlers,
+  ...namingExamples.actionHandlers,
+  ...notifications.actionHandlers,
+  ...qualityDefinitions.actionHandlers,
+  ...qualityProfiles.actionHandlers,
+  ...remotePathMappings.actionHandlers,
+  ...restrictions.actionHandlers,
+  ...ui.actionHandlers
 });
 
-export const fetchMediaManagementSettings = settingsActionHandlers[types.FETCH_MEDIA_MANAGEMENT_SETTINGS];
-export const saveMediaManagementSettings = settingsActionHandlers[types.SAVE_MEDIA_MANAGEMENT_SETTINGS];
-export const setMediaManagementSettingsValue = createAction(types.SET_MEDIA_MANAGEMENT_SETTINGS_VALUE, (payload) => {
-  return {
-    section: 'mediaManagement',
-    ...payload
-  };
-});
+//
+// Reducers
 
-export const fetchNamingSettings = settingsActionHandlers[types.FETCH_NAMING_SETTINGS];
-export const saveNamingSettings = settingsActionHandlers[types.SAVE_NAMING_SETTINGS];
-export const setNamingSettingsValue = createAction(types.SET_NAMING_SETTINGS_VALUE, (payload) => {
-  return {
-    section: 'naming',
-    ...payload
-  };
-});
+export const reducers = createHandleActions({
 
-export const fetchNamingExamples = settingsActionHandlers[types.FETCH_NAMING_EXAMPLES];
+  [TOGGLE_ADVANCED_SETTINGS]: (state, { payload }) => {
+    return Object.assign({}, state, { advancedSettings: !state.advancedSettings });
+  },
 
-export const fetchQualityProfiles = settingsActionHandlers[types.FETCH_QUALITY_PROFILES];
-export const fetchQualityProfileSchema = settingsActionHandlers[types.FETCH_QUALITY_PROFILE_SCHEMA];
-export const saveQualityProfile = settingsActionHandlers[types.SAVE_QUALITY_PROFILE];
-export const deleteQualityProfile = settingsActionHandlers[types.DELETE_QUALITY_PROFILE];
+  ...delayProfiles.reducers,
+  ...downloadClients.reducers,
+  ...downloadClientOptions.reducers,
+  ...general.reducers,
+  ...indexerOptions.reducers,
+  ...indexers.reducers,
+  ...languageProfiles.reducers,
+  ...metadataProfiles.reducers,
+  ...mediaManagement.reducers,
+  ...metadata.reducers,
+  ...metadataProvider.reducers,
+  ...naming.reducers,
+  ...namingExamples.reducers,
+  ...notifications.reducers,
+  ...qualityDefinitions.reducers,
+  ...qualityProfiles.reducers,
+  ...remotePathMappings.reducers,
+  ...restrictions.reducers,
+  ...ui.reducers
 
-export const setQualityProfileValue = createAction(types.SET_QUALITY_PROFILE_VALUE, (payload) => {
-  return {
-    section: 'qualityProfiles',
-    ...payload
-  };
-});
-
-export const fetchLanguageProfiles = settingsActionHandlers[types.FETCH_LANGUAGE_PROFILES];
-export const fetchLanguageProfileSchema = settingsActionHandlers[types.FETCH_LANGUAGE_PROFILE_SCHEMA];
-export const saveLanguageProfile = settingsActionHandlers[types.SAVE_LANGUAGE_PROFILE];
-export const deleteLanguageProfile = settingsActionHandlers[types.DELETE_LANGUAGE_PROFILE];
-
-export const setLanguageProfileValue = createAction(types.SET_LANGUAGE_PROFILE_VALUE, (payload) => {
-  return {
-    section: 'languageProfiles',
-    ...payload
-  };
-});
-
-export const fetchMetadataProfiles = settingsActionHandlers[types.FETCH_METADATA_PROFILES];
-export const fetchMetadataProfileSchema = settingsActionHandlers[types.FETCH_METADATA_PROFILE_SCHEMA];
-export const saveMetadataProfile = settingsActionHandlers[types.SAVE_METADATA_PROFILE];
-export const deleteMetadataProfile = settingsActionHandlers[types.DELETE_METADATA_PROFILE];
-
-export const setMetadataProfileValue = createAction(types.SET_METADATA_PROFILE_VALUE, (payload) => {
-  return {
-    section: 'metadataProfiles',
-    ...payload
-  };
-});
-
-export const fetchDelayProfiles = settingsActionHandlers[types.FETCH_DELAY_PROFILES];
-export const saveDelayProfile = settingsActionHandlers[types.SAVE_DELAY_PROFILE];
-export const deleteDelayProfile = settingsActionHandlers[types.DELETE_DELAY_PROFILE];
-export const reorderDelayProfile = settingsActionHandlers[types.REORDER_DELAY_PROFILE];
-
-export const setDelayProfileValue = createAction(types.SET_DELAY_PROFILE_VALUE, (payload) => {
-  return {
-    section: 'delayProfiles',
-    ...payload
-  };
-});
-
-export const fetchQualityDefinitions = settingsActionHandlers[types.FETCH_QUALITY_DEFINITIONS];
-export const saveQualityDefinitions = settingsActionHandlers[types.SAVE_QUALITY_DEFINITIONS];
-
-export const setQualityDefinitionValue = createAction(types.SET_QUALITY_DEFINITION_VALUE);
-
-export const fetchIndexers = settingsActionHandlers[types.FETCH_INDEXERS];
-export const fetchIndexerSchema = settingsActionHandlers[types.FETCH_INDEXER_SCHEMA];
-export const selectIndexerSchema = createAction(types.SELECT_INDEXER_SCHEMA);
-
-export const saveIndexer = settingsActionHandlers[types.SAVE_INDEXER];
-export const cancelSaveIndexer = settingsActionHandlers[types.CANCEL_SAVE_INDEXER];
-export const deleteIndexer = settingsActionHandlers[types.DELETE_INDEXER];
-export const testIndexer = settingsActionHandlers[types.TEST_INDEXER];
-export const cancelTestIndexer = settingsActionHandlers[types.CANCEL_TEST_INDEXER];
-
-export const setIndexerValue = createAction(types.SET_INDEXER_VALUE, (payload) => {
-  return {
-    section: 'indexers',
-    ...payload
-  };
-});
-
-export const setIndexerFieldValue = createAction(types.SET_INDEXER_FIELD_VALUE, (payload) => {
-  return {
-    section: 'indexers',
-    ...payload
-  };
-});
-
-export const fetchIndexerOptions = settingsActionHandlers[types.FETCH_INDEXER_OPTIONS];
-export const saveIndexerOptions = settingsActionHandlers[types.SAVE_INDEXER_OPTIONS];
-export const setIndexerOptionsValue = createAction(types.SET_INDEXER_OPTIONS_VALUE, (payload) => {
-  return {
-    section: 'indexerOptions',
-    ...payload
-  };
-});
-
-export const fetchRestrictions = settingsActionHandlers[types.FETCH_RESTRICTIONS];
-export const saveRestriction = settingsActionHandlers[types.SAVE_RESTRICTION];
-export const deleteRestriction = settingsActionHandlers[types.DELETE_RESTRICTION];
-
-export const setRestrictionValue = createAction(types.SET_RESTRICTION_VALUE, (payload) => {
-  return {
-    section: 'restrictions',
-    ...payload
-  };
-});
-
-export const fetchDownloadClients = settingsActionHandlers[types.FETCH_DOWNLOAD_CLIENTS];
-export const fetchDownloadClientSchema = settingsActionHandlers[types.FETCH_DOWNLOAD_CLIENT_SCHEMA];
-export const selectDownloadClientSchema = createAction(types.SELECT_DOWNLOAD_CLIENT_SCHEMA);
-
-export const saveDownloadClient = settingsActionHandlers[types.SAVE_DOWNLOAD_CLIENT];
-export const cancelSaveDownloadClient = settingsActionHandlers[types.CANCEL_SAVE_DOWNLOAD_CLIENT];
-export const deleteDownloadClient = settingsActionHandlers[types.DELETE_DOWNLOAD_CLIENT];
-export const testDownloadClient = settingsActionHandlers[types.TEST_DOWNLOAD_CLIENT];
-export const cancelTestDownloadClient = settingsActionHandlers[types.CANCEL_TEST_DOWNLOAD_CLIENT];
-
-export const setDownloadClientValue = createAction(types.SET_DOWNLOAD_CLIENT_VALUE, (payload) => {
-  return {
-    section: 'downloadClients',
-    ...payload
-  };
-});
-
-export const setDownloadClientFieldValue = createAction(types.SET_DOWNLOAD_CLIENT_FIELD_VALUE, (payload) => {
-  return {
-    section: 'downloadClients',
-    ...payload
-  };
-});
-
-export const fetchDownloadClientOptions = settingsActionHandlers[types.FETCH_DOWNLOAD_CLIENT_OPTIONS];
-export const saveDownloadClientOptions = settingsActionHandlers[types.SAVE_DOWNLOAD_CLIENT_OPTIONS];
-export const setDownloadClientOptionsValue = createAction(types.SET_DOWNLOAD_CLIENT_OPTIONS_VALUE, (payload) => {
-  return {
-    section: 'downloadClientOptions',
-    ...payload
-  };
-});
-
-export const fetchRemotePathMappings = settingsActionHandlers[types.FETCH_REMOTE_PATH_MAPPINGS];
-export const saveRemotePathMapping = settingsActionHandlers[types.SAVE_REMOTE_PATH_MAPPING];
-export const deleteRemotePathMapping = settingsActionHandlers[types.DELETE_REMOTE_PATH_MAPPING];
-
-export const setRemotePathMappingValue = createAction(types.SET_REMOTE_PATH_MAPPING_VALUE, (payload) => {
-  return {
-    section: 'remotePathMappings',
-    ...payload
-  };
-});
-
-export const fetchNotifications = settingsActionHandlers[types.FETCH_NOTIFICATIONS];
-export const fetchNotificationSchema = settingsActionHandlers[types.FETCH_NOTIFICATION_SCHEMA];
-export const selectNotificationSchema = createAction(types.SELECT_NOTIFICATION_SCHEMA);
-
-export const saveNotification = settingsActionHandlers[types.SAVE_NOTIFICATION];
-export const cancelSaveNotification = settingsActionHandlers[types.CANCEL_SAVE_NOTIFICATION];
-export const deleteNotification = settingsActionHandlers[types.DELETE_NOTIFICATION];
-export const testNotification = settingsActionHandlers[types.TEST_NOTIFICATION];
-export const cancelTestNotification = settingsActionHandlers[types.CANCEL_TEST_NOTIFICATION];
-
-export const setNotificationValue = createAction(types.SET_NOTIFICATION_VALUE, (payload) => {
-  return {
-    section: 'notifications',
-    ...payload
-  };
-});
-
-export const setNotificationFieldValue = createAction(types.SET_NOTIFICATION_FIELD_VALUE, (payload) => {
-  return {
-    section: 'notifications',
-    ...payload
-  };
-});
-
-export const fetchMetadata = settingsActionHandlers[types.FETCH_METADATA];
-export const saveMetadata = settingsActionHandlers[types.SAVE_METADATA];
-
-export const setMetadataValue = createAction(types.SET_METADATA_VALUE, (payload) => {
-  return {
-    section: 'metadata',
-    ...payload
-  };
-});
-
-export const setMetadataFieldValue = createAction(types.SET_METADATA_FIELD_VALUE, (payload) => {
-  return {
-    section: 'metadata',
-    ...payload
-  };
-});
-
-export const fetchMetadataProvider = settingsActionHandlers[types.FETCH_METADATA_PROVIDER];
-export const saveMetadataProvider = settingsActionHandlers[types.SAVE_METADATA_PROVIDER];
-export const setMetadataProviderValue = createAction(types.SET_METADATA_PROVIDER_VALUE, (payload) => {
-  return {
-    section: 'metadataProvider',
-    ...payload
-  };
-});
-
-export const fetchGeneralSettings = settingsActionHandlers[types.FETCH_GENERAL_SETTINGS];
-export const saveGeneralSettings = settingsActionHandlers[types.SAVE_GENERAL_SETTINGS];
-export const setGeneralSettingsValue = createAction(types.SET_GENERAL_SETTINGS_VALUE, (payload) => {
-  return {
-    section: 'general',
-    ...payload
-  };
-});
+}, defaultState, section);

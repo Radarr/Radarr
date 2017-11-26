@@ -160,6 +160,7 @@ class Missing extends Component {
             <PageToolbarButton
               label="Search All"
               iconName={icons.SEARCH}
+              isDisabled={!items.length}
               isSpinning={isSearchingForMissingAlbums}
               onPress={this.onSearchAllMissingPress}
             />

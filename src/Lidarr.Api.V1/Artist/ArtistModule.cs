@@ -98,7 +98,6 @@ namespace Lidarr.Api.V1.Artist
 
             var resource = artist.ToResource();
             MapCoversToLocal(resource);
-            //MapAlbums(resource);
             FetchAndLinkArtistStatistics(resource);
             //PopulateAlternateTitles(resource);
 
@@ -146,14 +145,6 @@ namespace Lidarr.Api.V1.Artist
             foreach (var artistResource in artists)
             {
                 _coverMapper.ConvertToLocalUrls(artistResource.Id, artistResource.Images);
-            }
-        }
-
-        private void MapAlbums(params ArtistResource[] artists)
-        {
-            foreach (var artistResource in artists)
-            {
-                artistResource.Albums = _albumService.GetAlbumsByArtist(artistResource.Id).ToResource();
             }
         }
 

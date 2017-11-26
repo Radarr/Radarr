@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import getSectionState from 'Utilities/State/getSectionState';
 
-function getProviderState(payload, getState, getFromState) {
+function getProviderState(payload, getState, section) {
   const id = payload.id;
-  const state = getFromState(getState());
+  const state = getSectionState(getState(), section, true);
   const pendingChanges = Object.assign({}, state.pendingChanges);
   const pendingFields = state.pendingChanges.fields || {};
   delete pendingChanges.fields;

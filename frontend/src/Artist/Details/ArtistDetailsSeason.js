@@ -125,7 +125,6 @@ class ArtistDetailsSeason extends Component {
       artistMonitored,
       isSmallScreen,
       onTableOptionChange,
-      onMonitorSeasonPress,
       onSearchPress
     } = this.props;
 
@@ -309,7 +308,6 @@ ArtistDetailsSeason.propTypes = {
   artistMonitored: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onTableOptionChange: PropTypes.func.isRequired,
-  onMonitorSeasonPress: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired

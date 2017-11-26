@@ -36,7 +36,7 @@ namespace Lidarr.Api.V1.Profiles.Quality
                 Id = model.Id,
                 Name = model.Name,
                 Cutoff = model.Cutoff,
-                Items = model.Items.ConvertAll(ToResource),
+                Items = model.Items.ConvertAll(ToResource)
             };
         }
 

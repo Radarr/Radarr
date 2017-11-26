@@ -1,47 +1,19 @@
 import _ from 'lodash';
 import persistState from 'redux-localstorage';
-import * as addArtistReducers from 'Store/Reducers/addArtistReducers';
-import * as episodeReducers from 'Store/Reducers/episodeReducers';
-import * as trackReducers from 'Store/Reducers/trackReducers';
-import * as artistIndexReducers from 'Store/Reducers/artistIndexReducers';
-import * as artistEditorReducers from 'Store/Reducers/artistEditorReducers';
-import * as albumStudioReducers from 'Store/Reducers/albumStudioReducers';
-import * as calendarReducers from 'Store/Reducers/calendarReducers';
-import * as historyReducers from 'Store/Reducers/historyReducers';
-import * as blacklistReducers from 'Store/Reducers/blacklistReducers';
-import * as wantedReducers from 'Store/Reducers/wantedReducers';
-import * as settingsReducers from 'Store/Reducers/settingsReducers';
-import * as systemReducers from 'Store/Reducers/systemReducers';
-import * as interactiveImportReducers from 'Store/Reducers/interactiveImportReducers';
-import * as queueReducers from 'Store/Reducers/queueReducers';
-
-const reducers = [
-  addArtistReducers,
-  episodeReducers,
-  trackReducers,
-  artistIndexReducers,
-  artistEditorReducers,
-  albumStudioReducers,
-  calendarReducers,
-  historyReducers,
-  blacklistReducers,
-  wantedReducers,
-  settingsReducers,
-  systemReducers,
-  interactiveImportReducers,
-  queueReducers
-];
+import actions from 'Store/Actions';
 
 const columnPaths = [];
 
-const paths = _.reduce(reducers, (acc, reducer) => {
-  reducer.persistState.forEach((path) => {
-    if (path.match(/\.columns$/)) {
-      columnPaths.push(path);
-    }
+const paths = _.reduce([...actions], (acc, action) => {
+  if (action.persistState) {
+    action.persistState.forEach((path) => {
+      if (path.match(/\.columns$/)) {
+        columnPaths.push(path);
+      }
 
-    acc.push(path);
-  });
+      acc.push(path);
+    });
+  }
 
   return acc;
 }, []);

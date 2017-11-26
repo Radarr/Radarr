@@ -7,6 +7,7 @@ import ToolbarMenuButton from 'Components/Menu/ToolbarMenuButton';
 function ViewMenu(props) {
   const {
     children,
+    isDisabled,
     ...otherProps
   } = props;
 
@@ -17,6 +18,7 @@ function ViewMenu(props) {
       <ToolbarMenuButton
         iconName={icons.VIEW}
         text="View"
+        isDisabled={isDisabled}
       />
       {children}
     </Menu>
@@ -24,7 +26,12 @@ function ViewMenu(props) {
 }
 
 ViewMenu.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  isDisabled: PropTypes.bool.isRequired
+};
+
+ViewMenu.defaultProps = {
+  isDisabled: false
 };
 
 export default ViewMenu;

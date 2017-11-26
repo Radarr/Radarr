@@ -80,7 +80,7 @@ class ImportArtistTable extends Component {
 
       // Props doesn't have a selected artist or
       // the selected artist is an existing artist.
-      if ((selectedArtist && !prevItem.selectedArtist) || (isExistingArtist && !prevItem.selectedArtist)) {
+      if ((!selectedArtist && prevItem.selectedArtist) || (isExistingArtist && !prevItem.selectedArtist)) {
         onSelectedChange({ id, value: false });
 
         return;

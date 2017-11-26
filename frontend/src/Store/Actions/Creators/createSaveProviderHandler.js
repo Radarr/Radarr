@@ -6,62 +6,58 @@ import { set, updateItem } from '../baseActions';
 const abortCurrentRequests = {};
 
 export function createCancelSaveProviderHandler(section) {
-  return function(payload) {
-    return function(dispatch, getState) {
-      if (abortCurrentRequests[section]) {
-        abortCurrentRequests[section]();
-        abortCurrentRequests[section] = null;
-      }
-    };
+  return function(getState, payload, dispatch) {
+    if (abortCurrentRequests[section]) {
+      abortCurrentRequests[section]();
+      abortCurrentRequests[section] = null;
+    }
   };
 }
 
-function createSaveProviderHandler(section, url, getFromState) {
-  return function(payload) {
-    return function(dispatch, getState) {
-      dispatch(set({ section, isSaving: true }));
+function createSaveProviderHandler(section, url) {
+  return function(getState, payload, dispatch) {
+    dispatch(set({ section, isSaving: true }));
 
-      const id = payload.id;
-      const saveData = getProviderState(payload, getState, getFromState);
+    const id = payload.id;
+    const saveData = getProviderState(payload, getState, section);
 
-      const ajaxOptions = {
-        url,
-        method: 'POST',
-        contentType: 'application/json',
-        dataType: 'json',
-        data: JSON.stringify(saveData)
-      };
+    const ajaxOptions = {
+      url,
+      method: 'POST',
+      contentType: 'application/json',
+      dataType: 'json',
+      data: JSON.stringify(saveData)
+    };
 
-      if (id) {
-        ajaxOptions.url = `${url}/${id}`;
-        ajaxOptions.method = 'PUT';
-      }
+    if (id) {
+      ajaxOptions.url = `${url}/${id}`;
+      ajaxOptions.method = 'PUT';
+    }
 
-      const { request, abortRequest } = createAjaxRequest(ajaxOptions);
-      
-      abortCurrentRequests[section] = abortRequest;
+    const { request, abortRequest } = createAjaxRequest(ajaxOptions);
 
-      request.done((data) => {
-        dispatch(batchActions([
-          updateItem({ section, ...data }),
+    abortCurrentRequests[section] = abortRequest;
 
-          set({
-            section,
-            isSaving: false,
-            saveError: null,
-            pendingChanges: {}
-          })
-        ]));
-      });
+    request.done((data) => {
+      dispatch(batchActions([
+        updateItem({ section, ...data }),
 
-      request.fail((xhr) => {
-        dispatch(set({
+        set({
           section,
           isSaving: false,
-          saveError: xhr.aborted ? null : xhr
-        }));
-      });
-    };
+          saveError: null,
+          pendingChanges: {}
+        })
+      ]));
+    });
+
+    request.fail((xhr) => {
+      dispatch(set({
+        section,
+        isSaving: false,
+        saveError: xhr.aborted ? null : xhr
+      }));
+    });
   };
 }
 

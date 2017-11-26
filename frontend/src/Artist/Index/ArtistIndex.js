@@ -214,6 +214,7 @@ class ArtistIndex extends Component {
 
     const ViewComponent = getViewComponent(view);
     const isLoaded = !error && isPopulated && !!items.length && contentBody;
+    const hasNoArtist = !items.length;
 
     return (
       <PageContent>
@@ -224,6 +225,7 @@ class ArtistIndex extends Component {
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               isSpinning={isRefreshingArtist}
+              isDisabled={hasNoArtist}
               onPress={onRefreshArtistPress}
             />
 
@@ -231,6 +233,7 @@ class ArtistIndex extends Component {
               label="RSS Sync"
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
+              isDisabled={hasNoArtist}
               onPress={onRssSyncPress}
             />
 
@@ -246,6 +249,7 @@ class ArtistIndex extends Component {
                 <PageToolbarButton
                   label="Options"
                   iconName={icons.POSTER}
+                  isDisabled={hasNoArtist}
                   onPress={this.onPosterOptionsPress}
                 />
             }
@@ -255,6 +259,7 @@ class ArtistIndex extends Component {
                 <PageToolbarButton
                   label="Options"
                   iconName={icons.POSTER}
+                  isDisabled={hasNoArtist}
                   onPress={this.onBannerOptionsPress}
                 />
             }
@@ -264,6 +269,7 @@ class ArtistIndex extends Component {
               <PageToolbarButton
                 label="Options"
                 iconName={icons.OVERVIEW}
+                isDisabled={hasNoArtist}
                 onPress={this.onOverviewOptionsPress}
               />
             }
@@ -276,18 +282,21 @@ class ArtistIndex extends Component {
 
             <ArtistIndexViewMenu
               view={view}
+              isDisabled={hasNoArtist}
               onViewSelect={onViewSelect}
             />
 
             <ArtistIndexSortMenu
               sortKey={sortKey}
               sortDirection={sortDirection}
+              isDisabled={hasNoArtist}
               onSortSelect={onSortSelect}
             />
 
             <ArtistIndexFilterMenu
               filterKey={filterKey}
               filterValue={filterValue}
+              isDisabled={hasNoArtist}
               onFilterSelect={onFilterSelect}
             />
           </PageToolbarSection>

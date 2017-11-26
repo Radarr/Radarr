@@ -9,6 +9,7 @@ function FilterMenu(props) {
   const {
     className,
     children,
+    isDisabled,
     ...otherProps
   } = props;
 
@@ -20,6 +21,7 @@ function FilterMenu(props) {
       <ToolbarMenuButton
         iconName={icons.FILTER}
         text="Filter"
+        isDisabled={isDisabled}
       />
       {children}
     </Menu>
@@ -28,11 +30,13 @@ function FilterMenu(props) {
 
 FilterMenu.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  isDisabled: PropTypes.bool.isRequired
 };
 
 FilterMenu.defaultProps = {
-  className: styles.filterMenu
+  className: styles.filterMenu,
+  isDisabled: false
 };
 
 export default FilterMenu;

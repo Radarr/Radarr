@@ -84,9 +84,9 @@ MetadataProviderConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                { withRef: true },
-                { section: 'metadataProvider' }
-               )(MetadataProviderConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  { withRef: true },
+  { section: 'settings.metadataProvider' }
+)(MetadataProviderConnector);

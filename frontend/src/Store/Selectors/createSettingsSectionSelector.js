@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import { createSelector } from 'reselect';
 import selectSettings from 'Store/Selectors/selectSettings';
 
 function createSettingsSectionSelector() {
   return createSelector(
-    (state, { section }) => state.settings[section],
+    (state, { section }) => _.get(state, section),
     (sectionSettings) => {
       const {
         isFetching,

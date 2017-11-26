@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import updateAlbums from 'Utilities/Album/updateAlbums';
+import getSectionState from 'Utilities/State/getSectionState';
 
-function createBatchToggleAlbumMonitoredHandler(section, getFromState) {
+function createBatchToggleAlbumMonitoredHandler(section) {
   return function(payload) {
     return function(dispatch, getState) {
       const {
@@ -9,7 +10,7 @@ function createBatchToggleAlbumMonitoredHandler(section, getFromState) {
         monitored
       } = payload;
 
-      const state = getFromState(getState());
+      const state = getSectionState(getState(), section, true);
 
       updateAlbums(dispatch, section, state.items, albumIds, {
         isSaving: true

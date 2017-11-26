@@ -97,5 +97,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'interactiveImport.interactiveImportAlbums' }
+  { section: 'interactiveImport.albums' }
 )(SelectAlbumModalContentConnector);

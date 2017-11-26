@@ -1,7 +1,8 @@
 import $ from 'jquery';
 import updateAlbums from 'Utilities/Album/updateAlbums';
+import getSectionState from 'Utilities/State/getSectionState';
 
-function createToggleAlbumMonitoredHandler(section, getFromState) {
+function createToggleAlbumMonitoredHandler(section) {
   return function(payload) {
     return function(dispatch, getState) {
       const {
@@ -9,8 +10,8 @@ function createToggleAlbumMonitoredHandler(section, getFromState) {
         monitored
       } = payload;
 
-      const state = getFromState(getState());
-
+      const state = getSectionState(getState(), section, true);
+      
       updateAlbums(dispatch, section, state.items, [albumId], {
         isSaving: true
       });

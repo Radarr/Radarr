@@ -19,7 +19,7 @@ const mapDispatchToProps = {
 class QualityDefinitionConnector extends Component {
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: 'qualityDefinitions' });
+    this.props.clearPendingChanges({ section: 'settings.qualityDefinitions' });
   }
 
   //

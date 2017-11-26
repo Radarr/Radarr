@@ -8,6 +8,7 @@ function SortMenu(props) {
   const {
     className,
     children,
+    isDisabled,
     ...otherProps
   } = props;
 
@@ -19,6 +20,7 @@ function SortMenu(props) {
       <ToolbarMenuButton
         iconName={icons.SORT}
         text="Sort"
+        isDisabled={isDisabled}
       />
       {children}
     </Menu>
@@ -27,7 +29,12 @@ function SortMenu(props) {
 
 SortMenu.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  isDisabled: PropTypes.bool.isRequired
+};
+
+SortMenu.defaultProps = {
+  isDisabled: false
 };
 
 export default SortMenu;

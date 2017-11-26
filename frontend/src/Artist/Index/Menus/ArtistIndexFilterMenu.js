@@ -9,11 +9,15 @@ function ArtistIndexFilterMenu(props) {
   const {
     filterKey,
     filterValue,
+    isDisabled,
     onFilterSelect
   } = props;
 
   return (
-    <FilterMenu alignMenu={align.RIGHT}>
+    <FilterMenu
+      isDisabled={isDisabled}
+      alignMenu={align.RIGHT}
+    >
       <MenuContent>
         <FilterMenuItem
           filterKey={filterKey}
@@ -70,6 +74,7 @@ function ArtistIndexFilterMenu(props) {
 ArtistIndexFilterMenu.propTypes = {
   filterKey: PropTypes.string,
   filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  isDisabled: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired
 };
 

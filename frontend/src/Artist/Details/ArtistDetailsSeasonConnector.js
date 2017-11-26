@@ -7,7 +7,6 @@ import { findCommand } from 'Utilities/Command';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { toggleSeasonMonitored } from 'Store/Actions/artistActions';
 import { toggleEpisodesMonitored, setEpisodesTableOption } from 'Store/Actions/episodeActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -42,7 +41,6 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  toggleSeasonMonitored,
   toggleEpisodesMonitored,
   setEpisodesTableOption,
   executeCommand
@@ -55,17 +53,6 @@ class ArtistDetailsSeasonConnector extends Component {
 
   onTableOptionChange = (payload) => {
     this.props.setEpisodesTableOption(payload);
-  }
-
-  onMonitorSeasonPress = (monitored) => {
-    const {
-      artistId
-    } = this.props;
-
-    this.props.toggleSeasonMonitored({
-      artistId,
-      monitored
-    });
   }
 
   onSearchPress = () => {
@@ -104,7 +91,6 @@ class ArtistDetailsSeasonConnector extends Component {
 
 ArtistDetailsSeasonConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
-  toggleSeasonMonitored: PropTypes.func.isRequired,
   toggleEpisodesMonitored: PropTypes.func.isRequired,
   setEpisodesTableOption: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired

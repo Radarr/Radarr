@@ -113,5 +113,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'general' }
+  { section: 'settings.general' }
 )(GeneralSettingsConnector);

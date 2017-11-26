@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import { toggleArtistMonitored, toggleSeasonMonitored } from 'Store/Actions/artistActions';
+import { toggleArtistMonitored } from 'Store/Actions/artistActions';
 import { toggleEpisodeMonitored } from 'Store/Actions/episodeActions';
 import AlbumStudioRow from './AlbumStudioRow';
 
@@ -32,7 +32,6 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   toggleArtistMonitored,
-  toggleSeasonMonitored,
   toggleEpisodeMonitored
 };
 
@@ -78,7 +77,6 @@ AlbumStudioRowConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   toggleArtistMonitored: PropTypes.func.isRequired,
-  toggleSeasonMonitored: PropTypes.func.isRequired,
   toggleEpisodeMonitored: PropTypes.func.isRequired
 };
 

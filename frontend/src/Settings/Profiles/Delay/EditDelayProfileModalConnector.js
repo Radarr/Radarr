@@ -18,7 +18,7 @@ class EditDelayProfileModalConnector extends Component {
   // Listeners
 
   onModalClose = () => {
-    this.props.clearPendingChanges({ section: 'delayProfiles' });
+    this.props.clearPendingChanges({ section: 'settings.delayProfiles' });
     this.props.onModalClose();
   }
 

@@ -6,7 +6,7 @@ import { cancelTestNotification, cancelSaveNotification } from 'Store/Actions/se
 import EditNotificationModal from './EditNotificationModal';
 
 function createMapDispatchToProps(dispatch, props) {
-  const section = 'notifications';
+  const section = 'settings.notifications';
 
   return {
     dispatchClearPendingChanges() {

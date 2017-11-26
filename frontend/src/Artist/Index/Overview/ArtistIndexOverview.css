@@ -57,6 +57,7 @@ $hoverScale: 1.05;
 .titleRow {
   display: flex;
   justify-content: space-between;
+  flex: 0 0 auto;
   margin-bottom: 10px;
   line-height: 32px;
 }

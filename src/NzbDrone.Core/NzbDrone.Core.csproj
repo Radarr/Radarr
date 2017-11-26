@@ -876,8 +876,8 @@
     <Compile Include="Profiles\Metadata\MetadataProfileRepository.cs" />
     <Compile Include="Profiles\Metadata\ProfileSecondaryAlbumTypeItem.cs" />
     <Compile Include="Profiles\Metadata\ProfilePrimaryAlbumTypeItem.cs" />
-    <Compile Include="Profiles\Quality\ProfileRepository.cs" />
-    <Compile Include="Profiles\Quality\QualityIndex.cs" />
+    <Compile Include="Profiles\Qualities\ProfileRepository.cs" />
+    <Compile Include="Profiles\Qualities\QualityIndex.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
     <Compile Include="Qualities\Revision.cs" />
@@ -992,11 +992,11 @@
     <Compile Include="Parser\ParsingService.cs" />
     <Compile Include="Parser\SceneChecker.cs" />
     <Compile Include="Parser\QualityParser.cs" />
-    <Compile Include="Profiles\Quality\Profile.cs" />
-    <Compile Include="Profiles\Quality\ProfileInUseException.cs" />
-    <Compile Include="Profiles\Quality\ProfileQualityItem.cs" />
+    <Compile Include="Profiles\Qualities\Profile.cs" />
+    <Compile Include="Profiles\Qualities\ProfileInUseException.cs" />
+    <Compile Include="Profiles\Qualities\ProfileQualityItem.cs" />
     <Compile Include="Profiles\Delay\DelayProfileRepository.cs" />
-    <Compile Include="Profiles\Quality\ProfileService.cs" />
+    <Compile Include="Profiles\Qualities\ProfileService.cs" />
     <Compile Include="ProgressMessaging\CommandUpdatedEvent.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

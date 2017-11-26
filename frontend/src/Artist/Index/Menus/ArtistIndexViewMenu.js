@@ -8,11 +8,15 @@ import ViewMenuItem from 'Components/Menu/ViewMenuItem';
 function ArtistIndexViewMenu(props) {
   const {
     view,
+    isDisabled,
     onViewSelect
   } = props;
 
   return (
-    <ViewMenu alignMenu={align.RIGHT}>
+    <ViewMenu
+      isDisabled={isDisabled}
+      alignMenu={align.RIGHT}
+    >
       <MenuContent>
         <ViewMenuItem
           name="table"
@@ -52,6 +56,7 @@ function ArtistIndexViewMenu(props) {
 
 ArtistIndexViewMenu.propTypes = {
   view: PropTypes.string.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
   onViewSelect: PropTypes.func.isRequired
 };
 

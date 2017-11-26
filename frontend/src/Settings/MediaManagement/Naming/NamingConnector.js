@@ -98,5 +98,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'naming' }
+  { section: 'settings.naming' }
 )(NamingConnector);

@@ -10,6 +10,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import MenuContent from 'Components/Menu/MenuContent';
 import FilterMenuItem from 'Components/Menu/FilterMenuItem';
+import NoArtist from 'Artist/NoArtist';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
 import Legend from './Legend/Legend';
 import CalendarConnector from './CalendarConnector';
@@ -59,8 +60,16 @@ class CalendarPage extends Component {
   render() {
     const {
       unmonitored,
+      hasArtist,
       colorImpairedMode
     } = this.props;
+
+    const isMeasured = this.state.width > 0;
+    let PageComponent = 'div';
+
+    if (isMeasured) {
+      PageComponent = hasArtist ? CalendarConnector : NoArtist;
+    }
 
     return (
       <PageContent title="Calendar">
@@ -74,7 +83,10 @@ class CalendarPage extends Component {
           </PageToolbarSection>
 
           <PageToolbarSection alignContent={align.RIGHT}>
-            <FilterMenu alignMenu={align.RIGHT}>
+            <FilterMenu
+              alignMenu={align.RIGHT}
+              isDisabled={!hasArtist}
+            >
               <MenuContent>
                 <FilterMenuItem
                   name="unmonitored"
@@ -108,14 +120,13 @@ class CalendarPage extends Component {
             whitelist={['width']}
             onMeasure={this.onMeasure}
           >
-            {
-              this.state.width > 0 ?
-                <CalendarConnector /> :
-                <div />
-            }
+            <PageComponent />
           </Measure>
 
-          <Legend colorImpairedMode={colorImpairedMode} />
+          {
+            hasArtist &&
+            <Legend colorImpairedMode={colorImpairedMode} />
+          }
         </PageContentBodyConnector>
 
         <CalendarLinkModal
@@ -129,6 +140,7 @@ class CalendarPage extends Component {
 
 CalendarPage.propTypes = {
   unmonitored: PropTypes.bool.isRequired,
+  hasArtist: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   onDaysCountChange: PropTypes.func.isRequired,
   onUnmonitoredChange: PropTypes.func.isRequired

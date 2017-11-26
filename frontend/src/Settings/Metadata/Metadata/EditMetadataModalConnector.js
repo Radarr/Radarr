@@ -5,7 +5,7 @@ import { clearPendingChanges } from 'Store/Actions/baseActions';
 import EditMetadataModal from './EditMetadataModal';
 
 function createMapDispatchToProps(dispatch, props) {
-  const section = 'metadata';
+  const section = 'settings.metadata';
 
   return {
     dispatchClearPendingChanges() {

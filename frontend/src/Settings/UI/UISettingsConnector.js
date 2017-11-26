@@ -78,5 +78,5 @@ export default connectSection(
   mapDispatchToProps,
   undefined,
   undefined,
-  { section: 'ui' }
+  { section: 'settings.ui' }
 )(UISettingsConnector);
