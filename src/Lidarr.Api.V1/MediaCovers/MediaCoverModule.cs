@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.RegularExpressions;
 using Nancy;
 using Nancy.Responses;
@@ -12,7 +12,7 @@ namespace Lidarr.Api.V1.MediaCovers
     {
         private static readonly Regex RegexResizedImage = new Regex(@"-\d+\.jpg$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private const string MEDIA_COVER_ROUTE = @"/(?<seriesId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
+        private const string MEDIA_COVER_ROUTE = @"/(?<artistId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
 
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IDiskProvider _diskProvider;
@@ -22,12 +22,12 @@ namespace Lidarr.Api.V1.MediaCovers
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get[MEDIA_COVER_ROUTE] = options => GetMediaCover(options.seriesId, options.filename);
+            Get[MEDIA_COVER_ROUTE] = options => GetMediaCover(options.artistId, options.filename);
         }
 
-        private Response GetMediaCover(int seriesId, string filename)
+        private Response GetMediaCover(int artistId, string filename)
         {
-            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", seriesId.ToString(), filename);
+            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", artistId.ToString(), filename);
 
             if (!_diskProvider.FileExists(filePath) || _diskProvider.GetFileSize(filePath) == 0)
             {

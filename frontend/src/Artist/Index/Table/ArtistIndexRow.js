@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getProgressBarKind from 'Utilities/Series/getProgressBarKind';
+import getProgressBarKind from 'Utilities/Artist/getProgressBarKind';
 import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
-import getNewSeries from 'Utilities/Series/getNewSeries';
+import getNewArtist from 'Utilities/Artist/getNewArtist';
 import * as types from './actionTypes';
 import { set, updateItem, removeItem } from './baseActions';
 import { startLookupArtist } from './importArtistActions';
@@ -117,7 +117,7 @@ const importArtistActionHandlers = {
         // Make sure we have a selected artist and
         // the same artist hasn't been added yet.
         if (selectedArtist && !_.some(acc, { foreignArtistId: selectedArtist.foreignArtistId })) {
-          const newSeries = getNewSeries(_.cloneDeep(selectedArtist), item);
+          const newSeries = getNewArtist(_.cloneDeep(selectedArtist), item);
           newSeries.path = item.path;
 
           addedIds.push(id);

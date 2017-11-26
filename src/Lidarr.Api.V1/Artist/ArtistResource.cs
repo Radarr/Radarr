@@ -58,7 +58,6 @@ namespace Lidarr.Api.V1.Artist
         public bool Monitored { get; set; }
 
         public string RootFolderPath { get; set; }
-        //public string Certification { get; set; }
         public List<string> Genres { get; set; }
         public string CleanName { get; set; }
         public string SortName { get; set; }
@@ -71,7 +70,7 @@ namespace Lidarr.Api.V1.Artist
         //TODO: Add series statistics as a property of the series (instead of individual properties)
     }
 
-    public static class SeriesResourceMapper
+    public static class ArtistResourceMapper
     {
         public static ArtistResource ToResource(this NzbDrone.Core.Music.Artist model)
         {
@@ -93,7 +92,6 @@ namespace Lidarr.Api.V1.Artist
                 Images = model.Images,
 
                 Albums = model.Albums.ToResource(),
-                //Year = model.Year,
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
@@ -105,12 +103,11 @@ namespace Lidarr.Api.V1.Artist
                 Monitored = model.Monitored,
 
                 LastInfoSync = model.LastInfoSync,
-                //SeriesType = model.SeriesType,
+
                 CleanName = model.CleanName,
                 ForeignArtistId = model.ForeignArtistId,
                 NameSlug = model.NameSlug,
                 RootFolderPath = model.RootFolderPath,
-                //Certification = model.Certification,
                 Genres = model.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
@@ -135,12 +132,8 @@ namespace Lidarr.Api.V1.Artist
                 Overview = resource.Overview,
                 //NextAiring
                 //PreviousAiring
-                // Network = resource.Network,
-                //AirTime = resource.AirTime,
-                Images = resource.Images,
 
-                //Albums = resource.Albums.ToModel(),
-                //Year = resource.Year,
+                Images = resource.Images,
 
                 Path = resource.Path,
                 ProfileId = resource.QualityProfileId,
@@ -152,12 +145,11 @@ namespace Lidarr.Api.V1.Artist
                 Monitored = resource.Monitored,
 
                 LastInfoSync = resource.LastInfoSync,
-                //SeriesType = resource.SeriesType,
+                ArtistType = resource.ArtistType,
                 CleanName = resource.CleanName,
                 ForeignArtistId = resource.ForeignArtistId,
                 NameSlug = resource.NameSlug,
                 RootFolderPath = resource.RootFolderPath,
-                //Certification = resource.Certification,
                 Genres = resource.Genres,
                 Tags = resource.Tags,
                 Added = resource.Added,

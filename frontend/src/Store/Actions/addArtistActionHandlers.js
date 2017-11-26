@@ -2,7 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
-import getNewSeries from 'Utilities/Series/getNewSeries';
+import getNewArtist from 'Utilities/Artist/getNewArtist';
 import * as types from './actionTypes';
 import { set, update, updateItem } from './baseActions';
 
@@ -57,7 +57,7 @@ const addArtistActionHandlers = {
 
       const foreignArtistId = payload.foreignArtistId;
       const items = getState().addArtist.items;
-      const newSeries = getNewSeries(_.cloneDeep(_.find(items, { foreignArtistId })), payload);
+      const newSeries = getNewArtist(_.cloneDeep(_.find(items, { foreignArtistId })), payload);
 
       const promise = $.ajax({
         url: '/artist',

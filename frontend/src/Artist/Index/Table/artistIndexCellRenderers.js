@@ -1,5 +1,5 @@
 import React from 'react';
-import getProgressBarKind from 'Utilities/Series/getProgressBarKind';
+import getProgressBarKind from 'Utilities/Artist/getProgressBarKind';
 import ProgressBar from 'Components/ProgressBar';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';

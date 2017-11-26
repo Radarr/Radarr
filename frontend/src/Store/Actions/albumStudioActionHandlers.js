@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
-import getMonitoringOptions from 'Utilities/Series/getMonitoringOptions';
+import getMonitoringOptions from 'Utilities/Artist/getMonitoringOptions';
 import * as types from './actionTypes';
 import { set } from './baseActions';
 import { fetchArtist } from './artistActions';

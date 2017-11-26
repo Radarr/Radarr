@@ -22,8 +22,8 @@ namespace Lidarr.Api.V1.Artist
 
         private Response Search()
         {
-            var tvDbResults = _searchProxy.SearchForNewArtist((string)Request.Query.term);
-            return MapToResource(tvDbResults).AsResponse();
+            var searchResults = _searchProxy.SearchForNewArtist((string)Request.Query.term);
+            return MapToResource(searchResults).AsResponse();
         }
 
 

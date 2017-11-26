@@ -1,6 +1,6 @@
-import getMonitoringOptions from 'Utilities/Series/getMonitoringOptions';
+import getMonitoringOptions from 'Utilities/Artist/getMonitoringOptions';
 
-function getNewSeries(artist, payload) {
+function getNewArtist(artist, payload) {
   const {
     rootFolderPath,
     monitor,
@@ -14,13 +14,11 @@ function getNewSeries(artist, payload) {
   } = payload;
 
   const {
-    // seasons,
     options: addOptions
   } = getMonitoringOptions(monitor);
 
   addOptions.searchForMissingAlbums = searchForMissingAlbums;
   artist.addOptions = addOptions;
-  // artist.seasons = seasons;
   artist.monitored = true;
   artist.qualityProfileId = qualityProfileId;
   artist.languageProfileId = languageProfileId;
@@ -33,4 +31,4 @@ function getNewSeries(artist, payload) {
   return artist;
 }
 
-export default getNewSeries;
+export default getNewArtist;
