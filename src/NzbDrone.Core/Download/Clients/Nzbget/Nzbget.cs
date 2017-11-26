@@ -26,8 +26,9 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
                       IConfigService configService,
                       IDiskProvider diskProvider,
                       IRemotePathMappingService remotePathMappingService,
+                      IValidateNzbs nzbValidationService,
                       Logger logger)
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, diskProvider, remotePathMappingService, nzbValidationService, logger)
         {
             _proxy = proxy;
         }
