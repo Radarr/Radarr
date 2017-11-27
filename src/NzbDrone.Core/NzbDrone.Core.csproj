@@ -1069,6 +1069,7 @@
     <Compile Include="Validation\FolderValidator.cs" />
     <Compile Include="Validation\IpValidation.cs" />
     <Compile Include="Validation\LanguageProfileExistsValidator.cs" />
+    <Compile Include="Validation\MetadataProfileExistsValidator.cs" />
     <Compile Include="Validation\NzbDroneValidationExtensions.cs" />
     <Compile Include="Validation\NzbDroneValidationFailure.cs" />
     <Compile Include="Validation\NzbDroneValidationResult.cs" />

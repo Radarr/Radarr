@@ -35,20 +35,19 @@ namespace Lidarr.Api.V1.Artist
         private readonly IAddArtistService _addArtistService;
         private readonly IArtistStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
-        private readonly IAlbumService _albumService;
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IArtistService artistService,
                             IAddArtistService addArtistService,
                             IArtistStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
-                            IAlbumService albumService,
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
                             ArtistAncestorValidator artistAncestorValidator,
                             ProfileExistsValidator profileExistsValidator,
-                            LanguageProfileExistsValidator languageProfileExistsValidator
+                            LanguageProfileExistsValidator languageProfileExistsValidator,
+                            MetadataProfileExistsValidator metadataProfileExistsValidator
             )
             : base(signalRBroadcaster)
         {
@@ -57,7 +56,6 @@ namespace Lidarr.Api.V1.Artist
             _artistStatisticsService = artistStatisticsService;
 
             _coverMapper = coverMapper;
-            _albumService = albumService;
 
             GetResourceAll = AllArtists;
             GetResourceById = GetArtist;
@@ -77,6 +75,7 @@ namespace Lidarr.Api.V1.Artist
 
             SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(profileExistsValidator);
             SharedValidator.RuleFor(s => s.LanguageProfileId).SetValidator(languageProfileExistsValidator);
+            SharedValidator.RuleFor(s => s.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath).IsValidPath().When(s => s.Path.IsNullOrWhiteSpace());
