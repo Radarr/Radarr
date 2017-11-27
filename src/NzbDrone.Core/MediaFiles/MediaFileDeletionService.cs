@@ -41,11 +41,13 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
+                _logger.Warn("Artist's root folder ({0}) doesn't exist.", rootFolder);
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Artist's root folder ({0}) doesn't exist.", rootFolder);
             }
 
             if (_diskProvider.GetDirectories(rootFolder).Empty())
             {
+                _logger.Warn("Artist's root folder ({0}) is empty.", rootFolder);
                 throw new NzbDroneClientException(HttpStatusCode.Conflict, "Artist's root folder ({0}) is empty.", rootFolder);
             }
 
