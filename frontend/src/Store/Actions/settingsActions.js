@@ -73,6 +73,10 @@ export const defaultState = {
   ui: ui.defaultState
 };
 
+export const persistState = [
+  'settings.advancedSettings'
+];
+
 //
 // Actions Types
 
