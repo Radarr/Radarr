@@ -88,7 +88,7 @@ function EditRemotePathMappingModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.PATH}
                   name="localPath"
-                  helpText="Path that Sonarr should use to access the remote path locally"
+                  helpText="Path that Lidarr should use to access the remote path locally"
                   {...localPath}
                   onChange={onInputChange}
                 />
