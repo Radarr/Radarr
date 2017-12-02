@@ -177,6 +177,7 @@
     <Compile Include="Datastore\Migration\005_metadata_profiles.cs" />
     <Compile Include="Datastore\Migration\004_add_various_qualities_in_profile.cs" />
     <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
+    <Compile Include="Datastore\Migration\006_separate_automatic_and_interactive_search.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />

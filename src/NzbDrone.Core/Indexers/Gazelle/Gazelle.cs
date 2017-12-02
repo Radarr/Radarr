@@ -61,7 +61,8 @@ namespace NzbDrone.Core.Indexers.Gazelle
             return new IndexerDefinition
             {
                 EnableRss = false,
-                EnableSearch = false,
+                EnableAutomaticSearch = false,
+                EnableInteractiveSearch = false,
                 Name = name,
                 Implementation = GetType().Name,
                 Settings = settings,

@@ -28,7 +28,8 @@ namespace NzbDrone.Integration.Test
             Indexers.Post(new Lidarr.Api.V1.Indexers.IndexerResource
             {
                 EnableRss = false,
-                EnableSearch = false,
+                EnableInteractiveSearch = false,
+                EnableAutomaticSearch = false,
                 ConfigContract = nameof(NewznabSettings),
                 Implementation = nameof(Newznab),
                 Name = "NewznabTest",

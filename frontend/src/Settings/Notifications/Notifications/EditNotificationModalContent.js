@@ -107,12 +107,12 @@ function EditNotificationModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>On Download</FormLabel>
+                <FormLabel>On Import</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="onDownload"
-                  helpText="Be notified when episodes are successfully downloaded"
+                  helpText="Be notified when tracks are successfully imported"
                   isDisabled={!supportsOnDownload.value}
                   {...onDownload}
                   onChange={onInputChange}

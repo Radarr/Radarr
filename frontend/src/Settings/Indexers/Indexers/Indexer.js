@@ -67,7 +67,8 @@ class Indexer extends Component {
       id,
       name,
       enableRss,
-      enableSearch,
+      enableAutomaticSearch,
+      enableInteractiveSearch,
       supportsRss,
       supportsSearch
     } = this.props;
@@ -90,10 +91,17 @@ class Indexer extends Component {
           </Label>
 
           <Label
-            kind={getLabelKind(supportsSearch, enableSearch)}
-            outline={supportsSearch && !enableSearch}
+            kind={getLabelKind(supportsSearch, enableAutomaticSearch)}
+            outline={supportsSearch && !enableAutomaticSearch}
           >
-            Search
+            Automatic Search
+          </Label>
+
+          <Label
+            kind={getLabelKind(supportsSearch, enableInteractiveSearch)}
+            outline={supportsSearch && !enableInteractiveSearch}
+          >
+            Interactive Search
           </Label>
         </div>
 
@@ -122,7 +130,8 @@ Indexer.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   enableRss: PropTypes.bool.isRequired,
-  enableSearch: PropTypes.bool.isRequired,
+  enableAutomaticSearch: PropTypes.bool.isRequired,
+  enableInteractiveSearch: PropTypes.bool.isRequired,
   supportsRss: PropTypes.bool.isRequired,
   supportsSearch: PropTypes.bool.isRequired,
   onConfirmDeleteIndexer: PropTypes.func.isRequired

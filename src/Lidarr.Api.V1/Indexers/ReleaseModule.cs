@@ -89,7 +89,7 @@ namespace Lidarr.Api.V1.Indexers
         {
             try
             {
-                var decisions = _nzbSearchService.AlbumSearch(albumId, true, true);
+                var decisions = _nzbSearchService.AlbumSearch(albumId, true, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);

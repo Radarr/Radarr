@@ -80,7 +80,7 @@ export const actionHandlers = handleThunks({
         const {
           albums,
           options: artistMonitoringOptions
-        } = getMonitoringOptions(_.cloneDeep(s.albums), monitor);
+        } = getMonitoringOptions(monitor);
 
         if (!monitoringOptions) {
           monitoringOptions = artistMonitoringOptions;

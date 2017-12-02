@@ -162,7 +162,6 @@ class ImportArtistFooter extends Component {
 
         {
           showLanguageProfile &&
-
             <div className={styles.inputContainer}>
               <div className={styles.label}>
                 Language Profile
@@ -181,7 +180,6 @@ class ImportArtistFooter extends Component {
 
         {
           showMetadataProfile &&
-
             <div className={styles.inputContainer}>
               <div className={styles.label}>
                 Metadata Profile

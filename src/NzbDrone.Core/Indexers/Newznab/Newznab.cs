@@ -66,7 +66,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             return new IndexerDefinition
                    {
                        EnableRss = false,
-                       EnableSearch = false,
+                       EnableAutomaticSearch = false,
+                       EnableInteractiveSearch = false,
                        Name = name,
                        Implementation = GetType().Name,
                        Settings = settings,

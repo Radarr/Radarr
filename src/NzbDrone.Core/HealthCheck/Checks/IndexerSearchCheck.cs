@@ -19,14 +19,21 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var enabled = _indexerFactory.SearchEnabled(false);
+            var automaticSearchEnabled = _indexerFactory.AutomaticSearchEnabled(false);
 
-            if (enabled.Empty())
+            if (automaticSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Search enabled, Lidarr will not provide any search results");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Automatic Search enabled, Lidarr will not provide any automatic search results");
             }
 
-            var active = _indexerFactory.SearchEnabled(true);
+            var interactiveSearchEnabled = _indexerFactory.InteractiveSearchEnabled(false);
+
+            if (interactiveSearchEnabled.Empty())
+            {
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, "No indexers available with Interactive Search enabled, Lidarr will not provide any interactive search results");
+            }
+
+            var active = _indexerFactory.AutomaticSearchEnabled(true);
 
             if (active.Empty())
             {

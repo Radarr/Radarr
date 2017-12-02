@@ -16,8 +16,8 @@ namespace NzbDrone.Core.IndexerSearch
 {
     public interface ISearchForNzb
     {
-        List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch);
-        List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch);
+        List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
+        List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
     }
 
     public class NzbSearchService : ISearchForNzb
@@ -41,21 +41,21 @@ namespace NzbDrone.Core.IndexerSearch
             _logger = logger;
         }
 
-        public List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch)
+        public List<DownloadDecision> AlbumSearch(int albumId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var album = _albumService.GetAlbum(albumId);
-            return AlbumSearch(album, missingOnly, userInvokedSearch);
+            return AlbumSearch(album, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch)
+        public List<DownloadDecision> ArtistSearch(int artistId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var artist = _artistService.GetArtist(artistId);
-            return ArtistSearch(artist, missingOnly, userInvokedSearch);
+            return ArtistSearch(artist, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> ArtistSearch(Artist artist, bool missingOnly, bool userInvokedSearch)
+        public List<DownloadDecision> ArtistSearch(Artist artist, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch);
+            var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch, interactiveSearch);
             var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
             searchSpec.Albums = albums;
@@ -63,11 +63,11 @@ namespace NzbDrone.Core.IndexerSearch
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        public List<DownloadDecision> AlbumSearch(Album album, bool missingOnly, bool userInvokedSearch)
+        public List<DownloadDecision> AlbumSearch(Album album, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var artist = _artistService.GetArtist(album.ArtistId);
 
-            var searchSpec = Get<AlbumSearchCriteria>(artist, new List<Album> { album }, userInvokedSearch);
+            var searchSpec = Get<AlbumSearchCriteria>(artist, new List<Album> { album }, userInvokedSearch, interactiveSearch);
 
             searchSpec.AlbumTitle = album.Title;
             if (album.ReleaseDate.HasValue)
@@ -78,29 +78,34 @@ namespace NzbDrone.Core.IndexerSearch
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private TSpec Get<TSpec>(Artist artist, List<Album> albums, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        private TSpec Get<TSpec>(Artist artist, List<Album> albums, bool userInvokedSearch, bool interactiveSearch) where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
 
             spec.Albums = albums;
             spec.Artist = artist;
             spec.UserInvokedSearch = userInvokedSearch;
+            spec.InteractiveSearch = interactiveSearch;
 
             return spec;
         }
 
-        private static TSpec Get<TSpec>(Artist artist, bool userInvokedSearch) where TSpec : SearchCriteriaBase, new()
+        private static TSpec Get<TSpec>(Artist artist, bool userInvokedSearch, bool interactiveSearch) where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
             spec.Artist = artist;
             spec.UserInvokedSearch = userInvokedSearch;
+            spec.InteractiveSearch = interactiveSearch;
 
             return spec;
         }
 
         private List<DownloadDecision> Dispatch(Func<IIndexer, IEnumerable<ReleaseInfo>> searchAction, SearchCriteriaBase criteriaBase)
         {
-            var indexers = _indexerFactory.SearchEnabled();
+            var indexers = criteriaBase.InteractiveSearch ?
+                _indexerFactory.InteractiveSearchEnabled() :
+                _indexerFactory.AutomaticSearchEnabled();
+
             var reports = new List<ReleaseInfo>();
 
             _logger.ProgressInfo("Searching {0} indexers for {1}", indexers.Count, criteriaBase);

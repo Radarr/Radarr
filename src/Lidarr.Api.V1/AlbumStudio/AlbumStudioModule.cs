@@ -8,13 +8,13 @@ namespace Lidarr.Api.V1.AlbumStudio
     public class AlbumStudioModule : LidarrV1Module
     {
         private readonly IArtistService _artistService;
-        private readonly IAlbumMonitoredService _episodeMonitoredService;
+        private readonly IAlbumMonitoredService _albumMonitoredService;
 
-        public AlbumStudioModule(IArtistService artistService, IAlbumMonitoredService episodeMonitoredService)
+        public AlbumStudioModule(IArtistService artistService, IAlbumMonitoredService albumMonitoredService)
             : base("/albumstudio")
         {
             _artistService = artistService;
-            _episodeMonitoredService = episodeMonitoredService;
+            _albumMonitoredService = albumMonitoredService;
             Post["/"] = artist => UpdateAll();
         }
 
@@ -33,20 +33,7 @@ namespace Lidarr.Api.V1.AlbumStudio
                     artist.Monitored = s.Monitored.Value;
                 }
 
-                if (s.Albums != null && s.Albums.Any())
-                {
-                    foreach (var artistAlbum in artist.Albums)
-                    {
-                        var album = s.Albums.FirstOrDefault(c => c.Id == artistAlbum.Id);
-
-                        if (album != null)
-                        {
-                            artistAlbum.Monitored = album.Monitored;
-                        }
-                    }
-                }
-
-                _episodeMonitoredService.SetAlbumMonitoredStatus(artist, request.MonitoringOptions);
+                _albumMonitoredService.SetAlbumMonitoredStatus(artist, request.MonitoringOptions);
             }
 
             return "ok".AsResponse(HttpStatusCode.Accepted);

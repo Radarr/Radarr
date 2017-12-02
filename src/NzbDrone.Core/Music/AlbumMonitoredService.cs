@@ -34,15 +34,7 @@ namespace NzbDrone.Core.Music
 
                 var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
-                if (monitoringOptions.Monitored)
-                {
-                    ToggleAlbumsMonitoredState(albums, true);
-                }
-
-                else
-                {
-                    ToggleAlbumsMonitoredState(albums, false);
-                }
+                ToggleAlbumsMonitoredState(albums, monitoringOptions.Monitored);
 
                 //TODO Add Other Options for Future/Exisitng/Missing Once we have a good way to check for Album Related Files.
 

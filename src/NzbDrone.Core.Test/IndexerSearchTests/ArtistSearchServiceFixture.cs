@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
                 .Returns(_artist);
 
             Mocker.GetMock<ISearchForNzb>()
-                .Setup(s => s.ArtistSearch(_artist.Id, false, true))
+                .Setup(s => s.ArtistSearch(_artist.Id, false, true, false))
                 .Returns(new List<DownloadDecision>());
 
             Mocker.GetMock<IProcessDownloadDecisions>()
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
             Subject.Execute(new ArtistSearchCommand {ArtistId = _artist.Id, Trigger = CommandTrigger.Manual});
 
             Mocker.GetMock<ISearchForNzb>()
-                .Verify(v => v.ArtistSearch(_artist.Id, false, true),
+                .Verify(v => v.ArtistSearch(_artist.Id, false, true, false),
                     Times.Exactly(_artist.Albums.Count(s => s.Monitored)));
         }
     }

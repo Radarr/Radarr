@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Messaging.Commands;
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.IndexerSearch
 
         public void Execute(ArtistSearchCommand message)
         {
-            var decisions = _nzbSearchService.ArtistSearch(message.ArtistId, false, message.Trigger == CommandTrigger.Manual);
+            var decisions = _nzbSearchService.ArtistSearch(message.ArtistId, false, message.Trigger == CommandTrigger.Manual, false);
             var processed = _processDownloadDecisions.ProcessDecisions(decisions);
 
             _logger.ProgressInfo("Artist search completed. {0} reports downloaded.", processed.Grabbed.Count);

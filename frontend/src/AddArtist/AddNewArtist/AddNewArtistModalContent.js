@@ -153,33 +153,27 @@ class AddNewArtistModalContent extends Component {
                   />
                 </FormGroup>
 
-                {
-                  showLanguageProfile &&
-                    <FormGroup>
-                      <FormLabel>Language Profile</FormLabel>
+                <FormGroup className={showLanguageProfile ? undefined : styles.hideLanguageProfile}>
+                  <FormLabel>Language Profile</FormLabel>
 
-                      <FormInputGroup
-                        type={inputTypes.LANGUAGE_PROFILE_SELECT}
-                        name="languageProfileId"
-                        onChange={this.onLanguageProfileIdChange}
-                        {...languageProfileId}
-                      />
-                    </FormGroup>
-                }
+                  <FormInputGroup
+                    type={inputTypes.LANGUAGE_PROFILE_SELECT}
+                    name="languageProfileId"
+                    onChange={this.onLanguageProfileIdChange}
+                    {...languageProfileId}
+                  />
+                </FormGroup>
 
-                {
-                  showMetadataProfile &&
-                    <FormGroup>
-                      <FormLabel>Metadata Profile</FormLabel>
+                <FormGroup className={showMetadataProfile ? undefined : styles.hideMetadataProfile}>
+                  <FormLabel>Metadata Profile</FormLabel>
 
-                      <FormInputGroup
-                        type={inputTypes.METADATA_PROFILE_SELECT}
-                        name="metadataProfileId"
-                        onChange={this.onMetadataProfileIdChange}
-                        {...metadataProfileId}
-                      />
-                    </FormGroup>
-                }
+                  <FormInputGroup
+                    type={inputTypes.METADATA_PROFILE_SELECT}
+                    name="metadataProfileId"
+                    onChange={this.onMetadataProfileIdChange}
+                    {...metadataProfileId}
+                  />
+                </FormGroup>
 
                 <FormGroup>
                   <FormLabel>Album Folder</FormLabel>

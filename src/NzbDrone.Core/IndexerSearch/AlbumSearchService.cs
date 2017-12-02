@@ -44,7 +44,7 @@ namespace NzbDrone.Core.IndexerSearch
             foreach (var album in albums)
             {
                 List<DownloadDecision> decisions;
-                decisions = _nzbSearchService.AlbumSearch(album.Id, false, userInvokedSearch);
+                decisions = _nzbSearchService.AlbumSearch(album.Id, false, userInvokedSearch, false);
                 var processed = _processDownloadDecisions.ProcessDecisions(decisions);
 
                 downloadedCount += processed.Grabbed.Count;
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.IndexerSearch
             foreach (var albumId in message.AlbumIds)
             {
                 var decisions =
-                    _nzbSearchService.AlbumSearch(albumId, false, message.Trigger == CommandTrigger.Manual);
+                    _nzbSearchService.AlbumSearch(albumId, false, message.Trigger == CommandTrigger.Manual, false);
                 var processed = _processDownloadDecisions.ProcessDecisions(decisions);
 
                 _logger.ProgressInfo("Album search completed. {0} reports downloaded.", processed.Grabbed.Count);
