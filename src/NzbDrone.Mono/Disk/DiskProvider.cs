@@ -81,8 +81,8 @@ namespace NzbDrone.Mono.Disk
                                      .Concat(GetDriveInfoMounts()
                                                  .Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
                                                  .Where(d => d.DriveType == DriveType.Fixed ||
-                                                             d.DriveType == DriveType.Network || d.DriveType ==
-                                                             DriveType.Removable))
+                                                             d.DriveType == DriveType.Network ||
+                                                             d.DriveType == DriveType.Removable))
                                      .DistinctBy(v => v.RootDirectory)
                                      .ToList();
         }
