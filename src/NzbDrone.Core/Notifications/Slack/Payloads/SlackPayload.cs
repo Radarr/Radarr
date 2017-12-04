@@ -15,6 +15,8 @@ namespace NzbDrone.Core.Notifications.Slack.Payloads
         [JsonProperty("icon_url")]
         public string IconUrl { get; set; }
 
+        public string Channel { get; set; }
+
         public List<Attachment> Attachments { get; set; }
     }
 }
