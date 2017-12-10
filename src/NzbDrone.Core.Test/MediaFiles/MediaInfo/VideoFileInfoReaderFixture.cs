@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoProfile.Should().Be("Baseline@L2.1");
             info.VideoCodecLibrary.Should().Be("");
             info.AudioFormat.Should().Be("AAC");
-            info.AudioCodecID.Should().Be("40");
+            info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
             info.AudioProfile.Should().Be("LC");
             info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoProfile.Should().Be("Baseline@L2.1");
             info.VideoCodecLibrary.Should().Be("");
             info.AudioFormat.Should().Be("AAC");
-            info.AudioCodecID.Should().Be("40");
+            info.AudioCodecID.Should().BeOneOf("40", "mp4a-40-2");
             info.AudioProfile.Should().Be("LC");
             info.AudioCodecLibrary.Should().Be("");
             info.AudioBitrate.Should().Be(128000);
