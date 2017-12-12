@@ -446,6 +446,14 @@ namespace NzbDrone.Core.Tv
                     return true;
                 }
             }
+            else
+            {
+                result = _movieRepository.FindByTitle(movie.Title.CleanSeriesTitle());
+                if (result != null)
+                {
+                    return true;
+                }
+            }
 
             return false;
         }
