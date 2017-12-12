@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French)]
         [TestCase("Everest.2015.FRENCH.VFQ.BDRiP.x264-CNF30", Language.French)]
         [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French)]
+        [TestCase("The.Polar.Express.2004.MULTI.VF2.1080p.BluRay.x264-PopHD", Language.French)]
         [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL", Language.Spanish)]
         [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL", Language.German)]
         [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
