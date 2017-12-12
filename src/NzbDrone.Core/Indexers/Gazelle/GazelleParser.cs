@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Http;
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Indexers.Gazelle
                 throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<GazelleResponse>(indexerResponse.Content);
+            var jsonResponse = JsonConvert.DeserializeObject<GazelleResponse>(WebUtility.HtmlDecode(indexerResponse.Content));
             if (jsonResponse.Status != "success" ||
                 jsonResponse.Status.IsNullOrWhiteSpace() ||
                 jsonResponse.Response == null)
