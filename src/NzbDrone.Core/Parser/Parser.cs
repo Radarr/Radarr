@@ -19,74 +19,87 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportMusicTitleRegex = new[]
         {
-                // Track with artist (01 - artist - trackName)
-                new Regex(@"(?<trackNumber>\d*){0,1}([-| ]{0,1})(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
-                          RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track with artist (01 - artist - trackName)
+            new Regex(@"(?<trackNumber>\d*){0,1}([-| ]{0,1})(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                        RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                // Track without artist (01 - trackName)
-                new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track without artist (01 - trackName)
+            new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                // Track without trackNumber or artist(trackName)
-                new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track without trackNumber or artist(trackName)
+            new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                // Track without trackNumber and  with artist(artist - trackName)
-                new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track without trackNumber and  with artist(artist - trackName)
+            new Regex(@"(?<trackNumber>\d*)[-| .]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                // Track with artist and starting title (01 - artist - trackName)
-                new Regex(@"(?<trackNumber>\d*){0,1}[-| ]{0,1}(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Track with artist and starting title (01 - artist - trackName)
+            new Regex(@"(?<trackNumber>\d*){0,1}[-| ]{0,1}(?<artist>[a-zA-Z0-9, ().&_]*)[-| ]{0,1}(?<trackName>[a-zA-Z0-9, ().&_]+)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] ReportAlbumTitleRegex = new[]
         {
-                //Artist-Album-Version-Source-Year
-                //ex. Imagine Dragons-Smoke And Mirrors-Deluxe Edition-2CD-FLAC-2015-JLM
-                new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?:[\(|\[]?)(?<version>.+?(?:Edition)?)(?:[\)|\]]?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+
+            //Artist Discography with two years
+            new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Artist Discography
+                new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia)",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist-Album-Source-Year
-                //ex. Dani_Sbert-Togheter-WEB-2017-FURY
-                new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album-Version-Source-Year
+            //ex. Imagine Dragons-Smoke And Mirrors-Deluxe Edition-2CD-FLAC-2015-JLM
+            new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?:[\(|\[]?)(?<version>.+?(?:Edition)?)(?:[\)|\]]?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album (Year) Strict
-                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album-Source-Year
+            //ex. Dani_Sbert-Togheter-WEB-2017-FURY
+            new Regex(@"^(?<artist>.+?)[-](?<album>.+?)[-](?<source>\d?CD|WEB).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album (Year)
-                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album (Year) Strict
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album
-                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album (Year)
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album Year
-                new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(\d{4}|\d{3})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album [something] or Artist - Album (something)
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist Discography
-                new Regex(@"^(?<artist>.+?)\W*(?<discograghy>Discograghy|Discografia).+(?<startyear>\d{4}).+(?<endyear>\d{4})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist - Album Year
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                 //Artist - Album (Year) Strict
-                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album (Year) Strict
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[).+?(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album (Year)
-                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album (Year)
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album
-                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album [something] or Artist-Album (something)
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?:\(|\[)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-                //Artist - Album Year
-                new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(\d{4}|\d{3})",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            //Artist-Album-something-Year
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)(?:-.+?)(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Artist-Album Year
+            //Hyphen no space between artist and album
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
@@ -166,7 +179,7 @@ namespace NzbDrone.Core.Parser
 
             var fileInfo = new FileInfo(path);
 
-            var result = new ParsedTrackInfo{ };
+            var result = new ParsedTrackInfo { };
 
             if (MediaFiles.MediaFileExtensions.Extensions.Contains(fileInfo.Extension))
             {
@@ -497,7 +510,7 @@ namespace NzbDrone.Core.Parser
 
             var trackNumber = file.Tag.Track;
             var trackTitle = file.Tag.Title;
-            var discNumber = (file.Tag.Disc > 0) ? Convert.ToInt32(file.Tag.Disc) : 1 ;
+            var discNumber = (file.Tag.Disc > 0) ? Convert.ToInt32(file.Tag.Disc) : 1;
 
             var artist = file.Tag.FirstAlbumArtist;
 
@@ -528,12 +541,12 @@ namespace NzbDrone.Core.Parser
                 Title = trackTitle
             };
 
-            foreach (TagLib.ICodec codec in file.Properties.Codecs)
+            foreach (ICodec codec in file.Properties.Codecs)
             {
-                TagLib.IAudioCodec acodec = codec as TagLib.IAudioCodec;
-                TagLib.IVideoCodec vcodec = codec as TagLib.IVideoCodec;
+                IAudioCodec acodec = codec as IAudioCodec;
+                IVideoCodec vcodec = codec as IVideoCodec;
 
-                if (acodec != null && (acodec.MediaTypes & TagLib.MediaTypes.Audio) != TagLib.MediaTypes.None)
+                if (acodec != null && (acodec.MediaTypes & MediaTypes.Audio) != MediaTypes.None)
                 {
                     Logger.Debug("Audio Properties : " + acodec.Description + ", Bitrate: " + acodec.AudioBitrate + ", Sample Size: " +
                         file.Properties.BitsPerSample + ", SampleRate: " + acodec.AudioSampleRate + ", Channels: " + acodec.AudioChannels);
@@ -656,6 +669,11 @@ namespace NzbDrone.Core.Parser
             result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistName);
             result.ReleaseDate = releaseYear.ToString();
             result.ReleaseVersion = releaseVersion;
+
+            if (matchCollection[0].Groups["discography"].Success)
+            {
+                result.Discography = true;
+            }
 
             Logger.Debug("Album Parsed. {0}", result);
 
