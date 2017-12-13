@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Music
         void InsertMany(List<Album> albums);
         void UpdateMany(List<Album> albums);
         void DeleteMany(List<Album> albums);
-        bool AlbumPathExists(string folder);
         void RemoveAddOptions(Album album);
     }
 
@@ -67,11 +66,6 @@ namespace NzbDrone.Core.Music
             return newAlbum;
         }
 
-        public bool AlbumPathExists(string folder)
-        {
-            return _albumRepository.AlbumPathExists(folder);
-        }
-
         public void DeleteAlbum(int albumId, bool deleteFiles)
         {
             var album = _albumRepository.Get(albumId);
@@ -88,7 +82,6 @@ namespace NzbDrone.Core.Music
         {
             return _albumRepository.FindByTitle(artistId, title);
         }
-
 
         public Album FindByTitleInexact(string title)
         {

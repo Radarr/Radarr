@@ -13,66 +13,65 @@ namespace NzbDrone.Core.Test.Metadata.Consumers.Roksbox
     [TestFixture]
     public class FindMetadataFileFixture : CoreTest<RoksboxMetadata>
     {
-        private Artist _series;
+        private Artist _artist;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Artist>.CreateNew()
-                                     .With(s => s.Path = @"C:\Test\TV\The.Series".AsOsAgnostic())
+            _artist = Builder<Artist>.CreateNew()
+                                     .With(s => s.Path = @"C:\Test\Music\The.Artist".AsOsAgnostic())
                                      .Build();
         }
 
         [Test]
         public void should_return_null_if_filename_is_not_handled()
         {
-            var path = Path.Combine(_series.Path, "file.jpg");
+            var path = Path.Combine(_artist.Path, "file.jpg");
 
-            Subject.FindMetadataFile(_series, path).Should().BeNull();
+            Subject.FindMetadataFile(_artist, path).Should().BeNull();
         }
 
         [TestCase("Specials")]
         [TestCase("specials")]
         [TestCase("Season 1")]
-        public void should_return_season_image(string folder)
+        public void should_return_album_image(string folder)
         {
-            var path = Path.Combine(_series.Path, folder, folder + ".jpg");
+            var path = Path.Combine(_artist.Path, folder, folder + ".jpg");
 
-            Subject.FindMetadataFile(_series, path).Type.Should().Be(MetadataType.AlbumImage);
+            Subject.FindMetadataFile(_artist, path).Type.Should().Be(MetadataType.AlbumImage);
         }
 
         [TestCase(".xml", MetadataType.TrackMetadata)]
-        [TestCase(".jpg", MetadataType.TrackImage)]
-        public void should_return_metadata_for_episode_if_valid_file_for_episode(string extension, MetadataType type)
+        public void should_return_metadata_for_track_if_valid_file_for_track(string extension, MetadataType type)
         {
-            var path = Path.Combine(_series.Path, "the.series.s01e01.episode" + extension);
+            var path = Path.Combine(_artist.Path, "the.artist.s01e01.track" + extension);
 
-            Subject.FindMetadataFile(_series, path).Type.Should().Be(type);
+            Subject.FindMetadataFile(_artist, path).Type.Should().Be(type);
         }
 
         [TestCase(".xml")]
         [TestCase(".jpg")]
-        public void should_return_null_if_not_valid_file_for_episode(string extension)
+        public void should_return_null_if_not_valid_file_for_track(string extension)
         {
-            var path = Path.Combine(_series.Path, "the.series.episode" + extension);
+            var path = Path.Combine(_artist.Path, "the.artist.track" + extension);
 
-            Subject.FindMetadataFile(_series, path).Should().BeNull();
+            Subject.FindMetadataFile(_artist, path).Should().BeNull();
         }
 
         [Test]
         public void should_not_return_metadata_if_image_file_is_a_thumb()
         {
-            var path = Path.Combine(_series.Path, "the.series.s01e01.episode-thumb.jpg");
+            var path = Path.Combine(_artist.Path, "the.artist.s01e01.track-thumb.jpg");
 
-            Subject.FindMetadataFile(_series, path).Should().BeNull();
+            Subject.FindMetadataFile(_artist, path).Should().BeNull();
         }
 
         [Test]
-        public void should_return_series_image_for_folder_jpg_in_series_folder()
+        public void should_return_artist_image_for_folder_jpg_in_artist_folder()
         {
-            var path = Path.Combine(_series.Path, new DirectoryInfo(_series.Path).Name + ".jpg");
+            var path = Path.Combine(_artist.Path, new DirectoryInfo(_artist.Path).Name + ".jpg");
 
-            Subject.FindMetadataFile(_series, path).Type.Should().Be(MetadataType.ArtistImage);
+            Subject.FindMetadataFile(_artist, path).Type.Should().Be(MetadataType.ArtistImage);
         }
     }
 }

@@ -7,9 +7,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 {
     public class RoksboxSettingsValidator : AbstractValidator<RoksboxMetadataSettings>
     {
-        public RoksboxSettingsValidator()
-        {
-        }
     }
 
     public class RoksboxMetadataSettings : IProviderConfig
@@ -18,23 +15,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         public RoksboxMetadataSettings()
         {
-            EpisodeMetadata = true;
+            TrackMetadata = true;
             ArtistImages = true;
             AlbumImages = true;
-            EpisodeImages = true;
         }
 
-        [FieldDefinition(0, Label = "Episode Metadata", Type = FieldType.Checkbox, HelpText = "Season##\\filename.xml")]
-        public bool EpisodeMetadata { get; set; }
+        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox, HelpText = "Season##\\filename.xml")]
+        public bool TrackMetadata { get; set; }
 
         [FieldDefinition(1, Label = "Artist Images", Type = FieldType.Checkbox, HelpText = "Artist Title.jpg")]
         public bool ArtistImages { get; set; }
 
         [FieldDefinition(2, Label = "Album Images", Type = FieldType.Checkbox, HelpText = "Album Title.jpg")]
         public bool AlbumImages { get; set; }
-
-        [FieldDefinition(3, Label = "Episode Images", Type = FieldType.Checkbox, HelpText = "Season##\\filename.jpg")]
-        public bool EpisodeImages { get; set; }
         
         public bool IsValid => true;
 

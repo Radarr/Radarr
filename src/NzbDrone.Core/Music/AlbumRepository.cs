@@ -8,12 +8,12 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 using Marr.Data.QGen;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
     public interface IAlbumRepository : IBasicRepository<Album>
     {
-        bool AlbumPathExists(string path);
         List<Album> GetAlbums(int artistId);
         Album FindByName(string cleanTitle);
         Album FindByTitle(int artistId, string title);
@@ -36,11 +36,6 @@ namespace NzbDrone.Core.Music
             _database = database;
         }
 
-
-        public bool AlbumPathExists(string path)
-        {
-            return Query.Where(c => c.Path == path).Any();
-        }
 
         public List<Album> GetAlbums(int artistId)
         {

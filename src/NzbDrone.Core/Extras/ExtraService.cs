@@ -27,7 +27,6 @@ namespace NzbDrone.Core.Extras
                                 IHandle<ArtistRenamedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
-        //private readonly IEpisodeService _episodeService;
         private readonly IAlbumService _albumService;
         private readonly ITrackService _trackService;
         private readonly IDiskProvider _diskProvider;
@@ -36,7 +35,6 @@ namespace NzbDrone.Core.Extras
         private readonly Logger _logger;
 
         public ExtraService(IMediaFileService mediaFileService,
-                            //IEpisodeService episodeService,
                             IAlbumService albumService,
                             ITrackService trackService,
                             IDiskProvider diskProvider,
@@ -45,7 +43,6 @@ namespace NzbDrone.Core.Extras
                             Logger logger)
         {
             _mediaFileService = mediaFileService;
-            //_episodeService = episodeService;
             _albumService = albumService;
             _trackService = trackService;
             _diskProvider = diskProvider;
@@ -111,22 +108,23 @@ namespace NzbDrone.Core.Extras
         public void Handle(MediaCoversUpdatedEvent message)
         {
             var artist = message.Artist;
-            var albums = _albumService.GetAlbumsByArtist(artist.Id);
+
             var trackFiles = GetTrackFiles(artist.Id);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterArtistScan(artist, albums, trackFiles);
+                extraFileManager.CreateAfterArtistScan(artist, trackFiles);
             }
         }
 
         public void Handle(TrackFolderCreatedEvent message)
         {
             var artist = message.Artist;
+            var album = _albumService.GetAlbum(message.TrackFile.AlbumId);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterTrackImport(artist, message.ArtistFolder, message.AlbumFolder);
+                extraFileManager.CreateAfterTrackImport(artist, album, message.ArtistFolder, message.AlbumFolder);
             }
         }
 

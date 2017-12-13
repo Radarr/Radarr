@@ -31,7 +31,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             _logger = logger;
         }
 
-        private static List<string> ValidCertification = new List<string> { "G", "NC-17", "PG", "PG-13", "R", "UR", "UNRATED", "NR", "TV-Y", "TV-Y7", "TV-Y7-FV", "TV-G", "TV-PG", "TV-14", "TV-MA" };
         private static readonly Regex SeasonImagesRegex = new Regex(@"^(season (?<season>\d+))|(?<specials>specials)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override string Name => "Roksbox";
@@ -39,11 +38,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
         public override string GetFilenameAfterMove(Artist artist, TrackFile trackFile, MetadataFile metadataFile)
         {
             var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
-
-            if (metadataFile.Type == MetadataType.TrackImage)
-            {
-                return GetTrackImageFilename(trackFilePath);
-            }
 
             if (metadataFile.Type == MetadataType.TrackMetadata)
             {
@@ -104,16 +98,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 {
                     metadata.Type = MetadataType.TrackMetadata;
                     return metadata;
-                }
-
-                if (extension == ".jpg")
-                {
-                    if (!Path.GetFileNameWithoutExtension(filename).EndsWith("-thumb"))
-                    {
-                        metadata.Type = MetadataType.TrackImage;
-                        return metadata;
-                    }
-                }                
+                }             
             }
 
             return null;
@@ -125,14 +110,14 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             return null;
         }
 
-        public override MetadataFileResult AlbumMetadata(Artist artist, Album album)
+        public override MetadataFileResult AlbumMetadata(Artist artist, Album album, string albumPath)
         {
             return null;
         }
 
         public override MetadataFileResult TrackMetadata(Artist artist, TrackFile trackFile)
         {
-            if (!Settings.EpisodeMetadata)
+            if (!Settings.TrackMetadata)
             {
                 return null;
             }
@@ -151,11 +136,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 {
                     var doc = new XDocument();
 
-                    var details = new XElement("video");
-                    details.Add(new XElement("title", string.Format("{0} - {1} - {2}", artist.Name, track.TrackNumber, track.Title)));
-                    details.Add(new XElement("genre", string.Join(" / ", artist.Genres)));
-                    var actors = string.Join(" , ", artist.Members.ConvertAll(c => c.Name + " - " + c.Instrument).GetRange(0, Math.Min(3, artist.Members.Count)));
-                    details.Add(new XElement("actors", actors));
+                    var details = new XElement("song");
+                    details.Add(new XElement("title", track.Title));
+                    details.Add(new XElement("performingartist", artist.Name));
 
                     doc.Add(details);
                     doc.Save(xw);
@@ -188,34 +171,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             return new List<ImageFileResult>{ new ImageFileResult(destination, source) };
         }
 
-        public override List<ImageFileResult> AlbumImages(Artist artist, Album album)
+        public override List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumFolder)
         {
-            if (!Settings.AlbumImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            var albumFolders = GetAlbumFolders(artist);
-
-            string albumFolder;
-            if (!albumFolders.TryGetValue(album.ArtistId, out albumFolder))
-            {
-                _logger.Trace("Failed to find album folder for artit {0}, album {1}.", artist.Name, album.Title);
-                return new List<ImageFileResult>();
-            }
-
-            //Roksbox only supports one season image, so first of all try for poster otherwise just use whatever is first in the collection
-            var image = album.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? album.Images.FirstOrDefault();
-            if (image == null)
-            {
-                _logger.Trace("Failed to find suitable album image for artist {0}, album {1}.", artist.Name, album.Title);
-                return new List<ImageFileResult>();
-            }
-
-            var filename = Path.GetFileName(albumFolder) + ".jpg";
-            var path = artist.Path.GetRelativePath(Path.Combine(artist.Path, albumFolder, filename));
-
-            return new List<ImageFileResult> { new ImageFileResult(path, image.Url) };
+            return new List<ImageFileResult>();
         }
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)

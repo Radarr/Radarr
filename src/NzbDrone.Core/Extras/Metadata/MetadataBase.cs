@@ -35,13 +35,21 @@ namespace NzbDrone.Core.Extras.Metadata
             return newFileName;
         }
 
+        public virtual string GetFilenameAfterMove(Artist artist, string albumPath, MetadataFile metadataFile)
+        {
+            var existingFilename = Path.GetFileName(metadataFile.RelativePath);
+            var newFileName = Path.Combine(artist.Path, albumPath, existingFilename);
+
+            return newFileName;
+        }
+
         public abstract MetadataFile FindMetadataFile(Artist artist, string path);
 
         public abstract MetadataFileResult ArtistMetadata(Artist artist);
-        public abstract MetadataFileResult AlbumMetadata(Artist artist, Album album);
+        public abstract MetadataFileResult AlbumMetadata(Artist artist, Album album, string albumPath);
         public abstract MetadataFileResult TrackMetadata(Artist artist, TrackFile trackFile);
         public abstract List<ImageFileResult> ArtistImages(Artist artist);
-        public abstract List<ImageFileResult> AlbumImages(Artist artist, Album album);
+        public abstract List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumPath);
         public abstract List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile);
 
         public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }

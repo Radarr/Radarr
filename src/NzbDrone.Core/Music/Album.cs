@@ -2,8 +2,6 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Music
 {
@@ -24,12 +22,9 @@ namespace NzbDrone.Core.Music
         public string CleanTitle { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public List<string> Label { get; set; }
-        //public int TrackCount { get; set; }
-        public string Path { get; set; }
         public int ProfileId { get; set; }
         public int Duration { get; set; }
         public List<Track> Tracks { get; set; }
-        //public int DiscCount { get; set; }
         public bool Monitored { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<string> Genres { get; set; }

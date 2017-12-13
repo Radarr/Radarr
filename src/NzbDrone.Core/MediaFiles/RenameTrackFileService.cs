@@ -144,9 +144,10 @@ namespace NzbDrone.Core.MediaFiles
 
             if (renamed.Any())
             {
-                _diskProvider.RemoveEmptySubfolders(artist.Path);
-
                 _eventAggregator.PublishEvent(new ArtistRenamedEvent(artist));
+
+                _logger.Debug("Removing Empty Subfolders from: {0}", artist.Path);
+                _diskProvider.RemoveEmptySubfolders(artist.Path);
             }
         }
 

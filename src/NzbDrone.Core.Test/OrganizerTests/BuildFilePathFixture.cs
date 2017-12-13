@@ -1,4 +1,4 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Organizer;
@@ -37,7 +37,6 @@ namespace NzbDrone.Core.Test.OrganizerTests
 
             var fakeAlbum = Builder<Album>.CreateNew()
                 .With(s => s.Title = "Fake: Album")
-                .With(s => s.Path = @"C:\Test\Fake- The Artist\Fake- Album".AsOsAgnostic())
                 .Build();
 
             namingConfig.AlbumFolderFormat = "{Artist Name} {Album Title}";

@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Extras.Lyrics
 
         public override int Order => 1;
 
-        public override IEnumerable<ExtraFile> CreateAfterArtistScan(Artist artist, List<Album> albums, List<TrackFile> trackFiles)
+        public override IEnumerable<ExtraFile> CreateAfterArtistScan(Artist artist, List<TrackFile> trackFiles)
         {
             return Enumerable.Empty<LyricFile>();
         }
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Extras.Lyrics
             return Enumerable.Empty<LyricFile>();
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, string artistFolder, string albumFolder)
+        public override IEnumerable<ExtraFile> CreateAfterTrackImport(Artist artist, Album album, string artistFolder, string albumFolder)
         {
             return Enumerable.Empty<LyricFile>();
         }

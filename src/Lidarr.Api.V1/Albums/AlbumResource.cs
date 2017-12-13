@@ -16,7 +16,6 @@ namespace Lidarr.Api.V1.Albums
         public List<string> AlbumLabel { get; set; }
         public string ForeignAlbumId { get; set; }
         public bool Monitored { get; set; }
-        public string Path { get; set; }
         public int ProfileId { get; set; }
         public int Duration { get; set; }
         public string AlbumType { get; set; }
@@ -57,7 +56,6 @@ namespace Lidarr.Api.V1.Albums
                 ArtistId = model.ArtistId,
                 AlbumLabel = model.Label,
                 ForeignAlbumId = model.ForeignAlbumId,
-                Path = model.Path,
                 ProfileId = model.ProfileId,
                 Monitored = model.Monitored,
                 ReleaseDate = model.ReleaseDate,

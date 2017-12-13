@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         public void Clean()
         {
             DeleteDuplicateArtistMetadata();
+            DeleteDuplicateAlbumMetadata();
             DeleteDuplicateTrackMetadata();
             DeleteDuplicateTrackImages();
         }

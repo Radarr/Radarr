@@ -7,9 +7,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 {
     public class XbmcSettingsValidator : AbstractValidator<XbmcMetadataSettings>
     {
-        public XbmcSettingsValidator()
-        {
-        }
     }
 
     public class XbmcMetadataSettings : IProviderConfig
@@ -23,7 +20,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             TrackMetadata = true;
             ArtistImages = true;
             AlbumImages = true;
-            EpisodeImages = true;
         }
 
         [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox)]
@@ -40,9 +36,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         [FieldDefinition(4, Label = "Album Images", Type = FieldType.Checkbox)]
         public bool AlbumImages { get; set; }
-
-        [FieldDefinition(5, Label = "Episode Images", Type = FieldType.Checkbox)]
-        public bool EpisodeImages { get; set; }
 
         public bool IsValid => true;
 

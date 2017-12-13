@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Parser
         List<Album> GetAlbums(ParsedAlbumInfo parsedAlbumInfo, Artist artist, SearchCriteriaBase searchCriteria = null);
 
         // Music stuff here
+        Album GetLocalAlbum(string filename, Artist artist);
         LocalTrack GetLocalTrack(string filename, Artist artist);
         LocalTrack GetLocalTrack(string filename, Artist artist, ParsedTrackInfo folderInfo);
 
@@ -30,11 +31,13 @@ namespace NzbDrone.Core.Parser
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly ITrackService _trackService;
+        private readonly IMediaFileService _mediaFileService;
         private readonly Logger _logger;
 
         public ParsingService(ITrackService trackService,
                               IArtistService artistService,
                               IAlbumService albumService,
+                              IMediaFileService mediaFileService,
                               // ISceneMappingService sceneMappingService,
                               Logger logger)
         {
@@ -42,6 +45,7 @@ namespace NzbDrone.Core.Parser
             _artistService = artistService;
             // _sceneMappingService = sceneMappingService;
             _trackService = trackService;
+            _mediaFileService = mediaFileService;
             _logger = logger;
         }
 
@@ -172,6 +176,24 @@ namespace NzbDrone.Core.Parser
             }
 
             return artist;
+        }
+
+        public Album GetLocalAlbum(string filename, Artist artist)
+        {
+            
+            if (Path.HasExtension(filename))
+            {
+                filename = Path.GetDirectoryName(filename);
+            }
+
+            filename = artist.Path.GetRelativePath(filename);
+
+            var tracksInAlbum = _mediaFileService.GetFilesByArtist(artist.Id)
+                .FindAll(s => Path.GetDirectoryName(s.RelativePath) == filename)
+                .DistinctBy(s => s.AlbumId)
+                .ToList();
+
+            return tracksInAlbum.Count == 1 ? _albumService.GetAlbum(tracksInAlbum.First().AlbumId) : null;
         }
 
         public LocalTrack GetLocalTrack(string filename, Artist artist)

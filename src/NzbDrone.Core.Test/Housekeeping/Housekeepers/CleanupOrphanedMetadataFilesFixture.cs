@@ -93,10 +93,15 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var artist = Builder<Artist>.CreateNew()
                                         .BuildNew();
 
+            var album = Builder<Album>.CreateNew()
+                .BuildNew();
+
             Db.Insert(artist);
+            Db.Insert(album);
 
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                     .With(m => m.ArtistId = artist.Id)
+                                                    .With(m => m.AlbumId = album.Id)
                                                     .With(m => m.TrackFileId = 10)
                                                     .BuildNew();
 
@@ -134,6 +139,46 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
+        public void should_delete_album_metadata_files_that_have_albumid_of_zero()
+        {
+            var artist = Builder<Artist>.CreateNew()
+                .BuildNew();
+
+            Db.Insert(artist);
+
+            var metadataFile = Builder<MetadataFile>.CreateNew()
+                .With(m => m.ArtistId = artist.Id)
+                .With(m => m.Type = MetadataType.AlbumMetadata)
+                .With(m => m.AlbumId = 0)
+                .With(m => m.TrackFileId = null)
+                .BuildNew();
+
+            Db.Insert(metadataFile);
+            Subject.Clean();
+            AllStoredModels.Should().HaveCount(0);
+        }
+
+        [Test]
+        public void should_delete_album_image_files_that_have_albumid_of_zero()
+        {
+            var artist = Builder<Artist>.CreateNew()
+                .BuildNew();
+
+            Db.Insert(artist);
+
+            var metadataFile = Builder<MetadataFile>.CreateNew()
+                .With(m => m.ArtistId = artist.Id)
+                .With(m => m.Type = MetadataType.AlbumImage)
+                .With(m => m.AlbumId = 0)
+                .With(m => m.TrackFileId = null)
+                .BuildNew();
+
+            Db.Insert(metadataFile);
+            Subject.Clean();
+            AllStoredModels.Should().HaveCount(0);
+        }
+
+        [Test]
         public void should_delete_track_metadata_files_that_have_trackfileid_of_zero()
         {
             var artist = Builder<Artist>.CreateNew()
@@ -146,25 +191,6 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
                                                  .With(m => m.Type = MetadataType.TrackMetadata)
                                                  .With(m => m.TrackFileId = 0)
                                                  .BuildNew();
-
-            Db.Insert(metadataFile);
-            Subject.Clean();
-            AllStoredModels.Should().HaveCount(0);
-        }
-
-        [Test]
-        public void should_delete_track_image_files_that_have_trackfileid_of_zero()
-        {
-            var artist = Builder<Artist>.CreateNew()
-                                        .BuildNew();
-
-            Db.Insert(artist);
-
-            var metadataFile = Builder<MetadataFile>.CreateNew()
-                                                    .With(m => m.ArtistId = artist.Id)
-                                                    .With(m => m.Type = MetadataType.TrackImage)
-                                                    .With(m => m.TrackFileId = 0)
-                                                    .BuildNew();
 
             Db.Insert(metadataFile);
             Subject.Clean();

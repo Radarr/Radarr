@@ -57,8 +57,20 @@ namespace NzbDrone.Core.Extras.Metadata
                         continue;
                     }
 
-                    if (metadata.Type == MetadataType.TrackImage ||
-                        metadata.Type == MetadataType.TrackMetadata)
+                    if (metadata.Type == MetadataType.AlbumImage || metadata.Type == MetadataType.AlbumMetadata)
+                    {
+                        var localAlbum = _parsingService.GetLocalAlbum(possibleMetadataFile, artist);
+
+                        if (localAlbum == null)
+                        {
+                            _logger.Debug("Extra file folder has multiple Albums: {0}", possibleMetadataFile);
+                            continue;
+                        }
+
+                        metadata.AlbumId = localAlbum.Id;
+                    }
+
+                    if (metadata.Type == MetadataType.TrackMetadata)
                     {
                         var localTrack = _parsingService.GetLocalTrack(possibleMetadataFile, artist);
 
@@ -70,7 +82,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
                         if (localTrack.Tracks.Empty())
                         {
-                            _logger.Debug("Cannot find related episodes for: {0}", possibleMetadataFile);
+                            _logger.Debug("Cannot find related tracks for: {0}", possibleMetadataFile);
                             continue;
                         }
 
@@ -79,8 +91,7 @@ namespace NzbDrone.Core.Extras.Metadata
                             _logger.Debug("Extra file: {0} does not match existing files.", possibleMetadataFile);
                             continue;
                         }
-
-                        metadata.AlbumId = localTrack.Album.Id;
+                        
                         metadata.TrackFileId = localTrack.Tracks.First().TrackFileId;
                     }
 

@@ -7,9 +7,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 {
     public class WdtvSettingsValidator : AbstractValidator<WdtvMetadataSettings>
     {
-        public WdtvSettingsValidator()
-        {
-        }
     }
 
     public class WdtvMetadataSettings : IProviderConfig
@@ -18,23 +15,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
         public WdtvMetadataSettings()
         {
-            EpisodeMetadata = true;
+            TrackMetadata = true;
             ArtistImages = true;
             AlbumImages = true;
-            EpisodeImages = true;
         }
 
-        [FieldDefinition(0, Label = "Episode Metadata", Type = FieldType.Checkbox)]
-        public bool EpisodeMetadata { get; set; }
+        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox)]
+        public bool TrackMetadata { get; set; }
 
         [FieldDefinition(1, Label = "Artist Images", Type = FieldType.Checkbox)]
         public bool ArtistImages { get; set; }
 
         [FieldDefinition(2, Label = "Album Images", Type = FieldType.Checkbox)]
         public bool AlbumImages { get; set; }
-
-        [FieldDefinition(3, Label = "Episode Images", Type = FieldType.Checkbox)]
-        public bool EpisodeImages { get; set; }
         
         public bool IsValid => true;
 

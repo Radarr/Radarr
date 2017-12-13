@@ -73,7 +73,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
                 artistElement.Add(new XElement("LocalTitle", artist.Name));
 
                 artistElement.Add(new XElement("Rating", artist.Ratings.Value));
-                artistElement.Add(new XElement("Genres", artist.Genres.Select(genre => new XElement("Genre", genre))));
 
                 var persons   = new XElement("Persons");
 
@@ -98,7 +97,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             }
         }
 
-        public override MetadataFileResult AlbumMetadata(Artist artist, Album album)
+        public override MetadataFileResult AlbumMetadata(Artist artist, Album album, string albumPath)
         {
             return null;
         }
@@ -113,7 +112,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             return new List<ImageFileResult>();
         }
 
-        public override List<ImageFileResult> AlbumImages(Artist artist, Album season)
+        public override List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumFolder)
         {
             return new List<ImageFileResult>();
         }

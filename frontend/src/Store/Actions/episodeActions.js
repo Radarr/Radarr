@@ -40,11 +40,6 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'path',
-      label: 'Path',
-      isVisible: false
-    },
-    {
       name: 'releaseDate',
       label: 'Release Date',
       isVisible: true

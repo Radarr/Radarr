@@ -27,9 +27,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _logger = logger;
         }
 
-        private static readonly Regex ArtistImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|logo)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex AlbumImagesRegex = new Regex(@"^season(?<season>\d{2,}|-all|-specials)-(?<type>poster|banner|fanart|cover)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex EpisodeImageRegex = new Regex(@"-thumb\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ArtistImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|logo)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex AlbumImagesRegex = new Regex(@"^(?<type>cover|disc)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override string Name => "Kodi (XBMC) / Emby";
 
@@ -37,14 +36,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             var trackFilePath = Path.Combine(artist.Path, trackFile.RelativePath);
 
-            if (metadataFile.Type == MetadataType.TrackImage)
-            {
-                return GetEpisodeImageFilename(trackFilePath);
-            }
-
             if (metadataFile.Type == MetadataType.TrackMetadata)
             {
-                return GetEpisodeMetadataFilename(trackFilePath);
+                return GetTrackMetadataFilename(trackFilePath);
             }
 
             _logger.Debug("Unknown episode file metadata: {0}", metadataFile.RelativePath);
@@ -70,36 +64,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            var seasonMatch = AlbumImagesRegex.Match(filename);
+            var albumMatch = AlbumImagesRegex.Match(filename);
 
-            if (seasonMatch.Success)
+            if (albumMatch.Success)
             {
                 metadata.Type = MetadataType.AlbumImage;
-
-                var seasonNumberMatch = seasonMatch.Groups["season"].Value;
-                int seasonNumber;
-
-                if (seasonNumberMatch.Contains("specials"))
-                {
-                    metadata.AlbumId = 0;
-                }
-
-                else if (int.TryParse(seasonNumberMatch, out seasonNumber))
-                {
-                    metadata.AlbumId = seasonNumber;
-                }
-
-                else
-                {
-                    return null;
-                }
-
-                return metadata;
-            }
-
-            if (EpisodeImageRegex.IsMatch(filename))
-            {
-                metadata.Type = MetadataType.TrackImage;
                 return metadata;
             }
 
@@ -186,7 +155,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
         }
 
-        public override MetadataFileResult AlbumMetadata(Artist artist, Album album)
+        public override MetadataFileResult AlbumMetadata(Artist artist, Album album, string albumPath)
         {
             if (!Settings.AlbumMetadata)
             {
@@ -217,9 +186,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 var doc = new XDocument(albumElement);
                 doc.Save(xw);
 
-                _logger.Debug("Saving album.nfo for {0}", artist.Name);
+                _logger.Debug("Saving album.nfo for {0}", album.Title);
+                
+                var fileName = Path.Combine(albumPath, "album.nfo");
 
-                return new MetadataFileResult("album.nfo", doc.ToString());
+                return new MetadataFileResult(fileName, doc.ToString());
             }
         }
 
@@ -311,7 +282,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 }
             }
 
-            return new MetadataFileResult(GetEpisodeMetadataFilename(trackFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
+            return new MetadataFileResult(GetTrackMetadataFilename(trackFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
         public override List<ImageFileResult> ArtistImages(Artist artist)
@@ -324,14 +295,14 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             return ProcessArtistImages(artist).ToList();
         }
 
-        public override List<ImageFileResult> AlbumImages(Artist artist, Album album)
+        public override List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumPath)
         {
             if (!Settings.AlbumImages)
             {
                 return new List<ImageFileResult>();
             }
 
-            return ProcessAlbumImages(album).ToList();
+            return ProcessAlbumImages(artist, album, albumPath).ToList();
         }
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
@@ -351,24 +322,21 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
         }
 
-        private IEnumerable<ImageFileResult> ProcessAlbumImages(Album album)
+        private IEnumerable<ImageFileResult> ProcessAlbumImages(Artist artist, Album album, string albumPath)
         {
             foreach (var image in album.Images)
             {
-                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);
+                // TODO: Make Source fallback to URL if local does not exist
+                // var source = _mediaCoverService.GetCoverPath(album.ArtistId, image.CoverType, null, album.Id);
+                var destination = Path.Combine(albumPath, image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url));
 
                 yield return new ImageFileResult(destination, image.Url);
             }
         }
 
-        private string GetEpisodeMetadataFilename(string episodeFilePath)
+        private string GetTrackMetadataFilename(string trackFilePath)
         {
-            return Path.ChangeExtension(episodeFilePath, "nfo");
-        }
-
-        private string GetEpisodeImageFilename(string episodeFilePath)
-        {
-            return Path.ChangeExtension(episodeFilePath, "").Trim('.') + "-thumb.jpg";
+            return Path.ChangeExtension(trackFilePath, "nfo");
         }
 
         private string GetAudioCodec(string audioCodec)

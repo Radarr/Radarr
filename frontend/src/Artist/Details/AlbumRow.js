@@ -67,7 +67,6 @@ class AlbumRow extends Component {
       title,
       isSaving,
       artistMonitored,
-      path,
       columns
     } = this.props;
 
@@ -118,16 +117,6 @@ class AlbumRow extends Component {
                     episodeTitle={title}
                     showOpenArtistButton={false}
                   />
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'path') {
-              return (
-                <TableRowCell key={name}>
-                  {
-                    path
-                  }
                 </TableRowCell>
               );
             }
@@ -221,7 +210,6 @@ AlbumRow.propTypes = {
   unverifiedSceneNumbering: PropTypes.bool,
   artistMonitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
-  path: PropTypes.string,
   mediaInfo: PropTypes.object,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
