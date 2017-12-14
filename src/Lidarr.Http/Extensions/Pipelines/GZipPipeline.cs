@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -33,7 +33,8 @@ namespace Lidarr.Http.Extensions.Pipelines
             try
             {
                 if (
-                   !response.ContentType.Contains("image")
+                   response.Contents != Response.NoBody
+                && !response.ContentType.Contains("image")
                 && !response.ContentType.Contains("font")
                 && request.Headers.AcceptEncoding.Any(x => x.Contains("gzip"))
                 && !AlreadyGzipEncoded(response)

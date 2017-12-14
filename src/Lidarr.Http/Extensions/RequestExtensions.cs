@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Nancy;
 
 namespace Lidarr.Http.Extensions
@@ -47,6 +47,12 @@ namespace Lidarr.Http.Extensions
             }
 
             return defaultValue;
+        }
+
+        public static bool IsSharedContentRequest(this Request request)
+        {
+            return request.Path.StartsWith("/MediaCover/", StringComparison.InvariantCultureIgnoreCase) ||
+                   request.Path.StartsWith("/Content/Images/", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

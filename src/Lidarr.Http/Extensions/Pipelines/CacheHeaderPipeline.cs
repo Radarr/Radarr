@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Nancy;
 using Nancy.Bootstrapper;
 using Lidarr.Http.Frontend;
@@ -23,6 +23,8 @@ namespace Lidarr.Http.Extensions.Pipelines
 
         private void Handle(NancyContext context)
         {
+            if (context.Request.Method == "OPTIONS") return;
+
             if (_cacheableSpecification.IsCacheable(context))
             {
                 context.Response.Headers.EnableCache();

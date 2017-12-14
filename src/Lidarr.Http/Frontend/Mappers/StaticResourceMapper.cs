@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -28,13 +28,15 @@ namespace Lidarr.Http.Frontend.Mappers
 
         public override bool CanHandle(string resourceUrl)
         {
-            if (resourceUrl.StartsWith("/Content/Images/Icons/manifest") ||
-                resourceUrl.StartsWith("/Content/Images/Icons/browserconfig"))
+            resourceUrl = resourceUrl.ToLowerInvariant();
+
+            if (resourceUrl.StartsWith("/content/images/icons/manifest") ||
+                resourceUrl.StartsWith("/content/images/icons/browserconfig"))
             {
                 return false;
             }
 
-            return resourceUrl.StartsWith("/Content") ||
+            return resourceUrl.StartsWith("/content") ||
                    resourceUrl.EndsWith(".js") ||
                    resourceUrl.EndsWith(".map") ||
                    resourceUrl.EndsWith(".css") ||
