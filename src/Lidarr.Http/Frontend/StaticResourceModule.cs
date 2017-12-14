@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
-using Nancy.Responses;
 using NLog;
 using NzbDrone.Core.Configuration;
 using Lidarr.Http.Frontend.Mappers;

@@ -49,9 +49,12 @@ namespace Lidarr.Http.Frontend.Mappers
 
         public override bool CanHandle(string resourceUrl)
         {
-            return !resourceUrl.Contains(".") &&
-                   !resourceUrl.StartsWith("/login") &&
-                   !resourceUrl.StartsWith("/Content");
+            resourceUrl = resourceUrl.ToLowerInvariant();
+
+            return !resourceUrl.StartsWith("/content") &&
+                   !resourceUrl.Contains(".") &&
+                   !resourceUrl.StartsWith("/login");
+
         }
 
         public override Response GetResponse(string resourceUrl)
