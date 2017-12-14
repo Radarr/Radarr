@@ -98,9 +98,9 @@ namespace NzbDrone.Core.History
 
         protected override SortBuilder<History> GetPagedQuery(QueryBuilder<History> query, PagingSpec<History> pagingSpec)
         {
-            var baseQuery = query.Join<History, Artist>(JoinType.Inner, h => h.Artist, (h, s) => h.ArtistId == s.Id)
-                                 .Join<History, Album>(JoinType.Inner, h => h.Album, (h, e) => h.AlbumId == e.Id)
-                                 .Join<History, Track>(JoinType.Left, h => h.Track, (h, e) => h.TrackId == e.Id);
+            var baseQuery = query.Join<History, Artist>(JoinType.Inner, h => h.Artist, (h, a) => h.ArtistId == a.Id)
+                                 .Join<History, Album>(JoinType.Inner, h => h.Album, (h, r) => h.AlbumId == r.Id)
+                                 .Join<History, Track>(JoinType.Left, h => h.Track, (h, t) => h.TrackId == t.Id);
 
             return base.GetPagedQuery(baseQuery, pagingSpec);
         }

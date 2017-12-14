@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import { fetchHistory, markAsFailed } from 'Store/Actions/historyActions';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
+import createTrackSelector from 'Store/Selectors/createTrackSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import HistoryRow from './HistoryRow';
 
@@ -12,11 +13,13 @@ function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
     createEpisodeSelector(),
+    createTrackSelector(),
     createUISettingsSelector(),
-    (artist, album, uiSettings) => {
+    (artist, album, track, uiSettings) => {
       return {
         artist,
         album,
+        track,
         shortDateFormat: uiSettings.shortDateFormat,
         timeFormat: uiSettings.timeFormat
       };
