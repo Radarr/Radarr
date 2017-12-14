@@ -31,6 +31,12 @@ export const defaultState = {
   recentFolders: [],
   importMode: 'move',
   sortPredicates: {
+    relativePath: function(item, direction) {
+      const relativePath = item.relativePath;
+
+      return relativePath.toLowerCase();
+    },
+
     artist: function(item, direction) {
       const artist = item.artist;
 

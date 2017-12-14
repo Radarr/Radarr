@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Marr.Data.QGen;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
@@ -13,7 +14,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Qualities;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.History
@@ -24,6 +25,8 @@ namespace NzbDrone.Core.History
         History MostRecentForAlbum(int episodeId);
         History MostRecentForDownloadId(string downloadId);
         History Get(int historyId);
+        List<History> GetByArtist(int artistId, HistoryEventType? eventType);
+        List<History> GetByAlbum(int artistId, int albumId, HistoryEventType? eventType);
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
@@ -64,6 +67,16 @@ namespace NzbDrone.Core.History
         public History Get(int historyId)
         {
             return _historyRepository.Get(historyId);
+        }
+
+        public List<History> GetByArtist(int artistId, HistoryEventType? eventType)
+        {
+            return _historyRepository.GetByArtist(artistId, eventType);
+        }
+
+        public List<History> GetByAlbum(int artistId, int albumId, HistoryEventType? eventType)
+        {
+            return _historyRepository.GetByAlbum(artistId, albumId, eventType);
         }
 
         public List<History> Find(string downloadId, HistoryEventType eventType)

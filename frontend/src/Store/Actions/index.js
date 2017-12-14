@@ -19,6 +19,7 @@ import * as rootFolders from './rootFolderActions';
 import * as albumStudio from './albumStudioActions';
 import * as artist from './artistActions';
 import * as artistEditor from './artistEditorActions';
+import * as artistHistory from './artistHistoryActions';
 import * as artistIndex from './artistIndexActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
@@ -48,6 +49,7 @@ export default [
   albumStudio,
   artist,
   artistEditor,
+  artistHistory,
   artistIndex,
   settings,
   system,

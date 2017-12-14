@@ -14,6 +14,8 @@ namespace NzbDrone.Core.History
         History MostRecentForAlbum(int albumId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
+        List<History> GetByArtist(int artistId, HistoryEventType? eventType);
+        List<History> GetByAlbum(int artistId, int albumId, HistoryEventType? eventType);
         List<History> FindDownloadHistory(int idArtistId, QualityModel quality);
         void DeleteForArtist(int artistId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
@@ -46,6 +48,36 @@ namespace NzbDrone.Core.History
         public List<History> FindByDownloadId(string downloadId)
         {
             return Query.Where(h => h.DownloadId == downloadId);
+        }
+
+        public List<History> GetByArtist(int artistId, HistoryEventType? eventType)
+        {
+            var query = Query.Where(h => h.ArtistId == artistId);
+
+            if (eventType.HasValue)
+            {
+                query.AndWhere(h => h.EventType == eventType);
+            }
+
+            query.OrderByDescending(h => h.Date);
+
+            return query;
+        }
+
+        public List<History> GetByAlbum(int artistId, int albumId, HistoryEventType? eventType)
+        {
+            var query = Query.Join<History, Album>(JoinType.Inner, h => h.Album, (h, e) => h.AlbumId == e.Id)
+                .Where(h => h.ArtistId == artistId)
+                .AndWhere(h => h.AlbumId == albumId);
+
+            if (eventType.HasValue)
+            {
+                query.AndWhere(h => h.EventType == eventType);
+            }
+
+            query.OrderByDescending(h => h.Date);
+
+            return query;
         }
 
         public List<History> FindDownloadHistory(int idArtistId, QualityModel quality)

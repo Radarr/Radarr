@@ -39,6 +39,7 @@ export const FOLDER_OPEN = 'fa fa-folder-open';
 export const GROUP = 'fa fa-object-group';
 export const HEALTH = 'fa fa-medkit';
 export const HEART = 'fa fa-heart';
+export const HISTORY = 'fa fa-history';
 export const HOUSEKEEPING = 'fa fa-home';
 export const INFO = 'fa fa-info-circle';
 export const INTERACTIVE = 'fa fa-user';

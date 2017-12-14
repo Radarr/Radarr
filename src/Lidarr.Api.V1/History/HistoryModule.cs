@@ -31,6 +31,7 @@ namespace Lidarr.Api.V1.History
             GetResourcePaged = GetHistory;
 
             Get["/since"] = x => GetHistorySince();
+            Get["/artist"] = x => GetArtistHistory();
             Post["/failed"] = x => MarkAsFailed();
         }
 
@@ -107,6 +108,38 @@ namespace Lidarr.Api.V1.History
             }
 
             return _historyService.Since(date, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();
+        }
+
+        private List<HistoryResource> GetArtistHistory()
+        {
+            var queryArtistId = Request.Query.ArtistId;
+            var queryAlbumId = Request.Query.AlbumId;
+            var queryEventType = Request.Query.EventType;
+
+            if (!queryArtistId.HasValue)
+            {
+                throw new BadRequestException("artistId is missing");
+            }
+
+            int artistId = Convert.ToInt32(queryArtistId.Value);
+            HistoryEventType? eventType = null;
+            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum");
+            var includeTrack = Request.GetBooleanQueryParameter("includeTrack");
+
+            if (queryEventType.HasValue)
+            {
+                eventType = (HistoryEventType)Convert.ToInt32(queryEventType.Value);
+            }
+
+            if (queryAlbumId.HasValue)
+            {
+                int albumId = Convert.ToInt32(queryAlbumId.Value);
+
+                return _historyService.GetByAlbum(artistId, albumId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();
+            }
+
+            return _historyService.GetByArtist(artistId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum, includeTrack)).ToList();
         }
 
         private Response MarkAsFailed()

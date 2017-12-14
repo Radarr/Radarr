@@ -1,15 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import padNumber from 'Utilities/Number/padNumber';
-import styles from './SeasonEpisodeNumber.css';
+import EpisodeNumber from './EpisodeNumber';
 
 function SeasonEpisodeNumber(props) {
   const {
-    seasonNumber,
-    episodeNumber,
-    absoluteEpisodeNumber,
     airDate,
-    artistType
+    artistType,
+    ...otherProps
   } = props;
 
   if (artistType === 'daily' && airDate) {
@@ -18,32 +15,16 @@ function SeasonEpisodeNumber(props) {
     );
   }
 
-  if (artistType === 'anime') {
-    return (
-      <span>
-        {seasonNumber}x{padNumber(episodeNumber, 2)}
-
-        {
-          absoluteEpisodeNumber &&
-            <span className={styles.absoluteEpisodeNumber}>
-              ({absoluteEpisodeNumber})
-            </span>
-        }
-      </span>
-    );
-  }
-
   return (
-    <span>
-      {seasonNumber}x{padNumber(episodeNumber, 2)}
-    </span>
+    <EpisodeNumber
+      seriesType={artistType}
+      showSeasonNumber={true}
+      {...otherProps}
+    />
   );
 }
 
 SeasonEpisodeNumber.propTypes = {
-  seasonNumber: PropTypes.number.isRequired,
-  episodeNumber: PropTypes.number.isRequired,
-  absoluteEpisodeNumber: PropTypes.number,
   airDate: PropTypes.string,
   artistType: PropTypes.string
 };

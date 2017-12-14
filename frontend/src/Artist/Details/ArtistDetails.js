@@ -26,6 +26,7 @@ import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfil
 import ArtistPoster from 'Artist/ArtistPoster';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
+import ArtistHistoryModal from 'Artist/History/ArtistHistoryModal';
 import ArtistAlternateTitles from './ArtistAlternateTitles';
 import ArtistDetailsSeasonConnector from './ArtistDetailsSeasonConnector';
 import ArtistTagsConnector from './ArtistTagsConnector';
@@ -92,6 +93,7 @@ class ArtistDetails extends Component {
       isManageEpisodesOpen: false,
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: false,
+      isArtistHistoryModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {}
@@ -134,6 +136,14 @@ class ArtistDetails extends Component {
 
   onDeleteArtistModalClose = () => {
     this.setState({ isDeleteArtistModalOpen: false });
+  }
+
+  onArtistHistoryPress = () => {
+    this.setState({ isArtistHistoryModalOpen: true });
+  }
+
+  onArtistHistoryModalClose = () => {
+    this.setState({ isArtistHistoryModalOpen: false });
   }
 
   onExpandAllPress = () => {
@@ -197,6 +207,7 @@ class ArtistDetails extends Component {
       isManageEpisodesOpen,
       isEditArtistModalOpen,
       isDeleteArtistModalOpen,
+      isArtistHistoryModalOpen,
       allExpanded,
       allCollapsed,
       expandedState
@@ -252,6 +263,12 @@ class ArtistDetails extends Component {
               label="Manage Tracks"
               iconName={icons.EPISODE_FILE}
               onPress={this.onManageEpisodesPress}
+            />
+
+            <PageToolbarButton
+              label="History"
+              iconName={icons.HISTORY}
+              onPress={this.onArtistHistoryPress}
             />
 
             <PageToolbarSeparator />
@@ -538,6 +555,12 @@ class ArtistDetails extends Component {
             isOpen={isManageEpisodesOpen}
             artistId={id}
             onModalClose={this.onManageEpisodesModalClose}
+          />
+
+          <ArtistHistoryModal
+            isOpen={isArtistHistoryModalOpen}
+            artistId={id}
+            onModalClose={this.onArtistHistoryModalClose}
           />
 
           <EditArtistModalConnector
