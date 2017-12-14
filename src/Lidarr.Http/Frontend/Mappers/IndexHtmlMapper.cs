@@ -52,6 +52,7 @@ namespace Lidarr.Http.Frontend.Mappers
             resourceUrl = resourceUrl.ToLowerInvariant();
 
             return !resourceUrl.StartsWith("/content") &&
+                   !resourceUrl.StartsWith("/mediacover") &&
                    !resourceUrl.Contains(".") &&
                    !resourceUrl.StartsWith("/login");
 
