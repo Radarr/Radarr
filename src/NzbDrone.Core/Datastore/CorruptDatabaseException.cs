@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using NzbDrone.Common.Exceptions;
 
 namespace NzbDrone.Core.Datastore
 {
-    public class CorruptDatabaseException : NzbDroneException
+    public class CorruptDatabaseException : LidarrStartupException
     {
         public CorruptDatabaseException(string message, params object[] args) : base(message, args)
         {
