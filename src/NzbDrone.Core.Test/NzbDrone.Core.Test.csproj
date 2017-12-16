@@ -221,6 +221,8 @@
     <Compile Include="IndexerSearchTests\ArtistSearchServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\SearchDefinitionFixture.cs" />
     <Compile Include="IndexerTests\BasicRssParserFixture.cs" />
+    <Compile Include="IndexerTests\HeadphonesTests\HeadphonesFixture.cs" />
+    <Compile Include="IndexerTests\HeadphonesTests\HeadphonesCapabilitiesProviderFixture.cs" />
     <Compile Include="IndexerTests\IndexerServiceFixture.cs" />
     <Compile Include="IndexerTests\IndexerStatusServiceFixture.cs" />
     <Compile Include="IndexerTests\IntegrationTests\IndexerIntegrationTests.cs" />
@@ -388,6 +390,9 @@
     </Content>
     <Content Include="..\Libraries\Sqlite\sqlite3.dll">
       <Link>sqlite3.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Files\Indexers\Headphones\Headphones.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Files\Indexers\TorrentRss\EvolutionWorld.xml">
