@@ -4,7 +4,6 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Profiles.Languages;
 using NzbDrone.Core.Profiles.Metadata;
-using NzbDrone.Core.Music;
 using System;
 using System.Collections.Generic;
 using System.Linq;

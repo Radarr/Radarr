@@ -29,8 +29,6 @@ namespace Lidarr.Api.V1.Artist
         public string Overview { get; set; }
         public string ArtistType { get; set; }
         public string Disambiguation { get; set; }
-        public List<string> PrimaryAlbumTypes { get; set; }
-        public List<string> SecondaryAlbumTypes { get; set; }
         public List<Links> Links { get; set; }
 
         public int? AlbumCount { get; set; }
