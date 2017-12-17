@@ -87,7 +87,7 @@ ProgressEnd()
 LintUI()
 {
     ProgressStart 'ESLint'
-#    CheckExitCode yarn eslint
+    CheckExitCode yarn eslint
     ProgressEnd 'ESLint'
 
     ProgressStart 'Stylelint'

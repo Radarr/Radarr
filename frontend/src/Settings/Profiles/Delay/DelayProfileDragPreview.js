@@ -75,4 +75,7 @@ DelayProfileDragPreview.propTypes = {
   })
 };
 
+/* eslint-disable new-cap */
 export default DragLayer(collectDragLayer)(DelayProfileDragPreview);
+/* eslint-enable new-cap */
+

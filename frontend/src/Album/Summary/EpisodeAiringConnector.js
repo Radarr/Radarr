@@ -10,8 +10,7 @@ function createMapStateToProps() {
     (uiSettings) => {
       return _.pick(uiSettings, [
         'shortDateFormat',
-        'showRelativeDates',
-        'timeFormat'
+        'showRelativeDates'
       ]);
     }
   );

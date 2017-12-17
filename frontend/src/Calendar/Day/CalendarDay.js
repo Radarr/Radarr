@@ -28,7 +28,8 @@ function CalendarDay(props) {
             styles.dayOfMonth,
             isTodaysDate && styles.isToday,
             !moment(date).isSame(moment(time), 'month') && styles.isDifferentMonth
-          )}>
+          )}
+          >
             {moment(date).date()}
           </div>
       }

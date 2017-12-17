@@ -14,13 +14,10 @@ function createMapStateToProps() {
     createTrackFileSelector(),
     createCommandsSelector(),
     (id, sceneSeasonNumber, artist, trackFile, commands) => {
-      const alternateTitles = sceneSeasonNumber ? _.filter(artist.alternateTitles, { sceneSeasonNumber }) : [];
-
       return {
         artistMonitored: artist.monitored,
         trackFilePath: trackFile ? trackFile.path : null,
-        trackFileRelativePath: trackFile ? trackFile.relativePath : null,
-        alternateTitles
+        trackFileRelativePath: trackFile ? trackFile.relativePath : null
       };
     }
   );

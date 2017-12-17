@@ -11,7 +11,7 @@ function createToggleAlbumMonitoredHandler(section) {
       } = payload;
 
       const state = getSectionState(getState(), section, true);
-      
+
       updateAlbums(dispatch, section, state.items, [albumId], {
         isSaving: true
       });

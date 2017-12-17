@@ -2,18 +2,11 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import isAfter from 'Utilities/Date/isAfter';
-import isBefore from 'Utilities/Date/isBefore';
 import getToggledRange from 'Utilities/Table/getToggledRange';
-import { align, icons, kinds, sizes } from 'Helpers/Props';
+import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
-import SpinnerIcon from 'Components/SpinnerIcon';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import Menu from 'Components/Menu/Menu';
-import MenuButton from 'Components/Menu/MenuButton';
-import MenuContent from 'Components/Menu/MenuContent';
-import MenuItem from 'Components/Menu/MenuItem';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
@@ -119,13 +112,10 @@ class ArtistDetailsSeason extends Component {
       label,
       items,
       columns,
-      isSaving,
       isExpanded,
-      isSearching,
       artistMonitored,
       isSmallScreen,
-      onTableOptionChange,
-      onSearchPress
+      onTableOptionChange
     } = this.props;
 
     const {
@@ -237,15 +227,12 @@ ArtistDetailsSeason.propTypes = {
   label: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isSaving: PropTypes.bool,
   isExpanded: PropTypes.bool,
-  isSearching: PropTypes.bool.isRequired,
   artistMonitored: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onTableOptionChange: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
-  onMonitorAlbumPress: PropTypes.func.isRequired,
-  onSearchPress: PropTypes.func.isRequired
+  onMonitorAlbumPress: PropTypes.func.isRequired
 };
 
 export default ArtistDetailsSeason;

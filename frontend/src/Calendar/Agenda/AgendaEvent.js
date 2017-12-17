@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import formatTime from 'Utilities/Date/formatTime';
-import padNumber from 'Utilities/Number/padNumber';
 import { icons } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';

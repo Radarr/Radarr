@@ -59,7 +59,6 @@ class PageHeader extends Component {
           </Link>
         </div>
 
-
         <div className={styles.sidebarToggleContainer}>
           <IconButton
             id="sidebar-toggle-button"

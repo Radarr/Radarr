@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import CheckInput from 'Components/Form/CheckInput';

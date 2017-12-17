@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
 import TagListConnector from 'Components/TagListConnector';
 import CheckInput from 'Components/Form/CheckInput';
 import TableRow from 'Components/Table/TableRow';

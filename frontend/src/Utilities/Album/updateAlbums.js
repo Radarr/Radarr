@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import _ from 'lodash';
 import { update } from 'Store/Actions/baseActions';
 

@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import getDisplayName from 'Helpers/getDisplayName';

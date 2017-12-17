@@ -3,7 +3,6 @@ import React from 'react';
 import episodeEntities from 'Album/episodeEntities';
 import EpisodeTitleLink from 'Album/EpisodeTitleLink';
 import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
-import SeasonEpisodeNumber from 'Album/SeasonEpisodeNumber';
 import EpisodeSearchCellConnector from 'Album/EpisodeSearchCellConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';

@@ -145,7 +145,7 @@ class Tooltip extends Component {
 }
 
 Tooltip.propTypes = {
-  className: PropTypes.string,  
+  className: PropTypes.string,
   anchor: PropTypes.node.isRequired,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   kind: PropTypes.oneOf([kinds.DEFAULT, kinds.INVERSE]),

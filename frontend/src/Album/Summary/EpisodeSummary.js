@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons, kinds, sizes } from 'Helpers/Props';
-import IconButton from 'Components/Link/IconButton';
+import { kinds, sizes } from 'Helpers/Props';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import Label from 'Components/Label';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
-import EpisodeQuality from 'Album/EpisodeQuality';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import EpisodeAiringConnector from './EpisodeAiringConnector';

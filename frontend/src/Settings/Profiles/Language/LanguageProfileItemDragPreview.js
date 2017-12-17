@@ -85,4 +85,6 @@ LanguageProfileItemDragPreview.propTypes = {
   })
 };
 
+/* eslint-disable new-cap */
 export default DragLayer(collectDragLayer)(LanguageProfileItemDragPreview);
+/* eslint-enable new-cap */

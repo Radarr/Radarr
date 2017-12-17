@@ -230,6 +230,7 @@ QualityProfileItemDragSource.propTypes = {
   onQualityProfileItemDragEnd: PropTypes.func.isRequired
 };
 
+/* eslint-disable new-cap */
 export default DropTarget(
   QUALITY_PROFILE_ITEM,
   qualityProfileItemDropTarget,
@@ -239,3 +240,5 @@ export default DropTarget(
   qualityProfileItemDragSource,
   collectDragSource
 )(QualityProfileItemDragSource));
+/* eslint-enable new-cap */
+

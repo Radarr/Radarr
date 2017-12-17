@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -20,11 +21,6 @@ function createMapStateToProps() {
     createCommandsSelector(),
     createDimensionsSelector(),
     (label, episodes, artist, commands, dimensions) => {
-      const isSearching = !!findCommand(commands, {
-        name: commandNames.SEASON_SEARCH,
-        artistId: artist.id,
-        label
-      });
 
       const episodesInSeason = _.filter(episodes.items, { albumType: label });
       const sortedEpisodes = _.orderBy(episodesInSeason, 'releaseDate', 'desc');
@@ -32,7 +28,6 @@ function createMapStateToProps() {
       return {
         items: sortedEpisodes,
         columns: episodes.columns,
-        isSearching,
         artistMonitored: artist.monitored,
         isSmallScreen: dimensions.isSmallScreen
       };
@@ -55,17 +50,6 @@ class ArtistDetailsSeasonConnector extends Component {
     this.props.setEpisodesTableOption(payload);
   }
 
-  onSearchPress = () => {
-    const {
-      artistId
-    } = this.props;
-
-    this.props.executeCommand({
-      name: commandNames.SEASON_SEARCH,
-      artistId
-    });
-  }
-
   onMonitorAlbumPress = (albumIds, monitored) => {
     this.props.toggleEpisodesMonitored({
       albumIds,
@@ -81,8 +65,6 @@ class ArtistDetailsSeasonConnector extends Component {
       <ArtistDetailsSeason
         {...this.props}
         onTableOptionChange={this.onTableOptionChange}
-        onMonitorSeasonPress={this.onMonitorSeasonPress}
-        onSearchPress={this.onSearchPress}
         onMonitorAlbumPress={this.onMonitorAlbumPress}
       />
     );

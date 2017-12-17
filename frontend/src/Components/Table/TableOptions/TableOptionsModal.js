@@ -239,4 +239,6 @@ TableOptionsModal.defaultProps = {
   canModifyColumns: true
 };
 
+/* eslint-disable new-cap */
 export default DragDropContext(HTML5Backend)(TableOptionsModal);
+/* eslint-enable new-cap */

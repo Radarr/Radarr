@@ -20,7 +20,7 @@ function createMapStateToProps() {
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
       props.renameTracks = naming.item.renameTracks;
-      props.trackFormat = naming.item['standardTrackFormat'];
+      props.trackFormat = naming.item.standardTrackFormat;
       props.path = artist.path;
 
       return props;

@@ -10,7 +10,6 @@ import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import EpisodeTitleLink from 'Album/EpisodeTitleLink';
 import EpisodeQuality from 'Album/EpisodeQuality';
-import SeasonEpisodeNumber from 'Album/SeasonEpisodeNumber';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import QueueStatusCell from './QueueStatusCell';

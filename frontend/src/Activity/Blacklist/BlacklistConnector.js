@@ -36,7 +36,7 @@ class BlacklistConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    registerPagePopulator(this.repopulate);    
+    registerPagePopulator(this.repopulate);
     this.props.gotoBlacklistFirstPage();
   }
 

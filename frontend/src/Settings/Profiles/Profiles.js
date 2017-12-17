@@ -34,5 +34,6 @@ class Profiles extends Component {
 
 // Only a single DragDropContext can exist so it's done here to allow editing
 // quality profiles and reordering delay profiles to work.
-
+/* eslint-disable new-cap */
 export default DragDropContext(HTML5Backend)(Profiles);
+/* eslint-enable new-cap */

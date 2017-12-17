@@ -300,7 +300,7 @@ class ArtistIndexPosters extends Component {
               />
             );
           }
-        }
+          }
         </WindowScroller>
       </Measure>
     );

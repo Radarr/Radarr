@@ -89,4 +89,6 @@ QualityProfileItemDragPreview.propTypes = {
   })
 };
 
+/* eslint-disable new-cap */
 export default DragLayer(collectDragLayer)(QualityProfileItemDragPreview);
+/* eslint-enable new-cap */

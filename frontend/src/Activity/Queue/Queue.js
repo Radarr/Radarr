@@ -137,7 +137,7 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isAlbumsFetching || isCheckForFinishedDownloadExecuting;    
+    const isRefreshing = isFetching || isAlbumsFetching || isCheckForFinishedDownloadExecuting;
     const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
     const hasError = error || episodesError;
     const selectedCount = this.getSelectedIds().length;

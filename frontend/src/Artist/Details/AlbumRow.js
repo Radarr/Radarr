@@ -211,7 +211,6 @@ AlbumRow.propTypes = {
   artistMonitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
   mediaInfo: PropTypes.object,
-  alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired
 };

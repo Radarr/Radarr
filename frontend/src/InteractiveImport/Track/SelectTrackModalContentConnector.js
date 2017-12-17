@@ -95,9 +95,9 @@ SelectTrackModalContentConnector.propTypes = {
 };
 
 export default connectSection(
-                createMapStateToProps,
-                mapDispatchToProps,
-                undefined,
-                undefined,
-                { section: 'tracks' }
-               )(SelectTrackModalContentConnector);
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'tracks' }
+)(SelectTrackModalContentConnector);

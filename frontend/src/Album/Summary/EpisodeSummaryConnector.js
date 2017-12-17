@@ -14,14 +14,15 @@ function createMapStateToProps() {
     createEpisodeSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (tracks, episode, commands, dimensions) => {
+    createArtistSelector(),
+    (tracks, episode, commands, dimensions, artist) => {
       const filteredItems = _.filter(tracks.items, { albumId: episode.id });
       const mediumSortedItems = _.orderBy(filteredItems, 'absoluteTrackNumber');
       const items = _.orderBy(mediumSortedItems, 'mediumNumber');
 
       return {
         network: episode.label,
-        qualityProfileId: episode.profileId,
+        qualityProfileId: artist.qualityProfileId,
         releaseDate: episode.releaseDate,
         overview: episode.overview,
         items,

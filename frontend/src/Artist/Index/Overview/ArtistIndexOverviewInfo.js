@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import PropTypes from 'prop-types';
 import React from 'react';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';

@@ -43,7 +43,7 @@ function ArtistDetailsLinks(props) {
               </Label>
             </Link>
             {(index > 0 && index % 5 === 0) &&
-              <br></br>
+              <br />
             }
 
           </span>

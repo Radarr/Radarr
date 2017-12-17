@@ -54,7 +54,7 @@ function createMapStateToProps() {
 
       const languages = _.map(languageProfilesSchema.languages, 'language');
       const qualities = getQualities(qualityProfileSchema.items);
-      
+
       return {
         items,
         artistType: artist.artistType,

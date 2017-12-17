@@ -146,6 +146,7 @@ LanguageProfileItemDragSource.propTypes = {
   onLanguageProfileItemDragEnd: PropTypes.func.isRequired
 };
 
+/* eslint-disable new-cap */
 export default DropTarget(
   QUALITY_PROFILE_ITEM,
   languageProfileItemDropTarget,
@@ -155,3 +156,4 @@ export default DropTarget(
   languageProfileItemDragSource,
   collectDragSource
 )(LanguageProfileItemDragSource));
+/* eslint-enable new-cap */

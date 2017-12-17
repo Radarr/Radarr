@@ -1,7 +1,6 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import formatTime from 'Utilities/Date/formatTime';
 import isInNextWeek from 'Utilities/Date/isInNextWeek';
 import isToday from 'Utilities/Date/isToday';
 import isTomorrow from 'Utilities/Date/isTomorrow';
@@ -13,8 +12,7 @@ function EpisodeAiring(props) {
     releaseDate,
     albumLabel,
     shortDateFormat,
-    showRelativeDates,
-    timeFormat
+    showRelativeDates
   } = props;
 
   const networkLabel = (
@@ -77,8 +75,7 @@ EpisodeAiring.propTypes = {
   releaseDate: PropTypes.string.isRequired,
   albumLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
   shortDateFormat: PropTypes.string.isRequired,
-  showRelativeDates: PropTypes.bool.isRequired,
-  timeFormat: PropTypes.string.isRequired
+  showRelativeDates: PropTypes.bool.isRequired
 };
 
 export default EpisodeAiring;

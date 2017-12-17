@@ -1,3 +1,4 @@
+/* eslint max-params: 0 */
 import areAllSelected from './areAllSelected';
 import getToggledRange from './getToggledRange';
 
