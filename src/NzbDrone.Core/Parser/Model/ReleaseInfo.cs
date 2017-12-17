@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using NzbDrone.Core.Indexers;
 
@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Parser.Model
         public string Title { get; set; }
         public long Size { get; set; }
         public string DownloadUrl { get; set; }
+        public string BasicAuthString { get; set; }
         public string InfoUrl { get; set; }
         public string CommentUrl { get; set; }
         public int IndexerId { get; set; }

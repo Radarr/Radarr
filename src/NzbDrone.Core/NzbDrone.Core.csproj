@@ -526,6 +526,7 @@
     <Compile Include="Indexers\Headphones\HeadphonesCapabilitiesProvider.cs" />
     <Compile Include="Indexers\Headphones\HeadphonesCapabilities.cs" />
     <Compile Include="Indexers\Headphones\HeadphonesRequestGenerator.cs" />
+    <Compile Include="Indexers\Headphones\HeadphonesRssParser.cs" />
     <Compile Include="Indexers\IIndexerSettings.cs" />
     <Compile Include="Indexers\IndexerDefaults.cs" />
     <Compile Include="Indexers\ITorrentIndexerSettings.cs" />

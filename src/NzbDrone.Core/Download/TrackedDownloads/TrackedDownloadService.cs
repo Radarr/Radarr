@@ -6,6 +6,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Download.TrackedDownloads
@@ -116,11 +117,31 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     {
                         // Try parsing the original source title and if that fails, try parsing it as a special
                         // TODO: Pass the TVDB ID and TVRage IDs in as well so we have a better chance for finding the item
+                        var historyArtist = firstHistoryItem.Artist;
+                        var historyAlbums = new List<Album> { firstHistoryItem.Album };
+
                         parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(firstHistoryItem.SourceTitle);
 
                         if (parsedAlbumInfo != null)
                         {
-                            trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo, firstHistoryItem.ArtistId, historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.AlbumId).Distinct());
+                            trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo,
+                                firstHistoryItem.ArtistId,
+                                historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.AlbumId)
+                                    .Distinct());
+                        }
+                        else
+                        {
+                            parsedAlbumInfo =
+                                Parser.Parser.ParseAlbumTitleWithSearchCriteria(firstHistoryItem.SourceTitle,
+                                    historyArtist, historyAlbums);
+
+                            if (parsedAlbumInfo != null)
+                            {
+                                trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo,
+                                    firstHistoryItem.ArtistId,
+                                    historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.AlbumId)
+                                        .Distinct());
+                            }
                         }
                     }
                 }

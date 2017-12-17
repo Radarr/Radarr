@@ -156,6 +156,7 @@ namespace NzbDrone.Core.Indexers
             releaseInfo.Title = GetTitle(item);
             releaseInfo.PublishDate = GetPublishDate(item);
             releaseInfo.DownloadUrl = GetDownloadUrl(item);
+            releaseInfo.BasicAuthString = GetBasicAuth();
             releaseInfo.InfoUrl = GetInfoUrl(item);
             releaseInfo.CommentUrl = GetCommentUrl(item);
 
@@ -196,6 +197,11 @@ namespace NzbDrone.Core.Indexers
             }
 
             return XElementExtensions.ParseDate(dateString);
+        }
+
+        protected virtual string GetBasicAuth()
+        {
+            return null;
         }
 
         protected virtual string GetDownloadUrl(XElement item)

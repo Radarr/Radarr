@@ -62,6 +62,12 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(report.Title);
 
+                    if (parsedAlbumInfo == null && searchCriteria != null)
+                    {
+                        parsedAlbumInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
+                            searchCriteria.Artist, searchCriteria.Albums);
+                    }
+
                     if (parsedAlbumInfo != null)
                     {
                         // TODO: Artist Data Augment without calling to parse title again

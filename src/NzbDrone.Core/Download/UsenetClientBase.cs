@@ -8,6 +8,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Configuration;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.RemotePathMappings;
 
 namespace NzbDrone.Core.Download
@@ -43,7 +44,15 @@ namespace NzbDrone.Core.Download
 
             try
             {
-                nzbData = _httpClient.Get(new HttpRequest(url)).ResponseData;
+                var nzbDataRequest = new HttpRequest(url);
+
+                // TODO: Look into moving download request handling to indexer
+                if (remoteAlbum.Release.BasicAuthString.IsNotNullOrWhiteSpace())
+                {
+                    nzbDataRequest.Headers.Set("Authorization", "Basic " + remoteAlbum.Release.BasicAuthString);
+                }
+                
+                nzbData = _httpClient.Get(nzbDataRequest).ResponseData;
 
                 _logger.Debug("Downloaded nzb for release '{0}' finished ({1} bytes from {2})", remoteAlbum.Release.Title, nzbData.Length, url);
             }

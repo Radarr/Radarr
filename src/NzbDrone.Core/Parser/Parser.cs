@@ -7,6 +7,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Languages;
 using TagLib;
@@ -307,6 +308,70 @@ namespace NzbDrone.Core.Parser
                             break;
                         }
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                if (!title.ToLower().Contains("password") && !title.ToLower().Contains("yenc"))
+                    Logger.Error(e, "An error has occurred while trying to parse {0}", title);
+            }
+
+            Logger.Debug("Unable to parse {0}", title);
+            return null;
+        }
+
+        public static ParsedAlbumInfo ParseAlbumTitleWithSearchCriteria(string title, Artist artist, List<Album> album)
+        {
+            try
+            {
+                if (!ValidateBeforeParsing(title)) return null;
+
+                Logger.Debug("Parsing string '{0}'", title);
+
+                if (ReversedTitleRegex.IsMatch(title))
+                {
+                    var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
+                    Array.Reverse(titleWithoutExtension);
+
+                    title = new string (titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
+
+                    Logger.Debug("Reversed name detected. Converted to '{0}'", title);
+                }
+
+                var releaseTitle = RemoveFileExtension(title);
+
+                var simpleTitle = SimpleTitleRegex.Replace(releaseTitle, string.Empty);
+
+                simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
+
+                simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
+
+                var result = new ParsedAlbumInfo();
+
+                if (simpleTitle.ToLowerInvariant().Contains(artist.Name.ToLowerInvariant()))
+                {
+                    result.ArtistName = artist.Name;
+                    var artistRegex = new Regex(Regex.Escape(artist.Name.ToLowerInvariant()));
+                    var albumReleaseString = artistRegex.Replace(simpleTitle.ToLowerInvariant(), string.Empty, 1);
+
+                    var selectedAlbum = album.FirstOrDefault(s => albumReleaseString.Contains(s.Title.ToLowerInvariant()));
+
+                    if (selectedAlbum != null)
+                    {
+                        result.AlbumTitle = selectedAlbum.Title;
+                    }
+
+                    result.Language = LanguageParser.ParseLanguage(releaseTitle);
+                    Logger.Debug("Language parsed: {0}", result.Language);
+
+                    result.Quality = QualityParser.ParseQuality(title, null, 0);
+                    Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                    result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
+
+                    Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                    return result;
                 }
             }
             catch (Exception e)

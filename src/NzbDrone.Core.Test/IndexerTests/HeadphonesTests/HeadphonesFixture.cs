@@ -24,7 +24,9 @@ namespace NzbDrone.Core.Test.IndexerTests.HeadphonesTests
                     Name = "Headphones VIP",
                     Settings = new HeadphonesSettings()
                         {
-                            Categories = new int[] { 3000 }
+                            Categories = new int[] { 3000 },
+                            Username = "user",
+                            Password = "pass"
                         }
                 };
 
@@ -53,6 +55,7 @@ namespace NzbDrone.Core.Test.IndexerTests.HeadphonesTests
             releaseInfo.Title.Should().Be("Lady Gaga Born This Way 2CD FLAC 2011 WRE");
             releaseInfo.DownloadProtocol.Should().Be(DownloadProtocol.Usenet);
             releaseInfo.DownloadUrl.Should().Be("https://indexer.codeshy.com/api?t=g&guid=123456&apikey=123456789");
+            releaseInfo.BasicAuthString.Should().Be("dXNlcjpwYXNz");
             releaseInfo.Indexer.Should().Be(Subject.Definition.Name);
             releaseInfo.PublishDate.Should().Be(DateTime.Parse("2013/06/02 08:58:54"));
             releaseInfo.Size.Should().Be(917347414);

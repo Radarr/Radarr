@@ -32,7 +32,10 @@ namespace NzbDrone.Core.Indexers.Headphones
 
         public override IParseIndexerResponse GetParser()
         {
-            return new NewznabRssParser();
+            return new HeadphonesRssParser
+            {
+                Settings = Settings
+            };
         }
 
         public Headphones(IHeadphonesCapabilitiesProvider capabilitiesProvider, IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
