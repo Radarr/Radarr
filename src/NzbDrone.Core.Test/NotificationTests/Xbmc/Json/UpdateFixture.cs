@@ -13,9 +13,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
     [TestFixture]
     public class UpdateFixture : CoreTest<JsonApiProvider>
     {
-        private const string MB_ID = "5";
+        private const string MB_ID = "9f4e41c3-2648-428e-b8c7-dc10465b49ac";
         private XbmcSettings _settings;
-        private List<TvShow> _xbmcArtist;
+        private List<KodiArtist> _xbmcArtist;
 
         [SetUp]
         public void Setup()
@@ -23,9 +23,9 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
             _settings = Builder<XbmcSettings>.CreateNew()
                                              .Build();
 
-            _xbmcArtist = Builder<TvShow>.CreateListOfSize(3)
+            _xbmcArtist = Builder<KodiArtist>.CreateListOfSize(3)
                                          .TheFirst(1)
-                                         .With(s => s.ImdbNumber = MB_ID.ToString())
+                                         .With(s => s.MusicbrainzArtistId = new List<string> { MB_ID.ToString()})
                                          .Build()
                                          .ToList();
 
@@ -39,27 +39,27 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Json
         }
 
         [Test]
-        public void should_update_using_series_path()
+        public void should_update_using_artist_path()
         {
-            var series = Builder<Artist>.CreateNew()
+            var artist = Builder<Music.Artist>.CreateNew()
                                         .With(s => s.ForeignArtistId = MB_ID)
                                         .Build();
 
-            Subject.Update(_settings, series);
+            Subject.Update(_settings, artist);
 
             Mocker.GetMock<IXbmcJsonApiProxy>()
                   .Verify(v => v.UpdateLibrary(_settings, It.IsAny<string>()), Times.Once());
         }
 
         [Test]
-        public void should_update_all_paths_when_series_path_not_found()
+        public void should_update_all_paths_when_artist_path_not_found()
         {
-            var fakeSeries = Builder<Artist>.CreateNew()
-                                            .With(s => s.ForeignArtistId = "1000")
-                                            .With(s => s.Name = "Not 30 Rock")
+            var fakeArtist = Builder<Artist>.CreateNew()
+                                            .With(s => s.ForeignArtistId = "9f4e41c3-2648-428e-b8c7-dc10465b49ad")
+                                            .With(s => s.Name = "Not Shawn Desman")
                                             .Build();
 
-             Subject.Update(_settings, fakeSeries);
+             Subject.Update(_settings, fakeArtist);
 
              Mocker.GetMock<IXbmcJsonApiProxy>()
                    .Verify(v => v.UpdateLibrary(_settings, null), Times.Once());

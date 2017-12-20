@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using FluentValidation;
 using Newtonsoft.Json;
 using NzbDrone.Core.Annotations;
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         [FieldDefinition(7, Label = "Clean Library", HelpText = "Clean Library after update?", Type = FieldType.Checkbox)]
         public bool CleanLibrary { get; set; }
 
-        [FieldDefinition(8, Label = "Always Update", HelpText = "Update Library even when a video is playing?", Type = FieldType.Checkbox)]
+        [FieldDefinition(8, Label = "Always Update", HelpText = "Update Library even when a file is playing?", Type = FieldType.Checkbox)]
         public bool AlwaysUpdate { get; set; }
 
         [JsonIgnore]

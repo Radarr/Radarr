@@ -968,9 +968,9 @@
     <Compile Include="Notifications\Xbmc\Model\ActivePlayersDharmaResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\ActivePlayersEdenResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\ErrorResult.cs" />
-    <Compile Include="Notifications\Xbmc\Model\TvShow.cs" />
-    <Compile Include="Notifications\Xbmc\Model\TvShowResponse.cs" />
-    <Compile Include="Notifications\Xbmc\Model\TvShowResult.cs" />
+    <Compile Include="Notifications\Xbmc\Model\KodiArtist.cs" />
+    <Compile Include="Notifications\Xbmc\Model\ArtistResponse.cs" />
+    <Compile Include="Notifications\Xbmc\Model\ArtistResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\VersionResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\XbmcJsonResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\XbmcVersion.cs" />

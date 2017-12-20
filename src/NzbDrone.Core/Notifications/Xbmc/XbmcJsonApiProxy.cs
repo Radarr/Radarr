@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         string UpdateLibrary(XbmcSettings settings, string path);
         void CleanLibrary(XbmcSettings settings);
         List<ActivePlayer> GetActivePlayers(XbmcSettings settings);
-        List<TvShow> GetArtist(XbmcSettings settings);
+        List<KodiArtist> GetArtist(XbmcSettings settings);
     }
 
     public class XbmcJsonApiProxy : IXbmcJsonApiProxy
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
                 parameters = null;
             }
 
-            var response = ProcessRequest(request, settings, "VideoLibrary.Scan", parameters);
+            var response = ProcessRequest(request, settings, "AudioLibrary.Scan", parameters);
 
             return Json.Deserialize<XbmcJsonResult<string>>(response).Result;
         }
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
         {
             var request = new RestRequest();
 
-            ProcessRequest(request, settings, "VideoLibrary.Clean");
+            ProcessRequest(request, settings, "AudioLibrary.Clean");
         }
 
         public List<ActivePlayer> GetActivePlayers(XbmcSettings settings)
@@ -79,15 +79,15 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return Json.Deserialize<ActivePlayersEdenResult>(response).Result;
         }
 
-        public List<TvShow> GetArtist(XbmcSettings settings)
+        public List<KodiArtist> GetArtist(XbmcSettings settings)
         {
             var request = new RestRequest();
             var parameters = new Dictionary<string, object>();
-            parameters.Add("properties", new[] { "file", "imdbnumber" });
+            parameters.Add("properties", new[] { "musicbrainzartistid" }); //TODO: Figure out why AudioLibrary doesnt list file location like videoLibray
 
-            var response = ProcessRequest(request, settings, "VideoLibrary.GetTvShows", parameters);
+            var response = ProcessRequest(request, settings, "AudioLibrary.GetArtists", parameters);
 
-            return Json.Deserialize<TvShowResponse>(response).Result.TvShows;
+            return Json.Deserialize<ArtistResponse>(response).Result.Artists;
         }
 
         private string ProcessRequest(IRestRequest request, XbmcSettings settings, string method, Dictionary<string, object> parameters = null)

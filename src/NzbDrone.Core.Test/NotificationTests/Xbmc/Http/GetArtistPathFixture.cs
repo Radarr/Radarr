@@ -8,7 +8,7 @@ using NzbDrone.Core.Music;
 namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
 {
     [TestFixture]
-    public class GetSeriesPathFixture : CoreTest<HttpApiProvider>
+    public class GetArtistPathFixture : CoreTest<HttpApiProvider>
     {
         private XbmcSettings _settings;
         private Artist _artist;
@@ -29,8 +29,8 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
 
             _artist = new Artist
             {
-                ForeignArtistId = "123d45d-d154f5d-1f5d1-5df18d5",
-                Name = "30 Rock"
+                ForeignArtistId = "9f4e41c3-2648-428e-b8c7-dc10465b49ac",
+                Name = "Shawn Desman"
             };
 
             const string setResponseUrl = "http://localhost:8080/xbmcCmds/xbmcHttp?command=SetResponseFormat(webheader;false;webfooter;false;header;<xml>;footer;</xml>;opentag;<tag>;closetag;</tag>;closefinaltag;false)";
@@ -48,47 +48,47 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
         }
 
         [Test]
-        public void should_get_series_path()
+        public void should_get_artist_path()
         {
-            const string queryResult = @"<xml><record><field>smb://xbmc:xbmc@HOMESERVER/TV/30 Rock/</field></record></xml>";
-            var query = string.Format("http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryVideoDatabase(select path.strPath from path, tvshow, tvshowlinkpath where tvshow.c12 = 79488 and tvshowlinkpath.idShow = tvshow.idShow and tvshowlinkpath.idPath = path.idPath)");
+            const string queryResult = @"<xml><record><field>smb://xbmc:xbmc@HOMESERVER/Music/Shawn Desman/</field></record></xml>";
+            var query = string.Format("http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryMusicDatabase(select path.strPath from path, artist, artistlinkpath where artist.c12 = 9f4e41c3-2648-428e-b8c7-dc10465b49ac and artistlinkpath.idArtist = artist.idArtist and artistlinkpath.idPath = path.idPath)");
 
             Mocker.GetMock<IHttpProvider>()
                   .Setup(s => s.DownloadString(query, _settings.Username, _settings.Password))
                   .Returns(queryResult);
 
-            Subject.GetSeriesPath(_settings, _artist)
-                   .Should().Be("smb://xbmc:xbmc@HOMESERVER/TV/30 Rock/");
+            Subject.GetArtistPath(_settings, _artist)
+                   .Should().Be("smb://xbmc:xbmc@HOMESERVER/Music/Shawn Desman/");
         }
 
         [Test]
-        public void should_get_null_for_series_path()
+        public void should_get_null_for_artist_path()
         {
             const string queryResult = @"<xml></xml>";
-            var query = string.Format("http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryVideoDatabase(select path.strPath from path, tvshow, tvshowlinkpath where tvshow.c12 = 79488 and tvshowlinkpath.idShow = tvshow.idShow and tvshowlinkpath.idPath = path.idPath)");
+            var query = string.Format("http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryMusicDatabase(select path.strPath from path, artist, artistlinkpath where artist.c12 = 9f4e41c3-2648-428e-b8c7-dc10465b49ac and artistlinkpath.idArtist = artist.idArtist and artistlinkpath.idPath = path.idPath)");
 
             Mocker.GetMock<IHttpProvider>()
                   .Setup(s => s.DownloadString(query, _settings.Username, _settings.Password))
                   .Returns(queryResult);
 
 
-            Subject.GetSeriesPath(_settings, _artist)
+            Subject.GetArtistPath(_settings, _artist)
                    .Should().BeNull();
         }
 
         [Test]
-        public void should_get_series_path_with_special_characters_in_it()
+        public void should_get_artist_path_with_special_characters_in_it()
         {
-            const string queryResult = @"<xml><record><field>smb://xbmc:xbmc@HOMESERVER/TV/Law & Order- Special Victims Unit/</field></record></xml>";
-            var query = string.Format("http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryVideoDatabase(select path.strPath from path, tvshow, tvshowlinkpath where tvshow.c12 = 79488 and tvshowlinkpath.idShow = tvshow.idShow and tvshowlinkpath.idPath = path.idPath)");
+            const string queryResult = @"<xml><record><field>smb://xbmc:xbmc@HOMESERVER/Music/-wumpscut-/</field></record></xml>";
+            var query = string.Format("http://localhost:8080/xbmcCmds/xbmcHttp?command=QueryMusicDatabase(select path.strPath from path, artist, artistlinkpath where artist.c12 = 9f4e41c3-2648-428e-b8c7-dc10465b49ac and artistlinkpath.idArtist = artist.idArtist and artistlinkpath.idPath = path.idPath)");
 
             Mocker.GetMock<IHttpProvider>()
                   .Setup(s => s.DownloadString(query, _settings.Username, _settings.Password))
                   .Returns(queryResult);
 
 
-            Subject.GetSeriesPath(_settings, _artist)
-                   .Should().Be("smb://xbmc:xbmc@HOMESERVER/TV/Law & Order- Special Victims Unit/");
+            Subject.GetArtistPath(_settings, _artist)
+                   .Should().Be("smb://xbmc:xbmc@HOMESERVER/Music/-wumpscut-/");
         }
     }
 }

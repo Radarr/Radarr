@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
         private void WithVideoPlayerActive()
         {
             var activePlayers = @"<html><li>Filename:C:\Test\TV\2 Broke Girls\Season 01\2 Broke Girls - S01E01 - Pilot [SDTV].avi" +
-                              "<li>PlayStatus:Playing<li>VideoNo:0<li>Type:Video<li>Thumb:special://masterprofile/Thumbnails/Video/a/auto-a664d5a2.tbn" +
+                              "<li>PlayStatus:Playing<li>VideoNo:0<li>Type:Audio<li>Thumb:special://masterprofile/Thumbnails/Video/a/auto-a664d5a2.tbn" +
                               "<li>Time:00:06<li>Duration:21:35<li>Percentage:0<li>File size:183182590<li>Changed:True</html>";
 
             Mocker.GetMock<IHttpProvider>()
@@ -57,14 +57,14 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc.Http
         }
 
         [Test]
-        public void should_have_active_video_player()
+        public void should_have_active_audio_player()
         {
             WithVideoPlayerActive();
 
             var result = Subject.GetActivePlayers(_settings);
 
             result.Should().HaveCount(1);
-            result.First().Type.Should().Be("video");
+            result.First().Type.Should().Be("audio");
         }
     }
 }
