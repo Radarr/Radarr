@@ -16,14 +16,13 @@ install:
 build_script:
   - ps: ./build-appveyor.ps1
 
-test: off
-#test:
-#  assemblies:
-#    - '_tests\*Test.dll'
-#  categories:
-#    except:
-#      - IntegrationTest
-#      - AutomationTest
+test:
+  assemblies:
+    - '_tests\*Test.dll'
+  categories:
+    except:
+      - IntegrationTest
+      - AutomationTest
 
 artifacts:
   - path: '_artifacts\*.zip'

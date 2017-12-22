@@ -10,9 +10,9 @@ namespace NzbDrone.Core.Test.ParserTests
     [TestFixture]
     public class LanguageParserFixture : CoreTest
     {
-        [TestCase("Castle.2009.S01E14.English.HDTV.XviD-LOL")]
-        [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL")]
-        [TestCase("Castle.2009.S01E14.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.English.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Germany.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.FLAC.XviD-LOL")]
         [TestCase("Two.Greedy.Italians.S01E01.The.Family.720p.HDTV.x264-FTP")]
         [TestCase("The.Trip.To.Italy.S02E01.720p.HDTV.x264-TLA")]
         [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub")]
@@ -25,165 +25,161 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Should().Be(Language.English);
         }
 
-        [TestCase("2 Broke Girls - S01E01 - Pilot.sub")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.FLAC.XviD-LOL")]
         public void should_parse_subtitle_language_unknown(string fileName)
         {
             var result = LanguageParser.ParseSubtitleLanguage(fileName);
             result.Should().Be(Language.Unknown);
         }
 
-        [TestCase("Castle.2009.S01E14.French.HDTV.XviD-LOL")]
-        [TestCase("Extant.S01E01.VOSTFR.HDTV.x264-RiDERS")]
-        [TestCase("Shield,.The.1x13.Tueurs.De.Flics.FR.DVDRip.XviD")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.French.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.VOSTFR.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.FR.FLAC.XviD-LOL")]
         public void should_parse_language_french(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.French.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Spanish.FLAC.XviD-LOL")]
         public void should_parse_language_spanish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Spanish.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL")]
-        [TestCase("Burn.Notice.S04E15.Brotherly.Love.GERMAN.DUBBED.WS.WEBRiP.XviD.REPACK-TVP")]
-        [TestCase("Elementary - S02E16 - Kampfhaehne - mkv - by Videomann")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.German.FLAC.XviD-LOL")]
         public void should_parse_language_german(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.German.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Italian.HDTV.XviD-LOL")]
-        [TestCase("person.of.interest.1x19.ita.720p.bdmux.x264-novarip")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Italian.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.ita.FLAC.XviD-LOL")]
         public void should_parse_language_italian(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Italian.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Danish.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Danish.FLAC.XviD-LOL")]
         public void should_parse_language_danish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Danish.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Dutch.HDTV.XviD-LOL")]
-        [TestCase("Constantine.2014.S01E01.WEBRiP.H264.AAC.5.1-NL.SUBS")]
-        [TestCase("Ray Donovan - S01E01.720p.HDtv.x264-Evolve (NLsub)")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Dutch.FLAC.XviD-LOL")]
         public void should_parse_language_dutch(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Dutch.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Japanese.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Japanese.FLAC.XviD-LOL")]
         public void should_parse_language_japanese(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Japanese.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Cantonese.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Cantonese.FLAC.XviD-LOL")]
         public void should_parse_language_cantonese(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Cantonese.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Mandarin.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Mandarin.FLAC.XviD-LOL")]
         public void should_parse_language_mandarin(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Mandarin.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Korean.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Korean.FLAC.XviD-LOL")]
         public void should_parse_language_korean(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Korean.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Russian.HDTV.XviD-LOL")]
-        [TestCase("True.Detective.S01E01.1080p.WEB-DL.Rus.Eng.TVKlondike")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Russian.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Rus.Eng.FLAC.XviD-LOL")]
         public void should_parse_language_russian(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Russian.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Polish.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Polish.FLAC.XviD-LOL")]
         public void should_parse_language_polish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Polish.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Vietnamese.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Vietnamese.FLAC.XviD-LOL")]
         public void should_parse_language_vietnamese(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Vietnamese.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Swedish.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Swedish.FLAC.XviD-LOL")]
         public void should_parse_language_swedish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Swedish.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Norwegian.HDTV.XviD-LOL")]
-        [TestCase("Revolution S01E03 No Quarter 2012 WEB-DL 720p Nordic-philipo mkv")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Norwegian.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Nordic.FLAC.XviD-LOL")]
         public void should_parse_language_norwegian(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Norwegian.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Finnish.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Finnish.FLAC.XviD-LOL")]
         public void should_parse_language_finnish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Finnish.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Turkish.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Turkish.FLAC.XviD-LOL")]
         public void should_parse_language_turkish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Turkish.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.Portuguese.HDTV.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Portuguese.FLAC.XviD-LOL")]
         public void should_parse_language_portuguese(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Portuguese.Id);
         }
 
-        [TestCase("Salamander.S01E01.FLEMISH.HDTV.x264-BRiGAND")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.FLEMISH.FLAC.XviD-LOL")]
         public void should_parse_language_flemish(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Flemish.Id);
         }
 
-        [TestCase("H.Polukatoikia.S03E13.Greek.PDTV.XviD-Ouzo")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.Greek.FLAC.XviD-LOL")]
         public void should_parse_language_greek(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);
             result.Language.Id.Should().Be(Language.Greek.Id);
         }
 
-        [TestCase("Castle.2009.S01E14.HDTV.XviD.HUNDUB-LOL")]
-        [TestCase("Castle.2009.S01E14.HDTV.XviD.ENG.HUN-LOL")]
-        [TestCase("Castle.2009.S01E14.HDTV.XviD.HUN-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.HUNDUB.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.ENG.HUN.FLAC.XviD-LOL")]
+        [TestCase("Alien.Ant.Farm-truAnt.2009.HUN.FLAC.XviD-LOL")]
         public void should_parse_language_hungarian(string postTitle)
         {
             var result = Parser.Parser.ParseAlbumTitle(postTitle);

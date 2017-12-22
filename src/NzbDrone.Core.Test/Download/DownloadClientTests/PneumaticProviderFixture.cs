@@ -67,9 +67,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         }
 
         [Test]
-        public void should_throw_if_full_season_download()
+        public void should_throw_if_discography_download()
         {
-            _remoteAlbum.Release.Title = "30 Rock - Season 1";
+            _remoteAlbum.Release.Title = "Alien Ant Farm - Discography";
+            _remoteAlbum.ParsedAlbumInfo.Discography = true;
 
             Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteAlbum));
         }

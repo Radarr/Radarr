@@ -20,7 +20,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         [TestCase("4.6")]
         [TestCase("4.4.2")]
-        [TestCase("4.6")]
         [TestCase("4.8")]
         [TestCase("5.0")]
         [TestCase("5.2")]

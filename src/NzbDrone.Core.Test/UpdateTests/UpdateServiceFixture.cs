@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
@@ -35,9 +35,9 @@ namespace NzbDrone.Core.Test.UpdateTests
             {
                 _updatePackage = new UpdatePackage
                 {
-                    FileName = "NzbDrone.develop.2.0.0.0.tar.gz",
-                    Url = "http://download.lidarr.audio/v2/develop/mono/NzbDrone.develop.tar.gz",
-                    Version = new Version("2.0.0.0")
+                    FileName = "Lidarr.develop.0.2.0.195.tar.gz",
+                    Url = "https://ci.appveyor.com/api/buildjobs/5fk7if5wjlb8twhv/artifacts/_artifacts/Lidarr.develop.0.2.0.195.linux.tar.gz",
+                    Version = new Version("0.2.0.195")
                 };
             }
 
@@ -45,9 +45,9 @@ namespace NzbDrone.Core.Test.UpdateTests
             {
                 _updatePackage = new UpdatePackage
                 {
-                    FileName = "NzbDrone.develop.2.0.0.0.zip",
-                    Url = "http://download.lidarr.audio/v2/develop/windows/NzbDrone.develop.zip",
-                    Version = new Version("2.0.0.0")
+                    FileName = "Lidarr.develop.0.2.0.195.zip",
+                    Url = "https://ci.appveyor.com/api/buildjobs/5fk7if5wjlb8twhv/artifacts/_artifacts/Lidarr.develop.0.2.0.195.windows.zip",
+                    Version = new Version("0.2.0.195")
                 };
             }
 
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_run_script_if_configured()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript(scriptPath);
 
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_throw_if_script_is_not_set()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript("");
 
@@ -200,7 +200,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_throw_if_script_is_null()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript(null);
 
@@ -214,7 +214,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Platform("Mono")]
         public void should_throw_if_script_path_does_not_exist()
         {
-            const string scriptPath = "/tmp/nzbdrone/update.sh";
+            const string scriptPath = "/tmp/lidarr/update.sh";
 
             GivenInstallScript(scriptPath);
 
@@ -245,7 +245,7 @@ namespace NzbDrone.Core.Test.UpdateTests
             updateSubFolder.Refresh();
 
             updateSubFolder.Exists.Should().BeTrue();
-            updateSubFolder.GetDirectories("NzbDrone").Should().HaveCount(1);
+            updateSubFolder.GetDirectories("Lidarr").Should().HaveCount(1);
             updateSubFolder.GetDirectories().Should().HaveCount(1);
             updateSubFolder.GetFiles().Should().NotBeEmpty();
         }
@@ -253,8 +253,8 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Test]
         public void should_log_error_when_app_data_is_child_of_startup_folder()
         {
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\NzbDrone".AsOsAgnostic);
-            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\NzbDrone\AppData".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.StartUpFolder).Returns(@"C:\Lidarr".AsOsAgnostic);
+            Mocker.GetMock<IAppFolderInfo>().SetupGet(c => c.AppDataFolder).Returns(@"C:\LIdarr\AppData".AsOsAgnostic);
 
             Assert.Throws<CommandFailedException>(() => Subject.Execute(new ApplicationUpdateCommand()));
             ExceptionVerification.ExpectedErrors(1);

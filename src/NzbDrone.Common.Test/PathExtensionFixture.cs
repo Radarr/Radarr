@@ -98,7 +98,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void should_return_true_when_folder_is_parent_of_another_folder()
         {
-            var path = @"C:\Test\TV".AsOsAgnostic();
+            var path = @"C:\Test\Music".AsOsAgnostic();
 
             _parent.IsParentPath(path).Should().BeTrue();
         }

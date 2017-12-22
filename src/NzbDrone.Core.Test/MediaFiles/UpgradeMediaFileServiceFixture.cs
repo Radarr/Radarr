@@ -38,6 +38,10 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
+                .Setup(c => c.FolderExists(It.IsAny<string>()))
+                .Returns(true);
+
+            Mocker.GetMock<IDiskProvider>()
                  .Setup(c => c.GetParentFolder(It.IsAny<string>()))
                  .Returns<string>(c => Path.GetDirectoryName(c));
         }
@@ -104,7 +108,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_delete_the_same_episode_file_only_once()
+        public void should_delete_the_same_track_file_only_once()
         {
             GivenMultipleTracksWithSingleTrackFile();
 
@@ -114,7 +118,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_delete_multiple_different_episode_files()
+        public void should_delete_multiple_different_track_files()
         {
             GivenMultipleTracksWithMultipleTrackFiles();
 
@@ -124,7 +128,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_delete_episode_file_from_database()
+        public void should_delete_track_file_from_database()
         {
             GivenSingleTrackWithSingleTrackFile();
 
@@ -162,7 +166,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_return_old_episode_file_in_oldFiles()
+        public void should_return_old_track_file_in_oldFiles()
         {
             GivenSingleTrackWithSingleTrackFile();
 
@@ -170,7 +174,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_return_old_episode_files_in_oldFiles()
+        public void should_return_old_track_files_in_oldFiles()
         {
             GivenMultipleTracksWithMultipleTrackFiles();
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
@@ -202,7 +202,7 @@ namespace NzbDrone.Common.Test.DiskTests
         [Test]
         public void GetParentFolder_should_remove_trailing_slash_before_getting_parent_folder()
         {
-            var path = @"C:\Test\TV\".AsOsAgnostic();
+            var path = @"C:\Test\Music\".AsOsAgnostic();
             var parent = @"C:\Test".AsOsAgnostic();
 
             Subject.GetParentFolder(path).Should().Be(parent);
