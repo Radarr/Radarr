@@ -346,32 +346,48 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
 
-                var result = new ParsedAlbumInfo();
+                var releaseRegex = new Regex(@"\b(?<artist>" + artist.Name + @")\b.*\b(?<album>"+ string.Join("|",album.Select(s=>s.Title).ToList()) + @")\b",
+                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-                if (simpleTitle.ToLowerInvariant().Contains(artist.Name.ToLowerInvariant()))
+                var match = releaseRegex.Matches(simpleTitle);
+
+                if (match.Count != 0)
                 {
-                    result.ArtistName = artist.Name;
-                    var artistRegex = new Regex(Regex.Escape(artist.Name.ToLowerInvariant()));
-                    var albumReleaseString = artistRegex.Replace(simpleTitle.ToLowerInvariant(), string.Empty, 1);
-
-                    var selectedAlbum = album.FirstOrDefault(s => albumReleaseString.Contains(s.Title.ToLowerInvariant()));
-
-                    if (selectedAlbum != null)
+                    try
                     {
-                        result.AlbumTitle = selectedAlbum.Title;
+                        var result = ParseAlbumMatchCollection(match);
+
+                        if (result != null)
+                        {
+                            result.Language = LanguageParser.ParseLanguage(releaseTitle);
+                            Logger.Debug("Language parsed: {0}", result.Language);
+
+                            result.Quality = QualityParser.ParseQuality(title, null, 0);
+                            Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                            result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
+
+                            var subGroup = GetSubGroup(match);
+                            if (!subGroup.IsNullOrWhiteSpace())
+                            {
+                                result.ReleaseGroup = subGroup;
+                            }
+
+                            Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                            result.ReleaseHash = GetReleaseHash(match);
+                            if (!result.ReleaseHash.IsNullOrWhiteSpace())
+                            {
+                                Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
+                            }
+
+                            return result;
+                        }
                     }
-
-                    result.Language = LanguageParser.ParseLanguage(releaseTitle);
-                    Logger.Debug("Language parsed: {0}", result.Language);
-
-                    result.Quality = QualityParser.ParseQuality(title, null, 0);
-                    Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                    result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
-
-                    Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
-
-                    return result;
+                    catch (InvalidDateException ex)
+                    {
+                        Logger.Debug(ex, ex.Message);
+                    }
                 }
             }
             catch (Exception e)

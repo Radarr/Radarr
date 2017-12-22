@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -10,6 +14,23 @@ namespace NzbDrone.Core.Test.ParserTests
     [TestFixture]
     public class ParserFixture : CoreTest
     {
+        Artist _artist = new Artist();
+        private List<Album> _albums = new List<Album>{new Album()};
+
+        [SetUp]
+        public void Setup()
+        {
+            _artist = Builder<Artist>
+                .CreateNew()
+                .Build();
+        }
+
+        private void GivenSearchCriteria(string artistName, string albumTitle)
+        {
+            _artist.Name = artistName;
+            _albums.First().Title = albumTitle;
+        }
+
         [TestCase("Bad Format", "badformat")]
         public void should_parse_artist_name(string postTitle, string title)
         {
@@ -101,6 +122,26 @@ namespace NzbDrone.Core.Test.ParserTests
             parseResult.ArtistName.Should().Be(name);
             parseResult.AlbumTitle.Should().Be(title);
             parseResult.Discography.Should().Be(discography);
+        }
+
+        [TestCase("Black Sabbath - Black Sabbath FLAC")]
+        [TestCase("Black Sabbath Black Sabbath FLAC")]
+        [TestCase("BlaCk SabBaTh Black SabBatH FLAC")]
+        [TestCase("Black Sabbath FLAC Black Sabbath")]
+        public void should_parse_artist_name_and_album_title_by_search_criteria(string releaseTitle)
+        {
+            GivenSearchCriteria("Black Sabbath", "Black Sabbath");
+            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            parseResult.ArtistName.ToLowerInvariant().Should().Be("black sabbath");
+            parseResult.AlbumTitle.ToLowerInvariant().Should().Be("black sabbath");
+        }
+
+        [Test]
+        public void should_not_parse_artist_name_and_album_title_by_incorrect_search_criteria()
+        {
+            GivenSearchCriteria("Abba", "Abba");
+            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria("Black Sabbath  Black Sabbath FLAC", _artist, _albums);
+            parseResult.Should().BeNull();
         }
     }
 }
