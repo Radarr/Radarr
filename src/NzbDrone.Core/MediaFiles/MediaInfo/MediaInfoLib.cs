@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
     [Flags]
     public enum BufferStatus
     {
+        None = 0,
         Accepted = 1,
         Filled = 2,
         Updated = 4,
@@ -210,7 +211,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                     var status = (BufferStatus)MediaInfo_Open_Buffer_Continue(_handle, buffer, (IntPtr)bufferRead);
 
-                    if (status.HasFlag(BufferStatus.Finalized) || status <= 0 || bufferRead == 0)
+                    if (status.HasFlag(BufferStatus.Finalized) || bufferRead == 0)
                     {
                         Logger.Trace("Read file offset {0}-{1} ({2} bytes)", seekStart, stream.Position, stream.Position - seekStart);
                         break;
