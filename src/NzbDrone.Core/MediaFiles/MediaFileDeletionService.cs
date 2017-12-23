@@ -21,16 +21,19 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
+        private readonly IArtistService _artistService;
         private readonly Logger _logger;
 
         public MediaFileDeletionService(IDiskProvider diskProvider,
                                         IRecycleBinProvider recycleBinProvider,
                                         IMediaFileService mediaFileService,
+                                        IArtistService artistService,
                                         Logger logger)
         {
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
+            _artistService = artistService;
             _logger = logger;
         }
 
@@ -76,6 +79,25 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (message.DeleteFiles)
             {
+                var artist = message.Artist;
+                var allArtists = _artistService.GetAllArtists();
+
+                foreach (var s in allArtists)
+                {
+                    if (s.Id == artist.Id) continue;
+
+                    if (artist.Path.IsParentPath(s.Path))
+                    {
+                        _logger.Error("Artist path: '{0}' is a parent of another artist, not deleting files.", artist.Path);
+                        return;
+                    }
+
+                    if (artist.Path.PathEquals(s.Path))
+                    {
+                        _logger.Error("Artist path: '{0}' is the same as another artist, not deleting files.", artist.Path);
+                        return;
+                    }
+                }
                 if (_diskProvider.FolderExists(message.Artist.Path))
                 {
                     _recycleBinProvider.DeleteFolder(message.Artist.Path);

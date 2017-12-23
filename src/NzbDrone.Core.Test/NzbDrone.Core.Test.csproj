@@ -347,6 +347,7 @@
     <Compile Include="ThingiProviderTests\ProviderStatusServiceFixture.cs" />
     <Compile Include="UpdateTests\UpdatePackageProviderFixture.cs" />
     <Compile Include="UpdateTests\UpdateServiceFixture.cs" />
+    <Compile Include="ValidationTests\SystemFolderValidatorFixture.cs" />
     <Compile Include="XbmcVersionTests.cs" />
     <None Include="Files\Nzbs\NoFiles.nzb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

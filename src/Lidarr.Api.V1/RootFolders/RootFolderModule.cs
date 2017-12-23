@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation.Paths;
@@ -15,7 +15,11 @@ namespace Lidarr.Api.V1.RootFolders
                                 IBroadcastSignalRMessage signalRBroadcaster,
                                 RootFolderValidator rootFolderValidator,
                                 PathExistsValidator pathExistsValidator,
-                                MappedNetworkDriveValidator mappedNetworkDriveValidator)
+                                MappedNetworkDriveValidator mappedNetworkDriveValidator,
+                                StartupFolderValidator startupFolderValidator,
+                                SystemFolderValidator systemFolderValidator,
+                                FolderWritableValidator folderWritableValidator
+        )
             : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;
@@ -30,7 +34,10 @@ namespace Lidarr.Api.V1.RootFolders
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
                            .SetValidator(mappedNetworkDriveValidator)
-                           .SetValidator(pathExistsValidator);
+                           .SetValidator(startupFolderValidator)
+                           .SetValidator(pathExistsValidator)
+                           .SetValidator(systemFolderValidator)
+                           .SetValidator(folderWritableValidator);
         }
 
         private RootFolderResource GetRootFolder(int id)

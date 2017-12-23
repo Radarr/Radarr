@@ -1092,6 +1092,7 @@
     <Compile Include="Validation\Paths\StartupFolderValidator.cs" />
     <Compile Include="Validation\Paths\RootFolderValidator.cs" />
     <Compile Include="Validation\Paths\ArtistAncestorValidator.cs" />
+    <Compile Include="Validation\Paths\SystemFolderValidator.cs" />
     <Compile Include="Validation\ProfileExistsValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
     <Compile Include="Validation\UrlValidator.cs" />

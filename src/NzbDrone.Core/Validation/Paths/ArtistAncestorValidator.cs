@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IArtistService _artistService;
 
         public ArtistAncestorValidator(IArtistService artistService)
-            : base("Path is an ancestor of an existing path")
+            : base("Path is an ancestor of an existing artist")
         {
             _artistService = artistService;
         }
