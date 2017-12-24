@@ -22,11 +22,17 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             var qualityComparer = new QualityModelComparer(localTrack.Artist.Profile);
             var languageComparer = new LanguageComparer(localTrack.Artist.LanguageProfile);
 
+            if (localTrack.Tracks.Any(e => e.TrackFileId != 0 && qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) > 0))
+            {
+                _logger.Debug("This file isn't a quality upgrade for all tracks. Skipping {0}", localTrack.Path);
+                return Decision.Reject("Not an upgrade for existing track file(s)");
+            }
+
             if (localTrack.Tracks.Any(e => e.TrackFileId != 0 &&
                                       languageComparer.Compare(e.TrackFile.Value.Language, localTrack.Language) > 0 &&
                                       qualityComparer.Compare(e.TrackFile.Value.Quality, localTrack.Quality) == 0))
             {
-                _logger.Debug("This file isn't an upgrade for all tracks. Skipping {0}", localTrack.Path);
+                _logger.Debug("This file isn't a language upgrade for all tracks. Skipping {0}", localTrack.Path);
                 return Decision.Reject("Not an upgrade for existing track file(s)");
             }
 

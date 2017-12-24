@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                                      .With(e => e.TrackFile = new LazyLoaded<TrackFile>(
                                                                               new TrackFile
                                                                               {
-                                                                                  Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1)),
+                                                                                  Quality = new QualityModel(Quality.MP3_256, new Revision(version: 1)),
                                                                                   Language = Language.English
                                                                               }))
                                                      .Build()
