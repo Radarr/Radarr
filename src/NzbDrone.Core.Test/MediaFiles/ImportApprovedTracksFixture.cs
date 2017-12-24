@@ -23,7 +23,7 @@ using NzbDrone.Core.Profiles.Languages;
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
-    public class ImportApprovedEpisodesFixture : CoreTest<ImportApprovedTracks>
+    public class ImportApprovedTracksFixture : CoreTest<ImportApprovedTracks>
     {
         private List<ImportDecision> _rejectedDecisions;
         private List<ImportDecision> _approvedDecisions;
@@ -46,6 +46,11 @@ namespace NzbDrone.Core.Test.MediaFiles
                                         .With(s => s.Path = @"C:\Test\Music\Alien Ant Farm".AsOsAgnostic())
                                         .Build();
 
+            var album = Builder<Album>.CreateNew()
+                .With(e => e.Artist = artist)
+                .Build();
+               
+
             var tracks = Builder<Track>.CreateListOfSize(5)
                                            .Build();
 
@@ -62,8 +67,9 @@ namespace NzbDrone.Core.Test.MediaFiles
                                            new LocalTrack
                                            {
                                                Artist = artist,
+                                               Album = album,
                                                Tracks = new List<Track> { track },
-                                               Path = Path.Combine(artist.Path, "30 Rock - S01E01 - Pilot.avi"),
+                                               Path = Path.Combine(artist.Path, "Alien Ant Farm - 01 - Pilot.mp3"),
                                                Quality = new QualityModel(Quality.MP3_256),
                                                ParsedTrackInfo = new ParsedTrackInfo
                                                {
@@ -107,7 +113,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_only_import_each_episode_once()
+        public void should_only_import_each_track_once()
         {
             var all = new List<ImportDecision>();
             all.AddRange(_approvedDecisions);
@@ -128,14 +134,14 @@ namespace NzbDrone.Core.Test.MediaFiles
                           Times.Once());
         }
 
-        //[Test]
-        //public void should_publish_EpisodeImportedEvent_for_new_downloads()
-        //{
-        //    Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
+        [Test]
+        public void should_publish_TrackImportedEvent_for_new_downloads()
+        {
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
 
-        //    Mocker.GetMock<IEventAggregator>()
-        //        .Verify(v => v.PublishEvent(It.IsAny<EpisodeImportedEvent>()), Times.Once());
-        //}
+            Mocker.GetMock<IEventAggregator>()
+                .Verify(v => v.PublishEvent(It.IsAny<TrackImportedEvent>()), Times.Once());
+        }
 
         [Test]
         public void should_not_move_existing_files()
@@ -145,61 +151,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeTrackFile(It.IsAny<TrackFile>(), _approvedDecisions.First().LocalTrack, false),
                           Times.Never());
-        }
-
-        [Test]
-        public void should_use_nzb_title_as_scene_name()
-        {
-            _downloadClientItem.Title = "malcolm.in.the.middle.s02e05.dvdrip.xvid-ingot";
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<TrackFile>(c => c.SceneName == _downloadClientItem.Title)));
-        }
-
-        [TestCase(".mkv")]
-        [TestCase(".par2")]
-        [TestCase(".nzb")]
-        public void should_remove_extension_from_nzb_title_for_scene_name(string extension)
-        {
-            var title = "malcolm.in.the.middle.s02e05.dvdrip.xvid-ingot";
-
-            _downloadClientItem.Title = title + extension;
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<TrackFile>(c => c.SceneName == title)));
-        }
-
-        [Test]
-        public void should_not_use_nzb_title_as_scene_name_if_full_season()
-        {
-            _approvedDecisions.First().LocalTrack.Path = "c:\\tv\\season1\\malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot.mkv".AsOsAgnostic();
-            _downloadClientItem.Title = "malcolm.in.the.middle.s02.dvdrip.xvid-ingot";
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<TrackFile>(c => c.SceneName == "malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot")));
-        }
-
-        [Test]
-        public void should_use_file_name_as_scenename_only_if_it_looks_like_scenename()
-        {
-            _approvedDecisions.First().LocalTrack.Path = "c:\\tv\\malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot.mkv".AsOsAgnostic();
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<TrackFile>(c => c.SceneName == "malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot")));
-        }
-
-        [Test]
-        public void should_not_use_file_name_as_scenename_if_it_doesnt_looks_like_scenename()
-        {
-            _approvedDecisions.First().LocalTrack.Path = "c:\\tv\\aaaaa.mkv".AsOsAgnostic();
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<TrackFile>(c => c.SceneName == null)));
         }
 
         [Test]
@@ -213,7 +164,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 {
                     Artist = fileDecision.LocalTrack.Artist,
                     Tracks = new List<Track> { fileDecision.LocalTrack.Tracks.First() },
-                    Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
+                    Path = @"C:\Test\Music\Alien Ant Farm\Alien Ant Farm - 01 - Pilot.mp3".AsOsAgnostic(),
                     Quality = new QualityModel(Quality.MP3_256),
                     Size = 80.Megabytes()
                 });
@@ -233,7 +184,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_copy_when_cannot_move_files_downloads()
         {
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "30.Rock.S01E01", CanMoveFiles = false });
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "Alien.Ant.Farm-Truant", CanMoveFiles = false });
 
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeTrackFile(It.IsAny<TrackFile>(), _approvedDecisions.First().LocalTrack, true), Times.Once());
@@ -242,7 +193,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_use_override_importmode()
         {
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "30.Rock.S01E01", CanMoveFiles = false }, ImportMode.Move);
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "Alien.Ant.Farm-Truant", CanMoveFiles = false }, ImportMode.Move);
 
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeTrackFile(It.IsAny<TrackFile>(), _approvedDecisions.First().LocalTrack, false), Times.Once());
