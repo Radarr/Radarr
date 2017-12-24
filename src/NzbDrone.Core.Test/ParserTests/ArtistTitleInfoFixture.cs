@@ -38,6 +38,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [Test]
+        [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_have_year_in_title_when_title_has_a_year()
         {
             const string title = "House.2004.S01E01.pilot.720p.hdtv";
@@ -48,6 +49,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [Test]
+        [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_title_without_year_should_not_contain_year()
         {
             const string title = "House.2004.S01E01.pilot.720p.hdtv";

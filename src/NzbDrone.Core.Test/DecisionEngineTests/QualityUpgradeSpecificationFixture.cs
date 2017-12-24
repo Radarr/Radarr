@@ -31,8 +31,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new object[] { Quality.MP3_192, 1, Language.English, Quality.MP3_192, 1, Language.Spanish, Quality.MP3_192, Language.Spanish, true },
             new object[] { Quality.MP3_320, 1, Language.French, Quality.MP3_320, 2, Language.English, Quality.MP3_320, Language.Spanish, true },
             new object[] { Quality.MP3_192, 1, Language.English, Quality.MP3_192, 1, Language.English, Quality.MP3_192, Language.English, false },
-            new object[] { Quality.MP3_320, 1, Language.English, Quality.MP3_320, 2, Language.Spanish, Quality.FLAC, Language.Spanish, false },
-            new object[] { Quality.MP3_320, 1, Language.Spanish, Quality.MP3_320, 2, Language.French, Quality.MP3_320, Language.Spanish, false }
+            new object[] { Quality.MP3_320, 1, Language.English, Quality.MP3_256, 2, Language.Spanish, Quality.FLAC, Language.Spanish, false },
+            new object[] { Quality.MP3_320, 1, Language.Spanish, Quality.MP3_256, 2, Language.French, Quality.MP3_320, Language.Spanish, false }
         };
 
         [SetUp]
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                 .Should().Be(expected);
         }
 
-        [Test, TestCaseSource("IsUpgradeTestCasesLanguages")]
+        [Test, TestCaseSource(nameof(IsUpgradeTestCasesLanguages))]
         public void IsUpgradeTestLanguage(Quality current, int currentVersion, Language currentLanguage, Quality newQuality, int newVersion, Language newLanguage, Quality cutoff, Language languageCutoff, bool expected)
         {
             GivenAutoDownloadPropers(true);

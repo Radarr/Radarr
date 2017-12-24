@@ -254,7 +254,6 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
         }
 
         [TestCase("IPTorrents/IPTorrents.xml")]
-        [TestCase("Newznab/newznab_nzb_su.xml")]
         [TestCase("Nyaa/Nyaa.xml")]
         [TestCase("Torznab/torznab_hdaccess_net.xml")]
         [TestCase("Torznab/torznab_tpb.xml")]
