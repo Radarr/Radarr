@@ -305,7 +305,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _reports = new List<ReleaseInfo>
                 {
-                    new ReleaseInfo{Title = "The.Office.S03E115.DVDRip.XviD-OSiTV"},
+                    new ReleaseInfo{Title = "Alien Ant Farm - TruAnt (FLAC) DRONE"},
                 };
 
             Subject.GetRssDecision(_reports).Should().HaveCount(1);

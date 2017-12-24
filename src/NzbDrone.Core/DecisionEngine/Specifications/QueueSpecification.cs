@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -14,11 +13,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         private readonly Logger _logger;
 
         public QueueSpecification(IQueueService queueService,
-                                       UpgradableSpecification qualityUpgradableSpecification,
+                                       UpgradableSpecification upgradableSpecification,
                                        Logger logger)
         {
             _queueService = queueService;
-            _upgradableSpecification = qualityUpgradableSpecification;
+            _upgradableSpecification = upgradableSpecification;
             _logger = logger;
         }
 
@@ -35,7 +34,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             foreach (var remoteAlbum in matchingAlbum)
             {
-                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
+                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
 
                 if (!_upgradableSpecification.CutoffNotMet(subject.Artist.Profile,
                                                            subject.Artist.LanguageProfile,
@@ -46,7 +45,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     return Decision.Reject("Quality for release in queue already meets cutoff: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
                 }
 
-                _logger.Debug("Checking if release is higher quality than queued release. Queued quality is: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
+                _logger.Debug("Checking if release is higher quality than queued release. Queued quality is: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
 
                 if (!_upgradableSpecification.IsUpgradable(subject.Artist.Profile,
                                                            subject.Artist.LanguageProfile,
@@ -55,7 +54,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                                                            subject.ParsedAlbumInfo.Quality,
                                                            subject.ParsedAlbumInfo.Language))
                 {
-                    return Decision.Reject("Quality for release in queue is of equal or higher preference: {0}", remoteAlbum.ParsedAlbumInfo.Quality);
+                    return Decision.Reject("Quality for release in queue is of equal or higher preference: {0} - {1}", remoteAlbum.ParsedAlbumInfo.Quality, remoteAlbum.ParsedAlbumInfo.Language);
                 }
             }
 
