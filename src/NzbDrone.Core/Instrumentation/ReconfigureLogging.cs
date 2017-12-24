@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Instrumentation
             var rules = LogManager.Configuration.LoggingRules;
 
             //Console
-            SetMinimumLogLevel(rules, "consoleLogger", LogLevel.Trace);
+            SetMinimumLogLevel(rules, "consoleLogger", minimumLogLevel);
 
             //Log Files
             SetMinimumLogLevel(rules, "appFileInfo", minimumLogLevel <= LogLevel.Info ? LogLevel.Info : LogLevel.Off);
