@@ -101,7 +101,6 @@
     <Compile Include="ArtistStatsTests\ArtistStatisticsFixture.cs" />
     <Compile Include="Blacklisting\BlacklistRepositoryFixture.cs" />
     <Compile Include="Blacklisting\BlacklistServiceFixture.cs" />
-    <Compile Include="BulkImport\BulkImportFixture.cs" />
     <Compile Include="Configuration\ConfigCachingFixture.cs" />
     <Compile Include="Configuration\ConfigServiceFixture.cs" />
     <Compile Include="DataAugmentation\DailySeries\DailySeriesDataProxyFixture.cs" />
