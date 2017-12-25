@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
+        [Ignore("Ignore until we actually release something on Master")]
         public void should_get_master_if_branch_doesnt_exit()
         {
             UseRealHttp();

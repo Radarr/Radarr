@@ -217,6 +217,7 @@ namespace NzbDrone.Integration.Test
                 var artist = lookup.First();
                 artist.QualityProfileId = 1;
                 artist.LanguageProfileId = 1;
+                artist.MetadataProfileId = 1;
                 artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
                 artist.Monitored = true;
                 artist.AddOptions = new Core.Music.AddArtistOptions();

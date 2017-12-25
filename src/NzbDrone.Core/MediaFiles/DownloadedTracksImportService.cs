@@ -57,9 +57,9 @@ namespace NzbDrone.Core.MediaFiles
                 results.AddRange(folderResults);
             }
 
-            foreach (var videoFile in _diskScanService.GetNonAudioFiles(directoryInfo.FullName, false))
+            foreach (var audioFile in _diskScanService.GetAudioFiles(directoryInfo.FullName, false))
             {
-                var fileResults = ProcessFile(new FileInfo(videoFile), ImportMode.Auto, null);
+                var fileResults = ProcessFile(new FileInfo(audioFile), ImportMode.Auto, null);
                 results.AddRange(fileResults);
             }
 
@@ -98,11 +98,12 @@ namespace NzbDrone.Core.MediaFiles
 
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Artist artist)
         {
-            var audioFiles = _diskScanService.GetNonAudioFiles(directoryInfo.FullName);
+            var audioFiles = _diskScanService.GetAudioFiles(directoryInfo.FullName);
             var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
 
             foreach (var audioFile in audioFiles)
             {
+                //TODO Make this more robust, we should not delete path if it still contains audio files. 
                 var albumParseResult = Parser.Parser.ParseMusicTitle(Path.GetFileName(audioFile));
 
                 if (albumParseResult == null)
@@ -124,9 +125,7 @@ namespace NzbDrone.Core.MediaFiles
         private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
         {
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-
-            var files = _diskScanService.GetAudioFiles(directoryInfo.FullName);
-            var artist = _parsingService.GetArtist(files.First());
+            var artist = _parsingService.GetArtist(cleanedUpName);
 
             if (artist == null)
             {
@@ -186,8 +185,6 @@ namespace NzbDrone.Core.MediaFiles
                     }
                 }
             }
-
-
 
             var decisions = _importDecisionMaker.GetImportDecisions(audioFiles.ToList(), artist, trackInfo);
             var importResults = _importApprovedTracks.Import(decisions, true, downloadClientItem, importMode);
