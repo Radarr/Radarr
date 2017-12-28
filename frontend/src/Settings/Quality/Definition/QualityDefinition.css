@@ -53,7 +53,7 @@
   justify-content: space-between;
 }
 
-.megabytesPerMinute {
+.kilobitsPerSecond {
   display: flex;
   justify-content: space-between;
   flex: 0 0 250px;

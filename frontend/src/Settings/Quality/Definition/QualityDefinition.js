@@ -10,8 +10,8 @@ import styles from './QualityDefinition.css';
 
 const slider = {
   min: 0,
-  max: 200,
-  step: 0.1
+  max: 1500,
+  step: 1
 };
 
 function getValue(value) {
@@ -69,13 +69,16 @@ class QualityDefinition extends Component {
       onTitleChange
     } = this.props;
 
-    const minBytes = minSize * 1024 * 1024;
-    const minThirty = formatBytes(minBytes * 30, 2);
-    const minSixty = formatBytes(minBytes * 60, 2);
+    const minBytes = minSize * 128;
+    const maxBytes = maxSize && maxSize * 128;
 
-    const maxBytes = maxSize && maxSize * 1024 * 1024;
-    const maxThirty = maxBytes ? formatBytes(maxBytes * 30, 2) : 'Unlimited';
-    const maxSixty = maxBytes ? formatBytes(maxBytes * 60, 2) : 'Unlimited';
+    // Calculates the bytes used by a twenty minute EP
+    const minTwenty = formatBytes(minBytes * 20 * 60, 2);
+    const maxTwenty = maxBytes ? formatBytes(maxBytes * 20 * 60, 2) : 'Unlimited';
+
+    // Calculates the bytes used by a forty-five minute LP
+    const minFortyFive = formatBytes(minBytes * 45 * 60, 2);
+    const maxFortyFive = maxBytes ? formatBytes(maxBytes * 45 * 60, 2) : 'Unlimited';
 
     return (
       <div className={styles.qualityDefinition}>
@@ -108,20 +111,20 @@ class QualityDefinition extends Component {
 
           <div className={styles.sizes}>
             <div>
-              <Label kind={kinds.WARNING}>{minThirty}</Label>
-              <Label kind={kinds.INFO}>{minSixty}</Label>
+              <Label title={"Minimum size for a 20 minute EP"} kind={kinds.WARNING}>{minTwenty}</Label>
+              <Label title={"Minimum size for a 45 minute LP"} kind={kinds.INFO}>{minFortyFive}</Label>
             </div>
 
             <div>
-              <Label kind={kinds.WARNING}>{maxThirty}</Label>
-              <Label kind={kinds.INFO}>{maxSixty}</Label>
+              <Label title={"Maximum size for a 20 minute EP"} kind={kinds.WARNING}>{maxTwenty}</Label>
+              <Label title={"Maximum size for a 45 minute LP"} kind={kinds.INFO}>{maxFortyFive}</Label>
             </div>
           </div>
         </div>
 
         {
           advancedSettings &&
-            <div className={styles.megabytesPerMinute}>
+            <div className={styles.kilobitsPerSecond}>
               <div>
                 Min
 
@@ -139,7 +142,7 @@ class QualityDefinition extends Component {
 
                 <NumberInput
                   className={styles.sizeInput}
-                  name={`${id}.min`}
+                  name={`${id}.max`}
                   value={maxSize || slider.max}
                   isFloat={true}
                   onChange={this.onMaxSizeChange}

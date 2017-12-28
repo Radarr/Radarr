@@ -28,7 +28,7 @@ class QualityDefinitions extends Component {
             <div className={styles.quality}>Quality</div>
             <div className={styles.title}>Title</div>
             <div className={styles.sizeLimit}>Size Limit</div>
-            <div className={styles.megabytesPerMinute}>Megabytes Per Minute</div>
+            <div className={styles.kilobitsPerSecond}>Kilobits Per Second</div>
           </div>
 
           <div className={styles.definitions}>
