@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -56,6 +56,7 @@ namespace NzbDrone.Common.Extensions
 
         public static string GetRelativePath(this string parentPath, string childPath)
         {
+            parentPath = Path.GetDirectoryName(parentPath);
             if (!parentPath.IsParentPath(childPath))
             {
                 throw new Exceptions.NotParentException("{0} is not a child of {1}", childPath, parentPath);
