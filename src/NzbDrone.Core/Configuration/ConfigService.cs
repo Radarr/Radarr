@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -306,6 +306,13 @@ namespace NzbDrone.Core.Configuration
             get { return GetValueBoolean("AutoRenameFolders", false); }
 
             set { SetValue("AutoRenameFolders", value); }
+        }
+
+        public bool EnableFlatFileSupport
+        {
+            get { return GetValueBoolean("EnableFlatFileSupport", true); }
+
+            set { SetValue("EnableFlatFileSupport", value); }
         }
 
         public bool PathsDefaultStatic

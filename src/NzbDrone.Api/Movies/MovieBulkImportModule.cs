@@ -17,6 +17,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Core.Tv;
 using NzbDrone.Common.Disk;
 using System.IO;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Api.Movie
 {
@@ -38,9 +39,11 @@ namespace NzbDrone.Api.Movie
         private readonly IDiskScanService _diskScanService;
 		private readonly ICached<Core.Tv.Movie> _mappedMovies;
         private readonly IMovieService _movieService;
+        private readonly IConfigService _configService;
 
         public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker,
-                                    IDiskProvider diskProvider, IDiskScanService diskScanService, ICacheManager cacheManager, IMovieService movieService)
+                                    IDiskProvider diskProvider, IDiskScanService diskScanService, ICacheManager cacheManager, IMovieService movieService,
+                                    IConfigService configService)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
@@ -48,6 +51,7 @@ namespace NzbDrone.Api.Movie
             _importDecisionMaker = importDecisionMaker;
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
+            _configService = configService;
 
 			_mappedMovies = cacheManager.GetCache<Core.Tv.Movie>(GetType(), "mappedMoviesCache");
             _movieService = movieService;
@@ -57,7 +61,6 @@ namespace NzbDrone.Api.Movie
 
         private Response Search()
         {
-            bool flatFiles = true;
 
             if (Request.Query.Id == 0)
             {
@@ -76,7 +79,7 @@ namespace NzbDrone.Api.Movie
             var unmappedDirectories = rootFolder.UnmappedFolders.OrderBy(f => f.Name).ToList();
             var unmappedFiles = new List<UnmappedFile>();
 
-            if (flatFiles)
+            if (_configService.EnableFlatFileSupport)
             {
                 unmappedFiles = rootFolder.UnmappedFiles.OrderBy(f => f.Name).ToList();
             }

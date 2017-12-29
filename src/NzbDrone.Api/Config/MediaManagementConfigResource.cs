@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.REST;
+using NzbDrone.Api.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 
@@ -12,6 +12,7 @@ namespace NzbDrone.Api.Config
         public bool CreateEmptySeriesFolders { get; set; }
         public FileDateType FileDate { get; set; }
         public bool AutoRenameFolders { get; set; }
+        public bool EnableFlatFileSupport { get; set; }
         public bool PathsDefaultStatic { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
@@ -38,6 +39,7 @@ namespace NzbDrone.Api.Config
                 CreateEmptySeriesFolders = model.CreateEmptySeriesFolders,
                 FileDate = model.FileDate,
                 AutoRenameFolders = model.AutoRenameFolders,
+                EnableFlatFileSupport = model.EnableFlatFileSupport,
                 PathsDefaultStatic = model.PathsDefaultStatic,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,

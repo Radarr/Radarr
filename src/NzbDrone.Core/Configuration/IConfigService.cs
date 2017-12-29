@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Parser;
@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Configuration
         bool EnableMediaInfo { get; set; }
         string ExtraFileExtensions { get; set; }
         bool AutoRenameFolders { get; set; }
+        bool EnableFlatFileSupport { get; set; }
         bool PathsDefaultStatic { get; set; }
 
         //Permissions (Media Management)
