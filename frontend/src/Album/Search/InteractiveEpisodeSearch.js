@@ -83,7 +83,7 @@ function InteractiveEpisodeSearch(props) {
   if (isFetching) {
     return <LoadingIndicator />;
   } else if (!isFetching && !!error) {
-    return <div>Unable to load results for this episode search. Try again later.</div>;
+    return <div>Unable to load results for this album search. Try again later.</div>;
   } else if (isPopulated && !items.length) {
     return <div>No results found.</div>;
   }
