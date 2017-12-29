@@ -96,8 +96,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 if (lowerTitle.StartsWith("lidarr:") || lowerTitle.StartsWith("lidarrid:"))
                 {
                     var slug = lowerTitle.Split(':')[1].Trim();
+                    Guid searchGuid;
 
-                    bool isValid = Guid.TryParse(slug, out var searchGuid);
+                    bool isValid = Guid.TryParse(slug, out searchGuid);
 
                     if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || isValid == false)
                     {
