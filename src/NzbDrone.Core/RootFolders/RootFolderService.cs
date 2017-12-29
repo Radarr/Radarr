@@ -232,7 +232,7 @@ namespace NzbDrone.Core.RootFolders
             }
 
             var possibleMovieFiles = _diskScanService.GetVideoFiles(path, false);
-            var unmappedFiles = possibleMovieFiles.Except(movies.Select(s => s.MovieFile.Path), PathEqualityComparer.Instance).ToList();
+            var unmappedFiles = possibleMovieFiles.Except(movies.Where(s => s.MovieFile != null).Select(s => s.MovieFile.Path), PathEqualityComparer.Instance).ToList();
 
             foreach (string unmappedFile in unmappedFiles)
             {
