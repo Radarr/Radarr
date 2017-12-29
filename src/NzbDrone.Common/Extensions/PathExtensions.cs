@@ -55,14 +55,13 @@ namespace NzbDrone.Common.Extensions
         }
 
         public static string GetRelativePath(this string parentPath, string childPath)
-        {
-            parentPath = Path.GetDirectoryName(parentPath);
+        {         
             if (!parentPath.IsParentPath(childPath))
             {
-                throw new Exceptions.NotParentException("{0} is not a child of {1}", childPath, parentPath);
+                parentPath = Path.GetDirectoryName(parentPath);
             }
-
-            return childPath.Substring(parentPath.Length).Trim(Path.DirectorySeparatorChar);
+            
+            return childPath.Replace(parentPath, string.Empty);
         }
 
         public static string GetParentPath(this string childPath)
