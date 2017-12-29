@@ -70,6 +70,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     throw new ArtistNotFoundException(foreignArtistId);
                 }
+                else if (httpResponse.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    throw new BadRequestException(foreignArtistId);
+                }
                 else
                 {
                     throw new HttpException(httpRequest, httpResponse);
@@ -93,7 +97,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     var slug = lowerTitle.Split(':')[1].Trim();
 
-                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace))
+                    bool isValid = Guid.TryParse(slug, out var searchGuid);
+
+                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || isValid == false)
                     {
                         return new List<Artist>();
                     }
@@ -101,7 +107,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     try
                     {
                         var metadataProfile = _metadataProfileService.All().First().Id; //Change this to Use last Used profile?
-                        return new List<Artist> { GetArtistInfo(slug, metadataProfile).Item1 };
+                        return new List<Artist> { GetArtistInfo(searchGuid.ToString(), metadataProfile).Item1 };
                     }
                     catch (ArtistNotFoundException)
                     {

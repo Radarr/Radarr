@@ -1,9 +1,13 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MetadataSource.SkyHook;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 using NzbDrone.Test.Common.Categories;
+using Moq;
+using NzbDrone.Core.Profiles.Metadata;
+using NzbDrone.Core.Music;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 {
@@ -15,6 +19,36 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         public void Setup()
         {
             UseRealHttp();
+
+            var _metadataProfile = new MetadataProfile
+            {
+                Id = 1,
+                PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>
+                {
+                    new ProfilePrimaryAlbumTypeItem
+                    {
+                        PrimaryAlbumType = PrimaryAlbumType.Album,
+                        Allowed = true
+
+                    }
+                },
+                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>
+                {
+                    new ProfileSecondaryAlbumTypeItem()
+                    {
+                        SecondaryAlbumType = SecondaryAlbumType.Studio,
+                        Allowed = true
+                    }
+                },
+            };
+
+            Mocker.GetMock<IMetadataProfileService>()
+                .Setup(s => s.All())
+                .Returns(new List<MetadataProfile>{_metadataProfile});
+
+            Mocker.GetMock<IMetadataProfileService>()
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns(_metadataProfile);
         }
 
         [TestCase("Coldplay", "Coldplay")]

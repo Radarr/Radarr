@@ -9,6 +9,8 @@ using NzbDrone.Core.MetadataSource.SkyHook;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Test.Common.Categories;
+using Moq;
+using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 {
@@ -20,13 +22,38 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         public void Setup()
         {
             UseRealHttp();
+
+            var _metadataProfile = new MetadataProfile
+            {
+                PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>
+                {
+                    new ProfilePrimaryAlbumTypeItem
+                    {
+                        PrimaryAlbumType = PrimaryAlbumType.Album,
+                        Allowed = true
+                        
+                    }
+                },
+                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>
+                {
+                    new ProfileSecondaryAlbumTypeItem()
+                    {
+                        SecondaryAlbumType = SecondaryAlbumType.Studio,
+                        Allowed = true
+                    }
+                },
+            };
+
+            Mocker.GetMock<IMetadataProfileService>()
+                .Setup(s => s.Get(It.IsAny<int>()))
+                .Returns(_metadataProfile);
         }
 
         [TestCase("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
         [TestCase("66c662b6-6e2f-4930-8610-912e24c63ed1", "AC/DC")]
         public void should_be_able_to_get_artist_detail(string mbId, string name)
         {
-            var details = Subject.GetArtistInfo(mbId, 0);
+            var details = Subject.GetArtistInfo(mbId, 1);
 
             ValidateArtist(details.Item1);
             ValidateAlbums(details.Item2);
@@ -37,13 +64,14 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [Test]
         public void getting_details_of_invalid_artist()
         {
-            Assert.Throws<ArtistNotFoundException>(() => Subject.GetArtistInfo("aaaaaa-aaa-aaaa-aaaa", 0));
+            Assert.Throws<BadRequestException>(() => Subject.GetArtistInfo("aaaaaa-aaa-aaaa-aaaa", 1));
         }
 
         [Test]
+        [Ignore("We don't return a dothack from Metadata")]
         public void should_not_have_period_at_start_of_name_slug()
         {
-            var details = Subject.GetArtistInfo("b6db95cd-88d9-492f-bbf6-a34e0e89b2e5", 0);
+            var details = Subject.GetArtistInfo("b6db95cd-88d9-492f-bbf6-a34e0e89b2e5", 1);
 
             details.Item1.NameSlug.Should().Be("dothack");
         }
