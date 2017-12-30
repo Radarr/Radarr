@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void not_monitored_series_should_be_skipped()
+        public void not_monitored_artist_should_be_skipped()
         {
             _fakeArtist.Monitored = false;
             _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
@@ -109,19 +109,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _fakeArtist.Monitored = false;
             _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_true_if_album_is_monitored_for_season_search()
-        {
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
-        }
-
-        [Test]
-        public void should_return_false_if_album_is_not_monitored_for_season_search()
-        {
-            WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeFalse();
         }
 
         [Test]

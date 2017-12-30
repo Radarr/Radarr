@@ -5,6 +5,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -38,6 +39,10 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [Test]
         public void should_update_path_when_rootFolderPath_is_supplied()
         {
+            Mocker.GetMock<IBuildFileNames>()
+                .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
+                .Returns<Artist, NamingConfig>((c, n) => c.Name);
+
             var newRoot = @"C:\Test\Music2".AsOsAgnostic();
             _artists.ForEach(s => s.RootFolderPath = newRoot);
 
@@ -63,7 +68,11 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
                                         .Build()
                                         .ToList();
 
-            var newRoot = @"C:\Test\TV2".AsOsAgnostic();
+            Mocker.GetMock<IBuildFileNames>()
+                .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
+                .Returns<Artist, NamingConfig>((c, n) => c.Name);
+
+            var newRoot = @"C:\Test\Music2".AsOsAgnostic();
             artist.ForEach(s => s.RootFolderPath = newRoot);
 
             Subject.UpdateArtists(artist);

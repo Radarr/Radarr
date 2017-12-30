@@ -7,10 +7,13 @@ namespace NzbDrone.Core.Test.ParserTests
     [TestFixture]
     public class ArtistTitleInfoFixture : CoreTest
     {
+
+        // TODO: Redo this test and parsed info for Albums which do have a year association 
         [Test]
+        [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_have_year_zero_when_title_doesnt_have_a_year()
         {
-            const string title = "House.S01E01.pilot.720p.hdtv";
+            const string title = "Alien Ant Farm - TruAnt [Flac]";
 
             var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
 
@@ -18,9 +21,10 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [Test]
+        [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_have_same_title_for_title_and_title_without_year_when_title_doesnt_have_a_year()
         {
-            const string title = "House.S01E01.pilot.720p.hdtv";
+            const string title = "Alien Ant Farm - TruAnt [Flac]";
 
             var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
 
@@ -28,9 +32,10 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [Test]
+        [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_have_year_when_title_has_a_year()
         {
-            const string title = "House.2004.S01E01.pilot.720p.hdtv";
+            const string title = "Alien Ant Farm - TruAnt [Flac]";
 
             var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
 
@@ -41,7 +46,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_have_year_in_title_when_title_has_a_year()
         {
-            const string title = "House.2004.S01E01.pilot.720p.hdtv";
+            const string title = "Alien Ant Farm - TruAnt [Flac]";
 
             var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
 
@@ -52,7 +57,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [Ignore("Artist Don't have year association thus we dont use this currently")]
         public void should_title_without_year_should_not_contain_year()
         {
-            const string title = "House.2004.S01E01.pilot.720p.hdtv";
+            const string title = "Alien Ant Farm - TruAnt [Flac]";
 
             var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
 

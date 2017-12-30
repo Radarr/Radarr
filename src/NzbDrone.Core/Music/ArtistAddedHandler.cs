@@ -1,15 +1,13 @@
-﻿using NzbDrone.Core.Messaging.Commands;
+using System.Linq;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace NzbDrone.Core.Music
 {
-    public class ArtistAddedHandler : IHandle<ArtistAddedEvent>
+    public class ArtistAddedHandler : IHandle<ArtistAddedEvent>,
+                                      IHandle<ArtistsImportedEvent>
     {
         private readonly IManageCommandQueue _commandQueueManager;
 
@@ -21,6 +19,11 @@ namespace NzbDrone.Core.Music
         public void Handle(ArtistAddedEvent message)
         {
             _commandQueueManager.Push(new RefreshArtistCommand(message.Artist.Id));
+        }
+
+        public void Handle(ArtistsImportedEvent message)
+        {
+            _commandQueueManager.PushMany(message.ArtistIds.Select(s => new RefreshArtistCommand(s)).ToList());
         }
     }
 }

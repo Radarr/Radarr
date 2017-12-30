@@ -45,40 +45,30 @@ namespace NzbDrone.Core.Music
         {
             Ensure.That(newArtist, () => newArtist).IsNotNull();
 
-            // Called for artist creation from API, duplicated call when called from Lidarr. Fix this.
             newArtist = AddSkyhookData(newArtist);
-
-            if (string.IsNullOrWhiteSpace(newArtist.Path))
-            {
-                var folderName = _fileNameBuilder.GetArtistFolder(newArtist);
-                newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
-            }
-
-            newArtist.CleanName = newArtist.Name.CleanArtistName();
-            newArtist.SortName = ArtistNameNormalizer.Normalize(newArtist.Name, newArtist.ForeignArtistId); // There is no Sort Title
-            newArtist.Added = DateTime.UtcNow;
-
-            var validationResult = _addArtistValidator.Validate(newArtist);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            newArtist = SetPropertiesAndValidate(newArtist);
 
             _logger.Info("Adding Artist {0} Path: [{1}]", newArtist, newArtist.Path);
-            newArtist = _artistService.AddArtist(newArtist);
+            _artistService.AddArtist(newArtist);
 
             return newArtist;
         }
 
         public List<Artist> AddArtists(List<Artist> newArtists)
         {
-            newArtists.ForEach(artist =>
-            {
-                AddArtist(artist);
-            });
+            var added = DateTime.UtcNow;
+            var artistsToAdd = new List<Artist>();
 
-            return newArtists;
+            foreach (var s in newArtists)
+            {
+                // TODO: Verify if adding skyhook data will be slow
+                var artist = AddSkyhookData(s);
+                artist = SetPropertiesAndValidate(artist);
+                artist.Added = added;
+                artistsToAdd.Add(artist);
+            }
+
+            return _artistService.AddArtists(artistsToAdd);
         }
 
         private Artist AddSkyhookData(Artist newArtist)
@@ -107,6 +97,28 @@ namespace NzbDrone.Core.Music
             artist.ApplyChanges(newArtist);
 
             return artist;
+        }
+
+        private Artist SetPropertiesAndValidate(Artist newArtist)
+        {
+            if (string.IsNullOrWhiteSpace(newArtist.Path))
+            {
+                var folderName = _fileNameBuilder.GetArtistFolder(newArtist);
+                newArtist.Path = Path.Combine(newArtist.RootFolderPath, folderName);
+            }
+
+            newArtist.CleanName = newArtist.Name.CleanArtistName();
+            newArtist.SortName = ArtistNameNormalizer.Normalize(newArtist.Name, newArtist.ForeignArtistId);
+            newArtist.Added = DateTime.UtcNow;
+
+            var validationResult = _addArtistValidator.Validate(newArtist);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            return newArtist;
         }
     }
 }

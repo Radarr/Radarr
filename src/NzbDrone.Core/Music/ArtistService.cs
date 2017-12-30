@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Music
         Artist GetArtist(int artistId);
         List<Artist> GetArtists(IEnumerable<int> artistIds);
         Artist AddArtist(Artist newArtist);
+        List<Artist> AddArtists(List<Artist> newArtists);
         Artist FindById(string spotifyId);
         Artist FindByName(string title);
         Artist FindByTitleInexact(string title);
@@ -56,6 +57,14 @@ namespace NzbDrone.Core.Music
             _eventAggregator.PublishEvent(new ArtistAddedEvent(GetArtist(newArtist.Id)));
 
             return newArtist;
+        }
+
+        public List<Artist> AddArtists(List<Artist> newArtists)
+        {
+            _artistRepository.InsertMany(newArtists);
+            _eventAggregator.PublishEvent(new ArtistsImportedEvent(newArtists.Select(s => s.Id).ToList()));
+
+            return newArtists;
         }
 
         public bool ArtistPathExists(string folder)
