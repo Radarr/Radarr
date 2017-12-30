@@ -14,5 +14,5 @@
 .label {
   composes: label from 'Components/Label.css';
 
-  pointer-events: none;
+  cursor: pointer;
 }

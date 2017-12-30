@@ -50,7 +50,7 @@ class SelectQualityModalContentConnector extends Component {
 
   onQualitySelect = ({ qualityId, proper, real }) => {
     const quality = _.find(this.props.items,
-      (item) => item.quality.id === qualityId).quality;
+      (item) => item.id === qualityId);
 
     const revision = {
       version: proper ? 2 : 1,
