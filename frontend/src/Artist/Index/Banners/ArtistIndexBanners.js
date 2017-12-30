@@ -39,6 +39,7 @@ function calculateRowHeight(bannerHeight, sortKey, isSmallScreen, bannerOptions)
   const {
     detailedProgressBar,
     showTitle,
+    showMonitored,
     showQualityProfile
   } = bannerOptions;
 
@@ -52,6 +53,10 @@ function calculateRowHeight(bannerHeight, sortKey, isSmallScreen, bannerOptions)
   ];
 
   if (showTitle) {
+    heights.push(19);
+  }
+
+  if (showMonitored) {
     heights.push(19);
   }
 
@@ -213,6 +218,7 @@ class ArtistIndexBanners extends Component {
     const {
       detailedProgressBar,
       showTitle,
+      showMonitored,
       showQualityProfile
     } = bannerOptions;
 
@@ -231,12 +237,16 @@ class ArtistIndexBanners extends Component {
         bannerHeight={bannerHeight}
         detailedProgressBar={detailedProgressBar}
         showTitle={showTitle}
+        showMonitored={showMonitored}
         showQualityProfile={showQualityProfile}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}
         timeFormat={timeFormat}
         style={style}
-        {...artist}
+        artistId={artist.id}
+        languageProfileId={artist.languageProfileId}
+        qualityProfileId={artist.qualityProfileId}
+        metadataProfileId={artist.metadataProfileId}
       />
     );
   }

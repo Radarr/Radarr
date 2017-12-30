@@ -35,24 +35,22 @@ export const addTag = createThunk(ADD_TAG);
 // Action Handlers
 
 export const actionHandlers = handleThunks({
-  [FETCH_TAGS]: createFetchHandler('tags', '/tag'),
+  [FETCH_TAGS]: createFetchHandler(section, '/tag'),
 
-  [ADD_TAG]: function(payload) {
-    return (dispatch, getState) => {
-      const promise = $.ajax({
-        url: '/tag',
-        method: 'POST',
-        data: JSON.stringify(payload.tag)
-      });
+  [ADD_TAG]: function(getState, payload, dispatch) {
+    const promise = $.ajax({
+      url: '/tag',
+      method: 'POST',
+      data: JSON.stringify(payload.tag)
+    });
 
-      promise.done((data) => {
-        const tags = getState().tags.items.slice();
-        tags.push(data);
+    promise.done((data) => {
+      const tags = getState().tags.items.slice();
+      tags.push(data);
 
-        dispatch(update({ section: 'tags', data: tags }));
-        payload.onTagCreated(data);
-      });
-    };
+      dispatch(update({ section, data: tags }));
+      payload.onTagCreated(data);
+    });
   }
 });
 

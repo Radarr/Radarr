@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 {
     public interface IManualImportService
     {
-        List<ManualImportItem> GetMediaFiles(string path, string downloadId);
+        List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
             _logger = logger;
         }
 
-        public List<ManualImportItem> GetMediaFiles(string path, string downloadId)
+        public List<ManualImportItem> GetMediaFiles(string path, string downloadId, bool filterExistingFiles)
         {
             if (downloadId.IsNotNullOrWhiteSpace())
             {
@@ -92,10 +92,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
                 return new List<ManualImportItem> { ProcessFile(path, downloadId) };
             }
 
-            return ProcessFolder(path, downloadId);
+            return ProcessFolder(path, downloadId, filterExistingFiles);
         }
 
-        private List<ManualImportItem> ProcessFolder(string folder, string downloadId)
+        private List<ManualImportItem> ProcessFolder(string folder, string downloadId, bool filterExistingFiles)
         {
             var directoryInfo = new DirectoryInfo(folder);
             var artist = _parsingService.GetArtist(directoryInfo.Name);
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
 
             var folderInfo = Parser.Parser.ParseMusicTitle(directoryInfo.Name);
             var artistFiles = _diskScanService.GetAudioFiles(folder).ToList();
-            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo);
+            var decisions = _importDecisionMaker.GetImportDecisions(artistFiles, artist, folderInfo, filterExistingFiles);
 
             return decisions.Select(decision => MapItem(decision, folder, downloadId)).ToList();
         }

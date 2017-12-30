@@ -39,6 +39,7 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
   const {
     detailedProgressBar,
     showTitle,
+    showMonitored,
     showQualityProfile
   } = posterOptions;
 
@@ -52,6 +53,10 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
   ];
 
   if (showTitle) {
+    heights.push(19);
+  }
+
+  if (showMonitored) {
     heights.push(19);
   }
 
@@ -213,6 +218,7 @@ class ArtistIndexPosters extends Component {
     const {
       detailedProgressBar,
       showTitle,
+      showMonitored,
       showQualityProfile
     } = posterOptions;
 
@@ -231,12 +237,16 @@ class ArtistIndexPosters extends Component {
         posterHeight={posterHeight}
         detailedProgressBar={detailedProgressBar}
         showTitle={showTitle}
+        showMonitored={showMonitored}
         showQualityProfile={showQualityProfile}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}
         timeFormat={timeFormat}
         style={style}
-        {...artist}
+        artistId={artist.id}
+        languageProfileId={artist.languageProfileId}
+        qualityProfileId={artist.qualityProfileId}
+        metadataProfileId={artist.metadataProfileId}
       />
     );
   }

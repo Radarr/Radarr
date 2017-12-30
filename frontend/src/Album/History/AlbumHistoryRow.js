@@ -8,6 +8,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
+import EpisodeLanguage from 'Album/EpisodeLanguage';
 import EpisodeQuality from 'Album/EpisodeQuality';
 import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
 import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
@@ -61,6 +62,8 @@ class AlbumHistoryRow extends Component {
     const {
       eventType,
       sourceTitle,
+      language,
+      languageCutoffNotMet,
       quality,
       qualityCutoffNotMet,
       date,
@@ -83,6 +86,14 @@ class AlbumHistoryRow extends Component {
         </TableRowCell>
 
         <TableRowCell>
+          <EpisodeLanguage
+            language={language}
+            isCutoffNotMet={languageCutoffNotMet}
+          />
+        </TableRowCell>
+
+        <TableRowCell>
+
           <EpisodeQuality
             quality={quality}
             isCutoffNotMet={qualityCutoffNotMet}
@@ -140,6 +151,8 @@ AlbumHistoryRow.propTypes = {
   id: PropTypes.number.isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
+  language: PropTypes.object.isRequired,
+  languageCutoffNotMet: PropTypes.bool.isRequired,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,

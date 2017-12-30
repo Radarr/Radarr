@@ -16,6 +16,7 @@ module.exports = {
   sonarrBlue: '#00A65B',
   helpTextColor: '#909293',
   gray: '#adadad',
+  disabledInputColor: '#808080',
 
   // Theme Colors
 

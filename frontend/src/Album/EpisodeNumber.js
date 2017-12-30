@@ -100,7 +100,8 @@ EpisodeNumber.propTypes = {
 };
 
 EpisodeNumber.defaultProps = {
-  unverifiedSceneNumbering: false
+  unverifiedSceneNumbering: false,
+  alternateTitles: []
 };
 
 export default EpisodeNumber;

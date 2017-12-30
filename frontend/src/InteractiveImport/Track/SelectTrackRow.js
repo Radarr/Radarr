@@ -24,6 +24,7 @@ class SelectTrackRow extends Component {
   render() {
     const {
       id,
+      mediumNumber,
       trackNumber,
       title,
       isSelected,
@@ -37,6 +38,10 @@ class SelectTrackRow extends Component {
           isSelected={isSelected}
           onSelectedChange={onSelectedChange}
         />
+
+        <TableRowCell>
+          {mediumNumber}
+        </TableRowCell>
 
         <TableRowCell>
           {trackNumber}
@@ -53,6 +58,7 @@ class SelectTrackRow extends Component {
 
 SelectTrackRow.propTypes = {
   id: PropTypes.number.isRequired,
+  mediumNumber: PropTypes.number.isRequired,
   trackNumber: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,

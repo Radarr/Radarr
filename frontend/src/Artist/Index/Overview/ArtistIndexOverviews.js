@@ -191,7 +191,10 @@ class ArtistIndexOverviews extends Component {
         timeFormat={timeFormat}
         isSmallScreen={isSmallScreen}
         style={style}
-        {...artist}
+        artistId={artist.id}
+        languageProfileId={artist.languageProfileId}
+        qualityProfileId={artist.qualityProfileId}
+        metadataProfileId={artist.metadataProfileId}
       />
     );
   }

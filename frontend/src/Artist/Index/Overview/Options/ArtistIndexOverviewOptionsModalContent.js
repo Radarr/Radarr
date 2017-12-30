@@ -29,6 +29,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
     this.state = {
       detailedProgressBar: props.detailedProgressBar,
       size: props.size,
+      showMonitored: props.showMonitored,
       showQualityProfile: props.showQualityProfile,
       showPreviousAiring: props.showPreviousAiring,
       showAdded: props.showAdded,
@@ -42,6 +43,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
     const {
       detailedProgressBar,
       size,
+      showMonitored,
       showQualityProfile,
       showPreviousAiring,
       showAdded,
@@ -58,6 +60,10 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
 
     if (size !== prevProps.size) {
       state.size = size;
+    }
+
+    if (showMonitored !== prevProps.showMonitored) {
+      state.showMonitored = showMonitored;
     }
 
     if (showQualityProfile !== prevProps.showQualityProfile) {
@@ -111,6 +117,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
     const {
       detailedProgressBar,
       size,
+      showMonitored,
       showQualityProfile,
       showPreviousAiring,
       showAdded,
@@ -152,6 +159,18 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
+              <FormLabel>Show Monitored</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showMonitored"
+                value={showMonitored}
+                onChange={this.onChangeOverviewOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
+
               <FormLabel>Show Quality Profile</FormLabel>
 
               <FormInputGroup
@@ -233,6 +252,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
 
 ArtistIndexOverviewOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
+  showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   showPreviousAiring: PropTypes.bool.isRequired,
   showAdded: PropTypes.bool.isRequired,

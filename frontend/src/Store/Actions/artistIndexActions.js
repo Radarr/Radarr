@@ -28,6 +28,7 @@ export const defaultState = {
     detailedProgressBar: false,
     size: 'large',
     showTitle: false,
+    showMonitored: true,
     showQualityProfile: true
   },
 
@@ -35,12 +36,14 @@ export const defaultState = {
     detailedProgressBar: false,
     size: 'large',
     showTitle: false,
+    showMonitored: true,
     showQualityProfile: true
   },
 
   overviewOptions: {
     detailedProgressBar: false,
     size: 'medium',
+    showMonitored: true,
     showNetwork: true,
     showQualityProfile: true,
     showPreviousAiring: false,

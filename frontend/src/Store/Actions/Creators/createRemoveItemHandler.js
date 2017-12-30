@@ -6,13 +6,13 @@ function createRemoveItemHandler(section, url) {
   return function(getState, payload, dispatch) {
     const {
       id,
-      ...queryParms
+      ...queryParams
     } = payload;
 
     dispatch(set({ section, isDeleting: true }));
 
     const ajaxOptions = {
-      url: `${url}/${id}?${$.param(queryParms, true)}`,
+      url: `${url}/${id}?${$.param(queryParams, true)}`,
       method: 'DELETE'
     };
 

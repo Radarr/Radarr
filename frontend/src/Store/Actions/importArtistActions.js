@@ -2,6 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
 import getNewArtist from 'Utilities/Artist/getNewArtist';
@@ -15,14 +16,14 @@ import { fetchRootFolders } from './rootFolderActions';
 
 export const section = 'importArtist';
 let concurrentLookups = 0;
+let abortCurrentLookup = null;
+const queue = [];
 
 //
 // State
 
 export const defaultState = {
-  isFetching: false,
-  isPopulated: false,
-  error: null,
+  isLookingUpArtist: false,
   isImporting: false,
   isImported: false,
   importError: null,
@@ -34,9 +35,10 @@ export const defaultState = {
 
 export const QUEUE_LOOKUP_ARTIST = 'importArtist/queueLookupArtist';
 export const START_LOOKUP_ARTIST = 'importArtist/startLookupArtist';
-export const CLEAR_IMPORT_ARTIST = 'importArtist/importArtist';
-export const SET_IMPORT_ARTIST_VALUE = 'importArtist/clearImportArtist';
-export const IMPORT_ARTIST = 'importArtist/setImportArtistValue';
+export const CANCEL_LOOKUP_ARTIST = 'importArtist/cancelLookupArtist';
+export const CLEAR_IMPORT_ARTIST = 'importArtist/clearImportArtist';
+export const SET_IMPORT_ARTIST_VALUE = 'importArtist/setImportArtistValue';
+export const IMPORT_ARTIST = 'importArtist/importArtist';
 
 //
 // Action Creators
@@ -45,10 +47,10 @@ export const queueLookupArtist = createThunk(QUEUE_LOOKUP_ARTIST);
 export const startLookupArtist = createThunk(START_LOOKUP_ARTIST);
 export const importArtist = createThunk(IMPORT_ARTIST);
 export const clearImportArtist = createAction(CLEAR_IMPORT_ARTIST);
+export const cancelLookupArtist = createAction(CANCEL_LOOKUP_ARTIST);
 
 export const setImportArtistValue = createAction(SET_IMPORT_ARTIST_VALUE, (payload) => {
   return {
-
     section,
     ...payload
   };
@@ -63,7 +65,8 @@ export const actionHandlers = handleThunks({
     const {
       name,
       path,
-      term
+      term,
+      topOfQueue = false
     } = payload;
 
     const state = getState().importArtist;
@@ -84,8 +87,20 @@ export const actionHandlers = handleThunks({
       items: []
     }));
 
+    const itemIndex = queue.indexOf(item.id);
+
+    if (itemIndex >= 0) {
+      queue.splice(itemIndex, 1);
+    }
+
+    if (topOfQueue) {
+      queue.unshift(item.id);
+    } else {
+      queue.push(item.id);
+    }
+
     if (term && term.length > 2) {
-      dispatch(startLookupArtist());
+      dispatch(startLookupArtist({ start: true }));
     }
   },
 
@@ -95,13 +110,27 @@ export const actionHandlers = handleThunks({
     }
 
     const state = getState().importArtist;
-    const queued = _.find(state.items, { queued: true });
 
-    if (!queued) {
+    const {
+      isLookingUpArtist,
+      items
+    } = state;
+
+    const queueId = queue[0];
+
+    if (payload.start && !isLookingUpArtist) {
+      dispatch(set({ section, isLookingUpArtist: true }));
+    } else if (!isLookingUpArtist) {
+      return;
+    } else if (!queueId) {
+      dispatch(set({ section, isLookingUpArtist: false }));
       return;
     }
 
     concurrentLookups++;
+    queue.splice(0, 1);
+
+    const queued = items.find((i) => i.id === queueId);
 
     dispatch(updateItem({
       section,
@@ -109,14 +138,16 @@ export const actionHandlers = handleThunks({
       isFetching: true
     }));
 
-    const promise = $.ajax({
+    const { request, abortRequest } = createAjaxRequest({
       url: '/artist/lookup',
       data: {
         term: queued.term
       }
     });
 
-    promise.done((data) => {
+    abortCurrentLookup = abortRequest;
+
+    request.done((data) => {
       dispatch(updateItem({
         section,
         id: queued.id,
@@ -125,23 +156,26 @@ export const actionHandlers = handleThunks({
         error: null,
         items: data,
         queued: false,
-        selectedArtist: queued.selectedArtist || data[0]
+        selectedArtist: queued.selectedArtist || data[0],
+        updateOnly: true
       }));
     });
 
-    promise.fail((xhr) => {
+    request.fail((xhr) => {
       dispatch(updateItem({
         section,
         id: queued.id,
         isFetching: false,
         isPopulated: false,
         error: xhr,
-        queued: false
+        queued: false,
+        updateOnly: true
       }));
     });
 
-    promise.always(() => {
+    request.always(() => {
       concurrentLookups--;
+
       dispatch(startLookupArtist());
     });
   },
@@ -159,7 +193,7 @@ export const actionHandlers = handleThunks({
 
       // Make sure we have a selected artist and
       // the same artist hasn't been added yet.
-      if (selectedArtist && !_.some(acc, { tvdbId: selectedArtist.tvdbId })) {
+      if (selectedArtist && !_.some(acc, { foreignArtistId: selectedArtist.foreignArtistId })) {
         const newArtist = getNewArtist(_.cloneDeep(selectedArtist), item);
         newArtist.path = item.path;
 
@@ -216,7 +250,19 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
+  [CANCEL_LOOKUP_ARTIST]: function(state) {
+    return Object.assign({}, state, { isLookingUpArtist: false });
+  },
+
   [CLEAR_IMPORT_ARTIST]: function(state) {
+    if (abortCurrentLookup) {
+      abortCurrentLookup();
+
+      abortCurrentLookup = null;
+    }
+
+    queue.splice(0, queue.length);
+
     return Object.assign({}, state, defaultState);
   },
 

@@ -19,6 +19,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
     {
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist);
         List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo);
+        List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles);
+
     }
 
     public class ImportDecisionMaker : IMakeImportDecision
@@ -52,14 +54,19 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
         public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo)
         {
-            var newFiles = _mediaFileService.FilterExistingFiles(musicFiles.ToList(), artist);
+            return GetImportDecisions(musicFiles, artist, folderInfo, false);
+        }
 
-            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, musicFiles.Count());
+        public List<ImportDecision> GetImportDecisions(List<string> musicFiles, Artist artist, ParsedTrackInfo folderInfo, bool filterExistingFiles)
+        {
+            var files = filterExistingFiles ? _mediaFileService.FilterExistingFiles(musicFiles.ToList(), artist) : musicFiles.ToList();
+
+            _logger.Debug("Analyzing {0}/{1} files.", files.Count, musicFiles.Count);
 
             var shouldUseFolderName = ShouldUseFolderName(musicFiles, artist, folderInfo);
             var decisions = new List<ImportDecision>();
 
-            foreach (var file in newFiles)
+            foreach (var file in files)
             {
                 decisions.AddIfNotNull(GetDecision(file, artist, folderInfo, shouldUseFolderName));
             }

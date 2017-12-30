@@ -1,3 +1,14 @@
+.filterContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.filterText {
+  margin-left: 5px;
+  font-size: $largeFontSize;
+}
+
 .footer {
   composes: modalFooter from 'Components/Modal/ModalFooter.css';
 

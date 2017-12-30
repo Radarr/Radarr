@@ -22,6 +22,8 @@ namespace Lidarr.Api.V1.TrackFiles
         public MediaInfoResource MediaInfo { get; set; }
 
         public bool QualityCutoffNotMet { get; set; }
+        public bool LanguageCutoffNotMet { get; set; }
+
     }
 
     public static class TrackFileResourceMapper
@@ -67,11 +69,9 @@ namespace Lidarr.Api.V1.TrackFiles
                 Language = model.Language,
                 Quality = model.Quality,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                
-                QualityCutoffNotMet = upgradableSpecification.CutoffNotMet(artist.Profile.Value,
-                                                                           artist.LanguageProfile.Value,
-                                                                           model.Quality,
-                                                                           model.Language)
+
+                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(artist.Profile.Value, model.Quality),
+                LanguageCutoffNotMet = upgradableSpecification.LanguageCutoffNotMet(artist.LanguageProfile.Value, model.Language)
             };
         }
     }

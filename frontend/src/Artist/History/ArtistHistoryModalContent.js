@@ -26,6 +26,11 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'language',
+    label: 'Language',
+    isVisible: true
+  },
+  {
     name: 'quality',
     label: 'Quality',
     isVisible: true

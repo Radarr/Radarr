@@ -1,4 +1,6 @@
-﻿using System.IO;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -16,6 +18,7 @@ namespace NzbDrone.Core.Test.MusicTests
     {
         private Artist _artist;
         private MoveArtistCommand _command;
+        private BulkMoveArtistCommand _bulkCommand;
 
         [SetUp]
         public void Setup()
@@ -30,6 +33,19 @@ namespace NzbDrone.Core.Test.MusicTests
                            SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic(),
                            DestinationPath = @"C:\Test\Music2\Artist".AsOsAgnostic()
                        };
+
+            _bulkCommand = new BulkMoveArtistCommand
+            {
+                Artist = new List<BulkMoveArtist>
+                {
+                    new BulkMoveArtist
+                    {
+                        ArtistId = 1,
+                        SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic()
+                    }
+                },
+                DestinationRootFolder = @"C:\Test\Music2".AsOsAgnostic()
+            };
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(It.IsAny<int>()))
@@ -48,52 +64,52 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             GivenFailedMove();
 
-            Assert.Throws<IOException>(() => Subject.Execute(_command));
+            Subject.Execute(_command);
 
             ExceptionVerification.ExpectedErrors(1);
         }
 
         [Test]
-        public void should_no_update_artist_path_on_error()
+        public void should_revert_artist_path_on_error()
         {
             GivenFailedMove();
 
-            Assert.Throws<IOException>(() => Subject.Execute(_command));
+            Subject.Execute(_command);
 
             ExceptionVerification.ExpectedErrors(1);
 
             Mocker.GetMock<IArtistService>()
-                  .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Never());
+                .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Once());
+        }
+
+        [Test]
+        public void should_use_destination_path()
+        {
+
+            Subject.Execute(_command);
+
+            Mocker.GetMock<IDiskTransferService>()
+                .Verify(v => v.TransferFolder(_command.SourcePath, _command.DestinationPath, TransferMode.Move, It.IsAny<bool>()), Times.Once());
+
+            Mocker.GetMock<IBuildFileNames>()
+                .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
         }
 
         [Test]
         public void should_build_new_path_when_root_folder_is_provided()
         {
-            _command.DestinationPath = null;
-            _command.DestinationRootFolder = @"C:\Test\Music3".AsOsAgnostic();
-            
-            var expectedPath = @"C:\Test\Music3\Artist".AsOsAgnostic();
+            var artistFolder = "Artist";
+            var expectedPath = Path.Combine(_bulkCommand.DestinationRootFolder, artistFolder);
+
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
-                  .Returns("Artist");
+                .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
+                .Returns(artistFolder);
 
-            Subject.Execute(_command);
+            Subject.Execute(_bulkCommand);
 
-            Mocker.GetMock<IArtistService>()
-                  .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.Path == expectedPath)), Times.Once());
-        }
-
-        [Test]
-        public void should_use_destination_path_if_destination_root_folder_is_blank()
-        {
-            Subject.Execute(_command);
-
-            Mocker.GetMock<IArtistService>()
-                  .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.Path == _command.DestinationPath)), Times.Once());
-
-            Mocker.GetMock<IBuildFileNames>()
-                  .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
+            Mocker.GetMock<IDiskTransferService>()
+                .Verify(v => v.TransferFolder(_bulkCommand.Artist.First().SourcePath, expectedPath, TransferMode.Move, It.IsAny<bool>()), Times.Once());
         }
     }
 }

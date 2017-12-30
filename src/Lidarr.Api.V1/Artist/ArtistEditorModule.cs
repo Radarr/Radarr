@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Nancy;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Commands;
 using Lidarr.Http.Extensions;
 
 namespace Lidarr.Api.V1.Artist
@@ -9,11 +12,13 @@ namespace Lidarr.Api.V1.Artist
     public class ArtistEditorModule : LidarrV1Module
     {
         private readonly IArtistService _artistService;
+        private readonly IManageCommandQueue _commandQueueManager;
 
-        public ArtistEditorModule(IArtistService artistService)
+        public ArtistEditorModule(IArtistService artistService, IManageCommandQueue commandQueueManager)
             : base("/artist/editor")
         {
             _artistService = artistService;
+            _commandQueueManager = commandQueueManager;
             Put["/"] = artist => SaveAll();
             Delete["/"] = artist => DeleteArtist();
         }
@@ -22,6 +27,7 @@ namespace Lidarr.Api.V1.Artist
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
             var artistToUpdate = _artistService.GetArtists(resource.ArtistIds);
+            var artistToMove = new List<BulkMoveArtist>();
 
             foreach (var artist in artistToUpdate)
             {
@@ -53,6 +59,12 @@ namespace Lidarr.Api.V1.Artist
                 if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
                 {
                     artist.RootFolderPath = resource.RootFolderPath;
+                    artistToMove.Add(new BulkMoveArtist
+                    {
+                        ArtistId = artist.Id,
+                        SourcePath = artist.Path
+                    });
+
                 }
 
                 if (resource.Tags != null)
@@ -73,6 +85,15 @@ namespace Lidarr.Api.V1.Artist
                             break;
                     }
                 }
+            }
+
+            if (resource.MoveFiles && artistToMove.Any())
+            {
+                _commandQueueManager.Push(new BulkMoveArtistCommand
+                {
+                    DestinationRootFolder = resource.RootFolderPath,
+                    Artist = artistToMove
+                });
             }
 
             return _artistService.UpdateArtists(artistToUpdate)

@@ -112,7 +112,7 @@ export const actionHandlers = handleThunks({
     });
 
     promise.done(() => {
-      // SignaR will take care of removing the serires from the collection
+      // SignalR will take care of removing the artist from the collection
 
       dispatch(set({
         section,

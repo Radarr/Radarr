@@ -31,8 +31,7 @@ $hoverScale: 1.05;
 }
 
 .nextAiring {
-  background-color: $defaultColor;
-  color: $white;
+  background-color: #fafbfc;
   text-align: center;
   font-size: $smallFontSize;
 }

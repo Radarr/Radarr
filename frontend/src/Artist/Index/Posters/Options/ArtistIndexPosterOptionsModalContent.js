@@ -30,6 +30,7 @@ class ArtistIndexPosterOptionsModalContent extends Component {
       detailedProgressBar: props.detailedProgressBar,
       size: props.size,
       showTitle: props.showTitle,
+      showMonitored: props.showMonitored,
       showQualityProfile: props.showQualityProfile
     };
   }
@@ -39,6 +40,7 @@ class ArtistIndexPosterOptionsModalContent extends Component {
       detailedProgressBar,
       size,
       showTitle,
+      showMonitored,
       showQualityProfile
     } = this.props;
 
@@ -54,6 +56,10 @@ class ArtistIndexPosterOptionsModalContent extends Component {
 
     if (showTitle !== prevProps.showTitle) {
       state.showTitle = showTitle;
+    }
+
+    if (showMonitored !== prevProps.showMonitored) {
+      state.showMonitored = showMonitored;
     }
 
     if (showQualityProfile !== prevProps.showQualityProfile) {
@@ -88,6 +94,7 @@ class ArtistIndexPosterOptionsModalContent extends Component {
       detailedProgressBar,
       size,
       showTitle,
+      showMonitored,
       showQualityProfile
     } = this.state;
 
@@ -136,6 +143,18 @@ class ArtistIndexPosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
+              <FormLabel>Show Monitored</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showMonitored"
+                value={showMonitored}
+                helpText="Show monitored status under poster"
+                onChange={this.onChangePosterOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <FormLabel>Show Quality Profile</FormLabel>
 
               <FormInputGroup
@@ -164,6 +183,7 @@ class ArtistIndexPosterOptionsModalContent extends Component {
 ArtistIndexPosterOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
   showTitle: PropTypes.bool.isRequired,
+  showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
   onChangePosterOption: PropTypes.func.isRequired,

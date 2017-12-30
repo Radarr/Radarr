@@ -10,12 +10,6 @@ class ImportArtistTable extends Component {
   //
   // Lifecycle
 
-  constructor(props, context) {
-    super(props, context);
-
-    this._table = null;
-  }
-
   componentDidMount() {
     const {
       unmappedFolders,
@@ -101,21 +95,10 @@ class ImportArtistTable extends Component {
         return;
       }
     });
-
-    // Forces the table to re-render if the selected state
-    // has changed otherwise it will be stale.
-
-    if (prevProps.selectedState !== selectedState && this._table) {
-      this._table.forceUpdateGrid();
-    }
   }
 
   //
   // Control
-
-  setTableRef = (ref) => {
-    this._table = ref;
-  }
 
   rowRenderer = ({ key, rowIndex, style }) => {
     const {
@@ -156,6 +139,7 @@ class ImportArtistTable extends Component {
       showLanguageProfile,
       showMetadataProfile,
       scrollTop,
+      selectedState,
       onSelectAllChange,
       onScroll
     } = this.props;
@@ -166,7 +150,6 @@ class ImportArtistTable extends Component {
 
     return (
       <VirtualTable
-        ref={this.setTableRef}
         items={items}
         contentBody={contentBody}
         isSmallScreen={isSmallScreen}
@@ -183,6 +166,7 @@ class ImportArtistTable extends Component {
             onSelectAllChange={onSelectAllChange}
           />
         }
+        selectedState={selectedState}
         onScroll={onScroll}
       />
     );

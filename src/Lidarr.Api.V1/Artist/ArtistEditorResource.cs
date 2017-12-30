@@ -14,6 +14,7 @@ namespace Lidarr.Api.V1.Artist
         public string RootFolderPath { get; set; }
         public List<int> Tags { get; set; }
         public ApplyTags ApplyTags { get; set; }
+        public bool MoveFiles { get; set; }
     }
 
     public enum ApplyTags

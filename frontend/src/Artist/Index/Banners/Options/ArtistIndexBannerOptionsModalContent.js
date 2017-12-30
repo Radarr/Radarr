@@ -30,6 +30,7 @@ class ArtistIndexBannerOptionsModalContent extends Component {
       detailedProgressBar: props.detailedProgressBar,
       size: props.size,
       showTitle: props.showTitle,
+      showMonitored: props.showMonitored,
       showQualityProfile: props.showQualityProfile
     };
   }
@@ -39,6 +40,7 @@ class ArtistIndexBannerOptionsModalContent extends Component {
       detailedProgressBar,
       size,
       showTitle,
+      showMonitored,
       showQualityProfile
     } = this.props;
 
@@ -56,6 +58,10 @@ class ArtistIndexBannerOptionsModalContent extends Component {
       state.showTitle = showTitle;
     }
 
+    if (showMonitored !== prevProps.showMonitored) {
+      state.showMonitored = showMonitored;
+    }
+
     if (showQualityProfile !== prevProps.showQualityProfile) {
       state.showQualityProfile = showQualityProfile;
     }
@@ -68,11 +74,11 @@ class ArtistIndexBannerOptionsModalContent extends Component {
   //
   // Listeners
 
-  onChangeOption = ({ name, value }) => {
+  onChangeBannerOption = ({ name, value }) => {
     this.setState({
       [name]: value
     }, () => {
-      this.props.onChangeOption({ [name]: value });
+      this.props.onChangeBannerOption({ [name]: value });
     });
   }
 
@@ -88,6 +94,7 @@ class ArtistIndexBannerOptionsModalContent extends Component {
       detailedProgressBar,
       size,
       showTitle,
+      showMonitored,
       showQualityProfile
     } = this.state;
 
@@ -107,7 +114,7 @@ class ArtistIndexBannerOptionsModalContent extends Component {
                 name="size"
                 value={size}
                 values={bannerSizeOptions}
-                onChange={this.onChangeOption}
+                onChange={this.onChangeBannerOption}
               />
             </FormGroup>
 
@@ -119,7 +126,7 @@ class ArtistIndexBannerOptionsModalContent extends Component {
                 name="detailedProgressBar"
                 value={detailedProgressBar}
                 helpText="Show text on progess bar"
-                onChange={this.onChangeOption}
+                onChange={this.onChangeBannerOption}
               />
             </FormGroup>
 
@@ -131,7 +138,19 @@ class ArtistIndexBannerOptionsModalContent extends Component {
                 name="showTitle"
                 value={showTitle}
                 helpText="Show artist name under banner"
-                onChange={this.onChangeOption}
+                onChange={this.onChangeBannerOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Show Monitored</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showMonitored"
+                value={showMonitored}
+                helpText="Show monitored status under banner"
+                onChange={this.onChangeBannerOption}
               />
             </FormGroup>
 
@@ -143,7 +162,7 @@ class ArtistIndexBannerOptionsModalContent extends Component {
                 name="showQualityProfile"
                 value={showQualityProfile}
                 helpText="Show quality profile under banner"
-                onChange={this.onChangeOption}
+                onChange={this.onChangeBannerOption}
               />
             </FormGroup>
           </Form>
@@ -166,7 +185,8 @@ ArtistIndexBannerOptionsModalContent.propTypes = {
   showTitle: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
-  onChangeOption: PropTypes.func.isRequired,
+  onChangeBannerOption: PropTypes.func.isRequired,
+  showMonitored: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

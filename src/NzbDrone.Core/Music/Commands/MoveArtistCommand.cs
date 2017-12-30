@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Messaging.Commands;
+using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.Music.Commands
 {
@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Music.Commands
         public int ArtistId { get; set; }
         public string SourcePath { get; set; }
         public string DestinationPath { get; set; }
-        public string DestinationRootFolder { get; set; }
+
+        public override bool SendUpdatesToClient => true;
     }
 }

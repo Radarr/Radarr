@@ -5,6 +5,7 @@ import TetherComponent from 'react-tether';
 import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import SpinnerIcon from 'Components/SpinnerIcon';
+import FormInputButton from 'Components/Form/FormInputButton';
 import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import TextInput from 'Components/Form/TextInput';
@@ -99,6 +100,10 @@ class ImportArtistSelectArtist extends Component {
     });
   }
 
+  onRefreshPress = () => {
+    this.props.onSearchInputChange(this.state.term);
+  }
+
   onArtistSelect = (foreignArtistId) => {
     this.setState({ isOpen: false });
 
@@ -116,7 +121,8 @@ class ImportArtistSelectArtist extends Component {
       isPopulated,
       error,
       items,
-      queued
+      queued,
+      isLookingUpArtist
     } = this.props;
 
     const errorMessage = error &&
@@ -137,7 +143,7 @@ class ImportArtistSelectArtist extends Component {
           onPress={this.onPress}
         >
           {
-            queued && !isPopulated &&
+            isLookingUpArtist && queued && !isPopulated &&
               <LoadingIndicator
                 className={styles.loading}
                 size={20}
@@ -206,10 +212,7 @@ class ImportArtistSelectArtist extends Component {
               <div className={styles.content}>
                 <div className={styles.searchContainer}>
                   <div className={styles.searchIconContainer}>
-                    <SpinnerIcon
-                      name={icons.SEARCH}
-                      isSpinning={isFetching}
-                    />
+                    <Icon name={icons.SEARCH} />
                   </div>
 
                   <TextInput
@@ -218,6 +221,16 @@ class ImportArtistSelectArtist extends Component {
                     value={this.state.term}
                     onChange={this.onSearchInputChange}
                   />
+
+                  <FormInputButton
+                    kind={kinds.DEFAULT}
+                    spinnerIcon={icons.REFRESH}
+                    canSpin={true}
+                    isSpinning={isFetching}
+                    onPress={this.onRefreshPress}
+                  >
+                    <Icon name={icons.REFRESH} />
+                  </FormInputButton>
                 </div>
 
                 <div className={styles.results}>
@@ -253,6 +266,7 @@ ImportArtistSelectArtist.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   queued: PropTypes.bool.isRequired,
+  isLookingUpArtist: PropTypes.bool.isRequired,
   onSearchInputChange: PropTypes.func.isRequired,
   onArtistSelect: PropTypes.func.isRequired
 };

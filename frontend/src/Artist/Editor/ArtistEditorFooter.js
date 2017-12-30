@@ -8,6 +8,7 @@ import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSe
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import MoveArtistModal from 'Artist/MoveArtist/MoveArtistModal';
 import TagsModal from './Tags/TagsModal';
 import DeleteArtistModal from './Delete/DeleteArtistModal';
 import ArtistEditorFooterLabel from './ArtistEditorFooterLabel';
@@ -32,7 +33,9 @@ class ArtistEditorFooter extends Component {
       rootFolderPath: NO_CHANGE,
       savingTags: false,
       isDeleteArtistModalOpen: false,
-      isTagsModalOpen: false
+      isTagsModalOpen: false,
+      isConfirmMoveModalOpen: false,
+      destinationRootFolder: null
     };
   }
 
@@ -66,6 +69,12 @@ class ArtistEditorFooter extends Component {
     }
 
     switch (name) {
+      case 'rootFolderPath':
+        this.setState({
+          isConfirmMoveModalOpen: true,
+          destinationRootFolder: value
+        });
+        break;
       case 'monitored':
         this.props.onSaveSelected({ [name]: value === 'monitored' });
         break;
@@ -105,6 +114,27 @@ class ArtistEditorFooter extends Component {
     this.setState({ isTagsModalOpen: false });
   }
 
+  onSaveRootFolderPress = () => {
+    this.setState({
+      isConfirmMoveModalOpen: false,
+      destinationRootFolder: null
+    });
+
+    this.props.onSaveSelected({ rootFolderPath: this.state.destinationRootFolder });
+  }
+
+  onMoveArtistPress = () => {
+    this.setState({
+      isConfirmMoveModalOpen: false,
+      destinationRootFolder: null
+    });
+
+    this.props.onSaveSelected({
+      rootFolderPath: this.state.destinationRootFolder,
+      moveFiles: true
+    });
+  }
+
   //
   // Render
 
@@ -129,7 +159,9 @@ class ArtistEditorFooter extends Component {
       rootFolderPath,
       savingTags,
       isTagsModalOpen,
-      isDeleteArtistModalOpen
+      isDeleteArtistModalOpen,
+      isConfirmMoveModalOpen,
+      destinationRootFolder
     } = this.state;
 
     const monitoredOptions = [
@@ -297,6 +329,14 @@ class ArtistEditorFooter extends Component {
           artistIds={artistIds}
           onModalClose={this.onDeleteArtistModalClose}
         />
+
+        <MoveArtistModal
+          destinationRootFolder={destinationRootFolder}
+          isOpen={isConfirmMoveModalOpen}
+          onSavePress={this.onSaveRootFolderPress}
+          onMoveArtistPress={this.onMoveArtistPress}
+        />
+
       </PageContentFooter>
     );
   }

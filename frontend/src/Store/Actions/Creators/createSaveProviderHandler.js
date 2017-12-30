@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getProviderState from 'Utilities/State/getProviderState';
@@ -14,15 +15,19 @@ export function createCancelSaveProviderHandler(section) {
   };
 }
 
-function createSaveProviderHandler(section, url) {
+function createSaveProviderHandler(section, url, options = {}) {
   return function(getState, payload, dispatch) {
     dispatch(set({ section, isSaving: true }));
 
-    const id = payload.id;
+    const {
+      id,
+      queryParams = {}
+    } = payload;
+
     const saveData = getProviderState(payload, getState, section);
 
     const ajaxOptions = {
-      url,
+      url: `${url}?${$.param(queryParams, true)}`,
       method: 'POST',
       contentType: 'application/json',
       dataType: 'json',
@@ -30,7 +35,7 @@ function createSaveProviderHandler(section, url) {
     };
 
     if (id) {
-      ajaxOptions.url = `${url}/${id}`;
+      ajaxOptions.url = `${url}/${id}?${$.param(queryParams, true)}`;
       ajaxOptions.method = 'PUT';
     }
 

@@ -140,8 +140,11 @@ namespace NzbDrone.Core.Music
                 _logger.Trace("Updating: {0}", s.Name);
                 if (!s.RootFolderPath.IsNullOrWhiteSpace())
                 {
-                    var folderName = new DirectoryInfo(s.Path).Name;
-                    s.Path = Path.Combine(s.RootFolderPath, folderName);
+                    // Build the artist folder name instead of using the existing folder name.
+                    // This may lead to folder name changes, but consistent with adding a new artist.
+
+                    s.Path = Path.Combine(s.RootFolderPath, _fileNameBuilder.GetArtistFolder(s));
+
                     _logger.Trace("Changing path for {0} to {1}", s.Name, s.Path);
                 }
 

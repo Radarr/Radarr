@@ -32,6 +32,7 @@ import ArtistDetailsSeasonConnector from './ArtistDetailsSeasonConnector';
 import ArtistTagsConnector from './ArtistTagsConnector';
 import ArtistDetailsLinks from './ArtistDetailsLinks';
 import styles from './ArtistDetails.css';
+import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
 
 const albumTypes = [
   {
@@ -94,6 +95,7 @@ class ArtistDetails extends Component {
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: false,
       isArtistHistoryModalOpen: false,
+      isInteractiveImportModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {}
@@ -117,6 +119,14 @@ class ArtistDetails extends Component {
 
   onManageEpisodesModalClose = () => {
     this.setState({ isManageEpisodesOpen: false });
+  }
+
+  onInteractiveImportPress = () => {
+    this.setState({ isInteractiveImportModalOpen: true });
+  }
+
+  onInteractiveImportModalClose = () => {
+    this.setState({ isInteractiveImportModalOpen: false });
   }
 
   onEditArtistPress = () => {
@@ -207,6 +217,7 @@ class ArtistDetails extends Component {
       isEditArtistModalOpen,
       isDeleteArtistModalOpen,
       isArtistHistoryModalOpen,
+      isInteractiveImportModalOpen,
       allExpanded,
       allCollapsed,
       expandedState
@@ -268,6 +279,12 @@ class ArtistDetails extends Component {
               label="History"
               iconName={icons.HISTORY}
               onPress={this.onArtistHistoryPress}
+            />
+
+            <PageToolbarButton
+              label="Manual Import"
+              iconName={icons.INTERACTIVE}
+              onPress={this.onInteractiveImportPress}
             />
 
             <PageToolbarSeparator />
@@ -573,6 +590,13 @@ class ArtistDetails extends Component {
             isOpen={isDeleteArtistModalOpen}
             artistId={id}
             onModalClose={this.onDeleteArtistModalClose}
+          />
+
+          <InteractiveImportModal
+            isOpen={isInteractiveImportModalOpen}
+            folder={path}
+            showFilterExistingFiles={true}
+            onModalClose={this.onInteractiveImportModalClose}
           />
         </PageContentBodyConnector>
       </PageContent>

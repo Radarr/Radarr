@@ -11,11 +11,47 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import MoveArtistModal from 'Artist/MoveArtist/MoveArtistModal';
 import styles from './EditArtistModalContent.css';
 
 class EditArtistModalContent extends Component {
 
   //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isConfirmMoveModalOpen: false
+    };
+  }
+
+  //
+  // Listeners
+
+  onSavePress = () => {
+    const {
+      isPathChanging,
+      onSavePress
+    } = this.props;
+
+    if (isPathChanging && !this.state.isConfirmMoveModalOpen) {
+      this.setState({ isConfirmMoveModalOpen: true });
+    } else {
+      this.setState({ isConfirmMoveModalOpen: false });
+
+      onSavePress(false);
+    }
+  }
+
+  onMoveArtistPress = () => {
+    this.setState({ isConfirmMoveModalOpen: false });
+
+    this.props.onSavePress(true);
+  }
+
+  //  
   // Render
 
   render() {
@@ -25,8 +61,8 @@ class EditArtistModalContent extends Component {
       isSaving,
       showLanguageProfile,
       showMetadataProfile,
+      originalPath,
       onInputChange,
-      onSavePress,
       onModalClose,
       onDeleteArtistPress,
       ...otherProps
@@ -156,11 +192,20 @@ class EditArtistModalContent extends Component {
 
           <SpinnerButton
             isSpinning={isSaving}
-            onPress={onSavePress}
+            onPress={this.onSavePress}
           >
             Save
           </SpinnerButton>
         </ModalFooter>
+
+        <MoveArtistModal
+          originalPath={originalPath}
+          destinationPath={path.value}
+          isOpen={this.state.isConfirmMoveModalOpen}
+          onSavePress={this.onSavePress}
+          onMoveArtistPress={this.onMoveArtistPress}
+        />
+
       </ModalContent>
     );
   }
@@ -173,6 +218,8 @@ EditArtistModalContent.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
+  isPathChanging: PropTypes.bool.isRequired,
+  originalPath: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,

@@ -55,10 +55,8 @@ namespace Lidarr.Api.V1.History
 
             if (model.Artist != null)
             {
-                resource.QualityCutoffNotMet = _upgradableSpecification.CutoffNotMet(model.Artist.Profile.Value,
-                                                                                     model.Artist.LanguageProfile,
-                                                                                     model.Quality,
-                                                                                     model.Language);
+                resource.QualityCutoffNotMet = _upgradableSpecification.QualityCutoffNotMet(model.Artist.Profile.Value, model.Quality);
+                resource.LanguageCutoffNotMet = _upgradableSpecification.LanguageCutoffNotMet(model.Artist.LanguageProfile, model.Language);
             }
 
             return resource;

@@ -10,6 +10,7 @@ export const DOWNLOADED_ALBUMS_SCAN = 'DownloadedAlbumsScan';
 export const ALBUM_SEARCH = 'AlbumSearch';
 export const INTERACTIVE_IMPORT = 'ManualImport';
 export const MISSING_ALBUM_SEARCH = 'MissingAlbumSearch';
+export const MOVE_ARTIST = 'MoveArtist';
 export const REFRESH_ARTIST = 'RefreshArtist';
 export const RENAME_FILES = 'RenameFiles';
 export const RENAME_ARTIST = 'RenameArtist';

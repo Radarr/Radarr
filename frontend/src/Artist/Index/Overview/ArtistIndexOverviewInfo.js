@@ -21,11 +21,13 @@ function isVisible(name, show, value, sortKey, index) {
 function ArtistIndexOverviewInfo(props) {
   const {
     height,
+    showMonitored,
     showQualityProfile,
     showAdded,
     showAlbumCount,
     showPath,
     showSizeOnDisk,
+    monitored,
     nextAiring,
     qualityProfile,
     added,
@@ -47,6 +49,7 @@ function ArtistIndexOverviewInfo(props) {
   }
 
   const maxRows = Math.floor(height / (infoRowHeight + 4));
+  const monitoredText = monitored ? 'Monitored' : 'Unmonitored';
 
   return (
     <div className={styles.infos}>
@@ -77,7 +80,23 @@ function ArtistIndexOverviewInfo(props) {
       }
 
       {
-        isVisible('qualityProfileId', showQualityProfile, qualityProfile, sortKey) && maxRows > 1 &&
+        isVisible('monitored', showMonitored, monitored, sortKey) && maxRows > 1 &&
+          <div
+            className={styles.info}
+            title={monitoredText}
+          >
+            <Icon
+              className={styles.icon}
+              name={monitored ? icons.MONITORED : icons.UNMONITORED}
+              size={14}
+            />
+
+            {monitoredText}
+          </div>
+      }
+
+      {
+        isVisible('qualityProfileId', showQualityProfile, qualityProfile, sortKey) && maxRows > 2 &&
           <div
             className={styles.info}
             title="Quality Profile"
@@ -93,7 +112,7 @@ function ArtistIndexOverviewInfo(props) {
       }
 
       {
-        isVisible('added', showAdded, added, sortKey) && maxRows > 2 &&
+        isVisible('added', showAdded, added, sortKey) && maxRows > 3 &&
           <div
             className={styles.info}
             title="Date Added"
@@ -119,7 +138,7 @@ function ArtistIndexOverviewInfo(props) {
       }
 
       {
-        isVisible('albumCount', showAlbumCount, albumCount, sortKey) && maxRows > 3 &&
+        isVisible('albumCount', showAlbumCount, albumCount, sortKey) && maxRows > 4 &&
           <div
             className={styles.info}
             title="Album Count"
@@ -135,7 +154,7 @@ function ArtistIndexOverviewInfo(props) {
       }
 
       {
-        isVisible('path', showPath, path, sortKey) && maxRows > 4 &&
+        isVisible('path', showPath, path, sortKey) && maxRows > 5 &&
           <div
             className={styles.info}
             title="Path"
@@ -151,7 +170,7 @@ function ArtistIndexOverviewInfo(props) {
       }
 
       {
-        isVisible('sizeOnDisk', showSizeOnDisk, sizeOnDisk, sortKey) && maxRows > 5 &&
+        isVisible('sizeOnDisk', showSizeOnDisk, sizeOnDisk, sortKey) && maxRows > 6 &&
           <div
             className={styles.info}
             title="Size on Disk"
@@ -173,11 +192,13 @@ function ArtistIndexOverviewInfo(props) {
 ArtistIndexOverviewInfo.propTypes = {
   height: PropTypes.number.isRequired,
   showNetwork: PropTypes.bool.isRequired,
+  showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   showAdded: PropTypes.bool.isRequired,
   showAlbumCount: PropTypes.bool.isRequired,
   showPath: PropTypes.bool.isRequired,
   showSizeOnDisk: PropTypes.bool.isRequired,
+  monitored: PropTypes.bool.isRequired,
   nextAiring: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   previousAiring: PropTypes.string,

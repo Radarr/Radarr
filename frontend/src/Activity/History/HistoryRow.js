@@ -58,7 +58,9 @@ class HistoryRow extends Component {
       album,
       track,
       language,
+      languageCutoffNotMet,
       quality,
+      qualityCutoffNotMet,
       eventType,
       sourceTitle,
       date,
@@ -135,6 +137,7 @@ class HistoryRow extends Component {
                 <TableRowCell key={name}>
                   <EpisodeLanguage
                     language={language}
+                    isCutoffMet={languageCutoffNotMet}
                   />
                 </TableRowCell>
               );
@@ -145,6 +148,7 @@ class HistoryRow extends Component {
                 <TableRowCell key={name}>
                   <EpisodeQuality
                     quality={quality}
+                    isCutoffMet={qualityCutoffNotMet}
                   />
                 </TableRowCell>
               );
@@ -233,7 +237,9 @@ HistoryRow.propTypes = {
   album: PropTypes.object,
   track: PropTypes.object,
   language: PropTypes.object.isRequired,
+  languageCutoffNotMet: PropTypes.bool.isRequired,
   quality: PropTypes.object.isRequired,
+  qualityCutoffNotMet: PropTypes.bool.isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

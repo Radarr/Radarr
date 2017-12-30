@@ -7,9 +7,11 @@ using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
@@ -35,12 +37,14 @@ namespace Lidarr.Api.V1.Artist
         private readonly IAddArtistService _addArtistService;
         private readonly IArtistStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
+        private readonly IManageCommandQueue _commandQueueManager;
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IArtistService artistService,
                             IAddArtistService addArtistService,
                             IArtistStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
+                            IManageCommandQueue commandQueueManager,
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
@@ -57,6 +61,7 @@ namespace Lidarr.Api.V1.Artist
             _artistStatisticsService = artistStatisticsService;
 
             _coverMapper = coverMapper;
+            _commandQueueManager = commandQueueManager;
 
             GetResourceAll = AllArtists;
             GetResourceById = GetArtist;
@@ -127,7 +132,24 @@ namespace Lidarr.Api.V1.Artist
 
         private void UpdateArtist(ArtistResource artistResource)
         {
-            var model = artistResource.ToModel(_artistService.GetArtist(artistResource.Id));
+            var moveFiles = Request.GetBooleanQueryParameter("moveFiles");
+            var artist = _artistService.GetArtist(artistResource.Id);
+
+            if (moveFiles)
+            {
+                var sourcePath = artist.Path;
+                var destinationPath = artistResource.Path;
+
+                _commandQueueManager.Push(new MoveArtistCommand
+                {
+                    ArtistId = artist.Id,
+                    SourcePath = sourcePath,
+                    DestinationPath = destinationPath,
+                    Trigger = CommandTrigger.Manual
+                });
+            }
+
+            var model = artistResource.ToModel(artist);
 
             _artistService.UpdateArtist(model);
 

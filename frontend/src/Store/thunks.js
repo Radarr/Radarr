@@ -1,12 +1,16 @@
 const thunks = {};
 
-export function createThunk(type) {
+function identity(payload) {
+  return payload;
+}
+
+export function createThunk(type, identityFunction = identity) {
   return function(payload = {}) {
     return function(dispatch, getState) {
       const thunk = thunks[type];
 
       if (thunk) {
-        return thunk(getState, payload, dispatch);
+        return thunk(getState, identityFunction(payload), dispatch);
       }
 
       throw Error(`Thunk handler has not been registered for ${type}`);
@@ -21,4 +25,3 @@ export function handleThunks(handlers) {
     thunks[type] = handlers[type];
   });
 }
-

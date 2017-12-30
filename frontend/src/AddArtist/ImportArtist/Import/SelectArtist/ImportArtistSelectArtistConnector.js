@@ -9,9 +9,13 @@ import ImportArtistSelectArtist from './ImportArtistSelectArtist';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.importArtist.isLookingUpArtist,
     createImportArtistItemSelector(),
-    (item) => {
-      return item;
+    (isLookingUpArtist, item) => {
+      return {
+        isLookingUpArtist,
+        ...item
+      };
     }
   );
 }
@@ -29,7 +33,8 @@ class ImportArtistSelectArtistConnector extends Component {
   onSearchInputChange = (term) => {
     this.props.queueLookupArtist({
       name: this.props.id,
-      term
+      term,
+      topOfQueue: true
     });
   }
 

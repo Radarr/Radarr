@@ -4,11 +4,15 @@ import React, { Component } from 'react';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import { icons, kinds } from 'Helpers/Props';
+import { align, icons, kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Icon from 'Components/Icon';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import SelectInput from 'Components/Form/SelectInput';
+import Menu from 'Components/Menu/Menu';
+import MenuButton from 'Components/Menu/MenuButton';
+import MenuContent from 'Components/Menu/MenuContent';
+import SelectedMenuItem from 'Components/Menu/SelectedMenuItem';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
@@ -70,6 +74,11 @@ const columns = [
   }
 ];
 
+const filterExistingFilesOptions = {
+  ALL: 'all',
+  NEW: 'new'
+};
+
 class InteractiveImportModalContent extends Component {
 
   //
@@ -129,6 +138,10 @@ class InteractiveImportModalContent extends Component {
     this.props.onImportSelectedPress(selected, this.state.importMode);
   }
 
+  onFilterExistingFilesChange = (value) => {
+    this.props.onFilterExistingFilesChange(value !== filterExistingFilesOptions.ALL);
+  }
+
   onImportModeChange = ({ value }) => {
     this.props.onImportModeChange(value);
   }
@@ -155,6 +168,8 @@ class InteractiveImportModalContent extends Component {
   render() {
     const {
       downloadId,
+      showFilterExistingFiles,
+      filterExistingFiles,
       title,
       folder,
       isFetching,
@@ -205,7 +220,45 @@ class InteractiveImportModalContent extends Component {
           }
 
           {
-            isPopulated && !!items.length &&
+            isPopulated && showFilterExistingFiles && !isFetching &&
+            <div className={styles.filterContainer}>
+              <Menu alignMenu={align.RIGHT}>
+                <MenuButton>
+                  <Icon
+                    name={icons.FILTER}
+                    size={22}
+                  />
+
+                  <div className={styles.filterText}>
+                    {
+                      filterExistingFiles ? 'Unmapped Files Only' : 'All Files'
+                    }
+                  </div>
+                </MenuButton>
+
+                <MenuContent>
+                  <SelectedMenuItem
+                    name={filterExistingFilesOptions.ALL}
+                    isSelected={!filterExistingFiles}
+                    onPress={this.onFilterExistingFilesChange}
+                  >
+                    All Files
+                  </SelectedMenuItem>
+
+                  <SelectedMenuItem
+                    name={filterExistingFilesOptions.NEW}
+                    isSelected={filterExistingFiles}
+                    onPress={this.onFilterExistingFilesChange}
+                  >
+                    Unmapped Files Only
+                  </SelectedMenuItem>
+                </MenuContent>
+              </Menu>
+            </div>
+          }
+
+          {
+            isPopulated && !!items.length && !isFetching && !isFetching &&
               <Table
                 columns={columns}
                 selectAll={true}
@@ -235,7 +288,7 @@ class InteractiveImportModalContent extends Component {
           }
 
           {
-            isPopulated && !items.length &&
+            isPopulated && !items.length && !isFetching &&
               'No audio files were found in the selected folder'
           }
         </ModalBody>
@@ -303,6 +356,8 @@ class InteractiveImportModalContent extends Component {
 
 InteractiveImportModalContent.propTypes = {
   downloadId: PropTypes.string,
+  showFilterExistingFiles: PropTypes.bool.isRequired,
+  filterExistingFiles: PropTypes.bool.isRequired,
   importMode: PropTypes.string.isRequired,
   title: PropTypes.string,
   folder: PropTypes.string,
@@ -314,12 +369,14 @@ InteractiveImportModalContent.propTypes = {
   sortDirection: PropTypes.string,
   interactiveImportErrorMessage: PropTypes.string,
   onSortPress: PropTypes.func.isRequired,
+  onFilterExistingFilesChange: PropTypes.func.isRequired,
   onImportModeChange: PropTypes.func.isRequired,
   onImportSelectedPress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 InteractiveImportModalContent.defaultProps = {
+  showFilterExistingFiles: false,
   importMode: 'move'
 };
 

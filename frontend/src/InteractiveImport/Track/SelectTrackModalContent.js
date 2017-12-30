@@ -16,6 +16,12 @@ import SelectTrackRow from './SelectTrackRow';
 
 const columns = [
   {
+    name: 'mediumNumber',
+    label: 'Medium',
+    isSortable: true,
+    isVisible: true
+  },
+  {
     name: 'trackNumber',
     label: '#',
     isSortable: true,
@@ -127,7 +133,8 @@ class SelectTrackModalContent extends Component {
                         <SelectTrackRow
                           key={item.id}
                           id={item.id}
-                          trackNumber={item.trackNumber}
+                          mediumNumber={item.mediumNumber}
+                          trackNumber={item.absoluteTrackNumber}
                           title={item.title}
                           isSelected={selectedState[item.id]}
                           onSelectedChange={this.onSelectedChange}

@@ -109,8 +109,17 @@ class Modal extends Component {
   }
 
   onBackdropEndPress = (event) => {
-    if (this._isBackdropPressed && this._isBackdropTarget(event)) {
-      this.props.onModalClose();
+    const {
+      closeOnBackgroundClick,
+      onModalClose
+    } = this.props;
+
+    if (
+      this._isBackdropPressed &&
+      this._isBackdropTarget(event) &&
+      closeOnBackgroundClick
+    ) {
+      onModalClose();
     }
 
     this._isBackdropPressed = false;
@@ -187,13 +196,15 @@ Modal.propTypes = {
   size: PropTypes.oneOf(sizes.all),
   children: PropTypes.node,
   isOpen: PropTypes.bool.isRequired,
+  closeOnBackgroundClick: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 Modal.defaultProps = {
   className: styles.modal,
   backdropClassName: styles.modalBackdrop,
-  size: sizes.LARGE
+  size: sizes.LARGE,
+  closeOnBackgroundClick: true
 };
 
 export default Modal;

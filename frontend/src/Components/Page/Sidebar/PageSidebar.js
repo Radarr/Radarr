@@ -482,7 +482,7 @@ class PageSidebar extends Component {
                               key={child.to}
                               title={child.title}
                               to={child.to}
-                              isActive={pathname === child.to}
+                              isActive={pathname.startsWith(child.to)}
                               isParentItem={false}
                               isChildItem={true}
                               statusComponent={child.statusComponent}

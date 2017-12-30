@@ -289,6 +289,7 @@ class EnhancedSelectInput extends Component {
                 hasWarning && styles.hasWarning,
                 isDisabled && disabledClassName
               )}
+              isDisabled={isDisabled}
               onBlur={this.onBlur}
               onKeyDown={this.onKeyDown}
               onPress={this.onPress}
@@ -296,11 +297,17 @@ class EnhancedSelectInput extends Component {
               <SelectedValueComponent
                 {...selectedValueOptions}
                 {...selectedOption}
+                isDisabled={isDisabled}
               >
                 {selectedOption ? selectedOption.value : null}
               </SelectedValueComponent>
 
-              <div className={styles.dropdownArrowContainer}>
+              <div
+                className={isDisabled ?
+                  styles.dropdownArrowContainerDisabled :
+                  styles.dropdownArrowContainer
+                }
+              >
                 <Icon
                   name={icons.CARET_DOWN}
                 />

@@ -9,6 +9,8 @@ namespace NzbDrone.Core.DecisionEngine
     public interface IUpgradableSpecification
     {
         bool IsUpgradable(Profile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, QualityModel newQuality, Language newLanguage);
+        bool QualityCutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null);
+        bool LanguageCutoffNotMet(LanguageProfile languageProfile, Language currentLanguage);
         bool CutoffNotMet(Profile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, QualityModel newQuality = null);
         bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality);
     }
@@ -68,29 +70,46 @@ namespace NzbDrone.Core.DecisionEngine
             return true;
         }
 
-        public bool CutoffNotMet(Profile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, QualityModel newQuality = null)
+        public bool QualityCutoffNotMet(Profile profile, QualityModel currentQuality, QualityModel newQuality = null)
         {
-            var languageCompare = new LanguageComparer(languageProfile).Compare(currentLanguage, languageProfile.Cutoff);
             var qualityCompare = new QualityModelComparer(profile).Compare(currentQuality.Quality.Id, profile.Cutoff);
 
-            // If we can upgrade the language (it is not the cutoff) then doesn't matter the quality we can always get same quality with prefered language
-            if (languageCompare < 0)
+            if (qualityCompare < 0)
             {
                 return true;
             }
 
-            if (qualityCompare >= 0)
+            if (qualityCompare == 0 && newQuality != null && IsRevisionUpgrade(currentQuality, newQuality))
             {
-                if (newQuality != null && IsRevisionUpgrade(currentQuality, newQuality))
-                {
-                    return true;
-                }
-
-                _logger.Debug("Existing item meets cut-off. skipping.");
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        public bool LanguageCutoffNotMet(LanguageProfile languageProfile, Language currentLanguage)
+        {
+            var languageCompare = new LanguageComparer(languageProfile).Compare(currentLanguage, languageProfile.Cutoff);
+
+            return languageCompare < 0;
+        }
+
+        public bool CutoffNotMet(Profile profile, LanguageProfile languageProfile, QualityModel currentQuality, Language currentLanguage, QualityModel newQuality = null)
+        {
+            // If we can upgrade the language (it is not the cutoff) then doesn't matter the quality we can always get same quality with prefered language
+            if (LanguageCutoffNotMet(languageProfile, currentLanguage))
+            {
+                return true;
+            }
+
+            if (QualityCutoffNotMet(profile, currentQuality, newQuality))
+            {
+                return true;
+            }
+
+            _logger.Debug("Existing item meets cut-off. skipping.");
+
+            return false;
         }
 
         public bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality)

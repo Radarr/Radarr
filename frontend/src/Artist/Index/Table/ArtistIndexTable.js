@@ -11,34 +11,6 @@ import styles from './ArtistIndexTable.css';
 class ArtistIndexTable extends Component {
 
   //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    this._table = null;
-  }
-
-  componentDidUpdate(prevProps) {
-    const {
-      columns,
-      filterKey,
-      filterValue,
-      sortKey,
-      sortDirection
-    } = this.props;
-
-    if (prevProps.columns !== columns ||
-        prevProps.filterKey !== filterKey ||
-        prevProps.filterValue !== filterValue ||
-        prevProps.sortKey !== sortKey ||
-        prevProps.sortDirection !== sortDirection
-    ) {
-      this._table.forceUpdateGrid();
-    }
-  }
-
-  //
   // Control
 
   scrollToFirstCharacter(character) {
@@ -59,10 +31,6 @@ class ArtistIndexTable extends Component {
     }
   }
 
-  setTableRef = (ref) => {
-    this._table = ref;
-  }
-
   rowRenderer = ({ key, rowIndex, style }) => {
     const {
       items,
@@ -77,7 +45,10 @@ class ArtistIndexTable extends Component {
         component={ArtistIndexRow}
         style={style}
         columns={columns}
-        {...artist}
+        artistId={artist.id}
+        languageProfileId={artist.languageProfileId}
+        qualityProfileId={artist.qualityProfileId}
+        metadataProfileId={artist.metadataProfileId}
       />
     );
   }
@@ -89,6 +60,8 @@ class ArtistIndexTable extends Component {
     const {
       items,
       columns,
+      filterKey,
+      filterValue,
       sortKey,
       sortDirection,
       isSmallScreen,
@@ -101,7 +74,6 @@ class ArtistIndexTable extends Component {
 
     return (
       <VirtualTable
-        ref={this.setTableRef}
         className={styles.tableContainer}
         items={items}
         scrollTop={scrollTop}
@@ -118,6 +90,11 @@ class ArtistIndexTable extends Component {
             onSortPress={onSortPress}
           />
         }
+        columns={columns}
+        filterKey={filterKey}
+        filterValue={filterValue}
+        sortKey={sortKey}
+        sortDirection={sortDirection}
         onRender={onRender}
         onScroll={onScroll}
       />

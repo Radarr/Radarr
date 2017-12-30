@@ -44,7 +44,6 @@ class VirtualTable extends Component {
     };
 
     this._isInitialized = false;
-    this._table = null;
   }
 
   componentDidMount() {
@@ -58,18 +57,9 @@ class VirtualTable extends Component {
     return this.props.items[index];
   }
 
-  setTableRef = (ref) => {
-    this._table = ref;
-  }
-
-  forceUpdateGrid = () => {
-    this._table.recomputeGridSize();
-  }
-
   scrollToRow = (rowIndex) => {
     const scrollTop = (rowIndex + 1) * ROW_HEIGHT + 20;
 
-    // this._table.scrollToCell({ columnIndex: 0, rowIndex });
     this.props.onScroll({ scrollTop });
   }
 
@@ -124,7 +114,6 @@ class VirtualTable extends Component {
                 {header}
 
                 <VirtualTableBody
-                  ref={this.setTableRef}
                   autoContainerWidth={true}
                   width={width}
                   height={height}

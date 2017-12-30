@@ -46,8 +46,31 @@ export const TOGGLE_ALBUM_MONITORED = 'artist/toggleAlbumMonitored';
 // Action Creators
 
 export const fetchArtist = createThunk(FETCH_ARTIST);
-export const saveArtist = createThunk(SAVE_ARTIST);
-export const deleteArtist = createThunk(DELETE_ARTIST);
+export const saveArtist = createThunk(SAVE_ARTIST, (payload) => {
+  const newPayload = {
+    ...payload
+  };
+
+  if (payload.moveFiles) {
+    newPayload.queryParams = {
+      moveFiles: true
+    };
+  }
+
+  delete newPayload.moveFiles;
+
+  return newPayload;
+});
+
+export const deleteArtist = createThunk(DELETE_ARTIST, (payload) => {
+  return {
+    ...payload,
+    queryParams: {
+      deleteFiles: payload.deleteFiles
+    }
+  };
+});
+
 export const toggleArtistMonitored = createThunk(TOGGLE_ARTIST_MONITORED);
 export const toggleAlbumMonitored = createThunk(TOGGLE_ALBUM_MONITORED);
 
@@ -59,19 +82,24 @@ export const setArtistValue = createAction(SET_ARTIST_VALUE, (payload) => {
 });
 
 //
+// Helpers
+
+function getSaveAjaxOptions({ ajaxOptions, payload }) {
+  if (payload.moveFolder) {
+    ajaxOptions.url = `${ajaxOptions.url}?moveFolder=true`;
+  }
+
+  return ajaxOptions;
+}
+
+//
 // Action Handlers
 
 export const actionHandlers = handleThunks({
 
   [FETCH_ARTIST]: createFetchHandler(section, '/artist'),
-
-  [SAVE_ARTIST]: createSaveProviderHandler(
-    section, '/artist'),
-
-  [DELETE_ARTIST]: createRemoveItemHandler(
-    section,
-    '/artist'
-  ),
+  [SAVE_ARTIST]: createSaveProviderHandler(section, '/artist', { getAjaxOptions: getSaveAjaxOptions }),
+  [DELETE_ARTIST]: createRemoveItemHandler(section, '/artist'),
 
   [TOGGLE_ARTIST_MONITORED]: (getState, payload, dispatch) => {
     const {
@@ -115,7 +143,7 @@ export const actionHandlers = handleThunks({
     });
   },
 
-  [TOGGLE_ALBUM_MONITORED]: (getState, payload, dispatch) => {
+  [TOGGLE_ALBUM_MONITORED]: function(getState, payload, dispatch) {
     const {
       artistId: id,
       seasonNumber,

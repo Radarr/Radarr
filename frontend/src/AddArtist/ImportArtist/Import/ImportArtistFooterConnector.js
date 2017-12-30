@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import ImportArtistFooter from './ImportArtistFooter';
+import { cancelLookupArtist } from 'Store/Actions/importArtistActions';
 
 function isMixed(items, selectedIds, defaultValue, key) {
   return _.some(items, (artist) => {
@@ -23,11 +24,11 @@ function createMapStateToProps() {
         albumFolder: defaultAlbumFolder
       } = addArtist.defaults;
 
-      const items = importArtist.items;
-
-      const isLookingUpArtist = _.some(importArtist.items, (artist) => {
-        return !artist.isPopulated && artist.error == null;
-      });
+      const {
+        isLookingUpArtist,
+        isImporting,
+        items
+      } = importArtist;
 
       const isMonitorMixed = isMixed(items, selectedIds, defaultMonitor, 'monitor');
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
@@ -37,8 +38,8 @@ function createMapStateToProps() {
 
       return {
         selectedCount: selectedIds.length,
-        isImporting: importArtist.isImporting,
         isLookingUpArtist,
+        isImporting,
         defaultMonitor,
         defaultQualityProfileId,
         defaultLanguageProfileId,
@@ -54,4 +55,8 @@ function createMapStateToProps() {
   );
 }
 
-export default connect(createMapStateToProps)(ImportArtistFooter);
+const mapDispatchToProps = {
+  onCancelLookupPress: cancelLookupArtist
+};
+
+export default connect(createMapStateToProps, mapDispatchToProps)(ImportArtistFooter);

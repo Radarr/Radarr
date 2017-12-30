@@ -9,6 +9,7 @@ function ModalContent(props) {
   const {
     className,
     children,
+    showCloseButton,
     onModalClose,
     ...otherProps
   } = props;
@@ -18,15 +19,18 @@ function ModalContent(props) {
       className={className}
       {...otherProps}
     >
-      <Link
-        className={styles.closeButton}
-        onPress={onModalClose}
-      >
-        <Icon
-          name={icons.CLOSE}
-          size={18}
-        />
-      </Link>
+      {
+        showCloseButton &&
+          <Link
+            className={styles.closeButton}
+            onPress={onModalClose}
+          >
+            <Icon
+              name={icons.CLOSE}
+              size={18}
+            />
+          </Link>
+      }
 
       {children}
     </div>
@@ -36,11 +40,13 @@ function ModalContent(props) {
 ModalContent.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
+  showCloseButton: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 ModalContent.defaultProps = {
-  className: styles.modalContent
+  className: styles.modalContent,
+  showCloseButton: true
 };
 
 export default ModalContent;

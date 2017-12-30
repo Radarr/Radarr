@@ -68,6 +68,7 @@ class ArtistIndexPoster extends Component {
       posterHeight,
       detailedProgressBar,
       showTitle,
+      showMonitored,
       showQualityProfile,
       qualityProfile,
       showRelativeDates,
@@ -152,6 +153,13 @@ class ArtistIndexPoster extends Component {
           }
 
           {
+            showMonitored &&
+              <div className={styles.title}>
+                {monitored ? 'Monitored' : 'Unmonitored'}
+              </div>
+          }
+
+          {
             showQualityProfile &&
               <div className={styles.title}>
                 {qualityProfile.name}
@@ -214,6 +222,7 @@ ArtistIndexPoster.propTypes = {
   posterHeight: PropTypes.number.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
   showTitle: PropTypes.bool.isRequired,
+  showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
   qualityProfile: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,

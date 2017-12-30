@@ -19,6 +19,7 @@ namespace Lidarr.Api.V1.History
         public Language Language { get; set; }
         public QualityModel Quality { get; set; }
         public bool QualityCutoffNotMet { get; set; }
+        public bool LanguageCutoffNotMet { get; set; }
         public DateTime Date { get; set; }
         public string DownloadId { get; set; }
 

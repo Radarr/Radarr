@@ -31,10 +31,17 @@
 .isDisabled {
   opacity: 0.7;
   cursor: not-allowed;
+  pointer-events: all !important;
 }
 
 .dropdownArrowContainer {
   margin-left: 12px;
+}
+
+.dropdownArrowContainerDisabled {
+  composes: dropdownArrowContainer;
+
+  color: $disabledInputColor;
 }
 
 .optionsContainer {

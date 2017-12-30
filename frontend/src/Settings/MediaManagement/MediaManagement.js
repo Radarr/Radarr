@@ -264,7 +264,7 @@ class MediaManagement extends Component {
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                       >
-                        <FormLabel>File chmod mask</FormLabel>
+                        <FormLabel>File chmod mode</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.TEXT}
@@ -279,7 +279,7 @@ class MediaManagement extends Component {
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                       >
-                        <FormLabel>Folder chmod mask</FormLabel>
+                        <FormLabel>Folder chmod mode</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.TEXT}

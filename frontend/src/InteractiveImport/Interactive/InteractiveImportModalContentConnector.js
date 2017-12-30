@@ -35,7 +35,8 @@ class InteractiveImportModalContentConnector extends Component {
     super(props, context);
 
     this.state = {
-      interactiveImportErrorMessage: null
+      interactiveImportErrorMessage: null,
+      filterExistingFiles: true
     };
   }
 
@@ -45,7 +46,34 @@ class InteractiveImportModalContentConnector extends Component {
       folder
     } = this.props;
 
-    this.props.fetchInteractiveImportItems({ downloadId, folder });
+    const {
+      filterExistingFiles
+    } = this.state;
+
+    this.props.fetchInteractiveImportItems({
+      downloadId,
+      folder,
+      filterExistingFiles
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      filterExistingFiles
+    } = this.state;
+
+    if (prevState.filterExistingFiles !== filterExistingFiles) {
+      const {
+        downloadId,
+        folder
+      } = this.props;
+
+      this.props.fetchInteractiveImportItems({
+        downloadId,
+        folder,
+        filterExistingFiles
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -57,6 +85,10 @@ class InteractiveImportModalContentConnector extends Component {
 
   onSortPress = (sortKey, sortDirection) => {
     this.props.setInteractiveImportSort({ sortKey, sortDirection });
+  }
+
+  onFilterExistingFilesChange = (filterExistingFiles) => {
+    this.setState({ filterExistingFiles });
   }
 
   onImportModeChange = (importMode) => {
@@ -122,11 +154,18 @@ class InteractiveImportModalContentConnector extends Component {
   // Render
 
   render() {
+    const {
+      interactiveImportErrorMessage,
+      filterExistingFiles
+    } = this.state;
+
     return (
       <InteractiveImportModalContent
         {...this.props}
-        interactiveImportErrorMessage={this.state.interactiveImportErrorMessage}
+        interactiveImportErrorMessage={interactiveImportErrorMessage}
+        filterExistingFiles={filterExistingFiles}
         onSortPress={this.onSortPress}
+        onFilterExistingFilesChange={this.onFilterExistingFilesChange}
         onImportModeChange={this.onImportModeChange}
         onImportSelectedPress={this.onImportSelectedPress}
       />
@@ -137,6 +176,7 @@ class InteractiveImportModalContentConnector extends Component {
 InteractiveImportModalContentConnector.propTypes = {
   downloadId: PropTypes.string,
   folder: PropTypes.string,
+  filterExistingFiles: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchInteractiveImportItems: PropTypes.func.isRequired,
   setInteractiveImportSort: PropTypes.func.isRequired,
@@ -144,6 +184,10 @@ InteractiveImportModalContentConnector.propTypes = {
   setInteractiveImportMode: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
+};
+
+InteractiveImportModalContentConnector.defaultProps = {
+  filterExistingFiles: true
 };
 
 export default connectSection(

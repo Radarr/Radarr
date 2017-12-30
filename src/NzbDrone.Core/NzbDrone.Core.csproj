@@ -758,6 +758,7 @@
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\AlbumCutoffService.cs" />
+    <Compile Include="Music\Commands\BulkMoveArtistCommand.cs" />
     <Compile Include="Music\SecondaryAlbumType.cs" />
     <Compile Include="Music\PrimaryAlbumType.cs" />
     <Compile Include="Music\Links.cs" />

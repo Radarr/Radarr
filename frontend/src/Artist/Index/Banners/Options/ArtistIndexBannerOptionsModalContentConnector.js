@@ -14,7 +14,7 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onChangeOption(payload) {
+    onChangeBannerOption(payload) {
       dispatch(setArtistBannerOption(payload));
     }
   };

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { inputTypes, kinds } from 'Helpers/Props';
+import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import CheckInput from 'Components/Form/CheckInput';
@@ -117,7 +118,8 @@ class ImportArtistFooter extends Component {
       isMetadataProfileIdMixed,
       showLanguageProfile,
       showMetadataProfile,
-      onImportPress
+      onImportPress,
+      onCancelLookupPress
     } = this.props;
 
     const {
@@ -227,10 +229,21 @@ class ImportArtistFooter extends Component {
 
             {
               isLookingUpArtist &&
-              <LoadingIndicator
-                className={styles.loading}
-                size={24}
-              />
+                <Button
+                  className={styles.loadingButton}
+                  kind={kinds.WARNING}
+                  onPress={onCancelLookupPress}
+                >
+                  Cancel Processing
+                </Button>
+            }
+
+            {
+              isLookingUpArtist &&
+                <LoadingIndicator
+                  className={styles.loading}
+                  size={24}
+                />
             }
 
             {
@@ -261,7 +274,8 @@ ImportArtistFooter.propTypes = {
   showLanguageProfile: PropTypes.bool.isRequired,
   showMetadataProfile: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  onImportPress: PropTypes.func.isRequired
+  onImportPress: PropTypes.func.isRequired,
+  onCancelLookupPress: PropTypes.func.isRequired
 };
 
 export default ImportArtistFooter;

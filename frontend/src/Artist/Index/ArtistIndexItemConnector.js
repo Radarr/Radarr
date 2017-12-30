@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
 import createLanguageProfileSelector from 'Store/Selectors/createLanguageProfileSelector';
@@ -13,21 +14,21 @@ import * as commandNames from 'Commands/commandNames';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { id }) => id,
-    (state, { albums }) => albums,
+    createArtistSelector(),
     createQualityProfileSelector(),
     createLanguageProfileSelector(),
     createMetadataProfileSelector(),
     createCommandsSelector(),
-    (artistId, albums, qualityProfile, languageProfile, metadataProfile, commands) => {
+    (artist, qualityProfile, languageProfile, metadataProfile, commands) => {
       const isRefreshingArtist = _.some(commands, (command) => {
         return command.name === commandNames.REFRESH_ARTIST &&
-          command.body.artistId === artistId;
+        command.body.artistId === artist.id;
       });
 
-      const latestAlbum = _.first(_.orderBy(albums, 'releaseDate', 'desc'));
+      const latestAlbum = _.maxBy(artist.albums, (album) => album.releaseDate);
 
       return {
+        ...artist,
         qualityProfile,
         languageProfile,
         metadataProfile,

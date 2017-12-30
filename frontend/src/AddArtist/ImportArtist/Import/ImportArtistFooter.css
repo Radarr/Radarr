@@ -19,6 +19,12 @@
   height: 35px;
 }
 
+.loadingButton {
+  composes: importButton;
+
+  margin-left: 10px;
+}
+
 .loading {
   composes: loading from 'Components/Loading/LoadingIndicator.css';
 

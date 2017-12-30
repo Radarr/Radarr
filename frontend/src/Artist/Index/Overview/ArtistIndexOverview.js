@@ -5,6 +5,7 @@ import { icons } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
 import IconButton from 'Components/Link/IconButton';
+import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ArtistPoster from 'Artist/ArtistPoster';
@@ -188,6 +189,7 @@ class ArtistIndexOverview extends Component {
 
               <ArtistIndexOverviewInfo
                 height={overviewHeight}
+                monitored={monitored}
                 nextAiring={nextAiring}
                 qualityProfile={qualityProfile}
                 showRelativeDates={showRelativeDates}

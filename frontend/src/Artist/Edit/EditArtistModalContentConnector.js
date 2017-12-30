@@ -37,7 +37,8 @@ function createMapStateToProps() {
         artistName: artist.artistName,
         isSaving,
         saveError,
-        pendingChanges,
+        isPathChanging: pendingChanges.hasOwnProperty('path'),
+        originalPath: artist.path,
         item: settings.settings,
         showLanguageProfile: languageProfiles.items.length > 1,
         showMetadataProfile: metadataProfiles.items.length > 1,
@@ -48,8 +49,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setArtistValue,
-  saveArtist
+  dispatchSetArtistValue: setArtistValue,
+  dispatchSaveArtist: saveArtist
 };
 
 class EditArtistModalContentConnector extends Component {
@@ -67,11 +68,14 @@ class EditArtistModalContentConnector extends Component {
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setArtistValue({ name, value });
+    this.props.dispatchSetArtistValue({ name, value });
   }
 
-  onSavePress = () => {
-    this.props.saveArtist({ id: this.props.artistId });
+  onSavePress = (moveFiles) => {
+    this.props.dispatchSaveArtist({
+      id: this.props.artistId,
+      moveFiles
+    });
   }
 
   //
@@ -83,6 +87,7 @@ class EditArtistModalContentConnector extends Component {
         {...this.props}
         onInputChange={this.onInputChange}
         onSavePress={this.onSavePress}
+        onMoveArtistPress={this.onMoveArtistPress}
       />
     );
   }
@@ -92,8 +97,8 @@ EditArtistModalContentConnector.propTypes = {
   artistId: PropTypes.number,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
-  setArtistValue: PropTypes.func.isRequired,
-  saveArtist: PropTypes.func.isRequired,
+  dispatchSetArtistValue: PropTypes.func.isRequired,
+  dispatchSaveArtist: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

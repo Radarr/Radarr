@@ -6,6 +6,7 @@ import createClientSideCollectionSelector from 'Store/Selectors/createClientSide
 import createCommandSelector from 'Store/Selectors/createCommandSelector';
 import { setArtistEditorSort, setArtistEditorFilter, saveArtistEditor } from 'Store/Actions/artistEditorActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import ArtistEditor from './ArtistEditor';
 
@@ -27,10 +28,11 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  setArtistEditorSort,
-  setArtistEditorFilter,
-  saveArtistEditor,
-  fetchRootFolders
+  dispatchSetArtistEditorSort: setArtistEditorSort,
+  dispatchSetArtistEditorFilter: setArtistEditorFilter,
+  dispatchSaveArtistEditor: saveArtistEditor,
+  dispatchFetchRootFolders: fetchRootFolders,
+  dispatchExecuteCommand: executeCommand
 };
 
 class ArtistEditorConnector extends Component {
@@ -39,22 +41,29 @@ class ArtistEditorConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchRootFolders();
+    this.props.dispatchFetchRootFolders();
   }
 
   //
   // Listeners
 
   onSortPress = (sortKey) => {
-    this.props.setArtistEditorSort({ sortKey });
+    this.props.dispatchSetArtistEditorSort({ sortKey });
   }
 
   onFilterSelect = (filterKey, filterValue, filterType) => {
-    this.props.setArtistEditorFilter({ filterKey, filterValue, filterType });
+    this.props.dispatchSetArtistEditorFilter({ filterKey, filterValue, filterType });
   }
 
   onSaveSelected = (payload) => {
-    this.props.saveArtistEditor(payload);
+    this.props.dispatchSaveArtistEditor(payload);
+  }
+
+  onMoveSelected = (payload) => {
+    this.props.dispatchExecuteCommand({
+      name: commandNames.MOVE_ARTIST,
+      ...payload
+    });
   }
 
   //
@@ -73,10 +82,11 @@ class ArtistEditorConnector extends Component {
 }
 
 ArtistEditorConnector.propTypes = {
-  setArtistEditorSort: PropTypes.func.isRequired,
-  setArtistEditorFilter: PropTypes.func.isRequired,
-  saveArtistEditor: PropTypes.func.isRequired,
-  fetchRootFolders: PropTypes.func.isRequired
+  dispatchSetArtistEditorSort: PropTypes.func.isRequired,
+  dispatchSetArtistEditorFilter: PropTypes.func.isRequired,
+  dispatchSaveArtistEditor: PropTypes.func.isRequired,
+  dispatchFetchRootFolders: PropTypes.func.isRequired,
+  dispatchExecuteCommand: PropTypes.func.isRequired
 };
 
 export default connectSection(
