@@ -1,5 +1,6 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 
@@ -7,6 +8,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(ArtistDeletedEvent))]
     [CheckOn(typeof(ArtistMovedEvent))]
+    [CheckOn(typeof(TrackImportedEvent), CheckOnCondition.FailedOnly)]
+    [CheckOn(typeof(TrackImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
     public class RootFolderCheck : HealthCheckBase
     {
         private readonly IArtistService _artistService;
