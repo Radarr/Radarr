@@ -155,7 +155,12 @@ namespace NzbDrone.Api.Movie
 				{
                     if (_diskProvider.FileExists(mappedMovie.Path))
                     {
+                        mappedMovie.FlatFileName = Path.GetFileNameWithoutExtension(mappedMovie.Path);
                         mappedMovie.Path = Path.GetDirectoryName(mappedMovie.Path);
+                    }
+                    else
+                    {
+                        mappedMovie.FlatFileName = string.Empty;
                     }
                     
 					mappedMovie.Monitored = true;

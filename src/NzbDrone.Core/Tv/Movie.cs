@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Marr.Data;
 using NzbDrone.Common.Extensions;
@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Tv
         public string TitleSlug { get; set; }
         public string Website { get; set; }
         public string Path { get; set; }
+        public string FlatFileName { get; set; }
         public int Year { get; set; }
         public Ratings Ratings { get; set; }
         public List<string> Genres { get; set; }

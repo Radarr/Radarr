@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -847,6 +847,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 	            }
 
 	            newMovie.Path = movie.Path;
+                newMovie.FlatFileName = movie.FlatFileName;
 	            newMovie.RootFolderPath = movie.RootFolderPath;
 	            newMovie.ProfileId = movie.ProfileId;
 	            newMovie.Monitored = movie.Monitored;
