@@ -23,9 +23,9 @@
 }
 
 .albumCount {
-  font-size: 18px;
-  font-style: italic;
   color: #8895aa;
+  font-style: italic;
+  font-size: 18px;
 }
 
 .episodeCountContainer {

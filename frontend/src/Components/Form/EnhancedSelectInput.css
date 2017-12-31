@@ -73,6 +73,7 @@
 
 .optionsModalScroller {
   composes: scroller from 'Components/Scroller/Scroller.css';
+
   border: 1px solid $inputBorderColor;
   border-radius: 4px;
   background-color: $white;

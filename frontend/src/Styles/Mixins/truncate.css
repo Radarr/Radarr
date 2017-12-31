@@ -10,7 +10,7 @@
  *    occur.
  */
 
- @define-mixin truncate {
+@define-mixin truncate {
   overflow: hidden !important;
   max-width: 100%; /* 1 */
   text-overflow: ellipsis !important;

@@ -8,7 +8,7 @@ addons:
 script:
   - ./build.sh
   - chmod +x test.sh
-#  - ./test.sh Linux Unit Takes far too long, maybe even crashes travis :/
+  - ./test.sh Linux Unit
 after_success:
   - chmod +x package.sh
   - ./package.sh

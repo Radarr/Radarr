@@ -14,20 +14,16 @@ install:
   - git submodule update --init --recursive
 
 build_script:
-  - ps: ./build-appveyor.ps1
+  - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./build.sh
+  
+after_build:
+  - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./appveyor-package.sh
+  - ps: Get-ChildItem .\_artifacts\*.zip | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+  - ps: Get-ChildItem .\_artifacts\*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+  - ps: Get-ChildItem .\_artifacts\*.tar.gz | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
-test:
-  assemblies:
-    - '_tests\*Test.dll'
-  categories:
-    except:
-      - IntegrationTest
-      - AutomationTest
-
-artifacts:
-  - path: '_artifacts\*.zip'
-  - path: '_artifacts\*.exe'
-  - path: '_artifacts\*.tar.gz'
+test_script:
+  - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./test.sh Windows Unit
 
 cache:
   - '%USERPROFILE%\.nuget\packages'

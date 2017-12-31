@@ -13,11 +13,19 @@ fi
 rm -f "$TEST_LOG_FILE"
 
 # Uncomment to log test output to a file instead of the console
-# export LIDARR_TESTS_LOG_OUTPUT="File"
+export LIDARR_TESTS_LOG_OUTPUT="File"
 
-NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe"
-NUNIT_COMMAND="$NUNIT"
-NUNIT_PARAMS="--teamcity --workers=1"
+if [[ -z "${APPVEYOR}" ]]; then
+  NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
+  NUNIT_COMMAND="$NUNIT"
+  NUNIT_PARAMS="--workers=1"
+else
+  NUNIT="nunit3-console"
+  NUNIT_COMMAND="$NUNIT"
+  NUNIT_PARAMS="--result=myresults.xml;format=AppVeyor --workers=1"
+  unset TMP
+  unset TEMP
+fi
 
 if [ "$PLATFORM" = "Windows" ]; then
   WHERE="$WHERE && cat != LINUX"
@@ -51,7 +59,12 @@ $NUNIT_COMMAND --where "$WHERE" $NUNIT_PARAMS $ASSEMBLIES;
 EXIT_CODE=$?
 
 if [ "$EXIT_CODE" -ge 0 ]; then
-  echo "Failed tests: $EXIT_CODE"
+  if [[ -z "${APPVEYOR}" ]]; then
+    echo "Failed tests: $EXIT_CODE"
+  else
+    echo "Failed tests: $EXIT_CODE"
+    appveyor AddMessage "Failed tests: $EXIT_CODE"
+  fi
   exit 0
 else
   exit $EXIT_CODE

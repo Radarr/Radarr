@@ -111,13 +111,13 @@ class QualityDefinition extends Component {
 
           <div className={styles.sizes}>
             <div>
-              <Label title={"Minimum size for a 20 minute EP"} kind={kinds.WARNING}>{minTwenty}</Label>
-              <Label title={"Minimum size for a 45 minute LP"} kind={kinds.INFO}>{minFortyFive}</Label>
+              <Label title={'Minimum size for a 20 minute EP'} kind={kinds.WARNING}>{minTwenty}</Label>
+              <Label title={'Minimum size for a 45 minute LP'} kind={kinds.INFO}>{minFortyFive}</Label>
             </div>
 
             <div>
-              <Label title={"Maximum size for a 20 minute EP"} kind={kinds.WARNING}>{maxTwenty}</Label>
-              <Label title={"Maximum size for a 45 minute LP"} kind={kinds.INFO}>{maxFortyFive}</Label>
+              <Label title={'Maximum size for a 20 minute EP'} kind={kinds.WARNING}>{maxTwenty}</Label>
+              <Label title={'Maximum size for a 45 minute LP'} kind={kinds.INFO}>{maxFortyFive}</Label>
             </div>
           </div>
         </div>

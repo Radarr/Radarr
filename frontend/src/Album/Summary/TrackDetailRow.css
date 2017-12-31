@@ -1,31 +1,31 @@
 .title {
-    composes: cell from 'Components/Table/Cells/TableRowCell.css';
+  composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .monitored {
-    composes: cell from 'Components/Table/Cells/TableRowCell.css';
+  composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
-    width: 42px;
+  width: 42px;
 }
 
 .trackNumber {
-    composes: cell from 'Components/Table/Cells/TableRowCell.css';
+  composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
-    width: 50px;
+  width: 50px;
 }
 
 .audio {
-    composes: cell from 'Components/Table/Cells/TableRowCell.css';
+  composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
-    width: 200px;
+  width: 200px;
 }
 
 .language,
 .video,
 .status {
-    composes: cell from 'Components/Table/Cells/TableRowCell.css';
+  composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
-    width: 100px;
+  width: 100px;
 }
