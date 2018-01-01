@@ -4,7 +4,7 @@ import * as blacklist from './blacklistActions';
 import * as captcha from './captchaActions';
 import * as calendar from './calendarActions';
 import * as commands from './commandActions';
-import * as episodes from './episodeActions';
+import * as albums from './albumActions';
 import * as trackFiles from './trackFileActions';
 import * as albumHistory from './albumHistoryActions';
 import * as history from './historyActions';
@@ -34,7 +34,7 @@ export default [
   captcha,
   calendar,
   commands,
-  episodes,
+  albums,
   trackFiles,
   albumHistory,
   history,

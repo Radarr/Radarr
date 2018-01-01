@@ -81,7 +81,7 @@ function EditLanguageProfileModalContent(props) {
                   {...cutoff}
                   value={cutoff ? cutoff.value.id : 0}
                   values={languages}
-                  helpText="Once this language is reached Lidarr will no longer download episodes"
+                  helpText="Once this language is reached Lidarr will no longer download albums"
                   onChange={onCutoffChange}
                 />
               </FormGroup>

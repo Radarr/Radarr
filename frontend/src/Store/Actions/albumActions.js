@@ -6,7 +6,7 @@ import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import episodeEntities from 'Album/episodeEntities';
+import albumEntities from 'Album/albumEntities';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import { updateItem } from './baseActions';
@@ -14,7 +14,7 @@ import { updateItem } from './baseActions';
 //
 // Variables
 
-export const section = 'episodes';
+export const section = 'albums';
 
 //
 // State
@@ -74,47 +74,47 @@ export const defaultState = {
 };
 
 export const persistState = [
-  'episodes.columns'
+  'albums.columns'
 ];
 
 //
 // Actions Types
 
-export const FETCH_EPISODES = 'episodes/fetchEpisodes';
-export const SET_EPISODES_SORT = 'episodes/setEpisodesSort';
-export const SET_EPISODES_TABLE_OPTION = 'episodes/setEpisodesTableOption';
-export const CLEAR_EPISODES = 'episodes/clearEpisodes';
-export const TOGGLE_EPISODE_MONITORED = 'episodes/toggleEpisodeMonitored';
-export const TOGGLE_EPISODES_MONITORED = 'episodes/toggleEpisodesMonitored';
+export const FETCH_ALBUMS = 'albums/fetchAlbums';
+export const SET_ALBUMS_SORT = 'albums/setAlbumsSort';
+export const SET_ALBUMS_TABLE_OPTION = 'albums/setAlbumsTableOption';
+export const CLEAR_ALBUMS = 'albums/clearAlbums';
+export const TOGGLE_ALBUM_MONITORED = 'albums/toggleAlbumMonitored';
+export const TOGGLE_ALBUMS_MONITORED = 'albums/toggleAlbumsMonitored';
 
 //
 // Action Creators
 
-export const fetchEpisodes = createThunk(FETCH_EPISODES);
-export const setEpisodesSort = createAction(SET_EPISODES_SORT);
-export const setEpisodesTableOption = createAction(SET_EPISODES_TABLE_OPTION);
-export const clearEpisodes = createAction(CLEAR_EPISODES);
-export const toggleEpisodeMonitored = createThunk(TOGGLE_EPISODE_MONITORED);
-export const toggleEpisodesMonitored = createThunk(TOGGLE_EPISODES_MONITORED);
+export const fetchAlbums = createThunk(FETCH_ALBUMS);
+export const setAlbumsSort = createAction(SET_ALBUMS_SORT);
+export const setAlbumsTableOption = createAction(SET_ALBUMS_TABLE_OPTION);
+export const clearAlbums = createAction(CLEAR_ALBUMS);
+export const toggleAlbumMonitored = createThunk(TOGGLE_ALBUM_MONITORED);
+export const toggleAlbumsMonitored = createThunk(TOGGLE_ALBUMS_MONITORED);
 
 //
 // Action Handlers
 
 export const actionHandlers = handleThunks({
-  [FETCH_EPISODES]: createFetchHandler(section, '/album'),
+  [FETCH_ALBUMS]: createFetchHandler(section, '/album'),
 
-  [TOGGLE_EPISODE_MONITORED]: function(getState, payload, dispatch) {
+  [TOGGLE_ALBUM_MONITORED]: function(getState, payload, dispatch) {
     const {
       albumId,
-      episodeEntity = episodeEntities.EPISODES,
+      albumEntity = albumEntities.ALBUMS,
       monitored
     } = payload;
 
-    const episodeSection = _.last(episodeEntity.split('.'));
+    const albumSection = _.last(albumEntity.split('.'));
 
     dispatch(updateItem({
       id: albumId,
-      section: episodeSection,
+      section: albumSection,
       isSaving: true
     }));
 
@@ -128,7 +128,7 @@ export const actionHandlers = handleThunks({
     promise.done((data) => {
       dispatch(updateItem({
         id: albumId,
-        section: episodeSection,
+        section: albumSection,
         isSaving: false,
         monitored
       }));
@@ -137,26 +137,26 @@ export const actionHandlers = handleThunks({
     promise.fail((xhr) => {
       dispatch(updateItem({
         id: albumId,
-        section: episodeSection,
+        section: albumSection,
         isSaving: false
       }));
     });
   },
 
-  [TOGGLE_EPISODES_MONITORED]: function(getState, payload, dispatch) {
+  [TOGGLE_ALBUMS_MONITORED]: function(getState, payload, dispatch) {
     const {
       albumIds,
-      episodeEntity = episodeEntities.EPISODES,
+      albumEntity = albumEntities.ALBUMS,
       monitored
     } = payload;
 
-    const episodeSection = _.last(episodeEntity.split('.'));
+    const albumSection = _.last(albumEntity.split('.'));
 
     dispatch(batchActions(
       albumIds.map((albumId) => {
         return updateItem({
           id: albumId,
-          section: episodeSection,
+          section: albumSection,
           isSaving: true
         });
       })
@@ -174,7 +174,7 @@ export const actionHandlers = handleThunks({
         albumIds.map((albumId) => {
           return updateItem({
             id: albumId,
-            section: episodeSection,
+            section: albumSection,
             isSaving: false,
             monitored
           });
@@ -187,7 +187,7 @@ export const actionHandlers = handleThunks({
         albumIds.map((albumId) => {
           return updateItem({
             id: albumId,
-            section: episodeSection,
+            section: albumSection,
             isSaving: false
           });
         })
@@ -201,9 +201,9 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [SET_EPISODES_TABLE_OPTION]: createSetTableOptionReducer(section),
+  [SET_ALBUMS_TABLE_OPTION]: createSetTableOptionReducer(section),
 
-  [CLEAR_EPISODES]: (state) => {
+  [CLEAR_ALBUMS]: (state) => {
     return Object.assign({}, state, {
       isFetching: false,
       isPopulated: false,
@@ -212,6 +212,6 @@ export const reducers = createHandleActions({
     });
   },
 
-  [SET_EPISODES_SORT]: createSetClientSideCollectionSortReducer(section)
+  [SET_ALBUMS_SORT]: createSetClientSideCollectionSortReducer(section)
 
 }, defaultState, section);

@@ -175,7 +175,7 @@ export const actionHandlers = handleThunks({
     });
 
     promise.done((data) => {
-      const episodes = _.filter(getState().episodes.items, { artistId: id, seasonNumber });
+      const albums = _.filter(getState().albums.items, { artistId: id, seasonNumber });
 
       dispatch(batchActions([
         updateItem({
@@ -184,10 +184,10 @@ export const actionHandlers = handleThunks({
           ...data
         }),
 
-        ...episodes.map((episode) => {
+        ...albums.map((album) => {
           return updateItem({
-            id: episode.id,
-            section: 'episodes',
+            id: album.id,
+            section: 'albums',
             monitored
           });
         })

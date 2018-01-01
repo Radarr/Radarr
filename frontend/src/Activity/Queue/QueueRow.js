@@ -8,7 +8,7 @@ import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
-import EpisodeTitleLink from 'Album/EpisodeTitleLink';
+import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EpisodeQuality from 'Album/EpisodeQuality';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import ArtistNameLink from 'Artist/ArtistNameLink';
@@ -68,7 +68,7 @@ class QueueRow extends Component {
       statusMessages,
       errorMessage,
       artist,
-      episode,
+      album,
       quality,
       protocol,
       indexer,
@@ -152,14 +152,14 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'episodeTitle') {
+            if (name === 'albumTitle') {
               return (
                 <TableRowCell key={name}>
-                  <EpisodeTitleLink
-                    albumId={episode.id}
+                  <AlbumTitleLink
+                    albumId={album.id}
                     artistId={artist.id}
-                    trackFileId={episode.trackFileId}
-                    episodeTitle={episode.title}
+                    trackFileId={album.trackFileId}
+                    albumTitle={album.title}
                     showOpenArtistButton={true}
                   />
                 </TableRowCell>
@@ -300,7 +300,7 @@ QueueRow.propTypes = {
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
   artist: PropTypes.object.isRequired,
-  episode: PropTypes.object.isRequired,
+  album: PropTypes.object.isRequired,
   quality: PropTypes.object.isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

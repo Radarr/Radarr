@@ -8,7 +8,7 @@ import { findCommand } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
+import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -18,11 +18,11 @@ import ArtistDetails from './ArtistDetails';
 function createMapStateToProps() {
   return createSelector(
     (state, { nameSlug }) => nameSlug,
-    (state) => state.episodes,
+    (state) => state.albums,
     (state) => state.trackFiles,
     createAllArtistSelector(),
     createCommandsSelector(),
-    (nameSlug, episodes, trackFiles, allArtists, commands) => {
+    (nameSlug, albums, trackFiles, allArtists, commands) => {
       const sortedArtist = _.orderBy(allArtists, 'sortName');
       const artistIndex = _.findIndex(sortedArtist, { nameSlug });
       const artist = sortedArtist[artistIndex];
@@ -41,9 +41,9 @@ function createMapStateToProps() {
       const isRenamingArtistCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
       const isRenamingArtist = !!(isRenamingArtistCommand && isRenamingArtistCommand.body.artistId.indexOf(artist.id) > -1);
 
-      const isFetching = episodes.isFetching || trackFiles.isFetching;
-      const isPopulated = episodes.isPopulated && trackFiles.isPopulated;
-      const episodesError = episodes.error;
+      const isFetching = albums.isFetching || trackFiles.isFetching;
+      const isPopulated = albums.isPopulated && trackFiles.isPopulated;
+      const albumsError = albums.error;
       const trackFilesError = trackFiles.error;
       const alternateTitles = _.reduce(artist.alternateTitles, (acc, alternateTitle) => {
         if ((alternateTitle.seasonNumber === -1 || alternateTitle.seasonNumber === undefined) &&
@@ -65,7 +65,7 @@ function createMapStateToProps() {
         isRenamingArtist,
         isFetching,
         isPopulated,
-        episodesError,
+        albumsError,
         trackFilesError,
         previousArtist,
         nextArtist
@@ -75,8 +75,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchEpisodes,
-  clearEpisodes,
+  fetchAlbums,
+  clearAlbums,
   fetchTrackFiles,
   clearTrackFiles,
   fetchQueueDetails,
@@ -112,7 +112,7 @@ class ArtistDetailsConnector extends Component {
       this.populate();
     }
 
-    // If the id has changed we need to clear the episodes/episode
+    // If the id has changed we need to clear the albums
     // files and fetch from the server.
 
     if (prevProps.id !== id) {
@@ -132,13 +132,13 @@ class ArtistDetailsConnector extends Component {
   populate = () => {
     const artistId = this.props.id;
 
-    this.props.fetchEpisodes({ artistId });
+    this.props.fetchAlbums({ artistId });
     this.props.fetchTrackFiles({ artistId });
     this.props.fetchQueueDetails({ artistId });
   }
 
   unpopulate = () => {
-    this.props.clearEpisodes();
+    this.props.clearAlbums();
     this.props.clearTrackFiles();
     this.props.clearQueueDetails();
   }
@@ -182,8 +182,8 @@ ArtistDetailsConnector.propTypes = {
   isRefreshing: PropTypes.bool.isRequired,
   isRenamingFiles: PropTypes.bool.isRequired,
   isRenamingArtist: PropTypes.bool.isRequired,
-  fetchEpisodes: PropTypes.func.isRequired,
-  clearEpisodes: PropTypes.func.isRequired,
+  fetchAlbums: PropTypes.func.isRequired,
+  clearAlbums: PropTypes.func.isRequired,
   fetchTrackFiles: PropTypes.func.isRequired,
   clearTrackFiles: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,

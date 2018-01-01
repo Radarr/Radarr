@@ -5,7 +5,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Icon from 'Components/Icon';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import InteractiveEpisodeSearchRow from './InteractiveEpisodeSearchRow';
+import InteractiveAlbumSearchRow from './InteractiveAlbumSearchRow';
 
 const columns = [
   {
@@ -66,7 +66,7 @@ const columns = [
   }
 ];
 
-function InteractiveEpisodeSearch(props) {
+function InteractiveAlbumSearch(props) {
   const {
     isFetching,
     isPopulated,
@@ -99,7 +99,7 @@ function InteractiveEpisodeSearch(props) {
         {
           items.map((item) => {
             return (
-              <InteractiveEpisodeSearchRow
+              <InteractiveAlbumSearchRow
                 key={item.guid}
                 {...item}
                 longDateFormat={longDateFormat}
@@ -114,7 +114,7 @@ function InteractiveEpisodeSearch(props) {
   );
 }
 
-InteractiveEpisodeSearch.propTypes = {
+InteractiveAlbumSearch.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -127,4 +127,4 @@ InteractiveEpisodeSearch.propTypes = {
   onGrabPress: PropTypes.func.isRequired
 };
 
-export default InteractiveEpisodeSearch;
+export default InteractiveAlbumSearch;

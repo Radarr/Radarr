@@ -9,22 +9,22 @@ import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as queueActions from 'Store/Actions/queueActions';
-import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
+import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import * as commandNames from 'Commands/commandNames';
 import Queue from './Queue';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.episodes,
+    (state) => state.albums,
     (state) => state.queue.paged,
     createCommandsSelector(),
-    (episodes, queue, commands) => {
+    (albums, queue, commands) => {
       const isCheckForFinishedDownloadExecuting = _.some(commands, { name: commandNames.CHECK_FOR_FINISHED_DOWNLOAD });
 
       return {
-        isAlbumsFetching: episodes.isFetching,
-        isAlbumsPopulated: episodes.isPopulated,
-        episodesError: episodes.error,
+        isAlbumsFetching: albums.isFetching,
+        isAlbumsPopulated: albums.isPopulated,
+        albumsError: albums.error,
         isCheckForFinishedDownloadExecuting,
         ...queue
       };
@@ -34,8 +34,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   ...queueActions,
-  fetchEpisodes,
-  clearEpisodes,
+  fetchAlbums,
+  clearAlbums,
   executeCommand
 };
 
@@ -53,9 +53,9 @@ class QueueConnector extends Component {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       const albumIds = selectUniqueIds(this.props.items, 'albumId');
       if (albumIds.length) {
-        this.props.fetchEpisodes({ albumIds });
+        this.props.fetchAlbums({ albumIds });
       } else {
-        this.props.clearEpisodes();
+        this.props.clearAlbums();
       }
 
     }
@@ -64,7 +64,7 @@ class QueueConnector extends Component {
   componentWillUnmount() {
     unregisterPagePopulator(this.repopulate);
     this.props.clearQueue();
-    this.props.clearEpisodes();
+    this.props.clearAlbums();
   }
 
   //
@@ -158,8 +158,8 @@ QueueConnector.propTypes = {
   clearQueue: PropTypes.func.isRequired,
   grabQueueItems: PropTypes.func.isRequired,
   removeQueueItems: PropTypes.func.isRequired,
-  fetchEpisodes: PropTypes.func.isRequired,
-  clearEpisodes: PropTypes.func.isRequired,
+  fetchAlbums: PropTypes.func.isRequired,
+  clearAlbums: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

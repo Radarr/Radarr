@@ -2,13 +2,13 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchHistory, markAsFailed } from 'Store/Actions/historyActions';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
+import createAlbumSelector from 'Store/Selectors/createAlbumSelector';
 import ArtistHistoryRow from './ArtistHistoryRow';
 
 function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
-    createEpisodeSelector(),
+    createAlbumSelector(),
     (artist, album) => {
       return {
         artist,

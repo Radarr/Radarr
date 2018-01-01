@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
-import { toggleEpisodeMonitored } from 'Store/Actions/episodeActions';
-import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
+import { toggleAlbumMonitored } from 'Store/Actions/albumActions';
+import createAlbumSelector from 'Store/Selectors/createAlbumSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import episodeEntities from 'Album/episodeEntities';
+import albumEntities from 'Album/albumEntities';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
-import EpisodeDetailsModalContent from './EpisodeDetailsModalContent';
+import AlbumDetailsModalContent from './AlbumDetailsModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createEpisodeSelector(),
+    createAlbumSelector(),
     createArtistSelector(),
     (album, artist) => {
       const {
@@ -52,11 +52,11 @@ function createMapDispatchToProps(dispatch, props) {
     onMonitorAlbumPress(monitored) {
       const {
         albumId,
-        episodeEntity
+        albumEntity
       } = this.props;
 
-      dispatch(toggleEpisodeMonitored({
-        episodeEntity,
+      dispatch(toggleAlbumMonitored({
+        albumEntity,
         albumId,
         monitored
       }));
@@ -64,7 +64,7 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-class EpisodeDetailsModalContentConnector extends Component {
+class AlbumDetailsModalContentConnector extends Component {
 
   //
   // Lifecycle
@@ -103,14 +103,14 @@ class EpisodeDetailsModalContentConnector extends Component {
     } = this.props;
 
     return (
-      <EpisodeDetailsModalContent {...otherProps} />
+      <AlbumDetailsModalContent {...otherProps} />
     );
   }
 }
 
-EpisodeDetailsModalContentConnector.propTypes = {
+AlbumDetailsModalContentConnector.propTypes = {
   albumId: PropTypes.number.isRequired,
-  episodeEntity: PropTypes.string.isRequired,
+  albumEntity: PropTypes.string.isRequired,
   artistId: PropTypes.number.isRequired,
   dispatchFetchTracks: PropTypes.func.isRequired,
   dispatchClearTracks: PropTypes.func.isRequired,
@@ -118,8 +118,8 @@ EpisodeDetailsModalContentConnector.propTypes = {
   dispatchClearReleases: PropTypes.func.isRequired
 };
 
-EpisodeDetailsModalContentConnector.defaultProps = {
-  episodeEntity: episodeEntities.EPISODES
+AlbumDetailsModalContentConnector.defaultProps = {
+  albumEntity: albumEntities.ALBUMS
 };
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(EpisodeDetailsModalContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(AlbumDetailsModalContentConnector);

@@ -6,11 +6,11 @@ import Label from 'Components/Label';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import EpisodeAiringConnector from './EpisodeAiringConnector';
+import AlbumReleasingConnector from './AlbumReleasingConnector';
 import TrackDetailRow from './TrackDetailRow';
-import styles from './EpisodeSummary.css';
+import styles from './AlbumSummary.css';
 
-class EpisodeSummary extends Component {
+class AlbumSummary extends Component {
 
   //
   // Lifecycle
@@ -63,7 +63,7 @@ class EpisodeSummary extends Component {
         <div>
           <span className={styles.infoTitle}>Releases</span>
 
-          <EpisodeAiringConnector
+          <AlbumReleasingConnector
             releaseDate={releaseDate}
             albumLabel={albumLabel}
           />
@@ -92,7 +92,7 @@ class EpisodeSummary extends Component {
 
         <div>
           {
-            <div className={styles.episodes}>
+            <div className={styles.albums}>
               {
                 items.length ?
                   <Table
@@ -113,7 +113,7 @@ class EpisodeSummary extends Component {
                     </TableBody>
                   </Table> :
 
-                  <div className={styles.noEpisodes}>
+                  <div className={styles.noAlbums}>
                     No tracks in this group
                   </div>
               }
@@ -124,7 +124,7 @@ class EpisodeSummary extends Component {
         <ConfirmModal
           isOpen={this.state.isRemoveTrackFileModalOpen}
           kind={kinds.DANGER}
-          title="Delete Episode File"
+          title="Delete Track File"
           message={`Are you sure you want to delete '${path}'?`}
           confirmLabel="Delete"
           onConfirm={this.onConfirmRemoveTrackFile}
@@ -135,7 +135,7 @@ class EpisodeSummary extends Component {
   }
 }
 
-EpisodeSummary.propTypes = {
+AlbumSummary.propTypes = {
   qualityProfileId: PropTypes.number.isRequired,
   overview: PropTypes.string,
   albumLabel: PropTypes.arrayOf(PropTypes.string),
@@ -149,4 +149,4 @@ EpisodeSummary.propTypes = {
   onDeleteTrackFile: PropTypes.func.isRequired
 };
 
-export default EpisodeSummary;
+export default AlbumSummary;

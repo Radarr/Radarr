@@ -54,8 +54,8 @@ class AlbumStudioAlbum extends Component {
 
         <div
           className={classNames(
-            styles.episodes,
-            percentOfTracks === 100 && styles.allEpisodes
+            styles.tracks,
+            percentOfTracks === 100 && styles.allTracks
           )}
           title={`${trackFileCount}/${totalTrackCount} tracks downloaded`}
         >

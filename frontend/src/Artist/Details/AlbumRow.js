@@ -7,13 +7,13 @@ import TableRow from 'Components/Table/TableRow';
 import Label from 'Components/Label';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
-import EpisodeSearchCellConnector from 'Album/EpisodeSearchCellConnector';
-import EpisodeTitleLink from 'Album/EpisodeTitleLink';
+import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
+import AlbumTitleLink from 'Album/AlbumTitleLink';
 
 import styles from './AlbumRow.css';
 
-function getEpisodeCountKind(monitored, trackFileCount, episodeCount) {
-  if (trackFileCount === episodeCount && episodeCount > 0) {
+function getTrackCountKind(monitored, trackFileCount, trackCount) {
+  if (trackFileCount === trackCount && trackCount > 0) {
     return kinds.SUCCESS;
   }
 
@@ -111,10 +111,10 @@ class AlbumRow extends Component {
                   key={name}
                   className={styles.title}
                 >
-                  <EpisodeTitleLink
+                  <AlbumTitleLink
                     albumId={id}
                     artistId={artistId}
-                    episodeTitle={title}
+                    albumTitle={title}
                     showOpenArtistButton={false}
                   />
                 </TableRowCell>
@@ -168,7 +168,7 @@ class AlbumRow extends Component {
                 >
                   <Label
                     title={`${totalTrackCount} tracks total. ${trackFileCount} tracks with files.`}
-                    kind={getEpisodeCountKind(monitored, trackFileCount, trackCount)}
+                    kind={getTrackCountKind(monitored, trackFileCount, trackCount)}
                     size={sizes.MEDIUM}
                   >
                     {
@@ -181,11 +181,11 @@ class AlbumRow extends Component {
 
             if (name === 'actions') {
               return (
-                <EpisodeSearchCellConnector
+                <AlbumSearchCellConnector
                   key={name}
                   albumId={id}
                   artistId={artistId}
-                  episodeTitle={title}
+                  albumTitle={title}
                 />
               );
             }

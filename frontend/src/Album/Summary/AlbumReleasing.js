@@ -7,7 +7,7 @@ import isTomorrow from 'Utilities/Date/isTomorrow';
 import { kinds, sizes } from 'Helpers/Props';
 import Label from 'Components/Label';
 
-function EpisodeAiring(props) {
+function AlbumReleasing(props) {
   const {
     releaseDate,
     albumLabel,
@@ -71,11 +71,11 @@ function EpisodeAiring(props) {
   );
 }
 
-EpisodeAiring.propTypes = {
+AlbumReleasing.propTypes = {
   releaseDate: PropTypes.string.isRequired,
   albumLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired
 };
 
-export default EpisodeAiring;
+export default AlbumReleasing;

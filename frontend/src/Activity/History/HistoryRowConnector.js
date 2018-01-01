@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchHistory, markAsFailed } from 'Store/Actions/historyActions';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
+import createAlbumSelector from 'Store/Selectors/createAlbumSelector';
 import createTrackSelector from 'Store/Selectors/createTrackSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import HistoryRow from './HistoryRow';
@@ -12,7 +12,7 @@ import HistoryRow from './HistoryRow';
 function createMapStateToProps() {
   return createSelector(
     createArtistSelector(),
-    createEpisodeSelector(),
+    createAlbumSelector(),
     createTrackSelector(),
     createUISettingsSelector(),
     (artist, album, track, uiSettings) => {

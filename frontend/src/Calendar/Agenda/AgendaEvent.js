@@ -7,8 +7,8 @@ import { icons } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import episodeEntities from 'Album/episodeEntities';
-import EpisodeDetailsModal from 'Album/EpisodeDetailsModal';
+import albumEntities from 'Album/albumEntities';
+import AlbumDetailsModal from 'Album/AlbumDetailsModal';
 import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
 import styles from './AgendaEvent.css';
 
@@ -88,7 +88,7 @@ class AgendaEvent extends Component {
             {artist.artistName}
           </div>
 
-          <div className={styles.episodeSeparator}> - </div>
+          <div className={styles.albumSeparator}> - </div>
 
           <div className={styles.albumTitle}>
             {title}
@@ -110,12 +110,12 @@ class AgendaEvent extends Component {
           }
         </Link>
 
-        <EpisodeDetailsModal
+        <AlbumDetailsModal
           isOpen={this.state.isDetailsModalOpen}
           albumId={id}
-          episodeEntity={episodeEntities.CALENDAR}
+          albumEntity={albumEntities.CALENDAR}
           artistId={artist.id}
-          episodeTitle={title}
+          albumTitle={title}
           showOpenArtistButton={true}
           onModalClose={this.onDetailsModalClose}
         />

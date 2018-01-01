@@ -6,20 +6,20 @@ import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePo
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import * as historyActions from 'Store/Actions/historyActions';
-import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
+import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
 import History from './History';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.history,
-    (state) => state.episodes,
+    (state) => state.albums,
     (state) => state.tracks,
-    (history, episodes, tracks) => {
+    (history, albums, tracks) => {
       return {
-        isAlbumsFetching: episodes.isFetching,
-        isAlbumsPopulated: episodes.isPopulated,
-        episodesError: episodes.error,
+        isAlbumsFetching: albums.isFetching,
+        isAlbumsPopulated: albums.isPopulated,
+        albumsError: albums.error,
         isTracksFetching: tracks.isFetching,
         isTracksPopulated: tracks.isPopulated,
         tracksError: tracks.error,
@@ -31,8 +31,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   ...historyActions,
-  fetchEpisodes,
-  clearEpisodes,
+  fetchAlbums,
+  clearAlbums,
   fetchTracks,
   clearTracks
 };
@@ -52,9 +52,9 @@ class HistoryConnector extends Component {
       const albumIds = selectUniqueIds(this.props.items, 'albumId');
       const trackIds = selectUniqueIds(this.props.items, 'trackId');
       if (albumIds.length) {
-        this.props.fetchEpisodes({ albumIds });
+        this.props.fetchAlbums({ albumIds });
       } else {
-        this.props.clearEpisodes();
+        this.props.clearAlbums();
       }
       if (trackIds.length) {
         this.props.fetchTracks({ trackIds });
@@ -67,7 +67,7 @@ class HistoryConnector extends Component {
   componentWillUnmount() {
     unregisterPagePopulator(this.repopulate);
     this.props.clearHistory();
-    this.props.clearEpisodes();
+    this.props.clearAlbums();
     this.props.clearTracks();
   }
 
@@ -149,8 +149,8 @@ HistoryConnector.propTypes = {
   setHistoryFilter: PropTypes.func.isRequired,
   setHistoryTableOption: PropTypes.func.isRequired,
   clearHistory: PropTypes.func.isRequired,
-  fetchEpisodes: PropTypes.func.isRequired,
-  clearEpisodes: PropTypes.func.isRequired,
+  fetchAlbums: PropTypes.func.isRequired,
+  clearAlbums: PropTypes.func.isRequired,
   fetchTracks: PropTypes.func.isRequired,
   clearTracks: PropTypes.func.isRequired
 };

@@ -42,7 +42,7 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'episodeTitle',
+      name: 'albumTitle',
       label: 'Album Title',
       isVisible: true
     },

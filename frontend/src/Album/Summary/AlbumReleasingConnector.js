@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import EpisodeAiring from './EpisodeAiring';
+import AlbumReleasing from './AlbumReleasing';
 
 function createMapStateToProps() {
   return createSelector(
@@ -16,4 +16,4 @@ function createMapStateToProps() {
   );
 }
 
-export default connect(createMapStateToProps)(EpisodeAiring);
+export default connect(createMapStateToProps)(AlbumReleasing);

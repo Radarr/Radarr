@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Link from 'Components/Link/Link';
-import EpisodeDetailsModal from 'Album/EpisodeDetailsModal';
-import styles from './EpisodeTitleLink.css';
+import AlbumDetailsModal from 'Album/AlbumDetailsModal';
+import styles from './AlbumTitleLink.css';
 
-class EpisodeTitleLink extends Component {
+class AlbumTitleLink extends Component {
 
   //
   // Lifecycle
@@ -33,7 +33,7 @@ class EpisodeTitleLink extends Component {
 
   render() {
     const {
-      episodeTitle,
+      albumTitle,
       ...otherProps
     } = this.props;
 
@@ -43,12 +43,12 @@ class EpisodeTitleLink extends Component {
           className={styles.link}
           onPress={this.onLinkPress}
         >
-          {episodeTitle}
+          {albumTitle}
         </Link>
 
-        <EpisodeDetailsModal
+        <AlbumDetailsModal
           isOpen={this.state.isDetailsModalOpen}
-          episodeTitle={episodeTitle}
+          albumTitle={albumTitle}
           {...otherProps}
           onModalClose={this.onModalClose}
         />
@@ -57,12 +57,12 @@ class EpisodeTitleLink extends Component {
   }
 }
 
-EpisodeTitleLink.propTypes = {
-  episodeTitle: PropTypes.string.isRequired
+AlbumTitleLink.propTypes = {
+  albumTitle: PropTypes.string.isRequired
 };
 
-EpisodeTitleLink.defaultProps = {
+AlbumTitleLink.defaultProps = {
   showArtistButton: false
 };
 
-export default EpisodeTitleLink;
+export default AlbumTitleLink;

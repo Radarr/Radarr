@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
+import createAlbumSelector from 'Store/Selectors/createAlbumSelector';
 import createQueueItemSelector from 'Store/Selectors/createQueueItemSelector';
 import createTrackFileSelector from 'Store/Selectors/createTrackFileSelector';
 import EpisodeStatus from './EpisodeStatus';
 
 function createMapStateToProps() {
   return createSelector(
-    createEpisodeSelector(),
+    createAlbumSelector(),
     createQueueItemSelector(),
     createTrackFileSelector(),
-    (episode, queueItem, trackFile) => {
-      const result = _.pick(episode, [
+    (album, queueItem, trackFile) => {
+      const result = _.pick(album, [
         'airDateUtc',
         'monitored',
         'grabbed'

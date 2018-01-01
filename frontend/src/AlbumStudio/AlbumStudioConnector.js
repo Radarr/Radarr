@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import connectSection from 'Store/connectSection';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { setAlbumStudioSort, setAlbumStudioFilter, saveAlbumStudio } from 'Store/Actions/albumStudioActions';
-import { fetchEpisodes, clearEpisodes } from 'Store/Actions/episodeActions';
+import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
 import AlbumStudio from './AlbumStudio';
 
 function createMapStateToProps() {
@@ -19,8 +19,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchEpisodes,
-  clearEpisodes,
+  fetchAlbums,
+  clearAlbums,
   setAlbumStudioSort,
   setAlbumStudioFilter,
   saveAlbumStudio
@@ -43,11 +43,11 @@ class AlbumStudioConnector extends Component {
   // Control
 
   populate = () => {
-    this.props.fetchEpisodes();
+    this.props.fetchAlbums();
   }
 
   unpopulate = () => {
-    this.props.clearEpisodes();
+    this.props.clearAlbums();
   }
 
   //
@@ -83,8 +83,8 @@ class AlbumStudioConnector extends Component {
 AlbumStudioConnector.propTypes = {
   setAlbumStudioSort: PropTypes.func.isRequired,
   setAlbumStudioFilter: PropTypes.func.isRequired,
-  fetchEpisodes: PropTypes.func.isRequired,
-  clearEpisodes: PropTypes.func.isRequired,
+  fetchAlbums: PropTypes.func.isRequired,
+  clearAlbums: PropTypes.func.isRequired,
   saveAlbumStudio: PropTypes.func.isRequired
 };
 

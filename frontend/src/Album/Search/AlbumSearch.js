@@ -3,9 +3,9 @@ import React from 'react';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Icon from 'Components/Icon';
-import styles from './EpisodeSearch.css';
+import styles from './AlbumSearch.css';
 
-function EpisodeSearch(props) {
+function AlbumSearch(props) {
   const {
     onQuickSearchPress,
     onInteractiveSearchPress
@@ -47,9 +47,9 @@ function EpisodeSearch(props) {
   );
 }
 
-EpisodeSearch.propTypes = {
+AlbumSearch.propTypes = {
   onQuickSearchPress: PropTypes.func.isRequired,
   onInteractiveSearchPress: PropTypes.func.isRequired
 };
 
-export default EpisodeSearch;
+export default AlbumSearch;

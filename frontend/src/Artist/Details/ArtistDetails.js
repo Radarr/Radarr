@@ -91,7 +91,7 @@ class ArtistDetails extends Component {
 
     this.state = {
       isOrganizeModalOpen: false,
-      isManageEpisodesOpen: false,
+      isManageTracksOpen: false,
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: false,
       isArtistHistoryModalOpen: false,
@@ -113,12 +113,12 @@ class ArtistDetails extends Component {
     this.setState({ isOrganizeModalOpen: false });
   }
 
-  onManageEpisodesPress = () => {
-    this.setState({ isManageEpisodesOpen: true });
+  onManageTracksPress = () => {
+    this.setState({ isManageTracksOpen: true });
   }
 
-  onManageEpisodesModalClose = () => {
-    this.setState({ isManageEpisodesOpen: false });
+  onManageTracksModalClose = () => {
+    this.setState({ isManageTracksOpen: false });
   }
 
   onInteractiveImportPress = () => {
@@ -203,7 +203,7 @@ class ArtistDetails extends Component {
       isSearching,
       isFetching,
       isPopulated,
-      episodesError,
+      albumsError,
       trackFilesError,
       previousArtist,
       nextArtist,
@@ -213,7 +213,7 @@ class ArtistDetails extends Component {
 
     const {
       isOrganizeModalOpen,
-      isManageEpisodesOpen,
+      isManageTracksOpen,
       isEditArtistModalOpen,
       isDeleteArtistModalOpen,
       isArtistHistoryModalOpen,
@@ -271,8 +271,8 @@ class ArtistDetails extends Component {
 
             <PageToolbarButton
               label="Manage Tracks"
-              iconName={icons.EPISODE_FILE}
-              onPress={this.onManageEpisodesPress}
+              iconName={icons.TRACK_FILE}
+              onPress={this.onManageTracksPress}
             />
 
             <PageToolbarButton
@@ -524,12 +524,12 @@ class ArtistDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !episodesError && !trackFilesError &&
+              !isPopulated && !albumsError && !trackFilesError &&
                 <LoadingIndicator />
             }
 
             {
-              !isFetching && episodesError &&
+              !isFetching && albumsError &&
                 <div>Loading albums failed</div>
             }
 
@@ -568,9 +568,9 @@ class ArtistDetails extends Component {
           />
 
           <TrackFileEditorModal
-            isOpen={isManageEpisodesOpen}
+            isOpen={isManageTracksOpen}
             artistId={id}
-            onModalClose={this.onManageEpisodesModalClose}
+            onModalClose={this.onManageTracksModalClose}
           />
 
           <ArtistHistoryModal
@@ -624,7 +624,7 @@ ArtistDetails.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  episodesError: PropTypes.object,
+  albumsError: PropTypes.object,
   trackFilesError: PropTypes.object,
   previousArtist: PropTypes.object.isRequired,
   nextArtist: PropTypes.object.isRequired,

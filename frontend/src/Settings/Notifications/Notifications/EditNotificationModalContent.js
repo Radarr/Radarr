@@ -99,7 +99,7 @@ function EditNotificationModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="onGrab"
-                  helpText="Be notified when episodes are available for download and has been sent to a download client"
+                  helpText="Be notified when albums are available for download and has been sent to a download client"
                   isDisabled={!supportsOnGrab.value}
                   {...onGrab}
                   onChange={onInputChange}
@@ -127,7 +127,7 @@ function EditNotificationModalContent(props) {
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="onUpgrade"
-                      helpText="Be notified when episodes are upgraded to a better quality"
+                      helpText="Be notified when tracks are upgraded to a better quality"
                       isDisabled={!supportsOnUpgrade.value}
                       {...onUpgrade}
                       onChange={onInputChange}
@@ -141,7 +141,7 @@ function EditNotificationModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="onRename"
-                  helpText="Be notified when episodes are renamed"
+                  helpText="Be notified when tracks are renamed"
                   isDisabled={!supportsOnRename.value}
                   {...onRename}
                   onChange={onInputChange}

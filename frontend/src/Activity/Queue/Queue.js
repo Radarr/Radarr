@@ -119,7 +119,7 @@ class Queue extends Component {
       items,
       isAlbumsFetching,
       isAlbumsPopulated,
-      episodesError,
+      albumsError,
       columns,
       totalRecords,
       isGrabbing,
@@ -139,7 +139,7 @@ class Queue extends Component {
 
     const isRefreshing = isFetching || isAlbumsFetching || isCheckForFinishedDownloadExecuting;
     const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
-    const hasError = error || episodesError;
+    const hasError = error || albumsError;
     const selectedCount = this.getSelectedIds().length;
     const disableSelectedActions = selectedCount === 0;
 
@@ -250,7 +250,7 @@ Queue.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   isAlbumsFetching: PropTypes.bool.isRequired,
   isAlbumsPopulated: PropTypes.bool.isRequired,
-  episodesError: PropTypes.object,
+  albumsError: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   isGrabbing: PropTypes.bool.isRequired,

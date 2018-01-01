@@ -42,7 +42,7 @@
   flex: 0 0 100px;
 }
 
-.episodeSeparator {
+.albumSeparator {
   display: none;
 }
 
@@ -98,7 +98,7 @@
     flex: 0 0 auto;
   }
 
-  .episodeSeparator {
+  .albumSeparator {
     display: inline-block;
     margin: 0 5px;
   }

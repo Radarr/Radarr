@@ -4,10 +4,10 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { icons } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
-import episodeEntities from 'Album/episodeEntities';
+import albumEntities from 'Album/albumEntities';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import EpisodeDetailsModal from 'Album/EpisodeDetailsModal';
+import AlbumDetailsModal from 'Album/AlbumDetailsModal';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
 import styles from './CalendarEvent.css';
 
@@ -108,12 +108,12 @@ class CalendarEvent extends Component {
           </div>
         </Link>
 
-        <EpisodeDetailsModal
+        <AlbumDetailsModal
           isOpen={this.state.isDetailsModalOpen}
           albumId={id}
-          episodeEntity={episodeEntities.CALENDAR}
+          albumEntity={albumEntities.CALENDAR}
           artistId={artist.id}
-          episodeTitle={title}
+          albumTitle={title}
           showOpenArtistButton={true}
           onModalClose={this.onDetailsModalClose}
         />

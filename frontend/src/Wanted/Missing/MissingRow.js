@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import episodeEntities from 'Album/episodeEntities';
-import EpisodeTitleLink from 'Album/EpisodeTitleLink';
+import albumEntities from 'Album/albumEntities';
+import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
-import EpisodeSearchCellConnector from 'Album/EpisodeSearchCellConnector';
+import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
@@ -75,11 +75,11 @@ function MissingRow(props) {
           if (name === 'albumTitle') {
             return (
               <TableRowCell key={name}>
-                <EpisodeTitleLink
+                <AlbumTitleLink
                   albumId={id}
                   artistId={artist.id}
-                  episodeEntity={episodeEntities.WANTED_MISSING}
-                  episodeTitle={title}
+                  albumEntity={albumEntities.WANTED_MISSING}
+                  albumTitle={title}
                   showOpenArtistButton={true}
                 />
               </TableRowCell>
@@ -112,7 +112,7 @@ function MissingRow(props) {
           //       <EpisodeStatusConnector
           //         albumId={id}
           //         trackFileId={trackFileId}
-          //         episodeEntity={episodeEntities.WANTED_MISSING}
+          //         albumEntity={albumEntities.WANTED_MISSING}
           //       />
           //     </TableRowCell>
           //   );
@@ -120,12 +120,12 @@ function MissingRow(props) {
 
           if (name === 'actions') {
             return (
-              <EpisodeSearchCellConnector
+              <AlbumSearchCellConnector
                 key={name}
                 albumId={id}
                 artistId={artist.id}
-                episodeTitle={title}
-                episodeEntity={episodeEntities.WANTED_MISSING}
+                albumTitle={title}
+                albumEntity={albumEntities.WANTED_MISSING}
                 showOpenArtistButton={true}
               />
             );

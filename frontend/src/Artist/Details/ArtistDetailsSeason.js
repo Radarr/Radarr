@@ -24,8 +24,8 @@ class ArtistDetailsSeason extends Component {
 
     this.state = {
       isOrganizeModalOpen: false,
-      isManageEpisodesOpen: false,
-      lastToggledEpisode: null
+      isManageTracksOpen: false,
+      lastToggledAlbum: null
     };
   }
 
@@ -68,12 +68,12 @@ class ArtistDetailsSeason extends Component {
     this.setState({ isOrganizeModalOpen: false });
   }
 
-  onManageEpisodesPress = () => {
-    this.setState({ isManageEpisodesOpen: true });
+  onManageTracksPress = () => {
+    this.setState({ isManageTracksOpen: true });
   }
 
-  onManageEpisodesModalClose = () => {
-    this.setState({ isManageEpisodesOpen: false });
+  onManageTracksModalClose = () => {
+    this.setState({ isManageTracksOpen: false });
   }
 
   onExpandPress = () => {
@@ -86,7 +86,7 @@ class ArtistDetailsSeason extends Component {
   }
 
   onMonitorAlbumPress = (albumId, monitored, { shiftKey }) => {
-    const lastToggled = this.state.lastToggledEpisode;
+    const lastToggled = this.state.lastToggledAlbum;
     const albumIds = [albumId];
 
     if (shiftKey && lastToggled) {
@@ -98,7 +98,7 @@ class ArtistDetailsSeason extends Component {
       }
     }
 
-    this.setState({ lastToggledEpisode: albumId });
+    this.setState({ lastToggledAlbum: albumId });
 
     this.props.onMonitorAlbumPress(_.uniq(albumIds), monitored);
   }
@@ -120,7 +120,7 @@ class ArtistDetailsSeason extends Component {
 
     const {
       isOrganizeModalOpen,
-      isManageEpisodesOpen
+      isManageTracksOpen
     } = this.state;
 
     return (
@@ -166,7 +166,7 @@ class ArtistDetailsSeason extends Component {
         <div>
           {
             isExpanded &&
-              <div className={styles.episodes}>
+              <div className={styles.albums}>
                 {
                   items.length ?
                     <Table
@@ -189,7 +189,7 @@ class ArtistDetailsSeason extends Component {
                       </TableBody>
                     </Table> :
 
-                    <div className={styles.noEpisodes}>
+                    <div className={styles.noAlbums}>
                       No albums in this group
                     </div>
                 }
@@ -212,9 +212,9 @@ class ArtistDetailsSeason extends Component {
         />
 
         <TrackFileEditorModal
-          isOpen={isManageEpisodesOpen}
+          isOpen={isManageTracksOpen}
           artistId={artistId}
-          onModalClose={this.onManageEpisodesModalClose}
+          onModalClose={this.onManageTracksModalClose}
         />
       </div>
     );

@@ -5,7 +5,7 @@ import connectSection from 'Store/connectSection';
 import { fetchReleases, setReleasesSort, grabRelease } from 'Store/Actions/releaseActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import InteractiveEpisodeSearch from './InteractiveEpisodeSearch';
+import InteractiveAlbumSearch from './InteractiveAlbumSearch';
 
 function createMapStateToProps() {
   return createSelector(
@@ -27,7 +27,7 @@ const mapDispatchToProps = {
   grabRelease
 };
 
-class InteractiveEpisodeSearchConnector extends Component {
+class InteractiveAlbumSearchConnector extends Component {
 
   //
   // Lifecycle
@@ -64,7 +64,7 @@ class InteractiveEpisodeSearchConnector extends Component {
 
   render() {
     return (
-      <InteractiveEpisodeSearch
+      <InteractiveAlbumSearch
         {...this.props}
         onSortPress={this.onSortPress}
         onGrabPress={this.onGrabPress}
@@ -73,7 +73,7 @@ class InteractiveEpisodeSearchConnector extends Component {
   }
 }
 
-InteractiveEpisodeSearchConnector.propTypes = {
+InteractiveAlbumSearchConnector.propTypes = {
   albumId: PropTypes.number.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   fetchReleases: PropTypes.func.isRequired,
@@ -87,4 +87,4 @@ export default connectSection(
   undefined,
   undefined,
   { section: 'releases' }
-)(InteractiveEpisodeSearchConnector);
+)(InteractiveAlbumSearchConnector);

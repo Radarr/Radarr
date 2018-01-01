@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
-import EpisodeSearch from './EpisodeSearch';
-import InteractiveEpisodeSearchConnector from './InteractiveEpisodeSearchConnector';
+import AlbumSearch from './AlbumSearch';
+import InteractiveAlbumSearchConnector from './InteractiveAlbumSearchConnector';
 
 function createMapStateToProps() {
   return createSelector(
@@ -22,7 +22,7 @@ const mapDispatchToProps = {
   executeCommand
 };
 
-class EpisodeSearchConnector extends Component {
+class AlbumSearchConnector extends Component {
 
   //
   // Lifecycle
@@ -63,14 +63,14 @@ class EpisodeSearchConnector extends Component {
   render() {
     if (this.state.isInteractiveSearchOpen) {
       return (
-        <InteractiveEpisodeSearchConnector
+        <InteractiveAlbumSearchConnector
           {...this.props}
         />
       );
     }
 
     return (
-      <EpisodeSearch
+      <AlbumSearch
         {...this.props}
         onQuickSearchPress={this.onQuickSearchPress}
         onInteractiveSearchPress={this.onInteractiveSearchPress}
@@ -79,7 +79,7 @@ class EpisodeSearchConnector extends Component {
   }
 }
 
-EpisodeSearchConnector.propTypes = {
+AlbumSearchConnector.propTypes = {
   albumId: PropTypes.number.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   startInteractiveSearch: PropTypes.bool.isRequired,
@@ -87,4 +87,4 @@ EpisodeSearchConnector.propTypes = {
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(EpisodeSearchConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(AlbumSearchConnector);

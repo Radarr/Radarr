@@ -13,12 +13,12 @@
   padding: 0 4px;
 }
 
-.episodes {
+.tracks {
   padding: 0 4px;
   background-color: $white;
   color: $defaultColor;
 }
 
-.allEpisodes {
+.allTracks {
   background-color: #e0ffe0;
 }

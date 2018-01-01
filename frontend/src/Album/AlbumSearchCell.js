@@ -4,10 +4,10 @@ import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import EpisodeDetailsModal from './EpisodeDetailsModal';
-import styles from './EpisodeSearchCell.css';
+import AlbumDetailsModal from './AlbumDetailsModal';
+import styles from './AlbumSearchCell.css';
 
-class EpisodeSearchCell extends Component {
+class AlbumSearchCell extends Component {
 
   //
   // Lifecycle
@@ -38,14 +38,14 @@ class EpisodeSearchCell extends Component {
     const {
       albumId,
       artistId,
-      episodeTitle,
+      albumTitle,
       isSearching,
       onSearchPress,
       ...otherProps
     } = this.props;
 
     return (
-      <TableRowCell className={styles.episodeSearchCell}>
+      <TableRowCell className={styles.AlbumSearchCell}>
         <SpinnerIconButton
           name={icons.SEARCH}
           isSpinning={isSearching}
@@ -57,11 +57,11 @@ class EpisodeSearchCell extends Component {
           onPress={this.onManualSearchPress}
         />
 
-        <EpisodeDetailsModal
+        <AlbumDetailsModal
           isOpen={this.state.isDetailsModalOpen}
           albumId={albumId}
           artistId={artistId}
-          episodeTitle={episodeTitle}
+          albumTitle={albumTitle}
           selectedTab="search"
           startInteractiveSearch={true}
           onModalClose={this.onDetailsModalClose}
@@ -72,12 +72,12 @@ class EpisodeSearchCell extends Component {
   }
 }
 
-EpisodeSearchCell.propTypes = {
+AlbumSearchCell.propTypes = {
   albumId: PropTypes.number.isRequired,
   artistId: PropTypes.number.isRequired,
-  episodeTitle: PropTypes.string.isRequired,
+  albumTitle: PropTypes.string.isRequired,
   isSearching: PropTypes.bool.isRequired,
   onSearchPress: PropTypes.func.isRequired
 };
 
-export default EpisodeSearchCell;
+export default AlbumSearchCell;

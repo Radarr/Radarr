@@ -15,8 +15,8 @@ import SelectAlbumModalContent from './SelectAlbumModalContent';
 function createMapStateToProps() {
   return createSelector(
     createClientSideCollectionSelector(),
-    (episodes) => {
-      return episodes;
+    (albums) => {
+      return albums;
     }
   );
 }

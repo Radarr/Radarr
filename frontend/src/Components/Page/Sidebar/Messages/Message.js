@@ -13,7 +13,7 @@ function getIconName(name) {
       return icons.BACKUP;
     case 'CheckHealth':
       return icons.HEALTH;
-    case 'EpisodeSearch':
+    case 'AlbumSearch':
       return icons.SEARCH;
     case 'Housekeeping':
       return icons.HOUSEKEEPING;

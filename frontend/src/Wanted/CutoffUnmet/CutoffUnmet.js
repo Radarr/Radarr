@@ -242,11 +242,11 @@ class CutoffUnmet extends Component {
                 <ConfirmModal
                   isOpen={isConfirmSearchAllCutoffUnmetModalOpen}
                   kind={kinds.DANGER}
-                  title="Search for all Cutoff Unmet episodes"
+                  title="Search for all Cutoff Unmet albums"
                   message={
                     <div>
                       <div>
-                        Are you sure you want to search for all {totalRecords} Cutoff Unmet episodes?
+                        Are you sure you want to search for all {totalRecords} Cutoff Unmet albums?
                       </div>
                       <div>
                         This cannot be cancelled once started without restarting Lidarr.

@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import { createThunk, handleThunks } from 'Store/thunks';
-import episodeEntities from 'Album/episodeEntities';
+import albumEntities from 'Album/albumEntities';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
@@ -60,20 +60,20 @@ export const actionHandlers = handleThunks({
   [DELETE_TRACK_FILE]: function(getState, payload, dispatch) {
     const {
       id: trackFileId,
-      episodeEntity = episodeEntities.EPISODES
+      albumEntity = albumEntities.ALBUMS
     } = payload;
 
-    const episodeSection = _.last(episodeEntity.split('.'));
+    const albumSection = _.last(albumEntity.split('.'));
     const deletePromise = deleteTrackFileHelper(getState, payload, dispatch);
 
     deletePromise.done(() => {
-      const episodes = getState().episodes.items;
-      const tracksWithRemovedFiles = _.filter(episodes, { trackFileId });
+      const albums = getState().albums.items;
+      const tracksWithRemovedFiles = _.filter(albums, { trackFileId });
 
       dispatch(batchActions([
         ...tracksWithRemovedFiles.map((track) => {
           return updateItem({
-            section: episodeSection,
+            section: albumSection,
             ...track,
             trackFileId: 0,
             hasFile: false

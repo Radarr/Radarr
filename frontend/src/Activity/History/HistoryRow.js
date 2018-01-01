@@ -5,8 +5,8 @@ import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import episodeEntities from 'Album/episodeEntities';
-import EpisodeTitleLink from 'Album/EpisodeTitleLink';
+import albumEntities from 'Album/albumEntities';
+import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EpisodeLanguage from 'Album/EpisodeLanguage';
 import EpisodeQuality from 'Album/EpisodeQuality';
 import ArtistNameLink from 'Artist/ArtistNameLink';
@@ -110,14 +110,14 @@ class HistoryRow extends Component {
               );
             }
 
-            if (name === 'episodeTitle') {
+            if (name === 'albumTitle') {
               return (
                 <TableRowCell key={name}>
-                  <EpisodeTitleLink
+                  <AlbumTitleLink
                     albumId={albumId}
-                    episodeEntity={episodeEntities.EPISODES}
+                    albumEntity={albumEntities.ALBUMS}
                     artistId={artist.id}
-                    episodeTitle={album.title}
+                    albumTitle={album.title}
                     showOpenArtistButton={true}
                   />
                 </TableRowCell>

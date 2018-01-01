@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import episodeEntities from 'Album/episodeEntities';
+import albumEntities from 'Album/albumEntities';
 import Button from 'Components/Link/Button';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import EpisodeSummaryConnector from './Summary/EpisodeSummaryConnector';
+import AlbumSummaryConnector from './Summary/AlbumSummaryConnector';
 import AlbumHistoryConnector from './History/AlbumHistoryConnector';
-import EpisodeSearchConnector from './Search/EpisodeSearchConnector';
-import styles from './EpisodeDetailsModalContent.css';
+import AlbumSearchConnector from './Search/AlbumSearchConnector';
+import styles from './AlbumDetailsModalContent.css';
 
 const tabs = [
   'details',
@@ -19,7 +19,7 @@ const tabs = [
   'search'
 ];
 
-class EpisodeDetailsModalContent extends Component {
+class AlbumDetailsModalContent extends Component {
 
   //
   // Lifecycle
@@ -45,13 +45,13 @@ class EpisodeDetailsModalContent extends Component {
   render() {
     const {
       albumId,
-      episodeEntity,
+      albumEntity,
       artistId,
       artistName,
       nameSlug,
       albumLabel,
       artistMonitored,
-      episodeTitle,
+      albumTitle,
       releaseDate,
       monitored,
       isSaving,
@@ -84,7 +84,7 @@ class EpisodeDetailsModalContent extends Component {
 
           <span className={styles.separator}>-</span>
 
-          {episodeTitle}
+          {albumTitle}
         </ModalHeader>
 
         <ModalBody>
@@ -119,9 +119,9 @@ class EpisodeDetailsModalContent extends Component {
             </TabList>
 
             <TabPanel className={styles.tabPanel}>
-              <EpisodeSummaryConnector
+              <AlbumSummaryConnector
                 albumId={albumId}
-                episodeEntity={episodeEntity}
+                albumEntity={albumEntity}
                 releaseDate={releaseDate}
                 albumLabel={albumLabel}
                 artistId={artistId}
@@ -135,7 +135,7 @@ class EpisodeDetailsModalContent extends Component {
             </TabPanel>
 
             <TabPanel className={styles.tabPanel}>
-              <EpisodeSearchConnector
+              <AlbumSearchConnector
                 albumId={albumId}
                 startInteractiveSearch={startInteractiveSearch}
                 onModalClose={onModalClose}
@@ -167,16 +167,16 @@ class EpisodeDetailsModalContent extends Component {
   }
 }
 
-EpisodeDetailsModalContent.propTypes = {
+AlbumDetailsModalContent.propTypes = {
   albumId: PropTypes.number.isRequired,
-  episodeEntity: PropTypes.string.isRequired,
+  albumEntity: PropTypes.string.isRequired,
   artistId: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
   artistMonitored: PropTypes.bool.isRequired,
   releaseDate: PropTypes.string.isRequired,
   albumLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
-  episodeTitle: PropTypes.string.isRequired,
+  albumTitle: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool,
   showOpenArtistButton: PropTypes.bool,
@@ -186,11 +186,11 @@ EpisodeDetailsModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-EpisodeDetailsModalContent.defaultProps = {
+AlbumDetailsModalContent.defaultProps = {
   selectedTab: 'details',
   albumLabel: ['Unknown'],
-  episodeEntity: episodeEntities.EPISODES,
+  albumEntity: albumEntities.ALBUMS,
   startInteractiveSearch: false
 };
 
-export default EpisodeDetailsModalContent;
+export default AlbumDetailsModalContent;

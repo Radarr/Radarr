@@ -13,7 +13,7 @@ import Popover from 'Components/Tooltip/Popover';
 import EpisodeQuality from 'Album/EpisodeQuality';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
-import styles from './InteractiveEpisodeSearchRow.css';
+import styles from './InteractiveAlbumSearchRow.css';
 
 function getDownloadIcon(isGrabbing, isGrabbed, grabError) {
   if (isGrabbing) {
@@ -39,7 +39,7 @@ function getDownloadTooltip(isGrabbing, isGrabbed, grabError) {
   return 'Add to downloaded queue';
 }
 
-class InteractiveEpisodeSearchRow extends Component {
+class InteractiveAlbumSearchRow extends Component {
 
   //
   // Listeners
@@ -171,7 +171,7 @@ class InteractiveEpisodeSearchRow extends Component {
   }
 }
 
-InteractiveEpisodeSearchRow.propTypes = {
+InteractiveAlbumSearchRow.propTypes = {
   guid: PropTypes.string.isRequired,
   protocol: PropTypes.string.isRequired,
   age: PropTypes.number.isRequired,
@@ -196,9 +196,9 @@ InteractiveEpisodeSearchRow.propTypes = {
   onGrabPress: PropTypes.func.isRequired
 };
 
-InteractiveEpisodeSearchRow.defaultProps = {
+InteractiveAlbumSearchRow.defaultProps = {
   isGrabbing: false,
   isGrabbed: false
 };
 
-export default InteractiveEpisodeSearchRow;
+export default InteractiveAlbumSearchRow;

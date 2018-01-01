@@ -5,7 +5,7 @@ import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
-import EpisodeSearchCell from './EpisodeSearchCell';
+import AlbumSearchCell from './AlbumSearchCell';
 
 function createMapStateToProps() {
   return createSelector(
@@ -15,9 +15,9 @@ function createMapStateToProps() {
     createCommandsSelector(),
     (albumId, sceneSeasonNumber, artist, commands) => {
       const isSearching = _.some(commands, (command) => {
-        const episodeSearch = command.name === commandNames.ALBUM_SEARCH;
+        const albumSearch = command.name === commandNames.ALBUM_SEARCH;
 
-        if (!episodeSearch) {
+        if (!albumSearch) {
           return false;
         }
 
@@ -44,4 +44,4 @@ function createMapDispatchToProps(dispatch, props) {
   };
 }
 
-export default connect(createMapStateToProps, createMapDispatchToProps)(EpisodeSearchCell);
+export default connect(createMapStateToProps, createMapDispatchToProps)(AlbumSearchCell);

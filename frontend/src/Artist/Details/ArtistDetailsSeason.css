@@ -75,7 +75,7 @@
   width: 30px;
 }
 
-.episodes {
+.albums {
   padding-top: 15px;
   border-top: 1px solid $borderColor;
 }
@@ -100,7 +100,7 @@
   margin-left: -15px;
 }
 
-.noEpisodes {
+.noAlbums {
   margin-bottom: 15px;
   text-align: center;
 }

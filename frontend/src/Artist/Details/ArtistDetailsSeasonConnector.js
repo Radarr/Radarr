@@ -8,7 +8,7 @@ import { findCommand } from 'Utilities/Command';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { toggleEpisodesMonitored, setEpisodesTableOption } from 'Store/Actions/episodeActions';
+import { toggleAlbumsMonitored, setAlbumsTableOption } from 'Store/Actions/albumActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import ArtistDetailsSeason from './ArtistDetailsSeason';
@@ -16,18 +16,18 @@ import ArtistDetailsSeason from './ArtistDetailsSeason';
 function createMapStateToProps() {
   return createSelector(
     (state, { label }) => label,
-    (state) => state.episodes,
+    (state) => state.albums,
     createArtistSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (label, episodes, artist, commands, dimensions) => {
+    (label, albums, artist, commands, dimensions) => {
 
-      const episodesInSeason = _.filter(episodes.items, { albumType: label });
-      const sortedEpisodes = _.orderBy(episodesInSeason, 'releaseDate', 'desc');
+      const albumsInGroup = _.filter(albums.items, { albumType: label });
+      const sortedAlbums = _.orderBy(albumsInGroup, 'releaseDate', 'desc');
 
       return {
-        items: sortedEpisodes,
-        columns: episodes.columns,
+        items: sortedAlbums,
+        columns: albums.columns,
         artistMonitored: artist.monitored,
         isSmallScreen: dimensions.isSmallScreen
       };
@@ -36,8 +36,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  toggleEpisodesMonitored,
-  setEpisodesTableOption,
+  toggleAlbumsMonitored,
+  setAlbumsTableOption,
   executeCommand
 };
 
@@ -47,11 +47,11 @@ class ArtistDetailsSeasonConnector extends Component {
   // Listeners
 
   onTableOptionChange = (payload) => {
-    this.props.setEpisodesTableOption(payload);
+    this.props.setAlbumsTableOption(payload);
   }
 
   onMonitorAlbumPress = (albumIds, monitored) => {
-    this.props.toggleEpisodesMonitored({
+    this.props.toggleAlbumsMonitored({
       albumIds,
       monitored
     });
@@ -73,8 +73,8 @@ class ArtistDetailsSeasonConnector extends Component {
 
 ArtistDetailsSeasonConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
-  toggleEpisodesMonitored: PropTypes.func.isRequired,
-  setEpisodesTableOption: PropTypes.func.isRequired,
+  toggleAlbumsMonitored: PropTypes.func.isRequired,
+  setAlbumsTableOption: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

@@ -54,7 +54,7 @@ class History extends Component {
       totalRecords,
       isAlbumsFetching,
       isAlbumsPopulated,
-      episodesError,
+      albumsError,
       onFilterSelect,
       onFirstPagePress,
       ...otherProps
@@ -62,7 +62,7 @@ class History extends Component {
 
     const isFetchingAny = isFetching || isAlbumsFetching;
     const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
-    const hasError = error || episodesError;
+    const hasError = error || albumsError;
 
     return (
       <PageContent title="History">
@@ -209,7 +209,7 @@ History.propTypes = {
   totalRecords: PropTypes.number,
   isAlbumsFetching: PropTypes.bool.isRequired,
   isAlbumsPopulated: PropTypes.bool.isRequired,
-  episodesError: PropTypes.object,
+  albumsError: PropTypes.object,
   onFilterSelect: PropTypes.func.isRequired,
   onFirstPagePress: PropTypes.func.isRequired
 };
