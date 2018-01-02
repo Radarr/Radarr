@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using FluentValidation;
 using NzbDrone.Common.EnvironmentInfo;
@@ -75,6 +75,7 @@ namespace Lidarr.Api.V1.Config
                                      .ToDictionary(prop => prop.Name, prop => prop.GetValue(resource, null));
 
             _configFileProvider.SaveConfigDictionary(dictionary);
+            _configService.SaveConfigDictionary(dictionary);
 
             if (resource.Username.IsNotNullOrWhiteSpace() && resource.Password.IsNotNullOrWhiteSpace())
             {
