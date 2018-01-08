@@ -58,6 +58,8 @@ namespace NzbDrone.Core.IndexerSearch
             var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch, interactiveSearch);
             var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
+            albums = albums.Where(a => a.Monitored).ToList();
+
             searchSpec.Albums = albums;
             
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
