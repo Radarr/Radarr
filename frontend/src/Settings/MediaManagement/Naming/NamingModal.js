@@ -69,7 +69,6 @@ class NamingModal extends Component {
     }
   }
 
-
   //
   // Render
 

@@ -57,8 +57,6 @@ class MetadataProfile extends Component {
     onCloneMetadataProfilePress(id);
   }
 
-
-
   //
   // Render
 

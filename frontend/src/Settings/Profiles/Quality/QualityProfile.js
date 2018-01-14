@@ -58,8 +58,6 @@ class QualityProfile extends Component {
     onCloneQualityProfilePress(id);
   }
 
-
-
   //
   // Render
 
