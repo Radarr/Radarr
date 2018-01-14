@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -54,12 +54,12 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing albums released over 14 days ago")]
         public int OlderTvPriority { get; set; }
 
-        [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox)]
-        public bool UseSsl { get; set; }
-
-        [FieldDefinition(8, Label = "Add Paused", Type = FieldType.Checkbox, HelpText = "This option requires at least NzbGet version 16.0")]
+        [FieldDefinition(7, Label = "Add Paused", Type = FieldType.Checkbox, HelpText = "This option requires at least NzbGet version 16.0")]
         public bool AddPaused { get; set; }
 
+        [FieldDefinition(8, Label = "Use SSL", Type = FieldType.Checkbox)]
+        public bool UseSsl { get; set; }
+        
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

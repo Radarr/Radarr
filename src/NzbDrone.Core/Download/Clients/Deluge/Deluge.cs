@@ -40,8 +40,6 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
             }
 
-            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
-
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
             if (isRecentAlbum && Settings.RecentTvPriority == (int)DelugePriority.First ||
@@ -67,12 +65,10 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
             }
 
-            _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
-
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)DelugePriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)DelugePriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)DelugePriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)DelugePriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
             }
