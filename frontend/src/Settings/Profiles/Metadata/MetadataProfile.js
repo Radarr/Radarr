@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditMetadataProfileModalConnector from './EditMetadataProfileModalConnector';
 import styles from './MetadataProfile.css';
@@ -47,6 +48,17 @@ class MetadataProfile extends Component {
     this.props.onConfirmDeleteMetadataProfile(this.props.id);
   }
 
+  onCloneMetadataProfilePress = () => {
+    const {
+      id,
+      onCloneMetadataProfilePress
+    } = this.props;
+
+    onCloneMetadataProfilePress(id);
+  }
+
+
+
   //
   // Render
 
@@ -62,10 +74,20 @@ class MetadataProfile extends Component {
     return (
       <Card
         className={styles.metadataProfile}
+        overlayContent={true}
         onPress={this.onEditMetadataProfilePress}
       >
-        <div className={styles.name}>
-          {name}
+        <div className={styles.nameContainer}>
+          <div className={styles.name}>
+            {name}
+          </div>
+
+          <IconButton
+            className={styles.cloneButton}
+            title="Clone Profile"
+            name={icons.CLONE}
+            onPress={this.onCloneMetadataProfilePress}
+          />
         </div>
 
         <div className={styles.albumTypes}>
@@ -136,7 +158,9 @@ MetadataProfile.propTypes = {
   primaryAlbumTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
   secondaryAlbumTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  onConfirmDeleteMetadataProfile: PropTypes.func.isRequired
+  onConfirmDeleteMetadataProfile: PropTypes.func.isRequired,
+  onCloneMetadataProfilePress: PropTypes.func.isRequired
+
 };
 
 export default MetadataProfile;

@@ -11,6 +11,7 @@ function IconButton(props) {
     name,
     kind,
     size,
+    isSpinning,
     ...otherProps
   } = props;
 
@@ -24,6 +25,7 @@ function IconButton(props) {
         name={name}
         kind={kind}
         size={size}
+        isSpinning={isSpinning}
       />
     </Link>
   );
@@ -34,7 +36,8 @@ IconButton.propTypes = {
   iconClassName: PropTypes.string,
   kind: PropTypes.string,
   name: PropTypes.string.isRequired,
-  size: PropTypes.number
+  size: PropTypes.number,
+  isSpinning: PropTypes.bool
 };
 
 IconButton.defaultProps = {

@@ -25,10 +25,6 @@ class QualityProfileItems extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.onToggleEditGroupsMode();
-  }
-
   //
   // Listeners
 

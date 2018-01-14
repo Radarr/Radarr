@@ -67,7 +67,7 @@ class EditLanguageProfileModalContentConnector extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.id) {
+    if (!this.props.id && !this.props.isPopulated) {
       this.props.fetchLanguageProfileSchema();
     }
   }
@@ -176,6 +176,7 @@ class EditLanguageProfileModalContentConnector extends Component {
 EditLanguageProfileModalContentConnector.propTypes = {
   id: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,

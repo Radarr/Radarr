@@ -26,7 +26,8 @@ function PageToolbarButton(props) {
       {...otherProps}
     >
       <Icon
-        name={isSpinning ? `${spinningName || iconName} fa-spin` : iconName}
+        name={isSpinning ? (spinningName || iconName) : iconName}
+        isSpinning={isSpinning}
         size={22}
       />
 

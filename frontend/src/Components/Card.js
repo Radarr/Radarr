@@ -11,9 +11,26 @@ class Card extends Component {
   render() {
     const {
       className,
+      overlayClassName,
+      overlayContent,
       children,
       onPress
     } = this.props;
+
+    if (overlayContent) {
+      return (
+        <div className={className}>
+          <Link
+            className={styles.underlay}
+            onPress={onPress}
+          />
+
+          <div className={overlayClassName}>
+            {children}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <Link
@@ -28,12 +45,16 @@ class Card extends Component {
 
 Card.propTypes = {
   className: PropTypes.string.isRequired,
+  overlayClassName: PropTypes.string.isRequired,
+  overlayContent: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
   onPress: PropTypes.func.isRequired
 };
 
 Card.defaultProps = {
-  className: styles.card
+  className: styles.card,
+  overlayClassName: styles.overlay,
+  overlayContent: false
 };
 
 export default Card;

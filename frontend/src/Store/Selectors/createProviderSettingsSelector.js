@@ -13,6 +13,7 @@ function createProviderSettingsSelector() {
 
         const {
           isFetchingSchema: isFetching,
+          isSchemaPopulated: isPopulated,
           schemaError: error,
           isSaving,
           saveError,
@@ -22,6 +23,7 @@ function createProviderSettingsSelector() {
 
         return {
           isFetching,
+          isPopulated,
           error,
           isSaving,
           saveError,
@@ -34,6 +36,7 @@ function createProviderSettingsSelector() {
 
       const {
         isFetching,
+        isPopulated,
         error,
         isSaving,
         saveError,
@@ -45,6 +48,7 @@ function createProviderSettingsSelector() {
 
       return {
         isFetching,
+        isPopulated,
         error,
         isSaving,
         saveError,

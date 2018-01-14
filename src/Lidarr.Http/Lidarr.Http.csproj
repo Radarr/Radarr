@@ -119,6 +119,7 @@
     <Compile Include="LidarrBootstrapper.cs" />
     <Compile Include="LidarrRestModule.cs" />
     <Compile Include="LidarrRestModuleWithSignalR.cs" />
+    <Compile Include="REST\UnsupportedMediaTypeException.cs" />
     <Compile Include="TinyIoCNancyBootstrapper.cs" />
     <Compile Include="Validation\EmptyCollectionValidator.cs" />
     <Compile Include="Validation\RssSyncIntervalValidator.cs" />

@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds, tooltipPositions } from 'Helpers/Props';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import EditQualityProfileModalConnector from './EditQualityProfileModalConnector';
@@ -48,6 +49,17 @@ class QualityProfile extends Component {
     this.props.onConfirmDeleteQualityProfile(this.props.id);
   }
 
+  onCloneQualityProfilePress = () => {
+    const {
+      id,
+      onCloneQualityProfilePress
+    } = this.props;
+
+    onCloneQualityProfilePress(id);
+  }
+
+
+
   //
   // Render
 
@@ -63,10 +75,20 @@ class QualityProfile extends Component {
     return (
       <Card
         className={styles.qualityProfile}
+        overlayContent={true}
         onPress={this.onEditQualityProfilePress}
       >
-        <div className={styles.name}>
-          {name}
+        <div className={styles.nameContainer}>
+          <div className={styles.name}>
+            {name}
+          </div>
+
+          <IconButton
+            className={styles.cloneButton}
+            title="Clone Profile"
+            name={icons.CLONE}
+            onPress={this.onCloneQualityProfilePress}
+          />
         </div>
 
         <div className={styles.qualities}>
@@ -157,7 +179,8 @@ QualityProfile.propTypes = {
   cutoff: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  onConfirmDeleteQualityProfile: PropTypes.func.isRequired
+  onConfirmDeleteQualityProfile: PropTypes.func.isRequired,
+  onCloneQualityProfilePress: PropTypes.func.isRequired
 };
 
 export default QualityProfile;

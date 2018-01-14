@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchLanguageProfiles, deleteLanguageProfile } from 'Store/Actions/settingsActions';
+import { fetchLanguageProfiles, deleteLanguageProfile, cloneLanguageProfile } from 'Store/Actions/settingsActions';
 import LanguageProfiles from './LanguageProfiles';
 
 function createMapStateToProps() {
@@ -19,8 +19,9 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchLanguageProfiles,
-  deleteLanguageProfile
+  dispatchFetchLanguageProfiles: fetchLanguageProfiles,
+  dispatchDeleteLanguageProfile: deleteLanguageProfile,
+  dispatchCloneLanguageProfile: cloneLanguageProfile
 };
 
 class LanguageProfilesConnector extends Component {
@@ -29,14 +30,18 @@ class LanguageProfilesConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchLanguageProfiles();
+    this.props.dispatchFetchLanguageProfiles();
   }
 
   //
   // Listeners
 
   onConfirmDeleteLanguageProfile = (id) => {
-    this.props.deleteLanguageProfile({ id });
+    this.props.dispatchDeleteLanguageProfile({ id });
+  }
+
+  onCloneLanguageProfilePress = (id) => {
+    this.props.dispatchCloneLanguageProfile({ id });
   }
 
   //
@@ -46,6 +51,7 @@ class LanguageProfilesConnector extends Component {
     return (
       <LanguageProfiles
         onConfirmDeleteLanguageProfile={this.onConfirmDeleteLanguageProfile}
+        onCloneLanguageProfilePress={this.onCloneLanguageProfilePress}
         {...this.props}
       />
     );
@@ -53,8 +59,9 @@ class LanguageProfilesConnector extends Component {
 }
 
 LanguageProfilesConnector.propTypes = {
-  fetchLanguageProfiles: PropTypes.func.isRequired,
-  deleteLanguageProfile: PropTypes.func.isRequired
+  dispatchFetchLanguageProfiles: PropTypes.func.isRequired,
+  dispatchDeleteLanguageProfile: PropTypes.func.isRequired,
+  dispatchCloneLanguageProfile: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(LanguageProfilesConnector);

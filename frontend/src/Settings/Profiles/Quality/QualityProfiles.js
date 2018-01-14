@@ -26,6 +26,11 @@ class QualityProfiles extends Component {
   //
   // Listeners
 
+  onCloneQualityProfilePress = (id) => {
+    this.props.onCloneQualityProfilePress(id);
+    this.setState({ isQualityProfileModalOpen: true });
+  }
+
   onEditQualityProfilePress = () => {
     this.setState({ isQualityProfileModalOpen: true });
   }
@@ -51,7 +56,7 @@ class QualityProfiles extends Component {
       >
         <PageSectionContent
           errorMessage="Unable to load Quality Profiles"
-          {...otherProps}
+          {...otherProps}c={true}
         >
           <div className={styles.qualityProfiles}>
             {
@@ -62,6 +67,7 @@ class QualityProfiles extends Component {
                     {...item}
                     isDeleting={isDeleting}
                     onConfirmDeleteQualityProfile={onConfirmDeleteQualityProfile}
+                    onCloneQualityProfilePress={this.onCloneQualityProfilePress}
                   />
                 );
               })
@@ -95,7 +101,8 @@ QualityProfiles.propTypes = {
   error: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onConfirmDeleteQualityProfile: PropTypes.func.isRequired
+  onConfirmDeleteQualityProfile: PropTypes.func.isRequired,
+  onCloneQualityProfilePress: PropTypes.func.isRequired
 };
 
 export default QualityProfiles;

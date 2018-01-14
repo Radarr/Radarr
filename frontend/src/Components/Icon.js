@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { kinds } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import classNames from 'classnames';
 import styles from './Icon.css';
 
@@ -10,7 +10,8 @@ function Icon(props) {
     name,
     kind,
     size,
-    title
+    title,
+    isSpinning
   } = props;
 
   return (
@@ -18,7 +19,8 @@ function Icon(props) {
       className={classNames(
         name,
         className,
-        styles[kind]
+        styles[kind],
+        isSpinning && icons.SPIN
       )}
       title={title}
       style={{
@@ -33,12 +35,14 @@ Icon.propTypes = {
   name: PropTypes.string.isRequired,
   kind: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
-  title: PropTypes.string
+  title: PropTypes.string,
+  isSpinning: PropTypes.bool.isRequired
 };
 
 Icon.defaultProps = {
   kind: kinds.DEFAULT,
-  size: 14
+  size: 14,
+  isSpinning: false
 };
 
 export default Icon;

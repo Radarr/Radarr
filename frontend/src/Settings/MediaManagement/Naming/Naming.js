@@ -96,43 +96,19 @@ class Naming extends Component {
       if (examples.singleTrackExample) {
         standardTrackFormatHelpTexts.push(`Single Track: ${examples.singleTrackExample}`);
       } else {
-        standardTrackFormatErrors.push('Single Track: Invalid Format');
+        standardTrackFormatErrors.push({ message: 'Single Track: Invalid Format' });
       }
-
-      // if (examples.multiEpisodeExample) {
-      //   standardTrackFormatHelpTexts.push(`Multi Episode: ${examples.multiEpisodeExample}`);
-      // } else {
-      //   standardTrackFormatErrors.push('Multi Episode: Invalid Format');
-      // }
-
-      // if (examples.dailyEpisodeExample) {
-      //  dailyEpisodeFormatHelpTexts.push(`Example: ${examples.dailyEpisodeExample}`);
-      // } else {
-      //  dailyEpisodeFormatErrors.push('Invalid Format');
-      // }
-
-      // if (examples.animeEpisodeExample) {
-      //   animeEpisodeFormatHelpTexts.push(`Single Episode: ${examples.animeEpisodeExample}`);
-      // } else {
-      //   animeEpisodeFormatErrors.push('Single Episode: Invalid Format');
-      // }
-
-      // if (examples.animeMultiEpisodeExample) {
-      //   animeEpisodeFormatHelpTexts.push(`Multi Episode: ${examples.animeMultiEpisodeExample}`);
-      // } else {
-      //   animeEpisodeFormatErrors.push('Multi Episode: Invalid Format');
-      // }
 
       if (examples.artistFolderExample) {
         artistFolderFormatHelpTexts.push(`Example: ${examples.artistFolderExample}`);
       } else {
-        artistFolderFormatErrors.push('Invalid Format');
+        artistFolderFormatErrors.push({ message: 'Invalid Format' });
       }
 
       if (examples.albumFolderExample) {
         albumFolderFormatHelpTexts.push(`Example: ${examples.albumFolderExample}`);
       } else {
-        albumFolderFormatErrors.push('Invalid Format');
+        albumFolderFormatErrors.push({ message: 'Invalid Format' });
       }
     }
 

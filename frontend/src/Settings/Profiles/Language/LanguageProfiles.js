@@ -26,6 +26,11 @@ class LanguageProfiles extends Component {
   //
   // Listeners
 
+  onCloneLanguageProfilePress = (id) => {
+    this.props.onCloneLanguageProfilePress(id);
+    this.setState({ isLanguageProfileModalOpen: true });
+  }
+
   onEditLanguageProfilePress = () => {
     this.setState({ isLanguageProfileModalOpen: true });
   }
@@ -62,6 +67,7 @@ class LanguageProfiles extends Component {
                     {...item}
                     isDeleting={isDeleting}
                     onConfirmDeleteLanguageProfile={onConfirmDeleteLanguageProfile}
+                    onCloneLanguageProfilePress={this.onCloneLanguageProfilePress}
                   />
                 );
               })
@@ -96,7 +102,8 @@ LanguageProfiles.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  onConfirmDeleteLanguageProfile: PropTypes.func.isRequired
+  onConfirmDeleteLanguageProfile: PropTypes.func.isRequired,
+  onCloneLanguageProfilePress: PropTypes.func.isRequired
 };
 
 export default LanguageProfiles;

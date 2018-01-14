@@ -14,7 +14,7 @@ function createMapStateToProps() {
     (qualityProfiles) => {
       const {
         isFetchingSchema: isFetching,
-        schemaPopulated: isPopulated,
+        isSchemaPopulated: isPopulated,
         schemaError: error,
         schema
       } = qualityProfiles;

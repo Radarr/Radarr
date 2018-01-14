@@ -42,10 +42,8 @@ function CaptchaInput(props) {
           onPress={onRefreshPress}
         >
           <Icon
-            name={classNames(
-              icons.REFRESH,
-              refreshing && 'fa-spin'
-            )}
+            name={icons.REFRESH}
+            isSpinning={refreshing}
           />
         </FormInputButton>
       </div>

@@ -1,5 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createThunk } from 'Store/thunks';
+import getSectionState from 'Utilities/State/getSectionState';
+import updateSectionState from 'Utilities/State/updateSectionState';
 import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
 import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
 import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
@@ -19,6 +21,7 @@ export const FETCH_LANGUAGE_PROFILE_SCHEMA = 'settings/languageProfiles/fetchLan
 export const SAVE_LANGUAGE_PROFILE = 'settings/languageProfiles/saveLanguageProfile';
 export const DELETE_LANGUAGE_PROFILE = 'settings/languageProfiles/deleteLanguageProfile';
 export const SET_LANGUAGE_PROFILE_VALUE = 'settings/languageProfiles/setLanguageProfileValue';
+export const CLONE_LANGUAGE_PROFILE = 'settings/languageProfiles/cloneLanguageProfile';
 
 //
 // Action Creators
@@ -35,6 +38,8 @@ export const setLanguageProfileValue = createAction(SET_LANGUAGE_PROFILE_VALUE, 
   };
 });
 
+export const cloneLanguageProfile = createAction(CLONE_LANGUAGE_PROFILE);
+
 //
 // Details
 
@@ -50,7 +55,7 @@ export default {
     isDeleting: false,
     deleteError: null,
     isFetchingSchema: false,
-    schemaPopulated: false,
+    isSchemaPopulated: false,
     schemaError: null,
     schema: {},
     isSaving: false,
@@ -73,7 +78,20 @@ export default {
   // Reducers
 
   reducers: {
-    [SET_LANGUAGE_PROFILE_VALUE]: createSetSettingValueReducer(section)
+    [SET_LANGUAGE_PROFILE_VALUE]: createSetSettingValueReducer(section),
+
+    [CLONE_LANGUAGE_PROFILE]: function(state, { payload }) {
+      const id = payload.id;
+      const newState = getSectionState(state, section);
+      const item = newState.items.find((i) => i.id === id);
+      const pendingChanges = { ...item, id: 0 };
+      delete pendingChanges.id;
+
+      pendingChanges.name = `${pendingChanges.name} - Copy`;
+      newState.pendingChanges = pendingChanges;
+
+      return updateSectionState(state, section, newState);
+    }
   }
 
 };

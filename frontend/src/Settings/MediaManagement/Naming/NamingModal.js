@@ -21,6 +21,9 @@ class NamingModal extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._selectionStart = null;
+    this._selectionEnd = null;
+
     this.state = {
       case: 'title'
     };
@@ -32,6 +35,40 @@ class NamingModal extends Component {
   onNamingCaseChange = (event) => {
     this.setState({ case: event.value });
   }
+
+  onInputSelectionChange = (selectionStart, selectionEnd) => {
+    this._selectionStart = selectionStart;
+    this._selectionEnd = selectionEnd;
+  }
+
+  onOptionPress = ({ isFullFilename, tokenValue }) => {
+    const {
+      name,
+      value,
+      onInputChange
+    } = this.props;
+
+    const selectionStart = this._selectionStart;
+    const selectionEnd = this._selectionEnd;
+
+    if (isFullFilename) {
+      onInputChange({ name, value: tokenValue });
+    } else if (selectionStart == null) {
+      onInputChange({
+        name,
+        value: `${value}${tokenValue}`
+      });
+    } else {
+      const start = value.substring(0, selectionStart);
+      const end = value.substring(selectionEnd);
+      const newValue = `${start}${tokenValue}${end}`;
+
+      onInputChange({ name, value: newValue });
+      this._selectionStart = newValue.length - 1;
+      this._selectionEnd = newValue.length - 1;
+    }
+  }
+
 
   //
   // Render
@@ -188,7 +225,7 @@ class NamingModal extends Component {
                             isFullFilename={true}
                             tokenCase={this.state.case}
                             size={sizes.LARGE}
-                            onInputChange={onInputChange}
+                            onPress={this.onOptionPress}
                           />
                         );
                       }
@@ -210,7 +247,7 @@ class NamingModal extends Component {
                         token={token}
                         example={example}
                         tokenCase={this.state.case}
-                        onInputChange={onInputChange}
+                        onPress={this.onOptionPress}
                       />
                     );
                   }
@@ -234,7 +271,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -255,7 +292,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -281,7 +318,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -302,7 +339,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -323,7 +360,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -350,7 +387,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -371,7 +408,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -392,7 +429,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -413,7 +450,7 @@ class NamingModal extends Component {
                               token={token}
                               example={example}
                               tokenCase={this.state.case}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -435,7 +472,7 @@ class NamingModal extends Component {
                               example={example}
                               tokenCase={this.state.case}
                               size={sizes.LARGE}
-                              onInputChange={onInputChange}
+                              onPress={this.onOptionPress}
                             />
                           );
                         }
@@ -452,6 +489,7 @@ class NamingModal extends Component {
               name={name}
               value={value}
               onChange={onInputChange}
+              onSelectionChange={this.onInputSelectionChange}
             />
             <Button onPress={onModalClose}>
               Close

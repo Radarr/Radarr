@@ -1,20 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { icons } from 'Helpers/Props';
-import Icon from 'Components/Icon';
-import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import styles from './Backups.css';
+import BackupRow from './BackupRow';
+import RestoreBackupModalConnector from './RestoreBackupModalConnector';
 
 const columns = [
   {
@@ -30,10 +26,36 @@ const columns = [
     name: 'time',
     label: 'Time',
     isVisible: true
+  },
+  {
+    name: 'actions',
+    isVisible: true
   }
 ];
 
 class Backups extends Component {
+
+  //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isRestoreModalOpen: false
+    };
+  }
+
+  //
+  // Listeners
+
+  onRestorePress = () => {
+    this.setState({ isRestoreModalOpen: true });
+  }
+
+  onRestoreModalClose = () => {
+    this.setState({ isRestoreModalOpen: false });
+  }
 
   //
   // Render
@@ -41,13 +63,16 @@ class Backups extends Component {
   render() {
     const {
       isFetching,
+      isPopulated,
+      error,
       items,
       backupExecuting,
-      onBackupPress
+      onBackupPress,
+      onDeleteBackupPress
     } = this.props;
 
-    const hasBackups = !isFetching && items.length > 0;
-    const noBackups = !isFetching && !items.length;
+    const hasBackups = isPopulated && !!items.length;
+    const noBackups = isPopulated && !items.length;
 
     return (
       <PageContent title="Backups">
@@ -59,13 +84,24 @@ class Backups extends Component {
               isSpinning={backupExecuting}
               onPress={onBackupPress}
             />
+
+            <PageToolbarButton
+              label="Restore Backup"
+              iconName={icons.RESTORE}
+              onPress={this.onRestorePress}
+            />
           </PageToolbarSection>
         </PageToolbar>
 
         <PageContentBodyConnector>
           {
-            isFetching &&
+            isFetching && !isPopulated &&
               <LoadingIndicator />
+          }
+
+          {
+            !isFetching && !!error &&
+              <div>Unable to load backups</div>
           }
 
           {
@@ -89,42 +125,16 @@ class Backups extends Component {
                         time
                       } = item;
 
-                      let iconClassName = icons.SCHEDULED;
-                      let iconTooltip = 'Scheduled';
-
-                      if (type === 'manual') {
-                        iconClassName = icons.INTERACTIVE;
-                        iconTooltip = 'Manual';
-                      } else if (item === 'update') {
-                        iconClassName = icons.UPDATE;
-                        iconTooltip = 'Before update';
-                      }
-
                       return (
-                        <TableRow key={id}>
-                          <TableRowCell className={styles.type}>
-                            {
-                              <Icon
-                                name={iconClassName}
-                                title={iconTooltip}
-                              />
-                            }
-                          </TableRowCell>
-
-                          <TableRowCell>
-                            <Link
-                              to={path}
-                              noRouter={true}
-                            >
-                              {name}
-                            </Link>
-                          </TableRowCell>
-
-                          <RelativeDateCellConnector
-                            className={styles.time}
-                            date={time}
-                          />
-                        </TableRow>
+                        <BackupRow
+                          key={id}
+                          id={id}
+                          type={type}
+                          name={name}
+                          path={path}
+                          time={time}
+                          onDeleteBackupPress={onDeleteBackupPress}
+                        />
                       );
                     })
                   }
@@ -132,6 +142,11 @@ class Backups extends Component {
               </Table>
           }
         </PageContentBodyConnector>
+
+        <RestoreBackupModalConnector
+          isOpen={this.state.isRestoreModalOpen}
+          onModalClose={this.onRestoreModalClose}
+        />
       </PageContent>
     );
   }
@@ -140,9 +155,12 @@ class Backups extends Component {
 
 Backups.propTypes = {
   isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   items: PropTypes.array.isRequired,
   backupExecuting: PropTypes.bool.isRequired,
-  onBackupPress: PropTypes.func.isRequired
+  onBackupPress: PropTypes.func.isRequired,
+  onDeleteBackupPress: PropTypes.func.isRequired
 };
 
 export default Backups;

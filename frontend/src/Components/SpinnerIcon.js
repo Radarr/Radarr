@@ -13,7 +13,7 @@ function SpinnerIcon(props) {
 
   return (
     <Icon
-      name={isSpinning ? `${spinningName || name} fa-spin` : name}
+      name={isSpinning ? (spinningName || name) : name}
       {...otherProps}
     />
   );

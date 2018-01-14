@@ -26,6 +26,11 @@ class MetadataProfiles extends Component {
   //
   // Listeners
 
+  onCloneMetadataProfilePress = (id) => {
+    this.props.onCloneMetadataProfilePress(id);
+    this.setState({ isMetadataProfileModalOpen: true });
+  }
+
   onEditMetadataProfilePress = () => {
     this.setState({ isMetadataProfileModalOpen: true });
   }
@@ -62,6 +67,7 @@ class MetadataProfiles extends Component {
                     {...item}
                     isDeleting={isDeleting}
                     onConfirmDeleteMetadataProfile={onConfirmDeleteMetadataProfile}
+                    onCloneMetadataProfilePress={this.onCloneMetadataProfilePress}
                   />
                 );
               })
@@ -96,7 +102,8 @@ MetadataProfiles.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  onConfirmDeleteMetadataProfile: PropTypes.func.isRequired
+  onConfirmDeleteMetadataProfile: PropTypes.func.isRequired,
+  onCloneMetadataProfilePress: PropTypes.func.isRequired
 };
 
 export default MetadataProfiles;

@@ -90,7 +90,5 @@ namespace NzbDrone.Host
                     }
             }
         }
-
-
     }
 }

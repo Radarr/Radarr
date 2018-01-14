@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchMetadataProfiles, deleteMetadataProfile } from 'Store/Actions/settingsActions';
+import { fetchMetadataProfiles, deleteMetadataProfile, cloneMetadataProfile } from 'Store/Actions/settingsActions';
 import MetadataProfiles from './MetadataProfiles';
 
 function createMapStateToProps() {
@@ -19,8 +19,9 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchMetadataProfiles,
-  deleteMetadataProfile
+  dispatchFetchMetadataProfiles: fetchMetadataProfiles,
+  dispatchDeleteMetadataProfile: deleteMetadataProfile,
+  dispatchCloneMetadataProfile: cloneMetadataProfile
 };
 
 class MetadataProfilesConnector extends Component {
@@ -29,14 +30,18 @@ class MetadataProfilesConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchMetadataProfiles();
+    this.props.dispatchFetchMetadataProfiles();
   }
 
   //
   // Listeners
 
   onConfirmDeleteMetadataProfile = (id) => {
-    this.props.deleteMetadataProfile({ id });
+    this.props.dispatchDeleteMetadataProfile({ id });
+  }
+
+  onCloneMetadataProfilePress = (id) => {
+    this.props.dispatchCloneMetadataProfile({ id });
   }
 
   //
@@ -46,6 +51,7 @@ class MetadataProfilesConnector extends Component {
     return (
       <MetadataProfiles
         onConfirmDeleteMetadataProfile={this.onConfirmDeleteMetadataProfile}
+        onCloneMetadataProfilePress={this.onCloneMetadataProfilePress}
         {...this.props}
       />
     );
@@ -53,8 +59,9 @@ class MetadataProfilesConnector extends Component {
 }
 
 MetadataProfilesConnector.propTypes = {
-  fetchMetadataProfiles: PropTypes.func.isRequired,
-  deleteMetadataProfile: PropTypes.func.isRequired
+  dispatchFetchMetadataProfiles: PropTypes.func.isRequired,
+  dispatchDeleteMetadataProfile: PropTypes.func.isRequired,
+  dispatchCloneMetadataProfile: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MetadataProfilesConnector);

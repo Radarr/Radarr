@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { fetchBackups } from 'Store/Actions/systemActions';
+import { fetchBackups, deleteBackup } from 'Store/Actions/systemActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import Backups from './Backups';
@@ -16,6 +16,8 @@ function createMapStateToProps() {
     (backups, commands) => {
       const {
         isFetching,
+        isPopulated,
+        error,
         items
       } = backups;
 
@@ -23,6 +25,8 @@ function createMapStateToProps() {
 
       return {
         isFetching,
+        isPopulated,
+        error,
         items,
         backupExecuting
       };
@@ -30,10 +34,23 @@ function createMapStateToProps() {
   );
 }
 
-const mapDispatchToProps = {
-  fetchBackups,
-  executeCommand
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchFetchBackups() {
+      dispatch(fetchBackups());
+    },
+
+    onDeleteBackupPress(id) {
+      dispatch(deleteBackup({ id }));
+    },
+
+    onBackupPress() {
+      dispatch(executeCommand({
+        name: commandNames.BACKUP
+      }));
+    }
+  };
+}
 
 class BackupsConnector extends Component {
 
@@ -41,22 +58,13 @@ class BackupsConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchBackups();
+    this.props.dispatchFetchBackups();
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.backupExecuting && !this.props.backupExecuting) {
-      this.props.fetchBackups();
+      this.props.dispatchFetchBackups();
     }
-  }
-
-  //
-  // Listeners
-
-  onBackupPress = () => {
-    this.props.executeCommand({
-      name: commandNames.BACKUP
-    });
   }
 
   //
@@ -65,7 +73,6 @@ class BackupsConnector extends Component {
   render() {
     return (
       <Backups
-        onBackupPress={this.onBackupPress}
         {...this.props}
       />
     );
@@ -74,8 +81,7 @@ class BackupsConnector extends Component {
 
 BackupsConnector.propTypes = {
   backupExecuting: PropTypes.bool.isRequired,
-  fetchBackups: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  dispatchFetchBackups: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(BackupsConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(BackupsConnector);

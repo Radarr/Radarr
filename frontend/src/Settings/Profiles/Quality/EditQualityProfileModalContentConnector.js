@@ -94,12 +94,12 @@ class EditQualityProfileModalContentConnector extends Component {
       dragQualityIndex: null,
       dropQualityIndex: null,
       dropPosition: null,
-      editGroups: true
+      editGroups: false
     };
   }
 
   componentDidMount() {
-    if (!this.props.id) {
+    if (!this.props.id && !this.props.isPopulated) {
       this.props.fetchQualityProfileSchema();
     }
   }
@@ -429,6 +429,7 @@ class EditQualityProfileModalContentConnector extends Component {
 EditQualityProfileModalContentConnector.propTypes = {
   id: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,

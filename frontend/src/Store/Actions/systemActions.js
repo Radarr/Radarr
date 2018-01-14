@@ -3,15 +3,19 @@ import { createAction } from 'redux-actions';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
+import { setAppValue } from 'Store/Actions/appActions';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 import createFetchHandler from './Creators/createFetchHandler';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
+import { set } from './baseActions';
 
 //
 // Variables
 
 export const section = 'system';
+const backupsSection = 'system.backups';
 
 //
 // State
@@ -49,6 +53,10 @@ export const defaultState = {
     isFetching: false,
     isPopulated: false,
     error: null,
+    isRestoring: false,
+    restoreError: null,
+    isDeleting: false,
+    deleteError: null,
     items: []
   },
 
@@ -135,7 +143,12 @@ export const FETCH_DISK_SPACE = 'system/diskSpace/fetchDiskSPace';
 
 export const FETCH_TASK = 'system/tasks/fetchTask';
 export const FETCH_TASKS = 'system/tasks/fetchTasks';
+
 export const FETCH_BACKUPS = 'system/backups/fetchBackups';
+export const RESTORE_BACKUP = 'system/backups/restoreBackup';
+export const CLEAR_RESTORE_BACKUP = 'system/backups/clearRestoreBackup';
+export const DELETE_BACKUP = 'system/backups/deleteBackup';
+
 export const FETCH_UPDATES = 'system/updates/fetchUpdates';
 
 export const FETCH_LOGS = 'system/logs/fetchLogs';
@@ -163,7 +176,12 @@ export const fetchDiskSpace = createThunk(FETCH_DISK_SPACE);
 
 export const fetchTask = createThunk(FETCH_TASK);
 export const fetchTasks = createThunk(FETCH_TASKS);
+
 export const fetchBackups = createThunk(FETCH_BACKUPS);
+export const restoreBackup = createThunk(RESTORE_BACKUP);
+export const clearRestoreBackup = createAction(CLEAR_RESTORE_BACKUP);
+export const deleteBackup = createThunk(DELETE_BACKUP);
+
 export const fetchUpdates = createThunk(FETCH_UPDATES);
 
 export const fetchLogs = createThunk(FETCH_LOGS);
@@ -191,7 +209,72 @@ export const actionHandlers = handleThunks({
   [FETCH_DISK_SPACE]: createFetchHandler('system.diskSpace', '/diskspace'),
   [FETCH_TASK]: createFetchHandler('system.tasks', '/system/task'),
   [FETCH_TASKS]: createFetchHandler('system.tasks', '/system/task'),
-  [FETCH_BACKUPS]: createFetchHandler('system.backups', '/system/backup'),
+
+  [FETCH_BACKUPS]: createFetchHandler(backupsSection, '/system/backup'),
+
+  [RESTORE_BACKUP]: function(getState, payload, dispatch) {
+    const {
+      id,
+      file
+    } = payload;
+
+    dispatch(set({
+      section: backupsSection,
+      isRestoring: true
+    }));
+
+    let ajaxOptions = null;
+
+    if (id) {
+      ajaxOptions = {
+        url: `/system/backup/restore/${id}`,
+        method: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          id
+        })
+      };
+    } else if (file) {
+      const formData = new FormData();
+      formData.append('restore', file);
+
+      ajaxOptions = {
+        url: '/system/backup/restore/upload',
+        method: 'POST',
+        processData: false,
+        contentType: false,
+        data: formData
+      };
+    } else {
+      dispatch(set({
+        section: backupsSection,
+        isRestoring: false,
+        restoreError: 'Error restoring backup'
+      }));
+    }
+
+    const promise = $.ajax(ajaxOptions);
+
+    promise.done((data) => {
+      dispatch(set({
+        section: backupsSection,
+        isRestoring: false,
+        restoreError: null
+      }));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(set({
+        section: backupsSection,
+        isRestoring: false,
+        restoreError: xhr
+      }));
+    });
+  },
+
+  [DELETE_BACKUP]: createRemoveItemHandler(backupsSection, '/system/backup'),
+
   [FETCH_UPDATES]: createFetchHandler('system.updates', '/update'),
   [FETCH_LOG_FILES]: createFetchHandler('system.logFiles', '/log/file'),
   [FETCH_UPDATE_LOG_FILES]: createFetchHandler('system.updateLogFiles', '/log/file/update'),
@@ -212,10 +295,14 @@ export const actionHandlers = handleThunks({
     }
   ),
 
-  [RESTART]: function() {
-    $.ajax({
+  [RESTART]: function(getState, payload, dispatch) {
+    const promise = $.ajax({
       url: '/system/restart',
       method: 'POST'
+    });
+
+    promise.done(() => {
+      dispatch(setAppValue({ isRestarting: true }));
     });
   },
 
@@ -231,6 +318,17 @@ export const actionHandlers = handleThunks({
 // Reducers
 
 export const reducers = createHandleActions({
+
+  [CLEAR_RESTORE_BACKUP]: function(state, { payload }) {
+    return {
+      ...state,
+      backups: {
+        ...state.backups,
+        isRestoring: false,
+        restoreError: null
+      }
+    };
+  },
 
   [SET_LOGS_TABLE_OPTION]: createSetTableOptionReducer('logs')
 

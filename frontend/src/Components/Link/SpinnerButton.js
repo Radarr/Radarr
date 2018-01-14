@@ -29,10 +29,8 @@ function SpinnerButton(props) {
       <span className={styles.spinnerContainer}>
         <Icon
           className={styles.spinner}
-          name={classNames(
-            spinnerIcon,
-            'fa-spin'
-          )}
+          name={spinnerIcon}
+          isSpinning={true}
         />
       </span>
 

@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditLanguageProfileModalConnector from './EditLanguageProfileModalConnector';
 import styles from './LanguageProfile.css';
@@ -47,6 +48,15 @@ class LanguageProfile extends Component {
     this.props.onConfirmDeleteLanguageProfile(this.props.id);
   }
 
+  onCloneLanguageProfilePress = () => {
+    const {
+      id,
+      onCloneLanguageProfilePress
+    } = this.props;
+
+    onCloneLanguageProfilePress(id);
+  }
+
   //
   // Render
 
@@ -62,10 +72,20 @@ class LanguageProfile extends Component {
     return (
       <Card
         className={styles.languageProfile}
+        overlayContent={true}
         onPress={this.onEditLanguageProfilePress}
       >
-        <div className={styles.name}>
-          {name}
+        <div className={styles.nameContainer}>
+          <div className={styles.name}>
+            {name}
+          </div>
+
+          <IconButton
+            className={styles.cloneButton}
+            title="Clone Profile"
+            name={icons.CLONE}
+            onPress={this.onCloneLanguageProfilePress}
+          />
         </div>
 
         <div className={styles.languages}>
@@ -118,7 +138,8 @@ LanguageProfile.propTypes = {
   cutoff: PropTypes.object.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
-  onConfirmDeleteLanguageProfile: PropTypes.func.isRequired
+  onConfirmDeleteLanguageProfile: PropTypes.func.isRequired,
+  onCloneLanguageProfilePress: PropTypes.func.isRequired
 };
 
 export default LanguageProfile;

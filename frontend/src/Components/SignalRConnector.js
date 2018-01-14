@@ -312,7 +312,8 @@ class SignalRConnector extends Component {
       this.props.setAppValue({
         isConnected: true,
         isReconnecting: false,
-        isDisconnected: false
+        isDisconnected: false,
+        isRestarting: false
       });
 
       this.retryInterval = 5;

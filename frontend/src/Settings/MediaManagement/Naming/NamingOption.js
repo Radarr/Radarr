@@ -12,30 +12,21 @@ class NamingOption extends Component {
 
   onPress = () => {
     const {
-      name,
-      value,
       token,
       tokenCase,
       isFullFilename,
-      onInputChange
+      onPress
     } = this.props;
 
-    let newValue = token;
+    let tokenValue = token;
 
     if (tokenCase === 'lower') {
-      newValue = token.toLowerCase();
+      tokenValue = token.toLowerCase();
     } else if (tokenCase === 'upper') {
-      newValue = token.toUpperCase();
+      tokenValue = token.toUpperCase();
     }
 
-    if (isFullFilename) {
-      onInputChange({ name, value: newValue });
-    } else {
-      onInputChange({
-        name,
-        value: `${value}${newValue}`
-      });
-    }
+    onPress({ isFullFilename, tokenValue });
   }
 
   //
@@ -67,14 +58,12 @@ class NamingOption extends Component {
 }
 
 NamingOption.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   example: PropTypes.string.isRequired,
   tokenCase: PropTypes.string.isRequired,
   isFullFilename: PropTypes.bool.isRequired,
   size: PropTypes.oneOf([sizes.SMALL, sizes.LARGE]),
-  onInputChange: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired
 };
 
 NamingOption.defaultProps = {

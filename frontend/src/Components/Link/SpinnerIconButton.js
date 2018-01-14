@@ -14,7 +14,7 @@ function SpinnerIconButton(props) {
 
   return (
     <IconButton
-      name={isSpinning ? `${spinningName || name} fa-spin` : name}
+      name={isSpinning ? (spinningName || name) : name}
       isDisabled={isDisabled || isSpinning}
       {...otherProps}
     />

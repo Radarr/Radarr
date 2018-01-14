@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchQualityProfiles, deleteQualityProfile } from 'Store/Actions/settingsActions';
+import { fetchQualityProfiles, deleteQualityProfile, cloneQualityProfile } from 'Store/Actions/settingsActions';
 import QualityProfiles from './QualityProfiles';
 
 function createMapStateToProps() {
@@ -17,8 +17,9 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchQualityProfiles,
-  deleteQualityProfile
+  dispatchFetchQualityProfiles: fetchQualityProfiles,
+  dispatchDeleteQualityProfile: deleteQualityProfile,
+  dispatchCloneQualityProfile: cloneQualityProfile
 };
 
 class QualityProfilesConnector extends Component {
@@ -27,14 +28,18 @@ class QualityProfilesConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchQualityProfiles();
+    this.props.dispatchFetchQualityProfiles();
   }
 
   //
   // Listeners
 
   onConfirmDeleteQualityProfile = (id) => {
-    this.props.deleteQualityProfile({ id });
+    this.props.dispatchDeleteQualityProfile({ id });
+  }
+
+  onCloneQualityProfilePress = (id) => {
+    this.props.dispatchCloneQualityProfile({ id });
   }
 
   //
@@ -44,6 +49,7 @@ class QualityProfilesConnector extends Component {
     return (
       <QualityProfiles
         onConfirmDeleteQualityProfile={this.onConfirmDeleteQualityProfile}
+        onCloneQualityProfilePress={this.onCloneQualityProfilePress}
         {...this.props}
       />
     );
@@ -51,8 +57,9 @@ class QualityProfilesConnector extends Component {
 }
 
 QualityProfilesConnector.propTypes = {
-  fetchQualityProfiles: PropTypes.func.isRequired,
-  deleteQualityProfile: PropTypes.func.isRequired
+  dispatchFetchQualityProfiles: PropTypes.func.isRequired,
+  dispatchDeleteQualityProfile: PropTypes.func.isRequired,
+  dispatchCloneQualityProfile: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(QualityProfilesConnector);

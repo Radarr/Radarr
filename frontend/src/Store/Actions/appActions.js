@@ -36,6 +36,7 @@ export const defaultState = {
   isConnected: true,
   isReconnecting: false,
   isDisconnected: false,
+  isRestarting: false,
   isSidebarVisible: !getDimensions(window.innerWidth, window.innerHeight).isSmallScreen
 };
 

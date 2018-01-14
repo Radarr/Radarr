@@ -13,7 +13,7 @@ function createFetchSchemaHandler(section, url) {
       dispatch(set({
         section,
         isFetchingSchema: false,
-        schemaPopulated: true,
+        isSchemaPopulated: true,
         schemaError: null,
         schema: data
       }));
@@ -23,7 +23,7 @@ function createFetchSchemaHandler(section, url) {
       dispatch(set({
         section,
         isFetchingSchema: false,
-        schemaPopulated: true,
+        isSchemaPopulated: true,
         schemaError: xhr
       }));
     });
