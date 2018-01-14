@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Configuration;
 using Lidarr.Http.Validation;
 
@@ -11,6 +11,9 @@ namespace Lidarr.Api.V1.Config
             : base(configService)
         {
             SharedValidator.RuleFor(c => c.MinimumAge)
+                           .GreaterThanOrEqualTo(0);
+
+            SharedValidator.RuleFor(c => c.MaximumSize)
                            .GreaterThanOrEqualTo(0);
 
             SharedValidator.RuleFor(c => c.Retention)

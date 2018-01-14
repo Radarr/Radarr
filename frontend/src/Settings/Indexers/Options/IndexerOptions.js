@@ -48,6 +48,18 @@ function IndexerOptions(props) {
             </FormGroup>
 
             <FormGroup>
+              <FormLabel>Maximum Size</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.NUMBER}
+                name="maximumSize"
+                helpText="Maximum size for a release to be grabbed in MB. Set to zero to set to unlimited."
+                onChange={onInputChange}
+                {...settings.maximumSize}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <FormLabel>Retention</FormLabel>
 
               <FormInputGroup

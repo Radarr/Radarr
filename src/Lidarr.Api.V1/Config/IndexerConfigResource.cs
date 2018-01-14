@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Configuration;
 using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Config
@@ -6,6 +6,7 @@ namespace Lidarr.Api.V1.Config
     public class IndexerConfigResource : RestResource
     {
         public int MinimumAge { get; set; }
+        public int MaximumSize { get; set; }
         public int Retention { get; set; }
         public int RssSyncInterval { get; set; }
     }
@@ -17,6 +18,7 @@ namespace Lidarr.Api.V1.Config
             return new IndexerConfigResource
             {
                 MinimumAge = model.MinimumAge,
+                MaximumSize = model.MaximumSize,
                 Retention = model.Retention,
                 RssSyncInterval = model.RssSyncInterval,
             };

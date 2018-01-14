@@ -212,6 +212,7 @@
     <Compile Include="DecisionEngine\Specifications\BlockedIndexerSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\DiscographySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\CutoffSpecification.cs" />
+    <Compile Include="DecisionEngine\Specifications\MaximumSizeSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\ProtocolSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\LanguageSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\QueueSpecification.cs" />

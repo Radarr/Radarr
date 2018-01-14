@@ -99,6 +99,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RssSyncInterval", value); }
         }
 
+        public int MaximumSize
+        {
+            get { return GetValueInt("MaximumSize", 0);}
+
+            set { SetValue("MaximumSize", value);}
+        }
+
         public int MinimumAge
         {
             get { return GetValueInt("MinimumAge", 0); }
