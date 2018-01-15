@@ -25,6 +25,11 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public object ToDB(object clrValue)
         {
+            if (clrValue == null)
+            {
+                return DBNull.Value;
+            }
+
             var value = clrValue;
 
             return value.ToString();

@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
                   .Returns(new[] { _artist.Path });
         }
 
-        private void GivenSeriesFolderExists()
+        private void GivenArtistFolderExists()
         {
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FolderExists(_artist.Path))
@@ -64,13 +64,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
         public void should_throw_if_root_folder_does_not_exist()
         {
             Assert.Throws<NzbDroneClientException>(() => Subject.DeleteTrackFile(_artist, _trackFile));
+            ExceptionVerification.ExpectedWarns(1);
         }
 
         [Test]
-        public void should_should_throw_if_root_folder_is_empty()
+        public void should_throw_if_root_folder_is_empty()
         {
             GivenRootFolderExists();
             Assert.Throws<NzbDroneClientException>(() => Subject.DeleteTrackFile(_artist, _trackFile));
+            ExceptionVerification.ExpectedWarns(1);
         }
 
         [Test]
@@ -90,7 +92,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
         {
             GivenRootFolderExists();
             GivenRootFolderHasFolders();
-            GivenSeriesFolderExists();
+            GivenArtistFolderExists();
 
             Subject.DeleteTrackFile(_artist, _trackFile);
 
@@ -103,7 +105,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
         {
             GivenRootFolderExists();
             GivenRootFolderHasFolders();
-            GivenSeriesFolderExists();
+            GivenArtistFolderExists();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(_trackFile.Path))
@@ -120,7 +122,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
         {
             GivenRootFolderExists();
             GivenRootFolderHasFolders();
-            GivenSeriesFolderExists();
+            GivenArtistFolderExists();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(_trackFile.Path))
