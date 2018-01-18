@@ -129,8 +129,7 @@ namespace NzbDrone.Core.Music
 
                     if (albumToUpdate != null)
                     {
-
-                        tuple = _albumInfo.GetAlbumInfo(album.ForeignAlbumId, albumToUpdate.CurrentRelease.Id);
+                        tuple = _albumInfo.GetAlbumInfo(album.ForeignAlbumId, albumToUpdate.CurrentRelease?.Id);
                         albumInfo = tuple.Item1;
                         existingAlbums.Remove(albumToUpdate);
                         updateList.Add(albumToUpdate);
