@@ -23,6 +23,7 @@ export default function artistIndexCellRenderers(cellProps) {
     status,
     name,
     nameSlug,
+    foreignArtistId,
     qualityProfileId,
     nextAiring,
     previousAiring,
@@ -52,7 +53,7 @@ export default function artistIndexCellRenderers(cellProps) {
         {...otherProps}
       >
         <ArtistNameLink
-          nameSlug={nameSlug}
+          foreignArtistId={foreignArtistId}
           name={name}
         />
       </VirtualTableRowCell>

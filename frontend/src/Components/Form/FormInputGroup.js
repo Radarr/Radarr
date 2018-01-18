@@ -12,6 +12,7 @@ import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
 import LanguageProfileSelectInputConnector from './LanguageProfileSelectInputConnector';
 import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
+import AlbumReleaseSelectInputConnector from './AlbumReleaseSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import SeriesTypeSelectInput from './SeriesTypeSelectInput';
 import SelectInput from './SelectInput';
@@ -52,6 +53,9 @@ function getComponent(type) {
 
     case inputTypes.METADATA_PROFILE_SELECT:
       return MetadataProfileSelectInputConnector;
+
+    case inputTypes.ALBUM_RELEASE_SELECT:
+      return AlbumReleaseSelectInputConnector;
 
     case inputTypes.ROOT_FOLDER_SELECT:
       return RootFolderSelectInputConnector;

@@ -37,7 +37,7 @@
   margin-top: 20px;
 }
 
-.openSeriesButton {
+.openArtistButton {
   composes: button from 'Components/Link/Button.css';
 
   margin-right: auto;

@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                          .Build();
 
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
                   .Returns(new List<TrackFile> { _firstFile, _secondFile });
 
             _parseResultMulti = new RemoteAlbum
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_if_album_has_no_existing_file()
         {
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
                   .Returns(new List<TrackFile> { });
 
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();

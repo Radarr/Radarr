@@ -18,7 +18,7 @@ namespace NzbDrone.Core.MediaFiles
         void Update(List<TrackFile> trackFile);
         void Delete(TrackFile trackFile, DeleteMediaFileReason reason);
         List<TrackFile> GetFilesByArtist(int artistId);
-        List<TrackFile> GetFilesByAlbum(int artistId, int albumId);
+        List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFiles(IEnumerable<int> ids);
         List<TrackFile> GetFilesWithoutMediaInfo();
         List<string> FilterExistingFiles(List<string> files, Artist artist);
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.MediaFiles
 
     }
 
-    public class MediaFileService : IMediaFileService, IHandleAsync<ArtistDeletedEvent>
+    public class MediaFileService : IMediaFileService, IHandleAsync<ArtistDeletedEvent>, IHandleAsync<AlbumDeletedEvent>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediaFileRepository _mediaFileRepository;
@@ -104,12 +104,18 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileRepository.DeleteMany(files);
         }
 
+        public void HandleAsync(AlbumDeletedEvent message)
+        {
+            var files = GetFilesByAlbum(message.Album.Id);
+            _mediaFileRepository.DeleteMany(files);
+        }
+
         public List<TrackFile> GetFilesByArtist(int artistId)
         {
             return _mediaFileRepository.GetFilesByArtist(artistId);
         }
 
-        public List<TrackFile> GetFilesByAlbum(int artistId, int albumId)
+        public List<TrackFile> GetFilesByAlbum(int albumId)
         {
             return _mediaFileRepository.GetFilesByAlbum(albumId);
         }

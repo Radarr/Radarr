@@ -18,8 +18,8 @@
   flex: 1 0 125px;
 }
 
-.nextAiring,
-.previousAiring,
+.nextAlbum,
+.lastAlbum,
 .added {
   composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
 

@@ -5,7 +5,9 @@ import { batchActions } from 'redux-batched-actions';
 import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import albumEntities from 'Album/albumEntities';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
@@ -23,9 +25,12 @@ export const defaultState = {
   isFetching: false,
   isPopulated: false,
   error: null,
+  isSaving: false,
+  saveError: null,
   sortKey: 'releaseDate',
   sortDirection: sortDirections.DESCENDING,
   items: [],
+  pendingChanges: {},
 
   columns: [
     {
@@ -43,6 +48,11 @@ export const defaultState = {
       name: 'releaseDate',
       label: 'Release Date',
       isVisible: true
+    },
+    {
+      name: 'secondaryTypes',
+      label: 'Secondary Types',
+      isVisible: false
     },
     {
       name: 'mediumCount',
@@ -84,6 +94,8 @@ export const FETCH_ALBUMS = 'albums/fetchAlbums';
 export const SET_ALBUMS_SORT = 'albums/setAlbumsSort';
 export const SET_ALBUMS_TABLE_OPTION = 'albums/setAlbumsTableOption';
 export const CLEAR_ALBUMS = 'albums/clearAlbums';
+export const SET_ALBUM_VALUE = 'albums/setAlbumValue';
+export const SAVE_ALBUM = 'albums/saveAlbum';
 export const TOGGLE_ALBUM_MONITORED = 'albums/toggleAlbumMonitored';
 export const TOGGLE_ALBUMS_MONITORED = 'albums/toggleAlbumsMonitored';
 
@@ -97,11 +109,21 @@ export const clearAlbums = createAction(CLEAR_ALBUMS);
 export const toggleAlbumMonitored = createThunk(TOGGLE_ALBUM_MONITORED);
 export const toggleAlbumsMonitored = createThunk(TOGGLE_ALBUMS_MONITORED);
 
+export const saveAlbum = createThunk(SAVE_ALBUM);
+
+export const setAlbumValue = createAction(SET_ALBUM_VALUE, (payload) => {
+  return {
+    section: 'albums',
+    ...payload
+  };
+});
+
 //
 // Action Handlers
 
 export const actionHandlers = handleThunks({
   [FETCH_ALBUMS]: createFetchHandler(section, '/album'),
+  [SAVE_ALBUM]: createSaveProviderHandler(section, '/album'),
 
   [TOGGLE_ALBUM_MONITORED]: function(getState, payload, dispatch) {
     const {
@@ -202,6 +224,8 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [SET_ALBUMS_TABLE_OPTION]: createSetTableOptionReducer(section),
+
+  [SET_ALBUM_VALUE]: createSetSettingValueReducer(section),
 
   [CLEAR_ALBUMS]: (state) => {
     return Object.assign({}, state, {

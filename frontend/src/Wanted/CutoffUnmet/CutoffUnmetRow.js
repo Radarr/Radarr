@@ -48,7 +48,7 @@ function CutoffUnmetRow(props) {
             return (
               <TableRowCell key={name}>
                 <ArtistNameLink
-                  nameSlug={artist.nameSlug}
+                  foreignArtistId={artist.foreignArtistId}
                   artistName={artist.artistName}
                 />
               </TableRowCell>

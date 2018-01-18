@@ -2,20 +2,20 @@ using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Events;
 using NzbDrone.SignalR;
 using Lidarr.Api.V1.TrackFiles;
 using Lidarr.Api.V1.Artist;
 using Lidarr.Http;
+using NzbDrone.Core.MediaFiles.Events;
 
 namespace Lidarr.Api.V1.Tracks
 {
-    public abstract class TrackModuleWithSignalR : LidarrRestModuleWithSignalR<TrackResource, Track>
-        //IHandle<EpisodeGrabbedEvent>,
-        //IHandle<EpisodeImportedEvent>
+    public abstract class TrackModuleWithSignalR : LidarrRestModuleWithSignalR<TrackResource, Track>,
+            IHandle<TrackInfoRefreshedEvent>,
+            IHandle<TrackImportedEvent>
     {
         protected readonly ITrackService _trackService;
         protected readonly IArtistService _artistService;
@@ -31,24 +31,24 @@ namespace Lidarr.Api.V1.Tracks
             _artistService = artistService;
             _upgradableSpecification = upgradableSpecification;
 
-            GetResourceById = GetEpisode;
+            GetResourceById = GetTrack;
         }
 
-        protected TrackModuleWithSignalR(ITrackService episodeService,
-                                           IArtistService seriesService,
+        protected TrackModuleWithSignalR(ITrackService trackService,
+                                           IArtistService artistService,
                                            IUpgradableSpecification upgradableSpecification,
                                            IBroadcastSignalRMessage signalRBroadcaster,
                                            string resource)
             : base(signalRBroadcaster, resource)
         {
-            _trackService = episodeService;
-            _artistService = seriesService;
+            _trackService = trackService;
+            _artistService = artistService;
             _upgradableSpecification = upgradableSpecification;
 
-            GetResourceById = GetEpisode;
+            GetResourceById = GetTrack;
         }
 
-        protected TrackResource GetEpisode(int id)
+        protected TrackResource GetTrack(int id)
         {
             var episode = _trackService.GetTrack(id);
             var resource = MapToResource(episode, true, true);
@@ -76,28 +76,28 @@ namespace Lidarr.Api.V1.Tracks
             return resource;
         }
 
-        protected List<TrackResource> MapToResource(List<Track> episodes, bool includeSeries, bool includeEpisodeFile)
+        protected List<TrackResource> MapToResource(List<Track> tracks, bool includeArtist, bool includeTrackFile)
         {
-            var result = episodes.ToResource();
+            var result = tracks.ToResource();
 
-            if (includeSeries || includeEpisodeFile)
+            if (includeArtist || includeTrackFile)
             {
-                var seriesDict = new Dictionary<int, NzbDrone.Core.Music.Artist>();
-                for (var i = 0; i < episodes.Count; i++)
+                var artistDict = new Dictionary<int, NzbDrone.Core.Music.Artist>();
+                for (var i = 0; i < tracks.Count; i++)
                 {
-                    var episode = episodes[i];
+                    var track = tracks[i];
                     var resource = result[i];
 
-                    var series = episode.Artist ?? seriesDict.GetValueOrDefault(episodes[i].ArtistId) ?? _artistService.GetArtist(episodes[i].ArtistId);
-                    seriesDict[series.Id] = series;
+                    var series = track.Artist ?? artistDict.GetValueOrDefault(tracks[i].ArtistId) ?? _artistService.GetArtist(tracks[i].ArtistId);
+                    artistDict[series.Id] = series;
 
-                    if (includeSeries)
+                    if (includeArtist)
                     {
                         resource.Artist = series.ToResource();
                     }
-                    if (includeEpisodeFile && episodes[i].TrackFileId != 0)
+                    if (includeTrackFile && tracks[i].TrackFileId != 0)
                     {
-                        resource.TrackFile = episodes[i].TrackFile.Value.ToResource(series, _upgradableSpecification);
+                        resource.TrackFile = tracks[i].TrackFile.Value.ToResource(series, _upgradableSpecification);
                     }
                 }
             }
@@ -105,28 +105,31 @@ namespace Lidarr.Api.V1.Tracks
             return result;
         }
 
-        //public void Handle(EpisodeGrabbedEvent message)
-        //{
-        //    foreach (var episode in message.Episode.Episodes)
-        //    {
-        //        var resource = episode.ToResource();
-        //        resource.Grabbed = true;
+        public void Handle(TrackInfoRefreshedEvent message)
+        {
+            foreach (var track in message.Removed)
+            {
+                BroadcastResourceChange(ModelAction.Deleted, track.ToResource());
+            }
 
-        //        BroadcastResourceChange(ModelAction.Updated, resource);
-        //    }
-        //}
+            foreach (var track in message.Added)
+            {
+                BroadcastResourceChange(ModelAction.Updated, track.ToResource());
+            }
 
-        //public void Handle(EpisodeImportedEvent message)
-        //{
-        //    if (!message.NewDownload)
-        //    {
-        //        return;
-        //    }
+            foreach (var track in message.Updated)
+            {
+                BroadcastResourceChange(ModelAction.Updated, track.Id);
+            }
+        }
 
-        //    foreach (var episode in message.EpisodeInfo.Episodes)
-        //    {
-        //        BroadcastResourceChange(ModelAction.Updated, episode.Id);
-        //    }
-        //}
+        public void Handle(TrackImportedEvent message)
+        {
+            foreach (var track in message.TrackInfo.Tracks)
+            {
+                BroadcastResourceChange(ModelAction.Updated, track.Id);
+            }
+        }
+
     }
 }

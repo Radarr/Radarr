@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                          .Build();
 
             Mocker.GetMock<IMediaFileService>()
-                .Setup(c => c.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
                 .Returns(new List<TrackFile> { _firstFile, _secondFile });
 
             _parseResultMulti = new RemoteAlbum

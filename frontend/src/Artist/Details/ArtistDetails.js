@@ -34,34 +34,6 @@ import ArtistDetailsLinks from './ArtistDetailsLinks';
 import styles from './ArtistDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
 
-const albumTypes = [
-  {
-    name: 'album',
-    label: 'Album',
-    isVisible: true
-  },
-  {
-    name: 'ep',
-    label: 'EP',
-    isVisible: true
-  },
-  {
-    name: 'single',
-    label: 'Single',
-    isVisible: true
-  },
-  {
-    name: 'broadcast',
-    label: 'Broadcast',
-    isVisible: true
-  },
-  {
-    name: 'other',
-    label: 'Other',
-    isVisible: true
-  }
-];
-
 const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
 
@@ -193,6 +165,7 @@ class ArtistDetails extends Component {
       trackFileCount,
       qualityProfileId,
       monitored,
+      albumTypes,
       status,
       overview,
       links,
@@ -359,7 +332,7 @@ class ArtistDetails extends Component {
                       name={icons.ARROW_LEFT}
                       size={30}
                       title={`Go to ${previousArtist.artistName}`}
-                      to={`/artist/${previousArtist.nameSlug}`}
+                      to={`/artist/${previousArtist.foreignArtistId}`}
                     />
 
                     <IconButton
@@ -367,7 +340,7 @@ class ArtistDetails extends Component {
                       name={icons.ARROW_RIGHT}
                       size={30}
                       title={`Go to ${nextArtist.artistName}`}
-                      to={`/artist/${nextArtist.nameSlug}`}
+                      to={`/artist/${nextArtist.foreignArtistId}`}
                     />
                   </div>
                 </div>
@@ -545,12 +518,12 @@ class ArtistDetails extends Component {
                     albumTypes.slice(0).map((albumType) => {
                       return (
                         <ArtistDetailsSeasonConnector
-                          key={albumType.name}
+                          key={albumType}
                           artistId={id}
-                          name={albumType.name}
-                          label={albumType.label}
+                          name={albumType}
+                          label={albumType}
                           {...albumType}
-                          isExpanded={expandedState[albumType.name]}
+                          isExpanded={expandedState[albumType]}
                           onExpandPress={this.onExpandPress}
                         />
                       );
@@ -614,6 +587,7 @@ ArtistDetails.propTypes = {
   trackFileCount: PropTypes.number,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
+  albumTypes: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,

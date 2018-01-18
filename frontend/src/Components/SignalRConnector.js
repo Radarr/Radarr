@@ -218,12 +218,16 @@ class SignalRConnector extends Component {
   }
 
   handleTrack = (body) => {
-    if (body.action === 'updated') {
+    const action = body.action;
+    const section = 'tracks';
+
+    if (action === 'updated') {
       this.props.updateItem({
-        section: 'tracks',
-        updateOnly: true,
+        section,
         ...body.resource
       });
+    } else if (action === 'deleted') {
+      this.props.removeItem({ section, id: body.resource.id });
     }
   }
 

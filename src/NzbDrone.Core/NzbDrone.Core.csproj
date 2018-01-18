@@ -181,6 +181,7 @@
     <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
     <Compile Include="Datastore\Migration\006_separate_automatic_and_interactive_search.cs" />
     <Compile Include="Datastore\Migration\007_change_album_path_to_relative.cs" />
+    <Compile Include="Datastore\Migration\009_album_releases.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -424,6 +425,7 @@
     <Compile Include="Download\ProcessDownloadDecisions.cs" />
     <Compile Include="Download\ProcessedDecisions.cs" />
     <Compile Include="Download\RedownloadFailedDownloadService.cs" />
+    <Compile Include="Exceptions\AlbumNotFoundException.cs" />
     <Compile Include="Exceptions\ArtistNotFoundException.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\DownstreamException.cs" />
@@ -730,6 +732,7 @@
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
     <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
+    <Compile Include="MetadataSource\IProvideAlbumInfo.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MediumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MemberResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />
@@ -737,6 +740,7 @@
     <Compile Include="MetadataSource\SkyHook\Resource\LinkResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\ImageResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\RatingResource.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\ReleaseResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TimeOfDayResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\TrackResource.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
@@ -761,9 +765,13 @@
     <Compile Include="Extras\Metadata\MetadataRepository.cs" />
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
+    <Compile Include="Music\AlbumEditedService.cs" />
+    <Compile Include="Music\AlbumRelease.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\AlbumCutoffService.cs" />
     <Compile Include="Music\Commands\BulkMoveArtistCommand.cs" />
+    <Compile Include="Music\Commands\RefreshAlbumCommand.cs" />
+    <Compile Include="Music\Events\AlbumsAddedEvent.cs" />
     <Compile Include="Music\Events\ArtistsImportedEvent.cs" />
     <Compile Include="Music\SecondaryAlbumType.cs" />
     <Compile Include="Music\PrimaryAlbumType.cs" />

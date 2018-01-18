@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Music
     {
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IArtistService _artistService;
+        private readonly IAlbumService _albumService;
         private readonly IRefreshAlbumService _refreshAlbumService;
         private readonly IRefreshTrackService _refreshTrackService;
         private readonly IEventAggregator _eventAggregator;
@@ -29,6 +30,7 @@ namespace NzbDrone.Core.Music
 
         public RefreshArtistService(IProvideArtistInfo artistInfo,
                                     IArtistService artistService,
+                                    IAlbumService albumService,
                                     IRefreshAlbumService refreshAlbumService,
                                     IRefreshTrackService refreshTrackService,
                                     IEventAggregator eventAggregator,
@@ -38,6 +40,7 @@ namespace NzbDrone.Core.Music
         {
             _artistInfo = artistInfo;
             _artistService = artistService;
+            _albumService = albumService;
             _refreshAlbumService = refreshAlbumService;
             _refreshTrackService = refreshTrackService;
             _eventAggregator = eventAggregator;
@@ -92,50 +95,11 @@ namespace NzbDrone.Core.Music
             {
                 _logger.Warn(e, "Couldn't update artist path for " + artist.Path);
             }
-
-            //artist.Albums = UpdateAlbums(artist, artistInfo); # We don't need this since we don't store albums in artist table.
-
-            _artistService.UpdateArtist(artist);
-
-            _refreshAlbumService.RefreshAlbumInfo(artist, tuple.Item2);
-            foreach (var album in tuple.Item2)
-            {
-                _refreshTrackService.RefreshTrackInfo(album, album.Tracks);
-            }
             
+            _refreshAlbumService.RefreshAlbumInfo(artist, tuple.Item2);
 
             _logger.Debug("Finished artist refresh for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
-        }
-
-        private List<Album> UpdateAlbums(Artist artist, Artist artistInfo)
-        {
-            var albums = artistInfo.Albums.DistinctBy(s => s.ForeignAlbumId).ToList();
-
-            foreach (var album in albums)
-            {
-                var existingAlbum = artist.Albums.FirstOrDefault(s => s.ForeignAlbumId == album.ForeignAlbumId);
-
-                //Todo: Should this should use the previous season's monitored state?
-                if (existingAlbum == null)
-                {
-                    //if (album.SeasonNumber == 0)
-                    //{
-                    //    album.Monitored = false;
-                    //    continue;
-                    //}
-
-                    _logger.Debug("New album ({0}) for artist: [{1}] {2}, setting monitored to true", album.Title, artist.ForeignArtistId, artist.Name);
-                    album.Monitored = true;
-                }
-
-                else
-                {
-                    album.Monitored = existingAlbum.Monitored;
-                }
-            }
-
-            return albums;
         }
 
         public void Execute(RefreshArtistCommand message)

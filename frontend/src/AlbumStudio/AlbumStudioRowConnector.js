@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import { toggleArtistMonitored } from 'Store/Actions/artistActions';
-import { toggleAlbumMonitored } from 'Store/Actions/albumActions';
+import { toggleAlbumsMonitored } from 'Store/Actions/albumActions';
 import AlbumStudioRow from './AlbumStudioRow';
 
 function createMapStateToProps() {
@@ -32,7 +32,7 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   toggleArtistMonitored,
-  toggleAlbumMonitored
+  toggleAlbumsMonitored
 };
 
 class AlbumStudioRowConnector extends Component {
@@ -53,8 +53,9 @@ class AlbumStudioRowConnector extends Component {
   }
 
   onAlbumMonitoredPress = (albumId, monitored) => {
-    this.props.toggleAlbumMonitored({
-      albumId,
+    const albumIds = [albumId];
+    this.props.toggleAlbumsMonitored({
+      albumIds,
       monitored
     });
   }
@@ -77,7 +78,7 @@ AlbumStudioRowConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   toggleArtistMonitored: PropTypes.func.isRequired,
-  toggleAlbumMonitored: PropTypes.func.isRequired
+  toggleAlbumsMonitored: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(AlbumStudioRowConnector);

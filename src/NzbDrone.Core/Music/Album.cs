@@ -39,10 +39,26 @@ namespace NzbDrone.Core.Music
         public AddArtistOptions AddOptions { get; set; }
         public Artist Artist { get; set; }
         public Ratings Ratings { get; set; }
+        public List<AlbumRelease> Releases { get; set; }
+        public AlbumRelease CurrentRelease { get; set; }
 
         public override string ToString()
         {
             return string.Format("[{0}][{1}]", ForeignAlbumId, Title.NullSafe());
+        }
+
+        public void ApplyChanges(Album otherAlbum)
+        {
+
+            ForeignAlbumId = otherAlbum.ForeignAlbumId;
+
+            Tracks = otherAlbum.Tracks;
+
+            ProfileId = otherAlbum.ProfileId;
+            AddOptions = otherAlbum.AddOptions;
+            Monitored = otherAlbum.Monitored;
+            CurrentRelease = otherAlbum.CurrentRelease;
+
         }
     }
 }

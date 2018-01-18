@@ -102,8 +102,9 @@ class TrackFileEditorModalContentConnector extends Component {
 
   componentDidMount() {
     const artistId = this.props.artistId;
+    const albumId = this.props.albumId;
 
-    this.props.dispatchFetchTracks({ artistId });
+    this.props.dispatchFetchTracks({ artistId, albumId });
 
     this.props.dispatchFetchLanguageProfileSchema();
     this.props.dispatchFetchQualityProfileSchema();

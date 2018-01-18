@@ -11,7 +11,7 @@ namespace Lidarr.Api.V1.Albums
         public string MediumFormat { get; set; }
     }
 
-    public static class SeasonResourceMapper
+    public static class MediumResourceMapper
     {
         public static MediumResource ToResource(this Medium model)
         {

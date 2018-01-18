@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Common.Extensions;
 using Lidarr.Api.V1.Artist;
 using NzbDrone.Core.DecisionEngine;
@@ -9,10 +11,16 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.SignalR;
 using Lidarr.Http;
+using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Music.Events;
 
 namespace Lidarr.Api.V1.Albums
 {
-    public abstract class AlbumModuleWithSignalR : LidarrRestModuleWithSignalR<AlbumResource, Album>
+    public abstract class AlbumModuleWithSignalR : LidarrRestModuleWithSignalR<AlbumResource, Album>,
+        IHandle<AlbumGrabbedEvent>,
+        IHandle<AlbumEditedEvent>,
+        IHandle<TrackImportedEvent>
     {
         protected readonly IAlbumService _albumService;
         protected readonly IArtistStatisticsService _artistStatisticsService;
@@ -130,18 +138,26 @@ namespace Lidarr.Api.V1.Albums
             }
         }
 
-        //TODO: Implement Track or Album Grabbed/Dowloaded Events
+        public void Handle(AlbumGrabbedEvent message)
+        {
+            foreach (var album in message.Album.Albums)
+            {
+                var resource = album.ToResource();
+                resource.Grabbed = true;
 
-        //public void Handle(TrackGrabbedEvent message)
-        //{
-        //    foreach (var track in message.Track.Tracks)
-        //    {
-        //        var resource = track.ToResource();
-        //        resource.Grabbed = true;
+                BroadcastResourceChange(ModelAction.Updated, resource);
+            }
+        }
+        
+        public void Handle(AlbumEditedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, message.Album.Id);
+        }
 
-        //        BroadcastResourceChange(ModelAction.Updated, resource);
-        //    }
-        //}
+        public void Handle(TrackImportedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Updated, message.ImportedTrack.AlbumId);
+        }
 
         //public void Handle(TrackDownloadedEvent message)
         //{

@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Music
         List<Album> GetAlbums(IEnumerable<int> albumIds);
         List<Album> GetAlbumsByArtist(int artistId);
         Album AddAlbum(Album newAlbum);
+        List<Album> AddAlbums(List<Album> newAlbums);
         Album FindById(string spotifyId);
         Album FindByTitle(int artistId, string title);
         Album FindByTitleInexact(string title);
@@ -61,9 +62,17 @@ namespace NzbDrone.Core.Music
         public Album AddAlbum(Album newAlbum)
         {
             _albumRepository.Insert(newAlbum);
-            _eventAggregator.PublishEvent(new AlbumAddedEvent(GetAlbum(newAlbum.Id)));
+            //_eventAggregator.PublishEvent(new AlbumAddedEvent(GetAlbum(newAlbum.Id)));
 
             return newAlbum;
+        }
+
+        public List<Album> AddAlbums(List<Album> newAlbums)
+        {
+            _albumRepository.InsertMany(newAlbums);
+            //_eventAggregator.PublishEvent(new AlbumsAddedEvent(newAlbums.Select(s => s.Id).ToList()));
+
+            return newAlbums;
         }
 
         public void DeleteAlbum(int albumId, bool deleteFiles)
@@ -140,11 +149,16 @@ namespace NzbDrone.Core.Music
         public void DeleteMany(List<Album> albums)
         {
             _albumRepository.DeleteMany(albums);
+
+            foreach (var album in albums)
+            {
+                _eventAggregator.PublishEvent(new AlbumDeletedEvent(album, false));
+            }
         }
 
         public Album UpdateAlbum(Album album)
         {
-            var storedAlbum = GetAlbum(album.Id); // Is it Id or iTunesId? 
+            var storedAlbum = GetAlbum(album.Id);
 
             var updatedAlbum = _albumRepository.Update(album);
             _eventAggregator.PublishEvent(new AlbumEditedEvent(updatedAlbum, storedAlbum));

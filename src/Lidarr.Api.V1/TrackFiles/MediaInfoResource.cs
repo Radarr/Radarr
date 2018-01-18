@@ -12,7 +12,7 @@ namespace Lidarr.Api.V1.TrackFiles
 
     public static class MediaInfoResourceMapper
     {
-        public static MediaInfoResource ToResource(this MediaInfoModel model, string sceneName)
+        public static MediaInfoResource ToResource(this MediaInfoModel model)
         {
             if (model == null)
             {

@@ -34,6 +34,7 @@ namespace Lidarr.Api.V1.Artist
 
     {
         private readonly IArtistService _artistService;
+        private readonly IAlbumService _albumService;
         private readonly IAddArtistService _addArtistService;
         private readonly IArtistStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
@@ -41,6 +42,7 @@ namespace Lidarr.Api.V1.Artist
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IArtistService artistService,
+                            IAlbumService albumService,
                             IAddArtistService addArtistService,
                             IArtistStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
@@ -57,6 +59,7 @@ namespace Lidarr.Api.V1.Artist
             : base(signalRBroadcaster)
         {
             _artistService = artistService;
+            _albumService = albumService;
             _addArtistService = addArtistService;
             _artistStatisticsService = artistStatisticsService;
 
@@ -105,6 +108,7 @@ namespace Lidarr.Api.V1.Artist
             var resource = artist.ToResource();
             MapCoversToLocal(resource);
             FetchAndLinkArtistStatistics(resource);
+            LinkNextPreviousAlbums(resource);
             //PopulateAlternateTitles(resource);
 
             return resource;
@@ -116,7 +120,7 @@ namespace Lidarr.Api.V1.Artist
             var artistsResources = _artistService.GetAllArtists().ToResource();
 
             MapCoversToLocal(artistsResources.ToArray());
-            //MapAlbums(artistsResources.ToArray());
+            LinkNextPreviousAlbums(artistsResources.ToArray());
             LinkArtistStatistics(artistsResources, artistStats);
             //PopulateAlternateTitles(seriesResources);
 
@@ -171,6 +175,16 @@ namespace Lidarr.Api.V1.Artist
             }
         }
 
+        private void LinkNextPreviousAlbums(params ArtistResource[] artists)
+        {
+            foreach (var artistResource in artists)
+            {
+                var artistAlbums = _albumService.GetAlbumsByArtist(artistResource.Id).OrderBy(s=>s.ReleaseDate);
+                artistResource.NextAlbum = artistAlbums.Where(s => s.ReleaseDate >= DateTime.UtcNow && s.Monitored).FirstOrDefault();
+                artistResource.LastAlbum = artistAlbums.Where(s => s.ReleaseDate <= DateTime.UtcNow && s.Monitored).LastOrDefault();
+            }
+        }
+
         private void FetchAndLinkArtistStatistics(ArtistResource resource)
         {
             LinkArtistStatistics(resource, _artistStatisticsService.ArtistStatistics(resource.Id));
@@ -195,13 +209,6 @@ namespace Lidarr.Api.V1.Artist
             resource.SizeOnDisk = artistStatistics.SizeOnDisk;
             resource.AlbumCount = artistStatistics.AlbumCount;
 
-            if (artistStatistics.AlbumStatistics != null)
-            {
-               foreach (var album in resource.Albums)
-                {
-                    album.Statistics = artistStatistics.AlbumStatistics.SingleOrDefault(s => s.AlbumId == album.Id).ToResource();
-                }
-            }
         }
 
         //private void PopulateAlternateTitles(List<ArtistResource> resources)

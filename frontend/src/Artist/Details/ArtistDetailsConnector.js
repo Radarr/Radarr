@@ -17,19 +17,29 @@ import ArtistDetails from './ArtistDetails';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { nameSlug }) => nameSlug,
+    (state, { foreignArtistId }) => foreignArtistId,
     (state) => state.albums,
     (state) => state.trackFiles,
+    (state) => state.settings.metadataProfiles,
     createAllArtistSelector(),
     createCommandsSelector(),
-    (nameSlug, albums, trackFiles, allArtists, commands) => {
+    (foreignArtistId, albums, trackFiles, metadataProfiles, allArtists, commands) => {
       const sortedArtist = _.orderBy(allArtists, 'sortName');
-      const artistIndex = _.findIndex(sortedArtist, { nameSlug });
+      const artistIndex = _.findIndex(sortedArtist, { foreignArtistId });
       const artist = sortedArtist[artistIndex];
+      const metadataProfile = _.find(metadataProfiles.items, { id: artist.metadataProfileId });
+      const albumTypes = _.reduce(metadataProfile.primaryAlbumTypes, (acc, primaryType) => {
+        if (primaryType.allowed) {
+          acc.push(primaryType.albumType.name);
+        }
+        return acc;
+      }, []);
 
       if (!artist) {
         return {};
       }
+
+      const sortedAlbumTypes = _.orderBy(albumTypes);
 
       const previousArtist = sortedArtist[artistIndex - 1] || _.last(sortedArtist);
       const nextArtist = sortedArtist[artistIndex + 1] || _.first(sortedArtist);
@@ -56,6 +66,7 @@ function createMapStateToProps() {
 
       return {
         ...artist,
+        albumTypes: sortedAlbumTypes,
         alternateTitles,
         isArtistRefreshing,
         allArtistRefreshing,
@@ -176,7 +187,7 @@ class ArtistDetailsConnector extends Component {
 
 ArtistDetailsConnector.propTypes = {
   id: PropTypes.number.isRequired,
-  nameSlug: PropTypes.string.isRequired,
+  foreignArtistId: PropTypes.string.isRequired,
   isArtistRefreshing: PropTypes.bool.isRequired,
   allArtistRefreshing: PropTypes.bool.isRequired,
   isRefreshing: PropTypes.bool.isRequired,

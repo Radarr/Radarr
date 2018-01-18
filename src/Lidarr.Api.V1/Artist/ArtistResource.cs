@@ -36,13 +36,13 @@ namespace Lidarr.Api.V1.Artist
         public int? TrackCount { get; set; }
         public int? TrackFileCount { get; set; }
         public long? SizeOnDisk { get; set; }
-        //public SeriesStatusType Status { get; set; }
+        public Album NextAlbum { get; set; }
+        public Album LastAlbum { get; set; }
 
         public List<MediaCover> Images { get; set; }
         public List<Member> Members { get; set; }
 
         public string RemotePoster { get; set; }
-        public List<AlbumResource> Albums { get; set; }
 
 
         //View & Edit
@@ -89,8 +89,6 @@ namespace Lidarr.Api.V1.Artist
 
                 Images = model.Images,
 
-                Albums = model.Albums.ToResource(),
-
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
                 LanguageProfileId = model.LanguageProfileId,
@@ -128,8 +126,6 @@ namespace Lidarr.Api.V1.Artist
 
                 Status = resource.Status,
                 Overview = resource.Overview,
-                //NextAiring
-                //PreviousAiring
 
                 Images = resource.Images,
 

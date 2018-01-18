@@ -16,7 +16,7 @@ namespace NzbDrone.Common.Cloud
             Services = new HttpRequestBuilder("https://services.lidarr.audio/v1/")
                 .CreateFactory();
 
-            Search = new HttpRequestBuilder("https://api.lidarr.audio/api/v0/{route}/") // TODO: Add {version} once LidarrAPI.Metadata is released.
+            Search = new HttpRequestBuilder("https://api.lidarr.audio/api/v0.3/{route}")
                 .CreateFactory();
         }
 

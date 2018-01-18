@@ -68,6 +68,7 @@ namespace NzbDrone.Core.Music
                     trackToUpdate.AbsoluteTrackNumber = track.AbsoluteTrackNumber;
                     trackToUpdate.Title = track.Title ?? "Unknown";
                     trackToUpdate.AlbumId = album.Id;
+                    trackToUpdate.ArtistId = album.ArtistId;
                     trackToUpdate.Album = track.Album ?? album;
                     trackToUpdate.Explicit = track.Explicit;
                     trackToUpdate.ArtistId = album.ArtistId;
@@ -89,15 +90,11 @@ namespace NzbDrone.Core.Music
             allTracks.AddRange(newList);
             allTracks.AddRange(updateList);
 
-            // TODO: See if anything needs to be done here
-            //AdjustMultiEpisodeAirTime(artist, allTracks);
-            //AdjustDirectToDvdAirDate(artist, allTracks);
-
             _trackService.DeleteMany(existingTracks);
             _trackService.UpdateMany(updateList);
             _trackService.InsertMany(newList);
 
-            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(album, newList, updateList));
+            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(album, newList, updateList, existingTracks));
 
             if (failCount != 0)
             {

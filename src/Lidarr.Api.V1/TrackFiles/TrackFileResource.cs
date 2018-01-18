@@ -45,7 +45,7 @@ namespace Lidarr.Api.V1.TrackFiles
                // SceneName = model.SceneName,
                 Language = model.Language,
                 Quality = model.Quality,
-                MediaInfo = model.MediaInfo.ToResource(model.SceneName)
+                MediaInfo = model.MediaInfo.ToResource()
                 //QualityCutoffNotMet
             };
 
@@ -68,7 +68,7 @@ namespace Lidarr.Api.V1.TrackFiles
                 //SceneName = model.SceneName,
                 Language = model.Language,
                 Quality = model.Quality,
-                MediaInfo = model.MediaInfo.ToResource(model.SceneName),
+                MediaInfo = model.MediaInfo.ToResource(),
 
                 QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(artist.Profile.Value, model.Quality),
                 LanguageCutoffNotMet = upgradableSpecification.LanguageCutoffNotMet(artist.LanguageProfile.Value, model.Language)

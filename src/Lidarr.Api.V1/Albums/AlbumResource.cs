@@ -19,6 +19,7 @@ namespace Lidarr.Api.V1.Albums
         public int ProfileId { get; set; }
         public int Duration { get; set; }
         public string AlbumType { get; set; }
+        public List<string> SecondaryTypes { get; set; }
         public int MediumCount
         {
             get
@@ -33,6 +34,8 @@ namespace Lidarr.Api.V1.Albums
         }
         public Ratings Ratings { get; set; }
         public DateTime? ReleaseDate { get; set; }
+        public AlbumRelease CurrentRelease { get; set; }
+        public List<AlbumReleaseResource> Releases { get; set; }
         public List<string> Genres { get; set; }
         public List<MediumResource> Media { get; set; }
         public ArtistResource Artist { get; set; }
@@ -65,15 +68,45 @@ namespace Lidarr.Api.V1.Albums
                 Ratings = model.Ratings,
                 Duration = model.Duration,
                 AlbumType = model.AlbumType,
+                SecondaryTypes = model.SecondaryTypes.Select(s => s.Name).ToList(),
                 Media = model.Media.ToResource(),
+                CurrentRelease = model.CurrentRelease,
+                Releases = model.Releases.ToResource(),
             };
+        }
+
+        public static Album ToModel(this AlbumResource resource)
+        {
+            if (resource == null) return null;
+
+            return new Album
+            {
+                Id = resource.Id,
+                ForeignAlbumId = resource.ForeignAlbumId,
+                Title = resource.Title,
+                Images = resource.Images,
+                Monitored = resource.Monitored,
+                CurrentRelease = resource.CurrentRelease
+            };
+        }
+
+        public static Album ToModel(this AlbumResource resource, Album album)
+        {
+            var updatedAlbum = resource.ToModel();
+
+            album.ApplyChanges(updatedAlbum);
+
+            return album;
         }
 
         public static List<AlbumResource> ToResource(this IEnumerable<Album> models)
         {
-            if (models == null) return null;
+            return models?.Select(ToResource).ToList();
+        }
 
-            return models.Select(ToResource).ToList();
+        public static List<Album> ToModel(this IEnumerable<AlbumResource> resources)
+        {
+            return resources.Select(ToModel).ToList();
         }
     }
 }

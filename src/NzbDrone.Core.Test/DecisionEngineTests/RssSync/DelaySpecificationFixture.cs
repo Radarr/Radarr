@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _remoteAlbum.Albums = Builder<Album>.CreateListOfSize(1).Build().ToList();
 
             Mocker.GetMock<IMediaFileService>()
-                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
                 .Returns(new List<TrackFile> { });
 
             Mocker.GetMock<IDelayProfileService>()
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenExistingFile(QualityModel quality, Language language)
         {
             Mocker.GetMock<IMediaFileService>()
-                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
                 .Returns(new List<TrackFile> { new TrackFile {
                                                                 Quality = quality,
                                                                 Language = language

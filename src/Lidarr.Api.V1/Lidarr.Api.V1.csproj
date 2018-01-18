@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Albums\AlbumModule.cs" />
     <Compile Include="Albums\AlbumModuleWithSignalR.cs" />
+    <Compile Include="Albums\AlbumReleaseResource.cs" />
     <Compile Include="Albums\AlbumResource.cs" />
     <Compile Include="Albums\AlbumsMonitoredResource.cs" />
     <Compile Include="Albums\AlbumStatisticsResource.cs" />

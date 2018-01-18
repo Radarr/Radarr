@@ -72,7 +72,7 @@ namespace NzbDrone.Core.MediaFiles
 
             var artist = _artistService.GetArtist(artistId);
             var tracks = _trackService.GetTracksByAlbum(albumId);
-            var files = _mediaFileService.GetFilesByAlbum(artistId, albumId);
+            var files = _mediaFileService.GetFilesByAlbum(albumId);
 
             return GetPreviews(artist, tracks, files)
                 .OrderByDescending(e => e.TrackNumbers.First()).ToList();

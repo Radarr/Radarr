@@ -106,7 +106,7 @@
 }
 
 @media only screen and (max-width: $breakpointSmall) {
-  .season {
+  .albumType {
     border-right: 0;
     border-left: 0;
     border-radius: 0;

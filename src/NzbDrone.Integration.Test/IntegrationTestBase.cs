@@ -237,15 +237,6 @@ namespace NzbDrone.Integration.Test
                     changed = true;
                 }
 
-                result.Albums.ForEach(season =>
-                {
-                    if (season.Monitored != monitored.Value)
-                    {
-                        season.Monitored = monitored.Value;
-                        changed = true;
-                    }
-                });
-
                 if (changed)
                 {
                     Artist.Put(result);

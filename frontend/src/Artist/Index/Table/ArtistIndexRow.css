@@ -18,8 +18,8 @@
   flex: 1 0 125px;
 }
 
-.nextAiring,
-.previousAiring,
+.nextAlbum,
+.lastAlbum,
 .added {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
@@ -32,8 +32,7 @@
   flex: 0 0 100px;
 }
 
-.trackProgress,
-.latestAlbum {
+.trackProgress {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
   display: flex;

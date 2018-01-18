@@ -20,6 +20,7 @@ class AlbumStudioRow extends Component {
       artistId,
       status,
       nameSlug,
+      foreignArtistId,
       artistName,
       monitored,
       albums,
@@ -49,7 +50,7 @@ class AlbumStudioRow extends Component {
 
         <TableRowCell className={styles.title}>
           <ArtistNameLink
-            nameSlug={nameSlug}
+            foreignArtistId={foreignArtistId}
             artistName={artistName}
           />
         </TableRowCell>
@@ -84,6 +85,7 @@ AlbumStudioRow.propTypes = {
   artistId: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
   nameSlug: PropTypes.string.isRequired,
+  foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,

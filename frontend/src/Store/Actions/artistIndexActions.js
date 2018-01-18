@@ -93,14 +93,14 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'nextAiring',
-      label: 'Next Airing',
+      name: 'nextAlbum',
+      label: 'Next Album',
       isSortable: true,
       isVisible: true
     },
     {
-      name: 'previousAiring',
-      label: 'Previous Airing',
+      name: 'lastAlbum',
+      label: 'Last Album',
       isSortable: true,
       isVisible: false
     },
@@ -125,12 +125,6 @@ export const defaultState = {
     {
       name: 'trackCount',
       label: 'Track Count',
-      isSortable: true,
-      isVisible: false
-    },
-    {
-      name: 'latestAlbum',
-      label: 'Latest Album',
       isSortable: true,
       isVisible: false
     },

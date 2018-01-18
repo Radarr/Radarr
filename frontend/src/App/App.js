@@ -14,6 +14,7 @@ import ImportArtist from 'AddArtist/ImportArtist/ImportArtist';
 import ArtistEditorConnector from 'Artist/Editor/ArtistEditorConnector';
 import AlbumStudioConnector from 'AlbumStudio/AlbumStudioConnector';
 import ArtistDetailsPageConnector from 'Artist/Details/ArtistDetailsPageConnector';
+import AlbumDetailsPageConnector from 'Album/Details/AlbumDetailsPageConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
 import HistoryConnector from 'Activity/History/HistoryConnector';
 import QueueConnector from 'Activity/Queue/QueueConnector';
@@ -92,8 +93,13 @@ function App({ store, history }) {
               />
 
               <Route
-                path="/artist/:nameSlug"
+                path="/artist/:foreignArtistId"
                 component={ArtistDetailsPageConnector}
+              />
+
+              <Route
+                path="/album/:foreignAlbumId"
+                component={AlbumDetailsPageConnector}
               />
 
               {/*

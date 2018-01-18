@@ -80,8 +80,9 @@ namespace Lidarr.Api.V1.TrackFiles
             {
                 int albumId = Convert.ToInt32(albumIdQuery.Value);
                 var album = _albumService.GetAlbum(albumId);
+                var albumArtist = _artistService.GetArtist(album.ArtistId);
 
-                return _mediaFileService.GetFilesByAlbum(album.ArtistId, album.Id).ConvertAll(f => f.ToResource(album.Artist, _upgradableSpecification));
+                return _mediaFileService.GetFilesByAlbum(album.Id).ConvertAll(f => f.ToResource(albumArtist, _upgradableSpecification));
             }
 
             else

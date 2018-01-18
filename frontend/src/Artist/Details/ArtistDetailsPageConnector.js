@@ -13,12 +13,12 @@ function createMapStateToProps() {
     (state, { match }) => match,
     createAllArtistSelector(),
     (match, allArtists) => {
-      const nameSlug = match.params.nameSlug;
-      const artistIndex = _.findIndex(allArtists, { nameSlug });
+      const foreignArtistId = match.params.foreignArtistId;
+      const artistIndex = _.findIndex(allArtists, { foreignArtistId });
 
       if (artistIndex > -1) {
         return {
-          nameSlug
+          foreignArtistId
         };
       }
 
@@ -37,7 +37,7 @@ class ArtistDetailsPageConnector extends Component {
   // Lifecycle
 
   componentDidUpdate(prevProps) {
-    if (!this.props.nameSlug) {
+    if (!this.props.foreignArtistId) {
       this.props.push(`${window.Sonarr.urlBase}/`);
       return;
     }
@@ -48,10 +48,10 @@ class ArtistDetailsPageConnector extends Component {
 
   render() {
     const {
-      nameSlug
+      foreignArtistId
     } = this.props;
 
-    if (!nameSlug) {
+    if (!foreignArtistId) {
       return (
         <NotFound
           message="Sorry, that artist cannot be found."
@@ -61,15 +61,15 @@ class ArtistDetailsPageConnector extends Component {
 
     return (
       <ArtistDetailsConnector
-        nameSlug={nameSlug}
+        foreignArtistId={foreignArtistId}
       />
     );
   }
 }
 
 ArtistDetailsPageConnector.propTypes = {
-  nameSlug: PropTypes.string,
-  match: PropTypes.shape({ params: PropTypes.shape({ nameSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
+  foreignArtistId: PropTypes.string,
+  match: PropTypes.shape({ params: PropTypes.shape({ foreignArtistId: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired
 };
 

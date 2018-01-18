@@ -77,7 +77,7 @@ class ArtistIndexOverview extends Component {
       overview,
       monitored,
       status,
-      nameSlug,
+      foreignArtistId,
       nextAiring,
       trackCount,
       trackFileCount,
@@ -101,7 +101,7 @@ class ArtistIndexOverview extends Component {
       isDeleteArtistModalOpen
     } = this.state;
 
-    const link = `/artist/${nameSlug}`;
+    const link = `/artist/${foreignArtistId}`;
 
     const elementStyle = {
       width: `${posterWidth}px`,
@@ -226,7 +226,7 @@ ArtistIndexOverview.propTypes = {
   overview: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
-  nameSlug: PropTypes.string.isRequired,
+  foreignArtistId: PropTypes.string.isRequired,
   nextAiring: PropTypes.string,
   trackCount: PropTypes.number,
   trackFileCount: PropTypes.number,

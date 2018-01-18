@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void SetupMediaFile(List<TrackFile> files)
         {
             Mocker.GetMock<IMediaFileService>()
-                              .Setup(v => v.GetFilesByAlbum(It.IsAny<int>(), It.IsAny<int>()))
+                              .Setup(v => v.GetFilesByAlbum(It.IsAny<int>()))
                               .Returns(files);
         }
 

@@ -20,13 +20,15 @@ export const defaultState = {
   error: null,
   sortKey: 'mediumNumber',
   sortDirection: sortDirections.DESCENDING,
+  secondarySortKey: 'absoluteTrackNumber',
+  secondarySortDirection: sortDirections.ASCENDING,
   items: [],
 
   columns: [
     {
       name: 'medium',
       label: 'Medium',
-      isVisible: true
+      isVisible: false
     },
     {
       name: 'absoluteTrackNumber',
@@ -39,9 +41,24 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'path',
+      label: 'Path',
+      isVisible: false
+    },
+    {
+      name: 'relativePath',
+      label: 'Relative Path',
+      isVisible: false
+    },
+    {
       name: 'duration',
       label: 'Duration',
       isVisible: true
+    },
+    {
+      name: 'language',
+      label: 'Language',
+      isVisible: false
     },
     {
       name: 'audioInfo',
@@ -63,6 +80,8 @@ export const defaultState = {
 };
 
 export const persistState = [
+  'tracks.sortKey',
+  'tracks.sortDirection',
   'tracks.columns'
 ];
 

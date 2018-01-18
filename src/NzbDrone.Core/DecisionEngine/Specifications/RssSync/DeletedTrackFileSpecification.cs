@@ -46,7 +46,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             var missingTrackFiles = subject.Albums
-                                             .SelectMany(v => _albumService.GetFilesByAlbum(v.ArtistId, v.Id))
+                                             .SelectMany(v => _albumService.GetFilesByAlbum(v.Id))
                                              .DistinctBy(v => v.Id)
                                              .Where(v => IsTrackFileMissing(subject.Artist, v))
                                              .ToArray();

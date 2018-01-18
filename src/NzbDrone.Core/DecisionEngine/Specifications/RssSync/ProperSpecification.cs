@@ -35,7 +35,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             foreach (var album in subject.Albums)
             {
-                var trackFiles = _mediaFileService.GetFilesByAlbum(album.ArtistId, album.Id);
+                var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
 
                 if (trackFiles.Any())
                 {

@@ -17,13 +17,13 @@ function createMapStateToProps() {
     (album, artist) => {
       const {
         artistName,
-        nameSlug,
+        foreignArtistId,
         monitored: artistMonitored
       } = artist;
 
       return {
         artistName,
-        nameSlug,
+        foreignArtistId,
         artistMonitored,
         ...album
       };

@@ -59,7 +59,7 @@ class ArtistIndexBanner extends Component {
       artistName,
       monitored,
       status,
-      nameSlug,
+      foreignArtistId,
       nextAiring,
       trackCount,
       trackFileCount,
@@ -84,7 +84,7 @@ class ArtistIndexBanner extends Component {
       isDeleteArtistModalOpen
     } = this.state;
 
-    const link = `/artist/${nameSlug}`;
+    const link = `/artist/${foreignArtistId}`;
 
     const elementStyle = {
       width: `${bannerWidth}px`,
@@ -213,7 +213,7 @@ ArtistIndexBanner.propTypes = {
   artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
-  nameSlug: PropTypes.string.isRequired,
+  foreignArtistId: PropTypes.string.isRequired,
   nextAiring: PropTypes.string,
   trackCount: PropTypes.number,
   trackFileCount: PropTypes.number,

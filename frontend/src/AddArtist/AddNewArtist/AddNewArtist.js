@@ -99,7 +99,7 @@ class AddNewArtist extends Component {
               className={styles.searchInput}
               name="artistLookup"
               value={term}
-              placeholder="eg. Breaking Benjamin, lidarr:####"
+              placeholder="eg. Breaking Benjamin, lidarr:854a1807-025b-42a8-ba8c-2a39717f1d25"
               onChange={this.onSearchInputChange}
             />
 
@@ -144,7 +144,7 @@ class AddNewArtist extends Component {
             !isFetching && !error && !items.length && !!term &&
               <div className={styles.message}>
                 <div className={styles.noResults}>Couldn't find any results for '{term}'</div>
-                <div>You can also search using MusicBrainz ID of a show. eg. lidarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234</div>
+                <div>You can also search using MusicBrainz ID of an artist. eg. lidarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234</div>
                 <div>
                   <Link to="https://github.com/Lidarr/Lidarr/wiki/FAQ#why-cant-i-add-a-new-artist-when-i-know-the-musicbrainz-id">
                     Why can't I find my artist?
@@ -157,7 +157,7 @@ class AddNewArtist extends Component {
             !term &&
               <div className={styles.message}>
                 <div className={styles.helpText}>It's easy to add a new artist, just start typing the name the artist you want to add.</div>
-                <div>You can also search using MusicBrainz ID of a show. eg. lidarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234</div>
+                <div>You can also search using MusicBrainz ID of an artist. eg. lidarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234</div>
               </div>
           }
 

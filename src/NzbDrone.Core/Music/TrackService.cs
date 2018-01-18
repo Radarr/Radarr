@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Music
 
     public class TrackService : ITrackService,
                                 IHandleAsync<ArtistDeletedEvent>,
+                                IHandleAsync<AlbumDeletedEvent>,
                                 IHandle<TrackFileDeletedEvent>,
                                 IHandle<TrackFileAddedEvent>
     {
@@ -160,6 +161,12 @@ namespace NzbDrone.Core.Music
         public void HandleAsync(ArtistDeletedEvent message)
         {
             var tracks = GetTracksByArtist(message.Artist.Id);
+            _trackRepository.DeleteMany(tracks);
+        }
+
+        public void HandleAsync(AlbumDeletedEvent message)
+        {
+            var tracks = GetTracksByAlbum(message.Album.Id);
             _trackRepository.DeleteMany(tracks);
         }
 
