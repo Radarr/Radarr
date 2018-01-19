@@ -18,8 +18,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onGoToArtist(nameSlug) {
-      dispatch(push(`${window.Sonarr.urlBase}/artist/${nameSlug}`));
+    onGoToArtist(foreignArtistId) {
+      dispatch(push(`${window.Sonarr.urlBase}/artist/${foreignArtistId}`));
     },
 
     onGoToAddNewArtist(query) {

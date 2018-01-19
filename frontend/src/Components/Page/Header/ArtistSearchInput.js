@@ -78,7 +78,7 @@ class ArtistSearchInput extends Component {
 
   goToArtist(artist) {
     this.setState({ value: '' });
-    this.props.onGoToArtist(artist.nameSlug);
+    this.props.onGoToArtist(artist.foreignArtistId);
   }
 
   reset() {
