@@ -150,6 +150,8 @@ namespace NzbDrone.Core.Music
                         albumToUpdate.ForeignAlbumId = albumInfo.ForeignAlbumId;
                         albumToUpdate.Title = albumInfo.Title ?? "Unknown";
                         albumToUpdate.AlbumType = albumInfo.AlbumType;
+                        albumToUpdate.Releases = albumInfo.Releases;
+                        albumToUpdate.CurrentRelease = albumInfo.CurrentRelease;
 
                         _albumService.AddAlbum(albumToUpdate);
 
