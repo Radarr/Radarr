@@ -7,7 +7,5 @@
 }
 
 .label {
-  height: 14px;
-  color: $toolbarLabelColor;
-  font-size: $extraSmallFontSize;
+  composes: label from 'Components/Page/Toolbar/PageToolbarButton.css';
 }

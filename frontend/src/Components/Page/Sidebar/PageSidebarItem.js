@@ -87,7 +87,7 @@ class PageSidebarItem extends Component {
 }
 
 PageSidebarItem.propTypes = {
-  iconName: PropTypes.string,
+  iconName: PropTypes.object,
   title: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
   isActive: PropTypes.bool,

@@ -45,7 +45,7 @@ SpinnerButton.propTypes = {
   className: PropTypes.string.isRequired,
   isSpinning: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
-  spinnerIcon: PropTypes.string.isRequired,
+  spinnerIcon: PropTypes.object.isRequired,
   children: PropTypes.node
 };
 

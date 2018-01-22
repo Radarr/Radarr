@@ -51,7 +51,7 @@ class SelectedMenuItem extends Component {
 SelectedMenuItem.propTypes = {
   name: PropTypes.string,
   children: PropTypes.node.isRequired,
-  selectedIconName: PropTypes.string.isRequired,
+  selectedIconName: PropTypes.object.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onPress: PropTypes.func.isRequired
 };

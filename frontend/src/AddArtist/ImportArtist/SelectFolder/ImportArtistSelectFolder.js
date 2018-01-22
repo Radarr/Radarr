@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds, sizes } from 'Helpers/Props';
+import { icons, kinds, sizes } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
@@ -137,7 +137,7 @@ class ImportArtistSelectFolder extends Component {
                       >
                         <Icon
                           className={styles.importButtonIcon}
-                          name="fa fa-hdd-o"
+                          name={icons.DRIVE}
                         />
                         Choose another folder
                       </Button>
@@ -151,7 +151,7 @@ class ImportArtistSelectFolder extends Component {
                       >
                         <Icon
                           className={styles.importButtonIcon}
-                          name="fa fa-hdd-o"
+                          name={icons.DRIVE}
                         />
                         Start Import
                       </Button>

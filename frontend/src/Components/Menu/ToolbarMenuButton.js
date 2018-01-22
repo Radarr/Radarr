@@ -19,7 +19,7 @@ function ToolbarMenuButton(props) {
       <div>
         <Icon
           name={iconName}
-          size={22}
+          size={21}
         />
 
         <div className={styles.label}>
@@ -31,7 +31,7 @@ function ToolbarMenuButton(props) {
 }
 
 ToolbarMenuButton.propTypes = {
-  iconName: PropTypes.string.isRequired,
+  iconName: PropTypes.object.isRequired,
   text: PropTypes.string
 };
 

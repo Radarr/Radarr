@@ -35,7 +35,7 @@ IconButton.propTypes = {
   className: PropTypes.string.isRequired,
   iconClassName: PropTypes.string,
   kind: PropTypes.string,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.object.isRequired,
   size: PropTypes.number,
   isSpinning: PropTypes.bool
 };

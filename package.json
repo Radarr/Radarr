@@ -17,6 +17,10 @@
   "license": "GPL-3.0",
   "readmeFilename": "readme.md",
   "dependencies": {
+    "@fortawesome/fontawesome": "1.1.2",
+    "@fortawesome/fontawesome-free-regular": "5.0.4",
+    "@fortawesome/fontawesome-free-solid": "5.0.4",
+    "@fortawesome/react-fontawesome": "0.0.17",
     "autoprefixer": "7.1.5",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.1",
