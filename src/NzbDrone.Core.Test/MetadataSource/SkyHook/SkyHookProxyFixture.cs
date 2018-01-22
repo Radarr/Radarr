@@ -67,15 +67,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             Assert.Throws<BadRequestException>(() => Subject.GetArtistInfo("aaaaaa-aaa-aaaa-aaaa", 1));
         }
 
-        [Test]
-        [Ignore("We don't return a dothack from Metadata")]
-        public void should_not_have_period_at_start_of_name_slug()
-        {
-            var details = Subject.GetArtistInfo("b6db95cd-88d9-492f-bbf6-a34e0e89b2e5", 1);
-
-            details.Item1.NameSlug.Should().Be("dothack");
-        }
-
         private void ValidateArtist(Artist artist)
         {
             artist.Should().NotBeNull();
@@ -84,7 +75,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             artist.SortName.Should().Be(Parser.Parser.NormalizeTitle(artist.Name));
             artist.Overview.Should().NotBeNullOrWhiteSpace();
             artist.Images.Should().NotBeEmpty();
-            artist.NameSlug.Should().NotBeNullOrWhiteSpace();
             //series.TvRageId.Should().BeGreaterThan(0);
             artist.ForeignArtistId.Should().NotBeNullOrWhiteSpace();
         }

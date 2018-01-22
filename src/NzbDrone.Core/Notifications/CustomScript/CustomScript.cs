@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_EventType", "Grab");
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId.ToString());
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
             environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
             environmentVariables.Add("Lidarr_Release_AlbumCount", remoteAlbum.Albums.Count.ToString());
             environmentVariables.Add("Lidarr_Release_AlbumReleaseDates", string.Join(",", remoteAlbum.Albums.Select(e => e.ReleaseDate)));
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId.ToString());
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
             environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
             environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
             environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId.ToString());
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
             environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
 
             ExecuteScript(environmentVariables);

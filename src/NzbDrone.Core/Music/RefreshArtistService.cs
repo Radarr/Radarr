@@ -74,7 +74,6 @@ namespace NzbDrone.Core.Music
             }
 
             artist.Name = artistInfo.Name;
-            artist.NameSlug = artistInfo.NameSlug;
             artist.Overview = artistInfo.Overview;
             artist.Status = artistInfo.Status;
             artist.CleanName = artistInfo.CleanName;

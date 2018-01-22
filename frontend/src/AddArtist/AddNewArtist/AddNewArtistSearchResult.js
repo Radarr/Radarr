@@ -66,7 +66,6 @@ class AddNewArtistSearchResult extends Component {
     const {
       foreignArtistId,
       artistName,
-      nameSlug,
       year,
       disambiguation,
       artistType,
@@ -79,7 +78,7 @@ class AddNewArtistSearchResult extends Component {
       isSmallScreen
     } = this.props;
 
-    const linkProps = isExistingArtist ? { to: `/artist/${nameSlug}` } : { onPress: this.onPress };
+    const linkProps = isExistingArtist ? { to: `/artist/${foreignArtistId}` } : { onPress: this.onPress };
     let albums = '1 Album';
 
     if (albumCount > 1) {
@@ -193,7 +192,6 @@ class AddNewArtistSearchResult extends Component {
 AddNewArtistSearchResult.propTypes = {
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
-  nameSlug: PropTypes.string.isRequired,
   year: PropTypes.number,
   disambiguation: PropTypes.string,
   artistType: PropTypes.string,

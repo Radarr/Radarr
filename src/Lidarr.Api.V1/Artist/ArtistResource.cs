@@ -63,7 +63,6 @@ namespace Lidarr.Api.V1.Artist
         public DateTime Added { get; set; }
         public AddArtistOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
-        public string NameSlug { get; set; }
 
         //TODO: Add series statistics as a property of the series (instead of individual properties)
     }
@@ -102,7 +101,6 @@ namespace Lidarr.Api.V1.Artist
 
                 CleanName = model.CleanName,
                 ForeignArtistId = model.ForeignArtistId,
-                NameSlug = model.NameSlug,
                 RootFolderPath = model.RootFolderPath,
                 Genres = model.Genres,
                 Tags = model.Tags,
@@ -142,7 +140,6 @@ namespace Lidarr.Api.V1.Artist
                 ArtistType = resource.ArtistType,
                 CleanName = resource.CleanName,
                 ForeignArtistId = resource.ForeignArtistId,
-                NameSlug = resource.NameSlug,
                 RootFolderPath = resource.RootFolderPath,
                 Genres = resource.Genres,
                 Tags = resource.Tags,

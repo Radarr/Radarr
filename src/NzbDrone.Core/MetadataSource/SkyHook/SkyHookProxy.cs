@@ -270,7 +270,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             artist.ForeignArtistId = resource.Id;
             artist.Genres = resource.Genres;
             artist.Overview = resource.Overview;
-            artist.NameSlug = Parser.Parser.CleanArtistName(artist.Name) + "-" + resource.Id.Substring(resource.Id.Length - 6);
             artist.CleanName = Parser.Parser.CleanArtistName(artist.Name);
             artist.SortName = Parser.Parser.NormalizeTitle(artist.Name);
             artist.Disambiguation = resource.Disambiguation;

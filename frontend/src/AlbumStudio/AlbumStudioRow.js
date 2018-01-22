@@ -19,7 +19,6 @@ class AlbumStudioRow extends Component {
     const {
       artistId,
       status,
-      nameSlug,
       foreignArtistId,
       artistName,
       monitored,
@@ -84,7 +83,6 @@ class AlbumStudioRow extends Component {
 AlbumStudioRow.propTypes = {
   artistId: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
-  nameSlug: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,

@@ -30,7 +30,6 @@ namespace NzbDrone.Core.Music
         public int DiscogsId { get; set; }
         public string AMId { get; set; }
         public string Name { get; set; }
-        public string NameSlug { get; set; }
         public string CleanName { get; set; }
         public string SortName { get; set; }
         public string Overview { get; set; }

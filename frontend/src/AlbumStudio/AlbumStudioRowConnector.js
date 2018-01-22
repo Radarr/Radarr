@@ -20,7 +20,6 @@ function createMapStateToProps() {
         ...artist,
         artistId: artist.id,
         artistName: artist.artistName,
-        nameSlug: artist.nameSlug,
         monitored: artist.monitored,
         status: artist.status,
         isSaving: artist.isSaving,

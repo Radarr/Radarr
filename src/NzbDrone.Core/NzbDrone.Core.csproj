@@ -795,7 +795,6 @@
     <Compile Include="Music\ArtistNameNormalizer.cs" />
     <Compile Include="Music\AlbumService.cs" />
     <Compile Include="Music\AlbumRepository.cs" />
-    <Compile Include="Music\ArtistSlugValidator.cs" />
     <Compile Include="Music\ArtistRepository.cs" />
     <Compile Include="Music\ArtistService.cs" />
     <Compile Include="Music\Commands\RefreshArtistCommand.cs" />
