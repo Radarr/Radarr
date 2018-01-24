@@ -190,38 +190,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             ExceptionVerification.ExpectedWarns(1);
         }
 
-        [Test]
-        public void should_delete_folder_if_files_were_imported_and_only_sample_files_remain()
-        {
-            GivenValidArtist();
-
-            var localTrack = new LocalTrack();
-
-            var imported = new List<ImportDecision>();
-            imported.Add(new ImportDecision(localTrack));
-
-            Mocker.GetMock<IMakeImportDecision>()
-                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Artist>(), null))
-                  .Returns(imported);
-
-            Mocker.GetMock<IImportApprovedTracks>()
-                  .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
-                  .Returns(imported.Select(i => new ImportResult(i)).ToList());
-
-            //Mocker.GetMock<IDetectSample>()
-            //      .Setup(s => s.IsSample(It.IsAny<Artist>(),
-            //          It.IsAny<QualityModel>(),
-            //          It.IsAny<string>(),
-            //          It.IsAny<long>(),
-            //          It.IsAny<bool>()))
-            //      .Returns(true);
-
-            Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
-
-            Mocker.GetMock<IDiskProvider>()
-                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Once());
-        }
-
         [TestCase("_UNPACK_")]
         [TestCase("_FAILED_")]
         public void should_remove_unpack_from_folder_name(string prefix)

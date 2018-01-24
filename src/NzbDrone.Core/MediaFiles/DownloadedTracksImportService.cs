@@ -103,7 +103,6 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var audioFile in audioFiles)
             {
-                //TODO Make this more robust, we should not delete path if it still contains audio files. 
                 var albumParseResult = Parser.Parser.ParseMusicTitle(Path.GetFileName(audioFile));
 
                 if (albumParseResult == null)
@@ -111,6 +110,9 @@ namespace NzbDrone.Core.MediaFiles
                     _logger.Warn("Unable to parse file on import: [{0}]", audioFile);
                     return false;
                 }
+
+                _logger.Warn("Audio file detected: [{0}]", audioFile);
+                return false;
             }
 
             if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
