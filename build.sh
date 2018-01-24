@@ -131,7 +131,7 @@ RunGulp()
     LintUI
 
     ProgressStart 'Running gulp'
-    CheckExitCode yarn build --production
+    CheckExitCode yarn run build --production
     ProgressEnd 'Running gulp'
 }
 
