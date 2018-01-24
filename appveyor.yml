@@ -26,8 +26,8 @@ test_script:
   - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./test.sh Windows Unit
 
 cache:
-  - '%USERPROFILE%\.nuget\packages'
-  - node_modules
+  #- '%USERPROFILE%\.nuget\packages'
+  #- node_modules
   
 pull_requests:
   do_not_increment_build_number: true
