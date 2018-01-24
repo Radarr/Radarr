@@ -9,6 +9,7 @@ assembly_info:
 
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  nodejs_version: "6"
 
 install:
   - git submodule update --init --recursive
@@ -23,11 +24,13 @@ after_build:
   - ps: Get-ChildItem .\_artifacts\*.tar.gz | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
 test_script:
+  - node --version
+  - yarn --version
   - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./test.sh Windows Unit
 
 cache:
-  #- '%USERPROFILE%\.nuget\packages'
-  #- node_modules
+  - '%USERPROFILE%\.nuget\packages'
+  - node_modules -> package.json
   
 pull_requests:
   do_not_increment_build_number: true
