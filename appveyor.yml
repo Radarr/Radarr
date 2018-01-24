@@ -13,6 +13,7 @@ environment:
 
 install:
   - git submodule update --init --recursive
+  - ps: Install-Product node $env:nodejs_version
 
 build_script:
   - C:\msys64\usr\bin\bash -lc "cd \"$APPVEYOR_BUILD_FOLDER\" && exec ./build.sh
