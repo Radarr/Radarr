@@ -182,6 +182,7 @@
     <Compile Include="Datastore\Migration\006_separate_automatic_and_interactive_search.cs" />
     <Compile Include="Datastore\Migration\007_change_album_path_to_relative.cs" />
     <Compile Include="Datastore\Migration\009_album_releases.cs" />
+    <Compile Include="Datastore\Migration\010_album_releases_fix.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -731,8 +732,10 @@
     <Compile Include="Messaging\Events\IHandle.cs" />
     <Compile Include="Messaging\IProcessMessage.cs" />
     <Compile Include="MetadataSource\IProvideArtistInfo.cs" />
+    <Compile Include="MetadataSource\ISearchForNewAlbum.cs" />
     <Compile Include="MetadataSource\ISearchForNewArtist.cs" />
     <Compile Include="MetadataSource\IProvideAlbumInfo.cs" />
+    <Compile Include="MetadataSource\SkyHook\Resource\AlbumArtistResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MediumResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\MemberResource.cs" />
     <Compile Include="MetadataSource\SkyHook\Resource\AlbumResource.cs" />

@@ -15,12 +15,13 @@ using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideArtistInfo, ISearchForNewArtist, IProvideAlbumInfo
+    public class SkyHookProxy : IProvideArtistInfo, ISearchForNewArtist, IProvideAlbumInfo, ISearchForNewAlbum
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
         private readonly IArtistService _artistService;
+        private readonly IAlbumService _albumService;
         private readonly IHttpRequestBuilderFactory _requestBuilder;
         private readonly IConfigService _configService;
         private readonly IMetadataProfileService _metadataProfileService;
@@ -29,7 +30,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public SkyHookProxy(IHttpClient httpClient,
                             ILidarrCloudRequestBuilder requestBuilder,
-                            IArtistService artistService, Logger logger,
+                            IArtistService artistService,
+                            IAlbumService albumService,
+                            Logger logger,
                             IConfigService configService,
                             IMetadataProfileService metadataProfileService)
         {
@@ -38,6 +41,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _metadataProfileService = metadataProfileService;
             _requestBuilder = requestBuilder.Search;
             _artistService = artistService;
+            _albumService = albumService;
             _logger = logger;
         }
 
@@ -48,7 +52,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             SetCustomProvider();
 
-            var metadataProfile = _metadataProfileService.Get(metadataProfileId);
+            var metadataProfile = _metadataProfileService.Exists(metadataProfileId) ? _metadataProfileService.Get(metadataProfileId) : _metadataProfileService.All().FirstOrDefault();
+            
 
             var primaryTypes = metadataProfile.PrimaryAlbumTypes.Where(s => s.Allowed).Select(s => s.PrimaryAlbumType.Name);
             var secondaryTypes = metadataProfile.SecondaryAlbumTypes.Where(s => s.Allowed).Select(s => s.SecondaryAlbumType.Name);
@@ -183,11 +188,73 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
+        public List<Album> SearchForNewAlbum(string title, string artist, DateTime releaseDate)
+        {
+            try
+            {
+                var lowerTitle = title.ToLowerInvariant();
+
+                if (lowerTitle.StartsWith("lidarr:") || lowerTitle.StartsWith("lidarrid:"))
+                {
+                    var slug = lowerTitle.Split(':')[1].Trim();
+
+                    Guid searchGuid;
+
+                    bool isValid = Guid.TryParse(slug, out searchGuid);
+
+                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || isValid == false)
+                    {
+                        return new List<Album>();
+                    }
+
+                    try
+                    {
+                        return new List<Album> { GetAlbumInfo(searchGuid.ToString(), null).Item1 };
+                    }
+                    catch (ArtistNotFoundException)
+                    {
+                        return new List<Album>();
+                    }
+                }
+
+                SetCustomProvider();
+
+                var httpRequest = _customerRequestBuilder.Create()
+                                    .SetSegment("route", "search")
+                                    .AddQueryParam("type", "album")
+                                    .AddQueryParam("query", title.ToLower().Trim())
+                                    .AddQueryParam("artist", artist.ToLower().Trim())
+                                    .Build();
+
+
+
+                var httpResponse = _httpClient.Get<List<AlbumResource>>(httpRequest);
+
+                return httpResponse.Resource.SelectList(MapSearhResult);
+            }
+            catch (HttpException)
+            {
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with LidarrAPI.", title);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, ex.Message);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from LidarrAPI.", title);
+            }
+        }
+
         private Artist MapSearhResult(ArtistResource resource)
         {
             var artist = _artistService.FindById(resource.Id) ?? MapArtist(resource);
 
             return artist;
+        }
+
+        private Album MapSearhResult(AlbumResource resource)
+        {
+            var album = _albumService.FindById(resource.Id) ?? MapAlbum(resource);
+
+            return album;
         }
 
         private static Album MapAlbum(AlbumResource resource)
@@ -213,6 +280,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 album.Releases = resource.Releases.Select(MapAlbumRelease).ToList();
                 album.CurrentRelease = album.Releases.FirstOrDefault(s => s.Id == resource.SelectedRelease);
             }
+
+            if (resource.Artist != null)
+            {
+                album.Artist = new Artist
+                {
+                    ForeignArtistId = resource.Artist.Id,
+                    Name = resource.Artist.Name
+                };
+            }
+            
 
             return album;
         }

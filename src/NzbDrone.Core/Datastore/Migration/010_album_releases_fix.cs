@@ -8,10 +8,8 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Delete.Column("Releases").FromTable("Albums");
-            Delete.Column("CurrentRelease").FromTable("Albums");
-            Alter.Table("Albums").AddColumn("Releases").AsString().WithDefaultValue("[]").NotNullable();
-            Alter.Table("Albums").AddColumn("CurrentRelease").AsString().WithDefaultValue("").NotNullable();
+            Alter.Table("Albums").AlterColumn("Releases").AsString().NotNullable();
+            Alter.Table("Albums").AlterColumn("CurrentRelease").AsString().NotNullable();
         }
     }
 }

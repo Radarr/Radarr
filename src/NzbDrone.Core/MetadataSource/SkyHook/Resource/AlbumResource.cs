@@ -10,6 +10,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public AlbumResource()
         {
             Media = new List<MediumResource>();
+            Releases = new List<ReleaseResource>();
         }
 
         public List<ArtistResource> Artists { get; set; } // Will always be length of 1 unless a compilation
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public List<TrackResource> Tracks { get; set; }
         public List<ReleaseResource> Releases { get; set; }
         public string SelectedRelease { get; set; }
+        public AlbumArtistResource Artist { get; set; }
     }
 
     
