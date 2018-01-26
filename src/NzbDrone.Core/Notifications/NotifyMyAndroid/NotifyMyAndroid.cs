@@ -35,10 +35,6 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Notify My Android";
 
         public override bool SupportsOnRename => false;

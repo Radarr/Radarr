@@ -844,11 +844,12 @@ namespace NzbDrone.Core.Organizer
             {
                 mediaInfoAudioLanguages = string.Format("[{0}]", mediaInfoAudioLanguages);
             }
-
+            var mediaInfoAudioLanguagesAll = mediaInfoAudioLanguages;
             if (mediaInfoAudioLanguages == "[EN]")
             {
                 mediaInfoAudioLanguages = string.Empty;
             }
+
 
             var mediaInfoSubtitleLanguages = GetLanguagesToken(movieFile.MediaInfo.Subtitles);
             if (!mediaInfoSubtitleLanguages.IsNullOrWhiteSpace())
@@ -872,6 +873,9 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo Simple}"] = m => string.Format("{0} {1}", videoCodec, audioCodec);
 
             tokenHandlers["{MediaInfo Full}"] = m => string.Format("{0} {1}{2} {3}", videoCodec, audioCodec, mediaInfoAudioLanguages, mediaInfoSubtitleLanguages);
+            tokenHandlers["{MediaInfo AudioLanguages}"] = m => mediaInfoAudioLanguages;
+            tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => mediaInfoAudioLanguagesAll;
+            tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
         }
 
         private string GetLanguagesToken(string mediaInfoLanguages)

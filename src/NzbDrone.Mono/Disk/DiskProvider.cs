@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -116,21 +116,14 @@ namespace NzbDrone.Mono.Disk
 
         public override List<IMount> GetMounts()
         {
-			var mounts = GetDriveInfoMounts().Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
-											 .Where(d => d.DriveType == DriveType.Fixed || d.DriveType == DriveType.Network || d.DriveType == DriveType.Removable);
-
-
-
-			var procMounts = _procMountProvider.GetMounts();
-
-			if (procMounts != null)
-			{
-				return mounts.Concat(procMounts).DistinctBy(v => v.RootDirectory)
-									   .ToList();
-			}
-
-			return mounts.Cast<IMount>().DistinctBy(v => v.RootDirectory)
-									   .ToList();
+            return _procMountProvider.GetMounts()
+                                     .Concat(GetDriveInfoMounts()
+                                                 .Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
+                                                 .Where(d => d.DriveType == DriveType.Fixed ||
+                                                             d.DriveType == DriveType.Network ||
+                                                             d.DriveType == DriveType.Removable))
+                                     .DistinctBy(v => v.RootDirectory)
+                                     .ToList();
         }
 
         public override long? GetTotalSize(string path)

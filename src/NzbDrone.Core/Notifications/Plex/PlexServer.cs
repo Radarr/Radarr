@@ -30,11 +30,6 @@ namespace NzbDrone.Core.Notifications.Plex
             UpdateIfEnabled(movie);
         }
 		
-        public override void OnRename(Series series)
-        {
-            //UpdateIfEnabled(movie);
-        }
-
         private void UpdateIfEnabled(Movie movie)
         {
             if (Settings.UpdateLibrary)

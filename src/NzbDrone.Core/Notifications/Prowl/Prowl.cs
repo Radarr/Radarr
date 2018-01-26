@@ -35,10 +35,6 @@ namespace NzbDrone.Core.Notifications.Prowl
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Prowl";
 
         public override bool SupportsOnRename => false;

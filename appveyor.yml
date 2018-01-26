@@ -32,7 +32,7 @@ artifacts:
 
 cache:
   - '%USERPROFILE%\.nuget\packages'
-  - node_modules
+  - node_modules -> package.json
   
 pull_requests:
   do_not_increment_build_number: true

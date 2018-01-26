@@ -133,8 +133,8 @@ namespace NzbDrone.Core.Notifications.Growl
         {
             var notificationTypes = new List<NotificationType>();
             notificationTypes.Add(new NotificationType("TEST", "Test"));
-            notificationTypes.Add(new NotificationType("GRAB", "Episode Grabbed"));
-            notificationTypes.Add(new NotificationType("DOWNLOAD", "Episode Complete"));
+            notificationTypes.Add(new NotificationType("GRAB", "Movie Grabbed"));
+            notificationTypes.Add(new NotificationType("DOWNLOAD", "Movie Complete"));
 
             return notificationTypes.ToArray();
         }

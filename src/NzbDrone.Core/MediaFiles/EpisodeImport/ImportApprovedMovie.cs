@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                     if (newDownload)
                     {
-                        _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, movieFile, oldFiles));
+                        _eventAggregator.PublishEvent(new MovieDownloadedEvent(localMovie, movieFile, oldFiles, downloadClientItem));
                     }
                 }
                 catch (Exception e)

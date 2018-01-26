@@ -150,3 +150,6 @@ Thumbs.db
 # AppVeyor
 /tools-cake/
 /_artifacts/
+
+# Cake
+/tools/Addins/*

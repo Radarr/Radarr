@@ -34,10 +34,6 @@ namespace NzbDrone.Core.Notifications.Pushalot
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Pushalot";
 
         public override bool SupportsOnRename => false;

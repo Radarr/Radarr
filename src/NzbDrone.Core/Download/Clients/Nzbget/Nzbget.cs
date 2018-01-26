@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
-            var category = Settings.TvCategory; // TODO: Update this to MovieCategory?
+            var category = Settings.MovieCategory;
 
             var priority = Settings.RecentTvPriority;
 
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            return GetQueue().Concat(GetHistory()).Where(downloadClientItem => downloadClientItem.Category == Settings.TvCategory);
+            return GetQueue().Concat(GetHistory()).Where(downloadClientItem => downloadClientItem.Category == Settings.MovieCategory);
         }
 
         public override void RemoveItem(string downloadId, bool deleteData)
@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             var config = _proxy.GetConfig(Settings);
 
-            var category = GetCategories(config).FirstOrDefault(v => v.Name == Settings.TvCategory);
+            var category = GetCategories(config).FirstOrDefault(v => v.Name == Settings.MovieCategory);
 
             var status = new DownloadClientStatus
             {
@@ -283,7 +283,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
                 if (Version.Parse(version) < Version.Parse("12.0"))
                 {
-                    return new ValidationFailure(string.Empty, "Nzbget version too low, need 12.0 or higher");
+                    return new ValidationFailure(string.Empty, "NZBGet version too low, need 12.0 or higher");
                 }
             }
             catch (Exception ex)
@@ -304,12 +304,12 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             var config = _proxy.GetConfig(Settings);
             var categories = GetCategories(config);
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace() && !categories.Any(v => v.Name == Settings.TvCategory))
+            if (!Settings.MovieCategory.IsNullOrWhiteSpace() && !categories.Any(v => v.Name == Settings.MovieCategory))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Category does not exist")
+                return new NzbDroneValidationFailure("MovieCategory", "Category does not exist")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
-                    DetailedDescription = "The Category your entered doesn't exist in NzbGet. Go to NzbGet to create it."
+                    DetailedDescription = "The category you entered doesn't exist in NZBGet. Go to NZBGet to create it."
                 };
             }
 
@@ -323,10 +323,10 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             var keepHistory = config.GetValueOrDefault("KeepHistory");
             if (keepHistory == "0")
             {
-                return new NzbDroneValidationFailure(string.Empty, "NzbGet setting KeepHistory should be greater than 0")
+                return new NzbDroneValidationFailure(string.Empty, "NZBGet setting KeepHistory should be greater than 0")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
-                    DetailedDescription = "NzbGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
+                    DetailedDescription = "NZBGet setting KeepHistory is set to 0. Which prevents Radarr from seeing completed downloads."
                 };
             }
 
