@@ -21,10 +21,10 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchIndexerOptions,
-  setIndexerOptionsValue,
-  saveIndexerOptions,
-  clearPendingChanges
+  dispatchFetchIndexerOptions: fetchIndexerOptions,
+  dispatchSetIndexerOptionsValue: setIndexerOptionsValue,
+  dispatchSaveIndexerOptions: saveIndexerOptions,
+  dispatchClearPendingChanges: clearPendingChanges
 };
 
 class IndexerOptionsConnector extends Component {
@@ -33,31 +33,43 @@ class IndexerOptionsConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchIndexerOptions();
+    const {
+      dispatchFetchIndexerOptions,
+      dispatchSaveIndexerOptions,
+      onChildMounted
+    } = this.props;
+
+    dispatchFetchIndexerOptions();
+    onChildMounted(dispatchSaveIndexerOptions);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasPendingChanges !== prevProps.hasPendingChanges) {
-      this.props.onHasPendingChange(this.props.hasPendingChanges);
+    const {
+      hasPendingChanges,
+      isSaving,
+      onChildStateChange
+    } = this.props;
+
+    if (
+      prevProps.isSaving !== isSaving ||
+      prevProps.hasPendingChanges !== hasPendingChanges
+    ) {
+      onChildStateChange({
+        isSaving,
+        hasPendingChanges
+      });
     }
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: this.props.section });
-  }
-
-  //
-  // Control
-
-  save = () => {
-    this.props.saveIndexerOptions();
+    this.props.dispatchClearPendingChanges({ section: this.props.section });
   }
 
   //
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setIndexerOptionsValue({ name, value });
+    this.props.dispatchSetIndexerOptionsValue({ name, value });
   }
 
   //
@@ -75,18 +87,20 @@ class IndexerOptionsConnector extends Component {
 
 IndexerOptionsConnector.propTypes = {
   section: PropTypes.string.isRequired,
+  isSaving: PropTypes.bool.isRequired,
   hasPendingChanges: PropTypes.bool.isRequired,
-  fetchIndexerOptions: PropTypes.func.isRequired,
-  setIndexerOptionsValue: PropTypes.func.isRequired,
-  saveIndexerOptions: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired,
-  onHasPendingChange: PropTypes.func.isRequired
+  dispatchFetchIndexerOptions: PropTypes.func.isRequired,
+  dispatchSetIndexerOptionsValue: PropTypes.func.isRequired,
+  dispatchSaveIndexerOptions: PropTypes.func.isRequired,
+  dispatchClearPendingChanges: PropTypes.func.isRequired,
+  onChildMounted: PropTypes.func.isRequired,
+  onChildStateChange: PropTypes.func.isRequired
 };
 
 export default connectSection(
   createMapStateToProps,
   mapDispatchToProps,
   undefined,
-  { withRef: true },
+  undefined,
   { section: 'settings.indexerOptions' }
 )(IndexerOptionsConnector);

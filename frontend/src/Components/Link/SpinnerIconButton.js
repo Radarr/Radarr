@@ -16,6 +16,7 @@ function SpinnerIconButton(props) {
     <IconButton
       name={isSpinning ? (spinningName || name) : name}
       isDisabled={isDisabled || isSpinning}
+      isSpinning={isSpinning}
       {...otherProps}
     />
   );

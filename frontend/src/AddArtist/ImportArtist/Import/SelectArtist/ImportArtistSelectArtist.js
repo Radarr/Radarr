@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import TetherComponent from 'react-tether';
 import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
-import SpinnerIcon from 'Components/SpinnerIcon';
 import FormInputButton from 'Components/Form/FormInputButton';
 import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';

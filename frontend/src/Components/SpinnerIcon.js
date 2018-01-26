@@ -14,14 +14,15 @@ function SpinnerIcon(props) {
   return (
     <Icon
       name={isSpinning ? (spinningName || name) : name}
+      isSpinning={isSpinning}
       {...otherProps}
     />
   );
 }
 
 SpinnerIcon.propTypes = {
-  name: PropTypes.string.isRequired,
-  spinningName: PropTypes.string.isRequired,
+  name: PropTypes.object.isRequired,
+  spinningName: PropTypes.object.isRequired,
   isSpinning: PropTypes.bool.isRequired
 };
 

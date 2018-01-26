@@ -11,6 +11,9 @@ function createMapStateToProps() {
     (state) => state.paths,
     (paths) => {
       const {
+        isFetching,
+        isPopulated,
+        error,
         parent,
         currentPath,
         directories,
@@ -22,6 +25,9 @@ function createMapStateToProps() {
       });
 
       return {
+        isFetching,
+        isPopulated,
+        error,
         parent,
         currentPath,
         directories,

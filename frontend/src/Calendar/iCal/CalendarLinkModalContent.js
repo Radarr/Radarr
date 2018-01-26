@@ -22,7 +22,7 @@ function getUrls(state) {
     tags
   } = state;
 
-  let icalUrl = `${window.location.host}${window.Sonarr.urlBase}/feed/v1/calendar/Lidarr.ics?`;
+  let icalUrl = `${window.location.host}${window.Lidarr.urlBase}/feed/v1/calendar/Lidarr.ics?`;
 
   if (unmonitored) {
     icalUrl += 'unmonitored=true&';
@@ -40,7 +40,7 @@ function getUrls(state) {
     icalUrl += `tags=${tags.toString()}&`;
   }
 
-  icalUrl += `apikey=${window.Sonarr.apiKey}`;
+  icalUrl += `apikey=${window.Lidarr.apiKey}`;
 
   const iCalHttpUrl = `${window.location.protocol}//${icalUrl}`;
   const iCalWebCalUrl = `webcal://${icalUrl}`;

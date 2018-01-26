@@ -14,7 +14,10 @@ class IndexerSettings extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._saveCallback = null;
+
     this.state = {
+      isSaving: false,
       hasPendingChanges: false
     };
   }
@@ -22,28 +25,34 @@ class IndexerSettings extends Component {
   //
   // Listeners
 
-  setIndexerOptionsRef = (ref) => {
-    this._indexerOptions = ref;
+  onChildMounted = (saveCallback) => {
+    this._saveCallback = saveCallback;
   }
 
-  onHasPendingChange = (hasPendingChanges) => {
-    this.setState({
-      hasPendingChanges
-    });
+  onChildStateChange = (payload) => {
+    this.setState(payload);
   }
 
   onSavePress = () => {
-    this._indexerOptions.getWrappedInstance().save();
+    if (this._saveCallback) {
+      this._saveCallback();
+    }
   }
 
   //
   // Render
 
   render() {
+    const {
+      isSaving,
+      hasPendingChanges
+    } = this.state;
+
     return (
       <PageContent title="Indexer Settings">
         <SettingsToolbarConnector
-          hasPendingChanges={this.state.hasPendingChanges}
+          isSaving={isSaving}
+          hasPendingChanges={hasPendingChanges}
           onSavePress={this.onSavePress}
         />
 
@@ -51,8 +60,8 @@ class IndexerSettings extends Component {
           <IndexersConnector />
 
           <IndexerOptionsConnector
-            ref={this.setIndexerOptionsRef}
-            onHasPendingChange={this.onHasPendingChange}
+            onChildMounted={this.onChildMounted}
+            onChildStateChange={this.onChildStateChange}
           />
 
           <RestrictionsConnector />

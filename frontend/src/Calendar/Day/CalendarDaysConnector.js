@@ -17,16 +17,9 @@ function createMapStateToProps() {
   );
 }
 
-function createMapDispatchToProps(dispatch) {
-  return {
-    onNavigatePrevious() {
-      dispatch(gotoCalendarPreviousRange());
-    },
+const mapDispatchToProps = {
+  onNavigatePrevious: gotoCalendarPreviousRange,
+  onNavigateNext: gotoCalendarNextRange
+};
 
-    onNavigateNext() {
-      dispatch(gotoCalendarNextRange());
-    }
-  };
-}
-
-export default connect(createMapStateToProps, createMapDispatchToProps)(CalendarDays);
+export default connect(createMapStateToProps, mapDispatchToProps)(CalendarDays);

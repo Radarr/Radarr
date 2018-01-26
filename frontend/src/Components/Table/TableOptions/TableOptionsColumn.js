@@ -18,7 +18,7 @@ function TableOptionsColumn(props) {
   } = props;
 
   return (
-    <div className={!isModifiable && styles.notDragable}>
+    <div className={isModifiable ? undefined : styles.notDragable}>
       <div
         className={classNames(
           styles.column,

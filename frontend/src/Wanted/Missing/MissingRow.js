@@ -81,6 +81,7 @@ function MissingRow(props) {
                   albumEntity={albumEntities.WANTED_MISSING}
                   albumTitle={title}
                   showOpenArtistButton={true}
+                  showOpenAlbumButton={true}
                 />
               </TableRowCell>
             );

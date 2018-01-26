@@ -17,8 +17,9 @@ using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Lidarr.Api.V1.TrackFiles
 {
-    public class TrackModule : LidarrRestModuleWithSignalR<TrackFileResource, TrackFile>,
-                                 IHandle<TrackFileAddedEvent>
+    public class TrackFileModule : LidarrRestModuleWithSignalR<TrackFileResource, TrackFile>,
+                                 IHandle<TrackFileAddedEvent>,
+                                 IHandle<TrackFileDeletedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IDeleteMediaFiles _mediaFileDeletionService;
@@ -26,7 +27,7 @@ namespace Lidarr.Api.V1.TrackFiles
         private readonly IAlbumService _albumService;
         private readonly IUpgradableSpecification _upgradableSpecification;
 
-        public TrackModule(IBroadcastSignalRMessage signalRBroadcaster,
+        public TrackFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                              IMediaFileService mediaFileService,
                              IDeleteMediaFiles mediaFileDeletionService,
                              IArtistService artistService,
@@ -170,5 +171,11 @@ namespace Lidarr.Api.V1.TrackFiles
         {
             BroadcastResourceChange(ModelAction.Updated, message.TrackFile.Id);
         }
+
+        public void Handle(TrackFileDeletedEvent message)
+        {
+            BroadcastResourceChange(ModelAction.Deleted, message.TrackFile.Id);
+        }
+
     }
 }

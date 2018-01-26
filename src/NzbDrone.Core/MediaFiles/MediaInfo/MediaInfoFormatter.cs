@@ -147,7 +147,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             Logger.Debug()
-                  .Message("Unknown audio format: '{0}' in '{1}'.", string.Join(", ", audioFormat, audioCodecID, audioProfile, audioCodecLibrary))
+                  .Message("Unknown audio format: '{0}'.", string.Join(", ", audioFormat, audioCodecID, audioProfile, audioCodecLibrary))
                   .WriteSentryWarn("UnknownAudioFormat", mediaInfo.ContainerFormat, audioFormat, audioCodecID)
                   .Write();
 

@@ -40,7 +40,7 @@ class QualityDefinitionConnector extends Component {
       this.props.setQualityDefinitionValue({ id, name: 'minSize', value: minSize });
     }
 
-    if (minSize !== currentMaxSize) {
+    if (maxSize !== currentMaxSize) {
       this.props.setQualityDefinitionValue({ id, name: 'maxSize', value: maxSize });
     }
   }

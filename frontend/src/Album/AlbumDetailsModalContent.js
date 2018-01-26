@@ -45,17 +45,20 @@ class AlbumDetailsModalContent extends Component {
       albumId,
       artistName,
       foreignArtistId,
+      foreignAlbumId,
       artistMonitored,
       albumTitle,
       monitored,
       isSaving,
       showOpenArtistButton,
+      showOpenAlbumButton,
       startInteractiveSearch,
       onMonitorAlbumPress,
       onModalClose
     } = this.props;
 
     const artistLink = `/artist/${foreignArtistId}`;
+    const albumLink = `/album/${foreignAlbumId}`;
 
     return (
       <ModalContent
@@ -121,18 +124,30 @@ class AlbumDetailsModalContent extends Component {
           </Tabs>
         </ModalBody>
 
-        <ModalFooter>
-          {
-            showOpenArtistButton &&
-              <Button
-                className={styles.openArtistButton}
-                to={artistLink}
-                onPress={onModalClose}
-              >
-                Open Artist
-              </Button>
-          }
+        <ModalFooter >
+          <div className={styles.openButtons}>
+            {
+              showOpenArtistButton &&
+                <Button
+                  className={styles.openArtistButton}
+                  to={artistLink}
+                  onPress={onModalClose}
+                >
+                  Open Artist
+                </Button>
+            }
 
+            {
+              showOpenAlbumButton &&
+                <Button
+                  className={styles.openAlbumButton}
+                  to={albumLink}
+                  onPress={onModalClose}
+                >
+                  Open Album
+                </Button>
+            }
+          </div>
           <Button
             onPress={onModalClose}
           >
@@ -150,6 +165,7 @@ AlbumDetailsModalContent.propTypes = {
   artistId: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
+  foreignAlbumId: PropTypes.string.isRequired,
   artistMonitored: PropTypes.bool.isRequired,
   releaseDate: PropTypes.string.isRequired,
   albumLabel: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -157,6 +173,7 @@ AlbumDetailsModalContent.propTypes = {
   monitored: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool,
   showOpenArtistButton: PropTypes.bool,
+  showOpenAlbumButton: PropTypes.bool,
   selectedTab: PropTypes.string.isRequired,
   startInteractiveSearch: PropTypes.bool.isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired,

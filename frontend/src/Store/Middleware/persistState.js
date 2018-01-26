@@ -87,7 +87,7 @@ const config = {
   slicer,
   serialize,
   merge,
-  key: 'sonarr'
+  key: 'lidarr'
 };
 
 export default persistState(paths, config);

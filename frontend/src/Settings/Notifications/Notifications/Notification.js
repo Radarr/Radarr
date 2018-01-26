@@ -79,6 +79,7 @@ class Notification extends Component {
     return (
       <Card
         className={styles.notification}
+        overlayContent={true}
         onPress={this.onEditNotificationPress}
       >
         <div className={styles.name}>

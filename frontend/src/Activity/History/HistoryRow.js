@@ -119,6 +119,7 @@ class HistoryRow extends Component {
                     artistId={artist.id}
                     albumTitle={album.title}
                     showOpenArtistButton={true}
+                    showOpenAlbumButton={true}
                   />
                 </TableRowCell>
               );

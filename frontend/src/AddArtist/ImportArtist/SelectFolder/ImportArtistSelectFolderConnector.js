@@ -43,7 +43,7 @@ class ImportArtistSelectFolderConnector extends Component {
       const newRootFolders = _.differenceBy(items, prevProps.items, (item) => item.id);
 
       if (newRootFolders.length === 1) {
-        this.props.push(`${window.Sonarr.urlBase}/add/import/${newRootFolders[0].id}`);
+        this.props.push(`${window.Lidarr.urlBase}/add/import/${newRootFolders[0].id}`);
       }
     }
   }

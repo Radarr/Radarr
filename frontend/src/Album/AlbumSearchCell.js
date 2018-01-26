@@ -5,7 +5,6 @@ import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import AlbumDetailsModal from './AlbumDetailsModal';
-import EditAlbumModalConnector from './Edit/EditAlbumModalConnector';
 import styles from './AlbumSearchCell.css';
 
 class AlbumSearchCell extends Component {
@@ -17,8 +16,7 @@ class AlbumSearchCell extends Component {
     super(props, context);
 
     this.state = {
-      isDetailsModalOpen: false,
-      isEditAlbumModalOpen: false
+      isDetailsModalOpen: false
     };
   }
 
@@ -31,14 +29,6 @@ class AlbumSearchCell extends Component {
 
   onDetailsModalClose = () => {
     this.setState({ isDetailsModalOpen: false });
-  }
-
-  onEditAlbumPress = () => {
-    this.setState({ isEditAlbumModalOpen: true });
-  }
-
-  onEditAlbumModalClose = () => {
-    this.setState({ isEditAlbumModalOpen: false });
   }
 
   //
@@ -67,12 +57,6 @@ class AlbumSearchCell extends Component {
           onPress={this.onManualSearchPress}
         />
 
-        <IconButton
-          name={icons.EDIT}
-          title="Edit Album"
-          onPress={this.onEditAlbumPress}
-        />
-
         <AlbumDetailsModal
           isOpen={this.state.isDetailsModalOpen}
           albumId={albumId}
@@ -84,12 +68,6 @@ class AlbumSearchCell extends Component {
           {...otherProps}
         />
 
-        <EditAlbumModalConnector
-          isOpen={this.state.isEditAlbumModalOpen}
-          albumId={albumId}
-          artistId={artistId}
-          onModalClose={this.onEditAlbumModalClose}
-        />
       </TableRowCell>
     );
   }

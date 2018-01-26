@@ -74,6 +74,8 @@ function ProxySettings(props) {
             <FormInputGroup
               type={inputTypes.NUMBER}
               name="proxyPort"
+              min={1}
+              max={65535}
               onChange={onInputChange}
               {...proxyPort}
             />

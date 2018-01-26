@@ -31,7 +31,7 @@ export const defaultState = {
   messages: {
     items: []
   },
-  version: window.Sonarr.version,
+  version: window.Lidarr.version,
   isUpdated: false,
   isConnected: true,
   isReconnecting: false,

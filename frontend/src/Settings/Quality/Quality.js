@@ -12,7 +12,10 @@ class Quality extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._saveCallback = null;
+
     this.state = {
+      isSaving: false,
       hasPendingChanges: false
     };
   }
@@ -20,35 +23,41 @@ class Quality extends Component {
   //
   // Listeners
 
-  setQualityDefinitionsRef = (ref) => {
-    this._qualityDefinitions = ref;
+  onChildMounted = (saveCallback) => {
+    this._saveCallback = saveCallback;
   }
 
-  onHasPendingChange = (hasPendingChanges) => {
-    this.setState({
-      hasPendingChanges
-    });
+  onChildStateChange = (payload) => {
+    this.setState(payload);
   }
 
   onSavePress = () => {
-    this._qualityDefinitions.getWrappedInstance().save();
+    if (this._saveCallback) {
+      this._saveCallback();
+    }
   }
 
   //
   // Render
 
   render() {
+    const {
+      isSaving,
+      hasPendingChanges
+    } = this.state;
+
     return (
       <PageContent title="Quality Settings">
         <SettingsToolbarConnector
-          hasPendingChanges={this.state.hasPendingChanges}
+          isSaving={isSaving}
+          hasPendingChanges={hasPendingChanges}
           onSavePress={this.onSavePress}
         />
 
         <PageContentBodyConnector>
           <QualityDefinitionsConnector
-            ref={this.setQualityDefinitionsRef}
-            onHasPendingChange={this.onHasPendingChange}
+            onChildMounted={this.onChildMounted}
+            onChildStateChange={this.onChildStateChange}
           />
         </PageContentBodyConnector>
       </PageContent>

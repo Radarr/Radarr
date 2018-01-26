@@ -78,6 +78,10 @@ class AddNewArtistSearchResult extends Component {
       isSmallScreen
     } = this.props;
 
+    const {
+      isNewAddArtistModalOpen
+    } = this.state;
+
     const linkProps = isExistingArtist ? { to: `/artist/${foreignArtistId}` } : { onPress: this.onPress };
     let albums = '1 Album';
 
@@ -88,78 +92,78 @@ class AddNewArtistSearchResult extends Component {
     const height = calculateHeight(230, isSmallScreen);
 
     return (
-      <Link
-        className={styles.searchResult}
-        {...linkProps}
-      >
-        {
-          !isSmallScreen &&
+      <div>
+        <Link
+          className={styles.searchResult}
+          {...linkProps}
+        >
+          {
+            !isSmallScreen &&
             <ArtistPoster
               className={styles.poster}
               images={images}
               size={250}
             />
-        }
+          }
 
-        <div>
-          <div className={styles.name}>
-            {artistName}
+          <div>
+            <div className={styles.name}>
+              {artistName}
 
-            {
-              !name.contains(year) && !!year &&
+              {
+                !name.contains(year) && !!year &&
                 <span className={styles.year}>({year})</span>
-            }
+              }
 
-            {
-              !!disambiguation &&
+              {
+                !!disambiguation &&
                 <span className={styles.year}>({disambiguation})</span>
-            }
+              }
 
-            {
-              isExistingArtist &&
-                <Icon
-                  className={styles.alreadyExistsIcon}
-                  name={icons.CHECK_CIRCLE}
-                  size={36}
-                  title="Already in your library"
+              {
+                isExistingArtist &&
+                  <Icon
+                    className={styles.alreadyExistsIcon}
+                    name={icons.CHECK_CIRCLE}
+                    size={36}
+                    title="Already in your library"
+                  />
+              }
+            </div>
+
+            <div>
+              <Label size={sizes.LARGE}>
+                <HeartRating
+                  rating={ratings.value}
+                  iconSize={13}
                 />
-            }
-          </div>
+              </Label>
 
-          <div>
-            <Label size={sizes.LARGE}>
-              <HeartRating
-                rating={ratings.value}
-                iconSize={13}
-              />
-            </Label>
+              {
+                !!artistType &&
+                  <Label size={sizes.LARGE}>
+                    {artistType}
+                  </Label>
+              }
 
-            {
-              !!artistType &&
-                <Label size={sizes.LARGE}>
-                  {artistType}
-                </Label>
-            }
+              {
+                !!albumCount &&
+                  <Label size={sizes.LARGE}>
+                    {albums}
+                  </Label>
+              }
 
-            {
-              !!albumCount &&
-                <Label size={sizes.LARGE}>
-                  {albums}
-                </Label>
-            }
+              {
+                status === 'ended' &&
+                  <Label
+                    kind={kinds.DANGER}
+                    size={sizes.LARGE}
+                  >
+                    Ended
+                  </Label>
+              }
+            </div>
 
-            {
-              status === 'ended' &&
-                <Label
-                  kind={kinds.DANGER}
-                  size={sizes.LARGE}
-                >
-                  Ended
-                </Label>
-            }
-          </div>
-
-          <div>
             <div
               className={styles.overview}
               style={{
@@ -173,10 +177,10 @@ class AddNewArtistSearchResult extends Component {
               />
             </div>
           </div>
-        </div>
+        </Link>
 
         <AddNewArtistModal
-          isOpen={this.state.isNewAddArtistModalOpen && !isExistingArtist}
+          isOpen={isNewAddArtistModalOpen && !isExistingArtist}
           foreignArtistId={foreignArtistId}
           artistName={artistName}
           year={year}
@@ -184,7 +188,7 @@ class AddNewArtistSearchResult extends Component {
           images={images}
           onModalClose={this.onAddArtistModalClose}
         />
-      </Link>
+      </div>
     );
   }
 }

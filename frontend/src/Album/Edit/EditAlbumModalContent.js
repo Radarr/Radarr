@@ -26,7 +26,7 @@ class EditAlbumModalContent extends Component {
 
   }
 
-  //  
+  //
   // Render
 
   render() {

@@ -11,6 +11,7 @@ import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
 import AlbumCover from 'Album/AlbumCover';
+import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import EditAlbumModalConnector from 'Album/Edit/EditAlbumModalConnector';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -50,6 +51,7 @@ class AlbumDetails extends Component {
     super(props, context);
 
     this.state = {
+      isOrganizeModalOpen: false,
       isArtistHistoryModalOpen: false,
       isManageTracksOpen: false,
       isEditAlbumModalOpen: false,
@@ -61,6 +63,14 @@ class AlbumDetails extends Component {
 
   //
   // Listeners
+
+  onOrganizePress = () => {
+    this.setState({ isOrganizeModalOpen: true });
+  }
+
+  onOrganizeModalClose = () => {
+    this.setState({ isOrganizeModalOpen: false });
+  }
 
   onEditAlbumPress = () => {
     this.setState({ isEditAlbumModalOpen: true });
@@ -135,6 +145,7 @@ class AlbumDetails extends Component {
     } = this.props;
 
     const {
+      isOrganizeModalOpen,
       isArtistHistoryModalOpen,
       isEditAlbumModalOpen,
       isManageTracksOpen,
@@ -163,6 +174,12 @@ class AlbumDetails extends Component {
             />
 
             <PageToolbarSeparator />
+
+            <PageToolbarButton
+              label="Preview Rename"
+              iconName={icons.ORGANIZE}
+              onPress={this.onOrganizePress}
+            />
 
             <PageToolbarButton
               label="Manage Tracks"
@@ -363,6 +380,13 @@ class AlbumDetails extends Component {
             }
 
           </div>
+
+          <OrganizePreviewModalConnector
+            isOpen={isOrganizeModalOpen}
+            artistId={artist.id}
+            albumId={id}
+            onModalClose={this.onOrganizeModalClose}
+          />
 
           <TrackFileEditorModal
             isOpen={isManageTracksOpen}

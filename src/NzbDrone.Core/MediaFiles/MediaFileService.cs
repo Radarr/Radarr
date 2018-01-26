@@ -24,6 +24,7 @@ namespace NzbDrone.Core.MediaFiles
         List<string> FilterExistingFiles(List<string> files, Artist artist);
         TrackFile Get(int id);
         List<TrackFile> Get(IEnumerable<int> ids);
+        List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath);
 
     }
 
@@ -96,6 +97,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<TrackFile> Get(IEnumerable<int> ids)
         {
             return _mediaFileRepository.Get(ids).ToList();
+        }
+
+        public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
+        {
+            return _mediaFileRepository.GetFilesWithRelativePath(artistId, relativePath);
         }
 
         public void HandleAsync(ArtistDeletedEvent message)

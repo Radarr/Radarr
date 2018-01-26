@@ -35,8 +35,15 @@ namespace Lidarr.Http
 
         protected void BroadcastResourceChange(ModelAction action, int id)
         {
-            var resource = GetResourceById(id);
-            BroadcastResourceChange(action, resource);
+            if (action == ModelAction.Deleted)
+            {
+                BroadcastResourceChange(action, new TResource { Id = id });
+            }
+            else
+            {
+                var resource = GetResourceById(id);
+                BroadcastResourceChange(action, resource);
+            }
         }
 
 

@@ -60,6 +60,7 @@ class DownloadClient extends Component {
     return (
       <Card
         className={styles.downloadClient}
+        overlayContent={true}
         onPress={this.onEditDownloadClientPress}
       >
         <div className={styles.name}>

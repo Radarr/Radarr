@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Portal from 'react-portal';
 import classNames from 'classnames';
 import elementClass from 'element-class';
 import getUniqueElememtId from 'Utilities/getUniqueElementId';
@@ -27,6 +26,8 @@ class Modal extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._node = document.getElementById('modal-root');
+    this._backgroundRef = null;
     this._modalId = getUniqueElememtId();
   }
 
@@ -57,6 +58,10 @@ class Modal extends Component {
   //
   // Control
 
+  _setBackgroundRef = (ref) => {
+    this._backgroundRef = ref;
+  }
+
   _openModal() {
     openModals.push(this._modalId);
     window.addEventListener('keydown', this.onKeyDown);
@@ -79,9 +84,9 @@ class Modal extends Component {
     const targetElement = this._findEventTarget(event);
 
     if (targetElement) {
-      const modalElement = ReactDOM.findDOMNode(this.refs.modal);
+      const backgroundElement = ReactDOM.findDOMNode(this._backgroundRef);
 
-      return !modalElement || !modalElement.contains(targetElement);
+      return backgroundElement.isEqualNode(targetElement);
     }
 
     return false;
@@ -138,10 +143,6 @@ class Modal extends Component {
     }
   }
 
-  onClosePress = (event) => {
-    this.props.onModalClose();
-  }
-
   //
   // Render
 
@@ -155,36 +156,32 @@ class Modal extends Component {
       isOpen
     } = this.props;
 
-    return (
-      <Portal
-        isOpened={isOpen}
+    if (!isOpen) {
+      return null;
+    }
+
+    return ReactDOM.createPortal(
+      <div
+        className={styles.modalContainer}
       >
-        <div>
-          {
-            isOpen &&
-              <div
-                className={styles.modalContainer}
-              >
-                <div
-                  className={backdropClassName}
-                  onMouseDown={this.onBackdropBeginPress}
-                  onMouseUp={this.onBackdropEndPress}
-                >
-                  <div
-                    ref="modal"
-                    className={classNames(
-                      className,
-                      styles[size]
-                    )}
-                    style={style}
-                  >
-                    {children}
-                  </div>
-                </div>
-              </div>
-          }
+        <div
+          ref={this._setBackgroundRef}
+          className={backdropClassName}
+          onMouseDown={this.onBackdropBeginPress}
+          onMouseUp={this.onBackdropEndPress}
+        >
+          <div
+            className={classNames(
+              className,
+              styles[size]
+            )}
+            style={style}
+          >
+            {children}
+          </div>
         </div>
-      </Portal>
+      </div>,
+      this._node
     );
   }
 }

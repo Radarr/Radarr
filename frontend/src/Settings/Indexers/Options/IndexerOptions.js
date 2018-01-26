@@ -41,6 +41,7 @@ function IndexerOptions(props) {
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="minimumAge"
+                min={0}
                 helpText="Usenet only: Minimum age in minutes of NZBs before they are grabbed. Use this to give new releases time to propagate to your usenet provider."
                 onChange={onInputChange}
                 {...settings.minimumAge}
@@ -53,6 +54,7 @@ function IndexerOptions(props) {
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="maximumSize"
+                min={0}
                 helpText="Maximum size for a release to be grabbed in MB. Set to zero to set to unlimited."
                 onChange={onInputChange}
                 {...settings.maximumSize}
@@ -65,6 +67,7 @@ function IndexerOptions(props) {
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="retention"
+                min={0}
                 helpText="Usenet only: Set to zero to set for unlimited retention"
                 onChange={onInputChange}
                 {...settings.retention}
@@ -80,6 +83,7 @@ function IndexerOptions(props) {
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="rssSyncInterval"
+                min={0}
                 helpText="Interval in minutes. Set to zero to disable (this will stop all automatic release grabbing)"
                 helpTextWarning="This will apply to all indexers, please follow the rules set forth by them"
                 helpLink="https://github.com/Sonarr/Sonarr/wiki/RSS-Sync"

@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { scrollDirections } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
-import Scroller from 'Components/Scroller/Scroller';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import Scroller from 'Components/Scroller/Scroller';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import PathInput from 'Components/Form/PathInput';
@@ -43,12 +44,15 @@ class FileBrowserModalContent extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       currentPath
     } = this.props;
 
-    if (currentPath !== this.state.currentPath) {
+    if (
+      currentPath !== this.state.currentPath &&
+      currentPath !== prevState.currentPath
+    ) {
       this.setState({ currentPath });
       this._scrollerNode.scrollTop = 0;
     }
@@ -91,6 +95,9 @@ class FileBrowserModalContent extends Component {
 
   render() {
     const {
+      isFetching,
+      isPopulated,
+      error,
       parent,
       directories,
       files,
@@ -125,61 +132,77 @@ class FileBrowserModalContent extends Component {
             ref={this.setScrollerRef}
             className={styles.scroller}
           >
-            <Table columns={columns}>
-              <TableBody>
-                {
-                  emptyParent &&
-                    <FileBrowserRow
-                      type="computer"
-                      name="My Computer"
-                      path={parent}
-                      onPress={this.onRowPress}
-                    />
-                }
+            {
+              !!error &&
+                <div>Error loading contents</div>
+            }
 
-                {
-                  !emptyParent && parent &&
-                    <FileBrowserRow
-                      type="parent"
-                      name="..."
-                      path={parent}
-                      onPress={this.onRowPress}
-                    />
-                }
-
-                {
-                  directories.map((directory) => {
-                    return (
+            {
+              isPopulated && !error &&
+                <Table columns={columns}>
+                  <TableBody>
+                    {
+                      emptyParent &&
                       <FileBrowserRow
-                        key={directory.path}
-                        type={directory.type}
-                        name={directory.name}
-                        path={directory.path}
+                        type="computer"
+                        name="My Computer"
+                        path={parent}
                         onPress={this.onRowPress}
                       />
-                    );
-                  })
-                }
+                    }
 
-                {
-                  files.map((file) => {
-                    return (
+                    {
+                      !emptyParent && parent &&
                       <FileBrowserRow
-                        key={file.path}
-                        type={file.type}
-                        name={file.name}
-                        path={file.path}
+                        type="parent"
+                        name="..."
+                        path={parent}
                         onPress={this.onRowPress}
                       />
-                    );
-                  })
-                }
-              </TableBody>
-            </Table>
+                    }
+
+                    {
+                      directories.map((directory) => {
+                        return (
+                          <FileBrowserRow
+                            key={directory.path}
+                            type={directory.type}
+                            name={directory.name}
+                            path={directory.path}
+                            onPress={this.onRowPress}
+                          />
+                        );
+                      })
+                    }
+
+                    {
+                      files.map((file) => {
+                        return (
+                          <FileBrowserRow
+                            key={file.path}
+                            type={file.type}
+                            name={file.name}
+                            path={file.path}
+                            onPress={this.onRowPress}
+                          />
+                        );
+                      })
+                    }
+                  </TableBody>
+                </Table>
+            }
           </Scroller>
         </ModalBody>
 
         <ModalFooter>
+          {
+            isFetching &&
+              <LoadingIndicator
+                className={styles.loading}
+                size={20}
+              />
+          }
+
           <Button
             onPress={onModalClose}
           >
@@ -200,6 +223,9 @@ class FileBrowserModalContent extends Component {
 FileBrowserModalContent.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  isPopulated: PropTypes.bool.isRequired,
+  error: PropTypes.object,
   parent: PropTypes.string,
   currentPath: PropTypes.string.isRequired,
   directories: PropTypes.arrayOf(PropTypes.object).isRequired,

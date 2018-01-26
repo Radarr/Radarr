@@ -26,8 +26,8 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchQualityDefinitions,
-  saveQualityDefinitions
+  dispatchFetchQualityDefinitions: fetchQualityDefinitions,
+  dispatchSaveQualityDefinitions: saveQualityDefinitions
 };
 
 class QualityDefinitionsConnector extends Component {
@@ -36,24 +36,34 @@ class QualityDefinitionsConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchQualityDefinitions();
+    this.props.dispatchFetchQualityDefinitions();
+
+    const {
+      dispatchFetchQualityDefinitions,
+      dispatchSaveQualityDefinitions,
+      onChildMounted
+    } = this.props;
+
+    dispatchFetchQualityDefinitions();
+    onChildMounted(dispatchSaveQualityDefinitions);
   }
 
   componentDidUpdate(prevProps) {
     const {
-      hasPendingChanges
+      hasPendingChanges,
+      isSaving,
+      onChildStateChange
     } = this.props;
 
-    if (hasPendingChanges !== prevProps.hasPendingChanges) {
-      this.props.onHasPendingChange(hasPendingChanges);
+    if (
+      prevProps.isSaving !== isSaving ||
+      prevProps.hasPendingChanges !== hasPendingChanges
+    ) {
+      onChildStateChange({
+        isSaving,
+        hasPendingChanges
+      });
     }
-  }
-
-  //
-  // Control
-
-  save = () => {
-    this.props.saveQualityDefinitions();
   }
 
   //
@@ -69,10 +79,12 @@ class QualityDefinitionsConnector extends Component {
 }
 
 QualityDefinitionsConnector.propTypes = {
+  isSaving: PropTypes.bool.isRequired,
   hasPendingChanges: PropTypes.bool.isRequired,
-  fetchQualityDefinitions: PropTypes.func.isRequired,
-  saveQualityDefinitions: PropTypes.func.isRequired,
-  onHasPendingChange: PropTypes.func.isRequired
+  dispatchFetchQualityDefinitions: PropTypes.func.isRequired,
+  dispatchSaveQualityDefinitions: PropTypes.func.isRequired,
+  onChildMounted: PropTypes.func.isRequired,
+  onChildStateChange: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps, null, { withRef: true })(QualityDefinitionsConnector);

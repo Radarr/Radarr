@@ -161,6 +161,7 @@ class QueueRow extends Component {
                     trackFileId={album.trackFileId}
                     albumTitle={album.title}
                     showOpenArtistButton={true}
+                    showOpenAlbumButton={true}
                   />
                 </TableRowCell>
               );

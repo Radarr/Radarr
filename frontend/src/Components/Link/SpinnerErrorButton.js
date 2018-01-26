@@ -129,7 +129,7 @@ class SpinnerErrorButton extends Component {
         isSpinning={isSpinning}
         {...otherProps}
       >
-        <span className={showIcon && styles.showIcon}>
+        <span className={showIcon ? styles.showIcon : undefined}>
           {
             showIcon &&
               <span className={styles.iconContainer}>

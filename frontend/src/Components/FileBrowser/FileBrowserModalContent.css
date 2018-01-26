@@ -14,3 +14,8 @@
 .scroller {
   margin-top: 20px;
 }
+
+.loading {
+  display: inline-block;
+  margin-right: auto;
+}

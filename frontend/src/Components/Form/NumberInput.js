@@ -8,10 +8,21 @@ class NumberInput extends Component {
   // Listeners
 
   onChange = ({ name, value }) => {
+    const {
+      min,
+      max
+    } = this.props;
+
     let newValue = null;
 
     if (value) {
       newValue = this.props.isFloat ? parseFloat(value) : parseInt(value);
+    }
+
+    if (min != null && newValue < min) {
+      newValue = min;
+    } else if (max != null && newValue > max) {
+      newValue = max;
     }
 
     this.props.onChange({
@@ -40,6 +51,8 @@ class NumberInput extends Component {
 
 NumberInput.propTypes = {
   value: PropTypes.number,
+  min: PropTypes.number,
+  max: PropTypes.number,
   isFloat: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired
 };

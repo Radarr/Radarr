@@ -1,3 +1,3 @@
 export default function getPathWithUrlBase(path) {
-  return `${window.Sonarr.urlBase}${path}`;
+  return `${window.Lidarr.urlBase}${path}`;
 }

@@ -15,7 +15,7 @@ import LoadingPage from './LoadingPage';
 import Page from './Page';
 
 function testLocalStorage() {
-  const key = 'sonarrTest';
+  const key = 'lidarrTest';
 
   try {
     localStorage.setItem(key, key);
@@ -64,7 +64,7 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    dispatchFetchSeries() {
+    dispatchFetchArtist() {
       dispatch(fetchArtist());
     },
     dispatchFetchTags() {
@@ -109,7 +109,7 @@ class PageConnector extends Component {
 
   componentDidMount() {
     if (!this.props.isPopulated) {
-      this.props.dispatchFetchSeries();
+      this.props.dispatchFetchArtist();
       this.props.dispatchFetchTags();
       this.props.dispatchFetchQualityProfiles();
       this.props.dispatchFetchLanguageProfiles();
@@ -133,7 +133,7 @@ class PageConnector extends Component {
     const {
       isPopulated,
       hasError,
-      dispatchFetchSeries,
+      dispatchFetchArtist,
       dispatchFetchTags,
       dispatchFetchQualityProfiles,
       dispatchFetchLanguageProfiles,
@@ -171,7 +171,7 @@ PageConnector.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
   isSidebarVisible: PropTypes.bool.isRequired,
-  dispatchFetchSeries: PropTypes.func.isRequired,
+  dispatchFetchArtist: PropTypes.func.isRequired,
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,
   dispatchFetchLanguageProfiles: PropTypes.func.isRequired,

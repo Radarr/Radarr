@@ -98,7 +98,7 @@ class ClipboardButton extends Component {
         className={styles.button}
         {...otherProps}
       >
-        <span className={showStateIcon && styles.showStateIcon}>
+        <span className={showStateIcon ? styles.showStateIcon : undefined}>
           {
             showSuccess &&
               <span className={styles.stateIconContainer}>

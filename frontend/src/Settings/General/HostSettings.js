@@ -49,6 +49,8 @@ function HostSettings(props) {
         <FormInputGroup
           type={inputTypes.NUMBER}
           name="port"
+          min={1}
+          max={65535}
           helpTextWarning="Requires restart to take effect"
           onChange={onInputChange}
           {...port}
@@ -95,6 +97,8 @@ function HostSettings(props) {
           <FormInputGroup
             type={inputTypes.NUMBER}
             name="sslPort"
+            min={1}
+            max={65535}
             helpTextWarning="Requires restart to take effect"
             onChange={onInputChange}
             {...sslPort}

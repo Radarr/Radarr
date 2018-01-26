@@ -51,10 +51,10 @@ class PageHeader extends Component {
     return (
       <div className={styles.header}>
         <div className={styles.logoContainer}>
-          <Link to={`${window.Sonarr.urlBase}/`}>
+          <Link to={`${window.Lidarr.urlBase}/`}>
             <img
               className={styles.logo}
-              src={`${window.Sonarr.urlBase}/Content/Images/logo.svg`}
+              src={`${window.Lidarr.urlBase}/Content/Images/logo.svg`}
             />
           </Link>
         </div>
@@ -74,6 +74,7 @@ class PageHeader extends Component {
             className={styles.donate}
             name={icons.HEART}
             to="https://www.paypal.me/Lidarr"
+            size={14}
           />
           <PageHeaderActionsMenuConnector
             onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}

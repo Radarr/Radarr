@@ -176,25 +176,23 @@ export const actionHandlers = handleThunks({
 
   [FETCH_QUEUE_STATUS]: createFetchHandler(status, '/queue/status'),
 
-  [FETCH_QUEUE_DETAILS]: function(payload) {
-    return function(dispatch, getState) {
-      let params = payload;
+  [FETCH_QUEUE_DETAILS]: function(getState, payload, dispatch) {
+    let params = payload;
 
-      // If the payload params are empty try to get params from state.
+    // If the payload params are empty try to get params from state.
 
-      if (params && !_.isEmpty(params)) {
-        dispatch(set({ section: details, params }));
-      } else {
-        params = getState().queue.details.params;
-      }
+    if (params && !_.isEmpty(params)) {
+      dispatch(set({ section: details, params }));
+    } else {
+      params = getState().queue.details.params;
+    }
 
-      // Ensure there are params before trying to fetch the queue
-      // so we don't make a bad request to the server.
+    // Ensure there are params before trying to fetch the queue
+    // so we don't make a bad request to the server.
 
-      if (params && !_.isEmpty(params)) {
-        fetchQueueDetailsHelper(getState, params, dispatch);
-      }
-    };
+    if (params && !_.isEmpty(params)) {
+      fetchQueueDetailsHelper(getState, params, dispatch);
+    }
   },
 
   ...createServerSideCollectionHandlers(

@@ -14,7 +14,10 @@ class DownloadClientSettings extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._saveCallback = null;
+
     this.state = {
+      isSaving: false,
       hasPendingChanges: false
     };
   }
@@ -22,28 +25,34 @@ class DownloadClientSettings extends Component {
   //
   // Listeners
 
-  setDownloadClientOptionsRef = (ref) => {
-    this._downloadClientOptions = ref;
+  onChildMounted = (saveCallback) => {
+    this._saveCallback = saveCallback;
   }
 
-  onHasPendingChange = (hasPendingChanges) => {
-    this.setState({
-      hasPendingChanges
-    });
+  onChildStateChange = (payload) => {
+    this.setState(payload);
   }
 
   onSavePress = () => {
-    this._downloadClientOptions.getWrappedInstance().save();
+    if (this._saveCallback) {
+      this._saveCallback();
+    }
   }
 
   //
   // Render
 
   render() {
+    const {
+      isSaving,
+      hasPendingChanges
+    } = this.state;
+
     return (
       <PageContent title="Download Client Settings">
         <SettingsToolbarConnector
-          hasPendingChanges={this.state.hasPendingChanges}
+          isSaving={isSaving}
+          hasPendingChanges={hasPendingChanges}
           onSavePress={this.onSavePress}
         />
 
@@ -51,8 +60,8 @@ class DownloadClientSettings extends Component {
           <DownloadClientsConnector />
 
           <DownloadClientOptionsConnector
-            ref={this.setDownloadClientOptionsRef}
-            onHasPendingChange={this.onHasPendingChange}
+            onChildMounted={this.onChildMounted}
+            onChildStateChange={this.onChildStateChange}
           />
 
           <RemotePathMappingsConnector />

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
@@ -15,7 +16,8 @@ namespace Lidarr.Api.V1.Tracks
 {
     public abstract class TrackModuleWithSignalR : LidarrRestModuleWithSignalR<TrackResource, Track>,
             IHandle<TrackInfoRefreshedEvent>,
-            IHandle<TrackImportedEvent>
+            IHandle<TrackImportedEvent>,
+            IHandle<TrackFileDeletedEvent>
     {
         protected readonly ITrackService _trackService;
         protected readonly IArtistService _artistService;
@@ -128,6 +130,14 @@ namespace Lidarr.Api.V1.Tracks
             foreach (var track in message.TrackInfo.Tracks)
             {
                 BroadcastResourceChange(ModelAction.Updated, track.Id);
+            }
+        }
+
+        public void Handle(TrackFileDeletedEvent message)
+        {
+            foreach (var track in message.TrackFile.Tracks.Value)
+            {
+                BroadcastResourceChange(ModelAction.Deleted, track.Id);
             }
         }
 

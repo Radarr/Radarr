@@ -32,6 +32,6 @@
 
   .label {
     left: 100%;
-    opacity: 0;
+    visibility: hidden;
   }
 }

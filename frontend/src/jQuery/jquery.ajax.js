@@ -1,8 +1,8 @@
 import $ from 'jquery';
 
 const absUrlRegex = /^(https?:)?\/\//i;
-const apiRoot = window.Sonarr.apiRoot;
-const urlBase = window.Sonarr.urlBase;
+const apiRoot = window.Lidarr.apiRoot;
+const urlBase = window.Lidarr.urlBase;
 
 function isRelative(xhr) {
   return !absUrlRegex.test(xhr.url);
@@ -31,7 +31,7 @@ function addRootUrl(xhr) {
 
 function addApiKey(xhr) {
   xhr.headers = xhr.headers || {};
-  xhr.headers['X-Api-Key'] = window.Sonarr.apiKey;
+  xhr.headers['X-Api-Key'] = window.Lidarr.apiKey;
 }
 
 export default function() {

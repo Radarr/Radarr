@@ -83,6 +83,10 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(new TrackFileMoveResult());
 
             _downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
+
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(s => s.GetFilesWithRelativePath(It.IsAny<int>(), It.IsAny<string>()))
+                .Returns(new List<TrackFile>());
         }
 
         [Test]
@@ -198,5 +202,19 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeTrackFile(It.IsAny<TrackFile>(), _approvedDecisions.First().LocalTrack, false), Times.Once());
         }
+
+        [Test]
+        public void should_delete_existing_metadata_files_with_the_same_path()
+        {
+            Mocker.GetMock<IMediaFileService>()
+                .Setup(s => s.GetFilesWithRelativePath(It.IsAny<int>(), It.IsAny<string>()))
+                .Returns(Builder<TrackFile>.CreateListOfSize(1).BuildList());
+
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, false);
+
+            Mocker.GetMock<IMediaFileService>()
+                .Verify(v => v.Delete(It.IsAny<TrackFile>(), DeleteMediaFileReason.ManualOverride), Times.Once());
+        }
+
     }
 }

@@ -10,10 +10,9 @@ import AlbumSearchCell from './AlbumSearchCell';
 function createMapStateToProps() {
   return createSelector(
     (state, { albumId }) => albumId,
-    (state, { sceneSeasonNumber }) => sceneSeasonNumber,
     createArtistSelector(),
     createCommandsSelector(),
-    (albumId, sceneSeasonNumber, artist, commands) => {
+    (albumId, artist, commands) => {
       const isSearching = _.some(commands, (command) => {
         const albumSearch = command.name === commandNames.ALBUM_SEARCH;
 

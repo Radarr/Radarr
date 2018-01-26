@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using Nancy.Responses;
+using NzbDrone.Common.TPL;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Messaging.Events;
@@ -16,12 +17,18 @@ namespace Lidarr.Api.V1.Queue
     {
         private readonly IQueueService _queueService;
         private readonly IPendingReleaseService _pendingReleaseService;
+        private readonly Debouncer _broadcastDebounce;
+
 
         public QueueStatusModule(IBroadcastSignalRMessage broadcastSignalRMessage, IQueueService queueService, IPendingReleaseService pendingReleaseService)
             : base(broadcastSignalRMessage, "queue/status")
         {
             _queueService = queueService;
             _pendingReleaseService = pendingReleaseService;
+
+            _broadcastDebounce = new Debouncer(BroadcastChange, TimeSpan.FromSeconds(5));
+
+
             Get["/"] = x => GetQueueStatusResponse();
         }
 
@@ -32,25 +39,38 @@ namespace Lidarr.Api.V1.Queue
 
         private QueueStatusResource GetQueueStatus()
         {
+            _broadcastDebounce.Pause();
+
             var queue = _queueService.GetQueue();
             var pending = _pendingReleaseService.GetPendingQueue();
 
-            return new QueueStatusResource
+            var resource = new QueueStatusResource
             {
                 Count = queue.Count + pending.Count,
                 Errors = queue.Any(q => q.TrackedDownloadStatus.Equals("Error", StringComparison.InvariantCultureIgnoreCase)),
                 Warnings = queue.Any(q => q.TrackedDownloadStatus.Equals("Warning", StringComparison.InvariantCultureIgnoreCase))
             };
+
+            _broadcastDebounce.Resume();
+
+            return resource;
+        }
+
+        private void BroadcastChange()
+        {
+            BroadcastResourceChange(ModelAction.Updated, GetQueueStatus());
         }
 
         public void Handle(QueueUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetQueueStatus());
+            _broadcastDebounce.Execute();
         }
-
+        
         public void Handle(PendingReleasesUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetQueueStatus());
+            _broadcastDebounce.Execute();
         }
+
+
     }
 }

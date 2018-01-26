@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.MediaFiles
         List<TrackFile> GetFilesByArtist(int artistId);
         List<TrackFile> GetFilesByAlbum(int albumId);
         List<TrackFile> GetFilesWithoutMediaInfo();
+        List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath);
     }
 
 
@@ -35,5 +36,13 @@ namespace NzbDrone.Core.MediaFiles
         {
             return Query.Where(c => c.AlbumId == albumId).ToList();
         }
+        
+        public List<TrackFile> GetFilesWithRelativePath(int artistId, string relativePath)
+        {
+            return Query.Where(c => c.ArtistId == artistId)
+                .AndWhere(c => c.RelativePath == relativePath)
+                .ToList();
+        }
+
     }
 }

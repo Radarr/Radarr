@@ -115,6 +115,15 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     else
                     {
                         trackFile.RelativePath = localTrack.Artist.Path.GetRelativePath(trackFile.Path);
+
+                        // Delete existing files from the DB mapped to this path
+                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localTrack.Artist.Id, trackFile.RelativePath);
+
+                        foreach (var previousFile in previousFiles)
+                        {
+                            _mediaFileService.Delete(previousFile, DeleteMediaFileReason.ManualOverride);
+                        }
+
                     }
 
                     _mediaFileService.Add(trackFile);

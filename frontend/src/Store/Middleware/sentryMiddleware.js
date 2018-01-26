@@ -25,7 +25,7 @@ export default function sentryMiddleware() {
     version,
     release,
     isProduction
-  } = window.Sonarr;
+  } = window.Lidarr;
 
   if (!analytics) {
     return;

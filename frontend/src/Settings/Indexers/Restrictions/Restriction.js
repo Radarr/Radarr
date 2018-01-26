@@ -64,6 +64,7 @@ class Restriction extends Component {
     return (
       <Card
         className={styles.restriction}
+        overlayContent={true}
         onPress={this.onEditRestrictionPress}
       >
         <div>

@@ -97,7 +97,7 @@ function EditMetadataProfileModalContent(props) {
           id &&
             <div
               className={styles.deleteButtonContainer}
-              title={isInUse && 'Can\'t delete a metadata profile that is attached to a artist'}
+              title={isInUse ? 'Can\'t delete a metadata profile that is attached to a artist' : undefined}
             >
               <Button
                 kind={kinds.DANGER}

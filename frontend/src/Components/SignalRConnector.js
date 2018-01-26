@@ -80,7 +80,7 @@ class SignalRConnector extends Component {
   componentDidMount() {
     console.log('Starting signalR');
 
-    this.signalRconnection = $.connection('/signalr', { apiKey: window.Sonarr.apiKey });
+    this.signalRconnection = $.connection('/signalr', { apiKey: window.Lidarr.apiKey });
 
     this.signalRconnection.stateChanged(this.onStateChanged);
     this.signalRconnection.received(this.onReceived);
@@ -232,11 +232,12 @@ class SignalRConnector extends Component {
   }
 
   handleTrackFile = (body) => {
+    const section = 'trackFiles';
+
     if (body.action === 'updated') {
-      this.props.updateItem({
-        section: 'trackFiles',
-        ...body.resource
-      });
+      this.props.updateItem({ section, ...body.resource });
+    } else if (body.action === 'deleted') {
+      this.props.removeItem({ section, id: body.resource.id });
     }
   }
 
@@ -335,7 +336,7 @@ class SignalRConnector extends Component {
   }
 
   onReconnecting = () => {
-    if (window.Sonarr.unloading) {
+    if (window.Lidarr.unloading) {
       return;
     }
 
@@ -349,7 +350,7 @@ class SignalRConnector extends Component {
   }
 
   onDisconnected = () => {
-    if (window.Sonarr.unloading) {
+    if (window.Lidarr.unloading) {
       return;
     }
 

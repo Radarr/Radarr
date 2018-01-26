@@ -7,7 +7,7 @@ import updateSectionState from 'Utilities/State/updateSectionState';
 import { createThunk } from 'Store/thunks';
 import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
 import createSaveHandler from 'Store/Actions/Creators/createSaveHandler';
-import { clearPendingChanges, update } from 'Store/Actions/baseActions';
+import { clearPendingChanges, set, update } from 'Store/Actions/baseActions';
 
 //
 // Variables
@@ -70,6 +70,11 @@ export default {
         return;
       }
 
+      dispatch(set({
+        section,
+        isSaving: true
+      }));
+
       const promise = $.ajax({
         method: 'PUT',
         url: '/qualityDefinition/update',
@@ -78,9 +83,23 @@ export default {
 
       promise.done((data) => {
         dispatch(batchActions([
+          set({
+            section,
+            isSaving: false,
+            saveError: null
+          }),
+
           update({ section, data }),
           clearPendingChanges({ section })
         ]));
+      });
+
+      promise.fail((xhr) => {
+        dispatch(set({
+          section,
+          isSaving: false,
+          saveError: xhr
+        }));
       });
     }
   },

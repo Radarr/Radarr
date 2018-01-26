@@ -1,7 +1,0 @@
-.advancedSettings {
-  composes: toolbarButton from 'Components/Page/Toolbar/PageToolbarButton.css';
-}
-
-.advancedSettingsEnabled {
-  color: $toobarButtonHoverColor;
-}

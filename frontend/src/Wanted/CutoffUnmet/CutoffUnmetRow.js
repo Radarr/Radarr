@@ -64,6 +64,7 @@ function CutoffUnmetRow(props) {
                   albumEntity={albumEntities.WANTED_CUTOFF_UNMET}
                   albumTitle={title}
                   showOpenArtistButton={true}
+                  showOpenAlbumButton={true}
                 />
               </TableRowCell>
             );

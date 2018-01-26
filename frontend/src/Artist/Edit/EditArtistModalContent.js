@@ -51,7 +51,7 @@ class EditArtistModalContent extends Component {
     this.props.onSavePress(true);
   }
 
-  //  
+  //
   // Render
 
   render() {

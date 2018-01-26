@@ -29,6 +29,29 @@ function getValue(value) {
 class QualityDefinition extends Component {
 
   //
+  // Lifecycle
+
+  constructor(props, context) {
+    super(props, context);
+
+    this._forceUpdateTimeout = null;
+  }
+
+  componentDidMount() {
+    // A hack to deal with a bug in the slider component until a fix for it
+    // lands and an updated version is available.
+    // See: https://github.com/mpowaga/react-slider/issues/115
+
+    this._forceUpdateTimeout = setTimeout(() => this.forceUpdate(), 1);
+  }
+
+  componentWillUnmount() {
+    if (this._forceUpdateTimeout) {
+      clearTimeout(this._forceUpdateTimeout);
+    }
+  }
+
+  //
   // Listeners
 
   onSizeChange = ([minSize, maxSize]) => {
@@ -131,6 +154,8 @@ class QualityDefinition extends Component {
                 <NumberInput
                   className={styles.sizeInput}
                   name={`${id}.min`}
+                  min={slider.min}
+                  max={maxSize ? maxSize - 10 : slider.max - 10}
                   value={minSize || slider.min}
                   isFloat={true}
                   onChange={this.onMinSizeChange}
@@ -143,6 +168,7 @@ class QualityDefinition extends Component {
                 <NumberInput
                   className={styles.sizeInput}
                   name={`${id}.max`}
+                  min={minSize + 10}
                   value={maxSize || slider.max}
                   isFloat={true}
                   onChange={this.onMaxSizeChange}

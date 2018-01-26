@@ -21,10 +21,10 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  fetchDownloadClientOptions,
-  setDownloadClientOptionsValue,
-  saveDownloadClientOptions,
-  clearPendingChanges
+  dispatchFetchDownloadClientOptions: fetchDownloadClientOptions,
+  dispatchSetDownloadClientOptionsValue: setDownloadClientOptionsValue,
+  dispatchSaveDownloadClientOptions: saveDownloadClientOptions,
+  dispatchClearPendingChanges: clearPendingChanges
 };
 
 class DownloadClientOptionsConnector extends Component {
@@ -33,31 +33,43 @@ class DownloadClientOptionsConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchDownloadClientOptions();
+    const {
+      dispatchFetchDownloadClientOptions,
+      dispatchSaveDownloadClientOptions,
+      onChildMounted
+    } = this.props;
+
+    dispatchFetchDownloadClientOptions();
+    onChildMounted(dispatchSaveDownloadClientOptions);
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.hasPendingChanges !== prevProps.hasPendingChanges) {
-      this.props.onHasPendingChange(this.props.hasPendingChanges);
+    const {
+      hasPendingChanges,
+      isSaving,
+      onChildStateChange
+    } = this.props;
+
+    if (
+      prevProps.isSaving !== isSaving ||
+      prevProps.hasPendingChanges !== hasPendingChanges
+    ) {
+      onChildStateChange({
+        isSaving,
+        hasPendingChanges
+      });
     }
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: this.props.section });
-  }
-
-  //
-  // Control
-
-  save = () => {
-    this.props.saveDownloadClientOptions();
+    this.props.dispatchClearPendingChanges({ section: this.props.section });
   }
 
   //
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    this.props.setDownloadClientOptionsValue({ name, value });
+    this.props.dispatchSetDownloadClientOptionsValue({ name, value });
   }
 
   //
@@ -75,18 +87,20 @@ class DownloadClientOptionsConnector extends Component {
 
 DownloadClientOptionsConnector.propTypes = {
   section: PropTypes.string.isRequired,
+  isSaving: PropTypes.bool.isRequired,
   hasPendingChanges: PropTypes.bool.isRequired,
-  fetchDownloadClientOptions: PropTypes.func.isRequired,
-  setDownloadClientOptionsValue: PropTypes.func.isRequired,
-  saveDownloadClientOptions: PropTypes.func.isRequired,
-  clearPendingChanges: PropTypes.func.isRequired,
-  onHasPendingChange: PropTypes.func.isRequired
+  dispatchFetchDownloadClientOptions: PropTypes.func.isRequired,
+  dispatchSetDownloadClientOptionsValue: PropTypes.func.isRequired,
+  dispatchSaveDownloadClientOptions: PropTypes.func.isRequired,
+  dispatchClearPendingChanges: PropTypes.func.isRequired,
+  onChildMounted: PropTypes.func.isRequired,
+  onChildStateChange: PropTypes.func.isRequired
 };
 
 export default connectSection(
   createMapStateToProps,
   mapDispatchToProps,
   undefined,
-  { withRef: true },
+  undefined,
   { section: 'settings.downloadClientOptions' }
 )(DownloadClientOptionsConnector);

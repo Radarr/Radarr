@@ -76,6 +76,7 @@ class Indexer extends Component {
     return (
       <Card
         className={styles.indexer}
+        overlayContent={true}
         onPress={this.onEditIndexerPress}
       >
         <div className={styles.name}>

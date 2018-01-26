@@ -101,7 +101,7 @@ function EditLanguageProfileModalContent(props) {
           id &&
             <div
               className={styles.deleteButtonContainer}
-              title={isInUse && 'Can\'t delete a language profile that is attached to a artist'}
+              title={isInUse ? 'Can\'t delete a language profile that is attached to a artist' : undefined}
             >
               <Button
                 kind={kinds.DANGER}

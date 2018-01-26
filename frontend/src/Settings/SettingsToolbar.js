@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { icons } from 'Helpers/Props';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PendingChangesModal from './PendingChangesModal';
-import styles from './SettingsToolbar.css';
+import AdvancedSettingsButton from './AdvancedSettingsButton';
 
 class SettingsToolbar extends Component {
 
@@ -53,14 +52,9 @@ class SettingsToolbar extends Component {
     return (
       <PageToolbar>
         <PageToolbarSection>
-          <PageToolbarButton
-            label={advancedSettings ? 'Hide Advanced' : 'Show Advanced'}
-            className={classNames(
-              styles.advancedSettings,
-              advancedSettings && styles.advancedSettingsEnabled
-            )}
-            iconName={icons.ADVANCED_SETTINGS}
-            onPress={onAdvancedSettingsPress}
+          <AdvancedSettingsButton
+            advancedSettings={advancedSettings}
+            onAdvancedSettingsPress={onAdvancedSettingsPress}
           />
 
           {

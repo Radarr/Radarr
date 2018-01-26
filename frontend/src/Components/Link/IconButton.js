@@ -41,7 +41,8 @@ IconButton.propTypes = {
 };
 
 IconButton.defaultProps = {
-  className: styles.button
+  className: styles.button,
+  size: 12
 };
 
 export default IconButton;
