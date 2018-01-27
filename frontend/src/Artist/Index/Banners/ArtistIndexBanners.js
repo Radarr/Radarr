@@ -288,7 +288,7 @@ class ArtistIndexBanners extends Component {
     return (
       <Measure onMeasure={this.onMeasure}>
         <WindowScroller
-          scrollElement={isSmallScreen ? null : this._contentBodyNode}
+          scrollElement={isSmallScreen ? undefined : this._contentBodyNode}
           onScroll={onScroll}
         >
           {({ height, isScrolling }) => {
