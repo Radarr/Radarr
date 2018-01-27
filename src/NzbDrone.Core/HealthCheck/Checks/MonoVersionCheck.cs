@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 
@@ -26,15 +24,15 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             var monoVersion = _platformInfo.Version;
 
-            if (monoVersion == new Version("4.4") || monoVersion == new Version("4.4.1"))
+            if (monoVersion == new Version("4.4.0") || monoVersion == new Version("4.4.1"))
             {
                 _logger.Debug("Mono version {0}", monoVersion);
                 return new HealthCheck(GetType(), HealthCheckResult.Error, $"Your Mono version {monoVersion} has a bug that causes issues connecting to indexers/download clients. You should upgrade to a higher version");
             }
 
-            if (monoVersion >= new Version("4.4"))
+            if (monoVersion >= new Version("4.4.2"))
             {
-                _logger.Debug("Mono version is 4.4 or better: {0}", monoVersion);
+                _logger.Debug("Mono version is 4.4.2 or better: {0}", monoVersion);
                 return new HealthCheck(GetType());
             }
 
