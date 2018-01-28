@@ -42,6 +42,8 @@ namespace Lidarr.Api.V1.Albums
         public List<MediaCover> Images { get; set; }
         public AlbumStatisticsResource Statistics { get; set; }
 
+        public string RemoteCover { get; set; }
+
         //Hiding this so people don't think its usable (only used to set the initial state)
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool Grabbed { get; set; }
@@ -72,6 +74,7 @@ namespace Lidarr.Api.V1.Albums
                 Media = model.Media.ToResource(),
                 CurrentRelease = model.CurrentRelease,
                 Releases = model.Releases.ToResource(),
+                Artist = model.Artist.ToResource()
             };
         }
 

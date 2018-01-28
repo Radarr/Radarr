@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -8,6 +9,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Languages;
+using NzbDrone.Core.Profiles.Metadata;
 
 namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
@@ -16,7 +18,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
     public class ArtistRepositoryFixture : DbTest<ArtistRepository, Artist>
     {
         [Test]
-        public void should_lazyload_quality_profile()
+        public void should_lazyload_profiles()
         {
             var profile = new Profile
             {
@@ -33,20 +35,29 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 Cutoff = Language.English
             };
 
+            var metaProfile = new MetadataProfile
+            {
+                Name = "TestProfile",
+                PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>(),
+                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>()
+            };
+
 
             Mocker.Resolve<ProfileRepository>().Insert(profile);
             Mocker.Resolve<LanguageProfileRepository>().Insert(langProfile);
+            Mocker.Resolve<MetadataProfileRepository>().Insert(metaProfile);
 
-            var series = Builder<Artist>.CreateNew().BuildNew();
-            series.ProfileId = profile.Id;
-            series.LanguageProfileId = langProfile.Id;
+            var artist = Builder<Artist>.CreateNew().BuildNew();
+            artist.ProfileId = profile.Id;
+            artist.LanguageProfileId = langProfile.Id;
+            artist.MetadataProfileId = metaProfile.Id;
 
-            Subject.Insert(series);
+            Subject.Insert(artist);
 
 
             StoredModel.Profile.Should().NotBeNull();
             StoredModel.LanguageProfile.Should().NotBeNull();
-
+            StoredModel.MetadataProfile.Should().NotBeNull();
 
         }
     }

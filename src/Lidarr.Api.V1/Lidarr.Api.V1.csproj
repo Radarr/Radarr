@@ -86,6 +86,7 @@
     <Compile Include="Albums\AlbumResource.cs" />
     <Compile Include="Albums\AlbumsMonitoredResource.cs" />
     <Compile Include="Albums\AlbumStatisticsResource.cs" />
+    <Compile Include="Albums\AlbumLookupModule.cs" />
     <Compile Include="Albums\MediumResource.cs" />
     <Compile Include="Blacklist\BlacklistModule.cs" />
     <Compile Include="Blacklist\BlacklistResource.cs" />

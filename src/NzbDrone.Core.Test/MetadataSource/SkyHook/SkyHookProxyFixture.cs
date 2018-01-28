@@ -4,7 +4,6 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
@@ -47,6 +46,10 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             Mocker.GetMock<IMetadataProfileService>()
                 .Setup(s => s.Get(It.IsAny<int>()))
                 .Returns(_metadataProfile);
+
+            Mocker.GetMock<IMetadataProfileService>()
+                .Setup(s => s.Exists(It.IsAny<int>()))
+                .Returns(true);
         }
 
         [TestCase("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
@@ -60,11 +63,53 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
 
             details.Item1.Name.Should().Be(name);
         }
+        
+        [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", null, "Hysteria")]
+        public void should_be_able_to_get_album_detail(string mbId, string release, string name)
+        {
+            var details = Subject.GetAlbumInfo(mbId, release);
+            
+            ValidateAlbums(new List<Album> {details.Item1});
+
+            details.Item1.Title.Should().Be(name);
+        }
+
+        [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", "3c186b52-ca73-46a3-a8e6-04559bfbb581",1, 13, "Hysteria")]
+        [TestCase("12fa3845-7c62-36e5-a8da-8be137155a72", "dee9ca6f-4f84-4359-82a9-b75a37ffc316",2, 27,"Hysteria")]
+        public void should_be_able_to_get_album_detail_with_release(string mbId, string release, int mediaCount, int trackCount, string name)
+        {
+            var details = Subject.GetAlbumInfo(mbId, release);
+
+            ValidateAlbums(new List<Album> { details.Item1 });
+
+            details.Item1.Media.Count.Should().Be(mediaCount);
+            details.Item2.Count.Should().Be(trackCount);
+
+            details.Item1.Title.Should().Be(name);
+        }
 
         [Test]
         public void getting_details_of_invalid_artist()
         {
-            Assert.Throws<BadRequestException>(() => Subject.GetArtistInfo("aaaaaa-aaa-aaaa-aaaa", 1));
+            Assert.Throws<ArtistNotFoundException>(() => Subject.GetArtistInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1", 1));
+        }
+
+        [Test]
+        public void getting_details_of_invalid_guid_for_artist()
+        {
+            Assert.Throws<BadRequestException>(() => Subject.GetArtistInfo("66c66aaa-6e2f-4930-aaaaaa", 1));
+        }
+
+        [Test]
+        public void getting_details_of_invalid_album()
+        {
+            Assert.Throws<AlbumNotFoundException>(() => Subject.GetAlbumInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1",null));
+        }
+
+        [Test]
+        public void getting_details_of_invalid_guid_for_album()
+        {
+            Assert.Throws<BadRequestException>(() => Subject.GetAlbumInfo("66c66aaa-6e2f-4930-aaaaaa", null));
         }
 
         private void ValidateArtist(Artist artist)
@@ -75,7 +120,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             artist.SortName.Should().Be(Parser.Parser.NormalizeTitle(artist.Name));
             artist.Overview.Should().NotBeNullOrWhiteSpace();
             artist.Images.Should().NotBeEmpty();
-            //series.TvRageId.Should().BeGreaterThan(0);
             artist.ForeignArtistId.Should().NotBeNullOrWhiteSpace();
         }
 
@@ -83,9 +127,9 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             albums.Should().NotBeEmpty();
 
-            foreach (var episode in albums)
+            foreach (var album in albums)
             {
-                ValidateAlbum(episode);
+                ValidateAlbum(album);
 
                 //if atleast one album has title it means parse it working.
                 albums.Should().Contain(c => !string.IsNullOrWhiteSpace(c.Title));

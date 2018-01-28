@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Music
             Images = new List<MediaCover.MediaCover>();
             Media = new List<Medium>();
             Releases = new List<AlbumRelease>();
+            CurrentRelease = new AlbumRelease();
         }
 
         public const string RELEASE_DATE_FORMAT = "yyyy-MM-dd";

@@ -768,13 +768,13 @@
     <Compile Include="Extras\Metadata\MetadataRepository.cs" />
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
+    <Compile Include="Music\AddAlbumService.cs" />
     <Compile Include="Music\AlbumEditedService.cs" />
     <Compile Include="Music\AlbumRelease.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\AlbumCutoffService.cs" />
     <Compile Include="Music\Commands\BulkMoveArtistCommand.cs" />
     <Compile Include="Music\Commands\RefreshAlbumCommand.cs" />
-    <Compile Include="Music\Events\AlbumsAddedEvent.cs" />
     <Compile Include="Music\Events\ArtistsImportedEvent.cs" />
     <Compile Include="Music\SecondaryAlbumType.cs" />
     <Compile Include="Music\PrimaryAlbumType.cs" />

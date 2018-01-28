@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Music
 {
     public interface IAlbumMonitoredService
     {
-        void SetAlbumMonitoredStatus(Artist album, MonitoringOptions monitoringOptions);
+        void SetAlbumMonitoredStatus(Artist artist, MonitoringOptions monitoringOptions);
     }
 
     public class AlbumMonitoredService : IAlbumMonitoredService
@@ -34,7 +34,19 @@ namespace NzbDrone.Core.Music
 
                 var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
-                ToggleAlbumsMonitoredState(albums, monitoringOptions.Monitored);
+                var monitoredAlbums = artist.Albums;
+
+                if (monitoredAlbums != null)
+                {
+                    ToggleAlbumsMonitoredState(
+                        albums.Where(s => monitoredAlbums.Any(t => t.ForeignAlbumId == s.ForeignAlbumId)), true);
+                    ToggleAlbumsMonitoredState(
+                        albums.Where(s => monitoredAlbums.Any(t => t.ForeignAlbumId != s.ForeignAlbumId)), false);
+                }
+                else
+                {
+                    ToggleAlbumsMonitoredState(albums, monitoringOptions.Monitored);
+                }
 
                 //TODO Add Other Options for Future/Exisitng/Missing Once we have a good way to check for Album Related Files.
 

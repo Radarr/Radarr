@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Music
 
         public List<Album> UpdateAlbums(List<Album> album)
         {
-            _logger.Debug("Updating {0} album", album.Count);
+            _logger.Debug("Updating {0} albums", album.Count);
 
             _albumRepository.UpdateMany(album);
             _logger.Debug("{0} albums updated", album.Count);

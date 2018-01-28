@@ -188,7 +188,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        public List<Album> SearchForNewAlbum(string title, string artist, DateTime releaseDate)
+        public List<Album> SearchForNewAlbum(string title, string artist)
         {
             try
             {
@@ -223,7 +223,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                                     .SetSegment("route", "search")
                                     .AddQueryParam("type", "album")
                                     .AddQueryParam("query", title.ToLower().Trim())
-                                    .AddQueryParam("artist", artist.ToLower().Trim())
+                                    .AddQueryParam("artist", artist.IsNotNullOrWhiteSpace() ? artist.ToLower().Trim() : string.Empty)
                                     .Build();
 
 

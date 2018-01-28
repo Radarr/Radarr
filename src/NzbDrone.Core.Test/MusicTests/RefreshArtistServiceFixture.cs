@@ -18,24 +18,33 @@ namespace NzbDrone.Core.Test.MusicTests
     public class RefreshArtistServiceFixture : CoreTest<RefreshArtistService>
     {
         private Artist _artist;
+        private Album _album1;
+        private Album _album2;
+        private List<Album> _albums;
 
         [SetUp]
         public void Setup()
         {
-            var season1 = Builder<Album>.CreateNew()
-                                         .With(s => s.ForeignAlbumId = "1")
-                                         .Build();
+            _album1 = Builder<Album>.CreateNew()
+                .With(s => s.ForeignAlbumId = "1")
+                .Build();
+
+            _album2 = Builder<Album>.CreateNew()
+                .With(s => s.ForeignAlbumId = "2")
+                .Build();
+
+            _albums = new List<Album> {_album1, _album2};
 
             _artist = Builder<Artist>.CreateNew()
-                                     .With(s => s.Albums = new List<Album>
-                                                            {
-                                                                season1
-                                                            })
                                      .Build();
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(_artist.Id))
                   .Returns(_artist);
+
+            Mocker.GetMock<IAlbumService>()
+                .Setup(s => s.GetAlbumsByArtist(It.IsAny<int>()))
+                .Returns(new List<Album>());
             
             Mocker.GetMock<IProvideArtistInfo>()
                   .Setup(s => s.GetArtistInfo(It.IsAny<string>(), It.IsAny<int>()))
@@ -46,25 +55,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             Mocker.GetMock<IProvideArtistInfo>()
                   .Setup(s => s.GetArtistInfo(_artist.ForeignArtistId, _artist.MetadataProfileId))
-                  .Returns(new Tuple<Artist, List<Album>>(artist, new List<Album>()));
-        }
-
-        // TODO: Re-Write album verification tests
-        [Test]
-        [Ignore("This test needs to be re-written as we no longer store albums in artist table or object")]
-        public void should_monitor_new_albums_automatically()
-        {
-            var newArtistInfo = _artist.JsonClone();
-            newArtistInfo.Albums.Add(Builder<Album>.CreateNew()
-                                         .With(s => s.ForeignAlbumId = "2")
-                                         .Build());
-
-            GivenNewArtistInfo(newArtistInfo);
-
-            Subject.Execute(new RefreshArtistCommand(_artist.Id));
-
-            Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.Albums.Count == 2 && s.Albums.Single(season => season.ForeignAlbumId == "2").Monitored == true)));
+                  .Returns(new Tuple<Artist, List<Album>>(artist, _albums));
         }
 
         [Test]

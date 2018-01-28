@@ -6,6 +6,6 @@ namespace NzbDrone.Core.MetadataSource
 {
     public interface ISearchForNewAlbum
     {
-        List<Album> SearchForNewAlbum(string title, string artist, DateTime releaseDate);
+        List<Album> SearchForNewAlbum(string title, string artist);
     }
 }

@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Music
     {
         private readonly IProvideArtistInfo _artistInfo;
         private readonly IArtistService _artistService;
+        private readonly IAddAlbumService _addAlbumService;
         private readonly IAlbumService _albumService;
         private readonly IRefreshAlbumService _refreshAlbumService;
         private readonly IRefreshTrackService _refreshTrackService;
@@ -30,6 +31,7 @@ namespace NzbDrone.Core.Music
 
         public RefreshArtistService(IProvideArtistInfo artistInfo,
                                     IArtistService artistService,
+                                    IAddAlbumService addAlbumService,
                                     IAlbumService albumService,
                                     IRefreshAlbumService refreshAlbumService,
                                     IRefreshTrackService refreshTrackService,
@@ -40,6 +42,7 @@ namespace NzbDrone.Core.Music
         {
             _artistInfo = artistInfo;
             _artistService = artistService;
+            _addAlbumService = addAlbumService;
             _albumService = albumService;
             _refreshAlbumService = refreshAlbumService;
             _refreshTrackService = refreshTrackService;
@@ -94,11 +97,57 @@ namespace NzbDrone.Core.Music
             {
                 _logger.Warn(e, "Couldn't update artist path for " + artist.Path);
             }
-            
-            _refreshAlbumService.RefreshAlbumInfo(artist, tuple.Item2);
+
+            var remoteAlbums = tuple.Item2.DistinctBy(m => new { m.ForeignAlbumId, m.ReleaseDate }).ToList();
+
+            // Get list of DB current db albums for artist
+            var existingAlbums = _albumService.GetAlbumsByArtist(artist.Id);
+
+            var newAlbumsList = new List<Album>();
+            var updateAlbumsList = new List<Album>();
+
+            // Cycle thru albums
+            foreach (var album in remoteAlbums)
+            {
+                // Check for album in existing albums, if not set properties and add to new list
+                var albumToRefresh = existingAlbums.FirstOrDefault(s => s.ForeignAlbumId == album.ForeignAlbumId);
+
+                if (albumToRefresh != null)
+                {
+                    existingAlbums.Remove(albumToRefresh);
+                    updateAlbumsList.Add(albumToRefresh);
+                }
+                else
+                {
+                    newAlbumsList.Add(album);
+                }
+            }
+
+            // Update new albums with artist info and correct monitored status
+            newAlbumsList = UpdateAlbums(artist, newAlbumsList);
+
+            _artistService.UpdateArtist(artist);
+
+            _addAlbumService.AddAlbums(newAlbumsList);
+
+            _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList);
+
+            _albumService.DeleteMany(existingAlbums);
 
             _logger.Debug("Finished artist refresh for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
+        }
+
+        private List<Album> UpdateAlbums(Artist artist, List<Album> albumsToUpdate)
+        {
+            foreach (var album in albumsToUpdate)
+            {
+                album.ArtistId = artist.Id;
+                album.ProfileId = artist.ProfileId;
+                album.Monitored = artist.Monitored;
+            }
+
+            return albumsToUpdate;
         }
 
         public void Execute(RefreshArtistCommand message)
