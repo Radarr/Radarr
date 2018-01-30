@@ -633,6 +633,15 @@ namespace NzbDrone.Core.Organizer
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
         {
+            if (movieFile?.Quality?.Quality == null)
+            {
+                tokenHandlers["{Quality Full}"] = m => "";
+                tokenHandlers["{Quality Title}"] = m => "";
+                tokenHandlers["{Quality Proper}"] = m => "";
+                tokenHandlers["{Quality Real}"] = m => "";
+                return;
+            }
+            
             var qualityTitle = _qualityDefinitionService.Get(movieFile.Quality.Quality).Title;
             var qualityProper = GetQualityProper(movie, movieFile.Quality);
             var qualityReal = GetQualityReal(movie, movieFile.Quality);
