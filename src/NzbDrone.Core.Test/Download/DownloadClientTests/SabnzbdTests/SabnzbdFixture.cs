@@ -544,7 +544,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
         public void should_test_failed_if_tv_sorting_contains_category()
         {
             _config.Misc.enable_tv_sorting = true;
-            _config.Misc.tv_categories = new[] { "tv" };
+            _config.Misc.tv_categories = new[] { "movie" };
 
             var result = new NzbDroneValidationResult(Subject.Test());
 

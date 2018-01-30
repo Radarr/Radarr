@@ -328,7 +328,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
 
             result.IsLocalhost.Should().BeTrue();
             result.OutputRootFolders.Should().NotBeNull();
-            result.OutputRootFolders.First().Should().Be(@"C:\Downloads\Finished\utorrent\tv".AsOsAgnostic());
+            result.OutputRootFolders.First().Should().Be(@"C:\Downloads\Finished\utorrent\movie".AsOsAgnostic());
         }
 
         [Test]

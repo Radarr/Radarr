@@ -340,7 +340,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
 
             result.IsLocalhost.Should().BeTrue();
             result.OutputRootFolders.Should().NotBeNull();
-            result.OutputRootFolders.First().Should().Be(@"/remote/mount/tv");
+            result.OutputRootFolders.First().Should().Be(@"/remote/mount/movie");
         }
 
         [Test]
