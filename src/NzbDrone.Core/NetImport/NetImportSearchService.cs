@@ -54,21 +54,22 @@ namespace NzbDrone.Core.NetImport
         }
 
 
-        public List<Movie> Fetch(int listId, bool onlyEnableAuto = false)
+        public NetImportFetchResult Fetch(int listId, bool onlyEnableAuto = false)
         {
             return MovieListSearch(listId, onlyEnableAuto);
         }
 
         public List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto)
         {
-            var movies = MovieListSearch(listId, onlyEnableAuto);
+            var movies = MovieListSearch(listId, onlyEnableAuto).Movies;
 
-            return _movieService.FilterExistingMovies(movies);
+            return _movieService.FilterExistingMovies(movies.ToList());
         }
 
-        public List<Movie> MovieListSearch(int listId, bool onlyEnableAuto = false)
+        public NetImportFetchResult MovieListSearch(int listId, bool onlyEnableAuto = false)
         {
             var movies = new List<Movie>();
+            var anyFailure = false;
 
             var importLists = _netImportFactory.GetAvailableProviders();
 
@@ -81,24 +82,31 @@ namespace NzbDrone.Core.NetImport
 
             foreach (var list in lists)
             {
-                movies.AddRange(list.Fetch());
+                var result = list.Fetch();
+                movies.AddRange(result.Movies);
+                anyFailure |= result.AnyFailure;
             }
 
             _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", lists.Select(l => l.Definition.Name)));
 
-			return movies.DistinctBy(x => {
-				if (x.TmdbId != 0)
-				{
-					return x.TmdbId.ToString();
-				}
+            return new NetImportFetchResult
+            {
+                Movies = movies.DistinctBy(x =>
+                {
+                    if (x.TmdbId != 0)
+                    {
+                        return x.TmdbId.ToString();
+                    }
 
-				if (x.ImdbId.IsNotNullOrWhiteSpace())
-				{
-					return x.ImdbId;
-				}
+                    if (x.ImdbId.IsNotNullOrWhiteSpace())
+                    {
+                        return x.ImdbId;
+                    }
 
-				return x.Title;
-			}).ToList();
+                    return x.Title;
+                }).ToList(),
+                AnyFailure = anyFailure
+            };
         }
 
 
@@ -112,9 +120,13 @@ namespace NzbDrone.Core.NetImport
                 return;
             }
 
-            var listedMovies = Fetch(0, true);
+            var result = Fetch(0, true);
+            var listedMovies = result.Movies.ToList();
 
-            CleanLibrary(listedMovies);
+            if (!result.AnyFailure)
+            {
+                CleanLibrary(listedMovies);
+            }
 
             listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
             if (listedMovies.Any())
