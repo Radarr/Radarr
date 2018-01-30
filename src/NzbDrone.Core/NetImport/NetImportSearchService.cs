@@ -19,7 +19,7 @@ namespace NzbDrone.Core.NetImport
 {
     public interface IFetchNetImport
     {
-        List<Movie> Fetch(int listId, bool onlyEnableAuto);
+        NetImportFetchResult Fetch(int listId, bool onlyEnableAuto);
         List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto);
     }
 
