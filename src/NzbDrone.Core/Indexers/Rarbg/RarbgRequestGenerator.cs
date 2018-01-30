@@ -82,7 +82,15 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             requestBuilder.AddQueryParam("mode", "search");
 
-            requestBuilder.AddQueryParam("search_imdb", searchCriteria.Movie.ImdbId);
+            if (searchCriteria.Movie.ImdbId != null)
+            {
+                requestBuilder.AddQueryParam("search_imdb", searchCriteria.Movie.ImdbId);
+            }
+            else
+            {
+                requestBuilder.AddQueryParam("search_string", $"{searchCriteria.Movie.Title} {searchCriteria.Movie.Year}");
+            }
+            
 
             if (!Settings.RankedOnly)
             {
