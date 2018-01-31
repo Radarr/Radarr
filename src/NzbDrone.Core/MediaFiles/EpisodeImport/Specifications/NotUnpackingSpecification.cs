@@ -5,6 +5,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
@@ -57,7 +58,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
             return Decision.Accept();
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localEpisode)
+        public Decision IsSatisfiedBy(LocalMovie localEpisode, DownloadClientItem downloadClientItem)
         {
             if (localEpisode.ExistingFile)
             {

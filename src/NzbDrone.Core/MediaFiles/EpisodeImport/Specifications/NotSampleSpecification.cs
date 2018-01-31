@@ -1,5 +1,6 @@
 ﻿using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
@@ -38,7 +39,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
             return Decision.Accept();
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localEpisode)
+        public Decision IsSatisfiedBy(LocalMovie localEpisode, DownloadClientItem downloadClientItem)
         {
             var sample = _detectSample.IsSample(localEpisode.Movie,
                                                 localEpisode.Quality,

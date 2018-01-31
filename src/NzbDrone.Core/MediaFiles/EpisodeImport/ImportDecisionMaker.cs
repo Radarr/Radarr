@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -20,8 +21,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, bool shouldCheckQuality);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality);
-        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality);
+        List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource);
     }
 
@@ -62,12 +63,12 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie)
         {
-            return GetImportDecisions(videoFiles, movie, null, true, false);
+            return GetImportDecisions(videoFiles, movie, null, null, true, false);
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, bool shouldCheckQuality = false)
         {
-            return GetImportDecisions(videoFiles, movie, null, true, shouldCheckQuality);
+            return GetImportDecisions(videoFiles, movie, null, null, true, shouldCheckQuality);
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Series series, ParsedEpisodeInfo folderInfo, bool sceneSource)
@@ -87,7 +88,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decisions;
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource)
         {
             var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
 
@@ -98,13 +99,13 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
             foreach (var file in newFiles)
             {
-                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName));
+                decisions.AddIfNotNull(GetDecision(file, movie, downloadClientItem, folderInfo, sceneSource, shouldUseFolderName));
             }
 
             return decisions;
         }
 
-        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality = false)
+        public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldCheckQuality)
         {
             var newFiles = _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie);
 
@@ -115,13 +116,13 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
             foreach (var file in newFiles)
             {
-                decisions.AddIfNotNull(GetDecision(file, movie, folderInfo, sceneSource, shouldUseFolderName, shouldCheckQuality));
+                decisions.AddIfNotNull(GetDecision(file, movie, downloadClientItem, folderInfo, sceneSource, shouldUseFolderName, shouldCheckQuality));
             }
 
             return decisions;
         }
 
-        private ImportDecision GetDecision(string file, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldUseFolderName, bool shouldCheckQuality = false)
+        private ImportDecision GetDecision(string file, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool shouldUseFolderName, bool shouldCheckQuality = false)
         {
             ImportDecision decision = null;
 
@@ -283,11 +284,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
 
 
-                        decision = GetDecision(localMovie);
+                        decision = GetDecision(localMovie, downloadClientItem);
                     }
                     else
                     {
-                        decision = GetDecision(localMovie);
+                        decision = GetDecision(localMovie, downloadClientItem);
                     }
                 }
 
@@ -314,9 +315,9 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return decision;
         }
 
-        private ImportDecision GetDecision(LocalMovie localMovie)
+        private ImportDecision GetDecision(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, localMovie))
+            var reasons = _specifications.Select(c => EvaluateSpec(c, localMovie, downloadClientItem))
                                          .Where(c => c != null);
 
             return new ImportDecision(localMovie, reasons.ToArray());
@@ -385,11 +386,11 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
             return new ImportDecision(localEpisode, reasons.ToArray());
         }
 
-        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalMovie localMovie)
+        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             try
             {
-                var result = spec.IsSatisfiedBy(localMovie);
+                var result = spec.IsSatisfiedBy(localMovie, downloadClientItem);
 
                 if (!result.Accepted)
                 {
