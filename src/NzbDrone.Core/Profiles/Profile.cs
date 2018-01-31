@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Parser;
@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Profiles
         public List<ProfileQualityItem> Items { get; set; }
         public List<string> PreferredTags { get; set; }
         public Language Language { get; set; }
+        public bool AllowMulti { get; set; }
 
         public Quality LastAllowedQuality()
         {

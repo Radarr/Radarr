@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Qualities;
 
@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Parser.Model
         public string Edition { get; set;}
         public int Year { get; set; }
         public string ImdbId { get; set; }
+        public bool IsMulti { get; set; }
 
         public ParsedMovieInfo()
         {

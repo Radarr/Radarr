@@ -21,6 +21,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             
             _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedEpisodeInfo.Language);
 
+            if (subject.Series.Profile.Value.AllowMulti && subject.ParsedEpisodeInfo.IsMulti)
+                return Decision.Accept();
+
             if (subject.ParsedEpisodeInfo.Language != wantedLanguage)
             {
                 _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.ParsedEpisodeInfo.Language, wantedLanguage);
@@ -35,6 +38,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             var wantedLanguage = subject.Movie.Profile.Value.Language;
 
             _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Language);
+
+            if (subject.Movie.Profile.Value.AllowMulti && subject.ParsedMovieInfo.IsMulti)
+                return Decision.Accept();
 
             if (subject.ParsedMovieInfo.Language != wantedLanguage)
             {

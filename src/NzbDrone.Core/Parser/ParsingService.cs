@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -339,6 +339,7 @@ namespace NzbDrone.Core.Parser
                 info.Quality = QualityParser.ParseQuality(title);
                 info.ReleaseGroup = Parser.ParseReleaseGroup(title);
                 info.Language = LanguageParser.ParseLanguage(title);
+                info.IsMulti = LanguageParser.IsMulti(title);
                 info.Special = true;
 
                 _logger.Debug("Found special episode {0} for title '{1}'", info, title);

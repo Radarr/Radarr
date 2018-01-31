@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.Parser;
@@ -14,6 +14,7 @@ namespace NzbDrone.Api.Profiles
         public string PreferredTags { get; set; }
         public List<ProfileQualityItemResource> Items { get; set; }
         public Language Language { get; set; }
+        public bool AllowMulti { get; set; }
     }
 
     public class ProfileQualityItemResource : RestResource
@@ -36,7 +37,8 @@ namespace NzbDrone.Api.Profiles
                 Cutoff = model.Cutoff,
                 PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Items = model.Items.ConvertAll(ToResource),
-                Language = model.Language
+                Language = model.Language,
+                AllowMulti = model.AllowMulti
             };
         }
 
@@ -63,7 +65,8 @@ namespace NzbDrone.Api.Profiles
                 Cutoff = (Quality)resource.Cutoff.Id,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
-                Language = resource.Language
+                Language = resource.Language,
+                AllowMulti = resource.AllowMulti
             };
         }
 

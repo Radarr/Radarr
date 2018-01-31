@@ -127,6 +127,7 @@
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="Datastore\Migration\140_add_alternative_titles_table.cs" />
     <Compile Include="Datastore\Migration\141_fix_duplicate_alt_titles.cs" />
+    <Compile Include="Datastore\Migration\142_add_allow_multi.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
     <Compile Include="MediaFiles\EpisodeImport\Specifications\GrabbedReleaseQualitySpecification.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
@@ -1376,11 +1377,7 @@
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="NetImport\ImportExclusions\" />
-    <Folder Include="NetImport\Radarr\" />
-    <Folder Include="MetadataSource\RadarrAPI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
