@@ -15,6 +15,7 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
     public interface IImportExclusionsRepository : IBasicRepository<ImportExclusion>
     {
         bool IsMovieExcluded(int tmdbid);
+        ImportExclusion GetByTmdbid(int tmdbid);
     }
 
     public class ImportExclusionsRepository : BasicRepository<ImportExclusion>, IImportExclusionsRepository
@@ -30,6 +31,11 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         public bool IsMovieExcluded(int tmdbid)
         {
             return Query.Where(ex => ex.TmdbId == tmdbid).Any();
+        }
+
+        public ImportExclusion GetByTmdbid(int tmdbid)
+        {
+            return Query.Where(ex => ex.TmdbId == tmdbid).First();
         }
     }
 }

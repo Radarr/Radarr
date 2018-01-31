@@ -47,6 +47,10 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
 
         public ImportExclusion AddExclusion(ImportExclusion exclusion)
         {
+            if (_exclusionRepository.IsMovieExcluded(exclusion.TmdbId))
+            {
+                return _exclusionRepository.GetByTmdbid(exclusion.TmdbId);
+            }
             return _exclusionRepository.Insert(exclusion);
         }
 
