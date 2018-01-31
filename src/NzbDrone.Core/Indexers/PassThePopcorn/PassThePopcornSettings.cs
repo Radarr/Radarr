@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public int MinimumSeeders { get; set; }
         
         [FieldDefinition(5, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", Advanced = true)]
-        public IndexerFlags RequiredFlags { get; set; }
+        public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
