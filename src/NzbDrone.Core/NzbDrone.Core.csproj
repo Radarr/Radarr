@@ -504,6 +504,7 @@
     <Compile Include="Download\Clients\Pneumatic\Pneumatic.cs" />
     <Compile Include="Download\Clients\Pneumatic\PneumaticSettings.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentPreferences.cs" />
+    <Compile Include="Download\Clients\QBittorrent\QBittorrentState.cs" />
     <Compile Include="Download\Clients\rTorrent\RTorrentDirectoryValidator.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrent.cs" />
     <Compile Include="Download\Clients\QBittorrent\QBittorrentPriority.cs" />
@@ -555,6 +556,7 @@
     <Compile Include="Download\Clients\uTorrent\UTorrentProxy.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentResponse.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentSettings.cs" />
+    <Compile Include="Download\Clients\uTorrent\UtorrentState.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrent.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrentCache.cs" />
     <Compile Include="Download\Clients\uTorrent\UTorrentTorrentStatus.cs" />
@@ -984,14 +986,16 @@
     <Compile Include="Notifications\Telegram\TelegramSettings.cs" />
     <Compile Include="Notifications\Twitter\OAuthToken.cs" />
     <Compile Include="Notifications\Twitter\TwitterException.cs" />
-    <Compile Include="Notifications\Webhook\WebhookEpisode.cs" />
     <Compile Include="Notifications\Webhook\WebhookException.cs" />
+    <Compile Include="Notifications\Webhook\WebhookGrabPayload.cs" />
+    <Compile Include="Notifications\Webhook\WebhookImportPayload.cs" />
     <Compile Include="Notifications\Webhook\WebhookMethod.cs" />
+    <Compile Include="Notifications\Webhook\WebhookMovieFile.cs" />
     <Compile Include="Notifications\Webhook\WebhookPayload.cs" />
-    <Compile Include="Notifications\Webhook\WebhookSeries.cs" />
+    <Compile Include="Notifications\Webhook\WebhookProxy.cs" />
+    <Compile Include="Notifications\Webhook\WebhookRelease.cs" />
     <Compile Include="Notifications\Webhook\WebhookMovie.cs" />
     <Compile Include="Notifications\Webhook\WebhookRemoteMovie.cs" />
-    <Compile Include="Notifications\Webhook\WebhookService.cs" />
     <Compile Include="Notifications\Webhook\WebhookSettings.cs" />
     <Compile Include="Notifications\Webhook\Webhook.cs" />
     <Compile Include="Organizer\NamingConfigRepository.cs" />
@@ -1087,7 +1091,6 @@
     <Compile Include="Notifications\Pushover\PushoverService.cs" />
     <Compile Include="Notifications\Pushover\PushoverSettings.cs" />
     <Compile Include="Notifications\Xbmc\XbmcJsonException.cs" />
-    <Compile Include="Notifications\Xbmc\HttpApiProvider.cs" />
     <Compile Include="Notifications\Xbmc\IApiProvider.cs" />
     <Compile Include="Notifications\Xbmc\InvalidXbmcVersionException.cs" />
     <Compile Include="Notifications\Xbmc\JsonApiProvider.cs" />
@@ -1095,9 +1098,6 @@
     <Compile Include="Notifications\Xbmc\Model\ActivePlayersDharmaResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\ActivePlayersEdenResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\ErrorResult.cs" />
-    <Compile Include="Notifications\Xbmc\Model\TvShow.cs" />
-    <Compile Include="Notifications\Xbmc\Model\TvShowResponse.cs" />
-    <Compile Include="Notifications\Xbmc\Model\TvShowResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\VersionResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\XbmcJsonResult.cs" />
     <Compile Include="Notifications\Xbmc\Model\XbmcVersion.cs" />
@@ -1303,6 +1303,9 @@
     <Compile Include="MetadataSource\RadarrAPI\RadarrResources.cs" />
     <Compile Include="MetadataSource\RadarrAPI\RadarrAPIClient.cs" />
     <Compile Include="Datastore\Migration\139_fix_indexer_baseurl.cs" />
+    <Compile Include="Notifications\Xbmc\Model\XbmcMovie.cs" />
+    <Compile Include="Notifications\Xbmc\Model\MovieResponse.cs" />
+    <Compile Include="Notifications\Xbmc\Model\MovieResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

@@ -1,13 +1,13 @@
-﻿@import "../Shared/Styles/clickable.less";
+@import "../Shared/Styles/clickable.less";
 
 ﻿.form-group {
   .input-group {
     .checkbox {
       width         : 100px;
-      margin-left   : 0px;
+      margin-left   : 0;
       display       : inline-block;
-      padding-top   : 0px;
-      margin-bottom : 0px;
+      padding-top   : 0;
+      margin-bottom : 0;
     }
 
     .help-inline-checkbox {
@@ -20,7 +20,7 @@
 
     .btn {
       i {
-        margin-right : 0px;
+        margin-right : 0;
         color        : inherit;
       }
     }
@@ -28,7 +28,7 @@
 
   .btn {
     i {
-      margin-right : 0px;
+      margin-right : 0;
       color        : inherit;
     }
   }
@@ -41,11 +41,10 @@
 
   .help-inline {
     display      : inline-block;
-    margin-top   : 8px;
     padding-left : 0px;
 
     @media (max-width: @screen-xs-max) {
-      margin-left: 0px;
+      margin-left: 0;
     }
   }
 }
@@ -76,7 +75,7 @@ textarea.release-restrictions {
 h3 {
   .help-inline {
     font-size: 16px;
-    padding-left: 0px;
+    padding-left: 0;
     margin-top: -5px;
     text-transform: none;
   }
@@ -91,7 +90,7 @@ h3 {
 .has-error {
   .help-inline {
     color: #b94a48;
-    margin-left: 0px;
+    margin-left: 0;
   }
 }
 
@@ -105,7 +104,7 @@ h3 {
 .has-warning {
   .help-inline {
     color: orange;
-    margin-left: 0px;
+    margin-left: 0;
   }
 }
 
@@ -127,7 +126,7 @@ h3 {
   .help-link ~ .tooltip {
     .tooltip-inner {
       white-space : normal;
-      min-width   : 0px;
+      min-width   : 0;
     }
   }
 }

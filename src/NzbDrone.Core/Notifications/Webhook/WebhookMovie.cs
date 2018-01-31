@@ -9,6 +9,8 @@ namespace NzbDrone.Core.Notifications.Webhook
         public int Id { get; set; }
         public string Title { get; set; }
         public string FilePath { get; set; }
+        public string ReleaseDate { get; set; }
+        public string FolderPath { get; set; }
 
         public WebhookMovie() { }
 
@@ -16,12 +18,12 @@ namespace NzbDrone.Core.Notifications.Webhook
         {
             Id = movie.Id;
             Title = movie.Title;
+            ReleaseDate = movie.PhysicalReleaseDate().ToString("yyyy-MM-dd");
+            FolderPath = movie.Path;
         }
 
-        public WebhookMovie(Movie movie, MovieFile movieFile)
+        public WebhookMovie(Movie movie, MovieFile movieFile) : this(movie)
         {
-            Id = movie.Id;
-            Title = movie.Title;
             FilePath = Path.Combine(movie.Path, movieFile.RelativePath);
         }
     }

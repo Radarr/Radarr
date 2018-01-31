@@ -9,6 +9,12 @@ using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.NetImport
 {
+    public class NetImportFetchResult
+    {
+        public IList<Movie> Movies { get; set; }
+        public bool AnyFailure { get; set; }
+    }
+    
     public abstract class NetImportBase<TSettings> : INetImport
         where TSettings : IProviderConfig, new()
     {
@@ -20,7 +26,7 @@ namespace NzbDrone.Core.NetImport
         public abstract bool Enabled { get; }
         public abstract bool EnableAuto { get; }
 
-        public abstract IList<Movie> Fetch();
+        public abstract NetImportFetchResult Fetch();
 
         public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {

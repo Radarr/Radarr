@@ -133,7 +133,7 @@ module.exports = Marionette.ItemView.extend({
                 if (rootFolder !== 'noChange') {
                 	var rootFolderPath = RootFolders.get(parseInt(rootFolder, 10));
 					var folderName = m.get('folderName');
-                	m.set('path', rootFolderPath.get('path')+ folderName);
+                	//m.set('path', rootFolderPath.get('path')+ folderName);
             	}
 			}
 		}

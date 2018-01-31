@@ -34,10 +34,6 @@ namespace NzbDrone.Core.Notifications.Pushover
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Pushover";
 
         public override bool SupportsOnRename => false;

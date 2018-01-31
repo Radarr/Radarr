@@ -31,16 +31,6 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
             ProcessRequest(request, settings);
         }
 
-        public void Update(MediaBrowserSettings settings, int tvdbId)
-        {
-            var path = string.Format("/Library/Series/Updated?tvdbid={0}", tvdbId);            
-            var request = BuildRequest(path, settings);
-            request.Headers.Add("Content-Length", "0");
-
-            ProcessRequest(request, settings);
-        }
-
-
         public void UpdateMovies(MediaBrowserSettings settings, string imdbid)
         {
             var path = string.Format("/Library/Movies/Updated?ImdbId={0}", imdbid);

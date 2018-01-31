@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Organizer
         public static readonly Regex SeriesTitleRegex = new Regex(@"(?<token>\{(?:Series)(?<separator>[- ._])(Clean)?Title\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean)?Title(The)?)\})",
+        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean)?(Title|Filename)(The)?)\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -633,6 +633,15 @@ namespace NzbDrone.Core.Organizer
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
         {
+            if (movieFile?.Quality?.Quality == null)
+            {
+                tokenHandlers["{Quality Full}"] = m => "";
+                tokenHandlers["{Quality Title}"] = m => "";
+                tokenHandlers["{Quality Proper}"] = m => "";
+                tokenHandlers["{Quality Real}"] = m => "";
+                return;
+            }
+            
             var qualityTitle = _qualityDefinitionService.Get(movieFile.Quality.Quality).Title;
             var qualityProper = GetQualityProper(movie, movieFile.Quality);
             var qualityReal = GetQualityReal(movie, movieFile.Quality);
@@ -844,11 +853,12 @@ namespace NzbDrone.Core.Organizer
             {
                 mediaInfoAudioLanguages = string.Format("[{0}]", mediaInfoAudioLanguages);
             }
-
+            var mediaInfoAudioLanguagesAll = mediaInfoAudioLanguages;
             if (mediaInfoAudioLanguages == "[EN]")
             {
                 mediaInfoAudioLanguages = string.Empty;
             }
+
 
             var mediaInfoSubtitleLanguages = GetLanguagesToken(movieFile.MediaInfo.Subtitles);
             if (!mediaInfoSubtitleLanguages.IsNullOrWhiteSpace())
@@ -872,6 +882,9 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo Simple}"] = m => string.Format("{0} {1}", videoCodec, audioCodec);
 
             tokenHandlers["{MediaInfo Full}"] = m => string.Format("{0} {1}{2} {3}", videoCodec, audioCodec, mediaInfoAudioLanguages, mediaInfoSubtitleLanguages);
+            tokenHandlers["{MediaInfo AudioLanguages}"] = m => mediaInfoAudioLanguages;
+            tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => mediaInfoAudioLanguagesAll;
+            tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
         }
 
         private string GetLanguagesToken(string mediaInfoLanguages)

@@ -9,6 +9,6 @@ namespace NzbDrone.Core.NetImport
         bool Enabled { get; }
         bool EnableAuto { get; }
 
-        IList<Movie> Fetch();
+        NetImportFetchResult Fetch();
     }
 }

@@ -36,10 +36,6 @@ namespace NzbDrone.Core.Notifications.Email
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Email";
 
         public override bool SupportsOnRename => false;
