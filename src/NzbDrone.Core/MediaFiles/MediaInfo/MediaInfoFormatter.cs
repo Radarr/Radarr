@@ -73,6 +73,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return string.Empty;
             }
 
+            if (audioFormat.EqualsIgnoreCase("ALAC"))
+            {
+                return "ALAC";
+            }
+
             if (audioFormat.EqualsIgnoreCase("AC-3"))
             {
                 return "AC3";
@@ -166,6 +171,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             if (audioFormat.EqualsIgnoreCase("AC-3"))
             {
                 return "AC3";
+            }
+
+            if (audioFormat.EqualsIgnoreCase("ALAC"))
+            {
+                return "ALAC";
             }
 
             if (audioFormat.EqualsIgnoreCase("E-AC-3"))
