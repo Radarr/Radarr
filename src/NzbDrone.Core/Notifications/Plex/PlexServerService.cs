@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Notifications.Plex
         {
             _logger.Debug("Getting sections from Plex host: {0}", settings.Host);
 
-            return _plexServerProxy.GetTvSections(settings).ToList();
+            return _plexServerProxy.GetArtistSections(settings).ToList();
         }
 
         private bool PartialUpdatesAllowed(PlexServerSettings settings, Version version)

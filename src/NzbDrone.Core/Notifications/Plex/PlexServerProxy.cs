@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Plex
 {
     public interface IPlexServerProxy
     {
-        List<PlexSection> GetTvSections(PlexServerSettings settings);
+        List<PlexSection> GetArtistSections(PlexServerSettings settings);
         void Update(int sectionId, PlexServerSettings settings);
         void UpdateSeries(int metadataId, PlexServerSettings settings);
         string Version(PlexServerSettings settings);
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Notifications.Plex
             _logger = logger;
         }
 
-        public List<PlexSection> GetTvSections(PlexServerSettings settings)
+        public List<PlexSection> GetArtistSections(PlexServerSettings settings)
         {
             var request = GetPlexServerRequest("library/sections", Method.GET, settings);
             var client = GetPlexServerClient(settings);
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Notifications.Plex
             {
                 return Json.Deserialize<PlexMediaContainerLegacy>(response.Content)
                     .Sections
-                    .Where(d => d.Type == "show")
+                    .Where(d => d.Type == "artist")
                     .Select(s => new PlexSection
                                  {
                                      Id = s.Id,
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Notifications.Plex
             return Json.Deserialize<PlexResponse<PlexSectionsContainer>>(response.Content)
                        .MediaContainer
                        .Sections
-                       .Where(d => d.Type == "show")
+                       .Where(d => d.Type == "artist")
                        .ToList();
         }
 
