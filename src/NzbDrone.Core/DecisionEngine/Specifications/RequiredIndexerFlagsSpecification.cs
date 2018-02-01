@@ -86,7 +86,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
                 var requiredFlags = torrentIndexerSettings.RequiredFlags;
                 var requiredFlag = (IndexerFlags) 0;
 
-                if (requiredFlags.Count() == 0)
+                if (requiredFlags == null || requiredFlags.Count() == 0)
                 {
                     return Decision.Accept();
                 }
