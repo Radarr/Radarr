@@ -1,5 +1,7 @@
-﻿using FluentValidation;
+﻿using System.Collections.Generic;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
@@ -30,11 +32,11 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         [FieldDefinition(1, Label = "Passkey")]
         public string Passkey { get; set; }
 
-        [FieldDefinition(2, Type = FieldType.Checkbox, Label = "Require Internal", HelpText = "Will only include internal releases for RSS Sync.")]
-        public bool Internal { get; set; }
-
-        [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
+        [FieldDefinition(2, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
+        
+        [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", Advanced = true)]
+        public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

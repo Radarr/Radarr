@@ -41,6 +41,16 @@ namespace NzbDrone.Api.ClientSchema
                     };
 
                     var value = propertyInfo.GetValue(model, null);
+                    
+                    if (propertyInfo.PropertyType.HasAttribute<FlagsAttribute>())
+                    {
+                        int intVal = (int)value;
+                        value = Enum.GetValues(propertyInfo.PropertyType)
+                            .Cast<int>()
+                            .Where(f=> (f & intVal) == f)
+                            .ToList();
+                    }
+                    
                     if (value != null)
                     {
                         field.Value = value;
@@ -129,6 +139,12 @@ namespace NzbDrone.Api.ClientSchema
                             value = field.Value.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         }
 
+                        propertyInfo.SetValue(target, value, null);
+                    }
+                    
+                    else if (propertyInfo.PropertyType.HasAttribute<FlagsAttribute>())
+                    {
+                        int value = field.Value.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => Convert.ToInt32(s)).Sum();
                         propertyInfo.SetValue(target, value, null);
                     }
 
