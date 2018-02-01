@@ -88,7 +88,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
         {
-            var langCode = profile != null ? IsoLanguages.Get(profile.Language).TwoLetterCode : "us";
+            var langCode = profile != null ? IsoLanguages.Get(profile.Language).TwoLetterCode : "en";
 
             var request = _movieBuilder.Create()
                .SetSegment("route", "movie")
