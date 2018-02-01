@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Validation;
 using System.Text.RegularExpressions;
+using NzbDrone.Core.Parser.Model;
+
 namespace NzbDrone.Core.Indexers.Nyaa
 {
     public class NyaaSettingsValidator : AbstractValidator<NyaaSettings>
@@ -32,6 +35,9 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
         [FieldDefinition(2, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
+        
+        [FieldDefinition(3, Type = FieldType.Tag, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", Advanced = true)]
+        public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()
         {

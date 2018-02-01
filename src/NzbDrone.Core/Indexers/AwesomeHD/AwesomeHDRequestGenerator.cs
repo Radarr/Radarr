@@ -27,19 +27,13 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
         private IEnumerable<IndexerRequest> GetRequest(string searchParameters)
         {
-            var onlyInternal = "";
-            if (Settings.Internal)
-            {
-                onlyInternal = "&internal=true";
-            }
-
             if (searchParameters != null)
             {
                 yield return new IndexerRequest($"{Settings.BaseUrl.Trim().TrimEnd('/')}/searchapi.php?action=imdbsearch&passkey={Settings.Passkey.Trim()}&imdb={searchParameters}", HttpAccept.Rss);
             }
             else
             {
-                yield return new IndexerRequest($"{Settings.BaseUrl.Trim().TrimEnd('/')}/searchapi.php?action=latestmovies&passkey={Settings.Passkey.Trim()}{onlyInternal}", HttpAccept.Rss);
+                yield return new IndexerRequest($"{Settings.BaseUrl.Trim().TrimEnd('/')}/searchapi.php?action=latestmovies&passkey={Settings.Passkey.Trim()}", HttpAccept.Rss);
             }
 
         }
