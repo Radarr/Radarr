@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -14,23 +15,26 @@ using NzbDrone.Core.Music;
 namespace NzbDrone.Core.IndexerSearch
 {
     class AlbumSearchService : IExecute<AlbumSearchCommand>,
-                               IExecute<MissingAlbumSearchCommand>
-                               //IExecute<CutoffUnmetAlbumSearchCommand>
+                               IExecute<MissingAlbumSearchCommand>,
+                               IExecute<CutoffUnmetAlbumSearchCommand>
     {
         private readonly ISearchForNzb _nzbSearchService;
         private readonly IAlbumService _albumService;
+        private readonly IAlbumCutoffService _albumCutoffService;
         private readonly IQueueService _queueService;
         private readonly IProcessDownloadDecisions _processDownloadDecisions;
         private readonly Logger _logger;
 
         public AlbumSearchService(ISearchForNzb nzbSearchService,
             IAlbumService albumService,
+            IAlbumCutoffService albumCutoffService,
             IQueueService queueService,
             IProcessDownloadDecisions processDownloadDecisions,
             Logger logger)
         {
             _nzbSearchService = nzbSearchService;
             _albumService = albumService;
+            _albumCutoffService = albumCutoffService;
             _queueService = queueService;
             _processDownloadDecisions = processDownloadDecisions;
             _logger = logger;
@@ -101,6 +105,40 @@ namespace NzbDrone.Core.IndexerSearch
                                                                             v.Artist.Monitored == true
                 }).Records.ToList();
             }
+
+            var queue = _queueService.GetQueue().Select(q => q.Album.Id);
+            var missing = albums.Where(e => !queue.Contains(e.Id)).ToList();
+
+            SearchForMissingAlbums(missing, message.Trigger == CommandTrigger.Manual);
+        }
+
+        public void Execute(CutoffUnmetAlbumSearchCommand message)
+        {
+            Expression<Func<Album, bool>> filterExpression;
+
+            if (message.ArtistId.HasValue)
+            {
+                filterExpression = v =>
+                    v.ArtistId == message.ArtistId.Value &&
+                    v.Monitored == true &&
+                    v.Artist.Monitored == true;
+            }
+
+            else
+            {
+                filterExpression = v =>
+                    v.Monitored == true &&
+                    v.Artist.Monitored == true;
+            }
+
+            var albums = _albumCutoffService.AlbumsWhereCutoffUnmet(new PagingSpec<Album>
+            {
+                Page = 1,
+                PageSize = 100000,
+                SortDirection = SortDirection.Ascending,
+                SortKey = "Id",
+                FilterExpression = filterExpression
+            }).Records.ToList();
 
             var queue = _queueService.GetQueue().Select(q => q.Album.Id);
             var missing = albums.Where(e => !queue.Contains(e.Id)).ToList();
