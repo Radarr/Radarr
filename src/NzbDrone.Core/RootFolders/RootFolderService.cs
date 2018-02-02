@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,14 +76,15 @@ namespace NzbDrone.Core.RootFolders
                     if (folder.Path.IsPathValid() && _diskProvider.FolderExists(folder.Path))
                     {
                         folder.FreeSpace = _diskProvider.GetAvailableSpace(folder.Path);
+                        folder.TotalSpace = _diskProvider.GetTotalSize(folder.Path);
                         folder.UnmappedFolders = GetUnmappedFolders(folder.Path);
                     }
                 }
                 //We don't want an exception to prevent the root folders from loading in the UI, so they can still be deleted
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Unable to get free space and unmapped folders for root folder: " + folder.Path);
                     folder.FreeSpace = 0;
+                    _logger.Error(ex, "Unable to get free space and unmapped folders for root folder {0}", folder.Path);
                     folder.UnmappedFolders = new List<UnmappedFolder>();
                 }
             });
@@ -211,6 +212,7 @@ namespace NzbDrone.Core.RootFolders
         {
             var rootFolder = _rootFolderRepository.Get(id);
             rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
+            rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
             rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
             return rootFolder;
         }
