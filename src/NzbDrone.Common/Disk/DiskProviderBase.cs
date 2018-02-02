@@ -245,6 +245,25 @@ namespace NzbDrone.Common.Disk
             File.Move(source, destination);
         }
 
+        public void MoveFolder(string source, string destination, bool overwrite = false)
+        {
+            Ensure.That(source, () => source).IsValidPath();
+            Ensure.That(destination, () => destination).IsValidPath();
+
+            if (source.PathEquals(destination))
+            {
+                throw new IOException(string.Format("Source and destination can't be the same {0}", source));
+            }
+
+            if (FolderExists(destination) && overwrite)
+            {
+                DeleteFolder(destination, true);
+            }
+
+            RemoveReadOnlyFolder(source);
+            Directory.Move(source, destination);
+        }
+
         public abstract bool TryCreateHardLink(string source, string destination);
 
         public void DeleteFolder(string path, bool recursive)
@@ -367,6 +386,20 @@ namespace NzbDrone.Common.Disk
                 {
                     var newAttributes = attributes & ~(FileAttributes.ReadOnly);
                     File.SetAttributes(path, newAttributes);
+                }
+            }
+        }
+
+        private static void RemoveReadOnlyFolder(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                var dirInfo = new DirectoryInfo(path);
+
+                if (dirInfo.Attributes.HasFlag(FileAttributes.ReadOnly))
+                {
+                    var newAttributes = dirInfo.Attributes & ~(FileAttributes.ReadOnly);
+                    dirInfo.Attributes = newAttributes;
                 }
             }
         }

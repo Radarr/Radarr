@@ -66,7 +66,7 @@ namespace NzbDrone.Core.MediaFiles
             EnsureMovieFolder(movieFile, movie, filePath);
 
             _logger.Debug("Renaming movie file: {0} to {1}", movieFile, filePath);
-            
+
             return TransferFile(movieFile, movie, filePath, TransferMode.Move);
         }
 
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.MediaFiles
             EnsureMovieFolder(movieFile, localMovie, filePath);
 
             _logger.Debug("Moving movie file: {0} to {1}", movieFile.Path, filePath);
-            
+
             return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.Move);
         }
 
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Debug("Copying movie file: {0} to {1}", movieFile.Path, filePath);
             return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.Copy);
         }
-        
+
         private MovieFile TransferFile(MovieFile movieFile, Movie movie, string destinationFilePath, TransferMode mode)
         {
             Ensure.That(movieFile, () => movieFile).IsNotNull();
@@ -122,11 +122,8 @@ namespace NzbDrone.Core.MediaFiles
             var oldMoviePath = movie.Path;
 
             var newMoviePath = new OsPath(destinationFilePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar);
-            movie.Path = newMoviePath;
-            if (oldMoviePath != newMoviePath)
-            {
-                _movieService.UpdateMovie(movie);
-            }
+
+            movie.Path = newMoviePath; //We update it when everything went well!
 
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
 
@@ -146,10 +143,33 @@ namespace NzbDrone.Core.MediaFiles
 
             if(oldMoviePath != newMoviePath)
             {
+                //Let's move the old files before deleting the old folder. We could just do move folder, but the main file (movie file) is already moved, so eh.
+                var files = _diskProvider.GetFiles(oldMoviePath, SearchOption.AllDirectories);
+
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        var destFile = Path.Combine(newMoviePath, oldMoviePath.GetRelativePath(file));
+                        _diskProvider.EnsureFolder(Path.GetDirectoryName(destFile));
+                        _diskProvider.MoveFile(file, destFile);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Warn(e, "Error while trying to move extra file {0} to new folder. Maybe it already exists? (Manual cleanup necessary!).", oldMoviePath.GetRelativePath(file));
+                    }
+                }
+
                 if (_diskProvider.GetFiles(oldMoviePath, SearchOption.AllDirectories).Count() == 0)
                 {
                     _recycleBinProvider.DeleteFolder(oldMoviePath);
                 }
+            }
+
+            //Only update the movie path if we were successfull!
+            if (oldMoviePath != newMoviePath)
+            {
+                _movieService.UpdateMovie(movie);
             }
 
             return movieFile;
@@ -163,7 +183,7 @@ namespace NzbDrone.Core.MediaFiles
         private void EnsureMovieFolder(MovieFile movieFile, Movie movie, string filePath)
         {
             var movieFolder = Path.GetDirectoryName(filePath);
-		movie.Path = movieFolder;
+		//movie.Path = movieFolder;
             var rootFolder = new OsPath(movieFolder).Directory.FullPath;
             var fileName = Path.GetFileName(filePath);
 
