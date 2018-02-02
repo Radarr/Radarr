@@ -87,8 +87,8 @@ module.exports = Marionette.Layout.extend({
 
     _filter : function (term) {
         this.movieCollection.reset(this.fullMovieCollection.filter(function(model){
-            return model.get("title").toLowerCase().indexOf(term.toLowerCase()) != -1;
-        }).slice(0, 20));
+            return (model.get("title") + " ("+model.get("year")+")").toLowerCase().indexOf(term.toLowerCase()) != -1;
+        }).slice(0, 50));
 
         this._setModelCollection();
         //this.movieView.render();

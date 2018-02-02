@@ -22,9 +22,7 @@ module.exports = Backgrid.Row.extend({
     },
 
     _setError : function () {
-        if (this.model.has('series') &&
-            this.model.has('seasonNumber') &&
-            (this.model.has('episodes') && this.model.get('episodes').length > 0)&&
+        if (this.model.has('movie') &&
             this.model.has('quality')) {
             this.$el.removeClass('manual-import-error');
         }
@@ -35,7 +33,7 @@ module.exports = Backgrid.Row.extend({
     },
 
     _setClasses : function () {
-        this.$el.toggleClass('has-series', this.model.has('series'));
-        this.$el.toggleClass('has-season', this.model.has('seasonNumber'));
+        this.$el.toggleClass('has-movie', this.model.has('movie'));
+        //this.$el.toggleClass('has-season', this.model.has('seasonNumber'));
     }
 });

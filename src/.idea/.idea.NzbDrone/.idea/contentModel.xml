@@ -1408,6 +1408,7 @@
             <e p="QueueSpecification.cs" t="Include" />
             <e p="RawDiskSpecification.cs" t="Include" />
             <e p="ReleaseRestrictionsSpecification.cs" t="Include" />
+            <e p="RequiredIndexerFlagsSpecification.cs" t="Include" />
             <e p="RetentionSpecification.cs" t="Include" />
             <e p="RssSync" t="Include">
               <e p="AvailabilitySpecification.cs" t="Include" />
@@ -1554,6 +1555,7 @@
               <e p="QBittorrentPriority.cs" t="Include" />
               <e p="QBittorrentProxy.cs" t="Include" />
               <e p="QBittorrentSettings.cs" t="Include" />
+              <e p="QBittorrentState.cs" t="Include" />
               <e p="QBittorrentTorrent.cs" t="Include" />
             </e>
             <e p="rTorrent" t="Include">
@@ -1609,6 +1611,7 @@
               <e p="UTorrentProxy.cs" t="Include" />
               <e p="UTorrentResponse.cs" t="Include" />
               <e p="UTorrentSettings.cs" t="Include" />
+              <e p="UtorrentState.cs" t="Include" />
               <e p="UTorrentTorrent.cs" t="Include" />
               <e p="UTorrentTorrentCache.cs" t="Include" />
               <e p="UTorrentTorrentStatus.cs" t="Include" />
@@ -2004,6 +2007,7 @@
             <e p="Specifications" t="Include">
               <e p="FreeSpaceSpecification.cs" t="Include" />
               <e p="FullSeasonSpecification.cs" t="Include" />
+              <e p="GrabbedReleaseQualitySpecification.cs" t="Include" />
               <e p="MatchesFolderSpecification.cs" t="Include" />
               <e p="NotSampleSpecification.cs" t="Include" />
               <e p="NotUnpackingSpecification.cs" t="Include" />
@@ -2337,18 +2341,19 @@
           </e>
           <e p="Webhook" t="Include">
             <e p="Webhook.cs" t="Include" />
-            <e p="WebhookEpisode.cs" t="Include" />
             <e p="WebhookException.cs" t="Include" />
+            <e p="WebhookGrabPayload.cs" t="Include" />
+            <e p="WebhookImportPayload.cs" t="Include" />
             <e p="WebhookMethod.cs" t="Include" />
             <e p="WebhookMovie.cs" t="Include" />
+            <e p="WebhookMovieFile.cs" t="Include" />
             <e p="WebhookPayload.cs" t="Include" />
+            <e p="WebhookProxy.cs" t="Include" />
+            <e p="WebhookRelease.cs" t="Include" />
             <e p="WebhookRemoteMovie.cs" t="Include" />
-            <e p="WebhookSeries.cs" t="Include" />
-            <e p="WebhookService.cs" t="Include" />
             <e p="WebhookSettings.cs" t="Include" />
           </e>
           <e p="Xbmc" t="Include">
-            <e p="HttpApiProvider.cs" t="Include" />
             <e p="IApiProvider.cs" t="Include" />
             <e p="InvalidXbmcVersionException.cs" t="Include" />
             <e p="JsonApiProvider.cs" t="Include" />
@@ -2357,11 +2362,11 @@
               <e p="ActivePlayersDharmaResult.cs" t="Include" />
               <e p="ActivePlayersEdenResult.cs" t="Include" />
               <e p="ErrorResult.cs" t="Include" />
-              <e p="TvShow.cs" t="Include" />
-              <e p="TvShowResponse.cs" t="Include" />
-              <e p="TvShowResult.cs" t="Include" />
+              <e p="MovieResponse.cs" t="Include" />
+              <e p="MovieResult.cs" t="Include" />
               <e p="VersionResult.cs" t="Include" />
               <e p="XbmcJsonResult.cs" t="Include" />
+              <e p="XbmcMovie.cs" t="Include" />
               <e p="XbmcVersion.cs" t="Include" />
             </e>
             <e p="Xbmc.cs" t="Include" />
@@ -3053,15 +3058,9 @@
           <e p="ProwlProviderTest.cs" t="Include" />
           <e p="SynologyIndexerFixture.cs" t="Include" />
           <e p="Xbmc" t="Include">
-            <e p="Http" t="Include">
-              <e p="ActivePlayersFixture.cs" t="Include" />
-              <e p="CheckForErrorFixture.cs" t="Include" />
-              <e p="GetSeriesPathFixture.cs" t="Include" />
-              <e p="UpdateFixture.cs" t="Include" />
-            </e>
             <e p="Json" t="Include">
-              <e p="GetSeriesPathFixture.cs" t="Include" />
-              <e p="UpdateFixture.cs" t="Include" />
+              <e p="GetMoviePathFixture.cs" t="Include" />
+              <e p="UpdateMovieFixture.cs" t="Include" />
             </e>
             <e p="OnDownloadFixture.cs" t="Include" />
           </e>

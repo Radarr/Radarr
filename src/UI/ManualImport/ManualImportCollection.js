@@ -36,7 +36,7 @@ var Collection = PageableCollection.extend({
     },
 
     sortMappings : {
-        series : {
+        movie : {
             sortValue : function(model, attr, order) {
                 var series = model.get(attr);
 
