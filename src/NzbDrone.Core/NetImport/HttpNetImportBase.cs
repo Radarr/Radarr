@@ -34,18 +34,20 @@ namespace NzbDrone.Core.NetImport
             _httpClient = httpClient;
         }
 
-        public override IList<Movie> Fetch()
+        public override NetImportFetchResult Fetch()
         {
             var generator = GetRequestGenerator();
             return FetchMovies(generator.GetMovies());
         }
 
-        protected virtual IList<Movie> FetchMovies(NetImportPageableRequestChain pageableRequestChain, bool isRecent = false)
+        protected virtual NetImportFetchResult FetchMovies(NetImportPageableRequestChain pageableRequestChain, bool isRecent = false)
         {
             var movies = new List<Movie>();
             var url = string.Empty;
 
             var parser = GetParser();
+
+            var anyFailure = false;
 
             try
             {
@@ -73,6 +75,7 @@ namespace NzbDrone.Core.NetImport
             }
             catch (WebException webException)
             {
+                anyFailure = true;
                 if (webException.Message.Contains("502") || webException.Message.Contains("503") ||
                     webException.Message.Contains("timed out"))
                 {
@@ -85,6 +88,7 @@ namespace NzbDrone.Core.NetImport
             }
             catch (HttpException httpException)
             {
+                anyFailure = true;
                 if ((int)httpException.Response.StatusCode == 429)
                 {
                     _logger.Warn("API Request Limit reached for {0}", this);
@@ -96,11 +100,12 @@ namespace NzbDrone.Core.NetImport
             }
             catch (Exception feedEx)
             {
+                anyFailure = true;
                 feedEx.Data.Add("FeedUrl", url);
                 _logger.Error(feedEx, "An error occurred while processing feed. " + url);
             }
 
-            return movies;
+            return new NetImportFetchResult {Movies = movies, AnyFailure = anyFailure};
         }
 
         protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)

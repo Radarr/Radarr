@@ -19,10 +19,10 @@ namespace NzbDrone.Core.Notifications.Plex
         List<PlexSection> GetTvSections(PlexServerSettings settings);
         List<PlexSection> GetMovieSections(PlexServerSettings settings);
         void Update(int sectionId, PlexServerSettings settings);
-        void UpdateSeries(int metadataId, PlexServerSettings settings);
+        void UpdateItem(int metadataId, PlexServerSettings settings);
         string Version(PlexServerSettings settings);
         List<PlexPreference> Preferences(PlexServerSettings settings);
-        int? GetMetadataId(int sectionId, int tvdbId, string language, PlexServerSettings settings);
+        int? GetMetadataId(int sectionId, string imdbId, string language, PlexServerSettings settings);
     }
 
     public class PlexServerProxy : IPlexServerProxy
@@ -109,14 +109,14 @@ namespace NzbDrone.Core.Notifications.Plex
             CheckForError(response, settings);
         }
 
-        public void UpdateSeries(int metadataId, PlexServerSettings settings)
+        public void UpdateItem(int metadataId, PlexServerSettings settings)
         {
             var resource = string.Format("library/metadata/{0}/refresh", metadataId);
             var request = GetPlexServerRequest(resource, Method.PUT, settings);
             var client = GetPlexServerClient(settings);
             var response = client.Execute(request);
 
-            _logger.Trace("Update Series response: {0}", response.Content);
+            _logger.Trace("Update Item response: {0}", response.Content);
             CheckForError(response, settings);
         }
 
@@ -160,9 +160,9 @@ namespace NzbDrone.Core.Notifications.Plex
                        .Preferences;
         }
 
-        public int? GetMetadataId(int sectionId, int tvdbId, string language, PlexServerSettings settings)
+        public int? GetMetadataId(int sectionId, string imdbId, string language, PlexServerSettings settings)
         {
-            var guid = string.Format("com.plexapp.agents.thetvdb://{0}?lang={1}", tvdbId, language);
+            var guid = string.Format("com.plexapp.agents.imdb://{0}?lang={1}", imdbId, language);
             var resource = string.Format("library/sections/{0}/all?guid={1}", sectionId, System.Web.HttpUtility.UrlEncode(guid));
             var request = GetPlexServerRequest(resource, Method.GET, settings);
             var client = GetPlexServerClient(settings);

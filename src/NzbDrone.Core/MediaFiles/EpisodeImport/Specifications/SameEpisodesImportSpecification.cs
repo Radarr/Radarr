@@ -1,6 +1,7 @@
 using System;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
@@ -29,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
             return Decision.Reject("Episode file on disk contains more episodes than this file contains");
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie)
+        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             return Decision.Accept();
         }

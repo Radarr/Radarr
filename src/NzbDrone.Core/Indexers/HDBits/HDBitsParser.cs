@@ -82,15 +82,6 @@ namespace NzbDrone.Core.Indexers.HDBits
                 });
             }
 
-            // order by internal
-            if (_settings.PreferInternal)
-            {
-                return
-                    torrentInfos.OrderByDescending(o => o.PublishDate)
-                        .ThenBy(o => ((dynamic)o).Internal ? 0 : 1)
-                        .ToArray();
-            }
-
             return torrentInfos.ToArray();
         }
 

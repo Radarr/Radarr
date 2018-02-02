@@ -63,12 +63,6 @@ namespace NzbDrone.Core.Indexers.HDBits
             query.Codec = Settings.Codecs.ToArray();
             query.Medium = Settings.Mediums.ToArray();
 
-            // Require Internal only if came from RSS sync
-            if (Settings.RequireInternal && query.ImdbInfo == null)
-            {
-                query.Origin = 1;
-            }
-
             request.SetContent(query.ToJson());
 
             yield return new IndexerRequest(request);

@@ -6,12 +6,12 @@ namespace NzbDrone.Core.Validation.Paths
 {
     public class MoviePathValidator : PropertyValidator
     {
-        private readonly IMovieService _seriesService;
+        private readonly IMovieService _moviesService;
 
-        public MoviePathValidator(IMovieService seriesService)
-            : base("Path is already configured for another series")
+        public MoviePathValidator(IMovieService moviesService)
+            : base("Path is already configured for another movie")
         {
-            _seriesService = seriesService;
+            _moviesService = moviesService;
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Validation.Paths
             dynamic instance = context.ParentContext.InstanceToValidate;
             var instanceId = (int)instance.Id;
 
-            return (!_seriesService.GetAllMovies().Exists(s => s.Path.PathEquals(context.PropertyValue.ToString()) && s.Id != instanceId));
+            return (!_moviesService.GetAllMovies().Exists(s => s.Path.PathEquals(context.PropertyValue.ToString()) && s.Id != instanceId));
         }
     }
 }

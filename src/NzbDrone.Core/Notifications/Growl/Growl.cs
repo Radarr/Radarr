@@ -34,10 +34,6 @@ namespace NzbDrone.Core.Notifications.Growl
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Growl";
 
         public override bool SupportsOnRename => false;

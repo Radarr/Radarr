@@ -86,7 +86,7 @@ var Collection = PageableCollection.extend({
 	  	return {};
 	  }
 
-	  if (this.state.pageSize == -1) {
+	  if (this.state.pageSize === -1) {
 	      return this.state;
       }
 
@@ -98,7 +98,7 @@ var Collection = PageableCollection.extend({
     },
 
     parseRecords : function(resp) {
-        if (resp && this.mode !== 'client' && this.state.pageSize != 0 && this.state.pageSize != -1) {
+        if (resp && this.mode !== 'client' && this.state.pageSize !== 0 && this.state.pageSize !== -1) {
             return resp.records;
         }
 
@@ -129,7 +129,7 @@ var Collection = PageableCollection.extend({
             url : self.url + '/editor',
 
             toJSON : function() {
-                return t.filter(function(model) {
+                return self.filter(function(model) {
                     return model.edited;
                 });
             }
@@ -252,7 +252,7 @@ var Collection = PageableCollection.extend({
     },
 
     add : function(model, options) {
-      if (this.length >= this.state.pageSize && this.state.pageSize != -1) {
+      if (this.length >= this.state.pageSize && this.state.pageSize !== -1) {
         return;
       }
       this.origAdd.call(this, model, options);

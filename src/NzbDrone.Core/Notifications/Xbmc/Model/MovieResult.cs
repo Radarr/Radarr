@@ -2,14 +2,14 @@
 
 namespace NzbDrone.Core.Notifications.Xbmc.Model
 {
-    public class TvShowResult
+    public class MovieResult
     {
         public Dictionary<string, int> Limits { get; set; }
-        public List<TvShow> TvShows;
+        public List<XbmcMovie> Movies;
 
-        public TvShowResult()
+        public MovieResult()
         {
-            TvShows = new List<TvShow>();
+            Movies = new List<XbmcMovie>();
         }
     }
 }

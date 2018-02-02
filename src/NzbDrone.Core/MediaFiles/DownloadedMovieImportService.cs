@@ -187,7 +187,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, folderInfo, true, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, null, folderInfo, true, false);
             var importResults = _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
 
             if ((downloadClientItem == null || !downloadClientItem.IsReadOnly) &&
@@ -241,7 +241,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, null, true, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, null, null, true, false);
 
             return _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
         }

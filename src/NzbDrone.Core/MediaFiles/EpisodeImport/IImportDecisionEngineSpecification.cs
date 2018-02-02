@@ -1,4 +1,5 @@
 ﻿using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.EpisodeImport
@@ -7,6 +8,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
     {
         Decision IsSatisfiedBy(LocalEpisode localEpisode);
 
-        Decision IsSatisfiedBy(LocalMovie localMovie);
+        Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem);
     }
 }

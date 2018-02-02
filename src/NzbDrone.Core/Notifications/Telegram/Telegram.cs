@@ -34,10 +34,6 @@ namespace NzbDrone.Core.Notifications.Telegram
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Telegram";
 
         public override bool SupportsOnRename => false;

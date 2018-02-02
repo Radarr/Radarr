@@ -34,10 +34,6 @@ namespace NzbDrone.Core.Notifications.Join
         {
         }
 		
-        public override void OnRename(Series series)
-        {
-        }
-
         public override string Name => "Join";
 
         public override bool SupportsOnRename => false;

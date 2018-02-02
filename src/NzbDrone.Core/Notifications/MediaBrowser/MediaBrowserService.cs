@@ -10,7 +10,6 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
     public interface IMediaBrowserService
     {
         void Notify(MediaBrowserSettings settings, string title, string message);
-        void Update(MediaBrowserSettings settings, Series series);
         void UpdateMovies(MediaBrowserSettings settings, Movie movie);
         ValidationFailure Test(MediaBrowserSettings settings);
     }
@@ -30,12 +29,6 @@ namespace NzbDrone.Core.Notifications.MediaBrowser
         {
             _proxy.Notify(settings, title, message);
         }
-
-        public void Update(MediaBrowserSettings settings, Series series)
-        {
-            _proxy.Update(settings, series.TvdbId);
-        }
-
 
         public void UpdateMovies(MediaBrowserSettings settings, Movie movie)
         {

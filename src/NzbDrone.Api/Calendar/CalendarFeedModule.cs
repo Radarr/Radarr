@@ -1,9 +1,10 @@
-﻿using Nancy;
+using Nancy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ical.Net;
 using Ical.Net.DataTypes;
+using Ical.Net.General;
 using Ical.Net.Interfaces.Serialization;
 using Ical.Net.Serialization;
 using Ical.Net.Serialization.iCalendar.Factory;
@@ -86,6 +87,10 @@ namespace NzbDrone.Api.Calendar
                 ProductId = "-//radarr.video//Radarr//EN"
             };
 
+            var calendarName = "Radarr Movies Calendar";
+            calendar.AddProperty(new CalendarProperty("NAME", calendarName));
+            calendar.AddProperty(new CalendarProperty("X-WR-CALNAME", calendarName));
+
             foreach (var movie in movies.OrderBy(v => v.Added))
             {
                 if (tags.Any() && tags.None(movie.Tags.Contains))
@@ -114,8 +119,10 @@ namespace NzbDrone.Api.Calendar
                             occurrence.End = new CalDateTime(movie.InCinemas.Value.AddMinutes(movie.Runtime)) { HasTime = true };
                         }
                         break;
+
                     case MovieStatusType.Announced:
                         continue; // no date
+
                     default:
                         if (movie.PhysicalRelease != null)
                         {

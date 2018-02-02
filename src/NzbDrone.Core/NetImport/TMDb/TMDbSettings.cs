@@ -36,19 +36,19 @@ namespace NzbDrone.Core.NetImport.TMDb
             RuleFor(c => c.Ceritification)
                 .Matches(@"^\bNR\b|\bG\b|\bPG\b|\bPG\-13\b|\bR\b|\bNC\-17\b$", RegexOptions.IgnoreCase)
                 .When(c => c.Ceritification.IsNotNullOrWhiteSpace())
-                .WithMessage("Not a valid cerification");
+                .WithMessage("Not a valid certification");
 
             // CSV of numbers
             RuleFor(c => c.IncludeGenreIds)
-                .Matches(@"^\d+([,]\d+)*$", RegexOptions.IgnoreCase)
+                .Matches(@"^\d+([,|]\d+)*$", RegexOptions.IgnoreCase)
                 .When(c => c.IncludeGenreIds.IsNotNullOrWhiteSpace())
-                .WithMessage("Genre Ids must be comma separated number ids");
+                .WithMessage("Genre Ids must be comma (,) or pipe (|) separated number ids");
 
             // CSV of numbers
             RuleFor(c => c.ExcludeGenreIds)
-                .Matches(@"^\d+([,]\d+)*$", RegexOptions.IgnoreCase)
+                .Matches(@"^\d+([,|]\d+)*$", RegexOptions.IgnoreCase)
                 .When(c => c.ExcludeGenreIds.IsNotNullOrWhiteSpace())
-                .WithMessage("Genre Ids must be comma separated number ids");
+                .WithMessage("Genre Ids must be comma (,) or pipe (|) separated number ids");
 
         }
     }

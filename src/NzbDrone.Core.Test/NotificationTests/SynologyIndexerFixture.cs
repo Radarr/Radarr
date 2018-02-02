@@ -19,29 +19,29 @@ namespace NzbDrone.Core.Test.NotificationTests
         [SetUp]
         public void SetUp()
         {
-            _movie = new Movie()
+            _movie = new Movie
             {
                 Path = @"C:\Test\".AsOsAgnostic()
             };
 
-            _upgrade = new DownloadMessage()
+            _upgrade = new DownloadMessage
             {
                 Movie = _movie,
 
                 MovieFile = new MovieFile
                 {
-                    RelativePath = "file1.S01E01E02.mkv"
+                    RelativePath = "moviefile1.mkv"
                 },
 
                 OldMovieFiles = new List<MovieFile>
                 {
                     new MovieFile
                     {
-                        RelativePath = "file1.S01E01.mkv"
+                        RelativePath = "oldmoviefile1.mkv"
                     },
                     new MovieFile
                     {
-                        RelativePath = "file1.S01E02.mkv"
+                        RelativePath = "oldmoviefile2.mkv"
                     }
                 }
             };
@@ -63,37 +63,37 @@ namespace NzbDrone.Core.Test.NotificationTests
             Subject.OnMovieRename(_movie);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.UpdateFolder(_movie.Path), Times.Never());
+                  .Verify(v => v.UpdateFolder(_movie.Path), Times.Never());
         }
 
         [Test]
-        public void should_remove_old_episodes_on_upgrade()
+        public void should_remove_old_movie_on_upgrade()
         {
             Subject.OnDownload(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.DeleteFile(@"C:\Test\file1.S01E01.mkv".AsOsAgnostic()), Times.Once());
+                  .Verify(v => v.DeleteFile(@"C:\Test\oldmoviefile1.mkv".AsOsAgnostic()), Times.Once());
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.DeleteFile(@"C:\Test\file1.S01E02.mkv".AsOsAgnostic()), Times.Once());
+                  .Verify(v => v.DeleteFile(@"C:\Test\oldmoviefile2.mkv".AsOsAgnostic()), Times.Once());
         }
 
         [Test]
-        public void should_add_new_episode_on_upgrade()
+        public void should_add_new_movie_on_upgrade()
         {
             Subject.OnDownload(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.AddFile(@"C:\Test\file1.S01E01E02.mkv".AsOsAgnostic()), Times.Once());
+                  .Verify(v => v.AddFile(@"C:\Test\moviefile1.mkv".AsOsAgnostic()), Times.Once());
         }
 
         [Test]
-        public void should_update_entire_series_folder_on_rename()
+        public void should_update_entire_movie_folder_on_rename()
         {
             Subject.OnMovieRename(_movie);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
-                .Verify(v => v.UpdateFolder(@"C:\Test\".AsOsAgnostic()), Times.Once());
+                  .Verify(v => v.UpdateFolder(@"C:\Test\".AsOsAgnostic()), Times.Once());
         }
     }
 }

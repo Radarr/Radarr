@@ -29,9 +29,10 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             if (jsonResponse.Resource.error_code.HasValue)
             {
-                if (jsonResponse.Resource.error_code == 20 || jsonResponse.Resource.error_code == 8)
+                if (jsonResponse.Resource.error_code == 20 || jsonResponse.Resource.error_code == 8
+                    || jsonResponse.Resource.error_code == 9 || jsonResponse.Resource.error_code == 10)
                 {
-                    // No results found
+                    // No results or imdbid not found
                     return results;
                 }
 
