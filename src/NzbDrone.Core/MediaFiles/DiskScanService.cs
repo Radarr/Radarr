@@ -161,15 +161,9 @@ namespace NzbDrone.Core.MediaFiles
 
             if (!_diskProvider.FolderExists(movie.Path))
             {
-                if (_configService.CreateEmptySeriesFolders &&
-                    _diskProvider.FolderExists(rootFolder))
+                if (movie.MovieFileId != 0)
                 {
-                    _logger.Debug("Creating missing movies folder: {0}", movie.Path);
-                    _diskProvider.CreateFolder(movie.Path);
-                    SetPermissions(movie.Path);
-                }
-                else
-                {
+                    //Since there is no folder, there can't be any files right?
                     // Delete Movie from MovieFiles
                     _movieFileRepository.Delete(movie.MovieFileId);
 
@@ -178,6 +172,13 @@ namespace NzbDrone.Core.MediaFiles
                     _movieService.UpdateMovie(movie);
 
                     _logger.Debug("Movies folder doesn't exist: {0}", movie.Path);
+                }
+                else if (_configService.CreateEmptySeriesFolders &&
+                    _diskProvider.FolderExists(rootFolder))
+                {
+                    _logger.Debug("Creating missing movies folder: {0}", movie.Path);
+                    _diskProvider.CreateFolder(movie.Path);
+                    SetPermissions(movie.Path);
                 }
 
                 _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.MovieFolderDoesNotExist));
