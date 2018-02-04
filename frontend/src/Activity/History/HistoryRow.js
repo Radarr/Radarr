@@ -108,7 +108,7 @@ class HistoryRow extends Component {
               );
             }
 
-            if (name === 'albumTitle') {
+            if (name === 'album.title') {
               return (
                 <TableRowCell key={name}>
                   <AlbumTitleLink

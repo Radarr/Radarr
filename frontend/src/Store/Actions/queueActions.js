@@ -64,8 +64,9 @@ export const defaultState = {
         isVisible: true
       },
       {
-        name: 'albumTitle',
+        name: 'album.title',
         label: 'Album Title',
+        isSortable: true,
         isVisible: true
       },
       {

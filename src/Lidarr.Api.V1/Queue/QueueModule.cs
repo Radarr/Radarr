@@ -80,11 +80,11 @@ namespace Lidarr.Api.V1.Queue
         {
             switch (pagingSpec.SortKey)
             {
-                case "series.sortTitle":
+                case "artist.sortName":
                     return q => q.Artist.SortName;
-                case "episode":
+                case "album":
                     return q => q.Album;
-                case "episode.title":
+                case "album.title":
                     return q => q.Album.Title;
                 case "quality":
                     return q => q.Quality;
@@ -95,9 +95,9 @@ namespace Lidarr.Api.V1.Queue
             }
         }
 
-        private QueueResource MapToResource(NzbDrone.Core.Queue.Queue queueItem, bool includeSeries, bool includeEpisode)
+        private QueueResource MapToResource(NzbDrone.Core.Queue.Queue queueItem, bool includeArtist, bool includeAlbum)
         {
-            return queueItem.ToResource(includeSeries, includeEpisode);
+            return queueItem.ToResource(includeArtist, includeAlbum);
         }
 
         public void Handle(QueueUpdatedEvent message)
