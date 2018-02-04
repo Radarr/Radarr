@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -95,7 +96,7 @@ class SelectTrackModalContent extends Component {
       selectedState
     } = this.state;
 
-    const errorMessage = error && error.message || 'Unable to load tracks';
+    const errorMessage = getErrorMessage(error, 'Unable to load tracks');
 
     return (
       <ModalContent onModalClose={onModalClose}>

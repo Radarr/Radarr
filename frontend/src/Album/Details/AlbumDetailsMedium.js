@@ -22,6 +22,8 @@ function getMediumStatistics(tracks) {
     if (track.trackFileId) {
       trackCount++;
       trackFileCount++;
+    } else if (track.monitored) {
+      trackCount++;
     }
 
     totalTrackCount++;
@@ -34,9 +36,13 @@ function getMediumStatistics(tracks) {
   };
 }
 
-function getTrackCountKind(trackFileCount, trackCount) {
+function getTrackCountKind(monitored, trackFileCount, trackCount) {
   if (trackFileCount === trackCount && trackCount > 0) {
     return kinds.SUCCESS;
+  }
+
+  if (!monitored) {
+    return kinds.WARNING;
   }
 
   return kinds.DANGER;
@@ -94,6 +100,7 @@ class AlbumDetailsMedium extends Component {
     const {
       mediumNumber,
       mediumFormat,
+      albumMonitored,
       items,
       columns,
       onTableOptionChange,
@@ -123,11 +130,11 @@ class AlbumDetailsMedium extends Component {
 
             <Label
               title={`${totalTrackCount} tracks total. ${trackFileCount} tracks with files.`}
-              kind={getTrackCountKind(trackFileCount, trackCount)}
+              kind={getTrackCountKind(albumMonitored, trackFileCount, trackCount)}
               size={sizes.LARGE}
             >
               {
-                <span>{totalTrackCount} / {trackCount}</span>
+                <span>{trackFileCount} / {trackCount}</span>
               }
             </Label>
           </div>
@@ -197,6 +204,7 @@ class AlbumDetailsMedium extends Component {
 
 AlbumDetailsMedium.propTypes = {
   albumId: PropTypes.number.isRequired,
+  albumMonitored: PropTypes.bool.isRequired,
   mediumNumber: PropTypes.number.isRequired,
   mediumFormat: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
