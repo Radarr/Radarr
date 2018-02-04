@@ -7,7 +7,6 @@ import getStatusStyle from 'Calendar/getStatusStyle';
 import albumEntities from 'Album/albumEntities';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import AlbumDetailsModal from 'Album/AlbumDetailsModal';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
 import styles from './CalendarEvent.css';
 
@@ -107,16 +106,6 @@ class CalendarEvent extends Component {
             </div>
           </div>
         </Link>
-
-        <AlbumDetailsModal
-          isOpen={this.state.isDetailsModalOpen}
-          albumId={id}
-          albumEntity={albumEntities.CALENDAR}
-          artistId={artist.id}
-          albumTitle={title}
-          showOpenArtistButton={true}
-          onModalClose={this.onDetailsModalClose}
-        />
       </div>
     );
   }

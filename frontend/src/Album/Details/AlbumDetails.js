@@ -22,6 +22,7 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import AlbumDetailsMediumConnector from './AlbumDetailsMediumConnector';
 import ArtistHistoryModal from 'Artist/History/ArtistHistoryModal';
+import InteractiveAlbumSearchModal from 'Album/Search/InteractiveAlbumSearchModal';
 import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
 
 import styles from './AlbumDetails.css';
@@ -53,6 +54,7 @@ class AlbumDetails extends Component {
     this.state = {
       isOrganizeModalOpen: false,
       isArtistHistoryModalOpen: false,
+      isInteractiveSearchModalOpen: false,
       isManageTracksOpen: false,
       isEditAlbumModalOpen: false,
       allExpanded: false,
@@ -86,6 +88,14 @@ class AlbumDetails extends Component {
 
   onManageTracksModalClose = () => {
     this.setState({ isManageTracksOpen: false });
+  }
+
+  onInteractiveSearchPress = () => {
+    this.setState({ isInteractiveSearchModalOpen: true });
+  }
+
+  onInteractiveSearchModalClose = () => {
+    this.setState({ isInteractiveSearchModalOpen: false });
   }
 
   onArtistHistoryPress = () => {
@@ -147,6 +157,7 @@ class AlbumDetails extends Component {
     const {
       isOrganizeModalOpen,
       isArtistHistoryModalOpen,
+      isInteractiveSearchModalOpen,
       isEditAlbumModalOpen,
       isManageTracksOpen,
       allExpanded,
@@ -171,6 +182,12 @@ class AlbumDetails extends Component {
               iconName={icons.SEARCH}
               isSpinning={isSearching}
               onPress={onSearchPress}
+            />
+
+            <PageToolbarButton
+              label="Interactive Search"
+              iconName={icons.INTERACTIVE}
+              onPress={this.onInteractiveSearchPress}
             />
 
             <PageToolbarSeparator />
@@ -394,6 +411,12 @@ class AlbumDetails extends Component {
             artistId={artist.id}
             albumId={id}
             onModalClose={this.onManageTracksModalClose}
+          />
+
+          <InteractiveAlbumSearchModal
+            isOpen={isInteractiveSearchModalOpen}
+            albumId={id}
+            onModalClose={this.onInteractiveSearchModalClose}
           />
 
           <ArtistHistoryModal

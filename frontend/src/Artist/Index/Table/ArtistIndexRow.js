@@ -12,7 +12,7 @@ import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import ArtistNameLink from 'Artist/ArtistNameLink';
-import AlbumTitleDetailLink from 'Album/AlbumTitleDetailLink';
+import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
 import ArtistStatusCell from './ArtistStatusCell';
@@ -181,7 +181,7 @@ class ArtistIndexRow extends Component {
                     key={name}
                     className={styles[name]}
                   >
-                    <AlbumTitleDetailLink
+                    <AlbumTitleLink
                       title={nextAlbum.title}
                       foreignAlbumId={nextAlbum.foreignAlbumId}
                     />
@@ -205,7 +205,7 @@ class ArtistIndexRow extends Component {
                     key={name}
                     className={styles[name]}
                   >
-                    <AlbumTitleDetailLink
+                    <AlbumTitleLink
                       title={lastAlbum.title}
                       foreignAlbumId={lastAlbum.foreignAlbumId}
                     />

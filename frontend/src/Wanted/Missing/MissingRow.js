@@ -18,6 +18,7 @@ function MissingRow(props) {
     artist,
     releaseDate,
     albumType,
+    foreignAlbumId,
     title,
     isSelected,
     columns,
@@ -76,12 +77,8 @@ function MissingRow(props) {
             return (
               <TableRowCell key={name}>
                 <AlbumTitleLink
-                  albumId={id}
-                  artistId={artist.id}
-                  albumEntity={albumEntities.WANTED_MISSING}
-                  albumTitle={title}
-                  showOpenArtistButton={true}
-                  showOpenAlbumButton={true}
+                  foreignAlbumId={foreignAlbumId}
+                  title={title}
                 />
               </TableRowCell>
             );
@@ -144,6 +141,7 @@ MissingRow.propTypes = {
   // trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
+  foreignAlbumId: PropTypes.string.isRequired,
   albumType: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,

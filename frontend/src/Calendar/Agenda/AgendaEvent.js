@@ -7,8 +7,6 @@ import { icons } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import albumEntities from 'Album/albumEntities';
-import AlbumDetailsModal from 'Album/AlbumDetailsModal';
 import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
 import styles from './AgendaEvent.css';
 
@@ -109,16 +107,6 @@ class AgendaEvent extends Component {
               />
           }
         </Link>
-
-        <AlbumDetailsModal
-          isOpen={this.state.isDetailsModalOpen}
-          albumId={id}
-          albumEntity={albumEntities.CALENDAR}
-          artistId={artist.id}
-          albumTitle={title}
-          showOpenArtistButton={true}
-          onModalClose={this.onDetailsModalClose}
-        />
       </div>
     );
   }

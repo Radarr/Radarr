@@ -156,12 +156,8 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   <AlbumTitleLink
-                    albumId={album.id}
-                    artistId={artist.id}
-                    trackFileId={album.trackFileId}
-                    albumTitle={album.title}
-                    showOpenArtistButton={true}
-                    showOpenAlbumButton={true}
+                    foreignAlbumId={album.foreignAlbumId}
+                    title={album.title}
                   />
                 </TableRowCell>
               );

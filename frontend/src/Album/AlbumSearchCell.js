@@ -4,7 +4,7 @@ import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import AlbumDetailsModal from './AlbumDetailsModal';
+import InteractiveAlbumSearchModal from './Search/InteractiveAlbumSearchModal';
 import styles from './AlbumSearchCell.css';
 
 class AlbumSearchCell extends Component {
@@ -37,8 +37,6 @@ class AlbumSearchCell extends Component {
   render() {
     const {
       albumId,
-      artistId,
-      albumTitle,
       isSearching,
       onSearchPress,
       ...otherProps
@@ -57,13 +55,9 @@ class AlbumSearchCell extends Component {
           onPress={this.onManualSearchPress}
         />
 
-        <AlbumDetailsModal
+        <InteractiveAlbumSearchModal
           isOpen={this.state.isDetailsModalOpen}
           albumId={albumId}
-          artistId={artistId}
-          albumTitle={albumTitle}
-          selectedTab="search"
-          startInteractiveSearch={true}
           onModalClose={this.onDetailsModalClose}
           {...otherProps}
         />

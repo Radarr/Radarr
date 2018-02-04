@@ -8,7 +8,7 @@ import Label from 'Components/Label';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
 import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
-import AlbumTitleDetailLink from 'Album/AlbumTitleDetailLink';
+import AlbumTitleLink from 'Album/AlbumTitleLink';
 import styles from './AlbumRow.css';
 
 function getTrackCountKind(monitored, trackFileCount, trackCount) {
@@ -121,7 +121,7 @@ class AlbumRow extends Component {
                   key={name}
                   className={styles.title}
                 >
-                  <AlbumTitleDetailLink
+                  <AlbumTitleLink
                     title={title}
                     foreignAlbumId={foreignAlbumId}
                   />

@@ -5,7 +5,6 @@ import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import albumEntities from 'Album/albumEntities';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
 import EpisodeLanguage from 'Album/EpisodeLanguage';
 import EpisodeQuality from 'Album/EpisodeQuality';
@@ -53,7 +52,6 @@ class HistoryRow extends Component {
 
   render() {
     const {
-      albumId,
       artist,
       album,
       track,
@@ -114,12 +112,8 @@ class HistoryRow extends Component {
               return (
                 <TableRowCell key={name}>
                   <AlbumTitleLink
-                    albumId={albumId}
-                    albumEntity={albumEntities.ALBUMS}
-                    artistId={artist.id}
-                    albumTitle={album.title}
-                    showOpenArtistButton={true}
-                    showOpenAlbumButton={true}
+                    foreignAlbumId={album.foreignAlbumId}
+                    title={album.title}
                   />
                 </TableRowCell>
               );
