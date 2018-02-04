@@ -43,6 +43,9 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportAlbumTitleRegex = new[]
         {
+            //ruTracker - (Genre) [Source]? Artist - Discography
+            new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<discography>Discography|Discografia)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             //Artist Discography with two years
             new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
@@ -51,6 +54,10 @@ namespace NzbDrone.Core.Parser
             //Artist Discography
                 new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia)",
                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //ruTracker - (Genre) [Source]? Artist - Album - Year
+            new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<album>.+?)(?: - )(?<releaseyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             //Artist-Album-Version-Source-Year
             //ex. Imagine Dragons-Smoke And Mirrors-Deluxe Edition-2CD-FLAC-2015-JLM

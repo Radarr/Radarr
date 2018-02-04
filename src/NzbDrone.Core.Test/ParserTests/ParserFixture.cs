@@ -115,6 +115,16 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Shinedown-Us and Them-NMR-2005-NMR", "Shinedown", "Us and Them")]
         [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", "Captain", "", true)]
         [TestCase("Coolio - Gangsta's Paradise (1995) (FLAC Lossless)", "Coolio", "Gangsta's Paradise")]
+        // ruTracker
+        [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill","From The Trees")]
+        [TestCase("(Folk Rock / Pop) Aztec Two-Step - Naked - 2017, MP3, 320 kbps", "Aztec Two-Step", "Naked")]
+        [TestCase("(Zeuhl / Progressive Rock) [WEB] Dai Kaht - Dai Kaht - 2017, FLAC (tracks), lossless", "Dai Kaht", "Dai Kaht")]
+        //[TestCase("(Industrial Folk) Bumblebee(Shmely, AntiVirus) - Discography, 23 albums - 1998-2011, FLAC(image + .cue), lossless")]
+        //[TestCase("(Heavy Metal) Sergey Mavrin(Mavrik) - Discography(14 CD) [1998-2010], FLAC(image + .cue), lossless")]
+        [TestCase("(Heavy Metal) [CD] Black Obelisk - Discography - 1991-2015 (36 releases, 32 CDs), FLAC(image + .cue), lossless", "Black Obelisk", "", true)]
+        //[TestCase("(R'n'B / Soul) Moyton - One of the Sta(2014) + Ocean(2014), MP3, 320 kbps", "Moyton", "")]
+        [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "", true)]
+        [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "", true)]
         public void should_parse_artist_name_and_album_title(string postTitle, string name, string title, bool discography = false)
         {
 
