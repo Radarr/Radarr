@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Qualities;
 
@@ -10,7 +11,7 @@ namespace NzbDrone.Core.Parser.Model
         public SeriesTitleInfo MovieTitleInfo { get; set; }
         public QualityModel Quality { get; set; }
         //public int SeasonNumber { get; set; }
-        public Language Language { get; set; }
+        public List<Language> Languages { get; set; }
         //public bool FullSeason { get; set; }
         //public bool Special { get; set; }
         public string ReleaseGroup { get; set; }
