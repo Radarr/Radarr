@@ -96,7 +96,7 @@ namespace MonoTorrent.BEncoding
             if (stream == null)
                 throw new ArgumentNullException("stream");
 
-            return Decode(new RawReader(stream));
+            return Decode(new RawReader(stream, false));
         }
 
 
