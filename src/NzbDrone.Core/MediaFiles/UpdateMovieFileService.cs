@@ -53,7 +53,7 @@ namespace NzbDrone.Core.MediaFiles
                     {
                         var airDate = movie.PhysicalRelease;
 
-                        if (airDate == null)
+                        if (airDate.HasValue == false)
                         {
                             return false;
                         }
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.MediaFiles
                     {
                         var airDate = movie.InCinemas;
 
-                        if (airDate == null)
+                        if (airDate.HasValue == false)
                         {
                             return false;
                         }
