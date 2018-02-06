@@ -34,14 +34,14 @@ namespace NzbDrone.Core.Music
 
                 var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
-                var monitoredAlbums = artist.Albums;
+                var monitoredAlbums = monitoringOptions.AlbumsToMonitor;
 
-                if (monitoredAlbums != null)
+                if (monitoredAlbums.Any())
                 {
                     ToggleAlbumsMonitoredState(
-                        albums.Where(s => monitoredAlbums.Any(t => t.ForeignAlbumId == s.ForeignAlbumId)), true);
+                        albums.Where(s => monitoredAlbums.Any(t => t == s.ForeignAlbumId)), true);
                     ToggleAlbumsMonitoredState(
-                        albums.Where(s => monitoredAlbums.Any(t => t.ForeignAlbumId != s.ForeignAlbumId)), false);
+                        albums.Where(s => monitoredAlbums.Any(t => t != s.ForeignAlbumId)), false);
                 }
                 else
                 {

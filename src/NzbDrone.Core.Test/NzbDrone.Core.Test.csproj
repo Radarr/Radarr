@@ -205,6 +205,7 @@
     <Compile Include="HealthCheck\Checks\ImportMechanismCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerSearchCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerRssCheckFixture.cs" />
+    <Compile Include="HealthCheck\Checks\ImportListStatusCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\MonoVersionCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\IndexerStatusCheckFixture.cs" />
     <Compile Include="HealthCheck\Checks\RootFolderCheckFixture.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupDuplicateMetadataFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlbumsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedBlacklistFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedImportListStatusFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTrackFilesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedTracksFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedIndexerStatusFixture.cs" />
@@ -227,9 +229,13 @@
     <Compile Include="Housekeeping\Housekeepers\CleanupUnusedTagsFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedPendingReleasesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureDownloadClientStatusTimesFixture.cs" />
+    <Compile Include="Housekeeping\Housekeepers\FixFutureImportListStatusTimesFixture.cs" />
     <Compile Include="Housekeeping\Housekeepers\FixFutureIndexerStatusTimesFixture.cs" />
     <Compile Include="Http\HttpProxySettingsProviderFixture.cs" />
     <Compile Include="Http\TorCacheHttpRequestInterceptorFixture.cs" />
+    <Compile Include="ImportListTests\ImportListServiceFixture.cs" />
+    <Compile Include="ImportListTests\ImportListStatusServiceFixture.cs" />
+    <Compile Include="ImportListTests\ImportListSyncServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\ArtistSearchServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\SearchDefinitionFixture.cs" />
     <Compile Include="IndexerTests\BasicRssParserFixture.cs" />

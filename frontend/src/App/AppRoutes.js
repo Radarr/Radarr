@@ -22,6 +22,7 @@ import MediaManagementConnector from 'Settings/MediaManagement/MediaManagementCo
 import Profiles from 'Settings/Profiles/Profiles';
 import Quality from 'Settings/Quality/Quality';
 import IndexerSettings from 'Settings/Indexers/IndexerSettings';
+import ImportListSettings from 'Settings/ImportLists/ImportListSettings';
 import DownloadClientSettings from 'Settings/DownloadClients/DownloadClientSettings';
 import NotificationSettings from 'Settings/Notifications/NotificationSettings';
 import MetadataSettings from 'Settings/Metadata/MetadataSettings';
@@ -173,6 +174,11 @@ function AppRoutes(props) {
       <Route
         path="/settings/downloadclients"
         component={DownloadClientSettings}
+      />
+
+      <Route
+        path="/settings/importlists"
+        component={ImportListSettings}
       />
 
       <Route

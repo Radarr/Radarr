@@ -70,6 +70,17 @@ function Settings() {
 
         <Link
           className={styles.link}
+          to="/settings/importlists"
+        >
+          Import Lists
+        </Link>
+
+        <div className={styles.summary}>
+          Import Lists
+        </div>
+
+        <Link
+          className={styles.link}
           to="/settings/connect"
         >
           Connect

@@ -9,6 +9,7 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Housekeeping;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -70,6 +71,12 @@ namespace NzbDrone.Core.Jobs
                     {
                         Interval = GetBackupInterval(),
                         TypeName = typeof(BackupCommand).FullName
+                    },
+
+                    new ScheduledTask
+                    {
+                        Interval = 24 * 60, // TODO: Add a setting?
+                        TypeName = typeof(ImportListSyncCommand).FullName
                     },
 
                     new ScheduledTask

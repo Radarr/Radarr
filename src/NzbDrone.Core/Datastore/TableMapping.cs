@@ -10,6 +10,7 @@ using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.MediaFiles;
@@ -58,6 +59,10 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsRss)
                   .Ignore(i => i.SupportsSearch)
                   .Ignore(d => d.Tags);
+
+            Mapper.Entity<ImportListDefinition>().RegisterDefinition("ImportLists")
+                .Ignore(i => i.Enable)
+                .Ignore(d => d.Tags);
 
             Mapper.Entity<NotificationDefinition>().RegisterDefinition("Notifications")
                   .Ignore(i => i.SupportsOnGrab)
@@ -130,6 +135,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<IndexerStatus>().RegisterModel("IndexerStatus");
             Mapper.Entity<DownloadClientStatus>().RegisterModel("DownloadClientStatus");
+            Mapper.Entity<ImportListStatus>().RegisterModel("ImportListStatus");
         }
 
         private static void RegisterMappers()
