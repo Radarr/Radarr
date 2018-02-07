@@ -769,7 +769,7 @@ namespace NzbDrone.Core.Parser
         public static string NormalizeTitle(string title)
         {
             title = WordDelimiterRegex.Replace(title, " ");
-            title = PunctuationRegex.Replace(title, string.Empty);
+            title = PunctuationRegex.Replace(title, " ");
             title = CommonWordRegex.Replace(title, string.Empty);
             title = DuplicateSpacesRegex.Replace(title, " ");
             title = SpecialCharRegex.Replace(title, string.Empty);
