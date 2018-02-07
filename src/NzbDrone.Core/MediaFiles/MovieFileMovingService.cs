@@ -141,7 +141,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _mediaFileAttributeService.SetFilePermissions(destinationFilePath);
 
-            if(oldMoviePath != newMoviePath)
+            if(oldMoviePath != newMoviePath && _diskProvider.FolderExists(oldMoviePath))
             {
                 //Let's move the old files before deleting the old folder. We could just do move folder, but the main file (movie file) is already moved, so eh.
                 var files = _diskProvider.GetFiles(oldMoviePath, SearchOption.AllDirectories);
