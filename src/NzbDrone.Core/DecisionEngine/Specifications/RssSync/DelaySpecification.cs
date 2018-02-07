@@ -43,7 +43,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             // Preferred word count 
             var title = subject.Release.Title;
-            var preferredWords = subject.Movie.Profile.Value.PreferredTags;
+            var preferredWords = subject.Movie.Profile?.Value?.PreferredTags;
             var preferredCount = 0;
 
             if (preferredWords == null)
