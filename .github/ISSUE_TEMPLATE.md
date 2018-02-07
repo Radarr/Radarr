@@ -10,6 +10,7 @@ Provide a description of the feature request or bug here, the more details the b
 Please also try to include the following if you are reporting a bug
 
 **Radarr Version:**
+**Mono Version:**
 
 **Logs:**
 
