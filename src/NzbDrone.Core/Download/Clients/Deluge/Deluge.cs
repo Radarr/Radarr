@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             foreach (var torrent in torrents)
             {
                 var item = new DownloadClientItem();
-                item.DownloadId = torrent.Hash.ToUpper();
+                item.DownloadId = torrent.Hash?.ToUpper();
                 item.Title = torrent.Name;
                 item.Category = Settings.MovieCategory;
 
