@@ -1,8 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Mono.Unix;
 using Mono.Unix.Native;
 using NLog;
@@ -18,50 +17,21 @@ namespace NzbDrone.Mono.Disk
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(DiskProvider));
 
         private readonly IProcMountProvider _procMountProvider;
-        private readonly ISymbLinkResolver _symLinkResolver;
-	private readonly Logger _logger;
+        private readonly ISymbolicLinkResolver _symLinkResolver;
 
         // Mono supports sending -1 for a uint to indicate that the owner or group should not be set
         // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
         private const uint UNCHANGED_ID = uint.MaxValue;
 
-        public DiskProvider(IProcMountProvider procMountProvider, ISymbLinkResolver symLinkResolver, Logger logger)
+        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver)
         {
             _procMountProvider = procMountProvider;
             _symLinkResolver = symLinkResolver;
-		_logger = logger;
         }
 
         public override IMount GetMount(string path)
         {
-		if (path == null) return null;
-
-		try
-		{
-			string[] dirs;
-			int lastIndex;
-			GetPathComponents(path, out dirs, out lastIndex);
-
-			var realPath = new StringBuilder();
-			if (dirs.Length > 0)
-			{
-				var dir = UnixPath.IsPathRooted(path) ? "/" : "";
-				dir += dirs[0];
-				realPath.Append(GetRealPath(dir));
-			}
-			for (var i = 1; i < lastIndex; ++i)
-			{
-				realPath.Append("/").Append(dirs[i]);
-				var realSubPath = GetRealPath(realPath.ToString());
-				realPath.Remove(0, realPath.Length);
-				realPath.Append(realSubPath);
-			}
-			path = realPath.ToString();
-		}
-		catch (Exception ex)
-		{
-			_logger.Debug(ex, string.Format("Failed to check for symlinks in the path {0}", path));
-		}
+            path = _symLinkResolver.GetCompleteRealPath(path);
 
             return base.GetMount(path);
         }
@@ -70,24 +40,15 @@ namespace NzbDrone.Mono.Disk
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            try
-            {
-                var mount = GetMount(path);
+            var mount = GetMount(path);
 
-                if (mount == null)
-                {
-                    Logger.Debug("Unable to get free space for '{0}', unable to find suitable drive", path);
-                    return null;
-                }
-
-                return mount.AvailableFreeSpace;
-            }
-            catch (InvalidOperationException ex)
+            if (mount == null)
             {
-                Logger.Error(ex, "Couldn't get free space for " + path);
+                Logger.Debug("Unable to get free space for '{0}', unable to find suitable drive", path);
+                return null;
             }
 
-            return null;
+            return mount.AvailableFreeSpace;
         }
 
         public override void InheritFolderPermissions(string filename)
@@ -120,8 +81,8 @@ namespace NzbDrone.Mono.Disk
                                      .Concat(GetDriveInfoMounts()
                                                  .Select(d => new DriveInfoMount(d, FindDriveType.Find(d.DriveFormat)))
                                                  .Where(d => d.DriveType == DriveType.Fixed ||
-                                                             d.DriveType == DriveType.Network ||
-                                                             d.DriveType == DriveType.Removable))
+                                                             d.DriveType == DriveType.Network || d.DriveType ==
+                                                             DriveType.Removable))
                                      .DistinctBy(v => v.RootDirectory)
                                      .ToList();
         }
@@ -130,20 +91,9 @@ namespace NzbDrone.Mono.Disk
         {
             Ensure.That(path, () => path).IsValidPath();
 
-            try
-            {
-                var mount = GetMount(path);
+            var mount = GetMount(path);
 
-                if (mount == null) return null;
-
-                return mount.TotalSize;
-            }
-            catch (InvalidOperationException e)
-            {
-                Logger.Error(e, "Couldn't get total space for " + path);
-            }
-
-            return null;
+            return mount?.TotalSize;
         }
 
         public override bool TryCreateHardLink(string source, string destination)
@@ -240,67 +190,7 @@ namespace NzbDrone.Mono.Disk
 
             return g.gr_gid;
 
-            
+
         }
-
-	private static void GetPathComponents(string path, out string[] components, out int lastIndex)
-	{
-		var dirs = path.Split(UnixPath.DirectorySeparatorChar);
-		var target = 0;
-		for (var i = 0; i < dirs.Length; ++i)
-		{
-			if (dirs[i] == "." || dirs[i] == string.Empty)
-			{
-				continue;
-			}
-
-			if (dirs[i] == "..")
-			{
-				if (target != 0)
-				{
-					target--;
-				}
-				else
-				{
-					target++;
-				}
-			}
-			else
-			{
-				dirs[target++] = dirs[i];
-			}
-		}
-		components = dirs;
-		lastIndex = target;
-	}
-
-	public string GetRealPath(string path)
-	{
-		do
-		{
-			var link = UnixPath.TryReadLink(path);
-
-			if (link == null)
-			{
-				var errno = Stdlib.GetLastError();
-				if (errno != Errno.EINVAL)
-				{
-					_logger.Trace("Checking path {0} for symlink returned error {1}, assuming it's not a symlink.", path, errno);
-				}
-
-				return path;
-			}
-
-			if (UnixPath.IsPathRooted(link))
-			{
-				path = link;
-			}
-			else
-			{
-				path = UnixPath.GetDirectoryName(path) + UnixPath.DirectorySeparatorChar + link;
-				path = UnixPath.GetCanonicalPath(path);
-			}
-		} while (true);
-	}
     }
 }
