@@ -85,7 +85,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 ### Planned Features
 
-* Downloading Metadata such as trailers or subtitles (\*)
+* Importing Metadata such as trailers or subtitles (\*)
 * Adding metadata such as posters and information for Kodi and others to use (\*)
 * Dynamically renaming folders with quality info, etc. (\*)
 * Supporting custom folder structures, such as all movie files in one folder (\*)
