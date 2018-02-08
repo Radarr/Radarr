@@ -17,13 +17,13 @@ namespace NzbDrone.Mono.Disk
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(DiskProvider));
 
         private readonly IProcMountProvider _procMountProvider;
-        private readonly ISymbolicLinkResolver _symLinkResolver;
+        private readonly ISymbLinkResolver _symLinkResolver;
 
         // Mono supports sending -1 for a uint to indicate that the owner or group should not be set
         // `unchecked((uint)-1)` and `uint.MaxValue` are the same thing.
         private const uint UNCHANGED_ID = uint.MaxValue;
 
-        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver)
+        public DiskProvider(IProcMountProvider procMountProvider, ISymbLinkResolver symLinkResolver)
         {
             _procMountProvider = procMountProvider;
             _symLinkResolver = symLinkResolver;
@@ -31,7 +31,7 @@ namespace NzbDrone.Mono.Disk
 
         public override IMount GetMount(string path)
         {
-            path = _symLinkResolver.GetCompleteRealPath(path);
+            path = _symLinkResolver.GetCompletePath(path);
 
             return base.GetMount(path);
         }
