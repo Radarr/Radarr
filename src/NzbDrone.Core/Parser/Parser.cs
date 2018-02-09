@@ -439,8 +439,8 @@ namespace NzbDrone.Core.Parser
                                     languageTitle = simpleTitle.Replace(match[0].Groups["title"].Value, "A Movie");
                                 }
 
-                                result.Language = LanguageParser.ParseLanguage(languageTitle);
-                                Logger.Debug("Language parsed: {0}", result.Language);
+                                result.Languages = LanguageParser.ParseLanguages(languageTitle);
+                                Logger.Debug("Language(s) parsed: {0}", result.Languages);
 
                                 result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
@@ -497,8 +497,8 @@ namespace NzbDrone.Core.Parser
 
             var languageTitle = Regex.Replace(title.Replace(".", " "), foundTitle, "A Movie", RegexOptions.IgnoreCase);
             
-            result.Language = LanguageParser.ParseLanguage(title);
-            Logger.Debug("Language parsed: {0}", result.Language);
+            result.Languages = LanguageParser.ParseLanguages(title);
+            Logger.Debug("Language parsed: {0}", result.Languages);
 
             result.Quality = QualityParser.ParseQuality(title);
             Logger.Debug("Quality parsed: {0}", result.Quality);
@@ -639,7 +639,7 @@ namespace NzbDrone.Core.Parser
                                     result.Special = true;
                                 }
 
-                                result.Language = LanguageParser.ParseLanguage(title);
+                                //result.Language = LanguageParser.ParseLanguages(title);
                                 Logger.Debug("Language parsed: {0}", result.Language);
 
                                 result.Quality = QualityParser.ParseQuality(title);

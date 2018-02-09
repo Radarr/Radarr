@@ -70,6 +70,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                 try
                 {
+                    
                     var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title, _configService.ParsingLeniency > 0);
 
                     MappingResult result = null;
@@ -81,7 +82,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             MovieTitle = report.Title,
                             Year = 1290,
-                            Language = Language.Unknown,
+                            Languages = new List<Language>{Language.Unknown},
                             Quality = new QualityModel(),
                         };
 

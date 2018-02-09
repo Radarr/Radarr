@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -34,19 +35,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.Turkish.HDTV.XviD-LOL", Language.Turkish)]
         [TestCase("Castle.2009.S01E14.Portuguese.HDTV.XviD-LOL", Language.Portuguese)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD-LOL", Language.English)]
-        [TestCase("person.of.interest.1x19.ita.720p.bdmux.x264-novarip", Language.Italian)]
-        [TestCase("Salamander.S01E01.FLEMISH.HDTV.x264-BRiGAND", Language.Flemish)]
-        [TestCase("H.Polukatoikia.S03E13.Greek.PDTV.XviD-Ouzo", Language.Greek)]
         [TestCase("Burn.Notice.S04E15.Brotherly.Love.GERMAN.DUBBED.WS.WEBRiP.XviD.REPACK-TVP", Language.German)]
-        [TestCase("Ray Donovan - S01E01.720p.HDtv.x264-Evolve (NLsub)", Language.Dutch)]
-        [TestCase("Shield,.The.1x13.Tueurs.De.Flics.FR.DVDRip.XviD", Language.French)]
-        [TestCase("True.Detective.S01E01.1080p.WEB-DL.Rus.Eng.TVKlondike", Language.Russian)]
-        [TestCase("The.Trip.To.Italy.S02E01.720p.HDTV.x264-TLA", Language.English)]
         [TestCase("Revolution S01E03 No Quarter 2012 WEB-DL 720p Nordic-philipo mkv", Language.Norwegian)]
-        [TestCase("Extant.S01E01.VOSTFR.HDTV.x264-RiDERS", Language.French)]
         [TestCase("Constantine.2014.S01E01.WEBRiP.H264.AAC.5.1-NL.SUBS", Language.Dutch)]
-        [TestCase("Elementary - S02E16 - Kampfhaehne - mkv - by Videomann", Language.German)]
-        [TestCase("Two.Greedy.Italians.S01E01.The.Family.720p.HDTV.x264-FTP", Language.English)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUNDUB-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.ENG.HUN-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUN-LOL", Language.Hungarian)]
@@ -64,7 +55,16 @@ namespace NzbDrone.Core.Test.ParserTests
 				Parser.Parser.ParseTitle(postTitle).Language.Should().Be(language);
 				return;
 			}
-            result.Language.Should().Be(language);
+            result.Languages.Should().Contain(language);
+        }
+
+        [TestCase("My Movie 2017 German English", Language.English, Language.German)]
+        //[TestCase("Nocturnal.Animals.2016.MULTi.1080p.BluRay.x264-ANONA", Language.English, Language.French)] fails since no mention of french!
+        [TestCase("Nocturnal Animals (2016) MULTi VFQ [1080p] BluRay x264-PopHD", Language.English, Language.French)]
+        public void should_parse_languages(string postTitle, params Language[] languages)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+            result.Languages.Should().BeEquivalentTo(languages);
         }
 
         [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English)]

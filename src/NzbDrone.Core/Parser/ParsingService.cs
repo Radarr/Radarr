@@ -338,7 +338,7 @@ namespace NzbDrone.Core.Parser
                 info.FullSeason = false;
                 info.Quality = QualityParser.ParseQuality(title);
                 info.ReleaseGroup = Parser.ParseReleaseGroup(title);
-                info.Language = LanguageParser.ParseLanguage(title);
+                //info.Language = LanguageParser.ParseLanguage(title);
                 info.Special = true;
 
                 _logger.Debug("Found special episode {0} for title '{1}'", info, title);
