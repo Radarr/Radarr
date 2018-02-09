@@ -118,7 +118,19 @@ namespace NzbDrone.Core.Configuration
 
             set { SetValue("NetImportSyncInterval", value); }
         }
-        
+
+		public string TmdbSessionId
+		{
+			get { return GetValue("TmdbSessionId", string.Empty); }
+			set { SetValue("TmdbSessionId", value); }
+		}
+
+		public string TmdbRequestToken
+        {
+            get { return GetValue("TmdbRequestToken", string.Empty); }
+            set { SetValue("TmdbRequestToken", value); }
+        }
+                
         public string TraktAuthToken
 	      {
             get { return GetValue("TraktAuthToken", string.Empty); }
