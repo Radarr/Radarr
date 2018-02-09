@@ -1,6 +1,10 @@
 <div class="series-editor-footer">
-    <div class="row">
-        <div class="form-group col-md-1">
+	<div class="row">
+		<div class="form-group col-md-1">
+            <button class="btn btn-primary x-select-all" title="Select all Movies in the current filter view">Select All (Filtered)</button>
+            <button class="btn btn-primary x-unselect-all" title="Clear Selection of all Movies in the current filter view">Unselect All (Filtered)</button>
+		</div>
+        <div class="form-group col-md-2">
             <label>Monitored</label>
 
             <select class="form-control x-action x-monitored">
@@ -60,6 +64,7 @@
             <div>
                 <button class="btn btn-primary x-action x-save">Save</button>
                 <button class="btn btn-danger x-action x-organize-files" title="Organize and rename movie files">Organize</button>
+                <button class="btn btn-danger x-action x-delete-selected" title="Delete Selected Movies from Radarr">Delete Selected</button>
             </div>
         </div>
     </div>
