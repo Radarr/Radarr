@@ -111,13 +111,6 @@ namespace NzbDrone.Core.Parser
 
             if (match.Groups["hebrew"].Success)
                 languages.Add( Language.Hebrew);
-            
-            //Let's assume multi always have english as well for now. TODO: UPDATE!!
-            if (lowerTitle.Contains("multi") && languages.Count < 2)
-                languages.Add(Language.English);
-            
-            if (languages.Empty())
-                languages.Add(Language.English);
 
             return languages;
         }
