@@ -13,6 +13,7 @@ using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Parser
@@ -33,6 +34,7 @@ namespace NzbDrone.Core.Parser
         private readonly ISceneMappingService _sceneMappingService;
         private readonly IMovieService _movieService;
         private readonly IConfigService _config;
+        private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
  
@@ -42,6 +44,7 @@ namespace NzbDrone.Core.Parser
                               ISceneMappingService sceneMappingService,
                               IMovieService movieService,
                               IConfigService configService,
+                              IQualityDefinitionService qualityDefinitionService,
                               Logger logger)
         {
             _episodeService = episodeService;
@@ -49,6 +52,7 @@ namespace NzbDrone.Core.Parser
             _sceneMappingService = sceneMappingService;
             _movieService = movieService;
             _config = configService;
+            _qualityDefinitionService = qualityDefinitionService;
             _logger = logger;
 
             if (_arabicRomanNumeralMappings == null)
@@ -84,6 +88,8 @@ namespace NzbDrone.Core.Parser
 
             result = AugmentMovieInfoRelease(result, releaseInfo);
 
+            result.Quality = ParseQualityDefinition(result, releaseInfo);
+
             return result;
         }
 
@@ -115,6 +121,76 @@ namespace NzbDrone.Core.Parser
         {
             //TODO implement this here!
             return movieInfo;
+        }
+
+        private QualityModel ParseQualityDefinition(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo)
+        {
+            var result = movieInfo.Quality;
+
+            var definitions = _qualityDefinitionService.All();
+
+            QualityDefinition bestDefinition = null;
+            var bestDefinitionMatches = 0;
+
+            foreach (var definition in definitions)
+            {
+                var matches = 0;
+                TagType? currentType = null;
+                var previousTagTypeMatches = 0;
+                if (definition.QualityTags == null)
+                {
+                    continue;
+                }
+                //Find most matches
+                foreach (var qualityTag in definition.QualityTags.OrderBy(t => t.TagType))
+                {
+                    if (qualityTag.DoesItMatch(movieInfo, releaseInfo))
+                    {
+                        matches++;
+                        previousTagTypeMatches++;
+                    }
+                    else
+                    {
+                        // To bad so sad
+                        if (qualityTag.TagModifier.HasFlag(TagModifier.AbsolutelyRequired))
+                        {
+                            matches = 0;
+                            break;
+                        }
+                    }
+
+                    //Previous tag type didn't have any matches, so we don't want this quality.
+                    if ((currentType.HasValue && currentType.Value != qualityTag.TagType &&
+                         previousTagTypeMatches == 0))
+                    {
+                        matches = 0;
+                        break;
+                    }
+
+                    if (!currentType.HasValue || currentType.Value != qualityTag.TagType)
+                    {
+                        previousTagTypeMatches = 0;
+                    }
+                    
+                    currentType = qualityTag.TagType;
+                }
+
+                if (matches > bestDefinitionMatches)
+                {
+                    bestDefinition = definition;
+                    bestDefinitionMatches = matches;
+                }
+            }
+
+            //No match found, for now definition with id 1 (Unknown)
+            if (bestDefinition == null)
+            {
+                bestDefinition = definitions.First(d => d.Id == 1);
+            }
+
+            result.QualityDefinition = bestDefinition;
+            
+            return result;
         }
 
         public LocalMovie GetLocalMovie(string filename, Movie movie)

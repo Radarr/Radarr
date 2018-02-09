@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Qualities
 
             DefaultQualityDefinitions = new HashSet<QualityDefinition>
             {
-                new QualityDefinition(Quality.Unknown)     { Weight = 1,  MinSize = 0, MaxSize = 100 },
+                new QualityDefinition(Quality.Unknown)     { Weight = 1,  MinSize = 0, MaxSize = 100, QualityTags = new List<QualityTag>() },
                 new QualityDefinition(Quality.WORKPRINT)   { Weight = 2,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.CAM)         { Weight = 3,  MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.TELESYNC)    { Weight = 4,  MinSize = 0, MaxSize = 100 },
@@ -157,9 +157,9 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.Bluray720p)  { Weight = 16, MinSize = 0, MaxSize = 100 },
 
                 new QualityDefinition(Quality.HDTV1080p)   { Weight = 17, MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100 },
-                new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100, QualityTags = new List<QualityTag>{ new QualityTag("S_webdl"), new QualityTag("R_1080") } },
+                new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("S_bluray"), new QualityTag("R_1080") } },
+                new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("R_1080"), new QualityTag("m_remux") } },
 
                 new QualityDefinition(Quality.HDTV2160p)   { Weight = 21, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.WEBDL2160p)  { Weight = 22, MinSize = 0, MaxSize = null },

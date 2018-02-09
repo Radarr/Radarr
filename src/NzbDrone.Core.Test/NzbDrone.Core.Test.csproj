@@ -300,6 +300,7 @@
     <Compile Include="OrganizerTests\GetMovieFolderFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\ParseMovieTitleFixture.cs" />
     <Compile Include="ParserTests\RomanNumeralTests\RomanNumeralConversionFixture.cs" />
+    <Compile Include="Qualities\QualityTagFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
     <Compile Include="RemotePathMappingsTests\RemotePathMappingServiceFixture.cs" />

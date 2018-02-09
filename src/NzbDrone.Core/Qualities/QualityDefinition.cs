@@ -1,4 +1,5 @@
-﻿using NzbDrone.Core.Datastore;
+﻿using System.Collections.Generic;
+using NzbDrone.Core.Datastore;
 
 
 namespace NzbDrone.Core.Qualities
@@ -13,6 +14,8 @@ namespace NzbDrone.Core.Qualities
 
         public double? MinSize { get; set; }
         public double? MaxSize { get; set; }
+        
+        public List<QualityTag> QualityTags { get; set; }
 
         public QualityDefinition()
         {

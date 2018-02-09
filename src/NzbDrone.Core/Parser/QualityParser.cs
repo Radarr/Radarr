@@ -99,116 +99,41 @@ namespace NzbDrone.Core.Parser
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
 
+            result.Resolution = resolution;
+
+            if (resolution == Resolution.Unknown)
+            {
+                result.Resolution = Resolution.R480P;
+            }
+
             if (RemuxRegex.IsMatch(normalizedName) && sourceMatch?.Groups["webdl"].Success != true && sourceMatch?.Groups["hdtv"].Success != true)
             {
-                if (resolution == Resolution.R2160p)
-                {
-                    result.Quality = Quality.Remux2160p;
-                    return result;
-                }
-
-                if (resolution == Resolution.R1080p)
-                {
-                    result.Quality = Quality.Remux1080p;
-                    return result;
-                }
+                result.Modifier = Modifier.REMUX;
             }
 
             if (sourceMatch != null && sourceMatch.Success)
             {
                 if (sourceMatch.Groups["bluray"].Success)
                 {
+                    result.Source = Source.BLURAY;
+                    
                     if (codecRegex.Groups["xvid"].Success || codecRegex.Groups["divx"].Success)
                     {
-                        result.Quality = Quality.DVD;
-                        return result;
+                        result.Source = Source.DVD;
                     }
 
-                    if (resolution == Resolution.R2160p)
-                    {
-                        result.Quality = Quality.Bluray2160p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R1080p)
-                    {
-                        result.Quality = Quality.Bluray1080p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R576p)
-                    {
-                        result.Quality = Quality.Bluray576p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R480P)
-                    {
-                        result.Quality = Quality.Bluray480p;
-                        return result;
-                    }
-
-                    result.Quality = Quality.Bluray720p;
                     return result;
                 }
 
                 if (sourceMatch.Groups["webdl"].Success)
                 {
-                    if (resolution == Resolution.R2160p)
-                    {
-                        result.Quality = Quality.WEBDL2160p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R1080p)
-                    {
-                        result.Quality = Quality.WEBDL1080p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R720p)
-                    {
-                        result.Quality = Quality.WEBDL720p;
-                        return result;
-                    }
-
-                    if (name.Contains("[WEBDL]"))
-                    {
-                        result.Quality = Quality.WEBDL720p;
-                        return result;
-                    }
-
-                    result.Quality = Quality.WEBDL480p;
+                   result.Source = Source.WEBDL;
                     return result;
                 }
 
                 if (sourceMatch.Groups["hdtv"].Success)
                 {
-                    if (resolution == Resolution.R2160p)
-                    {
-                        result.Quality = Quality.HDTV2160p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R1080p)
-                    {
-                        result.Quality = Quality.HDTV1080p;
-                        return result;
-                    }
-
-                    if (resolution == Resolution.R720p)
-                    {
-                        result.Quality = Quality.HDTV720p;
-                        return result;
-                    }
-
-                    if (name.Contains("[HDTV]"))
-                    {
-                        result.Quality = Quality.HDTV720p;
-                        return result;
-                    }
-
-                    result.Quality = Quality.SDTV;
+                    result.Source = Source.TV;
                     return result;
                 }
 
@@ -217,75 +142,62 @@ namespace NzbDrone.Core.Parser
                 {
                     if (codecRegex.Groups["xvid"].Success || codecRegex.Groups["divx"].Success)
                     {
-                        result.Quality = Quality.DVD;
+                        result.Source = Source.DVD;
                         return result;
                     }
                     
-                    switch (resolution)
-                    {
-                        case Resolution.R720p:
-                            result.Quality = Quality.Bluray720p;
-                            return result;
-                        case Resolution.R1080p:
-                            result.Quality = Quality.Bluray1080p;
-                            return result;
-						case Resolution.R576p:
-							result.Quality = Quality.Bluray576p;
-							return result;
-						case Resolution.R480P:
-							result.Quality = Quality.Bluray480p;
-							return result;
-                        default:
-                            result.Quality = Quality.Bluray480p;
-                            return result;
-                    }
+                    result.Source = Source.BLURAY;
+                    return result;
                 }
 
                 if (sourceMatch.Groups["wp"].Success)
                 {
-                    result.Quality = Quality.WORKPRINT;
+                    result.Source = Source.WORKPRINT;
                     return result;
                 }
 
                 if (sourceMatch.Groups["dvd"].Success)
                 {
-                    result.Quality = Quality.DVD;
+                    result.Source = Source.DVD;
                     return result;
                 }
 
                 if (sourceMatch.Groups["dvdr"].Success)
                 {
-                    result.Quality = Quality.DVDR;
+                    result.Source = Source.DVD;
+                    result.Modifier = Modifier.REGIONAL;
                     return result;
                 }
 
                 if (sourceMatch.Groups["scr"].Success)
                 {
-                    result.Quality = Quality.DVDSCR;
+                    result.Source = Source.DVD;
+                    result.Modifier = Modifier.SCREENER;
                     return result;
                 }
 
                 if (sourceMatch.Groups["regional"].Success)
                 {
-                    result.Quality = Quality.REGIONAL;
+                    result.Source = Source.DVD;
+                    result.Modifier = Modifier.REGIONAL;
                     return result;
                 }
 
                 if (sourceMatch.Groups["cam"].Success)
                 {
-                    result.Quality = Quality.CAM;
+                    result.Source = Source.CAM;
                     return result;
                 }
 
                 if (sourceMatch.Groups["ts"].Success)
                 {
-                    result.Quality = Quality.TELESYNC;
+                    result.Source = Source.TELESYNC;
                     return result;
                 }
 
                 if (sourceMatch.Groups["tc"].Success)
                 {
-                    result.Quality = Quality.TELECINE;
+                    result.Source = Source.TELECINE;
                     return result;
                 }
 
@@ -294,123 +206,109 @@ namespace NzbDrone.Core.Parser
                     sourceMatch.Groups["dsr"].Success ||
                     sourceMatch.Groups["tvrip"].Success)
                 {
+                    result.Source = Source.TV;
                     if (HighDefPdtvRegex.IsMatch(normalizedName))
                     {
-                        result.Quality = Quality.HDTV720p;
+                        result.Resolution = Resolution.R720p;
                         return result;
                     }
 
-                    result.Quality = Quality.SDTV;
+                    result.Resolution = Resolution.R480P;
                     return result;
                 }
             }
-
-           
-
-
+            
             //Anime Bluray matching
             if (AnimeBlurayRegex.Match(normalizedName).Success)
             {
                 if (resolution == Resolution.R480P || resolution == Resolution.R576p || normalizedName.Contains("480p"))
                 {
-                    result.Quality = Quality.DVD;
+                    result.Source = Source.DVD;
                     return result;
                 }
 
                 if (resolution == Resolution.R1080p || normalizedName.Contains("1080p"))
                 {
-                    result.Quality = Quality.Bluray1080p;
-                    return result;
+                    result.Source = Source.BLURAY;
                 }
 
-                result.Quality = Quality.Bluray720p;
+                result.Source = Source.BLURAY;
                 return result;
             }
 
-            if (resolution == Resolution.R2160p)
+            if (resolution == Resolution.R2160p || resolution == Resolution.R1080p || resolution == Resolution.R720p)
             {
-                result.Quality = Quality.HDTV2160p;
-                return result;
-            }
-
-            if (resolution == Resolution.R1080p)
-            {
-                result.Quality = Quality.HDTV1080p;
-                return result;
-            }
-
-            if (resolution == Resolution.R720p)
-            {
-                result.Quality = Quality.HDTV720p;
+                result.Source = Source.WEBDL;
                 return result;
             }
 
             if (resolution == Resolution.R480P)
             {
-                result.Quality = Quality.SDTV;
+                result.Source = Source.DVD;
                 return result;
             }
 
             if (codecRegex.Groups["x264"].Success)
             {
-                result.Quality = Quality.SDTV;
+                result.Source = Source.DVD;
+                result.Resolution = Resolution.R480P;
                 return result;
             }
 
             if (normalizedName.Contains("848x480"))
             {
-                if (normalizedName.Contains("dvd"))
-                {
-                    result.Quality = Quality.DVD;
-                }
 
-                result.Quality = Quality.SDTV;
+                    result.Source = Source.DVD;
+                    result.Resolution = Resolution.R480P;
+                return result;
+
             }
 
             if (normalizedName.Contains("1280x720"))
             {
+                result.Resolution = Resolution.R720p;
+                result.Source = Source.WEBDL;
                 if (normalizedName.Contains("bluray"))
                 {
-                    result.Quality = Quality.Bluray720p;
+                    result.Source = Source.BLURAY;
                 }
-
-                result.Quality = Quality.HDTV720p;
+                return result;
             }
 
             if (normalizedName.Contains("1920x1080"))
             {
+                result.Resolution = Resolution.R1080p;
+                result.Source = Source.WEBDL;
                 if (normalizedName.Contains("bluray"))
                 {
-                    result.Quality = Quality.Bluray1080p;
+                    result.Source = Source.BLURAY;
                 }
-
-                result.Quality = Quality.HDTV1080p;
+                return result;
             }
 
             if (normalizedName.Contains("bluray720p"))
             {
-                result.Quality = Quality.Bluray720p;
+                result.Resolution = Resolution.R720p;
+                result.Source = Source.BLURAY;
+                return result;
             }
 
             if (normalizedName.Contains("bluray1080p"))
             {
-                result.Quality = Quality.Bluray1080p;
+                result.Resolution = Resolution.R1080p;
+                result.Source = Source.BLURAY;
+                return result;
             }
 
             var otherSourceMatch = OtherSourceMatch(normalizedName);
-
-            if (otherSourceMatch != Quality.Unknown)
-            {
-                result.Quality = otherSourceMatch;
-            }
 
             //Based on extension
             if (result.Quality == Quality.Unknown && !name.ContainsInvalidPathChars())
             {
                 try
                 {
-                    result.Quality = MediaFileExtensions.GetQualityForExtension(Path.GetExtension(name));
-                    result.QualitySource = QualitySource.Extension;
+                    //result.Quality = MediaFileExtensions.GetQualityForExtension(Path.GetExtension(name));
+                    //result.QualitySource = QualitySource.Extension;
                 }
                 catch (ArgumentException)
                 {
