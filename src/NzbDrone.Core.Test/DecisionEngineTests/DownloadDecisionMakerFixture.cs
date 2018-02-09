@@ -228,16 +228,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     Title = string.Format("{0}.S{1:00}E{2:00}.720p.WEB-DL-DRONE", series.Title, v.SceneSeasonNumber, v.SceneEpisodeNumber) 
                 }).ToList();
 
-            Mocker.GetMock<IParsingService>()
-                .Setup(v => v.Map(It.IsAny<ParsedEpisodeInfo>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<SearchCriteriaBase>()))
-                .Returns<ParsedEpisodeInfo, int, int, SearchCriteriaBase>((p,tvdbid,tvrageid,c) =>
-                    new RemoteEpisode
-                    {
-                        DownloadAllowed = true,
-                        ParsedEpisodeInfo = p,
-                        Series = series,
-                        Episodes = episodes.Where(v => v.SceneEpisodeNumber == p.EpisodeNumbers.First()).ToList()
-                    });
+           
 
             Mocker.SetConstant<IEnumerable<IDecisionEngineSpecification>>(new List<IDecisionEngineSpecification>
             {

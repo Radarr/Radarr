@@ -10,7 +10,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 using NzbDrone.Test.Common;
-
+/*
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 {
     [TestFixture]
@@ -344,3 +344,4 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         }
     }
 }
+*/

@@ -327,54 +327,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
         {
             ImportDecision decision = null;
 
-            try
-            {
-                var localEpisode = _parsingService.GetLocalEpisode(file, series, shouldUseFolderName ? folderInfo : null, sceneSource);
-
-                if (localEpisode != null)
-                {
-                    localEpisode.Quality = GetQuality(folderInfo, localEpisode.Quality, series);
-                    localEpisode.Size = _diskProvider.GetFileSize(file);
-
-                    _logger.Debug("Size: {0}", localEpisode.Size);
-
-                    //TODO: make it so media info doesn't ruin the import process of a new series
-                    if (sceneSource)
-                    {
-                        localEpisode.MediaInfo = _videoFileInfoReader.GetMediaInfo(file);
-                    }
-
-                    if (localEpisode.Episodes.Empty())
-                    {
-                        decision = new ImportDecision(localEpisode, new Rejection("Invalid season or episode"));
-                    }
-                    else
-                    {
-                        decision = GetDecision(localEpisode);
-                    }
-                }
-
-                else
-                {
-                    localEpisode = new LocalEpisode();
-                    localEpisode.Path = file;
-
-                    decision = new ImportDecision(localEpisode, new Rejection("Unable to parse file"));
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e, "Couldn't import file. " + file);
-
-                var localEpisode = new LocalEpisode { Path = file };
-                decision = new ImportDecision(localEpisode, new Rejection("Unexpected error processing file"));
-            }
-
-            if (decision == null)
-            {
-                _logger.Error("Unable to make a decision on {0}", file);
-            }
-
+            
             return decision;
         }
 

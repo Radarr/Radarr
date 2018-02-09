@@ -110,7 +110,7 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var videoFile in videoFiles)
             {
-                var episodeParseResult = Parser.Parser.ParseTitle(Path.GetFileName(videoFile));
+                var episodeParseResult = Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), false);
 
                 if (episodeParseResult == null)
                 {
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.MediaFiles
                 var size = _diskProvider.GetFileSize(videoFile);
                 var quality = QualityParser.ParseQuality(videoFile);
 
-                if (!_detectSample.IsSample(movie, quality, videoFile, size, episodeParseResult.IsPossibleSpecialEpisode))
+                if (!_detectSample.IsSample(movie, quality, videoFile, size, false))
                 {
                     _logger.Warn("Non-sample file detected: [{0}]", videoFile);
                     return false;

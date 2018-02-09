@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Extras.Others
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.Extras.Others
 
             foreach (var possibleExtraFile in filterResult.FilesOnDisk)
             {
-                var localEpisode = _parsingService.GetLocalEpisode(possibleExtraFile, series);
+                LocalEpisode localEpisode = null;//_parsingService.GetLocalEpisode(possibleExtraFile, series);
 
                 if (localEpisode == null)
                 {

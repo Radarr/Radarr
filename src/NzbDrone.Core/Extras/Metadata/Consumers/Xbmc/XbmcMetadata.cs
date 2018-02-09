@@ -11,6 +11,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
@@ -109,7 +110,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            var parseResult = Parser.Parser.ParseTitle(filename);
+            ParsedEpisodeInfo parseResult = null;//Parser.Parser.ParseTitle(filename);
 
             if (parseResult != null &&
                 !parseResult.FullSeason &&

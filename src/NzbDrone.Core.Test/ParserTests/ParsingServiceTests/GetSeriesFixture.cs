@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Tv;
-
+/*
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 {
     [TestFixture]
@@ -45,3 +45,4 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         }
     }
 }
+*/

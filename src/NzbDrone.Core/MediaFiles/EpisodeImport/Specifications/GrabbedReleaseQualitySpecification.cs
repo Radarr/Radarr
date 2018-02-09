@@ -50,13 +50,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
                 return Decision.Accept();
             }
 
-            var parsedReleaseName = Parser.Parser.ParseTitle(grabbedHistory.First().SourceTitle);
-
-            if (parsedReleaseName != null && parsedReleaseName.FullSeason)
-            {
-                _logger.Debug("File is part of a season pack, skipping.");
-                return Decision.Accept();
-            }
+            var parsedReleaseName = Parser.Parser.ParseMovieTitle(grabbedHistory.First().SourceTitle, false);
 
             foreach (var item in grabbedHistory)
             {

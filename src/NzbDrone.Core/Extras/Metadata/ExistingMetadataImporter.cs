@@ -7,6 +7,7 @@ using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Subtitles;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Extras.Metadata
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Extras.Metadata
                     if (metadata.Type == MetadataType.EpisodeImage ||
                         metadata.Type == MetadataType.EpisodeMetadata)
                     {
-                        var localEpisode = _parsingService.GetLocalEpisode(possibleMetadataFile, series);
+                        LocalEpisode localEpisode = null;//_parsingService.GetLocalEpisode(possibleMetadataFile, series);
 
                         if (localEpisode == null)
                         {

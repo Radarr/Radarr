@@ -150,25 +150,6 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
         private string GetSceneName(DownloadClientItem downloadClientItem, LocalEpisode localEpisode)
         {
-            if (downloadClientItem != null)
-            {
-                var title = Parser.Parser.RemoveFileExtension(downloadClientItem.Title);
-
-                var parsedTitle = Parser.Parser.ParseTitle(title);
-
-                if (parsedTitle != null && !parsedTitle.FullSeason)
-                {
-                    return title;
-                }
-            }
-
-            var fileName = Path.GetFileNameWithoutExtension(localEpisode.Path.CleanFilePath());
-
-            if (SceneChecker.IsSceneTitle(fileName))
-            {
-                return fileName;
-            }
-
             return null;
         }
     }

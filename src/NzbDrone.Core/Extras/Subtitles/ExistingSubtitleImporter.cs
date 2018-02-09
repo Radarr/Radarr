@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Core.Extras.Subtitles
@@ -40,7 +41,7 @@ namespace NzbDrone.Core.Extras.Subtitles
 
                 if (SubtitleFileExtensions.Extensions.Contains(extension))
                 {
-                    var localEpisode = _parsingService.GetLocalEpisode(possibleSubtitleFile, series);
+                    LocalEpisode localEpisode = null;//_parsingService.GetLocalEpisode(possibleSubtitleFile, series);
 
                     if (localEpisode == null)
                     {

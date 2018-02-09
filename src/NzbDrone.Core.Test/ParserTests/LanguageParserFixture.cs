@@ -50,11 +50,6 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_language(string postTitle, Language language)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
-			if (result == null)
-			{
-				Parser.Parser.ParseTitle(postTitle).Language.Should().Be(language);
-				return;
-			}
             result.Languages.Should().Contain(language);
         }
 
