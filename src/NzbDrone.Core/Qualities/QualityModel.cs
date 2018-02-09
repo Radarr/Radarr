@@ -7,6 +7,9 @@ namespace NzbDrone.Core.Qualities
     public class QualityModel : IEmbeddedDocument, IEquatable<QualityModel>
     {
         public Quality Quality { get; set; }
+        public Resolution Resolution { get; set; }
+        public Source Source { get; set; }
+        public Modifier Modifier { get; set; }
         public Revision Revision { get; set; }
         public string HardcodedSubs { get; set; }
 

@@ -189,9 +189,9 @@ namespace NzbDrone.Core.Qualities
             return quality;
         }
 
-        public static explicit operator Quality(string id)
+        public static explicit operator Quality(int id)
         {
-            return FindById(int.Parse(id));
+            return FindById(id);
         }
 
         public static explicit operator int(Quality quality)

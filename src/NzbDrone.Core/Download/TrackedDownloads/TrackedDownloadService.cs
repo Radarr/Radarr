@@ -60,6 +60,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
+                
                 var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title, _config.ParsingLeniency > 0);
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
 

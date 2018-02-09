@@ -475,14 +475,4 @@ namespace NzbDrone.Core.Parser
             return result;
         }
     }
-
-    public enum Resolution
-    {
-        R480P,
-        R576p,
-        R720p,
-        R1080p,
-        R2160p,
-        Unknown
-    }
 }
