@@ -32,14 +32,24 @@ var view = Marionette.ItemView.extend({
   initialize : function() {
 
 	},
+	
+	ui : {
+		resetTraktTokens : '.x-reset-trakt-tokens',
+		authToken : '.x-trakt-auth-token',
+		refreshToken : '.x-trakt-refresh-token',
+        tokenExpiry : '.x-trakt-token-expiry',
+		tmdbSessionId : '.x-tmdb-session-id',
+		tmdbRequestToken : '.x-tmdb-request-token',
+		resetTmdbSessionIdButton : '.x-reset-tmdb-session-id',
+		revokeTmdbSessionIdButton : '.x-revoke-tmdb-session-id'
+	},
 
 	onShow : function() {
 		var params = new URLSearchParams(window.location.search);
         var oauth = params.get('access');
 		var refresh=params.get('refresh');
 		var request_token = params.get('request_token');
-		var approved = params.get('approved');
-		var denied = params.get('denied');
+		var request_token_authorized = params.get('request_token_authorized');
 		var session_id = params.get('session_id');
 	    history.pushState('object', 'title', (window.location.href).replace(window.location.search, ''));
 		if (oauth && refresh){
@@ -57,75 +67,66 @@ var view = Marionette.ItemView.extend({
 			this.ui.tmdbSessionId.val(session_id).trigger('change');
 			vent.trigger(vent.Commands.SaveSettings);
 		}
-		if (this.ui.tmdbSessionId.val()) {
-			this.ui.resetTmdbSessionIdButton.hide();
-			this.revokeTmdbSessionIdButton.show();
-		} else {
-			this.ui.resetTmdbSessionIdButton.show();
-			this.ui.revokeTmdbSessionIdButton.hide();
+		else if (request_token) {
+			this.ui.tmdbRequestToken.val(request_token).trigger('change');
+			vent.trigger(vent.Commands.SaveSettings);
+			window.location="https://www.themoviedb.org/auth/access?request_token="+request_token;
 		}
-		if (this.ui.authToken.val() && this.ui.refreshToken.val()){
-           this.ui.resetTokensButton.hide();
-			this.ui.revokeTokensButton.show();
-		} else {
-			this.ui.resetTokensButton.show();
-			this.ui.revokeTokensButton.hide();
-		}
+		else if (request_token_authorized && this.ui.tmdbRequestToken.val()){
+			var obj;
+			var options = {
+		"method": "POST",
+  		"host": "api.themoviedb.org",
+  		"path": "/4/auth/access_token",
+  		"withCredentials": false,
+		"headers": {"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlODM4OTY2NTA2NGJlYTA5NzZjOWJiNzU2OTJlYmM2OCIsInN1YiI6IjU4MTdhZmY3YzNhMzY4NzY2OTAxZmRjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zOg1vwB-fVfqhmfuiz352TidSNEiJi3Ze7UHJcIGZ4w",
+		"Content-Type": "application/json;charset=utf-8"}
+	};
+
+    var callback = function(response) {
+		var str='';
+
+  		response.on("data", function (chunk) {
+    		str+=chunk;
+  		});
+
+  		response.on("end", function () {
+			obj = JSON.parse(str);
+			if (obj.success) {
+				//window.alert(obj.access_token);
+				window.location=window.location.href+"?session_id="+obj.access_token;
+			}
+			else {
+				window.alert("There was an error -> Perhaps TheMovieDB.org is down?");
+			}
+  		});
+
+		response.on('error', function(e) {
+		  	window.alert("Got error: " + e.message);
+		});
+	}
+	
+	var req = https.request(options,callback);
+	var postData = '{\"request_token\":\"'+this.ui.tmdbRequestToken.val()+'\"}';
+	req.write(postData);
+	req.end();
+}
+		//if (this.ui.tmdbSessionId.val()) {
+		//	this.ui.resetTmdbSessionIdButton.hide();
+		//	this.revokeTmdbSessionIdButton.show();
+		//} else {
+		//	this.ui.resetTmdbSessionIdButton.show();
+		//	this.ui.revokeTmdbSessionIdButton.hide();
+		//}
+		//if (this.ui.authToken.val() && this.ui.refreshToken.val()){
+        //  this.ui.resetTokensButton.hide();
+		//	this.ui.revokeTokensButton.show();
+		//} else {
+		//	this.ui.resetTokensButton.show();
+		//	this.ui.revokeTokensButton.hide();
+		//}
 		
-		if (request_token && approved) {
-			//history.pushState('object', 'title', (window.location.href).replace(window.location.search, ''));
-			//window.alert("now we can do stuff with"+request_token);
 
-		    var obj;
-    		var options = {
-        		"host": "api.themoviedb.org",
-        		"withCredentials": false,
-        		"path": "/3/authentication/session/new?api_key=1a7373301961d03f97f853a876dd1212&request_token="+request_token
-    		};
-
-
-    		var callback = function(response) {
-        	var str='';
-
-        	response.on("data", function (chunk) {
-            	str+=chunk;
-        	});
-
-        	response.on("end", function () {
-            	obj = JSON.parse(str);
-				window.location=window.location.href+'?session_id='+obj.session_id;
-        	});
-
-        	response.on('error', function(e) {
-            	window.alert("Got error: " + e.message);
-        	});
-    	}
-
-    	var req = https.request(options,callback);
-    	req.write("{}");
-    	req.end();
-
-		}
-
-
-
-	},
-
-	onRender : function() {
-
-  },
-
-	ui : {
-		resetTraktTokens : '.x-reset-trakt-tokens',
-		authToken : '.x-trakt-auth-token',
-		refreshToken : '.x-trakt-refresh-token',
-		resetTokensButton : '.x-reset-trakt-tokens',
-		revokeTokensButton : '.x-revoke-trakt-tokens',
-    tokenExpiry : '.x-trakt-token-expiry',
-		importExclusions : '.x-import-exclusions'
-		tmdbSessionId : '.x-tmdb-session-id',
-		resetTmdbSessionIdButton : '.x-reset-tmdb-session-id',
-		revokeTmdbSessionIdButton : '.x-revoke-tmdb-session-id'
 	},
 
 	_resetTraktTokens : function() {
@@ -158,18 +159,17 @@ var view = Marionette.ItemView.extend({
 	
 	_resetTmdbSessionId : function() {
 
-    var obj;
+  var obj;
 	var options = {
 		"method": "POST",
   		"host": "api.themoviedb.org",
-		"withCredentials": false,
   		"path": "/4/auth/request_token",
+  		"withCredentials": false,
 		"headers": {"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlODM4OTY2NTA2NGJlYTA5NzZjOWJiNzU2OTJlYmM2OCIsInN1YiI6IjU4MTdhZmY3YzNhMzY4NzY2OTAxZmRjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zOg1vwB-fVfqhmfuiz352TidSNEiJi3Ze7UHJcIGZ4w",
-					"Content-Type": "application/json;charset=utf-8"}
+		"Content-Type": "application/json;charset=utf-8"}
 	};
 
-
-	var callback = function(response) {
+    var callback = function(response) {
 		var str='';
 
   		response.on("data", function (chunk) {
@@ -179,9 +179,8 @@ var view = Marionette.ItemView.extend({
   		response.on("end", function () {
 			obj = JSON.parse(str);
 			if (obj.success) {
-				if (window.confirm("Proceed to themoviedb.org for authentication?\n You will then be redirected back here.")){
-					window.location = 'https://www.themoviedb.org/authenticate/'+obj.request_token+'?redirect_to='+window.location.href; //+'?request_token='+obj.request_token;
-				}
+				window.location=window.location.href+'?request_token='+obj.request_token;
+				//window.location="https://www.themoviedb.org/auth/access?request_token="+obj.request_token;
 			}
 			else {
 				window.alert("There was an error -> Perhaps TheMovieDB.org is down?");
@@ -194,18 +193,14 @@ var view = Marionette.ItemView.extend({
 	}
 
 
-
 	var req = https.request(options,callback);
-	//req.write('{\"redirect_to\": \"'+window.location.href+'\"}');
-	var postData = '{\"redirect_to\":\"http://www.themoviedb.org/\"}';
+	var postData = '{\"redirect_to\":\"'+window.location.href+'?request_token_authorized=1\"}';
 	req.write(postData);
 	req.end();
-
-	}
+	
+  }
 
 });
-
-
 AsModelBoundView.call(view);
 AsValidatedView.call(view);
 
