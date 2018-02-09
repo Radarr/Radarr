@@ -74,6 +74,7 @@ namespace NzbDrone.Core.Indexers
             {
                 c.IndexerId = Definition.Id;
                 c.Indexer = Definition.Name;
+                c.IndexerSettings = Definition.Settings as IIndexerSettings;
                 c.DownloadProtocol = Protocol;
             });
 
