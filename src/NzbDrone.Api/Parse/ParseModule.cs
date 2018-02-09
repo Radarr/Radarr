@@ -18,33 +18,7 @@ namespace NzbDrone.Api.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var parsedEpisodeInfo = Parser.ParseTitle(title);
-
-            if (parsedEpisodeInfo == null)
-            {
-                return null;
-            }
-
-            var remoteEpisode = _parsingService.Map(parsedEpisodeInfo, 0, 0);
-
-            if (remoteEpisode != null)
-            {
-                return new ParseResource
-                {
-                    Title = title,
-                    ParsedEpisodeInfo = remoteEpisode.ParsedEpisodeInfo,
-                    Series = remoteEpisode.Series.ToResource(),
-                    Episodes = remoteEpisode.Episodes.ToResource()
-                };
-            }
-            else
-            {
-                return new ParseResource
-                {
-                    Title = title,
-                    ParsedEpisodeInfo = parsedEpisodeInfo
-                };
-            }
+            return null;
         }
     }
 }

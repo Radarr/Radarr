@@ -2,6 +2,7 @@ var Marionette = require('marionette');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 require('jquery-ui');
 var FormatHelpers = require('../../../Shared/FormatHelpers');
+require('../../../Mixins/TagInput');
 
 var view = Marionette.ItemView.extend({
 		template  : 'Settings/Quality/Definition/QualityDefinitionItemViewTemplate',
@@ -18,7 +19,8 @@ var view = Marionette.ItemView.extend({
 				thirtyMinuteMinSize : '.x-min-thirty',
 				sixtyMinuteMinSize  : '.x-min-sixty',
 				thirtyMinuteMaxSize : '.x-max-thirty',
-				sixtyMinuteMaxSize  : '.x-max-sixty'
+				sixtyMinuteMaxSize  : '.x-max-sixty',
+				tags : '.x-tags'
 		},
 
 		events : {
@@ -44,6 +46,28 @@ var view = Marionette.ItemView.extend({
 								this.model.get('maxSize') || this.slider.max
 						]
 				});
+
+            this.ui.tags.tagsinput({
+                trimValue : true,
+                allowDuplicates: false,
+                tagClass : function(item) {
+                	var cls = "label ";
+                	var start = item[0].toLowerCase();
+                	if (start == "r") {
+                		return cls + "label-default";
+					}
+					if (start == "s") {
+                		return cls + "label-success";
+					}
+					if (start == "m") {
+                        return cls + "label-warning";
+                    }
+                    if (start == "e") {
+                        return cls + "label-info";
+                    }
+					return cls + "label-danger";
+				}
+            });
 
 				this._changeSize();
 		},

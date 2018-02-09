@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Qualities
 
         private Dictionary<Quality, QualityDefinition> GetAll()
         {
+            return Quality.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
             return _cache.Get("all", () => _repo.All().Select(WithWeight).ToDictionary(v => v.Quality), TimeSpan.FromSeconds(5.0));
         }
 

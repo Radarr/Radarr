@@ -8,6 +8,7 @@ namespace NzbDrone.Api.Qualities
     public class QualityDefinitionResource : RestResource
     {
         public Quality Quality { get; set; }
+        public List<string> QualityTags { get; set; }
 
         public string Title { get; set; }
 
@@ -28,6 +29,7 @@ namespace NzbDrone.Api.Qualities
                 Id = model.Id,
 
                 Quality = model.Quality,
+                QualityTags = model.QualityTags?.Select(t => t.Raw.ToUpper()).ToList(),
 
                 Title = model.Title,
 
@@ -47,6 +49,7 @@ namespace NzbDrone.Api.Qualities
                 Id = resource.Id,
 
                 Quality = resource.Quality,
+                QualityTags = resource.QualityTags.Select(s => new QualityTag(s)).ToList(),
 
                 Title = resource.Title,
 

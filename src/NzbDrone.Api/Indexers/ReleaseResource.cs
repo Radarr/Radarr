@@ -29,7 +29,7 @@ namespace NzbDrone.Api.Indexers
         public string Title { get; set; }
         public bool FullSeason { get; set; }
         public int SeasonNumber { get; set; }
-        public Language Language { get; set; }
+        public List<Language> Languages { get; set; }
         public int Year { get; set; }
         public string MovieTitle { get; set; }
         public int[] EpisodeNumbers { get; set; }
@@ -113,7 +113,7 @@ namespace NzbDrone.Api.Indexers
                     Title = releaseInfo.Title,
                     //FullSeason = parsedMovieInfo.FullSeason,
                     //SeasonNumber = parsedMovieInfo.SeasonNumber,
-                    Language = parsedMovieInfo.Language,
+                    Languages = parsedMovieInfo.Languages,
                     Year = parsedMovieInfo.Year,
                     MovieTitle = parsedMovieInfo.MovieTitle,
                     EpisodeNumbers = new int[0],
@@ -165,7 +165,7 @@ namespace NzbDrone.Api.Indexers
                 Title = releaseInfo.Title,
                 FullSeason = parsedEpisodeInfo.FullSeason,
                 SeasonNumber = parsedEpisodeInfo.SeasonNumber,
-                Language = parsedEpisodeInfo.Language,
+                //Languages = parsedEpisodeInfo.Language,
                 //AirDate = parsedEpisodeInfo.AirDate,
                 //SeriesTitle = parsedEpisodeInfo.SeriesTitle,
                 EpisodeNumbers = parsedEpisodeInfo.EpisodeNumbers,
