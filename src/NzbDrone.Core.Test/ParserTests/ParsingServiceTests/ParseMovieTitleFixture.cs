@@ -49,6 +49,13 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             defaults.Add(definition);
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(defaults);
         }
+        
+        private void GivenExtraQD(params QualityDefinition[] definition)
+        {
+            var defaults = Quality.DefaultQualityDefinitions.ToList();
+            defaults.AddRange(definition);
+            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(defaults);
+        }
 
         [Test]
         public void should_augment_multi_languages()
@@ -73,11 +80,39 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             var result = Subject.ParseMovieInfo(title);
             result.Quality.QualityDefinition.Title.Should().Be(definitionName);
         }
-        
-        [TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N", "Remux-1080p Director")]
+
+        [TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+            "Remux-1080p Director")]
+        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.MULTI.French.English", "Remux-1080p FR")]
+        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.French", "Remux-1080p FR")]
         public void should_correctly_identify_advanced_definitons(string title, string definitionName)
         {
-            GivenExtraQD(new QualityDefinition { Title = "Remux-1080p Director", QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("R_1080"), new QualityTag("m_remux"), new QualityTag("e_director") }});
+            GivenExtraQD(
+                new QualityDefinition
+                {
+                    Title = "Remux-1080p Director",
+                    QualityTags = new List<QualityTag>
+                    {
+                        new QualityTag("s_bluray"),
+                        new QualityTag("R_1080"),
+                        new QualityTag("m_remux"),
+                        new QualityTag("e_director")
+                    }
+                },
+                new QualityDefinition
+                {
+                    Title = "Remux-1080p FR",
+                    QualityTags = new List<QualityTag>
+                    {
+                        new QualityTag("s_bluray"),
+                        new QualityTag("R_1080"),
+                        new QualityTag("m_remux"),
+                        new QualityTag("l_re_french"),
+                        new QualityTag("l_english")
+                    }
+                }
+            );
+
             var result = Subject.ParseMovieInfo(title);
             result.Quality.QualityDefinition.Title.Should().Be(definitionName);
         }
