@@ -67,6 +67,8 @@ namespace NzbDrone.Core.Configuration
 		string NewTraktAuthToken { get; set; }
 		string NewTraktRefreshToken {get; set; }
 		int NewTraktTokenExpiry { get; set; }
+        string TmdbSessionId { get; set; }
+        string TmdbRequestToken { get; set; }
 
         //UI
         int FirstDayOfWeek { get; set; }
