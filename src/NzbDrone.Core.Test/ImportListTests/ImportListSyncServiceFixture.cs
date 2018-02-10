@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Mocker.GetMock<IImportListFactory>()
                 .Setup(v => v.Get(It.IsAny<int>()))
-                .Returns(new ImportListDefinition());
+                .Returns(new ImportListDefinition{ ShouldMonitor = true });
 
             Mocker.GetMock<IFetchAndParseImportList>()
                 .Setup(v => v.Fetch())
