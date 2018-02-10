@@ -3,7 +3,7 @@ var MovieModel = require('../Movies/MovieModel');
 var _ = require('underscore');
 
 module.exports = Backbone.Collection.extend({
-    url   : window.NzbDrone.ApiRoot + '/movies/lookup',
+    url   : window.NzbDrone.ApiRoot + '/movie/lookup',
     model : MovieModel,
 
     parse : function(response) {
