@@ -8,7 +8,7 @@ import createSetClientSideCollectionSortReducer from './Creators/Reducers/create
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import createHandleActions from './Creators/createHandleActions';
 import { set } from './baseActions';
-import { fetchArtist } from './artistActions';
+import { fetchAlbums } from './albumActions';
 
 //
 // Variables
@@ -108,7 +108,7 @@ export const actionHandlers = handleThunks({
     });
 
     promise.done((data) => {
-      dispatch(fetchArtist());
+      dispatch(fetchAlbums());
 
       dispatch(set({
         section,

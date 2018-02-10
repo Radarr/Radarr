@@ -195,14 +195,14 @@ namespace NzbDrone.Core.Music
             }
         }
 
-        public List<Album> UpdateAlbums(List<Album> album)
+        public List<Album> UpdateAlbums(List<Album> albums)
         {
-            _logger.Debug("Updating {0} albums", album.Count);
+            _logger.Debug("Updating {0} albums", albums.Count);
 
-            _albumRepository.UpdateMany(album);
-            _logger.Debug("{0} albums updated", album.Count);
+            _albumRepository.UpdateMany(albums);
+            _logger.Debug("{0} albums updated", albums.Count);
 
-            return album;
+            return albums;
         }
 
         public void HandleAsync(ArtistDeletedEvent message)
