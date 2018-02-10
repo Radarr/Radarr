@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.RootFolders;
 using Lidarr.Http.REST;
@@ -9,6 +9,7 @@ namespace Lidarr.Api.V1.RootFolders
     {
         public string Path { get; set; }
         public long? FreeSpace { get; set; }
+        public long? TotalSpace { get; set; }
 
         public List<UnmappedFolder> UnmappedFolders { get; set; }
     }
@@ -25,6 +26,7 @@ namespace Lidarr.Api.V1.RootFolders
 
                 Path = model.Path,
                 FreeSpace = model.FreeSpace,
+                TotalSpace = model.TotalSpace,
                 UnmappedFolders = model.UnmappedFolders
             };
         }

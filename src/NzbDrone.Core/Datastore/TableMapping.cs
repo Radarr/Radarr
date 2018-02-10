@@ -50,7 +50,11 @@ namespace NzbDrone.Core.Datastore
             RegisterMappers();
 
             Mapper.Entity<Config>().RegisterModel("Config");
-            Mapper.Entity<RootFolder>().RegisterModel("RootFolders").Ignore(r => r.FreeSpace);
+
+            Mapper.Entity<RootFolder>().RegisterModel("RootFolders")
+                  .Ignore(r => r.FreeSpace)
+                  .Ignore(r => r.TotalSpace);
+
             Mapper.Entity<ScheduledTask>().RegisterModel("ScheduledTasks");
 
             Mapper.Entity<IndexerDefinition>().RegisterDefinition("Indexers")

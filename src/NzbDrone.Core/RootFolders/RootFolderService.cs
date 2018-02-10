@@ -73,6 +73,7 @@ namespace NzbDrone.Core.RootFolders
                     if (folder.Path.IsPathValid() && _diskProvider.FolderExists(folder.Path))
                     {
                         folder.FreeSpace = _diskProvider.GetAvailableSpace(folder.Path);
+                        folder.TotalSpace = _diskProvider.GetTotalSize(folder.Path);
                         folder.UnmappedFolders = GetUnmappedFolders(folder.Path);
                     }
                 }
@@ -80,7 +81,6 @@ namespace NzbDrone.Core.RootFolders
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Unable to get free space and unmapped folders for root folder {0}", folder.Path);
-                    folder.FreeSpace = 0;
                     folder.UnmappedFolders = new List<UnmappedFolder>();
                 }
             });
@@ -115,6 +115,7 @@ namespace NzbDrone.Core.RootFolders
             _rootFolderRepository.Insert(rootFolder);
 
             rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
+            rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
             rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
             return rootFolder;
         }
@@ -162,6 +163,7 @@ namespace NzbDrone.Core.RootFolders
         {
             var rootFolder = _rootFolderRepository.Get(id);
             rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
+            rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
             rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
             return rootFolder;
         }
