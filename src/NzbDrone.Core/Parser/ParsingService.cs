@@ -119,6 +119,25 @@ namespace NzbDrone.Core.Parser
 
             Album albumInfo = null;
 
+            if (parsedAlbumInfo.Discography)
+            {
+                if (parsedAlbumInfo.DiscographyStart > 0)
+                {
+                    return _albumService.ArtistAlbumsBetweenDates(artist,
+                        new DateTime(parsedAlbumInfo.DiscographyStart, 1, 1),
+                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31), false);
+                }
+
+                if (parsedAlbumInfo.DiscographyEnd > 0)
+                {
+                    return _albumService.ArtistAlbumsBetweenDates(artist,
+                        new DateTime(1800, 1, 1),
+                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31), false);
+                }
+
+                return _albumService.GetAlbumsByArtist(artist.Id);
+            }
+
             if (searchCriteria != null)
             {
                 albumInfo = searchCriteria.Albums.SingleOrDefault(e => e.Title == albumTitle);

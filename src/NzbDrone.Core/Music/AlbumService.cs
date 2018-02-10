@@ -1,15 +1,10 @@
 using NLog;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music.Events;
-using NzbDrone.Core.Organizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Parser;
-using System.Text;
-using System.IO;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Music
 {
@@ -31,6 +26,7 @@ namespace NzbDrone.Core.Music
         void SetMonitored(IEnumerable<int> ids, bool monitored);
         PagingSpec<Album> AlbumsWithoutFiles(PagingSpec<Album> pagingSpec);
         List<Album> AlbumsBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
+        List<Album> ArtistAlbumsBetweenDates(Artist artist, DateTime start, DateTime end, bool includeUnmonitored);
         void InsertMany(List<Album> albums);
         void UpdateMany(List<Album> albums);
         void DeleteMany(List<Album> albums);
@@ -43,19 +39,16 @@ namespace NzbDrone.Core.Music
         private readonly IAlbumRepository _albumRepository;
         private readonly IEventAggregator _eventAggregator;
         private readonly ITrackService _trackService;
-        private readonly IBuildFileNames _fileNameBuilder;
         private readonly Logger _logger;
 
         public AlbumService(IAlbumRepository albumRepository,
                             IEventAggregator eventAggregator,
                             ITrackService trackService,
-                            IBuildFileNames fileNameBuilder,
                             Logger logger)
         {
             _albumRepository = albumRepository;
             _eventAggregator = eventAggregator;
             _trackService = trackService;
-            _fileNameBuilder = fileNameBuilder;
             _logger = logger;
         }
 
@@ -132,6 +125,13 @@ namespace NzbDrone.Core.Music
         public List<Album> AlbumsBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
         {
             var albums = _albumRepository.AlbumsBetweenDates(start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
+
+            return albums;
+        }
+
+        public List<Album> ArtistAlbumsBetweenDates(Artist artist, DateTime start, DateTime end, bool includeUnmonitored)
+        {
+            var albums = _albumRepository.ArtistAlbumsBetweenDates(artist, start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
 
             return albums;
         }

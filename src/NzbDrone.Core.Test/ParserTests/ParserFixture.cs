@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Ricardo Arjona - APNEA (Single 2014) (320 kbps)", "Ricardo Arjona", "APNEA")]
         [TestCase("Kehlani - SweetSexySavage (Deluxe Edition) (2017) 320", "Kehlani", "SweetSexySavage")]
         [TestCase("Anderson Paak - Malibu (320)(2016)", "Anderson Paak", "Malibu")]
-        [TestCase("Caetano Veloso Discografia Completa MP3 @256", "Caetano Veloso", "", true)]
+        [TestCase("Caetano Veloso Discografia Completa MP3 @256", "Caetano Veloso", "Discography", true)]
         [TestCase("Little Mix - Salute [Deluxe Edition] [2013] [M4A-256]-V3nom [GLT", "Little Mix", "Salute")]
         [TestCase("Ricky Martin - A Quien Quiera Escuchar (2015) 256 kbps [GloDLS]", "Ricky Martin", "A Quien Quiera Escuchar")]
         [TestCase("Jake Bugg - Jake Bugg (Album) [2012] {MP3 256 kbps}", "Jake Bugg", "Jake Bugg")]
@@ -113,7 +113,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("New.Edition-One.Love-CD-FLAC-2017-MrFlac", "New Edition", "One Love")]
         [TestCase("David_Gray-The_Best_of_David_Gray-(Deluxe_Edition)-2CD-2016-MTD", "David Gray", "The Best of David Gray")]
         [TestCase("Shinedown-Us and Them-NMR-2005-NMR", "Shinedown", "Us and Them")]
-        [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", "Captain", "", true)]
+        [TestCase("Led Zeppelin - Studio Discography 1969-1982 (10 albums)(flac)", "Led Zeppelin", "Discography", true)]
+        [TestCase("Minor Threat - Complete Discography [1989] [Anthology]", "Minor Threat", "Discography", true)]
+        [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", "Captain", "Discography", true)]
         [TestCase("Coolio - Gangsta's Paradise (1995) (FLAC Lossless)", "Coolio", "Gangsta's Paradise")]
         // ruTracker
         [TestCase("(Eclectic Progressive Rock) [CD] Peter Hammill - From The Trees - 2017, FLAC (tracks + .cue), lossless", "Peter Hammill","From The Trees")]
@@ -121,10 +123,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("(Zeuhl / Progressive Rock) [WEB] Dai Kaht - Dai Kaht - 2017, FLAC (tracks), lossless", "Dai Kaht", "Dai Kaht")]
         //[TestCase("(Industrial Folk) Bumblebee(Shmely, AntiVirus) - Discography, 23 albums - 1998-2011, FLAC(image + .cue), lossless")]
         //[TestCase("(Heavy Metal) Sergey Mavrin(Mavrik) - Discography(14 CD) [1998-2010], FLAC(image + .cue), lossless")]
-        [TestCase("(Heavy Metal) [CD] Black Obelisk - Discography - 1991-2015 (36 releases, 32 CDs), FLAC(image + .cue), lossless", "Black Obelisk", "", true)]
+        [TestCase("(Heavy Metal) [CD] Black Obelisk - Discography - 1991-2015 (36 releases, 32 CDs), FLAC(image + .cue), lossless", "Black Obelisk", "Discography", true)]
         //[TestCase("(R'n'B / Soul) Moyton - One of the Sta(2014) + Ocean(2014), MP3, 320 kbps", "Moyton", "")]
-        [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "", true)]
-        [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "", true)]
+        [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "Discography", true)]
+        [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "Discography", true)]
         public void should_parse_artist_name_and_album_title(string postTitle, string name, string title, bool discography = false)
         {
 
@@ -144,6 +146,20 @@ namespace NzbDrone.Core.Test.ParserTests
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
             parseResult.ArtistName.ToLowerInvariant().Should().Be("black sabbath");
             parseResult.AlbumTitle.ToLowerInvariant().Should().Be("black sabbath");
+        }
+
+        [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", 1998, 2001)]
+        [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015]", 1985, 2015)]
+        [TestCase("Led Zeppelin - Studio Discography 1969-1982 (10 albums)(flac)", 1969, 1982)]
+        [TestCase("Minor Threat - Complete Discography [1989] [Anthology]", 0, 1989)]
+        [TestCase("Caetano Veloso Discografia Completa MP3 @256", 0, 0)]
+        public void should_parse_year_or_year_range_from_discography(string releaseTitle, int startyear,
+            int endyear)
+        {
+            var parseResult = Parser.Parser.ParseAlbumTitle(releaseTitle);
+            parseResult.Discography.Should().BeTrue();
+            parseResult.DiscographyStart.Should().Be(startyear);
+            parseResult.DiscographyEnd.Should().Be(endyear);
         }
 
         [Test]

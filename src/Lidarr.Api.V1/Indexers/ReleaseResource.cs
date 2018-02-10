@@ -25,7 +25,7 @@ namespace Lidarr.Api.V1.Indexers
         public string SubGroup { get; set; }
         public string ReleaseHash { get; set; }
         public string Title { get; set; }
-        public bool FullSeason { get; set; }
+        public bool Discography { get; set; }
         public bool SceneSource { get; set; }
         public Language Language { get; set; }
         public string AirDate { get; set; }
@@ -84,7 +84,7 @@ namespace Lidarr.Api.V1.Indexers
                 Language = parsedAlbumInfo.Language,
                 ArtistName = parsedAlbumInfo.ArtistName,
                 AlbumTitle = parsedAlbumInfo.AlbumTitle,
-                
+                Discography = parsedAlbumInfo.Discography,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,

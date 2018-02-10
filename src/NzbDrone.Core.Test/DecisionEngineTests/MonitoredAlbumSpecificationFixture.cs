@@ -124,5 +124,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithFirstAlbumUnmonitored();
             _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria{ MonitoredEpisodesOnly = true}).Accepted.Should().BeFalse();
         }
+
+        [Test]
+        public void should_return_false_if_all_albums_are_not_monitored_for_discography_pack_release()
+        {
+            WithSecondAlbumUnmonitored();
+            _parseResultMulti.ParsedAlbumInfo = new ParsedAlbumInfo()
+            {
+                Discography = true
+            };
+
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+        }
     }
 }

@@ -129,6 +129,7 @@
     <Compile Include="Datastore\SqliteSchemaDumperTests\SqliteSchemaDumperFixture.cs" />
     <Compile Include="DecisionEngineTests\AcceptableSizeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\BlockedIndexerSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\DiscographySpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\MaximumSizeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\ProtocolSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\CutoffSpecificationFixture.cs" />

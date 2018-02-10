@@ -44,16 +44,28 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex[] ReportAlbumTitleRegex = new[]
         {
             //ruTracker - (Genre) [Source]? Artist - Discography
-            new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<discography>Discography|Discografia)",
+            new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Artist - Discography with two years
+            new Regex(@"^(?<artist>.+?)(?: - )(?:.+?)?(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            //Artist - Discography with end year
+            new Regex(@"^(?<artist>.+?)(?: - )(?:.+?)?(?<discography>Discography|Discografia).+?(?<endyear>\d{4})",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             //Artist Discography with two years
             new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia).+?(?<startyear>\d{4}).+?(?<endyear>\d{4})",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
+            //Artist Discography with end year
+            new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia).+?(?<endyear>\d{4})",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
             //Artist Discography
-                new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia)",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"^(?<artist>.+?)\W*(?<discography>Discography|Discografia)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             //ruTracker - (Genre) [Source]? Artist - Album - Year
             new Regex(@"^(?:\(.+?\))(?:\W*(?:\[(?<source>.+?)\]))?\W*(?<artist>.+?)(?: - )(?<album>.+?)(?: - )(?<releaseyear>\d{4})",
@@ -760,7 +772,23 @@ namespace NzbDrone.Core.Parser
 
             if (matchCollection[0].Groups["discography"].Success)
             {
+                int discStart;
+                int discEnd;
+                int.TryParse(matchCollection[0].Groups["startyear"].Value, out discStart);
+                int.TryParse(matchCollection[0].Groups["endyear"].Value, out discEnd);
                 result.Discography = true;
+
+                if (discStart > 0 && discEnd > 0)
+                {
+                    result.DiscographyStart = discStart;
+                    result.DiscographyEnd = discEnd;
+                }
+                else if (discEnd > 0)
+                {
+                    result.DiscographyEnd = discEnd;
+                }
+
+                result.AlbumTitle = "Discography";
             }
 
             Logger.Debug("Album Parsed. {0}", result);

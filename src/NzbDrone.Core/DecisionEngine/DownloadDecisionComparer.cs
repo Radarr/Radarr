@@ -80,6 +80,14 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareAlbumCount(DownloadDecision x, DownloadDecision y)
         {
+            var discographyCompare = CompareBy(x.RemoteAlbum, y.RemoteAlbum,
+                remoteAlbum => remoteAlbum.ParsedAlbumInfo.Discography);
+
+            if (discographyCompare != 0)
+            {
+                return discographyCompare;
+            }
+
             return CompareByReverse(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Albums.Count);
         }
 

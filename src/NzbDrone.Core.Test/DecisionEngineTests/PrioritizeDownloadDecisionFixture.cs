@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_not_throw_if_no_episodes_are_found()
+        public void should_not_throw_if_no_albums_are_found()
         {
             var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 500.Megabytes());
             var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.MP3_256), Language.English, size: 500.Megabytes());
@@ -181,6 +181,38 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
             qualifiedReports.First().RemoteAlbum.Release.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
+        }
+
+        [Test]
+        public void should_prefer_discography_pack_above_single_album()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1), GivenAlbum(2) }, new QualityModel(Quality.FLAC), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC), Language.English);
+
+            remoteAlbum1.ParsedAlbumInfo.Discography = true;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Discography.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_prefer_quality_over_discography_pack()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1), GivenAlbum(2) }, new QualityModel(Quality.MP3_320), Language.English);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Album> { GivenAlbum(1) }, new QualityModel(Quality.FLAC), Language.English);
+
+            remoteAlbum1.ParsedAlbumInfo.Discography = true;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteAlbum1));
+            decisions.Add(new DownloadDecision(remoteAlbum2));
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Discography.Should().BeFalse();
         }
 
         [Test]
