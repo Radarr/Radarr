@@ -149,10 +149,15 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     _logger.Warn(e, "Couldn't import track " + localTrack);
                     importResults.Add(new ImportResult(importDecision, "Failed to import track, Destination already exists."));
                 }
+                catch (UnauthorizedAccessException e)
+                {
+                    _logger.Warn(e, "Couldn't import track " + localTrack);
+                    importResults.Add(new ImportResult(importDecision, "Failed to import track, Permissions error"));
+                }
                 catch (Exception e)
                 {
                     _logger.Warn(e, "Couldn't import track " + localTrack);
-                    importResults.Add(new ImportResult(importDecision, "Failed to import episode"));
+                    importResults.Add(new ImportResult(importDecision, "Failed to import track"));
                 }
             }
 
