@@ -25,6 +25,8 @@ namespace NzbDrone.Core.Parser
         Movie GetMovie(string title);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, ReleaseInfo releaseInfo = null, MediaInfoModel mediaInfo = null);
+        QualityDefinition ParseQualityDefinition(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null);
+        List<QualityTagMatchResult> MatchQualityTags(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null);
     }
 
     public class ParsingService : IParsingService
@@ -88,7 +90,7 @@ namespace NzbDrone.Core.Parser
 
             result = AugmentMovieInfoRelease(result, releaseInfo);
 
-            result.Quality = ParseQualityDefinition(result, releaseInfo);
+            result.Quality.QualityDefinition = ParseQualityDefinition(result, releaseInfo);
 
             return result;
         }
@@ -123,74 +125,65 @@ namespace NzbDrone.Core.Parser
             return movieInfo;
         }
 
-        private QualityModel ParseQualityDefinition(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo)
+        public QualityDefinition ParseQualityDefinition(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null)
         {
-            var result = movieInfo.Quality;
+            var matches = MatchQualityTags(movieInfo, releaseInfo);
+            matches = matches.OrderByDescending(m => m.Matches.Count(t => t.Value == true)).ToList();
+            var bestMatchCount = matches.First().Matches.Count(t => t.Value);
+            if (bestMatchCount == 0)
+            {
+                return _qualityDefinitionService.GetById(1); //Unknown
+            }
+            var bestMatches = matches.Where(m => m.Matches.Count(t => t.Value) == bestMatchCount).ToList();
+            if (bestMatches.Count > 1)
+            {
+                //Check Filesize to find best match!
+                var ordered = bestMatches.OrderBy(m =>
+                    (m.QualityDefinition.MaxSize?.Megabytes() ?? 1000000.Megabytes()) - (m.QualityDefinition.MinSize?.Megabytes() ?? 0));
+                var test = bestMatches.Select(m =>
+                    (m.QualityDefinition.MaxSize?.Megabytes() ?? 1000000.Megabytes()) - (m.QualityDefinition.MinSize?.Megabytes() ?? 0));
+                if (releaseInfo == null || releaseInfo.Size == 0)
+                {
+                    return ordered.Last().QualityDefinition;
+                }
+                var asdf = test;
+                return ordered.FirstOrDefault(m =>
+                               (m.QualityDefinition.MaxSize?.Megabytes() ?? 10000000.Megabytes()) * 115 > releaseInfo.Size &&
+                               (m.QualityDefinition.MinSize?.Megabytes() ?? 0) * 115 < releaseInfo.Size)?
+                           .QualityDefinition ?? ordered.Last().QualityDefinition; //Always choose qd with largest size spanning.
+            }
+            else
+            {
+                return bestMatches.First().QualityDefinition;
+            }
+        }
 
+        public List<QualityTagMatchResult> MatchQualityTags(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null)
+        {
             var definitions = _qualityDefinitionService.All();
 
-            QualityDefinition bestDefinition = null;
-            var bestDefinitionMatches = 0;
+            var matches = new List<QualityTagMatchResult>();
 
             foreach (var definition in definitions)
             {
-                var matches = 0;
-                TagType? currentType = null;
-                var previousTagTypeMatches = 0;
-                if (definition.QualityTags == null)
-                {
-                    continue;
-                }
-                //Find most matches
-                foreach (var qualityTag in definition.QualityTags.OrderBy(t => t.TagType))
-                {
-                    if (qualityTag.DoesItMatch(movieInfo, releaseInfo))
-                    {
-                        matches++;
-                        previousTagTypeMatches++;
-                    }
-                    else
-                    {
-                        // To bad so sad
-                        if (qualityTag.TagModifier.HasFlag(TagModifier.AbsolutelyRequired))
-                        {
-                            matches = 0;
-                            break;
-                        }
-                    }
+                var currentMatches = new Dictionary<QualityTag, bool>();
 
-                    //Previous tag type didn't have any matches, so we don't want this quality.
-                    if ((currentType.HasValue && currentType.Value != qualityTag.TagType &&
-                         previousTagTypeMatches == 0))
-                    {
-                        matches = 0;
-                        break;
-                    }
-
-                    if (!currentType.HasValue || currentType.Value != qualityTag.TagType)
-                    {
-                        previousTagTypeMatches = 0;
-                    }
-                    
-                    currentType = qualityTag.TagType;
-                }
-
-                if (matches > bestDefinitionMatches)
+                if (definition.QualityTags != null)
                 {
-                    bestDefinition = definition;
-                    bestDefinitionMatches = matches;
+                    foreach (var qualityTag in definition.QualityTags)
+                    {
+                        currentMatches.Add(qualityTag, qualityTag.DoesItMatch(movieInfo, releaseInfo));
+                    }
                 }
+                
+                matches.Add(new QualityTagMatchResult
+                {
+                    Matches = currentMatches,
+                    QualityDefinition = definition
+                });
             }
-
-            //No match found, for now definition with id 1 (Unknown)
-            if (bestDefinition == null)
-            {
-                bestDefinition = definitions.First(d => d.Id == 1);
-            }
-
-            result.QualityDefinition = bestDefinition;
             
-            return result;
+            return matches;
         }
 
         public LocalMovie GetLocalMovie(string filename, Movie movie)

@@ -10,11 +10,11 @@ namespace NzbDrone.Core.Test.Qualities
     [TestFixture]
     public class QualityTagFixture : CoreTest
     {   
-        [TestCase("R_1080", TagType.Resolution, Resolution.R1080p)]
-        [TestCase("R_720", TagType.Resolution, Resolution.R720p)]
-        [TestCase("R_576", TagType.Resolution, Resolution.R576p)]
+        [TestCase("R_1080", TagType.Resolution, Resolution.R1080P)]
+        [TestCase("R_720", TagType.Resolution, Resolution.R720P)]
+        [TestCase("R_576", TagType.Resolution, Resolution.R576P)]
         [TestCase("R_480", TagType.Resolution, Resolution.R480P)]
-        [TestCase("R_2160", TagType.Resolution, Resolution.R2160p)]
+        [TestCase("R_2160", TagType.Resolution, Resolution.R2160P)]
         [TestCase("S_BLURAY", TagType.Source, Source.BLURAY)]
         [TestCase("s_tv", TagType.Source, Source.TV)]
         [TestCase("s_workPRINT", TagType.Source, Source.WORKPRINT)]

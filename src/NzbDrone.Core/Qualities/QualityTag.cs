@@ -89,16 +89,16 @@ namespace NzbDrone.Core.Qualities
                     switch (value)
                     {
                         case "2160":
-                            Value = Resolution.R2160p;
+                            Value = Resolution.R2160P;
                             break;
                         case "1080":
-                            Value = Resolution.R1080p;
+                            Value = Resolution.R1080P;
                             break;
                         case "720":
-                            Value = Resolution.R720p;
+                            Value = Resolution.R720P;
                             break;
                         case "576":
-                            Value = Resolution.R576p;
+                            Value = Resolution.R576P;
                             break;
                         case "480":
                             Value = Resolution.R480P;
@@ -208,16 +208,17 @@ namespace NzbDrone.Core.Qualities
     
     public enum Resolution
     {
+        Unknown = 0,
         R480P,
-        R576p,
-        R720p,
-        R1080p,
-        R2160p,
-        Unknown
+        R576P,
+        R720P,
+        R1080P,
+        R2160P
     }
 
     public enum Source
     {
+        UNKNOWN = 0,
         CAM,
         TELESYNC,
         TELECINE,
@@ -230,6 +231,7 @@ namespace NzbDrone.Core.Qualities
 
     public enum Modifier
     {
+        NONE = 0,
         REGIONAL,
         SCREENER,
         RAWHD,

@@ -81,6 +81,72 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             result.Quality.QualityDefinition.Title.Should().Be(definitionName);
         }
 
+        [Test]
+        public void should_correctly_choose_matching_filesize()
+        {
+            GivenExtraQD(new QualityDefinition
+            {
+                Title = "Small Bluray 1080p",
+                QualityTags = new List<QualityTag>
+                {
+                    new QualityTag("s_bluray"),
+                    new QualityTag("R_1080")
+                },
+                MaxSize = 50,
+                MinSize = 0,
+            }, new QualityDefinition
+            {
+                Title = "Small WEB 1080p",
+                QualityTags = new List<QualityTag>
+                {
+                    new QualityTag("s_webdl"),
+                    new QualityTag("R_1080")
+                },
+                MaxSize = 50,
+                MinSize = 0,
+            });
+            var movieInfo = new ParsedMovieInfo
+            {
+                Edition = "",
+                MovieTitle = "A Movie",
+                Quality = new QualityModel
+                {
+                    Resolution = Resolution.R1080P,
+                    Source = Source.BLURAY
+                },
+                Year = 2018
+            };
+            var webInfo = new ParsedMovieInfo
+            {
+                Edition = "",
+                MovieTitle = "A Movie",
+                Quality = new QualityModel
+                {
+                    Resolution = Resolution.R1080P,
+                    Source = Source.WEBDL
+                },
+                Year = 2018
+            };
+            var smallRelease = new ReleaseInfo
+            {
+                Size = 2875.Megabytes() //2.8GB
+            };
+            var largeRelease = new ReleaseInfo
+            {
+                Size = 8625.Megabytes() //8.6GB
+            };
+            var largestRelease = new ReleaseInfo
+            {
+                Size = 20000.Megabytes() //20GB
+            };
+            Subject.ParseQualityDefinition(movieInfo, smallRelease).Title.Should().Be("Small Bluray 1080p");
+            Subject.ParseQualityDefinition(movieInfo, largeRelease).Title.Should().Be("Bluray-1080p");
+            Subject.ParseQualityDefinition(movieInfo, largestRelease).Title.Should().Be("Bluray-1080p");
+            Subject.ParseQualityDefinition(webInfo, smallRelease).Title.Should().Be("Small WEB 1080p");
+            Subject.ParseQualityDefinition(webInfo, largeRelease).Title.Should().Be("WEBDL-1080p");
+            Subject.ParseQualityDefinition(webInfo, largestRelease).Title.Should().Be("WEBDL-1080p");
+        }
+
         [TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
         [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.MULTI.French.English", "Remux-1080p FR")]

@@ -1024,6 +1024,7 @@
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
     <Compile Include="Qualities\QualityTag.cs" />
+    <Compile Include="Qualities\QualityTagMatchResult.cs" />
     <Compile Include="Qualities\Revision.cs" />
     <Compile Include="RemotePathMappings\RemotePathMapping.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingRepository.cs" />
