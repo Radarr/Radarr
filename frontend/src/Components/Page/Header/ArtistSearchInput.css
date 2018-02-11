@@ -72,7 +72,7 @@
 }
 
 .highlighted {
-  background-color: $themeLightColor;
+  background-color: $primaryHoverBackgroundColor;
 }
 
 .sectionTitle {

@@ -1,0 +1,6 @@
+[*]
+insert_final_newline = true
+
+[*.{js,css}]
+indent_style = space
+indent_size = 2

@@ -56,7 +56,7 @@ class ArtistSearchInput extends Component {
   }
 
   getSuggestionValue({ title }) {
-    return title;
+    return title || '';
   }
 
   renderSuggestion(item, { query }) {
@@ -92,11 +92,15 @@ class ArtistSearchInput extends Component {
   // Listeners
 
   onChange = (event, { newValue }) => {
+    if (!newValue) {
+      return;
+    }
+
     this.setState({ value: newValue });
   }
 
   onKeyDown = (event) => {
-    if (event.key !== 'Tab' && event.key !== 'Enter') {
+    if (event.key !== 'Tab' && event.key !== 'Enter' || event.key !== 'ArrowDown' || event.key !== 'ArrowUp') {
       return;
     }
 
@@ -110,7 +114,7 @@ class ArtistSearchInput extends Component {
       highlightedSuggestionIndex
     } = this._autosuggest.state;
 
-    if (!suggestions.length || highlightedSectionIndex) {
+    if (!suggestions.length || highlightedSectionIndex && (event.key !== 'ArrowDown' || event.key !== 'ArrowUp')) {
       this.props.onGoToAddNewArtist(value);
       this._autosuggest.input.blur();
 
@@ -120,7 +124,7 @@ class ArtistSearchInput extends Component {
     // If an suggestion is not selected go to the first artist,
     // otherwise go to the selected artist.
 
-    if (highlightedSuggestionIndex == null) {
+    if (highlightedSuggestionIndex == null && (event.key !== 'ArrowDown' || event.key !== 'ArrowUp')) {
       this.goToArtist(suggestions[0]);
     } else {
       this.goToArtist(suggestions[highlightedSuggestionIndex]);

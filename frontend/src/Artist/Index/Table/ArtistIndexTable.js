@@ -9,9 +9,21 @@ import ArtistIndexRow from './ArtistIndexRow';
 import styles from './ArtistIndexTable.css';
 
 class ArtistIndexTable extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this._table = null;
+  }
 
   //
   // Control
+
+  /**
+   * Sets the reference to the virtual table
+   * @param ref
+   */
+  setTableRef = (ref) => {
+    this._table = ref;
+  };
 
   scrollToFirstCharacter(character) {
     const items = this.props.items;
@@ -74,6 +86,7 @@ class ArtistIndexTable extends Component {
 
     return (
       <VirtualTable
+        ref={this.setTableRef}
         className={styles.tableContainer}
         items={items}
         scrollTop={scrollTop}

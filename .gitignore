@@ -133,4 +133,6 @@ output/*
 _start
 _temp_*/**/*
 
-src/.idea/
+## Merge any idea folder
+*/**/.idea
+*.iml
