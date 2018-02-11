@@ -32,7 +32,7 @@ $.fn.bindSearch = function() {
           empty : function(input) {
             var escapedQuery = _.escape(input.query);
 
-            return '<div class="tt-dataset-series"><span class="tt-suggestions" style="display: block;"><div class="tt-suggestion"><p style="white-space: normal;"><a class="no-movies-found" href="/addmovies/search/' + escapedQuery + '">Search for "' + escapedQuery + '"</a></p></div></span></div>';
+            return "<div class='tt-dataset-series'><span class='tt-suggestions' style='display: block;'><div class='tt-suggestion'><p style='white-space: normal;'><a class='no-movies-found' href='/addmovies/search/'" + escapedQuery + "'>Search for " + escapedQuery + "</a></p></div></span></div>";
           },
         },
         source     : substringMatcher()
