@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -18,28 +18,20 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public XbmcMetadataSettings()
         {
-            SeriesMetadata = true;
-            EpisodeMetadata = true;
-            SeriesImages = true;
-            SeasonImages = true;
-            EpisodeImages = true;
+            MovieMetadata = true;
+            MovieImages = true;
+            UseMovieNfo = false;
         }
 
-        [FieldDefinition(0, Label = "Series Metadata", Type = FieldType.Checkbox)]
-        public bool SeriesMetadata { get; set; }
+        [FieldDefinition(0, Label = "Movie Metadata", Type = FieldType.Checkbox)]
+        public bool MovieMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Episode Metadata", Type = FieldType.Checkbox)]
-        public bool EpisodeMetadata { get; set; }
+        [FieldDefinition(1, Label = "Movie Images", Type = FieldType.Checkbox)]
+        public bool MovieImages { get; set; }
 
-        [FieldDefinition(2, Label = "Series Images", Type = FieldType.Checkbox)]
-        public bool SeriesImages { get; set; }
+        [FieldDefinition(2, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
+        public bool UseMovieNfo { get; set; }
 
-        [FieldDefinition(3, Label = "Season Images", Type = FieldType.Checkbox)]
-        public bool SeasonImages { get; set; }
-
-        [FieldDefinition(4, Label = "Episode Images", Type = FieldType.Checkbox)]
-        public bool EpisodeImages { get; set; }
-        
         public bool IsValid => true;
 
         public NzbDroneValidationResult Validate()

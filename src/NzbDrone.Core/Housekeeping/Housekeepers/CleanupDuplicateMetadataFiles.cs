@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -13,12 +13,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            DeleteDuplicateSeriesMetadata();
-            DeleteDuplicateEpisodeMetadata();
-            DeleteDuplicateEpisodeImages();
+            DeleteDuplicateMovieMetadata();
+            DeleteDuplicateMovieFileMetadata();
         }
 
-        private void DeleteDuplicateSeriesMetadata()
+        private void DeleteDuplicateMovieMetadata()
         {
             var mapper = _database.GetDataMapper();
 
@@ -26,34 +25,21 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 1
-                                         GROUP BY SeriesId, Consumer
-                                         HAVING COUNT(SeriesId) > 1
+                                         GROUP BY MovieId, Consumer
+                                         HAVING COUNT(MovieId) > 1
                                      )");
         }
 
-        private void DeleteDuplicateEpisodeMetadata()
+        private void DeleteDuplicateMovieFileMetadata()
         {
             var mapper = _database.GetDataMapper();
 
             mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
-                                         WHERE Type = 2
-                                         GROUP BY EpisodeFileId, Consumer
-                                         HAVING COUNT(EpisodeFileId) > 1
-                                     )");
-        }
-
-        private void DeleteDuplicateEpisodeImages()
-        {
-            var mapper = _database.GetDataMapper();
-
-            mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
-                                     WHERE Id IN (
-                                         SELECT Id FROM MetadataFiles
-                                         WHERE Type = 5
-                                         GROUP BY EpisodeFileId, Consumer
-                                         HAVING COUNT(EpisodeFileId) > 1
+                                         WHERE Type = 1
+                                         GROUP BY MovieFileId, Consumer
+                                         HAVING COUNT(MovieFileId) > 1
                                      )");
         }
     }

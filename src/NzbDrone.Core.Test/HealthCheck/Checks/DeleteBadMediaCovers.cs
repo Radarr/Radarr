@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,27 +20,27 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     public class DeleteBadMediaCoversFixture : CoreTest<DeleteBadMediaCovers>
     {
         private List<MetadataFile> _metadata;
-        private List<Series> _series;
+        private List<Movie> _movies;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateListOfSize(1)
+            _movies = Builder<Movie>.CreateListOfSize(1)
                 .All()
-                .With(c => c.Path = "C:\\TV\\".AsOsAgnostic())
+                .With(c => c.Path = "C:\\Movie\\".AsOsAgnostic())
                 .Build().ToList();
 
 
             _metadata = Builder<MetadataFile>.CreateListOfSize(1)
                .Build().ToList();
 
-            Mocker.GetMock<ISeriesService>()
-                .Setup(c => c.GetAllSeries())
-                .Returns(_series);
+            Mocker.GetMock<IMovieService>()
+                .Setup(c => c.GetAllMovies())
+                .Returns(_movies);
 
 
             Mocker.GetMock<IMetadataFileService>()
-                .Setup(c => c.GetFilesBySeries(_series.First().Id))
+                .Setup(c => c.GetFilesByMovie(_movies.First().Id))
                 .Returns(_metadata);
 
 
@@ -51,8 +51,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_not_process_non_image_files()
         {
-            _metadata.First().RelativePath = "season\\file.xml".AsOsAgnostic();
-            _metadata.First().Type = MetadataType.EpisodeMetadata;
+            _metadata.First().RelativePath = "extrafiles\\file.xml".AsOsAgnostic();
+            _metadata.First().Type = MetadataType.MovieMetadata;
 
             Subject.Clean();
 
@@ -101,10 +101,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_delete_html_images()
         {
 
-            var imagePath = "C:\\TV\\Season\\image.jpg".AsOsAgnostic();
+            var imagePath = "C:\\Movie\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
-            _metadata.First().RelativePath = "Season\\image.jpg".AsOsAgnostic();
-            _metadata.First().Type = MetadataType.SeriesImage;
+            _metadata.First().RelativePath = "image.jpg".AsOsAgnostic();
+            _metadata.First().Type = MetadataType.MovieImage;
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.OpenReadStream(imagePath))
@@ -123,10 +123,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_delete_empty_images()
         {
 
-            var imagePath = "C:\\TV\\Season\\image.jpg".AsOsAgnostic();
+            var imagePath = "C:\\Movie\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
-            _metadata.First().Type = MetadataType.SeasonImage;
-            _metadata.First().RelativePath = "Season\\image.jpg".AsOsAgnostic();
+            _metadata.First().Type = MetadataType.MovieImage;
+            _metadata.First().RelativePath = "image.jpg".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.OpenReadStream(imagePath))
@@ -144,9 +144,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_not_delete_non_html_files()
         {
 
-            var imagePath = "C:\\TV\\Season\\image.jpg".AsOsAgnostic();
+            var imagePath = "C:\\Movie\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
-            _metadata.First().RelativePath = "Season\\image.jpg".AsOsAgnostic();
+            _metadata.First().RelativePath = "image.jpg".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.OpenReadStream(imagePath))

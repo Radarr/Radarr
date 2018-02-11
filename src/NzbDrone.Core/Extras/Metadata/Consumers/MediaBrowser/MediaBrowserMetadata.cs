@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
         public override string Name => "Emby (Legacy)";
 
-        public override MetadataFile FindMetadataFile(Series series, string path)
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
         {
             var filename = Path.GetFileName(path);
 
@@ -33,28 +33,28 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
             var metadata = new MetadataFile
                            {
-                               SeriesId = series.Id,
+                               MovieId = movie.Id,
                                Consumer = GetType().Name,
-                               RelativePath = series.Path.GetRelativePath(path)
+                               RelativePath = movie.Path.GetRelativePath(path)
                            };
 
-            if (filename.Equals("series.xml", StringComparison.InvariantCultureIgnoreCase))
+            if (filename.Equals("movie.xml", StringComparison.InvariantCultureIgnoreCase))
             {
-                metadata.Type = MetadataType.SeriesMetadata;
+                metadata.Type = MetadataType.MovieMetadata;
                 return metadata;
             }
 
             return null;
         }
 
-        public override MetadataFileResult SeriesMetadata(Series series)
+        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
         {
-            if (!Settings.SeriesMetadata)
+            if (!Settings.MovieMetadata)
             {
                 return null;
             }
 
-            _logger.Debug("Generating series.xml for: {0}", series.Title);
+            _logger.Debug("Generating movie.xml for: {0}", movie.Title);
             var sb = new StringBuilder();
             var xws = new XmlWriterSettings();
             xws.OmitXmlDeclaration = true;
@@ -62,39 +62,26 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
             using (var xw = XmlWriter.Create(sb, xws))
             {
-                var tvShow = new XElement("Series");
+                var movieElement = new XElement("Movie");
 
-                tvShow.Add(new XElement("id", series.TvdbId));
-                tvShow.Add(new XElement("Status", series.Status));
-                tvShow.Add(new XElement("Network", series.Network));
-                tvShow.Add(new XElement("Airs_Time", series.AirTime));
+                movieElement.Add(new XElement("id", movie.ImdbId));
+                movieElement.Add(new XElement("Status", movie.Status));
 
-                if (series.FirstAired.HasValue)
-                {
-                    tvShow.Add(new XElement("FirstAired", series.FirstAired.Value.ToString("yyyy-MM-dd")));
-                }
+                movieElement.Add(new XElement("ContentRating", movie.Certification));
+                movieElement.Add(new XElement("Added", movie.Added.ToString("MM/dd/yyyy HH:mm:ss tt")));
+                movieElement.Add(new XElement("LockData", "false"));
+                movieElement.Add(new XElement("Overview", movie.Overview));
+                movieElement.Add(new XElement("LocalTitle", movie.Title));
 
-                tvShow.Add(new XElement("ContentRating", series.Certification));
-                tvShow.Add(new XElement("Added", series.Added.ToString("MM/dd/yyyy HH:mm:ss tt"))); 
-                tvShow.Add(new XElement("LockData", "false"));
-                tvShow.Add(new XElement("Overview", series.Overview));
-                tvShow.Add(new XElement("LocalTitle", series.Title));
+                movieElement.Add(new XElement("Rating", movie.Ratings.Value));
+                movieElement.Add(new XElement("ProductionYear", movie.Year));
+                movieElement.Add(new XElement("RunningTime", movie.Runtime));
+                movieElement.Add(new XElement("IMDB", movie.ImdbId));
+                movieElement.Add(new XElement("Genres", movie.Genres.Select(genre => new XElement("Genre", genre))));
 
-                if (series.FirstAired.HasValue)
-                {
-                    tvShow.Add(new XElement("PremiereDate", series.FirstAired.Value.ToString("yyyy-MM-dd")));
-                }
+                var persons = new XElement("Persons");
 
-                tvShow.Add(new XElement("Rating", series.Ratings.Value));
-                tvShow.Add(new XElement("ProductionYear", series.Year));
-                tvShow.Add(new XElement("RunningTime", series.Runtime));
-                tvShow.Add(new XElement("IMDB", series.ImdbId));
-                tvShow.Add(new XElement("TVRageId", series.TvRageId));
-                tvShow.Add(new XElement("Genres", series.Genres.Select(genre => new XElement("Genre", genre))));
-
-                var persons   = new XElement("Persons");
-
-                foreach (var person in series.Actors)
+                foreach (var person in movie.Actors)
                 {
                     persons.Add(new XElement("Person",
                         new XElement("Name", person.Name),
@@ -103,56 +90,26 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
                         ));
                 }
 
-                tvShow.Add(persons);
+                movieElement.Add(persons);
 
 
-                var doc = new XDocument(tvShow);
+                var doc = new XDocument(movieElement);
                 doc.Save(xw);
 
-                _logger.Debug("Saving series.xml for {0}", series.Title);
+                _logger.Debug("Saving movie.xml for {0}", movie.Title);
 
-                return new MetadataFileResult("series.xml", doc.ToString());
+                return new MetadataFileResult("movie.xml", doc.ToString());
             }
         }
- 
-        public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
-        {
-            return null;
-        }
-            
-        public override List<ImageFileResult> SeriesImages(Series series)
+
+        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
         {
             return new List<ImageFileResult>();
         }
 
-        public override List<ImageFileResult> SeasonImages(Series series, Season season)
+        private IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie)
         {
             return new List<ImageFileResult>();
-        }
-
-        public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
-        {
-            return new List<ImageFileResult>();
-        }
-
-        private IEnumerable<ImageFileResult> ProcessSeriesImages(Series series)
-        {
-            return new List<ImageFileResult>();
-        }
-
-        private IEnumerable<ImageFileResult> ProcessSeasonImages(Series series, Season season)
-        {
-            return new List<ImageFileResult>();
-        }
-
-        private string GetEpisodeNfoFilename(string episodeFilePath)
-        {
-            return null;
-        }
-
-        private string GetEpisodeImageFilename(string episodeFilePath)
-        {
-            return null;
         }
     }
 }

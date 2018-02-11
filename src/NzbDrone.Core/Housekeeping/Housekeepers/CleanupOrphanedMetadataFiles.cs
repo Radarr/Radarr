@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -13,45 +13,45 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            DeleteOrphanedBySeries();
-            DeleteOrphanedByEpisodeFile();
-            DeleteWhereEpisodeFileIsZero();
+            DeleteOrphanedByMovie();
+            DeleteOrphanedByMovieFile();
+            DeleteWhereMovieFileIsZero();
         }
 
-        private void DeleteOrphanedBySeries()
+        private void DeleteOrphanedByMovie()
         {
             var mapper = _database.GetDataMapper();
 
             mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
-                                     LEFT OUTER JOIN Series
-                                     ON MetadataFiles.SeriesId = Series.Id
-                                     WHERE Series.Id IS NULL)");
+                                     LEFT OUTER JOIN Movies
+                                     ON MetadataFiles.MovieId = Movies.Id
+                                     WHERE Movies.Id IS NULL)");
         }
 
-        private void DeleteOrphanedByEpisodeFile()
+        private void DeleteOrphanedByMovieFile()
         {
             var mapper = _database.GetDataMapper();
 
             mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
-                                     LEFT OUTER JOIN EpisodeFiles
-                                     ON MetadataFiles.EpisodeFileId = EpisodeFiles.Id
-                                     WHERE MetadataFiles.EpisodeFileId > 0
-                                     AND EpisodeFiles.Id IS NULL)");
+                                     LEFT OUTER JOIN MovieFiles
+                                     ON MetadataFiles.MovieFileId = MovieFiles.Id
+                                     WHERE MetadataFiles.MovieFileId > 0
+                                     AND MovieFiles.Id IS NULL)");
         }
 
-        private void DeleteWhereEpisodeFileIsZero()
+        private void DeleteWhereMovieFileIsZero()
         {
             var mapper = _database.GetDataMapper();
 
             mapper.ExecuteNonQuery(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles
-                                     WHERE Type IN (2, 5)
-                                     AND EpisodeFileId = 0)");
+                                     WHERE Type IN (1, 2)
+                                     AND MovieFileId = 0)");
         }
     }
 }

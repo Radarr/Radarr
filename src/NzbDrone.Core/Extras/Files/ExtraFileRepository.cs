@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -7,12 +7,10 @@ namespace NzbDrone.Core.Extras.Files
 {
     public interface IExtraFileRepository<TExtraFile> : IBasicRepository<TExtraFile> where TExtraFile : ExtraFile, new()
     {
-        void DeleteForSeries(int seriesId);
-        void DeleteForSeason(int seriesId, int seasonNumber);
-        void DeleteForEpisodeFile(int episodeFileId);
-        List<TExtraFile> GetFilesBySeries(int seriesId);
-        List<TExtraFile> GetFilesBySeason(int seriesId, int seasonNumber);
-        List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId);
+        void DeleteForMovie(int movieId);
+        void DeleteForMovieFile(int movieFileId);
+        List<TExtraFile> GetFilesByMovie(int movieId);
+        List<TExtraFile> GetFilesByMovieFile(int movieFileId);
         TExtraFile FindByPath(string path);
     }
 
@@ -24,34 +22,24 @@ namespace NzbDrone.Core.Extras.Files
         {
         }
 
-        public void DeleteForSeries(int seriesId)
+        public void DeleteForMovie(int movieId)
         {
-            Delete(c => c.SeriesId == seriesId);
+            Delete(c => c.MovieId == movieId);
         }
 
-        public void DeleteForSeason(int seriesId, int seasonNumber)
+        public void DeleteForMovieFile(int movieFileId)
         {
-            Delete(c => c.SeriesId == seriesId && c.SeasonNumber == seasonNumber);
+            Delete(c => c.MovieFileId == movieFileId);
         }
 
-        public void DeleteForEpisodeFile(int episodeFileId)
+        public List<TExtraFile> GetFilesByMovie(int movieId)
         {
-            Delete(c => c.EpisodeFileId == episodeFileId);
+            return Query.Where(c => c.MovieId == movieId);
         }
 
-        public List<TExtraFile> GetFilesBySeries(int seriesId)
+        public List<TExtraFile> GetFilesByMovieFile(int movieFileId)
         {
-            return Query.Where(c => c.SeriesId == seriesId);
-        }
-
-        public List<TExtraFile> GetFilesBySeason(int seriesId, int seasonNumber)
-        {
-            return Query.Where(c => c.SeriesId == seriesId && c.SeasonNumber == seasonNumber);
-        }
-
-        public List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId)
-        {
-            return Query.Where(c => c.EpisodeFileId == episodeFileId);
+            return Query.Where(c => c.MovieFileId == movieFileId);
         }
 
         public TExtraFile FindByPath(string path)
