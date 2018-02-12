@@ -3,7 +3,7 @@ version: 2
 jobs:
     build:
         docker:
-            - image: mono:4.8
+            - image: gallileo/radarr-cci-primary:4.8
         steps:
             - checkout
             - run: git submodule update --init --recursive
@@ -13,3 +13,5 @@ jobs:
             - run:
                 name: Testing
                 command: ./test.sh Linux Unit
+            - store_test_results:
+                path: _tests/reports/
