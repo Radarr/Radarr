@@ -69,11 +69,21 @@ BuildWithMSBuild()
     CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Build //m //p:AllowedReferenceRelatedFileExtensions=.pdb
 }
 
-BuildWithXbuild()
+RestoreNuget()
+{
+    export MONO_IOMAP=case
+    mono $nuget restore $slnFile
+}
+
+CleanWithXbuild()
 {
     export MONO_IOMAP=case
     CheckExitCode xbuild /t:Clean $slnFile
-    mono $nuget restore $slnFile
+}
+
+BuildWithXbuild()
+{
+    export MONO_IOMAP=case
     CheckExitCode xbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
 }
 
@@ -86,6 +96,8 @@ Build()
     if [ $runtime = "dotnet" ] ; then
         BuildWithMSBuild
     else
+        CleanWithXbuild
+        RestoreNuget
         BuildWithXbuild
     fi
 
@@ -256,10 +268,39 @@ case "$(uname -s)" in
         ;;
 esac
 
-Build
-RunGulp
-PackageMono
-PackageOsx
-PackageOsxApp
-PackageTests
-CleanupWindowsPackage
+if [ $# -eq 0 ]
+  then
+    Build
+    RunGulp
+    PackageMono
+    PackageOsx
+    PackageOsxApp
+    PackageTests
+    CleanupWindowsPackage
+    exit 0
+fi
+
+if [ "$1" -eq "PrepareBuild" ]
+then rm -rf $outputFolder
+    CleanWithXbuild
+    RestoreNuget
+fi
+
+if [ "$1" -eq "Build" ]
+then BuildWithXbuild
+  CleanFolder $outputFolder false
+  AddJsonNet
+  rm $outputFolder/Mono.Posix.dll
+fi
+
+if [ "$1" -eq "Gulp" ]
+then RunGulp
+fi
+
+if [ "$1" -eq "Package" ]
+then PackageMono
+  PackageOsx
+  PackageOsxApp
+  PackageTests
+  CleanupWindowsPackage
+fi
