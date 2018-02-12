@@ -109,11 +109,14 @@ namespace NzbDrone.Core.Parser
             if (BRDISKRegex.IsMatch(normalizedName) && sourceMatch?.Groups["bluray"].Success == true)
             {
                 result.Modifier = Modifier.BRDISK;
+                result.Source = Source.BLURAY;
             }
 
             if (RemuxRegex.IsMatch(normalizedName) && sourceMatch?.Groups["webdl"].Success != true && sourceMatch?.Groups["hdtv"].Success != true)
             {
                 result.Modifier = Modifier.REMUX;
+                result.Source = Source.BLURAY;
+                return result; //We found remux!
             }
 
             if (sourceMatch != null && sourceMatch.Success)
@@ -137,13 +140,17 @@ namespace NzbDrone.Core.Parser
 
                 if (sourceMatch.Groups["webdl"].Success)
                 {
-                   result.Source = Source.WEBDL;
+                    result.Source = Source.WEBDL;
+                    if (resolution == Resolution.Unknown) result.Resolution = Resolution.R480P;
+                    if (resolution == Resolution.Unknown && name.Contains("[WEBDL]")) result.Resolution = Resolution.R720P;
                     return result;
                 }
 
                 if (sourceMatch.Groups["hdtv"].Success)
                 {
                     result.Source = Source.TV;
+                    if (resolution == Resolution.Unknown) result.Resolution = Resolution.R480P; //hdtvs are always at least 480p (they might have been downscaled
+                    if (resolution == Resolution.Unknown && name.Contains("[HDTV]")) result.Resolution = Resolution.R720P;
                     return result;
                 }
 
@@ -260,6 +267,15 @@ namespace NzbDrone.Core.Parser
                 result.Source = Source.BLURAY;
                 return result;
             }
+            
+            var otherSourceMatch = OtherSourceMatch(normalizedName);
+
+            if (otherSourceMatch.Source != Source.UNKNOWN)
+            {
+                result.Source = otherSourceMatch.Source;
+                result.Resolution = resolution == Resolution.Unknown ? otherSourceMatch.Resolution : resolution;
+                return result;
+            }
 
             if (resolution == Resolution.R2160P || resolution == Resolution.R1080P || resolution == Resolution.R720P)
             {
@@ -325,8 +341,6 @@ namespace NzbDrone.Core.Parser
                 return result;
             }
 
-            var otherSourceMatch = OtherSourceMatch(normalizedName);
-
             //Based on extension
             if (result.Source == Source.UNKNOWN && !name.ContainsInvalidPathChars())
             {
@@ -361,15 +375,15 @@ namespace NzbDrone.Core.Parser
             return Resolution.Unknown;
         }
 
-        private static Quality OtherSourceMatch(string name)
+        private static QualityModel OtherSourceMatch(string name)
         {
             var match = OtherSourceRegex.Match(name);
 
-            if (!match.Success) return Quality.Unknown;
-            if (match.Groups["sdtv"].Success) return Quality.SDTV;
-            if (match.Groups["hdtv"].Success) return Quality.HDTV720p;
+            if (!match.Success) return new QualityModel();
+            if (match.Groups["sdtv"].Success) return new QualityModel {Source = Source.TV, Resolution = Resolution.R480P};
+            if (match.Groups["hdtv"].Success) return new QualityModel {Source = Source.TV, Resolution = Resolution.R720P};
 
-            return Quality.Unknown;
+            return new QualityModel();
         }
 
         private static QualityModel ParseQualityModifiers(string name, string normalizedName)
