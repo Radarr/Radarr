@@ -8,8 +8,11 @@ jobs:
             - checkout
             - run: git submodule update --init --recursive
             - run:
-                name: Prepare Build
-                command: ./build.sh PrepareBuild
+                name: Clean Build
+                command: ./build.sh Clean
+            - run:
+                name: Restore Nuget
+                command: ./build.sh NugetMono
             - run:
                 name: Build
                 command: ./build.sh Build

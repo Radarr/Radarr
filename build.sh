@@ -277,27 +277,30 @@ if [ $# -eq 0 ]
     PackageOsxApp
     PackageTests
     CleanupWindowsPackage
-    exit 0
 fi
 
-if [ "$1" -eq "PrepareBuild" ]
+if [ "$1" = "CleanXbuild" ]
 then rm -rf $outputFolder
     CleanWithXbuild
+fi
+
+if [ "$1" = "NugetMono" ]
+then rm -rf $outputFolder
     RestoreNuget
 fi
 
-if [ "$1" -eq "Build" ]
+if [ "$1" = "Build" ]
 then BuildWithXbuild
   CleanFolder $outputFolder false
   AddJsonNet
   rm $outputFolder/Mono.Posix.dll
 fi
 
-if [ "$1" -eq "Gulp" ]
+if [ "$1" = "Gulp" ]
 then RunGulp
 fi
 
-if [ "$1" -eq "Package" ]
+if [ "$1" = "Package" ]
 then PackageMono
   PackageOsx
   PackageOsxApp
