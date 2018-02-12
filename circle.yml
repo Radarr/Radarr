@@ -28,5 +28,5 @@ dependencies:
 
 test:
     override:
-        - build.sh
-        - test.sh Linux Unit
+        - ./build.sh
+        - ./test.sh Linux Unit
