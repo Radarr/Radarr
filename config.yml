@@ -1,0 +1,32 @@
+checkout:
+    post:
+        - git submodule update --init --recursive
+
+dependencies:
+    cache_directories:
+        - packages
+        - "~/.apt-cache"
+        - "~/.nuget/packages"
+    pre:
+        # https://discuss.circleci.com/t/add-ability-to-cache-apt-get-programs/598/4
+        - sudo rm -rf /var/cache/apt/archives && sudo ln -s ~/.apt-cache /var/cache/apt/archives && mkdir -p ~/.apt-cache/partial
+        - mkdir -p packages
+
+    override:
+        # http://www.mono-project.com/docs/getting-started/install/linux/
+        - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+        - echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+        - sudo apt-get update
+        # http://www.mono-project.com/docs/getting-started/install/linux/#usage
+        - sudo apt-get install -y mono-complete
+        - sudo apt-get install -y referenceassemblies-pcl
+        - sudo apt-get install -y ca-certificates-mono
+        #- sudo apt-get install -y nunit-console
+
+        #- cd packages; wget --no-check-certificate https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+        #- mono packages/nuget.exe restore
+
+test:
+    override:
+        - build.sh
+        - test.sh Linux Unit
