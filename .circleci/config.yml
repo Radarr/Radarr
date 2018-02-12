@@ -20,8 +20,8 @@ jobs:
                 name: Package
                 command: ./build.sh Package
             - run:
-              name: Preparing Tests
-              command: mkdir _tests/reports
+                name: Preparing Tests
+                command: mkdir _tests/reports
             - run:
                 name: Testing
                 command: ./test.sh Linux Unit
