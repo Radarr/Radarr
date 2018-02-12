@@ -10,6 +10,7 @@ jobs:
             - run:
                 name: Build
                 command: ./build.sh
+            - run: mkdir _tests/reports
             - run:
                 name: Testing
                 command: ./test.sh Linux Unit
