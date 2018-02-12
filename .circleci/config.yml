@@ -1,0 +1,15 @@
+version: 2
+
+jobs:
+    build:
+        docker:
+            - image: mono:4.8
+        steps:
+            - checkout
+            - run: git submodule update --init --recursive
+            - run:
+                name: Build
+                command: ./build.sh
+            - run:
+                name: Testing
+                command: ./test.sh Linux Unit
