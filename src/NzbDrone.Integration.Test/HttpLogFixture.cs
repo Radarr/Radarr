@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Api.Movie;
 
 namespace NzbDrone.Integration.Test
 {
@@ -18,7 +19,7 @@ namespace NzbDrone.Integration.Test
             var logFile = Path.Combine(_runner.AppData, "logs", "radarr.trace.txt");
             var logLines = File.ReadAllLines(logFile);
 
-            var result = Series.InvalidPost(new Api.Series.SeriesResource());
+            var result = Movies.InvalidPost(new MovieResource());
 
             logLines = File.ReadAllLines(logFile).Skip(logLines.Length).ToArray();
 

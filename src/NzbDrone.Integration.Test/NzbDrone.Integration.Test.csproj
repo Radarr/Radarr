@@ -107,21 +107,19 @@
     <Compile Include="ApiTests\CalendarFixture.cs" />
     <Compile Include="ApiTests\BlacklistFixture.cs" />
     <Compile Include="ApiTests\DownloadClientFixture.cs" />
-    <Compile Include="ApiTests\EpisodeFileFixture.cs" />
+    <Compile Include="ApiTests\MovieFileFixture.cs" />
     <Compile Include="ApiTests\FileSystemFixture.cs" />
-    <Compile Include="ApiTests\SeriesLookupFixture.cs" />
+    <Compile Include="ApiTests\MovieLookupFixture.cs" />
     <Compile Include="ApiTests\WantedFixture.cs" />
     <Compile Include="Client\ClientBase.cs" />
-    <Compile Include="Client\EpisodeClient.cs" />
     <Compile Include="Client\IndexerClient.cs" />
     <Compile Include="Client\DownloadClientClient.cs" />
+    <Compile Include="Client\MovieClient.cs" />
     <Compile Include="Client\NotificationClient.cs" />
     <Compile Include="Client\CommandClient.cs" />
     <Compile Include="Client\ReleaseClient.cs" />
-    <Compile Include="Client\SeriesClient.cs" />
     <Compile Include="ApiTests\CommandFixture.cs" />
     <Compile Include="CorsFixture.cs" />
-    <Compile Include="ApiTests\EpisodeFixture.cs" />
     <Compile Include="ApiTests\HistoryFixture.cs" />
     <Compile Include="ApiTests\IndexerFixture.cs" />
     <Compile Include="HttpLogFixture.cs" />
@@ -133,8 +131,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApiTests\ReleaseFixture.cs" />
     <Compile Include="ApiTests\RootFolderFixture.cs" />
-    <Compile Include="ApiTests\SeriesEditorFixture.cs" />
-    <Compile Include="ApiTests\SeriesFixture.cs" />
+    <Compile Include="ApiTests\MovieEditorFixture.cs" />
+    <Compile Include="ApiTests\MovieFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\NzbDrone.Test.Common\App.config">

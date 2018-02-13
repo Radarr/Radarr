@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
+using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Integration.Test
@@ -8,7 +9,7 @@ namespace NzbDrone.Integration.Test
     {
         protected NzbDroneRunner _runner;
 
-        public override string SeriesRootFolder => GetTempDirectory("SeriesRootFolder");
+        public override string MovieRootFolder => GetTempDirectory("MovieRootFolder");
 
         protected override string RootUrl => "http://localhost:7878/";
 
@@ -24,15 +25,15 @@ namespace NzbDrone.Integration.Test
 
         protected override void InitializeTestTarget()
         {
-            // Add Wombles
-            var wombles = Indexers.Post(new Api.Indexers.IndexerResource
+            Indexers.Post(new Api.Indexers.IndexerResource
             {
-                EnableRss = true,
-                ConfigContract = "NullConfig",
-                Implementation = "Wombles",
-                Name = "Wombles",
+                EnableRss = false,
+                EnableSearch = false,
+                ConfigContract = nameof(NewznabSettings),
+                Implementation = nameof(Newznab),
+                Name = "NewznabTest",
                 Protocol = Core.Indexers.DownloadProtocol.Usenet,
-                Fields = new List<Api.ClientSchema.Field>()
+                Fields = Api.ClientSchema.SchemaBuilder.ToSchema(new NewznabSettings())
             });
         }
 

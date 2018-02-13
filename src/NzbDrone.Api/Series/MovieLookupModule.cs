@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Core.MediaCover;
@@ -15,7 +15,7 @@ namespace NzbDrone.Api.Movie
         private readonly IProvideMovieInfo _movieInfo;
 
         public MovieLookupModule(ISearchForNewMovie searchProxy, IProvideMovieInfo movieInfo)
-            : base("/movies/lookup")
+            : base("/movie/lookup")
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
