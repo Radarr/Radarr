@@ -14,7 +14,7 @@ namespace NzbDrone.Api.ExtraFiles
         private readonly IExtraFileService<OtherExtraFile> _otherFileService;
 
         public ExtraFileModule(IExtraFileService<SubtitleFile> subtitleFileService, IExtraFileService<MetadataFile> metadataFileService, IExtraFileService<OtherExtraFile> otherExtraFileService)
-            : base("/extrafiles")
+            : base("/extrafile")
         {
             _subtitleFileService = subtitleFileService;
             _metadataFileService = metadataFileService;
