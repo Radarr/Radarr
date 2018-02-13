@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -67,7 +67,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
                 movieElement.Add(new XElement("id", movie.ImdbId));
                 movieElement.Add(new XElement("Status", movie.Status));
 
-                movieElement.Add(new XElement("ContentRating", movie.Certification));
                 movieElement.Add(new XElement("Added", movie.Added.ToString("MM/dd/yyyy HH:mm:ss tt")));
                 movieElement.Add(new XElement("LockData", "false"));
                 movieElement.Add(new XElement("Overview", movie.Overview));
@@ -78,20 +77,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
                 movieElement.Add(new XElement("RunningTime", movie.Runtime));
                 movieElement.Add(new XElement("IMDB", movie.ImdbId));
                 movieElement.Add(new XElement("Genres", movie.Genres.Select(genre => new XElement("Genre", genre))));
-
-                var persons = new XElement("Persons");
-
-                foreach (var person in movie.Actors)
-                {
-                    persons.Add(new XElement("Person",
-                        new XElement("Name", person.Name),
-                        new XElement("Type", "Actor"),
-                        new XElement("Role", person.Character)
-                        ));
-                }
-
-                movieElement.Add(persons);
-
 
                 var doc = new XDocument(movieElement);
                 doc.Save(xw);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                         metadata.Type = MetadataType.MovieImage;
                         return metadata;
                 }
-                
+
             }
 
             return null;
@@ -114,7 +114,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                     details.Add(new XElement("id", movie.Id));
                     details.Add(new XElement("title", movie.Title));
                     details.Add(new XElement("genre", string.Join(" / ", movie.Genres)));
-                    details.Add(new XElement("actor", string.Join(" / ", movie.Actors.ConvertAll(c => c.Name + " - " + c.Character))));
                     details.Add(new XElement("overview", movie.Overview));
 
                     doc.Add(details);

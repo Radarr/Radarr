@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             _logger = logger;
         }
 
-        private static List<string> ValidCertification = new List<string> { "G", "NC-17", "PG", "PG-13", "R", "UR", "UNRATED", "NR", "TV-Y", "TV-Y7", "TV-Y7-FV", "TV-G", "TV-PG", "TV-14", "TV-MA" };
+        //Re-enable when/if we store and use mpaa certification
+        //private static List<string> ValidCertification = new List<string> { "G", "NC-17", "PG", "PG-13", "R", "UR", "UNRATED", "NR", "TV-Y", "TV-Y7", "TV-Y7-FV", "TV-G", "TV-PG", "TV-14", "TV-MA" };
 
         public override string Name => "Roksbox";
 
@@ -86,7 +87,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                         metadata.Type = MetadataType.MovieImage;
                         return metadata;
                     }
-                }                
+                }
             }
 
             return null;
@@ -98,7 +99,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             {
                 return null;
             }
-            
+
             _logger.Debug("Generating Movie File Metadata for: {0}", movieFile.RelativePath);
 
             var xmlResult = string.Empty;
@@ -116,21 +117,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                     details.Add(new XElement("title", movie.Title));
 
                     details.Add(new XElement("genre", string.Join(" / ", movie.Genres)));
-                    var actors = string.Join(" , ", movie.Actors.ConvertAll(c => c.Name + " - " + c.Character).GetRange(0, Math.Min(3, movie.Actors.Count)));
-                    details.Add(new XElement("actors", actors));
                     details.Add(new XElement("description", movie.Overview));
                     details.Add(new XElement("length", movie.Runtime));
-
-                    if (movie.Certification.IsNotNullOrWhiteSpace() &&
-                        ValidCertification.Contains(movie.Certification.ToUpperInvariant()))
-                    {
-                        details.Add(new XElement("mpaa", movie.Certification.ToUpperInvariant()));
-                    }
-
-                    else
-                    {
-                        details.Add(new XElement("mpaa", "UNRATED"));
-                    }
 
                     doc.Add(details);
                     doc.Save(xw);

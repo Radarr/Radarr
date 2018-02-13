@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -125,7 +125,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 }
 
                 details.Add(new XElement("plot", movie.Overview));
-                details.Add(new XElement("mpaa", movie.Certification));
                 details.Add(new XElement("id", movie.ImdbId));
                 details.Add(new XElement("year", movie.Year));
 
@@ -140,20 +139,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 }
 
                 details.Add(new XElement("studio", movie.Studio));
-
-                foreach (var actor in movie.Actors)
-                {
-                    var xmlActor = new XElement("actor",
-                        new XElement("name", actor.Name),
-                        new XElement("role", actor.Character));
-
-                    if (actor.Images.Any())
-                    {
-                        xmlActor.Add(new XElement("thumb", actor.Images.First().Url));
-                    }
-
-                    details.Add(xmlActor);
-                }
 
                 if (image == null)
                 {
