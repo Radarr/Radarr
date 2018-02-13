@@ -298,6 +298,7 @@
     <Compile Include="MusicTests\ArtistServiceTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\ArtistServiceTests\UpdateMultipleArtistFixture.cs" />
     <Compile Include="MusicTests\RefreshAlbumServiceFixture.cs" />
+    <Compile Include="MusicTests\ShouldRefreshAlbumFixture.cs" />
     <Compile Include="NotificationTests\NotificationBaseFixture.cs" />
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />

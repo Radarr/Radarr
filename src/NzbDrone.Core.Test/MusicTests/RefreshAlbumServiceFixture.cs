@@ -43,6 +43,10 @@ namespace NzbDrone.Core.Test.MusicTests
             Mocker.GetMock<IProvideAlbumInfo>()
                   .Setup(s => s.GetAlbumInfo(It.IsAny<string>(), It.IsAny<string>()))
                   .Callback(() => { throw new AlbumNotFoundException(album1.ForeignAlbumId); });
+
+            Mocker.GetMock<ICheckIfAlbumShouldBeRefreshed>()
+                .Setup(s => s.ShouldRefresh(It.IsAny<Album>()))
+                .Returns(true);
         }
 
         private void GivenNewAlbumInfo(Album album)

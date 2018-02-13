@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Music
         private readonly IProvideAlbumInfo _albumInfo;
         private readonly IRefreshTrackService _refreshTrackService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ICheckIfAlbumShouldBeRefreshed _checkIfAlbumShouldBeRefreshed;
         private readonly Logger _logger;
 
         public RefreshAlbumService(IAlbumService albumService,
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.Music
                                    IProvideAlbumInfo albumInfo,
                                    IRefreshTrackService refreshTrackService,
                                    IEventAggregator eventAggregator,
+                                   ICheckIfAlbumShouldBeRefreshed checkIfAlbumShouldBeRefreshed,
                                    Logger logger)
         {
             _albumService = albumService;
@@ -44,6 +46,7 @@ namespace NzbDrone.Core.Music
             _albumInfo = albumInfo;
             _refreshTrackService = refreshTrackService;
             _eventAggregator = eventAggregator;
+            _checkIfAlbumShouldBeRefreshed = checkIfAlbumShouldBeRefreshed;
             _logger = logger;
         }
 
@@ -51,7 +54,10 @@ namespace NzbDrone.Core.Music
         {
             foreach (var album in albums)
             {
-                RefreshAlbumInfo(album);
+                if (_checkIfAlbumShouldBeRefreshed.ShouldRefresh(album))
+                {
+                    RefreshAlbumInfo(album);
+                }
             }
         }
 
