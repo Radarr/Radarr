@@ -12,4 +12,11 @@ namespace NzbDrone.Core.Extras.Files
         public DateTime LastUpdated { get; set; }
         public string Extension { get; set; }
     }
+
+    public enum ExtraFileType
+    {
+        Subtitle = 0,
+        Metadata = 1,
+        Other = 2
+    }
 }
