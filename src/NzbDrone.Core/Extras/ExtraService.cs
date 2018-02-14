@@ -19,12 +19,15 @@ namespace NzbDrone.Core.Extras
     public interface IExtraService
     {
         void ImportExtraFiles(LocalEpisode localEpisode, EpisodeFile episodeFile, bool isReadOnly);
+        //void ImportExtraFiles(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
                                 IHandle<MediaCoversUpdatedEvent>,
                                 IHandle<EpisodeFolderCreatedEvent>,
-                                IHandle<SeriesRenamedEvent>
+                                IHandle<SeriesRenamedEvent>/*,
+                                IHandle<MovieFolderCreatedEvent>,
+                                IHandle<MovieRenamedEvent>*/
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IEpisodeService _episodeService;
@@ -61,43 +64,43 @@ namespace NzbDrone.Core.Extras
             // Not importing files yet, testing that parsing is working properly first
             return;
 
-            var sourcePath = localEpisode.Path;
-            var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
-            var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
-            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);
+            //var sourcePath = localEpisode.Path;
+            //var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
+            //var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
+            //var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);
 
-            var wantedExtensions = _configService.ExtraFileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                                                     .Select(e => e.Trim(' ', '.'))
-                                                                     .ToList();
+            //var wantedExtensions = _configService.ExtraFileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            //                                                         .Select(e => e.Trim(' ', '.'))
+            //                                                         .ToList();
 
-            var matchingFilenames = files.Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(sourceFileName));
+            //var matchingFilenames = files.Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(sourceFileName));
 
-            foreach (var matchingFilename in matchingFilenames)
-            {
-                var matchingExtension = wantedExtensions.FirstOrDefault(e => matchingFilename.EndsWith(e));
+            //foreach (var matchingFilename in matchingFilenames)
+            //{
+            //    var matchingExtension = wantedExtensions.FirstOrDefault(e => matchingFilename.EndsWith(e));
 
-                if (matchingExtension == null)
-                {
-                    continue;
-                }
+            //    if (matchingExtension == null)
+            //    {
+            //        continue;
+            //    }
 
-                try
-                {
-                    foreach (var extraFileManager in _extraFileManagers)
-                    {
-                        var extraFile = extraFileManager.Import(series, episodeFile, matchingFilename, matchingExtension, isReadOnly);
+            //    try
+            //    {
+            //        foreach (var extraFileManager in _extraFileManagers)
+            //        {
+            //            var extraFile = extraFileManager.Import(series, episodeFile, matchingFilename, matchingExtension, isReadOnly);
 
-                        if (extraFile != null)
-                        {
-                            break;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Failed to import extra file: {0}", matchingFilename);
-                }
-            }
+            //            if (extraFile != null)
+            //            {
+            //                break;
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        _logger.Warn(ex, "Failed to import extra file: {0}", matchingFilename);
+            //    }
+            //}
         }
 
         public void Handle(MediaCoversUpdatedEvent message)

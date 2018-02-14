@@ -12,10 +12,13 @@ namespace NzbDrone.Core.Extras.Files
     {
         int Order { get; }
         IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles);
+        IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie/*, List<EpisodeFile> episodeFiles*/);
         IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile);
+        IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie/*, MovieFile movieFile*/);
         IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
         IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
-        ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        //ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
     }
 
     public abstract class ExtraFileManager<TExtraFile> : IManageExtraFiles
@@ -37,14 +40,40 @@ namespace NzbDrone.Core.Extras.Files
 
         public abstract int Order { get; }
         public abstract IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie/*, List<EpisodeFile> episodeFiles*/);
         public abstract IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie/*, MovieFile movieFile*/);
         public abstract IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
         public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
         public abstract ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        public abstract ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
 
-        protected TExtraFile ImportFile(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
+        //protected TExtraFile ImportFile(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
+        //{
+        //    var newFileName = Path.Combine(series.Path, Path.ChangeExtension(episodeFile.RelativePath, extension));
+
+        //    var transferMode = TransferMode.Move;
+
+        //    if (readOnly)
+        //    {
+        //        transferMode = _configService.CopyUsingHardlinks ? TransferMode.HardLinkOrCopy : TransferMode.Copy;
+        //    }
+
+        //    _diskTransferService.TransferFile(path, newFileName, transferMode, true, false);
+
+        //    return new TExtraFile
+        //    {
+        //        SeriesId = series.Id,
+        //        SeasonNumber = episodeFile.SeasonNumber,
+        //        EpisodeFileId = episodeFile.Id,
+        //        RelativePath = series.Path.GetRelativePath(newFileName),
+        //        Extension = Path.GetExtension(path)
+        //    };
+        //}
+
+        protected TExtraFile ImportFile(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
         {
-            var newFileName = Path.Combine(series.Path, Path.ChangeExtension(episodeFile.RelativePath, extension));
+            var newFileName = Path.Combine(movie.Path, Path.ChangeExtension(movieFile.RelativePath, extension));
 
             var transferMode = TransferMode.Move;
 
@@ -57,10 +86,8 @@ namespace NzbDrone.Core.Extras.Files
 
             return new TExtraFile
             {
-                SeriesId = series.Id,
-                SeasonNumber = episodeFile.SeasonNumber,
-                EpisodeFileId = episodeFile.Id,
-                RelativePath = series.Path.GetRelativePath(newFileName),
+                MovieId = movie.Id,
+                RelativePath = movie.Path.GetRelativePath(newFileName),
                 Extension = Path.GetExtension(path)
             };
         }

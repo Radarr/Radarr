@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles
         string[] GetVideoFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
         List<string> FilterFiles(Series series, IEnumerable<string> files);
+        List<string> FilterFiles(Movie movie, IEnumerable<string> files);
     }
 
     public class DiskScanService :

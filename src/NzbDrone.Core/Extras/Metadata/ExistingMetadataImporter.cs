@@ -32,6 +32,61 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override int Order => 0;
 
+        public override IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles)
+        {
+            _logger.Debug("Looking for existing metadata in {0}", movie.Path);
+
+            var metadataFiles = new List<MetadataFile>();
+            var filterResult = FilterAndClean(movie, filesOnDisk, importedFiles);
+
+            foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
+            {
+                // Don't process files that have known Subtitle file extensions (saves a bit of unecessary processing)
+
+                if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
+                {
+                    continue;
+                }
+
+                foreach (var consumer in _consumers)
+                {
+                    var metadata = consumer.FindMetadataFile(movie, possibleMetadataFile);
+
+                    if (metadata == null)
+                    {
+                        continue;
+                    }
+
+                    if (metadata.Type == MetadataType.MovieImage ||
+                        metadata.Type == MetadataType.MovieMetadata)
+                    {
+                        var localMovie = _parsingService.GetLocalMovie(possibleMetadataFile, movie);
+
+                        if (localMovie == null)
+                        {
+                            _logger.Debug("Unable to parse extra file: {0}", possibleMetadataFile);
+                            continue;
+                        }
+
+                        metadata.MovieFileId = localMovie.Movie.MovieFileId;
+                    }
+
+                    metadata.Extension = Path.GetExtension(possibleMetadataFile);
+
+                    metadataFiles.Add(metadata);
+                }
+            }
+
+            _logger.Info("Found {0} existing metadata files", metadataFiles.Count);
+            _metadataFileService.Upsert(metadataFiles);
+
+            // Return files that were just imported along with files that were
+            // previously imported so previously imported files aren't imported twice
+
+            return metadataFiles.Concat(filterResult.PreviouslyImported);
+        }
+
+
         public override IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles)
         {
             _logger.Debug("Looking for existing metadata in {0}", series.Path);

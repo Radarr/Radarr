@@ -46,6 +46,21 @@ namespace NzbDrone.Core.Extras.Metadata
         public abstract List<ImageFileResult> SeasonImages(Series series, Season season);
         public abstract List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile);
 
+        // For Movies
+        public virtual string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
+        {
+            var existingFilename = Path.Combine(movie.Path, metadataFile.RelativePath);
+            var extension = Path.GetExtension(existingFilename).TrimStart('.');
+            var newFileName = Path.ChangeExtension(Path.Combine(movie.Path, movieFile.RelativePath), extension);
+
+            return newFileName;
+        }
+
+        public abstract MetadataFile FindMetadataFile(Movie movie, string path);
+        public abstract MetadataFileResult MovieMetadata(Movie movie);
+        public abstract List<ImageFileResult> MovieImages(Movie movie);
+        // End Movies
+
         public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
 
         protected TSettings Settings => (TSettings)Definition.Settings;

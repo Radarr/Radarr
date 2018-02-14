@@ -137,6 +137,7 @@
     <Compile Include="Datastore\Migration\130_remove_wombles_kickass.cs" />
     <Compile Include="Datastore\Migration\132_rename_torrent_downloadstation.cs" />
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
+    <Compile Include="Datastore\Migration\135_update_metadata_files.cs" />
     <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitle.cs" />
@@ -925,12 +926,6 @@
     <Compile Include="MetadataSource\SkyHook\SkyHookProxy.cs" />
     <Compile Include="MetadataSource\SearchSeriesComparer.cs" />
     <Compile Include="MetadataSource\SkyHook\SkyHookException.cs" />
-    <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadata.cs" />
-    <Compile Include="Extras\Metadata\Consumers\MediaBrowser\MediaBrowserMetadataSettings.cs" />
-    <Compile Include="Extras\Metadata\Consumers\Roksbox\RoksboxMetadata.cs" />
-    <Compile Include="Extras\Metadata\Consumers\Roksbox\RoksboxMetadataSettings.cs" />
-    <Compile Include="Extras\Metadata\Consumers\Wdtv\WdtvMetadata.cs" />
-    <Compile Include="Extras\Metadata\Consumers\Wdtv\WdtvMetadataSettings.cs" />
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcMetadata.cs" />
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcMetadataSettings.cs" />
     <Compile Include="Extras\Metadata\ExistingMetadataImporter.cs" />

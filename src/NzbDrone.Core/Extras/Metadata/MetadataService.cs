@@ -82,6 +82,37 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie/*, MovieFile movieFile*/)
+        {
+            var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
+            _cleanMetadataService.Clean(movie);
+
+            if (!_diskProvider.FolderExists(movie.Path))
+            {
+                _logger.Info("Movie folder does not exist, skipping metadata creation");
+                return Enumerable.Empty<MetadataFile>();
+            }
+
+            var files = new List<MetadataFile>();
+
+            foreach (var consumer in _metadataFactory.Enabled())
+            {
+                var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
+
+                files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, consumerFiles));
+                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+                //files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+
+                //files.AddIfNotNull(ProcessEpisodeMetadata(consumer, movie, movieFile, consumerFiles));
+                //files.AddRange(ProcessEpisodeImages(consumer, movie, movieFile, consumerFiles));
+ 
+            }
+
+            _metadataFileService.Upsert(files);
+
+            return files;
+        }
+
         public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile)
         {
             var files = new List<MetadataFile>();
@@ -97,6 +128,23 @@ namespace NzbDrone.Core.Extras.Metadata
 
             return files;
         }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie/*, MovieFile movieFile*/)
+        {
+            var files = new List<MetadataFile>();
+
+            foreach (var consumer in _metadataFactory.Enabled())
+            {
+
+                files.AddIfNotNull(ProcessMovieMetadata(consumer, movie/*, movieFile*/, new List<MetadataFile>()));
+                files.AddRange(ProcessMovieImages(consumer, movie/*, movieFile*/, new List<MetadataFile>()));
+            }
+
+            _metadataFileService.Upsert(files);
+
+            return files;
+        }
+
 
         public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder)
         {
@@ -176,9 +224,14 @@ namespace NzbDrone.Core.Extras.Metadata
             return null;
         }
 
-        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> seriesMetadata)
+        public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
         {
-            return seriesMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
+            return null;
+        }
+
+        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> movieMetadata)
+        {
+            return movieMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
         }
 
         private MetadataFile ProcessSeriesMetadata(IMetadata consumer, Series series, List<MetadataFile> existingMetadataFiles)
@@ -219,6 +272,49 @@ namespace NzbDrone.Core.Extras.Metadata
 
             metadata.Hash = hash;
             metadata.RelativePath = seriesMetadata.RelativePath;
+            metadata.Extension = Path.GetExtension(fullPath);
+
+            return metadata;
+        }
+
+        private MetadataFile ProcessMovieMetadata(IMetadata consumer, Movie movie, List<MetadataFile> existingMetadataFiles)
+        {
+            var movieMetadata = consumer.MovieMetadata(movie);
+
+            if (movieMetadata == null)
+            {
+                return null;
+            }
+
+            var hash = movieMetadata.Contents.SHA256Hash();
+
+            var metadata = GetMetadataFile(movie, existingMetadataFiles, e => e.Type == MetadataType.SeriesMetadata) ??
+                               new MetadataFile
+                               {
+                                   MovieId = movie.Id,
+                                   Consumer = consumer.GetType().Name,
+                                   Type = MetadataType.SeriesMetadata
+                               };
+
+            if (hash == metadata.Hash)
+            {
+                if (movieMetadata.RelativePath != metadata.RelativePath)
+                {
+                    metadata.RelativePath = movieMetadata.RelativePath;
+
+                    return metadata;
+                }
+
+                return null;
+            }
+
+            var fullPath = Path.Combine(movie.Path, movieMetadata.RelativePath);
+
+            _logger.Debug("Writing Movie Metadata to: {0}", fullPath);
+            SaveMetadataFile(fullPath, movieMetadata.Contents);
+
+            metadata.Hash = hash;
+            metadata.RelativePath = movieMetadata.RelativePath;
             metadata.Extension = Path.GetExtension(fullPath);
 
             return metadata;
@@ -301,6 +397,39 @@ namespace NzbDrone.Core.Extras.Metadata
                                };
 
                 DownloadImage(series, image);
+
+                result.Add(metadata);
+            }
+
+            return result;
+        }
+
+        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, List<MetadataFile> existingMetadataFiles)
+        {
+            var result = new List<MetadataFile>();
+
+            foreach (var image in consumer.MovieImages(movie))
+            {
+                var fullPath = Path.Combine(movie.Path, image.RelativePath);
+
+                if (_diskProvider.FileExists(fullPath))
+                {
+                    _logger.Debug("Movie image already exists: {0}", fullPath);
+                    continue;
+                }
+
+                var metadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
+                                                                              c.RelativePath == image.RelativePath) ??
+                               new MetadataFile
+                               {
+                                   MovieId = movie.Id,
+                                   Consumer = consumer.GetType().Name,
+                                   Type = MetadataType.SeriesImage,
+                                   RelativePath = image.RelativePath,
+                                   Extension = Path.GetExtension(fullPath)
+                               };
+
+                DownloadImage(movie, image);
 
                 result.Add(metadata);
             }
@@ -421,6 +550,32 @@ namespace NzbDrone.Core.Extras.Metadata
             }
         }
 
+        private void DownloadImage(Movie movie, ImageFileResult image)
+        {
+            var fullPath = Path.Combine(movie.Path, image.RelativePath);
+
+            try
+            {
+                if (image.Url.StartsWith("http"))
+                {
+                    _httpClient.DownloadFile(image.Url, fullPath);
+                }
+                else
+                {
+                    _diskProvider.CopyFile(image.Url, fullPath);
+                }
+                _mediaFileAttributeService.SetFilePermissions(fullPath);
+            }
+            catch (WebException ex)
+            {
+                _logger.Warn(ex, "Couldn't download image {0} for {1}. {2}", image.Url, movie, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Couldn't download image {0} for {1}. {2}", image.Url, movie, ex.Message);
+            }
+        }
+
         private void SaveMetadataFile(string path, string contents)
         {
             _diskProvider.WriteAllText(path, contents);
@@ -448,6 +603,31 @@ namespace NzbDrone.Core.Extras.Metadata
             }
 
             
+            return matchingMetadataFiles.First();
+        }
+
+
+        private MetadataFile GetMetadataFile(Movie movie, List<MetadataFile> existingMetadataFiles, Func<MetadataFile, bool> predicate)
+        {
+            var matchingMetadataFiles = existingMetadataFiles.Where(predicate).ToList();
+
+            if (matchingMetadataFiles.Empty())
+            {
+                return null;
+            }
+
+            //Remove duplicate metadata files from DB and disk
+            foreach (var file in matchingMetadataFiles.Skip(1))
+            {
+                var path = Path.Combine(movie.Path, file.RelativePath);
+
+                _logger.Debug("Removing duplicate Metadata file: {0}", path);
+
+                _diskProvider.DeleteFile(path);
+                _metadataFileService.Delete(file.Id);
+            }
+
+
             return matchingMetadataFiles.First();
         }
     }

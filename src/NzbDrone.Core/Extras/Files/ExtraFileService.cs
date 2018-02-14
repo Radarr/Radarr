@@ -17,6 +17,9 @@ namespace NzbDrone.Core.Extras.Files
     {
         List<TExtraFile> GetFilesBySeries(int seriesId);
         List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId);
+
+        List<TExtraFile> GetFilesByMovie(int movieId);
+
         TExtraFile FindByPath(string path);
         void Upsert(TExtraFile extraFile);
         void Upsert(List<TExtraFile> extraFiles);
@@ -25,30 +28,35 @@ namespace NzbDrone.Core.Extras.Files
     }
 
     public abstract class ExtraFileService<TExtraFile> : IExtraFileService<TExtraFile>,
-                                                         IHandleAsync<SeriesDeletedEvent>,
-                                                         IHandleAsync<EpisodeFileDeletedEvent>
+                                                         IHandleAsync<MovieDeletedEvent>,
+                                                         IHandleAsync<MovieFileDeletedEvent>
         where TExtraFile : ExtraFile, new()
     {
         private readonly IExtraFileRepository<TExtraFile> _repository;
-        private readonly ISeriesService _seriesService;
+        private readonly IMovieService _movieService;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
 
         public ExtraFileService(IExtraFileRepository<TExtraFile> repository,
-                                ISeriesService seriesService,
+                                IMovieService movieService,
                                 IDiskProvider diskProvider,
                                 IRecycleBinProvider recycleBinProvider,
                                 Logger logger)
         {
             _repository = repository;
-            _seriesService = seriesService;
+            _movieService = movieService;
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
             _logger = logger;
         }
 
         public virtual bool PermanentlyDelete => false;
+
+        public List<TExtraFile> GetFilesByMovie(int movieId)
+        {
+            return _repository.GetFilesByMovie(movieId);
+        }
 
         public List<TExtraFile> GetFilesBySeries(int seriesId)
         {
@@ -96,15 +104,15 @@ namespace NzbDrone.Core.Extras.Files
             _repository.DeleteMany(ids);
         }
 
-        public void HandleAsync(SeriesDeletedEvent message)
+        public void HandleAsync(MovieDeletedEvent message)
         {
-            _logger.Debug("Deleting Extra from database for series: {0}", message.Series);
-            _repository.DeleteForSeries(message.Series.Id);
+            _logger.Debug("Deleting Extra from database for movie: {0}", message.Movie);
+            _repository.DeleteForMovie(message.Movie.Id);
         }
 
-        public void HandleAsync(EpisodeFileDeletedEvent message)
+        public void HandleAsync(MovieFileDeletedEvent message)
         {
-            var episodeFile = message.EpisodeFile;
+            var movieFile = message.MovieFile;
 
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
@@ -113,11 +121,11 @@ namespace NzbDrone.Core.Extras.Files
 
             else
             {
-                var series = _seriesService.GetSeries(message.EpisodeFile.SeriesId);
+                var movie = _movieService.GetMovie(movieFile.MovieId);
 
-                foreach (var extra in _repository.GetFilesByEpisodeFile(episodeFile.Id))
+                foreach (var extra in _repository.GetFilesByMovieFile(movieFile.Id))
                 {
-                    var path = Path.Combine(series.Path, extra.RelativePath);
+                    var path = Path.Combine(movie.Path, extra.RelativePath);
 
                     if (_diskProvider.FileExists(path))
                     {
@@ -135,8 +143,8 @@ namespace NzbDrone.Core.Extras.Files
                 }
             }
 
-            _logger.Debug("Deleting Extra from database for episode file: {0}", episodeFile);
-            _repository.DeleteForEpisodeFile(episodeFile.Id);
+            _logger.Debug("Deleting Extra from database for episode file: {0}", movieFile);
+            _repository.DeleteForMovieFile(movieFile.Id);
         }
     }
 }

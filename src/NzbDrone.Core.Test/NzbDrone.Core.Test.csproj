@@ -313,8 +313,6 @@
     <Compile Include="Messaging\Commands\CommandEqualityComparerFixture.cs" />
     <Compile Include="Messaging\Commands\CommandExecutorFixture.cs" />
     <Compile Include="Messaging\Events\EventAggregatorFixture.cs" />
-    <Compile Include="Metadata\Consumers\Roksbox\FindMetadataFileFixture.cs" />
-    <Compile Include="Metadata\Consumers\Wdtv\FindMetadataFileFixture.cs" />
     <Compile Include="NotificationTests\PlexClientServiceTest.cs" />
     <Compile Include="NotificationTests\ProwlProviderTest.cs" />
     <Compile Include="NotificationTests\Xbmc\OnDownloadFixture.cs" />
@@ -574,6 +572,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataAugmentation\SceneNumbering\" />
+    <Folder Include="Metadata\Consumers\Roksbox\" />
+    <Folder Include="Metadata\Consumers\Wdtv\" />
     <Folder Include="Providers\" />
     <Folder Include="ProviderTests\UpdateProviderTests\" />
     <Folder Include="IndexerTests\PTPTests\" />
