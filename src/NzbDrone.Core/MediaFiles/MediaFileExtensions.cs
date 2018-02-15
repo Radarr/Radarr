@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using NzbDrone.Core.Qualities;
 
 
@@ -82,7 +83,7 @@ namespace NzbDrone.Core.MediaFiles
             };
         }
 
-        public static HashSet<string> Extensions => new HashSet<string>(_fileExtensions.Keys);
+        public static HashSet<string> Extensions => new HashSet<string>(_fileExtensions.Keys, StringComparer.OrdinalIgnoreCase);
 
         public static Source GetSourceForExtension(string extension)
         {

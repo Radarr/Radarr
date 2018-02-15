@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Api.Indexers;
 using System.Linq;
@@ -7,15 +7,16 @@ using System.Net;
 namespace NzbDrone.Integration.Test.ApiTests
 {
     [TestFixture]
+    [Ignore("Need mock Newznab to test")]
     public class ReleaseFixture : IntegrationTest
     {
         [Test]
-        public void should_only_have_unknown_series_releases()
+        public void should_only_have_unknown_movie_releases()
         {
             var releases = Releases.All();
             var indexers = Indexers.All();
 
-            releases.Should().OnlyContain(c => c.Rejections.Contains("Unknown Series"));
+            releases.Should().OnlyContain(c => c.Rejections.Contains("Unknown Movie"));
             releases.Should().OnlyContain(c => BeValidRelease(c));
         }
 

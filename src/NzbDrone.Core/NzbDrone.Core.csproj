@@ -125,6 +125,7 @@
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\142_movie_extras.cs" />
     <Compile Include="Datastore\Migration\140_add_alternative_titles_table.cs" />
     <Compile Include="Datastore\Migration\141_fix_duplicate_alt_titles.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="Backup\Backup.cs" />
     <Compile Include="Backup\BackupCommand.cs" />
     <Compile Include="Backup\BackupService.cs" />
+    <Compile Include="Backup\MakeDatabaseBackup.cs" />
     <Compile Include="Blacklisting\Blacklist.cs" />
     <Compile Include="Blacklisting\BlacklistRepository.cs" />
     <Compile Include="Blacklisting\BlacklistService.cs" />
@@ -1379,11 +1381,7 @@
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="NetImport\ImportExclusions\" />
-    <Folder Include="NetImport\Radarr\" />
-    <Folder Include="MetadataSource\RadarrAPI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

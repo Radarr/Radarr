@@ -111,6 +111,18 @@ module.exports = Marionette.Layout.extend({
                     icon : 'icon-radarr-delete-white',
                     className: 'btn-danger',
                     callback : this._deleteSelected
+                },
+				{
+                    title : 'Select All',
+                    icon : 'icon-sonarr-checked',
+                    className: 'btn-primary',
+                    callback : this._selectAll
+                },
+				{
+                    title : 'Unselect All',
+                    icon : 'icon-sonarr-unchecked',
+                    className: 'btn-primary',
+                    callback : this._unselectAll
                 }
             ]
         };
@@ -245,5 +257,28 @@ module.exports = Marionette.Layout.extend({
         var updateFilesMoviesView = new DeleteSelectedView({ movies : selected });
 
         vent.trigger(vent.Commands.OpenModalCommand, updateFilesMoviesView);
-    }
+    },
+    
+    _selectAll : function() {
+		    var pageSize = this.movieCollection.state.pageSize;
+		    var currentPage = this.movieCollection.state.currentPage;
+		    this.movieCollection.setPageSize(this.movieCollection.fullCollection.length, { fetch: false});
+		    this.movieCollection.each(function(model) {
+		    	model.trigger('backgrid:selected', model, true);	
+		    });
+		    this.movieCollection.setPageSize(pageSize, {fetch: false});
+		    this.movieCollection.getPage(currentPage, {fetch: false});
+	},
+
+	_unselectAll : function() {
+		    var pageSize = this.movieCollection.state.pageSize;
+		    var currentPage = this.movieCollection.state.currentPage;
+		    this.movieCollection.setPageSize(this.movieCollection.fullCollection.length, { fetch: false});
+		    this.movieCollection.each(function(model) {
+		   	model.trigger('backgrid:selected', model, false);
+	        });
+		    this.movieCollection.setPageSize(pageSize, {fetch: false});
+		    this.movieCollection.getPage(currentPage, {fetch: false});
+	}
+	
 });

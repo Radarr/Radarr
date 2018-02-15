@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Api.Extensions;
 using RestSharp;
@@ -8,7 +8,7 @@ namespace NzbDrone.Integration.Test
     [TestFixture]
     public class CorsFixture : IntegrationTest
     {
-        private RestRequest BuildGet(string route = "series")
+        private RestRequest BuildGet(string route = "movie")
         {
             var request = new RestRequest(route, Method.GET);
             request.AddHeader(AccessControlHeaders.RequestMethod, "POST");
@@ -16,7 +16,7 @@ namespace NzbDrone.Integration.Test
             return request;
         }
 
-        private RestRequest BuildOptions(string route = "series")
+        private RestRequest BuildOptions(string route = "movie")
         {
             var request = new RestRequest(route, Method.OPTIONS);
 

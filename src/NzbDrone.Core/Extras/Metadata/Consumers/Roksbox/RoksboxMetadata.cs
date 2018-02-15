@@ -32,30 +32,30 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             _logger = logger;
         }
 
-        private static List<string> ValidCertification = new List<string> { "G", "NC-17", "PG", "PG-13", "R", "UR", "UNRATED", "NR", "TV-Y", "TV-Y7", "TV-Y7-FV", "TV-G", "TV-PG", "TV-14", "TV-MA" };
-        private static readonly Regex SeasonImagesRegex = new Regex(@"^(season (?<season>\d+))|(?<specials>specials)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        //Re-enable when/if we store and use mpaa certification
+        //private static List<string> ValidCertification = new List<string> { "G", "NC-17", "PG", "PG-13", "R", "UR", "UNRATED", "NR", "TV-Y", "TV-Y7", "TV-Y7-FV", "TV-G", "TV-PG", "TV-14", "TV-MA" };
 
         public override string Name => "Roksbox";
 
-        public override string GetFilenameAfterMove(Series series, EpisodeFile episodeFile, MetadataFile metadataFile)
+        public override string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
         {
-            var episodeFilePath = Path.Combine(series.Path, episodeFile.RelativePath);
+            var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
 
-            if (metadataFile.Type == MetadataType.EpisodeImage)
+            if (metadataFile.Type == MetadataType.MovieImage)
             {
-                return GetEpisodeImageFilename(episodeFilePath);
+                return GetMovieFileImageFilename(movieFilePath);
             }
 
-            if (metadataFile.Type == MetadataType.EpisodeMetadata)
+            if (metadataFile.Type == MetadataType.MovieMetadata)
             {
-                return GetEpisodeMetadataFilename(episodeFilePath);
+                return GetMovieFileMetadataFilename(movieFilePath);
             }
 
-            _logger.Debug("Unknown episode file metadata: {0}", metadataFile.RelativePath);
-            return Path.Combine(series.Path, metadataFile.RelativePath);
+            _logger.Debug("Unknown movie file metadata: {0}", metadataFile.RelativePath);
+            return Path.Combine(movie.Path, metadataFile.RelativePath);
         }
 
-        public override MetadataFile FindMetadataFile(Series series, string path)
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
         {
             var filename = Path.GetFileName(path);
 
@@ -64,81 +64,47 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
             var metadata = new MetadataFile
                            {
-                               SeriesId = series.Id,
+                               MovieId = movie.Id,
                                Consumer = GetType().Name,
-                               RelativePath = series.Path.GetRelativePath(path)
+                               RelativePath = movie.Path.GetRelativePath(path)
                            };
 
-            //Series and season images are both named folder.jpg, only season ones sit in season folders
-            if (Path.GetFileNameWithoutExtension(filename).Equals(parentdir.Name, StringComparison.InvariantCultureIgnoreCase))
-            {
-                var seasonMatch = SeasonImagesRegex.Match(parentdir.Name);
+            var parseResult = Parser.Parser.ParseMovieTitle(filename, false);
 
-                if (seasonMatch.Success)
-                {
-                    metadata.Type = MetadataType.SeasonImage;
-
-                    if (seasonMatch.Groups["specials"].Success)
-                    {
-                        metadata.SeasonNumber = 0;
-                    }
-
-                    else
-                    {
-                        metadata.SeasonNumber = Convert.ToInt32(seasonMatch.Groups["season"].Value);
-                    }
-
-                    return metadata;
-                }
-
-                metadata.Type = MetadataType.SeriesImage;
-                return metadata;
-            }
-
-            ParsedEpisodeInfo parseResult = null;//Parser.Parser.ParseTitle(filename);
-
-            if (parseResult != null &&
-                !parseResult.FullSeason)
+            if (parseResult != null)
             {
                 var extension = Path.GetExtension(filename).ToLowerInvariant();
 
                 if (extension == ".xml")
                 {
-                    metadata.Type = MetadataType.EpisodeMetadata;
+                    metadata.Type = MetadataType.MovieMetadata;
                     return metadata;
                 }
 
                 if (extension == ".jpg")
                 {
-                    if (!Path.GetFileNameWithoutExtension(filename).EndsWith("-thumb"))
+                    if (Path.GetFileNameWithoutExtension(filename).Equals(parentdir.Name, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        metadata.Type = MetadataType.EpisodeImage;
+                        metadata.Type = MetadataType.MovieImage;
                         return metadata;
                     }
-                }                
+                }
             }
 
             return null;
         }
 
-        public override MetadataFileResult SeriesMetadata(Series series)
+        public override MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile)
         {
-            //Series metadata is not supported
-            return null;
-        }
-
-        public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
-        {
-            if (!Settings.EpisodeMetadata)
+            if (!Settings.MovieMetadata)
             {
                 return null;
             }
-            
-            _logger.Debug("Generating Episode Metadata for: {0}", episodeFile.RelativePath);
+
+            _logger.Debug("Generating Movie File Metadata for: {0}", movieFile.RelativePath);
 
             var xmlResult = string.Empty;
-            foreach (var episode in episodeFile.Episodes.Value)
-            {
+
                 var sb = new StringBuilder();
                 var xws = new XmlWriterSettings();
                 xws.OmitXmlDeclaration = true;
@@ -149,24 +115,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                     var doc = new XDocument();
 
                     var details = new XElement("video");
-                    details.Add(new XElement("title", string.Format("{0} - {1}x{2} - {3}", series.Title, episode.SeasonNumber, episode.EpisodeNumber, episode.Title)));
-                    details.Add(new XElement("year", episode.AirDate));
-                    details.Add(new XElement("genre", string.Join(" / ", series.Genres)));
-                    var actors = string.Join(" , ", series.Actors.ConvertAll(c => c.Name + " - " + c.Character).GetRange(0, Math.Min(3, series.Actors.Count)));
-                    details.Add(new XElement("actors", actors));
-                    details.Add(new XElement("description", episode.Overview));
-                    details.Add(new XElement("length", series.Runtime));
+                    details.Add(new XElement("title", movie.Title));
 
-                    if (series.Certification.IsNotNullOrWhiteSpace() &&
-                        ValidCertification.Contains(series.Certification.ToUpperInvariant()))
-                    {
-                        details.Add(new XElement("mpaa", series.Certification.ToUpperInvariant()));
-                    }
-
-                    else
-                    {
-                        details.Add(new XElement("mpaa", "UNRATED"));
-                    }
+                    details.Add(new XElement("genre", string.Join(" / ", movie.Genres)));
+                    details.Add(new XElement("description", movie.Overview));
+                    details.Add(new XElement("length", movie.Runtime));
 
                     doc.Add(details);
                     doc.Save(xw);
@@ -174,111 +127,39 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                     xmlResult += doc.ToString();
                     xmlResult += Environment.NewLine;
                 }
-            }
 
-            return new MetadataFileResult(GetEpisodeMetadataFilename(episodeFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
+
+            return new MetadataFileResult(GetMovieFileMetadataFilename(movieFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
-        public override List<ImageFileResult> SeriesImages(Series series)
+        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
         {
-            var image = series.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? series.Images.FirstOrDefault();
+            if (!Settings.MovieImages)
+            {
+                return new List<ImageFileResult>();
+            }
+
+            var image = movie.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? movie.Images.FirstOrDefault();
             if (image == null)
             {
-                _logger.Trace("Failed to find suitable Series image for series {0}.", series.Title);
+                _logger.Trace("Failed to find suitable Movie image for movie {0}.", movie.Title);
                 return null;
             }
 
-            var source = _mediaCoverService.GetCoverPath(series.Id, image.CoverType);
-            var destination = Path.GetFileName(series.Path) + Path.GetExtension(source);
+            var source = _mediaCoverService.GetCoverPath(movie.Id, image.CoverType);
+            var destination = Path.GetFileName(movie.Path) + Path.GetExtension(source);
 
-            return new List<ImageFileResult>{ new ImageFileResult(destination, source) };
+            return new List<ImageFileResult> { new ImageFileResult(destination, source) };
         }
 
-        public override List<ImageFileResult> SeasonImages(Series series, Season season)
+        private string GetMovieFileMetadataFilename(string movieFilePath)
         {
-            var seasonFolders = GetSeasonFolders(series);
-
-            string seasonFolder;
-            if (!seasonFolders.TryGetValue(season.SeasonNumber, out seasonFolder))
-            {
-                _logger.Trace("Failed to find season folder for series {0}, season {1}.", series.Title, season.SeasonNumber);
-                return new List<ImageFileResult>();
-            }
-
-            //Roksbox only supports one season image, so first of all try for poster otherwise just use whatever is first in the collection
-            var image = season.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? season.Images.FirstOrDefault();
-            if (image == null)
-            {
-                _logger.Trace("Failed to find suitable season image for series {0}, season {1}.", series.Title, season.SeasonNumber);
-                return new List<ImageFileResult>();
-            }
-
-            var filename = Path.GetFileName(seasonFolder) + ".jpg";
-            var path = series.Path.GetRelativePath(Path.Combine(series.Path, seasonFolder, filename));
-
-            return new List<ImageFileResult> { new ImageFileResult(path, image.Url) };
+            return Path.ChangeExtension(movieFilePath, "xml");
         }
 
-        public override List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile)
+        private string GetMovieFileImageFilename(string movieFilePath)
         {
-            var screenshot = episodeFile.Episodes.Value.First().Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
-
-            if (screenshot == null)
-            {
-                _logger.Trace("Episode screenshot not available");
-                return new List<ImageFileResult>();
-            }
-
-            return new List<ImageFileResult> {new ImageFileResult(GetEpisodeImageFilename(episodeFile.RelativePath), screenshot.Url)};
-        }
-
-        private string GetEpisodeMetadataFilename(string episodeFilePath)
-        {
-            return Path.ChangeExtension(episodeFilePath, "xml");
-        }
-
-        private string GetEpisodeImageFilename(string episodeFilePath)
-        {
-            return Path.ChangeExtension(episodeFilePath, "jpg");
-        }
-
-        private Dictionary<int, string> GetSeasonFolders(Series series)
-        {
-            var seasonFolderMap = new Dictionary<int, string>();
-
-            foreach (var folder in _diskProvider.GetDirectories(series.Path))
-            {
-                var directoryinfo = new DirectoryInfo(folder);
-                var seasonMatch = SeasonImagesRegex.Match(directoryinfo.Name);
-
-                if (seasonMatch.Success)
-                {
-                    var seasonNumber = seasonMatch.Groups["season"].Value;
-
-                    if (seasonNumber.Contains("specials"))
-                    {
-                        seasonFolderMap[0] = folder;
-                    }
-                    else
-                    {
-                        int matchedSeason;
-                        if (int.TryParse(seasonNumber, out matchedSeason))
-                        {
-                            seasonFolderMap[matchedSeason] = folder;
-                        }
-                        else
-                        {
-                            _logger.Debug("Failed to parse season number from {0} for series {1}.", folder, series.Title);
-                        }
-                    }
-                }
-                else
-                {
-                    _logger.Debug("Rejecting folder {0} for series {1}.", Path.GetDirectoryName(folder), series.Title);
-                }
-            }
-
-            return seasonFolderMap;
+            return Path.ChangeExtension(movieFilePath, "jpg");
         }
     }
 }

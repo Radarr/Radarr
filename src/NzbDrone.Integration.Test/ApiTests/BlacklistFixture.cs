@@ -1,23 +1,23 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Series;
+using NzbDrone.Api.Movie;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {
     [TestFixture]
     public class BlacklistFixture : IntegrationTest
     {
-        private SeriesResource _series;
+        private MovieResource _movie;
 
         [Test]
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _series = EnsureSeries(266189, "The Blacklist");
+            _movie = EnsureMovie("tt0110912", "The Blacklist");
 
             Blacklist.Post(new Api.Blacklist.BlacklistResource
             {
-                SeriesId = _series.Id,
+                MovieId = _movie.Id,
                 SourceTitle = "Blacklist.S01E01.Brought.To.You.By-BoomBoxHD"
             });
         }

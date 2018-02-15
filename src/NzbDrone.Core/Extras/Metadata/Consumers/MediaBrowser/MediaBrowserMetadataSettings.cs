@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -18,11 +18,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
         public MediaBrowserMetadataSettings()
         {
-            SeriesMetadata = true;
+            MovieMetadata = true;
         }
 
-        [FieldDefinition(0, Label = "Series Metadata", Type = FieldType.Checkbox)]
-        public bool SeriesMetadata { get; set; }
+        [FieldDefinition(0, Label = "Movie Metadata", Type = FieldType.Checkbox)]
+        public bool MovieMetadata { get; set; }
 
         public bool IsValid => true;
 

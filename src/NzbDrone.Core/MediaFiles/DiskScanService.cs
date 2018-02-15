@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaFiles
         string[] GetVideoFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
         List<string> FilterFiles(Series series, IEnumerable<string> files);
+        List<string> FilterFiles(Movie series, IEnumerable<string> files);
     }
 
     public class DiskScanService :
@@ -213,7 +214,7 @@ namespace NzbDrone.Core.MediaFiles
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var filesOnDisk = _diskProvider.GetFiles(path, searchOption);
 
-            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
+            var mediaFileList = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
             _logger.Debug("{0} video files were found in {1}", mediaFileList.Count, path);
@@ -227,7 +228,7 @@ namespace NzbDrone.Core.MediaFiles
             var searchOption = allDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             var filesOnDisk = _diskProvider.GetFiles(path, searchOption);
 
-            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).ToLower()))
+            var mediaFileList = filesOnDisk.Where(file => !MediaFileExtensions.Extensions.Contains(Path.GetExtension(file)))
                                            .ToList();
 
             _logger.Debug("{0} non-video files were found in {1}", mediaFileList.Count, path);
@@ -267,7 +268,7 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.Warn(ex, "Unable to apply permissions to: " + path);
                 _logger.Debug(ex, ex.Message);
             }
-        }       
+        }
 
         public void Handle(SeriesUpdatedEvent message)
         {

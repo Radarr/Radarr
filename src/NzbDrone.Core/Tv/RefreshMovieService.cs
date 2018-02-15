@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,33 +24,30 @@ namespace NzbDrone.Core.Tv
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieService _movieService;
         private readonly IAlternativeTitleService _titleService;
-        private readonly IRefreshEpisodeService _refreshEpisodeService;
         private readonly IEventAggregator _eventAggregator;
-	private readonly IManageCommandQueue _commandQueueManager;
+        private readonly IManageCommandQueue _commandQueueManager;
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
         private readonly IRadarrAPIClient _apiClient;
-        
+
         private readonly Logger _logger;
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
                                     IAlternativeTitleService titleService,
-                                    IRefreshEpisodeService refreshEpisodeService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
                                     IRadarrAPIClient apiClient,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
-		                   IManageCommandQueue commandQueue,
+                                    IManageCommandQueue commandQueue,
                                     Logger logger)
         {
             _movieInfo = movieInfo;
             _movieService = movieService;
             _titleService = titleService;
-            _refreshEpisodeService = refreshEpisodeService;
             _eventAggregator = eventAggregator;
             _apiClient = apiClient;
-		    _commandQueueManager = commandQueue;
+            _commandQueueManager = commandQueue;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _logger = logger;
@@ -61,7 +58,7 @@ namespace NzbDrone.Core.Tv
             _logger.ProgressInfo("Updating Info for {0}", movie.Title);
 
             Movie movieInfo;
-            
+
             try
             {
                 movieInfo = _movieInfo.GetMovieInfo(movie.TmdbId, movie.Profile, movie.HasPreDBEntry);
@@ -99,7 +96,7 @@ namespace NzbDrone.Core.Tv
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
-			movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
+            movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
 
             try
             {
@@ -121,12 +118,12 @@ namespace NzbDrone.Core.Tv
                 var mappingsTitles = mappings.Item1;
 
                 movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
-                
+
                 _titleService.DeleteNotEnoughVotes(mappingsTitles);
 
                 mappingsTitles = mappingsTitles.ExceptBy(t => t.CleanTitle, movie.AlternativeTitles,
                     t => t.CleanTitle, EqualityComparer<string>.Default).ToList();
-                
+
 
                 mappingsTitles = mappingsTitles.Where(t => t.Votes > 3).ToList();
 
@@ -151,7 +148,7 @@ namespace NzbDrone.Core.Tv
             {
                 _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
-            
+
 
             _movieService.UpdateMovie(movie);
 
@@ -177,7 +174,7 @@ namespace NzbDrone.Core.Tv
             if (message.MovieId.HasValue)
             {
                 var movie = _movieService.GetMovie(message.MovieId.Value);
-				RefreshMovieInfo(movie);
+                RefreshMovieInfo(movie);
             }
             else
             {
@@ -202,7 +199,7 @@ namespace NzbDrone.Core.Tv
                         try
                         {
                             _logger.Info("Skipping refresh of movie: {0}", movie.Title);
-				_commandQueueManager.Push(new RenameMovieFolderCommand(new List<int>{movie.Id}));
+                            _commandQueueManager.Push(new RenameMovieFolderCommand(new List<int> { movie.Id }));
                             _diskScanService.Scan(movie);
                         }
                         catch (Exception e)

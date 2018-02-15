@@ -1,0 +1,40 @@
+version: 2
+
+jobs:
+    build:
+        docker:
+            - image: gallileo/radarr-cci-primary:4.8
+        steps:
+            - checkout
+            - run: git submodule update --init --recursive
+            - run:
+                name: Clean Build
+                command: ./build.sh Clean
+            - run:
+                name: Restore Nuget
+                command: ./build.sh NugetMono
+            - run:
+                name: Build
+                command: ./build.sh Build
+            - run:
+                name: Gulp
+                command: ./build.sh Gulp
+            - run:
+                name: Package
+                command: ./build.sh Package
+            - run:
+                name: Preparing Tests
+                command: mkdir _tests/reports
+            - run:
+                name: Testing
+                command: ./test.sh Linux Unit
+            - store_test_results:
+                path: _tests/reports/
+            - store_artifacts:
+                path: _output
+            - store_artifacts:
+                path: _output_mono
+            - store_artifacts:
+                path: _output_osx
+            - store_artifacts:
+                path: _output_osx_app

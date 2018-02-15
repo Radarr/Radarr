@@ -115,10 +115,12 @@
     <Compile Include="Extensions\Pipelines\CorsPipeline.cs" />
     <Compile Include="Extensions\Pipelines\UrlBasePipeline.cs" />
     <Compile Include="Extensions\Pipelines\RequestLoggingPipeline.cs" />
+    <Compile Include="ExtraFiles\ExtraFileResource.cs" />
     <Compile Include="Frontend\Mappers\LoginHtmlMapper.cs" />
     <Compile Include="Frontend\Mappers\RobotsTxtMapper.cs" />
     <Compile Include="Indexers\ReleaseModuleBase.cs" />
     <Compile Include="Indexers\ReleasePushModule.cs" />
+    <Compile Include="ExtraFiles\ExtraFileModule.cs" />
     <Compile Include="Movies\AlternativeTitleModule.cs" />
     <Compile Include="Movies\AlternativeYearResource.cs" />
     <Compile Include="Movies\AlternativeYearModule.cs" />

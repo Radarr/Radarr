@@ -30,7 +30,9 @@ $.fn.bindSearch = function() {
         },
         templates  : {
           empty : function(input) {
-            return '<div class="tt-dataset-series"><span class="tt-suggestions" style="display: block;"><div class="tt-suggestion"><p style="white-space: normal;"><a class="no-movies-found" href="/addmovies/search/' + input.query + '">Search for "' + input.query + '"</a></p></div></span></div>';
+            var escapedQuery = _.escape(input.query);
+
+            return "<div class='tt-dataset-series'><span class='tt-suggestions' style='display: block;'><div class='tt-suggestion'><p style='white-space: normal;'><a class='no-movies-found' href='/addmovies/search/'" + escapedQuery + "'>Search for " + escapedQuery + "</a></p></div></span></div>";
           },
         },
         source     : substringMatcher()

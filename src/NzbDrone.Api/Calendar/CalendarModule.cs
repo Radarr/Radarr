@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
@@ -17,7 +17,6 @@ using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.Tv;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Calendar

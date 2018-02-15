@@ -1,14 +1,14 @@
 var vent = require('vent');
 var Marionette = require('marionette');
-var Qualities = require('../../../Quality/QualityDefinitionCollection');
-var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
-var AsValidatedView = require('../../../Mixins/AsValidatedView');
-var AsEditModalView = require('../../../Mixins/AsEditModalView');
-require('../../../Mixins/TagInput');
-require('../../../Mixins/FileBrowser');
+var Qualities = require('../../../../Quality/QualityDefinitionCollection');
+var AsModelBoundView = require('../../../../Mixins/AsModelBoundView');
+var AsValidatedView = require('../../../../Mixins/AsValidatedView');
+var AsEditModalView = require('../../../../Mixins/AsEditModalView');
+require('../../../../Mixins/TagInput');
+require('../../../../Mixins/FileBrowser');
 
 var view = Marionette.ItemView.extend({
-		template : 'Movies/Files/Edit/EditFileTemplate',
+		template : 'Movies/Files/Media/Edit/EditFileTemplate',
 
 		ui : {
 				quality : '.x-quality',

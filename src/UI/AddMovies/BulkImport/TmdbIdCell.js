@@ -25,7 +25,7 @@ module.exports = NzbDroneCell.extend({
             var data = field.val();
 
             var promise = $.ajax({
-                url  : window.NzbDrone.ApiRoot + '/movies/lookup/tmdb?tmdbId=' + data,
+                url  : window.NzbDrone.ApiRoot + '/movie/lookup/tmdb?tmdbId=' + data,
                 type : 'GET',
             });
 

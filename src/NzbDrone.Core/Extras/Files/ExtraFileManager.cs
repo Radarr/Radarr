@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -11,11 +14,10 @@ namespace NzbDrone.Core.Extras.Files
     public interface IManageExtraFiles
     {
         int Order { get; }
-        IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles);
-        IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile);
-        IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
-        IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
-        ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
+        IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
+        IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
+        ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
     }
 
     public abstract class ExtraFileManager<TExtraFile> : IManageExtraFiles
@@ -23,29 +25,40 @@ namespace NzbDrone.Core.Extras.Files
 
     {
         private readonly IConfigService _configService;
+        private readonly IDiskProvider _diskProvider;
         private readonly IDiskTransferService _diskTransferService;
-        private readonly IExtraFileService<TExtraFile> _extraFileService;
+        private readonly Logger _logger;
 
         public ExtraFileManager(IConfigService configService,
+                                IDiskProvider diskProvider,
                                 IDiskTransferService diskTransferService,
-                                IExtraFileService<TExtraFile> extraFileService)
+                                Logger logger)
         {
             _configService = configService;
+            _diskProvider = diskProvider;
             _diskTransferService = diskTransferService;
-            _extraFileService = extraFileService;
+            _logger = logger;
         }
 
         public abstract int Order { get; }
-        public abstract IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles);
-        public abstract IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile);
-        public abstract IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder);
-        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles);
-        public abstract ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
+        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
+        public abstract ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
 
-        protected TExtraFile ImportFile(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
+        protected TExtraFile ImportFile(Movie movie, MovieFile movieFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
         {
-            var newFileName = Path.Combine(series.Path, Path.ChangeExtension(episodeFile.RelativePath, extension));
+            var newFolder = Path.GetDirectoryName(Path.Combine(movie.Path, movieFile.RelativePath));
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(movieFile.RelativePath));
 
+            if (fileNameSuffix.IsNotNullOrWhiteSpace())
+            {
+                filenameBuilder.Append(fileNameSuffix);
+            }
+
+            filenameBuilder.Append(extension);
+
+            var newFileName = Path.Combine(newFolder, filenameBuilder.ToString());
             var transferMode = TransferMode.Move;
 
             if (readOnly)
@@ -57,12 +70,45 @@ namespace NzbDrone.Core.Extras.Files
 
             return new TExtraFile
             {
-                SeriesId = series.Id,
-                SeasonNumber = episodeFile.SeasonNumber,
-                EpisodeFileId = episodeFile.Id,
-                RelativePath = series.Path.GetRelativePath(newFileName),
-                Extension = Path.GetExtension(path)
+                MovieId = movie.Id,
+                MovieFileId = movieFile.Id,
+                RelativePath = movie.Path.GetRelativePath(newFileName),
+                Extension = extension
             };
+        }
+
+        protected TExtraFile MoveFile(Movie movie, MovieFile movieFile, TExtraFile extraFile, string fileNameSuffix = null)
+        {
+            var newFolder = Path.GetDirectoryName(Path.Combine(movie.Path, movieFile.RelativePath));
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(movieFile.RelativePath));
+
+            if (fileNameSuffix.IsNotNullOrWhiteSpace())
+            {
+                filenameBuilder.Append(fileNameSuffix);
+            }
+            
+            filenameBuilder.Append(extraFile.Extension);
+
+            var existingFileName = Path.Combine(movie.Path, extraFile.RelativePath);
+            var newFileName = Path.Combine(newFolder, filenameBuilder.ToString());
+
+            if (newFileName.PathNotEquals(existingFileName))
+            {
+                try
+                {
+                    _diskProvider.MoveFile(existingFileName, newFileName);
+                    extraFile.RelativePath = movie.Path.GetRelativePath(newFileName);
+
+                    return extraFile;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to move file after rename: {0}", existingFileName);
+                }
+            }
+
+            return null;
         }
     }
 }
+

@@ -1,5 +1,104 @@
 # Changelog
 
+## (unreleased)
+
+### **New features**
+- Importing extra files from downloaded movies and generate metadata such as .nfo (#2506) [Qstick]
+- Quotes around alternative titles (#2522) [Qstick]
+- Backup improvements from Sonarr (#2513) [Qstick]
+- NzbDrone references in FirewallAdapter.cs (#2504) [Qstick]
+
+### **Fixes**
+- Integration Unit Tests (#2500) [Qstick]
+- XSS vulnerability in the navbar search. (#2505) [Scott]
+- StartNzbDroneService.cs unit test (#2499) [Qstick]
+- SelectAll and deselectAll MovieEditor buttons. [geogolem]
+- Fix build problem on windows. [geogolem]
+- Revert "Fixed: Removed hebrew ISO, since english movies are still in english. (#1922)" [Leonardo Galli]
+- Error with deluge when it doesn’t report a Hash. [Leonardo Galli]
+- Logging error when accessing mount point. [Leonardo Galli]
+- Invalid runtime from CP causing issues importing. [Leonardo Galli]
+- Typo in TMDB Settings. [Leonardo Galli]
+- Hopefully fixed errors with Delay Profiles. [Leonardo Galli]
+- Error when importing files and old folder doesn’t exist. [Leonardo Galli]
+- Zooqle torrents not getting added, since their torrent file is messed up. [Leonardo Galli]
+
+
+## v0.2.0.935 (2018-02-06)
+
+### **New features**
+- Include total space with root folders. [Leonardo Galli]
+- Manual Import now adds year after movie title for filtering. This should help finding movies such as IT. [Leonardo Galli]
+- Option to require indexer flags per indexer. (e.g. only download freeleech torrents from a private tracker) (#2460) [Leonardo Galli]
+- Files downloaded with different quality than grabbed will get rejected. [Leonardo Galli]
+- TMDbSettings.cs to allow pipe for or for genre ids (#2389) [crhammock]
+- Dynamic paths cleanup old folders now! [Leonardo Galli]
+
+### **Fixes**
+- No Physical Release Date causing exception when setting last write time. [Leonardo Galli]
+- Movies not getting unmonitored when folder gets deleted. [Leonardo Galli]
+- Rare case of null quality causing issues with manual import. [Leonardo Galli]
+- Manual Import not automatically choosing right movie. [Leonardo Galli]
+- Rare case of RequiredIndexerFlags failing with old Newznab indexers. [Leonardo Galli]
+- Folder name getting messed up when adding movies via a list. [Leonardo Galli]
+- Error when adding an already excluded movie to the exclusion list. [Leonardo Galli]
+- Last commit still not compiling (whoops squared) [Leonardo Galli]
+- Last commit not compiling (whoops) [Leonardo Galli]
+- Clean Library being to agressive when lists are having failures. [Leonardo Galli]
+- Error when nno quality was associated with a movie file. [Leonardo Galli]
+- Allowing in use Profiles to be Deleted. [Leonardo Galli]
+- Error when Movie has no imdbid when searching Rargb. [Leonardo Galli]
+- Rargb failing when imdbid is not found. [Leonardo Galli]
+- {Original Filename} not allowed in Movie Filename. [Leonardo Galli]
+- Look for changes to package.json before using old build cache (#2445) [Qstick]
+- HistoryDetailsLayoutTemplate.hbs (#2361) [Pieter Janssens]
+
+
+## v0.2.0.910 (2017-12-13)
+
+### **New features**
+- Separate naming tags for AudioLanguage and SubtitleLanguage (#2261) (Fixes #2257) [fhscholl]
+- Include APFS disks in disk space calculation. [Leonardo Galli]
+- Upgrade MediaInfo to 17.10 (Windows/macOS) [Leonardo Galli]
+- Support for VF2 french tag. (#2291) (Fixes #2290) [kriegalex]
+- Customize Slack Channel (#2308) (Fixes #2298) [grokdesigns]
+- SceneName to MovieFile API output (#2250) (Fixes #2245) [fhscholl]
+- Functionality to XBMC and Plex to update indivdual titles. Also: Notification Cleanup (#2240) [fhscholl]
+- FolderPath to the Movie Webhook (#2230) [adnanklink]
+- Download_Id to On Download/On Upgrade (#2229) [adnanklink]
+- Movie_Quality to onGrab (#2221) (Fixes #1833) [fhscholl]
+- Webhook Improvements (#2220) (Fixes #1751) [fhscholl]
+- Message about adblockers preventing the log table from loading (#2213) (Fixes #2209) [James White]
+- Sabnzbd Update test cases and rename to MovieCategory (#2212) [James White]
+- Nzbget Rename TvCategory references to MovieCategory (#2211) [James White]
+- Change default port of qBittorrent download client config (#2187) [James White]
+- Initial state for torrents added to qBittorrent (#2176) [James White]
+- Adjust ambiguous date options (#2165) [James White]
+- A default name for Radarr.ics (#2163) [James White]
+
+### **Fixes**
+- Fixed MediaCover endpoint. [Taloth Saldono]
+- Don't handle content requests in IndexHtmlMapper. [Mark McDowall]
+- Movies parsed from lists with no year and only title getting added mutliple times. [Leonardo Galli]
+- Security Vulnerabilities allowing authentication to be bypassed (discovered by Kyle Neideck) [Taloth Saldono]
+- Movie Editor Path screwed up. Might also fix some other movie editor issues. (Fixes #2170) [Leonardo Galli]
+- Tags disappearing (Fixes #2204) [Leonardo Galli]
+- Moment.js deprecated zone and add functions (Fixes #2232) (Fixes #2231) (#2264) [Fish2]
+- CPU locking at a 100% in certain instances. (#2258) (Fixes #2218) [Mike]
+- Revert "Fixed: moment.js deprecated zone and Added: and lossless compression of images (#2232) (Fixes #2231)" [Fish2]
+- Moment.js deprecated zone and Added: and lossless compression of images (#2232) (Fixes #2231) [Fish2]
+- Fixes #2218. (#2254) [Mike]
+- Minor error message tweak (#1778) [Oliver Rivett-Carnac]
+- UTorrent initial state feature (#2192) [James White]
+- Add IsUpgrade and related deleted file paths for CustomScript (#2205) [fhscholl]
+- Typo on margin-bottom (#2182) [James White]
+- Manual Import. Fixes #2160. [Leonardo Galli]
+- Remove unit on zero values (#2178) [James White]
+- Jackett apikey cleaned from log again. (#2177) [James White]
+- Manual Movie Page Filtering. [Leonardo Galli]
+- MediaInfo not getting read when quality isn't Bluray, Web-dl or HDTV. Fixes #1465. Fixes #1572. [Leonardo Galli]
+
+
 ## v0.2.0.870 (2017-10-09)
 
 ### **New features**

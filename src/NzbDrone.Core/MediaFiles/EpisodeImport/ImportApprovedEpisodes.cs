@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport
 
                     if (newDownload)
                     {
-                        _extraService.ImportExtraFiles(localEpisode, episodeFile, copyOnly);
+                        // _extraService.ImportExtraFiles(localEpisode, episodeFile, copyOnly);
                     }
 
                     if (downloadClientItem != null)

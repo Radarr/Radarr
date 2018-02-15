@@ -9,9 +9,9 @@ if [ -d "$TEST_DIR/_tests" ]; then
   TEST_DIR="$TEST_DIR/_tests"
 fi
 
-NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe"
+NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe"
 NUNIT_COMMAND="$NUNIT"
-NUNIT_PARAMS="--teamcity"
+NUNIT_PARAMS="--result=$TEST_DIR/reports/results.xml;transform=.circleci/nunit3-junit.xslt"
 
 if [ "$PLATFORM" = "Windows" ]; then
   WHERE="$WHERE && cat != LINUX"
