@@ -54,6 +54,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
         }
 
+        public override MetadataFile FindMetadataFile(Movie movie, string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFile FindMetadataFile(Series series, string path)
         {
             var filename = Path.GetFileName(path);
@@ -119,6 +124,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
             return null;
         }
 
+        public override MetadataFileResult MovieMetadata(Movie movie)
+        {
+            throw new NotImplementedException();
+        }
+
         public override MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile)
         {
             if (!Settings.EpisodeMetadata)
@@ -168,6 +178,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
             var filename = GetEpisodeMetadataFilename(episodeFile.RelativePath);
 
             return new MetadataFileResult(filename, xmlResult.Trim(Environment.NewLine.ToCharArray()));
+        }
+
+        public override List<ImageFileResult> MovieImages(Movie movie)
+        {
+            throw new NotImplementedException();
         }
 
         public override List<ImageFileResult> SeriesImages(Series series)

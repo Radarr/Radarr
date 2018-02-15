@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Extras.Metadata.Files
     public interface ICleanMetadataService
     {
         void Clean(Series series);
+        void Clean(Movie movie);
     }
 
     public class CleanExtraFileService : ICleanMetadataService
@@ -34,6 +35,22 @@ namespace NzbDrone.Core.Extras.Metadata.Files
             foreach (var metadataFile in metadataFiles)
             {
                 if (!_diskProvider.FileExists(Path.Combine(series.Path, metadataFile.RelativePath)))
+                {
+                    _logger.Debug("Deleting metadata file from database: {0}", metadataFile.RelativePath);
+                    _metadataFileService.Delete(metadataFile.Id);
+                }
+            }
+        }
+
+        public void Clean(Movie movie)
+        {
+            _logger.Debug("Cleaning missing metadata files for movie: {0}", movie.Title);
+
+            var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
+
+            foreach (var metadataFile in metadataFiles)
+            {
+                if (!_diskProvider.FileExists(Path.Combine(movie.Path, metadataFile.RelativePath)))
                 {
                     _logger.Debug("Deleting metadata file from database: {0}", metadataFile.RelativePath);
                     _metadataFileService.Delete(metadataFile.Id);

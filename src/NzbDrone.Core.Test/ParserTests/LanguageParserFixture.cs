@@ -67,13 +67,18 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Language.Should().Be(language);
         }
 
-        [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English)]
-        [TestCase("2 Broke Girls - S01E01 - Pilot.eng.sub", Language.English)]
-        [TestCase("2 Broke Girls - S01E01 - Pilot.sub", Language.Unknown)]
-        public void should_parse_subtitle_language(string fileName, Language language)
+        [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English, null)]
+        [TestCase("2 Broke Girls - S01E01 - Pilot.eng.sub", Language.English, null)]
+        [TestCase("2 Broke Girls - S01E01 - Pilot.sub", Language.Unknown, null)]
+        [TestCase("2 Broke Girls - S01E01 - Pilot.en.forced.sub", Language.English, "forced")]
+        [TestCase("2 Broke Girls - S01E01 - Pilot.eng.forced.sub", Language.English, "forced")]
+        [TestCase("2 Broke Girls - S01E01 - Pilot.forced.sub", Language.Unknown, "forced")]
+        public void should_parse_subtitle_language(string fileName, Language language, string specialType)
         {
-            var result = LanguageParser.ParseSubtitleLanguage(fileName);
+            string _specialType;
+            var result = LanguageParser.ParseSubtitleLanguage(fileName, out _specialType);
             result.Should().Be(language);
+            _specialType.Should().Be(specialType);
         }
     }
 }

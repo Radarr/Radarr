@@ -39,12 +39,16 @@ namespace NzbDrone.Core.Extras.Metadata
         }
 
         public abstract MetadataFile FindMetadataFile(Series series, string path);
+        public abstract MetadataFile FindMetadataFile(Movie movie, string path);
 
         public abstract MetadataFileResult SeriesMetadata(Series series);
         public abstract MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile);
         public abstract List<ImageFileResult> SeriesImages(Series series);
         public abstract List<ImageFileResult> SeasonImages(Series series, Season season);
         public abstract List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile);
+
+        public abstract MetadataFileResult MovieMetadata(Movie movie);
+        public abstract List<ImageFileResult> MovieImages(Movie movie);
 
         public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
 

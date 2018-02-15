@@ -60,13 +60,16 @@ namespace NzbDrone.Core.Extras.Subtitles
                         continue;
                     }
 
+                    string specialType;
+
                     var subtitleFile = new SubtitleFile
                                        {
                                            SeriesId = series.Id,
                                            SeasonNumber = localEpisode.SeasonNumber,
                                            EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId,
                                            RelativePath = series.Path.GetRelativePath(possibleSubtitleFile),
-                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
+                                           Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out specialType),
+                                           SpecialType = specialType,
                                            Extension = extension
                                        };
 
@@ -82,5 +85,57 @@ namespace NzbDrone.Core.Extras.Subtitles
 
             return subtitleFiles.Concat(filterResult.PreviouslyImported);
         }
-    }
+
+        public override IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles)
+        {
+            _logger.Debug("Looking for existing subtitle files in {0}", movie.Path);
+
+            var subtitleFiles = new List<SubtitleFile>();
+            var filterResult = FilterAndClean(movie, filesOnDisk, importedFiles);
+
+            foreach (var possibleSubtitleFile in filterResult.FilesOnDisk)
+            {
+                var extension = Path.GetExtension(possibleSubtitleFile);
+
+                if (SubtitleFileExtensions.Extensions.Contains(extension))
+                {
+                    var localMovie = _parsingService.GetLocalMovie(possibleSubtitleFile, movie);
+
+                    if (localMovie == null)
+                    {
+                        _logger.Debug("Unable to parse subtitle file: {0}", possibleSubtitleFile);
+                        continue;
+                    }
+
+                    if (localMovie.Movie == null)
+                    {
+                        _logger.Debug("Cannot find related movie for: {0}", possibleSubtitleFile);
+                        continue;
+                    }
+
+                    string specialType;
+
+                    var subtitleFile = new SubtitleFile
+                    {
+                        MovieId = movie.Id,
+                        MovieFileId = localMovie.Movie.MovieFileId,
+                        RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
+                        Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile, out specialType),
+                        SpecialType = specialType,
+                        Extension = extension
+                    };
+
+                    subtitleFiles.Add(subtitleFile);
+                }
+            }
+
+            _logger.Info("Found {0} existing subtitle files", subtitleFiles.Count);
+            _subtitleFileService.Upsert(subtitleFiles);
+
+            // Return files that were just imported along with files that were
+            // previously imported so previously imported files aren't imported twice
+
+            return subtitleFiles.Concat(filterResult.PreviouslyImported);
+        }
+}
 }

@@ -1306,6 +1306,7 @@
     <Compile Include="MetadataSource\RadarrAPI\RadarrResources.cs" />
     <Compile Include="MetadataSource\RadarrAPI\RadarrAPIClient.cs" />
     <Compile Include="Datastore\Migration\139_fix_indexer_baseurl.cs" />
+    <Compile Include="Datastore\Migration\142_update_extra_and_subtitle.cs" />
     <Compile Include="Notifications\Xbmc\Model\XbmcMovie.cs" />
     <Compile Include="Notifications\Xbmc\Model\MovieResponse.cs" />
     <Compile Include="Notifications\Xbmc\Model\MovieResult.cs" />

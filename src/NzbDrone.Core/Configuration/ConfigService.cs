@@ -294,9 +294,15 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableMediaInfo", value); }
         }
 
+        public bool ImportExtraFiles
+        {
+            get { return GetValueBoolean("ImportExtraFiles", false); }
+            set { SetValue("ImportExtraFiles", value); }
+        }
+
         public string ExtraFileExtensions
         {
-            get { return GetValue("ExtraFileExtensions", ""); }
+            get { return GetValue("ExtraFileExtensions", "srt"); }
 
             set { SetValue("ExtraFileExtensions", value); }
         }

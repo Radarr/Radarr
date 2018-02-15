@@ -13,6 +13,11 @@ namespace NzbDrone.Core.Extras.Files
         List<TExtraFile> GetFilesBySeries(int seriesId);
         List<TExtraFile> GetFilesBySeason(int seriesId, int seasonNumber);
         List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId);
+
+        void DeleteForMovie(int movieId);
+        void DeleteForMovieFile(int movieFileId);
+        List<TExtraFile> GetFilesByMovie(int movieId);
+        List<TExtraFile> GetFilesByMovieFile(int movieFileId);
         TExtraFile FindByPath(string path);
     }
 
@@ -52,6 +57,26 @@ namespace NzbDrone.Core.Extras.Files
         public List<TExtraFile> GetFilesByEpisodeFile(int episodeFileId)
         {
             return Query.Where(c => c.EpisodeFileId == episodeFileId);
+        }
+
+        public void DeleteForMovie(int movieId)
+        {
+            Delete(c => c.MovieId == movieId);
+        }
+
+        public void DeleteForMovieFile(int movieFileId)
+        {
+            Delete(c => c.MovieFileId == movieFileId);
+        }
+
+        public List<TExtraFile> GetFilesByMovie(int movieId)
+        {
+            return Query.Where(c => c.MovieId == movieId);
+        }
+
+        public List<TExtraFile> GetFilesByMovieFile(int movieFileId)
+        {
+            return Query.Where(c => c.MovieFileId == movieFileId);
         }
 
         public TExtraFile FindByPath(string path)

@@ -16,6 +16,9 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        //only handle forced for now, but this could be expanded for more special types
+        private static readonly Regex SubtitleSpecialTypeRegex = new Regex("(?<base_filename>.+?)[-_. ](?<special_type>forced)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public static Language ParseLanguage(string title)
         {
             var lowerTitle = title.ToLower();
@@ -112,13 +115,23 @@ namespace NzbDrone.Core.Parser
             return Language.English;
         }
 
-        public static Language ParseSubtitleLanguage(string fileName)
+        public static Language ParseSubtitleLanguage(string fileName, out string specialType)
         {
+            specialType = null;
             try
             {
                 Logger.Debug("Parsing language from subtitle file: {0}", fileName);
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
+                var specialTypeMatch = SubtitleSpecialTypeRegex.Match(simpleFilename);
+
+                if (specialTypeMatch.Success)
+                {
+                    specialType = specialTypeMatch.Groups["special_type"].Value;
+                    Logger.Debug("Found special type {0}", specialType);
+                    simpleFilename = specialTypeMatch.Groups["base_filename"].Value;
+                }
+
                 var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);
 
                 if (languageMatch.Success)
@@ -129,11 +142,11 @@ namespace NzbDrone.Core.Parser
                     return isoLanguage?.Language ?? Language.Unknown;
                 }
 
-                Logger.Debug("Unable to parse langauge from subtitle file: {0}", fileName);
+                Logger.Debug("Unable to parse language from subtitle file: {0}", fileName);
             }
-            catch (Exception ex)
+            catch
             {
-                Logger.Debug("Failed parsing langauge from subtitle file: {0}", fileName);
+                Logger.Debug("Failed parsing language from subtitle file: {0}", fileName);
             }
             
             return Language.Unknown;

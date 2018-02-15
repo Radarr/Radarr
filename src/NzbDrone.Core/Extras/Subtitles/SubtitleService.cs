@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,18 +16,16 @@ namespace NzbDrone.Core.Extras.Subtitles
     public class SubtitleService : ExtraFileManager<SubtitleFile>
     {
         private readonly ISubtitleFileService _subtitleFileService;
-        private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         public SubtitleService(IConfigService configService,
+                               IDiskProvider diskProvider,
                                IDiskTransferService diskTransferService,
                                ISubtitleFileService subtitleFileService,
-                               IDiskProvider diskProvider,
                                Logger logger)
-            : base(configService, diskTransferService, subtitleFileService)
+            : base(configService, diskProvider, diskTransferService, logger)
         {
             _subtitleFileService = subtitleFileService;
-            _diskProvider = diskProvider;
             _logger = logger;
         }
 
@@ -49,13 +46,23 @@ namespace NzbDrone.Core.Extras.Subtitles
             return Enumerable.Empty<SubtitleFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles)
         {
-            // TODO: Remove
-            // We don't want to move files after rename yet.
-
-            return Enumerable.Empty<ExtraFile>();
-
             var subtitleFiles = _subtitleFileService.GetFilesBySeries(series.Id);
 
             var movedFiles = new List<SubtitleFile>();
@@ -63,7 +70,7 @@ namespace NzbDrone.Core.Extras.Subtitles
             foreach (var episodeFile in episodeFiles)
             {
                 var groupedExtraFilesForEpisodeFile = subtitleFiles.Where(m => m.EpisodeFileId == episodeFile.Id)
-                                                            .GroupBy(s => s.Language + s.Extension).ToList();
+                                                                   .GroupBy(s => s.Language + s.SpecialType + s.Extension).ToList();
 
                 foreach (var group in groupedExtraFilesForEpisodeFile)
                 {
@@ -72,28 +79,49 @@ namespace NzbDrone.Core.Extras.Subtitles
 
                     if (groupCount > 1)
                     {
-                        _logger.Warn("Multiple subtitle files found with the same language and extension for {0}", Path.Combine(series.Path, episodeFile.RelativePath));
+                        _logger.Warn("Multiple subtitle files found with the same language, special type, and extension for {0}", Path.Combine(series.Path, episodeFile.RelativePath));
                     }
 
-                    foreach (var extraFile in group)
+                    foreach (var subtitleFile in group)
                     {
-                        var existingFileName = Path.Combine(series.Path, extraFile.RelativePath);
-                        var extension = GetExtension(extraFile, existingFileName, copy, groupCount > 1);
-                        var newFileName = Path.ChangeExtension(Path.Combine(series.Path, episodeFile.RelativePath), extension);
+                        var suffix = GetSuffix(subtitleFile.Language, copy, groupCount > 1, subtitleFile.SpecialType);
+                        movedFiles.AddIfNotNull(MoveFile(series, episodeFile, subtitleFile, suffix));
 
-                        if (newFileName.PathNotEquals(existingFileName))
-                        {
-                            try
-                            {
-                                _diskProvider.MoveFile(existingFileName, newFileName);
-                                extraFile.RelativePath = series.Path.GetRelativePath(newFileName);
-                                movedFiles.Add(extraFile);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.Warn(ex, "Unable to move subtitle file: {0}", existingFileName);
-                            }
-                        }
+                        copy++;
+                    }
+                }
+            }
+
+            _subtitleFileService.Upsert(movedFiles);
+
+            return movedFiles;
+        }
+
+        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
+        {
+            var subtitleFiles = _subtitleFileService.GetFilesByMovie(movie.Id);
+
+            var movedFiles = new List<SubtitleFile>();
+
+            foreach (var movieFile in movieFiles)
+            {
+                var groupedExtraFilesForMovieFile = subtitleFiles.Where(m => m.MovieFileId == movieFile.Id)
+                                                                 .GroupBy(s => s.Language + s.SpecialType + s.Extension).ToList();
+
+                foreach (var group in groupedExtraFilesForMovieFile)
+                {
+                    var groupCount = group.Count();
+                    var copy = 1;
+
+                    if (groupCount > 1)
+                    {
+                        _logger.Warn("Multiple subtitle files found with the same language, special type, and extension for {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+                    }
+
+                    foreach (var subtitleFile in group)
+                    {
+                        var suffix = GetSuffix(subtitleFile.Language, copy, groupCount > 1, subtitleFile.SpecialType);
+                        movedFiles.AddIfNotNull(MoveFile(movie, movieFile, subtitleFile, suffix));
 
                         copy++;
                     }
@@ -109,8 +137,12 @@ namespace NzbDrone.Core.Extras.Subtitles
         {
             if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
             {
-                var subtitleFile = ImportFile(series, episodeFile, path, extension, readOnly);
-                subtitleFile.Language = LanguageParser.ParseSubtitleLanguage(path);
+                string specialType;
+                var language = LanguageParser.ParseSubtitleLanguage(path, out specialType);
+                var suffix = GetSuffix(language, 1, false, specialType);
+                var subtitleFile = ImportFile(series, episodeFile, path, readOnly, extension, suffix);
+                subtitleFile.Language = language;
+                subtitleFile.SpecialType = specialType;
 
                 _subtitleFileService.Upsert(subtitleFile);
 
@@ -120,26 +152,48 @@ namespace NzbDrone.Core.Extras.Subtitles
             return null;
         }
 
-        private string GetExtension(SubtitleFile extraFile, string existingFileName, int copy, bool multipleCopies = false)
+        public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
         {
-            var fileExtension = Path.GetExtension(existingFileName);
-            var extensionBuilder = new StringBuilder();
+            if (SubtitleFileExtensions.Extensions.Contains(Path.GetExtension(path)))
+            {
+                string specialType;
+                var language = LanguageParser.ParseSubtitleLanguage(path, out specialType);
+                var suffix = GetSuffix(language, 1, false, specialType);
+                var subtitleFile = ImportFile(movie, movieFile, path, readOnly, extension, suffix);
+                subtitleFile.Language = language;
+                subtitleFile.SpecialType = specialType;
+
+                _subtitleFileService.Upsert(subtitleFile);
+
+                return subtitleFile;
+            }
+
+            return null;
+        }
+
+        private string GetSuffix(Language language, int copy, bool multipleCopies = false, string specialType = null)
+        {
+            var suffixBuilder = new StringBuilder();
 
             if (multipleCopies)
             {
-                extensionBuilder.Append(copy);
-                extensionBuilder.Append(".");
+                suffixBuilder.Append(".");
+                suffixBuilder.Append(copy);
             }
 
-            if (extraFile.Language != Language.Unknown)
+            if (language != Language.Unknown)
             {
-                extensionBuilder.Append(IsoLanguages.Get(extraFile.Language).TwoLetterCode);
-                extensionBuilder.Append(".");
+                suffixBuilder.Append(".");
+                suffixBuilder.Append(IsoLanguages.Get(language).TwoLetterCode);
             }
 
-            extensionBuilder.Append(fileExtension.TrimStart('.'));
+            if (specialType.IsNotNullOrWhiteSpace())
+            {
+                suffixBuilder.Append(".");
+                suffixBuilder.Append(specialType);
+            }
 
-            return extensionBuilder.ToString();
+            return suffixBuilder.ToString();
         }
     }
 }

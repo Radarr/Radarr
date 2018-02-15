@@ -15,19 +15,15 @@ namespace NzbDrone.Core.Extras.Others
     public class OtherExtraService : ExtraFileManager<OtherExtraFile>
     {
         private readonly IOtherExtraFileService _otherExtraFileService;
-        private readonly IDiskProvider _diskProvider;
-        private readonly Logger _logger;
 
         public OtherExtraService(IConfigService configService,
+                                 IDiskProvider diskProvider,
                                  IDiskTransferService diskTransferService,
                                  IOtherExtraFileService otherExtraFileService,
-                                 IDiskProvider diskProvider,
                                  Logger logger)
-            : base(configService, diskTransferService, otherExtraFileService)
+            : base(configService, diskProvider, diskTransferService, logger)
         {
             _otherExtraFileService = otherExtraFileService;
-            _diskProvider = diskProvider;
-            _logger = logger;
         }
 
         public override int Order => 2;
@@ -47,13 +43,23 @@ namespace NzbDrone.Core.Extras.Others
             return Enumerable.Empty<ExtraFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
+        {
+            return Enumerable.Empty<ExtraFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile)
+        {
+            return Enumerable.Empty<ExtraFile>();
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            return Enumerable.Empty<ExtraFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles)
         {
-            // TODO: Remove
-            // We don't want to move files after rename yet.
-
-            return Enumerable.Empty<ExtraFile>();
-
             var extraFiles = _otherExtraFileService.GetFilesBySeries(series.Id);
             var movedFiles = new List<OtherExtraFile>();
 
@@ -63,23 +69,27 @@ namespace NzbDrone.Core.Extras.Others
 
                 foreach (var extraFile in extraFilesForEpisodeFile)
                 {
-                    var existingFileName = Path.Combine(series.Path, extraFile.RelativePath);
-                    var extension = Path.GetExtension(existingFileName).TrimStart('.');
-                    var newFileName = Path.ChangeExtension(Path.Combine(series.Path, episodeFile.RelativePath), extension);
+                    movedFiles.AddIfNotNull(MoveFile(series, episodeFile, extraFile));
+                }
+            }
 
-                    if (newFileName.PathNotEquals(existingFileName))
-                    {
-                        try
-                        {
-                            _diskProvider.MoveFile(existingFileName, newFileName);
-                            extraFile.RelativePath = series.Path.GetRelativePath(newFileName);
-                            movedFiles.Add(extraFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.Warn(ex, "Unable to move extra file: {0}", existingFileName);
-                        }
-                    }
+            _otherExtraFileService.Upsert(movedFiles);
+
+            return movedFiles;
+        }
+
+        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
+        {
+            var extraFiles = _otherExtraFileService.GetFilesByMovie(movie.Id);
+            var movedFiles = new List<OtherExtraFile>();
+
+            foreach (var movieFile in movieFiles)
+            {
+                var extraFilesForMovieFile = extraFiles.Where(m => m.MovieFileId == movieFile.Id).ToList();
+
+                foreach (var extraFile in extraFilesForMovieFile)
+                {
+                    movedFiles.AddIfNotNull(MoveFile(movie, movieFile, extraFile));
                 }
             }
 
@@ -91,12 +101,27 @@ namespace NzbDrone.Core.Extras.Others
         public override ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)
         {
             // If the extension is .nfo we need to change it to .nfo-orig
+            if (Path.GetExtension(path).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
+            {
+                extension += "-orig";
+            }
+
+            var extraFile = ImportFile(series, episodeFile, path, readOnly, extension, null);
+
+            _otherExtraFileService.Upsert(extraFile);
+
+            return extraFile;
+        }
+
+        public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
+        {
+            // If the extension is .nfo we need to change it to .nfo-orig
             if (Path.GetExtension(path).Equals(".nfo"))
             {
                 extension += "-orig";
             }
 
-            var extraFile = ImportFile(series, episodeFile, path, extension, readOnly);
+            var extraFile = ImportFile(movie, movieFile, path, readOnly, extension, null);
 
             _otherExtraFileService.Upsert(extraFile);
 

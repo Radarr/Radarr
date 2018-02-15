@@ -27,15 +27,15 @@ namespace NzbDrone.Core.Extras.Metadata
         private readonly Logger _logger;
 
         public MetadataService(IConfigService configService,
+                               IDiskProvider diskProvider,
                                IDiskTransferService diskTransferService,
                                IMetadataFactory metadataFactory,
                                ICleanMetadataService cleanMetadataService,
-                               IDiskProvider diskProvider,
                                IHttpClient httpClient,
                                IMediaFileAttributeService mediaFileAttributeService,
                                IMetadataFileService metadataFileService,
                                Logger logger)
-            : base(configService, diskTransferService, metadataFileService)
+            : base(configService, diskProvider, diskTransferService, logger)
         {
             _metadataFactory = metadataFactory;
             _cleanMetadataService = cleanMetadataService;
@@ -48,6 +48,12 @@ namespace NzbDrone.Core.Extras.Metadata
         }
 
         public override int Order => 0;
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
+        {
+            //throw new NotImplementedException();
+            return new List<MetadataFile>();
+        }
 
         public override IEnumerable<ExtraFile> CreateAfterSeriesScan(Series series, List<EpisodeFile> episodeFiles)
         {
@@ -82,6 +88,12 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            //throw new NotImplementedException();
+            return null;
+        }
+
         public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, EpisodeFile episodeFile)
         {
             var files = new List<MetadataFile>();
@@ -96,6 +108,12 @@ namespace NzbDrone.Core.Extras.Metadata
             _metadataFileService.Upsert(files);
 
             return files;
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile)
+        {
+            //throw new NotImplementedException();
+            return new List<MetadataFile>();
         }
 
         public override IEnumerable<ExtraFile> CreateAfterEpisodeImport(Series series, string seriesFolder, string seasonFolder)
@@ -130,6 +148,12 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
+        public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
+        {
+            //throw new NotImplementedException();
+            return new List<MetadataFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Series series, List<EpisodeFile> episodeFiles)
         {
             var metadataFiles = _metadataFileService.GetFilesBySeries(series.Id);
@@ -159,7 +183,7 @@ namespace NzbDrone.Core.Extras.Metadata
                             }
                             catch (Exception ex)
                             {
-                                _logger.Warn(ex, "Unable to move metadata file: {0}", existingFileName);
+                                _logger.Warn(ex, "Unable to move metadata file after rename: {0}", existingFileName);
                             }
                         }
                     }
@@ -169,6 +193,12 @@ namespace NzbDrone.Core.Extras.Metadata
             _metadataFileService.Upsert(movedFiles);
 
             return movedFiles;
+        }
+
+        public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
+        {
+            //throw new NotImplementedException();
+            return null;
         }
 
         public override ExtraFile Import(Series series, EpisodeFile episodeFile, string path, string extension, bool readOnly)

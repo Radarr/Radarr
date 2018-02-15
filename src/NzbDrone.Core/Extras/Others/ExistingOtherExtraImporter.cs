@@ -76,5 +76,55 @@ namespace NzbDrone.Core.Extras.Others
 
             return extraFiles.Concat(filterResult.PreviouslyImported);
         }
+
+        public override IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles)
+        {
+            _logger.Debug("Looking for existing extra files in {0}", movie.Path);
+
+            var extraFiles = new List<OtherExtraFile>();
+            var filterResult = FilterAndClean(movie, filesOnDisk, importedFiles);
+
+            foreach (var possibleExtraFile in filterResult.FilesOnDisk)
+            {
+                var extension = Path.GetExtension(possibleExtraFile);
+                if (extension.IsNullOrWhiteSpace())
+                {
+                    _logger.Debug("No extension for file: {0}", possibleExtraFile);
+                    continue;
+                }
+
+                var localMovie = _parsingService.GetLocalMovie(possibleExtraFile, movie);
+
+                if (localMovie == null)
+                {
+                    _logger.Debug("Unable to parse extra file: {0}", possibleExtraFile);
+                    continue;
+                }
+
+                if (localMovie.Movie == null)
+                {
+                    _logger.Debug("Cannot find related movie for: {0}", possibleExtraFile);
+                    continue;
+                }
+
+                var extraFile = new OtherExtraFile
+                {
+                    MovieId = movie.Id,
+                    MovieFileId = localMovie.Movie.MovieFileId,
+                    RelativePath = movie.Path.GetRelativePath(possibleExtraFile),
+                    Extension = extension
+                };
+
+                extraFiles.Add(extraFile);
+            }
+
+            _logger.Info("Found {0} existing other extra files", extraFiles.Count);
+            _otherExtraFileService.Upsert(extraFiles);
+
+            // Return files that were just imported along with files that were
+            // previously imported so previously imported files aren't imported twice
+
+            return extraFiles.Concat(filterResult.PreviouslyImported);
+        }
     }
 }
