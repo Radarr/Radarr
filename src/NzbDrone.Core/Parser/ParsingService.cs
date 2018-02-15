@@ -66,6 +66,10 @@ namespace NzbDrone.Core.Parser
         public ParsedMovieInfo ParseMovieInfo(string title, ReleaseInfo releaseInfo = null, MediaInfoModel mediaInfo = null)
         {
             var result = Parser.ParseMovieTitle(title, _config.ParsingLeniency > 0);
+            if (result == null)
+            {
+                return null;
+            }
             
             var languageTitle = result.SimpleTitle;
             if (result.MovieTitle.IsNotNullOrWhiteSpace())

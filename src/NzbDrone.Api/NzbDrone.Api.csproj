@@ -125,6 +125,7 @@
     <Compile Include="Movies\MovieModuleWithSignalR.cs" />
     <Compile Include="Movies\MovieBulkImportModule.cs" />
     <Compile Include="Movies\MovieFileModule.cs" />
+    <Compile Include="Qualities\QualityTagMatchResultResource.cs" />
     <Compile Include="Series\MovieModule.cs" />
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />

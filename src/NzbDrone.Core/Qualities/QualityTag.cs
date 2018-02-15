@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Qualities
                     string compared = null;
                     if (TagType == TagType.Custom)
                     {
-                        compared = releaseInfo.Title;
+                        compared = releaseInfo?.Title ?? movieInfo.SimpleTitle;
                     }
                     else
                     {

@@ -159,14 +159,14 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.HDTV1080p)   { Weight = 17, MinSize = 0, MaxSize = 100 },
                 new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100, QualityTags = new List<QualityTag>{ new QualityTag("S_webdl"), new QualityTag("R_1080") } },
                 new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("S_bluray"), new QualityTag("R_1080") } },
-                new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("R_1080"), new QualityTag("m_remux") } },
+                new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("R_1080"), new QualityTag("m_remux"), new QualityTag(@"C_R_((DD\+|DTS.?HD.?MA|DD)(.)?(5|7)(\.1)?|(ATMOS))") } },
 
                 new QualityDefinition(Quality.HDTV2160p)   { Weight = 21, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.WEBDL2160p)  { Weight = 22, MinSize = 0, MaxSize = null },
                 new QualityDefinition(Quality.Bluray2160p) { Weight = 23, MinSize = 0, MaxSize = null },
-                new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_2160"), new QualityTag("m_remux") } },
 
-                new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null },
+                new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_2160"), new QualityTag("r_1080"), new QualityTag("m_brdisk") } },
                 new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null }
             };
         }
