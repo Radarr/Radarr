@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Qualities
 
         private Dictionary<Quality, QualityDefinition> GetAll()
         {
-            return Quality.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
+            //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
             return _cache.Get("all", () => _repo.All().Select(WithWeight).ToDictionary(v => v.Quality), TimeSpan.FromSeconds(5.0));
         }
 
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Qualities
             List<QualityDefinition> insertList = new List<QualityDefinition>();
             List<QualityDefinition> updateList = new List<QualityDefinition>();
             
-            var allDefinitions = Quality.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
+            var allDefinitions = QualityDefinition.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
             var existingDefinitions = _repo.All().ToList();
 
             foreach (var definition in allDefinitions)
@@ -88,9 +88,27 @@ namespace NzbDrone.Core.Qualities
             _cache.Clear();
         }
 
+        private void AddDefaultQualityTags()
+        {
+            var allDefinitions = All();
+            if (!allDefinitions.Any(d => d.QualityTags != null && d.QualityTags.Count > 0))
+            {
+                _logger.Debug("Adding default quality tags, since none are in the repo");
+                var defaults = QualityDefinition.DefaultQualityDefinitions;
+                var updateList = new List<QualityDefinition>();
+                foreach (var definition in allDefinitions)
+                {
+                    definition.QualityTags = defaults.Single(d => d.Quality == definition.Quality).QualityTags;
+                    updateList.Add(definition);
+                }
+                _repo.UpdateMany(updateList);
+                _cache.Clear();
+            }
+        }
+
         private static QualityDefinition WithWeight(QualityDefinition definition)
         {
-            definition.Weight = Quality.DefaultQualityDefinitions.Single(d => d.Quality == definition.Quality).Weight;
+            definition.Weight = QualityDefinition.DefaultQualityDefinitions.Single(d => d.Quality == definition.Quality).Weight;
 
             return definition;
         }
@@ -100,6 +118,8 @@ namespace NzbDrone.Core.Qualities
             _logger.Debug("Setting up default quality config");
 
             InsertMissingDefinitions();
+            
+            AddDefaultQualityTags();
         }
     }
 }

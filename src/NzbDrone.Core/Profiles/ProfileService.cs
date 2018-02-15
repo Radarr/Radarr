@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Profiles
 
         private Profile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)
         {
-            var items = Quality.DefaultQualityDefinitions
+            var items = QualityDefinition.DefaultQualityDefinitions
                             .OrderBy(v => v.Weight)
                             .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) })
                             .ToList();

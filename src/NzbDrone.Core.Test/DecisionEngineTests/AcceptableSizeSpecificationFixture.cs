@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(It.IsAny<Quality>()))
-                .Returns<Quality>(v => Quality.DefaultQualityDefinitions.First(c => c.Quality == v));
+                .Returns<Quality>(v => QualityDefinition.DefaultQualityDefinitions.First(c => c.Quality == v));
 
             qualityType = Builder<QualityDefinition>.CreateNew()
                 .With(q => q.MinSize = 2)

@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
     public class QualityParserFixture : CoreTest
     {
-        public static object[] SelfQualityParserCases = Quality.DefaultQualityDefinitions.ToArray();
+        public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
 
         public static object[] OtherSourceQualityParserCases =
         {

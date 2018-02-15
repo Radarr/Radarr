@@ -32,7 +32,7 @@ namespace NzbDrone.Api.ManualImport
         {
             if (item.Quality != null)
             {
-                item.QualityWeight = Quality.DefaultQualityDefinitions.Single(q => q.Quality == item.Quality.Quality).Weight;
+                item.QualityWeight = QualityDefinition.DefaultQualityDefinitions.Single(q => q.Quality == item.Quality.Quality).Weight;
                 item.QualityWeight += item.Quality.Revision.Real * 10;
                 item.QualityWeight += item.Quality.Revision.Version;
             }

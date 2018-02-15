@@ -40,19 +40,19 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             _nonMultiRelease = Builder<ReleaseInfo>.CreateNew().With(r => r.Title = "My Movie 2017")
                 .With(r => r.IndexerSettings = _notMultiSettings).Build();
 
-            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(Quality.DefaultQualityDefinitions.ToList());
+            Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(QualityDefinition.DefaultQualityDefinitions.ToList());
         }
 
         public void GivenExtraQD(QualityDefinition definition)
         {
-            var defaults = Quality.DefaultQualityDefinitions.ToList();
+            var defaults = QualityDefinition.DefaultQualityDefinitions.ToList();
             defaults.Add(definition);
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(defaults);
         }
         
         private void GivenExtraQD(params QualityDefinition[] definition)
         {
-            var defaults = Quality.DefaultQualityDefinitions.ToList();
+            var defaults = QualityDefinition.DefaultQualityDefinitions.ToList();
             defaults.AddRange(definition);
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(defaults);
         }

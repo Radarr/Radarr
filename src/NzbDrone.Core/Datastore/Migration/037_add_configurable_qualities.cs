@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         var minSize = qualitySizeReader.GetInt32(1);
                         var maxSize = qualitySizeReader.GetInt32(2);
 
-                        var defaultConfig = Quality.DefaultQualityDefinitions.Single(p => (int)p.Quality == qualityId);
+                        var defaultConfig = QualityDefinition.DefaultQualityDefinitions.Single(p => (int)p.Quality == qualityId);
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {

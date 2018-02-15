@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(Moq.It.IsAny<Quality>()))
-                .Returns<Quality>(v => Quality.DefaultQualityDefinitions.First(c => c.Quality == v));
+                .Returns<Quality>(v => QualityDefinition.DefaultQualityDefinitions.First(c => c.Quality == v));
         }
 
         [TestCase("Florence + the Machine", "Florence + the Machine")]
