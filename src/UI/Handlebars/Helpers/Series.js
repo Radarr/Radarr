@@ -70,9 +70,9 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
   });
 
   if (titles.length === 1) {
-    return titles[0];
+    return '"' + titles[0] + '"';
   }
-  return titles.slice(0,titles.length-1).join(", ") + " and " + titles[titles.length-1];
+  return '"' + titles.slice(0,titles.length-1).join('", "') + '" and "' + titles[titles.length-1] + '"';
 });
 
 Handlebars.registerHelper('GetStatus', function() {
