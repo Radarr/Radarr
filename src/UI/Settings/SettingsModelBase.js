@@ -21,6 +21,8 @@ var model = DeepModel.extend({
                 errorMessage   : this.errorMessage
             });
 
+            debugger;
+
             return savePromise;
         }
 

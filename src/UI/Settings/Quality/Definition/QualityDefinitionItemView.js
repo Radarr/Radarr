@@ -24,7 +24,8 @@ var view = Marionette.ItemView.extend({
 		},
 
 		events : {
-				'slide .x-slider' : '_updateSize'
+				'slide .x-slider' : '_updateSize',
+				'change .x-tags' : '_updateTags',
 		},
 
 		initialize : function(options) {
@@ -68,9 +69,16 @@ var view = Marionette.ItemView.extend({
 					return cls + "label-danger";
 				}
             });
+            var self = this;
+            _.each(this.model.get("qualityTags"), function(item){
+            	self.ui.tags.tagsinput('add', item);
+			});
 
 				this._changeSize();
 		},
+
+    _updateTags : function() {
+    },
 
 		_updateSize : function(event, ui) {
 				var minSize = ui.values[0];
