@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
@@ -29,22 +29,19 @@ namespace NzbDrone.Core.Extras.Metadata
             return new ValidationResult();
         }
 
-        public virtual string GetFilenameAfterMove(Series series, EpisodeFile episodeFile, MetadataFile metadataFile)
+        public virtual string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
         {
-            var existingFilename = Path.Combine(series.Path, metadataFile.RelativePath);
+            var existingFilename = Path.Combine(movie.Path, metadataFile.RelativePath);
             var extension = Path.GetExtension(existingFilename).TrimStart('.');
-            var newFileName = Path.ChangeExtension(Path.Combine(series.Path, episodeFile.RelativePath), extension);
+            var newFileName = Path.ChangeExtension(Path.Combine(movie.Path, movieFile.RelativePath), extension);
 
             return newFileName;
         }
 
-        public abstract MetadataFile FindMetadataFile(Series series, string path);
-
-        public abstract MetadataFileResult SeriesMetadata(Series series);
-        public abstract MetadataFileResult EpisodeMetadata(Series series, EpisodeFile episodeFile);
-        public abstract List<ImageFileResult> SeriesImages(Series series);
-        public abstract List<ImageFileResult> SeasonImages(Series series, Season season);
-        public abstract List<ImageFileResult> EpisodeImages(Series series, EpisodeFile episodeFile);
+        public abstract MetadataFile FindMetadataFile(Movie movie, string path);
+        
+        public abstract MetadataFileResult MovieMetadata(Movie movie, MovieFile movieFile);
+        public abstract List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile);
 
         public virtual object RequestAction(string action, IDictionary<string, string> query) { return null; }
 

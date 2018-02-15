@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Parser;
@@ -33,6 +33,7 @@ namespace NzbDrone.Core.Configuration
         bool SkipFreeSpaceCheckWhenImporting { get; set; }
         bool CopyUsingHardlinks { get; set; }
         bool EnableMediaInfo { get; set; }
+        bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
         bool AutoRenameFolders { get; set; }
         bool PathsDefaultStatic { get; set; }

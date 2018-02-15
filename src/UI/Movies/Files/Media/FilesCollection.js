@@ -1,6 +1,6 @@
 var PagableCollection = require('backbone.pageable');
 var FileModel = require('./FileModel');
-var AsSortedCollection = require('../../Mixins/AsSortedCollection');
+var AsSortedCollection = require('../../../Mixins/AsSortedCollection');
 
 var Collection = PagableCollection.extend({
     url   : window.NzbDrone.ApiRoot + "/moviefile",

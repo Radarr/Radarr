@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -32,12 +32,12 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override int Order => 0;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Series series, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Movie movie, List<string> filesOnDisk, List<string> importedFiles)
         {
-            _logger.Debug("Looking for existing metadata in {0}", series.Path);
+            _logger.Debug("Looking for existing metadata in {0}", movie.Path);
 
             var metadataFiles = new List<MetadataFile>();
-            var filterResult = FilterAndClean(series, filesOnDisk, importedFiles);
+            var filterResult = FilterAndClean(movie, filesOnDisk, importedFiles);
 
             foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
             {
@@ -50,38 +50,31 @@ namespace NzbDrone.Core.Extras.Metadata
 
                 foreach (var consumer in _consumers)
                 {
-                    var metadata = consumer.FindMetadataFile(series, possibleMetadataFile);
+                    var metadata = consumer.FindMetadataFile(movie, possibleMetadataFile);
 
                     if (metadata == null)
                     {
                         continue;
                     }
 
-                    if (metadata.Type == MetadataType.EpisodeImage ||
-                        metadata.Type == MetadataType.EpisodeMetadata)
+                    if (metadata.Type == MetadataType.MovieImage ||
+                        metadata.Type == MetadataType.MovieMetadata)
                     {
-                        var localEpisode = _parsingService.GetLocalEpisode(possibleMetadataFile, series);
+                        var localMovie = _parsingService.GetLocalMovie(possibleMetadataFile, movie);
 
-                        if (localEpisode == null)
+                        if (localMovie == null)
                         {
                             _logger.Debug("Unable to parse extra file: {0}", possibleMetadataFile);
                             continue;
                         }
 
-                        if (localEpisode.Episodes.Empty())
+                        if (localMovie.Movie == null)
                         {
-                            _logger.Debug("Cannot find related episodes for: {0}", possibleMetadataFile);
+                            _logger.Debug("Cannot find related movie for: {0}", possibleMetadataFile);
                             continue;
                         }
-
-                        if (localEpisode.Episodes.DistinctBy(e => e.EpisodeFileId).Count() > 1)
-                        {
-                            _logger.Debug("Extra file: {0} does not match existing files.", possibleMetadataFile);
-                            continue;
-                        }
-
-                        metadata.SeasonNumber = localEpisode.SeasonNumber;
-                        metadata.EpisodeFileId = localEpisode.Episodes.First().EpisodeFileId;
+                        
+                        metadata.MovieFileId = localMovie.Movie.MovieFileId;
                     }
 
                     metadata.Extension = Path.GetExtension(possibleMetadataFile);
