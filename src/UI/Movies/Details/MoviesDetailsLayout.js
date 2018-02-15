@@ -11,8 +11,7 @@ var LoadingView = require('../../Shared/LoadingView');
 var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEditorLayout');
 var HistoryLayout = require('../History/MovieHistoryLayout');
 var SearchLayout = require('../Search/MovieSearchLayout');
-var FilesLayout = require("../Files/FilesLayout");
-var ExtraFilesLayout = require("../Extras/ExtraFilesLayout");
+var AllFilesLayout = require("../Files/AllFilesLayout");
 var TitlesLayout = require("../Titles/TitlesLayout");
 require('backstrech');
 require('../../Mixins/backbone.signalr.mixin');
@@ -22,30 +21,27 @@ module.exports = Marionette.Layout.extend({
 		template          : 'Movies/Details/MoviesDetailsTemplate',
 
 		regions : {
-				seasons : '#seasons',
-				info    : '#info',
-				search  : '#movie-search',
-				history : '#movie-history',
-				files   : "#movie-files",
-				extras  : "#movie-extra-files",
-				titles  : "#movie-titles",
+				info    	: '#info',
+				search  	: '#movie-search',
+				history 	: '#movie-history',
+				filesTabs	: '#movie-files-tabs',
+				titles  	: "#movie-titles",
 		},
 
 
 		ui : {
-				header    : '.x-header',
-				monitored : '.x-monitored',
-				edit      : '.x-edit',
-				refresh   : '.x-refresh',
-				rename    : '.x-rename',
-				searchAuto    : '.x-search',
-				poster    : '.x-movie-poster',
-				manualSearch : '.x-manual-search',
-				history   : '.x-movie-history',
-				search    : '.x-movie-search',
-				files     : ".x-movie-files",
-				extras    : ".x-movie-extra-files",
-				titles    : ".x-movie-titles",
+				header    	: '.x-header',
+				monitored 	: '.x-monitored',
+				edit      	: '.x-edit',
+				refresh   	: '.x-refresh',
+				rename    	: '.x-rename',
+				searchAuto  : '.x-search',
+				poster    	: '.x-movie-poster',
+				manualSearch: '.x-manual-search',
+				history   	: '.x-movie-history',
+				search    	: '.x-movie-search',
+				filesTabs 	: '.x-movie-files-tabs',
+				titles    	: ".x-movie-titles",
 		},
 
 		events : {
@@ -58,8 +54,7 @@ module.exports = Marionette.Layout.extend({
 				'click .x-manual-search'       : '_showSearch',
 				'click .x-movie-history'       : '_showHistory',
 				'click .x-movie-search'        : '_showSearch',
-				"click .x-movie-files"         : "_showFiles",
-				"click .x-movie-extra-files"   : "_showExtraFiles",
+				'click .x-movie-files-tabs'    : '_showFileTabs',
 				"click .x-movie-titles"        : "_showTitles",
 		},
 
@@ -83,27 +78,20 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_refreshFiles : function() {
-			this._showFiles();
+			this._showFileTabs();
 		},
 
 		onShow : function() {
 				this.searchLayout = new SearchLayout({ model : this.model });
 				this.searchLayout.startManualSearch = true;
-
-				this.filesLayout = new FilesLayout({ model : this.model });
-				this.extraFilesLayout = new ExtraFilesLayout({ model : this.model });
+				this.allFilesLayout = new AllFilesLayout({ model : this.model });
             	this.titlesLayout = new TitlesLayout({ model : this.model });
 
 				this._showBackdrop();
 				this._showSeasons();
 				this._setMonitoredState();
 				this._showInfo();
-				if (this.model.get("movieFile")) {
-					this._showFiles();
-				} else {
-					this._showHistory();
-				}
-
+				this._showHistory();
 		},
 
 		onRender : function() {
@@ -171,22 +159,13 @@ module.exports = Marionette.Layout.extend({
 				this.search.show(this.searchLayout);
 		},
 
-		_showFiles : function(e) {
-				if (e) {
-					e.preventDefault();
-				}
-
-				this.ui.files.tab('show');
-				this.files.show(this.filesLayout);
-		},
-
-		_showExtraFiles : function(e) {
+		_showFileTabs : function(e) {
 			if (e) {
 				e.preventDefault();
 			}
 
-			this.ui.extras.tab('show');
-			this.extras.show(this.extraFilesLayout);
+			this.ui.filesTabs.tab('show');
+			this.filesTabs.show(this.allFilesLayout);
 		},
 
 		_showTitles : function(e) {
@@ -268,9 +247,6 @@ module.exports = Marionette.Layout.extend({
 		},
 
 		_refresh : function() {
-				//this.seasonCollection.add(this.model.get('seasons'), { merge : true });
-				//this.episodeCollection.fetch();
-				//this.episodeFileCollection.fetch();
 				this._setMonitoredState();
 				this._showInfo();
 		},

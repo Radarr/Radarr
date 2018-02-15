@@ -2,18 +2,18 @@ var vent = require('vent');
 var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var ExtraFilesCollection = require('./ExtraFilesCollection');
-var LoadingView = require('../../Shared/LoadingView');
+var LoadingView = require('../../../Shared/LoadingView');
 var ExtraFileModel = require("./ExtraFileModel");
-var FileTitleCell = require('../../Cells/FileTitleCell');
-var ExtraExtensionCell = require('../../Cells/ExtraExtensionCell');
-var ExtraTypeCell = require('../../Cells/ExtraTypeCell');
+var FileTitleCell = require('../../../Cells/FileTitleCell');
+var ExtraExtensionCell = require('../../../Cells/ExtraExtensionCell');
+var ExtraTypeCell = require('../../../Cells/ExtraTypeCell');
+var NoResultsView = require('../NoFilesView');
 
 module.exports = Marionette.Layout.extend({
-		template : 'Movies/Extras/ExtraFilesLayoutTemplate',
+		template : 'Movies/Files/Extras/ExtraFilesLayoutTemplate',
 
 		regions : {
-				main : '#movie-extra-files-region',
-				grid : "#movie-extra-files-grid"
+			extraFilesTable : '.extra-files-table'
 		},
 
 		columns : [
@@ -37,23 +37,26 @@ module.exports = Marionette.Layout.extend({
 
 		initialize : function() {
 			this.collection = new ExtraFilesCollection();
+			
 			this.listenTo(this.collection, 'sync', this._showTable);
 		},
 	
-		onRender : function() {
-			this.grid.show(new LoadingView());
-
-			this.collection.fetchMovieExtras(this.model.id);
+		onShow : function() {
+			this.extraFilesTable.show(new LoadingView());
+			
+			this.collection.fetchMovieExtras(this.model.id);			
 		},
 	
 		_showTable : function() {
-			if (!this.isClosed) {
-				this.grid.show(new Backgrid.Grid({
+			if (this.collection.any()) {
+				this.extraFilesTable.show(new Backgrid.Grid({
 					row        : Backgrid.Row,
 					columns    : this.columns,
 					collection : this.collection,
 					className  : 'table table-hover'
 				}));
+			} else {
+				this.extraFilesTable.show(new NoResultsView());
 			}
 		}
 });
