@@ -70,10 +70,10 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                         continue;
                     }
                 }
-                else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                else if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                 {
                     var directories = outputPath.FullPath.Split('\\', '/');
-                    if (!directories.Contains(Settings.TvCategory))
+                    if (!directories.Contains(Settings.MusicCategory))
                     {
                         continue;
                     }
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
                 var item = new DownloadClientItem()
                 {
-                    Category = Settings.TvCategory,
+                    Category = Settings.MusicCategory,
                     DownloadClient = Definition.Name,
                     DownloadId = CreateDownloadId(torrent.Id, serialNumber),
                     Title = torrent.Title,
@@ -297,7 +297,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 if (downloadDir != null)
                 {
                     var sharedFolder = downloadDir.Split('\\', '/')[0];
-                    var fieldName = Settings.TvDirectory.IsNotNullOrWhiteSpace() ? nameof(Settings.TvDirectory) : nameof(Settings.TvCategory);
+                    var fieldName = Settings.TvDirectory.IsNotNullOrWhiteSpace() ? nameof(Settings.TvDirectory) : nameof(Settings.MusicCategory);
 
                     var folderInfo = _fileStationProxy.GetInfoFileOrDirectory($"/{downloadDir}", Settings);
 
@@ -418,11 +418,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             {
                 return Settings.TvDirectory.TrimStart('/');
             }
-            else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            else if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 var destDir = GetDefaultDir();
 
-                return $"{destDir.TrimEnd('/')}/{Settings.TvCategory}";
+                return $"{destDir.TrimEnd('/')}/{Settings.MusicCategory}";
             }
 
             return null;

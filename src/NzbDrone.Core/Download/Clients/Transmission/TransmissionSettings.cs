@@ -16,9 +16,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
             RuleFor(c => c.UrlBase).ValidUrlBase();
 
-            RuleFor(c => c.TvCategory).Matches(@"^\.?[-a-z]*$", RegexOptions.IgnoreCase).WithMessage("Allowed characters a-z and -");
+            RuleFor(c => c.MusicCategory).Matches(@"^\.?[-a-z]*$", RegexOptions.IgnoreCase).WithMessage("Allowed characters a-z and -");
 
-            RuleFor(c => c.TvCategory).Empty()
+            RuleFor(c => c.MusicCategory).Empty()
                 .When(c => c.TvDirectory.IsNotNullOrWhiteSpace())
                 .WithMessage("Cannot use Category and Directory");
         }
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         public string Password { get; set; }
 
         [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional. Creates a [category] subdirectory in the output directory.")]
-        public string TvCategory { get; set; }
+        public string MusicCategory { get; set; }
 
         [FieldDefinition(6, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default Transmission location")]
         public string TvDirectory { get; set; }

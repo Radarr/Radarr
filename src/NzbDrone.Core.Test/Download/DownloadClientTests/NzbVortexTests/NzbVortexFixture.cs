@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
                                               Host = "127.0.0.1",
                                               Port = 2222,
                                               ApiKey = "1234-ABCD",
-                                              TvCategory = "Music",
+                                              MusicCategory = "Music",
                                               RecentTvPriority = (int)NzbgetPriority.High
                                           };
 
@@ -298,7 +298,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             Mocker.GetMock<INzbVortexProxy>()
                 .Setup(v => v.GetGroups(It.IsAny<NzbVortexSettings>()))
-                .Returns(new List<NzbVortexGroup> { new NzbVortexGroup { GroupName = ((NzbVortexSettings)Subject.Definition.Settings).TvCategory } });
+                .Returns(new List<NzbVortexGroup> { new NzbVortexGroup { GroupName = ((NzbVortexSettings)Subject.Definition.Settings).MusicCategory } });
 
             Mocker.GetMock<INzbVortexProxy>()
                 .Setup(v => v.GetApiVersion(It.IsAny<NzbVortexSettings>()))

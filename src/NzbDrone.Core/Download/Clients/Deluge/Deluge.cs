@@ -35,9 +35,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             var actualHash = _proxy.AddTorrentFromMagnet(magnetLink, Settings);
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
+                _proxy.SetLabel(actualHash, Settings.MusicCategory, Settings);
             }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
@@ -60,9 +60,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 throw new DownloadClientException("Deluge failed to add torrent " + filename);
             }
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
             {
-                _proxy.SetLabel(actualHash, Settings.TvCategory, Settings);
+                _proxy.SetLabel(actualHash, Settings.MusicCategory, Settings);
             }
 
             var isRecentAlbum = remoteAlbum.IsRecentAlbum();
@@ -82,9 +82,9 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             IEnumerable<DelugeTorrent> torrents;
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace())
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace())
             {
-                torrents = _proxy.GetTorrentsByLabel(Settings.TvCategory, Settings);
+                torrents = _proxy.GetTorrentsByLabel(Settings.MusicCategory, Settings);
             }
             else
             {
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.Hash.ToUpper();
                 item.Title = torrent.Name;
-                item.Category = Settings.TvCategory;
+                item.Category = Settings.MusicCategory;
 
                 item.DownloadClient = Definition.Name;
 
@@ -231,7 +231,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
         private ValidationFailure TestCategory()
         {
-            if (Settings.TvCategory.IsNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNullOrWhiteSpace())
             {
                 return null;
             }
@@ -248,12 +248,12 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             var labels = _proxy.GetAvailableLabels(Settings);
 
-            if (!labels.Contains(Settings.TvCategory))
+            if (!labels.Contains(Settings.MusicCategory))
             {
-                _proxy.AddLabel(Settings.TvCategory, Settings);
+                _proxy.AddLabel(Settings.MusicCategory, Settings);
                 labels = _proxy.GetAvailableLabels(Settings);
 
-                if (!labels.Contains(Settings.TvCategory))
+                if (!labels.Contains(Settings.MusicCategory))
                 {
                     return new NzbDroneValidationFailure("TvCategory", "Configuration of label failed")
                     {

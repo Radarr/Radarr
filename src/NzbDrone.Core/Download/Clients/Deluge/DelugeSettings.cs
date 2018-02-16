@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
 
-            RuleFor(c => c.TvCategory).Matches("^[-a-z]*$").WithMessage("Allowed characters a-z and -");
+            RuleFor(c => c.MusicCategory).Matches("^[-a-z]*$").WithMessage("Allowed characters a-z and -");
         }
     }
 
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             Host = "localhost";
             Port = 8112;
             Password = "deluge";
-            TvCategory = "lidarr";
+            MusicCategory = "lidarr";
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         public string Password { get; set; }
 
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
-        public string TvCategory { get; set; }
+        public string MusicCategory { get; set; }
 
         [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }

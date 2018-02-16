@@ -61,8 +61,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         public List<QBittorrentTorrent> GetTorrents(QBittorrentSettings settings)
         {
             var request = BuildRequest(settings).Resource("/query/torrents")
-                                                .AddQueryParam("label", settings.TvCategory)
-                                                .AddQueryParam("category", settings.TvCategory);
+                                                .AddQueryParam("label", settings.MusicCategory)
+                                                .AddQueryParam("category", settings.MusicCategory);
 
             var response = ProcessRequest<List<QBittorrentTorrent>>(request, settings);
 
@@ -75,9 +75,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormParameter("urls", torrentUrl);
 
-            if (settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
-                request.AddFormParameter("category", settings.TvCategory);
+                request.AddFormParameter("category", settings.MusicCategory);
             }
 
             var result = ProcessRequest(request, settings);
@@ -110,9 +110,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormParameter("hashes", hash);
 
-            if (settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
-                request.AddFormParameter("category", settings.TvCategory);
+                request.AddFormParameter("category", settings.MusicCategory);
             }
 
             ProcessRequest(request, settings);

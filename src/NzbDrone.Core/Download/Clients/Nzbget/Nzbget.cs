@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
         {
-            var category = Settings.TvCategory;
+            var category = Settings.MusicCategory;
 
             var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            return GetQueue().Concat(GetHistory()).Where(downloadClientItem => downloadClientItem.Category == Settings.TvCategory);
+            return GetQueue().Concat(GetHistory()).Where(downloadClientItem => downloadClientItem.Category == Settings.MusicCategory);
         }
 
         public override void RemoveItem(string downloadId, bool deleteData)
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             var config = _proxy.GetConfig(Settings);
 
-            var category = GetCategories(config).FirstOrDefault(v => v.Name == Settings.TvCategory);
+            var category = GetCategories(config).FirstOrDefault(v => v.Name == Settings.MusicCategory);
 
             var status = new DownloadClientInfo
             {
@@ -282,7 +282,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             var config = _proxy.GetConfig(Settings);
             var categories = GetCategories(config);
 
-            if (!Settings.TvCategory.IsNullOrWhiteSpace() && !categories.Any(v => v.Name == Settings.TvCategory))
+            if (!Settings.MusicCategory.IsNullOrWhiteSpace() && !categories.Any(v => v.Name == Settings.MusicCategory))
             {
                 return new NzbDroneValidationFailure("TvCategory", "Category does not exist")
                 {

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
-            RuleFor(c => c.TvCategory).NotEmpty()
+            RuleFor(c => c.MusicCategory).NotEmpty()
                                       .WithMessage("A category is recommended")
                                       .AsWarning(); 
         }
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             Host = "localhost";
             Port = 8080;
             UrlBase = "RPC2";
-            TvCategory = "lidarr";
+            MusicCategory = "lidarr";
             OlderTvPriority = (int)RTorrentPriority.Normal;
             RecentTvPriority = (int)RTorrentPriority.Normal;
         }
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         public string Password { get; set; }
 
         [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional.")]
-        public string TvCategory { get; set; }
+        public string MusicCategory { get; set; }
 
         [FieldDefinition(7, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default rTorrent location")]
         public string TvDirectory { get; set; }

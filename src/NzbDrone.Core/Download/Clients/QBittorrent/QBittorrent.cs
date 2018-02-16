@@ -35,9 +35,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
 
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
+                _proxy.SetTorrentLabel(hash.ToLower(), Settings.MusicCategory, Settings);
             }
 
             var isRecentEpisode = remoteAlbum.IsRecentAlbum();
@@ -59,9 +59,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             try
             {
-                if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                 {
-                    _proxy.SetTorrentLabel(hash.ToLower(), Settings.TvCategory, Settings);
+                    _proxy.SetTorrentLabel(hash.ToLower(), Settings.MusicCategory, Settings);
                 }
             }
             catch (Exception ex)
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 else if (version < 6)
                 {
                     // API version 6 introduced support for labels
-                    if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                    if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                     {
                         return new NzbDroneValidationFailure("Category", "Category is not supported")
                         {
@@ -212,7 +212,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         };
                     }
                 }
-                else if (Settings.TvCategory.IsNullOrWhiteSpace())
+                else if (Settings.MusicCategory.IsNullOrWhiteSpace())
                 {
                     // warn if labels are supported, but category is not provided
                     return new NzbDroneValidationFailure("TvCategory", "Category is recommended")

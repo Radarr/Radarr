@@ -204,11 +204,11 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
 
         private ValidationFailure TestCategory()
         {
-            var group = GetGroups().FirstOrDefault(c => c.GroupName == Settings.TvCategory);
+            var group = GetGroups().FirstOrDefault(c => c.GroupName == Settings.MusicCategory);
 
             if (group == null)
             {
-                if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                 {
                     return new NzbDroneValidationFailure("TvCategory", "Group does not exist")
                     {

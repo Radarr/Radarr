@@ -296,7 +296,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected void GivenTvCategory()
         {
-            _settings.TvCategory = _category;
+            _settings.MusicCategory = _category;
         }
 
         protected void GivenTvDirectory()

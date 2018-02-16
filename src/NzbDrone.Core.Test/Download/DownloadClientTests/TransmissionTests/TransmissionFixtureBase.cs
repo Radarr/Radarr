@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         protected void GivenTvCategory()
         {
-            _settings.TvCategory = "Lidarr";
+            _settings.MusicCategory = "Lidarr";
         }
 
         protected void GivenTvDirectory()

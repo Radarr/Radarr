@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             RuleFor(c => c.Username).NotEmpty().When(c => !string.IsNullOrWhiteSpace(c.Password));
             RuleFor(c => c.Password).NotEmpty().When(c => !string.IsNullOrWhiteSpace(c.Username));
 
-            RuleFor(c => c.TvCategory).NotEmpty().WithMessage("A category is recommended").AsWarning();
+            RuleFor(c => c.MusicCategory).NotEmpty().WithMessage("A category is recommended").AsWarning();
         }
     }
 
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             Host = "localhost";
             Port = 6789;
-            TvCategory = "Music";
+            MusicCategory = "Music";
             Username = "nzbget";
             Password = "tegbzn6789";
             RecentTvPriority = (int)NzbgetPriority.Normal;
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         public string Password { get; set; }
 
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Lidarr avoids conflicts with unrelated downloads, but it's optional")]
-        public string TvCategory { get; set; }
+        public string MusicCategory { get; set; }
 
         [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
         public int RecentTvPriority { get; set; }

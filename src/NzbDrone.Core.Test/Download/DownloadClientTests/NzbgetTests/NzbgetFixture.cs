@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbgetTests
                                               Port = 2222,
                                               Username = "admin",
                                               Password = "pass",
-                                              TvCategory = "music",
+                                              MusicCategory = "music",
                                               RecentTvPriority = (int)NzbgetPriority.High
                                           };
 

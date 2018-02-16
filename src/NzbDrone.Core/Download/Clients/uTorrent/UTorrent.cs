@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
 
             var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-            _proxy.SetTorrentLabel(hash, Settings.TvCategory, Settings);
+            _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
 
             var isRecentEpisode = remoteAlbum.IsRecentAlbum();
 
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
             foreach (var torrent in torrents)
             {
-                if (torrent.Label != Settings.TvCategory)
+                if (torrent.Label != Settings.MusicCategory)
                 {
                     continue;
                 }
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         {
             List<UTorrentTorrent> torrents;
 
-            var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.TvCategory);
+            var cacheKey = string.Format("{0}:{1}:{2}", Settings.Host, Settings.Port, Settings.MusicCategory);
             var cache = _torrentCache.Find(cacheKey);
 
             var response = _proxy.GetTorrents(cache == null ? null : cache.CacheID, Settings);
@@ -198,7 +198,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
                 if (config.GetValueOrDefault("dir_add_label") == "true")
                 {
-                    destDir = destDir + Settings.TvCategory;
+                    destDir = destDir + Settings.MusicCategory;
                 }
             }
 

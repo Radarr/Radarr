@@ -48,17 +48,17 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 {
                     if (!new OsPath(Settings.TvDirectory).Contains(outputPath)) continue;
                 }
-                else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+                else if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
                 {
                     var directories = outputPath.FullPath.Split('\\', '/');
-                    if (!directories.Contains(Settings.TvCategory)) continue;
+                    if (!directories.Contains(Settings.MusicCategory)) continue;
                 }
 
                 outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
 
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.HashString.ToUpper();
-                item.Category = Settings.TvCategory;
+                item.Category = Settings.MusicCategory;
                 item.Title = torrent.Name;
 
                 item.DownloadClient = Definition.Name;
@@ -114,9 +114,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             var config = _proxy.GetConfig(Settings);
             var destDir = config.GetValueOrDefault("download-dir") as string;
             
-            if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
-                destDir = string.Format("{0}/.{1}", destDir, Settings.TvCategory);
+                destDir = string.Format("{0}/.{1}", destDir, Settings.MusicCategory);
             }
 
             return new DownloadClientInfo
@@ -174,12 +174,12 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             {
                 return Settings.TvDirectory;
             }
-            else if (Settings.TvCategory.IsNotNullOrWhiteSpace())
+            else if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 var config = _proxy.GetConfig(Settings);
                 var destDir = (string)config.GetValueOrDefault("download-dir");
 
-                return string.Format("{0}/{1}", destDir.TrimEnd('/'), Settings.TvCategory);
+                return string.Format("{0}/{1}", destDir.TrimEnd('/'), Settings.MusicCategory);
             }
             else
             {

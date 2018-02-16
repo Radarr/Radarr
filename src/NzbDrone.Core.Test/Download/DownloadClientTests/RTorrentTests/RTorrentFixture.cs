@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new RTorrentSettings()
             {
-                TvCategory = null
+                MusicCategory = null
             };
 
             _downloading = new RTorrentTorrent

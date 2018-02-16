@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 
-            _proxy.AddTorrentFromUrl(magnetLink, Settings.TvCategory, priority, Settings.TvDirectory, Settings);
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MusicCategory, priority, Settings.TvDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         {
             var priority = (RTorrentPriority)(remoteEpisode.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings.TvCategory, priority, Settings.TvDirectory, Settings);
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MusicCategory, priority, Settings.TvDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             foreach (RTorrentTorrent torrent in torrents)
             {
                 // Don't concern ourselves with categories other than specified
-                if (torrent.Category != Settings.TvCategory) continue;
+                if (torrent.Category != Settings.MusicCategory) continue;
 
                 if (torrent.Path.StartsWith("."))
                 {

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
         {
-            var category = Settings.TvCategory;
+            var category = Settings.MusicCategory;
             var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
             var response = _proxy.DownloadNzb(fileContent, filename, category, priority, Settings);
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         private IEnumerable<DownloadClientItem> GetHistory()
         {
-            var sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.TvCategory, Settings);
+            var sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.MusicCategory, Settings);
 
             var historyItems = new List<DownloadClientItem>();
 
@@ -192,7 +192,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         {
             foreach (var downloadClientItem in GetQueue().Concat(GetHistory()))
             {
-                if (downloadClientItem.Category == Settings.TvCategory || downloadClientItem.Category == "*" && Settings.TvCategory.IsNullOrWhiteSpace())
+                if (downloadClientItem.Category == Settings.MusicCategory || downloadClientItem.Category == "*" && Settings.MusicCategory.IsNullOrWhiteSpace())
                 {
                     yield return downloadClientItem;
                 }
@@ -246,7 +246,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             var config = _proxy.GetConfig(Settings);
             var categories = GetCategories(config).ToArray();
 
-            var category = categories.FirstOrDefault(v => v.Name == Settings.TvCategory);
+            var category = categories.FirstOrDefault(v => v.Name == Settings.MusicCategory);
 
             if (category == null)
             {
@@ -429,7 +429,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         private ValidationFailure TestCategory()
         {
             var config = _proxy.GetConfig(Settings);
-            var category = GetCategories(config).FirstOrDefault((SabnzbdCategory v) => v.Name == Settings.TvCategory);
+            var category = GetCategories(config).FirstOrDefault((SabnzbdCategory v) => v.Name == Settings.MusicCategory);
 
             if (category != null)
             {
@@ -444,7 +444,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             else
             {
-                if (!Settings.TvCategory.IsNullOrWhiteSpace())
+                if (!Settings.MusicCategory.IsNullOrWhiteSpace())
                 {
                     return new NzbDroneValidationFailure("TvCategory", "Category does not exist")
                     {
@@ -453,7 +453,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     };
                 }
             }
-            if (config.Misc.enable_tv_sorting && ContainsCategory(config.Misc.tv_categories, Settings.TvCategory))
+            if (config.Misc.enable_tv_sorting && ContainsCategory(config.Misc.tv_categories, Settings.MusicCategory))
             {
                 return new NzbDroneValidationFailure("TvCategory", "Disable TV Sorting")
                 {
@@ -461,7 +461,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
-            if (config.Misc.enable_movie_sorting && ContainsCategory(config.Misc.movie_categories, Settings.TvCategory))
+            if (config.Misc.enable_movie_sorting && ContainsCategory(config.Misc.movie_categories, Settings.MusicCategory))
             {
                 return new NzbDroneValidationFailure("TvCategory", "Disable Movie Sorting")
                 {
@@ -469,7 +469,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
-            if (config.Misc.enable_date_sorting && ContainsCategory(config.Misc.date_categories, Settings.TvCategory))
+            if (config.Misc.enable_date_sorting && ContainsCategory(config.Misc.date_categories, Settings.MusicCategory))
             {
                 return new NzbDroneValidationFailure("TvCategory", "Disable Date Sorting")
                 {
