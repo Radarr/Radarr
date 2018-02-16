@@ -41,15 +41,20 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
         [Test]
         public void should_not_be_able_to_delete_profile_if_assigned_to_artist()
         {
+            var profile = Builder<MetadataProfile>.CreateNew()
+                .With(p => p.Id = 2)
+                .Build();
+
             var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .Random(1)
-                                            .With(c => c.MetadataProfileId = 2)
+                                            .With(c => c.MetadataProfileId = profile.Id)
                                             .Build().ToList();
 
 
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
-            Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(2));
+            Assert.Throws<MetadataProfileInUseException>(() => Subject.Delete(profile.Id));
 
             Mocker.GetMock<IMetadataProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
 

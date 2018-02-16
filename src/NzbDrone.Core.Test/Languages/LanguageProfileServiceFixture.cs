@@ -41,15 +41,20 @@ namespace NzbDrone.Core.Test.Languages
         [Test]
         public void should_not_be_able_to_delete_profile_if_assigned_to_artist()
         {
+            var profile = Builder<LanguageProfile>.CreateNew()
+                .With(p => p.Id = 2)
+                .Build();
+
             var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .Random(1)
-                                            .With(c => c.LanguageProfileId = 2)
+                                            .With(c => c.LanguageProfileId = profile.Id)
                                             .Build().ToList();
 
 
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<ILanguageProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
-            Assert.Throws<LanguageProfileInUseException>(() => Subject.Delete(2));
+            Assert.Throws<LanguageProfileInUseException>(() => Subject.Delete(profile.Id));
 
             Mocker.GetMock<ILanguageProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
 

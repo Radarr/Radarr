@@ -1,11 +1,12 @@
-﻿using NzbDrone.Common.Exceptions;
+using System.Net;
+using NzbDrone.Core.Exceptions;
 
 namespace NzbDrone.Core.Profiles.Languages
 {
-    public class LanguageProfileInUseException : NzbDroneException
+    public class LanguageProfileInUseException : NzbDroneClientException
     {
-        public LanguageProfileInUseException(int profileId)
-            : base("Language profile [{0}] is in use.", profileId)
+        public LanguageProfileInUseException(string name)
+            : base(HttpStatusCode.BadRequest, "Language profile [{0}] is in use.", name)
         {
 
         }

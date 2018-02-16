@@ -44,7 +44,8 @@ namespace NzbDrone.Core.Profiles.Metadata
         {
             if (_artistService.GetAllArtists().Any(c => c.MetadataProfileId == id))
             {
-                throw new MetadataProfileInUseException(id);
+                var profile = _profileRepository.Get(id);
+                throw new MetadataProfileInUseException(profile.Name);
             }
 
             _profileRepository.Delete(id);

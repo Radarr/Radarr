@@ -1,11 +1,12 @@
-using NzbDrone.Common.Exceptions;
+using System.Net;
+using NzbDrone.Core.Exceptions;
 
 namespace NzbDrone.Core.Profiles.Metadata
 {
-    public class MetadataProfileInUseException : NzbDroneException
+    public class MetadataProfileInUseException : NzbDroneClientException
     {
-        public MetadataProfileInUseException(int profileId)
-            : base("Metadata profile [{0}] is in use.", profileId)
+        public MetadataProfileInUseException(string name)
+            : base(HttpStatusCode.BadRequest, "Metadata profile [{0}] is in use.", name)
         {
 
         }

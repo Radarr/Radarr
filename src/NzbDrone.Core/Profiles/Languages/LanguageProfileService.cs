@@ -45,7 +45,8 @@ namespace NzbDrone.Core.Profiles.Languages
         {
             if (_artistService.GetAllArtists().Any(c => c.LanguageProfileId == id))
             {
-                throw new LanguageProfileInUseException(id);
+                var profile = _profileRepository.Get(id);
+                throw new LanguageProfileInUseException(profile.Name);
             }
 
             _profileRepository.Delete(id);
