@@ -1,10 +1,8 @@
 var vent = require('vent');
 var AppLayout = require('../../AppLayout');
 var Marionette = require('marionette');
-var EditSeriesView = require('../../Series/Edit/EditSeriesView');
 var EditMovieView = require('../../Movies/Edit/EditMovieView');
 var DeleteMovieView = require('../../Movies/Delete/DeleteMovieView');
-var EpisodeDetailsLayout = require('../../Episode/EpisodeDetailsLayout');
 var HistoryDetailsLayout = require('../../Activity/History/Details/HistoryDetailsLayout');
 var LogDetailsView = require('../../System/Logs/Table/Details/LogDetailsView');
 var RenamePreviewLayout = require('../../Rename/RenamePreviewLayout');
@@ -19,11 +17,9 @@ module.exports = Marionette.AppRouter.extend({
 				vent.on(vent.Commands.CloseModalCommand, this._closeModal, this);
 				vent.on(vent.Commands.OpenModal2Command, this._openModal2, this);
 				vent.on(vent.Commands.CloseModal2Command, this._closeModal2, this);
-				vent.on(vent.Commands.EditSeriesCommand, this._editSeries, this);
 				vent.on(vent.Commands.EditMovieCommand, this._editMovie, this);
 				vent.on(vent.Commands.EditFileCommand, this._editFile, this);
 				vent.on(vent.Commands.DeleteMovieCommand, this._deleteMovie, this);
-				vent.on(vent.Commands.ShowEpisodeDetails, this._showEpisode, this);
 				vent.on(vent.Commands.ShowMovieDetails, this._showMovie, this);
 				vent.on(vent.Commands.ShowHistoryDetails, this._showHistory, this);
 				vent.on(vent.Commands.ShowLogDetails, this._showLogDetails, this);
@@ -49,11 +45,6 @@ module.exports = Marionette.AppRouter.extend({
 				AppLayout.modalRegion2.closeModal();
 		},
 
-		_editSeries : function(options) {
-				var view = new EditSeriesView({ model : options.series });
-				AppLayout.modalRegion.show(view);
-		},
-
 		_editMovie : function(options) {
 				var view = new EditMovieView({ model : options.movie });
 				AppLayout.modalRegion.show(view);
@@ -66,15 +57,6 @@ module.exports = Marionette.AppRouter.extend({
 
 		_deleteMovie : function(options) {
 				var view = new DeleteMovieView({ model : options.movie });
-				AppLayout.modalRegion.show(view);
-		},
-
-		_showEpisode : function(options) {
-				var view = new EpisodeDetailsLayout({
-						model          : options.episode,
-						hideSeriesLink : options.hideSeriesLink,
-						openingTab     : options.openingTab
-				});
 				AppLayout.modalRegion.show(view);
 		},
 

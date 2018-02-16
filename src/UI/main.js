@@ -6,7 +6,6 @@ var SignalRBroadcaster = require('./Shared/SignalRBroadcaster');
 var NavbarLayout = require('./Navbar/NavbarLayout');
 var AppLayout = require('./AppLayout');
 var MoviesController = require('./Movies/MoviesController');
-var SeriesController = require('./Series/SeriesController');
 var Router = require('./Router');
 var ModalController = require('./Shared/Modal/ModalController');
 var ControlPanelController = require('./Shared/ControlPanel/ControlPanelController');
@@ -22,7 +21,6 @@ require('./Shared/piwikCheck');
 require('./Shared/VersionChangeMonitor');
 
 new MoviesController();
-new SeriesController();
 new ModalController();
 new ControlPanelController();
 new Router();

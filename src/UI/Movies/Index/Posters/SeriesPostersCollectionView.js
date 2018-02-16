@@ -4,5 +4,5 @@ var PosterItemView = require('./SeriesPostersItemView');
 module.exports = Marionette.CompositeView.extend({
     itemView          : PosterItemView,
     itemViewContainer : '#x-series-posters',
-    template          : 'Series/Index/Posters/SeriesPostersCollectionViewTemplate'
+    template          : 'Movies/Index/Posters/SeriesPostersCollectionViewTemplate'
 });
