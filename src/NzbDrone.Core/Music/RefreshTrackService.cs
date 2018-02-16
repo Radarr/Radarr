@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Music
             _trackService.UpdateMany(updateList);
             _trackService.InsertMany(newList);
 
-            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(album, newList, updateList, existingTracks));
+            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(album, newList, updateList));
 
             if (failCount != 0)
             {

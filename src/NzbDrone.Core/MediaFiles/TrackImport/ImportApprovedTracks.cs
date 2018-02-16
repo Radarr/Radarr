@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NzbDrone.Core.Extras;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
 
@@ -25,7 +26,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
     {
         private readonly IUpgradeMediaFiles _trackFileUpgrader;
         private readonly IMediaFileService _mediaFileService;
-        //private readonly IExtraService _extraService;
+        private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
         private readonly IEventAggregator _eventAggregator;
         private readonly IAlbumRepository _albumRepository;
@@ -33,7 +34,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
         public ImportApprovedTracks(IUpgradeMediaFiles episodeFileUpgrader,
                                       IMediaFileService mediaFileService,
-                                      //IExtraService extraService,
+                                      IExtraService extraService,
                                       IAlbumRepository albumRepository,
                                       IDiskProvider diskProvider,
                                       IEventAggregator eventAggregator,
@@ -41,7 +42,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         {
             _trackFileUpgrader = episodeFileUpgrader;
             _mediaFileService = mediaFileService;
-            // _extraService = extraService;
+            _extraService = extraService;
             _albumRepository = albumRepository;
              _diskProvider = diskProvider;
             _eventAggregator = eventAggregator;
@@ -129,10 +130,10 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                     _mediaFileService.Add(trackFile);
                     importResults.Add(new ImportResult(importDecision));
 
-                    //if (newDownload)
-                    //{
-                    //    _extraService.ImportExtraFiles(localTrack, trackFile, copyOnly); // TODO: Import Music Extras
-                    //}
+                    if (newDownload)
+                    {
+                        _extraService.ImportExtraFiles(localTrack, trackFile, copyOnly);
+                    }
 
                     _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, newDownload, downloadClientItem));
 

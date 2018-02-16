@@ -11,6 +11,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Languages;
 using TagLib;
+using TagLib.IFD.Tags;
 
 namespace NzbDrone.Core.Parser
 {
@@ -604,7 +605,6 @@ namespace NzbDrone.Core.Parser
 
         private static ParsedTrackInfo ParseAudioTags(string path)
         {
-            var fileInfo = new FileInfo(path);
             var file = TagLib.File.Create(path);
             Logger.Debug("Starting Tag Parse for {0}", file.Name);
 
@@ -627,6 +627,7 @@ namespace NzbDrone.Core.Parser
 
             var temp = new int[1];
             temp[0] = (int)trackNumber;
+
             var result = new ParsedTrackInfo
             {
                 Language = Language.English, //TODO Parse from Tag/Mediainfo
@@ -640,6 +641,8 @@ namespace NzbDrone.Core.Parser
                 ArtistTitleInfo = artistTitleInfo,
                 Title = trackTitle
             };
+            
+            Logger.Trace("File Tags Parsed: Artist: {0}, Album: {1}, Disc: {2}, Track Numbers(s): {3}, TrackTitle: {4}", result.ArtistTitle, result.AlbumTitle, result.DiscNumber, trackNumber, result.Title);
 
             foreach (ICodec codec in file.Properties.Codecs)
             {

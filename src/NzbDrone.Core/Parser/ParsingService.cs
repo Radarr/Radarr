@@ -286,16 +286,15 @@ namespace NzbDrone.Core.Parser
             if (parsedTrackInfo.Title.IsNotNullOrWhiteSpace())
             {
                 trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.Title);
-                _logger.Debug("Track {0} selected for {1}", trackInfo, parsedTrackInfo);
-
+                
                 if (trackInfo != null)
                 {
+                    _logger.Debug("Track {0} selected for {1}", trackInfo, parsedTrackInfo);
                     result.Add(trackInfo);
-                    
                 }
                 else
                 {
-                    _logger.Debug("Unable to find {0}", parsedTrackInfo);
+                    _logger.Debug("Unable to find track for {0}", parsedTrackInfo);
                 }
             }
 

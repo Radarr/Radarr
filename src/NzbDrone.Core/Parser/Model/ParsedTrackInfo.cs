@@ -37,10 +37,10 @@ namespace NzbDrone.Core.Parser.Model
             
             if (TrackNumbers != null && TrackNumbers.Any())
             {
-                trackString = string.Format("T{0}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));
+                trackString = string.Format("{0}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));
             }
 
-            return string.Format("{0} - {1} - {2}: {3}", ArtistTitle, AlbumTitle, trackString, Quality);
+            return string.Format("{0} - {1} - {2}:{3} {4}: {5}", ArtistTitle, AlbumTitle, DiscNumber, trackString, Title, Quality);
         }
     }
 }

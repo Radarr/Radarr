@@ -94,7 +94,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                     if (localTrack.Tracks.Empty())
                     {
-                        decision = new ImportDecision(localTrack, new Rejection("Invalid album or track"));
+                        decision = localTrack.Album != null ? new ImportDecision(localTrack, new Rejection($"Couldn't parse track from: {localTrack.ParsedTrackInfo}")) :
+                            new ImportDecision(localTrack, new Rejection($"Couldn't parse album from: {localTrack.ParsedTrackInfo}"));
                     }
                     else
                     {
