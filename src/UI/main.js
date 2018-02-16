@@ -12,6 +12,8 @@ var ControlPanelController = require('./Shared/ControlPanel/ControlPanelControll
 var ServerStatusModel = require('./System/StatusModel');
 var Tooltip = require('./Shared/Tooltip');
 var UiSettingsController = require('./Shared/UiSettingsController');
+//We need this for filters to work, fuck you backbone.
+var SeriesCollection = require('./Series/SeriesCollection');
 
 require('./jQuery/ToTheTop');
 require('./Instrumentation/StringFormat');
@@ -21,6 +23,7 @@ require('./Shared/piwikCheck');
 require('./Shared/VersionChangeMonitor');
 
 new MoviesController();
+//new SeriesCollection();
 new ModalController();
 new ControlPanelController();
 new Router();
