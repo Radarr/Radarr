@@ -11,16 +11,13 @@ vent.Events = {
 };
 
 vent.Commands = {
-		EditSeriesCommand        : 'EditSeriesCommand',
 		EditMovieCommand         : 'EditMovieCommand',
 		EditFileCommand          : "EditFileCommand",
-		DeleteSeriesCommand      : 'DeleteSeriesCommand',
 		DeleteMovieCommand       : 'DeleteMovieCommand',
 		OpenModalCommand         : 'OpenModalCommand',
 		CloseModalCommand        : 'CloseModalCommand',
 		OpenModal2Command        : 'OpenModal2Command',
 		CloseModal2Command       : 'CloseModal2Command',
-		ShowEpisodeDetails       : 'ShowEpisodeDetails',
 		ShowMovieDetails         : 'ShowMovieDetails',
 		ShowHistoryDetails       : 'ShowHistoryDetails',
 		ShowLogDetails           : 'ShowLogDetails',
