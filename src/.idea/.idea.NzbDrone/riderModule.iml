@@ -1,9 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="RIDER_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$/../../../Logo/1024.png" />
-    <content url="file://$MODULE_DIR$/../../../Logo/64.png" />
-    <content url="file://$MODULE_DIR$/../.." />
+    <content url="file://$MODULE_DIR$/../../../Logo/1024.png">
+      <sourceFolder url="file://$MODULE_DIR$/../../../Logo/1024.png" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../Logo/64.png">
+      <sourceFolder url="file://$MODULE_DIR$/../../../Logo/64.png" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../.nuget/NuGet.exe" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Common/CommonAssemblyInfo.cs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Common/CommonVersionInfo.cs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Common/GlobalSuppressions.cs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../ExternalModules/CurlSharp/CurlSharp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Libraries/MediaInfo/libmediainfo.0.dylib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Libraries/MediaInfo/MediaInfo.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Libraries/Sqlite/libsqlite3.0.dylib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Libraries/Sqlite/sqlite3.dll" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../LogentriesCore" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../LogentriesNLog" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Marr.Data" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Microsoft.AspNet.SignalR.Core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../Microsoft.AspNet.SignalR.Owin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../MonoTorrent" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Api" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Api.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.App.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Automation.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Common" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Common.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Console" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Core.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Host" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Integration.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Libraries.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Mono" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Mono.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.SignalR" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Test.Common" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Test.Dummy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Update" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Update.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Windows" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../NzbDrone.Windows.Test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../ServiceHelpers/ServiceInstall" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../ServiceHelpers/ServiceUninstall" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ExternalModules/CurlSharp/CurlSharp/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ExternalModules/CurlSharp/CurlSharp/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../LogentriesCore/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../LogentriesCore/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../LogentriesNLog/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../LogentriesNLog/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Marr.Data/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Microsoft.AspNet.SignalR.Core/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Microsoft.AspNet.SignalR.Core/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Microsoft.AspNet.SignalR.Owin/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Microsoft.AspNet.SignalR.Owin/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../MonoTorrent/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Api.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Api.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Api/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.App.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.App.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Automation.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Automation.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Common.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Common.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Common/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Console/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Core.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Core.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Core/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Host/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Integration.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Integration.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Libraries.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Libraries.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Mono.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Mono.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Mono/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.SignalR/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Test.Common/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Test.Common/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Test.Dummy/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Test.Dummy/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Update.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Update.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Update/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Windows.Test/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Windows.Test/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone.Windows/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../NzbDrone/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ServiceHelpers/ServiceInstall/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ServiceHelpers/ServiceUninstall/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../_ReSharper.Caches/ReSharperHost8.NzbDrone.00" />
+      <excludeFolder url="file://$MODULE_DIR$/../../packages" />
+    </content>
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
