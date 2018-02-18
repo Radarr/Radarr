@@ -37,7 +37,7 @@ namespace NzbDrone.Core.History
     {
         Unknown = 0,
         Grabbed = 1,
-        SeriesFolderImported = 2,
+        ArtistFolderImported = 2,
         DownloadFolderImported = 3,
         DownloadFailed = 4,
         TrackFileDeleted = 5,
