@@ -131,6 +131,7 @@
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
     <Compile Include="MediaFiles\EpisodeImport\Specifications\GrabbedReleaseQualitySpecification.cs" />
+    <Compile Include="MediaFiles\EpisodeImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
     <Compile Include="Datastore\Migration\134_add_remux_qualities_for_the_wankers.cs" />
     <Compile Include="Datastore\Migration\129_add_parsed_movie_info_to_pending_release.cs" />
