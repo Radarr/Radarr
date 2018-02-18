@@ -1,4 +1,4 @@
-﻿namespace Lidarr.Api.V1.Series
+namespace Lidarr.Api.V1.Artist
 {
     public class AlternateTitleResource
     {

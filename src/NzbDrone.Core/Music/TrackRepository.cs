@@ -79,13 +79,11 @@ namespace NzbDrone.Core.Music
 
         public PagingSpec<Track> TracksWhereCutoffUnmet(PagingSpec<Track> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-            pagingSpec.TotalRecords = EpisodesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
-            pagingSpec.Records = EpisodesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
+            pagingSpec.TotalRecords = TracksWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
+            pagingSpec.Records = TracksWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
 
             return pagingSpec;
         }
-
-        
 
         public void SetMonitoredFlat(Track track, bool monitored)
         {
@@ -109,22 +107,22 @@ namespace NzbDrone.Core.Music
             mapper.ExecuteNonQuery(sql);
         }
 
-        public void SetFileId(int episodeId, int fileId)
+        public void SetFileId(int trackId, int fileId)
         {
-            SetFields(new Track { Id = episodeId, TrackFileId = fileId }, track => track.TrackFileId);
+            SetFields(new Track { Id = trackId, TrackFileId = fileId }, track => track.TrackFileId);
         }
 
         public PagingSpec<Track> TracksWithoutFiles(PagingSpec<Track> pagingSpec)
         {
             var currentTime = DateTime.UtcNow;
 
-            pagingSpec.TotalRecords = GetMissingEpisodesQuery(pagingSpec, currentTime).GetRowCount();
-            pagingSpec.Records = GetMissingEpisodesQuery(pagingSpec, currentTime).ToList();
+            pagingSpec.TotalRecords = GetMissingTracksQuery(pagingSpec, currentTime).GetRowCount();
+            pagingSpec.Records = GetMissingTracksQuery(pagingSpec, currentTime).ToList();
 
             return pagingSpec;
         }
 
-        private SortBuilder<Track> GetMissingEpisodesQuery(PagingSpec<Track> pagingSpec, DateTime currentTime)
+        private SortBuilder<Track> GetMissingTracksQuery(PagingSpec<Track> pagingSpec, DateTime currentTime)
         {
             return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
                             .Where(pagingSpec.FilterExpression)
@@ -136,7 +134,7 @@ namespace NzbDrone.Core.Music
         }
 
 
-        private SortBuilder<Track> EpisodesWhereCutoffUnmetQuery(PagingSpec<Track> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
+        private SortBuilder<Track> TracksWhereCutoffUnmetQuery(PagingSpec<Track> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
             return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
                              .Join<Track, TrackFile>(JoinType.Left, e => e.TrackFile, (e, s) => e.TrackFileId == s.Id)

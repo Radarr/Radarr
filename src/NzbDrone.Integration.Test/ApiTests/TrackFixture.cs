@@ -1,7 +1,6 @@
 using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
-using Lidarr.Api.V1.Series;
 using Lidarr.Api.V1.Artist;
 using System.Linq;
 using NzbDrone.Test.Common;
@@ -11,12 +10,12 @@ namespace NzbDrone.Integration.Test.ApiTests
     [TestFixture]
     public class TrackFixture : IntegrationTest
     {
-        private ArtistResource artist;
+        private ArtistResource _artist;
 
         [SetUp]
         public void Setup()
         {
-            artist = GivenArtistWithTracks();
+            _artist = GivenArtistWithTracks();
         }
 
         private ArtistResource GivenArtistWithTracks()
@@ -36,13 +35,13 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_get_all_tracks_in_artist()
         {
-            Tracks.GetTracksInArtist(artist.Id).Count.Should().BeGreaterThan(0);
+            Tracks.GetTracksInArtist(_artist.Id).Count.Should().BeGreaterThan(0);
         }
 
         [Test]
         public void should_be_able_to_get_a_single_track()
         {
-            var tracks = Tracks.GetTracksInArtist(artist.Id);
+            var tracks = Tracks.GetTracksInArtist(_artist.Id);
 
             Tracks.Get(tracks.First().Id).Should().NotBeNull();
         }
@@ -50,7 +49,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_set_monitor_status()
         {
-            var tracks = Tracks.GetTracksInArtist(artist.Id);
+            var tracks = Tracks.GetTracksInArtist(_artist.Id);
             var updatedTrack = tracks.First();
             updatedTrack.Monitored = false;
 
@@ -61,7 +60,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [TearDown]
         public void TearDown()
         {
-            Artist.Delete(artist.Id);
+            Artist.Delete(_artist.Id);
             Thread.Sleep(2000);
         }
     }

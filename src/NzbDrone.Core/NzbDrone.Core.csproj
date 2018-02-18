@@ -142,9 +142,6 @@
     <Compile Include="Configuration\IConfigService.cs" />
     <Compile Include="Configuration\InvalidConfigFileException.cs" />
     <Compile Include="Configuration\ResetApiKeyCommand.cs" />
-    <Compile Include="DataAugmentation\DailySeries\DailySeries.cs" />
-    <Compile Include="DataAugmentation\DailySeries\DailySeriesDataProxy.cs" />
-    <Compile Include="DataAugmentation\DailySeries\DailySeriesService.cs" />
     <Compile Include="Datastore\BasicRepository.cs" />
     <Compile Include="Datastore\ConnectionStringFactory.cs" />
     <Compile Include="Datastore\Converters\BooleanIntConverter.cs" />
@@ -231,7 +228,6 @@
     <Compile Include="DecisionEngine\Specifications\RssSync\HistorySpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\MonitoredAlbumSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\RssSync\ProperSpecification.cs" />
-    <Compile Include="DecisionEngine\Specifications\Search\DailyAudioMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\AlbumRequestedSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\SeasonMatchSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\Search\ArtistSpecification.cs" />
