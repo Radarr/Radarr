@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.Episodes;
-using NzbDrone.Api.Movie;
+using NzbDrone.Api.Movies;
 using NzbDrone.Api.REST;
 using NzbDrone.Api.Series;
 using NzbDrone.Common.Crypto;
@@ -18,8 +17,6 @@ namespace NzbDrone.Api.ManualImport
         public long Size { get; set; }
         public SeriesResource Series { get; set; }
         public MovieResource Movie { get; set; }
-        public int? SeasonNumber { get; set; }
-        public List<Episodes.EpisodeResource> Episodes { get; set; }
         public QualityModel Quality { get; set; }
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
@@ -42,8 +39,6 @@ namespace NzbDrone.Api.ManualImport
                 Size = model.Size,
                 Series = model.Series.ToResource(),
                 Movie = model.Movie.ToResource(),
-                SeasonNumber = model.SeasonNumber,
-                Episodes = model.Episodes.ToResource(),
                 Quality = model.Quality,
                 //QualityWeight
                 DownloadId = model.DownloadId,

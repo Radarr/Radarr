@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Tv;
-using NzbDrone.Api.Series;
+using NzbDrone.Api.MovieFiles;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
     public class MovieResource : RestResource
     {

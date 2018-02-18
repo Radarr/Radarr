@@ -1,16 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Tv;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Api.Series;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
     public class AlternativeYearResource : RestResource
     {

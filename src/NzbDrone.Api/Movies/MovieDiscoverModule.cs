@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Core.MediaCover;
@@ -9,7 +9,7 @@ using NzbDrone.Api.REST;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Api.NetImport;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
     public class MovieDiscoverModule : NzbDroneRestModule<MovieResource>
     {

@@ -1,5 +1,4 @@
-﻿using NzbDrone.Api.Episodes;
-using NzbDrone.Api.Series;
+using NzbDrone.Api.Movies;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Api.Parse
@@ -18,23 +17,22 @@ namespace NzbDrone.Api.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var parsedEpisodeInfo = Parser.ParseTitle(title);
+            var parsedMovieInfo = Parser.ParseMovieTitle(title, false);
 
-            if (parsedEpisodeInfo == null)
+            if (parsedMovieInfo == null)
             {
                 return null;
             }
 
-            var remoteEpisode = _parsingService.Map(parsedEpisodeInfo, 0, 0);
+            var remoteMovie = _parsingService.Map(parsedMovieInfo, "");
 
-            if (remoteEpisode != null)
+            if (remoteMovie != null)
             {
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedEpisodeInfo = remoteEpisode.ParsedEpisodeInfo,
-                    Series = remoteEpisode.Series.ToResource(),
-                    Episodes = remoteEpisode.Episodes.ToResource()
+                    ParsedMovieInfo = remoteMovie.RemoteMovie.ParsedMovieInfo,
+                    Movie = remoteMovie.Movie.ToResource()
                 };
             }
             else
@@ -42,7 +40,7 @@ namespace NzbDrone.Api.Parse
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedEpisodeInfo = parsedEpisodeInfo
+                    ParsedMovieInfo = parsedMovieInfo
                 };
             }
         }

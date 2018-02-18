@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Api.Movie;
+using NzbDrone.Api.Movies;
 
 namespace NzbDrone.Integration.Test
 {

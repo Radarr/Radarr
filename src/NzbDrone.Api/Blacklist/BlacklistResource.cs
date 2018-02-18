@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using NzbDrone.Api.Movie;
+using NzbDrone.Api.Movies;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Api.Series;
