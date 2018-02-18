@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -79,21 +79,24 @@ namespace NzbDrone.Core.MediaFiles
 
         private bool ChangeFileDate(string filePath, DateTime date)
         {
-            DateTime oldDateTime = _diskProvider.FileGetLastWrite(filePath);
+            DateTime oldDateTime;
 
-            if (!DateTime.Equals(date, oldDateTime))
+            if (DateTime.TryParse(_diskProvider.FileGetLastWrite(filePath).ToLongDateString(), out oldDateTime))
             {
-                try
+                if (!DateTime.Equals(date, oldDateTime))
                 {
-                    _diskProvider.FileSetLastWriteTime(filePath, date);
-                    _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", filePath, oldDateTime, date);
+                    try
+                    {
+                        _diskProvider.FileSetLastWriteTime(filePath, date);
+                        _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", filePath, oldDateTime, date);
 
-                    return true;
-                }
+                        return true;
+                    }
 
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Unable to set date of file [" + filePath + "]");
+                    }
                 }
             }
 
