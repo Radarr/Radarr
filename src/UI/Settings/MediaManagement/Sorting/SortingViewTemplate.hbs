@@ -7,18 +7,18 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="createEmptySeriesFolders"/>
+                    <input type="checkbox" name="createEmptySeriesFolders" />
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button"/>
+                    <div class="btn btn-primary slide-button" />
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-info" title="Create missing movie folders during disk scan"/>
+                    <i class="icon-sonarr-form-info" title="Create missing movie folders during disk scan" />
                 </span>
             </div>
         </div>
@@ -30,18 +30,18 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="autoRenameFolders"/>
+                    <input type="checkbox" name="autoRenameFolders" />
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button"/>
+                    <div class="btn btn-primary slide-button" />
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! This feature must be enabled for namings schemes beyond '{Movie Title} {Year}' to work. With it folders are automatically renamed according to your naming scheme on each disk scan. If your folder naming scheme contains things such as quality, etc., the movie folder will be automatically adjusted for that regardless of this setting."/>
+                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! This feature must be enabled for namings schemes beyond '{Movie Title} {Year}' to work. With it folders are automatically renamed according to your naming scheme on each disk scan. If your folder naming scheme contains things such as quality, etc., the movie folder will be automatically adjusted for that regardless of this setting." />
                 </span>
             </div>
         </div>
@@ -53,18 +53,41 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <label class="checkbox toggle well">
-                    <input type="checkbox" name="pathsDefaultStatic"/>
+                    <input type="checkbox" name="pathsDefaultStatic" />
 
                     <p>
                         <span>Yes</span>
                         <span>No</span>
                     </p>
 
-                    <div class="btn btn-primary slide-button"/>
+                    <div class="btn btn-primary slide-button" />
                 </label>
 
                 <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! If enabled, the path of new movies is static and won't change."/>
+                    <i class="icon-sonarr-form-warning" title="CURRENTLY ALPHA! If enabled, the path of new movies is static and won't change." />
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Enable Flat File Support</label>
+
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="checkbox toggle well">
+                    <input type="checkbox" name="enableFlatFileSupport" />
+
+                    <p>
+                        <span>Yes</span>
+                        <span>No</span>
+                    </p>
+
+                    <div class="btn btn-primary slide-button" />
+                </label>
+
+                <span class="help-inline-checkbox">
+                    <i class="icon-sonarr-form-warning" title="attempts to read files from flat file structure" />
                 </span>
             </div>
         </div>

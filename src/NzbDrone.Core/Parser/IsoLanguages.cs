@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NzbDrone.Core.Parser
@@ -34,16 +34,19 @@ namespace NzbDrone.Core.Parser
 
         public static IsoLanguage Find(string isoCode)
         {
-            if (isoCode.Length == 2)
+            if (isoCode != null)
             {
-                //Lookup ISO639-1 code
-                return All.SingleOrDefault(l => l.TwoLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
-            }
-            else if (isoCode.Length == 3)
-            {
-                //Lookup ISO639-2T code
-                return All.SingleOrDefault(l => l.ThreeLetterCode == isoCode);
-            }
+                if (isoCode.Length == 2)
+                {
+                    //Lookup ISO639-1 code
+                    return All.SingleOrDefault(l => l.TwoLetterCode == isoCode) ?? All.SingleOrDefault(l => l.AltCodes.Contains(isoCode));
+                }
+                else if (isoCode.Length == 3)
+                {
+                    //Lookup ISO639-2T code
+                    return All.SingleOrDefault(l => l.ThreeLetterCode == isoCode);
+                }
+            }         
 
             return null;
         }

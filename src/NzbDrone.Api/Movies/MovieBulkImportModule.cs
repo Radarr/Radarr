@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Api.Extensions;
@@ -15,6 +15,9 @@ using NzbDrone.Core.MediaFiles.EpisodeImport;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Tv;
+using NzbDrone.Common.Disk;
+using System.IO;
+using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Api.Movie
 {
@@ -32,18 +35,24 @@ namespace NzbDrone.Api.Movie
         private readonly ISearchForNewMovie _searchProxy;
         private readonly IRootFolderService _rootFolderService;
         private readonly IMakeImportDecision _importDecisionMaker;
+        private readonly IDiskProvider _diskProvider;
         private readonly IDiskScanService _diskScanService;
 		private readonly ICached<Core.Tv.Movie> _mappedMovies;
         private readonly IMovieService _movieService;
+        private readonly IConfigService _configService;
 
         public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker,
-		                             IDiskScanService diskScanService, ICacheManager cacheManager, IMovieService movieService)
+                                    IDiskProvider diskProvider, IDiskScanService diskScanService, ICacheManager cacheManager, IMovieService movieService,
+                                    IConfigService configService)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
             _rootFolderService = rootFolderService;
             _importDecisionMaker = importDecisionMaker;
+            _diskProvider = diskProvider;
             _diskScanService = diskScanService;
+            _configService = configService;
+
 			_mappedMovies = cacheManager.GetCache<Core.Tv.Movie>(GetType(), "mappedMoviesCache");
             _movieService = movieService;
             Get["/"] = x => Search();
@@ -52,6 +61,7 @@ namespace NzbDrone.Api.Movie
 
         private Response Search()
         {
+
             if (Request.Query.Id == 0)
             {
                 //Todo error handling
@@ -66,7 +76,15 @@ namespace NzbDrone.Api.Movie
 
             int max = page * per_page;
 
-            var unmapped = rootFolder.UnmappedFolders.OrderBy(f => f.Name).ToList();
+            var unmappedDirectories = rootFolder.UnmappedFolders.OrderBy(f => f.Name).ToList();
+            var unmappedFiles = new List<UnmappedFile>();
+
+            if (_configService.EnableFlatFileSupport)
+            {
+                unmappedFiles = rootFolder.UnmappedFiles.OrderBy(f => f.Name).ToList();
+            }
+
+            var unmapped = unmappedDirectories.ToDictionary(o => o.Name, o => o.Path).Concat(unmappedFiles.ToDictionary(o => o.Name, o => o.Path)).ToList();
 
             int total_count = unmapped.Count;
 
@@ -83,20 +101,20 @@ namespace NzbDrone.Api.Movie
 			{
 				Core.Tv.Movie m = null;
 
-				var mappedMovie = _mappedMovies.Find(f.Name);
+				var mappedMovie = _mappedMovies.Find(f.Key);
 
 				if (mappedMovie != null)
 				{
 					return mappedMovie;
 				}
 
-				var parsedTitle = Parser.ParseMoviePath(f.Name, false);
+				var parsedTitle = Parser.ParseMoviePath(f.Key, false);
 				if (parsedTitle == null)
 				{
 					m = new Core.Tv.Movie
 					{
-						Title = f.Name.Replace(".", " ").Replace("-", " "),
-						Path = f.Path,
+						Title = f.Key.Replace(".", " ").Replace("-", " "),
+						Path = f.Value,
 					};
 				}
 				else
@@ -106,11 +124,11 @@ namespace NzbDrone.Api.Movie
 						Title = parsedTitle.MovieTitle,
 						Year = parsedTitle.Year,
 						ImdbId = parsedTitle.ImdbId,
-						Path = f.Path
+						Path = f.Value
 					};
 				}
 
-				var files = _diskScanService.GetVideoFiles(f.Path);
+				var files = _diskProvider.FileExists(f.Value) ? new string[] { f.Value } : _diskScanService.GetVideoFiles(f.Value);
 
 				var decisions = _importDecisionMaker.GetImportDecisions(files.ToList(), m, true);
 
@@ -127,17 +145,27 @@ namespace NzbDrone.Api.Movie
 						Quality = local.Quality,
 						MediaInfo = local.MediaInfo,
 						ReleaseGroup = local.ParsedMovieInfo.ReleaseGroup,
-						RelativePath = f.Path.GetRelativePath(local.Path)
+						RelativePath = f.Value.GetRelativePath(local.Path)
 					});
 				}
 
 				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
-
+                
 				if (mappedMovie != null)
 				{
+                    if (_diskProvider.FileExists(mappedMovie.Path))
+                    {
+                        mappedMovie.FlatFileName = Path.GetFileNameWithoutExtension(mappedMovie.Path);
+                        mappedMovie.Path = Path.GetDirectoryName(mappedMovie.Path);
+                    }
+                    else
+                    {
+                        mappedMovie.FlatFileName = string.Empty;
+                    }
+                    
 					mappedMovie.Monitored = true;
 
-					_mappedMovies.Set(f.Name, mappedMovie, TimeSpan.FromDays(2));
+					_mappedMovies.Set(f.Key, mappedMovie, TimeSpan.FromDays(2));
 
 					return mappedMovie;
 				}

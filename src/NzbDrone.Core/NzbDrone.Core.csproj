@@ -1170,6 +1170,7 @@
     <Compile Include="RootFolders\RootFolderService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RootFolders\UnmappedFile.cs" />
     <Compile Include="RootFolders\UnmappedFolder.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="MovieStats\SeasonStatistics.cs" />

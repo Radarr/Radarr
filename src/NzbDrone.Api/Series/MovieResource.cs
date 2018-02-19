@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
@@ -42,6 +42,7 @@ namespace NzbDrone.Api.Movie
 
         //View & Edit
         public string Path { get; set; }
+        public string FlatFileName { get; set; }
         public int ProfileId { get; set; }
         public MoviePathState PathState { get; set; }
 
@@ -140,6 +141,7 @@ namespace NzbDrone.Api.Movie
                 SecondaryYearSourceId = model.SecondaryYearSourceId,
                 
                 Path = model.Path,
+                FlatFileName = model.FlatFileName,
                 ProfileId = model.ProfileId,
                 PathState = model.PathState,
                 
@@ -200,6 +202,7 @@ namespace NzbDrone.Api.Movie
                 SecondaryYearSourceId = resource.SecondaryYearSourceId,
 
                 Path = resource.Path,
+                FlatFileName = resource.FlatFileName,
                 ProfileId = resource.ProfileId,
                 PathState = resource.PathState,
 
@@ -231,6 +234,7 @@ namespace NzbDrone.Api.Movie
             movie.TmdbId = resource.TmdbId;
 
             movie.Path = resource.Path;
+            movie.FlatFileName = resource.FlatFileName;
             movie.ProfileId = resource.ProfileId;
             movie.PathState = resource.PathState;
 

@@ -315,6 +315,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AutoRenameFolders", value); }
         }
 
+        public bool EnableFlatFileSupport
+        {
+            get { return GetValueBoolean("EnableFlatFileSupport", true); }
+
+            set { SetValue("EnableFlatFileSupport", value); }
+        }
+
         public bool PathsDefaultStatic
         {
             get { return GetValueBoolean("PathsDefaultStatic", true); }

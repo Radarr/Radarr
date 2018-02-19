@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
@@ -50,6 +50,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Status").AsInt32()
                 .WithColumn("Overview").AsString().Nullable()
                 .WithColumn("Images").AsString()
+                .WithColumn("FlatFileName").AsString()
                 .WithColumn("Path").AsString()
                 .WithColumn("Monitored").AsBoolean()
                 .WithColumn("ProfileId").AsInt32()

@@ -139,8 +139,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Scan(Movie movie)
         {
-		//Try renaming the movie path in case anything changed such as year, title or something else.
-		_renameMovieFiles.RenameMoviePath(movie, true);
+		    //Try renaming the movie path in case anything changed such as year, title or something else.
+		    _renameMovieFiles.RenameMoviePath(movie, true);
 
             var rootFolder = _diskProvider.GetParentFolder(movie.Path);
 
@@ -188,6 +188,11 @@ namespace NzbDrone.Core.MediaFiles
 
             var videoFilesStopwatch = Stopwatch.StartNew();
             var mediaFileList = FilterFiles(movie, GetVideoFiles(movie.Path)).ToList();
+
+            if (!string.IsNullOrEmpty(movie.FlatFileName))
+            {
+                mediaFileList = FilterFiles(movie, GetVideoFiles(movie.Path).Where(x => Path.GetFileNameWithoutExtension(x).Equals(movie.FlatFileName))).ToList();
+            }
 
             videoFilesStopwatch.Stop();
             _logger.Trace("Finished getting episode files for: {0} [{1}]", movie, videoFilesStopwatch.Elapsed);

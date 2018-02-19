@@ -36,6 +36,7 @@ namespace NzbDrone.Core.Configuration
         bool ImportExtraFiles { get; set; }
         string ExtraFileExtensions { get; set; }
         bool AutoRenameFolders { get; set; }
+        bool EnableFlatFileSupport { get; set; }
         bool PathsDefaultStatic { get; set; }
 
         //Permissions (Media Management)

@@ -8,6 +8,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Tv;
+using NzbDrone.Core.MediaFiles;
 
 namespace NzbDrone.Core.RootFolders
 {
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.RootFolders
         private readonly ISeriesRepository _seriesRepository;
         private readonly IMovieRepository _movieRepository;
         private readonly IConfigService _configService;
+        private readonly IDiskScanService _diskScanService;
         private readonly Logger _logger;
 
         private static readonly HashSet<string> SpecialFolders = new HashSet<string>
@@ -45,6 +47,7 @@ namespace NzbDrone.Core.RootFolders
 
         public RootFolderService(IRootFolderRepository rootFolderRepository,
                                  IDiskProvider diskProvider,
+                                 IDiskScanService diskScanService,
                                  ISeriesRepository seriesRepository,
                                  IMovieRepository movieRepository,
                                  IConfigService configService,
@@ -52,6 +55,7 @@ namespace NzbDrone.Core.RootFolders
         {
             _rootFolderRepository = rootFolderRepository;
             _diskProvider = diskProvider;
+            _diskScanService = diskScanService;
             _seriesRepository = seriesRepository;
             _movieRepository = movieRepository;
             _configService = configService;
@@ -78,6 +82,7 @@ namespace NzbDrone.Core.RootFolders
                         folder.FreeSpace = _diskProvider.GetAvailableSpace(folder.Path);
                         folder.TotalSpace = _diskProvider.GetTotalSize(folder.Path);
                         folder.UnmappedFolders = GetUnmappedFolders(folder.Path);
+                        folder.UnmappedFiles = GetUnmappedFiles(folder.Path);
                     }
                 }
                 //We don't want an exception to prevent the root folders from loading in the UI, so they can still be deleted
@@ -86,6 +91,7 @@ namespace NzbDrone.Core.RootFolders
                     folder.FreeSpace = 0;
                     _logger.Error(ex, "Unable to get free space and unmapped folders for root folder {0}", folder.Path);
                     folder.UnmappedFolders = new List<UnmappedFolder>();
+                    folder.UnmappedFiles = new List<UnmappedFile>();
                 }
             });
 
@@ -125,6 +131,7 @@ namespace NzbDrone.Core.RootFolders
 
             rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
             rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+            rootFolder.UnmappedFiles = GetUnmappedFiles(rootFolder.Path);
             return rootFolder;
         }
 
@@ -208,12 +215,51 @@ namespace NzbDrone.Core.RootFolders
             return results;
         }
 
+        private List<UnmappedFile> GetUnmappedFiles(string path)
+        {
+            _logger.Debug("Generating list of unmapped files");
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Invalid path provided", "path");
+            }
+
+            var results = new List<UnmappedFile>();
+            var movies = _movieRepository.All().ToList();
+
+            if (!_diskProvider.FolderExists(path))
+            {
+                _logger.Debug("Path supplied does not exist: {0}", path);
+                return results;
+            }
+
+            var possibleMovieFiles = _diskScanService.GetVideoFiles(path, false);
+            List<string> mappedFiles = movies.Where(x => x.MovieFile !=null && x.MovieFile.RelativePath != null).Select(x => $"{x.Path}{x.MovieFile.RelativePath}").ToList();
+            var unmappedFiles = possibleMovieFiles.Except(mappedFiles).ToList();
+
+            foreach (string unmappedFile in unmappedFiles)
+            {
+                var fi = new FileInfo(unmappedFile.Normalize());
+                if ((!fi.Attributes.HasFlag(FileAttributes.System) && !fi.Attributes.HasFlag(FileAttributes.Hidden)) || fi.Attributes.ToString() == "-1")
+                {
+                    results.Add(new UnmappedFile { Name = fi.Name, Path = fi.FullName });
+                }
+
+            }
+
+            //var setToRemove = SpecialFolders;
+            //results.RemoveAll(x => setToRemove.Contains(new DirectoryInfo(x.Path.ToLowerInvariant()).Name));
+
+            _logger.Debug("{0} unmapped files detected.", results.Count);
+            return results;
+        }
+
         public RootFolder Get(int id)
         {
             var rootFolder = _rootFolderRepository.Get(id);
             rootFolder.FreeSpace = _diskProvider.GetAvailableSpace(rootFolder.Path);
             rootFolder.TotalSpace = _diskProvider.GetTotalSize(rootFolder.Path);
             rootFolder.UnmappedFolders = GetUnmappedFolders(rootFolder.Path);
+            rootFolder.UnmappedFiles = GetUnmappedFiles(rootFolder.Path);
             return rootFolder;
         }
     }
