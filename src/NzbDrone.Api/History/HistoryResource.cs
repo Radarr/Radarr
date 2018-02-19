@@ -1,9 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using NzbDrone.Api.Episodes;
 using NzbDrone.Api.REST;
-using NzbDrone.Api.Series;
-using NzbDrone.Api.Movie;
+using NzbDrone.Api.Movies;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
 
@@ -12,9 +10,7 @@ namespace NzbDrone.Api.History
 {
     public class HistoryResource : RestResource
     {
-        public int EpisodeId { get; set; }
         public int MovieId { get; set; }
-        public int SeriesId { get; set; }
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }
         public bool QualityCutoffNotMet { get; set; }
@@ -25,8 +21,6 @@ namespace NzbDrone.Api.History
 
         public Dictionary<string, string> Data { get; set; }
         public MovieResource Movie { get; set; }
-        public EpisodeResource Episode { get; set; }
-        public SeriesResource Series { get; set; }
     }
 
     public static class HistoryResourceMapper
@@ -38,9 +32,6 @@ namespace NzbDrone.Api.History
             return new HistoryResource
             {
                 Id = model.Id,
-
-                EpisodeId = model.EpisodeId,
-                SeriesId = model.SeriesId,
                 MovieId = model.MovieId,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
@@ -51,8 +42,6 @@ namespace NzbDrone.Api.History
                 EventType = model.EventType,
 
                 Data  = model.Data
-                //Episode
-                //Series
             };
         }
     }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Core.MediaCover;
@@ -6,7 +6,7 @@ using NzbDrone.Core.MetadataSource;
 using System.Linq;
 using NzbDrone.Core.NetImport;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
     public class FetchMovieListModule : NzbDroneRestModule<MovieResource>
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System;
 using NzbDrone.Api.REST;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
     public class MovieLookupModule : NzbDroneRestModule<MovieResource>
     {

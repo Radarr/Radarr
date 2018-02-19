@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.Movie;
+using NzbDrone.Api.Movies;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;

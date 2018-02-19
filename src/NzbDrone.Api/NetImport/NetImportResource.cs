@@ -1,4 +1,3 @@
-﻿using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Tv;
 
 namespace NzbDrone.Api.NetImport

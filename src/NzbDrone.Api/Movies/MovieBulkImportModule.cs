@@ -1,4 +1,3 @@
-﻿using System.Collections;
 using System.Collections.Generic;
 using Nancy;
 using NzbDrone.Api.Extensions;
@@ -16,7 +15,7 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Tv;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
 
     public class UnmappedComparer : IComparer<UnmappedFolder>
