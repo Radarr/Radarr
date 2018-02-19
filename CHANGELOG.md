@@ -3,12 +3,25 @@
 ## (unreleased)
 
 ### **New features**
+- Handle ctrl-c more gracefully. [Leonardo Galli]
+- Device names for Join notifications (#2544) [Qstick]
+- Same File Size MediaFile Specification (#2532) [Qstick]
+- Updated NLog to version 4.4.12. Should fix #2218. [Leonardo Galli]
 - Importing extra files from downloaded movies and generate metadata such as .nfo (#2506) [Qstick]
 - Quotes around alternative titles (#2522) [Qstick]
 - Backup improvements from Sonarr (#2513) [Qstick]
 - NzbDrone references in FirewallAdapter.cs (#2504) [Qstick]
 
 ### **Fixes**
+- Alt Titles from TMDB not getting added when mappings server throws 404. [Leonardo Galli]
+- Unable to execute custom scripts if IMDB ID is null (#2543) [Qstick]
+- Cleanup TV related code in API (#2530) [Qstick]
+- Omgwtfnbs parsing being too greedy. [Leonardo Galli]
+- Help icon not centered (#2531) [Qstick]
+- Radarr Changes every file due to timezones (#2533) [Qstick]
+- Filters not working. Fuck you backbone. [Leonardo Galli]
+- Cleanup Series Code from UI (#2525) [Qstick]
+- Apostrophe getting replaced by an empty string causing no search results. [Leonardo Galli]
 - Integration Unit Tests (#2500) [Qstick]
 - XSS vulnerability in the navbar search. (#2505) [Scott]
 - StartNzbDroneService.cs unit test (#2499) [Qstick]
