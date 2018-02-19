@@ -114,10 +114,10 @@ namespace NzbDrone.Core.Tv
 
             try
             {
+                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
+                
                 var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
                 var mappingsTitles = mappings.Item1;
-
-                movie.AlternativeTitles.AddRange(_titleService.AddAltTitles(movieInfo.AlternativeTitles, movie));
 
                 _titleService.DeleteNotEnoughVotes(mappingsTitles);
 
