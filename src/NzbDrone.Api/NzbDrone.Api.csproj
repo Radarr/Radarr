@@ -240,14 +240,10 @@
     <Compile Include="Movies\AlternativeTitleResource.cs" />
     <Compile Include="MovieFiles\MovieFileResource.cs" />
     <Compile Include="Movies\FetchMovieListModule.cs" />
-    <Compile Include="Series\SeasonResource.cs" />
-    <Compile Include="Series\SeriesEditorModule.cs" />
     <Compile Include="Movies\MovieLookupModule.cs" />
-    <Compile Include="Series\SeriesLookupModule.cs" />
     <Compile Include="Series\SeriesModule.cs" />
     <Compile Include="Movies\MovieResource.cs" />
     <Compile Include="Series\SeriesResource.cs" />
-    <Compile Include="Series\SeasonStatisticsResource.cs" />
     <Compile Include="System\Backup\BackupModule.cs" />
     <Compile Include="System\Backup\BackupResource.cs" />
     <Compile Include="System\Tasks\TaskModule.cs" />

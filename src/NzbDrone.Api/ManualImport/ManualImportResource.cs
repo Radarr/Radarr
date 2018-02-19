@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.Movies;
 using NzbDrone.Api.REST;
-using NzbDrone.Api.Series;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Qualities;
@@ -15,7 +14,6 @@ namespace NzbDrone.Api.ManualImport
         public string RelativePath { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
-        public SeriesResource Series { get; set; }
         public MovieResource Movie { get; set; }
         public QualityModel Quality { get; set; }
         public int QualityWeight { get; set; }
@@ -37,7 +35,6 @@ namespace NzbDrone.Api.ManualImport
                 RelativePath = model.RelativePath,
                 Name = model.Name,
                 Size = model.Size,
-                Series = model.Series.ToResource(),
                 Movie = model.Movie.ToResource(),
                 Quality = model.Quality,
                 //QualityWeight
