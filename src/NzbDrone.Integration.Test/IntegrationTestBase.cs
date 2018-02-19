@@ -14,11 +14,11 @@ using NzbDrone.Api.Blacklist;
 using NzbDrone.Api.Commands;
 using NzbDrone.Api.Config;
 using NzbDrone.Api.DownloadClient;
-using NzbDrone.Api.Episodes;
+using NzbDrone.Api.MovieFiles;
 using NzbDrone.Api.History;
 using NzbDrone.Api.Profiles;
 using NzbDrone.Api.RootFolders;
-using NzbDrone.Api.Movie;
+using NzbDrone.Api.Movies;
 using NzbDrone.Api.Tags;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
@@ -50,8 +50,8 @@ namespace NzbDrone.Integration.Test
         public ClientBase<RootFolderResource> RootFolders;
         public MovieClient Movies;
         public ClientBase<TagResource> Tags;
-        public ClientBase<EpisodeResource> WantedMissing;
-        public ClientBase<EpisodeResource> WantedCutoffUnmet;
+        public ClientBase<MovieResource> WantedMissing;
+        public ClientBase<MovieResource> WantedCutoffUnmet;
 
         private List<SignalRMessage> _signalRReceived;
         private Connection _signalrConnection;
@@ -109,8 +109,8 @@ namespace NzbDrone.Integration.Test
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
             Movies = new MovieClient(RestClient, ApiKey);
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
-            WantedMissing = new ClientBase<EpisodeResource>(RestClient, ApiKey, "wanted/missing");
-            WantedCutoffUnmet = new ClientBase<EpisodeResource>(RestClient, ApiKey, "wanted/cutoff");
+            WantedMissing = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/missing");
+            WantedCutoffUnmet = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/cutoff");
         }
 
         [OneTimeTearDown]

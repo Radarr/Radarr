@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Api.ClientSchema;
 using NzbDrone.Core.NetImport;

@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using NLog;
 using NzbDrone.Api.REST;
-using NzbDrone.Api.Movie;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
@@ -11,7 +10,7 @@ using NzbDrone.Core.Tv;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
 
-namespace NzbDrone.Api.EpisodeFiles
+namespace NzbDrone.Api.MovieFiles
 {
     public class MovieFileModule : NzbDroneRestModuleWithSignalR<MovieFileResource, MovieFile>, IHandle<MovieFileAddedEvent>
     {
