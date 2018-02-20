@@ -614,6 +614,10 @@
           <e p="ReqResExtensions.cs" t="Include" />
           <e p="RequestExtensions.cs" t="Include" />
         </e>
+        <e p="ExtraFiles" t="Include">
+          <e p="ExtraFileModule.cs" t="Include" />
+          <e p="ExtraFileResource.cs" t="Include" />
+        </e>
         <e p="FileSystem" t="Include">
           <e p="FileSystemModule.cs" t="Include" />
         </e>
@@ -728,6 +732,7 @@
         <e p="Qualities" t="Include">
           <e p="QualityDefinitionModule.cs" t="Include" />
           <e p="QualityDefinitionResource.cs" t="Include" />
+          <e p="QualityTagMatchResultResource.cs" t="Include" />
         </e>
         <e p="Queue" t="Include">
           <e p="QueueActionModule.cs" t="Include" />
@@ -1154,6 +1159,7 @@
           <e p="Backup.cs" t="Include" />
           <e p="BackupCommand.cs" t="Include" />
           <e p="BackupService.cs" t="Include" />
+          <e p="MakeDatabaseBackup.cs" t="Include" />
         </e>
         <e p="Blacklisting" t="Include">
           <e p="Blacklist.cs" t="Include" />
@@ -1205,6 +1211,7 @@
             <e p="OsPathConverter.cs" t="Include" />
             <e p="ProviderSettingConverter.cs" t="Include" />
             <e p="QualityIntConverter.cs" t="Include" />
+            <e p="QualityTagStringConverter.cs" t="Include" />
             <e p="TimeSpanConverter.cs" t="Include" />
             <e p="UtcConverter.cs" t="Include" />
           </e>
@@ -1361,6 +1368,8 @@
             <e p="139_fix_indexer_baseurl.cs" t="Include" />
             <e p="140_add_alternative_titles_table.cs" t="Include" />
             <e p="141_fix_duplicate_alt_titles.cs" t="Include" />
+            <e p="142_movie_extras.cs" t="Include" />
+            <e p="143_add_quality_tags.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />
@@ -2458,6 +2467,8 @@
           <e p="QualityModel.cs" t="Include" />
           <e p="QualityModelComparer.cs" t="Include" />
           <e p="QualitySource.cs" t="Include" />
+          <e p="QualityTag.cs" t="Include" />
+          <e p="QualityTagMatchResult.cs" t="Include" />
           <e p="Revision.cs" t="Include" />
         </e>
         <e p="Queue" t="Include">
@@ -3082,22 +3093,15 @@
         </e>
         <e p="packages.config" t="Include" />
         <e p="ParserTests" t="Include">
-          <e p="AbsoluteEpisodeNumberParserFixture.cs" t="Include" />
-          <e p="AnimeMetadataParserFixture.cs" t="Include" />
-          <e p="CrapParserFixture.cs" t="Include" />
-          <e p="DailyEpisodeParserFixture.cs" t="Include" />
           <e p="ExtendedQualityParserRegex.cs" t="Include" />
-          <e p="HashedReleaseFixture.cs" t="Include" />
-          <e p="IsPossibleSpecialEpisodeFixture.cs" t="Include" />
           <e p="LanguageParserFixture.cs" t="Include" />
-          <e p="MiniSeriesEpisodeParserFixture.cs" t="Include" />
-          <e p="MultiEpisodeParserFixture.cs" t="Include" />
           <e p="NormalizeTitleFixture.cs" t="Include" />
           <e p="ParserFixture.cs" t="Include" />
           <e p="ParsingServiceTests" t="Include">
             <e p="GetEpisodesFixture.cs" t="Include" />
             <e p="GetSeriesFixture.cs" t="Include" />
             <e p="MapFixture.cs" t="Include" />
+            <e p="ParseMovieTitleFixture.cs" t="Include" />
           </e>
           <e p="PathParserFixture.cs" t="Include" />
           <e p="QualityParserFixture.cs" t="Include" />
@@ -3106,9 +3110,6 @@
             <e p="RomanNumeralConversionFixture.cs" t="Include" />
           </e>
           <e p="SceneCheckerFixture.cs" t="Include" />
-          <e p="SeasonParserFixture.cs" t="Include" />
-          <e p="SeriesTitleInfoFixture.cs" t="Include" />
-          <e p="SingleEpisodeParserFixture.cs" t="Include" />
         </e>
         <e p="Profiles" t="Include">
           <e p="ProfileRepositoryFixture.cs" t="Include" />
@@ -3137,6 +3138,7 @@
           <e p="QualityDefinitionServiceFixture.cs" t="Include" />
           <e p="QualityFixture.cs" t="Include" />
           <e p="QualityModelComparerFixture.cs" t="Include" />
+          <e p="QualityTagFixture.cs" t="Include" />
           <e p="RevisionComparableFixture.cs" t="Include" />
         </e>
         <e p="QueueTests" t="Include">
@@ -3243,18 +3245,17 @@
           <e p="CommandFixture.cs" t="Include" />
           <e p="DiskSpaceFixture.cs" t="Include" />
           <e p="DownloadClientFixture.cs" t="Include" />
-          <e p="EpisodeFileFixture.cs" t="Include" />
-          <e p="EpisodeFixture.cs" t="Include" />
           <e p="FileSystemFixture.cs" t="Include" />
           <e p="HistoryFixture.cs" t="Include" />
           <e p="IndexerFixture.cs" t="Include" />
+          <e p="MovieEditorFixture.cs" t="Include" />
+          <e p="MovieFileFixture.cs" t="Include" />
+          <e p="MovieFixture.cs" t="Include" />
+          <e p="MovieLookupFixture.cs" t="Include" />
           <e p="NamingConfigFixture.cs" t="Include" />
           <e p="NotificationFixture.cs" t="Include" />
           <e p="ReleaseFixture.cs" t="Include" />
           <e p="RootFolderFixture.cs" t="Include" />
-          <e p="SeriesEditorFixture.cs" t="Include" />
-          <e p="SeriesFixture.cs" t="Include" />
-          <e p="SeriesLookupFixture.cs" t="Include" />
           <e p="WantedFixture.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
@@ -3262,11 +3263,10 @@
           <e p="ClientBase.cs" t="Include" />
           <e p="CommandClient.cs" t="Include" />
           <e p="DownloadClientClient.cs" t="Include" />
-          <e p="EpisodeClient.cs" t="Include" />
           <e p="IndexerClient.cs" t="Include" />
+          <e p="MovieClient.cs" t="Include" />
           <e p="NotificationClient.cs" t="Include" />
           <e p="ReleaseClient.cs" t="Include" />
-          <e p="SeriesClient.cs" t="Include" />
         </e>
         <e p="CorsFixture.cs" t="Include" />
         <e p="HttpLogFixture.cs" t="Include" />

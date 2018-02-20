@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
@@ -58,7 +59,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Into the Inferno 2016 2160p Netflix WEBRip DD5 1 x264-Whatevs", 18)]
         public void should_parse_ultrahd_from_title(string title, int version)
         {
-            QualityParser.ParseQuality(title).Quality.Id.Should().Be(version);
+            var parsed = QualityParser.ParseQuality(title);
+            parsed.Resolution.Should().Be(Resolution.R2160P);
         }
     }
 }

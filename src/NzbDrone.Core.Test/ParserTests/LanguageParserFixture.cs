@@ -18,7 +18,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Polar.Express.2004.MULTI.VF2.1080p.BluRay.x264-PopHD", Language.French)]
         [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL", Language.Spanish)]
         [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL", Language.German)]
-        [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
         [TestCase("Castle.2009.S01E14.Italian.HDTV.XviD-LOL", Language.Italian)]
         [TestCase("Castle.2009.S01E14.Danish.HDTV.XviD-LOL", Language.Danish)]
         [TestCase("Castle.2009.S01E14.Dutch.HDTV.XviD-LOL", Language.Dutch)]
@@ -34,14 +33,12 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle.2009.S01E14.Finnish.HDTV.XviD-LOL", Language.Finnish)]
         [TestCase("Castle.2009.S01E14.Turkish.HDTV.XviD-LOL", Language.Turkish)]
         [TestCase("Castle.2009.S01E14.Portuguese.HDTV.XviD-LOL", Language.Portuguese)]
-        [TestCase("Castle.2009.S01E14.HDTV.XviD-LOL", Language.English)]
         [TestCase("Burn.Notice.S04E15.Brotherly.Love.GERMAN.DUBBED.WS.WEBRiP.XviD.REPACK-TVP", Language.German)]
         [TestCase("Revolution S01E03 No Quarter 2012 WEB-DL 720p Nordic-philipo mkv", Language.Norwegian)]
         [TestCase("Constantine.2014.S01E01.WEBRiP.H264.AAC.5.1-NL.SUBS", Language.Dutch)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUNDUB-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.ENG.HUN-LOL", Language.Hungarian)]
         [TestCase("Castle.2009.S01E14.HDTV.XviD.HUN-LOL", Language.Hungarian)]
-		[TestCase("The Danish Girl 2015", Language.English)]
         [TestCase("Passengers.2016.German.DL.AC3.Dubbed.1080p.WebHD.h264.iNTERNAL-PsO", Language.German)]
         [TestCase("Der.Soldat.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", Language.German)]
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", Language.German)]
@@ -49,17 +46,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Smurfs.​The.​Lost.​Village.​2017.​1080p.​BluRay.​HebDub.​x264-​iSrael",Language.Hebrew)]
         public void should_parse_language(string postTitle, Language language)
         {
-            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
-            result.Languages.Should().Contain(language);
-        }
-
-        [TestCase("My Movie 2017 German English", Language.English, Language.German)]
-        //[TestCase("Nocturnal.Animals.2016.MULTi.1080p.BluRay.x264-ANONA", Language.English, Language.French)] fails since no mention of french!
-        [TestCase("Nocturnal Animals (2016) MULTi VFQ [1080p] BluRay x264-PopHD", Language.English, Language.French)]
-        public void should_parse_languages(string postTitle, params Language[] languages)
-        {
-            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
-            result.Languages.Should().BeEquivalentTo(languages);
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.Should().Contain(language);
         }
 
         [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English)]

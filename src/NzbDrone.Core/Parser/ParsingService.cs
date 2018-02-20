@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Parser
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
- 
+
 
         public ParsingService(IEpisodeService episodeService,
                               ISeriesService seriesService,
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Parser
             {
                 return null;
             }
-            
+
             var languageTitle = result.SimpleTitle;
             if (result.MovieTitle.IsNotNullOrWhiteSpace())
             {
@@ -116,6 +116,14 @@ namespace NzbDrone.Core.Parser
                             movieInfo.Languages.Add(language);
                     }
                 }
+                else if (languageTitle.ToLower().Contains("multi"))
+                {
+                    //Let's add english language to multi release as a safe guard.
+                    if (!movieInfo.Languages.Contains(Language.English) && movieInfo.Languages.Count < 2)
+                    {
+                        movieInfo.Languages.Add(Language.English);
+                    }
+                }
             }
 
             if (!result.Languages.Any()) result.Languages.Add(Language.English);
@@ -132,25 +140,23 @@ namespace NzbDrone.Core.Parser
         public QualityDefinition ParseQualityDefinition(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null)
         {
             var matches = MatchQualityTags(movieInfo, releaseInfo);
-            matches = matches.OrderByDescending(m => m.Matches.Count(t => t.Value == true)).ToList();
-            var bestMatchCount = matches.First().Matches.Count(t => t.Value);
+            var goodMatches = matches.Where(m => AreMatchesGood(m.Matches)).ToList();
+            goodMatches = goodMatches.OrderByDescending(m => m.Matches.Count(t => t.Value == true)).ToList();
+            var bestMatchCount = goodMatches.First().Matches.Count(t => t.Value);
             if (bestMatchCount == 0)
             {
                 return _qualityDefinitionService.GetById(1); //Unknown
             }
-            var bestMatches = matches.Where(m => m.Matches.Count(t => t.Value) == bestMatchCount).ToList();
+            var bestMatches = goodMatches.Where(m => m.Matches.Count(t => t.Value) == bestMatchCount).ToList();
             if (bestMatches.Count > 1)
             {
                 //Check Filesize to find best match!
                 var ordered = bestMatches.OrderBy(m =>
-                    (m.QualityDefinition.MaxSize?.Megabytes() ?? 1000000.Megabytes()) - (m.QualityDefinition.MinSize?.Megabytes() ?? 0));
-                var test = bestMatches.Select(m =>
-                    (m.QualityDefinition.MaxSize?.Megabytes() ?? 1000000.Megabytes()) - (m.QualityDefinition.MinSize?.Megabytes() ?? 0));
+                    (m.QualityDefinition.MaxSize?.Megabytes() ?? 1000000.Megabytes()) - (m.QualityDefinition.MinSize?.Megabytes() ?? 0)).ToList();
                 if (releaseInfo == null || releaseInfo.Size == 0)
                 {
                     return ordered.Last().QualityDefinition;
                 }
-                var asdf = test;
                 return ordered.FirstOrDefault(m =>
                                (m.QualityDefinition.MaxSize?.Megabytes() ?? 10000000.Megabytes()) * 115 > releaseInfo.Size &&
                                (m.QualityDefinition.MinSize?.Megabytes() ?? 0) * 115 < releaseInfo.Size)?
@@ -179,15 +185,26 @@ namespace NzbDrone.Core.Parser
                         currentMatches.Add(qualityTag, qualityTag.DoesItMatch(movieInfo, releaseInfo));
                     }
                 }
-                
+
                 matches.Add(new QualityTagMatchResult
                 {
                     Matches = currentMatches,
                     QualityDefinition = definition
                 });
             }
-            
+
             return matches;
+        }
+
+        private bool AreMatchesGood(Dictionary<QualityTag, bool> matches)
+        {
+            if (matches.Any(m => m.Value == false && m.Key.TagModifier.HasFlag(TagModifier.AbsolutelyRequired)))
+                return false; //If we have any non matching Absolutely Required tags, this isn't a good match
+
+            var groups = matches.GroupBy(m => m.Key.TagType);
+            if (groups.Any(g => g.All(m => m.Value != true))) return false; //If we have any group where no matches were found, this is a bad match
+
+            return true;
         }
 
         public LocalMovie GetLocalMovie(string filename, Movie movie)
@@ -366,7 +383,7 @@ namespace NzbDrone.Core.Parser
                 result = new MappingResult { Movie = movieByTitleAndOrYear };
                 return true;
             }
-            
+
             if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
             {
                 movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, null);
@@ -376,7 +393,7 @@ namespace NzbDrone.Core.Parser
                     return true;
                 }
             }
-            
+
             result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound};
             return false;
         }
@@ -433,7 +450,7 @@ namespace NzbDrone.Core.Parser
                 result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                 return false;
             }
-            
+
             if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
             {
                 if (searchCriteria.Movie.CleanTitle.Contains(cleanTitle) ||
@@ -445,13 +462,13 @@ namespace NzbDrone.Core.Parser
                         result = new MappingResult {Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping};
                         return true;
                     }
-                    
+
                     if (parsedMovieInfo.Year < 1800)
                     {
                         result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.SuccessLenientMapping };
                         return true;
                     }
-                    
+
                     result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.WrongYear };
                     return false;
                 }
@@ -461,7 +478,7 @@ namespace NzbDrone.Core.Parser
 
             return false;
         }
-        
+
     }
 
 
@@ -496,9 +513,9 @@ namespace NzbDrone.Core.Parser
                 }
             }
         }
-        
+
         public RemoteMovie RemoteMovie;
-        public MappingResultType MappingResultType { get; set; } 
+        public MappingResultType MappingResultType { get; set; }
         public Movie Movie {
             get {
                 return RemoteMovie.Movie;
@@ -517,7 +534,7 @@ namespace NzbDrone.Core.Parser
                 };
             }
         }
-        
+
         public string ReleaseName { get; set; }
 
         public override string ToString() {
@@ -535,7 +552,7 @@ namespace NzbDrone.Core.Parser
             }
         }
     }
-    
+
     public enum MappingResultType
     {
         Unknown = -1,

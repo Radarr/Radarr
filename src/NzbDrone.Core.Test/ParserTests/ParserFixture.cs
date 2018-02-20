@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
@@ -26,7 +27,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_remove_accents_from_title()
         {
             const string title = "Carniv\u00E0le";
-            
+
             title.CleanSeriesTitle().Should().Be("carnivale");
         }
 
@@ -70,13 +71,6 @@ namespace NzbDrone.Core.Test.ParserTests
 			Parser.Parser.ParseMovieTitle(postTitle, false).Year.Should().Be(year);
 		}
 
-		[TestCase("The Danish Girl 2015")]
-        [TestCase("The.Danish.Girl.2015.1080p.BluRay.x264.DTS-HD.MA.5.1-RARBG")]
-		public void should_not_parse_language_in_movie_title(string postTitle)
-		{
-			Parser.Parser.ParseMovieTitle(postTitle, false).Languages.Should().Contain(Language.English);
-		}
-
         [TestCase("Prometheus 2012 Directors Cut", "Directors Cut")]
         [TestCase("Star Wars Episode IV - A New Hope 1999 (Despecialized).mkv", "Despecialized")]
         [TestCase("Prometheus.2012.(Special.Edition.Remastered).[Bluray-1080p].mkv", "Special Edition Remastered")]
@@ -116,7 +110,12 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Mission Impossible: Rogue Nation 2012 Bluray", "")]
         public void should_parse_edition(string postTitle, string edition)
         {
-            Parser.Parser.ParseMovieTitle(postTitle, true).Edition.Should().Be(edition);
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
+            if (parsed.Edition.IsNullOrWhiteSpace())
+            {
+                parsed.Edition = Parser.Parser.ParseEdition(parsed.SimpleTitle.Replace(parsed.MovieTitle, "A Movie"));
+            }
+            parsed.Edition.Should().Be(edition);
         }
 
         [TestCase("The Lord of the Rings The Fellowship of the Ring (Extended Edition) 1080p BD25", "The Lord Of The Rings The Fellowship Of The Ring", "Extended Edition")]

@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Parser
         //                                                        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
-                                                                (?<bluray>BluRay|Blu-Ray|HDDVD|BD|BDISO|BD25|BD50)|
+                                                                (?<bluray>BluRay|Blu-Ray|HDDVD|BD|BDISO|BD25|BD50|BR.?DISK)|
                                                                 (?<webdl>WEB[-_. ]DL|HDRIP|WEBDL|WebRip|Web-Rip|iTunesHD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DD5[. ]1)|\d+0p[. ]WEB[. ])|
                                                                 (?<hdtv>HDTV)|
                                                                 (?<bdrip>BDRip)|(?<brrip>BRRip)|
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RemuxRegex = new Regex(@"\b(?<remux>(BD)?Remux)\b",
                                                         RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50)\b",
+        private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper|repack|rerip)\b",
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex AnimeBlurayRegex = new Regex(@"bd(?:720|1080)|(?<=[-_. (\[])bd(?=[-_. )\]])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex HighDefPdtvRegex = new Regex(@"hr[-_. ]ws", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        
+
         private static readonly Regex HDShitQualityRegex = new Regex(@"(HD-TS|HDTS|HDTSRip|HD-TC|HDTC|HDCAM|HD-CAM)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static QualityModel ParseQuality(string name)
@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Parser
                 if (sourceMatch.Groups["bluray"].Success)
                 {
                     result.Source = Source.BLURAY;
-                    
+
                     if (codecRegex.Groups["xvid"].Success || codecRegex.Groups["divx"].Success)
                     {
                         result.Resolution = Resolution.R480P;
@@ -245,7 +245,7 @@ namespace NzbDrone.Core.Parser
                     return result;
                 }
             }
-            
+
             //Anime Bluray matching
             if (AnimeBlurayRegex.Match(normalizedName).Success)
             {
@@ -267,7 +267,7 @@ namespace NzbDrone.Core.Parser
                 result.Source = Source.BLURAY;
                 return result;
             }
-            
+
             var otherSourceMatch = OtherSourceMatch(normalizedName);
 
             if (otherSourceMatch.Source != Source.UNKNOWN)

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Qualities
 
         public double? MinSize { get; set; }
         public double? MaxSize { get; set; }
-        
+
         public List<QualityTag> QualityTags { get; set; }
 
         public QualityDefinition()
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Qualities
         {
             return Quality.Name;
         }
-        
+
         public static readonly HashSet<QualityDefinition> DefaultQualityDefinitions = new HashSet<QualityDefinition>
             {
                 new QualityDefinition(Quality.Unknown)     { Weight = 1,  MinSize = 0, MaxSize = 100, QualityTags = new List<QualityTag>() },
@@ -65,9 +65,9 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.Bluray2160p) { Weight = 23, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_2160") } },
                 new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_2160"), new QualityTag("m_remux") } },
 
-                new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_2160"), new QualityTag("r_1080"), new QualityTag("m_brdisk") } },
+                new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_1080"), new QualityTag("r_2160"), new QualityTag("m_brdisk") } },
                 new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_tv"), new QualityTag("r_1080"), new QualityTag("r_2160"), new QualityTag("m_rawhd") } }
             };
-        
+
     }
 }

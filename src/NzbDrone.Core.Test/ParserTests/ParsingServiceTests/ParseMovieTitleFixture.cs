@@ -3,6 +3,7 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Core.Parser;
@@ -25,7 +26,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         public ParsedMovieInfo _remuxMovie;
         public ParsedMovieInfo _remuxSurroundMovie;
         public ParsedMovieInfo _unknownMovie;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -41,6 +42,8 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 .With(r => r.IndexerSettings = _notMultiSettings).Build();
 
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(QualityDefinition.DefaultQualityDefinitions.ToList());
+
+            Mocker.GetMock<IConfigService>().Setup(s => s.ParsingLeniency).Returns(ParsingLeniencyType.Strict);
         }
 
         public void GivenExtraQD(QualityDefinition definition)
@@ -49,7 +52,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             defaults.Add(definition);
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(defaults);
         }
-        
+
         private void GivenExtraQD(params QualityDefinition[] definition)
         {
             var defaults = QualityDefinition.DefaultQualityDefinitions.ToList();
@@ -149,8 +152,15 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
         [TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
+        [TestCase("Blade.Runner.Directors.Edition.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+            "Remux-1080p Director")]
+        [TestCase("Blade.Runner.2017.Directors.Edition.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+            "Remux-1080p Director")]
+        [TestCase("Blade.Runner.2017.Extended.Edition.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+            "Remux-1080p")]
         [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.MULTI.French.English", "Remux-1080p FR")]
         [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.French", "Remux-1080p FR")]
+        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.English", "Remux-1080p")]
         public void should_correctly_identify_advanced_definitons(string title, string definitionName)
         {
             GivenExtraQD(
@@ -181,6 +191,18 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             var result = Subject.ParseMovieInfo(title);
             result.Quality.QualityDefinition.Title.Should().Be(definitionName);
+        }
+
+        [TestCase("My Movie 2017 German English", Language.English, Language.German)]
+        //[TestCase("Nocturnal.Animals.2016.MULTi.1080p.BluRay.x264-ANONA", Language.English, Language.French)] fails since no mention of french!
+        [TestCase("Nocturnal Animals (2016) MULTi VFQ [1080p] BluRay x264-PopHD", Language.English, Language.French)]
+        [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
+        [TestCase("Castle.2009.S01E14.HDTV.XviD-LOL", Language.English)]
+        [TestCase("The Danish Girl 2015", Language.English)]
+        public void should_parse_advanced_languages_correctly(string title, params Language[] languages)
+        {
+            var result = Subject.ParseMovieInfo(title);
+            result.Languages.Should().BeEquivalentTo(languages);
         }
     }
 }
