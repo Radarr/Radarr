@@ -168,12 +168,6 @@ Task("PackageOsx").Does(() => {
 	// Adding MediaInfo dylib
 	CopyFiles(sourceFolder + "/Libraries/MediaInfo/*.dylib", outputFolderOsx);
 
-	// Chmod as executable
-	StartProcess(@"C:\cygwin64\bin\chmod.exe", new ProcessSettings()
-		.WithArguments(args => args
-			.Append("+x")
-			.Append(outputFolderOsx + "/Radarr")));
-	
 	// Adding Startup script
 	CopyFile("./osx/Radarr", outputFolderOsx + "/Radarr");
 });
@@ -189,6 +183,12 @@ Task("PackageOsxApp").Does(() => {
 	// Copy osx package files
 	CopyDirectory("./osx/Radarr.app", outputFolderOsxApp + "/Radarr.app");
 	CopyDirectory(outputFolderOsx, outputFolderOsxApp + "/Radarr.app/Contents/MacOS");
+
+	// Chmod as executable
+	StartProcess("C:/cygwin64/bin/chmod.exe", new ProcessSettings()
+		.WithArguments(args => args
+			.Append("+x")
+			.Append(outputFolderOsxApp + "/Radarr.app/Contents/MacOS/Radarr")));
 });
 
 Task("PackageTests").Does(() => {
