@@ -40,30 +40,32 @@ namespace NzbDrone.Core.Indexers.Gazelle
                 throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<GazelleResponse>(WebUtility.HtmlDecode(indexerResponse.Content));
-            if (jsonResponse.Status != "success" ||
-                jsonResponse.Status.IsNullOrWhiteSpace() ||
-                jsonResponse.Response == null)
+            var jsonResponse = new HttpResponse<GazelleResponse>(indexerResponse.HttpResponse);
+            if (jsonResponse.Resource.Status != "success" ||
+                jsonResponse.Resource.Status.IsNullOrWhiteSpace() ||
+                jsonResponse.Resource.Response == null)
             {
                 return torrentInfos;
             }
 
 
-            foreach (var result in jsonResponse.Response.Results)
+            foreach (var result in jsonResponse.Resource.Response.Results)
             {
                 if (result.Torrents != null)
                 {
                     foreach (var torrent in result.Torrents)
                     {
                         var id = torrent.TorrentId;
+                        var artist = WebUtility.HtmlDecode(result.Artist);
+                        var album = WebUtility.HtmlDecode(result.GroupName);
 
                         torrentInfos.Add(new GazelleInfo()
                         {
                             Guid = string.Format("Gazelle-{0}", id),
-                            Artist = result.Artist,
+                            Artist = artist,
                             // Splice Title from info to avoid calling API again for every torrent.
-                            Title = result.Artist + " - " + result.GroupName + " (" + result.GroupYear +") (" + torrent.Format + " " + torrent.Encoding + ")",
-                            Album = result.GroupName,
+                            Title = WebUtility.HtmlDecode(result.Artist + " - " + result.GroupName + " (" + result.GroupYear +") [" + torrent.Format + " " + torrent.Encoding + "]"),
+                            Album = album,
                             Container = torrent.Encoding,
                             Codec = torrent.Format,
                             Size = long.Parse(torrent.Size),

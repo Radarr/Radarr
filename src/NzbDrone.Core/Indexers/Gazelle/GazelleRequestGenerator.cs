@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Indexers.Gazelle
             };
 
             indexRequestBuilder.SetCookies(cookies);
-            indexRequestBuilder.Method = HttpMethod.GET;
+            indexRequestBuilder.Method = HttpMethod.POST;
             indexRequestBuilder.Resource("ajax.php?action=index");
 
             var authIndexRequest = indexRequestBuilder

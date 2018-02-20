@@ -184,6 +184,9 @@
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveRejectedFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemoveGrabbedFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\AddFixture.cs" />
+    <None Include="Files\Indexers\Gazelle\GazelleIndex.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Files\Indexers\Rarbg\RecentFeed_v1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -239,6 +242,7 @@
     <Compile Include="IndexerSearchTests\ArtistSearchServiceFixture.cs" />
     <Compile Include="IndexerSearchTests\SearchDefinitionFixture.cs" />
     <Compile Include="IndexerTests\BasicRssParserFixture.cs" />
+    <Compile Include="IndexerTests\GazelleTests\GazelleFixture.cs" />
     <Compile Include="IndexerTests\HeadphonesTests\HeadphonesFixture.cs" />
     <Compile Include="IndexerTests\HeadphonesTests\HeadphonesCapabilitiesProviderFixture.cs" />
     <Compile Include="IndexerTests\IndexerServiceFixture.cs" />
@@ -412,6 +416,9 @@
       <Link>sqlite3.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Files\Indexers\Gazelle\Gazelle.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Files\Indexers\Headphones\Headphones.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
