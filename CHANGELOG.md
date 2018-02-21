@@ -3,6 +3,7 @@
 ## (unreleased)
 
 ### **New features**
+- Metadata links are now better readable. Also fixed links in the poster view. (#2562) [thezoggy]
 - Handle ctrl-c more gracefully. [Leonardo Galli]
 - Device names for Join notifications (#2544) [Qstick]
 - Same File Size MediaFile Specification (#2532) [Qstick]
@@ -13,6 +14,10 @@
 - NzbDrone references in FirewallAdapter.cs (#2504) [Qstick]
 
 ### **Fixes**
+- Another Delete modal is fixed. (#2560) [thezoggy]
+- Messed up movie deletion modal  (#2552) [thezoggy]
+- Remove sorting on Monitor/Profile columns to prevent unexpected results until sorting can properly be handled. Quick Fix for #2540 (#2553) [thezoggy]
+- OSX app has bundle name of Sonarr (#2555) [thezoggy]
 - Alt Titles from TMDB not getting added when mappings server throws 404. [Leonardo Galli]
 - Unable to execute custom scripts if IMDB ID is null (#2543) [Qstick]
 - Cleanup TV related code in API (#2530) [Qstick]
