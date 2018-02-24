@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
@@ -68,23 +68,23 @@ namespace NzbDrone.Core.Test.HistoryTests
         [Test]
         public void should_use_file_name_for_source_title_if_scene_name_is_null()
         {
-            var series = Builder<Series>.CreateNew().Build();
-            var episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
-            var episodeFile = Builder<EpisodeFile>.CreateNew()
+            // Test fails becuase Radarr is using movie.title in historyService with no fallback
+
+            var movie = Builder<Movie>.CreateNew().Build();
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                   .With(f => f.SceneName = null)
                                                   .Build();
 
-            var localEpisode = new LocalEpisode
+            var localMovie = new LocalMovie()
                                {
-                                   Series = series,
-                                   Episodes = episodes,
-                                   Path = @"C:\Test\Unsorted\Series.s01e01.mkv"
+                                   Movie = movie,
+                                   Path = @"C:\Test\Unsorted\Movie.2011.mkv"
                                };
 
-            Subject.Handle(new EpisodeImportedEvent(localEpisode, episodeFile, true, "sab", "abcd", true));
+            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, true, "sab", "abcd", true));
 
             Mocker.GetMock<IHistoryRepository>()
-                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localEpisode.Path))));
+                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localMovie.Path))));
         }
     }
 }
