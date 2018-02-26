@@ -5,10 +5,10 @@ module.exports = SeriesIndexItemView.extend({
     template : 'Movies/Index/Posters/SeriesPostersItemViewTemplate',
 
     initialize : function() {
-        this.events['mouseenter .x-series-poster-container'] = 'posterHoverAction';
-        this.events['mouseleave .x-series-poster-container'] = 'posterHoverAction';
+        this.events['mouseenter .x-movie-poster-container'] = 'posterHoverAction';
+        this.events['mouseleave .x-movie-poster-container'] = 'posterHoverAction';
 
-        this.ui.controls = '.x-series-controls';
+        this.ui.controls = '.x-movie-controls';
         this.ui.title = '.x-title';
     },
 
