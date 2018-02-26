@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenMostRecentForEpisode(int episodeId, string downloadId, QualityModel quality, DateTime date, HistoryEventType eventType)
         {
-            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForEpisode(episodeId))
+            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForMovie(episodeId))
                   .Returns(new History.History { DownloadId = downloadId, Quality = quality, Date = date, EventType = eventType });
         }
 
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_latest_history_item_is_null()
         {
-            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForEpisode(It.IsAny<int>())).Returns((History.History)null);
+            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForMovie(It.IsAny<int>())).Returns((History.History)null);
             _upgradeHistory.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
         }
 

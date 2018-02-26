@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Marr.Data.QGen;
@@ -11,12 +11,10 @@ namespace NzbDrone.Core.History
 {
     public interface IHistoryRepository : IBasicRepository<History>
     {
-        List<QualityModel> GetBestQualityInHistory(int episodeId);
-        History MostRecentForEpisode(int episodeId);
+        List<QualityModel> GetBestQualityInHistory(int movieId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
-        List<History> FindDownloadHistory(int idSeriesId, QualityModel quality);
-        void DeleteForSeries(int seriesId);
+        List<History> FindDownloadHistory(int idMovieId, QualityModel quality);
         void DeleteForMovie(int movieId);
         History MostRecentForMovie(int movieId);
     }
@@ -29,19 +27,11 @@ namespace NzbDrone.Core.History
         {
         }
 
-
-        public List<QualityModel> GetBestQualityInHistory(int episodeId)
+        public List<QualityModel> GetBestQualityInHistory(int movieId)
         {
-            var history = Query.Where(c => c.EpisodeId == episodeId);
+            var history = Query.Where(c => c.MovieId == movieId);
 
             return history.Select(h => h.Quality).ToList();
-        }
-
-        public History MostRecentForEpisode(int episodeId)
-        {
-            return Query.Where(h => h.EpisodeId == episodeId)
-                        .OrderByDescending(h => h.Date)
-                        .FirstOrDefault();
         }
 
         public History MostRecentForDownloadId(string downloadId)
@@ -56,20 +46,15 @@ namespace NzbDrone.Core.History
             return Query.Where(h => h.DownloadId == downloadId);
         }
 
-        public List<History> FindDownloadHistory(int idSeriesId, QualityModel quality)
+        public List<History> FindDownloadHistory(int idMovieId, QualityModel quality)
         {
             return Query.Where(h =>
-                 h.SeriesId == idSeriesId &&
+                 h.MovieId == idMovieId &&
                  h.Quality == quality &&
                  (h.EventType == HistoryEventType.Grabbed ||
                  h.EventType == HistoryEventType.DownloadFailed ||
                  h.EventType == HistoryEventType.DownloadFolderImported)
                  ).ToList();
-        }
-
-        public void DeleteForSeries(int seriesId)
-        {
-            Delete(c => c.SeriesId == seriesId);
         }
 
         public void DeleteForMovie(int movieId)
