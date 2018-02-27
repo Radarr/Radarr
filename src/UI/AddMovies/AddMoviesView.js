@@ -92,7 +92,7 @@ module.exports = Marionette.Layout.extend({
 
 				this.$el.addClass(this.className);
 
-				this.ui.moviesSearch.keyup(function(e) {
+				this.ui.moviesSearch.on('input', function(e) {
 
 						if (_.contains([
 										9,
