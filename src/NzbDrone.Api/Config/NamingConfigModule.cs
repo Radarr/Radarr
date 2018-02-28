@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
@@ -131,19 +131,7 @@ namespace NzbDrone.Api.Config
 
         private void ValidateFormatResult(NamingConfig nameSpec)
         {
-            var singleEpisodeSampleResult = _filenameSampleService.GetStandardSample(nameSpec);
-            var multiEpisodeSampleResult = _filenameSampleService.GetMultiEpisodeSample(nameSpec);
-            var dailyEpisodeSampleResult = _filenameSampleService.GetDailySample(nameSpec);
-            var animeEpisodeSampleResult = _filenameSampleService.GetAnimeSample(nameSpec);
-            var animeMultiEpisodeSampleResult = _filenameSampleService.GetAnimeMultiEpisodeSample(nameSpec);
-
             var movieSampleResult = _filenameSampleService.GetMovieSample(nameSpec);
-
-            var singleEpisodeValidationResult = _filenameValidationService.ValidateStandardFilename(singleEpisodeSampleResult);
-            var multiEpisodeValidationResult = _filenameValidationService.ValidateStandardFilename(multiEpisodeSampleResult);
-            var dailyEpisodeValidationResult = _filenameValidationService.ValidateDailyFilename(dailyEpisodeSampleResult);
-            var animeEpisodeValidationResult = _filenameValidationService.ValidateAnimeFilename(animeEpisodeSampleResult);
-            var animeMultiEpisodeValidationResult = _filenameValidationService.ValidateAnimeFilename(animeMultiEpisodeSampleResult);
 
             //var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult); For now, let's hope the user is not stupid enough :/
 

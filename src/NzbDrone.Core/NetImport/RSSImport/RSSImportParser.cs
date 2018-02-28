@@ -1,5 +1,5 @@
 ﻿using NzbDrone.Core.NetImport.Exceptions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using System;
 using System.Collections.Generic;
 using System.IO;

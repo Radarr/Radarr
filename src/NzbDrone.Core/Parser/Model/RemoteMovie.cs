@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Parser.Model
 {
     public class RemoteMovie
     {
         public ReleaseInfo Release { get; set; }
-        public ParsedEpisodeInfo ParsedEpisodeInfo { get; set; } //TODO: Change to ParsedMovieInfo, for now though ParsedEpisodeInfo will do.
         public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public Movie Movie { get; set; }
         public MappingResultType MappingResult { get; set; }

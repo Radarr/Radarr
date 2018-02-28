@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.DecisionEngine.Specifications;
@@ -6,7 +6,7 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -14,18 +14,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class LanguageSpecificationFixture : CoreTest
     {
-        private RemoteEpisode _remoteEpisode;
+        private RemoteMovie _remoteEpisode;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = new RemoteEpisode
+            _remoteEpisode = new RemoteMovie
             {
-                ParsedEpisodeInfo = new ParsedEpisodeInfo
+                ParsedMovieInfo = new ParsedMovieInfo
                 {
                     Language = Language.English
                 },
-                Series = new Series
+                Movie = new Movie
                          {
                              Profile = new LazyLoaded<Profile>(new Profile
                                                                {
@@ -37,12 +37,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithEnglishRelease()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Language = Language.English;
+            _remoteEpisode.ParsedMovieInfo.Language = Language.English;
         }
 
         private void WithGermanRelease()
         {
-            _remoteEpisode.ParsedEpisodeInfo.Language = Language.German;            
+            _remoteEpisode.ParsedMovieInfo.Language = Language.German;            
         }
 
         [Test]

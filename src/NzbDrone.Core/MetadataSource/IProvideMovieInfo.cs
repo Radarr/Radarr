@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Profiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MetadataSource
 {

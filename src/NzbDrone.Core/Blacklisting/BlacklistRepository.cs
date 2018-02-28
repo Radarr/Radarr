@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using Marr.Data.QGen;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Blacklisting
 {
     public interface IBlacklistRepository : IBasicRepository<Blacklist>
     {
-        List<Blacklist> BlacklistedByTitle(int seriesId, string sourceTitle);
-        List<Blacklist> BlacklistedByTorrentInfoHash(int seriesId, string torrentInfoHash);
-        List<Blacklist> BlacklistedByMovie(int seriesId);
+        List<Blacklist> BlacklistedByTitle(int movieId, string sourceTitle);
+        List<Blacklist> BlacklistedByTorrentInfoHash(int movieId, string torrentInfoHash);
+        List<Blacklist> BlacklistedByMovie(int movieId);
     }
 
     public class BlacklistRepository : BasicRepository<Blacklist>, IBlacklistRepository
@@ -30,11 +30,6 @@ namespace NzbDrone.Core.Blacklisting
         {
             return Query.Where(e => e.MovieId == movieId)
                         .AndWhere(e => e.TorrentInfoHash.Contains(torrentInfoHash));
-        }
-
-        public List<Blacklist> BlacklistedBySeries(int seriesId)
-        {
-            return Query.Where(b => b.SeriesId == seriesId);
         }
 
         public List<Blacklist> BlacklistedByMovie(int movieId)

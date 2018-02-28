@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
@@ -6,8 +6,6 @@ namespace NzbDrone.Core.Download.Pending
 {
     public interface IPendingReleaseRepository : IBasicRepository<PendingRelease>
     {
-        void DeleteBySeriesId(int seriesId);
-        List<PendingRelease> AllBySeriesId(int seriesId);
         void DeleteByMovieId(int movieId);
         List<PendingRelease> AllByMovieId(int movieId);
     }
@@ -17,16 +15,6 @@ namespace NzbDrone.Core.Download.Pending
         public PendingReleaseRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
-        }
-
-        public void DeleteBySeriesId(int seriesId)
-        {
-            Delete(r => r.SeriesId == seriesId);
-        }
-
-        public List<PendingRelease> AllBySeriesId(int seriesId)
-        {
-            return Query.Where(p => p.SeriesId == seriesId);
         }
 
         public void DeleteByMovieId(int movieId)

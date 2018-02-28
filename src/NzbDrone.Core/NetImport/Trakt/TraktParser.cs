@@ -18,11 +18,11 @@ namespace NzbDrone.Core.NetImport.Trakt
             _settings = settings;
         }
 
-        public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Tv.Movie>();
+            var movies = new List<Movies.Movie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
                 foreach (var movie in jsonResponse)
                 {
-                    movies.AddIfNotNull(new Tv.Movie()
+                    movies.AddIfNotNull(new Movies.Movie()
                     {
                         Title = movie.title,
                         ImdbId = movie.ids.imdb,
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
                 foreach (var movie in jsonResponse)
                 {
-                    movies.AddIfNotNull(new Tv.Movie()
+                    movies.AddIfNotNull(new Movies.Movie()
                     {
                         Title = movie.movie.title,
                         ImdbId = movie.movie.ids.imdb,

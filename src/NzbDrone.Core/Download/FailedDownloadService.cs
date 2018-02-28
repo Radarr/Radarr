@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -87,9 +87,7 @@ namespace NzbDrone.Core.Download
 
             var downloadFailedEvent = new DownloadFailedEvent
             {
-                SeriesId = 0,
                 MovieId = historyItem.MovieId,
-                EpisodeIds = null,
                 Quality = historyItem.Quality,
                 SourceTitle = historyItem.SourceTitle,
                 DownloadClient = historyItem.Data.GetValueOrDefault(History.History.DOWNLOAD_CLIENT),

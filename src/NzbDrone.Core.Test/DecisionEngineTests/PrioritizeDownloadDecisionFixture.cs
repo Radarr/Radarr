@@ -4,7 +4,7 @@ using System.Linq;
 using Moq;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Profiles.Delay;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Parser.Model;

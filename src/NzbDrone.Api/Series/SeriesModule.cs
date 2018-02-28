@@ -5,7 +5,7 @@ using NzbDrone.SignalR;
 namespace NzbDrone.Api.Series
 {
     [Obsolete("SeriesModule is Obsolete, Remove with new UI")]
-    public class SeriesModule : NzbDroneRestModuleWithSignalR<SeriesResource, Core.Tv.Series>
+    public class SeriesModule : NzbDroneRestModuleWithSignalR<SeriesResource, Core.Movies.Movie>
 
     {
         public SeriesModule(IBroadcastSignalRMessage signalRBroadcaster

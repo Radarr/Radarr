@@ -3,7 +3,7 @@ using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Core.Rest;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.MediaBrowser
 {

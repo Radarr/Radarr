@@ -8,7 +8,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.RemotePathMappings;

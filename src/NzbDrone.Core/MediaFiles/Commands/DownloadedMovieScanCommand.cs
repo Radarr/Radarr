@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.MediaFiles.EpisodeImport;
+﻿using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.MediaFiles.Commands

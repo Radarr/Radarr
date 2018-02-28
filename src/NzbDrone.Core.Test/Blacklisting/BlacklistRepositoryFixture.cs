@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -19,9 +19,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             _blacklist = new Blacklist
                      {
-                         SeriesId = 12345,
                          MovieId = 1234,
-                         EpisodeIds = new List<int> { 1 },
                          Quality = new QualityModel(Quality.Bluray720p),
                          SourceTitle = "series.title.s01e01",
                          Date = DateTime.UtcNow
@@ -40,7 +38,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             Subject.Insert(_blacklist);
 
-            Subject.All().First().EpisodeIds.Should().Contain(_blacklist.EpisodeIds);
+            Subject.All().First().MovieId.Should().Be(_blacklist.MovieId);
         }
 
         [Test]

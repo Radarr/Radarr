@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
 			if (result == null)
 			{
-				Parser.Parser.ParseTitle(postTitle).Language.Should().Be(language);
+				Parser.Parser.ParseMovieTitle(postTitle, false).Language.Should().Be(language);
 				return;
 			}
             result.Language.Should().Be(language);

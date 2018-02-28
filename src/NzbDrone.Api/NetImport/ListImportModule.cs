@@ -5,7 +5,7 @@ using Nancy.Extensions;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Api.NetImport
 {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -8,7 +8,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
 
@@ -204,51 +204,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var result = Subject.GetRssDecision(_reports);
 
             result.Should().HaveCount(1);
-        }
-
-        [Test]
-        [Ignore( "Series")]
-        public void should_only_include_reports_for_requested_episodes()
-        {
-            var series = Builder<Series>.CreateNew().Build();
-
-            var episodes = Builder<Episode>.CreateListOfSize(2)
-                .All()
-                .With(v => v.SeriesId, series.Id)
-                .With(v => v.Series, series)
-                .With(v => v.SeasonNumber, 1)
-                .With(v => v.SceneSeasonNumber, 2)
-                .BuildList();
-
-            var criteria = new SeasonSearchCriteria { Episodes = episodes.Take(1).ToList(), SeasonNumber = 1 };
-
-            var reports = episodes.Select(v => 
-                new ReleaseInfo() 
-                { 
-                    Title = string.Format("{0}.S{1:00}E{2:00}.720p.WEB-DL-DRONE", series.Title, v.SceneSeasonNumber, v.SceneEpisodeNumber) 
-                }).ToList();
-
-            Mocker.GetMock<IParsingService>()
-                .Setup(v => v.Map(It.IsAny<ParsedEpisodeInfo>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<SearchCriteriaBase>()))
-                .Returns<ParsedEpisodeInfo, int, int, SearchCriteriaBase>((p,tvdbid,tvrageid,c) =>
-                    new RemoteEpisode
-                    {
-                        DownloadAllowed = true,
-                        ParsedEpisodeInfo = p,
-                        Series = series,
-                        Episodes = episodes.Where(v => v.SceneEpisodeNumber == p.EpisodeNumbers.First()).ToList()
-                    });
-
-            Mocker.SetConstant<IEnumerable<IDecisionEngineSpecification>>(new List<IDecisionEngineSpecification>
-            {
-                Mocker.Resolve<NzbDrone.Core.DecisionEngine.Specifications.Search.EpisodeRequestedSpecification>()
-            });
-
-            var decisions = Subject.GetSearchDecision(reports, criteria);
-
-            var approvedDecisions = decisions.Where(v => v.Approved).ToList();
-
-            approvedDecisions.Count.Should().Be(1);
         }
 
         [Test]

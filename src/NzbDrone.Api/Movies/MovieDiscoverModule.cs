@@ -45,7 +45,7 @@ namespace NzbDrone.Api.Movies
             }).AsResponse();
         }
 
-        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Tv.Movie> movies)
+        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Movies.Movie> movies)
         {
             foreach (var currentSeries in movies)
             {

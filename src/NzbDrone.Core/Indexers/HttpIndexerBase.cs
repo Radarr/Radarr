@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -49,66 +49,6 @@ namespace NzbDrone.Core.Indexers
             var generator = GetRequestGenerator();
 
             return FetchReleases(generator.GetRecentRequests(), true);
-        }
-
-        public override IList<ReleaseInfo> Fetch(SingleEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        public override IList<ReleaseInfo> Fetch(SeasonSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        public override IList<ReleaseInfo> Fetch(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        public override IList<ReleaseInfo> Fetch(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
-        }
-
-        public override IList<ReleaseInfo> Fetch(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            if (!SupportsSearch)
-            {
-                return new List<ReleaseInfo>();
-            }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
         }
 
         public override IList<ReleaseInfo> Fetch(MovieSearchCriteria searchCriteria)

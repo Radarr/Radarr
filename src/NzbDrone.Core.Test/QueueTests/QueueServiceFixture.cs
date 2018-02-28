@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -7,7 +7,7 @@ using NzbDrone.Core.Queue;
 using NzbDrone.Core.Test.Framework;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Test.QueueTests
@@ -24,24 +24,18 @@ namespace NzbDrone.Core.Test.QueueTests
                                         .With(v => v.RemainingTime = TimeSpan.FromSeconds(10))
                                         .Build();
 
-            var series = Builder<Series>.CreateNew()
+            var series = Builder<Movie>.CreateNew()
                                         .Build();
-
-            var episodes = Builder<Episode>.CreateListOfSize(3)
-                                          .All()
-                                          .With(e => e.SeriesId = series.Id)
-                                          .Build();
             
-            var remoteEpisode = Builder<RemoteEpisode>.CreateNew()
-                                                   .With(r => r.Series = series)
-                                                   .With(r => r.Episodes = new List<Episode>(episodes))
-                                                   .With(r => r.ParsedEpisodeInfo = new ParsedEpisodeInfo())
+            var remoteEpisode = Builder<RemoteMovie>.CreateNew()
+                                                   .With(r => r.Movie = series)
+                                                   .With(r => r.ParsedMovieInfo = new ParsedMovieInfo())
                                                    .Build();
 
             _trackedDownloads = Builder<TrackedDownload>.CreateListOfSize(1)
                 .All()
                 .With(v => v.DownloadItem = downloadItem)
-                .With(v => v.RemoteEpisode = remoteEpisode)
+                .With(v => v.RemoteMovie = remoteEpisode)
                 .Build()
                 .ToList();
         }

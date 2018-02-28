@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -7,34 +7,26 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
     [TestFixture]
     public class CleanTitleFixture : CoreTest<FileNameBuilder>
     {
-        private Series _series;
-        private Episode _episode;
-        private EpisodeFile _episodeFile;
+        private Movie _series;
+        private MovieFile _episodeFile;
         private NamingConfig _namingConfig;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>
-                    .CreateNew()
-                    .With(s => s.Title = "South Park")
-                    .Build();
+            _series = Builder<Movie>
+                .CreateNew()
+                .With(s => s.Title = "South Park")
+                .Build();
 
-            _episode = Builder<Episode>.CreateNew()
-                            .With(e => e.Title = "City Sushi")
-                            .With(e => e.SeasonNumber = 15)
-                            .With(e => e.EpisodeNumber = 6)
-                            .With(e => e.AbsoluteEpisodeNumber = 100)
-                            .Build();
-
-            _episodeFile = new EpisodeFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
+            _episodeFile = new MovieFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
 
             _namingConfig = NamingConfig.Default;
             _namingConfig.RenameEpisodes = true;
@@ -69,27 +61,10 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_get_expected_title_back(string title, string expected)
         {
             _series.Title = title;
-            _namingConfig.StandardEpisodeFormat = "{Series CleanTitle}";
+            _namingConfig.StandardMovieFormat = "{Movie CleanTitle}";
 
-            Subject.BuildFileName(new List<Episode> { _episode }, _series, _episodeFile)
+            Subject.BuildFileName(_series, _episodeFile)
                    .Should().Be(expected);
-        }
-
-        [Test]
-        public void should_use_and_as_separator_for_multiple_episodes()
-        {
-            var episodes = Builder<Episode>.CreateListOfSize(2)
-                                           .TheFirst(1)
-                                           .With(e => e.Title = "Surrender Benson")
-                                           .TheNext(1)
-                                           .With(e => e.Title = "Imprisoned Lives")
-                                           .Build()
-                                           .ToList();
-
-            _namingConfig.StandardEpisodeFormat = "{Episode CleanTitle}";
-
-            Subject.BuildFileName(episodes, _series, _episodeFile)
-                   .Should().Be(episodes.First().Title + " and " + episodes.Last().Title);
         }
     }
 }

@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 using FluentValidation.Validators;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Validation.Paths
 {
     public class MovieExistsValidator : PropertyValidator
     {
-        private readonly IMovieService _seriesService;
+        private readonly IMovieService _movieService;
 
-        public MovieExistsValidator(IMovieService seriesService)
+        public MovieExistsValidator(IMovieService movieService)
             : base("This movie has already been added")
         {
-            _seriesService = seriesService;
+            _movieService = movieService;
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Validation.Paths
 
             int tmdbId = (int)context.PropertyValue;
 
-            return (!_seriesService.GetAllMovies().Exists(s => s.TmdbId == tmdbId));
+            return (!_movieService.GetAllMovies().Exists(s => s.TmdbId == tmdbId));
         }
     }
 }

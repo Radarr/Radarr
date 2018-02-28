@@ -1,7 +1,7 @@
 ﻿using Marr.Data;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport
 {

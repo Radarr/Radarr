@@ -8,7 +8,7 @@ using Ical.Net.General;
 using Ical.Net.Interfaces.Serialization;
 using Ical.Net.Serialization;
 using Ical.Net.Serialization.iCalendar.Factory;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using Nancy.Responses;
 using NzbDrone.Core.Tags;
 using NzbDrone.Common.Extensions;

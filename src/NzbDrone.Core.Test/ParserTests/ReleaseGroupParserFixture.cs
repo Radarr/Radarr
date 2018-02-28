@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string path = @"C:\Test\Doctor.Who.2005.s01e01.internal.bdrip.x264-archivist.mkv";
 
-            Parser.Parser.ParsePath(path).ReleaseGroup.Should().Be("archivist");
+            Parser.Parser.ParseMovieTitle(path, false).ReleaseGroup.Should().Be("archivist");
         }
 
         [TestCase("Marvels.Daredevil.S02E04.720p.WEBRip.x264-SKGTV English", "SKGTV")]

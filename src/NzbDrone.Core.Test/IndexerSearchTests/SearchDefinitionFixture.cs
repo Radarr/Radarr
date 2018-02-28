@@ -7,7 +7,7 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.IndexerSearchTests
 {
-    public class SearchDefinitionFixture : CoreTest<SingleEpisodeSearchCriteria>
+    public class SearchDefinitionFixture : CoreTest<MovieSearchCriteria>
     {
         [TestCase("Betty White's Off Their Rockers", "Betty+Whites+Off+Their+Rockers")]
         [TestCase("Star Wars: The Clone Wars", "Star+Wars+The+Clone+Wars")]

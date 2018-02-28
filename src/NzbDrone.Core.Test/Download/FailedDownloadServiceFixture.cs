@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -10,7 +10,7 @@ using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download
@@ -32,16 +32,15 @@ namespace NzbDrone.Core.Test.Download
 
             _grabHistory = Builder<History.History>.CreateListOfSize(2).BuildList();
 
-            var remoteEpisode = new RemoteEpisode
+            var remoteEpisode = new RemoteMovie
             {
-                Series = new Series(),
-                Episodes = new List<Episode> { new Episode { Id = 1 } }
+                Movie = new Movie(),
             };
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadStage.Downloading)
                     .With(c => c.DownloadItem = completed)
-                    .With(c => c.RemoteEpisode = remoteEpisode)
+                    .With(c => c.RemoteMovie = remoteEpisode)
                     .Build();
 
 

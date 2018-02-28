@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Api.MovieFiles;
 
 namespace NzbDrone.Api.Movies
@@ -88,7 +88,7 @@ namespace NzbDrone.Api.Movies
 
     public static class MovieResourceMapper
     {
-        public static MovieResource ToResource(this Core.Tv.Movie model)
+        public static MovieResource ToResource(this Core.Movies.Movie model)
         {
             if (model == null) return null;
 
@@ -171,11 +171,11 @@ namespace NzbDrone.Api.Movies
             };
         }
 
-        public static Core.Tv.Movie ToModel(this MovieResource resource)
+        public static Core.Movies.Movie ToModel(this MovieResource resource)
         {
             if (resource == null) return null;
 
-            return new Core.Tv.Movie
+            return new Core.Movies.Movie
             {
                 Id = resource.Id,
                 TmdbId = resource.TmdbId,
@@ -225,7 +225,7 @@ namespace NzbDrone.Api.Movies
             };
         }
 
-        public static Core.Tv.Movie ToModel(this MovieResource resource, Core.Tv.Movie movie)
+        public static Core.Movies.Movie ToModel(this MovieResource resource, Core.Movies.Movie movie)
         {
             movie.ImdbId = resource.ImdbId;
             movie.TmdbId = resource.TmdbId;
@@ -244,7 +244,7 @@ namespace NzbDrone.Api.Movies
             return movie;
         }
 
-        public static List<MovieResource> ToResource(this IEnumerable<Core.Tv.Movie> movies)
+        public static List<MovieResource> ToResource(this IEnumerable<Core.Movies.Movie> movies)
         {
             return movies.Select(ToResource).ToList();
         }

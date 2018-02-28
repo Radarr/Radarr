@@ -7,7 +7,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Rest;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
 using RestSharp;
 

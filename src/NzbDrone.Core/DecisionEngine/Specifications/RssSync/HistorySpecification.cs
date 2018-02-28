@@ -39,7 +39,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             var cdhEnabled = _configService.EnableCompletedDownloadHandling;
 
             _logger.Debug("Performing history status check on report");
-                _logger.Debug("Checking current status of episode [{0}] in history", subject.Movie.Id);
+                _logger.Debug("Checking current status of movie [{0}] in history", subject.Movie.Id);
                 var mostRecent = _historyService.MostRecentForMovie(subject.Movie.Id);
 
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
@@ -76,11 +76,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             
 
             return Decision.Accept();
-        }
-
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
-        {
-            throw new NotImplementedException();
         }
     }
 }

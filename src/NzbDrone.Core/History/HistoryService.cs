@@ -12,13 +12,13 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.History
 {
     public interface IHistoryService
     {
-        QualityModel GetBestQualityInHistory(Profile profile, int episodeId);
+        QualityModel GetBestQualityInHistory(Profile profile, int movieId);
         PagingSpec<History> Paged(PagingSpec<History> pagingSpec);
         History MostRecentForMovie(int movieId);
         History MostRecentForDownloadId(string downloadId);
@@ -73,10 +73,10 @@ namespace NzbDrone.Core.History
             return _historyRepository.FindByDownloadId(downloadId);
         }
 
-        public QualityModel GetBestQualityInHistory(Profile profile, int episodeId)
+        public QualityModel GetBestQualityInHistory(Profile profile, int movieId)
         {
             var comparer = new QualityModelComparer(profile);
-            return _historyRepository.GetBestQualityInHistory(episodeId)
+            return _historyRepository.GetBestQualityInHistory(movieId)
                 .OrderByDescending(q => q, comparer)
                 .FirstOrDefault();
         }
@@ -89,8 +89,6 @@ namespace NzbDrone.Core.History
                 Date = DateTime.UtcNow,
                 Quality = message.Movie.ParsedMovieInfo.Quality,
                 SourceTitle = message.Movie.Release.Title,
-                SeriesId = 0,
-                EpisodeId = 0,
                 DownloadId = message.DownloadId,
                 MovieId = message.Movie.Movie.Id
             };
@@ -146,8 +144,6 @@ namespace NzbDrone.Core.History
                 Date = DateTime.UtcNow,
                 Quality = message.MovieInfo.Quality,
                 SourceTitle = movie.Title,
-                SeriesId = 0,
-                EpisodeId = 0,
                 DownloadId = downloadId,
                 MovieId = movie.Id,
             };
@@ -175,8 +171,6 @@ namespace NzbDrone.Core.History
                 Date = DateTime.UtcNow,
                 Quality = message.MovieFile.Quality,
                 SourceTitle = message.MovieFile.Path,
-                SeriesId = 0,
-                EpisodeId = 0,
                 MovieId = message.MovieFile.MovieId
             };
 
@@ -240,8 +234,6 @@ namespace NzbDrone.Core.History
                 Date = DateTime.UtcNow,
                 Quality = message.Quality,
                 SourceTitle = message.SourceTitle,
-                SeriesId = 0,
-                EpisodeId = 0,
                 MovieId = message.MovieId,
                 DownloadId = message.DownloadId
             };

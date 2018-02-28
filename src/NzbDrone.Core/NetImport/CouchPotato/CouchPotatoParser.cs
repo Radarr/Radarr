@@ -20,11 +20,11 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             _settings = settings;
         }
 
-        public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Tv.Movie>();
+            var movies = new List<Movies.Movie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                     // if there are no releases at all the movie wasn't found on CP, so return movies
                     if (!item.releases.Any() && item.type == "movie")
                     {
-                        movies.AddIfNotNull(new Tv.Movie()
+                        movies.AddIfNotNull(new Movies.Movie()
                         {
                             Title = item.title,
                             ImdbId = item.info.imdb,
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                         bool isCompleted = item.releases.Any(rel => (rel.status == "done" || rel.status == "seeding"));
                         if (!isCompleted)
                         {
-                            movies.AddIfNotNull(new Tv.Movie()
+                            movies.AddIfNotNull(new Movies.Movie()
                             {
                                 Title = item.title,
                                 ImdbId = item.info.imdb,

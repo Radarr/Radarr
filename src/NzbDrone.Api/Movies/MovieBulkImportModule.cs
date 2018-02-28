@@ -10,10 +10,10 @@ using Marr.Data;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Common.Cache;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Api.Movies
 {
@@ -32,7 +32,7 @@ namespace NzbDrone.Api.Movies
         private readonly IRootFolderService _rootFolderService;
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IDiskScanService _diskScanService;
-		private readonly ICached<Core.Tv.Movie> _mappedMovies;
+		private readonly ICached<Core.Movies.Movie> _mappedMovies;
         private readonly IMovieService _movieService;
 
         public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker,
@@ -43,7 +43,7 @@ namespace NzbDrone.Api.Movies
             _rootFolderService = rootFolderService;
             _importDecisionMaker = importDecisionMaker;
             _diskScanService = diskScanService;
-			_mappedMovies = cacheManager.GetCache<Core.Tv.Movie>(GetType(), "mappedMoviesCache");
+			_mappedMovies = cacheManager.GetCache<Core.Movies.Movie>(GetType(), "mappedMoviesCache");
             _movieService = movieService;
             Get["/"] = x => Search();
         }
@@ -80,7 +80,7 @@ namespace NzbDrone.Api.Movies
 
             var mapped = paged.Select(f =>
 			{
-				Core.Tv.Movie m = null;
+				Core.Movies.Movie m = null;
 
 				var mappedMovie = _mappedMovies.Find(f.Name);
 
@@ -92,7 +92,7 @@ namespace NzbDrone.Api.Movies
 				var parsedTitle = Parser.ParseMoviePath(f.Name, false);
 				if (parsedTitle == null)
 				{
-					m = new Core.Tv.Movie
+					m = new Core.Movies.Movie
 					{
 						Title = f.Name.Replace(".", " ").Replace("-", " "),
 						Path = f.Path,
@@ -100,7 +100,7 @@ namespace NzbDrone.Api.Movies
 				}
 				else
 				{
-					m = new Core.Tv.Movie
+					m = new Core.Movies.Movie
 					{
 						Title = parsedTitle.MovieTitle,
 						Year = parsedTitle.Year,
@@ -156,7 +156,7 @@ namespace NzbDrone.Api.Movies
         }
 
 
-        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Tv.Movie> movies)
+        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Movies.Movie> movies)
         {
             foreach (var currentMovie in movies)
             {

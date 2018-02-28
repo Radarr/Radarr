@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Tv;
+﻿using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Notifications.Webhook

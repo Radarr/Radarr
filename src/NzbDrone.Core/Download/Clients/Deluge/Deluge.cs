@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Common.Disk;
@@ -57,16 +57,6 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
             return actualHash.ToUpper();
-        }
-
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
         }
 
         public override string Name => "Deluge";

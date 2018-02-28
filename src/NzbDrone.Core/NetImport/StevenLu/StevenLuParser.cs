@@ -18,11 +18,11 @@ namespace NzbDrone.Core.NetImport.StevenLu
             _settings = settings;
         }
 
-        public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Tv.Movie>();
+            var movies = new List<Movies.Movie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
 
             foreach (var item in jsonResponse)
             {
-                movies.AddIfNotNull(new Tv.Movie()
+                movies.AddIfNotNull(new Movies.Movie()
                 {
                     Title = item.title,
                     ImdbId = item.imdb_id,

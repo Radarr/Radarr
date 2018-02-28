@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,7 +12,7 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.PreDB;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using System.Threading;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
@@ -24,7 +24,7 @@ using NzbDrone.Core.MetadataSource.RadarrAPI;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideSeriesInfo, ISearchForNewSeries, IProvideMovieInfo, ISearchForNewMovie, IDiscoverNewMovies
+    public class SkyHookProxy : IProvideMovieInfo, ISearchForNewMovie, IDiscoverNewMovies
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -54,36 +54,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _radarrAPI = radarrAPI;
 
             _logger = logger;
-        }
-
-        public Tuple<Series, List<Episode>> GetSeriesInfo(int tvdbSeriesId)
-        {
-            var httpRequest = _requestBuilder.Create()
-                                             .SetSegment("route", "shows")
-                                             .Resource(tvdbSeriesId.ToString())
-                                             .Build();
-
-            httpRequest.AllowAutoRedirect = true;
-            httpRequest.SuppressHttpError = true;
-
-            var httpResponse = _httpClient.Get<ShowResource>(httpRequest);
-
-            if (httpResponse.HasHttpError)
-            {
-                if (httpResponse.StatusCode == HttpStatusCode.NotFound)
-                {
-                    throw new SeriesNotFoundException(tvdbSeriesId);
-                }
-                else
-                {
-                    throw new HttpException(httpRequest, httpResponse);
-                }
-            }
-
-            var episodes = httpResponse.Resource.Episodes.Select(MapEpisode);
-            var series = MapSeries(httpResponse.Resource);
-
-            return new Tuple<Series, List<Episode>>(series, episodes.ToList());
         }
 
         public Movie GetMovieInfo(int TmdbId, Profile profile = null, bool hasPreDBEntry = false)
@@ -463,7 +433,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     return new List<Movie> { GetMovieInfo(imdbid) };
                 }
-                catch (SeriesNotFoundException)
+                catch (MovieNotFoundException)
                 {
                     return new List<Movie>();
                 }
@@ -506,57 +476,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var movieResults = response.Resource.results;
 
             return movieResults.SelectList(MapMovie);
-        }
-
-        public List<Series> SearchForNewSeries(string title)
-        {
-            try
-            {
-                var lowerTitle = title.ToLowerInvariant();
-
-                if (lowerTitle.StartsWith("tvdb:") || lowerTitle.StartsWith("tvdbid:"))
-                {
-                    var slug = lowerTitle.Split(':')[1].Trim();
-
-                    int tvdbId;
-
-                    if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out tvdbId) || tvdbId <= 0)
-                    {
-                        return new List<Series>();
-                    }
-
-                    try
-                    {
-                        return new List<Series> { GetSeriesInfo(tvdbId).Item1 };
-                    }
-                    catch (SeriesNotFoundException)
-                    {
-                        return new List<Series>();
-                    }
-                }
-
-               
-
-                var httpRequest = _requestBuilder.Create()
-                                                 .SetSegment("route", "search")
-                                                 .AddQueryParam("term", title.ToLower().Trim())
-                                                 .Build();
-
-                
-
-                var httpResponse = _httpClient.Get<List<ShowResource>>(httpRequest);
-
-                return httpResponse.Resource.SelectList(MapSeries);
-            }
-            catch (HttpException)
-            {
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with SkyHook.", title);
-            }
-            catch (Exception ex)
-            {
-                _logger.Warn(ex, ex.Message);
-                throw new SkyHookException("Search for '{0}' failed. Invalid response received from SkyHook.", title);
-            }
         }
 
         public Movie MapMovie(MovieResult result)
@@ -661,63 +580,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return null;
         }
 
-        private static Series MapSeries(ShowResource show)
-        {
-            var series = new Series();
-            series.TvdbId = show.TvdbId;
-
-            if (show.TvRageId.HasValue)
-            {
-                series.TvRageId = show.TvRageId.Value;
-            }
-
-            if (show.TvMazeId.HasValue)
-            {
-                series.TvMazeId = show.TvMazeId.Value;
-            }
-
-            series.ImdbId = show.ImdbId;
-            series.Title = show.Title;
-            series.CleanTitle = Parser.Parser.CleanSeriesTitle(show.Title);
-            series.SortTitle = SeriesTitleNormalizer.Normalize(show.Title, show.TvdbId);
-
-            if (show.FirstAired != null)
-            {
-                series.FirstAired = DateTime.Parse(show.FirstAired).ToUniversalTime();
-                series.Year = series.FirstAired.Value.Year;
-            }
-
-            series.Overview = show.Overview;
-
-            if (show.Runtime != null)
-            {
-                series.Runtime = show.Runtime.Value;
-            }
-
-            series.Network = show.Network;
-
-            if (show.TimeOfDay != null)
-            {
-                series.AirTime = string.Format("{0:00}:{1:00}", show.TimeOfDay.Hours, show.TimeOfDay.Minutes);
-            }
-
-            series.TitleSlug = show.Slug;
-            series.Status = MapSeriesStatus(show.Status);
-            series.Ratings = MapRatings(show.Rating);
-            series.Genres = show.Genres;
-
-            if (show.ContentRating.IsNotNullOrWhiteSpace())
-            {
-                series.Certification = show.ContentRating.ToUpper();
-            }
-            
-            series.Actors = show.Actors.Select(MapActors).ToList();
-            series.Seasons = show.Seasons.Select(MapSeason).ToList();
-            series.Images = show.Images.Select(MapImage).ToList();
-
-            return series;
-        }
-
         private static Actor MapActors(ActorResource arg)
         {
             var newActor = new Actor
@@ -735,48 +597,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             return newActor;
-        }
-
-        private static Episode MapEpisode(EpisodeResource oracleEpisode)
-        {
-            var episode = new Episode();
-            episode.Overview = oracleEpisode.Overview;
-            episode.SeasonNumber = oracleEpisode.SeasonNumber;
-            episode.EpisodeNumber = oracleEpisode.EpisodeNumber;
-            episode.AbsoluteEpisodeNumber = oracleEpisode.AbsoluteEpisodeNumber;
-            episode.Title = oracleEpisode.Title;
-
-            episode.AirDate = oracleEpisode.AirDate;
-            episode.AirDateUtc = oracleEpisode.AirDateUtc;
-
-            episode.Ratings = MapRatings(oracleEpisode.Rating);
-
-            //Don't include series fanart images as episode screenshot
-            if (oracleEpisode.Image != null)
-            {
-                episode.Images.Add(new MediaCover.MediaCover(MediaCoverTypes.Screenshot, oracleEpisode.Image));
-            }
-
-            return episode;
-        }
-
-        private static Season MapSeason(SeasonResource seasonResource)
-        {
-            return new Season
-            {
-                SeasonNumber = seasonResource.SeasonNumber,
-                Images = seasonResource.Images.Select(MapImage).ToList()
-            };
-        }
-
-        private static SeriesStatusType MapSeriesStatus(string status)
-        {
-            if (status.Equals("ended", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return SeriesStatusType.Ended;
-            }
-
-            return SeriesStatusType.Continuing;
         }
 
         private static Ratings MapRatings(RatingResource rating)

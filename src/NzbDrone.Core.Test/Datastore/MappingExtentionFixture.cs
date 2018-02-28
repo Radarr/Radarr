@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Datastore
 
         public class TypeWithNoMappableProperties
         {
-            public Series Series { get; set; }
+            public Movie Movie { get; set; }
 
             public int ReadOnly { get; private set; }
             public int WriteOnly { private get; set; }
