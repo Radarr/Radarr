@@ -21,6 +21,7 @@ namespace NzbDrone.Core.NetImport
     {
         NetImportFetchResult Fetch(int listId, bool onlyEnableAuto);
         List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto);
+        void CleanLists(Movie movie);
     }
 
     public class NetImportSearchService : IFetchNetImport, IExecute<NetImportSyncCommand>
@@ -109,7 +110,16 @@ namespace NzbDrone.Core.NetImport
             };
         }
 
-
+        public void CleanLists(Movie movie)
+        {
+            var lists = _netImportFactory.GetAvailableProviders().Where(n => ((NetImportDefinition)n.Definition).ShouldClean);
+            
+            foreach (var list in lists)
+            {
+                list.Clean(movie);
+            }
+            
+        }
 
         public void Execute(NetImportSyncCommand message)
         {

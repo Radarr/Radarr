@@ -13,6 +13,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.NetImport;
 
 namespace NzbDrone.Core.History
 {
@@ -36,11 +37,13 @@ namespace NzbDrone.Core.History
     {
         private readonly IHistoryRepository _historyRepository;
         private readonly Logger _logger;
+        private readonly IFetchNetImport _netImport;
 
-        public HistoryService(IHistoryRepository historyRepository, Logger logger)
+        public HistoryService(IHistoryRepository historyRepository, IFetchNetImport netImport, Logger logger)
         {
             _historyRepository = historyRepository;
             _logger = logger;
+            _netImport = netImport;
         }
 
         public PagingSpec<History> Paged(PagingSpec<History> pagingSpec)
@@ -123,6 +126,7 @@ namespace NzbDrone.Core.History
             }
 
             _historyRepository.Insert(history);
+            //_netImport.CleanLists(message.Movie.Movie);
         }
 
         public void Handle(MovieImportedEvent message)
@@ -159,6 +163,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClient", message.DownloadClient);
 
             _historyRepository.Insert(history);
+            _netImport.CleanLists(movie);
         }
 
         public void Handle(MovieFileDeletedEvent message)

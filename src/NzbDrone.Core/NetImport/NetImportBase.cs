@@ -25,8 +25,11 @@ namespace NzbDrone.Core.NetImport
         public abstract string Name { get; }
         public abstract bool Enabled { get; }
         public abstract bool EnableAuto { get; }
+		public abstract bool ShouldClean { get; }
 
         public abstract NetImportFetchResult Fetch();
+        public abstract IList<Movie> Fetch();
+        public abstract void Clean(Movie movie);
 
         public NetImportBase(IConfigService configService, IParsingService parsingService, Logger logger)
         {
@@ -48,6 +51,7 @@ namespace NzbDrone.Core.NetImport
                 Name = this.Name,
                 Enabled = config.Validate().IsValid && Enabled,
                 EnableAuto = true,
+                ShouldClean = false,
                 ProfileId = 1,
                 MinimumAvailability = MovieStatusType.Announced,
                 Implementation = GetType().Name,

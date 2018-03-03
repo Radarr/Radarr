@@ -1310,6 +1310,7 @@
     <Compile Include="Notifications\Xbmc\Model\XbmcMovie.cs" />
     <Compile Include="Notifications\Xbmc\Model\MovieResponse.cs" />
     <Compile Include="Notifications\Xbmc\Model\MovieResult.cs" />
+	<Compile Include="Datastore\Migration\136_add_shouldClean_netimport_table.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

@@ -10,6 +10,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
         public override string Name => "CouchPotato";
         public override bool Enabled => true;
         public override bool EnableAuto => false;
+		public override bool ShouldClean => false;
 
         public CouchPotatoImport(IHttpClient httpClient, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, configService, parsingService, logger)

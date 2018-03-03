@@ -21,6 +21,11 @@ namespace NzbDrone.Core.NetImport.TMDb
             MaxPages = 3;
         }
 
+        public virtual void Clean(NzbDrone.Core.Tv.Movie movie)
+        {
+            ;
+        }
+
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var minVoteCount = Settings.MinVotes;
