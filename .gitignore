@@ -148,8 +148,9 @@ _temp_*/**/*
 Thumbs.db
 
 # AppVeyor
-/tools-cake/
+/tools/cake/
 /_artifacts/
 
 # Cake
 /tools/Addins/*
+packages.config.md5sum
