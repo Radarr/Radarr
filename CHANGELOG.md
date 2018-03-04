@@ -3,9 +3,12 @@
 ## (unreleased)
 
 ### **New features**
+- Copy & Paste now triggers search (#2587) [Paul Kozlovitch]
 - Added console logging in case NLog fails to initialize. [Taloth Saldono]
 
 ### **Fixes**
+- Movies not getting unmonitored when folder gets deleted (#2588) [Simon Chapman]
+- NLog causing a crash under mono 5.10. [Leonardo Galli]
 - Revert "Fixed: Updated NLog to 4.5 RC6 to handle mono 5.10" [Leonardo Galli]
 - Revert "Fixed: Messed up merge from Cherry pick" [Leonardo Galli]
 - Revert "Fixed: Appveyor build." [Leonardo Galli]
