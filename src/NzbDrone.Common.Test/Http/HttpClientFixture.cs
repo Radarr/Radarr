@@ -132,9 +132,24 @@ namespace NzbDrone.Common.Test.Http
             var request = new HttpRequest(string.Format("http://{0}/redirect/1", _httpBinHost));
             request.AllowAutoRedirect = true;
 
-            Subject.Get(request);
+            var response = Subject.Get(request);
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             ExceptionVerification.ExpectedErrors(0);
+        }
+
+        [Test]
+        public void should_not_follow_redirects()
+        {
+            var request = new HttpRequest($"http://{_httpBinHost}/redirect/1");
+            request.AllowAutoRedirect = false;
+
+            var response = Subject.Get(request);
+
+            response.StatusCode.Should().Be(HttpStatusCode.Found);
+
+            ExceptionVerification.ExpectedErrors(1);
         }
 
         [Test]
