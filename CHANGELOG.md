@@ -3,6 +3,26 @@
 ## (unreleased)
 
 ### **New features**
+- Added console logging in case NLog fails to initialize. [Taloth Saldono]
+
+### **Fixes**
+- Revert "Fixed: Updated NLog to 4.5 RC6 to handle mono 5.10" [Leonardo Galli]
+- Revert "Fixed: Messed up merge from Cherry pick" [Leonardo Galli]
+- Revert "Fixed: Appveyor build." [Leonardo Galli]
+- Appveyor build. [Leonardo Galli]
+- Messed up merge from Cherry pick. [Leonardo Galli]
+- Updated NLog to 4.5 RC6 to handle mono 5.10. [Leonardo Galli]
+- Revert "Fixed: NLog causing a crash under mono 5.10" [Leonardo Galli]
+- Pin cake and addin versions. [Qstick]
+- Temp Workaround for Appveyor Cake Issue. [Qstick]
+- NLog causing a crash under mono 5.10. [Leonardo Galli]
+- Poster sliding issues (#2570) [Qstick]
+- Multiple History Issues (#2571) [Qstick]
+
+
+## v0.2.0.980 (2018-02-21)
+
+### **New features**
 - Metadata links are now better readable. Also fixed links in the poster view. (#2562) [thezoggy]
 - Handle ctrl-c more gracefully. [Leonardo Galli]
 - Device names for Join notifications (#2544) [Qstick]
