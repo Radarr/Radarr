@@ -7,6 +7,10 @@
 - Added console logging in case NLog fails to initialize. [Taloth Saldono]
 
 ### **Fixes**
+- Changes in http redirect logic causing failed grabs and >25% cpu usage. [Leonardo Galli]
+- Http->https redirects do not use the tls1.2 curl fallback. [Leonardo Galli]
+- Dates before 1970 causing an exception. [Leonardo Galli]
+- Browser not updating on Movie File Imported. [Leonardo Galli]
 - Movies not getting unmonitored when folder gets deleted (#2588) [Simon Chapman]
 - NLog causing a crash under mono 5.10. [Leonardo Galli]
 - Revert "Fixed: Updated NLog to 4.5 RC6 to handle mono 5.10" [Leonardo Galli]
