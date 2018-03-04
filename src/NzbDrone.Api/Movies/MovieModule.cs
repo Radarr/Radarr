@@ -23,8 +23,8 @@ using Nancy;
 namespace NzbDrone.Api.Movies
 {
     public class MovieModule : NzbDroneRestModuleWithSignalR<MovieResource, Core.Tv.Movie>, 
-                                IHandle<EpisodeImportedEvent>, 
-                                IHandle<EpisodeFileDeletedEvent>,
+                                IHandle<MovieImportedEvent>, 
+                                IHandle<MovieFileDeletedEvent>,
                                 IHandle<MovieUpdatedEvent>,       
                                 IHandle<MovieEditedEvent>,  
                                 IHandle<MovieDeletedEvent>,
@@ -258,16 +258,16 @@ namespace NzbDrone.Api.Movies
             //resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
         }
 
-        public void Handle(EpisodeImportedEvent message)
+        public void Handle(MovieImportedEvent message)
         {
-            //BroadcastResourceChange(ModelAction.Updated, message.ImportedEpisode.MovieId);
+            BroadcastResourceChange(ModelAction.Updated, message.ImportedMovie.MovieId);
         }
 
-        public void Handle(EpisodeFileDeletedEvent message)
+        public void Handle(MovieFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.Upgrade) return;
 
-            //BroadcastResourceChange(ModelAction.Updated, message.EpisodeFile.MovieId);
+            BroadcastResourceChange(ModelAction.Updated, message.MovieFile.MovieId);
         }
 
         public void Handle(MovieUpdatedEvent message)
