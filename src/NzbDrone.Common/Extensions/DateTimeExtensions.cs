@@ -38,5 +38,7 @@ namespace NzbDrone.Common.Extensions
         {
             return dateTime >= afterDateTime && dateTime <= beforeDateTime;
         }
+        
+        public static DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     }
 }
