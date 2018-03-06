@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Music
             }
             catch (ArtistNotFoundException)
             {
-                _logger.Error("LidarrId {1} was not found, it may have been removed from Lidarr.", newArtist.ForeignArtistId);
+                _logger.Error("LidarrId {0} was not found, it may have been removed from Lidarr.", newArtist.ForeignArtistId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
