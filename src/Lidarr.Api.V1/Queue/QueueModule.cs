@@ -89,7 +89,7 @@ namespace Lidarr.Api.V1.Queue
                 case "quality":
                     return q => q.Quality;
                 case "progress":
-                    return q => 100 - q.Sizeleft / q.Size * 100;
+                    return q => q.Size == 0 ? 0 : 100 - q.Sizeleft / q.Size * 100;
                 default:
                     return q => q.Timeleft;
             }
