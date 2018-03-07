@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Tv
             return pagingSpec;
         }
 
-        public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
+        /*public override PagingSpec<Movie> GetPaged(PagingSpec<Movie> pagingSpec)
 		{
 			if (pagingSpec.SortKey == "downloadedQuality")
 			{
@@ -118,9 +118,10 @@ namespace NzbDrone.Core.Tv
 				var q2 = mapper.Query<Movie>("SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 ORDER BY QualityDefinitions.Title ASC;");
 
 				//var ok = q.BuildQuery();
+			    var q3 = Query.OrderBy("json_extract([t2].[quality], '$.quality') DESC");
 
-				pagingSpec.Records = q.ToList();
-				pagingSpec.TotalRecords = q2.Count();
+				pagingSpec.Records = q3.ToList();
+				pagingSpec.TotalRecords = q3.GetRowCount();
 
 			}
 			else
@@ -138,7 +139,7 @@ namespace NzbDrone.Core.Tv
 			}
 
 			return pagingSpec;
-		}
+		}*/
         
         /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
         {
@@ -184,7 +185,9 @@ namespace NzbDrone.Core.Tv
 				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
 				var q2 = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title ASC;");
 
-				//var ok = q.BuildQuery();
+			    var q3 = Query.OrderBy(m => m.MovieFile.Quality.Quality);
+			    var ok = q3.BuildQuery();
+			    var t = ok;
 
 				pagingSpec.Records = q.ToList();
 				pagingSpec.TotalRecords = q2.Count();

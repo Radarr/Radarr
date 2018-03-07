@@ -63,7 +63,7 @@ module.exports = Marionette.Layout.extend({
             cell  : RelativeDateCell
         },
         {
-          name : "downloadedQuality",
+          name : "movieFile.quality",
           label : "Downloaded",
           cell : DownloadedQualityCell,
           sortable : true
@@ -215,7 +215,7 @@ module.exports = Marionette.Layout.extend({
                 },
                 {
                     title: 'Downloaded',
-                    name: 'downloadedQuality'
+                    name: 'movieFile.quality'
                 },
                 {
                     title : 'Profile',
