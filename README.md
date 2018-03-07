@@ -54,8 +54,8 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 
 | API | Updates | Sites  |
 |-------|:----:|:----:|
-| [![API V2](http://status.radarr.video/component/1/shield?style=flat-square)](https://api.radarr.video/v2/) | [![Update Server](http://status.radarr.video/component/4/shield?style=flat-square)](https://radarr.aeonlucid.com) | [![Radarr Mappings](http://status.radarr.video/component/6/shield?style=flat-square)](https://mappings.radarr.video/)
-| [![API Staging](http://status.radarr.video/component/2/shield?style=flat-square)](https://staging.api.radarr.video/) | [![Github Updates](http://status.radarr.video/component/5/shield?style=flat-square)](https://api.github.com/v3/) | [![Main Site](http://status.radarr.video/component/7/shield?style=flat-square)](https://radarr.video/)
+| [![API V2 (develop)](http://status.radarr.video/component/1/shield?style=flat-square)](https://api.radarr.video/v2/) | [![Update Server](http://status.radarr.video/component/4/shield?style=flat-square)](https://radarr.aeonlucid.com) | [![Radarr Mappings](http://status.radarr.video/component/6/shield?style=flat-square)](https://mappings.radarr.video/)
+| [![API Staging (nightly)](http://status.radarr.video/component/2/shield?style=flat-square)](https://staging.api.radarr.video/) | [![Github Updates](http://status.radarr.video/component/5/shield?style=flat-square)](https://api.github.com/v3/) | [![Main Site](http://status.radarr.video/component/7/shield?style=flat-square)](https://radarr.video/)
 
 Radarr is currently undergoing rapid development and pull requests are actively added into the repository.
 
