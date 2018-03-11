@@ -156,7 +156,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     altTitles.Add(new AlternativeTitle(alternativeTitle.title, SourceType.TMDB, TmdbId, IsoLanguages.Find(alternativeTitle.iso_3166_1.ToLower())?.Language ?? Language.English));
                 }
-                else if (alternativeTitle.iso_3166_1.ToLower() == "us")
+                else if (alternativeTitle.iso_3166_1.ToLower() == "us" || alternativeTitle.iso_3166_1.ToLower() == "gb")
                 {
                     altTitles.Add(new AlternativeTitle(alternativeTitle.title, SourceType.TMDB, TmdbId, Language.English));
                 }
