@@ -82,15 +82,15 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
 * Full integration with Kodi, Plex (notification, library update)
 * And a beautiful UI
+* Importing Metadata such as trailers or subtitles
+* Adding metadata such as posters and information for Kodi and others to use
 
 ### Planned Features
 
-* Importing Metadata such as trailers or subtitles (\*)
-* Adding metadata such as posters and information for Kodi and others to use (\*)
-* Dynamically renaming folders with quality info, etc. (\*)
+* Dynamically renaming folders with quality info, etc. (Currently working partially.) (\*)
 * Supporting custom folder structures, such as all movie files in one folder (\*)
-* Supporting multiple editions per movies (waiting on The Movie Database to finish their implementation)
-* Supporting collections of movies, such as James Bond
+* Supporting multiple editions per movies (\*)
+* Supporting collections of movies, such as James Bond (\*)
 
 **Note:** All features marked with (\*) are set to be in the first release of Radarr.
 
