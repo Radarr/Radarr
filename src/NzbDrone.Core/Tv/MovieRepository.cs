@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Tv
         List<Movie> MoviesWithFiles(int movieId);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
+        void SetMonitored(Movie movie, bool monitored);
         void SetFileId(int fileId, int movieId);
         PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
     }
@@ -64,6 +65,13 @@ namespace NzbDrone.Core.Tv
         {
             return Query.Where(m => m.MovieFileId == fileId).ToList();
         }
+
+        public void SetMonitored(Movie movie, bool monitored)
+        {
+            movie.Monitored = monitored;
+            SetFields(movie, p => p.Monitored);
+        }
+
 
         public void SetFileId(int fileId, int episodeId)
         {

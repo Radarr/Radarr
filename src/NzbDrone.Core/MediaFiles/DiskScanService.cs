@@ -184,11 +184,20 @@ namespace NzbDrone.Core.MediaFiles
             var videoFilesStopwatch = Stopwatch.StartNew();
             var mediaFileList = FilterFiles(movie, GetVideoFiles(movie.Path)).ToList();
 
+
             videoFilesStopwatch.Stop();
             _logger.Trace("Finished getting episode files for: {0} [{1}]", movie, videoFilesStopwatch.Elapsed);
 
             _logger.Debug("{0} Cleaning up media files in DB", movie);
             _mediaFileTableCleanupService.Clean(movie, mediaFileList);
+
+            var anyMovieFilesExist = mediaFileList.Any(file => _diskProvider.FileExists(Path.Combine(movie.Path, file)));
+            if (!anyMovieFilesExist && _diskProvider.FolderExists(movie.Path))
+            {
+                _logger.Debug($"{movie} file missing, but folder still present. Setting movie to be monitored.");
+                _movieService.SetMovieMonitored(movie.Id, true);
+            }
+
 
             var decisionsStopwatch = Stopwatch.StartNew();
             var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie, true);

@@ -39,6 +39,7 @@ namespace NzbDrone.Core.Tv
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
         Movie UpdateMovie(Movie movie);
+        void SetMovieMonitored(int movieId, bool monitored);
         List<Movie> UpdateMovie(List<Movie> movie);
         List<Movie> FilterExistingMovies(List<Movie> movies);
         bool MoviePathExists(string folder);
@@ -345,6 +346,14 @@ namespace NzbDrone.Core.Tv
             _logger.Debug("{0} movie updated", movie.Count);
 
             return movie;
+        }
+
+        public void SetMovieMonitored(int movieId, bool monitored)
+        {
+            Movie movie = _movieRepository.Get(movieId);
+            _movieRepository.SetMonitored(movie, monitored);
+
+            _logger.Debug($"Monitored flag for Movie:{movieId} was set to {monitored}");
         }
 
         public bool MoviePathExists(string folder)
