@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using NzbDrone.Common.Disk;
@@ -57,6 +57,11 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
             return actualHash.ToUpper();
+        }
+
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            _proxy.SetTorrentSeedingConfiguration(hash, seedConfig, Settings);
         }
 
         protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)

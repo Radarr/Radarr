@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using MonoTorrent;
 using NzbDrone.Common.Disk;
@@ -13,6 +13,7 @@ using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Configuration;
 using NLog;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Download
 {
@@ -48,6 +49,7 @@ namespace NzbDrone.Core.Download
         {
             throw new NotImplementedException();
         }
+        protected abstract void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig);
 
         public override string Download(RemoteMovie remoteMovie)
         {
@@ -270,6 +272,16 @@ namespace NzbDrone.Core.Download
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
             var actualHash = AddFromTorrentFile(remoteEpisode, hash, filename, torrentFile);
 
+            if (actualHash.IsNotNullOrWhiteSpace() && hash == actualHash && remoteEpisode.Release.SeedConfiguration != null) {
+                try { SetTorrentSeedingConfiguration(actualHash, remoteEpisode.Release.SeedConfiguration); }
+                catch (Exception ex) {
+                    _logger.Debug(
+                        "SetTorrentSeedingConfiguration failed for {0} with hash {1}, error {2}",
+                        Definition.Implementation, actualHash, ex.Message
+                    );
+                }
+            }
+
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
             {
                 _logger.Debug(
@@ -299,6 +311,16 @@ namespace NzbDrone.Core.Download
             if (hash != null)
             {
                 actualHash = AddFromMagnetLink(remoteEpisode, hash, magnetUrl);
+            }
+
+            if (actualHash.IsNotNullOrWhiteSpace() && hash == actualHash && remoteEpisode.Release.SeedConfiguration != null) {
+                try { SetTorrentSeedingConfiguration(actualHash, remoteEpisode.Release.SeedConfiguration); }
+                catch (Exception ex) {
+                    _logger.Debug(
+                        "SetTorrentSeedingConfiguration failed for {0} with hash {1}, error {2}",
+                        Definition.Implementation, actualHash, ex.Message
+                    );
+                }
             }
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
@@ -372,6 +394,16 @@ namespace NzbDrone.Core.Download
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
             var actualHash = AddFromTorrentFile(remoteEpisode, hash, filename, torrentFile);
 
+            if (actualHash.IsNotNullOrWhiteSpace() && hash == actualHash && remoteEpisode.Release.SeedConfiguration != null) {
+                try { SetTorrentSeedingConfiguration(actualHash, remoteEpisode.Release.SeedConfiguration); }
+                catch (Exception ex) {
+                    _logger.Debug(
+                        "SetTorrentSeedingConfiguration failed for {0} with hash {1}, error {2}",
+                        Definition.Implementation, actualHash, ex.Message
+                    );
+                }
+            }
+
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
             {
                 _logger.Debug(
@@ -401,6 +433,16 @@ namespace NzbDrone.Core.Download
             if (hash != null)
             {
                 actualHash = AddFromMagnetLink(remoteEpisode, hash, magnetUrl);
+            }
+
+            if (actualHash.IsNotNullOrWhiteSpace() && hash == actualHash && remoteEpisode.Release.SeedConfiguration != null) {
+                try { SetTorrentSeedingConfiguration(actualHash, remoteEpisode.Release.SeedConfiguration); }
+                catch (Exception ex) {
+                    _logger.Debug(
+                        "SetTorrentSeedingConfiguration failed for {0} with hash {1}, error {2}",
+                        Definition.Implementation, actualHash, ex.Message
+                    );
+                }
             }
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)

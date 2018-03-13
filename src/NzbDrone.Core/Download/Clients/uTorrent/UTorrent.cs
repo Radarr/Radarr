@@ -82,6 +82,11 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return hash;
         }
 
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            _proxy.SetTorrentSeedingConfiguration(hash, seedConfig, Settings);
+        }
+
         public override string Name => "uTorrent";
 
         public override IEnumerable<DownloadClientItem> GetItems()

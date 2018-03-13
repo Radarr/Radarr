@@ -158,6 +158,10 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return hash;
         }
 
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig) {
+            _proxy.SetTorrentSeedingConfiguration(hash, seedConfig, Settings);
+        }
+
         protected override void Test(List<ValidationFailure> failures)
         {
             failures.AddIfNotNull(TestConnection());

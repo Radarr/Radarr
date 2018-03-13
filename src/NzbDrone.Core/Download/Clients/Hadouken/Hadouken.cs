@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
@@ -169,6 +169,11 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             return _proxy.AddTorrentFile(Settings, fileContent).ToUpper();
+        }
+
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            throw new NotImplementedException();
         }
 
         private ValidationFailure TestConnection()

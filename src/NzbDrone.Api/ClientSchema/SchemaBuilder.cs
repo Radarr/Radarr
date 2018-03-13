@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -88,6 +88,18 @@ namespace NzbDrone.Api.ClientSchema
                     {
                         var value = field.Value.ToString().ParseInt32();
                         propertyInfo.SetValue(target, value ?? 0, null);
+                    }
+
+                    else if (propertyInfo.PropertyType == typeof(float))
+                    {
+                        var value = field.Value.ToString().ParseFloat();
+                        propertyInfo.SetValue(target, value ?? 0, null);
+                    }
+
+                    else if (propertyInfo.PropertyType == typeof(float?))
+                    {
+                        var value = field.Value.ToString().ParseFloat();
+                        propertyInfo.SetValue(target, value, null);
                     }
 
                     else if (propertyInfo.PropertyType == typeof(long))

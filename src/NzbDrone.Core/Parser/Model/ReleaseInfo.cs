@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Text;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Download.Clients;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -25,6 +26,8 @@ namespace NzbDrone.Core.Parser.Model
         public string Container { get; set; }
         public string Codec { get; set; }
         public string Resolution { get; set; }
+
+        public TorrentSeedConfiguration SeedConfiguration { get; set; }
 
 	public IndexerFlags IndexerFlags { get; set; }
 

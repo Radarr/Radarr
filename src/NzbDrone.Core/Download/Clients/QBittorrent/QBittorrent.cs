@@ -69,6 +69,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             return hash;
         }
 
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string Name => "qBittorrent";
 
         public override IEnumerable<DownloadClientItem> GetItems()

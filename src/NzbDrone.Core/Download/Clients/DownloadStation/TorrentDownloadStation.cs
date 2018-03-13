@@ -195,6 +195,10 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             throw new DownloadClientException("Failed to add torrent task to Download Station");
         }
+        protected override void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfig)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void Test(List<ValidationFailure> failures)
         {
