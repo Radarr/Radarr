@@ -583,7 +583,7 @@ ArtistDetails.propTypes = {
   artistName: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  sizeOnDisk: PropTypes.number.isRequired,
+  sizeOnDisk: PropTypes.number,
   trackFileCount: PropTypes.number,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,

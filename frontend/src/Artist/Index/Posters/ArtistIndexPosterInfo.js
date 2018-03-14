@@ -103,7 +103,7 @@ ArtistIndexPosterInfo.propTypes = {
   showQualityProfile: PropTypes.bool.isRequired,
   previousAiring: PropTypes.string,
   added: PropTypes.string,
-  albumCount: PropTypes.number.isRequired,
+  albumCount: PropTypes.number,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number,
   sortKey: PropTypes.string.isRequired,

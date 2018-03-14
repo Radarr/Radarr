@@ -127,7 +127,7 @@ DeleteArtistModalContent.propTypes = {
   artistName: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   trackFileCount: PropTypes.number.isRequired,
-  sizeOnDisk: PropTypes.number.isRequired,
+  sizeOnDisk: PropTypes.number,
   onDeletePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

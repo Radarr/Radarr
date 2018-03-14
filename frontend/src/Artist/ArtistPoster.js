@@ -70,6 +70,15 @@ class ArtistPoster extends Component {
         // or the placeholder was shown.
       });
     }
+
+    // The poster could not be loaded..
+    if (!nextPoster && (this.props !== prevProps)) {
+      this.setState({
+        poster: undefined,
+        posterUrl: posterPlaceholder,
+        hasError: true
+      });
+    }
   }
 
   //

@@ -69,6 +69,15 @@ class ArtistBanner extends Component {
         // show the new image, whether an image was shown previously
         // or the placeholder was shown.
       });
+
+      // The poster could not be loaded..
+      if (!nextBanner && (this.props !== prevProps)) {
+        this.setState({
+          banner: undefined,
+          bannerUrl: bannerPlaceholder,
+          hasError: true
+        });
+      }
     }
   }
 
