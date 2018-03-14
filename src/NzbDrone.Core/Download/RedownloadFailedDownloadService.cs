@@ -1,10 +1,10 @@
-﻿using System.Linq;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Download
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download
         {
             if (!_configService.AutoRedownloadFailed)
             {
-                _logger.Debug("Auto redownloading failed episodes is disabled");
+                _logger.Debug("Auto redownloading failed movies is disabled");
                 return;
             }
 

@@ -5,7 +5,6 @@ using Marr.Data.Mapping;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
@@ -23,10 +22,9 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Restrictions;
 using NzbDrone.Core.RootFolders;
-using NzbDrone.Core.SeriesStats;
 using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Extras.Metadata;
@@ -78,27 +76,10 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<DownloadClientDefinition>().RegisterDefinition("DownloadClients")
                   .Ignore(d => d.Protocol);
 
-            Mapper.Entity<SceneMapping>().RegisterModel("SceneMappings");
-
             Mapper.Entity<History.History>().RegisterModel("History")
                   .AutoMapChildModels();
 
-            Mapper.Entity<Series>().RegisterModel("Series")
-                  .Ignore(s => s.RootFolderPath)
-                  .Relationship()
-                  .HasOne(s => s.Profile, s => s.ProfileId);
-
-
-
-            Mapper.Entity<EpisodeFile>().RegisterModel("EpisodeFiles")
-                  .Ignore(f => f.Path)
-                  .Relationships.AutoMapICollectionOrComplexProperties()
-                  .For("Episodes")
-                  .LazyLoad(condition: parent => parent.Id > 0, 
-                            query: (db, parent) => db.Query<Episode>().Where(c => c.EpisodeFileId == parent.Id).ToList())
-                  .HasOne(file => file.Series, file => file.SeriesId);
-
-                Mapper.Entity<MovieFile>().RegisterModel("MovieFiles")
+           Mapper.Entity<MovieFile>().RegisterModel("MovieFiles")
                 .Ignore(f => f.Path)
                 .Relationships.AutoMapICollectionOrComplexProperties()
                 .For("Movie")
@@ -124,28 +105,19 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
        
-
-            Mapper.Entity<Episode>().RegisterModel("Episodes")
-                  .Ignore(e => e.SeriesTitle)
-                  .Ignore(e => e.Series)
-                  .Ignore(e => e.HasFile)
-                  .Relationship()
-                  .HasOne(episode => episode.EpisodeFile, episode => episode.EpisodeFileId);
-
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.Weight);
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");
             Mapper.Entity<Log>().RegisterModel("Logs");
             Mapper.Entity<NamingConfig>().RegisterModel("NamingConfig");
-            Mapper.Entity<SeasonStatistics>().MapResultSet();
             Mapper.Entity<Blacklist>().RegisterModel("Blacklist");
             Mapper.Entity<MetadataFile>().RegisterModel("MetadataFiles");
             Mapper.Entity<SubtitleFile>().RegisterModel("SubtitleFiles");
             Mapper.Entity<OtherExtraFile>().RegisterModel("ExtraFiles");
 
             Mapper.Entity<PendingRelease>().RegisterModel("PendingReleases")
-                  .Ignore(e => e.RemoteEpisode);
+                  .Ignore(e => e.RemoteMovie);
 
             Mapper.Entity<RemotePathMapping>().RegisterModel("RemotePathMappings");
             Mapper.Entity<Tag>().RegisterModel("Tags");
@@ -176,7 +148,6 @@ namespace NzbDrone.Core.Datastore
             MapRepository.Instance.RegisterTypeConverter(typeof(Dictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<int>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<string>), new EmbeddedDocumentConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(ParsedEpisodeInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ParsedMovieInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(ReleaseInfo), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(HashSet<int>), new EmbeddedDocumentConverter());

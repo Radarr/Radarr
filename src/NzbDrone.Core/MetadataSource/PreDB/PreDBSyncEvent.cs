@@ -3,7 +3,7 @@ using NzbDrone.Core.Download;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MetadataSource.PreDB
 {

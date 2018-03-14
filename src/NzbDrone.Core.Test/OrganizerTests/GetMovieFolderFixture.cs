@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using FluentAssertions;
 
 namespace NzbDrone.Core.Test.OrganizerTests

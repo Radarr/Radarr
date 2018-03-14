@@ -129,14 +129,9 @@ namespace NzbDrone.Core.Test.ParserTests
         //[TestCase("", "", 0, 0)]
         public void should_parse_single_episode(string postTitle, string title, int seasonNumber, int episodeNumber)
         {
-            var result = Parser.Parser.ParseTitle(postTitle);
+            var result = Parser.Parser.ParseMovieTitle(postTitle, false);
             result.Should().NotBeNull();
-            result.EpisodeNumbers.Should().HaveCount(1);
-            result.SeasonNumber.Should().Be(seasonNumber);
-            result.EpisodeNumbers.First().Should().Be(episodeNumber);
-            result.SeriesTitle.Should().Be(title);
-            result.AbsoluteEpisodeNumbers.Should().BeEmpty();
-            result.FullSeason.Should().BeFalse();
+            result.MovieTitleInfo.Should().Be(title);
         }
     }
 }

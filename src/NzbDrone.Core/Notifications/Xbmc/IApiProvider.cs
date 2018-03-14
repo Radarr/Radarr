@@ -1,5 +1,5 @@
 ﻿using NzbDrone.Core.Notifications.Xbmc.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Xbmc
 {

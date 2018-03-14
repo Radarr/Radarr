@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras
 {

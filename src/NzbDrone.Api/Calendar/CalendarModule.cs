@@ -8,11 +8,9 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.MovieStats;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Validation.Paths;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.SignalR;
@@ -23,10 +21,8 @@ namespace NzbDrone.Api.Calendar
     {
         public CalendarModule(IBroadcastSignalRMessage signalR,
                             IMovieService moviesService,
-                            IMovieStatisticsService moviesStatisticsService,
-                            ISceneMappingService sceneMappingService,
                             IMapCoversToLocal coverMapper)
-            : base(signalR, moviesService, moviesStatisticsService, sceneMappingService, coverMapper, "calendar")
+            : base(signalR, moviesService, coverMapper, "calendar")
         {
             
             GetResourceAll = GetCalendar;

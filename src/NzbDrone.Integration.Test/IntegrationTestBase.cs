@@ -24,7 +24,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv.Commands;
+using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
@@ -211,7 +211,7 @@ namespace NzbDrone.Integration.Test
                 movie.ProfileId = 1;
                 movie.Path = Path.Combine(MovieRootFolder, movie.Title);
                 movie.Monitored = true;
-                movie.AddOptions = new Core.Tv.AddMovieOptions();
+                movie.AddOptions = new Core.Movies.AddMovieOptions();
                 Directory.CreateDirectory(movie.Path);
 
                 result = Movies.Post(movie);

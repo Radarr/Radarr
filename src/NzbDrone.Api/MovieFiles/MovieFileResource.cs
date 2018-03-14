@@ -4,7 +4,7 @@ using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Api.Movies;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
 

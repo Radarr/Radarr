@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
@@ -22,27 +22,6 @@ namespace NzbDrone.Core.Test.ParserTests
          * Constantine S1-E1-WEB-DL-1080p-NZBgeek
          */
 
-        [TestCase("Chuck - 4x05 - Title", "Chuck")]
-        [TestCase("Law & Order - 4x05 - Title", "laworder")]
-        [TestCase("Bad Format", "badformat")]
-        [TestCase("Mad Men - Season 1 [Bluray720p]", "madmen")]
-        [TestCase("Mad Men - Season 1 [Bluray1080p]", "madmen")]
-        [TestCase("The Daily Show With Jon Stewart -", "thedailyshowwithjonstewart")]
-        [TestCase("The Venture Bros. (2004)", "theventurebros2004")]
-        [TestCase("Castle (2011)", "castle2011")]
-        [TestCase("Adventure Time S02 720p HDTV x264 CRON", "adventuretime")]
-        [TestCase("Hawaii Five 0", "hawaiifive0")]
-        [TestCase("Match of the Day", "matchday")]
-        [TestCase("Match of the Day 2", "matchday2")]
-        [TestCase("[ www.Torrenting.com ] - Revenge.S03E14.720p.HDTV.X264-DIMENSION", "Revenge")]
-        [TestCase("Seed S02E09 HDTV x264-2HD [eztv]-[rarbg.com]", "Seed")]
-        [TestCase("Reno.911.S01.DVDRip.DD2.0.x264-DEEP", "Reno 911")]
-        public void should_parse_series_name(string postTitle, string title)
-        {
-            var result = Parser.Parser.ParseSeriesName(postTitle).CleanSeriesTitle();
-            result.Should().Be(title.CleanSeriesTitle());
-        }
-
         [Test]
         public void should_remove_accents_from_title()
         {
@@ -54,13 +33,13 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Discovery TV - Gold Rush : 02 Road From Hell [S04].mp4")]
         public void should_clean_up_invalid_path_characters(string postTitle)
         {
-            Parser.Parser.ParseTitle(postTitle);
+            Parser.Parser.ParseMovieTitle(postTitle, false);
         }
 
         [TestCase("[scnzbefnet][509103] 2.Broke.Girls.S03E18.720p.HDTV.X264-DIMENSION", "2 Broke Girls")]
         public void should_remove_request_info_from_title(string postTitle, string title)
         {
-            Parser.Parser.ParseTitle(postTitle).SeriesTitle.Should().Be(title);
+            Parser.Parser.ParseMovieTitle(postTitle, false).MovieTitle.Should().Be(title);
         }
 
         //Note: This assumes extended language parser is activated

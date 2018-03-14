@@ -24,11 +24,11 @@ namespace NzbDrone.Core.NetImport.TMDb
             _settings = settings;
         }
 
-        public IList<Tv.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Tv.Movie>();
+            var movies = new List<Movies.Movie>();
 
             if (!PreProcess(_importResponse))
             {

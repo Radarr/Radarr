@@ -26,7 +26,7 @@ namespace NzbDrone.Api.Movies
         {
             var results = _fetchNetImport.FetchAndFilter((int) Request.Query.listId, false);
 
-            List<Core.Tv.Movie> realResults = new List<Core.Tv.Movie>();
+            List<Core.Movies.Movie> realResults = new List<Core.Movies.Movie>();
 
             /*foreach (var movie in results)
             {
@@ -42,7 +42,7 @@ namespace NzbDrone.Api.Movies
         }
 
 
-        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Tv.Movie> movies)
+        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Movies.Movie> movies)
         {
             foreach (var currentSeries in movies)
             {

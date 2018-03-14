@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -17,26 +17,17 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
     [Ignore("Nyaa is down!")]
     public class IndexerIntegrationTests : CoreTest
     {
-        private SingleEpisodeSearchCriteria _singleSearchCriteria;
-        private AnimeEpisodeSearchCriteria _animeSearchCriteria;
+        private MovieSearchCriteria _singleSearchCriteria;
 
         [SetUp]
         public void SetUp()
         {
             UseRealHttp();
 
-            _singleSearchCriteria = new SingleEpisodeSearchCriteria()
+            _singleSearchCriteria = new MovieSearchCriteria()
                 {
                     SceneTitles = new List<string> { "Person of Interest" },
-                    SeasonNumber = 1,
-                    EpisodeNumber = 1
                 };
-
-            _animeSearchCriteria = new AnimeEpisodeSearchCriteria()
-            {
-                SceneTitles = new List<string> { "Steins;Gate" },
-                AbsoluteEpisodeNumber = 1
-            };
         }
 
         [Test]
@@ -66,7 +57,7 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
                 Settings = new NyaaSettings()
             };
 
-            var result = indexer.Fetch(_animeSearchCriteria);
+            var result = indexer.Fetch(_singleSearchCriteria);
 
             ValidateTorrentResult(result, hasSize: true);
         }

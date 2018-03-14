@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -8,7 +8,7 @@ using NzbDrone.Core.History;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Indexers;
 using System.Linq;
 
@@ -25,8 +25,6 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                  new History.History(){
                      DownloadId = "35238",
                      SourceTitle = "TV Series S01",
-                     SeriesId = 5,
-                     EpisodeId = 4,
 					 MovieId = 3,
                  }
                 });

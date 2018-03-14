@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.REST;
+using NzbDrone.Api.REST;
 using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Api.Config
@@ -10,11 +10,6 @@ namespace NzbDrone.Api.Config
         public string StandardMovieFormat { get; set; }
         public string MovieFolderFormat { get; set; }
         public int MultiEpisodeStyle { get; set; }
-        public string StandardEpisodeFormat { get; set; }
-        public string DailyEpisodeFormat { get; set; }
-        public string AnimeEpisodeFormat { get; set; }
-        public string SeriesFolderFormat { get; set; }
-        public string SeasonFolderFormat { get; set; }
         public bool IncludeSeriesTitle { get; set; }
         public bool IncludeEpisodeTitle { get; set; }
         public bool IncludeQuality { get; set; }
@@ -34,11 +29,6 @@ namespace NzbDrone.Api.Config
                 RenameEpisodes = model.RenameEpisodes,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
                 MultiEpisodeStyle = model.MultiEpisodeStyle,
-                StandardEpisodeFormat = model.StandardEpisodeFormat,
-                DailyEpisodeFormat = model.DailyEpisodeFormat,
-                AnimeEpisodeFormat = model.AnimeEpisodeFormat,
-                SeriesFolderFormat = model.SeriesFolderFormat,
-                SeasonFolderFormat = model.SeasonFolderFormat,
                 StandardMovieFormat = model.StandardMovieFormat,
                 MovieFolderFormat = model.MovieFolderFormat
                 //IncludeSeriesTitle

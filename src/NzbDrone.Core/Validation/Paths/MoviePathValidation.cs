@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Validation.Paths
 {

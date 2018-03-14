@@ -6,7 +6,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
@@ -14,12 +14,12 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
     [TestFixture]
     public class FilterFixture : CoreTest<MediaFileService>
     {
-        private Series _series;
+        private Movie _series;
 
         [SetUp]
         public void Setup()
         {
-            _series = new Series
+            _series = new Movie
                       {
                           Id = 10,
                           Path = @"C:\".AsOsAgnostic()
@@ -37,8 +37,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             };
 
             Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                .Returns(new List<EpisodeFile>());
+                .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
+                .Returns(new List<MovieFile>());
 
 
             Subject.FilterExistingFiles(files, _series).Should().BeEquivalentTo(files);
@@ -55,8 +55,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             };
 
             Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                .Returns(files.Select(f => new EpisodeFile { RelativePath = Path.GetFileName(f) }).ToList());
+                .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
+                .Returns(files.Select(f => new MovieFile { RelativePath = Path.GetFileName(f) }).ToList());
 
 
             Subject.FilterExistingFiles(files, _series).Should().BeEmpty();
@@ -73,10 +73,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             };
 
             Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                .Returns(new List<EpisodeFile>
+                .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
+                .Returns(new List<MovieFile>
                 {
-                    new EpisodeFile{ RelativePath = "file2.avi".AsOsAgnostic()}
+                    new MovieFile{ RelativePath = "file2.avi".AsOsAgnostic()}
                 });
 
 
@@ -97,10 +97,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             };
 
             Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                .Returns(new List<EpisodeFile>
+                .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
+                .Returns(new List<MovieFile>
                 {
-                    new EpisodeFile{ RelativePath = "file2.avi".AsOsAgnostic()}
+                    new MovieFile{ RelativePath = "file2.avi".AsOsAgnostic()}
                 });
 
 
@@ -121,10 +121,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             };
 
             Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                .Returns(new List<EpisodeFile>
+                .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
+                .Returns(new List<MovieFile>
                 {
-                    new EpisodeFile{ RelativePath = "file2.avi".AsOsAgnostic()}
+                    new MovieFile{ RelativePath = "file2.avi".AsOsAgnostic()}
                 });
 
             Subject.FilterExistingFiles(files, _series).Should().HaveCount(3);
@@ -139,8 +139,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
             };
 
             Mocker.GetMock<IMediaFileRepository>()
-                .Setup(c => c.GetFilesBySeries(It.IsAny<int>()))
-                .Returns(new List<EpisodeFile>());
+                .Setup(c => c.GetFilesByMovie(It.IsAny<int>()))
+                .Returns(new List<MovieFile>());
 
             Subject.FilterExistingFiles(files, _series).Should().HaveCount(1);
             Subject.FilterExistingFiles(files, _series).Should().NotContain(files.First().ToLower());

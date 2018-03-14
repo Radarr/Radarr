@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Backup;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Housekeeping;
@@ -15,7 +14,7 @@ using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Tv.Commands;
+using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Update.Commands;
 using NzbDrone.Core.MetadataSource.PreDB;
 
@@ -97,7 +96,6 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask
                     { 
                         Interval = _configService.DownloadedMoviesScanInterval,
-                        //TypeName = typeof(DownloadedEpisodesScanCommand).FullName
                         TypeName = typeof(DownloadedMoviesScanCommand).FullName
                     },
                 };

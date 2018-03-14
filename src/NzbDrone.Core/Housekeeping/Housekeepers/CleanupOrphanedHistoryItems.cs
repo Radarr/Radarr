@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
@@ -13,21 +13,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            //CleanupOrphanedBySeries();
-            //CleanupOrphanedByEpisode();
             CleanupOrphanedByMovie();
-        }
-
-        private void CleanupOrphanedBySeries()
-        {
-            var mapper = _database.GetDataMapper();
-
-            mapper.ExecuteNonQuery(@"DELETE FROM History
-                                     WHERE Id IN (
-                                     SELECT History.Id FROM History
-                                     LEFT OUTER JOIN Series
-                                     ON History.SeriesId = Series.Id
-                                     WHERE Series.Id IS NULL)");
         }
 
         private void CleanupOrphanedByMovie()
@@ -40,18 +26,6 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      LEFT OUTER JOIN Movies
                                      ON History.MovieId = Movies.Id
                                      WHERE Movies.Id IS NULL)");
-        }
-
-        private void CleanupOrphanedByEpisode()
-        {
-            var mapper = _database.GetDataMapper();
-
-            mapper.ExecuteNonQuery(@"DELETE FROM History
-                                     WHERE Id IN (
-                                     SELECT History.Id FROM History
-                                     LEFT OUTER JOIN Episodes
-                                     ON History.EpisodeId = Episodes.Id
-                                     WHERE Episodes.Id IS NULL)");
         }
     }
 }

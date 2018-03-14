@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Marr.Data;
@@ -8,26 +8,26 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     public class UpgradeMediaFileServiceFixture : CoreTest<UpgradeMediaFileService>
     {
-        private EpisodeFile _episodeFile;
-        private LocalEpisode _localEpisode;
+        private MovieFile _movieFile;
+        private LocalMovie _localMovie;
 
         [SetUp]
         public void Setup()
         {
-            _localEpisode = new LocalEpisode();
-            _localEpisode.Series = new Series
+            _localMovie = new LocalMovie();
+            _localMovie.Movie = new Movie
                                    {
                                        Path = @"C:\Test\TV\Series".AsOsAgnostic()
                                    };
 
-            _episodeFile = Builder<EpisodeFile>
+            _movieFile = Builder<MovieFile>
                 .CreateNew()
                 .Build();
 
@@ -39,53 +39,13 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private void GivenSingleEpisodeWithSingleEpisodeFile()
         {
-            _localEpisode.Episodes = Builder<Episode>.CreateListOfSize(1)
-                                                     .All()
-                                                     .With(e => e.EpisodeFileId = 1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
-                                                                                {
-                                                                                    Id = 1,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e01.avi",
-                                                                                }))
-                                                     .Build()
-                                                     .ToList();
-        }
-
-        private void GivenMultipleEpisodesWithSingleEpisodeFile()
-        {
-            _localEpisode.Episodes = Builder<Episode>.CreateListOfSize(2)
-                                                     .All()
-                                                     .With(e => e.EpisodeFileId = 1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
-                                                                                {
-                                                                                    Id = 1,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e01.avi",
-                                                                                }))
-                                                     .Build()
-                                                     .ToList();
-        }
-
-        private void GivenMultipleEpisodesWithMultipleEpisodeFiles()
-        {
-            _localEpisode.Episodes = Builder<Episode>.CreateListOfSize(2)
-                                                     .TheFirst(1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
-                                                                                {
-                                                                                    Id = 1,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e01.avi",
-                                                                                }))
-                                                     .TheNext(1)
-                                                     .With(e => e.EpisodeFile = new LazyLoaded<EpisodeFile>(
-                                                                                new EpisodeFile
-                                                                                {
-                                                                                    Id = 2,
-                                                                                    RelativePath = @"Season 01\30.rock.s01e02.avi",
-                                                                                }))
-                                                     .Build()
-                                                     .ToList();
+            _localMovie.Movie.MovieFileId = 1;
+            _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
+                new MovieFile
+                {
+                    Id = 1,
+                    RelativePath = @"Season 01\30.rock.s01e01.avi",
+                });
         }
 
         [Test]
@@ -93,39 +53,21 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenSingleEpisodeWithSingleEpisodeFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeMovieFile(_movieFile, _localMovie);
 
             Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Once());
         }
 
-        [Test]
-        public void should_delete_the_same_episode_file_only_once()
-        {
-            GivenMultipleEpisodesWithSingleEpisodeFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
-
-            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Once());
-        }
-
-        [Test]
-        public void should_delete_multiple_different_episode_files()
-        {
-            GivenMultipleEpisodesWithMultipleEpisodeFiles();
-
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
-
-            Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Exactly(2));
-        }
 
         [Test]
         public void should_delete_episode_file_from_database()
         {
             GivenSingleEpisodeWithSingleEpisodeFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeMovieFile(_movieFile, _localMovie);
 
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(It.IsAny<EpisodeFile>(), DeleteMediaFileReason.Upgrade), Times.Once());
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(It.IsAny<MovieFile>(), DeleteMediaFileReason.Upgrade), Times.Once());
         }
 
         [Test]
@@ -137,9 +79,9 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(false);
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeMovieFile(_movieFile, _localMovie);
 
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localEpisode.Episodes.Single().EpisodeFile.Value, DeleteMediaFileReason.Upgrade), Times.Once());
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localMovie.Movie.MovieFile, DeleteMediaFileReason.Upgrade), Times.Once());
         }
 
         [Test]
@@ -151,7 +93,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(false);
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode);
+            Subject.UpgradeMovieFile(_movieFile, _localMovie);
 
             Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>()), Times.Never());
         }
@@ -161,15 +103,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenSingleEpisodeWithSingleEpisodeFile();
 
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode).OldFiles.Count.Should().Be(1);
-        }
-
-        [Test]
-        public void should_return_old_episode_files_in_oldFiles()
-        {
-            GivenMultipleEpisodesWithMultipleEpisodeFiles();
-
-            Subject.UpgradeEpisodeFile(_episodeFile, _localEpisode).OldFiles.Count.Should().Be(2);
+            Subject.UpgradeMovieFile(_movieFile, _localMovie).OldFiles.Count.Should().Be(1);
         }
     }
 }

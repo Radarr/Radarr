@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using FluentAssertions;
 using Marr.Data;
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
         [Test]
         public void null_string_as_arg_should_not_fail()
         {
-            var epFile = new EpisodeFile();
+            var epFile = new MovieFile();
             _logger.Debug("File {0} no longer exists on disk. removing from database.", epFile.RelativePath);
 
             Thread.Sleep(600);

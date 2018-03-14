@@ -1,5 +1,5 @@
 ﻿using NzbDrone.Common.Messaging;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MediaFiles.Events
 {

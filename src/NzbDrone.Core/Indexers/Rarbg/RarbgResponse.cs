@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         public int? leechers { get; set; }
         public long size { get; set; }
         public DateTime pubdate { get; set; }
-        public RarbgTorrentInfo episode_info { get; set; }
+        public RarbgTorrentInfo movie_info { get; set; }
         public int? ranked { get; set; }
         public string info_page { get; set; }
     }

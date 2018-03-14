@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -8,7 +8,7 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
 {
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
             var specialFiles = GetFiles(path, subFolder).ToList();
             var allFiles = files.Concat(specialFiles);
 
-            var series = Builder<Series>.CreateNew()
+            var series = Builder<Movie>.CreateNew()
                                         .With(s => s.Path = path)
                                         .Build();
 

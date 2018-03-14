@@ -4,12 +4,12 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.SignalR;
 
 namespace NzbDrone.Api.Movies
 {
-    public abstract class MovieModuleWithSignalR : NzbDroneRestModuleWithSignalR<MovieResource, Core.Tv.Movie>,
+    public abstract class MovieModuleWithSignalR : NzbDroneRestModuleWithSignalR<MovieResource, Core.Movies.Movie>,
         IHandle<MovieGrabbedEvent>,
         IHandle<MovieDownloadedEvent>
     {
@@ -46,7 +46,7 @@ namespace NzbDrone.Api.Movies
             return resource;
         }
 
-        protected MovieResource MapToResource(Core.Tv.Movie episode, bool includeSeries)
+        protected MovieResource MapToResource(Core.Movies.Movie episode, bool includeSeries)
         {
             var resource = episode.ToResource();
 

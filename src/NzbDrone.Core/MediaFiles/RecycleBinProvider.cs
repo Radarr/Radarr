@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -8,7 +8,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
         void Cleanup();
     }
 
-    public class RecycleBinProvider : IHandleAsync<SeriesDeletedEvent>, IExecute<CleanUpRecycleBinCommand>, IRecycleBinProvider, IHandleAsync<MovieDeletedEvent>
+    public class RecycleBinProvider : IExecute<CleanUpRecycleBinCommand>, IRecycleBinProvider, IHandleAsync<MovieDeletedEvent>
     {
         private readonly IDiskTransferService _diskTransferService;
         private readonly IDiskProvider _diskProvider;
@@ -188,17 +188,6 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             _logger.Debug("Recycling Bin has been cleaned up.");
-        }
-
-        public void HandleAsync(SeriesDeletedEvent message)
-        {
-            if (message.DeleteFiles)
-            {
-                if (_diskProvider.FolderExists(message.Series.Path))
-                {
-                    DeleteFolder(message.Series.Path);
-                }
-            }
         }
 
         public void HandleAsync(MovieDeletedEvent message)

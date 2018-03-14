@@ -1,17 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
@@ -19,7 +18,6 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
     [TestFixture]
     public class MapFixture : TestBase<ParsingService>
     {
-        private Series _series;
 		private Movie _movie;
 		private ParsedMovieInfo _parsedMovieInfo;
 		private ParsedMovieInfo _wrongYearInfo;
@@ -29,17 +27,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         private ParsedMovieInfo _umlautInfo;
         private ParsedMovieInfo _umlautAltInfo;
 		private MovieSearchCriteria _movieSearchCriteria;
-        private List<Episode> _episodes;
-        private ParsedEpisodeInfo _parsedEpisodeInfo;
-        private SingleEpisodeSearchCriteria _singleEpisodeSearchCriteria;
 
         [SetUp]
         public void Setup()
         {
-            _series = Builder<Series>.CreateNew()
-                .With(s => s.Title = "30 Rock")
-                .With(s => s.CleanTitle = "rock")
-                .Build();
 
 			_movie = Builder<Movie>.CreateNew()
 								   .With(m => m.Title = "Fack Ju Göthe 2")
@@ -47,19 +38,6 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 			                       .With(m => m.Year = 2015)
 			                       .With(m => m.AlternativeTitles = new LazyList<AlternativeTitle>( new List<AlternativeTitle> {new AlternativeTitle("Fack Ju Göthe 2: Same same")}))
 								   .Build();
-
-            _episodes = Builder<Episode>.CreateListOfSize(1)
-                                        .All()
-                                        .With(e => e.AirDate = DateTime.Today.ToString(Episode.AIR_DATE_FORMAT))
-                                        .Build()
-                                        .ToList();
-
-            _parsedEpisodeInfo = new ParsedEpisodeInfo
-            {
-                SeriesTitle = _series.Title,
-                SeasonNumber = 1,
-                EpisodeNumbers = new[] { 1 }
-            };
 
 			_parsedMovieInfo = new ParsedMovieInfo
 			{
@@ -104,14 +82,6 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 Year = _movie.Year
             };
 
-            _singleEpisodeSearchCriteria = new SingleEpisodeSearchCriteria
-            {
-                Series = _series,
-                EpisodeNumber = _episodes.First().EpisodeNumber,
-                SeasonNumber = _episodes.First().SeasonNumber,
-                Episodes = _episodes
-            };
-
 			_movieSearchCriteria = new MovieSearchCriteria
 			{
 				Movie = _movie
@@ -123,11 +93,6 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.FindByTitle(It.IsAny<string>()))
                   .Returns(_movie);
-        }
-
-        private void GivenParseResultSeriesDoesntMatchSearchCriteria()
-        {
-            _parsedEpisodeInfo.SeriesTitle = "Another Name";
         }
 
         [Test]

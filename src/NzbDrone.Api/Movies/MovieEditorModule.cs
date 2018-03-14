@@ -5,7 +5,7 @@ using Nancy;
 using Nancy.Responses;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Api.REST;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Api.Movies
 {

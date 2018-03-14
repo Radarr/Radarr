@@ -23,7 +23,7 @@ namespace NzbDrone.Api.ManualImport
 
     public static class ManualImportResourceMapper
     {
-        public static ManualImportResource ToResource(this Core.MediaFiles.EpisodeImport.Manual.ManualImportItem model)
+        public static ManualImportResource ToResource(this Core.MediaFiles.MovieImport.Manual.ManualImportItem model)
         {
             if (model == null) return null;
 
@@ -43,7 +43,7 @@ namespace NzbDrone.Api.ManualImport
             };
         }
 
-        public static List<ManualImportResource> ToResource(this IEnumerable<Core.MediaFiles.EpisodeImport.Manual.ManualImportItem> models)
+        public static List<ManualImportResource> ToResource(this IEnumerable<Core.MediaFiles.MovieImport.Manual.ManualImportItem> models)
         {
             return models.Select(ToResource).ToList();
         }

@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             _movieSearchCriteria = new MovieSearchCriteria
             {
-				Movie = new Tv.Movie { ImdbId = "tt0076759", Title = "Star Wars", Year = 1977 }
+				Movie = new Movies.Movie { ImdbId = "tt0076759", Title = "Star Wars", Year = 1977 }
             };
 
             _capabilities = new NewznabCapabilities();

@@ -13,7 +13,7 @@ using NzbDrone.Core.Qualities;
 using System.Collections.Generic;
 using NzbDrone.Core.Test.Qualities;
 using FluentAssertions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.HistoryTests
 {

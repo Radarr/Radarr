@@ -31,8 +31,6 @@ namespace NzbDrone.Api.Blacklist
             {
                 Id = model.Id,
                 MovieId = model.MovieId,
-                SeriesId = model.SeriesId,
-                EpisodeIds = model.EpisodeIds,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
                 Date = model.Date,
