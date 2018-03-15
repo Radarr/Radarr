@@ -5890,13 +5890,13 @@ randombytes@^2.0.0, randombytes@^2.0.1:
   dependencies:
     safe-buffer "^5.1.0"
 
-raven-for-redux@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.0.0.tgz#3671c2fd39b155b92e7013895806ff75ff2d5e96"
+raven-for-redux@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/raven-for-redux/-/raven-for-redux-1.3.0.tgz#18a95a1f2131bf91bbd6faf7c13bb9e0d5ea2b44"
 
-raven-js@3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.17.0.tgz#779457ac7910512c3c2cc9bb6d0a9eeb59a969ec"
+raven-js@3.23.2:
+  version "3.23.2"
+  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.23.2.tgz#b71df14a066e450326b5356cc7fcc035510fdb26"
 
 raw-body@~2.1.5:
   version "2.1.7"
