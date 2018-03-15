@@ -6,12 +6,10 @@ using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
-using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Languages;
 using TagLib;
-using TagLib.IFD.Tags;
 
 namespace NzbDrone.Core.Parser
 {
@@ -290,34 +288,8 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                //if (result.FullSeason && title.ContainsIgnoreCase("Special"))
-                                //{
-                                //    result.FullSeason = false;
-                                //    result.Special = true;
-                                //}
-
-                                //result.Language = LanguageParser.ParseLanguage(title);
-                                //Logger.Debug("Language parsed: {0}", result.Language);
-
                                 result.Quality = QualityParser.ParseQuality(title, null, 0);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                                // Majora: We don't currently need Release Group for Music.
-                                //result.ReleaseGroup = ParseReleaseGroup(title);
-
-                                //var subGroup = GetSubGroup(match);
-                                //if (!subGroup.IsNullOrWhiteSpace())
-                                //{
-                                //    result.ReleaseGroup = subGroup;
-                                //}
-
-                                //Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
-
-                                //result.ReleaseHash = GetReleaseHash(match);
-                                //if (!result.ReleaseHash.IsNullOrWhiteSpace())
-                                //{
-                                //    Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
-                                //}
 
                                 return result;
                             }
@@ -720,19 +692,6 @@ namespace NzbDrone.Core.Parser
         {
             var artistTitleInfo = new ArtistTitleInfo();
             artistTitleInfo.Title = title;
-
-            //var match = YearInTitleRegex.Match(title);
-
-            //if (!match.Success)
-            //{
-            //    artistTitleInfo.TitleWithoutYear = title;
-            //}
-
-            //else
-            //{
-            //    artistTitleInfo.TitleWithoutYear = match.Groups["title"].Value;
-            //    artistTitleInfo.Year = Convert.ToInt32(match.Groups["year"].Value);
-            //}
 
             return artistTitleInfo;
         }

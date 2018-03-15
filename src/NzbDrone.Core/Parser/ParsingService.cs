@@ -38,12 +38,10 @@ namespace NzbDrone.Core.Parser
                               IArtistService artistService,
                               IAlbumService albumService,
                               IMediaFileService mediaFileService,
-                              // ISceneMappingService sceneMappingService,
                               Logger logger)
         {
             _albumService = albumService;
             _artistService = artistService;
-            // _sceneMappingService = sceneMappingService;
             _trackService = trackService;
             _mediaFileService = mediaFileService;
             _logger = logger;
@@ -297,32 +295,6 @@ namespace NzbDrone.Core.Parser
                     _logger.Debug("Unable to find track for {0}", parsedTrackInfo);
                 }
             }
-
-            //_logger.Debug("Track title search unsuccessful, falling back to track number for {1}", trackInfo, parsedTrackInfo);
-
-            //if (parsedTrackInfo.TrackNumbers == null)
-            //{
-            //    _logger.Debug("Track has no track numbers: {1}", trackInfo, parsedTrackInfo);
-            //    return new List<Track>();
-            //}
-
-            //foreach (var trackNumber in parsedTrackInfo.TrackNumbers)
-            //{
-            //    Track trackInfoByNumber = null;
-
-            //    trackInfoByNumber = _trackService.FindTrack(artist.Id, album.Id, parsedTrackInfo.DiscNumber, trackNumber);
-            //    _logger.Debug("Track {0} selected for {1}", trackInfoByNumber, parsedTrackInfo);
-
-            //    if (trackInfoByNumber != null)
-            //    {
-            //        result.Add(trackInfoByNumber);
-            //    }
-
-            //    else
-            //    {
-            //        _logger.Debug("Unable to find {0}", parsedTrackInfo);
-            //    }
-            //}
 
             return result;
         }

@@ -172,11 +172,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 return false;
             }
 
-            //if (folderInfo.FullSeason)
-            //{
-            //    return false;
-            //}
-
             return musicFiles.Count(file =>
             {
 

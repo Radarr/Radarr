@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Parser.Model;
 using System;
@@ -14,8 +14,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         public IEnumerable<Rejection> Rejections { get; private set; }
 
         public bool Approved => Rejections.Empty();
-
-        public object LocalEpisode { get; internal set; }
 
         public ImportDecision(LocalTrack localTrack, params Rejection[] rejections)
         {

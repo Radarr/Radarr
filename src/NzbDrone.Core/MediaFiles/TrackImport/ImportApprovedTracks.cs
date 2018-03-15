@@ -6,13 +6,11 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NzbDrone.Core.Extras;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
@@ -29,13 +27,11 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IExtraService _extraService;
         private readonly IDiskProvider _diskProvider;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IAlbumRepository _albumRepository;
         private readonly Logger _logger;
 
         public ImportApprovedTracks(IUpgradeMediaFiles episodeFileUpgrader,
                                       IMediaFileService mediaFileService,
                                       IExtraService extraService,
-                                      IAlbumRepository albumRepository,
                                       IDiskProvider diskProvider,
                                       IEventAggregator eventAggregator,
                                       Logger logger)
@@ -43,7 +39,6 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
             _trackFileUpgrader = episodeFileUpgrader;
             _mediaFileService = mediaFileService;
             _extraService = extraService;
-            _albumRepository = albumRepository;
              _diskProvider = diskProvider;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -168,29 +163,5 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
             return importResults;
         }
-
-        //private string GetSceneName(DownloadClientItem downloadClientItem, LocalEpisode localEpisode)
-        //{
-        //    if (downloadClientItem != null)
-        //    {
-        //        var title = Parser.Parser.RemoveFileExtension(downloadClientItem.Title);
-
-        //        var parsedTitle = Parser.Parser.ParseTitle(title);
-
-        //        if (parsedTitle != null && !parsedTitle.FullSeason)
-        //        {
-        //            return title;
-        //        }
-        //    }
-
-        //    var fileName = Path.GetFileNameWithoutExtension(localEpisode.Path.CleanFilePath());
-
-        //    if (SceneChecker.IsSceneTitle(fileName))
-        //    {
-        //        return fileName;
-        //    }
-
-        //    return null;
-        //}
     }
 }
