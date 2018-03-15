@@ -108,6 +108,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "FLAC";
             }
 
+            if (audioFormat.Trim().EqualsIgnoreCase("MLP"))
+            {
+                return "MLP";
+            }
+
             if (audioFormat.Trim().EqualsIgnoreCase("mp3"))
             {
                 return "MP3";
@@ -191,6 +196,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             if (audioFormat.EqualsIgnoreCase("MPEG Audio") && mediaInfo.AudioProfile == "Layer 3")
             {
                 return "MP3";
+            }
+
+            if (audioFormat.EqualsIgnoreCase("MLP"))
+            {
+                return "MLP";
             }
 
             if (audioFormat.EqualsIgnoreCase("DTS"))
