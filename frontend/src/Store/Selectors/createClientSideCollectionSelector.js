@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
+import findSelectedFilters from 'Utilities/Filter/findSelectedFilters';
 import { filterTypes, sortDirections } from 'Helpers/Props';
 
 const filterTypePredicates = {
   [filterTypes.CONTAINS]: function(value, filterValue) {
-    return value.toLowerCase().indexOf(filterValue.toLowerCase()) > -1;
+    return value.toLowerCase().contains(filterValue.toLowerCase());
   },
 
   [filterTypes.EQUAL]: function(value, filterValue) {
@@ -46,26 +47,54 @@ function getSortClause(sortKey, sortDirection, sortPredicates) {
 
 function filter(items, state) {
   const {
-    filterKey,
-    filterValue,
-    filterType,
+    selectedFilterKey,
+    filters,
+    customFilters,
     filterPredicates
   } = state;
 
-  if (!filterKey || !filterValue) {
+  if (!selectedFilterKey) {
     return items;
   }
 
+  const selectedFilters = findSelectedFilters(selectedFilterKey, filters, customFilters);
+
   return _.filter(items, (item) => {
-    if (filterPredicates && filterPredicates.hasOwnProperty(filterKey)) {
-      return filterPredicates[filterKey](item);
+    let i = 0;
+    let accepted = true;
+
+    while (accepted && i < selectedFilters.length) {
+      const {
+        key,
+        value,
+        type = filterTypes.EQUAL
+      } = selectedFilters[i];
+
+      if (filterPredicates && filterPredicates.hasOwnProperty(key)) {
+        const predicate = filterPredicates[key];
+
+        if (Array.isArray(value)) {
+          accepted = value.some((v) => predicate(item, v, type));
+        } else {
+          accepted = predicate(item, value, type);
+        }
+      } else if (item.hasOwnProperty(key)) {
+        const predicate = filterTypePredicates[type];
+
+        if (Array.isArray(value)) {
+          accepted = value.some((v) => predicate(item[key], v));
+        } else {
+          accepted = predicate(item[key], value);
+        }
+      } else {
+        // Default to false if the filter can't be tested
+        accepted = false;
+      }
+
+      i++;
     }
 
-    if (item.hasOwnProperty(filterKey)) {
-      return filterTypePredicates[filterType](item[filterKey], filterValue);
-    }
-
-    return false;
+    return accepted;
   });
 }
 

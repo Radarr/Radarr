@@ -69,7 +69,6 @@ namespace Lidarr.Api.V1.TrackFiles
                 Language = model.Language,
                 Quality = model.Quality,
                 MediaInfo = model.MediaInfo.ToResource(),
-
                 QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(artist.Profile.Value, model.Quality),
                 LanguageCutoffNotMet = upgradableSpecification.LanguageCutoffNotMet(artist.LanguageProfile.Value, model.Language)
             };

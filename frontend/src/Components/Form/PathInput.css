@@ -58,7 +58,7 @@
 }
 
 .pathHighlighted {
-  background-color: $menuItemHoverColor;
+  background-color: $menuItemHoverBackgroundColor;
 }
 
 .fileBrowserButton {

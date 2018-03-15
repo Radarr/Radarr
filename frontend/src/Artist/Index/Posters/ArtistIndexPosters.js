@@ -1,9 +1,9 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Measure from 'react-measure';
 import { Grid, WindowScroller } from 'react-virtualized';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import dimensions from 'Styles/Variables/dimensions';
 import { sortDirections } from 'Helpers/Props';
@@ -116,11 +116,11 @@ class ArtistIndexPosters extends Component {
   componentDidUpdate(prevProps) {
     const {
       items,
-      filterKey,
-      filterValue,
+      filters,
       sortKey,
       sortDirection,
-      posterOptions
+      posterOptions,
+      jumpToCharacter
     } = this.props;
 
     const itemsChanged = hasDifferentItems(prevProps.items, items);
@@ -134,43 +134,33 @@ class ArtistIndexPosters extends Component {
     }
 
     if (
-      prevProps.filterKey !== filterKey ||
-      prevProps.filterValue !== filterValue ||
+      prevProps.filters !== filters ||
       prevProps.sortKey !== sortKey ||
       prevProps.sortDirection !== sortDirection ||
       itemsChanged
     ) {
       this._grid.recomputeGridSize();
     }
+
+    if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
+      const index = getIndexOfFirstCharacter(items, jumpToCharacter);
+
+      if (index != null) {
+        const {
+          columnCount,
+          rowHeight
+        } = this.state;
+
+        const row = Math.floor(index / columnCount);
+        const scrollTop = rowHeight * row;
+
+        this.props.onScroll({ scrollTop });
+      }
+    }
   }
 
   //
   // Control
-
-  scrollToFirstCharacter(character) {
-    const items = this.props.items;
-    const {
-      columnCount,
-      rowHeight
-    } = this.state;
-
-    const index = _.findIndex(items, (item) => {
-      const firstCharacter = item.sortName.charAt(0);
-
-      if (character === '#') {
-        return !isNaN(firstCharacter);
-      }
-
-      return firstCharacter === character;
-    });
-
-    if (index != null) {
-      const row = Math.floor(index / columnCount);
-      const scrollTop = rowHeight * row;
-
-      this.props.onScroll({ scrollTop });
-    }
-  }
 
   setGridRef = (ref) => {
     this._grid = ref;
@@ -319,12 +309,12 @@ class ArtistIndexPosters extends Component {
 
 ArtistIndexPosters.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   posterOptions: PropTypes.object.isRequired,
   scrollTop: PropTypes.number.isRequired,
+  jumpToCharacter: PropTypes.string,
   contentBody: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

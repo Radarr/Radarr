@@ -22,8 +22,8 @@ module.exports = {
 
   themeBlue: '#00A65B',
   themeRed: '#c4273c',
-  themeDarkColor: '#216044',
-  themeLightColor: '#216044',
+  themeDarkColor: '#353535',
+  themeLightColor: '#1d563d',
 
   torrentColor: '#00853d',
   usenetColor: '#17b1d9',
@@ -36,14 +36,14 @@ module.exports = {
   // Sidebar
 
   sidebarColor: '#e1e2e3',
-  sidebarBackgroundColor: '#216044',
-  sidebarActiveBackgroundColor: '#353535',
+  sidebarBackgroundColor: '#353535',
+  sidebarActiveBackgroundColor: '#252525',
 
   // Toolbar
   toolbarColor: '#e1e2e3',
-  toolbarBackgroundColor: '#216044',
+  toolbarBackgroundColor: '#1d563d',
   toolbarMenuItemBackgroundColor: '#4D8069',
-  toolbarMenuItemHoverBackgroundColor: '#216044',
+  toolbarMenuItemHoverBackgroundColor: '#353535',
   toolbarLabelColor: '#8895aa',
 
   // Accents
@@ -66,7 +66,7 @@ module.exports = {
   defaultHoverBorderColor: '#d6d6d6;',
 
   primaryBackgroundColor: '#0b8750',
-  primaryBorderColor: '#216044',
+  primaryBorderColor: '#1d563d',
   primaryHoverBackgroundColor: '#097948',
   primaryHoverBorderColor: '#1D563D;',
 
@@ -85,6 +85,7 @@ module.exports = {
   dangerHoverBackgroundColor: '#ee3d3d',
   dangerHoverBorderColor: '#ec2626;',
 
+  iconButtonDisabledColor: '#7a7a7a',
   iconButtonHoverColor: '#666',
   iconButtonHoverLightColor: '#ccc',
 
@@ -99,6 +100,7 @@ module.exports = {
   // Menu
   menuItemColor: '#e1e2e3',
   menuItemHoverColor: '#fbfcfc',
+  menuItemHoverBackgroundColor: '#f5f7fa',
 
   //
   // Toolbar
@@ -157,7 +159,7 @@ module.exports = {
   popoverArrowBorderColor: 'rgba(0, 0, 0, 0.25)',
 
   popoverTitleBackgroundInverseColor: '#3a3f51',
-  popoverTitleBorderInverseColor: '#216044',
+  popoverTitleBorderInverseColor: '#353535',
   popoverShadowInverseColor: 'rgba(0, 0, 0, 0.2)',
   popoverArrowBorderInverseColor: 'rgba(58, 63, 81, 0.75)',
 

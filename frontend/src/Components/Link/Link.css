@@ -10,7 +10,7 @@
   cursor: pointer;
 
   &:global(.isDisabled) {
-    pointer-events: none;
+    cursor: default;
   }
 }
 

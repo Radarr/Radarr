@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import formatDate from 'Utilities/Date/formatDate';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -62,7 +62,7 @@ class Updates extends Component {
               <div className={styles.upToDate}>
                 <Icon
                   className={styles.upToDateIcon}
-                  name="fa fa-check-circle"
+                  name={icons.CHECK_CIRCLE}
                   size={30}
                 />
                 <div className={styles.upToDateMessage}>

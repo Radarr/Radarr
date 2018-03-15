@@ -2,7 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { sortDirections } from 'Helpers/Props';
+import { filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
 import createFetchHandler from './Creators/createFetchHandler';
@@ -28,6 +28,75 @@ export const defaultState = {
   items: [],
   sortKey: 'sortName',
   sortDirection: sortDirections.ASCENDING,
+  filters: [
+    {
+      key: 'all',
+      label: 'All',
+      filters: []
+    },
+    {
+      key: 'monitored',
+      label: 'Monitored Only',
+      filters: [
+        {
+          key: 'monitored',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'unmonitored',
+      label: 'Unmonitored Only',
+      filters: [
+        {
+          key: 'monitored',
+          value: false,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'continuing',
+      label: 'Continuing Only',
+      filters: [
+        {
+          key: 'status',
+          value: 'continuing',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'ended',
+      label: 'Ended Only',
+      filters: [
+        {
+          key: 'status',
+          value: 'ended',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'missing',
+      label: 'Missing Albums',
+      filters: [
+        {
+          key: 'missing',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
+    }
+  ],
+
+  filterPredicates: {
+    missing: function(item) {
+      return item.statistics.trackCount - item.statistics.trackFileCount > 0;
+    }
+  },
+
   pendingChanges: {}
 };
 

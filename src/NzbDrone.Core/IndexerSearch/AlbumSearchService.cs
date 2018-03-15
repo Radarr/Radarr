@@ -78,32 +78,34 @@ namespace NzbDrone.Core.IndexerSearch
             {
                 int artistId = message.ArtistId.Value;
 
-                albums = _albumService.AlbumsWithoutFiles(new PagingSpec<Album>
+                var pagingSpec = new PagingSpec<Album>
                 {
                     Page = 1,
                     PageSize = 100000,
                     SortDirection = SortDirection.Ascending,
-                    SortKey = "Id",
-                    FilterExpression =
-                                                            v =>
-                                                            v.Monitored == true &&
-                                                            v.Artist.Monitored == true
-                }).Records.Where(e => e.ArtistId.Equals(artistId)).ToList();
+                    SortKey = "Id"
+                };
+
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
+
+                albums = _albumService.AlbumsWithoutFiles(pagingSpec).Records.Where(e => e.ArtistId.Equals(artistId)).ToList();
+
             }
 
             else
             {
-                albums = _albumService.AlbumsWithoutFiles(new PagingSpec<Album>
+                var pagingSpec = new PagingSpec<Album>
                 {
                     Page = 1,
                     PageSize = 100000,
                     SortDirection = SortDirection.Ascending,
-                    SortKey = "Id",
-                    FilterExpression =
-                                                                            v =>
-                                                                            v.Monitored == true &&
-                                                                            v.Artist.Monitored == true
-                }).Records.ToList();
+                    SortKey = "Id"
+                };
+
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
+
+                albums = _albumService.AlbumsWithoutFiles(pagingSpec).Records.ToList();
+
             }
 
             var queue = _queueService.GetQueue().Select(q => q.Album.Id);
@@ -131,14 +133,17 @@ namespace NzbDrone.Core.IndexerSearch
                     v.Artist.Monitored == true;
             }
 
-            var albums = _albumCutoffService.AlbumsWhereCutoffUnmet(new PagingSpec<Album>
+            var pagingSpec = new PagingSpec<Album>
             {
                 Page = 1,
                 PageSize = 100000,
                 SortDirection = SortDirection.Ascending,
-                SortKey = "Id",
-                FilterExpression = filterExpression
-            }).Records.ToList();
+                SortKey = "Id"
+            };
+
+            pagingSpec.FilterExpressions.Add(filterExpression);
+
+            var albums = _albumCutoffService.AlbumsWhereCutoffUnmet(pagingSpec).Records.ToList();
 
             var queue = _queueService.GetQueue().Select(q => q.Album.Id);
             var missing = albums.Where(e => !queue.Contains(e.Id)).ToList();

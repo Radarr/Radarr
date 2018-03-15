@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NzbDrone.Core.Instrumentation;
 using Lidarr.Http.REST;
 
@@ -24,11 +24,10 @@ namespace Lidarr.Api.V1.Logs
             return new LogResource
             {
                 Id = model.Id,
-
                 Time = model.Time,
                 Exception = model.Exception,
                 ExceptionType = model.ExceptionType,
-                Level = model.Level,
+                Level = model.Level.ToLowerInvariant(),
                 Logger = model.Logger,
                 Message = model.Message
             };

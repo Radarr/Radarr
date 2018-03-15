@@ -82,8 +82,8 @@ class LogsTableRow extends Component {
                   className={styles.level}
                 >
                   <Icon
-                    className={styles[level.toLowerCase()]}
-                    name={getIconName(level.toLowerCase())}
+                    className={styles[level]}
+                    name={getIconName(level)}
                     title={level}
                   />
                 </TableRowCell>

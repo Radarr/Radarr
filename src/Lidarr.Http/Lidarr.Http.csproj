@@ -108,6 +108,7 @@
     <Compile Include="Mapping\MappingValidation.cs" />
     <Compile Include="Mapping\ResourceMappingException.cs" />
     <Compile Include="PagingResource.cs" />
+    <Compile Include="PagingResourceFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceChangeMessage.cs" />
     <Compile Include="REST\BadRequestException.cs" />

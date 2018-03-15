@@ -10,6 +10,7 @@ namespace Lidarr.Api.V1.Config
         public string RecycleBin { get; set; }
         public bool AutoDownloadPropers { get; set; }
         public bool CreateEmptyArtistFolders { get; set; }
+        public bool DeleteEmptyFolders { get; set; }
         public FileDateType FileDate { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
@@ -35,6 +36,7 @@ namespace Lidarr.Api.V1.Config
                 RecycleBin = model.RecycleBin,
                 AutoDownloadPropers = model.AutoDownloadPropers,
                 CreateEmptyArtistFolders = model.CreateEmptyArtistFolders,
+                DeleteEmptyFolders = model.DeleteEmptyFolders,
                 FileDate = model.FileDate,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,

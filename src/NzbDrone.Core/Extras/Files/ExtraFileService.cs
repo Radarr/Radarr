@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Extras.Files
 
     public abstract class ExtraFileService<TExtraFile> : IExtraFileService<TExtraFile>,
                                                          IHandleAsync<ArtistDeletedEvent>,
-                                                         IHandleAsync<TrackFileDeletedEvent>
+                                                         IHandle<TrackFileDeletedEvent>
         where TExtraFile : ExtraFile, new()
     {
         private readonly IExtraFileRepository<TExtraFile> _repository;
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Extras.Files
             _repository.DeleteForArtist(message.Artist.Id);
         }
 
-        public void HandleAsync(TrackFileDeletedEvent message)
+        public void Handle(TrackFileDeletedEvent message)
         {
             var trackFile = message.TrackFile;
 

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { filterTypes, sortDirections } from 'Helpers/Props';
+import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -25,17 +25,17 @@ export const defaultState = {
   sortDirection: sortDirections.ASCENDING,
   secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
-  filterKey: null,
-  filterValue: null,
-  filterType: filterTypes.EQUAL
+  selectedFilterKey: 'all',
+  // filters come from artistActions
+  customFilters: []
+  // filterPredicates come from artistActions
 };
 
 export const persistState = [
   'artistEditor.sortKey',
   'artistEditor.sortDirection',
-  'artistEditor.filterKey',
-  'artistEditor.filterValue',
-  'artistEditor.filterType'
+  'artistEditor.selectedFilterKey',
+  'artistEditor.customFilters'
 ];
 
 //

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Measure from 'react-measure';
 import { Grid, WindowScroller } from 'react-virtualized';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import dimensions from 'Styles/Variables/dimensions';
 import { sortDirections } from 'Helpers/Props';
@@ -76,11 +77,11 @@ class ArtistIndexOverviews extends Component {
   componentDidUpdate(prevProps) {
     const {
       items,
-      filterKey,
-      filterValue,
+      filters,
       sortKey,
       sortDirection,
-      overviewOptions
+      overviewOptions,
+      jumpToCharacter
     } = this.props;
 
     const itemsChanged = hasDifferentItems(prevProps.items, items);
@@ -95,14 +96,27 @@ class ArtistIndexOverviews extends Component {
     }
 
     if (
-      prevProps.filterKey !== filterKey ||
-      prevProps.filterValue !== filterValue ||
+      prevProps.filters !== filters ||
       prevProps.sortKey !== sortKey ||
       prevProps.sortDirection !== sortDirection ||
       itemsChanged ||
       overviewOptionsChanged
     ) {
       this._grid.recomputeGridSize();
+    }
+
+    if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
+      const index = getIndexOfFirstCharacter(items, jumpToCharacter);
+
+      if (index != null) {
+        const {
+          rowHeight
+        } = this.state;
+
+        const scrollTop = rowHeight * index;
+
+        this.props.onScroll({ scrollTop });
+      }
     }
   }
 
@@ -115,15 +129,7 @@ class ArtistIndexOverviews extends Component {
       rowHeight
     } = this.state;
 
-    const index = _.findIndex(items, (item) => {
-      const firstCharacter = item.sortTitle.charAt(0);
-
-      if (character === '#') {
-        return !isNaN(firstCharacter);
-      }
-
-      return firstCharacter === character;
-    });
+    const index = getIndexOfFirstCharacter(items, character);
 
     if (index != null) {
       const scrollTop = rowHeight * index;
@@ -263,12 +269,12 @@ class ArtistIndexOverviews extends Component {
 
 ArtistIndexOverviews.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   overviewOptions: PropTypes.object.isRequired,
   scrollTop: PropTypes.number.isRequired,
+  jumpToCharacter: PropTypes.string,
   contentBody: PropTypes.object.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

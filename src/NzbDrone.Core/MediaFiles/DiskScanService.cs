@@ -94,8 +94,10 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     _logger.Debug("Artist folder doesn't exist: {0}", artist.Path);
                 }
+
                 CleanMediaFiles(artist, new List<string>());
                 CompletedScanning(artist);
+
                 return;
             }
 
@@ -112,6 +114,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Trace("Import decisions complete for: {0} [{1}]", artist, decisionsStopwatch.Elapsed);
             _importApprovedTracks.Import(decisions, false);
 
+            RemoveEmptyArtistFolder(artist.Path);
             CompletedScanning(artist);
         }
         
@@ -183,7 +186,22 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.Warn(ex, "Unable to apply permissions to: " + path);
                 _logger.Debug(ex, ex.Message);
             }
-        }       
+        }
+
+        private void RemoveEmptyArtistFolder(string path)
+        {
+            if (_configService.DeleteEmptyFolders)
+            {
+                if (_diskProvider.GetFiles(path, SearchOption.AllDirectories).Empty())
+                {
+                    _diskProvider.DeleteFolder(path, true);
+                }
+                else
+                {
+                    _diskProvider.RemoveEmptySubfolders(path);
+                }
+            }
+        }
 
         public void Handle(ArtistUpdatedEvent message)
         {

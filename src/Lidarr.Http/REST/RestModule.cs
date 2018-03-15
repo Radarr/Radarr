@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -13,6 +13,16 @@ namespace Lidarr.Http.REST
     {
         private const string ROOT_ROUTE = "/";
         private const string ID_ROUTE = @"/(?<id>[\d]{1,10})";
+
+        private HashSet<string> EXCLUDED_KEYS = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            "page",
+            "pageSize",
+            "sortKey",
+            "sortDirection",
+            "filterKey",
+            "filterValue",
+        };
 
         private Action<int> _deleteResource;
         private Func<int, TResource> _getResourceById;
@@ -226,6 +236,7 @@ namespace Lidarr.Http.REST
             {
                 PageSize = pageSize,
                 Page = page,
+                Filters = new List<PagingResourceFilter>()
             };
 
             if (Request.Query.SortKey != null)
@@ -251,14 +262,36 @@ namespace Lidarr.Http.REST
                 }
             }
 
+            // For backwards compatibility with v2
             if (Request.Query.FilterKey != null)
             {
-                pagingResource.FilterKey = Request.Query.FilterKey.ToString();
+                var filter = new PagingResourceFilter
+                {
+                    Key = Request.Query.FilterKey.ToString()
+                };
 
                 if (Request.Query.FilterValue != null)
                 {
-                    pagingResource.FilterValue = Request.Query.FilterValue.ToString();
+                    filter.Value = Request.Query.FilterValue?.ToString();
                 }
+
+                pagingResource.Filters.Add(filter);
+            }
+
+            // v3 uses filters in key=value format
+
+            foreach (var key in Request.Query)
+            {
+                if (EXCLUDED_KEYS.Contains(key))
+                {
+                    continue;
+                }
+
+                pagingResource.Filters.Add(new PagingResourceFilter
+                {
+                    Key = key,
+                    Value = Request.Query[key]
+                });
             }
 
             return pagingResource;

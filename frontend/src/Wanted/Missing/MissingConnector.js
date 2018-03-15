@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import getFilterValue from 'Utilities/Filter/getFilterValue';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -95,8 +96,8 @@ class MissingConnector extends Component {
     this.props.setMissingSort({ sortKey });
   }
 
-  onFilterSelect = (filterKey, filterValue) => {
-    this.props.setMissingFilter({ filterKey, filterValue });
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.setMissingFilter({ selectedFilterKey });
   }
 
   onTableOptionChange = (payload) => {
@@ -116,13 +117,14 @@ class MissingConnector extends Component {
 
   onToggleSelectedPress = (selected) => {
     const {
-      filterKey,
-      filterValue
+      filters
     } = this.props;
+
+    const monitored = getFilterValue(filters, 'monitored');
 
     this.props.batchToggleMissingAlbums({
       albumIds: selected,
-      monitored: filterKey !== 'monitored' || !filterValue
+      monitored: monitored == null || !monitored
     });
   }
 
@@ -157,8 +159,7 @@ class MissingConnector extends Component {
 
 MissingConnector.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string.isRequired,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchMissing: PropTypes.func.isRequired,
   gotoMissingFirstPage: PropTypes.func.isRequired,
   gotoMissingPreviousPage: PropTypes.func.isRequired,

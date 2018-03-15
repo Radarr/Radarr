@@ -10,8 +10,6 @@ import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import MenuContent from 'Components/Menu/MenuContent';
-import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import NoArtist from 'Artist/NoArtist';
@@ -151,8 +149,9 @@ class ArtistEditor extends Component {
       isPopulated,
       error,
       items,
-      filterKey,
-      filterValue,
+      selectedFilterKey,
+      filters,
+      customFilters,
       sortKey,
       sortDirection,
       isSaving,
@@ -180,57 +179,13 @@ class ArtistEditor extends Component {
         <PageToolbar>
           <PageToolbarSection />
           <PageToolbarSection alignContent={align.RIGHT}>
-            <FilterMenu alignMenu={align.RIGHT}>
-              <MenuContent>
-                <FilterMenuItem
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  All
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="monitored"
-                  value={true}
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Monitored Only
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="status"
-                  value="continuing"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Continuing Only
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="status"
-                  value="ended"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Ended Only
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="missing"
-                  value={true}
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Missing Albums
-                </FilterMenuItem>
-              </MenuContent>
-            </FilterMenu>
+            <FilterMenu
+              alignMenu={align.RIGHT}
+              selectedFilterKey={selectedFilterKey}
+              filters={filters}
+              customFilters={customFilters}
+              onFilterSelect={onFilterSelect}
+            />
           </PageToolbarSection>
         </PageToolbar>
 
@@ -314,8 +269,9 @@ ArtistEditor.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   isDeleting: PropTypes.bool.isRequired,

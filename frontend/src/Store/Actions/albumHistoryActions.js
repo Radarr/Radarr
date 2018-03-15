@@ -46,10 +46,9 @@ export const actionHandlers = handleThunks({
     const queryParams = {
       pageSize: 1000,
       page: 1,
-      filterKey: 'albumId',
-      filterValue: payload.albumId,
       sortKey: 'date',
-      sortDirection: sortDirections.DESCENDING
+      sortDirection: sortDirections.DESCENDING,
+      albumId: payload.albumId
     };
 
     const promise = $.ajax({

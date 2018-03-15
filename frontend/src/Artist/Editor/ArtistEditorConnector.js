@@ -51,8 +51,8 @@ class ArtistEditorConnector extends Component {
     this.props.dispatchSetArtistEditorSort({ sortKey });
   }
 
-  onFilterSelect = (filterKey, filterValue, filterType) => {
-    this.props.dispatchSetArtistEditorFilter({ filterKey, filterValue, filterType });
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.dispatchSetArtistEditorFilter({ selectedFilterKey });
   }
 
   onSaveSelected = (payload) => {

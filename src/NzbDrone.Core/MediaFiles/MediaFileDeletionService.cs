@@ -4,7 +4,10 @@ using System.Net;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
@@ -16,24 +19,29 @@ namespace NzbDrone.Core.MediaFiles
         void DeleteTrackFile(Artist artist, TrackFile trackFile);
     }
 
-    public class MediaFileDeletionService : IDeleteMediaFiles, IHandleAsync<ArtistDeletedEvent>
+    public class MediaFileDeletionService : IDeleteMediaFiles,
+                                            IHandleAsync<ArtistDeletedEvent>,
+                                            IHandle<TrackFileDeletedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
         private readonly IArtistService _artistService;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
         public MediaFileDeletionService(IDiskProvider diskProvider,
                                         IRecycleBinProvider recycleBinProvider,
                                         IMediaFileService mediaFileService,
                                         IArtistService artistService,
+                                        IConfigService configService,
                                         Logger logger)
         {
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
             _artistService = artistService;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -101,6 +109,30 @@ namespace NzbDrone.Core.MediaFiles
                 if (_diskProvider.FolderExists(message.Artist.Path))
                 {
                     _recycleBinProvider.DeleteFolder(message.Artist.Path);
+                }
+            }
+        }
+
+        [EventHandleOrder(EventHandleOrder.Last)]
+        public void Handle(TrackFileDeletedEvent message)
+        {
+            if (message.Reason == DeleteMediaFileReason.Upgrade)
+            {
+                return;
+            }
+
+            if (_configService.DeleteEmptyFolders)
+            {
+                var artist = message.TrackFile.Artist.Value;
+                var albumFolder = message.TrackFile.Path.GetParentPath();
+
+                if (_diskProvider.GetFiles(artist.Path, SearchOption.AllDirectories).Empty())
+                {
+                    _diskProvider.DeleteFolder(artist.Path, true);
+                }
+                else if (_diskProvider.GetFiles(albumFolder, SearchOption.AllDirectories).Empty())
+                {
+                    _diskProvider.RemoveEmptySubfolders(albumFolder);
                 }
             }
         }

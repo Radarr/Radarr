@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import { batchActions } from 'redux-batched-actions';
+import findSelectedFilters from 'Utilities/Filter/findSelectedFilters';
 import getSectionState from 'Utilities/State/getSectionState';
 import { set, updateServerSideCollection } from '../baseActions';
 
@@ -15,10 +16,20 @@ function createFetchServerSideCollectionHandler(section, url) {
       _.pick(sectionState, [
         'pageSize',
         'sortDirection',
-        'sortKey',
-        'filterKey',
-        'filterValue'
+        'sortKey'
       ]));
+
+    const {
+      selectedFilterKey,
+      filters,
+      customFilters
+    } = sectionState;
+
+    const selectedFilters = findSelectedFilters(selectedFilterKey, filters, customFilters);
+
+    selectedFilters.forEach((filter) => {
+      data[filter.key] = filter.value;
+    });
 
     const promise = $.ajax({
       url,

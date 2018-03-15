@@ -78,8 +78,7 @@ class ArtistIndexOverview extends Component {
       status,
       foreignArtistId,
       nextAiring,
-      trackCount,
-      trackFileCount,
+      statistics,
       images,
       posterWidth,
       posterHeight,
@@ -94,6 +93,12 @@ class ArtistIndexOverview extends Component {
       onRefreshArtistPress,
       ...otherProps
     } = this.props;
+
+    const {
+      trackCount,
+      trackFileCount,
+      totalTrackCount
+    } = statistics;
 
     const {
       isEditArtistModalOpen,
@@ -144,6 +149,7 @@ class ArtistIndexOverview extends Component {
               status={status}
               trackCount={trackCount}
               trackFileCount={trackFileCount}
+              totalTrackCount={totalTrackCount}
               posterWidth={posterWidth}
               detailedProgressBar={overviewOptions.detailedProgressBar}
             />
@@ -194,6 +200,7 @@ class ArtistIndexOverview extends Component {
                 showRelativeDates={showRelativeDates}
                 shortDateFormat={shortDateFormat}
                 timeFormat={timeFormat}
+                statistics={statistics}
                 {...overviewOptions}
                 {...otherProps}
               />
@@ -227,8 +234,7 @@ ArtistIndexOverview.propTypes = {
   status: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
   nextAiring: PropTypes.string,
-  trackCount: PropTypes.number,
-  trackFileCount: PropTypes.number,
+  statistics: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
@@ -245,7 +251,8 @@ ArtistIndexOverview.propTypes = {
 
 ArtistIndexOverview.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0
+  trackFileCount: 0,
+  albumCount: 0
 };
 
 export default ArtistIndexOverview;

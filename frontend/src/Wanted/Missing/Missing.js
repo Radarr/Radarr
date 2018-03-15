@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getFilterValue from 'Utilities/Filter/getFilterValue';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import removeOldSelectedState from 'Utilities/Table/removeOldSelectedState';
@@ -17,8 +18,6 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import MenuContent from 'Components/Menu/MenuContent';
-import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MissingRowConnector from './MissingRowConnector';
@@ -58,10 +57,6 @@ class Missing extends Component {
 
   //
   // Listeners
-
-  onFilterMenuItemPress = (filterKey, filterValue) => {
-    this.props.onFilterSelect(filterKey, filterValue);
-  }
 
   onSelectAllChange = ({ value }) => {
     this.setState(selectAll(this.state.selectedState, value));
@@ -115,13 +110,14 @@ class Missing extends Component {
       isPopulated,
       error,
       items,
+      selectedFilterKey,
+      filters,
       columns,
       totalRecords,
       isSearchingForAlbums,
       isSearchingForMissingAlbums,
       isSaving,
-      filterKey,
-      filterValue,
+      onFilterSelect,
       ...otherProps
     } = this.props;
 
@@ -134,6 +130,7 @@ class Missing extends Component {
     } = this.state;
 
     const itemsSelected = !!this.getSelectedIds().length;
+    const monitoredFilterValue = getFilterValue(filters, 'monitored');
 
     return (
       <PageContent title="Missing">
@@ -148,7 +145,7 @@ class Missing extends Component {
             />
 
             <PageToolbarButton
-              label={filterKey === 'monitored' && filterValue ? 'Unmonitor Selected' : 'Monitor Selected'}
+              label={monitoredFilterValue ? 'Unmonitor Selected' : 'Monitor Selected'}
               iconName={icons.MONITORED}
               isDisabled={!itemsSelected}
               isSpinning={isSaving}
@@ -176,29 +173,13 @@ class Missing extends Component {
           </PageToolbarSection>
 
           <PageToolbarSection alignContent={align.RIGHT}>
-            <FilterMenu alignMenu={align.RIGHT}>
-              <MenuContent>
-                <FilterMenuItem
-                  name="monitored"
-                  value={true}
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  Monitored
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="monitored"
-                  value={false}
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  Unmonitored
-                </FilterMenuItem>
-              </MenuContent>
-            </FilterMenu>
+            <FilterMenu
+              alignMenu={align.RIGHT}
+              selectedFilterKey={selectedFilterKey}
+              filters={filters}
+              customFilters={[]}
+              onFilterSelect={onFilterSelect}
+            />
           </PageToolbarSection>
         </PageToolbar>
 
@@ -292,13 +273,13 @@ Missing.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   isSearchingForAlbums: PropTypes.bool.isRequired,
   isSearchingForMissingAlbums: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   onFilterSelect: PropTypes.func.isRequired,
   onSearchSelectedPress: PropTypes.func.isRequired,
   onToggleSelectedPress: PropTypes.func.isRequired,

@@ -64,6 +64,8 @@ function createMapStateToProps() {
         return acc;
       }, []);
 
+      const hasMonitoredAlbums = albums.items.some((e) => e.monitored);
+
       return {
         ...artist,
         albumTypes: sortedAlbumTypes,
@@ -78,6 +80,7 @@ function createMapStateToProps() {
         isPopulated,
         albumsError,
         trackFilesError,
+        hasMonitoredAlbums,
         previousArtist,
         nextArtist
       };

@@ -1,9 +1,21 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import { icons } from 'Helpers/Props';
-import Icon from 'Components/Icon';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import styles from './MonitorToggleButton.css';
+
+function getTooltip(monitored, isDisabled) {
+  if (isDisabled) {
+    return 'Cannot toogle monitored state when artist is unmonitored';
+  }
+
+  if (monitored) {
+    return 'Monitored, click to unmonitor';
+  }
+
+  return 'Unmonitored, click to monitor';
+}
 
 class MonitorToggleButton extends Component {
 
@@ -29,27 +41,18 @@ class MonitorToggleButton extends Component {
       ...otherProps
     } = this.props;
 
-    const monitoredMessage = 'Monitored, click to unmonitor';
-    const unmonitoredMessage = 'Unmonitored, click to monitor';
     const iconName = monitored ? icons.MONITORED : icons.UNMONITORED;
-
-    if (isDisabled) {
-      return (
-        <Icon
-          className={styles.disabledButton}
-          size={size}
-          name={iconName}
-          title="Cannot toogle monitored state when artist is unmonitored"
-        />
-      );
-    }
 
     return (
       <SpinnerIconButton
-        className={className}
+        className={classNames(
+          className,
+          isDisabled && styles.isDisabled
+        )}
         name={iconName}
         size={size}
-        title={monitored ? monitoredMessage : unmonitoredMessage}
+        title={getTooltip(monitored, isDisabled)}
+        isDisabled={isDisabled}
         isSpinning={isSaving}
         {...otherProps}
         onPress={this.onPress}

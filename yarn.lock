@@ -6063,10 +6063,6 @@ react-tabs@2.2.1:
     classnames "^2.2.0"
     prop-types "^15.5.0"
 
-react-tag-autocomplete@5.5.0:
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/react-tag-autocomplete/-/react-tag-autocomplete-5.5.0.tgz#49841388b88323f6bccb0c10039bd0252875b49f"
-
 react-tether@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/react-tether/-/react-tether-0.6.1.tgz#de64dd81a5e40053a9f275c4fef0beb0877b3e4e"

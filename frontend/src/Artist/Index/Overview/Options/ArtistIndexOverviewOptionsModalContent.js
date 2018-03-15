@@ -204,7 +204,7 @@ class ArtistIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Season Count</FormLabel>
+              <FormLabel>Show Album Count</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}

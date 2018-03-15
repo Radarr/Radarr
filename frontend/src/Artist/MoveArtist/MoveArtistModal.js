@@ -25,7 +25,7 @@ function MoveArtistModal(props) {
     !destinationPath &&
     !destinationRootFolder
   ) {
-    console.error('orginalPath and destinationPath OR destinationRootFolder must be provied');
+    console.error('orginalPath and destinationPath OR destinationRootFolder must be provided');
   }
 
   return (

@@ -203,12 +203,7 @@ namespace Lidarr.Api.V1.Artist
 
         private void LinkArtistStatistics(ArtistResource resource, ArtistStatistics artistStatistics)
         {
-            resource.TotalTrackCount = artistStatistics.TotalTrackCount;
-            resource.TrackCount = artistStatistics.TrackCount;
-            resource.TrackFileCount = artistStatistics.TrackFileCount;
-            resource.SizeOnDisk = artistStatistics.SizeOnDisk;
-            resource.AlbumCount = artistStatistics.AlbumCount;
-
+            resource.Statistics = artistStatistics.ToResource();
         }
 
         //private void PopulateAlternateTitles(List<ArtistResource> resources)

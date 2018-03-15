@@ -2,80 +2,38 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { align } from 'Helpers/Props';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import MenuContent from 'Components/Menu/MenuContent';
-import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 
 function ArtistIndexFilterMenu(props) {
   const {
-    filterKey,
-    filterValue,
+    selectedFilterKey,
+    filters,
+    customFilters,
     isDisabled,
     onFilterSelect
   } = props;
 
   return (
     <FilterMenu
-      isDisabled={isDisabled}
       alignMenu={align.RIGHT}
-    >
-      <MenuContent>
-        <FilterMenuItem
-          filterKey={filterKey}
-          filterValue={filterValue}
-          onPress={onFilterSelect}
-        >
-          All
-        </FilterMenuItem>
-
-        <FilterMenuItem
-          name="monitored"
-          value={true}
-          filterKey={filterKey}
-          filterValue={filterValue}
-          onPress={onFilterSelect}
-        >
-          Monitored Only
-        </FilterMenuItem>
-
-        <FilterMenuItem
-          name="status"
-          value="continuing"
-          filterKey={filterKey}
-          filterValue={filterValue}
-          onPress={onFilterSelect}
-        >
-          Continuing Only
-        </FilterMenuItem>
-
-        <FilterMenuItem
-          name="status"
-          value="ended"
-          filterKey={filterKey}
-          filterValue={filterValue}
-          onPress={onFilterSelect}
-        >
-          Ended Only
-        </FilterMenuItem>
-
-        <FilterMenuItem
-          name="missing"
-          value={true}
-          filterKey={filterKey}
-          filterValue={filterValue}
-          onPress={onFilterSelect}
-        >
-          Missing Albums
-        </FilterMenuItem>
-      </MenuContent>
-    </FilterMenu>
+      isDisabled={isDisabled}
+      selectedFilterKey={selectedFilterKey}
+      filters={filters}
+      customFilters={customFilters}
+      onFilterSelect={onFilterSelect}
+    />
   );
 }
 
 ArtistIndexFilterMenu.propTypes = {
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDisabled: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired
+};
+
+ArtistIndexFilterMenu.defaultProps = {
+  showCustomFilters: false
 };
 
 export default ArtistIndexFilterMenu;

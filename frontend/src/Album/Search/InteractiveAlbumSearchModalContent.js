@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, sortDirections } from 'Helpers/Props';
+import { align, icons, sortDirections } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Icon from 'Components/Icon';
+import FilterMenu from 'Components/Menu/FilterMenu';
+import PageMenuButton from 'Components/Menu/PageMenuButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
@@ -10,7 +12,9 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
 import InteractiveAlbumSearchRow from './InteractiveAlbumSearchRow';
+import styles from './InteractiveAlbumSearchModalContent.css';
 
 const columns = [
   {
@@ -81,12 +85,17 @@ class InteractiveAlbumSearchModalContent extends Component {
       isFetching,
       isPopulated,
       error,
+      totalReleasesCount,
       items,
+      selectedFilterKey,
+      filters,
+      customFilters,
       sortKey,
       sortDirection,
       longDateFormat,
       timeFormat,
       onSortPress,
+      onFilterSelect,
       onGrabPress,
       onModalClose
     } = this.props;
@@ -117,28 +126,59 @@ class InteractiveAlbumSearchModalContent extends Component {
 
           {
             isPopulated && hasItems && !error &&
-              <Table
-                columns={columns}
-                sortKey={sortKey}
-                sortDirection={sortDirection}
-                onSortPress={onSortPress}
-              >
-                <TableBody>
-                  {
-                    items.map((item) => {
-                      return (
-                        <InteractiveAlbumSearchRow
-                          key={item.guid}
-                          {...item}
-                          longDateFormat={longDateFormat}
-                          timeFormat={timeFormat}
-                          onGrabPress={onGrabPress}
-                        />
-                      );
-                    })
-                  }
-                </TableBody>
-              </Table>
+            <div>
+              <div className={styles.filterMenuContainer}>
+                <FilterMenu
+                  alignMenu={align.RIGHT}
+                  selectedFilterKey={selectedFilterKey}
+                  filters={filters}
+                  customFilters={customFilters}
+                  onFilterSelect={onFilterSelect}
+                  buttonComponent={PageMenuButton}
+                  filterModalConnectorComponent={InteractiveSearchFilterModalConnector}
+                />
+              </div>
+
+              {
+                !!totalReleasesCount && !items.length &&
+                <div>
+                      All results are hidden by {filters.length > 1 ? 'filters' : 'a filter'}.
+                </div>
+              }
+
+              {
+                !!items.length &&
+                <Table
+                  columns={columns}
+                  sortKey={sortKey}
+                  sortDirection={sortDirection}
+                  onSortPress={onSortPress}
+                >
+                  <TableBody>
+                    {
+                      items.map((item) => {
+                        return (
+                          <InteractiveAlbumSearchRow
+                            key={item.guid}
+                            {...item}
+                            longDateFormat={longDateFormat}
+                            timeFormat={timeFormat}
+                            onGrabPress={onGrabPress}
+                          />
+                        );
+                      })
+                    }
+                  </TableBody>
+                </Table>
+              }
+
+              {
+                totalReleasesCount !== items.length && !!items.length &&
+                  <div>
+                        Some results are hidden by {filters.length > 1 ? 'filters' : 'a filter'}.
+                  </div>
+              }
+            </div>
           }
         </ModalBody>
 
@@ -156,12 +196,17 @@ InteractiveAlbumSearchModalContent.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  totalReleasesCount: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.string,
   onSortPress: PropTypes.func.isRequired,
+  onFilterSelect: PropTypes.func.isRequired,
   onGrabPress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

@@ -6,6 +6,7 @@ import Menu from 'Components/Menu/Menu';
 import MenuButton from 'Components/Menu/MenuButton';
 import MenuContent from 'Components/Menu/MenuContent';
 import MenuItem from 'Components/Menu/MenuItem';
+import MenuItemSeparator from 'Components/Menu/MenuItemSeparator';
 import styles from './PageHeaderActionsMenu.css';
 
 function PageHeaderActionsMenu(props) {
@@ -34,7 +35,7 @@ function PageHeaderActionsMenu(props) {
             Keyboard Shortcuts
           </MenuItem>
 
-          <div className={styles.separator} />
+          <MenuItemSeparator />
 
           <MenuItem onPress={onRestartPress}>
             <Icon

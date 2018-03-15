@@ -9,12 +9,11 @@ class FilterMenuItem extends Component {
 
   onPress = () => {
     const {
-      name,
-      value,
+      filterKey,
       onPress
     } = this.props;
 
-    onPress(name, value);
+    onPress(filterKey);
   }
 
   //
@@ -22,18 +21,14 @@ class FilterMenuItem extends Component {
 
   render() {
     const {
-      name,
-      value,
       filterKey,
-      filterValue,
+      selectedFilterKey,
       ...otherProps
     } = this.props;
 
-    const isSelected = name === filterKey && value === filterValue;
-
     return (
       <SelectedMenuItem
-        isSelected={isSelected}
+        isSelected={filterKey === selectedFilterKey}
         {...otherProps}
         onPress={this.onPress}
       />
@@ -42,16 +37,9 @@ class FilterMenuItem extends Component {
 }
 
 FilterMenuItem.propTypes = {
-  name: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+  filterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired
-};
-
-FilterMenuItem.defaultProps = {
-  name: null,
-  value: null
 };
 
 export default FilterMenuItem;

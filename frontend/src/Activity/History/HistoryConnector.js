@@ -105,8 +105,8 @@ class HistoryConnector extends Component {
     this.props.setHistorySort({ sortKey });
   }
 
-  onFilterSelect = (filterKey, filterValue) => {
-    this.props.setHistoryFilter({ filterKey, filterValue });
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.setHistoryFilter({ selectedFilterKey });
   }
 
   onTableOptionChange = (payload) => {

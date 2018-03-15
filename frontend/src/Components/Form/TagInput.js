@@ -1,10 +1,26 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ReactTags from 'react-tag-autocomplete';
+import Autosuggest from 'react-autosuggest';
 import classNames from 'classnames';
 import { kinds } from 'Helpers/Props';
+import TagInputInput from './TagInputInput';
+import TagInputTag from './TagInputTag';
 import styles from './TagInput.css';
+
+function getTag(value, selectedIndex, suggestions, allowNew) {
+  if (selectedIndex == null && value) {
+    const existingTag = _.find(suggestions, { name: value });
+
+    if (existingTag) {
+      return existingTag;
+    } else if (allowNew) {
+      return { name: value };
+    }
+  } else if (selectedIndex != null) {
+    return suggestions[selectedIndex];
+  }
+}
 
 class TagInput extends Component {
 
@@ -14,97 +30,240 @@ class TagInput extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this._tagsRef = null;
-    this._inputRef = null;
+    this.state = {
+      value: '',
+      suggestions: [],
+      isFocused: false
+    };
+
+    this._autosuggestRef = null;
   }
 
   //
   // Control
 
-  _setTagsRef = (ref) => {
-    this._tagsRef = ref;
+  _setAutosuggestRef = (ref) => {
+    this._autosuggestRef = ref;
+  }
 
-    if (ref) {
-      this._inputRef = this._tagsRef.input.input;
+  getSuggestionValue({ name }) {
+    return name;
+  }
 
-      this._inputRef.addEventListener('blur', this.onInputBlur);
-    } else if (this._inputRef) {
-      this._inputRef.removeEventListener('blur', this.onInputBlur);
-    }
+  shouldRenderSuggestions = (value) => {
+    return value.length >= this.props.minQueryLength;
+  }
+
+  renderSuggestion({ name }, { query }) {
+    return name;
   }
 
   //
   // Listeners
 
+  onInputContainerPress = () => {
+    this._autosuggestRef.input.focus();
+  }
+
+  onTagAdd(tag) {
+    this.props.onTagAdd(tag);
+
+    this.setState({
+      value: '',
+      suggestions: []
+    });
+  }
+
+  onInputChange = (event, { newValue, method }) => {
+    const value = _.isObject(newValue) ? newValue.name : newValue;
+
+    if (method === 'type') {
+      this.setState({ value });
+    }
+  }
+
+  onInputKeyDown = (event) => {
+    const {
+      tags,
+      allowNew,
+      delimiters,
+      onTagDelete
+    } = this.props;
+
+    const {
+      value,
+      suggestions
+    } = this.state;
+
+    const keyCode = event.keyCode;
+
+    if (keyCode === 8 && !value.length) {
+      const index = tags.length - 1;
+
+      if (index >= 0) {
+        onTagDelete({ index, id: tags[index].id });
+      }
+
+      setTimeout(() => {
+        this.onSuggestionsFetchRequested({ value: '' });
+      });
+
+      event.preventDefault();
+    }
+
+    if (delimiters.includes(keyCode)) {
+      const selectedIndex = this._autosuggestRef.highlightedSuggestionIndex;
+      const tag = getTag(value, selectedIndex, suggestions, allowNew);
+
+      if (tag) {
+        this.onTagAdd(tag);
+      }
+
+      event.preventDefault();
+    }
+  }
+
+  onInputFocus = () => {
+    this.setState({ isFocused: true });
+  }
+
   onInputBlur = () => {
-    if (!this._tagsRef) {
+    this.setState({ isFocused: false });
+
+    if (!this._autosuggestRef) {
       return;
     }
 
     const {
-      tagList,
       allowNew
     } = this.props;
 
-    const query = this._tagsRef.state.query.trim();
+    const {
+      value,
+      suggestions
+    } = this.state;
 
-    if (query) {
-      const existingTag = _.find(tagList, { name: query });
+    const selectedIndex = this._autosuggestRef.highlightedSuggestionIndex;
+    const tag = getTag(value, selectedIndex, suggestions, allowNew);
 
-      if (existingTag) {
-        this._tagsRef.addTag(existingTag);
-      } else if (allowNew) {
-        this._tagsRef.addTag({ name: query });
-      }
+    if (tag) {
+      this.onTagAdd(tag);
     }
+  }
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    const lowerCaseValue = value.toLowerCase();
+
+    const {
+      tags,
+      tagList
+    } = this.props;
+
+    const suggestions = tagList.filter((tag) => {
+      return (
+        tag.name.toLowerCase().includes(lowerCaseValue) &&
+        !tags.some((t) => t.id === tag.id));
+    });
+
+    this.setState({ suggestions });
+  }
+
+  onSuggestionsClearRequested = () => {
+    // Required because props aren't always rendered, but no-op
+    // because we don't want to reset the paths after a path is selected.
+  }
+
+  onSuggestionSelected = (event, { suggestion }) => {
+    this.onTagAdd(suggestion);
   }
 
   //
   // Render
 
-  render() {
+  renderInputComponent = (inputProps) => {
     const {
       tags,
-      tagList,
-      allowNew,
       kind,
-      placeholder,
-      onTagAdd,
+      tagComponent,
       onTagDelete
     } = this.props;
 
-    const tagInputClassNames = {
-      root: styles.container,
-      rootFocused: styles.containerFocused,
-      selected: styles.selectedTagContainer,
-      selectedTag: classNames(styles.selectedTag, styles[kind]),
-      search: styles.searchInputContainer,
-      searchInput: styles.searchInput,
-      suggestions: styles.suggestions,
-      suggestionActive: styles.suggestionActive,
-      suggestionDisabled: styles.suggestionDisabled
+    return (
+      <TagInputInput
+        tags={tags}
+        kind={kind}
+        inputProps={inputProps}
+        isFocused={this.state.isFocused}
+        tagComponent={tagComponent}
+        onTagDelete={onTagDelete}
+        onInputContainerPress={this.onInputContainerPress}
+      />
+    );
+  }
+
+  render() {
+    const {
+      placeholder,
+      hasError,
+      hasWarning
+    } = this.props;
+
+    const {
+      value,
+      suggestions,
+      isFocused
+    } = this.state;
+
+    const inputProps = {
+      className: styles.input,
+      name,
+      value,
+      placeholder,
+      autoComplete: 'off',
+      spellCheck: false,
+      onChange: this.onInputChange,
+      onKeyDown: this.onInputKeyDown,
+      onFocus: this.onInputFocus,
+      onBlur: this.onInputBlur
+    };
+
+    const theme = {
+      container: classNames(
+        styles.inputContainer,
+        isFocused && styles.isFocused,
+        hasError && styles.hasError,
+        hasWarning && styles.hasWarning,
+      ),
+      containerOpen: styles.containerOpen,
+      suggestionsContainer: styles.suggestionsContainer,
+      suggestionsList: styles.suggestionsList,
+      suggestion: styles.suggestion,
+      suggestionHighlighted: styles.suggestionHighlighted
     };
 
     return (
-      <ReactTags
-        ref={this._setTagsRef}
-        classNames={tagInputClassNames}
-        tags={tags}
-        suggestions={tagList}
-        allowNew={allowNew}
-        minQueryLength={1}
-        placeholder={placeholder}
-        delimiters={[9, 13, 32, 188]}
-        handleAddition={onTagAdd}
-        handleDelete={onTagDelete}
+      <Autosuggest
+        ref={this._setAutosuggestRef}
+        id={name}
+        inputProps={inputProps}
+        theme={theme}
+        suggestions={suggestions}
+        getSuggestionValue={this.getSuggestionValue}
+        shouldRenderSuggestions={this.shouldRenderSuggestions}
+        focusInputOnSuggestionClick={false}
+        renderSuggestion={this.renderSuggestion}
+        renderInputComponent={this.renderInputComponent}
+        onSuggestionSelected={this.onSuggestionSelected}
+        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
       />
     );
   }
 }
 
-const tagShape = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired
+export const tagShape = {
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  name: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
 };
 
 TagInput.propTypes = {
@@ -113,6 +272,11 @@ TagInput.propTypes = {
   allowNew: PropTypes.bool.isRequired,
   kind: PropTypes.oneOf(kinds.all).isRequired,
   placeholder: PropTypes.string.isRequired,
+  delimiters: PropTypes.arrayOf(PropTypes.number).isRequired,
+  minQueryLength: PropTypes.number.isRequired,
+  hasError: PropTypes.bool,
+  hasWarning: PropTypes.bool,
+  tagComponent: PropTypes.func.isRequired,
   onTagAdd: PropTypes.func.isRequired,
   onTagDelete: PropTypes.func.isRequired
 };
@@ -120,7 +284,11 @@ TagInput.propTypes = {
 TagInput.defaultProps = {
   allowNew: true,
   kind: kinds.INFO,
-  placeholder: ''
+  placeholder: '',
+  // Tab, enter, space and comma
+  delimiters: [9, 13, 32, 188],
+  minQueryLength: 1,
+  tagComponent: TagInputTag
 };
 
 export default TagInput;

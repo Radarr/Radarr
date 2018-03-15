@@ -57,8 +57,8 @@ class AlbumStudioConnector extends Component {
     this.props.setAlbumStudioSort({ sortKey });
   }
 
-  onFilterSelect = (filterKey, filterValue, filterType) => {
-    this.props.setAlbumStudioFilter({ filterKey, filterValue, filterType });
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.setAlbumStudioFilter({ selectedFilterKey });
   }
 
   onUpdateSelectedPress = (payload) => {

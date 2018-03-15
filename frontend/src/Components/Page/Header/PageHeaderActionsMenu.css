@@ -13,12 +13,6 @@
   margin-right: 8px;
 }
 
-.separator {
-  overflow: hidden;
-  height: 1px;
-  background-color: $themeDarkColor;
-}
-
 @media only screen and (max-width: $breakpointSmall) {
   .menuButton {
     margin-right: 5px;

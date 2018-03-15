@@ -1,4 +1,5 @@
-﻿using NzbDrone.Core.Instrumentation;
+using System.Linq;
+using NzbDrone.Core.Instrumentation;
 using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Logs
@@ -22,27 +23,29 @@ namespace Lidarr.Api.V1.Logs
                 pageSpec.SortKey = "id";
             }
 
-            if (pagingResource.FilterKey == "level")
+            var levelFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "level");
+
+            if (levelFilter != null)
             {
-                switch (pagingResource.FilterValue)
+                switch (levelFilter.Value)
                 {
-                    case "Fatal":
-                        pageSpec.FilterExpression = h => h.Level == "Fatal";
+                    case "fatal":
+                        pageSpec.FilterExpressions.Add(h => h.Level == "Fatal");
                         break;
-                    case "Error":
-                        pageSpec.FilterExpression = h => h.Level == "Fatal" || h.Level == "Error";
+                    case "error":
+                        pageSpec.FilterExpressions.Add(h => h.Level == "Fatal" || h.Level == "Error");
                         break;
-                    case "Warn":
-                        pageSpec.FilterExpression = h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn";
+                    case "warn":
+                        pageSpec.FilterExpressions.Add(h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn");
                         break;
-                    case "Info":
-                        pageSpec.FilterExpression = h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn" || h.Level == "Info";
+                    case "info":
+                        pageSpec.FilterExpressions.Add(h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn" || h.Level == "Info");
                         break;
-                    case "Debug":
-                        pageSpec.FilterExpression = h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn" || h.Level == "Info" || h.Level == "Debug";
+                    case "debug":
+                        pageSpec.FilterExpressions.Add(h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn" || h.Level == "Info" || h.Level == "Debug");
                         break;
-                    case "Trace":
-                        pageSpec.FilterExpression = h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn" || h.Level == "Info" || h.Level == "Debug" || h.Level == "Trace";
+                    case "trace":
+                        pageSpec.FilterExpressions.Add(h => h.Level == "Fatal" || h.Level == "Error" || h.Level == "Warn" || h.Level == "Info" || h.Level == "Debug" || h.Level == "Trace");
                         break;
                 }
             }

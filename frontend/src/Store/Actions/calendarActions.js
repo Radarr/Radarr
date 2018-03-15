@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import moment from 'moment';
+import { filterTypes } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import * as calendarViews from 'Calendar/calendarViews';
 import createHandleActions from './Creators/createHandleActions';
@@ -31,16 +32,42 @@ export const defaultState = {
   dates: [],
   dayCount: 7,
   view: window.innerWidth > 768 ? 'week' : 'day',
-  unmonitored: false,
   showUpcoming: true,
   error: null,
-  items: []
+  items: [],
+
+  selectedFilterKey: 'all',
+
+  filters: [
+    {
+      key: 'all',
+      label: 'All',
+      filters: [
+        {
+          key: 'unmonitored',
+          value: false,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'unmonitored',
+      label: 'Unmonitored',
+      filters: [
+        {
+          key: 'unmonitored',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
+    }
+  ]
 };
 
 export const persistState = [
   'calendar.view',
-  'calendar.unmonitored',
-  'calendar.showUpcoming'
+  'calendar.showUpcoming',
+  'calendar.selectedFilterKey'
 ];
 
 //
@@ -48,8 +75,8 @@ export const persistState = [
 
 export const FETCH_CALENDAR = 'calendar/fetchCalendar';
 export const SET_CALENDAR_DAYS_COUNT = 'calendar/setCalendarDaysCount';
-export const SET_CALENDAR_INCLUDE_UNMONITORED = 'calendar/setCalendarIncludeUnmonitored';
 export const SET_CALENDAR_VIEW = 'calendar/setCalendarView';
+export const SET_CALENDAR_FILTER = 'calendar/setCalendarFilter';
 export const GOTO_CALENDAR_TODAY = 'calendar/gotoCalendarToday';
 export const GOTO_CALENDAR_PREVIOUS_RANGE = 'calendar/gotoCalendarPreviousRange';
 export const GOTO_CALENDAR_NEXT_RANGE = 'calendar/gotoCalendarNextRange';
@@ -155,8 +182,8 @@ function isRangePopulated(start, end, state) {
 
 export const fetchCalendar = createThunk(FETCH_CALENDAR);
 export const setCalendarDaysCount = createThunk(SET_CALENDAR_DAYS_COUNT);
-export const setCalendarIncludeUnmonitored = createThunk(SET_CALENDAR_INCLUDE_UNMONITORED);
 export const setCalendarView = createThunk(SET_CALENDAR_VIEW);
+export const setCalendarFilter = createThunk(SET_CALENDAR_FILTER);
 export const gotoCalendarToday = createThunk(GOTO_CALENDAR_TODAY);
 export const gotoCalendarPreviousRange = createThunk(GOTO_CALENDAR_PREVIOUS_RANGE);
 export const gotoCalendarNextRange = createThunk(GOTO_CALENDAR_NEXT_RANGE);
@@ -166,9 +193,11 @@ export const clearCalendar = createAction(CLEAR_CALENDAR);
 // Action Handlers
 
 export const actionHandlers = handleThunks({
+
   [FETCH_CALENDAR]: function(getState, payload, dispatch) {
     const state = getState();
-    const unmonitored = state.calendar.unmonitored;
+    const selectedFilter = state.calendar.selectedFilterKey;
+    const unmonitored = state.calendar.filters.find((f) => f.key === selectedFilter).filters[0].value;
 
     const {
       time,
@@ -245,18 +274,6 @@ export const actionHandlers = handleThunks({
     dispatch(fetchCalendar({ time, view }));
   },
 
-  [SET_CALENDAR_INCLUDE_UNMONITORED]: function(getState, payload, dispatch) {
-    dispatch(set({
-      section,
-      unmonitored: payload.unmonitored
-    }));
-
-    const state = getState();
-    const { time, view } = state.calendar;
-
-    dispatch(fetchCalendar({ time, view }));
-  },
-
   [SET_CALENDAR_VIEW]: function(getState, payload, dispatch) {
     const state = getState();
     const view = payload.view;
@@ -299,6 +316,18 @@ export const actionHandlers = handleThunks({
 
     const amount = view === calendarViews.FORECAST ? dayCount : 1;
     const time = moment(state.calendar.time).add(amount, viewRanges[view]);
+
+    dispatch(fetchCalendar({ time, view }));
+  },
+
+  [SET_CALENDAR_FILTER]: function(getState, payload, dispatch) {
+    dispatch(set({
+      section,
+      selectedFilterKey: payload.selectedFilterKey
+    }));
+
+    const state = getState();
+    const { time, view } = state.calendar;
 
     dispatch(fetchCalendar({ time, view }));
   }

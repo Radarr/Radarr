@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
-import { sortDirections } from 'Helpers/Props';
+import { filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import { setAppValue } from 'Store/Actions/appActions';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
@@ -73,8 +73,6 @@ export const defaultState = {
     pageSize: 50,
     sortKey: 'time',
     sortDirection: sortDirections.DESCENDING,
-    filterKey: null,
-    filterValue: null,
     error: null,
     items: [],
 
@@ -108,6 +106,49 @@ export const defaultState = {
         isVisible: true,
         isModifiable: false
       }
+    ],
+
+    selectedFilterKey: 'all',
+
+    filters: [
+      {
+        key: 'all',
+        label: 'All',
+        filters: []
+      },
+      {
+        key: 'info',
+        label: 'Info',
+        filters: [
+          {
+            key: 'level',
+            value: 'info',
+            type: filterTypes.EQUAL
+          }
+        ]
+      },
+      {
+        key: 'warn',
+        label: 'Warn',
+        filters: [
+          {
+            key: 'level',
+            value: 'warn',
+            type: filterTypes.EQUAL
+          }
+        ]
+      },
+      {
+        key: 'error',
+        label: 'Error',
+        filters: [
+          {
+            key: 'level',
+            value: 'error',
+            type: filterTypes.EQUAL
+          }
+        ]
+      }
     ]
   },
 
@@ -130,8 +171,7 @@ export const persistState = [
   'system.logs.pageSize',
   'system.logs.sortKey',
   'system.logs.sortDirection',
-  'system.logs.filterKey',
-  'system.logs.filterValue'
+  'system.logs.selectedFilterKey'
 ];
 
 //

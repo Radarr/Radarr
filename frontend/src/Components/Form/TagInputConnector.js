@@ -103,7 +103,7 @@ class TagInputConnector extends Component {
     this.props.onChange({ name, value: newValue });
   }
 
-  onTagDelete = (index) => {
+  onTagDelete = ({ index }) => {
     const {
       name,
       value

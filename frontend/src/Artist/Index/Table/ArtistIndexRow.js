@@ -74,17 +74,21 @@ class ArtistIndexRow extends Component {
       nextAlbum,
       lastAlbum,
       added,
-      albumCount,
-      trackCount,
-      trackFileCount,
-      totalTrackCount,
+      statistics,
       path,
-      sizeOnDisk,
       tags,
       columns,
       isRefreshingArtist,
       onRefreshArtistPress
     } = this.props;
+
+    const {
+      albumCount,
+      trackCount,
+      trackFileCount,
+      totalTrackCount,
+      sizeOnDisk
+    } = statistics;
 
     const {
       isEditArtistModalOpen,
@@ -367,13 +371,9 @@ ArtistIndexRow.propTypes = {
   nextAlbum: PropTypes.object,
   lastAlbum: PropTypes.object,
   added: PropTypes.string,
-  albumCount: PropTypes.number,
-  trackCount: PropTypes.number,
-  trackFileCount: PropTypes.number,
-  totalTrackCount: PropTypes.number,
+  statistics: PropTypes.object.isRequired,
   latestAlbum: PropTypes.object,
   path: PropTypes.string.isRequired,
-  sizeOnDisk: PropTypes.number,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,
@@ -382,7 +382,8 @@ ArtistIndexRow.propTypes = {
 
 ArtistIndexRow.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0
+  trackFileCount: 0,
+  albumCount: 0
 };
 
 export default ArtistIndexRow;

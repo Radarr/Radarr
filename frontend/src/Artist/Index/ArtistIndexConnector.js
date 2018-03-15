@@ -100,8 +100,8 @@ class ArtistIndexConnector extends Component {
     this.props.setArtistSort({ sortKey });
   }
 
-  onFilterSelect = (filterKey, filterValue, filterType) => {
-    this.props.setArtistFilter({ filterKey, filterValue, filterType });
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.setArtistFilter({ selectedFilterKey });
   }
 
   onViewSelect = (view) => {

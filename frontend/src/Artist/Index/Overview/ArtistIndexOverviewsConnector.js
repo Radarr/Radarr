@@ -28,6 +28,6 @@ export default connectSection(
   createMapStateToProps,
   undefined,
   undefined,
-  { withRef: true },
+  undefined,
   { section: 'artist', uiSection: 'artistIndex' }
 )(ArtistIndexOverviews);

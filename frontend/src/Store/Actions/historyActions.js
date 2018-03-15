@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
-import { sortDirections } from 'Helpers/Props';
+import { filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createClearReducer from './Creators/Reducers/createClearReducer';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
@@ -24,8 +24,6 @@ export const defaultState = {
   pageSize: 20,
   sortKey: 'date',
   sortDirection: sortDirections.DESCENDING,
-  filterKey: null,
-  filterValue: null,
   items: [],
 
   columns: [
@@ -89,15 +87,80 @@ export const defaultState = {
       isVisible: true,
       isModifiable: false
     }
+  ],
+
+  selectedFilterKey: 'all',
+
+  filters: [
+    {
+      key: 'all',
+      label: 'All',
+      filters: []
+    },
+    {
+      key: 'grabbed',
+      label: 'Grabbed',
+      filters: [
+        {
+          key: 'eventType',
+          value: '1',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'imported',
+      label: 'Imported',
+      filters: [
+        {
+          key: 'eventType',
+          value: '3',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'failed',
+      label: 'Failed',
+      filters: [
+        {
+          key: 'eventType',
+          value: '4',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'deleted',
+      label: 'Deleted',
+      filters: [
+        {
+          key: 'eventType',
+          value: '5',
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'renamed',
+      label: 'Renamed',
+      filters: [
+        {
+          key: 'eventType',
+          value: '6',
+          type: filterTypes.EQUAL
+        }
+      ]
+    }
   ]
+
 };
 
 export const persistState = [
   'history.pageSize',
   'history.sortKey',
   'history.sortDirection',
-  'history.filterKey',
-  'history.filterValue'
+  'history.selectedFilterKey'
 ];
 
 //

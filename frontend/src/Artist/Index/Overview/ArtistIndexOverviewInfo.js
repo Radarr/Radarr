@@ -31,14 +31,18 @@ function ArtistIndexOverviewInfo(props) {
     nextAiring,
     qualityProfile,
     added,
-    albumCount,
+    statistics,
     path,
-    sizeOnDisk,
     sortKey,
     showRelativeDates,
     shortDateFormat,
     timeFormat
   } = props;
+
+  const {
+    albumCount,
+    sizeOnDisk
+  } = statistics;
 
   let albums = '1 album';
 
@@ -203,9 +207,8 @@ ArtistIndexOverviewInfo.propTypes = {
   qualityProfile: PropTypes.object.isRequired,
   previousAiring: PropTypes.string,
   added: PropTypes.string,
-  albumCount: PropTypes.number.isRequired,
+  statistics: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  sizeOnDisk: PropTypes.number,
   sortKey: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

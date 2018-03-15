@@ -2,7 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import getMonitoringOptions from 'Utilities/Artist/getMonitoringOptions';
-import { filterTypes, sortDirections } from 'Helpers/Props';
+import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -25,17 +25,17 @@ export const defaultState = {
   sortDirection: sortDirections.ASCENDING,
   secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
-  filterKey: null,
-  filterValue: null,
-  filterType: filterTypes.EQUAL
+  selectedFilterKey: 'all',
+  // filters come from artistActions
+  customFilters: []
+  // filterPredicates come from artistActions
 };
 
 export const persistState = [
   'albumStudio.sortKey',
   'albumStudio.sortDirection',
-  'albumStudio.filterKey',
-  'albumStudio.filterValue',
-  'albumStudio.filterType'
+  'albumStudio.selectedFilterKey',
+  'albumStudio.customFilters'
 ];
 
 //

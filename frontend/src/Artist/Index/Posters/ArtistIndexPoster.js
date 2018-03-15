@@ -61,8 +61,7 @@ class ArtistIndexPoster extends Component {
       foreignArtistId,
       status,
       nextAiring,
-      trackCount,
-      trackFileCount,
+      statistics,
       images,
       posterWidth,
       posterHeight,
@@ -78,6 +77,12 @@ class ArtistIndexPoster extends Component {
       onRefreshArtistPress,
       ...otherProps
     } = this.props;
+
+    const {
+      trackCount,
+      trackFileCount,
+      totalTrackCount
+    } = statistics;
 
     const {
       isEditArtistModalOpen,
@@ -141,6 +146,7 @@ class ArtistIndexPoster extends Component {
             status={status}
             trackCount={trackCount}
             trackFileCount={trackFileCount}
+            totalTrackCount={totalTrackCount}
             posterWidth={posterWidth}
             detailedProgressBar={detailedProgressBar}
           />
@@ -165,26 +171,28 @@ class ArtistIndexPoster extends Component {
                 {qualityProfile.name}
               </div>
           }
-
-          <div className={styles.nextAiring}>
-            {
-              getRelativeDate(
-                nextAiring,
-                shortDateFormat,
-                showRelativeDates,
+          {
+            nextAiring &&
+              <div className={styles.nextAiring}>
                 {
-                  timeFormat,
-                  timeForToday: true
+                  getRelativeDate(
+                    nextAiring,
+                    shortDateFormat,
+                    showRelativeDates,
+                    {
+                      timeFormat,
+                      timeForToday: true
+                    }
+                  )
                 }
-              )
-            }
-          </div>
-
+              </div>
+          }
           <ArtistIndexPosterInfo
             qualityProfile={qualityProfile}
             showQualityProfile={showQualityProfile}
             showRelativeDates={showRelativeDates}
             shortDateFormat={shortDateFormat}
+            statistics={statistics}
             timeFormat={timeFormat}
             {...otherProps}
           />
@@ -215,8 +223,7 @@ ArtistIndexPoster.propTypes = {
   status: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
   nextAiring: PropTypes.string,
-  trackCount: PropTypes.number,
-  trackFileCount: PropTypes.number,
+  statistics: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
@@ -234,7 +241,8 @@ ArtistIndexPoster.propTypes = {
 
 ArtistIndexPoster.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0
+  trackFileCount: 0,
+  albumCount: 0
 };
 
 export default ArtistIndexPoster;

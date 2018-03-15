@@ -30,12 +30,7 @@ namespace Lidarr.Api.V1.Artist
         public string ArtistType { get; set; }
         public string Disambiguation { get; set; }
         public List<Links> Links { get; set; }
-
-        public int? AlbumCount { get; set; }
-        public int? TotalTrackCount { get; set; }
-        public int? TrackCount { get; set; }
-        public int? TrackFileCount { get; set; }
-        public long? SizeOnDisk { get; set; }
+        
         public Album NextAlbum { get; set; }
         public Album LastAlbum { get; set; }
 
@@ -64,7 +59,7 @@ namespace Lidarr.Api.V1.Artist
         public AddArtistOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
 
-        //TODO: Add series statistics as a property of the series (instead of individual properties)
+        public ArtistStatisticsResource Statistics { get; set; }
     }
 
     public static class ArtistResourceMapper

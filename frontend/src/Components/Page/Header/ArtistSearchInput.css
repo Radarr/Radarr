@@ -1,9 +1,6 @@
 .wrapper {
   display: flex;
-}
-
-.icon {
-  line-height: 24px !important;
+  align-items: center;
 }
 
 .input {

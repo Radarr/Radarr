@@ -69,17 +69,21 @@ namespace Lidarr.Api.V1.History
             var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum");
             var includeTrack = Request.GetBooleanQueryParameter("includeTrack");
 
-            if (pagingResource.FilterKey == "eventType")
+            var eventTypeFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "eventType");
+            var albumIdFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "albumId");
+
+            if (eventTypeFilter != null)
             {
-                var filterValue = (HistoryEventType)Convert.ToInt32(pagingResource.FilterValue);
-                pagingSpec.FilterExpression = v => v.EventType == filterValue;
+                var filterValue = (HistoryEventType)Convert.ToInt32(eventTypeFilter.Value);
+                pagingSpec.FilterExpressions.Add(v => v.EventType == filterValue);
             }
 
-            if (pagingResource.FilterKey == "albumId")
+            if (albumIdFilter != null)
             {
-                int albumId = Convert.ToInt32(pagingResource.FilterValue);
-                pagingSpec.FilterExpression = h => h.AlbumId == albumId;
+                var albumId = Convert.ToInt32(albumIdFilter.Value);
+                pagingSpec.FilterExpressions.Add(h => h.AlbumId == albumId);
             }
+
 
             return ApplyToPage(_historyService.Paged, pagingSpec, h => MapToResource(h, includeArtist, includeAlbum, includeTrack));
         }

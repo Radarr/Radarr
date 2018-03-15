@@ -12,8 +12,6 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import MenuContent from 'Components/Menu/MenuContent';
-import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import HistoryRowConnector from './HistoryRowConnector';
 
 class History extends Component {
@@ -49,8 +47,8 @@ class History extends Component {
       error,
       items,
       columns,
-      filterKey,
-      filterValue,
+      selectedFilterKey,
+      filters,
       totalRecords,
       isAlbumsFetching,
       isAlbumsPopulated,
@@ -77,67 +75,13 @@ class History extends Component {
           </PageToolbarSection>
 
           <PageToolbarSection alignContent={align.RIGHT}>
-            <FilterMenu alignMenu={align.RIGHT}>
-              <MenuContent>
-                <FilterMenuItem
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  All
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="eventType"
-                  value="1"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Grabbed
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="eventType"
-                  value="3"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Imported
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="eventType"
-                  value="4"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Failed
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="eventType"
-                  value="5"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Deleted
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="eventType"
-                  value="6"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={onFilterSelect}
-                >
-                  Renamed
-                </FilterMenuItem>
-              </MenuContent>
-            </FilterMenu>
+            <FilterMenu
+              alignMenu={align.RIGHT}
+              selectedFilterKey={selectedFilterKey}
+              filters={filters}
+              customFilters={[]}
+              onFilterSelect={onFilterSelect}
+            />
           </PageToolbarSection>
         </PageToolbar>
 
@@ -204,8 +148,8 @@ History.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.string,
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   isAlbumsFetching: PropTypes.bool.isRequired,
   isAlbumsPopulated: PropTypes.bool.isRequired,

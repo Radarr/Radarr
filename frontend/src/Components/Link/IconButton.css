@@ -13,4 +13,8 @@
     background-color: inherit;
     color: $iconButtonHoverColor;
   }
+
+  &.isDisabled {
+    color: $iconButtonDisabledColor;
+  }
 }

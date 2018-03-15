@@ -336,7 +336,7 @@ class PageSidebar extends Component {
 
     if (isSidebarVisible && (touchStartX > 210 || touchStartX < 180)) {
       return;
-    } else if (!isSidebarVisible && touchStartX > 30) {
+    } else if (!isSidebarVisible && touchStartX > 40) {
       return;
     }
 
@@ -347,22 +347,29 @@ class PageSidebar extends Component {
   onTouchMove = (event) => {
     const touches = event.touches;
     const currentTouchX = touches[0].pageX;
-    const currentTouchY = touches[0].pageY;
+    // const currentTouchY = touches[0].pageY;
+    // const isSidebarVisible = this.props.isSidebarVisible;
 
     if (!this._touchStartX) {
       return;
     }
 
-    if (Math.abs(this._touchStartY - currentTouchY) > 20) {
-      this.setState({
-        transition: 'none',
-        transform: 0
-      });
+    // This is a bit funky when trying to close and you scroll
+    // vertical too much by mistake, commenting out for now.
+    // TODO: Evaluate if this should be nuked
 
-      return;
-    }
+    // if (Math.abs(this._touchStartY - currentTouchY) > 40) {
+    //   const transform = isSidebarVisible ? 0 : SIDEBAR_WIDTH * -1;
 
-    if (Math.abs(this._touchStartX - currentTouchX) < 20) {
+    //   this.setState({
+    //     transition: 'none',
+    //     transform
+    //   });
+
+    //   return;
+    // }
+
+    if (Math.abs(this._touchStartX - currentTouchX) < 40) {
       return;
     }
 

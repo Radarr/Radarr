@@ -757,6 +757,7 @@
     <Compile Include="Messaging\Commands\IExecute.cs" />
     <Compile Include="Messaging\Commands\TestCommand.cs" />
     <Compile Include="Messaging\Commands\TestCommandExecutor.cs" />
+    <Compile Include="Messaging\EventHandleOrderAttribute.cs" />
     <Compile Include="Messaging\Events\CommandExecutedEvent.cs" />
     <Compile Include="Messaging\Events\EventAggregator.cs" />
     <Compile Include="Messaging\Events\IEventAggregator.cs" />

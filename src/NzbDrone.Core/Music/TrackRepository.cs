@@ -125,7 +125,7 @@ namespace NzbDrone.Core.Music
         private SortBuilder<Track> GetMissingTracksQuery(PagingSpec<Track> pagingSpec, DateTime currentTime)
         {
             return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
-                            .Where(pagingSpec.FilterExpression)
+                            .Where(pagingSpec.FilterExpressions.FirstOrDefault())
                             .AndWhere(e => e.TrackFileId == 0)
                             .AndWhere(BuildAirDateUtcCutoffWhereClause(currentTime))
                             .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Music
         {
             return Query.Join<Track, Artist>(JoinType.Inner, e => e.Artist, (e, s) => e.ArtistId == s.Id)
                              .Join<Track, TrackFile>(JoinType.Left, e => e.TrackFile, (e, s) => e.TrackFileId == s.Id)
-                             .Where(pagingSpec.FilterExpression)
+                             .Where(pagingSpec.FilterExpressions.FirstOrDefault())
                              .AndWhere(e => e.TrackFileId != 0)
                              .AndWhere(BuildQualityCutoffWhereClause(qualitiesBelowCutoff))
                              .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())

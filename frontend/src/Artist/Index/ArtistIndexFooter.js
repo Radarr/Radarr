@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import formatBytes from 'Utilities/Number/formatBytes';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import styles from './ArtistIndexFooter.css';
@@ -11,6 +12,7 @@ function ArtistIndexFooter({ artist }) {
   let ended = 0;
   let continuing = 0;
   let monitored = 0;
+  let totalFileSize = 0;
 
   artist.forEach((s) => {
     tracks += s.trackCount || 0;
@@ -25,6 +27,8 @@ function ArtistIndexFooter({ artist }) {
     if (s.monitored) {
       monitored++;
     }
+
+    totalFileSize += s.statistics.sizeOnDisk || 0;
   });
 
   return (
@@ -90,6 +94,13 @@ function ArtistIndexFooter({ artist }) {
           <DescriptionListItem
             title="Files"
             data={trackFiles}
+          />
+        </DescriptionList>
+
+        <DescriptionList>
+          <DescriptionListItem
+            title="Total File Size"
+            data={formatBytes(totalFileSize)}
           />
         </DescriptionList>
       </div>

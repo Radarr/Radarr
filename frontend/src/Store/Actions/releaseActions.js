@@ -1,8 +1,11 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
-import { sortDirections } from 'Helpers/Props';
+import customFilterHandlers from 'Utilities/customFilterHandlers';
+import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createCustomFilterReducers from './Creators/Reducers/createCustomFilterReducers';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 
@@ -40,8 +43,115 @@ export const defaultState = {
 
       return releaseWeight;
     }
-  }
+  },
+
+  selectedFilterKey: 'all',
+
+  filters: [
+    {
+      key: 'all',
+      label: 'All',
+      filters: []
+    },
+    {
+      key: 'discography-pack',
+      label: 'Discography',
+      filters: [
+        {
+          key: 'discography',
+          value: true,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
+      key: 'not-discography-pack',
+      label: 'Not Discography',
+      filters: [
+        {
+          key: 'discography',
+          value: false,
+          type: filterTypes.EQUAL
+        }
+      ]
+    }
+  ],
+
+  filterPredicates: {
+    quality: function(item, value, type) {
+      const qualityId = item.quality.quality.id;
+
+      if (type === filterTypes.EQUAL) {
+        return qualityId === value;
+      }
+
+      if (type === filterTypes.NOT_EQUAL) {
+        return qualityId !== value;
+      }
+
+      // Default to false
+      return false;
+    }
+  },
+
+  filterBuilderProps: [
+    {
+      name: 'title',
+      label: 'Title',
+      type: filterBuilderTypes.STRING
+    },
+    {
+      name: 'age',
+      label: 'Age',
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'protocol',
+      label: 'Protocol',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.PROTOCOL
+    },
+    {
+      name: 'indexerId',
+      label: 'Indexer',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.INDEXER
+    },
+    {
+      name: 'size',
+      label: 'Size',
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'seeders',
+      label: 'Seeders',
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'leechers',
+      label: 'Peers',
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'quality',
+      label: 'Quality',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.QUALITY
+    },
+    {
+      name: 'rejections',
+      label: 'Rejections',
+      type: filterBuilderTypes.NUMBER
+    }
+  ],
+
+  customFilters: []
 };
+
+export const persistState = [
+  'releases.selectedFilterKey',
+  'releases.customFilters'
+];
 
 //
 // Actions Types
@@ -52,6 +162,10 @@ export const SET_RELEASES_SORT = 'releases/setReleasesSort';
 export const CLEAR_RELEASES = 'releases/clearReleases';
 export const GRAB_RELEASE = 'releases/grabRelease';
 export const UPDATE_RELEASE = 'releases/updateRelease';
+export const SET_RELEASES_FILTER = 'releases/setReleasesFilter';
+export const ADD_RELEASES_CUSTOM_FILTER = 'releases/addReleasesCustomFilter';
+export const REMOVE_RELEASES_CUSTOM_FILTER = 'releases/removeReleasesCustomFilter';
+export const SAVE_RELEASES_CUSTOM_FILTER = 'releases/saveReleasesCustomFilter';
 
 //
 // Action Creators
@@ -62,6 +176,10 @@ export const setReleasesSort = createAction(SET_RELEASES_SORT);
 export const clearReleases = createAction(CLEAR_RELEASES);
 export const grabRelease = createThunk(GRAB_RELEASE);
 export const updateRelease = createAction(UPDATE_RELEASE);
+export const setReleasesFilter = createAction(SET_RELEASES_FILTER);
+export const addReleasesCustomFilter = createAction(ADD_RELEASES_CUSTOM_FILTER);
+export const removeReleasesCustomFilter = createAction(REMOVE_RELEASES_CUSTOM_FILTER);
+export const saveReleasesCustomFilter = createAction(SAVE_RELEASES_CUSTOM_FILTER);
 
 //
 // Helpers
@@ -147,6 +265,12 @@ export const reducers = createHandleActions({
     return newState;
   },
 
-  [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section)
+  [SET_RELEASES_SORT]: createSetClientSideCollectionSortReducer(section),
+  [SET_RELEASES_FILTER]: createSetClientSideCollectionFilterReducer(section),
+
+  ...createCustomFilterReducers(section, {
+    [customFilterHandlers.REMOVE]: REMOVE_RELEASES_CUSTOM_FILTER,
+    [customFilterHandlers.SAVE]: SAVE_RELEASES_CUSTOM_FILTER
+  })
 
 }, defaultState, section);

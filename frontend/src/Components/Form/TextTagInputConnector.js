@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import split from 'Utilities/String/split';
-import TextTagInput from './TextTagInput';
+import TagInput from './TagInput';
 
 function createMapStateToProps() {
   return createSelector(
@@ -34,25 +34,27 @@ class TextTagInputConnector extends Component {
   onTagAdd = (tag) => {
     const {
       name,
-      value
+      value,
+      onChange
     } = this.props;
 
     const newValue = split(value);
     newValue.push(tag.name);
 
-    this.props.onChange({ name, value: newValue.join(',') });
+    onChange({ name, value: newValue.join(',') });
   }
 
-  onTagDelete = (index) => {
+  onTagDelete = ({ index }) => {
     const {
       name,
-      value
+      value,
+      onChange
     } = this.props;
 
     const newValue = split(value);
     newValue.splice(index, 1);
 
-    this.props.onChange({
+    onChange({
       name,
       value: newValue.join(',')
     });
@@ -63,7 +65,8 @@ class TextTagInputConnector extends Component {
 
   render() {
     return (
-      <TextTagInput
+      <TagInput
+        tagList={[]}
         onTagAdd={this.onTagAdd}
         onTagDelete={this.onTagDelete}
         {...this.props}

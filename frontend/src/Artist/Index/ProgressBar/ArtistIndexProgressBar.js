@@ -11,6 +11,7 @@ function ArtistIndexProgressBar(props) {
     status,
     trackCount,
     trackFileCount,
+    totalTrackCount,
     posterWidth,
     detailedProgressBar
   } = props;
@@ -27,7 +28,7 @@ function ArtistIndexProgressBar(props) {
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       text={text}
-      title={detailedProgressBar ? null : text}
+      title={`${trackFileCount} / ${trackCount} (Total: ${totalTrackCount})`}
       width={posterWidth}
     />
   );
@@ -38,6 +39,7 @@ ArtistIndexProgressBar.propTypes = {
   status: PropTypes.string.isRequired,
   trackCount: PropTypes.number.isRequired,
   trackFileCount: PropTypes.number.isRequired,
+  totalTrackCount: PropTypes.number.isRequired,
   posterWidth: PropTypes.number.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired
 };

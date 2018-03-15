@@ -49,11 +49,10 @@ class ArtistIndex extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this._viewComponent = null;
-
     this.state = {
       contentBody: null,
       jumpBarItems: [],
+      jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
       isBannerOptionsModalOpen: false,
       isOverviewOptionsModalOpen: false,
@@ -69,7 +68,8 @@ class ArtistIndex extends Component {
     const {
       items,
       sortKey,
-      sortDirection
+      sortDirection,
+      scrollTop
     } = this.props;
 
     if (
@@ -79,6 +79,10 @@ class ArtistIndex extends Component {
     ) {
       this.setJumpBarItems();
     }
+
+    if (this.state.jumpToCharacter != null && scrollTop !== prevProps.scrollTop) {
+      this.setState({ jumpToCharacter: null });
+    }
   }
 
   //
@@ -86,10 +90,6 @@ class ArtistIndex extends Component {
 
   setContentBodyRef = (ref) => {
     this.setState({ contentBody: ref });
-  }
-
-  setViewComponentRef = (ref) => {
-    this._viewComponent = ref;
   }
 
   setJumpBarItems() {
@@ -152,9 +152,8 @@ class ArtistIndex extends Component {
     this.setState({ isOverviewOptionsModalOpen: false });
   }
 
-  onJumpBarItemPress = (item) => {
-    const viewComponent = this._viewComponent.getWrappedInstance();
-    viewComponent.scrollToFirstCharacter(item);
+  onJumpBarItemPress = (jumpToCharacter) => {
+    this.setState({ jumpToCharacter });
   }
 
   onRender = () => {
@@ -187,8 +186,9 @@ class ArtistIndex extends Component {
       isPopulated,
       error,
       items,
-      filterKey,
-      filterValue,
+      selectedFilterKey,
+      filters,
+      customFilters,
       sortKey,
       sortDirection,
       view,
@@ -206,6 +206,7 @@ class ArtistIndex extends Component {
     const {
       contentBody,
       jumpBarItems,
+      jumpToCharacter,
       isPosterOptionsModalOpen,
       isBannerOptionsModalOpen,
       isOverviewOptionsModalOpen,
@@ -294,8 +295,9 @@ class ArtistIndex extends Component {
             />
 
             <ArtistIndexFilterMenu
-              filterKey={filterKey}
-              filterValue={filterValue}
+              selectedFilterKey={selectedFilterKey}
+              filters={filters}
+              customFilters={customFilters}
               isDisabled={hasNoArtist}
               onFilterSelect={onFilterSelect}
             />
@@ -324,9 +326,9 @@ class ArtistIndex extends Component {
               isLoaded &&
                 <div className={styles.contentBodyContainer}>
                   <ViewComponent
-                    ref={this.setViewComponentRef}
                     contentBody={contentBody}
                     scrollTop={scrollTop}
+                    jumpToCharacter={jumpToCharacter}
                     onRender={this.onRender}
                     {...otherProps}
                   />
@@ -378,8 +380,9 @@ ArtistIndex.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   view: PropTypes.string.isRequired,

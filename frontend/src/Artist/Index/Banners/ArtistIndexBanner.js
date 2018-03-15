@@ -61,8 +61,7 @@ class ArtistIndexBanner extends Component {
       status,
       foreignArtistId,
       nextAiring,
-      trackCount,
-      trackFileCount,
+      statistics,
       images,
       bannerWidth,
       bannerHeight,
@@ -78,6 +77,12 @@ class ArtistIndexBanner extends Component {
       onRefreshArtistPress,
       ...otherProps
     } = this.props;
+
+    const {
+      trackCount,
+      trackFileCount,
+      totalTrackCount
+    } = statistics;
 
     const {
       isEditArtistModalOpen,
@@ -141,6 +146,7 @@ class ArtistIndexBanner extends Component {
             status={status}
             trackCount={trackCount}
             trackFileCount={trackFileCount}
+            totalTrackCount={totalTrackCount}
             posterWidth={bannerWidth}
             detailedProgressBar={detailedProgressBar}
           />
@@ -165,20 +171,22 @@ class ArtistIndexBanner extends Component {
                 {qualityProfile.name}
               </div>
           }
-
-          <div className={styles.nextAiring}>
-            {
-              getRelativeDate(
-                nextAiring,
-                shortDateFormat,
-                showRelativeDates,
+          {
+            nextAiring &&
+              <div className={styles.nextAiring}>
                 {
-                  timeFormat,
-                  timeForToday: true
+                  getRelativeDate(
+                    nextAiring,
+                    shortDateFormat,
+                    showRelativeDates,
+                    {
+                      timeFormat,
+                      timeForToday: true
+                    }
+                  )
                 }
-              )
-            }
-          </div>
+              </div>
+          }
 
           <ArtistIndexBannerInfo
             qualityProfile={qualityProfile}
@@ -186,6 +194,7 @@ class ArtistIndexBanner extends Component {
             showRelativeDates={showRelativeDates}
             shortDateFormat={shortDateFormat}
             timeFormat={timeFormat}
+            statistics={statistics}
             {...otherProps}
           />
 
@@ -215,8 +224,7 @@ ArtistIndexBanner.propTypes = {
   status: PropTypes.string.isRequired,
   foreignArtistId: PropTypes.string.isRequired,
   nextAiring: PropTypes.string,
-  trackCount: PropTypes.number,
-  trackFileCount: PropTypes.number,
+  statistics: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   bannerWidth: PropTypes.number.isRequired,
   bannerHeight: PropTypes.number.isRequired,
@@ -234,7 +242,8 @@ ArtistIndexBanner.propTypes = {
 
 ArtistIndexBanner.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0
+  trackFileCount: 0,
+  albumCount: 0
 };
 
 export default ArtistIndexBanner;

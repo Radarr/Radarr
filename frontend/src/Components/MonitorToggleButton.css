@@ -5,9 +5,7 @@
   font-size: inherit;
 }
 
-.disabledButton {
-  composes: button from 'Components/Link/IconButton.css';
-
+.isDisabled {
   color: $disabledColor;
   cursor: not-allowed;
 }

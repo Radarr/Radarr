@@ -71,8 +71,8 @@ class LogsTableConnector extends Component {
     this.props.setLogsSort({ sortKey });
   }
 
-  onFilterSelect = (filterKey, filterValue) => {
-    this.props.setLogsFilter({ filterKey, filterValue });
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.setLogsFilter({ selectedFilterKey });
   }
 
   onTableOptionChange = (payload) => {

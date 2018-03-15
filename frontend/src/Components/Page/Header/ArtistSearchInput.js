@@ -155,7 +155,7 @@ class ArtistSearchInput extends Component {
     this.reset();
   }
 
-  onSuggestionSelected = (event, { suggestion, sectionIndex }) => {
+  onSuggestionSelected = (event, { suggestion }) => {
     if (suggestion.type === ADD_NEW_TYPE) {
       this.props.onGoToAddNewArtist(this.state.value);
     } else {
@@ -181,7 +181,7 @@ class ArtistSearchInput extends Component {
       });
     }
 
-    if (suggestions.length <= 3) {
+    if (value.length >= 3) {
       suggestionGroups.push({
         title: 'Add New Artist',
         suggestions: [
@@ -218,10 +218,7 @@ class ArtistSearchInput extends Component {
 
     return (
       <div className={styles.wrapper}>
-        <Icon
-          className={styles.icon}
-          name={icons.SEARCH}
-        />
+        <Icon name={icons.SEARCH} />
 
         <Autosuggest
           ref={this.setAutosuggestRef}

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { align, icons } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
@@ -11,151 +11,102 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import FilterMenuItem from 'Components/Menu/FilterMenuItem';
-import MenuContent from 'Components/Menu/MenuContent';
 import LogsTableRow from './LogsTableRow';
 
-class LogsTable extends Component {
+function LogsTable(props) {
+  const {
+    isFetching,
+    isPopulated,
+    error,
+    items,
+    columns,
+    selectedFilterKey,
+    filters,
+    totalRecords,
+    clearLogExecuting,
+    onRefreshPress,
+    onClearLogsPress,
+    onFilterSelect,
+    ...otherProps
+  } = props;
 
-  //
-  // Listeners
+  return (
+    <PageContent title="Logs">
+      <PageToolbar>
+        <PageToolbarSection>
+          <PageToolbarButton
+            label="Refresh"
+            iconName={icons.REFRESH}
+            spinningName={icons.REFRESH}
+            isSpinning={isFetching}
+            onPress={onRefreshPress}
+          />
 
-  onFilterMenuItemPress = (filterKey, filterValue) => {
-    this.props.onFilterSelect(filterKey, filterValue);
-  }
+          <PageToolbarButton
+            label="Clear"
+            iconName={icons.CLEAR}
+            isSpinning={clearLogExecuting}
+            onPress={onClearLogsPress}
+          />
+        </PageToolbarSection>
 
-  //
-  // Render
+        <PageToolbarSection alignContent={align.RIGHT}>
+          <FilterMenu
+            alignMenu={align.RIGHT}
+            selectedFilterKey={selectedFilterKey}
+            filters={filters}
+            customFilters={[]}
+            onFilterSelect={onFilterSelect}
+          />
+        </PageToolbarSection>
+      </PageToolbar>
 
-  render() {
-    const {
-      isFetching,
-      isPopulated,
-      error,
-      items,
-      columns,
-      filterKey,
-      filterValue,
-      totalRecords,
-      clearLogExecuting,
-      onRefreshPress,
-      onClearLogsPress,
-      ...otherProps
-    } = this.props;
+      <PageContentBodyConnector>
+        {
+          isFetching && !isPopulated &&
+          <LoadingIndicator />
+        }
 
-    return (
-      <PageContent title="Logs">
-        <PageToolbar>
-          <PageToolbarSection>
-            <PageToolbarButton
-              label="Refresh"
-              iconName={icons.REFRESH}
-              spinningName={icons.REFRESH}
-              isSpinning={isFetching}
-              onPress={onRefreshPress}
-            />
-
-            <PageToolbarButton
-              label="Clear"
-              iconName={icons.CLEAR}
-              isSpinning={clearLogExecuting}
-              onPress={onClearLogsPress}
-            />
-          </PageToolbarSection>
-
-          <PageToolbarSection alignContent={align.RIGHT}>
-            <FilterMenu alignMenu={align.RIGHT}>
-              <MenuContent>
-                <FilterMenuItem
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  All
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="level"
-                  value="Info"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  Info
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="level"
-                  value="Warn"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  Warn
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="level"
-                  value="Error"
-                  filterKey={filterKey}
-                  filterValue={filterValue}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  Error
-                </FilterMenuItem>
-              </MenuContent>
-            </FilterMenu>
-          </PageToolbarSection>
-        </PageToolbar>
-
-        <PageContentBodyConnector>
-          {
-            isFetching && !isPopulated &&
-              <LoadingIndicator />
-          }
-
-          {
-            isPopulated && !error && !items.length &&
-              <div>
+        {
+          isPopulated && !error && !items.length &&
+          <div>
                 No logs found
-              </div>
-          }
+          </div>
+        }
 
-          {
-            isPopulated && !error && !!items.length &&
-              <div>
-                <Table
-                  columns={columns}
-                  canModifyColumns={false}
-                  {...otherProps}
-                >
-                  <TableBody>
-                    {
-                      items.map((item) => {
-                        return (
-                          <LogsTableRow
-                            key={item.id}
-                            columns={columns}
-                            {...item}
-                          />
-                        );
-                      })
-                    }
-                  </TableBody>
-                </Table>
+        {
+          isPopulated && !error && !!items.length &&
+          <div>
+            <Table
+              columns={columns}
+              canModifyColumns={false}
+              {...otherProps}
+            >
+              <TableBody>
+                {
+                  items.map((item) => {
+                    return (
+                      <LogsTableRow
+                        key={item.id}
+                        columns={columns}
+                        {...item}
+                      />
+                    );
+                  })
+                }
+              </TableBody>
+            </Table>
 
-                <TablePager
-                  totalRecords={totalRecords}
-                  isFetching={isFetching}
-                  {...otherProps}
-                />
-              </div>
-          }
-        </PageContentBodyConnector>
-      </PageContent>
-    );
-  }
-
+            <TablePager
+              totalRecords={totalRecords}
+              isFetching={isFetching}
+              {...otherProps}
+            />
+          </div>
+        }
+      </PageContentBodyConnector>
+    </PageContent>
+  );
 }
 
 LogsTable.propTypes = {
@@ -164,8 +115,8 @@ LogsTable.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.string,
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   clearLogExecuting: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired,

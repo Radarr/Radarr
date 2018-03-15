@@ -1,3 +1,4 @@
+using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Music;
@@ -32,14 +33,15 @@ namespace Lidarr.Api.V1.Wanted
             };
 
             var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var monitoredFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "monitored");
 
-            if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
+            if (monitoredFilter != null && monitoredFilter.Value == "false")
             {
-                pagingSpec.FilterExpression = v => v.Monitored == false || v.Artist.Monitored == false;
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == false || v.Artist.Monitored == false);
             }
             else
             {
-                pagingSpec.FilterExpression = v => v.Monitored == true && v.Artist.Monitored == true;
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
             }
 
             var resource = ApplyToPage(_albumService.AlbumsWithoutFiles, pagingSpec, v => MapToResource(v, includeArtist));

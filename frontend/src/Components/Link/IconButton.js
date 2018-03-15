@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import Icon from 'Components/Icon';
 import Link from './Link';
 import styles from './IconButton.css';
@@ -12,12 +13,18 @@ function IconButton(props) {
     kind,
     size,
     isSpinning,
+    isDisabled,
     ...otherProps
   } = props;
 
   return (
     <Link
-      className={className}
+      className={classNames(
+        className,
+        isDisabled && styles.isDisabled
+      )}
+      isDisabled={isDisabled}
+
       {...otherProps}
     >
       <Icon
@@ -37,7 +44,8 @@ IconButton.propTypes = {
   kind: PropTypes.string,
   name: PropTypes.object.isRequired,
   size: PropTypes.number,
-  isSpinning: PropTypes.bool
+  isSpinning: PropTypes.bool,
+  isDisabled: PropTypes.bool
 };
 
 IconButton.defaultProps = {

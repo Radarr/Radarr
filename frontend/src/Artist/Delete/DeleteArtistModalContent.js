@@ -47,10 +47,14 @@ class DeleteArtistModalContent extends Component {
     const {
       artistName,
       path,
-      trackFileCount,
-      sizeOnDisk,
+      statistics,
       onModalClose
     } = this.props;
+
+    const {
+      trackFileCount,
+      sizeOnDisk
+    } = statistics;
 
     const deleteFiles = this.state.deleteFiles;
     let deleteFilesLabel = `Delete ${trackFileCount} Track Files`;
@@ -126,8 +130,7 @@ class DeleteArtistModalContent extends Component {
 DeleteArtistModalContent.propTypes = {
   artistName: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
-  trackFileCount: PropTypes.number.isRequired,
-  sizeOnDisk: PropTypes.number,
+  statistics: PropTypes.object.isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

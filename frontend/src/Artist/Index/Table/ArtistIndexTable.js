@@ -1,6 +1,6 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import { sortDirections } from 'Helpers/Props';
 import VirtualTable from 'Components/Table/VirtualTable';
 import ArtistIndexItemConnector from 'Artist/Index/ArtistIndexItemConnector';
@@ -9,39 +9,36 @@ import ArtistIndexRow from './ArtistIndexRow';
 import styles from './ArtistIndexTable.css';
 
 class ArtistIndexTable extends Component {
+
+  //
+  // Lifecycle
+
   constructor(props, context) {
     super(props, context);
-    this._table = null;
+
+    this.state = {
+      scrollIndex: null
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    const jumpToCharacter = this.props.jumpToCharacter;
+
+    if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
+      const items = this.props.items;
+
+      const scrollIndex = getIndexOfFirstCharacter(items, jumpToCharacter);
+
+      if (scrollIndex != null) {
+        this.setState({ scrollIndex });
+      }
+    } else if (jumpToCharacter == null && prevProps.jumpToCharacter != null) {
+      this.setState({ scrollIndex: null });
+    }
   }
 
   //
   // Control
-
-  /**
-   * Sets the reference to the virtual table
-   * @param ref
-   */
-  setTableRef = (ref) => {
-    this._table = ref;
-  };
-
-  scrollToFirstCharacter(character) {
-    const items = this.props.items;
-
-    const row = _.findIndex(items, (item) => {
-      const firstCharacter = item.sortName.charAt(0);
-
-      if (character === '#') {
-        return !isNaN(firstCharacter);
-      }
-
-      return firstCharacter === character;
-    });
-
-    if (row != null) {
-      this._table.scrollToRow(row);
-    }
-  }
 
   rowRenderer = ({ key, rowIndex, style }) => {
     const {
@@ -72,8 +69,7 @@ class ArtistIndexTable extends Component {
     const {
       items,
       columns,
-      filterKey,
-      filterValue,
+      filters,
       sortKey,
       sortDirection,
       isSmallScreen,
@@ -86,10 +82,10 @@ class ArtistIndexTable extends Component {
 
     return (
       <VirtualTable
-        ref={this.setTableRef}
         className={styles.tableContainer}
         items={items}
         scrollTop={scrollTop}
+        scrollIndex={this.state.scrollIndex}
         contentBody={contentBody}
         isSmallScreen={isSmallScreen}
         rowHeight={38}
@@ -104,8 +100,7 @@ class ArtistIndexTable extends Component {
           />
         }
         columns={columns}
-        filterKey={filterKey}
-        filterValue={filterValue}
+        filters={filters}
         sortKey={sortKey}
         sortDirection={sortDirection}
         onRender={onRender}
@@ -118,11 +113,11 @@ class ArtistIndexTable extends Component {
 ArtistIndexTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   scrollTop: PropTypes.number.isRequired,
+  jumpToCharacter: PropTypes.string,
   contentBody: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onSortPress: PropTypes.func.isRequired,

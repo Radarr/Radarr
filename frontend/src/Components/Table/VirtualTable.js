@@ -50,17 +50,21 @@ class VirtualTable extends Component {
     this._contentBodyNode = ReactDOM.findDOMNode(this.props.contentBody);
   }
 
+  componentDidUpdate(prevProps, preState) {
+    const scrollIndex = this.props.scrollIndex;
+
+    if (scrollIndex != null && scrollIndex !== prevProps.scrollIndex) {
+      const scrollTop = (scrollIndex + 1) * ROW_HEIGHT + 20;
+
+      this.props.onScroll({ scrollTop });
+    }
+  }
+
   //
   // Control
 
   rowGetter = ({ index }) => {
     return this.props.items[index];
-  }
-
-  scrollToRow = (rowIndex) => {
-    const scrollTop = (rowIndex + 1) * ROW_HEIGHT + 20;
-
-    this.props.onScroll({ scrollTop });
   }
 
   //
@@ -144,6 +148,7 @@ VirtualTable.propTypes = {
   className: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   scrollTop: PropTypes.number.isRequired,
+  scrollIndex: PropTypes.number,
   contentBody: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   header: PropTypes.node.isRequired,

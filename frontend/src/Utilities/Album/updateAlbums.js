@@ -1,8 +1,7 @@
-/* eslint max-params: 0 */
 import _ from 'lodash';
 import { update } from 'Store/Actions/baseActions';
 
-function updateAlbums(dispatch, section, albums, albumIds, options) {
+function updateAlbums(section, albums, albumIds, options) {
   const data = _.reduce(albums, (result, item) => {
     if (albumIds.indexOf(item.id) > -1) {
       result.push({
@@ -16,7 +15,7 @@ function updateAlbums(dispatch, section, albums, albumIds, options) {
     return result;
   }, []);
 
-  dispatch(update({ section, data }));
+  return update({ section, data });
 }
 
 export default updateAlbums;

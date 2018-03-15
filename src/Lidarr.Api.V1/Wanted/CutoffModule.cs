@@ -1,3 +1,4 @@
+using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Music;
@@ -36,14 +37,15 @@ namespace Lidarr.Api.V1.Wanted
             };
 
             var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var filter = pagingResource.Filters.FirstOrDefault(f => f.Key == "monitored");
 
-            if (pagingResource.FilterKey == "monitored" && pagingResource.FilterValue == "false")
+            if (filter != null && filter.Value == "false")
             {
-                pagingSpec.FilterExpression = v => v.Monitored == false || v.Artist.Monitored == false;
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == false || v.Artist.Monitored == false);
             }
             else
             {
-                pagingSpec.FilterExpression = v => v.Monitored == true && v.Artist.Monitored == true;
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Monitored == true);
             }
 
             var resource = ApplyToPage(_albumCutoffService.AlbumsWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeArtist));

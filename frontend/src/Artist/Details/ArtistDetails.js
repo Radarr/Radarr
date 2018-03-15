@@ -161,8 +161,7 @@ class ArtistDetails extends Component {
       artistName,
       ratings,
       path,
-      sizeOnDisk,
-      trackFileCount,
+      statistics,
       qualityProfileId,
       monitored,
       albumTypes,
@@ -178,11 +177,17 @@ class ArtistDetails extends Component {
       isPopulated,
       albumsError,
       trackFilesError,
+      hasMonitoredAlbums,
       previousArtist,
       nextArtist,
       onRefreshPress,
       onSearchPress
     } = this.props;
+
+    const {
+      trackFileCount,
+      sizeOnDisk
+    } = statistics;
 
     const {
       isOrganizeModalOpen,
@@ -230,7 +235,9 @@ class ArtistDetails extends Component {
             <PageToolbarButton
               label="Search Monitored"
               iconName={icons.SEARCH}
+              isDisabled={!monitored || !hasMonitoredAlbums}
               isSpinning={isSearching}
+              title={hasMonitoredAlbums ? undefined : 'No monitored albums for this artist'}
               onPress={onSearchPress}
             />
 
@@ -583,8 +590,7 @@ ArtistDetails.propTypes = {
   artistName: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  sizeOnDisk: PropTypes.number,
-  trackFileCount: PropTypes.number,
+  statistics: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   albumTypes: PropTypes.arrayOf(PropTypes.string),
@@ -600,6 +606,7 @@ ArtistDetails.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   albumsError: PropTypes.object,
   trackFilesError: PropTypes.object,
+  hasMonitoredAlbums: PropTypes.bool.isRequired,
   previousArtist: PropTypes.object.isRequired,
   nextArtist: PropTypes.object.isRequired,
   onRefreshPress: PropTypes.func.isRequired,

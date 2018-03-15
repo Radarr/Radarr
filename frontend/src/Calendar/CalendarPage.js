@@ -2,14 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Measure from 'react-measure';
 import { align, icons } from 'Helpers/Props';
+import getFilterValue from 'Utilities/Filter/getFilterValue';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import MenuContent from 'Components/Menu/MenuContent';
-import FilterMenuItem from 'Components/Menu/FilterMenuItem';
 import NoArtist from 'Artist/NoArtist';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
 import Legend from './Legend/Legend';
@@ -42,10 +41,6 @@ class CalendarPage extends Component {
     this.props.onDaysCountChange(days);
   }
 
-  onFilterMenuItemPress = (filterKey, unmonitored) => {
-    this.props.onUnmonitoredChange(unmonitored);
-  }
-
   onGetCalendarLinkPress = () => {
     this.setState({ isCalendarLinkModalOpen: true });
   }
@@ -59,12 +54,15 @@ class CalendarPage extends Component {
 
   render() {
     const {
-      unmonitored,
+      selectedFilterKey,
+      filters,
       hasArtist,
-      colorImpairedMode
+      colorImpairedMode,
+      onFilterSelect
     } = this.props;
 
     const isMeasured = this.state.width > 0;
+
     let PageComponent = 'div';
 
     if (isMeasured) {
@@ -85,30 +83,11 @@ class CalendarPage extends Component {
           <PageToolbarSection alignContent={align.RIGHT}>
             <FilterMenu
               alignMenu={align.RIGHT}
-              isDisabled={!hasArtist}
-            >
-              <MenuContent>
-                <FilterMenuItem
-                  name="unmonitored"
-                  value={true}
-                  filterKey="unmonitored"
-                  filterValue={unmonitored}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  All
-                </FilterMenuItem>
-
-                <FilterMenuItem
-                  name="unmonitored"
-                  value={false}
-                  filterKey="unmonitored"
-                  filterValue={unmonitored}
-                  onPress={this.onFilterMenuItemPress}
-                >
-                  Monitored Only
-                </FilterMenuItem>
-              </MenuContent>
-            </FilterMenu>
+              selectedFilterKey={selectedFilterKey}
+              filters={filters}
+              customFilters={[]}
+              onFilterSelect={onFilterSelect}
+            />
           </PageToolbarSection>
         </PageToolbar>
 
@@ -139,11 +118,12 @@ class CalendarPage extends Component {
 }
 
 CalendarPage.propTypes = {
-  unmonitored: PropTypes.bool.isRequired,
+  selectedFilterKey: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasArtist: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   onDaysCountChange: PropTypes.func.isRequired,
-  onUnmonitoredChange: PropTypes.func.isRequired
+  onFilterSelect: PropTypes.func.isRequired
 };
 
 export default CalendarPage;

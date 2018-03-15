@@ -2,6 +2,6 @@
   transition: background-color 500ms;
 
   &:hover {
-    background-color: #fafbfc;
+    background-color: $tableRowHoverBackgroundColor;
   }
 }

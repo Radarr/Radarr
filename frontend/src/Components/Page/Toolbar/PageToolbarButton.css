@@ -7,6 +7,10 @@
   &:hover {
     color: $toobarButtonHoverColor;
   }
+
+  &.isDisabled {
+    color: $disabledColor;
+  }
 }
 
 .isDisabled {

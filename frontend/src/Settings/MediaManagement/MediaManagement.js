@@ -83,6 +83,22 @@ class MediaManagement extends Component {
                           {...settings.createEmptyArtistFolders}
                         />
                       </FormGroup>
+
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                        size={sizes.MEDIUM}
+                      >
+                        <FormLabel>Delete empty folders</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="deleteEmptyFolders"
+                          helpText="Delete empty artist and album folders during disk scan and when track files are deleted"
+                          onChange={onInputChange}
+                          {...settings.deleteEmptyFolders}
+                        />
+                      </FormGroup>
                     </FieldSet>
                 }
 

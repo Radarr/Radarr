@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createAction } from 'redux-actions';
-import { filterTypes, sortDirections } from 'Helpers/Props';
+import { sortDirections } from 'Helpers/Props';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
@@ -19,9 +19,6 @@ export const defaultState = {
   sortDirection: sortDirections.ASCENDING,
   secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
-  filterKey: null,
-  filterValue: null,
-  filterType: filterTypes.EQUAL,
   view: 'posters',
 
   posterOptions: {
@@ -155,45 +152,41 @@ export const defaultState = {
   ],
 
   sortPredicates: {
-    nextAiring: function(item, direction) {
-      const nextAiring = item.nextAiring;
-
-      if (nextAiring) {
-        return moment(nextAiring).unix();
-      }
-
-      if (direction === sortDirections.DESCENDING) {
-        return 0;
-      }
-
-      return Number.MAX_VALUE;
-    },
-
     trackProgress: function(item) {
       const {
         trackCount = 0,
         trackFileCount
-      } = item;
+      } = item.statistics;
 
       const progress = trackCount ? trackFileCount / trackCount * 100 : 100;
 
       return progress + trackCount / 1000000;
+    },
+
+    albumCount: function(item) {
+      return item.statistics.albumCount;
+    },
+
+    trackCount: function(item) {
+      return item.statistics.totalTrackCount;
+    },
+
+    sizeOnDisk: function(item) {
+      return item.statistics.sizeOnDisk;
     }
   },
 
-  filterPredicates: {
-    missing: function(item) {
-      return item.trackCount - item.trackFileCount > 0;
-    }
-  }
+  selectedFilterKey: 'all',
+  // filters come from artistActions
+  customFilters: []
+  // filterPredicates come from artistActions
 };
 
 export const persistState = [
   'artistIndex.sortKey',
   'artistIndex.sortDirection',
-  'artistIndex.filterKey',
-  'artistIndex.filterValue',
-  'artistIndex.filterType',
+  'artistIndex.selectedFilterKey',
+  'artistIndex.customFilters',
   'artistIndex.view',
   'artistIndex.columns',
   'artistIndex.posterOptions',

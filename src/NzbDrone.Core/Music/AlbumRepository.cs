@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Music
             string sortKey;
             string monitored = "(Albums.[Monitored] = 0) OR (Artists.[Monitored] = 0)";
 
-            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            if (pagingSpec.FilterExpressions.FirstOrDefault().ToString().Contains("True"))
             {
                 monitored = "(Albums.[Monitored] = 1) AND (Artists.[Monitored] = 1)";
             }
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Music
         {
             var monitored = 0;
 
-            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            if (pagingSpec.FilterExpressions.FirstOrDefault().ToString().Contains("True"))
             {
                 monitored = 1;
             }
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Music
             string sortKey;
             string monitored = "(Albums.[Monitored] = 0) OR (Artists.[Monitored] = 0)";
 
-            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            if (pagingSpec.FilterExpressions.FirstOrDefault().ToString().Contains("True"))
             {
                 monitored = "(Albums.[Monitored] = 1) AND (Artists.[Monitored] = 1)";
             }
@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Music
         {
             var monitored = 0;
 
-            if (pagingSpec.FilterExpression.ToString().Contains("True"))
+            if (pagingSpec.FilterExpressions.FirstOrDefault().ToString().Contains("True"))
             {
                 monitored = 1;
             }
