@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Parser.Model
         public ArtistTitleInfo ArtistTitleInfo { get; set; }
         public string ArtistMBId { get; set; }
         public string AlbumMBId { get; set; }
+        public string ReleaseMBId { get; set; }
         public string TrackMBId { get; set; }
         public int DiscNumber { get; set; }
         public QualityModel Quality { get; set; }

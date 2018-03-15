@@ -634,9 +634,9 @@ namespace NzbDrone.Core.Parser
                 AlbumTitle = file.Tag.Album,
                 ArtistTitle = artist,
                 ArtistMBId = file.Tag.MusicBrainzArtistId,
-                AlbumMBId = file.Tag.MusicBrainzReleaseId,
+                ReleaseMBId = file.Tag.MusicBrainzReleaseId,
                 DiscNumber = discNumber,
-                TrackMBId = file.Tag.MusicBrainzReleaseType,
+                TrackMBId = file.Tag.MusicBrainzTrackId,
                 TrackNumbers = temp,
                 ArtistTitleInfo = artistTitleInfo,
                 Title = trackTitle
