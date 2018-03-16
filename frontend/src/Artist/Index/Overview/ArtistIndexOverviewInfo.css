@@ -5,17 +5,6 @@
   margin-left: 10px;
 }
 
-.info {
-  flex: 0 0 $artistIndexOverviewInfoRowHeight;
-  margin: 2px 0;
-}
-
-.icon {
-  margin-right: 5px;
-  width: 25px;
-  text-align: center;
-}
-
 @media only screen and (max-width: $breakpointSmall) {
   .infos {
     margin-left: 0;

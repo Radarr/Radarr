@@ -79,6 +79,8 @@ class ArtistIndexPoster extends Component {
     } = this.props;
 
     const {
+      albumCount,
+      sizeOnDisk,
       trackCount,
       trackFileCount,
       totalTrackCount
@@ -188,11 +190,12 @@ class ArtistIndexPoster extends Component {
               </div>
           }
           <ArtistIndexPosterInfo
+            albumCount={albumCount}
+            sizeOnDisk={sizeOnDisk}
             qualityProfile={qualityProfile}
             showQualityProfile={showQualityProfile}
             showRelativeDates={showRelativeDates}
             shortDateFormat={shortDateFormat}
-            statistics={statistics}
             timeFormat={timeFormat}
             {...otherProps}
           />
@@ -241,8 +244,7 @@ ArtistIndexPoster.propTypes = {
 
 ArtistIndexPoster.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0,
-  albumCount: 0
+  trackFileCount: 0
 };
 
 export default ArtistIndexPoster;

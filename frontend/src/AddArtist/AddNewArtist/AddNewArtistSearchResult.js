@@ -71,7 +71,6 @@ class AddNewArtistSearchResult extends Component {
       artistType,
       status,
       overview,
-      albumCount,
       ratings,
       images,
       isExistingArtist,
@@ -83,11 +82,6 @@ class AddNewArtistSearchResult extends Component {
     } = this.state;
 
     const linkProps = isExistingArtist ? { to: `/artist/${foreignArtistId}` } : { onPress: this.onPress };
-    let albums = '1 Album';
-
-    if (albumCount > 1) {
-      albums = `${albumCount} Albums`;
-    }
 
     const height = calculateHeight(230, isSmallScreen);
 
@@ -147,13 +141,6 @@ class AddNewArtistSearchResult extends Component {
               }
 
               {
-                !!albumCount &&
-                  <Label size={sizes.LARGE}>
-                    {albums}
-                  </Label>
-              }
-
-              {
                 status === 'ended' &&
                   <Label
                     kind={kinds.DANGER}
@@ -201,7 +188,6 @@ AddNewArtistSearchResult.propTypes = {
   artistType: PropTypes.string,
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
-  albumCount: PropTypes.number,
   ratings: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingArtist: PropTypes.bool.isRequired,

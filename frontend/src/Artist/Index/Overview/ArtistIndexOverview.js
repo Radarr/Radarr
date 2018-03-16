@@ -95,6 +95,8 @@ class ArtistIndexOverview extends Component {
     } = this.props;
 
     const {
+      albumCount,
+      sizeOnDisk,
       trackCount,
       trackFileCount,
       totalTrackCount
@@ -196,11 +198,12 @@ class ArtistIndexOverview extends Component {
                 height={overviewHeight}
                 monitored={monitored}
                 nextAiring={nextAiring}
+                albumCount={albumCount}
+                sizeOnDisk={sizeOnDisk}
                 qualityProfile={qualityProfile}
                 showRelativeDates={showRelativeDates}
                 shortDateFormat={shortDateFormat}
                 timeFormat={timeFormat}
-                statistics={statistics}
                 {...overviewOptions}
                 {...otherProps}
               />
@@ -251,8 +254,7 @@ ArtistIndexOverview.propTypes = {
 
 ArtistIndexOverview.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0,
-  albumCount: 0
+  trackFileCount: 0
 };
 
 export default ArtistIndexOverview;

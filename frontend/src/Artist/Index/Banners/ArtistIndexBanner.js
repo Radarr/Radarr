@@ -79,6 +79,8 @@ class ArtistIndexBanner extends Component {
     } = this.props;
 
     const {
+      albumCount,
+      sizeOnDisk,
       trackCount,
       trackFileCount,
       totalTrackCount
@@ -189,12 +191,13 @@ class ArtistIndexBanner extends Component {
           }
 
           <ArtistIndexBannerInfo
+            albumCount={albumCount}
+            sizeOnDisk={sizeOnDisk}
             qualityProfile={qualityProfile}
             showQualityProfile={showQualityProfile}
             showRelativeDates={showRelativeDates}
             shortDateFormat={shortDateFormat}
             timeFormat={timeFormat}
-            statistics={statistics}
             {...otherProps}
           />
 
@@ -242,8 +245,7 @@ ArtistIndexBanner.propTypes = {
 
 ArtistIndexBanner.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0,
-  albumCount: 0
+  trackFileCount: 0
 };
 
 export default ArtistIndexBanner;

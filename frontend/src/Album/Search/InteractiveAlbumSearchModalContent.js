@@ -110,22 +110,6 @@ class InteractiveAlbumSearchModalContent extends Component {
 
         <ModalBody>
           {
-            isFetching &&
-              <LoadingIndicator />
-          }
-
-          {
-            !isFetching && !!error &&
-              <div>Unable to load releases.</div>
-          }
-
-          {
-            isPopulated && !hasItems && !error &&
-              <div>No results.</div>
-          }
-
-          {
-            isPopulated && hasItems && !error &&
             <div>
               <div className={styles.filterMenuContainer}>
                 <FilterMenu
@@ -140,10 +124,29 @@ class InteractiveAlbumSearchModalContent extends Component {
               </div>
 
               {
-                !!totalReleasesCount && !items.length &&
-                <div>
-                      All results are hidden by {filters.length > 1 ? 'filters' : 'a filter'}.
-                </div>
+                isFetching &&
+                  <LoadingIndicator />
+              }
+
+              {
+                !isFetching && !!error &&
+                  <div>
+                    Unable to load results for this album search. Try again later.
+                  </div>
+              }
+
+              {
+                !isFetching && isPopulated && !totalReleasesCount &&
+                  <div>
+                    No results found.
+                  </div>
+              }
+
+              {
+                !!totalReleasesCount && isPopulated && !items.length &&
+                  <div>
+                    All results are hidden by {filters.length > 1 ? 'filters' : 'a filter'}.
+                  </div>
               }
 
               {

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Measure from 'react-measure';
 import { align, icons } from 'Helpers/Props';
-import getFilterValue from 'Utilities/Filter/getFilterValue';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
@@ -41,6 +40,10 @@ class CalendarPage extends Component {
     this.props.onDaysCountChange(days);
   }
 
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.onUnmonitoredChange(selectedFilterKey === 'unmonitored');
+  }
+
   onGetCalendarLinkPress = () => {
     this.setState({ isCalendarLinkModalOpen: true });
   }
@@ -57,8 +60,7 @@ class CalendarPage extends Component {
       selectedFilterKey,
       filters,
       hasArtist,
-      colorImpairedMode,
-      onFilterSelect
+      colorImpairedMode
     } = this.props;
 
     const isMeasured = this.state.width > 0;
@@ -83,10 +85,11 @@ class CalendarPage extends Component {
           <PageToolbarSection alignContent={align.RIGHT}>
             <FilterMenu
               alignMenu={align.RIGHT}
+              isDisabled={!hasArtist}
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={[]}
-              onFilterSelect={onFilterSelect}
+              onFilterSelect={this.onFilterSelect}
             />
           </PageToolbarSection>
         </PageToolbar>
@@ -123,7 +126,7 @@ CalendarPage.propTypes = {
   hasArtist: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   onDaysCountChange: PropTypes.func.isRequired,
-  onFilterSelect: PropTypes.func.isRequired
+  onUnmonitoredChange: PropTypes.func.isRequired
 };
 
 export default CalendarPage;

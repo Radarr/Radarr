@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setCalendarDaysCount, setCalendarFilter } from 'Store/Actions/calendarActions';
+import { setCalendarDaysCount, setCalendarIncludeUnmonitored } from 'Store/Actions/calendarActions';
 import createArtistCountSelector from 'Store/Selectors/createArtistCountSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import CalendarPage from './CalendarPage';
@@ -12,8 +12,8 @@ function createMapStateToProps() {
     createUISettingsSelector(),
     (calendar, artistCount, uiSettings) => {
       return {
-        filters: calendar.filters,
         selectedFilterKey: calendar.selectedFilterKey,
+        filters: calendar.filters,
         showUpcoming: calendar.showUpcoming,
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasArtist: !!artistCount
@@ -28,8 +28,8 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(setCalendarDaysCount({ dayCount }));
     },
 
-    onFilterSelect(selectedFilterKey) {
-      dispatch(setCalendarFilter({ selectedFilterKey }));
+    onUnmonitoredChange(unmonitored) {
+      dispatch(setCalendarIncludeUnmonitored({ unmonitored }));
     }
   };
 }

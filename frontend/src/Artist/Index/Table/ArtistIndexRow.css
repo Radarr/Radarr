@@ -45,7 +45,7 @@
 .trackCount {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
-  flex: 0 0 120px;
+  flex: 0 0 130px;
 }
 
 .path {
@@ -57,7 +57,7 @@
 .sizeOnDisk {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
-  flex: 0 0 110px;
+  flex: 0 0 120px;
 }
 
 .tags {

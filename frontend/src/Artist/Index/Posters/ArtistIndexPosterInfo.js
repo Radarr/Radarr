@@ -10,18 +10,14 @@ function ArtistIndexPosterInfo(props) {
     showQualityProfile,
     previousAiring,
     added,
-    statistics,
+    albumCount,
     path,
+    sizeOnDisk,
     sortKey,
     showRelativeDates,
     shortDateFormat,
     timeFormat
   } = props;
-
-  const {
-    albumCount,
-    sizeOnDisk
-  } = statistics;
 
   if (sortKey === 'qualityProfileId' && !showQualityProfile) {
     return (
@@ -107,8 +103,9 @@ ArtistIndexPosterInfo.propTypes = {
   showQualityProfile: PropTypes.bool.isRequired,
   previousAiring: PropTypes.string,
   added: PropTypes.string,
-  statistics: PropTypes.object.isRequired,
+  albumCount: PropTypes.number.isRequired,
   path: PropTypes.string.isRequired,
+  sizeOnDisk: PropTypes.number,
   sortKey: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

@@ -382,8 +382,7 @@ ArtistIndexRow.propTypes = {
 
 ArtistIndexRow.defaultProps = {
   trackCount: 0,
-  trackFileCount: 0,
-  albumCount: 0
+  trackFileCount: 0
 };
 
 export default ArtistIndexRow;

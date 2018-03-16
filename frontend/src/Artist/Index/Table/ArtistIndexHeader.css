@@ -43,7 +43,7 @@
 .trackCount {
   composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
 
-  flex: 0 0 120px;
+  flex: 0 0 130px;
 }
 
 .path {
@@ -55,7 +55,7 @@
 .sizeOnDisk {
   composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
 
-  flex: 0 0 115px;
+  flex: 0 0 120px;
 }
 
 .tags {
