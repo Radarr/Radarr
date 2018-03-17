@@ -107,6 +107,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 {
                     localTrack = new LocalTrack();
                     localTrack.Path = file;
+                    localTrack.Quality = new QualityModel(Quality.Unknown);
+                    localTrack.Language = Language.Unknown;
 
                     decision = new ImportDecision(localTrack, new Rejection("Unable to parse file"));
                 }
