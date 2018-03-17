@@ -15,8 +15,8 @@ function ArtistIndexFooter({ artist }) {
   let totalFileSize = 0;
 
   artist.forEach((s) => {
-    tracks += s.trackCount || 0;
-    trackFiles += s.trackFileCount || 0;
+    tracks += s.statistics.trackCount || 0;
+    trackFiles += s.statistics.trackFileCount || 0;
 
     if (s.status === 'ended') {
       ended++;
