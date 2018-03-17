@@ -101,7 +101,9 @@ namespace Lidarr.Api.V1.Artist
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
-                Ratings = model.Ratings
+                Ratings = model.Ratings,
+
+                Statistics = new ArtistStatisticsResource()
             };
         }
 
