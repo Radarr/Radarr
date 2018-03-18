@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
@@ -105,5 +106,8 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             yield return new IndexerRequest(requestBuilder.Build());
         }
+        
+        public Func<IDictionary<string, string>> GetCookies { get; set; }
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
 }

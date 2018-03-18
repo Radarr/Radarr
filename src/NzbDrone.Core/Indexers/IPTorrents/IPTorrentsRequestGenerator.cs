@@ -27,5 +27,8 @@ namespace NzbDrone.Core.Indexers.IPTorrents
         {
             yield return new IndexerRequest(Settings.BaseUrl, HttpAccept.Rss);
         }
+        
+        public Func<IDictionary<string, string>> GetCookies { get; set; }
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
 }

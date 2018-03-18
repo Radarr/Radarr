@@ -45,10 +45,8 @@ namespace NzbDrone.Core.Indexers
             {
                 return new List<ReleaseInfo>();
             }
-
-            var generator = GetRequestGenerator();
-
-            return FetchReleases(generator.GetRecentRequests(), true);
+            
+            return FetchReleases(GetRequestChain(), true);
         }
 
         public override IList<ReleaseInfo> Fetch(MovieSearchCriteria searchCriteria)
@@ -58,9 +56,35 @@ namespace NzbDrone.Core.Indexers
                 return new List<ReleaseInfo>();
             }
 
-            var generator = GetRequestGenerator();
+            return FetchReleases(GetRequestChain(searchCriteria));
+        }
 
-            return FetchReleases(generator.GetSearchRequests(searchCriteria));
+        protected IndexerPageableRequestChain GetRequestChain(SearchCriteriaBase searchCriteria = null)
+        {
+            var generator = GetRequestGenerator();
+            
+            //A func ensures cookies are always updated to the latest. This way, the first page could update the cookies and then can be reused by the second page.
+
+            generator.GetCookies = () =>
+            {
+                var cookies = _indexerStatusService.GetIndexerCookies(Definition.Id);
+                var expiration = _indexerStatusService.GetIndexerCookiesExpirationDate(Definition.Id);
+                if (expiration < DateTime.Now)
+                {
+                    cookies = null;
+                }
+
+                return cookies;
+            };
+            
+            var requests = searchCriteria == null ? generator.GetRecentRequests() : generator.GetSearchRequests(searchCriteria as MovieSearchCriteria);
+
+            generator.CookiesUpdater = (cookies, expiration) =>
+            {
+                _indexerStatusService.UpdateCookies(Definition.Id, cookies, expiration);
+            };
+
+            return requests;
         }
 
         protected virtual IList<ReleaseInfo> FetchReleases(IndexerPageableRequestChain pageableRequestChain, bool isRecent = false)
@@ -261,8 +285,7 @@ namespace NzbDrone.Core.Indexers
             try
             {
                 var parser = GetParser();
-                var generator = GetRequestGenerator();
-                var releases = FetchPage(generator.GetRecentRequests().GetAllTiers().First().First(), parser);
+                var releases = FetchPage(GetRequestChain().GetAllTiers().First().First(), parser);
 
                 if (releases.Empty())
                 {

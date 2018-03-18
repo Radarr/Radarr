@@ -12,11 +12,14 @@ namespace NzbDrone.Core.Indexers
     {
         List<IndexerStatus> GetBlockedIndexers();
         ReleaseInfo GetLastRssSyncReleaseInfo(int indexerId);
+        IDictionary<string, string> GetIndexerCookies(int indexerId);
+        DateTime GetIndexerCookiesExpirationDate(int indexerId);
         void RecordSuccess(int indexerId);
         void RecordFailure(int indexerId, TimeSpan minimumBackOff = default(TimeSpan));
         void RecordConnectionFailure(int indexerId);
 
         void UpdateRssSyncStatus(int indexerId, ReleaseInfo releaseInfo);
+        void UpdateCookies(int indexerId, IDictionary<string, string> cookies, DateTime? expiration);
     }
 
     public class IndexerStatusService : IIndexerStatusService, IHandleAsync<ProviderDeletedEvent<IIndexer>>
@@ -53,6 +56,16 @@ namespace NzbDrone.Core.Indexers
         public ReleaseInfo GetLastRssSyncReleaseInfo(int indexerId)
         {
             return GetIndexerStatus(indexerId).LastRssSyncReleaseInfo;
+        }
+
+        public IDictionary<string, string> GetIndexerCookies(int indexerId)
+        {
+            return GetIndexerStatus(indexerId).Cookies;
+        }
+
+        public DateTime GetIndexerCookiesExpirationDate(int indexerId)
+        {
+            return GetIndexerStatus(indexerId).CookiesExpirationDate ?? DateTime.Now + TimeSpan.FromDays(12);
         }
 
         private IndexerStatus GetIndexerStatus(int indexerId)
@@ -137,6 +150,17 @@ namespace NzbDrone.Core.Indexers
 
                 status.LastRssSyncReleaseInfo = releaseInfo;
 
+                _indexerStatusRepository.Upsert(status);
+            }
+        }
+
+        public void UpdateCookies(int indexerId, IDictionary<string, string> cookies, DateTime? expiration)
+        {
+            lock (_syncRoot)
+            {
+                var status = GetIndexerStatus(indexerId);
+                status.Cookies = cookies;
+                status.CookiesExpirationDate = expiration;
                 _indexerStatusRepository.Upsert(status);
             }
         }

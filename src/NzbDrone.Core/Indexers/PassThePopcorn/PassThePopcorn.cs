@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public override bool SupportsSearch => true;
         public override int PageSize => 50;
 
-        private readonly ICached<Dictionary<string, string>> _authCookieCache;
         private readonly IHttpClient _httpClient;
+        private readonly IIndexerStatusService _indexerStatusService;
         private readonly Logger _logger;
 
         public PassThePopcorn(IHttpClient httpClient, ICacheManager cacheManager, IIndexerStatusService indexerStatusService,
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             _httpClient = httpClient;
             _logger = logger;
-            _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
+            _indexerStatusService = indexerStatusService;
         }
 
         public override IIndexerRequestGenerator GetRequestGenerator()
@@ -35,7 +35,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 Settings = Settings,
                 HttpClient = _httpClient,
                 Logger = _logger,
-                AuthCookieCache = _authCookieCache
             };
         }
 
