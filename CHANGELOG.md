@@ -3,6 +3,20 @@
 ## (unreleased)
 
 ### **New features**
+- A Huge Cleanup of old Series Code. (Let's pray nothing breaks :P) (#2589) [Qstick]
+- Update stale.yml. [AeonLucid]
+
+### **Fixes**
+- ICS malformed in a lot of cases. Also events are now all day. [Leonardo Galli]
+- Set category when adding torrent to qBittorrent (#2649) [themagicbullet]
+- Create support.yml. [Leonardo Galli]
+- Incorrect Kodi nfo date format (#2605) [Qstick]
+- Sort by Downloaded not working. [Leonardo Galli]
+
+
+## v0.2.0.995 (2018-03-04)
+
+### **New features**
 - Copy & Paste now triggers search (#2587) [Paul Kozlovitch]
 - Added console logging in case NLog fails to initialize. [Taloth Saldono]
 
