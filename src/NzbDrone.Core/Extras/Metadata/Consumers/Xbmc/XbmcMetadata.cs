@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using NLog;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaCover;
@@ -19,12 +20,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
     {
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
+        private readonly IDetectXbmcNfo _detectNfo;
+        private readonly IDiskProvider _diskProvider;
 
-        public XbmcMetadata(IMapCoversToLocal mediaCoverService,
+        public XbmcMetadata(IDetectXbmcNfo detectNfo,
+                            IDiskProvider diskProvider,
+                            IMapCoversToLocal mediaCoverService,
                             Logger logger)
         {
-            _mediaCoverService = mediaCoverService;
             _logger = logger;
+            _mediaCoverService = mediaCoverService;
+            _diskProvider = diskProvider;
+            _detectNfo = detectNfo;
+            
         }
 
         private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|landscape|logo|backdrop|clearlogo)\.(?:png|jpg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -76,7 +84,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            if (filename.Equals("movie.nfo", StringComparison.OrdinalIgnoreCase))
+            if (filename.Equals("movie.nfo", StringComparison.OrdinalIgnoreCase) &&
+                _detectNfo.IsXbmcNfoFile(path))
             {
                 metadata.Type = MetadataType.MovieMetadata;
                 return metadata;
@@ -85,7 +94,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             var parseResult = Parser.Parser.ParseMovieTitle(filename, false);
 
             if (parseResult != null &&
-                Path.GetExtension(filename).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
+                Path.GetExtension(filename).Equals(".nfo", StringComparison.OrdinalIgnoreCase) &&
+                _detectNfo.IsXbmcNfoFile(path))
             {
                 metadata.Type = MetadataType.MovieMetadata;
                 return metadata;
@@ -102,6 +112,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
 
             _logger.Debug("Generating Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+
+            var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
 
             var xmlResult = string.Empty;
 
@@ -150,7 +162,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     details.Add(new XElement("thumb", image.Url));
                 }
 
-                details.Add(new XElement("watched", "false"));
+                details.Add(new XElement("watched", watched));
 
                 if (movieFile.MediaInfo != null)
                 {
@@ -258,6 +270,20 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             }
 
             return audioCodec;
+        }
+
+        private bool GetExistingWatchedStatus(Movie movie, string movieFilePath)
+        {
+            var fullPath = Path.Combine(movie.Path, GetMovieMetadataFilename(movieFilePath));
+
+            if (!_diskProvider.FileExists(fullPath))
+            {
+                return false;
+            }
+
+            var fileContent = _diskProvider.ReadAllText(fullPath);
+
+            return Regex.IsMatch(fileContent, "<watched>true</watched>");
         }
     }
 }

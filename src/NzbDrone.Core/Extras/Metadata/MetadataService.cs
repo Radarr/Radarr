@@ -10,6 +10,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
+using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 
@@ -20,6 +21,7 @@ namespace NzbDrone.Core.Extras.Metadata
         private readonly IMetadataFactory _metadataFactory;
         private readonly ICleanMetadataService _cleanMetadataService;
         private readonly IRecycleBinProvider _recycleBinProvider;
+        private readonly IOtherExtraFileRenamer _otherExtraFileRenamer;
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IHttpClient _httpClient;
@@ -31,6 +33,7 @@ namespace NzbDrone.Core.Extras.Metadata
                                IDiskProvider diskProvider,
                                IDiskTransferService diskTransferService,
                                IRecycleBinProvider recycleBinProvider,
+                               IOtherExtraFileRenamer otherExtraFileRenamer,
                                IMetadataFactory metadataFactory,
                                ICleanMetadataService cleanMetadataService,
                                IHttpClient httpClient,
@@ -41,6 +44,7 @@ namespace NzbDrone.Core.Extras.Metadata
         {
             _metadataFactory = metadataFactory;
             _cleanMetadataService = cleanMetadataService;
+            _otherExtraFileRenamer = otherExtraFileRenamer;
             _recycleBinProvider = recycleBinProvider;
             _diskTransferService = diskTransferService;
             _diskProvider = diskProvider;
@@ -87,7 +91,6 @@ namespace NzbDrone.Core.Extras.Metadata
 
             foreach (var consumer in _metadataFactory.Enabled())
             {
-
                 files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, new List<MetadataFile>()));
                 files.AddRange(ProcessMovieImages(consumer, movie, movieFile, new List<MetadataFile>()));
             }
@@ -159,6 +162,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
             var fullPath = Path.Combine(movie.Path, movieFileMetadata.RelativePath);
 
+            _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
+
             var existingMetadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieMetadata &&
                                                                                   c.MovieFileId == movieFile.Id);
 
@@ -211,6 +216,8 @@ namespace NzbDrone.Core.Extras.Metadata
                     _logger.Debug("Movie image already exists: {0}", fullPath);
                     continue;
                 }
+
+                _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
 
                 var existingMetadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
                                                                                           c.RelativePath == image.RelativePath);

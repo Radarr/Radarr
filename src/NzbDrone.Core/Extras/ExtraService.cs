@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Extras
 {
     public interface IExtraService
     {
-        void ImportExtraFiles(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly);
+        void ImportMovie(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
@@ -48,15 +48,15 @@ namespace NzbDrone.Core.Extras
             _logger = logger;
         }
 
+        public void ImportMovie(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly)
+        {
+            ImportExtraFiles(localMovie, movieFile, isReadOnly);
+
+            CreateAfterImport(localMovie.Movie, movieFile);
+        }
+
         public void ImportExtraFiles(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly)
         {
-            var movie = localMovie.Movie;
-
-            foreach (var extraFileManager in _extraFileManagers)
-            {
-                extraFileManager.CreateAfterMovieImport(movie, movieFile);
-            }
-
             if (!_configService.ImportExtraFiles)
             {
                 return;
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Extras
                     foreach (var extraFileManager in _extraFileManagers)
                     {
                         var extension = Path.GetExtension(matchingFilename);
-                        var extraFile = extraFileManager.Import(movie, movieFile, matchingFilename, extension, isReadOnly);
+                        var extraFile = extraFileManager.Import(localMovie.Movie, movieFile, matchingFilename, extension, isReadOnly);
 
                         if (extraFile != null)
                         {
@@ -99,6 +99,14 @@ namespace NzbDrone.Core.Extras
                 {
                     _logger.Warn(ex, "Failed to import extra file: {0}", matchingFilename);
                 }
+            }
+        }
+
+        private void CreateAfterImport(Movie movie, MovieFile movieFile)
+        {
+            foreach (var extraFileManager in _extraFileManagers)
+            {
+                extraFileManager.CreateAfterMovieImport(movie, movieFile);
             }
         }
 
