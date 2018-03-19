@@ -128,7 +128,7 @@
     <Compile Include="Datastore\Migration\142_movie_extras.cs" />
     <Compile Include="Datastore\Migration\140_add_alternative_titles_table.cs" />
     <Compile Include="Datastore\Migration\141_fix_duplicate_alt_titles.cs" />
-    <Compile Include="Datastore\Migration\144_banner_to_fanart.cs" />
+    <Compile Include="Datastore\Migration\145_banner_to_fanart.cs" />
     <Compile Include="DecisionEngine\Specifications\RequiredIndexerFlagsSpecification.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualitySpecification.cs" />

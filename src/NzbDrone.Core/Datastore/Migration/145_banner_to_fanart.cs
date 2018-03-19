@@ -3,7 +3,7 @@ using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
-    [Migration(144)]
+    [Migration(145)]
     public class banner_to_fanart : NzbDroneMigrationBase
     {
         protected override void MainDbUpgrade()
