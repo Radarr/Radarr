@@ -127,7 +127,17 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * Make sure `NzbDrone.Console` is set as the startup project
 * Run `build.sh` before running
 
-### License
+## Supporters
+
+This project would not be possible without the support by these amazing folks. [**Become a sponsor or backer**](https://opencollective.com/radarr) to help us out!
+
+[![Sponsors](https://opencollective.com/radarr/tiers/sponsor.svg?avatarHeight=36)]
+
+---
+
+[![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=36)]
+
+## License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
 * Copyright 2010-2017
