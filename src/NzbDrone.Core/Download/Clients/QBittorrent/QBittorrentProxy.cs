@@ -75,6 +75,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormParameter("urls", torrentUrl);
 
+            if (settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                request.AddFormParameter("category", settings.MovieCategory);
+            }
+
             var result = ProcessRequest(request, settings);
 
             // Note: Older qbit versions returned nothing, so we can't do != "Ok." here.
@@ -105,6 +110,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormParameter("hashes", hash);
 
+            if (settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                request.AddFormParameter("category", settings.MovieCategory);
+            }
+            
             ProcessRequest(request, settings);
         }
 
