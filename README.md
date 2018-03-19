@@ -131,11 +131,11 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 This project would not be possible without the support by these amazing folks. [**Become a sponsor or backer**](https://opencollective.com/radarr) to help us out!
 
-[![Sponsors](https://opencollective.com/radarr/tiers/sponsor.svg?avatarHeight=36)]
+[![Sponsors](https://opencollective.com/radarr/tiers/sponsor.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3851)
 
 ---
 
-[![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=36)]
+[![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3850)
 
 ## License
 
