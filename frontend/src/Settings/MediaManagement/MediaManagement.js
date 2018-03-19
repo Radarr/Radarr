@@ -32,8 +32,7 @@ class MediaManagement extends Component {
 
     const fileDateOptions = [
       { key: 'none', value: 'None' },
-      { key: 'localAirDate', value: 'Local Air Date' },
-      { key: 'utcAirDate', value: 'UTC Air Date' }
+      { key: 'albumReleaseDate', value: 'Album Release Date' }
     ];
 
     return (
