@@ -45,7 +45,7 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(releaseActions.setReleasesFilter({ selectedFilterKey }));
     },
 
-    onGrabPress({ guid, indexerId }) {
+    onGrabPress(guid, indexerId) {
       dispatch(releaseActions.grabRelease({ guid, indexerId }));
     }
   };
