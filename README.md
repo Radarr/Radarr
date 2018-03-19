@@ -135,6 +135,10 @@ This project would not be possible without the support by these amazing folks. [
 
 ---
 
+[![Flexible Sponsors](https://opencollective.com/radarr/tiers/flexible-sponsor.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3856)
+
+---
+
 [![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3850)
 
 ## License
