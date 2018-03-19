@@ -87,12 +87,17 @@ namespace NzbDrone.Core.Indexers
             return requests;
         }
 
+
         protected virtual IList<ReleaseInfo> FetchReleases(IndexerPageableRequestChain pageableRequestChain, bool isRecent = false)
         {
             var releases = new List<ReleaseInfo>();
             var url = string.Empty;
 
             var parser = GetParser();
+            parser.CookiesUpdater = (cookies, expiration) =>
+            {
+                _indexerStatusService.UpdateCookies(Definition.Id, cookies, expiration);
+            };
 
             try
             {
@@ -285,6 +290,10 @@ namespace NzbDrone.Core.Indexers
             try
             {
                 var parser = GetParser();
+                parser.CookiesUpdater = (cookies, expiration) =>
+                {
+                    _indexerStatusService.UpdateCookies(Definition.Id, cookies, expiration);
+                };
                 var releases = FetchPage(GetRequestChain().GetAllTiers().First().First(), parser);
 
                 if (releases.Empty())

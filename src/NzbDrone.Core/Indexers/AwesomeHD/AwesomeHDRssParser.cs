@@ -106,6 +106,8 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
             return torrentInfos.OrderByDescending(o => ((dynamic)o).Seeders).ToArray();
         }
 
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+
         private string GetDownloadUrl(string torrentId, string authKey, string passKey)
         {
             var url = new HttpUri(_settings.BaseUrl)

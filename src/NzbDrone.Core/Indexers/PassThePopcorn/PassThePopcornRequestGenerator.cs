@@ -81,10 +81,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     .Accept(HttpAccept.Json)
                     .Build();
 
+                authLoginRequest.AllowAutoRedirect = true;
                 var response = HttpClient.Execute(authLoginRequest);
                 var result = Json.Deserialize<PassThePopcornAuthResponse>(response.Content);
 
-                if (result.Result != "Ok" || string.IsNullOrWhiteSpace(result.Result))
+                if (result?.Result != "Ok" || string.IsNullOrWhiteSpace(result.Result))
                 {
                     Logger.Debug("PassThePopcorn authentication failed.");
                     throw new Exception("Failed to authenticate with PassThePopcorn.");

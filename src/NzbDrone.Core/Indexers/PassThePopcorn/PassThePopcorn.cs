@@ -42,5 +42,20 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             return new PassThePopcornParser(Settings);
         }
+        
+        protected override IndexerResponse FetchIndexerResponse(IndexerRequest request)
+        {
+            _logger.Debug("Downloading Feed " + request.HttpRequest.ToString(false));
+
+            if (request.HttpRequest.RateLimit < RateLimit)
+            {
+                request.HttpRequest.RateLimit = RateLimit;
+            }
+
+            //Potentially dangerous though if ptp moves domains!
+            request.HttpRequest.AllowAutoRedirect = false;
+
+            return new IndexerResponse(request, _httpClient.Execute(request.HttpRequest));
+        }
     }
 }
