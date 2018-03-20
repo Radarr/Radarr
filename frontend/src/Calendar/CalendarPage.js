@@ -40,10 +40,6 @@ class CalendarPage extends Component {
     this.props.onDaysCountChange(days);
   }
 
-  onFilterSelect = (selectedFilterKey) => {
-    this.props.onUnmonitoredChange(selectedFilterKey === 'unmonitored');
-  }
-
   onGetCalendarLinkPress = () => {
     this.setState({ isCalendarLinkModalOpen: true });
   }
@@ -60,7 +56,8 @@ class CalendarPage extends Component {
       selectedFilterKey,
       filters,
       hasArtist,
-      colorImpairedMode
+      colorImpairedMode,
+      onFilterSelect
     } = this.props;
 
     const isMeasured = this.state.width > 0;
@@ -89,7 +86,7 @@ class CalendarPage extends Component {
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={[]}
-              onFilterSelect={this.onFilterSelect}
+              onFilterSelect={onFilterSelect}
             />
           </PageToolbarSection>
         </PageToolbar>
@@ -126,7 +123,7 @@ CalendarPage.propTypes = {
   hasArtist: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   onDaysCountChange: PropTypes.func.isRequired,
-  onUnmonitoredChange: PropTypes.func.isRequired
+  onFilterSelect: PropTypes.func.isRequired
 };
 
 export default CalendarPage;

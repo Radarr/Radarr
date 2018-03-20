@@ -40,6 +40,17 @@ export const defaultState = {
 
   filters: [
     {
+      key: 'all',
+      label: 'All',
+      filters: [
+        {
+          key: 'monitored',
+          value: false,
+          type: filterTypes.EQUAL
+        }
+      ]
+    },
+    {
       key: 'monitored',
       label: 'Monitored Only',
       filters: [
@@ -49,24 +60,12 @@ export const defaultState = {
           type: filterTypes.EQUAL
         }
       ]
-    },
-    {
-      key: 'unmonitored',
-      label: 'Include Unmonitored',
-      filters: [
-        {
-          key: 'monitored',
-          value: false,
-          type: filterTypes.EQUAL
-        }
-      ]
     }
   ]
 };
 
 export const persistState = [
   'calendar.view',
-  'calendar.unmonitored',
   'calendar.selectedFilterKey'
 ];
 
@@ -75,7 +74,7 @@ export const persistState = [
 
 export const FETCH_CALENDAR = 'calendar/fetchCalendar';
 export const SET_CALENDAR_DAYS_COUNT = 'calendar/setCalendarDaysCount';
-export const SET_CALENDAR_INCLUDE_UNMONITORED = 'calendar/setCalendarIncludeUnmonitored';
+export const SET_CALENDAR_FILTER = 'calendar/setCalendarFilter';
 export const SET_CALENDAR_VIEW = 'calendar/setCalendarView';
 export const GOTO_CALENDAR_TODAY = 'calendar/gotoCalendarToday';
 export const GOTO_CALENDAR_PREVIOUS_RANGE = 'calendar/gotoCalendarPreviousRange';
@@ -182,7 +181,7 @@ function isRangePopulated(start, end, state) {
 
 export const fetchCalendar = createThunk(FETCH_CALENDAR);
 export const setCalendarDaysCount = createThunk(SET_CALENDAR_DAYS_COUNT);
-export const setCalendarIncludeUnmonitored = createThunk(SET_CALENDAR_INCLUDE_UNMONITORED);
+export const setCalendarFilter = createThunk(SET_CALENDAR_FILTER);
 export const setCalendarView = createThunk(SET_CALENDAR_VIEW);
 export const gotoCalendarToday = createThunk(GOTO_CALENDAR_TODAY);
 export const gotoCalendarPreviousRange = createThunk(GOTO_CALENDAR_PREVIOUS_RANGE);
@@ -196,7 +195,7 @@ export const actionHandlers = handleThunks({
 
   [FETCH_CALENDAR]: function(getState, payload, dispatch) {
     const state = getState();
-    const unmonitored = state.calendar.unmonitored;
+    const unmonitored = state.calendar.selectedFilterKey === 'all';
 
     const {
       time,
@@ -273,10 +272,10 @@ export const actionHandlers = handleThunks({
     dispatch(fetchCalendar({ time, view }));
   },
 
-  [SET_CALENDAR_INCLUDE_UNMONITORED]: function(getState, payload, dispatch) {
+  [SET_CALENDAR_FILTER]: function(getState, payload, dispatch) {
     dispatch(set({
       section,
-      unmonitored: payload.unmonitored
+      selectedFilterKey: payload.selectedFilterKey
     }));
 
     const state = getState();
@@ -340,8 +339,8 @@ export const reducers = createHandleActions({
   [CLEAR_CALENDAR]: (state) => {
     const {
       view,
-      unmonitored,
       showUpcoming,
+      selectedFilterKey,
       ...otherDefaultState
     } = defaultState;
 
