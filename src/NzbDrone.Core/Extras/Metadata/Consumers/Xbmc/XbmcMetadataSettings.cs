@@ -17,19 +17,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             ArtistMetadata = true;
             AlbumMetadata = true;
-            TrackMetadata = true;
             ArtistImages = true;
             AlbumImages = true;
         }
 
-        [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox)]
+        [FieldDefinition(0, Label = "Artist Metadata", Type = FieldType.Checkbox, HelpText = "artist.nfo")]
         public bool ArtistMetadata { get; set; }
 
-        [FieldDefinition(1, Label = "Album Metadata", Type = FieldType.Checkbox)]
+        [FieldDefinition(1, Label = "Album Metadata", Type = FieldType.Checkbox, HelpText = "album.nfo")]
         public bool AlbumMetadata { get; set; }
-
-        [FieldDefinition(2, Label = "Track Metadata", Type = FieldType.Checkbox)]
-        public bool TrackMetadata { get; set; }
 
         [FieldDefinition(3, Label = "Artist Images", Type = FieldType.Checkbox)]
         public bool ArtistImages { get; set; }

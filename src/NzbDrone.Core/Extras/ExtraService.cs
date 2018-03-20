@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Extras
 {
     public interface IExtraService
     {
-        void ImportExtraFiles(LocalTrack localEpisode, TrackFile episodeFile, bool isReadOnly);
+        void ImportTrack(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
@@ -51,15 +51,15 @@ namespace NzbDrone.Core.Extras
             _logger = logger;
         }
 
+        public void ImportTrack(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly)
+        {
+            ImportExtraFiles(localTrack, trackFile, isReadOnly);
+
+            CreateAfterImport(localTrack.Artist, trackFile);
+        }
+
         public void ImportExtraFiles(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly)
         {
-            var artist = localTrack.Artist;
-
-            foreach (var extraFileManager in _extraFileManagers)
-            {
-                extraFileManager.CreateAfterTrackImport(artist, trackFile);
-            }
-
             if (!_configService.ImportExtraFiles)
             {
                 return;
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Extras
                     foreach (var extraFileManager in _extraFileManagers)
                     {
                         var extension = Path.GetExtension(matchingFilename);
-                        var extraFile = extraFileManager.Import(artist, trackFile, matchingFilename, extension, isReadOnly);
+                        var extraFile = extraFileManager.Import(localTrack.Artist, trackFile, matchingFilename, extension, isReadOnly);
 
                         if (extraFile != null)
                         {
@@ -102,6 +102,14 @@ namespace NzbDrone.Core.Extras
                 {
                     _logger.Warn(ex, "Failed to import extra file: {0}", matchingFilename);
                 }
+            }
+        }
+
+        private void CreateAfterImport(Artist artist, TrackFile trackFile)
+        {
+            foreach (var extraFileManager in _extraFileManagers)
+            {
+                extraFileManager.CreateAfterTrackImport(artist, trackFile);
             }
         }
 

@@ -127,7 +127,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                     if (newDownload)
                     {
-                        _extraService.ImportExtraFiles(localTrack, trackFile, copyOnly);
+                        _extraService.ImportTrack(localTrack, trackFile, copyOnly);
                     }
 
                     _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, newDownload, downloadClientItem));

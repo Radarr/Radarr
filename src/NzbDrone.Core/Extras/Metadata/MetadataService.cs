@@ -10,6 +10,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
+using NzbDrone.Core.Extras.Others;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
@@ -20,6 +21,8 @@ namespace NzbDrone.Core.Extras.Metadata
     {
         private readonly IMetadataFactory _metadataFactory;
         private readonly ICleanMetadataService _cleanMetadataService;
+        private readonly IRecycleBinProvider _recycleBinProvider;
+        private readonly IOtherExtraFileRenamer _otherExtraFileRenamer;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IDiskProvider _diskProvider;
         private readonly IHttpClient _httpClient;
@@ -31,6 +34,8 @@ namespace NzbDrone.Core.Extras.Metadata
         public MetadataService(IConfigService configService,
                                IDiskProvider diskProvider,
                                IDiskTransferService diskTransferService,
+                               IRecycleBinProvider recycleBinProvider,
+                               IOtherExtraFileRenamer otherExtraFileRenamer,
                                IMetadataFactory metadataFactory,
                                ICleanMetadataService cleanMetadataService,
                                IHttpClient httpClient,
@@ -42,6 +47,8 @@ namespace NzbDrone.Core.Extras.Metadata
         {
             _metadataFactory = metadataFactory;
             _cleanMetadataService = cleanMetadataService;
+            _otherExtraFileRenamer = otherExtraFileRenamer;
+            _recycleBinProvider = recycleBinProvider;
             _diskTransferService = diskTransferService;
             _diskProvider = diskProvider;
             _httpClient = httpClient;
@@ -249,6 +256,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
             var fullPath = Path.Combine(artist.Path, artistMetadata.RelativePath);
 
+            _otherExtraFileRenamer.RenameOtherExtraFile(artist, fullPath);
+
             _logger.Debug("Writing Artist Metadata to: {0}", fullPath);
             SaveMetadataFile(fullPath, artistMetadata.Contents);
 
@@ -293,6 +302,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
             var fullPath = Path.Combine(artist.Path, albumMetadata.RelativePath);
 
+            _otherExtraFileRenamer.RenameOtherExtraFile(artist, fullPath);
+
             _logger.Debug("Writing Album Metadata to: {0}", fullPath);
             SaveMetadataFile(fullPath, albumMetadata.Contents);
 
@@ -313,6 +324,8 @@ namespace NzbDrone.Core.Extras.Metadata
             }
 
             var fullPath = Path.Combine(artist.Path, trackMetadata.RelativePath);
+
+            _otherExtraFileRenamer.RenameOtherExtraFile(artist, fullPath);
 
             var existingMetadata = GetMetadataFile(artist, existingMetadataFiles, c => c.Type == MetadataType.TrackMetadata &&
                                                                                   c.TrackFileId == trackFile.Id);
@@ -368,6 +381,8 @@ namespace NzbDrone.Core.Extras.Metadata
                     continue;
                 }
 
+                _otherExtraFileRenamer.RenameOtherExtraFile(artist, fullPath);
+
                 var metadata = GetMetadataFile(artist, existingMetadataFiles, c => c.Type == MetadataType.ArtistImage &&
                                                                               c.RelativePath == image.RelativePath) ??
                                new MetadataFile
@@ -400,6 +415,8 @@ namespace NzbDrone.Core.Extras.Metadata
                     _logger.Debug("Album image already exists: {0}", fullPath);
                     continue;
                 }
+
+                _otherExtraFileRenamer.RenameOtherExtraFile(artist, fullPath);
 
                 var metadata = GetMetadataFile(artist, existingMetadataFiles, c => c.Type == MetadataType.AlbumImage &&
                                                                                 c.AlbumId == album.Id &&
@@ -471,10 +488,10 @@ namespace NzbDrone.Core.Extras.Metadata
 
                 _logger.Debug("Removing duplicate Metadata file: {0}", path);
 
-                _diskProvider.DeleteFile(path);
+                var subfolder = _diskProvider.GetParentFolder(artist.Path).GetRelativePath(_diskProvider.GetParentFolder(path));
+                _recycleBinProvider.DeleteFile(path, subfolder);
                 _metadataFileService.Delete(file.Id);
             }
-
             
             return matchingMetadataFiles.First();
         }

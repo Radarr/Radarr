@@ -17,14 +17,17 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 {
     public class XbmcMetadata : MetadataBase<XbmcMetadataSettings>
     {
-        private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
+        private readonly IMapCoversToLocal _mediaCoverService;
+        private readonly IDetectXbmcNfo _detectNfo;
 
-        public XbmcMetadata(IMapCoversToLocal mediaCoverService,
+        public XbmcMetadata(IDetectXbmcNfo detectNfo,
+                            IMapCoversToLocal mediaCoverService,
                             Logger logger)
         {
-            _mediaCoverService = mediaCoverService;
             _logger = logger;
+            _mediaCoverService = mediaCoverService;
+            _detectNfo = detectNfo;
         }
 
         private static readonly Regex ArtistImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|logo)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -72,24 +75,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return metadata;
             }
 
-            if (filename.Equals("artist.nfo", StringComparison.OrdinalIgnoreCase))
+            var isXbmcNfoFile = _detectNfo.IsXbmcNfoFile(path);
+
+            if (filename.Equals("artist.nfo", StringComparison.OrdinalIgnoreCase) &&
+                isXbmcNfoFile)
             {
                 metadata.Type = MetadataType.ArtistMetadata;
                 return metadata;
             }
 
-            if (filename.Equals("album.nfo", StringComparison.OrdinalIgnoreCase))
+            if (filename.Equals("album.nfo", StringComparison.OrdinalIgnoreCase) &&
+                isXbmcNfoFile)
             {
                 metadata.Type = MetadataType.AlbumMetadata;
-                return metadata;
-            }
-
-            var parseResult = Parser.Parser.ParseMusicTitle(filename);
-
-            if (parseResult != null &&
-                Path.GetExtension(filename).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
-            {
-                metadata.Type = MetadataType.TrackMetadata;
                 return metadata;
             }
 
@@ -196,93 +194,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         public override MetadataFileResult TrackMetadata(Artist artist, TrackFile trackFile)
         {
-            if (!Settings.TrackMetadata)
-            {
-                return null;
-            }
-
-            _logger.Debug("Generating Track Metadata for: {0}", Path.Combine(artist.Path, trackFile.RelativePath));
-
-            var xmlResult = string.Empty;
-            foreach (var episode in trackFile.Tracks.Value)
-            {
-                var sb = new StringBuilder();
-                var xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                xws.Indent = false;
-
-                using (var xw = XmlWriter.Create(sb, xws))
-                {
-                    var doc = new XDocument();
-
-                    var details = new XElement("episodedetails");
-                    details.Add(new XElement("title", episode.Title));
-                    details.Add(new XElement("episode", episode.TrackNumber));
-
-                    //If trakt ever gets airs before information for specials we should add set it
-                    details.Add(new XElement("displayseason"));
-                    details.Add(new XElement("displayepisode"));
-
-                    details.Add(new XElement("watched", "false"));
-
-                    if (episode.Ratings != null && episode.Ratings.Votes > 0)
-                    {
-                        details.Add(new XElement("rating", episode.Ratings.Value));
-                    }
-
-                    if (trackFile.MediaInfo != null)
-                    {
-                        var fileInfo = new XElement("fileinfo");
-                        var streamDetails = new XElement("streamdetails");
-
-                        var video = new XElement("video");
-                        video.Add(new XElement("aspect", (float)trackFile.MediaInfo.Width / (float)trackFile.MediaInfo.Height));
-                        video.Add(new XElement("bitrate", trackFile.MediaInfo.VideoBitrate));
-                        video.Add(new XElement("codec", trackFile.MediaInfo.VideoCodec));
-                        video.Add(new XElement("framerate", trackFile.MediaInfo.VideoFps));
-                        video.Add(new XElement("height", trackFile.MediaInfo.Height));
-                        video.Add(new XElement("scantype", trackFile.MediaInfo.ScanType));
-                        video.Add(new XElement("width", trackFile.MediaInfo.Width));
-
-                        if (trackFile.MediaInfo.RunTime != null)
-                        {
-                            video.Add(new XElement("duration", trackFile.MediaInfo.RunTime.TotalMinutes));
-                            video.Add(new XElement("durationinseconds", trackFile.MediaInfo.RunTime.TotalSeconds));
-                        }
-
-                        streamDetails.Add(video);
-
-                        var audio = new XElement("audio");
-                        audio.Add(new XElement("bitrate", trackFile.MediaInfo.AudioBitrate));
-                        audio.Add(new XElement("channels", trackFile.MediaInfo.AudioChannels));
-                        audio.Add(new XElement("codec", GetAudioCodec(trackFile.MediaInfo.AudioFormat)));
-                        audio.Add(new XElement("language", trackFile.MediaInfo.AudioLanguages));
-                        streamDetails.Add(audio);
-
-                        if (trackFile.MediaInfo.Subtitles != null && trackFile.MediaInfo.Subtitles.Length > 0)
-                        {
-                            var subtitle = new XElement("subtitle");
-                            subtitle.Add(new XElement("language", trackFile.MediaInfo.Subtitles));
-                            streamDetails.Add(subtitle);
-                        }
-
-                        fileInfo.Add(streamDetails);
-                        details.Add(fileInfo);
-                    }
-
-                    //Todo: get guest stars, writer and director
-                    //details.Add(new XElement("credits", tvdbEpisode.Writer.FirstOrDefault()));
-                    //details.Add(new XElement("director", tvdbEpisode.Directors.FirstOrDefault()));
-
-                    doc.Add(details);
-                    doc.Save(xw);
-
-                    xmlResult += doc.ToString();
-                    xmlResult += Environment.NewLine;
-                }
-            }
-
-            return new MetadataFileResult(GetTrackMetadataFilename(trackFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
+            return null;
         }
 
         public override List<ImageFileResult> ArtistImages(Artist artist)
@@ -339,14 +251,5 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             return Path.ChangeExtension(trackFilePath, "nfo");
         }
 
-        private string GetAudioCodec(string audioCodec)
-        {
-            if (audioCodec == "AC-3")
-            {
-                return "AC3";
-            }
-
-            return audioCodec;
-        }
     }
 }
