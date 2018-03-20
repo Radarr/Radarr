@@ -803,6 +803,7 @@
     <Compile Include="Extras\Metadata\MetadataService.cs" />
     <Compile Include="Extras\Metadata\MetadataType.cs" />
     <Compile Include="Music\AddAlbumService.cs" />
+    <Compile Include="Music\AlbumAddedService.cs" />
     <Compile Include="Music\AlbumEditedService.cs" />
     <Compile Include="Music\AlbumRelease.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
@@ -845,7 +846,6 @@
     <Compile Include="Music\Events\ArtistRefreshStartingEvent.cs" />
     <Compile Include="Music\Events\ArtistUpdatedEvent.cs" />
     <Compile Include="Music\Events\AlbumInfoRefreshedEvent.cs" />
-    <Compile Include="Music\Events\TrackInfoRefreshedEvent.cs" />
     <Compile Include="Music\Ratings.cs" />
     <Compile Include="Music\RefreshArtistService.cs" />
     <Compile Include="Music\RefreshAlbumService.cs" />

@@ -86,15 +86,9 @@ namespace NzbDrone.Core.Music
                 }
             }
 
-            var allTracks = new List<Track>();
-            allTracks.AddRange(newList);
-            allTracks.AddRange(updateList);
-
             _trackService.DeleteMany(existingTracks);
             _trackService.UpdateMany(updateList);
             _trackService.InsertMany(newList);
-
-            _eventAggregator.PublishEvent(new TrackInfoRefreshedEvent(album, newList, updateList));
 
             if (failCount != 0)
             {

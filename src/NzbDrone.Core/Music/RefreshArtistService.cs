@@ -134,6 +134,8 @@ namespace NzbDrone.Core.Music
 
             _albumService.DeleteMany(existingAlbums);
 
+            _eventAggregator.PublishEvent(new AlbumInfoRefreshedEvent(artist, newAlbumsList, updateAlbumsList));
+
             _logger.Debug("Finished artist refresh for {0}", artist.Name);
             _eventAggregator.PublishEvent(new ArtistUpdatedEvent(artist));
         }
