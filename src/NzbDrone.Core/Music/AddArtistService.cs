@@ -62,10 +62,20 @@ namespace NzbDrone.Core.Music
             foreach (var s in newArtists)
             {
                 // TODO: Verify if adding skyhook data will be slow
-                var artist = AddSkyhookData(s);
-                artist = SetPropertiesAndValidate(artist);
-                artist.Added = added;
-                artistsToAdd.Add(artist);
+                try
+                {
+                    var artist = AddSkyhookData(s);
+                    artist = SetPropertiesAndValidate(artist);
+                    artist.Added = added;
+                    artistsToAdd.Add(artist);
+                }
+                catch (Exception ex)
+                {
+                    // Catch Import Errors for now until we get things fixed up
+                    _logger.Debug("Failed to import id: {1} - {2}", s.ForeignArtistId, s.Name);
+                    _logger.Error(ex, ex.Message);
+                }
+                
             }
 
             return _artistService.AddArtists(artistsToAdd);
