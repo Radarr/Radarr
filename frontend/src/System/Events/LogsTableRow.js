@@ -42,7 +42,10 @@ class LogsTableRow extends Component {
   // Listeners
 
   onPress = () => {
-    this.setState({ isDetailsModalOpen: true });
+    // Don't re-open the modal if it's already open
+    if (!this.state.isDetailsModalOpen) {
+      this.setState({ isDetailsModalOpen: true });
+    }
   }
 
   onModalClose = () => {
@@ -63,7 +66,9 @@ class LogsTableRow extends Component {
     } = this.props;
 
     return (
-      <TableRowButton onPress={this.onPress}>
+      <TableRowButton
+        onPress={this.onPress}
+      >
         {
           columns.map((column) => {
             const {
