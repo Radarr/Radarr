@@ -247,7 +247,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Returns(tasks);
         }
 
-        protected string CleanFileName(String name)
+        protected static string CleanFileName(String name)
         {
             return FileNameBuilder.CleanFileName(name, NamingConfig.Default) + ".nzb";
         }
