@@ -20,10 +20,11 @@ namespace NzbDrone.Core.Download
 
         protected UsenetClientBase(IHttpClient httpClient,
                                    IConfigService configService,
+                                   INamingConfigService namingConfigService,
                                    IDiskProvider diskProvider,
                                    IRemotePathMappingService remotePathMappingService,
                                    Logger logger)
-            : base(configService, diskProvider, remotePathMappingService, logger)
+            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _httpClient = httpClient;
         }
@@ -35,7 +36,7 @@ namespace NzbDrone.Core.Download
         public override string Download(RemoteMovie remoteMovie)
         {
             var url = remoteMovie.Release.DownloadUrl;
-            var filename = FileNameBuilder.CleanFileName(remoteMovie.Release.Title) + ".nzb";
+            var filename = CleanFileName(remoteMovie.Release.Title) + ".nzb";
 
             byte[] nzbData;
 

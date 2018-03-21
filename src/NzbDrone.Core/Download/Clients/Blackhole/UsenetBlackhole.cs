@@ -22,10 +22,11 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         public UsenetBlackhole(IScanWatchFolder scanWatchFolder,
                                IHttpClient httpClient,
                                IConfigService configService,
+                               INamingConfigService namingConfigService,
                                IDiskProvider diskProvider,
                                IRemotePathMappingService remotePathMappingService,
                                Logger logger)
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _scanWatchFolder = scanWatchFolder;
 
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         {
             var title = remoteMovie.Release.Title;
 
-            title = FileNameBuilder.CleanFileName(title);
+            title = CleanFileName(title);
 
             var filepath = Path.Combine(Settings.NzbFolder, title + ".nzb");
 

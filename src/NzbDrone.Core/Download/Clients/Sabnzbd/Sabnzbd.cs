@@ -11,6 +11,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download.Clients.Sabnzbd
 {
@@ -21,10 +22,11 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         public Sabnzbd(ISabnzbdProxy proxy,
                        IHttpClient httpClient,
                        IConfigService configService,
+                       INamingConfigService namingConfigService,
                        IDiskProvider diskProvider,
                        IRemotePathMappingService remotePathMappingService,
                        Logger logger)
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
         }

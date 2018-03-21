@@ -11,6 +11,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download.Clients.Nzbget
 {
@@ -23,10 +24,11 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         public Nzbget(INzbgetProxy proxy,
                       IHttpClient httpClient,
                       IConfigService configService,
+                      INamingConfigService namingConfigService,
                       IDiskProvider diskProvider,
                       IRemotePathMappingService remotePathMappingService,
                       Logger logger)
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
         }

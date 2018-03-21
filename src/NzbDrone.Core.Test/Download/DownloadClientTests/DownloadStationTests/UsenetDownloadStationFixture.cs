@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -245,6 +245,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Setup(d => d.GetTasks(_settings))
                   .Returns(tasks);
+        }
+
+        protected string CleanFileName(String name)
+        {
+            return FileNameBuilder.CleanFileName(name, NamingConfig.Default) + ".nzb";
         }
 
         [Test]
