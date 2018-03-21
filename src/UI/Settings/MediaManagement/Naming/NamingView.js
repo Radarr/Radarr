@@ -81,7 +81,7 @@ module.exports = (function () {
             e.preventDefault();
             e.stopPropagation();
             var target = e.target;
-            var token = ";
+            var token = "";
             var input = this.$(target).closest(".x-helper-input").children("input");
             if (this.$(target).attr("data-token")) {
                 token = "{{0}}".format(this.$(target).attr("data-token"));
