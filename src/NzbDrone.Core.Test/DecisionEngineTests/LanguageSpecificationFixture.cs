@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using Marr.Data;
 using NUnit.Framework;
@@ -23,7 +24,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 ParsedMovieInfo = new ParsedMovieInfo
                 {
-                    Language = Language.English
+                    Languages = new List<Language> {Language.English}
                 },
                 Movie = new Movie
                          {
@@ -37,12 +38,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithEnglishRelease()
         {
-            _remoteEpisode.ParsedMovieInfo.Language = Language.English;
+            _remoteEpisode.ParsedMovieInfo.Languages = new List<Language> {Language.English};
         }
 
         private void WithGermanRelease()
         {
-            _remoteEpisode.ParsedMovieInfo.Language = Language.German;            
+            _remoteEpisode.ParsedMovieInfo.Languages = new List<Language> {Language.German};
         }
 
         [Test]

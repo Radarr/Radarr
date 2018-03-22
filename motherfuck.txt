@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -73,14 +73,14 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.0-rc06\lib\net40-client\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.11\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
       <HintPath>..\packages\Ical.Net.2.2.25\lib\net40\NodaTime.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,10 +88,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\NzbDrone.Common\Properties\SharedAssemblyInfo.cs">
@@ -130,8 +126,9 @@
     <Compile Include="Movies\AlternativeYearModule.cs" />
     <Compile Include="Movies\MovieModuleWithSignalR.cs" />
     <Compile Include="Movies\MovieBulkImportModule.cs" />
-    <Compile Include="MovieFiles\MovieFileModule.cs" />
-    <Compile Include="Movies\MovieModule.cs" />
+    <Compile Include="Movies\MovieFileModule.cs" />
+    <Compile Include="Qualities\QualityTagMatchResultResource.cs" />
+    <Compile Include="Series\MovieModule.cs" />
     <Compile Include="Movies\RenameMovieModule.cs" />
     <Compile Include="Movies\RenameMovieResource.cs" />
     <Compile Include="Movies\MovieEditorModule.cs" />
@@ -144,7 +141,6 @@
     <Compile Include="ManualImport\ManualImportResource.cs" />
     <Compile Include="Profiles\Delay\DelayProfileModule.cs" />
     <Compile Include="Profiles\Delay\DelayProfileResource.cs" />
-    <Compile Include="Qualities\QualityTagMatchResultResource.cs" />
     <Compile Include="Queue\QueueActionModule.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingModule.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingResource.cs" />
@@ -167,6 +163,13 @@
     <Compile Include="DiskSpace\DiskSpaceResource.cs" />
     <Compile Include="DownloadClient\DownloadClientModule.cs" />
     <Compile Include="DownloadClient\DownloadClientResource.cs" />
+    <Compile Include="EpisodeFiles\EpisodeFileModule.cs" />
+    <Compile Include="EpisodeFiles\EpisodeFileResource.cs" />
+    <Compile Include="Episodes\EpisodeModule.cs" />
+    <Compile Include="Episodes\EpisodeModuleWithSignalR.cs" />
+    <Compile Include="Episodes\EpisodeResource.cs" />
+    <Compile Include="Episodes\RenameEpisodeModule.cs" />
+    <Compile Include="Episodes\RenameEpisodeResource.cs" />
     <Compile Include="ErrorManagement\ApiException.cs" />
     <Compile Include="ErrorManagement\ErrorHandler.cs" />
     <Compile Include="ErrorManagement\ErrorModel.cs" />
@@ -242,13 +245,19 @@
     <Compile Include="REST\RestResource.cs" />
     <Compile Include="RootFolders\RootFolderModule.cs" />
     <Compile Include="RootFolders\RootFolderResource.cs" />
-    <Compile Include="Movies\AlternativeTitleResource.cs" />
-    <Compile Include="MovieFiles\MovieFileResource.cs" />
-    <Compile Include="Movies\FetchMovieListModule.cs" />
-    <Compile Include="Movies\MovieLookupModule.cs" />
+    <Compile Include="SeasonPass\SeasonPassResource.cs" />
+    <Compile Include="Series\AlternativeTitleResource.cs" />
+    <Compile Include="Series\MovieFileResource.cs" />
+    <Compile Include="Series\FetchMovieListModule.cs" />
+    <Compile Include="Series\SeasonResource.cs" />
+    <Compile Include="SeasonPass\SeasonPassModule.cs" />
+    <Compile Include="Series\SeriesEditorModule.cs" />
+    <Compile Include="Series\MovieLookupModule.cs" />
+    <Compile Include="Series\SeriesLookupModule.cs" />
     <Compile Include="Series\SeriesModule.cs" />
-    <Compile Include="Movies\MovieResource.cs" />
+    <Compile Include="Series\MovieResource.cs" />
     <Compile Include="Series\SeriesResource.cs" />
+    <Compile Include="Series\SeasonStatisticsResource.cs" />
     <Compile Include="System\Backup\BackupModule.cs" />
     <Compile Include="System\Backup\BackupResource.cs" />
     <Compile Include="System\Tasks\TaskModule.cs" />
@@ -263,10 +272,12 @@
     <Compile Include="Validation\RssSyncIntervalValidator.cs" />
     <Compile Include="Validation\EmptyCollectionValidator.cs" />
     <Compile Include="Validation\RuleBuilderExtensions.cs" />
+    <Compile Include="Wanted\CutoffModule.cs" />
     <Compile Include="Wanted\LegacyMissingModule.cs" />
+    <Compile Include="Wanted\MissingModule.cs" />
     <Compile Include="Wanted\MovieCutoffModule.cs" />
     <Compile Include="Wanted\MovieMissingModule.cs" />
-    <Compile Include="Movies\MovieDiscoverModule.cs" />
+    <Compile Include="Series\MovieDiscoverModule.cs" />
     <Compile Include="NetImport\ImportExclusionsModule.cs" />
     <Compile Include="NetImport\ImportExclusionsResource.cs" />
   </ItemGroup>
@@ -296,11 +307,3 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-			 Other similar extension points exist, see Microsoft.Common.targets.
-	<Target Name="BeforeBuild">
-	</Target>
-	<Target Name="AfterBuild">
-	</Target>
-	-->
-</Project>

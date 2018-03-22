@@ -108,7 +108,7 @@ namespace NzbDrone.Api.Indexers
                 ReleaseGroup = parsedMovieInfo.ReleaseGroup,
                 ReleaseHash = parsedMovieInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                Language = parsedMovieInfo.Language,
+                Languages = parsedMovieInfo.Languages,
                 Year = parsedMovieInfo.Year,
                 MovieTitle = parsedMovieInfo.MovieTitle,
                 Approved = model.Approved,
@@ -133,7 +133,7 @@ namespace NzbDrone.Api.Indexers
                 Protocol = releaseInfo.DownloadProtocol,
                 IndexerFlags = torrentInfo.IndexerFlags.ToString().Split(new string[] { ", " }, StringSplitOptions.None),
                 Edition = parsedMovieInfo.Edition,
-                
+
                 //Special = parsedMovieInfo.Special,
             };
 
