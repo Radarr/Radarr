@@ -36,16 +36,6 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _torrentCache = cacheManager.GetCache<UTorrentTorrentCache>(GetType(), "differentialTorrents");
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);

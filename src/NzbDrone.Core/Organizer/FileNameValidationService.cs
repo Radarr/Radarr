@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Organizer
 {
     public interface IFilenameValidationService
     {
-        ValidationFailure ValidateStandardFilename(SampleResult sampleResult);
-        ValidationFailure ValidateDailyFilename(SampleResult sampleResult);
-        ValidationFailure ValidateAnimeFilename(SampleResult sampleResult);
         ValidationFailure ValidateMovieFilename(SampleResult sampleResult);
     }
 
@@ -30,34 +27,6 @@ namespace NzbDrone.Core.Organizer
             }
 
             return null;
-        }
-
-        public ValidationFailure ValidateStandardFilename(SampleResult sampleResult)
-        {
-           
-
-            return null;
-        }
-
-        public ValidationFailure ValidateDailyFilename(SampleResult sampleResult)
-        {
-            
-
-            return null;
-        }
-
-        public ValidationFailure ValidateAnimeFilename(SampleResult sampleResult)
-        {
-            
-
-            return null;
-        }
-
-        private bool ValidateSeasonAndEpisodeNumbers(List<Episode> episodes, ParsedEpisodeInfo parsedEpisodeInfo)
-        {
-            
-
-            return true;
         }
     }
 }

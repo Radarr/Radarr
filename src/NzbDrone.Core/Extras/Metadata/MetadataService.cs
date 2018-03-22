@@ -11,7 +11,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras.Metadata
 {
@@ -66,10 +66,10 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
-                foreach (var episodeFile in movieFiles)
+                foreach (var movieFile in movieFiles)
                 {
-                    files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, episodeFile, consumerFiles));
-                    files.AddRange(ProcessMovieImages(consumer, movie, episodeFile, consumerFiles));
+                    files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, consumerFiles));
+                    files.AddRange(ProcessMovieImages(consumer, movie, movieFile, consumerFiles));
                 }
             }
 

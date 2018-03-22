@@ -1,8 +1,8 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.Datastore.PagingSpecExtensionsTests
 {
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.Datastore.PagingSpecExtensionsTests
         [TestCase(1, 100, 0)]
         public void should_calcuate_expected_offset(int page, int pageSize, int expected)
         {
-            var pagingSpec = new PagingSpec<Episode>
+            var pagingSpec = new PagingSpec<Movie>
                 {
                     Page = page,
                     PageSize = pageSize,

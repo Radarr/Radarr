@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -17,7 +17,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_user_invoked_search()
         {
-            Subject.IsSatisfiedBy(new RemoteEpisode(), new SingleEpisodeSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(new RemoteMovie(), new MovieSearchCriteria() { UserInvokedSearch = true }).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, new SingleEpisodeSearchCriteria()).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteEpisode, new MovieSearchCriteria()).Accepted.Should().BeFalse();
         }
 
         [Test]

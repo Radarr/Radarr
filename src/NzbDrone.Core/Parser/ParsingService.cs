@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.DataAugmentation.Scene;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
@@ -31,27 +30,18 @@ namespace NzbDrone.Core.Parser
 
     public class ParsingService : IParsingService
     {
-        private readonly IEpisodeService _episodeService;
-        private readonly ISeriesService _seriesService;
-        private readonly ISceneMappingService _sceneMappingService;
         private readonly IMovieService _movieService;
         private readonly IConfigService _config;
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
 
-
-        public ParsingService(IEpisodeService episodeService,
-                              ISeriesService seriesService,
-                              ISceneMappingService sceneMappingService,
+        public ParsingService(
                               IMovieService movieService,
                               IConfigService configService,
                               IQualityDefinitionService qualityDefinitionService,
                               Logger logger)
         {
-            _episodeService = episodeService;
-            _seriesService = seriesService;
-            _sceneMappingService = sceneMappingService;
             _movieService = movieService;
             _config = configService;
             _qualityDefinitionService = qualityDefinitionService;
@@ -283,16 +273,6 @@ namespace NzbDrone.Core.Parser
             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
 
             return result;
-        }
-
-        public RemoteEpisode Map(ParsedEpisodeInfo parsedEpisodeInfo, int seriesId, IEnumerable<int> episodeIds)
-        {
-            return new RemoteEpisode
-                   {
-                       ParsedEpisodeInfo = parsedEpisodeInfo,
-                       Series = _seriesService.GetSeries(seriesId),
-                       Episodes = _episodeService.GetEpisodes(episodeIds)
-                   };
         }
 
         private MappingResult GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)

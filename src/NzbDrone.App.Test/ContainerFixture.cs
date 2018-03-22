@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NUnit.Framework;
 using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
@@ -77,8 +77,8 @@ namespace NzbDrone.App.Test
         [Test]
         public void should_return_same_instance_of_singletons_by_different_same_interface()
         {
-            var first = _container.ResolveAll<IHandle<EpisodeGrabbedEvent>>().OfType<DownloadMonitoringService>().Single();
-            var second = _container.ResolveAll<IHandle<EpisodeGrabbedEvent>>().OfType<DownloadMonitoringService>().Single();
+            var first = _container.ResolveAll<IHandle<MovieGrabbedEvent>>().OfType<DownloadMonitoringService>().Single();
+            var second = _container.ResolveAll<IHandle<MovieGrabbedEvent>>().OfType<DownloadMonitoringService>().Single();
 
             first.Should().BeSameAs(second);
         }
@@ -86,7 +86,7 @@ namespace NzbDrone.App.Test
         [Test]
         public void should_return_same_instance_of_singletons_by_different_interfaces()
         {
-            var first = _container.ResolveAll<IHandle<EpisodeGrabbedEvent>>().OfType<DownloadMonitoringService>().Single();
+            var first = _container.ResolveAll<IHandle<MovieGrabbedEvent>>().OfType<DownloadMonitoringService>().Single();
             var second = (DownloadMonitoringService)_container.Resolve<IExecute<CheckForFinishedDownloadCommand>>();
 
             first.Should().BeSameAs(second);

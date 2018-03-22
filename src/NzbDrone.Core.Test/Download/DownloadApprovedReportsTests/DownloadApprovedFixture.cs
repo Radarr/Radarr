@@ -11,7 +11,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests

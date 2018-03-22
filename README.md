@@ -54,8 +54,8 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 
 | API | Updates | Sites  |
 |-------|:----:|:----:|
-| [![API V2](http://status.radarr.video/component/1/shield?style=flat-square)](https://api.radarr.video/v2/) | [![Update Server](http://status.radarr.video/component/4/shield?style=flat-square)](https://radarr.aeonlucid.com) | [![Radarr Mappings](http://status.radarr.video/component/6/shield?style=flat-square)](https://mappings.radarr.video/)
-| [![API Staging](http://status.radarr.video/component/2/shield?style=flat-square)](https://staging.api.radarr.video/) | [![Github Updates](http://status.radarr.video/component/5/shield?style=flat-square)](https://api.github.com/v3/) | [![Main Site](http://status.radarr.video/component/7/shield?style=flat-square)](https://radarr.video/)
+| [![API V2 (develop)](http://status.radarr.video/component/1/shield?style=flat-square)](https://api.radarr.video/v2/) | [![Update Server](http://status.radarr.video/component/4/shield?style=flat-square)](https://radarr.aeonlucid.com) | [![Radarr Mappings](http://status.radarr.video/component/6/shield?style=flat-square)](https://mappings.radarr.video/)
+| [![API Staging (nightly)](http://status.radarr.video/component/2/shield?style=flat-square)](https://staging.api.radarr.video/) | [![Github Updates](http://status.radarr.video/component/5/shield?style=flat-square)](https://api.github.com/v3/) | [![Main Site](http://status.radarr.video/component/7/shield?style=flat-square)](https://radarr.video/)
 
 Radarr is currently undergoing rapid development and pull requests are actively added into the repository.
 
@@ -82,15 +82,15 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
 * Full integration with Kodi, Plex (notification, library update)
 * And a beautiful UI
+* Importing Metadata such as trailers or subtitles
+* Adding metadata such as posters and information for Kodi and others to use
 
 ### Planned Features
 
-* Importing Metadata such as trailers or subtitles (\*)
-* Adding metadata such as posters and information for Kodi and others to use (\*)
-* Dynamically renaming folders with quality info, etc. (\*)
+* Dynamically renaming folders with quality info, etc. (Currently working partially.) (\*)
 * Supporting custom folder structures, such as all movie files in one folder (\*)
-* Supporting multiple editions per movies (waiting on The Movie Database to finish their implementation)
-* Supporting collections of movies, such as James Bond
+* Supporting multiple editions per movies (\*)
+* Supporting collections of movies, such as James Bond (\*)
 
 **Note:** All features marked with (\*) are set to be in the first release of Radarr.
 
@@ -127,7 +127,21 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * Make sure `NzbDrone.Console` is set as the startup project
 * Run `build.sh` before running
 
-### License
+## Supporters
+
+This project would not be possible without the support by these amazing folks. [**Become a sponsor or backer**](https://opencollective.com/radarr) to help us out!
+
+[![Sponsors](https://opencollective.com/radarr/tiers/sponsor.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3851)
+
+---
+
+[![Flexible Sponsors](https://opencollective.com/radarr/tiers/flexible-sponsor.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3856)
+
+---
+
+[![Backers](https://opencollective.com/radarr/tiers/backer.svg?avatarHeight=36)](https://opencollective.com/radarr/order/3850)
+
+## License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
 * Copyright 2010-2017

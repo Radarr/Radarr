@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using Moq;
@@ -38,8 +38,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _remoteMovie.Release.Title = _title;
             _remoteMovie.Release.DownloadUrl = _nzbUrl;
 
-            _remoteMovie.ParsedEpisodeInfo = new ParsedEpisodeInfo();
-            _remoteMovie.ParsedEpisodeInfo.FullSeason = false;
+            _remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
 
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
@@ -68,15 +67,6 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             WithFailedDownload();
 
             Assert.Throws<WebException>(() => Subject.Download(_remoteMovie));
-        }
-
-        [Test]
-        public void should_throw_if_full_season_download()
-        {
-            _remoteMovie.Release.Title = "30 Rock - Season 1";
-            _remoteMovie.ParsedEpisodeInfo.FullSeason = true;
-
-            Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteMovie));
         }
 
         [Test]

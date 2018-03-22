@@ -1,11 +1,11 @@
-﻿using FizzWare.NBuilder;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_orphaned_blacklist_items()
         {
             var blacklist = Builder<Blacklist>.CreateNew()
-                                              .With(h => h.EpisodeIds = new List<int>())
+                                              .With(h => h.MovieId = new int())
                                               .With(h => h.Quality = new QualityModel())
                                               .BuildNew();
 
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Db.Insert(movie);
 
             var blacklist = Builder<Blacklist>.CreateNew()
-                                              .With(h => h.EpisodeIds = new List<int>())
+                                              .With(h => h.MovieId = new int())
                                               .With(h => h.Quality = new QualityModel())
                                               .With(b => b.MovieId = movie.Id)
                                               .BuildNew();

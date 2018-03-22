@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using Nancy.Responses;
 using NzbDrone.Api.Extensions;
 using NzbDrone.Api.REST;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
-namespace NzbDrone.Api.Movie
+namespace NzbDrone.Api.Movies
 {
     public class MovieEditorModule : NzbDroneApiModule
     {

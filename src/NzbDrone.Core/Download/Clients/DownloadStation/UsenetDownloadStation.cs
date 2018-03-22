@@ -160,12 +160,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             _logger.Debug("{0} removed correctly", downloadId);
         }
 
-        protected override string AddFromNzbFile(RemoteEpisode remoteEpisode, string filename, byte[] fileContent)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
-        protected override string AddFromNzbFile(RemoteMovie remoteEpisode, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContent)
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
@@ -177,7 +172,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (item != null)
             {
-                _logger.Debug("{0} added correctly", remoteEpisode);
+                _logger.Debug("{0} added correctly", remoteMovie);
                 return CreateDownloadId(item.Id, hashedSerialNumber);
             }
 

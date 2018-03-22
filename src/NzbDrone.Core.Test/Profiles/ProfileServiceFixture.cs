@@ -5,7 +5,7 @@ using NUnit.Framework;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Test.Profiles
 {

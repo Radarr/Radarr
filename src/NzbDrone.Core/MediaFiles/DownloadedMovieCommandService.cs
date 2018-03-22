@@ -4,7 +4,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 using System;
 using System.Collections.Generic;

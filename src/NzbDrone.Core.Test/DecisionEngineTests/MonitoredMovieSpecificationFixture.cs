@@ -1,0 +1,113 @@
+using System.Collections.Generic;
+using FizzWare.NBuilder;
+using FluentAssertions;
+using NUnit.Framework;
+using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
+using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Framework;
+
+namespace NzbDrone.Core.Test.DecisionEngineTests
+{
+    [TestFixture]
+
+    public class MonitoredMovieSpecificationFixture : CoreTest<MonitoredMovieSpecification>
+    {
+        private MonitoredMovieSpecification _monitoredEpisodeSpecification;
+
+        private RemoteMovie _parseResultMulti;
+        private RemoteMovie _parseResultSingle;
+        private Movie _fakeSeries;
+        private Movie _firstEpisode;
+        private Movie _secondEpisode;
+
+        [SetUp]
+        public void Setup()
+        {
+            _monitoredEpisodeSpecification = Mocker.Resolve<MonitoredMovieSpecification>();
+
+            _fakeSeries = Builder<Movie>.CreateNew()
+                .With(c => c.Monitored = true)
+                .Build();
+
+            _firstEpisode = new Movie() { Monitored = true };
+            _secondEpisode = new Movie() { Monitored = true };
+
+
+            var singleEpisodeList = new List<Movie> { _firstEpisode };
+            var doubleEpisodeList = new List<Movie> { _firstEpisode, _secondEpisode };
+
+            _parseResultMulti = new RemoteMovie
+            {
+                Movie = _fakeSeries
+            };
+
+            _parseResultSingle = new RemoteMovie
+            {
+                Movie = _fakeSeries
+            };
+        }
+
+        private void WithFirstEpisodeUnmonitored()
+        {
+            _firstEpisode.Monitored = false;
+        }
+
+        private void WithSecondEpisodeUnmonitored()
+        {
+            _secondEpisode.Monitored = false;
+        }
+
+        [Test]
+        public void setup_should_return_monitored_episode_should_return_true()
+        {
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void not_monitored_series_should_be_skipped()
+        {
+            _fakeSeries.Monitored = false;
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void only_episode_not_monitored_should_return_false()
+        {
+            WithFirstEpisodeUnmonitored();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void both_episodes_not_monitored_should_return_false()
+        {
+            WithFirstEpisodeUnmonitored();
+            WithSecondEpisodeUnmonitored();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void only_first_episode_not_monitored_should_return_false()
+        {
+            WithFirstEpisodeUnmonitored();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void only_second_episode_not_monitored_should_return_false()
+        {
+            WithSecondEpisodeUnmonitored();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_for_single_episode_search()
+        {
+            _fakeSeries.Monitored = false;
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria()).Accepted.Should().BeTrue();
+        }
+
+    }
+}

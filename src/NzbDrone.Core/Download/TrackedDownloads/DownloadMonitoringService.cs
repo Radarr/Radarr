@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -12,8 +12,8 @@ using NzbDrone.Core.Messaging.Events;
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
     public class DownloadMonitoringService : IExecute<CheckForFinishedDownloadCommand>,
-                                             IHandle<EpisodeGrabbedEvent>,
-                                             IHandle<EpisodeImportedEvent>
+                                             IHandle<MovieGrabbedEvent>,
+                                             IHandle<MovieImportedEvent>
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
         private readonly IEventAggregator _eventAggregator;
@@ -163,12 +163,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             Refresh();
         }
 
-        public void Handle(EpisodeGrabbedEvent message)
+        public void Handle(MovieGrabbedEvent message)
         {
             _refreshDebounce.Execute();
         }
 
-        public void Handle(EpisodeImportedEvent message)
+        public void Handle(MovieImportedEvent message)
         {
             _refreshDebounce.Execute();
         }

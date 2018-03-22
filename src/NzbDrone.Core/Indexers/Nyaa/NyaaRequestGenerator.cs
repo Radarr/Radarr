@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -23,54 +23,6 @@ namespace NzbDrone.Core.Indexers.Nyaa
             var pageableRequests = new IndexerPageableRequestChain();
 
             pageableRequests.Add(GetPagedRequests(MaxPages, null));
-
-            return pageableRequests;
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SingleEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SeasonSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(DailyEpisodeSearchCriteria searchCriteria)
-        {
-            return new IndexerPageableRequestChain();
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(AnimeEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            foreach (var queryTitle in searchCriteria.QueryTitles)
-            {
-                var searchTitle = PrepareQuery(queryTitle);
-
-                pageableRequests.Add(GetPagedRequests(MaxPages, $"{searchTitle}+{searchCriteria.AbsoluteEpisodeNumber:0}"));
-
-                if (searchCriteria.AbsoluteEpisodeNumber < 10)
-                {
-                    pageableRequests.Add(GetPagedRequests(MaxPages, $"{searchTitle}+{searchCriteria.AbsoluteEpisodeNumber:00}"));
-                }
-            }
-
-            return pageableRequests;
-        }
-
-        public virtual IndexerPageableRequestChain GetSearchRequests(SpecialEpisodeSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            foreach (var queryTitle in searchCriteria.EpisodeQueryTitles)
-            {
-                pageableRequests.Add(GetPagedRequests(MaxPages,
-                    string.Format("&term={0}",
-                    PrepareQuery(queryTitle))));
-            }
 
             return pageableRequests;
         }

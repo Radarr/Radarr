@@ -1,9 +1,9 @@
-﻿using System.IO;
+using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Configuration;
@@ -33,11 +33,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             _logger = logger;
         }
 
-        private void UpdateMediaInfo(Movie series, List<MovieFile> mediaFiles)
+        private void UpdateMediaInfo(Movie movie, List<MovieFile> mediaFiles)
         {
             foreach (var mediaFile in mediaFiles)
             {
-                var path = Path.Combine(series.Path, mediaFile.RelativePath);
+                var path = Path.Combine(movie.Path, mediaFile.RelativePath);
 
                 if (!_diskProvider.FileExists(path))
                 {

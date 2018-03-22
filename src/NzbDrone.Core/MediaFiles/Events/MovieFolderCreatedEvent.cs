@@ -1,5 +1,5 @@
 using NzbDrone.Common.Messaging;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MediaFiles.Events
 {
@@ -11,10 +11,10 @@ namespace NzbDrone.Core.MediaFiles.Events
         public string SeasonFolder { get; set; }
         public string MovieFolder { get; set; }
 
-        public MovieFolderCreatedEvent(Movie movie, MovieFile episodeFile)
+        public MovieFolderCreatedEvent(Movie movie, MovieFile movieFile)
         {
             Movie = movie;
-            MovieFile = episodeFile;
+            MovieFile = movieFile;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -41,12 +41,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> GetSearchDecision(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteriaBase)
         {
-            if (searchCriteriaBase.Movie != null)
-            {
-                return GetMovieDecisions(reports, searchCriteriaBase).ToList();
-            }
-
-            return GetDecisions(reports, searchCriteriaBase).ToList();
+            return GetMovieDecisions(reports, searchCriteriaBase).ToList();
         }
 
         private IEnumerable<DownloadDecision> GetMovieDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
@@ -180,48 +175,12 @@ namespace NzbDrone.Core.DecisionEngine
             }
         }
 
-        private IEnumerable<DownloadDecision> GetDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
+        private DownloadDecision GetDecisionForReport(RemoteMovie remoteMovie, SearchCriteriaBase searchCriteria = null)
         {
-            return null;
-        }
-
-        private DownloadDecision GetDecisionForReport(RemoteMovie remoteEpisode, SearchCriteriaBase searchCriteria = null)
-        {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteEpisode, searchCriteria))
+            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteMovie, searchCriteria))
                                          .Where(c => c != null);
 
-            return new DownloadDecision(remoteEpisode, reasons.ToArray());
-        }
-
-        private DownloadDecision GetDecisionForReport(RemoteEpisode remoteEpisode, SearchCriteriaBase searchCriteria = null)
-        {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteEpisode, searchCriteria))
-                                         .Where(c => c != null);
-
-            return new DownloadDecision(remoteEpisode, reasons.ToArray());
-        }
-
-        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteEpisode remoteEpisode, SearchCriteriaBase searchCriteriaBase = null)
-        {
-            try
-            {
-                var result = spec.IsSatisfiedBy(remoteEpisode, searchCriteriaBase);
-
-                if (!result.Accepted)
-                {
-                    return new Rejection(result.Reason, spec.Type);
-                }
-            }
-            catch (Exception e)
-            {
-                e.Data.Add("report", remoteEpisode.Release.ToJson());
-                e.Data.Add("parsed", remoteEpisode.ParsedEpisodeInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on " + remoteEpisode.Release.Title + ", with spec: " + spec.GetType().Name);
-                //return new Rejection(string.Format("{0}: {1}", spec.GetType().Name, e.Message));//TODO UPDATE SPECS!
-                //return null;
-            }
-
-            return null;
+            return new DownloadDecision(remoteMovie, reasons.ToArray());
         }
 
         private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)

@@ -1,6 +1,6 @@
-#addin "Cake.Npm"
-#addin "SharpZipLib"
-#addin "Cake.Compression"
+#addin nuget:?package=Cake.Npm&version=0.12.1
+#addin nuget:?package=SharpZipLib&version=0.86.0
+#addin nuget:?package=Cake.Compression&version=0.1.4
 
 // Build variables
 var outputFolder = "./_output";

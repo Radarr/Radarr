@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
@@ -7,13 +7,13 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Blacklisting
 {
     public interface IBlacklistService
     {
-        bool Blacklisted(int seriesId, ReleaseInfo release);
+        bool Blacklisted(int movieId, ReleaseInfo release);
         PagingSpec<Blacklist> Paged(PagingSpec<Blacklist> pagingSpec);
         void Delete(int id);
     }
@@ -30,9 +30,9 @@ namespace NzbDrone.Core.Blacklisting
             _blacklistRepository = blacklistRepository;
         }
 
-        public bool Blacklisted(int seriesId, ReleaseInfo release)
+        public bool Blacklisted(int movieId, ReleaseInfo release)
         {
-            var blacklistedByTitle = _blacklistRepository.BlacklistedByTitle(seriesId, release.Title);
+            var blacklistedByTitle = _blacklistRepository.BlacklistedByTitle(movieId, release.Title);
             
             if (release.DownloadProtocol == DownloadProtocol.Torrent)
             {
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Blacklisting
                                              .Any(b => SameTorrent(b, torrentInfo));
                 }
 
-                var blacklistedByTorrentInfohash = _blacklistRepository.BlacklistedByTorrentInfoHash(seriesId, torrentInfo.InfoHash);
+                var blacklistedByTorrentInfohash = _blacklistRepository.BlacklistedByTorrentInfoHash(movieId, torrentInfo.InfoHash);
 
                 return blacklistedByTorrentInfohash.Any(b => SameTorrent(b, torrentInfo));
             }
@@ -128,8 +128,6 @@ namespace NzbDrone.Core.Blacklisting
         {
             var blacklist = new Blacklist
                             {
-                                SeriesId = 0,
-                                EpisodeIds = null,
                                 MovieId = message.MovieId,
                                 SourceTitle = message.SourceTitle,
                                 Quality = message.Quality,

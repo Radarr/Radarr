@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using Nancy;
@@ -24,8 +24,7 @@ namespace NzbDrone.Api.Indexers
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
-
-        private readonly ICached<RemoteEpisode> _remoteEpisodeCache;
+        
         private readonly ICached<RemoteMovie> _remoteMovieCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
@@ -48,44 +47,23 @@ namespace NzbDrone.Api.Indexers
 
             //PostValidator.RuleFor(s => s.DownloadAllowed).Equal(true);
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
-
-            _remoteEpisodeCache = cacheManager.GetCache<RemoteEpisode>(GetType(), "remoteEpisodes");
+            
             _remoteMovieCache = cacheManager.GetCache<RemoteMovie>(GetType(), "remoteMovies");
         }
 
         private Response DownloadRelease(ReleaseResource release)
         {
-            var remoteEpisode = _remoteEpisodeCache.Find(release.Guid);
+            var remoteMovie = _remoteMovieCache.Find(release.Guid);
 
-            if (remoteEpisode == null)
+            if (remoteMovie == null)
             {
                 _logger.Debug("Couldn't find requested release in cache, cache timeout probably expired.");
 
-                var remoteMovie = _remoteMovieCache.Find(release.Guid);
-
-                if (remoteMovie == null)
-                {
-                    return new NotFoundResponse();
-                }
-
-                try
-                {
-                    _downloadService.DownloadReport(remoteMovie, false);
-                }
-                catch (ReleaseDownloadException ex)
-                {
-                    _logger.Error(ex, ex.Message);
-                    throw new NzbDroneClientException(HttpStatusCode.Conflict, "Getting release from indexer failed");
-                }
-
-                return release.AsResponse();
-
-
+                return new NotFoundResponse();
             }
-
             try
             {
-                _downloadService.DownloadReport(remoteEpisode);
+                _downloadService.DownloadReport(remoteMovie, false);
             }
             catch (ReleaseDownloadException ex)
             {
@@ -98,34 +76,12 @@ namespace NzbDrone.Api.Indexers
 
         private List<ReleaseResource> GetReleases()
         {
-            if (Request.Query.episodeId != null)
-            {
-                return GetEpisodeReleases(Request.Query.episodeId);
-            }
-
             if (Request.Query.movieId != null)
             {
                 return GetMovieReleases(Request.Query.movieId);
             }
 
             return GetRss();
-        }
-
-        private List<ReleaseResource> GetEpisodeReleases(int episodeId)
-        {
-            try
-            {
-                var decisions = _nzbSearchService.EpisodeSearch(episodeId, true);
-                var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
-
-                return MapDecisions(prioritizedDecisions);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Episode search failed: " + ex.Message);
-            }
-
-            return new List<ReleaseResource>();
         }
 
         private List<ReleaseResource> GetMovieReleases(int movieId)
@@ -153,21 +109,15 @@ namespace NzbDrone.Api.Indexers
         {
             var reports = _rssFetcherAndParser.Fetch();
             var decisions = _downloadDecisionMaker.GetRssDecision(reports);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
+            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 
             return MapDecisions(prioritizedDecisions);
         }
 
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
-            if (decision.IsForMovie)
-            {
-                _remoteMovieCache.Set(decision.RemoteMovie.Release.Guid, decision.RemoteMovie, TimeSpan.FromMinutes(30));
-            }
-            else
-            {
-                _remoteEpisodeCache.Set(decision.RemoteEpisode.Release.Guid, decision.RemoteEpisode, TimeSpan.FromMinutes(30));
-            }
+
+           _remoteMovieCache.Set(decision.RemoteMovie.Release.Guid, decision.RemoteMovie, TimeSpan.FromMinutes(30));
             
            return base.MapDecision(decision, initialWeight);
         }

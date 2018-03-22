@@ -12,7 +12,7 @@ using NzbDrone.Core.Indexers;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using System;
 using System.IO;
 using NzbDrone.Core.Parser;

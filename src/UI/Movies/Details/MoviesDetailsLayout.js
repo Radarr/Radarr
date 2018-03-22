@@ -8,7 +8,7 @@ var MoviesCollection = require('../MoviesCollection');
 var InfoView = require('./InfoView');
 var CommandController = require('../../Commands/CommandController');
 var LoadingView = require('../../Shared/LoadingView');
-var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEditorLayout');
+// var EpisodeFileEditorLayout = require('../../EpisodeFile/Editor/EpisodeFileEditorLayout');
 var HistoryLayout = require('../History/MovieHistoryLayout');
 var SearchLayout = require('../Search/MovieSearchLayout');
 var AllFilesLayout = require("../Files/AllFilesLayout");
@@ -251,14 +251,14 @@ module.exports = Marionette.Layout.extend({
 				this._showInfo();
 		},
 
-		_openEpisodeFileEditor : function() {
-				var view = new EpisodeFileEditorLayout({
-						movies            : this.model,
-						episodeCollection : this.episodeCollection
-				});
+		// _openEpisodeFileEditor : function() {
+		// 		var view = new EpisodeFileEditorLayout({
+		// 				movies            : this.model,
+		// 				episodeCollection : this.episodeCollection
+		// 		});
 
-				vent.trigger(vent.Commands.OpenModalCommand, view);
-		},
+		// 		vent.trigger(vent.Commands.OpenModalCommand, view);
+		// },
 
 		_updateImages : function () {
 				var poster = this._getImage('poster');

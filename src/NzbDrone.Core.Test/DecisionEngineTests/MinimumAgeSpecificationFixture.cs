@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
@@ -13,12 +13,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class MinimumAgeSpecificationFixture : CoreTest<MinimumAgeSpecification>
     {
-        private RemoteEpisode _remoteEpisode;
+        private RemoteMovie _remoteEpisode;
 
         [SetUp]
         public void Setup()
         {
-            _remoteEpisode = new RemoteEpisode
+            _remoteEpisode = new RemoteMovie
             {
                 Release = new ReleaseInfo() { DownloadProtocol = DownloadProtocol.Usenet }
             };

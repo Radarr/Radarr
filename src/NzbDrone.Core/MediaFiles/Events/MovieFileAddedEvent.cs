@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Messaging;
+using NzbDrone.Common.Messaging;
 
 namespace NzbDrone.Core.MediaFiles.Events
 {
@@ -6,9 +6,9 @@ namespace NzbDrone.Core.MediaFiles.Events
     {
         public MovieFile MovieFile { get; private set; }
 
-        public MovieFileAddedEvent(MovieFile episodeFile)
+        public MovieFileAddedEvent(MovieFile movieFile)
         {
-            MovieFile = episodeFile;
+            MovieFile = movieFile;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.DiskSpace
 {
@@ -17,14 +17,14 @@ namespace NzbDrone.Core.DiskSpace
 
     public class DiskSpaceService : IDiskSpaceService
     {
-        private readonly ISeriesService _seriesService;
+        private readonly IMovieService _movieService;
         private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public DiskSpaceService(ISeriesService seriesService, IConfigService configService, IDiskProvider diskProvider, Logger logger)
+        public DiskSpaceService(IMovieService movieService, IConfigService configService, IDiskProvider diskProvider, Logger logger)
         {
-            _seriesService = seriesService;
+            _movieService = movieService;
             _configService = configService;
             _diskProvider = diskProvider;
             _logger = logger;
@@ -33,18 +33,18 @@ namespace NzbDrone.Core.DiskSpace
         public List<DiskSpace> GetFreeSpace()
         {
             var diskSpace = new List<DiskSpace>();
-            diskSpace.AddRange(GetSeriesFreeSpace());
+            diskSpace.AddRange(GetMovieFreeSpace());
             diskSpace.AddRange(GetDroneFactoryFreeSpace());
             diskSpace.AddRange(GetFixedDisksFreeSpace());
 
             return diskSpace.DistinctBy(d => d.Path).ToList();
         }
 
-        private IEnumerable<DiskSpace> GetSeriesFreeSpace()
+        private IEnumerable<DiskSpace> GetMovieFreeSpace()
         {
-            var seriesRootPaths = _seriesService.GetAllSeries().Select(s => _diskProvider.GetPathRoot(s.Path)).Distinct();
+            var movieRootPaths = _movieService.GetAllMovies().Select(s => _diskProvider.GetPathRoot(s.Path)).Distinct();
 
-            return GetDiskSpace(seriesRootPaths);
+            return GetDiskSpace(movieRootPaths);
         }
 
         private IEnumerable<DiskSpace> GetDroneFactoryFreeSpace()

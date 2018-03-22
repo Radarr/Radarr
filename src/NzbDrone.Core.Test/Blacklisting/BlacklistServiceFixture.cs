@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
@@ -19,9 +19,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             _event = new DownloadFailedEvent
                      {
-                         SeriesId = 0,
                          MovieId = 69,
-                         EpisodeIds = null,
                          Quality = new QualityModel(Quality.Bluray720p),
                          SourceTitle = "series.title.s01e01",
                          DownloadClient = "SabnzbdClient",

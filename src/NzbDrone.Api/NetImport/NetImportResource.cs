@@ -1,5 +1,4 @@
-﻿using NzbDrone.Core.NetImport;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Api.NetImport
 {

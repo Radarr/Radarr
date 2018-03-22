@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Queue;
 using NzbDrone.Core.DecisionEngine;

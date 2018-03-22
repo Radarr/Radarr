@@ -117,4 +117,4 @@ Collection = AsPersistedStateCollection.call(Collection);
 
 var data = ApiData.get('series');
 
-module.exports = new Collection(data, { full : true }).bindSignalR();
+module.exports = new Collection(data, { full : true }).bindSignalR(); 

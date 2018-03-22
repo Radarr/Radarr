@@ -3,7 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Configuration;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
@@ -37,33 +37,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             return Decision.Accept();
-        }
-
-        public virtual Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
-        {
-            if (searchCriteria != null)
-            {
-                if (!searchCriteria.MonitoredEpisodesOnly)
-                {
-                    _logger.Debug("Skipping availability check during search");
-                    return Decision.Accept();
-                }
-            }
-
-            /*if (subject.Series.Status != MovieStatusType.Released)
-            {
-                _logger.Debug("{0} is present in the DB but not yet available. skipping.", subject.Series);
-                return Decision.Reject("Series is not yet available");
-            }
-
-            /*var monitoredCount = subject.Episodes.Count(episode => episode.Monitored);
-            if (monitoredCount == subject.Episodes.Count)
-            {
-                return Decision.Accept();
-            }
-
-            _logger.Debug("Only {0}/{1} episodes are monitored. skipping.", monitoredCount, subject.Episodes.Count);*/
-            return Decision.Reject("Episode is not yet available");
         }
     }
 }

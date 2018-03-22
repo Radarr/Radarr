@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +9,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using TinyIoC;
 
 namespace NzbDrone.Core.Parser
@@ -152,13 +152,13 @@ namespace NzbDrone.Core.Parser
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse episode info using directory and file names. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
                 result = ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name, isLenient);
             }
 
             if (result == null)
             {
-                Logger.Debug("Attempting to parse episode info using directory name. {0}", fileInfo.Directory.Name);
+                Logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
                 result = ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension, isLenient);
             }
 
@@ -480,11 +480,11 @@ namespace NzbDrone.Core.Parser
             }
             
             
-            var seriesName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
-            seriesName = RequestInfoRegex.Replace(seriesName, "").Trim(' ');
+            var movieName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
+            movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 
-			var parts = seriesName.Split('.');
-			seriesName = "";
+			var parts = movieName.Split('.');
+			movieName = "";
 			int n = 0;
 			bool previousAcronym = false;
 			string nextPart = "";
@@ -496,27 +496,27 @@ namespace NzbDrone.Core.Parser
 				}
 				if (part.Length == 1 && part.ToLower() != "a" && !int.TryParse(part, out n))
 				{
-					seriesName += part + ".";
+					movieName += part + ".";
 					previousAcronym = true;
 				}
 				else if (part.ToLower() == "a" && (previousAcronym == true || nextPart.Length == 1))
 				{
-					seriesName += part + ".";
+					movieName += part + ".";
 					previousAcronym = true;
 				}
 				else
 				{
 					if (previousAcronym)
 					{
-						seriesName += " ";
+						movieName += " ";
 						previousAcronym = false;
 					}
-					seriesName += part + " ";
+					movieName += part + " ";
 				}
 				n++;
 			}
 
-			seriesName = seriesName.Trim(' ');
+			movieName = movieName.Trim(' ');
 
             int airYear;
             int.TryParse(matchCollection[0].Groups["year"].Value, out airYear);
@@ -530,7 +530,7 @@ namespace NzbDrone.Core.Parser
                 result.Edition = matchCollection[0].Groups["edition"].Value.Replace(".", " ");
             }
 
-            result.MovieTitle = seriesName;
+            result.MovieTitle = movieName;
             result.MovieTitleInfo = GetSeriesTitleInfo(result.MovieTitle);
 
             Logger.Debug("Movie Parsed. {0}", result);

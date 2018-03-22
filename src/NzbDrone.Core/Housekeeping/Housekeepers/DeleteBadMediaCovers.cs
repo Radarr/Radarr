@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Metadata.Files;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {

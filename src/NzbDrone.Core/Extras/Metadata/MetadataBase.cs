@@ -5,7 +5,7 @@ using FluentValidation.Results;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Extras.Metadata
 {

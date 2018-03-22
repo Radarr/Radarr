@@ -146,17 +146,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return finalPath;
         }
 
-        protected override string AddFromMagnetLink(RemoteEpisode remoteEpisode, string hash, string magnetLink)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
-        protected override string AddFromTorrentFile(RemoteEpisode remoteEpisode, string hash, string filename, byte[] fileContent)
-        {
-            throw new DownloadClientException("Episodes are not working with Radarr");
-        }
-
-        protected override string AddFromMagnetLink(RemoteMovie remoteEpisode, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
@@ -166,7 +156,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (item != null)
             {
-                _logger.Debug("{0} added correctly", remoteEpisode);
+                _logger.Debug("{0} added correctly", remoteMovie);
                 return CreateDownloadId(item.Id, hashedSerialNumber);
             }
 
@@ -175,7 +165,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             throw new DownloadClientException("Failed to add magnet task to Download Station");
         }
 
-        protected override string AddFromTorrentFile(RemoteMovie remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
@@ -187,7 +177,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (item != null)
             {
-                _logger.Debug("{0} added correctly", remoteEpisode);
+                _logger.Debug("{0} added correctly", remoteMovie);
                 return CreateDownloadId(item.Id, hashedSerialNumber);
             }
 

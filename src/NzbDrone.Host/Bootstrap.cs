@@ -37,6 +37,8 @@ namespace Radarr.Host
                 var appMode = GetApplicationMode(startupContext);
 
                 Start(appMode, startupContext);
+                
+                _container.Resolve<ICancelHandler>().Attach();
 
                 if (startCallback != null)
                 {

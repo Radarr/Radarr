@@ -6,13 +6,14 @@ var SignalRBroadcaster = require('./Shared/SignalRBroadcaster');
 var NavbarLayout = require('./Navbar/NavbarLayout');
 var AppLayout = require('./AppLayout');
 var MoviesController = require('./Movies/MoviesController');
-var SeriesController = require('./Series/SeriesController');
 var Router = require('./Router');
 var ModalController = require('./Shared/Modal/ModalController');
 var ControlPanelController = require('./Shared/ControlPanel/ControlPanelController');
 var ServerStatusModel = require('./System/StatusModel');
 var Tooltip = require('./Shared/Tooltip');
 var UiSettingsController = require('./Shared/UiSettingsController');
+//We need this for filters to work, fuck you backbone.
+var SeriesCollection = require('./Series/SeriesCollection');
 
 require('./jQuery/ToTheTop');
 require('./Instrumentation/StringFormat');
@@ -22,7 +23,7 @@ require('./Shared/piwikCheck');
 require('./Shared/VersionChangeMonitor');
 
 new MoviesController();
-new SeriesController();
+//new SeriesCollection();
 new ModalController();
 new ControlPanelController();
 new Router();

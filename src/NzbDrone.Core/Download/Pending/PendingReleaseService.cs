@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -13,8 +13,8 @@ using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -131,8 +131,6 @@ namespace NzbDrone.Core.Download.Pending
                 var queue = new Queue.Queue
                 {
                     Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
-                    Series = null,
-                    Episode = null,
                     Movie = pendingRelease.RemoteMovie.Movie,
                     Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
                     Title = pendingRelease.Title,
@@ -148,7 +146,7 @@ namespace NzbDrone.Core.Download.Pending
                 queued.Add(queue);
             }
 
-            //Return best quality release for each episode
+            //Return best quality release for each movie
             var deduped = queued.GroupBy(q => q.Movie.Id).Select(g =>
             {
                 var movies = g.First().Movie;
@@ -203,7 +201,7 @@ namespace NzbDrone.Core.Download.Pending
         {
             var movie = _movieService.GetMovie(release.MovieId);
 
-            //Just in case the series was removed, but wasn't cleaned up yet (housekeeper will clean it up)
+            //Just in case the movie was removed, but wasn't cleaned up yet (housekeeper will clean it up)
             if (movie == null) return null;
 
             // var episodes = _parsingService.GetMovie(release.ParsedMovieInfo.MovieTitle);

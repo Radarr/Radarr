@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.REST;
+using NzbDrone.Api.REST;
 using System.Collections.Generic;
 using System.Linq;
 

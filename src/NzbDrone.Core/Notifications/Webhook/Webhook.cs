@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Validation;
 

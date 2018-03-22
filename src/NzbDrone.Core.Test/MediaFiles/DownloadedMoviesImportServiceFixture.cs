@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -6,12 +6,12 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 using FluentAssertions;
 using NzbDrone.Core.Download;
@@ -341,7 +341,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), null, true))
                   .Returns(imported);
 
-            Mocker.GetMock<IImportApprovedEpisodes>()
+            Mocker.GetMock<IImportApprovedMovie>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
                   .Returns(new List<ImportResult>());
 
@@ -365,13 +365,13 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private void VerifyNoImport()
         {
-            Mocker.GetMock<IImportApprovedEpisodes>().Verify(c => c.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto),
+            Mocker.GetMock<IImportApprovedMovie>().Verify(c => c.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto),
                 Times.Never());
         }
 
         private void VerifyImport()
         {
-            Mocker.GetMock<IImportApprovedEpisodes>().Verify(c => c.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto),
+            Mocker.GetMock<IImportApprovedMovie>().Verify(c => c.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto),
                 Times.Once());
         }
     }

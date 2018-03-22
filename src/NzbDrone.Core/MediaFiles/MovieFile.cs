@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Marr.Data;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 
 namespace NzbDrone.Core.MediaFiles

@@ -12,10 +12,10 @@ namespace NzbDrone.Core.MediaFiles.Events
         public List<MovieFile> OldFiles { get; private set; }
         public string DownloadId { get; private set; }
 
-        public MovieDownloadedEvent(LocalMovie episode, MovieFile episodeFile, List<MovieFile> oldFiles, DownloadClientItem downloadClientItem)
+        public MovieDownloadedEvent(LocalMovie movie, MovieFile movieFile, List<MovieFile> oldFiles, DownloadClientItem downloadClientItem)
         {
-            Movie = episode;
-            MovieFile = episodeFile;
+            Movie = movie;
+            MovieFile = movieFile;
             OldFiles = oldFiles;
             if (downloadClientItem != null)
             {

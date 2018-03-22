@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -10,12 +10,12 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.Download
                 .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
                 .Returns(new List<ImportResult>
                     {
-                        new ImportResult(new ImportDecision(new LocalEpisode() { Path = @"C:\TestPath\Droned.1998.mkv" }))
+                        new ImportResult(new ImportDecision(new LocalMovie() { Path = @"C:\TestPath\Droned.1998.mkv" }))
                     });
         }
 
@@ -307,7 +307,7 @@ namespace NzbDrone.Core.Test.Download
                   .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>()))
                   .Returns(new List<ImportResult>
                            {
-                               new ImportResult(new ImportDecision(new LocalEpisode {Path = @"C:\TestPath\Droned.1998.mkv"}))
+                               new ImportResult(new ImportDecision(new LocalMovie {Path = @"C:\TestPath\Droned.1998.mkv"}))
                            });
 
             Mocker.GetMock<IHistoryService>()

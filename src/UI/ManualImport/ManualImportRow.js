@@ -34,6 +34,5 @@ module.exports = Backgrid.Row.extend({
 
     _setClasses : function () {
         this.$el.toggleClass('has-movie', this.model.has('movie'));
-        //this.$el.toggleClass('has-season', this.model.has('seasonNumber'));
     }
 });

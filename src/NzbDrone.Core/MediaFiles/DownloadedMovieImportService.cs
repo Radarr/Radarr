@@ -6,9 +6,9 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.MediaFiles.EpisodeImport;
+using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles.Commands;
@@ -227,7 +227,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 return new List<ImportResult>
                        {
-                           new ImportResult(new ImportDecision(new LocalEpisode { Path = fileInfo.FullName }, new Rejection("Invalid video file, filename starts with '._'")), "Invalid video file, filename starts with '._'")
+                           new ImportResult(new ImportDecision(new LocalMovie { Path = fileInfo.FullName }, new Rejection("Invalid video file, filename starts with '._'")), "Invalid video file, filename starts with '._'")
                        };
             }
 
@@ -258,14 +258,14 @@ namespace NzbDrone.Core.MediaFiles
         private ImportResult FileIsLockedResult(string videoFile)
         {
             _logger.Debug("[{0}] is currently locked by another process, skipping", videoFile);
-            return new ImportResult(new ImportDecision(new LocalEpisode { Path = videoFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
+            return new ImportResult(new ImportDecision(new LocalMovie { Path = videoFile }, new Rejection("Locked file, try again later")), "Locked file, try again later");
         }
 
         private ImportResult UnknownMovieResult(string message, string videoFile = null)
         {
-            var localEpisode = videoFile == null ? null : new LocalMovie { Path = videoFile };
+            var localMovie = videoFile == null ? null : new LocalMovie { Path = videoFile };
 
-            return new ImportResult(new ImportDecision(localEpisode, new Rejection("Unknown Movie")), message);
+            return new ImportResult(new ImportDecision(localMovie, new Rejection("Unknown Movie")), message);
         }
     }
 }

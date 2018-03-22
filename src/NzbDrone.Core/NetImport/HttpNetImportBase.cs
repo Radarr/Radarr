@@ -10,7 +10,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.NetImport.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
-using NzbDrone.Core.Tv;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport
 {

@@ -19,17 +19,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteEpisode subject, SearchCriteriaBase searchCriteria)
-        {          
-            if (_blacklistService.Blacklisted(subject.Series.Id, subject.Release))
-            {
-                _logger.Debug("{0} is blacklisted, rejecting.", subject.Release.Title);
-                return Decision.Reject("Release is blacklisted");
-            }
-
-            return Decision.Accept();
-        }
-
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
 

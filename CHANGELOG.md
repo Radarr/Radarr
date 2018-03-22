@@ -3,12 +3,71 @@
 ## (unreleased)
 
 ### **New features**
+- A Huge Cleanup of old Series Code. (Let's pray nothing breaks :P) (#2589) [Qstick]
+- Update stale.yml. [AeonLucid]
+
+### **Fixes**
+- ICS malformed in a lot of cases. Also events are now all day. [Leonardo Galli]
+- Set category when adding torrent to qBittorrent (#2649) [themagicbullet]
+- Create support.yml. [Leonardo Galli]
+- Incorrect Kodi nfo date format (#2605) [Qstick]
+- Sort by Downloaded not working. [Leonardo Galli]
+
+
+## v0.2.0.995 (2018-03-04)
+
+### **New features**
+- Copy & Paste now triggers search (#2587) [Paul Kozlovitch]
+- Added console logging in case NLog fails to initialize. [Taloth Saldono]
+
+### **Fixes**
+- Changes in http redirect logic causing failed grabs and >25% cpu usage. [Leonardo Galli]
+- Http->https redirects do not use the tls1.2 curl fallback. [Leonardo Galli]
+- Dates before 1970 causing an exception. [Leonardo Galli]
+- Browser not updating on Movie File Imported. [Leonardo Galli]
+- Movies not getting unmonitored when folder gets deleted (#2588) [Simon Chapman]
+- NLog causing a crash under mono 5.10. [Leonardo Galli]
+- Revert "Fixed: Updated NLog to 4.5 RC6 to handle mono 5.10" [Leonardo Galli]
+- Revert "Fixed: Messed up merge from Cherry pick" [Leonardo Galli]
+- Revert "Fixed: Appveyor build." [Leonardo Galli]
+- Appveyor build. [Leonardo Galli]
+- Messed up merge from Cherry pick. [Leonardo Galli]
+- Updated NLog to 4.5 RC6 to handle mono 5.10. [Leonardo Galli]
+- Revert "Fixed: NLog causing a crash under mono 5.10" [Leonardo Galli]
+- Pin cake and addin versions. [Qstick]
+- Temp Workaround for Appveyor Cake Issue. [Qstick]
+- NLog causing a crash under mono 5.10. [Leonardo Galli]
+- Poster sliding issues (#2570) [Qstick]
+- Multiple History Issues (#2571) [Qstick]
+
+
+## v0.2.0.980 (2018-02-21)
+
+### **New features**
+- Metadata links are now better readable. Also fixed links in the poster view. (#2562) [thezoggy]
+- Handle ctrl-c more gracefully. [Leonardo Galli]
+- Device names for Join notifications (#2544) [Qstick]
+- Same File Size MediaFile Specification (#2532) [Qstick]
+- Updated NLog to version 4.4.12. Should fix #2218. [Leonardo Galli]
 - Importing extra files from downloaded movies and generate metadata such as .nfo (#2506) [Qstick]
 - Quotes around alternative titles (#2522) [Qstick]
 - Backup improvements from Sonarr (#2513) [Qstick]
 - NzbDrone references in FirewallAdapter.cs (#2504) [Qstick]
 
 ### **Fixes**
+- Another Delete modal is fixed. (#2560) [thezoggy]
+- Messed up movie deletion modal  (#2552) [thezoggy]
+- Remove sorting on Monitor/Profile columns to prevent unexpected results until sorting can properly be handled. Quick Fix for #2540 (#2553) [thezoggy]
+- OSX app has bundle name of Sonarr (#2555) [thezoggy]
+- Alt Titles from TMDB not getting added when mappings server throws 404. [Leonardo Galli]
+- Unable to execute custom scripts if IMDB ID is null (#2543) [Qstick]
+- Cleanup TV related code in API (#2530) [Qstick]
+- Omgwtfnbs parsing being too greedy. [Leonardo Galli]
+- Help icon not centered (#2531) [Qstick]
+- Radarr Changes every file due to timezones (#2533) [Qstick]
+- Filters not working. Fuck you backbone. [Leonardo Galli]
+- Cleanup Series Code from UI (#2525) [Qstick]
+- Apostrophe getting replaced by an empty string causing no search results. [Leonardo Galli]
 - Integration Unit Tests (#2500) [Qstick]
 - XSS vulnerability in the navbar search. (#2505) [Scott]
 - StartNzbDroneService.cs unit test (#2499) [Qstick]
