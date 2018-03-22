@@ -18,7 +18,19 @@ namespace NzbDrone.Core.Qualities
 
         public List<QualityTag> QualityTags { get; set; }
 
-        public QualityDefinition ParentQualityDefinition { get; set; }
+        public QualityDefinition ParentQualityDefinition
+        {
+            get => _parentDefinition;
+            set
+            {
+                ParentQualityDefinitionId = value?.Id;
+                _parentDefinition = value;
+            }
+        }
+
+        private QualityDefinition _parentDefinition;
+
+        public int? ParentQualityDefinitionId { get; set; }
 
         public QualityDefinition()
         {

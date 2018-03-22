@@ -21,7 +21,8 @@ var view = Marionette.ItemView.extend({
 				sixtyMinuteMinSize  : '.x-min-sixty',
 				thirtyMinuteMaxSize : '.x-max-thirty',
 				sixtyMinuteMaxSize  : '.x-max-sixty',
-				tags : '.x-tags'
+				tags : '.x-tags',
+                parent : '.x-parent'
 		},
 
 
@@ -30,14 +31,22 @@ var view = Marionette.ItemView.extend({
 				'slide .x-slider' : '_updateSize',
 				'change .x-tags' : '_updateTags',
                 'click .x-create-format' : '_createFormat',
+                'change .x-parent' : '_changeParent',
 		},
 
 		initialize : function(options) {
 				this.profileCollection = options.profiles;
+            this.templateHelpers = {};
+            this.templateHelpers.qualities = this.model.collection.filter(function (quality){
+                return quality.get("parentQualityDefinition") == undefined;
+            }).map(function (model){
+                return model.toJSON();
+            });
 		},
 
 		onRender : function() {
-				if (this.model.get('quality').id === 0) {
+		        var quality = this.model.get('quality');
+				if (quality !== undefined && quality.id === 0) {
 						this.$el.addClass('row advanced-setting');
 				}
 
@@ -79,6 +88,10 @@ var view = Marionette.ItemView.extend({
 			});
 
 				this._changeSize();
+				var parent = this.model.get("parentQualityDefinition");
+				if (parent !== undefined) {
+				    this.ui.parent.val(parent.id);
+                }
 		},
 
     _updateTags : function() {
@@ -128,14 +141,19 @@ var view = Marionette.ItemView.extend({
         _createFormat : function() {
 		    var parent = this.model;
             var custom = new QualityDefinition({
-                name : "Custom " + parent.get("name"),
-                quality : -1,
-                parentQualityDefinition : parent,
+                title : "Custom " + parent.get("title"),
+                parentQualityDefinition : parent.toJSON(),
                 qualityTags : parent.get("qualityTags"),
                 minSize : parent.get("minSize"),
                 maxSize : parent.get("maxSize"),
             });
-            this.collection.add(custom);
+            this.model.collection.add(custom);
+        },
+
+        _changeParent : function() {
+            var qualityId = this.ui.parent.val();
+            var quality = this.model.collection.find(function(m){return m.get("id") === parseInt(qualityId);});
+            this.model.set("parentQualityDefinition", quality.toJSON());
         }
 });
 

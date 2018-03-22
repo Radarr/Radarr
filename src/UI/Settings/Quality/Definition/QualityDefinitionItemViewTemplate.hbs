@@ -1,6 +1,10 @@
 <div class="row">
     <span class="col-md-2 col-sm-3">
-        {{quality.name}}
+        {{#if parentQualityDefinition }}
+            <span class="label label-warning">Custom Format</span>
+        {{ else }}
+            {{quality.name}}
+        {{/if}}
     </span>
     <span class="col-md-2 col-sm-3">
 				<input type="text" class="form-control" name="title">
@@ -30,11 +34,19 @@
 						</div>
 				</div>
 		</span>
-    {{#unless parentQualityDefinition }}
+    {{#if parentQualityDefinition }}
+        <span class="col-md-3 col-sm-4">
+            Parent: <select class="form-control x-parent" name="parentQualityDefinition">
+            {{#each qualities}}
+                <option value="{{id}}">{{title}}</option>
+            {{/each}}
+        </select>
+        </span>
+    {{else}}
         <span class="col-md-3 col-sm-4">
             <button class="btn btn-success x-create-format">Create Custom Format</button>
         </span>
-    {{/unless}}
+    {{/if}}
 
 
 </div>

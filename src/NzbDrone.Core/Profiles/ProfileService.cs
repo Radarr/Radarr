@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Profiles
         List<Profile> All();
         Profile Get(int id);
         bool Exists(int id);
+        void AddNewQuality(QualityDefinition qualityDefinition);
     }
 
     public class ProfileService : IProfileService, IHandle<ApplicationStartedEvent>
@@ -40,6 +41,23 @@ namespace NzbDrone.Core.Profiles
         public void Update(Profile profile)
         {
             _profileRepository.Update(profile);
+        }
+
+        public void AddNewQuality(QualityDefinition qualityDefinition)
+        {
+            // TODO: Update ProfileQualityItem to use QualityDefinition!
+            var all = All();
+            var updated = new List<Profile>();
+            foreach (var profile in all)
+            {
+                var parent = profile.Items.Find(i => i.Quality.Id == qualityDefinition.Id);
+                profile.Items.Insert(profile.Items.IndexOf(parent), new ProfileQualityItem
+                {
+                    Allowed = parent.Allowed,
+                    Quality = Quality.Bluray480p
+                });
+                Update(profile);
+            }
         }
 
         public void Delete(int id)

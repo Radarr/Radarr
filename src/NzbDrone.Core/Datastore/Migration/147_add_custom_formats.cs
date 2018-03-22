@@ -18,7 +18,13 @@ namespace NzbDrone.Core.Datastore.Migration
             if (!Schema.Table("QualityDefinitions").Column("QualityTags").Exists())
             {
                 Alter.Table("QualityDefinitions").AddColumn("QualityTags").AsString().Nullable().WithDefaultValue(null)
-                    .AddColumn("ParentQualityDefinition").AsInt64().Nullable().WithDefaultValue(null);
+                    .AddColumn("ParentQualityDefinitionId").AsInt64().Nullable().WithDefaultValue(null);
+            }
+
+            if (Schema.Table("QualityDefinitions").Index("IX_QualityDefinitions_Quality").Exists())
+            {
+                Alter.Table("QualityDefinitions").AlterColumn("Quality").AsInt64().Nullable();
+                Delete.Index("IX_QualityDefinitions_Quality").OnTable("QualityDefinitions");
             }
         }
 

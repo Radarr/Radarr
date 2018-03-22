@@ -6,8 +6,15 @@ using Newtonsoft.Json;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class QualityIntConverter : JsonConverter, IConverter
+    public class QualityDefinitionIntConverter : JsonConverter, IConverter
     {
+        private readonly IQualityDefinitionService _qualityDefinitionService;
+
+        public QualityDefinitionIntConverter(IQualityDefinitionService qualityDefinitionService)
+        {
+            _qualityDefinitionService = qualityDefinitionService;
+        }
+
         public object FromDB(ConverterContext context)
         {
             if (context.DbValue == DBNull.Value)
@@ -17,7 +24,7 @@ namespace NzbDrone.Core.Datastore.Converters
 
             var val = Convert.ToInt32(context.DbValue);
 
-            return (Quality)val;
+            return _qualityDefinitionService.GetById(val);
         }
 
         public object FromDB(ColumnMap map, object dbValue)
@@ -29,13 +36,13 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if(clrValue == DBNull.Value) return null;
 
-            if(clrValue as Quality == null)
+            if(!(clrValue is QualityDefinition))
             {
-                throw new InvalidOperationException("Attempted to save a quality that isn't really a quality");
+                throw new InvalidOperationException("Attempted to save a quality definition that isn't really a quality definition");
             }
 
-            var quality = clrValue as Quality;
-            return (int)quality;
+            var quality = (QualityDefinition) clrValue;
+            return quality.Id;
         }
 
         public Type DbType => typeof(int);
@@ -48,7 +55,7 @@ namespace NzbDrone.Core.Datastore.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var item = reader.Value;
-            return (Quality)Convert.ToInt32(item);
+            return _qualityDefinitionService.GetById(Convert.ToInt32(item));
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

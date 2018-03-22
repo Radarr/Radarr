@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 
@@ -20,7 +21,15 @@ namespace NzbDrone.Api.Qualities
 
             UpdateResource = Update;
 
+            CreateResource = Create;
+
             Get["/test"] = x => Test();
+        }
+
+        private int Create(QualityDefinitionResource qualityDefinitionResource)
+        {
+            var model = qualityDefinitionResource.ToModel();
+            return _qualityDefinitionService.Insert(model).Id;
         }
 
         private void Update(QualityDefinitionResource resource)

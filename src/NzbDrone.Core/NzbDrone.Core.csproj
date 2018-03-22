@@ -123,6 +123,7 @@
     <Compile Include="Authentication\User.cs" />
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
+    <Compile Include="Datastore\Converters\QualityDefinitionIntConverter.cs" />
     <Compile Include="Datastore\Converters\QualityTagStringConverter.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="Datastore\Migration\147_add_custom_formats.cs" />

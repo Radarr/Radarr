@@ -4,13 +4,16 @@ using NLog;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using System;
+using System.Runtime.InteropServices;
 using NzbDrone.Common.Cache;
+using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Qualities
 {
     public interface IQualityDefinitionService
     {
         void Update(QualityDefinition qualityDefinition);
+        QualityDefinition Insert(QualityDefinition qualityDefinition);
         List<QualityDefinition> All();
         QualityDefinition GetById(int id);
         QualityDefinition Get(Quality quality);
@@ -19,20 +22,24 @@ namespace NzbDrone.Core.Qualities
     public class QualityDefinitionService : IQualityDefinitionService, IHandle<ApplicationStartedEvent>
     {
         private readonly IQualityDefinitionRepository _repo;
-        private readonly ICached<Dictionary<Quality, QualityDefinition>> _cache;
+        private readonly ICached<IEnumerable<QualityDefinition>> _cache;
+        private readonly IProfileService _profileService;
         private readonly Logger _logger;
 
-        public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager, Logger logger)
+        public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager,
+            //IProfileService profileService,
+            Logger logger)
         {
             _repo = repo;
-            _cache = cacheManager.GetCache<Dictionary<Quality, QualityDefinition>>(this.GetType());
+            _cache = cacheManager.GetCache<IEnumerable<QualityDefinition>>(this.GetType());
+            //_profileService = profileService;
             _logger = logger;
         }
 
-        private Dictionary<Quality, QualityDefinition> GetAll()
+        private IEnumerable<QualityDefinition> GetAll()
         {
             //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
-            return _cache.Get("all", () => _repo.All().Select(WithWeight).ToDictionary(v => v.Quality), TimeSpan.FromSeconds(5.0));
+            return _cache.Get("all", () => _repo.All().Select(WithWeight), TimeSpan.FromSeconds(5.0));
         }
 
         public void Update(QualityDefinition qualityDefinition)
@@ -42,19 +49,26 @@ namespace NzbDrone.Core.Qualities
             _cache.Clear();
         }
 
+        public QualityDefinition Insert(QualityDefinition qualityDefinition)
+        {
+            var newQD = _repo.Insert(qualityDefinition);
+            //TODO: actually use this once profile is updated. _profileService.AddNewQuality(newQD);
+            return newQD;
+        }
+
         public List<QualityDefinition> All()
         {
-            return GetAll().Values.OrderBy(d => d.Weight).ToList();
+            return GetAll().OrderBy(d => d.Weight).ToList();
         }
 
         public QualityDefinition GetById(int id)
         {
-            return GetAll().Values.Single(v => v.Id == id);
+            return GetAll().Single(v => v.Id == id);
         }
 
         public QualityDefinition Get(Quality quality)
         {
-            return GetAll()[quality];
+            return GetAll().First(v => v.Quality == quality);
         }
 
         private void InsertMissingDefinitions()
@@ -109,10 +123,9 @@ namespace NzbDrone.Core.Qualities
         private static QualityDefinition WithWeight(QualityDefinition definition)
         {
             definition.Weight = QualityDefinition.DefaultQualityDefinitions.Single(d =>
-                d.ParentQualityDefinition != null
-                    ? d.ParentQualityDefinition?.Quality == definition.Quality
+                definition.ParentQualityDefinitionId != null
+                    ? definition.ParentQualityDefinitionId.Value == d.Id
                     : d.Quality == definition.Quality).Weight; //Get weight from parent
-
             return definition;
         }
 

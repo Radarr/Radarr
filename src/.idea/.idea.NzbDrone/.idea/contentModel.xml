@@ -1174,6 +1174,7 @@
             <e p="Int32Converter.cs" t="Include" />
             <e p="OsPathConverter.cs" t="Include" />
             <e p="ProviderSettingConverter.cs" t="Include" />
+            <e p="QualityDefinitionIntConverter.cs" t="Include" />
             <e p="QualityIntConverter.cs" t="Include" />
             <e p="QualityTagStringConverter.cs" t="Include" />
             <e p="TimeSpanConverter.cs" t="Include" />
