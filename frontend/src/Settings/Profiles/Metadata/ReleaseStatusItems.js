@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputHelpText from 'Components/Form/FormInputHelpText';
-import SecondaryTypeItem from './SecondaryTypeItem';
+import ReleaseStatusItem from './ReleaseStatusItem';
 import styles from './TypeItems.css';
 
-class SecondaryTypeItems extends Component {
+class ReleaseStatusItems extends Component {
 
   //
   // Render
@@ -21,7 +21,7 @@ class SecondaryTypeItems extends Component {
 
     return (
       <FormGroup>
-        <FormLabel>Secondary Types</FormLabel>
+        <FormLabel>Release Statuses</FormLabel>
         <div>
 
           {
@@ -52,12 +52,12 @@ class SecondaryTypeItems extends Component {
 
           <div className={styles.albumTypes}>
             {
-              metadataProfileItems.map(({ allowed, albumType }, index) => {
+              metadataProfileItems.map(({ allowed, releaseStatus }, index) => {
                 return (
-                  <SecondaryTypeItem
-                    key={albumType.id}
-                    albumTypeId={albumType.id}
-                    name={albumType.name}
+                  <ReleaseStatusItem
+                    key={releaseStatus.id}
+                    albumTypeId={releaseStatus.id}
+                    name={releaseStatus.name}
                     allowed={allowed}
                     sortIndex={index}
                     {...otherProps}
@@ -72,16 +72,16 @@ class SecondaryTypeItems extends Component {
   }
 }
 
-SecondaryTypeItems.propTypes = {
+ReleaseStatusItems.propTypes = {
   metadataProfileItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   errors: PropTypes.arrayOf(PropTypes.object),
   warnings: PropTypes.arrayOf(PropTypes.object),
   formLabel: PropTypes.string
 };
 
-SecondaryTypeItems.defaultProps = {
+ReleaseStatusItems.defaultProps = {
   errors: [],
   warnings: []
 };
 
-export default SecondaryTypeItems;
+export default ReleaseStatusItems;

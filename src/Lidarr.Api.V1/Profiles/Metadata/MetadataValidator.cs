@@ -20,6 +20,13 @@ namespace Lidarr.Api.V1.Profiles.Metadata
 
             return ruleBuilder.SetValidator(new SecondaryTypeValidator<T>());
         }
+
+        public static IRuleBuilderOptions<T, IList<ProfileReleaseStatusItemResource>> MustHaveAllowedReleaseStatus<T>(this IRuleBuilder<T, IList<ProfileReleaseStatusItemResource>> ruleBuilder)
+        {
+            ruleBuilder.SetValidator(new NotEmptyValidator(null));
+
+            return ruleBuilder.SetValidator(new ReleaseStatusValidator<T>());
+        }
     }
 
 
@@ -58,6 +65,31 @@ namespace Lidarr.Api.V1.Profiles.Metadata
         protected override bool IsValid(PropertyValidatorContext context)
         {
             var list = context.PropertyValue as IList<ProfileSecondaryAlbumTypeItemResource>;
+
+            if (list == null)
+            {
+                return false;
+            }
+
+            if (!list.Any(c => c.Allowed))
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    public class ReleaseStatusValidator<T> : PropertyValidator
+    {
+        public ReleaseStatusValidator()
+            : base("Must have at least one allowed release status")
+        {
+        }
+
+        protected override bool IsValid(PropertyValidatorContext context)
+        {
+            var list = context.PropertyValue as IList<ProfileReleaseStatusItemResource>;
 
             if (list == null)
             {

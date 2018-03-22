@@ -148,6 +148,7 @@
     <Compile Include="Datastore\Converters\DoubleConverter.cs" />
     <Compile Include="Datastore\Converters\EmbeddedDocumentConverter.cs" />
     <Compile Include="Datastore\Converters\EnumIntConverter.cs" />
+    <Compile Include="Datastore\Converters\ReleaseStatusIntConverter.cs" />
     <Compile Include="Datastore\Converters\SecondaryAlbumTypeIntConverter.cs" />
     <Compile Include="Datastore\Converters\PrimaryAlbumTypeIntConverter.cs" />
     <Compile Include="Datastore\Converters\LanguageIntConverter.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Datastore\Migration\009_album_releases.cs" />
     <Compile Include="Datastore\Migration\010_album_releases_fix.cs" />
     <Compile Include="Datastore\Migration\011_import_lists.cs" />
+    <Compile Include="Datastore\Migration\012_add_release_status.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -811,8 +813,9 @@
     <Compile Include="Music\Commands\BulkMoveArtistCommand.cs" />
     <Compile Include="Music\Commands\RefreshAlbumCommand.cs" />
     <Compile Include="Music\Events\ArtistsImportedEvent.cs" />
-    <Compile Include="Music\SecondaryAlbumType.cs" />
     <Compile Include="Music\PrimaryAlbumType.cs" />
+    <Compile Include="Music\SecondaryAlbumType.cs" />
+    <Compile Include="Music\ReleaseStatus.cs" />
     <Compile Include="Music\Links.cs" />
     <Compile Include="Music\Commands\MoveArtistCommand.cs" />
     <Compile Include="Music\Events\ArtistMovedEvent.cs" />
@@ -935,6 +938,7 @@
     <Compile Include="Profiles\Metadata\MetadataProfileInUseException.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfile.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileRepository.cs" />
+    <Compile Include="Profiles\Metadata\ProfileReleaseStatusTypeItem.cs" />
     <Compile Include="Profiles\Metadata\ProfileSecondaryAlbumTypeItem.cs" />
     <Compile Include="Profiles\Metadata\ProfilePrimaryAlbumTypeItem.cs" />
     <Compile Include="Profiles\Qualities\ProfileRepository.cs" />

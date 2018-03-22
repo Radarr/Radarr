@@ -54,16 +54,41 @@ function createSecondaryAlbumTypesSelector() {
   );
 }
 
+function createReleaseStatusesSelector() {
+  return createSelector(
+    createProviderSettingsSelector(),
+    (metadataProfile) => {
+      const releaseStatuses = metadataProfile.item.releaseStatuses;
+      if (!releaseStatuses || !releaseStatuses.value) {
+        return [];
+      }
+
+      return _.reduceRight(releaseStatuses.value, (result, { allowed, releaseStatus }) => {
+        if (allowed) {
+          result.push({
+            key: releaseStatus.id,
+            value: releaseStatus.name
+          });
+        }
+
+        return result;
+      }, []);
+    }
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     createProviderSettingsSelector(),
     createPrimaryAlbumTypesSelector(),
     createSecondaryAlbumTypesSelector(),
+    createReleaseStatusesSelector(),
     createProfileInUseSelector('metadataProfileId'),
-    (metadataProfile, primaryAlbumTypes, secondaryAlbumTypes, isInUse) => {
+    (metadataProfile, primaryAlbumTypes, secondaryAlbumTypes, releaseStatuses, isInUse) => {
       return {
         primaryAlbumTypes,
         secondaryAlbumTypes,
+        releaseStatuses,
         ...metadataProfile,
         isInUse
       };
@@ -138,6 +163,18 @@ class EditMetadataProfileModalContentConnector extends Component {
     });
   }
 
+  onMetadataReleaseStatusItemAllowedChange = (id, allowed) => {
+    const metadataProfile = _.cloneDeep(this.props.item);
+
+    const item = _.find(metadataProfile.releaseStatuses.value, (i) => i.releaseStatus.id === id);
+    item.allowed = allowed;
+
+    this.props.setMetadataProfileValue({
+      name: 'releaseStatuses',
+      value: metadataProfile.releaseStatuses.value
+    });
+  }
+
   //
   // Render
 
@@ -154,6 +191,7 @@ class EditMetadataProfileModalContentConnector extends Component {
         onInputChange={this.onInputChange}
         onMetadataPrimaryTypeItemAllowedChange={this.onMetadataPrimaryTypeItemAllowedChange}
         onMetadataSecondaryTypeItemAllowedChange={this.onMetadataSecondaryTypeItemAllowedChange}
+        onMetadataReleaseStatusItemAllowedChange={this.onMetadataReleaseStatusItemAllowedChange}
       />
     );
   }

@@ -14,6 +14,7 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import PrimaryTypeItems from './PrimaryTypeItems';
 import SecondaryTypeItems from './SecondaryTypeItems';
+import ReleaseStatusItems from './ReleaseStatusItems';
 import styles from './EditMetadataProfileModalContent.css';
 
 function EditMetadataProfileModalContent(props) {
@@ -37,7 +38,8 @@ function EditMetadataProfileModalContent(props) {
     id,
     name,
     primaryAlbumTypes: itemPrimaryAlbumTypes,
-    secondaryAlbumTypes: itemSecondaryAlbumTypes
+    secondaryAlbumTypes: itemSecondaryAlbumTypes,
+    releaseStatuses: itemReleaseStatuses
   } = item;
 
   return (
@@ -89,6 +91,14 @@ function EditMetadataProfileModalContent(props) {
                 {...otherProps}
               />
 
+              <ReleaseStatusItems
+                metadataProfileItems={itemReleaseStatuses.value}
+                errors={itemReleaseStatuses.errors}
+                warnings={itemReleaseStatuses.warnings}
+                formLabel="Release Statuses"
+                {...otherProps}
+              />
+
             </Form>
         }
       </ModalBody>
@@ -134,6 +144,7 @@ EditMetadataProfileModalContent.propTypes = {
   saveError: PropTypes.object,
   primaryAlbumTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
   secondaryAlbumTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  releaseStatuses: PropTypes.arrayOf(PropTypes.object).isRequired,
   item: PropTypes.object.isRequired,
   isInUse: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,

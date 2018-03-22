@@ -10,6 +10,7 @@ namespace Lidarr.Api.V1.Profiles.Metadata
         public string Name { get; set; }
         public List<ProfilePrimaryAlbumTypeItemResource> PrimaryAlbumTypes { get; set; }
         public List<ProfileSecondaryAlbumTypeItemResource> SecondaryAlbumTypes { get; set; }
+        public List<ProfileReleaseStatusItemResource> ReleaseStatuses { get; set; }
     }
 
     public class ProfilePrimaryAlbumTypeItemResource : RestResource
@@ -24,6 +25,12 @@ namespace Lidarr.Api.V1.Profiles.Metadata
         public bool Allowed { get; set; }
     }
 
+    public class ProfileReleaseStatusItemResource : RestResource
+    {
+        public NzbDrone.Core.Music.ReleaseStatus ReleaseStatus { get; set; }
+        public bool Allowed { get; set; }
+    }
+
     public static class MetadataProfileResourceMapper
     {
         public static MetadataProfileResource ToResource(this MetadataProfile model)
@@ -35,7 +42,8 @@ namespace Lidarr.Api.V1.Profiles.Metadata
                 Id = model.Id,
                 Name = model.Name,
                 PrimaryAlbumTypes = model.PrimaryAlbumTypes.ConvertAll(ToResource),
-                SecondaryAlbumTypes = model.SecondaryAlbumTypes.ConvertAll(ToResource)
+                SecondaryAlbumTypes = model.SecondaryAlbumTypes.ConvertAll(ToResource),
+                ReleaseStatuses = model.ReleaseStatuses.ConvertAll(ToResource)
             };
         }
 
@@ -64,6 +72,20 @@ namespace Lidarr.Api.V1.Profiles.Metadata
             };
         }
 
+        public static ProfileReleaseStatusItemResource ToResource(this ProfileReleaseStatusItem model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+
+            return new ProfileReleaseStatusItemResource
+            {
+                ReleaseStatus = model.ReleaseStatus,
+                Allowed = model.Allowed
+            };
+        }
+
         public static MetadataProfile ToModel(this MetadataProfileResource resource)
         {
             if (resource == null)
@@ -76,7 +98,8 @@ namespace Lidarr.Api.V1.Profiles.Metadata
                 Id = resource.Id,
                 Name = resource.Name,
                 PrimaryAlbumTypes = resource.PrimaryAlbumTypes.ConvertAll(ToModel),
-                SecondaryAlbumTypes = resource.SecondaryAlbumTypes.ConvertAll(ToModel)
+                SecondaryAlbumTypes = resource.SecondaryAlbumTypes.ConvertAll(ToModel),
+                ReleaseStatuses = resource.ReleaseStatuses.ConvertAll(ToModel)
             };
         }
 
@@ -102,7 +125,18 @@ namespace Lidarr.Api.V1.Profiles.Metadata
             };
         }
 
-        public static List<MetadataProfileResource> ToResource(this IEnumerable<MetadataProfile> models)
+        public static ProfileReleaseStatusItem ToModel(this ProfileReleaseStatusItemResource resource)
+        {
+            if (resource == null) return null;
+
+            return new ProfileReleaseStatusItem
+            {
+                ReleaseStatus = (NzbDrone.Core.Music.ReleaseStatus)resource.ReleaseStatus.Id,
+                Allowed = resource.Allowed
+            };
+        }
+
+    public static List<MetadataProfileResource> ToResource(this IEnumerable<MetadataProfile> models)
         {
             return models.Select(ToResource).ToList();
         }

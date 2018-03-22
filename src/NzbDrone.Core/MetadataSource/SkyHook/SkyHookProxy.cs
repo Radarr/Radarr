@@ -52,16 +52,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             SetCustomProvider();
 
-            var metadataProfile = _metadataProfileService.Exists(metadataProfileId) ? _metadataProfileService.Get(metadataProfileId) : _metadataProfileService.All().FirstOrDefault();
-            
+            var metadataProfile = _metadataProfileService.Exists(metadataProfileId) ? _metadataProfileService.Get(metadataProfileId) : _metadataProfileService.All().First();
 
             var primaryTypes = metadataProfile.PrimaryAlbumTypes.Where(s => s.Allowed).Select(s => s.PrimaryAlbumType.Name);
             var secondaryTypes = metadataProfile.SecondaryAlbumTypes.Where(s => s.Allowed).Select(s => s.SecondaryAlbumType.Name);
+            var releaseStatuses = metadataProfile.ReleaseStatuses.Where(s => s.Allowed).Select(s => s.ReleaseStatus.Name);
 
             var httpRequest = _customerRequestBuilder.Create()
                                             .SetSegment("route", "artist/" + foreignArtistId)
                                             .AddQueryParam("primTypes", string.Join("|", primaryTypes))
                                             .AddQueryParam("secTypes", string.Join("|", secondaryTypes))
+                                            .AddQueryParam("releaseStatuses", string.Join("|", releaseStatuses))
                                             .Build();
 
             httpRequest.AllowAutoRedirect = true;

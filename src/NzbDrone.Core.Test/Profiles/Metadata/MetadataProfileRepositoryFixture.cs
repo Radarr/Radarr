@@ -27,16 +27,22 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                     Allowed = l == SecondaryAlbumType.Studio
                 }).ToList(),
 
+                ReleaseStatuses = ReleaseStatus.All.OrderByDescending(l => l.Name).Select(l => new ProfileReleaseStatusItem
+                {
+                    ReleaseStatus = l,
+                    Allowed = l == ReleaseStatus.Official
+                }).ToList(),
+
                 Name = "TestProfile"
             };
 
             Subject.Insert(profile);
 
-
             StoredModel.Name.Should().Be(profile.Name);
 
             StoredModel.PrimaryAlbumTypes.Should().Equal(profile.PrimaryAlbumTypes, (a, b) => a.PrimaryAlbumType == b.PrimaryAlbumType && a.Allowed == b.Allowed);
             StoredModel.SecondaryAlbumTypes.Should().Equal(profile.SecondaryAlbumTypes, (a, b) => a.SecondaryAlbumType == b.SecondaryAlbumType && a.Allowed == b.Allowed);
+            StoredModel.ReleaseStatuses.Should().Equal(profile.ReleaseStatuses, (a, b) => a.ReleaseStatus == b.ReleaseStatus && a.Allowed == b.Allowed);
         }
     }
 }

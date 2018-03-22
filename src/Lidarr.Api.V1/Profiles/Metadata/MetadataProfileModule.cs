@@ -15,6 +15,7 @@ namespace Lidarr.Api.V1.Profiles.Metadata
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
             SharedValidator.RuleFor(c => c.PrimaryAlbumTypes).MustHaveAllowedPrimaryType();
             SharedValidator.RuleFor(c => c.SecondaryAlbumTypes).MustHaveAllowedSecondaryType();
+            SharedValidator.RuleFor(c => c.ReleaseStatuses).MustHaveAllowedReleaseStatus();
 
             GetResourceAll = GetAll;
             GetResourceById = GetById;
