@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Extras
 
     public class ExtraService : IExtraService,
                                 IHandle<MediaCoversUpdatedEvent>,
+                                IHandle<MovieFolderCreatedEvent>,
                                 IHandle<MovieRenamedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
@@ -118,6 +119,16 @@ namespace NzbDrone.Core.Extras
             foreach (var extraFileManager in _extraFileManagers)
             {
                 extraFileManager.CreateAfterMovieScan(movie, movieFiles);
+            }
+        }
+
+        public void Handle(MovieFolderCreatedEvent message)
+        {
+            var movie = message.Movie;
+
+            foreach (var extraFileManager in _extraFileManagers)
+            {
+                extraFileManager.CreateAfterMovieImport(movie, message.MovieFolder);
             }
         }
 

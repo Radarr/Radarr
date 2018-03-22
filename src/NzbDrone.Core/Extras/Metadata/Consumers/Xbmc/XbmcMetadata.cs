@@ -50,11 +50,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return GetMovieMetadataFilename(movieFilePath);
             }
 
-            if (metadataFile.Type == MetadataType.MovieImage)
-            {
-                return GetMovieImageFilename(movieFilePath, metadataPath);
-            }
-
             _logger.Debug("Unknown movie file metadata: {0}", metadataFile.RelativePath);
             return Path.Combine(movie.Path, metadataFile.RelativePath);
         }
@@ -222,7 +217,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             return new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
-        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
+        public override List<ImageFileResult> MovieImages(Movie movie)
         {
             if (!Settings.MovieImages)
             {
@@ -237,7 +232,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             foreach (var image in movie.Images)
             {
                 var source = _mediaCoverService.GetCoverPath(movie.Id, image.CoverType);
-                var destination = Path.ChangeExtension(movie.MovieFile.RelativePath,"").TrimEnd(".") + "-" + image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(source);
+                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(source);
 
                 yield return new ImageFileResult(destination, source);
             }
@@ -246,20 +241,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private string GetMovieMetadataFilename(string movieFilePath)
         {
             return Path.ChangeExtension(movieFilePath, "nfo");
-        }
-
-        private string GetMovieImageFilename(string movieFilePath, string existingImageName)
-        {
-            var fileExtention = Path.GetExtension(existingImageName);
-            var match = MovieFileImageRegex.Matches(existingImageName);
-
-            if (match.Count > 0)
-            {
-                var imageType = match[0].Groups["type"].Value;
-                return Parser.Parser.RemoveFileExtension(movieFilePath) + imageType + fileExtention;
-            }
-
-            return existingImageName;
         }
 
         private string GetAudioCodec(string audioCodec)

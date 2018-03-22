@@ -73,10 +73,11 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
+                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+
                 foreach (var movieFile in movieFiles)
                 {
                     files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, consumerFiles));
-                    files.AddRange(ProcessMovieImages(consumer, movie, movieFile, consumerFiles));
                 }
             }
 
@@ -92,7 +93,32 @@ namespace NzbDrone.Core.Extras.Metadata
             foreach (var consumer in _metadataFactory.Enabled())
             {
                 files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, new List<MetadataFile>()));
-                files.AddRange(ProcessMovieImages(consumer, movie, movieFile, new List<MetadataFile>()));
+            }
+
+            _metadataFileService.Upsert(files);
+
+            return files;
+        }
+
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
+
+            if (movieFolder.IsNullOrWhiteSpace())
+            {
+                return new List<MetadataFile>();
+            }
+
+            var files = new List<MetadataFile>();
+
+            foreach (var consumer in _metadataFactory.Enabled())
+            {
+                var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
+
+                if (movieFolder.IsNotNullOrWhiteSpace())
+                {
+                    files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+                }
             }
 
             _metadataFileService.Upsert(files);
@@ -202,12 +228,12 @@ namespace NzbDrone.Core.Extras.Metadata
 
             return metadata;
         }
-        
-        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, MovieFile movieFile, List<MetadataFile> existingMetadataFiles)
+
+        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, List<MetadataFile> existingMetadataFiles)
         {
             var result = new List<MetadataFile>();
 
-            foreach (var image in consumer.MovieImages(movie, movieFile))
+            foreach (var image in consumer.MovieImages(movie))
             {
                 var fullPath = Path.Combine(movie.Path, image.RelativePath);
 
@@ -219,26 +245,11 @@ namespace NzbDrone.Core.Extras.Metadata
 
                 _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
 
-                var existingMetadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
-                                                                                          c.RelativePath == image.RelativePath);
-
-                if (existingMetadata != null)
-                {
-                    var existingFullPath = Path.Combine(movie.Path, existingMetadata.RelativePath);
-                    if (fullPath.PathNotEquals(existingFullPath))
-                    {
-                        _diskTransferService.TransferFile(existingFullPath, fullPath, TransferMode.Move);
-                        existingMetadata.RelativePath = image.RelativePath;
-
-                        return new List<MetadataFile>{ existingMetadata };
-                    }
-                }
-
-                var metadata = existingMetadata ??
+                var metadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
+                                                                                   c.RelativePath == image.RelativePath) ??
                                new MetadataFile
                                {
                                    MovieId = movie.Id,
-                                   MovieFileId = movieFile.Id,
                                    Consumer = consumer.GetType().Name,
                                    Type = MetadataType.MovieImage,
                                    RelativePath = image.RelativePath,

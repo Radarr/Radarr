@@ -38,6 +38,11 @@ namespace NzbDrone.Core.Extras.Others
             return Enumerable.Empty<ExtraFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            return Enumerable.Empty<ExtraFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
         { 
             var extraFiles = _otherExtraFileService.GetFilesByMovie(movie.Id);

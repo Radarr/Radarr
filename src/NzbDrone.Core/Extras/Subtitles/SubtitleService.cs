@@ -42,6 +42,11 @@ namespace NzbDrone.Core.Extras.Subtitles
             return Enumerable.Empty<SubtitleFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
         {
             var subtitleFiles = _subtitleFileService.GetFilesByMovie(movie.Id);
