@@ -106,11 +106,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RssSyncInterval", value); }
         }
 
-		public int AvailabilityDelay
-		{
-		    get { return GetValueInt("AvailabilityDelay",0); }
-		    set { SetValue("AvailabilityDelay", value); }
-		}
+        public int AvailabilityDelay
+        {
+            get { return GetValueInt("AvailabilityDelay", 0); }
+            set { SetValue("AvailabilityDelay", value); }
+        }
 
         public int NetImportSyncInterval
         {
@@ -118,57 +118,64 @@ namespace NzbDrone.Core.Configuration
 
             set { SetValue("NetImportSyncInterval", value); }
         }
-        
+
         public string TraktAuthToken
-	      {
+        {
             get { return GetValue("TraktAuthToken", string.Empty); }
 
             set { SetValue("TraktAuthToken", value); }
-	      }
+        }
 
-	      public string TraktRefreshToken
-	      {
-	          get { return GetValue("TraktRefreshToken", string.Empty); }
-        
-	          set {SetValue("TraktRefreshToken", value); }
-	      }
-        
-	      public int TraktTokenExpiry
-	      {
-	      	  get { return GetValueInt("TraktTokenExpiry", 0); }
-        
-	          set { SetValue("TraktTokenExpiry", value); }
-	      }
+        public string TraktRefreshToken
+        {
+            get { return GetValue("TraktRefreshToken", string.Empty); }
 
-	public string NewTraktAuthToken
-	{
-		get {return GetValue("NewTraktAuthToken", string.Empty); }
-		set { SetValue("NewTraktAuthToken", value); }
-	}
+            set { SetValue("TraktRefreshToken", value); }
+        }
 
-	public string NewTraktRefreshToken
-	{
-		get {return GetValue("NewTraktRefreshToken", string.Empty); }
-		set { SetValue("NewTraktRefreshToken", value); }
-	}
+        public int TraktTokenExpiry
+        {
+            get { return GetValueInt("TraktTokenExpiry", 0); }
 
-	public int NewTraktTokenExpiry
-	{
-		get {return GetValueInt("NewTraktTokenExpiry", 0); }
-		set { SetValue("NewTraktTokenExpiry", value); }
-	}
+            set { SetValue("TraktTokenExpiry", value); }
+        }
 
-	public string ListSyncLevel
-	{
-	    get { return GetValue("ListSyncLevel", "disabled"); }
-	    set { SetValue("ListSyncLevel", value); }
-	}
+        public string NewTraktAuthToken
+        {
+            get { return GetValue("NewTraktAuthToken", string.Empty); }
+            set { SetValue("NewTraktAuthToken", value); }
+        }
 
-	public string ImportExclusions
-	{
-	    get { return GetValue("ImportExclusions", string.Empty); }
-	    set { SetValue("ImportExclusions", value); }
-	}
+        public string NewTraktRefreshToken
+        {
+            get { return GetValue("NewTraktRefreshToken", string.Empty); }
+            set { SetValue("NewTraktRefreshToken", value); }
+        }
+
+        public int NewTraktTokenExpiry
+        {
+            get { return GetValueInt("NewTraktTokenExpiry", 0); }
+            set { SetValue("NewTraktTokenExpiry", value); }
+        }
+
+        public string ListSyncLevel
+        {
+            get { return GetValue("ListSyncLevel", "disabled"); }
+            set { SetValue("ListSyncLevel", value); }
+        }
+
+        public string ImportExclusions
+        {
+            get { return GetValue("ImportExclusions", string.Empty); }
+            set { SetValue("ImportExclusions", value); }
+        }
+
+        public int MaximumSize
+        {
+            get { return GetValueInt("MaximumSize", 0); }
+
+            set { SetValue("MaximumSize", value); }
+        }
 
         public int MinimumAge
         {
@@ -195,22 +202,22 @@ namespace NzbDrone.Core.Configuration
         {
             get { return GetValueBoolean("PreferIndexerFlags", false); }
 
-            set {SetValue("PreferIndexerFlags", value);}
+            set { SetValue("PreferIndexerFlags", value); }
         }
 
-		public bool AllowHardcodedSubs
-		{
-			get { return GetValueBoolean("AllowHardcodedSubs", false); }
+        public bool AllowHardcodedSubs
+        {
+            get { return GetValueBoolean("AllowHardcodedSubs", false); }
 
-			set { SetValue("AllowHardcodedSubs", value); }
-		}
+            set { SetValue("AllowHardcodedSubs", value); }
+        }
 
-		public string WhitelistedHardcodedSubs
-		{
-			get { return GetValue("WhitelistedHardcodedSubs", ""); }
+        public string WhitelistedHardcodedSubs
+        {
+            get { return GetValue("WhitelistedHardcodedSubs", ""); }
 
-			set { SetValue("WhitelistedHardcodedSubs", value); }
-		}
+            set { SetValue("WhitelistedHardcodedSubs", value); }
+        }
 
         public ParsingLeniencyType ParsingLeniency
         {
