@@ -12,19 +12,19 @@ namespace NzbDrone.Core.Qualities
         public TagType TagType { get; set; }
         public TagModifier TagModifier { get; set; }
         public object Value { get; set; }
-        
-        public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C)(_((?<m_r>R)|(?<m_re>RE)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        
+
+        public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C|I)(_((?<m_r>R)|(?<m_re>RE)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public QualityTag(string raw)
         {
             Raw = raw;
-            
+
             var match = QualityTagRegex.Match(raw);
             if (!match.Success)
             {
                 throw new ArgumentException("Quality Tag is not in the correct format!");
             }
-            
+
             ParseRawMatch(match);
         }
 
@@ -68,16 +68,18 @@ namespace NzbDrone.Core.Qualities
                     return movieInfo.Quality.Modifier == (Modifier) Value;
                 case TagType.Source:
                     return movieInfo.Quality.Source == (Source) Value;
+                case TagType.Indexer:
+                    return releaseInfo.IndexerFlags.HasFlag((IndexerFlags) Value);
                 default:
                     return false;
             }
         }
-        
+
         private void ParseRawMatch(Match match)
         {
             var type = match.Groups["type"].Value.ToLower();
             var value = match.Groups["value"].Value.ToLower();
-            
+
             if (match.Groups["m_re"].Success) TagModifier |= TagModifier.AbsolutelyRequired;
             if (match.Groups["m_r"].Success) TagModifier |= TagModifier.Regex;
             if (match.Groups["m_n"].Success) TagModifier |= TagModifier.Not;
@@ -171,6 +173,18 @@ namespace NzbDrone.Core.Qualities
                     TagType = TagType.Language;
                     Value = Parser.LanguageParser.ParseLanguages(value).First();
                     break;
+                case "i":
+                    TagType = TagType.Indexer;
+                    var flagValues = Enum.GetValues(typeof(IndexerFlags));
+
+                    foreach (IndexerFlags flagValue in flagValues)
+                    {
+                        if (nameof(flagValue).ToLower().Remove('_') != value.ToLower().Remove('_')) continue;
+                        Value = flagValue;
+                        break;
+                    }
+
+                    break;
                 case "c":
                 default:
                     TagType = TagType.Custom;
@@ -195,7 +209,8 @@ namespace NzbDrone.Core.Qualities
         Modifier = 4,
         Edition = 8,
         Language = 16,
-        Custom = 32
+        Custom = 32,
+        Indexer = 64,
     }
 
     [Flags]
@@ -205,7 +220,7 @@ namespace NzbDrone.Core.Qualities
         Not = 2, // Do not match
         AbsolutelyRequired = 4
     }
-    
+
     public enum Resolution
     {
         Unknown = 0,

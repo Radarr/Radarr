@@ -30,14 +30,23 @@
 						</div>
 				</div>
 		</span>
+    {{#unless parentQualityDefinition }}
+        <span class="col-md-3 col-sm-4">
+            <button class="btn btn-success x-create-format">Create Custom Format</button>
+        </span>
+    {{/unless}}
+
 
 </div>
-<div class="row advanced-setting">
-    <div class="col-sm-2">
-        Quality Tags:
+{{#if parentQualityDefinition}}
+    <div class="row advanced-setting">
+        <div class="col-sm-2">
+            Quality Tags:
+        </div>
+        <div class="col-sm-10">
+            <select multiple name="qualityTags" class="form-control x-tags"></select>
+        </div>
     </div>
-    <div class="col-sm-10">
-        <select multiple name="qualityTags" class="form-control x-tags"></select>
-    </div>
-</div>
+{{/if}}
+
 

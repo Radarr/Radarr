@@ -16,6 +16,8 @@ namespace NzbDrone.Api.Qualities
 
         public double? MinSize { get; set; }
         public double? MaxSize { get; set; }
+
+        public QualityDefinitionResource ParentQualityDefinition { get; set; }
     }
 
     public static class QualityDefinitionResourceMapper
@@ -36,7 +38,9 @@ namespace NzbDrone.Api.Qualities
                 Weight = model.Weight,
 
                 MinSize = model.MinSize,
-                MaxSize = model.MaxSize
+                MaxSize = model.MaxSize,
+
+                ParentQualityDefinition = model.ParentQualityDefinition?.ToResource()
             };
         }
 
@@ -56,7 +60,9 @@ namespace NzbDrone.Api.Qualities
                 Weight = resource.Weight,
 
                 MinSize = resource.MinSize,
-                MaxSize = resource.MaxSize
+                MaxSize = resource.MaxSize,
+
+                ParentQualityDefinition = resource.ParentQualityDefinition?.ToModel()
             };
         }
 

@@ -18,6 +18,8 @@ namespace NzbDrone.Core.Qualities
 
         public List<QualityTag> QualityTags { get; set; }
 
+        public QualityDefinition ParentQualityDefinition { get; set; }
+
         public QualityDefinition()
         {
 
@@ -31,7 +33,7 @@ namespace NzbDrone.Core.Qualities
 
         public override string ToString()
         {
-            return Quality.Name;
+            return Title;
         }
 
         public static readonly HashSet<QualityDefinition> DefaultQualityDefinitions = new HashSet<QualityDefinition>

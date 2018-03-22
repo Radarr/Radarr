@@ -125,6 +125,7 @@
     <Compile Include="Authentication\UserService.cs" />
     <Compile Include="Datastore\Converters\QualityTagStringConverter.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\147_add_custom_formats.cs" />
     <Compile Include="Datastore\Migration\143_clean_core_tv.cs" />
     <Compile Include="Datastore\Migration\142_movie_extras.cs" />
     <Compile Include="Datastore\Migration\140_add_alternative_titles_table.cs" />

@@ -51,17 +51,17 @@ namespace NzbDrone.Core.Qualities
         {
             return GetAll().Values.Single(v => v.Id == id);
         }
-        
+
         public QualityDefinition Get(Quality quality)
         {
             return GetAll()[quality];
         }
-        
+
         private void InsertMissingDefinitions()
         {
             List<QualityDefinition> insertList = new List<QualityDefinition>();
             List<QualityDefinition> updateList = new List<QualityDefinition>();
-            
+
             var allDefinitions = QualityDefinition.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
             var existingDefinitions = _repo.All().ToList();
 
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Qualities
             _repo.InsertMany(insertList);
             _repo.UpdateMany(updateList);
             _repo.DeleteMany(existingDefinitions);
-            
+
             _cache.Clear();
         }
 
@@ -108,7 +108,10 @@ namespace NzbDrone.Core.Qualities
 
         private static QualityDefinition WithWeight(QualityDefinition definition)
         {
-            definition.Weight = QualityDefinition.DefaultQualityDefinitions.Single(d => d.Quality == definition.Quality).Weight;
+            definition.Weight = QualityDefinition.DefaultQualityDefinitions.Single(d =>
+                d.ParentQualityDefinition != null
+                    ? d.ParentQualityDefinition?.Quality == definition.Quality
+                    : d.Quality == definition.Quality).Weight; //Get weight from parent
 
             return definition;
         }
@@ -118,7 +121,7 @@ namespace NzbDrone.Core.Qualities
             _logger.Debug("Setting up default quality config");
 
             InsertMissingDefinitions();
-            
+
             AddDefaultQualityTags();
         }
     }

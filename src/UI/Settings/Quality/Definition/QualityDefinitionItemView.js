@@ -3,6 +3,7 @@ var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 require('jquery-ui');
 var FormatHelpers = require('../../../Shared/FormatHelpers');
 require('../../../Mixins/TagInput');
+var QualityDefinition = require('../../../Quality/QualityDefinitionModel');
 
 var view = Marionette.ItemView.extend({
 		template  : 'Settings/Quality/Definition/QualityDefinitionItemViewTemplate',
@@ -23,9 +24,12 @@ var view = Marionette.ItemView.extend({
 				tags : '.x-tags'
 		},
 
+
+
 		events : {
 				'slide .x-slider' : '_updateSize',
 				'change .x-tags' : '_updateTags',
+                'click .x-create-format' : '_createFormat',
 		},
 
 		initialize : function(options) {
@@ -119,7 +123,20 @@ var view = Marionette.ItemView.extend({
 								this.ui.sixtyMinuteMaxSize.html(maxSixty);
 						}
 				}
-		}
+		},
+
+        _createFormat : function() {
+		    var parent = this.model;
+            var custom = new QualityDefinition({
+                name : "Custom " + parent.get("name"),
+                quality : -1,
+                parentQualityDefinition : parent,
+                qualityTags : parent.get("qualityTags"),
+                minSize : parent.get("minSize"),
+                maxSize : parent.get("maxSize"),
+            });
+            this.collection.add(custom);
+        }
 });
 
 view = AsModelBoundView.call(view);
