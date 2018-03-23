@@ -26,6 +26,8 @@ namespace NzbDrone.Core.Qualities
         private readonly IProfileService _profileService;
         private readonly Logger _logger;
 
+        public static IDictionary<int, QualityDefinition> AllQualityDefinitions;
+
         public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager,
             //IProfileService profileService,
             Logger logger)
@@ -42,7 +44,10 @@ namespace NzbDrone.Core.Qualities
             return _cache.Get("all", () =>
             {
                 var all = _repo.All();
-                return all.Select(d => WithParent(d, all)).Select(WithWeight);
+                var qualityDefinitions = all.ToList();
+                all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);
+                AllQualityDefinitions = qualityDefinitions.ToDictionary(d => d.Id);
+                return qualityDefinitions;
             }, TimeSpan.FromMinutes(15));
         }
 
@@ -50,14 +55,14 @@ namespace NzbDrone.Core.Qualities
         {
             _repo.Update(qualityDefinition);
 
-            _cache.Clear();
+            ClearCache();
         }
 
         public QualityDefinition Insert(QualityDefinition qualityDefinition)
         {
             var newQD = _repo.Insert(qualityDefinition);
             //TODO: actually use this once profile is updated. _profileService.AddNewQuality(newQD);
-            _cache.Clear();
+            ClearCache();
             return newQD;
         }
 
@@ -104,7 +109,7 @@ namespace NzbDrone.Core.Qualities
             _repo.UpdateMany(updateList);
             _repo.DeleteMany(existingDefinitions);
 
-            _cache.Clear();
+            ClearCache();
         }
 
         private void AddDefaultQualityTags()
@@ -121,8 +126,15 @@ namespace NzbDrone.Core.Qualities
                     updateList.Add(definition);
                 }
                 _repo.UpdateMany(updateList);
-                _cache.Clear();
+                ClearCache();
             }
+        }
+
+        private void ClearCache()
+        {
+            _cache.Clear();
+            AllQualityDefinitions = null;
+            GetAll(); //Force cache to be refreshed, else AllQualityDefinitions won't get properly reset.
         }
 
         private static QualityDefinition WithWeight(QualityDefinition definition)

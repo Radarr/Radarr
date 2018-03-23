@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ServiceModel;
 using Marr.Data.Converters;
 using Marr.Data.Mapping;
 using NzbDrone.Core.Qualities;
@@ -24,7 +25,12 @@ namespace NzbDrone.Core.Datastore.Converters
 
             var val = Convert.ToInt32(context.DbValue);
 
-            return _qualityDefinitionService.GetById(val);
+            if (QualityDefinitionService.AllQualityDefinitions == null)
+            {
+                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL QUALITY DEFINITIONS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
+            }
+
+            return QualityDefinitionService.AllQualityDefinitions[val];
         }
 
         public object FromDB(ColumnMap map, object dbValue)
@@ -49,13 +55,19 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Quality);
+            return objectType == typeof(QualityDefinition);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var item = reader.Value;
-            return _qualityDefinitionService.GetById(Convert.ToInt32(item));
+
+            if (QualityDefinitionService.AllQualityDefinitions == null)
+            {
+                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL QUALITY DEFINITIONS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
+            }
+
+            return QualityDefinitionService.AllQualityDefinitions[Convert.ToInt32(item)];
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
