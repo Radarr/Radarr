@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsOnDownload)
                   .Ignore(i => i.SupportsOnUpgrade)
                   .Ignore(i => i.SupportsOnRename);
-            
+
             Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata");
 
             Mapper.Entity<DownloadClientDefinition>().RegisterDefinition("DownloadClients")
@@ -101,12 +101,13 @@ namespace NzbDrone.Core.Datastore
                 .SetAltName("AltTitle_Id")
                 .Relationship()
                 .HasOne(t => t.Movie, t => t.MovieId);
-                
+
 
             Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
-       
+
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
-                  .Ignore(d => d.Weight);
+                  .Ignore(d => d.Weight)
+                .Relationship();
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");
             Mapper.Entity<Log>().RegisterModel("Logs");
@@ -136,7 +137,7 @@ namespace NzbDrone.Core.Datastore
             RegisterEmbeddedConverter();
             RegisterProviderSettingConverter();
 
-            
+
             MapRepository.Instance.RegisterTypeConverter(typeof(int), new Int32Converter());
             MapRepository.Instance.RegisterTypeConverter(typeof(double), new DoubleConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(DateTime), new UtcConverter());

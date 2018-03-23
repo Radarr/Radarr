@@ -39,7 +39,11 @@ namespace NzbDrone.Core.Qualities
         private IEnumerable<QualityDefinition> GetAll()
         {
             //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
-            return _cache.Get("all", () => _repo.All().Select(WithWeight), TimeSpan.FromSeconds(5.0));
+            return _cache.Get("all", () =>
+            {
+                var all = _repo.All();
+                return all.Select(d => WithParent(d, all)).Select(WithWeight);
+            }, TimeSpan.FromMinutes(15));
         }
 
         public void Update(QualityDefinition qualityDefinition)
@@ -53,6 +57,7 @@ namespace NzbDrone.Core.Qualities
         {
             var newQD = _repo.Insert(qualityDefinition);
             //TODO: actually use this once profile is updated. _profileService.AddNewQuality(newQD);
+            _cache.Clear();
             return newQD;
         }
 
@@ -77,7 +82,7 @@ namespace NzbDrone.Core.Qualities
             List<QualityDefinition> updateList = new List<QualityDefinition>();
 
             var allDefinitions = QualityDefinition.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
-            var existingDefinitions = _repo.All().ToList();
+            var existingDefinitions = _repo.All().Where(d => !d.ParentQualityDefinitionId.HasValue).ToList(); //Only get default definitions, not custom formats!
 
             foreach (var definition in allDefinitions)
             {
@@ -124,8 +129,14 @@ namespace NzbDrone.Core.Qualities
         {
             definition.Weight = QualityDefinition.DefaultQualityDefinitions.Single(d =>
                 definition.ParentQualityDefinitionId != null
-                    ? definition.ParentQualityDefinitionId.Value == d.Id
+                    ? definition.ParentQualityDefinition.Quality == d.Quality
                     : d.Quality == definition.Quality).Weight; //Get weight from parent
+            return definition;
+        }
+
+        private static QualityDefinition WithParent(QualityDefinition definition, IEnumerable<QualityDefinition> all)
+        {
+            definition.ParentQualityDefinition = all.FirstOrDefault(d => d.Id == definition.ParentQualityDefinitionId);
             return definition;
         }
 
