@@ -37,6 +37,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
             if (indexerResponse.HttpResponse.Headers.ContentType != HttpAccept.Json.Value)
             {
+                if (indexerResponse.HttpResponse.Request.Url.Path.ContainsIgnoreCase("login.php"))
+                {
+                    CookiesUpdater(null, null);
+                    throw new IndexerException(indexerResponse, "We are currently on the login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
+                }
                 // Remove cookie cache
                 throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }

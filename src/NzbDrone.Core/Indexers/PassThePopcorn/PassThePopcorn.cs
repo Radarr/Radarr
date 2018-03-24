@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             return new PassThePopcornParser(Settings);
         }
         
-        protected override IndexerResponse FetchIndexerResponse(IndexerRequest request)
+        /*protected override IndexerResponse FetchIndexerResponse(IndexerRequest request)
         {
             _logger.Debug("Downloading Feed " + request.HttpRequest.ToString(false));
 
@@ -56,6 +56,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             request.HttpRequest.AllowAutoRedirect = false;
 
             return new IndexerResponse(request, _httpClient.Execute(request.HttpRequest));
-        }
+        }*/
     }
 }

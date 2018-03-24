@@ -76,12 +76,14 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     .AddFormParameter("password", Settings.Password)
                     .AddFormParameter("passkey", Settings.Passkey)
                     .AddFormParameter("keeplogged", "1")
-                    .AddFormParameter("login", "Log In!")
                     .SetHeader("Content-Type", "multipart/form-data")
                     .Accept(HttpAccept.Json)
                     .Build();
 
                 authLoginRequest.AllowAutoRedirect = true;
+                // We want clean cookies for the auth request.
+                authLoginRequest.StoreRequestCookie = false;
+                authLoginRequest.StoreResponseCookie = false;
                 var response = HttpClient.Execute(authLoginRequest);
                 var result = Json.Deserialize<PassThePopcornAuthResponse>(response.Content);
 
