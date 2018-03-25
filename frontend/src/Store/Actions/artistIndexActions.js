@@ -163,6 +163,18 @@ export const defaultState = {
       return progress + trackCount / 1000000;
     },
 
+    nextAlbum: function(item) {
+      if (item.nextAlbum) {
+        return item.nextAlbum.title;
+      }
+    },
+
+    lastAlbum: function(item) {
+      if (item.lastAlbum) {
+        return item.lastAlbum.title;
+      }
+    },
+
     albumCount: function(item) {
       return item.statistics.albumCount;
     },

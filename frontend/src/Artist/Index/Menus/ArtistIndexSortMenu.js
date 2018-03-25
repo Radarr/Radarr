@@ -65,21 +65,21 @@ function ArtistIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="nextAiring"
+          name="nextAlbum"
           sortKey={sortKey}
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Next Airing
+          Next Album
         </SortMenuItem>
 
         <SortMenuItem
-          name="previousAiring"
+          name="lastAlbum"
           sortKey={sortKey}
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Previous Airing
+          Last Album
         </SortMenuItem>
 
         <SortMenuItem
@@ -116,15 +116,6 @@ function ArtistIndexSortMenu(props) {
           onPress={onSortSelect}
         >
           Track Count
-        </SortMenuItem>
-
-        <SortMenuItem
-          name="latestAlbum"
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onPress={onSortSelect}
-        >
-          Latest Album
         </SortMenuItem>
 
         <SortMenuItem
