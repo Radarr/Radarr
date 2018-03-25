@@ -24,7 +24,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                                                  .Build();
         }
 
-        [Test]
+        //TODO: Decide whether to reimplement this!
+
+        /*[Test]
         public void should_be_accepted_for_existing_file()
         {
             _localMovie.ExistingFile = true;
@@ -60,8 +62,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         public void should_be_rejected_if_file_and_folder_do_not_have_same_episode()
         {
             _localMovie.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic();
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();            
-        }
+            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+        }*/
 
     }
 }

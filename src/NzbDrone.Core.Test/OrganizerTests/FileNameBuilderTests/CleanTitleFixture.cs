@@ -8,6 +8,7 @@ using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
@@ -21,6 +22,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
             _series = Builder<Movie>
                 .CreateNew()
                 .With(s => s.Title = "South Park")

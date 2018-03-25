@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         [Test]
         public void should_use_parsed_series_title()
         {
-            const string title = "30.Rock.S01E01.720p.hdtv";
+            const string title = "30.Rock.2015.720p.hdtv";
 
             Subject.GetMovie(title);
 

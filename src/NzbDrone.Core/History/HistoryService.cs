@@ -143,7 +143,7 @@ namespace NzbDrone.Core.History
                 EventType = HistoryEventType.DownloadFolderImported,
                 Date = DateTime.UtcNow,
                 Quality = message.MovieInfo.Quality,
-                SourceTitle = movie.Title,
+                SourceTitle = message.ImportedMovie.SceneName ?? Path.GetFileNameWithoutExtension(message.MovieInfo.Path),
                 DownloadId = downloadId,
                 MovieId = movie.Id,
             };

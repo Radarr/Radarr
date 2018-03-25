@@ -7,6 +7,7 @@ using System;
 using System.Dynamic;
 using System.Runtime.InteropServices;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Qualities
@@ -27,23 +28,48 @@ namespace NzbDrone.Core.Qualities
         private readonly IProfileService _profileService;
         private readonly Logger _logger;
 
-        public static IDictionary<int, QualityDefinition> AllQualityDefinitions;
+        public static IEnumerable<QualityDefinition> AllQualityDefinitions
+        {
+            get
+            {
+                if (_allQualityDefinitions == null)
+                {
+                    throw new Exception("***FATAL***: Tried accessing quality definitions before they were loaded. Please save this log and open an issue on github!");
+                }
+
+                return _allQualityDefinitions;
+            }
+
+            set
+            {
+                _allQualityDefinitions = value;
+                AllQualityDefinitionsById = value.ToDictionary(d => d.Id);
+                AllQualityDefinitionsByQuality = value.ToDictionary(d => d.Quality);
+                _unknownQualityDefinition = AllQualityDefinitionsByQuality[Quality.Unknown].JsonClone();
+            }
+        }
+
+        public static IDictionary<int, QualityDefinition> AllQualityDefinitionsById;
+        public static IDictionary<Quality, QualityDefinition> AllQualityDefinitionsByQuality;
+
+        private static IEnumerable<QualityDefinition> _allQualityDefinitions;
 
         public static QualityDefinition UnknownQualityDefinition
         {
             get
             {
-                if (_unknownQualityDefinition == null)
+                if (AllQualityDefinitionsByQuality == null)
                 {
-                    throw new Exception("***FATAL***: Tried accessing unknown quality definition before it was loaded. Please save this log and open an issue on github!");
+                    throw new Exception("***FATAL***: Tried accessing quality definitions before they were loaded. Please save this log and open an issue on github!");
                 }
+
                 return _unknownQualityDefinition;
             }
-
-            set => _unknownQualityDefinition = value;
         }
 
         private static QualityDefinition _unknownQualityDefinition;
+
+        private static bool _applicationStarted = false;
 
         public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager,
             //IProfileService profileService,
@@ -60,11 +86,11 @@ namespace NzbDrone.Core.Qualities
             //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
             return _cache.Get("all", () =>
             {
+                Handle(new ApplicationStartedEvent()); //TODO: Update this horrible hack for integration tests.
                 var all = _repo.All();
                 var qualityDefinitions = all.ToList();
                 all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);
-                AllQualityDefinitions = qualityDefinitions.ToDictionary(d => d.Id);
-                UnknownQualityDefinition = qualityDefinitions.Find(d => d.Quality == Quality.Unknown);
+                AllQualityDefinitions = qualityDefinitions;
                 return qualityDefinitions;
             }, TimeSpan.FromMinutes(15));
         }
@@ -172,6 +198,11 @@ namespace NzbDrone.Core.Qualities
 
         public void Handle(ApplicationStartedEvent message)
         {
+            if (_applicationStarted)
+                return;
+
+            _applicationStarted = true;
+
             _logger.Debug("Setting up default quality config");
 
             InsertMissingDefinitions();
@@ -182,12 +213,21 @@ namespace NzbDrone.Core.Qualities
 
     public class QualityWrapper : DynamicObject
     {
-        public static dynamic Dynamic = new QualityWrapper();
+        public static readonly dynamic Dynamic = new QualityWrapper();
+
         public QualityDefinition GetPropertyValue(string propertyName)
         {
             var propInfo = typeof(Quality).GetProperty(propertyName);
             Quality quality = (Quality)propInfo?.GetValue(null, null);
-            return QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == quality);
+            return quality != null ? QualityDefinitionService.AllQualityDefinitionsByQuality[quality] : null;
+        }
+
+        // Implement the TryGetMember method of the DynamicObject class for dynamic member calls.
+        public override bool TryGetMember(GetMemberBinder binder,
+            out object result)
+        {
+            result = GetPropertyValue(binder.Name);
+            return result != null;
         }
     }
 }

@@ -4,12 +4,19 @@ using NUnit.Framework;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
     public class MediaFileRepositoryFixture : DbTest<MediaFileRepository, MovieFile>
     {
+        [SetUp]
+        public void Setup()
+        {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+        }
+
         [Test]
         public void get_files_by_series()
         {

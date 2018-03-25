@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Datastore.Converters
                 throw new Exception("***FATAL*** WE TRIED ACCESSING ALL QUALITY DEFINITIONS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
-            return QualityDefinitionService.AllQualityDefinitions[val];
+            return QualityDefinitionService.AllQualityDefinitionsById[val];
         }
 
         public object FromDB(ColumnMap map, object dbValue)
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Datastore.Converters
                 throw new Exception("***FATAL*** WE TRIED ACCESSING ALL QUALITY DEFINITIONS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
-            return QualityDefinitionService.AllQualityDefinitions[Convert.ToInt32(item)];
+            return QualityDefinitionService.AllQualityDefinitionsById[Convert.ToInt32(item)];
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

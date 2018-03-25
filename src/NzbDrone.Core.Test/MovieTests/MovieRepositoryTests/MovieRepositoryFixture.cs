@@ -40,8 +40,6 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
 
 
             StoredModel.Profile.Should().NotBeNull();
-
-
         }
     }
 }

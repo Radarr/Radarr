@@ -23,11 +23,11 @@ namespace NzbDrone.Core.Parser
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?.{1,3}(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
-            
+
             //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
             /*new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
-            
+
             //Normal movie format, e.g: Mission.Impossible.3.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
@@ -47,23 +47,23 @@ namespace NzbDrone.Core.Parser
             //When year comes first.
             new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
         };
-        
+
         private static readonly Regex[] ReportMovieTitleLenientRegexBefore = new[]
         {
             //Some german or french tracker formats
-            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(?:(?<!(19|20)\d{2}.)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),  
+            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(?:(?<!(19|20)\d{2}.)(German|French|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
-        
+
         private static readonly Regex[] ReportMovieTitleLenientRegexAfter = new Regex[]
         {
- 
+
         };
 
         private static readonly Regex[] RejectHashedReleasesRegex = new Regex[]
             {
                 // Generic match for md5 and mixed-case hashes.
                 new Regex(@"^[0-9a-zA-Z]{32}", RegexOptions.Compiled),
-                
+
                 // Generic match for shorter lower-case hashes.
                 new Regex(@"^[a-z0-9]{24}$", RegexOptions.Compiled),
 
@@ -131,9 +131,9 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex DuplicateSpacesRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
         private static readonly Regex RequestInfoRegex = new Regex(@"\[.+?\]", RegexOptions.Compiled);
-        
+
         private static readonly Regex ReportYearRegex = new Regex(@"^.*(?<year>(19|20)\d{2}).*$", RegexOptions.Compiled);
-        
+
         private static readonly Regex ReportEditionRegex = new Regex(@"(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
@@ -205,7 +205,7 @@ namespace NzbDrone.Core.Parser
                 if (isLenient)
                 {
                     allRegexes.InsertRange(0, ReportMovieTitleLenientRegexBefore);
-                    
+
                     allRegexes.AddRange(ReportMovieTitleLenientRegexAfter);
                 }
 
@@ -223,7 +223,7 @@ namespace NzbDrone.Core.Parser
                             if (result != null)
                             {
                                 result.SimpleTitle = simpleTitle;
-                                
+
                                 realResult = result;
 
                                 return result;
@@ -252,13 +252,13 @@ namespace NzbDrone.Core.Parser
             var result = new ParsedMovieInfo {MovieTitle = foundTitle};
 
             var languageTitle = Regex.Replace(title.Replace(".", " "), foundTitle, "A Movie", RegexOptions.IgnoreCase);
-            
+
             result.Languages = LanguageParser.ParseLanguages(title);
             Logger.Debug("Language parsed: {0}", result.Languages);
 
             result.Quality = QualityParser.ParseQuality(title);
             Logger.Debug("Quality parsed: {0}", result.Quality);
-            
+
             if (result.Edition.IsNullOrWhiteSpace())
             {
                 result.Edition = ParseEdition(languageTitle);
@@ -450,7 +450,7 @@ namespace NzbDrone.Core.Parser
 
             return title;
         }
-        
+
         private static SeriesTitleInfo GetSeriesTitleInfo(string title)
         {
             var seriesTitleInfo = new SeriesTitleInfo();
@@ -478,8 +478,8 @@ namespace NzbDrone.Core.Parser
             {
                 return null;
             }
-            
-            
+
+
             var movieName = matchCollection[0].Groups["title"].Value./*Replace('.', ' ').*/Replace('_', ' ');
             movieName = RequestInfoRegex.Replace(movieName, "").Trim(' ');
 

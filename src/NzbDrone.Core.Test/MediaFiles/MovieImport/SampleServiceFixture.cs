@@ -10,6 +10,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
@@ -22,6 +23,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
             _movie = Builder<Movie>.CreateNew()
                                      .With(s => s.Runtime = 30)
                                      .Build();
@@ -30,7 +33,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                                 {
                                     Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
                                     Movie = _movie,
-                                    Quality = new QualityModel()
+                                    Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p)
                                 };
         }
 

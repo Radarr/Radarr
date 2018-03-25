@@ -70,8 +70,6 @@ namespace NzbDrone.Core.Test.HistoryTests
         [Test]
         public void should_use_file_name_for_source_title_if_scene_name_is_null()
         {
-            // Test fails becuase Radarr is using movie.title in historyService with no fallback
-
             var movie = Builder<Movie>.CreateNew().Build();
             var movieFile = Builder<MovieFile>.CreateNew()
                                                   .With(f => f.SceneName = null)

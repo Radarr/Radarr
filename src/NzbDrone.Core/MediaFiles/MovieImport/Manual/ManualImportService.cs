@@ -103,11 +103,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
                 downloadClientItem = trackedDownload.DownloadItem;
-                
+
                 if (movie == null)
                 {
                     movie = trackedDownload.RemoteMovie.Movie;
-                } 
+                }
             }
 
             if (movie == null)
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
             }
 
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, _config.ParsingLeniency > 0);
+            var folderInfo = _parsingService.ParseMovieInfo(directoryInfo.Name);
             var movieFiles = _diskScanService.GetVideoFiles(folder).ToList();
             var decisions = _importDecisionMaker.GetImportDecisions(movieFiles, movie, downloadClientItem, folderInfo, SceneSource(movie, folder), false);
 
@@ -145,11 +145,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             {
                 var trackedDownload = _trackedDownloadService.Find(downloadId);
                 downloadClientItem = trackedDownload.DownloadItem;
-                
+
                 if (movie == null)
                 {
                     movie = trackedDownload.RemoteMovie.Movie;
-                } 
+                }
             }
 
             if (movie == null)

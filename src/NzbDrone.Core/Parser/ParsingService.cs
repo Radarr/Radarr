@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Parser
             if (folderInfo != null)
             {
                 parsedMovieInfo = folderInfo.JsonClone();
-                parsedMovieInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename));
+                parsedMovieInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename)); //TODO: Use quality def logic from above here as well!!!!
             }
 
             else

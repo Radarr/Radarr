@@ -1,8 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -14,7 +19,22 @@ namespace NzbDrone.Core.Test.Qualities
         public static void SetupDefaultDefinitions()
         {
             QualityDefinitionService.AllQualityDefinitions =
-                QualityDefinition.DefaultQualityDefinitions.ToDictionary(d => d.Quality.Id);
+                QualityDefinition.DefaultQualityDefinitions.Select(d =>
+                {
+                    d.Id = d.Quality.Id;
+                    return d;
+                });
+        }
+
+        [Test]
+        public void should_not_have_a_reference()
+        {
+            SetupDefaultDefinitions();
+
+            var parsedEpisodeInfo = new ParsedMovieInfo();
+            parsedEpisodeInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p);
+            var newInfo = parsedEpisodeInfo.JsonClone();
+            QualityDefinition.DefaultQualityDefinitions.Any(d => d.Quality == Quality.Unknown).Should().BeTrue();
         }
 
         [Test]

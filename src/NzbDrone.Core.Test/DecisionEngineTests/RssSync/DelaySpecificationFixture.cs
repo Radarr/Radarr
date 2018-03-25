@@ -49,9 +49,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                    .Build();
 
             _profile.Items = new List<ProfileQualityItem>();
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p });
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p });
-            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p });
+            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p, QualityDefinition = QualityWrapper.Dynamic.HDTV720p});
+            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p, QualityDefinition = QualityWrapper.Dynamic.WEBDL720p});
+            _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p, QualityDefinition = QualityWrapper.Dynamic.Bluray720p});
 
             _profile.Cutoff = QualityWrapper.Dynamic.WEBDL720p;
 

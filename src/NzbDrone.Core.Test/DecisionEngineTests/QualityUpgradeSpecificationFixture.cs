@@ -47,10 +47,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.IsUpgradable(profile,
                     new QualityModel(
-                        QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == current),
+                        QualityDefinitionService.AllQualityDefinitionsByQuality[current],
                         new Revision(version: currentVersion)),
                     new QualityModel(
-                        QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == current),
+                        QualityDefinitionService.AllQualityDefinitionsByQuality[newQuality],
                         new Revision(version: newVersion)))
                     .Should().Be(expected);
         }

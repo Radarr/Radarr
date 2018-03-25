@@ -111,7 +111,8 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var videoFile in videoFiles)
             {
-                var episodeParseResult = Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), false);
+                var episodeParseResult =
+                    Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), _config.ParsingLeniency > 0);
 
                 if (episodeParseResult == null)
                 {
@@ -120,9 +121,8 @@ namespace NzbDrone.Core.MediaFiles
                 }
 
                 var size = _diskProvider.GetFileSize(videoFile);
-                var quality = QualityParser.ParseQuality(videoFile);
 
-                if (!_detectSample.IsSample(movie, quality, videoFile, size, false))
+                if (!_detectSample.IsSample(movie, QualityParser.ParseQuality(Path.GetFileName(videoFile)), videoFile, size, false))
                 {
                     _logger.Warn("Non-sample file detected: [{0}]", videoFile);
                     return false;
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, _config.ParsingLeniency > 0);
+            var folderInfo = _parsingService.ParseMovieInfo(cleanedUpName); //TODO: Maybe get grabbed here too and use release info for quality??
 
             if (folderInfo != null)
             {

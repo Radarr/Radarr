@@ -69,6 +69,9 @@ namespace NzbDrone.Core.MediaFiles
                 moveFileResult.MovieFile = _movieFileMover.MoveMovieFile(movieFile, localMovie);
             }
 
+            localMovie.Movie.MovieFileId = existingFile?.Id ?? 0;
+            localMovie.Movie.MovieFile = existingFile;
+
 		//_movieFileRenamer.RenameMoviePath(localMovie.Movie, false);
 
             return moveFileResult;

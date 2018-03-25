@@ -71,8 +71,8 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             _command.DestinationPath = null;
             _command.DestinationRootFolder = @"C:\Test\Movie3".AsOsAgnostic();
-            
-            var expectedPath = @"C:\Test\TV3\Series".AsOsAgnostic();
+
+            var expectedPath = @"C:\Test\Movie3\Movie".AsOsAgnostic();
 
             Mocker.GetMock<IBuildFileNames>()
                   .Setup(s => s.GetMovieFolder(It.IsAny<Movie>(), null))

@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_episode_has_no_existing_file()
         {
-            _parseResultSingle.Movie.MovieFileId = 0;
+            _parseResultSingle.Movie.MovieFile = null;
             _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
         }
 

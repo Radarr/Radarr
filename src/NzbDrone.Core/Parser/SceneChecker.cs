@@ -12,10 +12,14 @@ namespace NzbDrone.Core.Parser
             if (title.Contains(" ")) return false;
 
             var parsedTitle = Parser.ParseMovieTitle(title, false); //We are not lenient when it comes to scene checking!
+            var rlsGroup = Parser.ParseReleaseGroup(title);
+            var quality = QualityParser.ParseQuality(title);
 
             if (parsedTitle == null ||
-                parsedTitle.ReleaseGroup == null ||
-                string.IsNullOrWhiteSpace(parsedTitle.MovieTitle))
+                rlsGroup == null ||
+                string.IsNullOrWhiteSpace(parsedTitle.MovieTitle) ||
+                quality.Resolution == Resolution.Unknown ||
+                quality.Source == Source.UNKNOWN)
             {
                 return false;
             }

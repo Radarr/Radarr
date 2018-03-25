@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using NzbDrone.Core.Datastore;
 
 
@@ -46,6 +47,21 @@ namespace NzbDrone.Core.Qualities
         public override string ToString()
         {
             return Title;
+        }
+
+        public QualityDefinition Clone()
+        {
+            return new QualityDefinition
+            {
+                Id = Id,
+                Quality = Quality,
+                Title = Title,
+                Weight = Weight,
+                MinSize = MinSize,
+                MaxSize = MaxSize,
+                QualityTags = QualityTags,
+                ParentQualityDefinition = ParentQualityDefinition?.Clone()
+            };
         }
 
         public static readonly HashSet<QualityDefinition> DefaultQualityDefinitions = new HashSet<QualityDefinition>

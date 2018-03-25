@@ -60,9 +60,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
-                
-                var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title, _config.ParsingLeniency > 0);
+
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
+                //TODO: Create release info from history and use that here, so we don't loose indexer flags!
+                var parsedMovieInfo = _parsingService.ParseMovieInfo(trackedDownload.DownloadItem.Title);
 
                 if (parsedMovieInfo != null)
                 {
@@ -78,7 +79,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.RemoteMovie == null ||
                         trackedDownload.RemoteMovie.Movie == null)
                     {
-                        parsedMovieInfo = Parser.Parser.ParseMovieTitle(firstHistoryItem.SourceTitle, _config.ParsingLeniency > 0);
+                        parsedMovieInfo = _parsingService.ParseMovieInfo(firstHistoryItem.SourceTitle);
 
                         if (parsedMovieInfo != null)
                         {

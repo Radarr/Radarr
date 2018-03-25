@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.Qualities
                 {
                     Quality = v,
                     QualityDefinition =
-                        QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == v),
+                        QualityDefinitionService.AllQualityDefinitionsByQuality[v],
                     Allowed = allowed.Contains(v)
                 }).ToList();
 

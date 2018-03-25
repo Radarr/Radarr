@@ -61,8 +61,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             var importResults = new List<ImportResult>();
 
-            foreach (var importDecision in qualifiedImports.OrderBy(e => e.LocalMovie.Size)
-                                                           .ThenByDescending(e => e.LocalMovie.Size))
+            foreach (var importDecision in qualifiedImports.OrderByDescending(e => e.LocalMovie.Size))
             {
                 var localMovie = importDecision.LocalMovie;
                 var oldFiles = new List<MovieFile>();
@@ -85,8 +84,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     movieFile.Quality = localMovie.Quality;
                     movieFile.MediaInfo = localMovie.MediaInfo;
                     movieFile.Movie = localMovie.Movie;
-                    movieFile.ReleaseGroup = localMovie.ParsedMovieInfo.ReleaseGroup;
-                    movieFile.Edition = localMovie.ParsedMovieInfo.Edition;
+                    movieFile.ReleaseGroup = localMovie.ParsedMovieInfo?.ReleaseGroup;
+                    movieFile.Edition = localMovie.ParsedMovieInfo?.Edition;
 
                     bool copyOnly;
                     switch (importMode)

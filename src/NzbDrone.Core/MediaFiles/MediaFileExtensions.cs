@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Qualities;
 
 
@@ -70,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles
                 //Bluray
                 { ".m2ts", Source.BLURAY }
             };
-            
+
             _resolutionExt = new Dictionary<string, Resolution>
             {
                 //HD
@@ -101,7 +102,7 @@ namespace NzbDrone.Core.MediaFiles
             {
                 return _resolutionExt[extension];
             }
-            
+
             var source = Source.UNKNOWN;
             if (_fileExtensions.ContainsKey(extension))
             {
@@ -112,7 +113,7 @@ namespace NzbDrone.Core.MediaFiles
             {
                 return Resolution.R480P;
             }
-            
+
             return Resolution.Unknown;
         }
     }

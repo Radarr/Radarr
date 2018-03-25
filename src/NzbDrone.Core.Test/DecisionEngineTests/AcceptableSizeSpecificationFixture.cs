@@ -9,6 +9,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -109,6 +110,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(true);
             remoteMovie.Release.Size = 1105.Megabytes();
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().Be(false);
+            ExceptionVerification.ExpectedWarns(1);
         }
     }
 }

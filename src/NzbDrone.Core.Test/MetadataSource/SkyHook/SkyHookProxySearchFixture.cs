@@ -17,17 +17,10 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             UseRealHttp();
         }
 
-        [TestCase("The Simpsons", "The Simpsons")]
-        [TestCase("South Park", "South Park")]
-        [TestCase("Franklin & Bash", "Franklin & Bash")]
-        [TestCase("House", "House")]
-        [TestCase("Mr. D", "Mr. D")]
-        //[TestCase("Rob & Big", "Rob & Big")]
-        [TestCase("M*A*S*H", "M*A*S*H")]
-        //[TestCase("imdb:tt0436992", "Doctor Who (2005)")]
-        [TestCase("tmdb:78804", "Doctor Who (2005)")]
-        [TestCase("tmdbid:78804", "Doctor Who (2005)")]
-        [TestCase("tmdbid: 78804 ", "Doctor Who (2005)")]
+        [TestCase("Prometheus", "Prometheus")]
+        [TestCase("The Man from U.N.C.L.E.", "The Man from U.N.C.L.E.")]
+        [TestCase("imdb:tt2527336", "Star Wars: The Last Jedi")]
+        [TestCase("imdb:tt2798920", "Annihilation")]
         public void successful_search(string title, string expected)
         {
             var result = Subject.SearchForNewMovie(title);
@@ -49,7 +42,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             var result = Subject.SearchForNewMovie(term);
             result.Should().BeEmpty();
-            
+
             ExceptionVerification.IgnoreWarns();
         }
     }

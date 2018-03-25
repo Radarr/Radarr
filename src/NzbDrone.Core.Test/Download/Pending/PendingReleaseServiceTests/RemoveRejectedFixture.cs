@@ -44,9 +44,9 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                            Cutoff = QualityWrapper.Dynamic.HDTV720p,
                            Items = new List<ProfileQualityItem>
                                    {
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p },
-                                       new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p }
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p, QualityDefinition = QualityWrapper.Dynamic.HDTV720p },
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p, QualityDefinition = QualityWrapper.Dynamic.WEBDL720p },
+                                       new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p, QualityDefinition = QualityWrapper.Dynamic.Bluray720p }
                                    },
                        };
 

@@ -107,6 +107,7 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
                   .Ignore(d => d.Weight)
+                  .Ignore(d => d.ParentQualityDefinition)
                 .Relationship();
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");
@@ -144,9 +145,10 @@ namespace NzbDrone.Core.Datastore
             MapRepository.Instance.RegisterTypeConverter(typeof(bool), new BooleanIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Enum), new EnumIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Quality), new QualityIntConverter());
-            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileQualityItem>), new EmbeddedDocumentConverter(new QualityIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(QualityDefinition), new QualityDefinitionIntConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileQualityItem>), new EmbeddedDocumentConverter(new QualityDefinitionIntConverter(), new QualityIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(List<QualityTag>), new EmbeddedDocumentConverter(new QualityTagStringConverter()));
-            MapRepository.Instance.RegisterTypeConverter(typeof(QualityModel), new EmbeddedDocumentConverter(new QualityIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(QualityModel), new EmbeddedDocumentConverter(new QualityDefinitionIntConverter(), new QualityIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(Dictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<int>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<string>), new EmbeddedDocumentConverter());

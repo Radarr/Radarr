@@ -16,6 +16,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Qualities;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -32,6 +33,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
             _rejectedDecisions = new List<ImportDecision>();
             _approvedDecisions = new List<ImportDecision>();
 
@@ -76,7 +79,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_import_each_approved()
         {
-            Subject.Import(_approvedDecisions, false).Should().HaveCount(5);
+            Subject.Import(_approvedDecisions, false).Should().HaveCount(1);
         }
 
         [Test]
@@ -136,7 +139,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_use_nzb_title_as_scene_name()
         {
-            _downloadClientItem.Title = "malcolm.in.the.middle.s02e05.dvdrip.xvid-ingot";
+            _downloadClientItem.Title = "malcolm.in.the.middle.2015.dvdrip.xvid-ingot";
 
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
 
@@ -148,7 +151,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [TestCase(".nzb")]
         public void should_remove_extension_from_nzb_title_for_scene_name(string extension)
         {
-            var title = "malcolm.in.the.middle.s02e05.dvdrip.xvid-ingot";
+            var title = "malcolm.in.the.middle.2015.dvdrip.xvid-ingot";
 
             _downloadClientItem.Title = title + extension;
 

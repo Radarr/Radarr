@@ -62,7 +62,7 @@ namespace NzbDrone.Api.Profiles
                 Id = resource.Id,
 
                 Name = resource.Name,
-                Cutoff = QualityDefinitionService.AllQualityDefinitions[resource.Cutoff.Id],
+                Cutoff = QualityDefinitionService.AllQualityDefinitionsById[resource.Cutoff.Id],
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
                 Language = resource.Language
@@ -75,7 +75,7 @@ namespace NzbDrone.Api.Profiles
 
             return new ProfileQualityItem
             {
-                QualityDefinition = QualityDefinitionService.AllQualityDefinitions[resource.Quality.Id],
+                QualityDefinition = QualityDefinitionService.AllQualityDefinitionsById[resource.Quality.Id],
                 Quality = (Quality)resource.Quality.Id,
                 Allowed = resource.Allowed
             };
