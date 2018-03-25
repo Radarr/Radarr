@@ -119,6 +119,10 @@ namespace NzbDrone.Core.Music
             {
                 sortKey = "Artists." + pagingSpec.SortKey.Split('.').Last();
             }
+            else if (pagingSpec.SortKey == "albumTitle")
+            {
+                sortKey = "Albums.title";
+            }
             else
             {
                 sortKey = "Albums.releaseDate";
@@ -138,11 +142,11 @@ namespace NzbDrone.Core.Music
 
         private int GetMissingAlbumsQueryCount(PagingSpec<Album> pagingSpec, DateTime currentTime)
         {
-            var monitored = 0;
+            var monitored = "(Albums.[Monitored] = 0) OR (Artists.[Monitored] = 0)";
 
             if (pagingSpec.FilterExpressions.FirstOrDefault().ToString().Contains("True"))
             {
-                monitored = 1;
+                monitored = "(Albums.[Monitored] = 1) AND (Artists.[Monitored] = 1)";
             }
 
             string query = string.Format("SELECT Albums.* FROM (SELECT Tracks.AlbumId, COUNT(*) AS TotalTrackCount," +
@@ -179,6 +183,10 @@ namespace NzbDrone.Core.Music
             else if (pagingSpec.SortKey == "artist.sortName")
             {
                 sortKey = "Artists." + pagingSpec.SortKey.Split('.').Last();
+            }
+            else if (pagingSpec.SortKey == "albumTitle")
+            {
+                sortKey = "Albums.title";
             }
             else
             {
