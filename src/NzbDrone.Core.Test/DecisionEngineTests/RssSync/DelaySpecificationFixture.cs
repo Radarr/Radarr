@@ -18,6 +18,7 @@ using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
@@ -31,6 +32,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             _profile = Builder<Profile>.CreateNew()
                                        .Build();
 
@@ -51,7 +53,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.WEBDL720p });
             _profile.Items.Add(new ProfileQualityItem { Allowed = true, Quality = Quality.Bluray720p });
 
-            _profile.Cutoff = Quality.WEBDL720p;
+            _profile.Cutoff = QualityWrapper.Dynamic.WEBDL720p;
 
             _remoteEpisode.ParsedMovieInfo = new ParsedMovieInfo();
             _remoteEpisode.Release = new ReleaseInfo();
@@ -97,7 +99,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_system_invoked_search_and_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.SDTV);
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.SDTV);
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -116,7 +118,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_quality_is_last_allowed_in_profile()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.Bluray720p);
 
             Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
         }
@@ -124,7 +126,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_older_than_delay()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p);
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
 
             _delayProfile.UsenetDelay = 60;
@@ -135,7 +137,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.SDTV);
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.SDTV);
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -146,10 +148,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_proper_for_existing_episode()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2));
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p, new Revision(version: 2));
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.HDTV720p));
+            GivenExistingFile(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
             GivenUpgradeForExistingFile();
 
             Mocker.GetMock<IQualityUpgradableSpecification>()
@@ -164,10 +166,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_real_for_existing_episode()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(real: 1));
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p, new Revision(real: 1));
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.HDTV720p));
+            GivenExistingFile(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
             GivenUpgradeForExistingFile();
 
             Mocker.GetMock<IQualityUpgradableSpecification>()
@@ -182,10 +184,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_proper_for_existing_episode_of_different_quality()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2));
+            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p, new Revision(version: 2));
             _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.SDTV));
+            GivenExistingFile(new QualityModel(QualityWrapper.Dynamic.SDTV));
 
             _delayProfile.UsenetDelay = 720;
 

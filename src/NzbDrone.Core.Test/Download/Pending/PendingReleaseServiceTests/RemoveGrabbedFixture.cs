@@ -13,6 +13,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -29,13 +30,15 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
             _movie = Builder<Movie>.CreateNew()
                                      .Build();
 
             _profile = new Profile
                        {
                            Name = "Test",
-                           Cutoff = Quality.HDTV720p,
+                           Cutoff = QualityWrapper.Dynamic.HDTV720p,
                            Items = new List<ProfileQualityItem>
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
@@ -49,14 +52,14 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
             _parsedEpisodeInfo = Builder<ParsedMovieInfo>.CreateNew().Build();
-            _parsedEpisodeInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _parsedEpisodeInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p);
 
             _remoteEpisode = new RemoteMovie();
             //_remoteEpisode.Episodes = new List<Episode>{ _episode };
             _remoteEpisode.Movie = _movie;
             _remoteEpisode.ParsedMovieInfo = _parsedEpisodeInfo;
             _remoteEpisode.Release = _release;
-            
+
             _temporarilyRejected = new DownloadDecision(_remoteEpisode, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()
@@ -106,7 +109,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_delete_if_the_grabbed_quality_is_the_higher()
         {
-            GivenHeldRelease(new QualityModel(Quality.SDTV));
+            GivenHeldRelease(new QualityModel(QualityWrapper.Dynamic.SDTV));
 
             Subject.Handle(new MovieGrabbedEvent(_remoteEpisode));
 
@@ -116,7 +119,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_not_delete_if_the_grabbed_quality_is_the_lower()
         {
-            GivenHeldRelease(new QualityModel(Quality.Bluray720p));
+            GivenHeldRelease(new QualityModel(QualityWrapper.Dynamic.Bluray720p));
 
             Subject.Handle(new MovieGrabbedEvent(_remoteEpisode));
 

@@ -259,7 +259,7 @@ namespace NzbDrone.Integration.Test
 
                 Commands.PostAndWait(new CommandResource { Name = "refreshmovie", Body = new RefreshMovieCommand(movie.Id) });
                 Commands.WaitAll();
-                
+
                 result = Movies.Get(movie.Id);
 
                 result.MovieFile.Should().NotBeNull();
@@ -268,7 +268,7 @@ namespace NzbDrone.Integration.Test
             return result.MovieFile;
         }
 
-        public ProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
+        public ProfileResource EnsureProfileCutoff(int profileId, QualityDefinition cutoff)
         {
             var profile = Profiles.Get(profileId);
 

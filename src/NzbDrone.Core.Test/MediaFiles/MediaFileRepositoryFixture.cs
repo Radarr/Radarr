@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var files = Builder<MovieFile>.CreateListOfSize(10)
                 .All()
                 .With(c => c.Id = 0)
-                .With(c => c.Quality =new QualityModel(Quality.Bluray720p))
+                .With(c => c.Quality =new QualityModel())
                 .Random(4)
                 .With(s => s.MovieId = 12)
                 .BuildListOfNew();

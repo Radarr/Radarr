@@ -36,11 +36,11 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Mocker.GetMock<INamingConfigService>()
                   .Setup(c => c.GetConfig()).Returns(_namingConfig);
 
-            _movieFile = new MovieFile { Quality = new QualityModel(Quality.HDTV720p), ReleaseGroup = "SonarrTest" };
-            
-            Mocker.GetMock<IQualityDefinitionService>()
+            _movieFile = new MovieFile { Quality = new QualityModel(new QualityDefinition(Quality.HDTV720p)), ReleaseGroup = "SonarrTest" };
+
+            /*Mocker.GetMock<IQualityDefinitionService>()
                 .Setup(v => v.Get(Moq.It.IsAny<Quality>()))
-                .Returns<Quality>(v => QualityDefinition.DefaultQualityDefinitions.First(c => c.Quality == v));
+                .Returns<Quality>(v => QualityDefinition.DefaultQualityDefinitions.First(c => c.Quality == v));*/
         }
 
         private void GivenProper()
@@ -247,7 +247,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_include_affixes_if_value_not_empty()
         {
             _namingConfig.StandardMovieFormat = "{Movie.Title}.S{season:00}E{episode:00}{_Episode.Title_}{Quality.Title}";
-            
+
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South.Park.S15E06_City.Sushi_HDTV-720p");
         }

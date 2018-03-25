@@ -14,6 +14,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.DecisionEngine;
 
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
@@ -28,25 +29,27 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
             Mocker.Resolve<QualityUpgradableSpecification>();
 
-            _firstFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
-            _secondFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _firstFile = new MovieFile { Quality = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _secondFile = new MovieFile { Quality = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 1)), DateAdded = DateTime.Now };
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p })
+                         .With(c => c.Profile = new Profile { Cutoff = QualityWrapper.Dynamic.Bluray1080p })
                          .Build();
 
             _parseResultSingle = new RemoteMovie
             {
                 Movie = fakeSeries,
-                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
+                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)) },
             };
         }
 
         private void WithFirstFileUpgradable()
         {
-            _firstFile.Quality = new QualityModel(Quality.SDTV);
+            _firstFile.Quality = new QualityModel(QualityWrapper.Dynamic.SDTV);
         }
 
         private void GivenAutoDownloadPropers()
@@ -59,7 +62,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_movieFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.QualityDefinition = QualityWrapper.Dynamic.DVD;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
@@ -86,7 +89,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_proper_but_auto_download_propers_is_false()
         {
-            _firstFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.QualityDefinition = QualityWrapper.Dynamic.DVD;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
@@ -97,7 +100,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             GivenAutoDownloadPropers();
 
-            _firstFile.Quality.Quality = Quality.DVD;
+            _firstFile.Quality.QualityDefinition = QualityWrapper.Dynamic.DVD;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();

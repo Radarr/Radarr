@@ -1,15 +1,17 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
-    
+
     public class QualityUpgradeSpecificationFixture : CoreTest<QualityUpgradableSpecification>
     {
         public static object[] IsUpgradeTestCases =
@@ -22,11 +24,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new object[] { Quality.WEBDL720p, 1, Quality.WEBDL720p, 1, Quality.WEBDL720p, false },
             new object[] { Quality.WEBDL1080p, 1, Quality.WEBDL1080p, 1, Quality.WEBDL1080p, false }
         };
-        
+
         [SetUp]
         public void Setup()
         {
-
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         private void GivenAutoDownloadPropers(bool autoDownloadPropers)
@@ -43,7 +45,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile, new QualityModel(current, new Revision(version: currentVersion)), new QualityModel(newQuality, new Revision(version: newVersion)))
+            Subject.IsUpgradable(profile,
+                    new QualityModel(
+                        QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == current),
+                        new Revision(version: currentVersion)),
+                    new QualityModel(
+                        QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == current),
+                        new Revision(version: newVersion)))
                     .Should().Be(expected);
         }
 
@@ -54,7 +62,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile, new QualityModel(Quality.DVD, new Revision(version: 2)), new QualityModel(Quality.DVD, new Revision(version: 1)))
+            Subject.IsUpgradable(profile, new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)), new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 1)))
                     .Should().BeFalse();
         }
     }

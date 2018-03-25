@@ -15,6 +15,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.DecisionEngine;
 
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -34,21 +35,22 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             Mocker.Resolve<QualityUpgradableSpecification>();
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
             _fakeMovie = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = QualityWrapper.Dynamic.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .Build();
 
             _parseResultSingle = new RemoteMovie
             {
                 Movie = _fakeMovie,
-                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) }
+                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)) }
             };
 
-            _upgradableQuality = new QualityModel(Quality.SDTV, new Revision(version: 1));
-            _notupgradableQuality = new QualityModel(Quality.HDTV1080p, new Revision(version: 2));
+            _upgradableQuality = new QualityModel(QualityWrapper.Dynamic.SDTV, new Revision(version: 1));
+            _notupgradableQuality = new QualityModel(QualityWrapper.Dynamic.HDTV1080p, new Revision(version: 2));
 
             Mocker.GetMock<IConfigService>()
                   .SetupGet(s => s.EnableCompletedDownloadHandling)
@@ -144,9 +146,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_episode_is_of_same_quality_as_existing()
         {
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
+            _fakeMovie.Profile = new Profile { Cutoff = QualityWrapper.Dynamic.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.WEBDL1080p, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(QualityWrapper.Dynamic.WEBDL1080p, new Revision(version: 1));
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -156,9 +158,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
+            _fakeMovie.Profile = new Profile { Cutoff = QualityWrapper.Dynamic.WEBDL1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.WEBDL1080p, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 1));
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
 
@@ -184,9 +186,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_cutoff_already_met_and_cdh_is_disabled()
         {
             GivenCdhDisabled();
-            _fakeMovie.Profile = new Profile { Cutoff = Quality.WEBDL1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
-            _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
+            _fakeMovie.Profile = new Profile { Cutoff = QualityWrapper.Dynamic.WEBDL1080p, Items = Qualities.QualityFixture.GetDefaultQualities() };
+            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(QualityWrapper.Dynamic.WEBDL1080p, new Revision(version: 1));
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, "test", _upgradableQuality, DateTime.UtcNow.AddDays(-100), HistoryEventType.Grabbed);
 

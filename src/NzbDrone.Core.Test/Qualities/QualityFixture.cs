@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
@@ -63,6 +64,11 @@ namespace NzbDrone.Core.Test.Qualities
 
         public static List<ProfileQualityItem> GetDefaultQualities(params Quality[] allowed)
         {
+            if (QualityDefinitionService.AllQualityDefinitions == null)
+            {
+                QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+            }
+
             var qualities = new List<Quality>
             {
                 Quality.CAM,
@@ -94,7 +100,13 @@ namespace NzbDrone.Core.Test.Qualities
             var items = qualities
                 .Except(allowed)
                 .Concat(allowed)
-                .Select(v => new ProfileQualityItem { Quality = v, Allowed = allowed.Contains(v) }).ToList();
+                .Select(v => new ProfileQualityItem
+                {
+                    Quality = v,
+                    QualityDefinition =
+                        QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == v),
+                    Allowed = allowed.Contains(v)
+                }).ToList();
 
             return items;
         }

@@ -25,8 +25,10 @@ namespace NzbDrone.Core.Test.HistoryTests
         [SetUp]
         public void Setup()
         {
-            _profile = new Profile { Cutoff = Quality.WEBDL720p, Items = QualityFixture.GetDefaultQualities() };
-            _profileCustom = new Profile { Cutoff = Quality.WEBDL720p, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
+            _profile = new Profile { Cutoff = QualityWrapper.Dynamic.WEBDL720p, Items = QualityFixture.GetDefaultQualities() };
+            _profileCustom = new Profile { Cutoff = QualityWrapper.Dynamic.WEBDL720p, Items = QualityFixture.GetDefaultQualities(Quality.DVD) };
         }
 
         [Test]
@@ -46,11 +48,11 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             Mocker.GetMock<IHistoryRepository>()
                 .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel> { new QualityModel(Quality.DVD), new QualityModel(Quality.Bluray1080p) });
+                .Returns(new List<QualityModel> { new QualityModel(QualityWrapper.Dynamic.DVD), new QualityModel(QualityWrapper.Dynamic.Bluray1080p) });
 
             var quality = Subject.GetBestQualityInHistory(_profile, 2);
 
-            quality.Should().Be(new QualityModel(Quality.Bluray1080p));
+            quality.Should().Be(new QualityModel(QualityWrapper.Dynamic.Bluray1080p));
         }
 
         [Test]
@@ -58,11 +60,11 @@ namespace NzbDrone.Core.Test.HistoryTests
         {
             Mocker.GetMock<IHistoryRepository>()
                 .Setup(v => v.GetBestQualityInHistory(2))
-                .Returns(new List<QualityModel> { new QualityModel(Quality.DVD), new QualityModel(Quality.Bluray1080p) });
+                .Returns(new List<QualityModel> { new QualityModel(QualityWrapper.Dynamic.DVD), new QualityModel(QualityWrapper.Dynamic.Bluray1080p) });
 
             var quality = Subject.GetBestQualityInHistory(_profileCustom, 2);
 
-            quality.Should().Be(new QualityModel(Quality.DVD));
+            quality.Should().Be(new QualityModel(QualityWrapper.Dynamic.DVD));
         }
 
         [Test]

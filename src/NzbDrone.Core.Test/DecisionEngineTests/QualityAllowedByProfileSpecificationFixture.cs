@@ -8,6 +8,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -34,14 +35,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.Bluray1080p })
+                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = QualityWrapper.Dynamic.Bluray1080p })
                          .Build();
 
             remoteMovie = new RemoteMovie
             {
                 Movie = fakeSeries,
-                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
+                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)) },
             };
         }
 

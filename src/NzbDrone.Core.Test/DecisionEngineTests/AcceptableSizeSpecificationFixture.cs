@@ -26,11 +26,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             movie = Builder<Movie>.CreateNew().Build();
 
+            qualityType = Builder<QualityDefinition>.CreateNew()
+                .With(q => q.MinSize = 2)
+                .With(q => q.MaxSize = 10)
+                .With(q => q.Quality = Quality.SDTV)
+                .Build();
+
             remoteMovie = new RemoteMovie
             {
                 Movie = movie,
                 Release = new ReleaseInfo(),
-                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.SDTV, new Revision(version: 2)) },
+                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(qualityType, new Revision(version: 2)) },
 
             };
 
@@ -38,11 +44,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Setup(v => v.Get(It.IsAny<Quality>()))
                 .Returns<Quality>(v => QualityDefinition.DefaultQualityDefinitions.First(c => c.Quality == v));
 
-            qualityType = Builder<QualityDefinition>.CreateNew()
-                .With(q => q.MinSize = 2)
-                .With(q => q.MaxSize = 10)
-                .With(q => q.Quality = Quality.SDTV)
-                .Build();
+
 
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.Get(Quality.SDTV)).Returns(qualityType);
         }

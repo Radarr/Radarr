@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Lifecycle;
@@ -10,6 +11,12 @@ namespace NzbDrone.Core.Test.Qualities
     [TestFixture]
     public class QualityDefinitionServiceFixture : CoreTest<QualityDefinitionService>
     {
+        public static void SetupDefaultDefinitions()
+        {
+            QualityDefinitionService.AllQualityDefinitions =
+                QualityDefinition.DefaultQualityDefinitions.ToDictionary(d => d.Quality.Id);
+        }
+
         [Test]
         public void init_should_add_all_definitions()
         {

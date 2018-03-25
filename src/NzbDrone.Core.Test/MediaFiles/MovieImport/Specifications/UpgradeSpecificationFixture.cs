@@ -10,6 +10,7 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             _movie = Builder<Movie>.CreateNew()
                                      .With(e => e.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                      .Build();
@@ -29,7 +31,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie = new LocalMovie()
                                 {
                                     Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
-                                    Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 1)),
+                                    Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p, new Revision(version: 1)),
                                     Movie = _movie
                                 };
         }
@@ -38,7 +40,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         public void should_return_true_if_no_existing_episodeFile()
         {
             _localMovie.Movie.MovieFile = null;
-            _localMovie.Movie.MovieFileId = 0; 
+            _localMovie.Movie.MovieFileId = 0;
 
             Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
         }
@@ -51,7 +53,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
                     new MovieFile
                     {
-                        Quality = new QualityModel(Quality.SDTV, new Revision(version: 1))
+                        Quality = new QualityModel(QualityWrapper.Dynamic.SDTV, new Revision(version: 1))
                     }
                 );
 
@@ -67,7 +69,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
                 new MovieFile
                 {
-                    Quality = new QualityModel(Quality.Bluray720p, new Revision(version: 1))
+                    Quality = new QualityModel(QualityWrapper.Dynamic.Bluray720p, new Revision(version: 1))
                 }
             );
 

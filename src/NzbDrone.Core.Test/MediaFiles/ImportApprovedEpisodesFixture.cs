@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                        {
                                            Movie = movie,
                                            Path = Path.Combine(movie.Path, "30 Rock - S01E01 - Pilot.avi"),
-                                           Quality = new QualityModel(Quality.Bluray720p),
+                                           Quality = new QualityModel(),
                                            ParsedMovieInfo = new ParsedMovieInfo()
                                            {
                                                ReleaseGroup = "DRONE"
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 {
                     Movie = fileDecision.LocalMovie.Movie,
                     Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
-                    Quality = new QualityModel(Quality.Bluray720p),
+                    Quality = new QualityModel(),
                     Size = 80.Megabytes()
                 });
 

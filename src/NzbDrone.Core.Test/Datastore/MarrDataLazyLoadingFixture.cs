@@ -6,6 +6,7 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -16,14 +17,16 @@ namespace NzbDrone.Core.Test.Datastore
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
             var profile = new Profile
                 {
                     Name = "Test",
-                    Cutoff = Quality.WEBDL720p,
+                    Cutoff = QualityWrapper.Dynamic.WEBDL720p,
                     Items = Qualities.QualityFixture.GetDefaultQualities()
                 };
 
-            
+
             profile = Db.Insert(profile);
 
             var series = Builder<Movie>.CreateListOfSize(1)

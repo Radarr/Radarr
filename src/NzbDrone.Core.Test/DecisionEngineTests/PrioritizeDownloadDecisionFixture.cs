@@ -14,6 +14,7 @@ using FluentAssertions;
 using FizzWare.NBuilder;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -23,6 +24,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             GivenPreferredDownloadProtocol(DownloadProtocol.Usenet);
         }
 
@@ -62,8 +64,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_put_propers_before_non_propers()
         {
-			var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 1)));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
+			var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p, new Revision(version: 1)));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p, new Revision(version: 2)));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -76,24 +78,24 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_put_higher_quality_before_lower()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.SDTV));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.SDTV));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
             decisions.Add(new DownloadDecision(remoteEpisode2));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
-            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.HDTV720p);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.QualityDefinition.Should().Be(QualityWrapper.Dynamic.HDTV720p);
         }
 
         [Test]
         public void should_order_by_age_then_largest_rounded_to_200mb()
         {
-            var remoteEpisodeSd = GivenRemoteMovie(new QualityModel(Quality.SDTV), size: 100.Megabytes(), age: 1);
-            var remoteEpisodeHdSmallOld = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 1200.Megabytes(), age: 1000);
-            var remoteEpisodeSmallYoung = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 1250.Megabytes(), age: 10);
-            var remoteEpisodeHdLargeYoung = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 3000.Megabytes(), age: 1);
+            var remoteEpisodeSd = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.SDTV), size: 100.Megabytes(), age: 1);
+            var remoteEpisodeHdSmallOld = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), size: 1200.Megabytes(), age: 1000);
+            var remoteEpisodeSmallYoung = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), size: 1250.Megabytes(), age: 10);
+            var remoteEpisodeHdLargeYoung = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), size: 3000.Megabytes(), age: 1);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisodeSd));
@@ -108,8 +110,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_order_by_youngest()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), age: 10);
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), age: 5);
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), age: 10);
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), age: 5);
 
 
             var decisions = new List<DownloadDecision>();
@@ -125,8 +127,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPreferredDownloadProtocol(DownloadProtocol.Usenet);
 
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), downloadProtocol: DownloadProtocol.Torrent);
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), downloadProtocol: DownloadProtocol.Usenet);
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), downloadProtocol: DownloadProtocol.Torrent);
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), downloadProtocol: DownloadProtocol.Usenet);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -141,8 +143,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPreferredDownloadProtocol(DownloadProtocol.Torrent);
 
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), downloadProtocol: DownloadProtocol.Torrent);
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), downloadProtocol: DownloadProtocol.Usenet);
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), downloadProtocol: DownloadProtocol.Torrent);
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p), downloadProtocol: DownloadProtocol.Usenet);
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteEpisode1));
@@ -155,8 +157,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_releases_with_more_seeders()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -183,8 +185,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_releases_with_more_peers_given_equal_number_of_seeds()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -213,8 +215,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_releases_with_more_peers_no_seeds()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -244,8 +246,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_first_release_if_peers_and_size_are_too_similar()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
             var torrentInfo1 = new TorrentInfo();
             torrentInfo1.PublishDate = DateTime.Now;
@@ -275,8 +277,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_prefer_first_release_if_age_and_size_are_too_similar()
         {
-            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+            var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
             remoteEpisode1.Release.PublishDate = DateTime.UtcNow.AddDays(-100);
             remoteEpisode1.Release.Size = 200.Megabytes();
@@ -295,8 +297,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 		[Test]
 		public void should_prefer_more_prioritized_words()
 		{
-			var remoteEpisode1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-			var remoteEpisode2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
+			var remoteEpisode1 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+			var remoteEpisode2 = GivenRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
 
 			remoteEpisode1.Release.Title += " DTS-HD";
 			remoteEpisode2.Release.Title += " DTS-HD SPARKS";
