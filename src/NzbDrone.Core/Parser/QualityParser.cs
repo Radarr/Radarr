@@ -388,7 +388,7 @@ namespace NzbDrone.Core.Parser
 
         private static QualityModel ParseQualityModifiers(string name, string normalizedName)
         {
-            var result = new QualityModel { Quality = Quality.Unknown };
+            var result = new QualityModel(QualityDefinitionService.UnknownQualityDefinition);
 
             if (ProperRegex.IsMatch(normalizedName))
             {

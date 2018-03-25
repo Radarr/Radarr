@@ -9,13 +9,6 @@ namespace NzbDrone.Core.Datastore.Converters
 {
     public class QualityDefinitionIntConverter : JsonConverter, IConverter
     {
-        private readonly IQualityDefinitionService _qualityDefinitionService;
-
-        public QualityDefinitionIntConverter(IQualityDefinitionService qualityDefinitionService)
-        {
-            _qualityDefinitionService = qualityDefinitionService;
-        }
-
         public object FromDB(ConverterContext context)
         {
             if (context.DbValue == DBNull.Value)

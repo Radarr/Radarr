@@ -4,6 +4,7 @@ using NLog;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using System;
+using System.Dynamic;
 using System.Runtime.InteropServices;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Profiles;
@@ -28,6 +29,22 @@ namespace NzbDrone.Core.Qualities
 
         public static IDictionary<int, QualityDefinition> AllQualityDefinitions;
 
+        public static QualityDefinition UnknownQualityDefinition
+        {
+            get
+            {
+                if (_unknownQualityDefinition == null)
+                {
+                    throw new Exception("***FATAL***: Tried accessing unknown quality definition before it was loaded. Please save this log and open an issue on github!");
+                }
+                return _unknownQualityDefinition;
+            }
+
+            set => _unknownQualityDefinition = value;
+        }
+
+        private static QualityDefinition _unknownQualityDefinition;
+
         public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager,
             //IProfileService profileService,
             Logger logger)
@@ -47,6 +64,7 @@ namespace NzbDrone.Core.Qualities
                 var qualityDefinitions = all.ToList();
                 all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);
                 AllQualityDefinitions = qualityDefinitions.ToDictionary(d => d.Id);
+                UnknownQualityDefinition = qualityDefinitions.Find(d => d.Quality == Quality.Unknown);
                 return qualityDefinitions;
             }, TimeSpan.FromMinutes(15));
         }
@@ -133,7 +151,7 @@ namespace NzbDrone.Core.Qualities
         private void ClearCache()
         {
             _cache.Clear();
-            AllQualityDefinitions = null;
+            //AllQualityDefinitions = null; dont set them to null, else we have a race condition
             GetAll(); //Force cache to be refreshed, else AllQualityDefinitions won't get properly reset.
         }
 
@@ -159,6 +177,17 @@ namespace NzbDrone.Core.Qualities
             InsertMissingDefinitions();
 
             AddDefaultQualityTags();
+        }
+    }
+
+    public class QualityWrapper : DynamicObject
+    {
+        public static dynamic Dynamic = new QualityWrapper();
+        public QualityDefinition GetPropertyValue(string propertyName)
+        {
+            var propInfo = typeof(Quality).GetProperty(propertyName);
+            Quality quality = (Quality)propInfo?.GetValue(null, null);
+            return QualityDefinitionService.AllQualityDefinitions.Values.First(d => d.Quality == quality);
         }
     }
 }

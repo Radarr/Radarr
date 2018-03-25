@@ -4,6 +4,7 @@ using System.Linq;
 using FluentMigrator;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -35,8 +36,15 @@ namespace NzbDrone.Core.Datastore.Migration
 
     public class ProfileItem70
     {
-        public int Quality { get; set; }
+        public int? QualityDefinition { get; set; }
+        public int? Quality { get; set; }
         public bool Allowed { get; set; }
+    }
+
+    public class QualityDefinition70
+    {
+        public int Id { get; set; }
+        public int Quality { get; set; }
     }
 
     public class ProfileUpdater70
@@ -144,6 +152,41 @@ namespace NzbDrone.Core.Datastore.Migration
                     Quality = quality,
                     Allowed = false
                 });
+
+                _changedProfiles.Add(profile);
+            }
+        }
+
+        public void UpdateQualityToQualityDefinition()
+        {
+            var definitions = new List<QualityDefinition70>();
+            using (var getDefinitions = _connection.CreateCommand())
+            {
+                getDefinitions.Transaction = _transaction;
+                getDefinitions.CommandText = @"SELECT Id, Quality FROM QualityDefinitions";
+
+                using (var definitionsReader = getDefinitions.ExecuteReader())
+                {
+                    while (definitionsReader.Read())
+                    {
+                        int id = definitionsReader.GetInt32(0);
+                        int quality = definitionsReader.GetInt32(1);
+                        definitions.Add(new QualityDefinition70 {Id = id, Quality = quality});
+                    }
+                }
+            }
+
+            foreach (var profile in _profiles)
+            {
+                profile.Items = profile.Items.Select(i =>
+                {
+                    return new ProfileItem70
+                    {
+                        Allowed = i.Allowed,
+                        Quality = i.Quality,
+                        QualityDefinition = definitions.Find(d => d.Quality == i.Quality).Id
+                    };
+                }).ToList();
 
                 _changedProfiles.Add(profile);
             }

@@ -52,7 +52,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             //I added a null op for the rare case that the quality is null. TODO: find out why that would even happen in the first place.
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalMovie.Movie.Id, (i, s) => s
-                   .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel{Quality = Quality.Unknown}, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
+                   .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel(QualityDefinitionService.UnknownQualityDefinition), new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
                    .ThenByDescending(c => c.LocalMovie.Size))
                .SelectMany(c => c)
                .ToList();

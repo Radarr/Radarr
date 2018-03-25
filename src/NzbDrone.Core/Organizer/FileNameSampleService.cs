@@ -16,13 +16,15 @@ namespace NzbDrone.Core.Organizer
     public class FileNameSampleService : IFilenameSampleService
     {
         private readonly IBuildFileNames _buildFileNames;
+        private readonly IQualityDefinitionService _definitionService;
 
         private static MovieFile _movieFile;
         private static Movie _movie;
 
-        public FileNameSampleService(IBuildFileNames buildFileNames)
+        public FileNameSampleService(IBuildFileNames buildFileNames, IQualityDefinitionService qualityDefinitionService)
         {
             _buildFileNames = buildFileNames;
+            _definitionService = qualityDefinitionService;
 
             var mediaInfo = new MediaInfoModel()
             {
@@ -48,7 +50,7 @@ namespace NzbDrone.Core.Organizer
 
             _movieFile = new MovieFile
             {
-                Quality = new QualityModel(Quality.Bluray1080p, new Revision(2)),
+                Quality = new QualityModel(_definitionService.Get(Quality.Bluray1080p), new Revision(2)),
                 RelativePath = "The.Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE.mkv",
                 SceneName = "The.Movie.Title.2010.1080p.BluRay.DTS.x264-EVOLVE",
                 ReleaseGroup = "EVOLVE",

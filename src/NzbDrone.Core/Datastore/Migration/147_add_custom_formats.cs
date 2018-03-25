@@ -26,18 +26,13 @@ namespace NzbDrone.Core.Datastore.Migration
                 Alter.Table("QualityDefinitions").AlterColumn("Quality").AsInt64().Nullable();
                 Delete.Index("IX_QualityDefinitions_Quality").OnTable("QualityDefinitions");
             }
+
+            Execute.WithConnection(RenameUrlToBaseUrl);
         }
 
         private void RenameUrlToBaseUrl(IDbConnection conn, IDbTransaction tran)
         {
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.Transaction = tran;
-                cmd.CommandText = "DELETE FROM AlternativeTitles WHERE rowid NOT IN ( SELECT MIN(rowid) FROM AlternativeTitles GROUP BY CleanTitle )";
-
-                cmd.ExecuteNonQuery();
-
-            }
+            var updater = new ProfileUpdater70(conn, tran);
         }
     }
 }

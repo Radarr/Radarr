@@ -43,6 +43,7 @@ namespace NzbDrone.Core.Download.Pending
         private readonly ITaskManager _taskManager;
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IQualityDefinitionService _definitionService;
         private readonly Logger _logger;
 
         public PendingReleaseService(IIndexerStatusService indexerStatusService,
@@ -53,6 +54,7 @@ namespace NzbDrone.Core.Download.Pending
                                     ITaskManager taskManager,
                                     IConfigService configService,
                                     IEventAggregator eventAggregator,
+                                    IQualityDefinitionService qualityDefinitionService,
                                     Logger logger)
         {
             _indexerStatusService = indexerStatusService;
@@ -63,6 +65,7 @@ namespace NzbDrone.Core.Download.Pending
             _taskManager = taskManager;
             _configService = configService;
             _eventAggregator = eventAggregator;
+            _definitionService = qualityDefinitionService;
             _logger = logger;
         }
 
@@ -132,7 +135,7 @@ namespace NzbDrone.Core.Download.Pending
                 {
                     Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
                     Movie = pendingRelease.RemoteMovie.Movie,
-                    Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
+                    Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(QualityDefinitionService.UnknownQualityDefinition),
                     Title = pendingRelease.Title,
                     Size = pendingRelease.RemoteMovie.Release.Size,
                     Sizeleft = pendingRelease.RemoteMovie.Release.Size,
@@ -259,7 +262,7 @@ namespace NzbDrone.Core.Download.Pending
         private void RemoveGrabbed(RemoteMovie remoteMovie)
         {
             var pendingReleases = GetPendingReleases();
-            
+
 
 			var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
                                                              .ToList();

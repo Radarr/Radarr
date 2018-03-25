@@ -117,12 +117,13 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     //TODO: make it so media info doesn't ruin the import process of a new movie
 					if (sceneSource && ShouldCheckQualityForParsedQuality(current.Quality))
                     {
-                        
+
                         if (shouldCheckQuality)
                         {
 							_logger.Debug("Checking quality for this video file to make sure nothing mismatched.");
-                            var width = localMovie.MediaInfo.Width;
-                            
+                            // TODO: Update this shitty part.
+                            /*var width = localMovie.MediaInfo.Width;
+
                             var qualityName = current.Quality.Name.ToLower();
                             QualityModel updated = null;
                             if (width > 2000)
@@ -255,7 +256,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 								_logger.Debug("Quality ({0}) of the file is different than the one we have ({1})", updated, current);
                                 updated.QualitySource = QualitySource.MediaInfo;
                                 localMovie.Quality = updated;
-                            }
+                            }*/
                         }
 
 

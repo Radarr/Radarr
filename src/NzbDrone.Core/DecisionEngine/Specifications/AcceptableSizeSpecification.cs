@@ -26,7 +26,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             _logger.Debug("Beginning size check for: {0}", subject);
 
-            var quality = subject.ParsedMovieInfo.Quality.Quality;
+            //var quality = subject.ParsedMovieInfo.Quality.Quality;
 
             if (subject.Release.Size == 0)
             {
@@ -34,12 +34,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return Decision.Accept();
             }
 
-            var qualityDefinition = _qualityDefinitionService.Get(quality);
-		if (subject.Movie.Runtime == 0)
-		{
-			_logger.Info("{0} has no runtime information using median movie runtime of 110 minutes.", subject.Movie);
-			subject.Movie.Runtime = 110;
-		}
+            var qualityDefinition = subject.ParsedMovieInfo.Quality.QualityDefinition;
+
+            if (subject.Movie.Runtime == 0)
+            {
+                _logger.Warn("{0} has no runtime information using median movie runtime of 110 minutes. Please edit themoviedb.org and add runtime info.", subject.Movie);
+                subject.Movie.Runtime = 110;
+            }
+
             if (qualityDefinition.MinSize.HasValue)
             {
                 var minSize = qualityDefinition.MinSize.Value.Megabytes();

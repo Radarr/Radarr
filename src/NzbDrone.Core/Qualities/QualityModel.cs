@@ -16,22 +16,23 @@ namespace NzbDrone.Core.Qualities
 
         [JsonIgnore]
         public QualitySource QualitySource { get; set; }
-        
+
         public QualityModel()
-            : this(Quality.Unknown, new Revision())
+            : this(QualityDefinitionService.UnknownQualityDefinition, new Revision())
         {
 
         }
 
-        public QualityModel(Quality quality, Revision revision = null)
+        public QualityModel(QualityDefinition quality, Revision revision = null)
         {
-            Quality = quality;
+            Quality = quality.Quality ?? quality.ParentQualityDefinition.Quality;
+            QualityDefinition = quality;
             Revision = revision ?? new Revision();
         }
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", Quality, Revision);
+            return string.Format("{0} {1}", QualityDefinition, Revision);
         }
 
         public override int GetHashCode()
@@ -50,7 +51,7 @@ namespace NzbDrone.Core.Qualities
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return other.Quality.Equals(Quality) && other.Revision.Equals(Revision);
+            return other.QualityDefinition.Id.Equals(QualityDefinition.Id) && other.Revision.Equals(Revision);
         }
 
         public override bool Equals(object obj)

@@ -26,7 +26,7 @@ namespace NzbDrone.Api.Profiles
                 .ToList();
 
             var profile = new Profile();
-            profile.Cutoff = Quality.Unknown;
+            profile.Cutoff = QualityDefinitionService.UnknownQualityDefinition;
             profile.Items = items;
             profile.Language = Language.English;
 

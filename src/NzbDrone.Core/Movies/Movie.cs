@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Movies
             //the below line is what was used before delay was implemented, could still be used for cases when delay==0
             //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
 
-            //This more complex sequence handles the delay 
+            //This more complex sequence handles the delay
             DateTime MinimumAvailabilityDate;
             switch (MinimumAvailability)
             {
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Movies
                     else
                         MinimumAvailabilityDate = DateTime.MaxValue;
                     break;
-                
+
                 case MovieStatusType.Released:
                 case MovieStatusType.PreDB:
                 default:
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Movies
 
         public override string ToString()
         {
-            return string.Format("[{0}][{1} ({2})]", ImdbId, Title.NullSafe(), Year.NullSafe());
+            return string.Format("[{1} ({2})][{0}, {3}]", ImdbId, Title.NullSafe(), Year.NullSafe(), TmdbId);
         }
     }
 

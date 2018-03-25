@@ -10,7 +10,7 @@ namespace NzbDrone.Api.Profiles
     public class ProfileResource : RestResource
     {
         public string Name { get; set; }
-        public Quality Cutoff { get; set; }
+        public QualityDefinition Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<ProfileQualityItemResource> Items { get; set; }
         public Language Language { get; set; }
@@ -18,6 +18,7 @@ namespace NzbDrone.Api.Profiles
 
     public class ProfileQualityItemResource : RestResource
     {
+        public QualityDefinition QualityDefinition { get; set; }
         public Quality Quality { get; set; }
         public bool Allowed { get; set; }
     }
@@ -46,11 +47,12 @@ namespace NzbDrone.Api.Profiles
 
             return new ProfileQualityItemResource
             {
+                QualityDefinition = model.QualityDefinition,
                 Quality = model.Quality,
                 Allowed = model.Allowed
             };
         }
-            
+
         public static Profile ToModel(this ProfileResource resource)
         {
             if (resource == null) return null;
@@ -60,7 +62,7 @@ namespace NzbDrone.Api.Profiles
                 Id = resource.Id,
 
                 Name = resource.Name,
-                Cutoff = (Quality)resource.Cutoff.Id,
+                Cutoff = QualityDefinitionService.AllQualityDefinitions[resource.Cutoff.Id],
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
                 Language = resource.Language
@@ -73,6 +75,7 @@ namespace NzbDrone.Api.Profiles
 
             return new ProfileQualityItem
             {
+                QualityDefinition = QualityDefinitionService.AllQualityDefinitions[resource.Quality.Id],
                 Quality = (Quality)resource.Quality.Id,
                 Allowed = resource.Allowed
             };

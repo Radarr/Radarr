@@ -4,7 +4,7 @@ using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Qualities
 {
-    public class QualityModelComparer : IComparer<Quality>, IComparer<QualityModel>
+    public class QualityModelComparer : IComparer<Quality>, IComparer<QualityModel>, IComparer<QualityDefinition>
     {
         private readonly Profile _profile;
 
@@ -24,9 +24,17 @@ namespace NzbDrone.Core.Qualities
             return leftIndex.CompareTo(rightIndex);
         }
 
+        public int Compare(QualityDefinition left, QualityDefinition right)
+        {
+            int leftIndex = _profile.Items.FindIndex(v => v.QualityDefinition.Id == left?.Id);
+            int rightIndex = _profile.Items.FindIndex(v => v.QualityDefinition.Id == right?.Id);
+
+            return leftIndex.CompareTo(rightIndex);
+        }
+
         public int Compare(QualityModel left, QualityModel right)
         {
-            int result = Compare(left.Quality, right.Quality);
+            int result = Compare(left.QualityDefinition, right.QualityDefinition);
 
             if (result == 0)
             {

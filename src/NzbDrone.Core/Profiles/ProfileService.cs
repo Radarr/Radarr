@@ -24,12 +24,15 @@ namespace NzbDrone.Core.Profiles
     {
         private readonly IProfileRepository _profileRepository;
         private readonly IMovieService _movieService;
+        private readonly IQualityDefinitionService _definitionService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, IMovieService movieService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IMovieService movieService,
+            IQualityDefinitionService qualityDefinitionService, Logger logger)
         {
             _profileRepository = profileRepository;
             _movieService = movieService;
+            _definitionService = qualityDefinitionService;
             _logger = logger;
         }
 
@@ -89,16 +92,17 @@ namespace NzbDrone.Core.Profiles
         {
             var items = QualityDefinition.DefaultQualityDefinitions
                             .OrderBy(v => v.Weight)
-                            .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) })
+                            .Select(v => new ProfileQualityItem { Quality = v.Quality, QualityDefinition = _definitionService.Get(v.Quality), Allowed = allowed.Contains(v.Quality) })
                             .ToList();
 
-            var profile = new Profile { Name = name, Cutoff = cutoff, Items = items, Language = Language.English };
+            var profile = new Profile { Name = name, Cutoff = _definitionService.Get(cutoff), Items = items, Language = Language.English };
 
             return Add(profile);
         }
 
         public void Handle(ApplicationStartedEvent message)
         {
+            // TODO: ERROR: This will probably cause a race condition with adding the default quality definitions!!!
             if (All().Any()) return;
 
             _logger.Info("Setting up default quality profiles");

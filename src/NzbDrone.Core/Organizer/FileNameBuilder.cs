@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Organizer
 
             if(movie.MovieFile != null)
             {
-                
+
                 AddQualityTokens(tokenHandlers, movie, movieFile);
                 AddMediaInfoTokens(tokenHandlers, movieFile);
                 AddMovieFileTokens(tokenHandlers, movieFile);
@@ -248,7 +248,7 @@ namespace NzbDrone.Core.Organizer
             {
                 AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}"});
             }
-                
+
             return CleanFolderName(ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig));
         }
 
@@ -334,13 +334,13 @@ namespace NzbDrone.Core.Organizer
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(episodeFile);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(episodeFile);
-            //tokenHandlers["{IMDb Id}"] = m => 
+            //tokenHandlers["{IMDb Id}"] = m =>
             tokenHandlers["{Release Group}"] = m => episodeFile.ReleaseGroup ?? m.DefaultValue("Radarr");
         }
 
         private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile)
         {
-            if (movieFile?.Quality?.Quality == null)
+            if (movieFile?.Quality?.QualityDefinition == null)
             {
                 tokenHandlers["{Quality Full}"] = m => "";
                 tokenHandlers["{Quality Title}"] = m => "";
@@ -348,8 +348,8 @@ namespace NzbDrone.Core.Organizer
                 tokenHandlers["{Quality Real}"] = m => "";
                 return;
             }
-            
-            var qualityTitle = _qualityDefinitionService.Get(movieFile.Quality.Quality).Title;
+
+            var qualityTitle = (movieFile.Quality.QualityDefinition).Title;
             var qualityProper = GetQualityProper(movie, movieFile.Quality);
             var qualityReal = GetQualityReal(movie, movieFile.Quality);
 
@@ -407,7 +407,7 @@ namespace NzbDrone.Core.Organizer
                 case "E-AC-3":
                     audioCodec = "EAC3";
                     break;
-                
+
                 case "Atmos / TrueHD":
                     audioCodec = "Atmos TrueHD";
                     break;
