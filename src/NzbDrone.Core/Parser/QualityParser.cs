@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SampleSizeRegex = new Regex(@"\b(?:(?<S24>24[ ]bit|24bit|[\[\(].*24bit.*[\]\)]))");
 
-        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<MP3VBR>MP3\S*VBR|MPEG Version 1 Audio, Layer 3 vbr)|(?<MP3CBR>MP3|MPEG Version \d+ Audio, Layer 3)|(?<FLAC>flac)|(?<ALAC>alac)|(?<WMA>WMA\d?)|(?<WAV>WAV|PCM)|(?<AAC>M4A|AAC|mp4a)|(?<OGG>OGG|Vorbis))\b",
+        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<MP3VBR>MP3.*VBR|MPEG Version 1 Audio, Layer 3 vbr)|(?<MP3CBR>MP3|MPEG Version \d+ Audio, Layer 3)|(?<FLAC>flac)|(?<ALAC>alac)|(?<WMA>WMA\d?)|(?<WAV>WAV|PCM)|(?<AAC>M4A|AAC|mp4a)|(?<OGG>OGG|Vorbis))\b",
                                                                   RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static QualityModel ParseQuality(string name, string desc, int fileBitrate, int fileSampleSize = 0)

@@ -86,6 +86,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Sia - This Is Acting (Standard Edition) [2016-Web-MP3-V0(VBR)]", null, 0)]
+        [TestCase("Mount Eerie - A Crow Looked at Me (2017) [MP3 V0 VBR)]", null, 0)]
         public void should_parse_mp3_vbr_v0_quality(string title, string desc, int bitrate)
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.MP3_VBR);
