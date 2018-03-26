@@ -95,12 +95,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                                 .Post()
                                                 .AddFormUpload("torrents", fileName, fileContent);
 
-            var result = ProcessRequest(request, settings);
-
             if (settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 request.AddFormParameter("category", settings.MusicCategory);
             }
+
+            var result = ProcessRequest(request, settings);
 
             // Note: Current qbit versions return nothing, so we can't do != "Ok." here.
             if (result == "Fails.")
