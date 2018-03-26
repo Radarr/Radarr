@@ -41,3 +41,5 @@ jobs:
                 path: _output_osx
             - store_artifacts:
                 path: _output_osx_app
+            - store_artifacts:
+                path: _tests/reports/junit/results.xml
