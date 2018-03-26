@@ -26,6 +26,9 @@ jobs:
                 name: Preparing Tests
                 command: mkdir _tests/reports
             - run:
+                name: Test mediainfo
+                command: apt-get install -y mediainfo && mediainfo _tests/Files/Media/H264_sample.mp4
+            - run:
                 name: Unit Tests
                 command: ./test.sh Linux Unit
             - run:
