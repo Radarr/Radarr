@@ -48,16 +48,16 @@ namespace NzbDrone.Core.Profiles
 
         public void AddNewQuality(QualityDefinition qualityDefinition)
         {
-            // TODO: Update ProfileQualityItem to use QualityDefinition!
             var all = All();
             var updated = new List<Profile>();
             foreach (var profile in all)
             {
                 var parent = profile.Items.Find(i => i.Quality.Id == qualityDefinition.Id);
-                profile.Items.Insert(profile.Items.IndexOf(parent), new ProfileQualityItem
+                profile.Items.Insert(profile.Items.IndexOf(parent)+1, new ProfileQualityItem
                 {
                     Allowed = parent.Allowed,
-                    Quality = Quality.Bluray480p
+                    Quality = null,
+                    QualityDefinition = qualityDefinition
                 });
                 Update(profile);
             }

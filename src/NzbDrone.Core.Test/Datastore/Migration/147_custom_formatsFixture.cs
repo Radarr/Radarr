@@ -174,5 +174,17 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     .Be(item.Quality == (int) Quality.WEBDL720p || item.Quality == (int) Quality.WEBDL1080p);
             }
         }
+
+        [Test]
+        public void should_correctly_add_quality_tags()
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                WithDefaultQualityDefinitions(c);
+            });
+
+            GetDefinitionForQuality(db, Quality.Bluray1080p).QualityTags.Select(t => t?.ToLower()).Should()
+                .BeEquivalentTo("s_bluray", "r_1080");
+        }
     }
 }

@@ -4,10 +4,12 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Common.Composition;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -92,6 +94,31 @@ namespace NzbDrone.Core.Test.Qualities
 
             Mocker.GetMock<IQualityDefinitionRepository>()
                 .Verify(v => v.DeleteMany(It.Is<List<QualityDefinition>>(d => d.Count == 1)), Times.Once());
+        }
+
+        [Test]
+        [Ignore("I am bad at writing tests.")]
+        public void should_call_profile_service_with_new_format()
+        {
+            Mocker.GetMock<IQualityDefinitionRepository>()
+                .Setup(s => s.All())
+                .Returns(QualityDefinition.DefaultQualityDefinitions.ToList());
+
+            Mocker.GetMock<IContainer>().Setup(s => s.Resolve<IProfileService>())
+                .Returns(Mocker.Resolve<ProfileService>());
+
+            var parent = QualityDefinition.DefaultQualityDefinitions.First(d => d.Quality == Quality.Bluray1080p);
+
+            var newQD = new QualityDefinition
+            {
+                ParentQualityDefinition = parent,
+                Title = parent.Title + " Custom",
+                QualityTags = parent.QualityTags
+            };
+
+            Subject.Insert(newQD);
+
+            Mocker.GetMock<IProfileService>().Verify(v => v.AddNewQuality(newQD), Times.Once());
         }
     }
 }

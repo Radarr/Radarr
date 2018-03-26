@@ -1,11 +1,13 @@
 ﻿﻿using System.Collections.Generic;
 using System.Data;
-using FluentMigrator;
+ using System.Linq;
+ using FluentMigrator;
  using Marr.Data.QGen;
  using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
+ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -27,7 +29,24 @@ namespace NzbDrone.Core.Datastore.Migration
                 Delete.Index("IX_QualityDefinitions_Quality").OnTable("QualityDefinitions");
             }
 
+            Execute.WithConnection(AddQualityTagsToDefinitions);
             Execute.WithConnection(RenameUrlToBaseUrl);
+        }
+
+        private void AddQualityTagsToDefinitions(IDbConnection conn, IDbTransaction tran)
+        {
+            foreach (var definition in QualityDefinition.DefaultQualityDefinitions)
+            {
+                using (var updateDefCmd = conn.CreateCommand())
+                {
+                    updateDefCmd.Transaction = tran;
+                    updateDefCmd.CommandText = "UPDATE QualityDefinitions SET QualityTags = ? WHERE Quality = ?";
+                    updateDefCmd.AddParameter(definition.QualityTags.Select(t => t.Raw).ToJson());
+                    updateDefCmd.AddParameter((int)definition.Quality);
+
+                    updateDefCmd.ExecuteNonQuery();
+                }
+            }
         }
 
         private void RenameUrlToBaseUrl(IDbConnection conn, IDbTransaction tran)

@@ -7,6 +7,7 @@ using System;
 using System.Dynamic;
 using System.Runtime.InteropServices;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Composition;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Profiles;
 
@@ -25,7 +26,8 @@ namespace NzbDrone.Core.Qualities
     {
         private readonly IQualityDefinitionRepository _repo;
         private readonly ICached<IEnumerable<QualityDefinition>> _cache;
-        private readonly IProfileService _profileService;
+        private IProfileService _profileService;
+        private readonly IContainer _container;
         private readonly Logger _logger;
 
         public static IEnumerable<QualityDefinition> AllQualityDefinitions
@@ -43,9 +45,16 @@ namespace NzbDrone.Core.Qualities
             set
             {
                 _allQualityDefinitions = value;
-                AllQualityDefinitionsById = value.ToDictionary(d => d.Id);
-                AllQualityDefinitionsByQuality = value.ToDictionary(d => d.Quality);
-                _unknownQualityDefinition = AllQualityDefinitionsByQuality[Quality.Unknown].JsonClone();
+                AllQualityDefinitionsById = value.DistinctBy(d => d.Id).ToDictionary(d => d.Id);
+                AllQualityDefinitionsByQuality = value.Where(d => d.Quality != null).ToDictionary(d => d.Quality); // We only want non custom formats here!
+
+                // Note: Some cases might exist (e.g. tests) where the repo won't return anything, hence we don't have an unknown quality.
+                // Accessing UnknownQualityDefinition will throw an error anyways.
+                if (AllQualityDefinitionsByQuality.Keys.Contains(Quality.Unknown))
+                {
+                    _unknownQualityDefinition = AllQualityDefinitionsByQuality[Quality.Unknown].JsonClone();
+                }
+
             }
         }
 
@@ -58,7 +67,7 @@ namespace NzbDrone.Core.Qualities
         {
             get
             {
-                if (AllQualityDefinitionsByQuality == null)
+                if (AllQualityDefinitionsByQuality == null || _unknownQualityDefinition == null)
                 {
                     throw new Exception("***FATAL***: Tried accessing quality definitions before they were loaded. Please save this log and open an issue on github!");
                 }
@@ -73,11 +82,13 @@ namespace NzbDrone.Core.Qualities
 
         public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager,
             //IProfileService profileService,
+            IContainer container,
             Logger logger)
         {
             _repo = repo;
             _cache = cacheManager.GetCache<IEnumerable<QualityDefinition>>(this.GetType());
             //_profileService = profileService;
+            _container = container;
             _logger = logger;
         }
 
@@ -86,7 +97,7 @@ namespace NzbDrone.Core.Qualities
             //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
             return _cache.Get("all", () =>
             {
-                Handle(new ApplicationStartedEvent()); //TODO: Update this horrible hack for integration tests.
+                //Handle(new ApplicationStartedEvent()); //TODO: Update this horrible hack for integration tests.
                 var all = _repo.All();
                 var qualityDefinitions = all.ToList();
                 all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);
@@ -105,7 +116,11 @@ namespace NzbDrone.Core.Qualities
         public QualityDefinition Insert(QualityDefinition qualityDefinition)
         {
             var newQD = _repo.Insert(qualityDefinition);
-            //TODO: actually use this once profile is updated. _profileService.AddNewQuality(newQD);
+            if (_profileService == null)
+            {
+                _profileService = _container.Resolve<IProfileService>();
+            }
+            _profileService.AddNewQuality(newQD);
             ClearCache();
             return newQD;
         }
@@ -198,16 +213,11 @@ namespace NzbDrone.Core.Qualities
 
         public void Handle(ApplicationStartedEvent message)
         {
-            if (_applicationStarted)
-                return;
-
-            _applicationStarted = true;
-
             _logger.Debug("Setting up default quality config");
 
             InsertMissingDefinitions();
 
-            AddDefaultQualityTags();
+            //AddDefaultQualityTags();
         }
     }
 
