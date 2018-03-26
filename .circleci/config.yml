@@ -26,8 +26,11 @@ jobs:
                 name: Preparing Tests
                 command: mkdir _tests/reports
             - run:
-                name: Testing
+                name: Unit Tests
                 command: ./test.sh Linux Unit
+            - run:
+                name: Integration Tests
+                command: ./test.sh Linux Integration
             - store_test_results:
                 path: _tests/reports/
             - store_artifacts:

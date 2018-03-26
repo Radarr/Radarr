@@ -46,7 +46,7 @@ EXIT_CODE=$?
 
 if [ "$EXIT_CODE" -ge 0 ]; then
   echo "Failed tests: $EXIT_CODE"
-  exit 0
+  exit $EXIT_CODE
 else
   exit $EXIT_CODE
 fi
