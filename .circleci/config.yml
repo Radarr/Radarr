@@ -27,7 +27,7 @@ jobs:
                 command: mkdir _tests/reports
             - run:
                 name: Test mediainfo
-                command: apt-get install -y mediainfo && mediainfo _tests/Files/Media/H264_sample.mp4
+                command: wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-5_all.deb && dpkg -i repo-mediaarea_1.0-5_all.deb && apt-get update && apt-get install -y mediainfo && mediainfo _tests/Files/Media/H264_sample.mp4
             - run:
                 name: Unit Tests
                 command: ./test.sh Linux Unit
