@@ -21,7 +21,10 @@ namespace NzbDrone.Core.Qualities
 
         public QualityDefinition ParentQualityDefinition
         {
-            get => _parentDefinition;
+            get
+            {
+                return _parentDefinition;
+            }
             set
             {
                 ParentQualityDefinitionId = value?.Id;
