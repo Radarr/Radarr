@@ -24,10 +24,7 @@ jobs:
                 command: ./build.sh Package
             - run:
                 name: Preparing Tests
-                command: mkdir _tests/reports && mkdir -p ../.config/Radarr && chmod -R 777 ../.config
-            - run:
-                name: Test mediainfo
-                command: mediainfo _tests/Files/Media/H264_sample.mp4
+                command: mkdir -p _tests/reports/junit && mkdir -p ../.config/Radarr && chmod -R 777 ../.config
             - run:
                 name: Unit Tests
                 command: ./test.sh Linux Unit

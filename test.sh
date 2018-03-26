@@ -11,7 +11,7 @@ fi
 
 NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe"
 NUNIT_COMMAND="$NUNIT"
-NUNIT_PARAMS="--result=$TEST_DIR/reports/results.xml;transform=.circleci/nunit3-junit.xslt --agents=1"
+NUNIT_PARAMS="--result=$TEST_DIR/reports/junit/results.xml;transform=.circleci/nunit3-junit.xslt --agents=1"
 
 if [ "$PLATFORM" = "Windows" ]; then
   WHERE="$WHERE && cat != LINUX"
