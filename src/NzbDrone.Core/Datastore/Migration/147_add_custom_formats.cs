@@ -33,6 +33,19 @@ namespace NzbDrone.Core.Datastore.Migration
         private void RenameUrlToBaseUrl(IDbConnection conn, IDbTransaction tran)
         {
             var updater = new ProfileUpdater70(conn, tran);
+            updater.UpdateQualityToQualityDefinition();
+            updater.Commit();
         }
+    }
+
+    public class QualityDefinition147
+    {
+        public int Id { get; set; }
+        public int Quality { get; set; }
+        public string Title { get; set; }
+        public int? MinSize { get; set; }
+        public int? MaxSize { get; set; }
+        public List<string> QualityTags { get; set; }
+        public int? ParentQualityDefinitionId { get; set; }
     }
 }

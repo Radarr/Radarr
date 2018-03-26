@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Datastore.Migration
         public int Cutoff { get; set; }
         public List<ProfileItem70> Items { get; set; }
         public int Language { get; set; }
+        public List<string> PreferredTags { get; set; }
     }
 
     public class ProfileItem70
@@ -187,6 +188,8 @@ namespace NzbDrone.Core.Datastore.Migration
                         QualityDefinition = definitions.Find(d => d.Quality == i.Quality).Id
                     };
                 }).ToList();
+
+                profile.Cutoff = definitions.Find(d => d.Quality == profile.Cutoff).Id;
 
                 _changedProfiles.Add(profile);
             }

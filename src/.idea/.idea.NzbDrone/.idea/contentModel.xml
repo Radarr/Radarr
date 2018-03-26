@@ -2548,6 +2548,7 @@
             <e p="099_extra_and_subtitle_filesFixture.cs" t="Include" />
             <e p="101_add_ultrahd_quality_in_profilesFixture.cs" t="Include" />
             <e p="103_fix_metadata_file_extensionsFixture.cs" t="Include" />
+            <e p="147_custom_formatsFixture.cs" t="Include" />
           </e>
           <e p="ObjectDatabaseFixture.cs" t="Include" />
           <e p="PagingSpecExtensionsTests" t="Include">
