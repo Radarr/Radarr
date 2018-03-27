@@ -52,7 +52,12 @@ var view = Marionette.Layout.extend({
             },
 
             visibleModelsFilter : function(model) {
-                return model.get('quality').id !== 0 || advancedShown;
+                var quality = model.get('quality');
+                if (quality) {
+                    return quality.id !== 0 || advancedShown;
+                }
+
+                return true;
             },
 
             collection : this.itemsCollection,
