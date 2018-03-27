@@ -32,7 +32,7 @@ var view = Marionette.ItemView.extend({
 		getCutoff : function() {
 				var self = this;
 
-				return _.findWhere(_.pluck(this.model.get('items'), 'quality'), { id : parseInt(self.ui.cutoff.val(), 10) });
+				return _.findWhere(_.pluck(this.model.get('items'), 'qualityDefinition'), { id : parseInt(self.ui.cutoff.val(), 10) });
 		}
 });
 
