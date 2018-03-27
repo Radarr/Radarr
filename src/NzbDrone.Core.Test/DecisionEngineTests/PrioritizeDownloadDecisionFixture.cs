@@ -19,6 +19,7 @@ using NzbDrone.Core.Test.Qualities;
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
+    //TODO: Update for custom qualities!
     public class PrioritizeDownloadDecisionFixture : CoreTest<DownloadDecisionPriorizationService>
     {
         [SetUp]

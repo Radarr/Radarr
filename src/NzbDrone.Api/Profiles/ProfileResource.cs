@@ -75,8 +75,8 @@ namespace NzbDrone.Api.Profiles
 
             return new ProfileQualityItem
             {
-                QualityDefinition = QualityDefinitionService.AllQualityDefinitionsById[resource.Quality.Id],
-                Quality = (Quality)resource.Quality.Id,
+                QualityDefinition = QualityDefinitionService.AllQualityDefinitionsById[resource.QualityDefinition.Id],
+                Quality = resource.Quality,
                 Allowed = resource.Allowed
             };
         }
