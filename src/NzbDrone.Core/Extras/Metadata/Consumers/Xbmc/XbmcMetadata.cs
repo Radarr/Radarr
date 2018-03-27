@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 return GetTrackMetadataFilename(trackFilePath);
             }
 
-            _logger.Debug("Unknown episode file metadata: {0}", metadataFile.RelativePath);
+            _logger.Debug("Unknown track file metadata: {0}", metadataFile.RelativePath);
             return Path.Combine(artist.Path, metadataFile.RelativePath);
         }
 
@@ -228,7 +228,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             foreach (var image in artist.Images)
             {
                 var source = _mediaCoverService.GetCoverPath(artist.Id, image.CoverType);
-                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(source);
+                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);
 
                 yield return new ImageFileResult(destination, source);
             }
