@@ -71,7 +71,6 @@ namespace NzbDrone.Core.Parser
             _logger.Debug("Language(s) parsed: {0}", result.Languages);
 
             result.Quality = QualityParser.ParseQuality(title);
-            _logger.Debug("Quality parsed: {0}", result.Quality);
 
             if (result.Edition.IsNullOrWhiteSpace())
             {
@@ -85,6 +84,8 @@ namespace NzbDrone.Core.Parser
             result = AugmentMovieInfoRelease(result, releaseInfo);
 
             result.Quality.QualityDefinition = ParseQualityDefinition(result, releaseInfo);
+
+            _logger.Debug("Quality parsed: {0}", result.Quality);
 
             return result;
         }
