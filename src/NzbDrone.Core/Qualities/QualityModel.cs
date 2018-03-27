@@ -9,10 +9,16 @@ namespace NzbDrone.Core.Qualities
         public Quality Quality { get; set; }
 
         public QualityDefinition QualityDefinition { get; set; }
+
+        [JsonIgnore]
         public Resolution Resolution { get; set; }
+        [JsonIgnore]
         public Source Source { get; set; }
+        [JsonIgnore]
         public Modifier Modifier { get; set; }
+        [JsonIgnore]
         public Revision Revision { get; set; }
+
         public string HardcodedSubs { get; set; }
 
         [JsonIgnore]

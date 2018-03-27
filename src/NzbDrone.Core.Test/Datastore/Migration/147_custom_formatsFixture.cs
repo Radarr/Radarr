@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
@@ -13,9 +14,17 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     [TestFixture]
     public class custom_formatsFixture : MigrationTest<add_custom_formats>
     {
-        public void WithDefaultQualityDefinitions(add_custom_formats m)
+        public static Dictionary<int, int> QualityToDefinition = null;
+
+        public void WithDefaultQualityDefinitions(add_custom_formats m, bool randomOrder = false)
         {
-            foreach (var definition in QualityDefinition.DefaultQualityDefinitions)
+            QualityToDefinition = new Dictionary<int, int>();
+            var count = 1;
+            var rng = new Random();
+            var list = randomOrder
+                ? QualityDefinition.DefaultQualityDefinitions.OrderBy(d => rng.Next()).ToList()
+                : QualityDefinition.DefaultQualityDefinitions.ToList();
+            foreach (var definition in list)
             {
                 m.Insert.IntoTable("QualityDefinitions").Row(new
                 {
@@ -24,6 +33,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     MinSize = definition.MinSize,
                     MaxSize = definition.MaxSize,
                 });
+                QualityToDefinition[(int)definition.Quality] = count;
+                count++;
             }
         }
 
@@ -186,5 +197,187 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             GetDefinitionForQuality(db, Quality.Bluray1080p).QualityTags.Select(t => t?.ToLower()).Should()
                 .BeEquivalentTo("s_bluray", "r_1080");
         }
+
+        [Test]
+        public void should_correctly_add_quality_tags_random()
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                WithDefaultQualityDefinitions(c, true);
+            });
+
+            GetDefinitionForQuality(db, Quality.Bluray1080p).QualityTags.Select(t => t?.ToLower()).Should()
+                .BeEquivalentTo("s_bluray", "r_1080");
+        }
+
+        [Test]
+        [TestCase("Blacklist")]
+        [TestCase("History")]
+        [TestCase("MovieFiles")]
+        public void should_correctly_migrate_quality_models(string tableName)
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                WithDefaultQualityDefinitions(c);
+
+                var qualities = new List<QualityModel147>
+                {
+                    new QualityModel147
+                    {
+                        Quality = 30,
+                        Revision = new Revision()
+                    },
+                    new QualityModel147
+                    {
+                        Quality = 30,
+                        Revision = new Revision(2)
+                    },
+                    new QualityModel147
+                    {
+                        Quality = 30,
+                        Revision = new Revision(),
+                        HardcodedSubs = "Generic Hardcoded Subs"
+                    },
+                    new QualityModel147
+                    {
+                        Quality = 0,
+                        Revision = new Revision()
+                    }
+                };
+
+                foreach (var quality in qualities)
+                {
+                    switch (tableName)
+                    {
+                        case "Blacklist":
+                            c.Insert.IntoTable(tableName).Row(new
+                            {
+                                Quality = quality.ToJson(),
+                                SourceTitle = $"My.Movie.2017.{quality.Quality}",
+                                Date = DateTime.Now,
+                            });
+                            break;
+                        case "History":
+                            c.Insert.IntoTable(tableName).Row(new
+                            {
+                                Quality = quality.ToJson(),
+                                SourceTitle = $"My.Movie.2017.{quality.Quality}",
+                                Date = DateTime.Now,
+                                Data = "",
+                                MovieId = 1,
+                            });
+                            break;
+                        case "MovieFiles":
+                            c.Insert.IntoTable(tableName).Row(new
+                            {
+                                Quality = quality.ToJson(),
+                                MovieId = 1,
+                                Size = 10,
+                                DateAdded = DateTime.Now,
+                            });
+                            break;
+                    }
+
+
+                }
+            });
+
+            var updatedItems = db.Query<ItemWithQualityModel>(@"SELECT Id, Quality FROM " + tableName);
+            var migratedQualities = updatedItems.Select(i => Json.Deserialize<QualityModel147>(i.Quality)).ToList();
+            migratedQualities.Should().HaveCount(4);
+
+            migratedQualities.First().QualityDefinition.Should().Be(QualityToDefinition[30]);
+            migratedQualities[1].Revision.Version.Should().Be(2);
+            migratedQualities[2].HardcodedSubs.Should().Be("Generic Hardcoded Subs");
+            migratedQualities[3].QualityDefinition.Should().Be(QualityToDefinition[0]);
+        }
+
+        [Test]
+        [TestCase("Blacklist")]
+        [TestCase("History")]
+        [TestCase("MovieFiles")]
+        public void should_correctly_migrate_quality_models_quality_definitions_random_order(string tableName)
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                WithDefaultQualityDefinitions(c, true);
+
+                var qualities = new List<QualityModel147>
+                {
+                    new QualityModel147
+                    {
+                        Quality = 30,
+                        Revision = new Revision()
+                    },
+                    new QualityModel147
+                    {
+                        Quality = 30,
+                        Revision = new Revision(2)
+                    },
+                    new QualityModel147
+                    {
+                        Quality = 30,
+                        Revision = new Revision(),
+                        HardcodedSubs = "Generic Hardcoded Subs"
+                    },
+                    new QualityModel147
+                    {
+                        Quality = 0,
+                        Revision = new Revision()
+                    }
+                };
+
+                foreach (var quality in qualities)
+                {
+                    switch (tableName)
+                    {
+                        case "Blacklist":
+                            c.Insert.IntoTable(tableName).Row(new
+                            {
+                                Quality = quality.ToJson(),
+                                SourceTitle = $"My.Movie.2017.{quality.Quality}",
+                                Date = DateTime.Now,
+                            });
+                            break;
+                        case "History":
+                            c.Insert.IntoTable(tableName).Row(new
+                            {
+                                Quality = quality.ToJson(),
+                                SourceTitle = $"My.Movie.2017.{quality.Quality}",
+                                Date = DateTime.Now,
+                                Data = "",
+                                MovieId = 1,
+                            });
+                            break;
+                        case "MovieFiles":
+                            c.Insert.IntoTable(tableName).Row(new
+                            {
+                                Quality = quality.ToJson(),
+                                MovieId = 1,
+                                Size = 10,
+                                DateAdded = DateTime.Now,
+                            });
+                            break;
+                    }
+
+
+                }
+            });
+
+            var updatedItems = db.Query<ItemWithQualityModel>(@"SELECT Id, Quality FROM " + tableName);
+            var migratedQualities = updatedItems.Select(i => Json.Deserialize<QualityModel147>(i.Quality)).ToList();
+            migratedQualities.Should().HaveCount(4);
+
+            migratedQualities.First().QualityDefinition.Should().Be(QualityToDefinition[30]);
+            migratedQualities[1].Revision.Version.Should().Be(2);
+            migratedQualities[2].HardcodedSubs.Should().Be("Generic Hardcoded Subs");
+            migratedQualities[3].QualityDefinition.Should().Be(QualityToDefinition[0]);
+        }
+    }
+
+    class ItemWithQualityModel
+    {
+        public int Id { get; set; }
+        public string Quality { get; set; }
     }
 }
