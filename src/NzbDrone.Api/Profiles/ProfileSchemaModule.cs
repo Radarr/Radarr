@@ -22,7 +22,7 @@ namespace NzbDrone.Api.Profiles
         {
             var items = _qualityDefinitionService.All()
                 .OrderBy(v => v.Weight)
-                .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = false })
+                .Select(v => new ProfileQualityItem { Quality = v.Quality, QualityDefinition = v, Allowed = false})
                 .ToList();
 
             var profile = new Profile();
