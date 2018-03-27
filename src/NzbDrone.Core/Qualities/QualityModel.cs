@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Qualities
         [JsonIgnore]
         public Modifier Modifier { get; set; }
 
-        
+
         public Revision Revision { get; set; }
 
         public string HardcodedSubs { get; set; }

@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Profiles
             var updated = new List<Profile>();
             foreach (var profile in all)
             {
-                var parent = profile.Items.Find(i => i.Quality.Id == qualityDefinition.Id);
+                var parent = profile.Items.Find(i => i.QualityDefinition.Id == qualityDefinition.ParentQualityDefinitionId);
                 profile.Items.Insert(profile.Items.IndexOf(parent)+1, new ProfileQualityItem
                 {
                     Allowed = parent.Allowed,
