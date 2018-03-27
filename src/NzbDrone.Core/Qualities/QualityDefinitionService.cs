@@ -101,8 +101,8 @@ namespace NzbDrone.Core.Qualities
                 var all = _repo.All();
                 var qualityDefinitions = all.ToList();
                 all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);
-                AllQualityDefinitions = qualityDefinitions;
-                return qualityDefinitions;
+                AllQualityDefinitions = all;
+                return all;
             }, TimeSpan.FromMinutes(15));
         }
 
