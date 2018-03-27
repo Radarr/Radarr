@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Api.Qualities
@@ -51,7 +52,10 @@ namespace NzbDrone.Api.Qualities
         private QualityDefinitionTestResource Test()
         {
 
-            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title);
+            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new ReleaseInfo
+            {
+                Title = Request.Query.title,
+            });
             if (parsed == null)
             {
                 return null;
