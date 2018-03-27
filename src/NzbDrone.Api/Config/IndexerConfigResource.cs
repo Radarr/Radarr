@@ -1,4 +1,4 @@
-﻿using NzbDrone.Api.REST;
+using NzbDrone.Api.REST;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 
@@ -7,6 +7,7 @@ namespace NzbDrone.Api.Config
     public class IndexerConfigResource : RestResource
     {
         public int MinimumAge { get; set; }
+        public int MaximumSize { get; set; }
         public int Retention { get; set; }
         public int RssSyncInterval { get; set; }
         public bool PreferIndexerFlags { get; set; }
@@ -23,6 +24,7 @@ namespace NzbDrone.Api.Config
             return new IndexerConfigResource
             {
                 MinimumAge = model.MinimumAge,
+                MaximumSize = model.MaximumSize,
                 Retention = model.Retention,
                 RssSyncInterval = model.RssSyncInterval,
                 PreferIndexerFlags = model.PreferIndexerFlags,

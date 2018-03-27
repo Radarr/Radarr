@@ -1374,6 +1374,7 @@
             <e p="BlacklistSpecification.cs" t="Include" />
             <e p="CutoffSpecification.cs" t="Include" />
             <e p="LanguageSpecification.cs" t="Include" />
+            <e p="MaximumSizeSpecification.cs" t="Include" />
             <e p="MinimumAgeSpecification.cs" t="Include" />
             <e p="NotSampleSpecification.cs" t="Include" />
             <e p="ProtocolSpecification.cs" t="Include" />
@@ -2568,6 +2569,7 @@
           <e p="DownloadDecisionMakerFixture.cs" t="Include" />
           <e p="HistorySpecificationFixture.cs" t="Include" />
           <e p="LanguageSpecificationFixture.cs" t="Include" />
+          <e p="MaximumSizeSpecificationFixture.cs" t="Include" />
           <e p="MinimumAgeSpecificationFixture.cs" t="Include" />
           <e p="MonitoredMovieSpecificationFixture.cs" t="Include" />
           <e p="PrioritizeDownloadDecisionFixture.cs" t="Include" />

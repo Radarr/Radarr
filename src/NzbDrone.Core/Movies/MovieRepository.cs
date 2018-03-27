@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Movies
 
 			return pagingSpec;
 		}*/
-        
+
         /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
         {
             return DataMapper.Query<Movie>().Join<Movie, AlternativeTitle>(JoinType.Left, m => m.AlternativeTitles,
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Movies
                 .Skip(pagingSpec.PagingOffset())
                 .Take(pagingSpec.PageSize);
         }*/
-        
+
         /*protected override SortBuilder<Movie> GetPagedQuery(QueryBuilder<Movie> query, PagingSpec<Movie> pagingSpec)
         {
             var newQuery = base.GetPagedQuery(query.Join<Movie, AlternativeTitle>(JoinType.Left, m => m.JoinAlternativeTitles, (movie, title) => title.MovieId == movie.Id), pagingSpec);
@@ -168,46 +168,15 @@ namespace NzbDrone.Core.Movies
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-			//I know this is bad, but if you have a better Idea please tell me.
-			if (pagingSpec.SortKey == "downloadedQuality")
-			{
-				var mapper = _database.GetDataMapper();
-				var offset = pagingSpec.PagingOffset();
-				var limit = pagingSpec.PageSize;
-				var direction = "ASC";
-				if (pagingSpec.SortDirection == NzbDrone.Core.Datastore.SortDirection.Descending)
-				{
-					direction = "DESC";
-				}
-
-				var whereClause = BuildQualityCutoffWhereClauseSpecial(qualitiesBelowCutoff);
-
-				var q = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title {direction} LIMIT {offset},{limit};");
-				var q2 = mapper.Query<Movie>($"SELECT * from \"Movies\" , \"MovieFiles\", \"QualityDefinitions\" WHERE Movies.MovieFileId=MovieFiles.Id AND instr(MovieFiles.Quality, ('quality\": ' || QualityDefinitions.Quality || \",\")) > 0 AND {whereClause} ORDER BY QualityDefinitions.Title ASC;");
-
-			    var q3 = Query.OrderBy(m => m.MovieFile.Quality.Quality);
-			    var ok = q3.BuildQuery();
-			    var t = ok;
-
-				pagingSpec.Records = q.ToList();
-				pagingSpec.TotalRecords = q2.Count();
-
-			}
-			else
-			{
-
-				pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
-				pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
-
-			}
+            pagingSpec.TotalRecords = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).GetRowCount();
+            pagingSpec.Records = MoviesWhereCutoffUnmetQuery(pagingSpec, qualitiesBelowCutoff).ToList();
 
             return pagingSpec;
         }
 
         private SortBuilder<Movie> MoviesWhereCutoffUnmetQuery(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
 		{
-            return Query.Join<Movie, MovieFile>(JoinType.Left, e => e.MovieFile, (e, s) => e.MovieFileId == s.Id)
-                 .Where(pagingSpec.FilterExpression)
+            return Query.Where(pagingSpec.FilterExpression)
                  .AndWhere(m => m.MovieFileId != 0)
                  .AndWhere(BuildQualityCutoffWhereClause(qualitiesBelowCutoff))
                  .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
@@ -290,8 +259,8 @@ namespace NzbDrone.Core.Movies
             return result;
             /*return year.HasValue
                 ? results?.FirstOrDefault(movie => movie.Year == year.Value)
-             
-             
+
+
               : results?.FirstOrDefault();*/
         }
 
