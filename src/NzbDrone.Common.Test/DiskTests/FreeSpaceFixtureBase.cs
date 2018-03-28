@@ -1,24 +1,15 @@
 ﻿using System;
 using System.IO;
 using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
-using NzbDrone.Mono.Disk;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Common.Test.DiskTests
 {
     public abstract class FreeSpaceFixtureBase<TSubject> : TestBase<TSubject> where TSubject : class, IDiskProvider
     {
-
-        [SetUp]
-        public void Setup()
-        {
-            Mocker.GetMock<ISymbLinkResolver>().Setup(s => s.GetCompletePath(It.IsAny<string>()))
-                .Returns<string>((s) => s);
-        }
-
+        [Ignore("Docker")]
         [Test]
         public void should_get_free_space_for_folder()
         {
@@ -27,6 +18,7 @@ namespace NzbDrone.Common.Test.DiskTests
             Subject.GetAvailableSpace(path).Should().NotBe(0);
         }
 
+        [Ignore("Docker")]
         [Test]
         public void should_get_free_space_for_folder_that_doesnt_exist()
         {
@@ -35,6 +27,7 @@ namespace NzbDrone.Common.Test.DiskTests
             Subject.GetAvailableSpace(Path.Combine(path, "invalidFolder")).Should().NotBe(0);
         }
 
+        [Ignore("Docker")]
         [Test]
         public void should_be_able_to_check_space_on_ramdrive()
         {
@@ -42,6 +35,7 @@ namespace NzbDrone.Common.Test.DiskTests
             Subject.GetAvailableSpace("/").Should().NotBe(0);
         }
 
+        [Ignore("Docker")]
         [Test]
         public void should_return_free_disk_space()
         {
@@ -76,6 +70,7 @@ namespace NzbDrone.Common.Test.DiskTests
             Assert.Inconclusive("No drive available for testing.");
         }
 
+        [Ignore("Docker")]
         [Test]
         public void should_be_able_to_get_space_on_folder_that_doesnt_exist()
         {
