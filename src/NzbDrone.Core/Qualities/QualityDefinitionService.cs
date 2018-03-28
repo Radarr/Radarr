@@ -97,7 +97,6 @@ namespace NzbDrone.Core.Qualities
             //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
             return _cache.Get("all", () =>
             {
-                //Handle(new ApplicationStartedEvent()); //TODO: Update this horrible hack for integration tests.
                 var all = _repo.All();
                 var qualityDefinitions = all.ToList();
                 all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);

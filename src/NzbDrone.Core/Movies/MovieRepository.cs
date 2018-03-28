@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Movies
 
             if (!includeUnmonitored)
             {
-                query.AndWhere(e => e.Monitored);
+                query.AndWhere(e => e.Monitored == true);
             }
 
             return query.ToList();

@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<dvdr>DVD-R|DVDR)|
                                                                 (?<dvd>DVD|DVDRip|NTSC|PAL|xvidvd)|
                                                                 (?<dsr>WS[-_. ]DSR|DSR)|
-                                                                (?<regional>R[0-9]{1})|
+                                                                (?<regional>R[0-9]{1}|REGIONAL)|
                                                                 (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
                                                                 (?<ts>TS|TELESYNC|HD-TS|HDTS|PDVD|TSRip|HDTSRip)|
                                                                 (?<tc>TC|TELECINE|HD-TC|HDTC)|
@@ -79,6 +79,9 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HDShitQualityRegex = new Regex(@"(HD-TS|HDTS|HDTSRip|HD-TC|HDTC|HDCAM|HD-CAM)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public static QualityModel ParseQuality(string name)
         {
             Logger.Debug("Trying to parse quality for {0}", name);
@@ -98,6 +101,13 @@ namespace NzbDrone.Core.Parser
                 {
                     result.HardcodedSubs = "Generic Hardcoded Subs";
                 }
+            }
+
+            if (RawHDRegex.IsMatch(normalizedName))
+            {
+                result.Modifier = Modifier.RAWHD;
+                result.Source = Source.TV;
+                return result;
             }
 
             var sourceMatch = SourceRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
@@ -188,7 +198,7 @@ namespace NzbDrone.Core.Parser
                 {
                     result.Resolution = Resolution.R480P;
                     result.Source = Source.DVD;
-                    result.Modifier = Modifier.REGIONAL;
+                    //result.Modifier = Modifier.REGIONAL;
                     return result;
                 }
 

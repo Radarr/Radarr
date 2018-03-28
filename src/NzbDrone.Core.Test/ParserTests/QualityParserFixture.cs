@@ -4,6 +4,7 @@ using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -11,6 +12,12 @@ namespace NzbDrone.Core.Test.ParserTests
 
     public class QualityParserFixture : CoreTest
     {
+        [SetUp]
+        public void Setup()
+        {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+        }
+
         public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
 
         public static object[] OtherSourceQualityParserCases =
@@ -62,7 +69,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("WEEDS.S03E01-06.DUAL.XviD.Bluray.AC3-REPACK.-HELLYWOOD.avi", true)]
         [TestCase("The.Shield.S01E13.NTSC.x264-CtrlSD", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD", false)]
-        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.X-viD.AC3.-HELLYWOOD", false)]    
+        [TestCase("WEEDS.S03E01-06.DUAL.BDRip.X-viD.AC3.-HELLYWOOD", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.BDRip.XviD.AC3.-HELLYWOOD.avi", false)]
         [TestCase("WEEDS.S03E01-06.DUAL.XviD.Bluray.AC3.-HELLYWOOD.avi", false)]
         [TestCase("The.Girls.Next.Door.S03E06.DVDRip.XviD-WiDE", false)]
@@ -112,12 +119,11 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R720P);
         }
 
-        
+
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.X264-QCF", false)]
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.x264-QCF", false)]
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.proper.X264-QCF", true)]
         [TestCase("Dexter - S01E01 - Title [HDTV-1080p]", false)]
-        [TestCase("Stripes (1981) 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
         public void should_parse_hdtv1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R1080P);
@@ -251,6 +257,12 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080P, Modifier.BRDISK);
         }
 
+        [TestCase("Stripes (1981) 1080i HDTV DD5.1 MPEG2-TrollHD")]
+        public void should_parse_rawhd_quality(string title)
+        {
+            ParseAndVerifyQuality(title, Source.TV, false, Resolution.Unknown, Modifier.RAWHD);
+        }
+
         //[TestCase("POI S02E11 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
         //[TestCase("How I Met Your Mother S01E18 Nothing Good Happens After 2 A.M. 720p HDTV DD5.1 MPEG2-TrollHD", false)]
         //[TestCase("The Voice S01E11 The Finals 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
@@ -285,7 +297,7 @@ namespace NzbDrone.Core.Test.ParserTests
             if (source != null) result.Source.Should().Be(source);
             if (resolution != null) result.Resolution.Should().Be(resolution);
             if (modifier != null) result.Modifier.Should().Be(modifier);
-            
+
         }
 
         [Test, TestCaseSource("OtherSourceQualityParserCases")]
@@ -314,7 +326,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[CR] Sailor Moon - 004 [48CE2D0F].avi")]
         public void should_parse_quality_from_extension(string title)
         {
-            QualityParser.ParseQuality(title).QualitySource.Should().Be(QualitySource.Extension); //TODO: Update quality parser for extensions.
+            QualityParser.ParseQuality(title).QualitySource.Should().Be(QualitySource.Extension);
         }
 
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "korsub")]

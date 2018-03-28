@@ -3,12 +3,19 @@ using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
     [TestFixture]
     public class ExtendedQualityParserRegex : CoreTest
     {
+        [SetUp]
+        public void Setup()
+        {
+            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+        }
+
         [TestCase("Chuck.S04E05.HDTV.XviD-LOL", 0)]
         [TestCase("Gold.Rush.S04E05.Garnets.or.Gold.REAL.REAL.PROPER.HDTV.x264-W4F", 2)]
         [TestCase("Chuck.S03E17.REAL.PROPER.720p.HDTV.x264-ORENJI-RP", 1)]

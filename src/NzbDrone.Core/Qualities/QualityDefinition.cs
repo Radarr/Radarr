@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_2160"), new QualityTag("m_remux") } },
 
                 new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_bluray"), new QualityTag("r_1080"), new QualityTag("r_2160"), new QualityTag("m_brdisk") } },
-                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_tv"), new QualityTag("r_1080"), new QualityTag("r_2160"), new QualityTag("m_rawhd") } }
+                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, QualityTags = new List<QualityTag>{ new QualityTag("s_tv"), new QualityTag("m_rawhd") } }
             };
 
     }

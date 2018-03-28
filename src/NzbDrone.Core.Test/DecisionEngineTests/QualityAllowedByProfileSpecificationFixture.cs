@@ -51,6 +51,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
             remoteMovie.ParsedMovieInfo.Quality.Quality = qualityType;
+            remoteMovie.ParsedMovieInfo.Quality.QualityDefinition =
+                QualityDefinitionService.AllQualityDefinitionsByQuality[qualityType];
             remoteMovie.Movie.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
@@ -60,6 +62,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
             remoteMovie.ParsedMovieInfo.Quality.Quality = qualityType;
+            remoteMovie.ParsedMovieInfo.Quality.QualityDefinition =
+                QualityDefinitionService.AllQualityDefinitionsByQuality[qualityType];
             remoteMovie.Movie.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeFalse();
