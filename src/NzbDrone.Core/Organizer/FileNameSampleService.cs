@@ -46,7 +46,6 @@ namespace NzbDrone.Core.Organizer
 
                 return _movieFile;
             }
-            set => _movieFile = value;
         }
 
         private static MovieFile _movieFile;
@@ -69,7 +68,6 @@ namespace NzbDrone.Core.Organizer
 
                 return _movie;
             }
-            set => _movie = value;
         }
 
         private static Movie _movie;
