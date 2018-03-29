@@ -1,6 +1,73 @@
 var Handlebars = require('handlebars');
 var StatusModel = require('../../System/StatusModel');
+var FormatHelpers = require('../../Shared/FormatHelpers');
+var moment = require('moment');
 var _ = require('underscore');
+require('../../Activity/Queue/QueueCollection');
+
+Handlebars.registerHelper('GetStatus', function() {
+    var monitored = this.monitored;
+    var status = this.status;
+    //var inCinemas = this.inCinemas;
+    //var date = new Date(inCinemas);
+    //var timeSince = new Date().getTime() - date.getTime();
+    //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
+  
+  
+    if (status === "announced") {
+      return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
+    }
+  
+  
+    if (status ==="inCinemas") {
+      return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+    }
+  
+    if (status === 'released') {
+        return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
+    }
+  
+    if (!monitored) {
+        return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
+    }
+  });
+
+Handlebars.registerHelper('route', function() {
+    return StatusModel.get('urlBase') + '/movies/' + this.titleSlug;
+});
+
+Handlebars.registerHelper('StatusLevel', function() {
+    var hasFile = this.hasFile;
+    var downloading = require('../../Activity/Queue/QueueCollection').findMovie(this.id) || this.downloading;
+    var currentTime = moment();
+    var monitored = this.monitored;
+
+    if (hasFile) {
+        return 'success';
+    }
+
+    else if (downloading) {
+        return 'purple';
+    }
+
+    else if (!monitored) {
+        return 'unmonitored';
+    }
+
+    else if (this.status === "inCinemas") {
+        return 'premiere';
+    }
+
+    else if (this.status === "released") {
+        return 'danger';
+    }
+
+    else if (this.status === "announced") {
+        return 'primary';
+    }
+
+    return 'primary';
+});
 
 Handlebars.registerHelper('poster', function() {
 
@@ -75,33 +142,6 @@ Handlebars.registerHelper('alternativeTitlesString', function() {
   return '"' + titles.slice(0,titles.length-1).join('", "') + '" and "' + titles[titles.length-1] + '"';
 });
 
-Handlebars.registerHelper('GetStatus', function() {
-  var monitored = this.monitored;
-  var status = this.status;
-  //var inCinemas = this.inCinemas;
-  //var date = new Date(inCinemas);
-  //var timeSince = new Date().getTime() - date.getTime();
-  //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
-
-
-  if (status === "announced") {
-    return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
-  }
-
-
-  if (status ==="inCinemas") {
-    return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
-  }
-
-  if (status === 'released') {
-      return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
-  }
-
-  if (!monitored) {
-      return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
-  }
-});
-
 Handlebars.registerHelper('GetBannerStatus', function() {
   var monitored = this.monitored;
   var status = this.status;
@@ -161,7 +201,6 @@ Handlebars.registerHelper("DownloadedQuality", function() {
   return "";
 });
 
-
 Handlebars.registerHelper('inCinemas', function() {
   var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -182,46 +221,6 @@ Handlebars.registerHelper('inCinemas', function() {
     return "In Cinemas: " + month + " " + year;
   }
   return "To be announced";
-});
-
-Handlebars.registerHelper('tvRageUrl', function() {
-    return 'http://www.tvrage.com/shows/id-' + this.tvRageId;
-});
-
-Handlebars.registerHelper('tvMazeUrl', function() {
-    return 'http://www.tvmaze.com/shows/' + this.tvMazeId + '/_';
-});
-
-Handlebars.registerHelper('route', function() {
-    return StatusModel.get('urlBase') + '/movies/' + this.titleSlug;
-});
-
-Handlebars.registerHelper('percentOfEpisodes', function() {
-    var episodeCount = this.episodeCount;
-    var episodeFileCount = this.episodeFileCount;
-
-    var percent = 100;
-
-    if (episodeCount > 0) {
-        percent = episodeFileCount / episodeCount * 100;
-    }
-
-    return percent;
-});
-
-Handlebars.registerHelper('seasonCountHelper', function() {
-    var seasonCount = this.seasonCount;
-    var continuing = this.status === 'continuing';
-
-    if (continuing) {
-        return new Handlebars.SafeString('<span class="label label-info">Season {0}</span>'.format(seasonCount));
-    }
-
-    if (seasonCount === 1) {
-        return new Handlebars.SafeString('<span class="label label-info">{0} Season</span>'.format(seasonCount));
-    }
-
-    return new Handlebars.SafeString('<span class="label label-info">{0} Seasons</span>'.format(seasonCount));
 });
 
 Handlebars.registerHelper('titleWithYear', function() {
