@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Qualities
                 case TagType.Source:
                     return movieInfo.Quality.Source == (Source) Value;
                 case TagType.Indexer:
-                    return releaseInfo.IndexerFlags.HasFlag((IndexerFlags) Value);
+                    return releaseInfo?.IndexerFlags.HasFlag((IndexerFlags) Value) == true;
                 default:
                     return false;
             }
