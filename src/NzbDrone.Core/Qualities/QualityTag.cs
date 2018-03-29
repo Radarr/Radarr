@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Qualities
 
                     foreach (IndexerFlags flagValue in flagValues)
                     {
-                        if (nameof(flagValue).ToLower().Remove('_') != value.ToLower().Remove('_')) continue;
+                        if (nameof(flagValue).ToLower().Replace("_", string.Empty) != value.ToLower().Replace("_", string.Empty)) continue;
                         Value = flagValue;
                         break;
                     }
