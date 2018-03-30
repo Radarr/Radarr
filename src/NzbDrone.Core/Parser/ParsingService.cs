@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Parser
             if (result.MovieTitle.IsNotNullOrWhiteSpace())
             {
                 languageTitle = languageTitle.Replace(result.MovieTitle, "A Movie");
-                if (languageTitle.ToLower().Contains("multi") && releaseInfo?.IndexerSettings?.MultiLanguages.Any() == true)
+                if (languageTitle.ToLower().Contains("multi") && releaseInfo?.IndexerSettings?.MultiLanguages?.Any() == true)
                 {
                     foreach (var i in releaseInfo.IndexerSettings.MultiLanguages)
                     {
