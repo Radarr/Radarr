@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
@@ -13,8 +14,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
     public class PassThePopcornParser : IParseIndexerResponse
     {
         private readonly PassThePopcornSettings _settings;
-        public ICached<Dictionary<string, string>> AuthCookieCache { get; set; }
-
         public PassThePopcornParser(PassThePopcornSettings settings)
         {
             _settings = settings;
@@ -27,16 +26,23 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             if (indexerResponse.HttpResponse.StatusCode != HttpStatusCode.OK)
             {
                 // Remove cookie cache
-                AuthCookieCache.Remove(_settings.BaseUrl.Trim().TrimEnd('/'));
-
+                if (indexerResponse.HttpResponse.HasHttpRedirect && indexerResponse.HttpResponse.Headers["Location"]
+                        .ContainsIgnoreCase("login.php"))
+                {
+                    CookiesUpdater(null, null);
+                    throw new IndexerException(indexerResponse, "We are being redirected to the PTP login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
+                }
                 throw new IndexerException(indexerResponse, $"Unexpected response status {indexerResponse.HttpResponse.StatusCode} code from API request");
             }
 
             if (indexerResponse.HttpResponse.Headers.ContentType != HttpAccept.Json.Value)
             {
+                if (indexerResponse.HttpResponse.Request.Url.Path.ContainsIgnoreCase("login.php"))
+                {
+                    CookiesUpdater(null, null);
+                    throw new IndexerException(indexerResponse, "We are currently on the login page. Most likely your session expired or was killed. Try testing the indexer in the settings.");
+                }
                 // Remove cookie cache
-                AuthCookieCache.Remove(_settings.BaseUrl.Trim().TrimEnd('/'));
-
                 throw new IndexerException(indexerResponse, $"Unexpected response header {indexerResponse.HttpResponse.Headers.ContentType} from API request, expected {HttpAccept.Json.Value}");
             }
 
@@ -96,6 +102,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 torrentInfos;
 
         }
+
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
 
         private string GetDownloadUrl(int torrentId, string authKey, string passKey)
         {

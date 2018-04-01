@@ -73,6 +73,8 @@ namespace NzbDrone.Core.Indexers
             return releases;
         }
 
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+
         protected virtual XDocument LoadXmlDocument(IndexerResponse indexerResponse)
         {
             try

@@ -13,6 +13,8 @@ namespace NzbDrone.Common.Http
             Url = new HttpUri(url);
             Headers = new HttpHeader();
             AllowAutoRedirect = true;
+            StoreRequestCookie = true;
+            IgnorePersistentCookies = false;
             Cookies = new Dictionary<string, string>();
             
             if (!RuntimeInfoBase.IsProduction)
@@ -37,6 +39,8 @@ namespace NzbDrone.Common.Http
         public bool ConnectionKeepAlive { get; set; }
         public bool LogResponseContent { get; set; }
         public Dictionary<string, string> Cookies { get; private set; }
+        public bool IgnorePersistentCookies { get; set; }
+        public bool StoreRequestCookie { get; set; }
         public bool StoreResponseCookie { get; set; }
         public TimeSpan RequestTimeout { get; set; }
         public TimeSpan RateLimit { get; set; }

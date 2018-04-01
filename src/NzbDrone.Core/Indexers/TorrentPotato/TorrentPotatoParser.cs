@@ -48,6 +48,8 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             return results;
         }
 
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+
         private string GetGuid(Result torrent)
         {
             var match = RegexGuid.Match(torrent.download_url);
