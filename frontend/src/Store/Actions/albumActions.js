@@ -42,16 +42,19 @@ export const defaultState = {
     {
       name: 'title',
       label: 'Title',
+      isSortable: true,
       isVisible: true
     },
     {
       name: 'releaseDate',
       label: 'Release Date',
+      isSortable: true,
       isVisible: true
     },
     {
       name: 'secondaryTypes',
       label: 'Secondary Types',
+      isSortable: true,
       isVisible: false
     },
     {
@@ -67,6 +70,7 @@ export const defaultState = {
     {
       name: 'duration',
       label: 'Duration',
+      isSortable: true,
       isVisible: false
     },
     {
@@ -84,6 +88,8 @@ export const defaultState = {
 };
 
 export const persistState = [
+  'albums.sortKey',
+  'albums.sortDirection',
   'albums.columns'
 ];
 
@@ -223,6 +229,8 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
+  [SET_ALBUMS_SORT]: createSetClientSideCollectionSortReducer(section),
+
   [SET_ALBUMS_TABLE_OPTION]: createSetTableOptionReducer(section),
 
   [SET_ALBUM_VALUE]: createSetSettingValueReducer(section),
@@ -234,8 +242,6 @@ export const reducers = createHandleActions({
       error: null,
       items: []
     });
-  },
-
-  [SET_ALBUMS_SORT]: createSetClientSideCollectionSortReducer(section)
+  }
 
 }, defaultState, section);

@@ -8,7 +8,7 @@ import { findCommand } from 'Utilities/Command';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { toggleAlbumsMonitored, setAlbumsTableOption } from 'Store/Actions/albumActions';
+import { toggleAlbumsMonitored, setAlbumsTableOption, setAlbumsSort } from 'Store/Actions/albumActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import ArtistDetailsSeason from './ArtistDetailsSeason';
@@ -23,11 +23,20 @@ function createMapStateToProps() {
     (label, albums, artist, commands, dimensions) => {
 
       const albumsInGroup = _.filter(albums.items, { albumType: label });
-      const sortedAlbums = _.orderBy(albumsInGroup, 'releaseDate', 'desc');
+
+      let sortDir = 'asc';
+
+      if (albums.sortDirection === 'descending') {
+        sortDir = 'desc';
+      }
+
+      const sortedAlbums = _.orderBy(albumsInGroup, albums.sortKey, sortDir);
 
       return {
         items: sortedAlbums,
         columns: albums.columns,
+        sortKey: albums.sortKey,
+        sortDirection: albums.sortDirection,
         artistMonitored: artist.monitored,
         isSmallScreen: dimensions.isSmallScreen
       };
@@ -38,6 +47,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   toggleAlbumsMonitored,
   setAlbumsTableOption,
+  dispatchSetAlbumSort: setAlbumsSort,
   executeCommand
 };
 
@@ -48,6 +58,10 @@ class ArtistDetailsSeasonConnector extends Component {
 
   onTableOptionChange = (payload) => {
     this.props.setAlbumsTableOption(payload);
+  }
+
+  onSortPress = (sortKey) => {
+    this.props.dispatchSetAlbumSort({ sortKey });
   }
 
   onMonitorAlbumPress = (albumIds, monitored) => {
@@ -64,6 +78,7 @@ class ArtistDetailsSeasonConnector extends Component {
     return (
       <ArtistDetailsSeason
         {...this.props}
+        onSortPress={this.onSortPress}
         onTableOptionChange={this.onTableOptionChange}
         onMonitorAlbumPress={this.onMonitorAlbumPress}
       />
@@ -75,6 +90,7 @@ ArtistDetailsSeasonConnector.propTypes = {
   artistId: PropTypes.number.isRequired,
   toggleAlbumsMonitored: PropTypes.func.isRequired,
   setAlbumsTableOption: PropTypes.func.isRequired,
+  dispatchSetAlbumSort: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

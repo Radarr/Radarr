@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import isAfter from 'Utilities/Date/isAfter';
 import getToggledRange from 'Utilities/Table/getToggledRange';
-import { icons } from 'Helpers/Props';
+import { icons, sortDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
@@ -114,6 +114,9 @@ class ArtistDetailsSeason extends Component {
       columns,
       isExpanded,
       artistMonitored,
+      sortKey,
+      sortDirection,
+      onSortPress,
       isSmallScreen,
       onTableOptionChange
     } = this.props;
@@ -171,6 +174,9 @@ class ArtistDetailsSeason extends Component {
                   items.length ?
                     <Table
                       columns={columns}
+                      sortKey={sortKey}
+                      sortDirection={sortDirection}
+                      onSortPress={onSortPress}
                       onTableOptionChange={onTableOptionChange}
                     >
                       <TableBody>
@@ -225,6 +231,8 @@ ArtistDetailsSeason.propTypes = {
   artistId: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  sortKey: PropTypes.string,
+  sortDirection: PropTypes.oneOf(sortDirections.all),
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExpanded: PropTypes.bool,
@@ -232,6 +240,7 @@ ArtistDetailsSeason.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   onTableOptionChange: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
+  onSortPress: PropTypes.func.isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired
 };
 
