@@ -511,6 +511,20 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        public void should_not_send_old_cookie()
+        {
+            GivenOldCookie();
+            
+            var requestCookies = new HttpRequest($"http://{_httpBinHost}/cookies");
+            requestCookies.IgnorePersistentCookies = true;
+            requestCookies.StoreRequestCookie = false;
+            requestCookies.StoreResponseCookie = false;
+            var responseCookies = Subject.Get<HttpCookieResource>(requestCookies);
+
+            responseCookies.Resource.Cookies.Should().BeEmpty();
+        }
+
+        [Test]
         public void should_throw_on_http429_too_many_requests()
         {
             var request = new HttpRequest(string.Format("http://{0}/status/429", _httpBinHost));

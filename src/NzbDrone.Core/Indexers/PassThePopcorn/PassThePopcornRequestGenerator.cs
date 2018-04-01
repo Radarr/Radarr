@@ -84,6 +84,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 // We want clean cookies for the auth request.
                 authLoginRequest.StoreRequestCookie = false;
                 authLoginRequest.StoreResponseCookie = false;
+                authLoginRequest.Cookies.Clear();
+                authLoginRequest.IgnorePersistentCookies = true;
                 var response = HttpClient.Execute(authLoginRequest);
                 var result = Json.Deserialize<PassThePopcornAuthResponse>(response.Content);
 

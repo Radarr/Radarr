@@ -139,8 +139,12 @@ namespace NzbDrone.Common.Http
                 var sourceContainer = new CookieContainer();
 
                 var presistentContainer = _cookieContainerCache.Get("container", () => new CookieContainer());
-                var persistentCookies = presistentContainer.GetCookies((Uri)request.Url);
-                sourceContainer.Add(persistentCookies);
+
+                if (!request.IgnorePersistentCookies)
+                {
+                    var persistentCookies = presistentContainer.GetCookies((Uri)request.Url);
+                    sourceContainer.Add(persistentCookies);   
+                }
 
                 if (request.Cookies.Count != 0)
                 {
