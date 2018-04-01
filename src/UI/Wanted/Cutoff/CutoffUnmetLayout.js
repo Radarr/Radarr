@@ -43,8 +43,8 @@ module.exports = Marionette.Layout.extend({
             cellValue : 'this',
         },
         {
-          name : "downloadedQuality",
-          label : "Downloaded",
+          name : "movieFile.quality",
+          label : "Downloaded", 
           cell : DownloadedQualityCell,
           sortable : true
         },
@@ -157,7 +157,7 @@ module.exports = Marionette.Layout.extend({
                     icon     : 'icon-sonarr-movie-announced',
                     callback : this._setFilter
                 },
-                {     
+                {
                     key      : 'incinemas',
                     title    : '',
                     tooltip  : 'In Cinemas Only',

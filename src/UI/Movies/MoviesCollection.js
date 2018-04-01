@@ -222,14 +222,6 @@ var Collection = PageableCollection.extend({
             return 0;
           }
         },
-        percentOfEpisodes : {
-            sortValue : function(model, attr) {
-                var percentOfEpisodes = model.get(attr);
-                var episodeCount = model.get('episodeCount');
-
-                return percentOfEpisodes + episodeCount / 1000000;
-            }
-        },
         inCinemas : {
 
           sortValue : function(model, attr) {

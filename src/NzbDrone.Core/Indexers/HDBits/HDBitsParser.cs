@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -84,6 +85,8 @@ namespace NzbDrone.Core.Indexers.HDBits
 
             return torrentInfos.ToArray();
         }
+
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
 
         private string GetDownloadUrl(string torrentId)
         {

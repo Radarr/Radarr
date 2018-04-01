@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="E:\C++ Projects\Sonarr\_output" t="ExcludeRecursive">
+    <e p="$PROJECT_DIR$/../_output" t="ExcludeRecursive">
       <e p="NzbDrone.Update" t="ExcludeRecursive" />
     </e>
-    <e p="E:\C++ Projects\Sonarr\Logo\1024.png" t="Include" />
-    <e p="E:\C++ Projects\Sonarr\Logo\64.png" t="Include" />
-    <e p="E:\C++ Projects\Sonarr\src" t="IncludeFlat">
+    <e p="$PROJECT_DIR$/../Logo/1024.png" t="Include" />
+    <e p="$PROJECT_DIR$/../Logo/64.png" t="Include" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p=".nuget" t="Include">
         <e p="NuGet.exe" t="Include" />
       </e>
-      <e p="_ReSharper.Caches\ReSharperHost11.NzbDrone.00" t="ExcludeRecursive" />
-      <e p="Common" t="Include">
-        <e p="CodeAnalysisDictionary.xml" t="Include" />
-        <e p="CommonAssemblyInfo.cs" t="Include" />
-        <e p="CommonVersionInfo.cs" t="Include" />
-        <e p="GlobalSuppressions.cs" t="Include" />
-      </e>
+      <e p="_ReSharper.Caches/ReSharperHost12.NzbDrone.00" t="ExcludeRecursive" />
+      <e p="Common/CommonAssemblyInfo.cs" t="Include" />
+      <e p="Common/CommonVersionInfo.cs" t="Include" />
+      <e p="Common/GlobalSuppressions.cs" t="Include" />
       <e p="External" t="Include" />
-      <e p="ExternalModules\CurlSharp\CurlSharp" t="IncludeRecursive">
+      <e p="ExternalModules/CurlSharp/CurlSharp" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="Callbacks" t="Include">
           <e p="CurlEasyCallbacks.cs" t="Include" />
@@ -70,10 +67,10 @@
         </e>
       </e>
       <e p="Host" t="Include" />
-      <e p="Libraries\MediaInfo\libmediainfo.0.dylib" t="Include" />
-      <e p="Libraries\MediaInfo\MediaInfo.dll" t="Include" />
-      <e p="Libraries\Sqlite\libsqlite3.0.dylib" t="Include" />
-      <e p="Libraries\Sqlite\sqlite3.dll" t="Include" />
+      <e p="Libraries/MediaInfo/libmediainfo.0.dylib" t="Include" />
+      <e p="Libraries/MediaInfo/MediaInfo.dll" t="Include" />
+      <e p="Libraries/Sqlite/libsqlite3.0.dylib" t="Include" />
+      <e p="Libraries/Sqlite/sqlite3.dll" t="Include" />
       <e p="LogentriesCore" t="IncludeRecursive">
         <e p="AsyncLogger.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
@@ -578,17 +575,6 @@
           <e p="DownloadClientModule.cs" t="Include" />
           <e p="DownloadClientResource.cs" t="Include" />
         </e>
-        <e p="EpisodeFiles" t="Include">
-          <e p="EpisodeFileModule.cs" t="Include" />
-          <e p="EpisodeFileResource.cs" t="Include" />
-        </e>
-        <e p="Episodes" t="Include">
-          <e p="EpisodeModule.cs" t="Include" />
-          <e p="EpisodeModuleWithSignalR.cs" t="Include" />
-          <e p="EpisodeResource.cs" t="Include" />
-          <e p="RenameEpisodeModule.cs" t="Include" />
-          <e p="RenameEpisodeResource.cs" t="Include" />
-        </e>
         <e p="ErrorManagement" t="Include">
           <e p="ApiException.cs" t="Include" />
           <e p="ErrorHandler.cs" t="Include" />
@@ -613,6 +599,10 @@
           </e>
           <e p="ReqResExtensions.cs" t="Include" />
           <e p="RequestExtensions.cs" t="Include" />
+        </e>
+        <e p="ExtraFiles" t="Include">
+          <e p="ExtraFileModule.cs" t="Include" />
+          <e p="ExtraFileResource.cs" t="Include" />
         </e>
         <e p="FileSystem" t="Include">
           <e p="FileSystemModule.cs" t="Include" />
@@ -670,14 +660,23 @@
           <e p="MetadataModule.cs" t="Include" />
           <e p="MetadataResource.cs" t="Include" />
         </e>
+        <e p="MovieFiles" t="Include">
+          <e p="MovieFileModule.cs" t="Include" />
+          <e p="MovieFileResource.cs" t="Include" />
+        </e>
         <e p="Movies" t="Include">
           <e p="AlternativeTitleModule.cs" t="Include" />
+          <e p="AlternativeTitleResource.cs" t="Include" />
           <e p="AlternativeYearModule.cs" t="Include" />
           <e p="AlternativeYearResource.cs" t="Include" />
+          <e p="FetchMovieListModule.cs" t="Include" />
           <e p="MovieBulkImportModule.cs" t="Include" />
+          <e p="MovieDiscoverModule.cs" t="Include" />
           <e p="MovieEditorModule.cs" t="Include" />
-          <e p="MovieFileModule.cs" t="Include" />
+          <e p="MovieLookupModule.cs" t="Include" />
+          <e p="MovieModule.cs" t="Include" />
           <e p="MovieModuleWithSignalR.cs" t="Include" />
+          <e p="MovieResource.cs" t="Include" />
           <e p="RenameMovieModule.cs" t="Include" />
           <e p="RenameMovieResource.cs" t="Include" />
         </e>
@@ -755,22 +754,7 @@
           <e p="RootFolderModule.cs" t="Include" />
           <e p="RootFolderResource.cs" t="Include" />
         </e>
-        <e p="SeasonPass" t="Include">
-          <e p="SeasonPassModule.cs" t="Include" />
-          <e p="SeasonPassResource.cs" t="Include" />
-        </e>
         <e p="Series" t="Include">
-          <e p="AlternativeTitleResource.cs" t="Include" />
-          <e p="FetchMovieListModule.cs" t="Include" />
-          <e p="MovieDiscoverModule.cs" t="Include" />
-          <e p="MovieFileResource.cs" t="Include" />
-          <e p="MovieLookupModule.cs" t="Include" />
-          <e p="MovieModule.cs" t="Include" />
-          <e p="MovieResource.cs" t="Include" />
-          <e p="SeasonResource.cs" t="Include" />
-          <e p="SeasonStatisticsResource.cs" t="Include" />
-          <e p="SeriesEditorModule.cs" t="Include" />
-          <e p="SeriesLookupModule.cs" t="Include" />
           <e p="SeriesModule.cs" t="Include" />
           <e p="SeriesResource.cs" t="Include" />
         </e>
@@ -801,9 +785,7 @@
           <e p="RuleBuilderExtensions.cs" t="Include" />
         </e>
         <e p="Wanted" t="Include">
-          <e p="CutoffModule.cs" t="Include" />
           <e p="LegacyMissingModule.cs" t="Include" />
-          <e p="MissingModule.cs" t="Include" />
           <e p="MovieCutoffModule.cs" t="Include" />
           <e p="MovieMissingModule.cs" t="Include" />
         </e>
@@ -1154,6 +1136,7 @@
           <e p="Backup.cs" t="Include" />
           <e p="BackupCommand.cs" t="Include" />
           <e p="BackupService.cs" t="Include" />
+          <e p="MakeDatabaseBackup.cs" t="Include" />
         </e>
         <e p="Blacklisting" t="Include">
           <e p="Blacklist.cs" t="Include" />
@@ -1173,23 +1156,6 @@
           <e p="IConfigService.cs" t="Include" />
           <e p="InvalidConfigFileException.cs" t="Include" />
           <e p="ResetApiKeyCommand.cs" t="Include" />
-        </e>
-        <e p="DataAugmentation" t="Include">
-          <e p="DailySeries" t="Include">
-            <e p="DailySeries.cs" t="Include" />
-            <e p="DailySeriesDataProxy.cs" t="Include" />
-            <e p="DailySeriesService.cs" t="Include" />
-          </e>
-          <e p="Scene" t="Include">
-            <e p="ISceneMappingProvider.cs" t="Include" />
-            <e p="SceneMapping.cs" t="Include" />
-            <e p="SceneMappingProxy.cs" t="Include" />
-            <e p="SceneMappingRepository.cs" t="Include" />
-            <e p="SceneMappingService.cs" t="Include" />
-            <e p="SceneMappingsUpdatedEvent.cs" t="Include" />
-            <e p="ServicesProvider.cs" t="Include" />
-            <e p="UpdateSceneMappingCommand.cs" t="Include" />
-          </e>
         </e>
         <e p="Datastore" t="Include">
           <e p="BasicRepository.cs" t="Include" />
@@ -1361,6 +1327,9 @@
             <e p="139_fix_indexer_baseurl.cs" t="Include" />
             <e p="140_add_alternative_titles_table.cs" t="Include" />
             <e p="141_fix_duplicate_alt_titles.cs" t="Include" />
+            <e p="142_movie_extras.cs" t="Include" />
+            <e p="143_clean_core_tv.cs" t="Include" />
+            <e p="144_add_cookies_to_indexer_status.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />
@@ -1393,14 +1362,13 @@
           <e p="QualityUpgradableSpecification.cs" t="Include" />
           <e p="Rejection.cs" t="Include" />
           <e p="RejectionType.cs" t="Include" />
-          <e p="SameEpisodesSpecification.cs" t="Include" />
           <e p="Specifications" t="Include">
             <e p="AcceptableSizeSpecification.cs" t="Include" />
             <e p="AnimeVersionUpgradeSpecification.cs" t="Include" />
             <e p="BlacklistSpecification.cs" t="Include" />
             <e p="CutoffSpecification.cs" t="Include" />
-            <e p="FullSeasonSpecification.cs" t="Include" />
             <e p="LanguageSpecification.cs" t="Include" />
+            <e p="MaximumSizeSpecification.cs" t="Include" />
             <e p="MinimumAgeSpecification.cs" t="Include" />
             <e p="NotSampleSpecification.cs" t="Include" />
             <e p="ProtocolSpecification.cs" t="Include" />
@@ -1414,16 +1382,12 @@
               <e p="AvailabilitySpecification.cs" t="Include" />
               <e p="DelaySpecification.cs" t="Include" />
               <e p="HistorySpecification.cs" t="Include" />
-              <e p="MonitoredEpisodeSpecification.cs" t="Include" />
+              <e p="MonitoredMovieSpecification.cs" t="Include" />
               <e p="ProperSpecification.cs" t="Include" />
             </e>
-            <e p="SameEpisodesGrabSpecification.cs" t="Include" />
             <e p="Search" t="Include">
               <e p="DailyEpisodeMatchSpecification.cs" t="Include" />
-              <e p="EpisodeRequestedSpecification.cs" t="Include" />
-              <e p="SeasonMatchSpecification.cs" t="Include" />
-              <e p="SeriesSpecification.cs" t="Include" />
-              <e p="SingleEpisodeSearchMatchSpecification.cs" t="Include" />
+              <e p="MovieSpecification.cs" t="Include" />
             </e>
             <e p="TorrentSeedingSpecification.cs" t="Include" />
             <e p="UpgradeDiskSpecification.cs" t="Include" />
@@ -1633,7 +1597,6 @@
           <e p="DownloadFailedEvent.cs" t="Include" />
           <e p="DownloadItemStatus.cs" t="Include" />
           <e p="DownloadService.cs" t="Include" />
-          <e p="EpisodeGrabbedEvent.cs" t="Include" />
           <e p="FailedDownloadService.cs" t="Include" />
           <e p="IDownloadClient.cs" t="Include" />
           <e p="MovieGrabbedEvent.cs" t="Include" />
@@ -1662,7 +1625,6 @@
           <e p="MovieNotFoundExceptions.cs" t="Include" />
           <e p="NzbDroneClientException.cs" t="Include" />
           <e p="ReleaseDownloadException.cs" t="Include" />
-          <e p="SeriesNotFoundException.cs" t="Include" />
           <e p="StatusCodeToExceptions.cs" t="Include" />
         </e>
         <e p="Extras" t="Include">
@@ -1767,18 +1729,17 @@
             <e p="CleanupDuplicateMetadataFiles.cs" t="Include" />
             <e p="CleanupOrphanedAlternativeTitles.cs" t="Include" />
             <e p="CleanupOrphanedBlacklist.cs" t="Include" />
-            <e p="CleanupOrphanedEpisodeFiles.cs" t="Include" />
-            <e p="CleanupOrphanedEpisodes.cs" t="Include" />
             <e p="CleanupOrphanedHistoryItems.cs" t="Include" />
             <e p="CleanupOrphanedIndexerStatus.cs" t="Include" />
             <e p="CleanupOrphanedMetadataFiles.cs" t="Include" />
+            <e p="CleanupOrphanedMovieFiles.cs" t="Include" />
             <e p="CleanupOrphanedPendingReleases.cs" t="Include" />
             <e p="CleanupUnusedTags.cs" t="Include" />
             <e p="DeleteBadMediaCovers.cs" t="Include" />
             <e p="FixFutureRunScheduledTasks.cs" t="Include" />
             <e p="FixWronglyMatchedMovieFiles.cs" t="Include" />
             <e p="TrimLogDatabase.cs" t="Include" />
-            <e p="UpdateCleanTitleForSeries.cs" t="Include" />
+            <e p="UpdateCleanTitleForMovies.cs" t="Include" />
           </e>
           <e p="HousekeepingCommand.cs" t="Include" />
           <e p="HousekeepingService.cs" t="Include" />
@@ -1911,25 +1872,13 @@
         <e p="IndexerSearch" t="Include">
           <e p="CutoffUnmetMoviesSearchCommand.cs" t="Include" />
           <e p="Definitions" t="Include">
-            <e p="AnimeEpisodeSearchCriteria.cs" t="Include" />
-            <e p="DailyEpisodeSearchCriteria.cs" t="Include" />
             <e p="MovieSearchCriteria.cs" t="Include" />
             <e p="SearchCriteriaBase.cs" t="Include" />
-            <e p="SeasonSearchCriteria.cs" t="Include" />
-            <e p="SingleEpisodeSearchCriteria.cs" t="Include" />
-            <e p="SpecialEpisodeSearchCriteria.cs" t="Include" />
           </e>
-          <e p="EpisodeSearchCommand.cs" t="Include" />
-          <e p="EpisodeSearchService.cs" t="Include" />
-          <e p="MissingEpisodeSearchCommand.cs" t="Include" />
           <e p="MissingMoviesSearchCommand.cs" t="Include" />
           <e p="MoviesSearchCommand.cs" t="Include" />
           <e p="MoviesSearchService.cs" t="Include" />
           <e p="NzbSearchService.cs" t="Include" />
-          <e p="SeasonSearchCommand.cs" t="Include" />
-          <e p="SeasonSearchService.cs" t="Include" />
-          <e p="SeriesSearchCommand.cs" t="Include" />
-          <e p="SeriesSearchService.cs" t="Include" />
         </e>
         <e p="Instrumentation" t="Include">
           <e p="Commands" t="Include">
@@ -1976,52 +1925,13 @@
             <e p="RenameMovieCommand.cs" t="Include" />
             <e p="RenameMovieFilesCommand.cs" t="Include" />
             <e p="RenameMovieFolderCommand.cs" t="Include" />
-            <e p="RenameSeriesCommand.cs" t="Include" />
             <e p="RescanMovieCommand.cs" t="Include" />
-            <e p="RescanSeriesCommand.cs" t="Include" />
           </e>
           <e p="DeleteMediaFileReason.cs" t="Include" />
           <e p="DiskScanService.cs" t="Include" />
           <e p="DownloadedMovieCommandService.cs" t="Include" />
           <e p="DownloadedMovieImportService.cs" t="Include" />
-          <e p="EpisodeFile.cs" t="Include" />
-          <e p="EpisodeFileMoveResult.cs" t="Include" />
-          <e p="EpisodeFileMovingService.cs" t="Include" />
-          <e p="EpisodeImport" t="Include">
-            <e p="DetectSample.cs" t="Include" />
-            <e p="IImportDecisionEngineSpecification.cs" t="Include" />
-            <e p="ImportApprovedEpisodes.cs" t="Include" />
-            <e p="ImportApprovedMovie.cs" t="Include" />
-            <e p="ImportDecision.cs" t="Include" />
-            <e p="ImportDecisionMaker.cs" t="Include" />
-            <e p="ImportMode.cs" t="Include" />
-            <e p="ImportResult.cs" t="Include" />
-            <e p="ImportResultType.cs" t="Include" />
-            <e p="Manual" t="Include">
-              <e p="ManualImportCommand.cs" t="Include" />
-              <e p="ManualImportFile.cs" t="Include" />
-              <e p="ManualImportItem.cs" t="Include" />
-              <e p="ManualImportService.cs" t="Include" />
-              <e p="ManuallyImportedFile.cs" t="Include" />
-            </e>
-            <e p="Specifications" t="Include">
-              <e p="FreeSpaceSpecification.cs" t="Include" />
-              <e p="FullSeasonSpecification.cs" t="Include" />
-              <e p="GrabbedReleaseQualitySpecification.cs" t="Include" />
-              <e p="MatchesFolderSpecification.cs" t="Include" />
-              <e p="NotSampleSpecification.cs" t="Include" />
-              <e p="NotUnpackingSpecification.cs" t="Include" />
-              <e p="SameEpisodesImportSpecification.cs" t="Include" />
-              <e p="UnverifiedSceneNumberingSpecification.cs" t="Include" />
-              <e p="UpgradeSpecification.cs" t="Include" />
-            </e>
-          </e>
           <e p="Events" t="Include">
-            <e p="EpisodeDownloadedEvent.cs" t="Include" />
-            <e p="EpisodeFileAddedEvent.cs" t="Include" />
-            <e p="EpisodeFileDeletedEvent.cs" t="Include" />
-            <e p="EpisodeFolderCreatedEvent.cs" t="Include" />
-            <e p="EpisodeImportedEvent.cs" t="Include" />
             <e p="MovieDownloadedEvent.cs" t="Include" />
             <e p="MovieFileAddedEvent.cs" t="Include" />
             <e p="MovieFileDeletedEvent.cs" t="Include" />
@@ -2031,9 +1941,6 @@
             <e p="MovieRenamedEvent.cs" t="Include" />
             <e p="MovieScannedEvent.cs" t="Include" />
             <e p="MovieScanSkippedEvent.cs" t="Include" />
-            <e p="SeriesRenamedEvent.cs" t="Include" />
-            <e p="SeriesScannedEvent.cs" t="Include" />
-            <e p="SeriesScanSkippedEvent.cs" t="Include" />
           </e>
           <e p="FileDateType.cs" t="Include" />
           <e p="MediaFileAttributeService.cs" t="Include" />
@@ -2050,17 +1957,40 @@
           <e p="MovieFile.cs" t="Include" />
           <e p="MovieFileMoveResult.cs" t="Include" />
           <e p="MovieFileMovingService.cs" t="Include" />
-          <e p="MovieFileRepository.cs" t="Include" />
+          <e p="MovieImport" t="Include">
+            <e p="DetectSample.cs" t="Include" />
+            <e p="IImportDecisionEngineSpecification.cs" t="Include" />
+            <e p="ImportApprovedMovie.cs" t="Include" />
+            <e p="ImportDecision.cs" t="Include" />
+            <e p="ImportDecisionMaker.cs" t="Include" />
+            <e p="ImportMode.cs" t="Include" />
+            <e p="ImportResult.cs" t="Include" />
+            <e p="ImportResultType.cs" t="Include" />
+            <e p="Manual" t="Include">
+              <e p="ManualImportCommand.cs" t="Include" />
+              <e p="ManualImportFile.cs" t="Include" />
+              <e p="ManualImportItem.cs" t="Include" />
+              <e p="ManualImportService.cs" t="Include" />
+              <e p="ManuallyImportedFile.cs" t="Include" />
+            </e>
+            <e p="Specifications" t="Include">
+              <e p="FreeSpaceSpecification.cs" t="Include" />
+              <e p="GrabbedReleaseQualitySpecification.cs" t="Include" />
+              <e p="MatchesFolderSpecification.cs" t="Include" />
+              <e p="NotSampleSpecification.cs" t="Include" />
+              <e p="NotUnpackingSpecification.cs" t="Include" />
+              <e p="SameFileSpecification.cs" t="Include" />
+              <e p="UnverifiedSceneNumberingSpecification.cs" t="Include" />
+              <e p="UpgradeSpecification.cs" t="Include" />
+            </e>
+          </e>
           <e p="RecycleBinProvider.cs" t="Include" />
-          <e p="RenameEpisodeFilePreview.cs" t="Include" />
-          <e p="RenameEpisodeFileService.cs" t="Include" />
           <e p="RenameMovieFilePreview.cs" t="Include" />
           <e p="RenameMovieFileService.cs" t="Include" />
           <e p="SameFilenameException.cs" t="Include" />
           <e p="TorrentInfo" t="Include">
             <e p="TorrentFileInfoReader.cs" t="Include" />
           </e>
-          <e p="UpdateEpisodeFileService.cs" t="Include" />
           <e p="UpdateMovieFileService.cs" t="Include" />
           <e p="UpgradeMediaFileService.cs" t="Include" />
         </e>
@@ -2096,9 +2026,7 @@
         <e p="MetadataSource" t="Include">
           <e p="IDiscoverNewMovies.cs" t="Include" />
           <e p="IProvideMovieInfo.cs" t="Include" />
-          <e p="IProvideSeriesInfo.cs" t="Include" />
           <e p="ISearchForNewMovie.cs" t="Include" />
-          <e p="ISearchForNewSeries.cs" t="Include" />
           <e p="PreDB" t="Include">
             <e p="PreDBResult.cs" t="Include" />
             <e p="PreDBService.cs" t="Include" />
@@ -2109,7 +2037,7 @@
             <e p="RadarrAPIClient.cs" t="Include" />
             <e p="RadarrResources.cs" t="Include" />
           </e>
-          <e p="SearchSeriesComparer.cs" t="Include" />
+          <e p="SearchMovieComparer.cs" t="Include" />
           <e p="SkyHook" t="Include">
             <e p="Resource" t="Include">
               <e p="ActorResource.cs" t="Include" />
@@ -2129,17 +2057,40 @@
           <e p="TmdbConfigurationService.cs" t="Include" />
         </e>
         <e p="Movies" t="Include">
+          <e p="Actor.cs" t="Include" />
+          <e p="AddMovieOptions.cs" t="Include" />
           <e p="AlternativeTitles" t="Include">
             <e p="AlternativeTitle.cs" t="Include" />
             <e p="AlternativeTitleRepository.cs" t="Include" />
             <e p="AlternativeTitleService.cs" t="Include" />
           </e>
-        </e>
-        <e p="MovieStats" t="Include">
-          <e p="MovieStatistics.cs" t="Include" />
-          <e p="MovieStatisticsRepository.cs" t="Include" />
-          <e p="MovieStatisticsService.cs" t="Include" />
-          <e p="SeasonStatistics.cs" t="Include" />
+          <e p="Commands" t="Include">
+            <e p="MoveMovieCommand.cs" t="Include" />
+            <e p="RefreshMovieCommand.cs" t="Include" />
+          </e>
+          <e p="Events" t="Include">
+            <e p="MovieAddedEvent.cs" t="Include" />
+            <e p="MovieDeletedEvent.cs" t="Include" />
+            <e p="MovieEditedEvent.cs" t="Include" />
+            <e p="MovieMovedEvent.cs" t="Include" />
+            <e p="MovieRefreshStartingEvent.cs" t="Include" />
+            <e p="MovieUpdateEvent.cs" t="Include" />
+          </e>
+          <e p="MonitoringOptions.cs" t="Include" />
+          <e p="MoveMovieService.cs" t="Include" />
+          <e p="Movie.cs" t="Include" />
+          <e p="MovieAddedHandler.cs" t="Include" />
+          <e p="MovieCutoffService.cs" t="Include" />
+          <e p="MovieEditedService.cs" t="Include" />
+          <e p="MovieRepository.cs" t="Include" />
+          <e p="MovieScannedHandler.cs" t="Include" />
+          <e p="MovieService.cs" t="Include" />
+          <e p="MovieStatusType.cs" t="Include" />
+          <e p="MovieTitleNormalizer.cs" t="Include" />
+          <e p="QueryExtensions.cs" t="Include" />
+          <e p="Ratings.cs" t="Include" />
+          <e p="RefreshMovieService.cs" t="Include" />
+          <e p="ShouldRefreshMovie.cs" t="Include" />
         </e>
         <e p="NetImport" t="Include">
           <e p="CouchPotato" t="Include">
@@ -2403,12 +2354,9 @@
           <e p="Language.cs" t="Include" />
           <e p="LanguageParser.cs" t="Include" />
           <e p="Model" t="Include">
-            <e p="LocalEpisode.cs" t="Include" />
             <e p="LocalMovie.cs" t="Include" />
-            <e p="ParsedEpisodeInfo.cs" t="Include" />
             <e p="ParsedMovieInfo.cs" t="Include" />
             <e p="ReleaseInfo.cs" t="Include" />
-            <e p="RemoteEpisode.cs" t="Include" />
             <e p="RemoteMovie.cs" t="Include" />
             <e p="SeriesTitleInfo.cs" t="Include" />
             <e p="TorrentInfo.cs" t="Include" />
@@ -2491,12 +2439,6 @@
           <e p="UnmappedFolder.cs" t="Include" />
         </e>
         <e p="Security.cs" t="Include" />
-        <e p="SeriesStats" t="Include">
-          <e p="SeasonStatistics.cs" t="Include" />
-          <e p="SeriesStatistics.cs" t="Include" />
-          <e p="SeriesStatisticsRepository.cs" t="Include" />
-          <e p="SeriesStatisticsService.cs" t="Include" />
-        </e>
         <e p="Tags" t="Include">
           <e p="Tag.cs" t="Include" />
           <e p="TagRepository.cs" t="Include" />
@@ -2520,63 +2462,6 @@
           <e p="ProviderRepository.cs" t="Include" />
         </e>
         <e p="TinyTwitter.cs" t="Include" />
-        <e p="Tv" t="Include">
-          <e p="Actor.cs" t="Include" />
-          <e p="AddSeriesOptions.cs" t="Include" />
-          <e p="Commands" t="Include">
-            <e p="MoveSeriesCommand.cs" t="Include" />
-            <e p="RefreshMovieCommand.cs" t="Include" />
-            <e p="RefreshSeriesCommand.cs" t="Include" />
-          </e>
-          <e p="Episode.cs" t="Include" />
-          <e p="EpisodeAddedService.cs" t="Include" />
-          <e p="EpisodeCutoffService.cs" t="Include" />
-          <e p="EpisodeMonitoredService.cs" t="Include" />
-          <e p="EpisodeRepository.cs" t="Include" />
-          <e p="EpisodeService.cs" t="Include" />
-          <e p="Events" t="Include">
-            <e p="EpisodeInfoRefreshedEvent.cs" t="Include" />
-            <e p="MovieAddedEvent.cs" t="Include" />
-            <e p="MovieDeletedEvent.cs" t="Include" />
-            <e p="MovieEditedEvent.cs" t="Include" />
-            <e p="MovieRefreshStartingEvent.cs" t="Include" />
-            <e p="MovieUpdateEvent.cs" t="Include" />
-            <e p="SeriesAddedEvent.cs" t="Include" />
-            <e p="SeriesDeletedEvent.cs" t="Include" />
-            <e p="SeriesEditedEvent.cs" t="Include" />
-            <e p="SeriesMovedEvent.cs" t="Include" />
-            <e p="SeriesRefreshStartingEvent.cs" t="Include" />
-            <e p="SeriesUpdatedEvent.cs" t="Include" />
-          </e>
-          <e p="MonitoringOptions.cs" t="Include" />
-          <e p="MoveSeriesService.cs" t="Include" />
-          <e p="Movie.cs" t="Include" />
-          <e p="MovieAddedHandler.cs" t="Include" />
-          <e p="MovieCutoffService.cs" t="Include" />
-          <e p="MovieEditedService.cs" t="Include" />
-          <e p="MovieRepository.cs" t="Include" />
-          <e p="MovieScannedHandler.cs" t="Include" />
-          <e p="MovieService.cs" t="Include" />
-          <e p="MovieStatusType.cs" t="Include" />
-          <e p="MovieTitleNormalizer.cs" t="Include" />
-          <e p="QueryExtensions.cs" t="Include" />
-          <e p="Ratings.cs" t="Include" />
-          <e p="RefreshEpisodeService.cs" t="Include" />
-          <e p="RefreshMovieService.cs" t="Include" />
-          <e p="RefreshSeriesService.cs" t="Include" />
-          <e p="Season.cs" t="Include" />
-          <e p="Series.cs" t="Include" />
-          <e p="SeriesAddedHandler.cs" t="Include" />
-          <e p="SeriesEditedService.cs" t="Include" />
-          <e p="SeriesRepository.cs" t="Include" />
-          <e p="SeriesScannedHandler.cs" t="Include" />
-          <e p="SeriesService.cs" t="Include" />
-          <e p="SeriesStatusType.cs" t="Include" />
-          <e p="SeriesTitleNormalizer.cs" t="Include" />
-          <e p="SeriesTypes.cs" t="Include" />
-          <e p="ShouldRefreshMovie.cs" t="Include" />
-          <e p="ShouldRefreshSeries.cs" t="Include" />
-        </e>
         <e p="Update" t="Include">
           <e p="Commands" t="Include">
             <e p="ApplicationUpdateCommand.cs" t="Include" />
@@ -2612,9 +2497,6 @@
             <e p="PathExistsValidator.cs" t="Include" />
             <e p="PathValidator.cs" t="Include" />
             <e p="RootFolderValidator.cs" t="Include" />
-            <e p="SeriesAncestorValidator.cs" t="Include" />
-            <e p="SeriesExistsValidator.cs" t="Include" />
-            <e p="SeriesPathValidator.cs" t="Include" />
             <e p="StartupFolderValidator.cs" t="Include" />
           </e>
           <e p="ProfileExistsValidator.cs" t="Include" />
@@ -2634,16 +2516,6 @@
         <e p="Configuration" t="Include">
           <e p="ConfigCachingFixture.cs" t="Include" />
           <e p="ConfigServiceFixture.cs" t="Include" />
-        </e>
-        <e p="DataAugmentation" t="Include">
-          <e p="DailySeries" t="Include">
-            <e p="DailySeriesDataProxyFixture.cs" t="Include" />
-          </e>
-          <e p="Scene" t="Include">
-            <e p="SceneMappingProxyFixture.cs" t="Include" />
-            <e p="SceneMappingServiceFixture.cs" t="Include" />
-          </e>
-          <e p="SceneNumbering" t="Include" />
         </e>
         <e p="Datastore" t="Include">
           <e p="BasicRepositoryFixture.cs" t="Include" />
@@ -2684,14 +2556,13 @@
         </e>
         <e p="DecisionEngineTests" t="Include">
           <e p="AcceptableSizeSpecificationFixture.cs" t="Include" />
-          <e p="AnimeVersionUpgradeSpecificationFixture.cs" t="Include" />
           <e p="CutoffSpecificationFixture.cs" t="Include" />
           <e p="DownloadDecisionMakerFixture.cs" t="Include" />
-          <e p="FullSeasonSpecificationFixture.cs" t="Include" />
           <e p="HistorySpecificationFixture.cs" t="Include" />
           <e p="LanguageSpecificationFixture.cs" t="Include" />
+          <e p="MaximumSizeSpecificationFixture.cs" t="Include" />
           <e p="MinimumAgeSpecificationFixture.cs" t="Include" />
-          <e p="MonitoredEpisodeSpecificationFixture.cs" t="Include" />
+          <e p="MonitoredMovieSpecificationFixture.cs" t="Include" />
           <e p="PrioritizeDownloadDecisionFixture.cs" t="Include" />
           <e p="ProtocolSpecificationFixture.cs" t="Include" />
           <e p="QualityAllowedByProfileSpecificationFixture.cs" t="Include" />
@@ -2704,9 +2575,8 @@
             <e p="DelaySpecificationFixture.cs" t="Include" />
             <e p="ProperSpecificationFixture.cs" t="Include" />
           </e>
-          <e p="SameEpisodesSpecificationFixture.cs" t="Include" />
           <e p="Search" t="Include">
-            <e p="SeriesSpecificationFixture.cs" t="Include" />
+            <e p="MovieSpecificationFixture.cs" t="Include" />
             <e p="TorrentSeedingSpecificationFixture.cs" t="Include" />
           </e>
           <e p="UpgradeDiskSpecificationFixture.cs" t="Include" />
@@ -2908,11 +2778,10 @@
             <e p="CleanupAdditionalUsersFixture.cs" t="Include" />
             <e p="CleanupDuplicateMetadataFilesFixture.cs" t="Include" />
             <e p="CleanupOrphanedBlacklistFixture.cs" t="Include" />
-            <e p="CleanupOrphanedEpisodeFilesFixture.cs" t="Include" />
-            <e p="CleanupOrphanedEpisodesFixture.cs" t="Include" />
             <e p="CleanupOrphanedHistoryItemsFixture.cs" t="Include" />
             <e p="CleanupOrphanedIndexerStatusFixture.cs" t="Include" />
             <e p="CleanupOrphanedMetadataFilesFixture.cs" t="Include" />
+            <e p="CleanupOrphanedMovieFilesFixture.cs" t="Include" />
             <e p="CleanupOrphanedPendingReleasesFixture.cs" t="Include" />
             <e p="CleanupUnusedTagsFixture.cs" t="Include" />
             <e p="FixFutureRunScheduledTasksFixture.cs" t="Include" />
@@ -2923,9 +2792,7 @@
           <e p="TorCacheHttpRequestInterceptorFixture.cs" t="Include" />
         </e>
         <e p="IndexerSearchTests" t="Include">
-          <e p="NzbSearchServiceFixture.cs" t="Include" />
           <e p="SearchDefinitionFixture.cs" t="Include" />
-          <e p="SeriesSearchServiceFixture.cs" t="Include" />
         </e>
         <e p="IndexerTests" t="Include">
           <e p="BasicRssParserFixture.cs" t="Include" />
@@ -2958,7 +2825,6 @@
           <e p="RarbgTests" t="Include">
             <e p="RarbgFixture.cs" t="Include" />
           </e>
-          <e p="SeasonSearchFixture.cs" t="Include" />
           <e p="TestIndexer.cs" t="Include" />
           <e p="TestIndexerSettings.cs" t="Include" />
           <e p="TorrentRssIndexerTests" t="Include">
@@ -2994,18 +2860,6 @@
           <e p="EpisodeFileMovingServiceTests" t="Include">
             <e p="MoveEpisodeFileFixture.cs" t="Include" />
           </e>
-          <e p="EpisodeImport" t="Include">
-            <e p="ImportDecisionMakerFixture.cs" t="Include" />
-            <e p="SampleServiceFixture.cs" t="Include" />
-            <e p="Specifications" t="Include">
-              <e p="FreeSpaceSpecificationFixture.cs" t="Include" />
-              <e p="FullSeasonSpecificationFixture.cs" t="Include" />
-              <e p="MatchesFolderSpecificationFixture.cs" t="Include" />
-              <e p="NotSampleSpecificationFixture.cs" t="Include" />
-              <e p="NotUnpackingSpecificationFixture.cs" t="Include" />
-              <e p="UpgradeSpecificationFixture.cs" t="Include" />
-            </e>
-          </e>
           <e p="ImportApprovedEpisodesFixture.cs" t="Include" />
           <e p="MediaFileRepositoryFixture.cs" t="Include" />
           <e p="MediaFileServiceTests" t="Include">
@@ -3016,7 +2870,19 @@
             <e p="UpdateMediaInfoServiceFixture.cs" t="Include" />
             <e p="VideoFileInfoReaderFixture.cs" t="Include" />
           </e>
-          <e p="RenameEpisodeFileServiceFixture.cs" t="Include" />
+          <e p="MovieImport" t="Include">
+            <e p="ImportDecisionMakerFixture.cs" t="Include" />
+            <e p="SampleServiceFixture.cs" t="Include" />
+            <e p="Specifications" t="Include">
+              <e p="FreeSpaceSpecificationFixture.cs" t="Include" />
+              <e p="MatchesFolderSpecificationFixture.cs" t="Include" />
+              <e p="NotSampleSpecificationFixture.cs" t="Include" />
+              <e p="NotUnpackingSpecificationFixture.cs" t="Include" />
+              <e p="SameFileSpecificationFixture.cs" t="Include" />
+              <e p="UpgradeSpecificationFixture.cs" t="Include" />
+            </e>
+          </e>
+          <e p="RenameMovieFileServiceFixture.cs" t="Include" />
           <e p="UpgradeMediaFileServiceFixture.cs" t="Include" />
         </e>
         <e p="Messaging" t="Include">
@@ -3040,11 +2906,25 @@
           </e>
         </e>
         <e p="MetadataSource" t="Include">
-          <e p="SearchSeriesComparerFixture.cs" t="Include" />
+          <e p="SearchMovieComparerFixture.cs" t="Include" />
           <e p="SkyHook" t="Include">
             <e p="SkyHookProxyFixture.cs" t="Include" />
             <e p="SkyHookProxySearchFixture.cs" t="Include" />
           </e>
+        </e>
+        <e p="MovieTests" t="Include">
+          <e p="MoveMovieServiceFixture.cs" t="Include" />
+          <e p="MovieRepositoryTests" t="Include">
+            <e p="MovieRepositoryFixture.cs" t="Include" />
+          </e>
+          <e p="MovieServiceTests" t="Include">
+            <e p="AddMovieFixture.cs" t="Include" />
+            <e p="UpdateMovieFixture.cs" t="Include" />
+            <e p="UpdateMultipleMoviesFixture.cs" t="Include" />
+          </e>
+          <e p="MovieTitleNormalizerFixture.cs" t="Include" />
+          <e p="RefreshMovieServiceFixture.cs" t="Include" />
+          <e p="ShouldRefreshMovieFixture.cs" t="Include" />
         </e>
         <e p="NetImport" t="Include">
           <e p="CouchPotato" t="Include">
@@ -3068,35 +2948,23 @@
         <e p="NzbDrone.Core.Test.csproj" t="IncludeRecursive" />
         <e p="obj" t="ExcludeRecursive" />
         <e p="OrganizerTests" t="Include">
-          <e p="BuildFilePathFixture.cs" t="Include" />
           <e p="CleanFixture.cs" t="Include" />
           <e p="FileNameBuilderTests" t="Include">
             <e p="CleanTitleFixture.cs" t="Include" />
-            <e p="EpisodeTitleCollapseFixture.cs" t="Include" />
             <e p="FileNameBuilderFixture.cs" t="Include" />
-            <e p="MultiEpisodeFixture.cs" t="Include" />
           </e>
           <e p="GetMovieFolderFixture.cs" t="Include" />
-          <e p="GetSeasonFolderFixture.cs" t="Include" />
-          <e p="GetSeriesFolderFixture.cs" t="Include" />
         </e>
         <e p="packages.config" t="Include" />
         <e p="ParserTests" t="Include">
-          <e p="AbsoluteEpisodeNumberParserFixture.cs" t="Include" />
-          <e p="AnimeMetadataParserFixture.cs" t="Include" />
           <e p="CrapParserFixture.cs" t="Include" />
-          <e p="DailyEpisodeParserFixture.cs" t="Include" />
           <e p="ExtendedQualityParserRegex.cs" t="Include" />
           <e p="HashedReleaseFixture.cs" t="Include" />
-          <e p="IsPossibleSpecialEpisodeFixture.cs" t="Include" />
           <e p="LanguageParserFixture.cs" t="Include" />
-          <e p="MiniSeriesEpisodeParserFixture.cs" t="Include" />
-          <e p="MultiEpisodeParserFixture.cs" t="Include" />
           <e p="NormalizeTitleFixture.cs" t="Include" />
           <e p="ParserFixture.cs" t="Include" />
           <e p="ParsingServiceTests" t="Include">
-            <e p="GetEpisodesFixture.cs" t="Include" />
-            <e p="GetSeriesFixture.cs" t="Include" />
+            <e p="GetMovieFixture.cs" t="Include" />
             <e p="MapFixture.cs" t="Include" />
           </e>
           <e p="PathParserFixture.cs" t="Include" />
@@ -3106,7 +2974,6 @@
             <e p="RomanNumeralConversionFixture.cs" t="Include" />
           </e>
           <e p="SceneCheckerFixture.cs" t="Include" />
-          <e p="SeasonParserFixture.cs" t="Include" />
           <e p="SeriesTitleInfoFixture.cs" t="Include" />
           <e p="SingleEpisodeParserFixture.cs" t="Include" />
         </e>
@@ -3148,45 +3015,11 @@
         <e p="RootFolderTests" t="Include">
           <e p="RootFolderServiceFixture.cs" t="Include" />
         </e>
-        <e p="SeriesStatsTests" t="Include">
-          <e p="SeriesStatisticsFixture.cs" t="Include" />
-        </e>
         <e p="ThingiProvider" t="Include">
           <e p="ProviderBaseFixture.cs" t="Include" />
         </e>
         <e p="ThingiProviderTests" t="Include">
           <e p="NullConfigFixture.cs" t="Include" />
-        </e>
-        <e p="TvTests" t="Include">
-          <e p="EpisodeMonitoredServiceTests" t="Include">
-            <e p="SetEpisodeMontitoredFixture.cs" t="Include" />
-          </e>
-          <e p="EpisodeRepositoryTests" t="Include">
-            <e p="ByAirDateFixture.cs" t="Include" />
-            <e p="EpisodesBetweenDatesFixture.cs" t="Include" />
-            <e p="EpisodesRepositoryReadFixture.cs" t="Include" />
-            <e p="EpisodesWhereCutoffUnmetFixture.cs" t="Include" />
-            <e p="EpisodesWithFilesFixture.cs" t="Include" />
-            <e p="EpisodesWithoutFilesFixture.cs" t="Include" />
-            <e p="FindEpisodeFixture.cs" t="Include" />
-          </e>
-          <e p="EpisodeServiceTests" t="Include">
-            <e p="FindEpisodeByTitleFixture.cs" t="Include" />
-            <e p="HandleEpisodeFileDeletedFixture.cs" t="Include" />
-          </e>
-          <e p="MoveSeriesServiceFixture.cs" t="Include" />
-          <e p="RefreshEpisodeServiceFixture.cs" t="Include" />
-          <e p="RefreshSeriesServiceFixture.cs" t="Include" />
-          <e p="SeriesRepositoryTests" t="Include">
-            <e p="SeriesRepositoryFixture.cs" t="Include" />
-          </e>
-          <e p="SeriesServiceTests" t="Include">
-            <e p="AddSeriesFixture.cs" t="Include" />
-            <e p="UpdateMultipleSeriesFixture.cs" t="Include" />
-            <e p="UpdateSeriesFixture.cs" t="Include" />
-          </e>
-          <e p="SeriesTitleNormalizerFixture.cs" t="Include" />
-          <e p="ShouldRefreshSeriesFixture.cs" t="Include" />
         </e>
         <e p="UpdateTests" t="Include">
           <e p="UpdatePackageProviderFixture.cs" t="Include" />
@@ -3207,6 +3040,7 @@
         <e p="ApplicationServer.cs" t="Include" />
         <e p="Bootstrap.cs" t="Include" />
         <e p="BrowserService.cs" t="Include" />
+        <e p="CancelHandler.cs" t="Include" />
         <e p="IUserAlert.cs" t="Include" />
         <e p="MainAppContainerBuilder.cs" t="Include" />
         <e p="NzbDrone.Host.csproj" t="IncludeRecursive" />
@@ -3243,18 +3077,17 @@
           <e p="CommandFixture.cs" t="Include" />
           <e p="DiskSpaceFixture.cs" t="Include" />
           <e p="DownloadClientFixture.cs" t="Include" />
-          <e p="EpisodeFileFixture.cs" t="Include" />
-          <e p="EpisodeFixture.cs" t="Include" />
           <e p="FileSystemFixture.cs" t="Include" />
           <e p="HistoryFixture.cs" t="Include" />
           <e p="IndexerFixture.cs" t="Include" />
+          <e p="MovieEditorFixture.cs" t="Include" />
+          <e p="MovieFileFixture.cs" t="Include" />
+          <e p="MovieFixture.cs" t="Include" />
+          <e p="MovieLookupFixture.cs" t="Include" />
           <e p="NamingConfigFixture.cs" t="Include" />
           <e p="NotificationFixture.cs" t="Include" />
           <e p="ReleaseFixture.cs" t="Include" />
           <e p="RootFolderFixture.cs" t="Include" />
-          <e p="SeriesEditorFixture.cs" t="Include" />
-          <e p="SeriesFixture.cs" t="Include" />
-          <e p="SeriesLookupFixture.cs" t="Include" />
           <e p="WantedFixture.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
@@ -3262,11 +3095,10 @@
           <e p="ClientBase.cs" t="Include" />
           <e p="CommandClient.cs" t="Include" />
           <e p="DownloadClientClient.cs" t="Include" />
-          <e p="EpisodeClient.cs" t="Include" />
           <e p="IndexerClient.cs" t="Include" />
+          <e p="MovieClient.cs" t="Include" />
           <e p="NotificationClient.cs" t="Include" />
           <e p="ReleaseClient.cs" t="Include" />
-          <e p="SeriesClient.cs" t="Include" />
         </e>
         <e p="CorsFixture.cs" t="Include" />
         <e p="HttpLogFixture.cs" t="Include" />
@@ -3448,7 +3280,7 @@
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Platform" t="Include" />
-      <e p="ServiceHelpers\ServiceInstall" t="IncludeRecursive">
+      <e p="ServiceHelpers/ServiceInstall" t="IncludeRecursive">
         <e p="app.config" t="Include" />
         <e p="app.manifest" t="Include" />
         <e p="green_puzzle.ico" t="Include" />
@@ -3460,7 +3292,7 @@
         <e p="ServiceHelper.cs" t="Include" />
         <e p="ServiceInstall.csproj" t="IncludeRecursive" />
       </e>
-      <e p="ServiceHelpers\ServiceUninstall" t="IncludeRecursive">
+      <e p="ServiceHelpers/ServiceUninstall" t="IncludeRecursive">
         <e p="app.config" t="Include" />
         <e p="app.manifest" t="Include" />
         <e p="obj" t="ExcludeRecursive" />

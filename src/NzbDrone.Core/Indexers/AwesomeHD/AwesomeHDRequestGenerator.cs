@@ -25,6 +25,9 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
             return pageableRequests;
         }
 
+        public Func<IDictionary<string, string>> GetCookies { get; set; }
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
+
         private IEnumerable<IndexerRequest> GetRequest(string searchParameters)
         {
             if (searchParameters != null)

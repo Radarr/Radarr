@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Parser.Model;
 
@@ -14,6 +15,9 @@ namespace NzbDrone.Core.Indexers
         public DateTime? DisabledTill { get; set; }
 
         public ReleaseInfo LastRssSyncReleaseInfo { get; set; }
+        
+        public IDictionary<string, string> Cookies { get; set; }
+        public DateTime? CookiesExpirationDate { get; set; }
 
         public bool IsDisabled()
         {
