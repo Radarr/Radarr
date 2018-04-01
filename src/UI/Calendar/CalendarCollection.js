@@ -1,9 +1,9 @@
 var Backbone = require('backbone');
-var EpisodeModel = require('../Movies/MovieModel');
+var MovieModel = require('../Movies/MovieModel');
 
 module.exports = Backbone.Collection.extend({
     url       : window.NzbDrone.ApiRoot + '/calendar',
-    model     : EpisodeModel,
+    model     : MovieModel,
     tableName : 'calendar',
 
     comparator : function(model) {

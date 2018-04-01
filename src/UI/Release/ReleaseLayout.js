@@ -2,7 +2,6 @@ var Marionette = require('marionette');
 var Backgrid = require('backgrid');
 var ReleaseCollection = require('./ReleaseCollection');
 var IndexerCell = require('../Cells/IndexerCell');
-var EpisodeNumberCell = require('../Cells/EpisodeNumberCell');
 var FileSizeCell = require('../Cells/FileSizeCell');
 var QualityCell = require('../Cells/QualityCell');
 var ApprovalStatusCell = require('../Cells/ApprovalStatusCell');
@@ -37,12 +36,6 @@ module.exports = Marionette.Layout.extend({
             sortable : true,
             cell     : ReleaseTitleCell
         },
-        /*{
-            name     : 'episodeNumbers',
-            episodes : 'episodeNumbers',
-            label    : 'season',
-            cell     : EpisodeNumberCell
-        },*/
         {
             name     : 'size',
             label    : 'Size',

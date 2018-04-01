@@ -92,15 +92,6 @@ var Collection = PageableCollection.extend({
             }
         },
 
-        percentOfEpisodes : {
-            sortValue : function(model, attr) {
-                var percentOfEpisodes = model.get(attr);
-                var episodeCount = model.get('episodeCount');
-
-                return percentOfEpisodes + episodeCount / 1000000;
-            }
-        },
-
         path : {
             sortValue : function(model) {
                 var path = model.get('path');

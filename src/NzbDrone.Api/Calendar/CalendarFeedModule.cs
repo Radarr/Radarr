@@ -98,44 +98,8 @@ namespace NzbDrone.Api.Calendar
                     continue;
                 }
 
-                var occurrence = calendar.Create<Event>();
-                occurrence.Uid = "NzbDrone_movie_" + movie.Id;
-                occurrence.Status = movie.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
-
-                switch (movie.Status)
-                {
-                    case MovieStatusType.PreDB:
-                        if (movie.PhysicalRelease != null)
-                        {
-                            occurrence.Start = new CalDateTime(movie.PhysicalRelease.Value) { HasTime = true };
-                            occurrence.End = new CalDateTime(movie.PhysicalRelease.Value.AddMinutes(movie.Runtime)) { HasTime = true };
-                        }
-                        break;
-
-                    case MovieStatusType.InCinemas:
-                        if (movie.InCinemas != null)
-                        {
-                            occurrence.Start = new CalDateTime(movie.InCinemas.Value) { HasTime = true };
-                            occurrence.End = new CalDateTime(movie.InCinemas.Value.AddMinutes(movie.Runtime)) { HasTime = true };
-                        }
-                        break;
-
-                    case MovieStatusType.Announced:
-                        continue; // no date
-
-                    default:
-                        if (movie.PhysicalRelease != null)
-                        {
-                            occurrence.Start = new CalDateTime(movie.PhysicalRelease.Value) { HasTime = true };
-                            occurrence.End = new CalDateTime(movie.PhysicalRelease.Value.AddMinutes(movie.Runtime)) { HasTime = true };
-                        }
-                        break;
-                }
-
-                occurrence.Description = movie.Overview;
-                occurrence.Categories = new List<string>() { movie.Studio };
-
-                occurrence.Summary = $"{movie.Title}";
+                CreateEvent(calendar, movie, true);
+                CreateEvent(calendar, movie, false);
 
             }
 
@@ -143,6 +107,31 @@ namespace NzbDrone.Api.Calendar
             var icalendar = serializer.SerializeToString(calendar);
 
             return new TextResponse(icalendar, "text/calendar");
+        }
+
+        private void CreateEvent(Ical.Net.Calendar calendar, Movie movie, bool cinemasRelease)
+        {
+            var date = cinemasRelease ? movie.InCinemas : movie.PhysicalRelease;
+            if (!date.HasValue)
+            {
+                return;
+            }
+            
+            var occurrence = calendar.Create<Event>();
+            occurrence.Uid = "NzbDrone_movie_" + movie.Id + (cinemasRelease ? "_cinemas" : "_physical");
+            occurrence.Status = movie.Status == MovieStatusType.Announced ? EventStatus.Tentative : EventStatus.Confirmed;
+            
+            occurrence.Start = new CalDateTime(date.Value);
+            occurrence.End = occurrence.Start;
+            occurrence.IsAllDay = true;
+
+            occurrence.Description = movie.Overview;
+            occurrence.Categories = new List<string>() { movie.Studio };
+
+            var physicalText = movie.PhysicalReleaseNote.IsNotNullOrWhiteSpace()
+                ? $"(Physical Release, {movie.PhysicalReleaseNote})"
+                : "(Physical Release)";
+            occurrence.Summary = $"{movie.Title} " + (cinemasRelease ? "(Theatrical Release)" : physicalText);
         }
     }
 }
