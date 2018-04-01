@@ -466,6 +466,7 @@
     <Compile Include="HealthCheck\Checks\DownloadClientCheck.cs" />
     <Compile Include="HealthCheck\Checks\DownloadClientStatusCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportListStatusCheck.cs" />
+    <Compile Include="HealthCheck\Checks\MonoDebugCheck.cs" />
     <Compile Include="HealthCheck\Checks\MonoTlsCheck.cs" />
     <Compile Include="HealthCheck\Checks\MountCheck.cs" />
     <Compile Include="HealthCheck\Checks\ImportMechanismCheck.cs" />
