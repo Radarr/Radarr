@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             AlbumImages = true;
         }
 
-        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox, HelpText = "Season##\\filename.xml")]
+        [FieldDefinition(0, Label = "Track Metadata", Type = FieldType.Checkbox, HelpText = "Album\\filename.xml")]
         public bool TrackMetadata { get; set; }
 
         [FieldDefinition(1, Label = "Artist Images", Type = FieldType.Checkbox, HelpText = "Artist Title.jpg")]

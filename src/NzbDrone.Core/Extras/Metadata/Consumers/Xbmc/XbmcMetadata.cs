@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _detectNfo = detectNfo;
         }
 
-        private static readonly Regex ArtistImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|logo)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ArtistImagesRegex = new Regex(@"^(?<type>folder|banner|fanart|logo)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex AlbumImagesRegex = new Regex(@"^(?<type>cover|disc)\.(?:png|jpg|jpeg)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public override string Name => "Kodi (XBMC) / Emby";
@@ -121,28 +121,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 artistElement.Add(new XElement("musicbrainzartistid", artist.ForeignArtistId));
                 artistElement.Add(new XElement("biography", artist.Overview));
                 artistElement.Add(new XElement("outline", artist.Overview));
-                //tvShow.Add(new XElement("episodeguide", new XElement("url", episodeGuideUrl)));
-                //tvShow.Add(new XElement("episodeguideurl", episodeGuideUrl));
-
-                //foreach (var genre in artist.Genres)
-                //{
-                //    tvShow.Add(new XElement("genre", genre));
-                //}
-                
-
-                //foreach (var actor in artist.Members)
-                //{
-                //    var xmlActor = new XElement("actor",
-                //        new XElement("name", actor.Name),
-                //        new XElement("role", actor.Instrument));
-
-                //    if (actor.Images.Any())
-                //    {
-                //        xmlActor.Add(new XElement("thumb", actor.Images.First().Url));
-                //    }
-
-                //    tvShow.Add(xmlActor);
-                //}
 
                 var doc = new XDocument(artistElement);
                 doc.Save(xw);
@@ -229,6 +207,10 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             {
                 var source = _mediaCoverService.GetCoverPath(artist.Id, image.CoverType);
                 var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(image.Url);
+                if (image.CoverType == MediaCoverTypes.Poster)
+                {
+                    destination = "folder" + Path.GetExtension(image.Url);
+                }
 
                 yield return new ImageFileResult(destination, source);
             }

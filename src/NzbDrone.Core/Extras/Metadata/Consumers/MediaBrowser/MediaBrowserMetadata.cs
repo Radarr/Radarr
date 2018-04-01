@@ -121,25 +121,5 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
         {
             return new List<ImageFileResult>();
         }
-
-        private IEnumerable<ImageFileResult> ProcessArtistImages(Artist artist)
-        {
-            return new List<ImageFileResult>();
-        }
-
-        private IEnumerable<ImageFileResult> ProcessAlbumImages(Artist artist, Album album)
-        {
-            return new List<ImageFileResult>();
-        }
-
-        private string GetEpisodeNfoFilename(string episodeFilePath)
-        {
-            return null;
-        }
-
-        private string GetEpisodeImageFilename(string episodeFilePath)
-        {
-            return null;
-        }
     }
 }

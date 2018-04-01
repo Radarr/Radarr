@@ -31,8 +31,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
             _logger = logger;
         }
 
-        private static readonly Regex SeasonImagesRegex = new Regex(@"^(season (?<season>\d+))|(?<specials>specials)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         public override string Name => "WDTV";
 
         public override string GetFilenameAfterMove(Artist artist, TrackFile trackFile, MetadataFile metadataFile)
@@ -61,32 +59,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                                Consumer = GetType().Name,
                                RelativePath = artist.Path.GetRelativePath(path)
                            };
-
-            //Series and season images are both named folder.jpg, only season ones sit in season folders
-            if (Path.GetFileName(filename).Equals("folder.jpg", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var parentdir = Directory.GetParent(path);
-                var seasonMatch = SeasonImagesRegex.Match(parentdir.Name);
-                if (seasonMatch.Success)
-                {
-                    metadata.Type = MetadataType.AlbumImage;
-
-                    if (seasonMatch.Groups["specials"].Success)
-                    {
-                        metadata.AlbumId = 0;
-                    }
-
-                    else
-                    {
-                        metadata.AlbumId = Convert.ToInt32(seasonMatch.Groups["season"].Value);
-                    }
-
-                    return metadata;
-                }
-
-                metadata.Type = MetadataType.ArtistImage;
-                return metadata;
-            }
 
             var parseResult = Parser.Parser.ParseMusicTitle(filename);
 
@@ -164,56 +136,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
 
         public override List<ImageFileResult> ArtistImages(Artist artist)
         {
-            if (!Settings.ArtistImages)
-            {
-                return new List<ImageFileResult>();
-            }
-
-            //Because we only support one image, attempt to get the Poster type, then if that fails grab the first
-            var image = artist.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? artist.Images.FirstOrDefault();
-            if (image == null)
-            {
-                _logger.Trace("Failed to find suitable Artist image for artist {0}.", artist.Name);
-                return new List<ImageFileResult>();
-            }
-
-            var source = _mediaCoverService.GetCoverPath(artist.Id, image.CoverType);
-            var destination = "folder" + Path.GetExtension(source);
-
-            return new List<ImageFileResult>
-                   {
-                       new ImageFileResult(destination, source)
-                   };
+            return new List<ImageFileResult>();
         }
 
         public override List<ImageFileResult> AlbumImages(Artist artist, Album album, string albumFolder)
         {
-            if (!Settings.AlbumImages)
-            {
-                return new List<ImageFileResult>();
-            }
-            
-            var seasonFolders = GetAlbumFolders(artist);
-
-            //Work out the path to this season - if we don't have a matching path then skip this season.
-            string seasonFolder;
-            if (!seasonFolders.TryGetValue(album.Id, out seasonFolder))
-            {
-                _logger.Trace("Failed to find album folder for artist {0}, album {1}.", artist.Name, album.Title);
-                return new List<ImageFileResult>();
-            }
-
-            //WDTV only supports one season image, so first of all try for poster otherwise just use whatever is first in the collection
-            var image = album.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? album.Images.FirstOrDefault();
-            if (image == null)
-            {
-                _logger.Trace("Failed to find suitable album image for artist {0}, album {1}.", artist.Name, album.Title);
-                return new List<ImageFileResult>();
-            }
-
-            var path = Path.Combine(seasonFolder, "folder.jpg");
-
-            return new List<ImageFileResult>{ new ImageFileResult(path, image.Url) };
+            return new List<ImageFileResult>();
         }
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
@@ -225,51 +153,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
         private string GetTrackMetadataFilename(string trackFilePath)
         {
             return Path.ChangeExtension(trackFilePath, "xml");
-        }
-
-        private string GetTrackImageFilename(string trackFilePath)
-        {
-            return Path.ChangeExtension(trackFilePath, "metathumb");
-        }
-
-        private Dictionary<int, string> GetAlbumFolders(Artist artist)
-        {
-            var seasonFolderMap = new Dictionary<int, string>();
-
-            foreach (var folder in _diskProvider.GetDirectories(artist.Path))
-            {
-                var directoryinfo = new DirectoryInfo(folder);
-                var seasonMatch = SeasonImagesRegex.Match(directoryinfo.Name);
-
-                if (seasonMatch.Success)
-                {
-                    var seasonNumber = seasonMatch.Groups["season"].Value;
-
-                    if (seasonNumber.Contains("specials"))
-                    {
-                        seasonFolderMap[0] = folder;
-                    }
-                    else
-                    {
-                        int matchedSeason;
-                        if (int.TryParse(seasonNumber, out matchedSeason))
-                        {
-                            seasonFolderMap[matchedSeason] = folder;
-                        }
-                        else
-                        {
-                            _logger.Debug("Failed to parse season number from {0} for artist {1}.", folder, artist.Name);
-                        }
-                    }
-                }
-
-                else
-                {
-                    _logger.Debug("Rejecting folder {0} for artist {1}.", Path.GetDirectoryName(folder), artist.Name);
-                }
-            }
-
-            return seasonFolderMap;
         }
     }
 }

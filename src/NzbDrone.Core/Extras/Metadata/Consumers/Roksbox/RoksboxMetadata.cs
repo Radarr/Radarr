@@ -178,70 +178,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
         public override List<ImageFileResult> TrackImages(Artist artist, TrackFile trackFile)
         {
-            //if (!Settings.EpisodeImages)
-            //{
-            //    return new List<ImageFileResult>();
-            //}
-
-            //var screenshot = episodeFile.Tracks.Value.First().Images.SingleOrDefault(i => i.CoverType == MediaCoverTypes.Screenshot);
-
-            //if (screenshot == null)
-            //{
-            //    _logger.Trace("Episode screenshot not available");
-            //    return new List<ImageFileResult>();
-            //}
-
-            //return new List<ImageFileResult> {new ImageFileResult(GetEpisodeImageFilename(episodeFile.RelativePath), screenshot.Url)};
             return new List<ImageFileResult>();
         }
 
         private string GetTrackMetadataFilename(string trackFilePath)
         {
             return Path.ChangeExtension(trackFilePath, "xml");
-        }
-
-        private string GetTrackImageFilename(string trackFilePath)
-        {
-            return Path.ChangeExtension(trackFilePath, "jpg");
-        }
-
-        private Dictionary<int, string> GetAlbumFolders(Artist artist)
-        {
-            var seasonFolderMap = new Dictionary<int, string>();
-
-            foreach (var folder in _diskProvider.GetDirectories(artist.Path))
-            {
-                var directoryinfo = new DirectoryInfo(folder);
-                var seasonMatch = SeasonImagesRegex.Match(directoryinfo.Name);
-
-                if (seasonMatch.Success)
-                {
-                    var seasonNumber = seasonMatch.Groups["season"].Value;
-
-                    if (seasonNumber.Contains("specials"))
-                    {
-                        seasonFolderMap[0] = folder;
-                    }
-                    else
-                    {
-                        int matchedSeason;
-                        if (int.TryParse(seasonNumber, out matchedSeason))
-                        {
-                            seasonFolderMap[matchedSeason] = folder;
-                        }
-                        else
-                        {
-                            _logger.Debug("Failed to parse season number from {0} for artist {1}.", folder, artist.Name);
-                        }
-                    }
-                }
-                else
-                {
-                    _logger.Debug("Rejecting folder {0} for artist {1}.", Path.GetDirectoryName(folder), artist.Name);
-                }
-            }
-
-            return seasonFolderMap;
         }
     }
 }
