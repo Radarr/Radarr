@@ -8,7 +8,7 @@ Before opening a new issue, please ensure:
 
 ## Support / Questions
 
-Please use https://discord.gg/8Y7rDc9 for support. Support requests or questions will be redirected to the forums and the issue will be closed.
+Please use https://discord.gg/8Y7rDc9 for support. Support requests or questions will be redirected to discord and the issue will be closed.
 
 <!--
 Remove if not opening a bug report
