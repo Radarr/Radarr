@@ -120,7 +120,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (newDownload)
                     {
-                        _extraService.ImportExtraFiles(localMovie, movieFile, copyOnly);
+                        _extraService.ImportMovie(localMovie, movieFile, copyOnly);
                     }
 
                     if (downloadClientItem != null)

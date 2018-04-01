@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             }
         }
 
-        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
+        public override List<ImageFileResult> MovieImages(Movie movie)
         {
             return new List<ImageFileResult>();
         }

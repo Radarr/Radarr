@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -160,7 +160,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.TitleSlug += "-" + movie.TmdbId.ToString();
 
             movie.Images.Add(_configService.GetCoverForURL(resource.poster_path, MediaCoverTypes.Poster));//TODO: Update to load image specs from tmdb page!
-            movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Banner));
+            movie.Images.Add(_configService.GetCoverForURL(resource.backdrop_path, MediaCoverTypes.Fanart));
             movie.Runtime = resource.runtime;
 
             //foreach(Title title in resource.alternative_titles.titles)

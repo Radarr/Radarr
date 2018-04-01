@@ -48,8 +48,6 @@ namespace NzbDrone.Core.Extras.Files
             _logger = logger;
         }
 
-        public virtual bool PermanentlyDelete => false;
-
         public List<TExtraFile> GetFilesByMovie(int movieId)
         {
             return _repository.GetFilesByMovie(movieId);
@@ -121,16 +119,8 @@ namespace NzbDrone.Core.Extras.Files
 
                     if (_diskProvider.FileExists(path))
                     {
-                        if (PermanentlyDelete)
-                        {
-                            _diskProvider.DeleteFile(path);
-                        }
-
-                        else
-                        {
-                            // Send extra files to the recycling bin so they can be recovered if necessary
-                            _recycleBinProvider.DeleteFile(path);
-                        }
+                        // Send to the recycling bin so they can be recovered if necessary
+                        _recycleBinProvider.DeleteFile(path);
                     }
                 }
             }
