@@ -12,6 +12,7 @@ using NLog;
 using FluentValidation.Results;
 using System.Net;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download.Clients.Deluge
 {
@@ -23,10 +24,11 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                       ITorrentFileInfoReader torrentFileInfoReader,
                       IHttpClient httpClient,
                       IConfigService configService,
+                      INamingConfigService namingConfigService,
                       IDiskProvider diskProvider,
                       IRemotePathMappingService remotePathMappingService,
                       Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
         }

@@ -7,6 +7,7 @@ namespace NzbDrone.Api.Config
     {
         public bool RenameEpisodes { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
+        public string ColonAction { get; set; }
         public string StandardMovieFormat { get; set; }
         public string MovieFolderFormat { get; set; }
         public int MultiEpisodeStyle { get; set; }
@@ -28,6 +29,7 @@ namespace NzbDrone.Api.Config
 
                 RenameEpisodes = model.RenameEpisodes,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
+                ColonAction = model.ColonAction,
                 MultiEpisodeStyle = model.MultiEpisodeStyle,
                 StandardMovieFormat = model.StandardMovieFormat,
                 MovieFolderFormat = model.MovieFolderFormat
@@ -58,6 +60,7 @@ namespace NzbDrone.Api.Config
 
                 RenameEpisodes = resource.RenameEpisodes,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
+                ColonAction = resource.ColonAction,
                 //MultiEpisodeStyle = resource.MultiEpisodeStyle,
                 //StandardEpisodeFormat = resource.StandardEpisodeFormat,
                 //DailyEpisodeFormat = resource.DailyEpisodeFormat,

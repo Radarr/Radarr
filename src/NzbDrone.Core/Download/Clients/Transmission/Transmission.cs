@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
@@ -7,6 +7,7 @@ using NLog;
 using FluentValidation.Results;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download.Clients.Transmission
 {
@@ -16,10 +17,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                             ITorrentFileInfoReader torrentFileInfoReader,
                             IHttpClient httpClient,
                             IConfigService configService,
+                            INamingConfigService namingConfigService,
                             IDiskProvider diskProvider,
                             IRemotePathMappingService remotePathMappingService,
                             Logger logger)
-            : base(proxy, torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(proxy, torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
         }
 

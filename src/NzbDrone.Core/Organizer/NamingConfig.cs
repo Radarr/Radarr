@@ -8,6 +8,7 @@ namespace NzbDrone.Core.Organizer
         {
             RenameEpisodes = false,
             ReplaceIllegalCharacters = true,
+            ColonAction = "",
             MultiEpisodeStyle = 0,
             MovieFolderFormat = "{Movie Title} ({Release Year})",
             StandardMovieFormat = "{Movie Title} ({Release Year}) {Quality Full}",
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.Organizer
 
         public bool RenameEpisodes { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
+        public string ColonAction { get; set; }
         public int MultiEpisodeStyle { get; set; }
         public string StandardMovieFormat { get; set; }
         public string MovieFolderFormat { get; set; }

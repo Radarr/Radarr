@@ -24,31 +24,49 @@
         </div>
     </div>
 
-    <div class="form-group advanced-setting">
-        <label class="col-sm-3 control-label">Replace Illegal Characters</label>
-
-        <div class="col-sm-8">
-            <div class="input-group">
-                <label class="checkbox toggle well">
-                    <input type="checkbox" name="replaceIllegalCharacters" />
-
-                    <p>
-                        <span>Yes</span>
-                        <span>No</span>
-                    </p>
-
-                    <div class="btn btn-primary slide-button"/>
-                </label>
-
-                <span class="help-inline-checkbox">
-                    <i class="icon-sonarr-form-info" title="Replace or Remove illegal characters"/>
-                </span>
-            </div>
-        </div>
-    </div>
-
     <div class="x-naming-options">
         <div class="basic-setting x-basic-naming"></div>
+
+        <div class="form-group advanced-setting">
+            <label class="col-sm-3 control-label">Replace Illegal Characters</label>
+
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <label class="checkbox toggle well">
+                        <input type="checkbox" name="replaceIllegalCharacters" class="x-replace-illegal-chars"/>
+
+                        <p>
+                            <span>Yes</span>
+                            <span>No</span>
+                        </p>
+
+                        <div class="btn btn-primary slide-button"/>
+                    </label>
+
+                    <span class="help-inline-checkbox">
+                        <i class="icon-sonarr-form-info" title="Replace or Remove illegal characters"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group advanced-setting x-replacing-options">
+
+            <label class="col-sm-3 control-label">Colon Action</label>
+
+            <span class="col-sm-1 col-sm-push-8 help-inline">
+                <i class="icon-sonarr-form-info" title="Colons are illegal characters; Radarr will delete them by default" />
+            </span>
+
+            <div class="col-sm-8 col-sm-pull-1">
+                <select class="form-control" name="colonAction">
+                    <option value="">Delete</option>
+                    <option value="-">Replace with Dash</option>
+                    <option value=" -">Replace with Space Dash</option>
+                    <option value=" - ">Replace with Space Dash Space</option>
+                </select>
+            </div>
+        </div>
 
         <div class="form-group advanced-setting">
             <label class="col-sm-3 control-label">Standard Movie Format</label>
