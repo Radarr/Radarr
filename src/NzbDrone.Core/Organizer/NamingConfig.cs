@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Organizer
         {
             RenameTracks = false,
             ReplaceIllegalCharacters = true,
-            StandardTrackFormat = "{Artist Name} - {track:00} - {Album Title} - {Track Title}",
+            StandardTrackFormat = "{Artist Name} - {Album Title} - {track:00} - {Track Title}",
             ArtistFolderFormat = "{Artist Name}",
             AlbumFolderFormat = "{Album Title} ({Release Year})"
         };
