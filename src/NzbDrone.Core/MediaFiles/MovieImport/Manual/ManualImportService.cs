@@ -268,7 +268,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 {
                     if (_downloadedMovieImportService.ShouldDeleteFolder(
                             new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
-                            trackedDownload.RemoteMovie.Movie) && !trackedDownload.DownloadItem.IsReadOnly)
+                            trackedDownload.RemoteMovie.Movie) && trackedDownload.DownloadItem.CanMoveFiles)
                     {
                         _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
                     }

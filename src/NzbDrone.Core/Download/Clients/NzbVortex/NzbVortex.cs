@@ -72,7 +72,9 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
                 queueItem.TotalSize = vortexQueueItem.TotalDownloadSize;
                 queueItem.RemainingSize = vortexQueueItem.TotalDownloadSize - vortexQueueItem.DownloadedSize;
                 queueItem.RemainingTime = null;
-                
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
+
                 if (vortexQueueItem.IsPaused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
