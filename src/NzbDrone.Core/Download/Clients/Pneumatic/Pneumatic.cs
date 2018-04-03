@@ -20,10 +20,11 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         public Pneumatic(IHttpClient httpClient,
                          IConfigService configService,
+                         INamingConfigService namingConfigService,
                          IDiskProvider diskProvider,
                          IRemotePathMappingService remotePathMappingService,
                          Logger logger)
-            : base(configService, diskProvider, remotePathMappingService, logger)
+            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _httpClient = httpClient;
         }
@@ -43,7 +44,7 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
             //    throw new NotSupportedException("Full season releases are not supported with Pneumatic.");
             //}
 
-            title = FileNameBuilder.CleanFileName(title);
+            title = CleanFileName(title);
 
             //Save to the Pneumatic directory (The user will need to ensure its accessible by XBMC)
             var nzbFile = Path.Combine(Settings.NzbFolder, title + ".nzb");
@@ -70,7 +71,7 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
                     continue;
                 }
 
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(file));
+                var title = CleanFileName(Path.GetFileName(file));
 
                 var historyItem = new DownloadClientItem
                 {
