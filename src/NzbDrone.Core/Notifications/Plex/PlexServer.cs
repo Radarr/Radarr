@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Notifications.Plex
         public override string Link => "https://www.plex.tv/";
         public override string Name => "Plex Media Server";
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             UpdateIfEnabled(message.Artist);
         }

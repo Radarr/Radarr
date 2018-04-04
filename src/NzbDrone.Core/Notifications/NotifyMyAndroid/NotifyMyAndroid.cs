@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 
@@ -21,9 +21,14 @@ namespace NzbDrone.Core.Notifications.NotifyMyAndroid
             _proxy.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             _proxy.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
+        }
+
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotifyMyAndroidPriority)Settings.Priority);
         }
 
         public override ValidationResult Test()

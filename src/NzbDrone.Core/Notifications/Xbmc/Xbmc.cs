@@ -28,7 +28,14 @@ namespace NzbDrone.Core.Notifications.Xbmc
             Notify(Settings, header, grabMessage.Message);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            const string header = "Lidarr - Downloaded";
+
+            Notify(Settings, header, message.Message);
+        }
+
+        public override void OnDownload(TrackDownloadMessage message)
         {
             const string header = "Lidarr - Downloaded";
 

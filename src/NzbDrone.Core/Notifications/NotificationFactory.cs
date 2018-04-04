@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Composition;
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Notifications
     {
         List<INotification> OnGrabEnabled();
         List<INotification> OnDownloadEnabled();
+        List<INotification> OnAlbumDownloadEnabled();
         List<INotification> OnUpgradeEnabled();
         List<INotification> OnRenameEnabled();
     }
@@ -32,6 +33,11 @@ namespace NzbDrone.Core.Notifications
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnDownload).ToList();
         }
 
+        public List<INotification> OnAlbumDownloadEnabled()
+        {
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnAlbumDownload).ToList();
+        }
+
         public List<INotification> OnUpgradeEnabled()
         {
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnUpgrade).ToList();
@@ -48,6 +54,7 @@ namespace NzbDrone.Core.Notifications
 
             definition.SupportsOnGrab = provider.SupportsOnGrab;
             definition.SupportsOnDownload = provider.SupportsOnDownload;
+            definition.SupportsOnAlbumDownload = provider.SupportsOnAlbumDownload;
             definition.SupportsOnUpgrade = provider.SupportsOnUpgrade;
             definition.SupportsOnRename = provider.SupportsOnRename;
         }

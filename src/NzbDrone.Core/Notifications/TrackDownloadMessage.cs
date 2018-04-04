@@ -4,7 +4,7 @@ using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Notifications
 {
-    public class DownloadMessage
+    public class TrackDownloadMessage
     {
         public string Message { get; set; }
         public Artist Artist { get; set; }

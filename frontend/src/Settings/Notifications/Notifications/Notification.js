@@ -68,10 +68,12 @@ class Notification extends Component {
       name,
       onGrab,
       onDownload,
+      onAlbumDownload,
       onUpgrade,
       onRename,
       supportsOnGrab,
       supportsOnDownload,
+      supportsOnAlbumDownload,
       supportsOnUpgrade,
       supportsOnRename
     } = this.props;
@@ -94,10 +96,17 @@ class Notification extends Component {
         </Label>
 
         <Label
+          kind={getLabelKind(supportsOnAlbumDownload, onAlbumDownload)}
+          outline={supportsOnAlbumDownload && !onAlbumDownload}
+        >
+          On Album Download
+        </Label>
+
+        <Label
           kind={getLabelKind(supportsOnDownload, onDownload)}
           outline={supportsOnDownload && !onDownload}
         >
-          On Download
+          On Track Download
         </Label>
 
         <Label
@@ -140,10 +149,12 @@ Notification.propTypes = {
   name: PropTypes.string.isRequired,
   onGrab: PropTypes.bool.isRequired,
   onDownload: PropTypes.bool.isRequired,
+  onAlbumDownload: PropTypes.bool.isRequired,
   onUpgrade: PropTypes.bool.isRequired,
   onRename: PropTypes.bool.isRequired,
   supportsOnGrab: PropTypes.bool.isRequired,
   supportsOnDownload: PropTypes.bool.isRequired,
+  supportsOnAlbumDownload: PropTypes.bool.isRequired,
   supportsOnUpgrade: PropTypes.bool.isRequired,
   supportsOnRename: PropTypes.bool.isRequired,
   onConfirmDeleteNotification: PropTypes.func.isRequired

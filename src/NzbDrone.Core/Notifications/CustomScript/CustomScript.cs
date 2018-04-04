@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             var artist = message.Artist;
             var trackFile = message.TrackFile;
@@ -90,6 +90,27 @@ namespace NzbDrone.Core.Notifications.CustomScript
                 environmentVariables.Add("Lidarr_DeletedRelativePaths", string.Join("|", message.OldFiles.Select(e => e.RelativePath)));
                 environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => Path.Combine(artist.Path, e.RelativePath))));
             }
+
+            ExecuteScript(environmentVariables);
+        }
+
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            var artist = message.Artist;
+            var album = message.Album;
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Lidarr_EventType", "AlbumDownload");
+            environmentVariables.Add("Lidarr_Artist_Id", artist.Id.ToString());
+            environmentVariables.Add("Lidarr_Artist_Name", artist.Name);
+            environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
+            environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
+            environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
+            environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
+            environmentVariables.Add("Lidarr_Album_Title", album.Title);
+            environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
+            environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
 
             ExecuteScript(environmentVariables);
         }

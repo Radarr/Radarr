@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             var attachments = new List<Attachment>
                               {
@@ -57,6 +57,23 @@ namespace NzbDrone.Core.Notifications.Slack
                                       Color = "good"
                                   }
                               };
+            var payload = CreatePayload($"Imported: {message.Message}", attachments);
+
+            _proxy.SendPayload(payload, Settings);
+        }
+
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            var attachments = new List<Attachment>
+            {
+                new Attachment
+                {
+                    Fallback = message.Message,
+                    Title = message.Artist.Name,
+                    Text = message.Message,
+                    Color = "good"
+                }
+            };
             var payload = CreatePayload($"Imported: {message.Message}", attachments);
 
             _proxy.SendPayload(payload, Settings);

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
@@ -24,7 +24,12 @@ namespace NzbDrone.Core.Notifications.Twitter
             _twitterService.SendNotification($"Grabbed: {message.Message}", Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
+        {
+            _twitterService.SendNotification($"Imported: {message.Message}", Settings);
+        }
+
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
         {
             _twitterService.SendNotification($"Imported: {message.Message}", Settings);
         }

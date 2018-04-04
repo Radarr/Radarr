@@ -9,12 +9,14 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
         : IHandle<AlbumGrabbedEvent>,
           IHandle<TrackImportedEvent>,
+          IHandle<AlbumImportedEvent>,
           IHandle<ArtistRenamedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
@@ -60,6 +62,14 @@ namespace NzbDrone.Core.Notifications
                                     artist.Name,
                                     trackTitles,
                                     qualityString);
+        }
+
+        private string GetAlbumDownloadMessage(Artist artist, Album album, List<LocalTrack> tracks)
+        {
+            return string.Format("{0} - {1} ({2} Tracks Imported)",
+                artist.Name,
+                album.Title,
+                tracks.Count);
         }
 
         private bool ShouldHandleArtist(ProviderDefinition definition, Artist artist)
@@ -115,7 +125,7 @@ namespace NzbDrone.Core.Notifications
                 return;
             }
 
-            var downloadMessage = new DownloadMessage
+            var downloadMessage = new TrackDownloadMessage
 
             {
                 Message = GetTrackMessage(message.TrackInfo.Artist, message.TrackInfo.Tracks, message.TrackInfo.Quality),
@@ -137,6 +147,40 @@ namespace NzbDrone.Core.Notifications
                         {
                             notification.OnDownload(downloadMessage);
                         }
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(AlbumImportedEvent message)
+        {
+            if (!message.NewDownload)
+            {
+                return;
+            }
+
+            var downloadMessage = new AlbumDownloadMessage
+
+            {
+                Message = GetAlbumDownloadMessage(message.Artist, message.Album, message.ImportedTracks),
+                Artist = message.Artist,
+                Album = message.Album,
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
+            };
+
+            foreach (var notification in _notificationFactory.OnAlbumDownloadEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleArtist(notification.Definition, message.Artist))
+                    {
+                        notification.OnAlbumDownload(downloadMessage);
                     }
                 }
 

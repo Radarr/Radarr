@@ -26,7 +26,15 @@ namespace NzbDrone.Core.Notifications.Emby
             }
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            if (Settings.Notify)
+            {
+                _mediaBrowserService.Notify(Settings, ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message);
+            }
+        }
+
+        public override void OnDownload(TrackDownloadMessage message)
         {
             if (Settings.Notify)
             {

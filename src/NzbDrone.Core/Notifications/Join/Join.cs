@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 
@@ -22,9 +22,14 @@ namespace NzbDrone.Core.Notifications.Join
             _proxy.SendNotification(ALBUM_GRABBED_TITLE_BRANDED, message.Message, Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             _proxy.SendNotification(TRACK_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
         }
 
         public override ValidationResult Test()

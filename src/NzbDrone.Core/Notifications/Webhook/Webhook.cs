@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             var trackFile = message.TrackFile;
 

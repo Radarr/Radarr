@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.NotificationTests
     public class SynologyIndexerFixture : CoreTest<SynologyIndexer>
     {
         private Artist _artist;
-        private DownloadMessage _upgrade;
+        private TrackDownloadMessage _upgrade;
 
         [SetUp]
         public void SetUp()
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 Path = @"C:\Test\".AsOsAgnostic()
             };
 
-            _upgrade = new DownloadMessage()
+            _upgrade = new TrackDownloadMessage()
             {
                 Artist = _artist,
 

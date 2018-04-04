@@ -10,9 +10,11 @@ namespace NzbDrone.Core.Notifications
     {
         protected const string ALBUM_GRABBED_TITLE = "Album Grabbed";
         protected const string TRACK_DOWNLOADED_TITLE = "Track Downloaded";
+        protected const string ALBUM_DOWNLOADED_TITLE = "Album Downloaded";
 
         protected const string ALBUM_GRABBED_TITLE_BRANDED = "Lidarr - " + ALBUM_GRABBED_TITLE;
         protected const string TRACK_DOWNLOADED_TITLE_BRANDED = "Lidarr - " + TRACK_DOWNLOADED_TITLE;
+        protected const string ALBUM_DOWNLOADED_TITLE_BRANDED = "Lidarr - " + ALBUM_DOWNLOADED_TITLE;
 
         public abstract string Name { get; }
 
@@ -32,12 +34,17 @@ namespace NzbDrone.Core.Notifications
 
         }
 
-        public virtual void OnDownload(DownloadMessage message)
+        public virtual void OnDownload(TrackDownloadMessage message)
         {
 
         }
 
-        public virtual void OnRename(Artist series)
+        public virtual void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+
+        }
+
+        public virtual void OnRename(Artist artist)
         {
 
         }
@@ -45,6 +52,7 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnGrab => HasConcreteImplementation("OnGrab");
         public bool SupportsOnRename => HasConcreteImplementation("OnRename");
         public bool SupportsOnDownload => HasConcreteImplementation("OnDownload");
+        public bool SupportsOnAlbumDownload => HasConcreteImplementation("OnAlbumDownload");
         public bool SupportsOnUpgrade => SupportsOnDownload;
 
         protected TSettings Settings => (TSettings)Definition.Settings;

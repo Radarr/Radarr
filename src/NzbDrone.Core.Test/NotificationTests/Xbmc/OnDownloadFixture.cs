@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
     [TestFixture]
     public class OnDownloadFixture : CoreTest<Notifications.Xbmc.Xbmc>
     {
-        private DownloadMessage _downloadMessage;
+        private TrackDownloadMessage _trackDownloadMessage;
         
         [SetUp]
         public void Setup()
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
             var trackFile = Builder<TrackFile>.CreateNew()
                                                    .Build();
 
-            _downloadMessage = Builder<DownloadMessage>.CreateNew()
+            _trackDownloadMessage = Builder<TrackDownloadMessage>.CreateNew()
                                                        .With(d => d.Artist = artist)
                                                        .With(d => d.TrackFile = trackFile)
                                                        .With(d => d.OldFiles = new List<TrackFile>())
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
 
         private void GivenOldFiles()
         {
-            _downloadMessage.OldFiles = Builder<TrackFile>.CreateListOfSize(1)
+            _trackDownloadMessage.OldFiles = Builder<TrackFile>.CreateListOfSize(1)
                                                             .Build()
                                                             .ToList();
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         [Test]
         public void should_not_clean_if_no_episode_was_replaced()
         {
-            Subject.OnDownload(_downloadMessage);
+            Subject.OnDownload(_trackDownloadMessage);
 
             Mocker.GetMock<IXbmcService>().Verify(v => v.Clean(It.IsAny<XbmcSettings>()), Times.Never());
         }
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.NotificationTests.Xbmc
         public void should_clean_if_episode_was_replaced()
         {
             GivenOldFiles();
-            Subject.OnDownload(_downloadMessage);
+            Subject.OnDownload(_trackDownloadMessage);
 
             Mocker.GetMock<IXbmcService>().Verify(v => v.Clean(It.IsAny<XbmcSettings>()), Times.Once());
         }

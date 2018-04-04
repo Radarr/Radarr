@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Notifications.Synology
         public override string Name => "Synology Indexer";
 
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             if (Settings.UpdateLibrary)
             {

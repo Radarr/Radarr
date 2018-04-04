@@ -39,10 +39,12 @@ function EditNotificationModalContent(props) {
     name,
     onGrab,
     onDownload,
+    onAlbumDownload,
     onUpgrade,
     onRename,
     supportsOnGrab,
     supportsOnDownload,
+    supportsOnAlbumDownload,
     supportsOnUpgrade,
     supportsOnRename,
     tags,
@@ -107,12 +109,25 @@ function EditNotificationModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>On Import</FormLabel>
+                <FormLabel>On Album Import</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="onAlbumDownload"
+                  helpText="Be notified when complete albums are successfully imported"
+                  isDisabled={!supportsOnAlbumDownload.value}
+                  {...onAlbumDownload}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>On Track Import</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="onDownload"
-                  helpText="Be notified when tracks are successfully imported"
+                  helpText="Be notified when track files are successfully imported"
                   isDisabled={!supportsOnDownload.value}
                   {...onDownload}
                   onChange={onInputChange}
@@ -122,7 +137,7 @@ function EditNotificationModalContent(props) {
               {
                 onDownload.value &&
                   <FormGroup>
-                    <FormLabel>On Upgrade</FormLabel>
+                    <FormLabel>On Track Upgrade</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}

@@ -21,11 +21,15 @@ namespace NzbDrone.Core.Notifications.Pushalot
             _proxy.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             _proxy.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, Settings);
         }
 
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE, message.Message, Settings);
+        }
 
         public override ValidationResult Test()
         {

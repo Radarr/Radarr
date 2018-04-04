@@ -179,6 +179,7 @@
     <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
     <Compile Include="Datastore\Migration\006_separate_automatic_and_interactive_search.cs" />
     <Compile Include="Datastore\Migration\007_change_album_path_to_relative.cs" />
+    <Compile Include="Datastore\Migration\013_album_download_notification.cs" />
     <Compile Include="Datastore\Migration\009_album_releases.cs" />
     <Compile Include="Datastore\Migration\010_album_releases_fix.cs" />
     <Compile Include="Datastore\Migration\011_import_lists.cs" />
@@ -684,6 +685,7 @@
     <Compile Include="MediaFiles\Commands\CleanUpRecycleBinCommand.cs" />
     <Compile Include="MediaFiles\Commands\DownloadedAlbumsScanCommand.cs" />
     <Compile Include="MediaFiles\Commands\RenameArtistCommand.cs" />
+    <Compile Include="MediaFiles\Events\AlbumImportedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFileRenamedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackFolderCreatedEvent.cs" />
     <Compile Include="MediaFiles\Events\TrackImportFailedEvent.cs" />
@@ -858,6 +860,7 @@
     <Compile Include="Music\Track.cs" />
     <Compile Include="Music\TrackRepository.cs" />
     <Compile Include="Music\TrackService.cs" />
+    <Compile Include="Notifications\AlbumDownloadMessage.cs" />
     <Compile Include="Notifications\Join\JoinAuthException.cs" />
     <Compile Include="Notifications\Join\JoinInvalidDeviceException.cs" />
     <Compile Include="Notifications\Join\JoinResponseModel.cs" />
@@ -953,7 +956,7 @@
     <Compile Include="RemotePathMappings\RemotePathMappingRepository.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingService.cs" />
     <Compile Include="MediaFiles\TorrentInfo\TorrentFileInfoReader.cs" />
-    <Compile Include="Notifications\DownloadMessage.cs" />
+    <Compile Include="Notifications\TrackDownloadMessage.cs" />
     <Compile Include="Notifications\Email\Email.cs">
       <SubType>Code</SubType>
     </Compile>

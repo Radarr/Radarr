@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 throw new NotImplementedException();
             }
 
-            public override void OnDownload(DownloadMessage downloadMessage)
+            public override void OnDownload(TrackDownloadMessage trackDownloadMessage)
             {
                 TestLogger.Info("OnDownload was called");
             }
@@ -55,9 +55,14 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnGrab was called");
             }
 
-            public override void OnDownload(DownloadMessage message)
+            public override void OnDownload(TrackDownloadMessage message)
             {
                 TestLogger.Info("OnDownload was called");
+            }
+
+            public override void OnAlbumDownload(AlbumDownloadMessage message)
+            {
+                TestLogger.Info("OnAlbumDownload was called");
             }
 
             public override void OnRename(Artist artist)
@@ -100,6 +105,7 @@ namespace NzbDrone.Core.Test.NotificationTests
 
             notification.SupportsOnGrab.Should().BeTrue();
             notification.SupportsOnDownload.Should().BeTrue();
+            notification.SupportsOnAlbumDownload.Should().BeTrue();
             notification.SupportsOnUpgrade.Should().BeTrue();
             notification.SupportsOnRename.Should().BeTrue();
         }
@@ -112,6 +118,7 @@ namespace NzbDrone.Core.Test.NotificationTests
 
             notification.SupportsOnGrab.Should().BeFalse();
             notification.SupportsOnDownload.Should().BeFalse();
+            notification.SupportsOnAlbumDownload.Should().BeFalse();
             notification.SupportsOnUpgrade.Should().BeFalse();
             notification.SupportsOnRename.Should().BeFalse();
         }

@@ -157,6 +157,19 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 }
             }
 
+            var albumImports = importResults.GroupBy(e => e.ImportDecision.LocalTrack.Album.Id).ToList();
+
+            foreach (var albumImport in albumImports)
+            {
+                var album = albumImport.First().ImportDecision.LocalTrack.Album;
+                var artist = albumImport.First().ImportDecision.LocalTrack.Artist;
+
+                if (albumImport.Where(e => e.Errors.Count == 0).ToList().Count > 0 && artist != null && album != null)
+                {
+                    _eventAggregator.PublishEvent(new AlbumImportedEvent(artist, album, albumImport.Select(e => e.ImportDecision.LocalTrack).ToList(), newDownload, downloadClientItem));
+                }
+            }
+
             //Adding all the rejected decisions
             importResults.AddRange(decisions.Where(c => !c.Approved)
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));

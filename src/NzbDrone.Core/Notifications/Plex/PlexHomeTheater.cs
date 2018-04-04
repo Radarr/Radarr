@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Notifications.Plex
             Notify(Settings, ALBUM_GRABBED_TITLE_BRANDED, grabMessage.Message);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             Notify(Settings, TRACK_DOWNLOADED_TITLE_BRANDED, message.Message);
         }

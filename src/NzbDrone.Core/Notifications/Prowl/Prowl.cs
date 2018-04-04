@@ -22,9 +22,14 @@ namespace NzbDrone.Core.Notifications.Prowl
             _prowlService.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
         }
 
-        public override void OnDownload(DownloadMessage message)
+        public override void OnDownload(TrackDownloadMessage message)
         {
             _prowlService.SendNotification(TRACK_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
+        }
+
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            _prowlService.SendNotification(ALBUM_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (NotificationPriority)Settings.Priority);
         }
 
         public override ValidationResult Test()
