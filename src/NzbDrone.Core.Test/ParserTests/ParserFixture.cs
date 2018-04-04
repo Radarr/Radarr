@@ -7,6 +7,7 @@ using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -64,6 +65,16 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             Parser.Parser.ParseAlbumTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
             Parser.Parser.ParseAlbumTitle(title).Quality.QualitySource.Should().Be(QualitySource.Extension);
+        }
+
+        [TestCase("of Montreal-Hissing Fauna, Are You The Destroyer? 2007", "Hissing Fauna, Are You The Destroyer", "of Montreal", "2007")]
+        [TestCase("of Montreal - 2007 - Hissing Fauna, Are You The Destroyer?", "Hissing Fauna, Are You The Destroyer", "of Montreal", "2007")]
+        public void should_parse_album(string title, string correctAlbum, string correctArtist, string correctYear)
+        {
+            ParsedAlbumInfo result = Parser.Parser.ParseAlbumTitle(title);
+            result.AlbumTitle.Should().Be(correctAlbum);
+            result.ArtistName.Should().Be(correctArtist);
+            result.ReleaseDate.Should().Be(correctYear);
         }
 
         [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "VA", "The Best 101 Love Ballads")]
