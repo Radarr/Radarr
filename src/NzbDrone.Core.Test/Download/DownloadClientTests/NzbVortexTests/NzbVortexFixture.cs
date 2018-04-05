@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
                                               Port = 2222,
                                               ApiKey = "1234-ABCD",
                                               TvCategory = "tv",
-                                              RecentTvPriority = (int)NzbgetPriority.High
+                                              RecentMoviePriority = (int)NzbgetPriority.High
                                           };
 
             _queued = new NzbVortexQueueItem

@@ -39,7 +39,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, RTorrentPriority.Normal, Settings.MovieDirectory, Settings);
+            var priority = (RTorrentPriority)(remoteMovie.IsRecentMovie() ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
+
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -57,7 +59,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, RTorrentPriority.Normal, Settings.MovieDirectory, Settings);
+            var priority = (RTorrentPriority)(remoteMovie.IsRecentMovie() ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
+
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;

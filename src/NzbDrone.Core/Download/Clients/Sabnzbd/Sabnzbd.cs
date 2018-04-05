@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
             var category = Settings.MovieCategory;
-            var priority = Settings.RecentTvPriority;
+            var priority = remoteMovie.IsRecentMovie() ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
 
             var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
 
@@ -79,7 +79,8 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 queueItem.RemainingSize = (long)(sabQueueItem.Sizeleft * 1024 * 1024);
                 queueItem.RemainingTime = sabQueueItem.Timeleft;
 
-                if (sabQueue.Paused || sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
+                if ((sabQueue.Paused && sabQueueItem.Priority != SabnzbdPriority.Force) ||
+                    sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
 

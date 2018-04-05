@@ -42,6 +42,14 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
+            var isRecentMovie = remoteMovie.IsRecentMovie();
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
+            }
+
             return actualHash.ToUpper();
         }
 
@@ -55,6 +63,14 @@ namespace NzbDrone.Core.Download.Clients.Deluge
             }
 
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
+
+            var isRecentMovie = remoteMovie.IsRecentMovie();
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(actualHash, Settings);
+            }
 
             return actualHash.ToUpper();
         }
