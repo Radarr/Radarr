@@ -181,12 +181,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             item.Status.Should().Be(expectedItemStatus);
         }
 
-        [TestCase(TransmissionTorrentStatus.Stopped, DownloadItemStatus.Completed, false)]
-        [TestCase(TransmissionTorrentStatus.CheckWait, DownloadItemStatus.Downloading, true)]
-        [TestCase(TransmissionTorrentStatus.Check, DownloadItemStatus.Downloading, true)]
-        [TestCase(TransmissionTorrentStatus.Queued, DownloadItemStatus.Queued, true)]
-        [TestCase(TransmissionTorrentStatus.SeedingWait, DownloadItemStatus.Completed, true)]
-        [TestCase(TransmissionTorrentStatus.Seeding, DownloadItemStatus.Completed, true)]
+        [TestCase(TransmissionTorrentStatus.Stopped, DownloadItemStatus.Completed, true)]
+        [TestCase(TransmissionTorrentStatus.CheckWait, DownloadItemStatus.Downloading, false)]
+        [TestCase(TransmissionTorrentStatus.Check, DownloadItemStatus.Downloading, false)]
+        [TestCase(TransmissionTorrentStatus.Queued, DownloadItemStatus.Queued, false)]
+        [TestCase(TransmissionTorrentStatus.SeedingWait, DownloadItemStatus.Completed, false)]
+        [TestCase(TransmissionTorrentStatus.Seeding, DownloadItemStatus.Completed, false)]
         public void GetItems_should_return_completed_item_as_downloadItemStatus(TransmissionTorrentStatus apiStatus, DownloadItemStatus expectedItemStatus, bool expectedReadOnly)
         {
             _completed.Status = apiStatus;
@@ -196,7 +196,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             var item = Subject.GetItems().Single();
 
             item.Status.Should().Be(expectedItemStatus);
-            item.IsReadOnly.Should().Be(expectedReadOnly);
+            item.CanBeRemoved.Should().Be(expectedReadOnly);
+            item.CanMoveFiles.Should().Be(expectedReadOnly);
         }
 
         [Test]

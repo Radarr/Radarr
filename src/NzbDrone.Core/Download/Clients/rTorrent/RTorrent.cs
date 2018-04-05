@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                     else if (!torrent.IsActive) item.Status = DownloadItemStatus.Paused;
 
                     // No stop ratio data is present, so do not delete
-                    item.IsReadOnly = true;
+                    item.CanMoveFiles = item.CanBeRemoved = false;
 
                     items.Add(item);
                 }

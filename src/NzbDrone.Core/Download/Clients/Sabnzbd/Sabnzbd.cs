@@ -78,6 +78,8 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 queueItem.TotalSize = (long)(sabQueueItem.Size * 1024 * 1024);
                 queueItem.RemainingSize = (long)(sabQueueItem.Sizeleft * 1024 * 1024);
                 queueItem.RemainingTime = sabQueueItem.Timeleft;
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
 
                 if (sabQueue.Paused || sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
                 {
@@ -142,7 +144,10 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     RemainingSize = 0,
                     RemainingTime = TimeSpan.Zero,
 
-                    Message = sabHistoryItem.FailMessage
+                    Message = sabHistoryItem.FailMessage,
+
+                    CanBeRemoved = true,
+                    CanMoveFiles = true
                 };
 
                 if (sabHistoryItem.Status == SabnzbdDownloadStatus.Failed)
