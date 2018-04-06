@@ -245,7 +245,8 @@ namespace NzbDrone.Core.Parser
             }
 
             var tracks = GetTracks(artist, parsedTrackInfo);
-            var album = _albumService.FindByTitle(artist.Id, parsedTrackInfo.AlbumTitle);
+            //var album = _albumService.FindByTitle(artist.Id, parsedTrackInfo.AlbumTitle);
+            var album = tracks.FirstOrDefault()?.Album;
 
             return new LocalTrack
             {
@@ -270,6 +271,9 @@ namespace NzbDrone.Core.Parser
                 return new List<Track>();
             }
 
+            parsedTrackInfo.AlbumTitle = Parser.CleanAlbumTitle(parsedTrackInfo.AlbumTitle);
+            _logger.Debug("Cleaning Album title of common matching issues. Cleaned album title is '{0}'", parsedTrackInfo.AlbumTitle);
+
             var album = _albumService.FindByTitle(artist.Id, parsedTrackInfo.AlbumTitle);
             _logger.Debug("Album {0} selected for {1}", album, parsedTrackInfo);
 
@@ -283,6 +287,9 @@ namespace NzbDrone.Core.Parser
 
             if (parsedTrackInfo.Title.IsNotNullOrWhiteSpace())
             {
+                parsedTrackInfo.Title = Parser.CleanTrackTitle(parsedTrackInfo.Title);
+                _logger.Debug("Cleaning Track title of common matching issues. Cleaned track title is '{0}'", parsedTrackInfo.Title);
+
                 trackInfo = _trackService.FindTrackByTitle(artist.Id, album.Id, parsedTrackInfo.DiscNumber, parsedTrackInfo.Title);
                 
                 if (trackInfo != null)

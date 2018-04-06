@@ -227,6 +227,7 @@ class ImportArtistSelectArtist extends Component {
                     canSpin={true}
                     isSpinning={isFetching}
                     onPress={this.onRefreshPress}
+                    title="Refresh"
                   >
                     <Icon name={icons.REFRESH} />
                   </FormInputButton>

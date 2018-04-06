@@ -47,6 +47,24 @@ namespace NzbDrone.Core.Test.ParserTests
             title.CleanArtistName().Should().Be("carnivale");
         }
 
+        [TestCase("Songs of Experience (Deluxe Edition)", "Songs of Experience")]
+        [TestCase("Mr. Bad Guy [Special Edition]", "Mr. Bad Guy")]
+        [TestCase("Sweet Dreams (Album)", "Sweet Dreams")]
+        public void should_remove_common_tags_from_album_title(string title, string correct)
+        {
+            var result = Parser.Parser.CleanAlbumTitle(title);
+            result.Should().Be(correct);
+        }
+
+        [TestCase("Songs of Experience (Deluxe Edition)", "Songs of Experience")]
+        [TestCase("Mr. Bad Guy [Special Edition]", "Mr. Bad Guy")]
+        [TestCase("Smooth Criminal (single)", "Smooth Criminal")]
+        public void should_remove_common_tags_from_track_title(string title, string correct)
+        {
+            var result = Parser.Parser.CleanTrackTitle(title);
+            result.Should().Be(correct);
+        }
+
         [TestCase("Discovery TV - Gold Rush : 02 Road From Hell [S04].mp4")]
         public void should_clean_up_invalid_path_characters(string postTitle)
         {
