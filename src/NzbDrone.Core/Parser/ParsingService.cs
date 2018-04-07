@@ -267,7 +267,12 @@ namespace NzbDrone.Core.Parser
         {
             Album album = null;
 
-            if (parsedTrackInfo != null && parsedTrackInfo.ReleaseMBId.IsNotNullOrWhiteSpace())
+            if (parsedTrackInfo == null)
+            {
+                return null;
+            }
+
+            if (parsedTrackInfo.ReleaseMBId.IsNotNullOrWhiteSpace())
             {
                 album = _albumService.FindAlbumByRelease(parsedTrackInfo.ReleaseMBId);
             }

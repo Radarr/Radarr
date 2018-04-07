@@ -634,8 +634,6 @@ namespace NzbDrone.Core.Parser
                 ArtistTitleInfo = artistTitleInfo,
                 Title = trackTitle
             };
-
-
             
             Logger.Trace("File Tags Parsed: Artist: {0}, Album: {1}, Disc: {2}, Track Numbers(s): {3}, TrackTitle: {4}", result.ArtistTitle, result.AlbumTitle, result.DiscNumber, trackNumber, result.Title);
 

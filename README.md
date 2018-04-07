@@ -3,6 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/tpm5mj5milne88nc?svg=true)](https://ci.appveyor.com/project/lidarr/lidarr)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e6d014aee9542189b4abb0b1439980f)](https://www.codacy.com/app/Lidarr/Lidarr?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lidarr/Lidarr&amp;utm_campaign=Badge_Grade)
 ![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/lidarr.svg)
+[![Backers on Open Collective](https://opencollective.com/lidarr/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/lidarr/sponsors/badge.svg)](#sponsors)
 
 Lidarr is a music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from your favorite artists and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
 
@@ -58,6 +59,34 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 * Open `Lidarr.sln` in Visual Studio
 * Make sure `NzbDrone.Console` is set as the startup project
 * Change build to 'Debug x86'
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/lidarr/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/lidarr#backer)]
+
+<a href="https://opencollective.com/lidarr#backers" target="_blank"><img src="https://opencollective.com/lidarr/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/lidarr#sponsor)]
+
+<a href="https://opencollective.com/lidarr/sponsor/0/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/1/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/2/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/3/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/4/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/5/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/6/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/7/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/8/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/lidarr/sponsor/9/website" target="_blank"><img src="https://opencollective.com/lidarr/sponsor/9/avatar.svg"></a>
 
 ### License
 
