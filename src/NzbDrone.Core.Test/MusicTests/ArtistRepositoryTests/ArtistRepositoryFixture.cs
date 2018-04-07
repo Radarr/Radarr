@@ -39,7 +39,8 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             {
                 Name = "TestProfile",
                 PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>(),
-                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>()
+                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>(),
+                ReleaseStatuses = new List<ProfileReleaseStatusItem>()
             };
 
 
