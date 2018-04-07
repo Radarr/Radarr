@@ -157,7 +157,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 }
             }
 
-            var albumImports = importResults.GroupBy(e => e.ImportDecision.LocalTrack.Album.Id).ToList();
+            var albumImports = importResults.Where(e =>e.ImportDecision.LocalTrack.Album != null)
+                .GroupBy(e => e.ImportDecision.LocalTrack.Album.Id).ToList();
 
             foreach (var albumImport in albumImports)
             {

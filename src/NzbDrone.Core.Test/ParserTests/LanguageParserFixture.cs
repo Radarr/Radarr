@@ -186,6 +186,7 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Language.Id.Should().Be(Language.Hungarian.Id);
         }
 
+        [Ignore("Not Implemented")]
         [TestCase("Avatar.The.Last.Airbender.S01-03.DVDRip.HebDub")]
         public void should_parse_language_hebrew(string postTitle)
         {
@@ -193,7 +194,7 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Language.Id.Should().Be(Language.Hebrew.Id);
         }
 
-
+        [Ignore("Not Implemented")]
         [TestCase("Prison.Break.S05E01.WEBRip.x264.AC3.LT.EN-CNN")]
         public void should_parse_language_lithuanian(string postTitle)
         {
@@ -201,7 +202,7 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Language.Id.Should().Be(Language.Lithuanian.Id);
         }
 
-
+        [Ignore("Not Implemented")]
         [TestCase("The.​Walking.​Dead.​S07E11.​WEB Rip.​XviD.​Louige-​CZ.​EN.​5.​1")]
         public void should_parse_language_czech(string postTitle)
         {

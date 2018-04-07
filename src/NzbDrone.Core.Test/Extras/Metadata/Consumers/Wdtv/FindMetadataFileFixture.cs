@@ -39,6 +39,7 @@ namespace NzbDrone.Core.Test.Extras.Metadata.Consumers.Wdtv
             Subject.FindMetadataFile(_artist, path).Type.Should().Be(type);
         }
 
+        [Ignore("Need Updated")]
         [TestCase(".xml")]
         [TestCase(".metathumb")]
         public void should_return_null_if_not_valid_file_for_track(string extension)

@@ -167,6 +167,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 (new LocalTrack
                 {
                     Artist = fileDecision.LocalTrack.Artist,
+                    Album = fileDecision.LocalTrack.Album,
                     Tracks = new List<Track> { fileDecision.LocalTrack.Tracks.First() },
                     Path = @"C:\Test\Music\Alien Ant Farm\Alien Ant Farm - 01 - Pilot.mp3".AsOsAgnostic(),
                     Quality = new QualityModel(Quality.MP3_256),
