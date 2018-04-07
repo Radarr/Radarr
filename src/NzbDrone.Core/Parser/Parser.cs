@@ -206,17 +206,11 @@ namespace NzbDrone.Core.Parser
         {
             var fileInfo = new FileInfo(path);
 
-            var result = new ParsedTrackInfo { };
+            ParsedTrackInfo result;
 
             if (MediaFiles.MediaFileExtensions.Extensions.Contains(fileInfo.Extension))
             {
                 result = ParseAudioTags(path);
-
-                if (CommonTagRegex.IsMatch(result.AlbumTitle))
-                {
-                    result.AlbumTitle = CleanAlbumTitle(result.AlbumTitle);
-                    Logger.Debug("Cleaning Album title of common matching issues. Cleaned album title is '{0}'", result.AlbumTitle);
-                }
             }
             else
             {
@@ -226,7 +220,6 @@ namespace NzbDrone.Core.Parser
             // TODO: Check if it is common that we might need to fallback to parser to gather details
             //var result = ParseMusicTitle(fileInfo.Name);
 
-            
 
             if (result == null)
             {
@@ -641,6 +634,8 @@ namespace NzbDrone.Core.Parser
                 ArtistTitleInfo = artistTitleInfo,
                 Title = trackTitle
             };
+
+
             
             Logger.Trace("File Tags Parsed: Artist: {0}, Album: {1}, Disc: {2}, Track Numbers(s): {3}, TrackTitle: {4}", result.ArtistTitle, result.AlbumTitle, result.DiscNumber, trackNumber, result.Title);
 

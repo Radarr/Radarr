@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Music
         List<Album> ArtistAlbumsBetweenDates(Artist artist, DateTime startDate, DateTime endDate, bool includeUnmonitored);
         void SetMonitoredFlat(Album album, bool monitored);
         void SetMonitored(IEnumerable<int> ids, bool monitored);
+        Album FindAlbumByRelease(string releaseId);
     }
 
     public class AlbumRepository : BasicRepository<Album>, IAlbumRepository
@@ -300,6 +301,11 @@ namespace NzbDrone.Core.Music
             return Query.Join<Album, Artist>(JoinType.Inner, album => album.Artist, (album, artist) => album.ArtistId == artist.Id)
                         .Where<Artist>(artist => artist.CleanName == cleanArtistName)
                         .SingleOrDefault(album => album.CleanTitle == cleanTitle);
+        }
+
+        public Album FindAlbumByRelease(string releaseId)
+        {
+            return Query.FirstOrDefault(e => e.Releases.Any(r => r.Id == releaseId));
         }
     }
 }

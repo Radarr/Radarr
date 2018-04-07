@@ -299,6 +299,7 @@
     <Compile Include="MusicTests\AddAlbumFixture.cs" />
     <Compile Include="MusicTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\AlbumMonitoredServiceTests\AlbumMonitoredServiceFixture.cs" />
+    <Compile Include="MusicTests\AlbumRepositoryTests\AlbumRepositoryFixture.cs" />
     <Compile Include="MusicTests\ArtistRepositoryTests\ArtistRepositoryFixture.cs" />
     <Compile Include="MusicTests\ArtistServiceTests\AddArtistFixture.cs" />
     <Compile Include="MusicTests\ArtistServiceTests\UpdateMultipleArtistFixture.cs" />
@@ -309,6 +310,7 @@
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\TitleTheFixture.cs" />
     <Compile Include="ParserTests\MusicParserFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\GetLocalTrackFixture.cs" />
     <Compile Include="Profiles\Delay\DelayProfileServiceFixture.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileServiceFixture.cs" />
     <Compile Include="Profiles\Metadata\MetadataProfileRepositoryFixture.cs" />

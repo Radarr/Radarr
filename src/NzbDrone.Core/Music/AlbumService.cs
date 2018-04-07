@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Music
         void UpdateMany(List<Album> albums);
         void DeleteMany(List<Album> albums);
         void RemoveAddOptions(Album album);
+        Album FindAlbumByRelease(string releaseId);
     }
 
     public class AlbumService : IAlbumService,
@@ -108,6 +109,11 @@ namespace NzbDrone.Core.Music
         public List<Album> GetAlbumsByArtist(int artistId)
         {
             return _albumRepository.GetAlbums(artistId).ToList();
+        }
+
+        public Album FindAlbumByRelease(string releaseId)
+        {
+            return _albumRepository.FindAlbumByRelease(releaseId);
         }
 
         public void RemoveAddOptions(Album album)
