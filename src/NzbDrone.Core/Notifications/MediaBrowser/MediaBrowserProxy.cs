@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Notifications.MediaBrowser.Model;
 
 namespace NzbDrone.Core.Notifications.Emby
 {
@@ -20,22 +23,52 @@ namespace NzbDrone.Core.Notifications.Emby
             var path = "/Notifications/Admin";
             var request = BuildRequest(path, settings);
             request.Headers.ContentType = "application/json";
+            request.Method = HttpMethod.POST;
 
             request.SetContent(new
-                           {
-                               Name = title,
-                               Description = message,
-                               ImageUrl = "https://raw.github.com/lidarr/Lidarr/develop/Logo/64.png"
-                           }.ToJson());
+            {
+                Name = title,
+                Description = message,
+                ImageUrl = "https://raw.github.com/lidarr/Lidarr/develop/Logo/64.png"
+            }.ToJson());
 
             ProcessRequest(request, settings);
         }
 
-        public void Update(MediaBrowserSettings settings, string mbId)
+        public void Update(MediaBrowserSettings settings, List<string> musicCollectionPaths)
         {
-            var path = string.Format("/Library/Artist/Updated?tvdbid={0}", mbId); //TODO: Get Emby to add a new Library Route           
-            var request = BuildRequest(path, settings);
-            request.Headers.Add("Content-Length", "0");
+            string path;
+            HttpRequest request;
+
+            if (musicCollectionPaths.Any())
+            {
+                path = "/Library/Media/Updated";
+                request = BuildRequest(path, settings);
+                request.Headers.ContentType = "application/json";
+
+                var updateInfo = new List<EmbyMediaUpdateInfo>();
+
+                foreach (var colPath in musicCollectionPaths)
+                {
+                    updateInfo.Add(new EmbyMediaUpdateInfo
+                    {
+                        Path = colPath,
+                        UpdateType = "Created"
+                    });
+                }
+
+                request.SetContent(new
+                {
+                    Updates = updateInfo
+                }.ToJson());
+            }
+            else
+            {
+                path = "/Library/Refresh";
+                request = BuildRequest(path, settings);
+            }
+
+            request.Method = HttpMethod.POST;
 
             ProcessRequest(request, settings);
         }
@@ -44,7 +77,8 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             request.Headers.Add("X-MediaBrowser-Token", settings.ApiKey);
 
-            var response = _httpClient.Post(request);
+            var response = _httpClient.Execute(request);
+
             _logger.Trace("Response: {0}", response.Content);
 
             CheckForError(response);
@@ -55,7 +89,7 @@ namespace NzbDrone.Core.Notifications.Emby
         private HttpRequest BuildRequest(string path, MediaBrowserSettings settings)
         {
             var url = string.Format(@"http://{0}/mediabrowser", settings.Address);
-            
+
             return new HttpRequestBuilder(url).Resource(path).Build();
         }
 
@@ -64,6 +98,17 @@ namespace NzbDrone.Core.Notifications.Emby
             _logger.Debug("Looking for error in response: {0}", response);
 
             //TODO: actually check for the error
+        }
+
+        public List<EmbyMediaFolder> GetArtist(MediaBrowserSettings settings)
+        {
+            var path = "/Library/MediaFolders";
+            var request = BuildRequest(path, settings);
+            request.Method = HttpMethod.GET;
+
+            var response = ProcessRequest(request, settings);
+
+            return Json.Deserialize<EmbyMediaFoldersResponse>(response).Items;
         }
     }
 }

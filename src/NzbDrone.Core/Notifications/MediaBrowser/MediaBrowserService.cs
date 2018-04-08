@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
@@ -32,7 +33,11 @@ namespace NzbDrone.Core.Notifications.Emby
 
         public void Update(MediaBrowserSettings settings, Artist artist)
         {
-            _proxy.Update(settings, artist.ForeignArtistId);
+            var folders = _proxy.GetArtist(settings);
+
+            var musicPaths = folders.Select(e => e.CollectionType = "music").ToList();
+
+            _proxy.Update(settings, musicPaths);
         }
 
         public ValidationFailure Test(MediaBrowserSettings settings)
