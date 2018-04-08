@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Test.ParserTests
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
             if (parsed.Edition.IsNullOrWhiteSpace())
             {
-                parsed.Edition = Parser.Parser.ParseEdition(parsed.SimpleTitle.Replace(parsed.MovieTitle, "A Movie"));
+                parsed.Edition = Parser.Parser.ParseEdition(parsed.SimpleReleaseTitle);
             }
             parsed.Edition.Should().Be(edition);
         }

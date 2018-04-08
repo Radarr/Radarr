@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                   .Verify(s => s.FindByTitle(Parser.Parser.ParseMovieTitle(title,false,false).MovieTitle), Times.Once());
         }
 
-        [Test]
+        /*[Test]
         public void should_fallback_to_title_without_year_and_year_when_title_lookup_fails()
         {
             const string title = "House.2004.S01E01.720p.hdtv";
@@ -42,6 +42,6 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Mocker.GetMock<IMovieService>()
                   .Verify(s => s.FindByTitle(parsedEpisodeInfo.MovieTitleInfo.TitleWithoutYear,
                                              parsedEpisodeInfo.MovieTitleInfo.Year), Times.Once());
-        }
+        }*/
     }
 }

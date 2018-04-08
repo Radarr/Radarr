@@ -19,11 +19,14 @@ namespace NzbDrone.Core.Parser
 {
     public interface IParsingService
     {
-        LocalMovie GetLocalMovie(string filename, Movie movie);
-        LocalMovie GetLocalMovie(string filename, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource);
+        LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, bool sceneSource = false, MediaInfoModel mediaInfo = null);
         Movie GetMovie(string title);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, ReleaseInfo releaseInfo = null, MediaInfoModel mediaInfo = null);
+        ParsedMovieInfo ParseMoviePathInfo(string path, ReleaseInfo releaseInfo = null,
+            MediaInfoModel mediaInfo = null);
+        ParsedMovieInfo ParseMinimalMovieInfo(string path);
+        ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
         QualityDefinition ParseQualityDefinition(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null);
         List<QualityTagMatchResult> MatchQualityTags(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo = null);
     }
@@ -61,31 +64,56 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            var languageTitle = result.SimpleTitle;
-            if (result.MovieTitle.IsNotNullOrWhiteSpace())
+            result = EnhanceMinimalInfo(result, releaseInfo, mediaInfo);
+
+            return result;
+        }
+
+        private ParsedMovieInfo EnhanceMinimalInfo(ParsedMovieInfo minimalInfo, ReleaseInfo releaseInfo = null,
+            MediaInfoModel mediaInfo = null)
+        {
+            minimalInfo.Languages = LanguageParser.ParseLanguages(minimalInfo.SimpleReleaseTitle);
+            _logger.Debug("Language(s) parsed: {0}", minimalInfo.Languages);
+
+            minimalInfo.Quality = QualityParser.ParseQuality(minimalInfo.SimpleReleaseTitle);
+
+            if (minimalInfo.Edition.IsNullOrWhiteSpace())
             {
-                languageTitle = languageTitle.Replace(result.MovieTitle, "A Movie");
+                minimalInfo.Edition = Parser.ParseEdition(minimalInfo.SimpleReleaseTitle);
             }
 
-            result.Languages = LanguageParser.ParseLanguages(languageTitle);
-            _logger.Debug("Language(s) parsed: {0}", result.Languages);
+            minimalInfo.ReleaseGroup = Parser.ParseReleaseGroup(minimalInfo.SimpleReleaseTitle);
 
-            result.Quality = QualityParser.ParseQuality(title);
+            minimalInfo.ImdbId = Parser.ParseImdbId(minimalInfo.SimpleReleaseTitle);
 
-            if (result.Edition.IsNullOrWhiteSpace())
+            minimalInfo = AugmentMovieInfoRelease(minimalInfo, releaseInfo);
+
+            minimalInfo = AugmentMovieInfoMedia(minimalInfo, mediaInfo);
+
+            minimalInfo.Quality.QualityDefinition = ParseQualityDefinition(minimalInfo, releaseInfo);
+
+            _logger.Debug("Quality parsed: {0}", minimalInfo.Quality);
+
+            return minimalInfo;
+        }
+
+        public ParsedMovieInfo ParseMoviePathInfo(string path, ReleaseInfo releaseInfo = null, MediaInfoModel mediaInfo = null)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var result = ParseMovieInfo(fileInfo.Name, releaseInfo, mediaInfo);
+
+            if (result == null)
             {
-                result.Edition = Parser.ParseEdition(languageTitle);
+                _logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                result = ParseMovieInfo(fileInfo.Directory.Name + " " + fileInfo.Name, releaseInfo, mediaInfo);
             }
 
-            result.ReleaseGroup = Parser.ParseReleaseGroup(title);
-
-            result.ImdbId = Parser.ParseImdbId(title);
-
-            result = AugmentMovieInfoRelease(result, releaseInfo);
-
-            result.Quality.QualityDefinition = ParseQualityDefinition(result, releaseInfo);
-
-            _logger.Debug("Quality parsed: {0}", result.Quality);
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMovieInfo(fileInfo.Directory.Name + fileInfo.Extension, releaseInfo, mediaInfo);
+            }
 
             return result;
         }
@@ -94,10 +122,9 @@ namespace NzbDrone.Core.Parser
         {
             var result = movieInfo;
             //Augment language
-            var languageTitle = result.SimpleTitle;
+            var languageTitle = result.SimpleReleaseTitle;
             if (result.MovieTitle.IsNotNullOrWhiteSpace())
             {
-                languageTitle = languageTitle.Replace(result.MovieTitle, "A Movie");
                 if (languageTitle.ToLower().Contains("multi") && releaseInfo?.IndexerSettings?.MultiLanguages?.Any() == true)
                 {
                     foreach (var i in releaseInfo.IndexerSettings.MultiLanguages)
@@ -122,9 +149,44 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
+        //TODO: Add tests for this!
         private ParsedMovieInfo AugmentMovieInfoMedia(ParsedMovieInfo movieInfo, MediaInfoModel mediaInfo)
         {
-            //TODO implement this here!
+            if (mediaInfo != null)
+            {
+                var quality = movieInfo.Quality;
+                if (!(quality.Modifier == Modifier.BRDISK && quality.Modifier == Modifier.REMUX) &&
+                    (quality.Source == Source.BLURAY || quality.Source == Source.TV ||
+                     quality.Source == Source.WEBDL) &&
+                    (quality.Resolution != Resolution.R480P || quality.Resolution != Resolution.R576P))
+                {
+                    var width = mediaInfo.Width;
+                    var existing = quality.Resolution;
+
+                    if (width > 854)
+                    {
+                        quality.Resolution = Resolution.R720P;
+                    }
+
+                    if (width > 1280)
+                    {
+                        quality.Resolution = Resolution.R1080P;
+                    }
+
+                    if (width > 1920)
+                    {
+                        quality.Resolution = Resolution.R2160P;
+                    }
+
+                    if (existing != quality.Resolution)
+                    {
+                        _logger.Debug("Overwriting resolution info {0} with info from media info {1}", existing, quality.Resolution);
+                        quality.QualitySource = QualitySource.MediaInfo;
+                        movieInfo.Quality = quality;
+                    }
+                }
+            }
+
             return movieInfo;
         }
 
@@ -198,44 +260,45 @@ namespace NzbDrone.Core.Parser
             return true;
         }
 
-        public LocalMovie GetLocalMovie(string filename, Movie movie)
+        public LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, bool sceneSource = false, MediaInfoModel mediaInfo = null)
         {
-            return GetLocalMovie(filename, movie, null, false);
-        }
-
-        public LocalMovie GetLocalMovie(string filename, Movie movie, ParsedMovieInfo folderInfo, bool sceneSource)
-        {
-            ParsedMovieInfo parsedMovieInfo;
-
-            if (folderInfo != null)
-            {
-                parsedMovieInfo = folderInfo.JsonClone();
-                parsedMovieInfo.Quality = QualityParser.ParseQuality(Path.GetFileName(filename)); //TODO: Use quality def logic from above here as well!!!!
-            }
-
-            else
-            {
-                parsedMovieInfo = Parser.ParseMoviePath(filename, _config.ParsingLeniency > 0);
-            }
-
-            if (parsedMovieInfo == null)
-            {
-                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(filename)))
-                {
-                    _logger.Warn("Unable to parse movie info from path {0}", filename);
-                }
-
-                return null;
-            }
+            var enhanced = EnhanceMinimalInfo(minimalInfo, null, mediaInfo);
 
             return new LocalMovie
             {
                 Movie = movie,
-                Quality = parsedMovieInfo.Quality,
+                Quality = enhanced.Quality,
                 Path = filename,
-                ParsedMovieInfo = parsedMovieInfo,
-                ExistingFile = movie.Path.IsParentPath(filename)
+                ParsedMovieInfo = enhanced,
+                ExistingFile = movie.Path.IsParentPath(filename),
+                MediaInfo = mediaInfo
             };
+        }
+
+        public ParsedMovieInfo ParseMinimalMovieInfo(string file)
+        {
+            return Parser.ParseMovieTitle(file, _config.ParsingLeniency > 0);
+        }
+
+        public ParsedMovieInfo ParseMinimalPathMovieInfo(string path)
+        {
+            var fileInfo = new FileInfo(path);
+
+            var result = ParseMinimalMovieInfo(fileInfo.Name);
+
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
+                result = ParseMinimalMovieInfo(fileInfo.Directory.Name + " " + fileInfo.Name);
+            }
+
+            if (result == null)
+            {
+                _logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
+                result = ParseMinimalMovieInfo(fileInfo.Directory.Name + fileInfo.Extension);
+            }
+
+            return result;
         }
 
         public Movie GetMovie(string title)
@@ -248,11 +311,6 @@ namespace NzbDrone.Core.Parser
             }
 
             var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-
-            if (movies == null)
-            {
-                movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitleInfo.TitleWithoutYear, parsedMovieInfo.MovieTitleInfo.Year);
-            }
 
             if (movies == null)
             {

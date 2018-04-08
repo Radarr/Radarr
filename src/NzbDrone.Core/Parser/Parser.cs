@@ -99,6 +99,8 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex SimpleTitleRegex = new Regex(@"\s*(?:480[ip]|576[ip]|720[ip]|1080[ip]|2160[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|(8|10)b(it)?)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex SimpleReleaseTitleRegex = new Regex(@"\s*(?:[<>?*:|])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private static readonly Regex WebsitePrefixRegex = new Regex(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*",
                                                                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -144,7 +146,7 @@ namespace NzbDrone.Core.Parser
             {"ü", "ue"},
         };
 
-        public static ParsedMovieInfo ParseMoviePath(string path, bool isLenient)
+        private static ParsedMovieInfo ParseMoviePath(string path, bool isLenient)
         {
             var fileInfo = new FileInfo(path);
 
@@ -190,6 +192,9 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = RemoveFileExtension(simpleTitle);
 
+                var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(title, string.Empty);
+                simpleReleaseTitle = RemoveFileExtension(simpleReleaseTitle);
+
                 // TODO: Quick fix stripping [url] - prefixes.
                 simpleTitle = WebsitePrefixRegex.Replace(simpleTitle, string.Empty);
 
@@ -222,7 +227,13 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                result.SimpleTitle = simpleTitle;
+                                //TODO: Add tests for this!
+                                if (result.MovieTitle.IsNotNullOrWhiteSpace())
+                                {
+                                    simpleReleaseTitle = simpleReleaseTitle.Replace(result.MovieTitle, result.MovieTitle.Contains(".") ? "A.Movie" : "A Movie");
+                                }
+
+                                result.SimpleReleaseTitle = simpleReleaseTitle;
 
                                 realResult = result;
 
@@ -531,7 +542,6 @@ namespace NzbDrone.Core.Parser
             }
 
             result.MovieTitle = movieName;
-            result.MovieTitleInfo = GetSeriesTitleInfo(result.MovieTitle);
 
             Logger.Debug("Movie Parsed. {0}", result);
 

@@ -60,21 +60,15 @@ namespace NzbDrone.Core.Extras.Metadata
                     if (metadata.Type == MetadataType.MovieImage ||
                         metadata.Type == MetadataType.MovieMetadata)
                     {
-                        var localMovie = _parsingService.GetLocalMovie(possibleMetadataFile, movie);
+                        var minimalInfo = _parsingService.ParseMinimalPathMovieInfo(possibleMetadataFile);
 
-                        if (localMovie == null)
+                        if (minimalInfo == null)
                         {
                             _logger.Debug("Unable to parse extra file: {0}", possibleMetadataFile);
                             continue;
                         }
 
-                        if (localMovie.Movie == null)
-                        {
-                            _logger.Debug("Cannot find related movie for: {0}", possibleMetadataFile);
-                            continue;
-                        }
-                        
-                        metadata.MovieFileId = localMovie.Movie.MovieFileId;
+                        metadata.MovieFileId = movie.MovieFileId;
                     }
 
                     metadata.Extension = Path.GetExtension(possibleMetadataFile);

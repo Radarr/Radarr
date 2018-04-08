@@ -35,8 +35,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 			remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
 			remoteMovie.ParsedMovieInfo.MovieTitle = "A Movie";
 			remoteMovie.ParsedMovieInfo.Year = 1998;
-			remoteMovie.ParsedMovieInfo.MovieTitleInfo = new SeriesTitleInfo { Year = 1998};
-			remoteMovie.ParsedMovieInfo.MovieTitleInfo.Year = 1998;
 		    remoteMovie.ParsedMovieInfo.Quality = quality;
 
 			remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities(),

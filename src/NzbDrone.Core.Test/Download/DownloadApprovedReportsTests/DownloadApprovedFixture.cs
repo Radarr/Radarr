@@ -55,7 +55,6 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                     Quality = quality,
                     Year = 1998,
                     MovieTitle = "A Movie",
-                    MovieTitleInfo = new SeriesTitleInfo()
                 },
                 Movie = movie,
 

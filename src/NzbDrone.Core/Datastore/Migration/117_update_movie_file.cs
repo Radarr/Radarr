@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         if (result != null)
                         {
-                            edition = result.Edition ?? Parser.Parser.ParseEdition(result.SimpleTitle);
+                            edition = result.Edition ?? Parser.Parser.ParseEdition(result.SimpleReleaseTitle);
                         }
 
                         using (IDbCommand updateCmd = conn.CreateCommand())

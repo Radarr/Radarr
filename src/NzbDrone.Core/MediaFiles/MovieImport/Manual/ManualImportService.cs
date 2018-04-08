@@ -219,7 +219,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 var file = message.Files[i];
                 var movie = _movieService.GetMovie(file.MovieId);
-                var parsedMovieInfo = Parser.Parser.ParseMoviePath(file.Path, _config.ParsingLeniency > 0) ?? new ParsedMovieInfo();
+                var parsedMovieInfo = _parsingService.ParseMoviePathInfo(file.Path) ?? new ParsedMovieInfo();
                 var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
                 var existingFile = movie.Path.IsParentPath(file.Path);
 
