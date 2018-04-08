@@ -3,6 +3,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Dispatchers;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
@@ -26,12 +27,14 @@ namespace NzbDrone.Core.Profiles.Qualities
     {
         private readonly IProfileRepository _profileRepository;
         private readonly IArtistService _artistService;
+        private readonly IImportListFactory _importListFactory;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, IArtistService artistService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IArtistService artistService, IImportListFactory importListFactory, Logger logger)
         {
             _profileRepository = profileRepository;
             _artistService = artistService;
+            _importListFactory = importListFactory;
             _logger = logger;
         }
 
@@ -47,7 +50,7 @@ namespace NzbDrone.Core.Profiles.Qualities
 
         public void Delete(int id)
         {
-            if (_artistService.GetAllArtists().Any(c => c.ProfileId == id))
+            if (_artistService.GetAllArtists().Any(c => c.ProfileId == id) || _importListFactory.All().Any(c => c.ProfileId == id))
             {
                 var profile = _profileRepository.Get(id);
                 throw new ProfileInUseException(profile.Name);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Languages;
@@ -22,12 +23,14 @@ namespace NzbDrone.Core.Profiles.Languages
     {
         private readonly ILanguageProfileRepository _profileRepository;
         private readonly IArtistService _artistService;
+        private readonly IImportListFactory _importListFactory;
         private readonly Logger _logger;
 
-        public LanguageProfileService(ILanguageProfileRepository profileRepository, IArtistService artistService, Logger logger)
+        public LanguageProfileService(ILanguageProfileRepository profileRepository, IArtistService artistService, IImportListFactory importListFactory, Logger logger)
         {
             _profileRepository = profileRepository;
             _artistService = artistService;
+            _importListFactory = importListFactory;
             _logger = logger;
         }
 
@@ -43,7 +46,7 @@ namespace NzbDrone.Core.Profiles.Languages
 
         public void Delete(int id)
         {
-            if (_artistService.GetAllArtists().Any(c => c.LanguageProfileId == id))
+            if (_artistService.GetAllArtists().Any(c => c.LanguageProfileId == id) || _importListFactory.All().Any(c => c.LanguageProfileId == id))
             {
                 var profile = _profileRepository.Get(id);
                 throw new LanguageProfileInUseException(profile.Name);

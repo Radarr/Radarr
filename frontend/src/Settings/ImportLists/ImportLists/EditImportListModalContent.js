@@ -41,7 +41,7 @@ function EditImportListModalContent(props) {
     enableAutomaticAdd,
     shouldMonitor,
     rootFolderPath,
-    profileId,
+    qualityProfileId,
     languageProfileId,
     metadataProfileId,
     fields
@@ -121,9 +121,9 @@ function EditImportListModalContent(props) {
 
                 <FormInputGroup
                   type={inputTypes.QUALITY_PROFILE_SELECT}
-                  name="profileId"
+                  name="qualityProfileId"
                   helpText={'Quality Profile list items should be added with'}
-                  {...profileId}
+                  {...qualityProfileId}
                   onChange={onInputChange}
                 />
               </FormGroup>

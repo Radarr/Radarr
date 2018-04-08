@@ -7,7 +7,7 @@ namespace Lidarr.Api.V1.ImportLists
         public bool EnableAutomaticAdd { get; set; }
         public bool ShouldMonitor { get; set; }
         public string RootFolderPath { get; set; }
-        public int ProfileId { get; set; }
+        public int QualityProfileId { get; set; }
         public int LanguageProfileId { get; set; }
         public int MetadataProfileId { get; set; }
     }
@@ -26,7 +26,7 @@ namespace Lidarr.Api.V1.ImportLists
             resource.EnableAutomaticAdd = definition.EnableAutomaticAdd;
             resource.ShouldMonitor = definition.ShouldMonitor;
             resource.RootFolderPath = definition.RootFolderPath;
-            resource.ProfileId = definition.ProfileId;
+            resource.QualityProfileId = definition.ProfileId;
             resource.LanguageProfileId = definition.LanguageProfileId;
             resource.MetadataProfileId = definition.MetadataProfileId;
 
@@ -45,7 +45,7 @@ namespace Lidarr.Api.V1.ImportLists
             definition.EnableAutomaticAdd = resource.EnableAutomaticAdd;
             definition.ShouldMonitor = resource.ShouldMonitor;
             definition.RootFolderPath = resource.RootFolderPath;
-            definition.ProfileId = resource.ProfileId;
+            definition.ProfileId = resource.QualityProfileId;
             definition.LanguageProfileId = resource.LanguageProfileId;
             definition.MetadataProfileId = resource.MetadataProfileId;
 

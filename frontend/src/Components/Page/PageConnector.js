@@ -8,7 +8,7 @@ import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
 import { fetchArtist } from 'Store/Actions/artistActions';
 import { fetchTags } from 'Store/Actions/tagActions';
-import { fetchQualityProfiles, fetchLanguageProfiles, fetchMetadataProfiles, fetchUISettings } from 'Store/Actions/settingsActions';
+import { fetchQualityProfiles, fetchLanguageProfiles, fetchMetadataProfiles, fetchUISettings, fetchImportLists } from 'Store/Actions/settingsActions';
 import { fetchStatus } from 'Store/Actions/systemActions';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
@@ -38,11 +38,17 @@ function createMapStateToProps() {
       const isPopulated = artist.isPopulated &&
         tags.isPopulated &&
         settings.qualityProfiles.isPopulated &&
+        settings.languageProfiles.isPopulated &&
+        settings.metadataProfiles.isPopulated &&
+        settings.importLists.isPopulated &&
         settings.ui.isPopulated;
 
       const hasError = !!artist.error ||
         !!tags.error ||
         !!settings.qualityProfiles.error ||
+        !!settings.languageProfiles.error ||
+        !!settings.metadataProfiles.error ||
+        !!settings.importLists.error ||
         !!settings.ui.error;
 
       return {
@@ -51,6 +57,9 @@ function createMapStateToProps() {
         artistError: artist.error,
         tagsError: tags.error,
         qualityProfilesError: settings.qualityProfiles.error,
+        languageProfilesError: settings.languageProfiles.error,
+        metadataProfilesError: settings.metadataProfiles.error,
+        importListsError: settings.importLists.error,
         uiSettingsError: settings.ui.error,
         isSmallScreen: dimensions.isSmallScreen,
         isSidebarVisible: app.isSidebarVisible,
@@ -78,6 +87,9 @@ function createMapDispatchToProps(dispatch, props) {
     },
     dispatchFetchMetadataProfiles() {
       dispatch(fetchMetadataProfiles());
+    },
+    dispatchFetchImportLists() {
+      dispatch(fetchImportLists());
     },
     dispatchFetchUISettings() {
       dispatch(fetchUISettings());
@@ -114,6 +126,7 @@ class PageConnector extends Component {
       this.props.dispatchFetchQualityProfiles();
       this.props.dispatchFetchLanguageProfiles();
       this.props.dispatchFetchMetadataProfiles();
+      this.props.dispatchFetchImportLists();
       this.props.dispatchFetchUISettings();
       this.props.dispatchFetchStatus();
     }
@@ -138,6 +151,7 @@ class PageConnector extends Component {
       dispatchFetchQualityProfiles,
       dispatchFetchLanguageProfiles,
       dispatchFetchMetadataProfiles,
+      dispatchFetchImportLists,
       dispatchFetchUISettings,
       dispatchFetchStatus,
       ...otherProps
@@ -176,6 +190,7 @@ PageConnector.propTypes = {
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,
   dispatchFetchLanguageProfiles: PropTypes.func.isRequired,
   dispatchFetchMetadataProfiles: PropTypes.func.isRequired,
+  dispatchFetchImportLists: PropTypes.func.isRequired,
   dispatchFetchUISettings: PropTypes.func.isRequired,
   dispatchFetchStatus: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired

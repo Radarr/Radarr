@@ -6,12 +6,17 @@ function createProfileInUseSelector(profileProp) {
   return createSelector(
     (state, { id }) => id,
     createAllArtistSelector(),
-    (id, artist) => {
+    (state) => state.settings.importLists.items,
+    (id, artist, lists) => {
       if (!id) {
         return false;
       }
 
-      return _.some(artist, { [profileProp]: id });
+      if (_.some(artist, { [profileProp]: id }) || _.some(lists, { [profileProp]: id })) {
+        return true;
+      }
+
+      return false;
     }
   );
 }

@@ -4,6 +4,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.ImportLists;
 
 namespace NzbDrone.Core.Profiles.Metadata
 {
@@ -21,12 +22,17 @@ namespace NzbDrone.Core.Profiles.Metadata
     {
         private readonly IMetadataProfileRepository _profileRepository;
         private readonly IArtistService _artistService;
+        private readonly IImportListFactory _importListFactory;
         private readonly Logger _logger;
 
-        public MetadataProfileService(IMetadataProfileRepository profileRepository, IArtistService artistService, Logger logger)
+        public MetadataProfileService(IMetadataProfileRepository profileRepository,
+                                      IArtistService artistService,
+                                      IImportListFactory importListFactory,
+                                      Logger logger)
         {
             _profileRepository = profileRepository;
             _artistService = artistService;
+            _importListFactory = importListFactory;
             _logger = logger;
         }
 
@@ -42,7 +48,7 @@ namespace NzbDrone.Core.Profiles.Metadata
 
         public void Delete(int id)
         {
-            if (_artistService.GetAllArtists().Any(c => c.MetadataProfileId == id))
+            if (_artistService.GetAllArtists().Any(c => c.MetadataProfileId == id) || _importListFactory.All().Any(c => c.MetadataProfileId == id))
             {
                 var profile = _profileRepository.Get(id);
                 throw new MetadataProfileInUseException(profile.Name);
