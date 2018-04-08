@@ -872,6 +872,9 @@
     <Compile Include="Notifications\Boxcar\BoxcarProxy.cs" />
     <Compile Include="Notifications\Boxcar\BoxcarSettings.cs" />
     <Compile Include="Notifications\GrabMessage.cs" />
+    <Compile Include="Notifications\MediaBrowser\Model\EmbyMediaFolder.cs" />
+    <Compile Include="Notifications\MediaBrowser\Model\EmbyMediaFoldersResponse.cs" />
+    <Compile Include="Notifications\MediaBrowser\Model\EmbyMediaUpdateInfo.cs" />
     <Compile Include="Notifications\Plex\Models\PlexIdentity.cs" />
     <Compile Include="Notifications\Plex\Models\PlexResponse.cs" />
     <Compile Include="Notifications\Plex\Models\PlexPreferences.cs" />
