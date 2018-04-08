@@ -200,7 +200,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-        private static readonly Regex CommonTagRegex = new Regex(@"(\[|\(){1}(version|deluxe|single|clean|album|special|bonus)+\s*.*(\]|\)){1}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex CommonTagRegex = new Regex(@"(\[|\(){1}(version|limited|deluxe|single|clean|album|special|bonus)+\s*.*(\]|\)){1}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         
         public static ParsedTrackInfo ParseMusicPath(string path)
         {
