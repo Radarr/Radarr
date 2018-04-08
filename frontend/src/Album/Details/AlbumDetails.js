@@ -140,6 +140,7 @@ class AlbumDetails extends Component {
       statistics,
       monitored,
       releaseDate,
+      ratings,
       images,
       media,
       isFetching,
@@ -280,14 +281,14 @@ class AlbumDetails extends Component {
                   </div>
                 </div>
 
-                {/* <div className={styles.details}>
+                <div className={styles.details}>
                   <div>
                     <HeartRating
                       rating={ratings.value}
                       iconSize={20}
                     />
                   </div>
-                </div> */}
+                </div>
 
                 <div className={styles.detailsLabels}>
 
@@ -446,6 +447,7 @@ AlbumDetails.propTypes = {
   albumType: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
+  ratings: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   media: PropTypes.arrayOf(PropTypes.object).isRequired,
   monitored: PropTypes.bool.isRequired,

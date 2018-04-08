@@ -101,6 +101,7 @@ namespace NzbDrone.Core.Music
             album.ReleaseDate = albumInfo.ReleaseDate;
             album.Duration = tuple.Item2.Sum(track => track.Duration);
             album.Releases = albumInfo.Releases;
+            album.Ratings = albumInfo.Ratings;
             album.CurrentRelease = albumInfo.CurrentRelease;
 
             _refreshTrackService.RefreshTrackInfo(album, tuple.Item2);

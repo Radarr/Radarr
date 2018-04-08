@@ -265,6 +265,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             album.ForeignAlbumId = resource.Id;
             album.ReleaseDate = resource.ReleaseDate;
             album.CleanTitle = Parser.Parser.CleanArtistName(album.Title);
+            album.Ratings = MapRatings(resource.Rating);
             album.AlbumType = resource.Type;
 
             if (resource.Images != null)
