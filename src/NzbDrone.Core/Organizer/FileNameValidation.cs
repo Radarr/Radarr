@@ -24,22 +24,31 @@ namespace NzbDrone.Core.Organizer
         public static IRuleBuilderOptions<T, string> ValidAlbumFolderFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             ruleBuilder.SetValidator(new NotEmptyValidator(null));
-            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.AlbumTitleRegex)).WithMessage("Must contain Album title");
+            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.AlbumTitleRegex)).WithMessage("Must contain Album title")
+                              .SetValidator(new RegularExpressionValidator(FileNameBuilder.ReleaseDateRegex)).WithMessage("Must contain Release year");
         }
     }
 
     public class ValidStandardTrackFormatValidator : PropertyValidator
     {
         public ValidStandardTrackFormatValidator()
-            : base("Must contain Album Title and Track numbers OR Original Title")
+            : base("Must contain Track Title and Track numbers OR Original Title")
         {
 
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
+            var value = context.PropertyValue as string;
 
-            return true; //TODO Add Logic here
+            if (!(FileNameBuilder.TrackTitleRegex.IsMatch(value) &&
+                FileNameBuilder.TrackRegex.IsMatch(value)) &&
+                !FileNameValidation.OriginalTokenRegex.IsMatch(value))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

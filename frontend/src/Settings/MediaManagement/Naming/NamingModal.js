@@ -123,7 +123,9 @@ class NamingModal extends Component {
 
       { token: '{Album CleanTitle}', example: 'Album Title' },
       { token: '{Album.CleanTitle}', example: 'Album.Title' },
-      { token: '{Album_CleanTitle}', example: 'Album_Title' }
+      { token: '{Album_CleanTitle}', example: 'Album_Title' },
+
+      { token: '{Album Type}', example: 'Album Type' }
     ];
 
     const mediumTokens = [
