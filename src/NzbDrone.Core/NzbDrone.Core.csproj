@@ -829,7 +829,6 @@
     <Compile Include="Music\ArtistScannedHandler.cs" />
     <Compile Include="Music\ArtistEditedService.cs" />
     <Compile Include="Music\ShouldRefreshAlbum.cs" />
-    <Compile Include="Music\TrackMonitoredService.cs" />
     <Compile Include="Music\Member.cs" />
     <Compile Include="Music\AddArtistOptions.cs" />
     <Compile Include="Music\AddArtistService.cs" />

@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Music
         void DeleteMany(List<Album> albums);
         void RemoveAddOptions(Album album);
         Album FindAlbumByRelease(string releaseId);
+        List<Album> GetArtistAlbumsWithFiles(Artist artist);
     }
 
     public class AlbumService : IAlbumService,
@@ -140,6 +141,11 @@ namespace NzbDrone.Core.Music
             var albums = _albumRepository.ArtistAlbumsBetweenDates(artist, start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
 
             return albums;
+        }
+
+        public List<Album> GetArtistAlbumsWithFiles(Artist artist)
+        {
+            return _albumRepository.GetArtistAlbumsWithFiles(artist);
         }
 
         public void InsertMany(List<Album> albums)

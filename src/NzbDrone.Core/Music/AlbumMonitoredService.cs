@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net.Sockets;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Music
 {
@@ -34,8 +37,13 @@ namespace NzbDrone.Core.Music
 
                 var albums = _albumService.GetAlbumsByArtist(artist.Id);
 
+                var albumsWithFiles = _albumService.GetArtistAlbumsWithFiles(artist);
+
+                var albumsWithoutFiles = albums.Where(c => !albumsWithFiles.Select(e => e.Id).Contains(c.Id) && c.ReleaseDate <= DateTime.UtcNow).ToList();
+
                 var monitoredAlbums = monitoringOptions.AlbumsToMonitor;
 
+                // If specific albums are passed use those instead of the monitoring options.
                 if (monitoredAlbums.Any())
                 {
                     ToggleAlbumsMonitoredState(
@@ -45,10 +53,44 @@ namespace NzbDrone.Core.Music
                 }
                 else
                 {
-                    ToggleAlbumsMonitoredState(albums, monitoringOptions.Monitored);
+                    switch (monitoringOptions.SelectedOption)
+                    {
+                        case MonitoringOption.All:
+                            ToggleAlbumsMonitoredState(albums, true);
+                            break;
+                        case MonitoringOption.Future:
+                            _logger.Debug("Unmonitoring Albums with Files");
+                            ToggleAlbumsMonitoredState(albums.Where(e => albumsWithFiles.Select(c => c.Id).Contains(e.Id)), false);
+                            _logger.Debug("Unmonitoring Albums without Files");
+                            ToggleAlbumsMonitoredState(albums.Where(e => albumsWithoutFiles.Select(c => c.Id).Contains(e.Id)), false);
+                            break;
+                        case MonitoringOption.None:
+                            ToggleAlbumsMonitoredState(albums, false);
+                            break;
+                        case MonitoringOption.Missing:
+                            _logger.Debug("Unmonitoring Albums with Files");
+                            ToggleAlbumsMonitoredState(albums.Where(e => albumsWithFiles.Select(c => c.Id).Contains(e.Id)), false);
+                            _logger.Debug("Monitoring Albums without Files");
+                            ToggleAlbumsMonitoredState(albums.Where(e => albumsWithoutFiles.Select(c => c.Id).Contains(e.Id)), true);
+                            break;
+                        case MonitoringOption.Existing:
+                            _logger.Debug("Monitoring Albums with Files");
+                            ToggleAlbumsMonitoredState(albums.Where(e => albumsWithFiles.Select(c => c.Id).Contains(e.Id)), true);
+                            _logger.Debug("Unmonitoring Albums without Files");
+                            ToggleAlbumsMonitoredState(albums.Where(e => albumsWithoutFiles.Select(c => c.Id).Contains(e.Id)), false);
+                            break;
+                        case MonitoringOption.Latest:
+                            ToggleAlbumsMonitoredState(albums, false);
+                            ToggleAlbumsMonitoredState(albums.OrderByDescending(e=>e.ReleaseDate).Take(1),true);
+                            break;
+                        case MonitoringOption.First:
+                            ToggleAlbumsMonitoredState(albums, false);
+                            ToggleAlbumsMonitoredState(albums.OrderBy(e => e.ReleaseDate).Take(1), true);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
-
-                //TODO Add Other Options for Future/Exisitng/Missing Once we have a good way to check for Album Related Files.
 
                 _albumService.UpdateAlbums(albums);
             }

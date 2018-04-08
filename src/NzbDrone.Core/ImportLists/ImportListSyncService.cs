@@ -106,7 +106,7 @@ namespace NzbDrone.Core.ImportLists
                         LanguageProfileId = importList.LanguageProfileId,
                         MetadataProfileId = importList.MetadataProfileId,
                         AlbumFolder = true,
-                        AddOptions = new AddArtistOptions{SearchForMissingAlbums = true, Monitored = importList.ShouldMonitor }
+                        AddOptions = new AddArtistOptions{SearchForMissingAlbums = true, Monitored = importList.ShouldMonitor, SelectedOption = 0}
                     });
                 }
 

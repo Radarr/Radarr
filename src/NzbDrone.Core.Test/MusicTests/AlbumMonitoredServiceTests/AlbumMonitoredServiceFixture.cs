@@ -42,6 +42,10 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
                   .Setup(s => s.GetAlbumsByArtist(It.IsAny<int>()))
                   .Returns(_albums);
 
+            Mocker.GetMock<IAlbumService>()
+                .Setup(s => s.GetArtistAlbumsWithFiles(It.IsAny<Artist>()))
+                .Returns(new List<Album>());
+
             Mocker.GetMock<ITrackService>()
                 .Setup(s => s.GetTracksByAlbum(It.IsAny<int>()))
                 .Returns(new List<Track>());
@@ -83,13 +87,11 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         }
 
         [Test]
-        [Ignore("Not Implemented Yet")]
         public void should_be_able_to_monitor_new_albums_only()
         {
             var monitoringOptions = new MonitoringOptions
             {
-                IgnoreAlbumsWithFiles = true,
-                IgnoreAlbumsWithoutFiles = true
+                SelectedOption = MonitoringOption.Future
             };
 
             Subject.SetAlbumMonitoredStatus(_artist, monitoringOptions);

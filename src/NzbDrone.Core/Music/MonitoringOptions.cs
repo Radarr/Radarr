@@ -9,10 +9,20 @@ namespace NzbDrone.Core.Music
         {
             AlbumsToMonitor = new List<string>();
         }
-
-        public bool IgnoreAlbumsWithFiles { get; set; }
-        public bool IgnoreAlbumsWithoutFiles { get; set; }
+        
+        public MonitoringOption SelectedOption { get; set; }
         public List<string> AlbumsToMonitor { get; set; }
         public bool Monitored { get; set; }
+    }
+
+    public enum MonitoringOption
+    {
+        All = 0,
+        Future = 1,
+        Missing = 2,
+        Existing = 3,
+        Latest = 4,
+        First = 5,
+        None = 6
     }
 }
