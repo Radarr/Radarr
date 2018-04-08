@@ -23,31 +23,31 @@
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">Best Matching Quality</label>
-                <div class="form-control">
-                    <span class="badge badge-success col-md-1" id="best-match">None</span>
+                <div class="col-md-2">
+                    <span class="badge badge-success" id="best-match">None</span>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-2 control-label">Legend for All Quality Matches</label>
                 <div class="col-md-10">
-                    <div class="row">
+                    <div class="row quality-legend-row">
                         <div class="col-md-2">
-                            <label class="label label-success" style="font-size: 14px;">Group Example: ...</label>
+                            <label class="label label-success label-large">Group Example: ...</label>
                         </div>
                         <div class="col-md-10">
                             One of the Quality Tags of Type Example has matched the release. For an overview of all Quality Tag Types <a href="https://github.com/Radarr/Radarr/wiki/Custom-Qualities" target="_blank">see the wiki</a>.
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row quality-legend-row">
                         <div class="col-md-2">
-                            <label class="label label-danger" style="font-size: 14px;">Group Example: ...</label>
+                            <label class="label label-danger label-large" style="font-size: 14px;">Group Example: ...</label>
                         </div>
                         <div class="col-md-10">
                             None of the Quality Tags of Type Example has matched the release. Because a group failed to match, the release will not be considered this quality.
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row quality-legend-row">
                         <div class="col-md-2">
                             <label class="label label-info" >S_BLURAY</label>
                         </div>
@@ -55,7 +55,7 @@
                             The Quality Tag matches the release. Ergo the whole group matches the release.
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row quality-legend-row">
                         <div class="col-md-2">
                             <label class="label label-warning" >S_BLURAY</label>
                         </div>
@@ -63,7 +63,7 @@
                             The Quality Tag does not match the release.
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row quality-legend-row">
                         <div class="col-md-2">
                             <label class="label label-danger" >L_RE_ENGLISH</label>
                         </div>

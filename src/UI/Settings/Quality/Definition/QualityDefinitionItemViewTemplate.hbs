@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row quality-definition-row">
     <span class="col-md-2 col-sm-3">
         {{#if parentQualityDefinition }}
             <span class="label label-warning">Custom Format</span>
@@ -35,12 +35,15 @@
 				</div>
 		</span>
     {{#if parentQualityDefinition }}
+        <span class="col-md-1">
+            Parent:
+        </span>
         <span class="col-md-3 col-sm-4">
-            Parent: <select class="form-control x-parent" name="parentQuality">
+            <select class="form-control x-parent" name="parentQuality">
             {{#each qualities}}
                 <option value="{{id}}">{{title}}</option>
             {{/each}}
-        </select>
+            </select>
         </span>
     {{else}}
 
@@ -52,7 +55,7 @@
 
 </div>
 {{#if parentQualityDefinition}}
-    <div class="row advanced-setting">
+    <div class="row advanced-setting quality-tags-row">
         <div class="col-sm-2">
             Quality Tags:
         </div>

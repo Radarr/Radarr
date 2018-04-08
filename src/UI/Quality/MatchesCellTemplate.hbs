@@ -1,3 +1,3 @@
 {{#each groups}}
-    <span class="label {{#if ok}}label-success{{else}}label-danger{{/if}}" style="font-size: 14px;">Group {{@key}}: {{#each matches}}<span class="label {{#if ok}}label-info{{else}}label-warning{{/if}}">{{value}}</span>{{/each}}</span>
+    <span class="label {{#if ok}}label-success{{else}}label-danger{{/if}} label-large">Group {{@key}}: {{#each matches}}<span class="label {{#if ok}}label-info{{else}}label-warning{{/if}}">{{value}}</span>{{/each}}</span>
 {{/each}}
