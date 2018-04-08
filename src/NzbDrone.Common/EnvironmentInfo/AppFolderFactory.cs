@@ -31,7 +31,15 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         public void Register()
         {
-            _diskProvider.EnsureFolder(_appFolderInfo.AppDataFolder);
+            try
+            {
+                _diskProvider.EnsureFolder(_appFolderInfo.AppDataFolder);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new LidarrStartupException("Cannot create AppFolder, Access to the path {0} is denied", _appFolderInfo.AppDataFolder);
+            }
+            
 
             if (OsInfo.IsWindows)
             {
