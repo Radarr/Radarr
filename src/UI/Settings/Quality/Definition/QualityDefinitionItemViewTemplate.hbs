@@ -23,9 +23,10 @@
 								</span>
 						</div>
 						<div class="pull-right">
-								<span class="label label-warning x-max-thirty"
-                                        name="thirtyMinuteMaxSize"
-                                        title="Maximum size for a 90 minute movie">
+								<span class="label label-warning"
+                                        title="Maximum size for a 90 minute movie. Click to edit, allows you to go beyond the maximum value.
+                                        Radarr will automatically convert this field from Gigabytes to Megabytes per minute of runtime assuming a 90 minute movie, when you click outside of this label.">
+                                    <input type="text" name="thirtyMinuteMaxSize" class="x-max-thirty label-textfield">
 								</span>
 								<span class="label label-info x-max-sixty"
                                         name="sixtyMinuteMaxSize"
