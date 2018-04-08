@@ -2,6 +2,7 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
@@ -50,8 +51,41 @@ namespace NzbDrone.Core.Test.Languages
                                             .With(c => c.LanguageProfileId = profile.Id)
                                             .Build().ToList();
 
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .All()
+                .With(c => c.ProfileId = 1)
+                .Build().ToList();
 
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
+            Mocker.GetMock<ILanguageProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
+
+            Assert.Throws<LanguageProfileInUseException>(() => Subject.Delete(profile.Id));
+
+            Mocker.GetMock<ILanguageProfileRepository>().Verify(c => c.Delete(It.IsAny<int>()), Times.Never());
+
+        }
+
+        [Test]
+        public void should_not_be_able_to_delete_profile_if_assigned_to_import_list()
+        {
+            var profile = Builder<LanguageProfile>.CreateNew()
+                .With(p => p.Id = 2)
+                .Build();
+
+            var artistList = Builder<Artist>.CreateListOfSize(3)
+                .All()
+                .With(c => c.LanguageProfileId = 1)
+                .Build().ToList();
+
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .Random(1)
+                .With(c => c.LanguageProfileId = profile.Id)
+                .Build().ToList();
+
+
+            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<ILanguageProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
 
             Assert.Throws<LanguageProfileInUseException>(() => Subject.Delete(profile.Id));
@@ -62,15 +96,20 @@ namespace NzbDrone.Core.Test.Languages
 
 
         [Test]
-        public void should_delete_profile_if_not_assigned_to_series()
+        public void should_delete_profile_if_not_assigned_to_artist_or_import_list()
         {
             var artistList = Builder<Artist>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.LanguageProfileId = 2)
                                             .Build().ToList();
 
+            var importLists = Builder<ImportListDefinition>.CreateListOfSize(2)
+                .All()
+                .With(c => c.LanguageProfileId = 2)
+                .Build().ToList();
 
             Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
 
             Subject.Delete(1);
 
