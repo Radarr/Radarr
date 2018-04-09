@@ -107,7 +107,9 @@ namespace NzbDrone.Core.Music
             _refreshTrackService.RefreshTrackInfo(album, tuple.Item2);
 
             _albumService.UpdateMany(new List<Album>{album});
-            
+
+            _logger.Debug("Finished album refresh for {0}", album.Title);
+
         }
 
         public void Execute(RefreshAlbumCommand message)

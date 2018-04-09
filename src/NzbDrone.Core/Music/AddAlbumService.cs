@@ -5,6 +5,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 
@@ -41,7 +42,7 @@ namespace NzbDrone.Core.Music
             var tuple = AddSkyhookData(newAlbum);
             newAlbum = tuple.Item1;
             _refreshTrackService.RefreshTrackInfo(newAlbum, tuple.Item2);
-            _logger.Info("Adding Album {0}", newAlbum);
+            _logger.ProgressInfo("Adding Album {0}", newAlbum.Title);
             _albumService.AddAlbum(newAlbum);
 
             return newAlbum;
@@ -60,6 +61,7 @@ namespace NzbDrone.Core.Music
                 album.LastInfoSync = added;
                 album = _albumService.AddAlbum(album);
                 _refreshTrackService.RefreshTrackInfo(album,tuple.Item2);
+                _logger.ProgressInfo("Adding Album {0}", newAlbum.Title);
                 albumsToAdd.Add(album);
             }
 
