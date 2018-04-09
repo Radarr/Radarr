@@ -1,5 +1,6 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
@@ -13,11 +14,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
     public class RootFolderCheck : HealthCheckBase
     {
         private readonly IArtistService _artistService;
+        private readonly IImportListFactory _importListFactory;
         private readonly IDiskProvider _diskProvider;
 
-        public RootFolderCheck(IArtistService artistService, IDiskProvider diskProvider)
+        public RootFolderCheck(IArtistService artistService, IImportListFactory importListFactory, IDiskProvider diskProvider)
         {
             _artistService = artistService;
+            _importListFactory = importListFactory;
             _diskProvider = diskProvider;
         }
 
@@ -28,6 +31,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
                                                    .Distinct()
                                                    .Where(s => !_diskProvider.FolderExists(s))
                                                    .ToList();
+
+            missingRootFolders.AddRange(_importListFactory.All()
+                .Select(s => s.RootFolderPath)
+                .Distinct()
+                .Where(s => !_diskProvider.FolderExists(s))
+                .ToList());
+
+            missingRootFolders = missingRootFolders.Distinct().ToList();
 
             if (missingRootFolders.Any())
             {

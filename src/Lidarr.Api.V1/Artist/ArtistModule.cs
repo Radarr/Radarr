@@ -73,6 +73,8 @@ namespace Lidarr.Api.V1.Artist
             DeleteResource = DeleteArtist;
 
             Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.QualityProfileId));
+            Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.LanguageProfileId));
+            Http.Validation.RuleBuilderExtensions.ValidId(SharedValidator.RuleFor(s => s.MetadataProfileId));
 
             SharedValidator.RuleFor(s => s.Path)
                            .Cascade(CascadeMode.StopOnFirstFailure)

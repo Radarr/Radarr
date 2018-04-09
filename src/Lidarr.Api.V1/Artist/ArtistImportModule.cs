@@ -21,9 +21,9 @@ namespace Lidarr.Api.V1.Artist
         private Response Import()
         {
             var resource = Request.Body.FromJson<List<ArtistResource>>();
-            var newArtist = resource.ToModel();
+            var newArtists = resource.ToModel();
 
-            return _addArtistService.AddArtists(newArtist).ToResource().AsResponse();
+            return _addArtistService.AddArtists(newArtists).ToResource().AsResponse();
         }
     }
 }

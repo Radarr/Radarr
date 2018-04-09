@@ -179,6 +179,7 @@
     <Compile Include="Datastore\Migration\003_add_medium_support.cs" />
     <Compile Include="Datastore\Migration\006_separate_automatic_and_interactive_search.cs" />
     <Compile Include="Datastore\Migration\007_change_album_path_to_relative.cs" />
+    <Compile Include="Datastore\Migration\014_fix_language_metadata_profiles.cs" />
     <Compile Include="Datastore\Migration\013_album_download_notification.cs" />
     <Compile Include="Datastore\Migration\009_album_releases.cs" />
     <Compile Include="Datastore\Migration\010_album_releases_fix.cs" />
