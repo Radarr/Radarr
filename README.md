@@ -63,7 +63,7 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="graphs/contributors"><img src="https://opencollective.com/lidarr/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/lidarr/Lidarr/graphs/contributors"><img src="https://opencollective.com/lidarr/contributors.svg?width=890&button=false" /></a>
 
 
 ## Backers
