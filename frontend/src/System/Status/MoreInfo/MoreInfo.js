@@ -36,9 +36,9 @@ class MoreInfo extends Component {
             <Link to="https://discord.gg/8Y7rDc9">#lidarr on Discord</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Donations (PayPal)</DescriptionListItemTitle>
+          <DescriptionListItemTitle>Donations (OpenCollective)</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://www.paypal.me/Lidarr">Donate to Lidarr</Link>
+            <Link to="https://opencollective.com/lidarr">Donate to Lidarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Donations (BTC)</DescriptionListItemTitle>

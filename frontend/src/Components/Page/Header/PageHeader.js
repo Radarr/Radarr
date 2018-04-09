@@ -73,7 +73,7 @@ class PageHeader extends Component {
           <IconButton
             className={styles.donate}
             name={icons.HEART}
-            to="https://www.paypal.me/Lidarr"
+            to="https://opencollective.com/lidarr"
             size={14}
           />
           <PageHeaderActionsMenuConnector
