@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
 
@@ -19,9 +20,17 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                                         .Build()
                                         .ToList();
 
+            var importList = Builder<ImportListDefinition>.CreateListOfSize(1)
+                .Build()
+                .ToList();
+
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetAllArtists())
                   .Returns(artist);
+
+            Mocker.GetMock<IImportListFactory>()
+                .Setup(s => s.All())
+                .Returns(importList);
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetParentFolder(artist.First().Path))
@@ -38,6 +47,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetAllArtists())
                   .Returns(new List<Artist>());
+
+            Mocker.GetMock<IImportListFactory>()
+                .Setup(s => s.All())
+                .Returns(new List<ImportListDefinition>());
 
             Subject.Check().ShouldBeOk();
         }
