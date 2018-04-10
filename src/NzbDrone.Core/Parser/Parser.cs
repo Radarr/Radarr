@@ -200,7 +200,10 @@ namespace NzbDrone.Core.Parser
 
         private static readonly string[] Numbers = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-        private static readonly Regex CommonTagRegex = new Regex(@"(\[|\(){1}(version|limited|deluxe|single|clean|album|special|bonus)+\s*.*(\]|\)){1}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex[] CommonTagRegex = new Regex[] {
+            new Regex(@"(\[|\()*\b((featuring|feat.|feat|ft|ft.)\s{1}){1}\s*.*(\]|\))*", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            new Regex(@"(\[|\(){1}(version|limited|deluxe|single|clean|album|special|bonus)+\s*.*(\]|\)){1}", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+        };
         
         public static ParsedTrackInfo ParseMusicPath(string path)
         {
@@ -588,12 +591,18 @@ namespace NzbDrone.Core.Parser
 
         public static string CleanAlbumTitle(string album)
         {
-            return CommonTagRegex.Replace(album, string.Empty).Trim();
+            return CommonTagRegex[1].Replace(album, string.Empty).Trim();
         }
 
         public static string CleanTrackTitle(string title)
         {
-            return CommonTagRegex.Replace(title, string.Empty).Trim();
+            var intermediateTitle = title;
+            foreach (var regex in CommonTagRegex)
+            {
+                intermediateTitle = regex.Replace(intermediateTitle, string.Empty).Trim();
+            }
+
+            return intermediateTitle;
         }
 
         private static ParsedTrackInfo ParseAudioTags(string path)

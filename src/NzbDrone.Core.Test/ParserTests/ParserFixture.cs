@@ -60,6 +60,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Songs of Experience (Deluxe Edition)", "Songs of Experience")]
         [TestCase("Mr. Bad Guy [Special Edition]", "Mr. Bad Guy")]
         [TestCase("Smooth Criminal (single)", "Smooth Criminal")]
+        [TestCase("Wie Maak Die Jol Vol (Ft. Isaac Mutant, Knoffel, Jaak Paarl & Scallywag)", "Wie Maak Die Jol Vol")]
+        [TestCase("Alles Schon Gesehen (Feat. Deichkind)", "Alles Schon Gesehen")]
+        [TestCase("Science Fiction/Double Feature", "Science Fiction/Double Feature")]
+        [TestCase("Dancing Feathers", "Dancing Feathers")]
         public void should_remove_common_tags_from_track_title(string title, string correct)
         {
             var result = Parser.Parser.CleanTrackTitle(title);
