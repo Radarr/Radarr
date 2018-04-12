@@ -22,6 +22,11 @@ namespace NzbDrone.Core.Notifications.Plex
             UpdateIfEnabled(message.Artist);
         }
 
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
+        {
+            UpdateIfEnabled(message.Artist);
+        }
+
         public override void OnRename(Artist artist)
         {
             UpdateIfEnabled(artist);
