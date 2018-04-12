@@ -12,16 +12,6 @@ namespace NzbDrone.Core.Parser.Model
         public Movie Movie { get; set; }
         public MappingResultType MappingResult { get; set; }
 
-        public bool IsRecentMovie()
-        {
-            if (Movie.PhysicalRelease.HasValue)
-            {
-                return Movie.PhysicalRelease.Value >= DateTime.UtcNow.AddDays(-21);
-            }
-
-            return true;
-        }
-
         public override string ToString()
         {
             return Release.Title;

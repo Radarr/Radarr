@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
             var category = Settings.MovieCategory;
-            var priority = remoteMovie.IsRecentMovie() ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
+            var priority = remoteMovie.Movie.IsRecentMovie() ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
 
             var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
 
