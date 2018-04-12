@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Notifications.Plex
         [FieldDefinition(2, Label = "Username")]
         public string Username { get; set; }
 
-        [FieldDefinition(3, Label = "Password")]
+        [FieldDefinition(3, Label = "Password", Type = FieldType.Password)]
         public string Password { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(Host);
