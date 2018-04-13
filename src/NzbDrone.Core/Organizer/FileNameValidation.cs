@@ -24,8 +24,8 @@ namespace NzbDrone.Core.Organizer
         public static IRuleBuilderOptions<T, string> ValidAlbumFolderFormat<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             ruleBuilder.SetValidator(new NotEmptyValidator(null));
-            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.AlbumTitleRegex)).WithMessage("Must contain Album title")
-                              .SetValidator(new RegularExpressionValidator(FileNameBuilder.ReleaseDateRegex)).WithMessage("Must contain Release year");
+            return ruleBuilder.SetValidator(new RegularExpressionValidator(FileNameBuilder.AlbumTitleRegex)).WithMessage("Must contain Album title");
+                              //.SetValidator(new RegularExpressionValidator(FileNameBuilder.ReleaseDateRegex)).WithMessage("Must contain Release year");
         }
     }
 
