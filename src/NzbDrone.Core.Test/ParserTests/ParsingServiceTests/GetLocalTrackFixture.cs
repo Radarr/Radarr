@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 .Returns(_fakeAlbum);
 
             Mocker.GetMock<ITrackService>()
-                .Setup(s => s.FindTrackByTitle(_fakeArtist.Id, _fakeAlbum.Id, It.IsAny<int>(), _fakeTrack.Title))
+                .Setup(s => s.FindTrackByTitle(_fakeArtist.Id, _fakeAlbum.Id, It.IsAny<int>(), It.IsAny<int>(), _fakeTrack.Title))
                 .Returns(_fakeTrack);
         }
 
