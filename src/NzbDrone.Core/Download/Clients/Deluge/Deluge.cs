@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie();
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
             if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
                 !isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First)
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             _proxy.SetTorrentConfiguration(actualHash, "remove_at_ratio", false, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie();
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
             if (isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First ||
                 !isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First)

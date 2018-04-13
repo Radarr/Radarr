@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         {
             var category = Settings.MovieCategory;
 
-            var priority = remoteMovie.Movie.IsRecentMovie() ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
+            var priority = remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
 
             var addpaused = Settings.AddPaused;
 

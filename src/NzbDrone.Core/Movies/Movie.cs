@@ -61,6 +61,24 @@ namespace NzbDrone.Core.Movies
         public string YouTubeTrailerId{ get; set; }
         public string Studio { get; set; }
 
+        public bool IsRecentMovie
+        {
+            get
+            {
+                if (PhysicalRelease.HasValue)
+                {
+                    return PhysicalRelease.Value >= DateTime.UtcNow.AddDays(-21);
+                }
+
+                if (InCinemas.HasValue)
+                {
+                    return InCinemas.Value >= DateTime.UtcNow.AddDays(-120);
+                }
+
+                return true;
+            }
+        }
+
         public bool HasFile => MovieFileId > 0;
 
         public string FolderName()
@@ -113,21 +131,6 @@ namespace NzbDrone.Core.Movies
 
 
             return DateTime.Now >= MinimumAvailabilityDate.AddDays((double)delay);
-        }
-
-        public bool IsRecentMovie()
-        {
-            if (PhysicalRelease.HasValue)
-            {
-                return PhysicalRelease.Value >= DateTime.UtcNow.AddDays(-21);
-            }
-
-            if (InCinemas.HasValue)
-            {
-                return InCinemas.Value >= DateTime.UtcNow.AddDays(-120);
-            }
-
-            return true;
         }
 
         public DateTime PhysicalReleaseDate()

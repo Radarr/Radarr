@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
             _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie();
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
             if (isRecentMovie && Settings.RecentMoviePriority == (int)UTorrentPriority.First ||
                 !isRecentMovie && Settings.OlderMoviePriority == (int)UTorrentPriority.First)
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
             _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie();
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
 
             if (isRecentMovie && Settings.RecentMoviePriority == (int)UTorrentPriority.First ||
                 !isRecentMovie && Settings.OlderMoviePriority == (int)UTorrentPriority.First)
