@@ -1,4 +1,4 @@
-﻿using FluentValidation.Results;
+using FluentValidation.Results;
 using Growl.Connector;
 using Growl.CoreLibrary;
 using NzbDrone.Common.Extensions;
@@ -20,9 +20,8 @@ namespace NzbDrone.Core.Notifications.Growl
     public class GrowlService : IGrowlService
     {
         private readonly Logger _logger;
-
-        //TODO: Change this to Lidarr, but it is a breaking change (v3)
-        private readonly Application _growlApplication = new Application("NzbDrone");
+        
+        private readonly Application _growlApplication = new Application("Lidarr");
         private readonly NotificationType[] _notificationTypes;
 
         private class GrowlRequestState
@@ -133,8 +132,9 @@ namespace NzbDrone.Core.Notifications.Growl
         {
             var notificationTypes = new List<NotificationType>();
             notificationTypes.Add(new NotificationType("TEST", "Test"));
-            notificationTypes.Add(new NotificationType("GRAB", "Episode Grabbed"));
-            notificationTypes.Add(new NotificationType("DOWNLOAD", "Episode Complete"));
+            notificationTypes.Add(new NotificationType("GRAB", "Album Grabbed"));
+            notificationTypes.Add(new NotificationType("TRACKDOWNLOAD", "Track Complete"));
+            notificationTypes.Add(new NotificationType("ALBUMDOWNLOAD", "Album Complete"));
 
             return notificationTypes.ToArray();
         }
