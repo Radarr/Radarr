@@ -287,7 +287,26 @@ namespace NzbDrone.Core.Organizer
         public static string CleanFileName(string name, NamingConfig namingConfig)
         {
             bool replace = namingConfig.ReplaceIllegalCharacters;
-            string colonReplacementFormat = namingConfig.ColonReplacementFormat;
+            string colonReplacementFormat;
+
+            switch ((ColonReplacementFormat) namingConfig.ColonReplacementFormat)
+            {
+                case ColonReplacementFormat.Delete:
+                    colonReplacementFormat = "";
+                    break;
+                case ColonReplacementFormat.Dash:
+                    colonReplacementFormat = "-";
+                    break;
+                case ColonReplacementFormat.SpaceDash:
+                    colonReplacementFormat = " -";
+                    break;
+                case ColonReplacementFormat.SpaceDashSpace:
+                    colonReplacementFormat = " - ";
+                    break;
+                default:
+                    colonReplacementFormat = "";
+                    break;
+            }
 
             string result = name;
             string[] badCharacters = { "\\", "/", "<", ">", "?", "*", ":", "|", "\"" };
@@ -662,5 +681,13 @@ namespace NzbDrone.Core.Organizer
         Scene = 3,
         Range = 4,
         PrefixedRange = 5
+    }
+
+    public enum ColonReplacementFormat
+    {
+        Delete = 0,
+        Dash = 1,
+        SpaceDash = 2,
+        SpaceDashSpace = 3
     }
 }
