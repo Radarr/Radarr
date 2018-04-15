@@ -248,8 +248,9 @@ namespace NzbDrone.Core.Organizer
             {
                 AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}"});
             }
-                
-            return CleanFolderName(ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig));
+
+            string name = ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig);
+            return CleanFolderName(name, namingConfig);
         }
 
         public static string CleanTitle(string title)
@@ -283,11 +284,33 @@ namespace NzbDrone.Core.Organizer
             return title.Trim();
         }
 
-        public static string CleanFileName(string name, bool replace = true)
+        public static string CleanFileName(string name, NamingConfig namingConfig)
         {
+            bool replace = namingConfig.ReplaceIllegalCharacters;
+            string colonReplacementFormat;
+
+            switch ((ColonReplacementFormat) namingConfig.ColonReplacementFormat)
+            {
+                case ColonReplacementFormat.Delete:
+                    colonReplacementFormat = "";
+                    break;
+                case ColonReplacementFormat.Dash:
+                    colonReplacementFormat = "-";
+                    break;
+                case ColonReplacementFormat.SpaceDash:
+                    colonReplacementFormat = " -";
+                    break;
+                case ColonReplacementFormat.SpaceDashSpace:
+                    colonReplacementFormat = " - ";
+                    break;
+                default:
+                    colonReplacementFormat = "";
+                    break;
+            }
+
             string result = name;
             string[] badCharacters = { "\\", "/", "<", ">", "?", "*", ":", "|", "\"" };
-            string[] goodCharacters = { "+", "+", "", "", "!", "-", "", "", "" };
+            string[] goodCharacters = { "+", "+", "", "", "!", "-", colonReplacementFormat, "", "" };
 
             for (int i = 0; i < badCharacters.Length; i++)
             {
@@ -297,12 +320,12 @@ namespace NzbDrone.Core.Organizer
             return result.Trim();
         }
 
-        public static string CleanFolderName(string name)
+        public static string CleanFolderName(string name, NamingConfig namingConfig)
         {
             name = FileNameCleanupRegex.Replace(name, match => match.Captures[0].Value[0].ToString());
             name = name.Trim(' ', '.');
 
-            return CleanFileName(name);
+            return CleanFileName(name, namingConfig);
         }
 
         private void AddMovieTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
@@ -557,7 +580,7 @@ namespace NzbDrone.Core.Organizer
                 replacementText = replacementText.Replace(" ", tokenMatch.Separator);
             }
 
-            replacementText = CleanFileName(replacementText, namingConfig.ReplaceIllegalCharacters);
+            replacementText = CleanFileName(replacementText, namingConfig);
 
             if (!replacementText.IsNullOrWhiteSpace())
             {
@@ -658,5 +681,13 @@ namespace NzbDrone.Core.Organizer
         Scene = 3,
         Range = 4,
         PrefixedRange = 5
+    }
+
+    public enum ColonReplacementFormat
+    {
+        Delete = 0,
+        Dash = 1,
+        SpaceDash = 2,
+        SpaceDashSpace = 3
     }
 }
