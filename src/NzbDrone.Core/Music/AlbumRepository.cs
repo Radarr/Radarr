@@ -210,11 +210,11 @@ namespace NzbDrone.Core.Music
 
         private int GetCutOffAlbumsQueryCount(PagingSpec<Album> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff, List<LanguagesBelowCutoff> languagesBelowCutoff)
         {
-            var monitored = 0;
+            var monitored = "(Albums.[Monitored] = 0) OR (Artists.[Monitored] = 0)";
 
             if (pagingSpec.FilterExpressions.FirstOrDefault().ToString().Contains("True"))
             {
-                monitored = 1;
+                monitored = "(Albums.[Monitored] = 1) AND (Artists.[Monitored] = 1)";
             }
 
             string query = string.Format("SELECT Albums.* FROM (SELECT TrackFiles.AlbumId, TrackFiles.Language, COUNT(*) AS FileCount," +
