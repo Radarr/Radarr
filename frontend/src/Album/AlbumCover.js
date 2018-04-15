@@ -58,16 +58,23 @@ class AlbumCover extends Component {
       pixelRatio
     } = this.state;
 
-    const nextcover = findCover(images);
+    const nextCover = findCover(images);
 
-    if (nextcover && (!cover || nextcover.url !== cover.url)) {
+    if (nextCover && (!cover || nextCover.url !== cover.url)) {
       this.setState({
-        cover: nextcover,
-        coverUrl: getCoverUrl(nextcover, pixelRatio * size),
-        hasError: false
-        // Don't reset isLoaded, as we want to immediately try to
-        // show the new image, whether an image was shown previously
-        // or the placeholder was shown.
+        cover: nextCover,
+        coverUrl: getCoverUrl(nextCover, pixelRatio * size),
+        hasError: false,
+        isLoaded: true
+      });
+    }
+
+    // The cover could not be loaded..
+    if (!nextCover && (this.props !== prevProps)) {
+      this.setState({
+        cover: undefined,
+        coverUrl: coverPlaceholder,
+        hasError: true
       });
     }
   }

@@ -64,20 +64,18 @@ class ArtistBanner extends Component {
       this.setState({
         banner: nextBanner,
         bannerUrl: getBannerUrl(nextBanner, pixelRatio * size),
-        hasError: false
-        // Don't reset isLoaded, as we want to immediately try to
-        // show the new image, whether an image was shown previously
-        // or the placeholder was shown.
+        hasError: false,
+        isLoaded: true
       });
+    }
 
-      // The poster could not be loaded..
-      if (!nextBanner && (this.props !== prevProps)) {
-        this.setState({
-          banner: undefined,
-          bannerUrl: bannerPlaceholder,
-          hasError: true
-        });
-      }
+    // The banner could not be loaded..
+    if (!nextBanner && (this.props !== prevProps)) {
+      this.setState({
+        banner: undefined,
+        bannerUrl: bannerPlaceholder,
+        hasError: true
+      });
     }
   }
 
