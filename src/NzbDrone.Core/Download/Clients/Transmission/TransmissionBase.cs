@@ -139,12 +139,30 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
+
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)TransmissionPriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)TransmissionPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }
+
             return hash;
         }
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
+
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)TransmissionPriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)TransmissionPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }
+
             return hash;
         }
 

@@ -40,6 +40,14 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
             }
 
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+            }
+
             SetInitialState(hash.ToLower());
 
             return hash;
@@ -49,9 +57,31 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
-            if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
+            try
             {
-                _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
+                if (Settings.MovieCategory.IsNotNullOrWhiteSpace())
+                {
+                    _proxy.SetTorrentLabel(hash.ToLower(), Settings.MovieCategory, Settings);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Failed to set the torrent label for {0}.", filename);
+            }
+
+            try
+            {
+                var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+
+                if (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First ||
+                    !isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First)
+                {
+                    _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "Failed to set the torrent priority for {0}.", filename);
             }
 
             SetInitialState(hash);
@@ -165,6 +195,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             failures.AddIfNotNull(TestConnection());
             if (failures.Any()) return;
+            failures.AddIfNotNull(TestPrioritySupport());
             failures.AddIfNotNull(TestGetTorrents());
         }
 
@@ -235,6 +266,41 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             catch (Exception ex)
             {
                 _logger.Error(ex, ex.Message);
+                return new NzbDroneValidationFailure(String.Empty, "Unknown exception: " + ex.Message);
+            }
+
+            return null;
+        }
+
+        private ValidationFailure TestPrioritySupport()
+        {
+            var recentPriorityDefault = Settings.RecentMoviePriority == (int)QBittorrentPriority.Last;
+            var olderPriorityDefault = Settings.OlderMoviePriority == (int)QBittorrentPriority.Last;
+
+            if (olderPriorityDefault && recentPriorityDefault)
+            {
+                return null;
+            }
+
+            try
+            {
+                var config = _proxy.GetConfig(Settings);
+
+                if (!config.QueueingEnabled)
+                {
+                    if (!recentPriorityDefault)
+                    {
+                        return new NzbDroneValidationFailure(nameof(Settings.RecentMoviePriority), "Queueing not enabled") { DetailedDescription = "Torrent Queueing is not enabled in your qBittorrent settings. Enable it in qBittorrent or select 'Last' as priority." };
+                    }
+                    else if (!olderPriorityDefault)
+                    {
+                        return new NzbDroneValidationFailure(nameof(Settings.OlderMoviePriority), "Queueing not enabled") { DetailedDescription = "Torrent Queueing is not enabled in your qBittorrent settings. Enable it in qBittorrent or select 'Last' as priority." };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Failed to test qBittorrent");
                 return new NzbDroneValidationFailure(String.Empty, "Unknown exception: " + ex.Message);
             }
 
