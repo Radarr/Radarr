@@ -7,7 +7,7 @@ namespace NzbDrone.Api.Config
     {
         public bool RenameEpisodes { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
-        public string ColonReplacementFormat { get; set; }
+        public int ColonReplacementFormat { get; set; }
         public string StandardMovieFormat { get; set; }
         public string MovieFolderFormat { get; set; }
         public int MultiEpisodeStyle { get; set; }

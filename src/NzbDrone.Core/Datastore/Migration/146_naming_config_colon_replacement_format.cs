@@ -8,8 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("NamingConfig").AddColumn("ColonReplacementFormat").AsString().WithDefaultValue("");
-            Update.Table("NamingConfig").Set(new { ColonReplacementFormat = "" }).AllRows();
+            Alter.Table("NamingConfig").AddColumn("ColonReplacementFormat").AsInt32().NotNullable().WithDefaultValue(0);
         }
     }
 }
