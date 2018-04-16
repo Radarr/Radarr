@@ -7,7 +7,7 @@ namespace NzbDrone.Api.Config
     {
         public bool RenameEpisodes { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
-        public int ColonReplacementFormat { get; set; }
+        public ColonReplacementFormat ColonReplacementFormat { get; set; }
         public string StandardMovieFormat { get; set; }
         public string MovieFolderFormat { get; set; }
         public int MultiEpisodeStyle { get; set; }
@@ -61,12 +61,6 @@ namespace NzbDrone.Api.Config
                 RenameEpisodes = resource.RenameEpisodes,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
                 ColonReplacementFormat = resource.ColonReplacementFormat,
-                //MultiEpisodeStyle = resource.MultiEpisodeStyle,
-                //StandardEpisodeFormat = resource.StandardEpisodeFormat,
-                //DailyEpisodeFormat = resource.DailyEpisodeFormat,
-                //AnimeEpisodeFormat = resource.AnimeEpisodeFormat,
-                //SeriesFolderFormat = resource.SeriesFolderFormat,
-                //SeasonFolderFormat = resource.SeasonFolderFormat,
                 StandardMovieFormat = resource.StandardMovieFormat,
                 MovieFolderFormat = resource.MovieFolderFormat
             };

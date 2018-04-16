@@ -1,3 +1,4 @@
+using System;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Organizer
@@ -16,9 +17,38 @@ namespace NzbDrone.Core.Organizer
 
         public bool RenameEpisodes { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
-        public int ColonReplacementFormat { get; set; }
+        public ColonReplacementFormat ColonReplacementFormat { get; set; }
         public int MultiEpisodeStyle { get; set; }
         public string StandardMovieFormat { get; set; }
         public string MovieFolderFormat { get; set; }
+    }
+
+    public enum ColonReplacementFormat
+    {
+        Delete = 0,
+        Dash = 1,
+        SpaceDash = 2,
+        SpaceDashSpace = 3
+    }
+
+    static class ColonReplacementFormatMethods
+    {
+
+        public static String GetFormatString(this ColonReplacementFormat format)
+        {
+            switch (format)
+            {
+                case ColonReplacementFormat.Delete:
+                    return "";
+                case ColonReplacementFormat.Dash:
+                    return "-";
+                case ColonReplacementFormat.SpaceDash:
+                    return " -";
+                case ColonReplacementFormat.SpaceDashSpace:
+                    return " - ";
+                default:
+                    return "";
+            }
+        }
     }
 }
