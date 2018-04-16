@@ -34,11 +34,6 @@ namespace NzbDrone.Api.Config
             Get["/samples"] = x => GetExamples(this.Bind<NamingConfigResource>());
 
             SharedValidator.RuleFor(c => c.MultiEpisodeStyle).InclusiveBetween(0, 5);
-            /*SharedValidator.RuleFor(c => c.StandardEpisodeFormat).ValidEpisodeFormat();
-            SharedValidator.RuleFor(c => c.DailyEpisodeFormat).ValidDailyEpisodeFormat();
-            SharedValidator.RuleFor(c => c.AnimeEpisodeFormat).ValidAnimeEpisodeFormat();
-            SharedValidator.RuleFor(c => c.SeriesFolderFormat).ValidSeriesFolderFormat();
-            SharedValidator.RuleFor(c => c.SeasonFolderFormat).ValidSeasonFolderFormat();*/
             SharedValidator.RuleFor(c => c.StandardMovieFormat).ValidMovieFormat();
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();
         }
@@ -55,12 +50,6 @@ namespace NzbDrone.Api.Config
         {
             var nameSpec = _namingConfigService.GetConfig();
             var resource = nameSpec.ToResource();
-
-            //if (resource.StandardEpisodeFormat.IsNotNullOrWhiteSpace())
-            //{
-            //    var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
-            //    basicConfig.AddToResource(resource);
-            //}
 
             if (resource.StandardMovieFormat.IsNotNullOrWhiteSpace())
             {
@@ -80,47 +69,12 @@ namespace NzbDrone.Api.Config
         {
             var nameSpec = config.ToModel();
             var sampleResource = new NamingSampleResource();
-            
-            //var singleEpisodeSampleResult = _filenameSampleService.GetStandardSample(nameSpec);
-            //var multiEpisodeSampleResult = _filenameSampleService.GetMultiEpisodeSample(nameSpec);
-            //var dailyEpisodeSampleResult = _filenameSampleService.GetDailySample(nameSpec);
-            //var animeEpisodeSampleResult = _filenameSampleService.GetAnimeSample(nameSpec);
-            //var animeMultiEpisodeSampleResult = _filenameSampleService.GetAnimeMultiEpisodeSample(nameSpec);
 
             var movieSampleResult = _filenameSampleService.GetMovieSample(nameSpec);
-            
-
-            //sampleResource.SingleEpisodeExample = _filenameValidationService.ValidateStandardFilename(singleEpisodeSampleResult) != null
-            //        ? "Invalid format"
-            //        : singleEpisodeSampleResult.FileName;
-
-            //sampleResource.MultiEpisodeExample = _filenameValidationService.ValidateStandardFilename(multiEpisodeSampleResult) != null
-            //        ? "Invalid format"
-            //        : multiEpisodeSampleResult.FileName;
-
-            //sampleResource.DailyEpisodeExample = _filenameValidationService.ValidateDailyFilename(dailyEpisodeSampleResult) != null
-            //        ? "Invalid format"
-            //        : dailyEpisodeSampleResult.FileName;
-
-            //sampleResource.AnimeEpisodeExample = _filenameValidationService.ValidateAnimeFilename(animeEpisodeSampleResult) != null
-            //        ? "Invalid format"
-            //        : animeEpisodeSampleResult.FileName;
-
-            //sampleResource.AnimeMultiEpisodeExample = _filenameValidationService.ValidateAnimeFilename(animeMultiEpisodeSampleResult) != null
-            //        ? "Invalid format"
-            //        : animeMultiEpisodeSampleResult.FileName;
 
             sampleResource.MovieExample = nameSpec.StandardMovieFormat.IsNullOrWhiteSpace()
                 ? "Invalid Format"
                 : movieSampleResult.FileName;
-
-            //sampleResource.SeriesFolderExample = nameSpec.SeriesFolderFormat.IsNullOrWhiteSpace()
-            //    ? "Invalid format"
-            //    : _filenameSampleService.GetSeriesFolderSample(nameSpec);
-
-            //sampleResource.SeasonFolderExample = nameSpec.SeasonFolderFormat.IsNullOrWhiteSpace()
-            //    ? "Invalid format"
-            //    : _filenameSampleService.GetSeasonFolderSample(nameSpec);
 
             sampleResource.MovieFolderExample = nameSpec.MovieFolderFormat.IsNullOrWhiteSpace()
                 ? "Invalid format"
@@ -136,12 +90,6 @@ namespace NzbDrone.Api.Config
             //var standardMovieValidationResult = _filenameValidationService.ValidateMovieFilename(movieSampleResult); For now, let's hope the user is not stupid enough :/
 
             var validationFailures = new List<ValidationFailure>();
-
-            //validationFailures.AddIfNotNull(singleEpisodeValidationResult);
-            //validationFailures.AddIfNotNull(multiEpisodeValidationResult);
-            //validationFailures.AddIfNotNull(dailyEpisodeValidationResult);
-            //validationFailures.AddIfNotNull(animeEpisodeValidationResult);
-            //validationFailures.AddIfNotNull(animeMultiEpisodeValidationResult);
 
             //validationFailures.AddIfNotNull(standardMovieValidationResult);
 

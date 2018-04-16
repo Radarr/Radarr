@@ -11,6 +11,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download
 {
@@ -18,6 +19,7 @@ namespace NzbDrone.Core.Download
         where TSettings : IProviderConfig, new()
     {
         protected readonly IConfigService _configService;
+        protected readonly INamingConfigService _namingConfigService;
         protected readonly IDiskProvider _diskProvider;
         protected readonly IRemotePathMappingService _remotePathMappingService;
         protected readonly Logger _logger;
@@ -39,12 +41,14 @@ namespace NzbDrone.Core.Download
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 
-        protected DownloadClientBase(IConfigService configService, 
+        protected DownloadClientBase(IConfigService configService,
+            INamingConfigService namingConfigService,
             IDiskProvider diskProvider, 
             IRemotePathMappingService remotePathMappingService,
             Logger logger)
         {
             _configService = configService;
+            _namingConfigService = namingConfigService;
             _diskProvider = diskProvider;
             _remotePathMappingService = remotePathMappingService;
             _logger = logger;
@@ -151,6 +155,13 @@ namespace NzbDrone.Core.Download
             return null;
         }
 
+        // proxy method to pass in our naming config
+        protected String CleanFileName(string name)
+        {
+            // get a fresh naming config each time, in case the user has made changes
+            NamingConfig namingConfig = _namingConfigService.GetConfig();
+            return FileNameBuilder.CleanFileName(name, namingConfig);
+        }
         
     }
 }

@@ -9,6 +9,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -23,10 +24,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             ITorrentFileInfoReader torrentFileInfoReader,
             IHttpClient httpClient,
             IConfigService configService,
+            INamingConfigService namingConfigService,
             IDiskProvider diskProvider,
             IRemotePathMappingService remotePathMappingService,
             Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
         }

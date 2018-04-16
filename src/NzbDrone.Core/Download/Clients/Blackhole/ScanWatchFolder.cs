@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Disk;
@@ -23,13 +23,15 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         private readonly Logger _logger;
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskScanService _diskScanService;
+        private readonly INamingConfigService _namingConfigService;
         private readonly ICached<Dictionary<string, WatchFolderItem>>  _watchFolderItemCache;
 
-        public ScanWatchFolder(ICacheManager cacheManager, IDiskScanService diskScanService, IDiskProvider diskProvider, Logger logger)
+        public ScanWatchFolder(ICacheManager cacheManager, IDiskScanService diskScanService, INamingConfigService namingConfigService, IDiskProvider diskProvider, Logger logger)
         {
             _logger = logger;
             _diskProvider = diskProvider;
             _diskScanService = diskScanService;
+            _namingConfigService = namingConfigService;
             _watchFolderItemCache = cacheManager.GetCache<Dictionary<string, WatchFolderItem>>(GetType());
         }
 
@@ -50,9 +52,12 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
         private IEnumerable<WatchFolderItem> GetDownloadItems(string watchFolder, Dictionary<string, WatchFolderItem> lastWatchItems, TimeSpan waitPeriod)
         {
+            // get a fresh naming config each time, in case the user has made changes
+            NamingConfig namingConfig = _namingConfigService.GetConfig();
+
             foreach (var folder in _diskProvider.GetDirectories(watchFolder))
             {
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(folder));
+                var title = FileNameBuilder.CleanFileName(Path.GetFileName(folder), namingConfig);
 
                 var newWatchItem = new WatchFolderItem
                 {
@@ -88,7 +93,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             foreach (var videoFile in _diskScanService.GetVideoFiles(watchFolder, false))
             {
-                var title = FileNameBuilder.CleanFileName(Path.GetFileName(videoFile));
+                var title = FileNameBuilder.CleanFileName(Path.GetFileName(videoFile), namingConfig);
 
                 var newWatchItem = new WatchFolderItem
                 {
