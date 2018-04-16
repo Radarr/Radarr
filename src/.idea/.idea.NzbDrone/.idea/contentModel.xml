@@ -1035,6 +1035,7 @@
           <e p="HttpUriConverter.cs" t="Include" />
           <e p="IntConverter.cs" t="Include" />
           <e p="JSON.cs" t="Include" />
+          <e p="UnderscoreStringEnumConverter.cs" t="Include" />
         </e>
         <e p="ServiceFactory.cs" t="Include" />
         <e p="ServiceProvider.cs" t="Include" />
@@ -1330,6 +1331,8 @@
             <e p="142_movie_extras.cs" t="Include" />
             <e p="143_clean_core_tv.cs" t="Include" />
             <e p="144_add_cookies_to_indexer_status.cs" t="Include" />
+            <e p="145_banner_to_fanart.cs" t="Include" />
+            <e p="146_naming_config_colon_replacement_format.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />
@@ -1656,6 +1659,7 @@
               <e p="Xbmc" t="Include">
                 <e p="XbmcMetadata.cs" t="Include" />
                 <e p="XbmcMetadataSettings.cs" t="Include" />
+                <e p="XbmcNfoDetector.cs" t="Include" />
               </e>
             </e>
             <e p="ExistingMetadataImporter.cs" t="Include" />
@@ -1678,6 +1682,7 @@
           <e p="Others" t="Include">
             <e p="ExistingOtherExtraImporter.cs" t="Include" />
             <e p="OtherExtraFile.cs" t="Include" />
+            <e p="OtherExtraFileRenamer.cs" t="Include" />
             <e p="OtherExtraFileRepository.cs" t="Include" />
             <e p="OtherExtraFileService.cs" t="Include" />
             <e p="OtherExtraService.cs" t="Include" />
@@ -2597,6 +2602,7 @@
             </e>
             <e p="DownloadClientFixtureBase.cs" t="Include" />
             <e p="DownloadStationTests" t="Include">
+              <e p="DownloadStationsTaskStatusJsonConverterFixture.cs" t="Include" />
               <e p="SerialNumberProviderFixture.cs" t="Include" />
               <e p="SharedFolderResolverFixture.cs" t="Include" />
               <e p="TorrentDownloadStationFixture.cs" t="Include" />
@@ -2648,6 +2654,21 @@
           </e>
           <e p="TrackedDownloads" t="Include">
             <e p="TrackedDownloadServiceFixture.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Extras" t="Include">
+          <e p="Metadata" t="Include">
+            <e p="Consumers" t="Include">
+              <e p="Roksbox" t="Include">
+                <e p="FindMetadataFileFixture.cs" t="Include" />
+              </e>
+              <e p="Wdtv" t="Include">
+                <e p="FindMetadataFileFixture.cs" t="Include" />
+              </e>
+              <e p="Xbmc" t="Include">
+                <e p="FindMetadataFileFixture.cs" t="Include" />
+              </e>
+            </e>
           </e>
         </e>
         <e p="Files" t="Include">
@@ -2893,16 +2914,6 @@
           </e>
           <e p="Events" t="Include">
             <e p="EventAggregatorFixture.cs" t="Include" />
-          </e>
-        </e>
-        <e p="Metadata" t="Include">
-          <e p="Consumers" t="Include">
-            <e p="Roksbox" t="Include">
-              <e p="FindMetadataFileFixture.cs" t="Include" />
-            </e>
-            <e p="Wdtv" t="Include">
-              <e p="FindMetadataFileFixture.cs" t="Include" />
-            </e>
           </e>
         </e>
         <e p="MetadataSource" t="Include">

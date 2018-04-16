@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
         public override IParseIndexerResponse GetParser()
         {
-            return new PassThePopcornParser(Settings);
+            return new PassThePopcornParser(Settings, _logger);
         }
         
         /*protected override IndexerResponse FetchIndexerResponse(IndexerRequest request)
