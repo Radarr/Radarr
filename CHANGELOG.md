@@ -3,12 +3,18 @@
 ## (unreleased)
 
 ### **New features**
+- More logging for strange PTP errors. Please report them immediately when you see them. [Leonardo Galli]
+- Setting for Colon Replacement Format (#2711) [Qstick]
+- Enable Download Client Priorities (#2699) [Qstick]
 - Radarr now stores cookies for PTP beyond restarts. Should limit active sessions correctly. (#2643) [Leonardo Galli]
 - New: Setting for absolute maximum size for a release (#2662) [Qstick]
 - A Huge Cleanup of old Series Code. (Let's pray nothing breaks :P) (#2589) [Qstick]
 - Update stale.yml. [AeonLucid]
 
 ### **Fixes**
+- Register as Radarr to avoid issues with Sonarr (#2715) [Qstick]
+- Handling of unknown status types in DownloadStation and Import from torrent Download Station should move since DS maintains an internal copy for seeding. (#2420) [Marcelo Castagna]
+- Misc Extra File Improvements (This changes mapping of backdrop images to Fanart instead of Banner) (#2642) [Qstick]
 - Multiple Calendar Issues, Other UI Fixes (#2685) [Qstick]
 - Cutoff Unmet Sorting by Downloaded Quality not working. [Leonardo Galli]
 - Add form param before submitting request (#2674) [Qstick]
