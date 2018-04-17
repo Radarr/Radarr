@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Movies
         {
             return Query.Where(pagingSpec.FilterExpression)
                              .AndWhere(m => m.MovieFileId == 0)
-                             .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                             .OrderBy(pagingSpec.OrderByClause(x => x.SortTitle), pagingSpec.ToSortDirection())
                              .Skip(pagingSpec.PagingOffset())
                              .Take(pagingSpec.PageSize);
         }
@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Movies
             return Query.Where(pagingSpec.FilterExpression)
                  .AndWhere(m => m.MovieFileId != 0)
                  .AndWhere(BuildQualityCutoffWhereClause(qualitiesBelowCutoff))
-                 .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection())
+                 .OrderBy(pagingSpec.OrderByClause(x => x.SortTitle), pagingSpec.ToSortDirection())
                  .Skip(pagingSpec.PagingOffset())
                  .Take(pagingSpec.PageSize);
         }

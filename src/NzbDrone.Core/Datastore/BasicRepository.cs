@@ -259,7 +259,7 @@ namespace NzbDrone.Core.Datastore
         protected virtual SortBuilder<TModel> GetPagedQuery(QueryBuilder<TModel> query, PagingSpec<TModel> pagingSpec)
         {
             return query.Where(pagingSpec.FilterExpression)
-                .OrderBy(pagingSpec.OrderByClause(), pagingSpec.ToSortDirection());
+                .OrderBy(pagingSpec.OrderByClause(x => x.Id), pagingSpec.ToSortDirection());
         }
 
         protected void ModelCreated(TModel model)
