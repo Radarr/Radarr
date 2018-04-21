@@ -63,4 +63,4 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 ### License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2017
+* Copyright 2010-2018
