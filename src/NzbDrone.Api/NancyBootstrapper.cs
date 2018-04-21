@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Nancy.Bootstrapper;
 using Nancy.Diagnostics;
 using NLog;
@@ -24,9 +24,9 @@ namespace NzbDrone.Api
 
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
-            Logger.Info("Starting NzbDrone API");
+            Logger.Info("Starting Web Server");
 
-            if (RuntimeInfoBase.IsProduction)
+            if (RuntimeInfo.IsProduction)
             {
                 DiagnosticsHook.Disable(pipelines);
             }
