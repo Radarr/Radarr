@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using FluentAssertions;
@@ -133,7 +133,7 @@ namespace NzbDrone.Test.Common
 
         protected void MonoOnly()
         {
-            if (OsInfo.IsWindows)
+            if (!PlatformInfo.IsMono)
             {
                 throw new IgnoreException("mono specific test");
             }

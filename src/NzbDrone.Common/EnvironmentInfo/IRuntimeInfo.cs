@@ -1,14 +1,13 @@
-﻿namespace NzbDrone.Common.EnvironmentInfo
+namespace NzbDrone.Common.EnvironmentInfo
 {
     public interface IRuntimeInfo
     {
         bool IsUserInteractive { get; }
         bool IsAdmin { get; }
         bool IsWindowsService { get; }
-        bool IsConsole { get; }
-        bool IsRunning { get; set; }
+        bool IsWindowsTray { get; }
+        bool IsExiting { get; set; }
         bool RestartPending { get; set; }
         string ExecutingApplication { get; }
-        string RuntimeVersion { get; }
     }
 }

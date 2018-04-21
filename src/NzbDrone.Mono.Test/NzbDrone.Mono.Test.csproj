@@ -82,10 +82,26 @@
   <ItemGroup>
     <Compile Include="DiskProviderTests\DiskProviderFixture.cs" />
     <Compile Include="DiskProviderTests\FreeSpaceFixture.cs" />
+    <Compile Include="EnvironmentInfo\MonoPlatformInfoFixture.cs" />
+    <Compile Include="EnvironmentInfo\ReleaseFileVersionAdapterFixture.cs" />
+    <Compile Include="EnvironmentInfo\VersionAdapters\MacOsVersionAdapterFixture.cs" />
+    <Compile Include="EnvironmentInfo\VersionAdapters\ReleaseFileVersionAdapterFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Files\linux\lsb-release">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Files\linux\os-release">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Files\macOS\SystemVersion.plist">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Files\synology\VERSION">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
