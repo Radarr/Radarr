@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.ParserTests
     public class ParserFixture : CoreTest
     {
         Artist _artist = new Artist();
-        private List<Album> _albums = new List<Album>{new Album()};
+        private List<Album> _albums = new List<Album> { new Album() };
 
         [SetUp]
         public void Setup()
@@ -24,12 +24,17 @@ namespace NzbDrone.Core.Test.ParserTests
             _artist = Builder<Artist>
                 .CreateNew()
                 .Build();
+            _albums = Builder<List<Album>>
+                .CreateNew()
+                .Build();
         }
 
         private void GivenSearchCriteria(string artistName, string albumTitle)
         {
             _artist.Name = artistName;
-            _albums.First().Title = albumTitle;
+            var a = new Album();
+            a.Title = albumTitle;
+            _albums.Add(a);
         }
 
         [TestCase("Bad Format", "badformat")]
@@ -43,7 +48,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_remove_accents_from_title()
         {
             const string title = "Carniv\u00E0le";
-            
+
             title.CleanArtistName().Should().Be("carnivale");
         }
 
@@ -82,16 +87,16 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseAlbumTitle(postTitle).ArtistName.Should().Be(title);
         }
 
-        [TestCase("02 Unchained.flac")]
-        [TestCase("Fall Out Boy - 02 - Title.wav")]
+        [TestCase("02 Unchained.flac")] // This isn't valid on any regex we have. We must always have an artist
+        [TestCase("Fall Out Boy - 02 - Title.wav")] // This isn't valid on any regex we have. We don't support Artist - Track - TrackName
         public void should_parse_quality_from_extension(string title)
         {
             Parser.Parser.ParseAlbumTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
             Parser.Parser.ParseAlbumTitle(title).Quality.QualitySource.Should().Be(QualitySource.Extension);
         }
 
-        [TestCase("of Montreal-Hissing Fauna, Are You The Destroyer? 2007", "Hissing Fauna, Are You The Destroyer", "of Montreal", "2007")]
-        [TestCase("of Montreal - 2007 - Hissing Fauna, Are You The Destroyer?", "Hissing Fauna, Are You The Destroyer", "of Montreal", "2007")]
+        [TestCase("of Montreal-Hissing Fauna, Are You The Destroyer? 2007", "Hissing Fauna, Are You The Destroyer?", "of Montreal", "2007")]
+        [TestCase("of Montreal - 2007 - Hissing Fauna, Are You The Destroyer?", "Hissing Fauna, Are You The Destroyer?", "of Montreal", "2007")]
         public void should_parse_album(string title, string correctAlbum, string correctArtist, string correctYear)
         {
             ParsedAlbumInfo result = Parser.Parser.ParseAlbumTitle(title);
@@ -202,6 +207,30 @@ namespace NzbDrone.Core.Test.ParserTests
             GivenSearchCriteria("Abba", "Abba");
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria("Black Sabbath  Black Sabbath FLAC", _artist, _albums);
             parseResult.Should().BeNull();
+        }
+
+        [TestCase("Ed Sheeran", "I See Fire", "Ed Sheeran I See Fire[Mimp3.eu].mp3 FLAC")]
+        [TestCase("Ed Sheeran", "Divide", "Ed Sheeran   ? Divide FLAC")]
+        [TestCase("Ed Sheeran", "+", "Ed Sheeran + FLAC")]
+        //[TestCase("Glasvegas", @"EUPHORIC /// HEARTBREAK \\\", @"EUPHORIC /// HEARTBREAK \\\ FLAC")] // slashes not being escaped properly
+        [TestCase("XXXTENTACION", "?", "XXXTENTACION ? FLAC")]
+        [TestCase("Hey", "BŁYSK", "Hey - BŁYSK FLAC")]
+        public void should_escape_albums(string artist, string album, string releaseTitle)
+        {
+            GivenSearchCriteria(artist, album);
+            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            parseResult.AlbumTitle.Should().Be(album);
+        }
+
+        [TestCase("???", "Album", "??? Album FLAC")]
+        [TestCase("+", "Album", "+ Album FLAC")]
+        [TestCase(@"/\", "Album", @"/\ Album FLAC")]
+        [TestCase("+44", "When Your Heart Stops Beating", "+44 When Your Heart Stops Beating FLAC")]
+        public void should_escape_artists(string artist, string album, string releaseTitle)
+        {
+            GivenSearchCriteria(artist, album);
+            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            parseResult.ArtistName.Should().Be(artist);
         }
     }
 }

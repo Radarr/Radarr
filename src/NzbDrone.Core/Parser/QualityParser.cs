@@ -122,6 +122,7 @@ namespace NzbDrone.Core.Parser
                     else if (bitrate == BitRate.B256) { result.Quality = Quality.VORBIS_Q8; }
                     else if (bitrate == BitRate.B320) { result.Quality = Quality.VORBIS_Q9; }
                     else if (bitrate == BitRate.B500) { result.Quality = Quality.VORBIS_Q10; }
+                    else { result.Quality = Quality.Unknown; }
                     break;
                 case Codec.Unknown:
                     if (bitrate == BitRate.B192) { result.Quality = Quality.MP3_192; }

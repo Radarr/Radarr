@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Parser
 
             //Artist-Album Year
             //Hyphen no space between artist and album
-            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\W*(?<releaseyear>\d{4})",
+            new Regex(@"^(?:(?<artist>.+?)(?:-)+)(?<album>.+?)\b(?<releaseyear>\d{4})",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex FileExtensionRegex = new Regex(@"\.[a-z0-9]{2,4}$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>?*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
+        private static readonly Regex SimpleTitleRegex = new Regex(@"(?:(480|720|1080|2160|320)[ip]|[xh][\W_]?26[45]|DD\W?5\W1|[<>*:|]|848x480|1280x720|1920x1080|3840x2160|4096x2160|(8|10)b(it)?)\s*",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WebsitePrefixRegex = new Regex(@"^\[\s*[a-z]+(\.[a-z]+)+\s*\][- ]*",
@@ -351,8 +351,11 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle, string.Empty);
 
-                var releaseRegex = new Regex(@"\b(?<artist>" + artist.Name + @")\b.*\b(?<album>"+ string.Join("|",album.Select(s=>s.Title).ToList()) + @")\b",
-                    RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                var escapedArtist = Regex.Escape(artist.Name);
+                var escapedAlbums = Regex.Escape(string.Join("|", album.Select(s => s.Title).ToList()));
+
+                var releaseRegex = new Regex(@"^(\W*|\b)(?<artist>" + escapedArtist + @")(\W*|\b).*(\W*|\b)(?<album>" + escapedAlbums + @")(\W*|\b)", RegexOptions.IgnoreCase);
+
 
                 var match = releaseRegex.Matches(simpleTitle);
 
