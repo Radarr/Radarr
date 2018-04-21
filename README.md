@@ -32,34 +32,6 @@ Lidarr is a music collection manager for Usenet and BitTorrent users. It can mon
 [![GitHub](https://img.shields.io/badge/github-issues-red.svg?maxAge=60)](https://github.com/Lidarr/Lidarr/issues)
 [![GitHub Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60)](https://github.com/Lidarr/Lidarr/wiki)
 
-## Configuring Development Environment:
-
-### Requirements
-
-* Visual Studio 2017 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
-* [Git](https://git-scm.com/downloads)
-* [NodeJS](https://nodejs.org/en/download/) (Node 6.X.X or higher)
-* [Yarn](https://yarnpkg.com/)
-
-### Setup
-
-* Make sure all the required software mentioned above are installed.
-* Clone the repository into your development machine. [*info*](https://help.github.com/articles/working-with-repositories)
-* Grab the submodules `git submodule init && git submodule update`
-* Install the required Node Packages `yarn install`
-* Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
-* Build the project in Visual Studio
-* Run the project in Visual Studio
-* Open http://localhost:8686
-
-*Please note gulp must be running at all times while you are working with Lidarr client source files.*
-
-### Development
-
-* Open `Lidarr.sln` in Visual Studio
-* Make sure `NzbDrone.Console` is set as the startup project
-* Change build to 'Debug x86'
-
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
