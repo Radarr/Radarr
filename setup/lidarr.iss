@@ -35,7 +35,7 @@ DisableReadyPage=True
 CompressionThreads=2
 Compression=lzma2/normal
 AppContact={#ForumsURL}
-VersionInfoVersion=0.2.0.{#BuildNumber}
+VersionInfoVersion=0.3.0.{#BuildNumber}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
