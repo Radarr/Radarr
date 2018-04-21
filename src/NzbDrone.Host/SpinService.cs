@@ -1,4 +1,4 @@
-﻿using System.Threading;
+using System.Threading;
 using NLog;
 using NLog.Common;
 using NzbDrone.Common.EnvironmentInfo;
@@ -28,7 +28,7 @@ namespace Radarr.Host
 
         public void Spin()
         {
-            while (_runtimeInfo.IsRunning)
+            while (!_runtimeInfo.IsExiting)
             {
                 Thread.Sleep(1000);
             }
