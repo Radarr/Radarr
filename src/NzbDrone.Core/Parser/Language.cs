@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Parser
+namespace NzbDrone.Core.Parser
 {
     public enum Language
     {
@@ -25,6 +25,7 @@
         Greek = 20,
         Korean = 21,
         Hungarian = 22,
-        Hebrew = 23
+        Hebrew = 23,
+        Czech = 24
     }
 }
