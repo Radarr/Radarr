@@ -79,7 +79,7 @@ namespace NzbDrone.Api.Frontend.Mappers
 
         private string GetIndexText()
         {
-            if (RuntimeInfoBase.IsProduction && _generatedContent != null)
+            if (RuntimeInfo.IsProduction && _generatedContent != null)
             {
                 return _generatedContent;
             }
@@ -111,7 +111,7 @@ namespace NzbDrone.Api.Frontend.Mappers
             text = text.Replace("APP_BRANCH", _configFileProvider.Branch.ToLower());
             text = text.Replace("APP_ANALYTICS", _analyticsService.IsEnabled.ToString().ToLowerInvariant());
             text = text.Replace("URL_BASE", URL_BASE);
-            text = text.Replace("PRODUCTION", RuntimeInfoBase.IsProduction.ToString().ToLowerInvariant());
+            text = text.Replace("PRODUCTION", RuntimeInfo.IsProduction.ToString().ToLowerInvariant());
 
             _generatedContent = text;
 

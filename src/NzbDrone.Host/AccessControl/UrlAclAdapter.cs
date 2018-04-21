@@ -20,6 +20,7 @@ namespace Radarr.Host.AccessControl
         private readonly INetshProvider _netshProvider;
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IRuntimeInfo _runtimeInfo;
+        private readonly IOsInfo _osInfo;
         private readonly Logger _logger;
 
         public List<string> Urls
@@ -30,7 +31,7 @@ namespace Radarr.Host.AccessControl
             }
         }
 
-        private List<UrlAcl> InternalUrls { get; set; }
+        private List<UrlAcl> InternalUrls { get; }
         private List<UrlAcl> RegisteredUrls { get; set; } 
 
         private static readonly Regex UrlAclRegex = new Regex(@"(?<scheme>https?)\:\/\/(?<address>.+?)\:(?<port>\d+)/(?<urlbase>.+)?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -38,19 +39,26 @@ namespace Radarr.Host.AccessControl
         public UrlAclAdapter(INetshProvider netshProvider,
                              IConfigFileProvider configFileProvider,
                              IRuntimeInfo runtimeInfo,
+                             IOsInfo osInfo,
                              Logger logger)
         {
             _netshProvider = netshProvider;
             _configFileProvider = configFileProvider;
             _runtimeInfo = runtimeInfo;
+            _osInfo = osInfo;
             _logger = logger;
 
             InternalUrls = new List<UrlAcl>();
-            RegisteredUrls = GetRegisteredUrls();
+            RegisteredUrls = new List<UrlAcl>();
         }
 
         public void ConfigureUrls()
         {
+            if (RegisteredUrls.Empty())
+            {
+                GetRegisteredUrls();
+            }
+
             var localHostHttpUrls = BuildUrlAcls("http", "localhost", _configFileProvider.Port);
             var interfaceHttpUrls = BuildUrlAcls("http", _configFileProvider.BindAddress, _configFileProvider.Port);
 
@@ -105,7 +113,8 @@ namespace Radarr.Host.AccessControl
 
         private void RefreshRegistration()
         {
-            if (OsInfo.Version.Major < 6) return;
+            var osVersion = new Version(_osInfo.Version);
+            if (osVersion.Major < 6) return;
 
             foreach (var urlAcl in InternalUrls)
             {
@@ -124,19 +133,24 @@ namespace Radarr.Host.AccessControl
                                       c.UrlBase == urlAcl.UrlBase);
         }
 
-        private List<UrlAcl> GetRegisteredUrls()
+        private void GetRegisteredUrls()
         {
             if (OsInfo.IsNotWindows)
             {
-                return new List<UrlAcl>();
+                return;
+            }
+
+            if (RegisteredUrls.Any())
+            {
+                return;
             }
 
             var arguments = string.Format("http show urlacl");
             var output = _netshProvider.Run(arguments);
 
-            if (output == null || !output.Standard.Any()) return new List<UrlAcl>();
+            if (output == null || !output.Standard.Any()) return;
 
-            return output.Standard.Select(line =>
+            RegisteredUrls = output.Standard.Select(line =>
             {
                 var match = UrlAclRegex.Match(line.Content);
 

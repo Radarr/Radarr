@@ -58,7 +58,7 @@ namespace Radarr.Host
                 //_cancelHandler = new CancelHandler();
             }
 
-            _runtimeInfo.IsRunning = true;
+            _runtimeInfo.IsExiting = false;
             DbFactory.RegisterDatabase(_container);
             _hostController.StartServer();
 
@@ -87,7 +87,7 @@ namespace Radarr.Host
             _logger.Info("Attempting to stop application.");
             _hostController.StopServer();
             _logger.Info("Application has finished stop routine.");
-            _runtimeInfo.IsRunning = false;
+            _runtimeInfo.IsExiting = true;
         }
 
         public void Handle(ApplicationShutdownRequested message)

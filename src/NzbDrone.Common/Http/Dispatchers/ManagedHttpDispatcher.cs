@@ -13,22 +13,35 @@ namespace NzbDrone.Common.Http.Dispatchers
     {
         private readonly IHttpProxySettingsProvider _proxySettingsProvider;
         private readonly ICreateManagedWebProxy _createManagedWebProxy;
+        private readonly IUserAgentBuilder _userAgentBuilder;
 
-        public ManagedHttpDispatcher(IHttpProxySettingsProvider proxySettingsProvider, ICreateManagedWebProxy createManagedWebProxy)
+        public ManagedHttpDispatcher(IHttpProxySettingsProvider proxySettingsProvider, ICreateManagedWebProxy createManagedWebProxy, IUserAgentBuilder userAgentBuilder)
         {
             _proxySettingsProvider = proxySettingsProvider;
             _createManagedWebProxy = createManagedWebProxy;
+            _userAgentBuilder = userAgentBuilder;
         }
 
         public HttpResponse GetResponse(HttpRequest request, CookieContainer cookies)
         {
-            HttpWebResponse httpWebResponse = null;
-            HttpWebRequest webRequest = null;
-            try
+            var webRequest = (HttpWebRequest)WebRequest.Create((Uri)request.Url);
+
+            // Deflate is not a standard and could break depending on implementation.
+            // we should just stick with the more compatible Gzip
+            //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
+            webRequest.AutomaticDecompression = DecompressionMethods.GZip;
+
+            webRequest.Method = request.Method.ToString();
+            webRequest.UserAgent = _userAgentBuilder.GetUserAgent(request.UseSimplifiedUserAgent);
+            webRequest.KeepAlive = request.ConnectionKeepAlive;
+            webRequest.AllowAutoRedirect = false;
+            webRequest.CookieContainer = cookies;
+
+            if (request.RequestTimeout != TimeSpan.Zero)
             {
                 webRequest = (HttpWebRequest) WebRequest.Create((Uri) request.Url);
 
-                if (OsInfo.IsMonoRuntime)
+                if (PlatformInfo.IsMonoRuntime)
                 {
                     // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
                     webRequest.AutomaticDecompression = DecompressionMethods.None;
@@ -98,7 +111,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                     {
                         data = responseStream.ToBytes();
 
-                        if (OsInfo.IsMonoRuntime && httpWebResponse.ContentEncoding == "gzip")
+                        if (PlatformInfo.IsMonoRuntime && httpWebResponse.ContentEncoding == "gzip")
                         {
                             using (var compressedStream = new MemoryStream(data))
                             using (var gzip = new GZipStream(compressedStream, CompressionMode.Decompress))

@@ -1,16 +1,12 @@
-﻿using NzbDrone.Common.Messaging;
+using NzbDrone.Common.Messaging;
 
 namespace NzbDrone.Core.Lifecycle
 {
     public class ApplicationShutdownRequested : IEvent
     {
-        public bool Restarting { get; set; }
+        public bool Restarting { get; }
 
-        public ApplicationShutdownRequested()
-        {
-        }
-
-        public ApplicationShutdownRequested(bool restarting)
+        public ApplicationShutdownRequested(bool restarting = false)
         {
             Restarting = restarting;
         }
