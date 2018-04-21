@@ -1,5 +1,6 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace Radarr.Host
 {
@@ -8,14 +9,16 @@ namespace Radarr.Host
         private readonly INzbDroneServiceFactory _nzbDroneServiceFactory;
         private readonly IServiceProvider _serviceProvider;
         private readonly IConsoleService _consoleService;
+        private readonly IRuntimeInfo _runtimeInfo;
         private readonly Logger _logger;
 
         public Router(INzbDroneServiceFactory nzbDroneServiceFactory, IServiceProvider serviceProvider,
-                        IConsoleService consoleService, Logger logger)
+                        IConsoleService consoleService, IRuntimeInfo runtimeInfo, Logger logger)
         {
             _nzbDroneServiceFactory = nzbDroneServiceFactory;
             _serviceProvider = serviceProvider;
             _consoleService = consoleService;
+            _runtimeInfo = runtimeInfo;
             _logger = logger;
         }
 
@@ -34,7 +37,7 @@ namespace Radarr.Host
 
                 case ApplicationModes.Interactive:
                     {
-                        _logger.Debug("Console selected");
+                        _logger.Debug(_runtimeInfo.IsWindowsTray ? "Tray selected" : "Console selected");
                         _nzbDroneServiceFactory.Start();
                         break;
                     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
@@ -35,7 +35,7 @@ namespace NzbDrone.Common.Instrumentation
                 return;
             }
 
-            if (OsInfo.IsMonoRuntime)
+            if (PlatformInfo.IsMono)
             {
                 if (exception is TypeInitializationException && exception.InnerException is DllNotFoundException ||
                     exception is DllNotFoundException)

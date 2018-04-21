@@ -1,4 +1,3 @@
-﻿using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 
@@ -14,16 +13,11 @@ namespace NzbDrone.Core.Update
         private readonly IUpdatePackageProvider _updatePackageProvider;
         private readonly IConfigFileProvider _configFileProvider;
 
-        private readonly Logger _logger;
-
-
         public CheckUpdateService(IUpdatePackageProvider updatePackageProvider,
-                                  IConfigFileProvider configFileProvider,
-                                  Logger logger)
+                                  IConfigFileProvider configFileProvider)
         {
             _updatePackageProvider = updatePackageProvider;
             _configFileProvider = configFileProvider;
-            _logger = logger;
         }
 
         public UpdatePackage AvailableUpdate()
