@@ -9,7 +9,7 @@ namespace NzbDrone.SignalR
 
         public void Initialize(string instanceName, CancellationToken hostShutdownToken)
         {
-            
+
         }
 
         public IPerformanceCounter LoadCounter(string categoryName, string counterName, string instanceName, bool isReadOnly)
@@ -50,5 +50,9 @@ namespace NzbDrone.SignalR
         public IPerformanceCounter ScaleoutErrorsTotal => _counter;
         public IPerformanceCounter ScaleoutErrorsPerSec => _counter;
         public IPerformanceCounter ScaleoutSendQueueLength => _counter;
+        public IPerformanceCounter ConnectionsCurrentForeverFrame => _counter;
+        public IPerformanceCounter ConnectionsCurrentLongPolling => _counter;
+        public IPerformanceCounter ConnectionsCurrentServerSentEvents => _counter;
+        public IPerformanceCounter ConnectionsCurrentWebSockets => _counter;
     }
 }

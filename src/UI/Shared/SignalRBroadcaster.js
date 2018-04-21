@@ -29,7 +29,7 @@ module.exports = {
         this.signalRconnection = $.connection(StatusModel.get('urlBase') + '/signalr', { apiKey: window.NzbDrone.ApiKey });
 
         this.signalRconnection.stateChanged(function(change) {
-            console.debug('SignalR: [{0}]'.format(getStatus(change.newState)));
+            console.log('SignalR: [{0}]'.format(getStatus(change.newState)));
         });
 
         this.signalRconnection.received(function(message) {
@@ -69,7 +69,7 @@ module.exports = {
             }
         });
 
-        this.signalRconnection.start({ transport : ['longPolling'] });
+        this.signalRconnection.start({ transport : ['webSockets', 'longPolling'] });
 
         return this;
     }

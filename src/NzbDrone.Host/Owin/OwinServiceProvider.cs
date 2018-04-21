@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -60,7 +60,7 @@ namespace Radarr.Host.Owin
 
                 if (ex.InnerException is HttpListenerException)
                 {
-                    throw new PortInUseException("Port {0} is already in use, please ensure NzbDrone is not already running.", ex, _configFileProvider.Port);
+                    throw new PortInUseException("Port {0} is already in use, please ensure Radarr is not already running.", ex, _configFileProvider.Port);
                 }
 
                 throw ex.InnerException;
