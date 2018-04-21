@@ -185,6 +185,7 @@
     <Compile Include="Datastore\Migration\010_album_releases_fix.cs" />
     <Compile Include="Datastore\Migration\011_import_lists.cs" />
     <Compile Include="Datastore\Migration\012_add_release_status.cs" />
+    <Compile Include="Datastore\Migration\015_remove_fanzub.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -586,9 +587,6 @@
     <Compile Include="Indexers\Exceptions\RequestLimitReachedException.cs" />
     <Compile Include="Indexers\Exceptions\UnsupportedFeedException.cs" />
     <Compile Include="Indexers\EzrssTorrentRssParser.cs" />
-    <Compile Include="Indexers\Fanzub\Fanzub.cs" />
-    <Compile Include="Indexers\Fanzub\FanzubRequestGenerator.cs" />
-    <Compile Include="Indexers\Fanzub\FanzubSettings.cs" />
     <Compile Include="Indexers\FetchAndParseRssService.cs" />
     <Compile Include="Indexers\IIndexer.cs" />
     <Compile Include="Indexers\IIndexerRequestGenerator.cs" />

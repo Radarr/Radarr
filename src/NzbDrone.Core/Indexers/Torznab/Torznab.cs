@@ -35,14 +35,6 @@ namespace NzbDrone.Core.Indexers.Torznab
             return new TorznabRssParser();
         }
 
-        public override IEnumerable<ProviderDefinition> DefaultDefinitions
-        {
-            get
-            {
-                yield return GetDefinition("HD4Free.xyz", GetSettings("http://hd4free.xyz"));
-            }
-        }
-
         public Torznab(INewznabCapabilitiesProvider capabilitiesProvider, IHttpClient httpClient, IIndexerStatusService indexerStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
