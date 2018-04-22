@@ -12,7 +12,6 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
     {
         private readonly LidarrListsSettings _settings;
         private ImportListResponse _importListResponse;
-        private readonly Logger _logger;
 
         public LidarrListsParser(LidarrListsSettings settings)
         {

@@ -6,7 +6,6 @@ namespace NzbDrone.Core.Indexers.Headphones
 {
     public class HeadphonesRssParser : NewznabRssParser
     {
-        public const string ns = "{http://www.newznab.com/DTD/2010/feeds/attributes/}";
         public HeadphonesSettings Settings { get; set; }
 
         public HeadphonesRssParser()

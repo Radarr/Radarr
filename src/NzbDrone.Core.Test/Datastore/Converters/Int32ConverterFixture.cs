@@ -13,8 +13,6 @@ namespace NzbDrone.Core.Test.Datastore.Converters
         [Test]
         public void should_return_int_when_saving_int_to_db()
         {
-            var i = 5;
-
             Subject.ToDB(5).Should().Be(5);
         }
 

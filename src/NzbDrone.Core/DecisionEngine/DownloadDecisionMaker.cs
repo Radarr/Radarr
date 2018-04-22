@@ -160,7 +160,7 @@ namespace NzbDrone.Core.DecisionEngine
                     return new Rejection(result.Reason, spec.Type);
                 }
             }
-            catch (NotImplementedException e)
+            catch (NotImplementedException)
             {
                 _logger.Trace("Spec " + spec.GetType().Name + " not implemented.");
             }

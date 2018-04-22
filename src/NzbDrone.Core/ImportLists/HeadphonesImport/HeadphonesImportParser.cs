@@ -11,7 +11,6 @@ namespace NzbDrone.Core.ImportLists.HeadphonesImport
     public class HeadphonesImportParser : IParseImportListResponse
     {
         private ImportListResponse _importListResponse;
-        private readonly Logger _logger;
 
         public IList<ImportListItemInfo> ParseResponse(ImportListResponse importListResponse)
         {

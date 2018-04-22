@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Tags;
+using NzbDrone.Core.Tags;
 using Lidarr.Http;
 
 namespace Lidarr.Api.V1.Tags
@@ -12,10 +12,10 @@ namespace Lidarr.Api.V1.Tags
         {
             _tagService = tagService;
 
-            GetResourceById = Get;
+            GetResourceById = GetTagDetails;
         }
 
-        private TagDetailsResource Get(int id)
+        private TagDetailsResource GetTagDetails(int id)
         {
             return _tagService.Details(id).ToResource();
         }

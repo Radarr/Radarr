@@ -1,4 +1,4 @@
-﻿using TinyIoC;
+using TinyIoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,7 +91,6 @@ namespace Lidarr.Http
                         break;
                     case Lifetime.PerRequest:
                         throw new InvalidOperationException("Unable to directly register a per request lifetime.");
-                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -118,7 +117,6 @@ namespace Lidarr.Http
                         break;
                     case Lifetime.PerRequest:
                         throw new InvalidOperationException("Unable to directly register a per request lifetime.");
-                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

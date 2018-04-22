@@ -17,15 +17,11 @@ namespace NzbDrone.Core.Indexers.Gazelle
         public override int PageSize => 50;
 
         private readonly ICached<Dictionary<string, string>> _authCookieCache;
-        private readonly IHttpClient _httpClient;
-        private readonly Logger _logger;
 
         public Gazelle(IHttpClient httpClient, ICacheManager cacheManager, IIndexerStatusService indexerStatusService,
             IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, indexerStatusService, configService, parsingService, logger)
         {
-            _httpClient = httpClient;
-            _logger = logger;
             _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
         }
 
