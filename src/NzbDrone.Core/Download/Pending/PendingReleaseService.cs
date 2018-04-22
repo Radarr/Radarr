@@ -15,6 +15,7 @@ using NzbDrone.Core.Music.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Marr.Data;
 
 namespace NzbDrone.Core.Download.Pending
 {
@@ -69,66 +70,72 @@ namespace NzbDrone.Core.Download.Pending
 
         public void Add(DownloadDecision decision, PendingReleaseReason reason)
         {
-            var alreadyPending = _repository.AllByArtistId(decision.RemoteAlbum.Artist.Id);
-
-            alreadyPending = IncludeRemoteAlbums(alreadyPending);
-
-            Add(alreadyPending, decision, reason);
+            AddMany(new List<Tuple<DownloadDecision, PendingReleaseReason>> { Tuple.Create(decision, reason) });
         }
 
         public void AddMany(List<Tuple<DownloadDecision, PendingReleaseReason>> decisions)
         {
-            var alreadyPending = decisions.Select(v => v.Item1.RemoteAlbum.Artist.Id).Distinct().SelectMany(_repository.AllByArtistId).ToList();
-
-            alreadyPending = IncludeRemoteAlbums(alreadyPending);
-
-            foreach (var pair in decisions)
+            foreach (var artistDecisions in decisions.GroupBy(v => v.Item1.RemoteAlbum.Artist.Id))
             {
-                Add(alreadyPending, pair.Item1, pair.Item2);
+                var artist = artistDecisions.First().Item1.RemoteAlbum.Artist;
+                var alreadyPending = _repository.AllByArtistId(artist.Id);
+
+                alreadyPending = IncludeRemoteAlbums(alreadyPending, artistDecisions.ToDictionaryIgnoreDuplicates(v => v.Item1.RemoteAlbum.Release.Title, v => v.Item1.RemoteAlbum));
+                var alreadyPendingByAlbum = CreateAlbumLookup(alreadyPending);
+
+                foreach (var pair in artistDecisions)
+                {
+                    var decision = pair.Item1;
+                    var reason = pair.Item2;
+
+                    var albumIds = decision.RemoteAlbum.Albums.Select(e => e.Id);
+
+                    var existingReports = albumIds.SelectMany(v => alreadyPendingByAlbum[v] ?? Enumerable.Empty<PendingRelease>())
+                                                    .Distinct().ToList();
+
+                    var matchingReports = existingReports.Where(MatchingReleasePredicate(decision.RemoteAlbum.Release)).ToList();
+
+                    if (matchingReports.Any())
+                    {
+                        var matchingReport = matchingReports.First();
+
+                        if (matchingReport.Reason != reason)
+                        {
+                            _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteAlbum, matchingReport.Reason, reason);
+                            matchingReport.Reason = reason;
+                            _repository.Update(matchingReport);
+                        }
+                        else
+                        {
+                            _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteAlbum, reason);
+                        }
+
+                        if (matchingReports.Count() > 1)
+                        {
+                            _logger.Debug("The release {0} had {1} duplicate pending, removing duplicates.", decision.RemoteAlbum, matchingReports.Count() - 1);
+
+                            foreach (var duplicate in matchingReports.Skip(1))
+                            {
+                                _repository.Delete(duplicate.Id);
+                                alreadyPending.Remove(duplicate);
+                                alreadyPendingByAlbum = CreateAlbumLookup(alreadyPending);
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    _logger.Debug("Adding release {0} to pending releases with reason {1}", decision.RemoteAlbum, reason);
+                    Insert(decision, reason);
+                }
             }
         }
 
-        private void Add(List<PendingRelease> alreadyPending, DownloadDecision decision, PendingReleaseReason reason)
+        private ILookup<int, PendingRelease> CreateAlbumLookup(IEnumerable<PendingRelease> alreadyPending)
         {
-            var albumIds = decision.RemoteAlbum.Albums.Select(e => e.Id);
-
-            var existingReports = alreadyPending.Where(r => r.RemoteAlbum.Albums.Select(e => e.Id)
-                                                             .Intersect(albumIds)
-                                                             .Any());
-
-            var matchingReports = existingReports.Where(MatchingReleasePredicate(decision.RemoteAlbum.Release)).ToList();
-
-            if (matchingReports.Any())
-            {
-                var matchingReport = matchingReports.First();
-
-                if (matchingReport.Reason != reason)
-                {
-                    _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteAlbum, matchingReport.Reason, reason);
-                    matchingReport.Reason = reason;
-                    _repository.Update(matchingReport);
-                }
-
-                else
-                {
-                    _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteAlbum, reason); return;
-                }
-
-                if (matchingReports.Count() > 1)
-                {
-                    _logger.Debug("The release {0} had {1} duplicate pending, removing duplicates.", decision.RemoteAlbum, matchingReports.Count() - 1);
-
-                    foreach (var duplicate in matchingReports.Skip(1))
-                    {
-                        _repository.Delete(duplicate.Id);
-                        alreadyPending.Remove(duplicate);
-                    }
-                }
-
-                return;
-            }
-
-            _logger.Debug("Adding release {0} to pending releases with reason {1}", decision.RemoteAlbum, reason); Insert(decision, reason);
+            return alreadyPending.SelectMany(v => v.RemoteAlbum.Albums
+                    .Select(d => new { Album = d, PendingRelease = v }))
+                .ToLookup(v => v.Album.Id, v => v.PendingRelease);
         }
 
         public List<ReleaseInfo> GetPending()
@@ -185,20 +192,20 @@ namespace NzbDrone.Core.Download.Pending
                     }
 
                     var queue = new Queue.Queue
-                                {
-                                    Id = GetQueueId(pendingRelease, album),
-                                    Artist = pendingRelease.RemoteAlbum.Artist,
-                                    Album = album,
-                                    Quality = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Quality,
-                                    Title = pendingRelease.Title,
-                                    Size = pendingRelease.RemoteAlbum.Release.Size,
-                                    Sizeleft = pendingRelease.RemoteAlbum.Release.Size,
-                                    RemoteAlbum = pendingRelease.RemoteAlbum,
-                                    Timeleft = timeleft,
-                                    EstimatedCompletionTime = ect,
-                                    Status = pendingRelease.Reason.ToString(),
-                                    Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol,
-                                    Indexer = pendingRelease.RemoteAlbum.Release.Indexer
+                    {
+                        Id = GetQueueId(pendingRelease, album),
+                        Artist = pendingRelease.RemoteAlbum.Artist,
+                        Album = album,
+                        Quality = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Quality,
+                        Title = pendingRelease.Title,
+                        Size = pendingRelease.RemoteAlbum.Release.Size,
+                        Sizeleft = pendingRelease.RemoteAlbum.Release.Size,
+                        RemoteAlbum = pendingRelease.RemoteAlbum,
+                        Timeleft = timeleft,
+                        EstimatedCompletionTime = ect,
+                        Status = pendingRelease.Reason.ToString(),
+                        Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol,
+                        Indexer = pendingRelease.RemoteAlbum.Release.Indexer
                     };
 
                     queued.Add(queue);
@@ -254,11 +261,27 @@ namespace NzbDrone.Core.Download.Pending
             return IncludeRemoteAlbums(_repository.AllByArtistId(artistId).ToList());
         }
 
-        private List<PendingRelease> IncludeRemoteAlbums(List<PendingRelease> releases)
+        private List<PendingRelease> IncludeRemoteAlbums(List<PendingRelease> releases, Dictionary<string, RemoteAlbum> knownRemoteAlbums = null)
         {
             var result = new List<PendingRelease>();
-            var artistMap = _artistService.GetArtists(releases.Select(v => v.ArtistId).Distinct())
-                                          .ToDictionary(v => v.Id);
+
+            var artistMap = new Dictionary<int, Artist>();
+
+            if (knownRemoteAlbums != null)
+            {
+                foreach (var artist in knownRemoteAlbums.Values.Select(v => v.Artist))
+                {
+                    if (!artistMap.ContainsKey(artist.Id))
+                    {
+                        artistMap[artist.Id] = artist;
+                    }
+                }
+            }
+
+            foreach (var artist in _artistService.GetArtists(releases.Select(v => v.ArtistId).Distinct().Where(v => !artistMap.ContainsKey(v))))
+            {
+                artistMap[artist.Id] = artist;
+            }
 
             foreach (var release in releases)
             {
@@ -267,7 +290,17 @@ namespace NzbDrone.Core.Download.Pending
                 // Just in case the artist was removed, but wasn't cleaned up yet (housekeeper will clean it up)
                 if (artist == null) return null;
 
-                var albums = _parsingService.GetAlbums(release.ParsedAlbumInfo, artist);
+                List<Album> albums;
+
+                RemoteAlbum knownRemoteAlbum;
+                if (knownRemoteAlbums != null && knownRemoteAlbums.TryGetValue(release.Release.Title, out knownRemoteAlbum))
+                {
+                    albums = knownRemoteAlbum.Albums;
+                }
+                else
+                {
+                    albums = _parsingService.GetAlbums(release.ParsedAlbumInfo, artist);
+                }
 
                 release.RemoteAlbum = new RemoteAlbum
                 {
