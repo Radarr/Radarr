@@ -8,6 +8,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -35,6 +36,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IDetectSample _detectSample;
         private readonly IQualityDefinitionService _qualitiesService;
         private readonly IConfigService _config;
+        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -45,6 +47,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                    IDetectSample detectSample,
                                    IQualityDefinitionService qualitiesService,
                                    IConfigService config,
+                                   IHistoryService historyService,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -55,6 +58,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _detectSample = detectSample;
             _qualitiesService = qualitiesService;
             _config = config;
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -119,9 +123,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 {
                     //TODO: make it so media info doesn't ruin the import process of a new movie
                     var mediaInfo = _config.EnableMediaInfo ? _videoFileInfoReader.GetMediaInfo(file) : null;
-                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, sceneSource, mediaInfo);
+                    var size = _diskProvider.GetFileSize(file);
+                    var historyItems = _historyService.FindByDownloadId(downloadClientItem?.DownloadId ?? "");
+                    var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
+                    var sizeMovie = new LocalMovie();
+                    sizeMovie.Size = size;
+                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie}, sceneSource);
                     localMovie.Quality = GetQuality(folderInfo, localMovie.Quality, movie);
-                    localMovie.Size = _diskProvider.GetFileSize(file);
+                    localMovie.Size = size;
 
                     _logger.Debug("Size: {0}", localMovie.Size);
 

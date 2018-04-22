@@ -112,6 +112,23 @@ namespace NzbDrone.Core.Parser
             if (match.Groups["hebrew"].Success)
                 languages.Add( Language.Hebrew);
 
+
+            return languages.DistinctBy(l => (int)l).ToList();
+        }
+
+        public static List<Language> EnhanceLanguages(string title, List<Language> languages)
+        {
+            if (title.ToLower().Contains("multi"))
+            {
+                //Let's add english language to multi release as a safe guard.
+                if (!languages.Contains(Language.English) && languages.Count < 2)
+                {
+                    languages.Add(Language.English);
+                }
+            }
+
+            if (!languages.Any()) languages.Add(Language.English);
+
             return languages;
         }
 
@@ -138,7 +155,7 @@ namespace NzbDrone.Core.Parser
             {
                 Logger.Debug("Failed parsing langauge from subtitle file: {0}", fileName);
             }
-            
+
             return Language.Unknown;
         }
     }

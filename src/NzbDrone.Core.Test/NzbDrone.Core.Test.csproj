@@ -287,7 +287,14 @@
     <Compile Include="NotificationTests\SynologyIndexerFixture.cs" />
     <Compile Include="OrganizerTests\FileNameBuilderTests\CleanTitleFixture.cs" />
     <Compile Include="OrganizerTests\GetMovieFolderFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentMovieInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithFileSizeFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithHistoryFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithMediaInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithReleaseInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\ParseQualityDefinitionFixture.cs" />
     <Compile Include="ParserTests\RomanNumeralTests\RomanNumeralConversionFixture.cs" />
+    <Compile Include="Qualities\QualityTagFixture.cs" />
     <Compile Include="Qualities\RevisionComparableFixture.cs" />
     <Compile Include="QueueTests\QueueServiceFixture.cs" />
     <Compile Include="RemotePathMappingsTests\RemotePathMappingServiceFixture.cs" />

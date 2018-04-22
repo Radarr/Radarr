@@ -10,6 +10,7 @@ using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles.Commands;
 
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IImportApprovedMovie _importApprovedMovie;
         private readonly IDetectSample _detectSample;
         private readonly IConfigService _config;
+        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public DownloadedMovieImportService(IDiskProvider diskProvider,
@@ -42,6 +44,7 @@ namespace NzbDrone.Core.MediaFiles
                                                IImportApprovedMovie importApprovedMovie,
                                                IDetectSample detectSample,
                                                IConfigService config,
+                                               IHistoryService historyService,
                                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -52,6 +55,7 @@ namespace NzbDrone.Core.MediaFiles
             _importApprovedMovie = importApprovedMovie;
             _detectSample = detectSample;
             _config = config;
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -165,7 +169,9 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = _parsingService.ParseMovieInfo(cleanedUpName); //TODO: Maybe get grabbed here too and use release info for quality??
+            var historyItems = _historyService.FindByDownloadId(downloadClientItem?.DownloadId ?? "");
+            var firstHistoryItem = historyItems?.OrderByDescending(h => h.Date).FirstOrDefault();
+            var folderInfo = _parsingService.ParseMovieInfo(cleanedUpName, new List<object>{firstHistoryItem});
 
             if (folderInfo != null)
             {

@@ -2354,6 +2354,13 @@
         </e>
         <e p="packages.config" t="Include" />
         <e p="Parser" t="Include">
+          <e p="Augmenters" t="Include">
+            <e p="AugmentWithFileSize.cs" t="Include" />
+            <e p="AugmentWithHistory.cs" t="Include" />
+            <e p="AugmentWithMediaInfo.cs" t="Include" />
+            <e p="AugmentWithReleaseInfo.cs" t="Include" />
+            <e p="IAugmentParsedMovieInfo.cs" t="Include" />
+          </e>
           <e p="InvalidDateException.cs" t="Include" />
           <e p="IsoLanguage.cs" t="Include" />
           <e p="IsoLanguages.cs" t="Include" />
@@ -2971,8 +2978,16 @@
           <e p="NormalizeTitleFixture.cs" t="Include" />
           <e p="ParserFixture.cs" t="Include" />
           <e p="ParsingServiceTests" t="Include">
+            <e p="AugmentersTests" t="Include">
+              <e p="AugmentMovieInfoFixture.cs" t="Include" />
+              <e p="AugmentWithFileSizeFixture.cs" t="Include" />
+              <e p="AugmentWithHistoryFixture.cs" t="Include" />
+              <e p="AugmentWithMediaInfoFixture.cs" t="Include" />
+              <e p="AugmentWithReleaseInfoFixture.cs" t="Include" />
+            </e>
             <e p="GetMovieFixture.cs" t="Include" />
             <e p="MapFixture.cs" t="Include" />
+            <e p="ParseQualityDefinitionFixture.cs" t="Include" />
           </e>
           <e p="PathParserFixture.cs" t="Include" />
           <e p="QualityParserFixture.cs" t="Include" />
@@ -3009,6 +3024,7 @@
           <e p="QualityDefinitionServiceFixture.cs" t="Include" />
           <e p="QualityFixture.cs" t="Include" />
           <e p="QualityModelComparerFixture.cs" t="Include" />
+          <e p="QualityTagFixture.cs" t="Include" />
           <e p="RevisionComparableFixture.cs" t="Include" />
         </e>
         <e p="QueueTests" t="Include">

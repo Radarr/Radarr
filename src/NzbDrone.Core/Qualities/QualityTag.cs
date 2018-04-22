@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
@@ -28,14 +29,14 @@ namespace NzbDrone.Core.Qualities
             ParseRawMatch(match);
         }
 
-        public bool DoesItMatch(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo)
+        public bool DoesItMatch(ParsedMovieInfo movieInfo)
         {
-            var match = DoesItMatchWithoutMods(movieInfo, releaseInfo);
+            var match = DoesItMatchWithoutMods(movieInfo);
             if (TagModifier.HasFlag(TagModifier.Not)) match = !match;
             return match;
         }
 
-        private bool DoesItMatchWithoutMods(ParsedMovieInfo movieInfo, ReleaseInfo releaseInfo)
+        private bool DoesItMatchWithoutMods(ParsedMovieInfo movieInfo)
         {
             switch (TagType)
             {
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.Qualities
                     string compared = null;
                     if (TagType == TagType.Custom)
                     {
-                        compared = releaseInfo?.Title ?? movieInfo.SimpleReleaseTitle;
+                        compared = movieInfo.SimpleReleaseTitle;
                     }
                     else
                     {
@@ -69,7 +70,7 @@ namespace NzbDrone.Core.Qualities
                 case TagType.Source:
                     return movieInfo.Quality.Source == (Source) Value;
                 case TagType.Indexer:
-                    return releaseInfo?.IndexerFlags.HasFlag((IndexerFlags) Value) == true;
+                    return (movieInfo.ExtraInfo.GetValueOrDefault("IndexerFlags") as IndexerFlags?)?.HasFlag((IndexerFlags) Value) == true;
                 default:
                     return false;
             }

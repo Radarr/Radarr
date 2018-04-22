@@ -957,6 +957,11 @@
     <Compile Include="Notifications\Twitter\Twitter.cs" />
     <Compile Include="Notifications\Twitter\TwitterService.cs" />
     <Compile Include="Notifications\Twitter\TwitterSettings.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithFileSize.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithHistory.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithMediaInfo.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithReleaseInfo.cs" />
+    <Compile Include="Parser\Augmenters\IAugmentParsedMovieInfo.cs" />
     <Compile Include="Parser\IsoLanguage.cs" />
     <Compile Include="Parser\IsoLanguages.cs" />
     <Compile Include="Parser\LanguageParser.cs" />
@@ -1287,7 +1292,6 @@
     </Content>
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

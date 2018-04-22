@@ -52,10 +52,7 @@ namespace NzbDrone.Api.Qualities
         private QualityDefinitionTestResource Test()
         {
 
-            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new ReleaseInfo
-            {
-                Title = Request.Query.title,
-            });
+            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new List<object>());
             if (parsed == null)
             {
                 return null;

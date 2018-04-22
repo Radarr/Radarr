@@ -10,6 +10,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -37,6 +38,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _config;
+        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public ManualImportService(IDiskProvider diskProvider,
@@ -50,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                                    IDownloadedMovieImportService downloadedMovieImportService,
                                    IEventAggregator eventAggregator,
                                    IConfigService config,
+                                   IHistoryService historyService,
                                    Logger logger)
         {
             _diskProvider = diskProvider;
@@ -63,6 +66,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             _downloadedMovieImportService = downloadedMovieImportService;
             _eventAggregator = eventAggregator;
             _config = config;
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -117,7 +121,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return files.Select(file => ProcessFile(file, downloadId, folder)).Where(i => i != null).ToList();
             }
 
-            var folderInfo = _parsingService.ParseMovieInfo(directoryInfo.Name);
+            var historyItems = _historyService.FindByDownloadId(downloadId);
+            var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
+            var folderInfo = _parsingService.ParseMovieInfo(directoryInfo.Name, new List<object>{firstHistoryItem});
             var movieFiles = _diskScanService.GetVideoFiles(folder).ToList();
             var decisions = _importDecisionMaker.GetImportDecisions(movieFiles, movie, downloadClientItem, folderInfo, SceneSource(movie, folder), false);
 
@@ -219,7 +225,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 var file = message.Files[i];
                 var movie = _movieService.GetMovie(file.MovieId);
-                var parsedMovieInfo = _parsingService.ParseMoviePathInfo(file.Path) ?? new ParsedMovieInfo();
+                var parsedMovieInfo = _parsingService.ParseMoviePathInfo(file.Path, new List<object>()) ?? new ParsedMovieInfo();
                 var mediaInfo = _videoFileInfoReader.GetMediaInfo(file.Path);
                 var existingFile = movie.Path.IsParentPath(file.Path);
 

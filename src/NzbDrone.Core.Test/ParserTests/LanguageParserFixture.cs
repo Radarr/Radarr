@@ -12,10 +12,10 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         [TestCase("Castle.2009.S01E14.English.HDTV.XviD-LOL", Language.English)]
         [TestCase("Castle.2009.S01E14.French.HDTV.XviD-LOL", Language.French)]
-        [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French)]
+        [TestCase("Ouija.Origin.of.Evil.2016.MULTi.TRUEFRENCH.1080p.BluRay.x264-MELBA", Language.French, Language.English)]
         [TestCase("Everest.2015.FRENCH.VFQ.BDRiP.x264-CNF30", Language.French)]
-        [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French)]
-        [TestCase("The.Polar.Express.2004.MULTI.VF2.1080p.BluRay.x264-PopHD", Language.French)]
+        [TestCase("Showdown.In.Little.Tokyo.1991.MULTI.VFQ.VFF.DTSHD-MASTER.1080p.BluRay.x264-ZombiE", Language.French, Language.English)]
+        [TestCase("The.Polar.Express.2004.MULTI.VF2.1080p.BluRay.x264-PopHD", Language.French, Language.English)]
         [TestCase("Castle.2009.S01E14.Spanish.HDTV.XviD-LOL", Language.Spanish)]
         [TestCase("Castle.2009.S01E14.German.HDTV.XviD-LOL", Language.German)]
         [TestCase("Castle.2009.S01E14.Italian.HDTV.XviD-LOL", Language.Italian)]
@@ -44,10 +44,19 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Passengers.German.DL.AC3.Dubbed..BluRay.x264-PsO", Language.German)]
         [TestCase("Valana la Legende FRENCH BluRay 720p 2016 kjhlj", Language.French)]
         [TestCase("Smurfs.​The.​Lost.​Village.​2017.​1080p.​BluRay.​HebDub.​x264-​iSrael",Language.Hebrew)]
-        public void should_parse_language(string postTitle, Language language)
+        [TestCase("The Danish Girl 2015", Language.English)]
+        [TestCase("Nocturnal Animals (2016) MULTi VFQ English [1080p] BluRay x264-PopHD", Language.English, Language.French)]
+        public void should_parse_language(string postTitle, params Language[] languages)
         {
-            var result = LanguageParser.ParseLanguages(postTitle);
-            result.Should().Contain(language);
+            var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
+            var languageTitle = postTitle;
+            if (movieInfo != null)
+            {
+                languageTitle = movieInfo.SimpleReleaseTitle;
+            }
+            var result = LanguageParser.ParseLanguages(languageTitle);
+            result = LanguageParser.EnhanceLanguages(languageTitle, result);
+            result.Should().BeEquivalentTo(languages);
         }
 
         [TestCase("2 Broke Girls - S01E01 - Pilot.en.sub", Language.English)]

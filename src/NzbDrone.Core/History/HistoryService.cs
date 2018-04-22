@@ -107,6 +107,8 @@ namespace NzbDrone.Core.History
             history.Data.Add("TvdbId", message.Movie.Release.TvdbId.ToString());
             history.Data.Add("TvRageId", message.Movie.Release.TvRageId.ToString());
             history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
+            history.Data.Add("IndexerFlags", message.Movie.Release.IndexerFlags.ToString());
+            history.Data.Add("IndexerId", message.Movie.Release.IndexerId.ToString());
 
             if (!message.Movie.ParsedMovieInfo.ReleaseHash.IsNullOrWhiteSpace())
             {

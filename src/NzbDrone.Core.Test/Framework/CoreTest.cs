@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System.Collections.Specialized;
+using System.Security.AccessControl;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
@@ -33,14 +35,14 @@ namespace NzbDrone.Core.Test.Framework
         //Used for tests that rely on parsing working correctly.
         protected void UseRealParsingService()
         {
-            Mocker.SetConstant<IParsingService>(new ParsingService(Mocker.Resolve<MovieService>(), Mocker.Resolve<ConfigService>(), Mocker.Resolve<QualityDefinitionService>(), TestLogger));
+            //Mocker.SetConstant<IParsingService>(new ParsingService(Mocker.Resolve<MovieService>(), Mocker.Resolve<ConfigService>(), Mocker.Resolve<QualityDefinitionService>(), TestLogger));
         }
 
         //Used for tests that rely on parsing working correctly. Does some minimal parsing using the old static methods.
         protected void ParseMovieTitle()
         {
-            Mocker.GetMock<IParsingService>().Setup(c => c.ParseMovieInfo(It.IsAny<string>(), It.IsAny<ReleaseInfo>(), It.IsAny<MediaInfoModel>()))
-                .Returns<string, ReleaseInfo, MediaInfoModel>((title, ir, ir2) =>
+            Mocker.GetMock<IParsingService>().Setup(c => c.ParseMovieInfo(It.IsAny<string>(), It.IsAny<System.Collections.Generic.List<object>>()))
+                .Returns<string, System.Collections.Generic.List<object>>((title, helpers) =>
                 {
                     var result = Parser.Parser.ParseMovieTitle(title, false);
                     if (result != null)
