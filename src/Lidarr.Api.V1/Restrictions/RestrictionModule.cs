@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Restrictions;
@@ -15,11 +15,11 @@ namespace Lidarr.Api.V1.Restrictions
         {
             _restrictionService = restrictionService;
 
-            GetResourceById = Get;
+            GetResourceById = GetRestriction;
             GetResourceAll = GetAll;
             CreateResource = Create;
             UpdateResource = Update;
-            DeleteResource = Delete;
+            DeleteResource = DeleteRestriction;
 
             SharedValidator.Custom(restriction =>
             {
@@ -32,7 +32,7 @@ namespace Lidarr.Api.V1.Restrictions
             });
         }
 
-        private RestrictionResource Get(int id)
+        private RestrictionResource GetRestriction(int id)
         {
             return _restrictionService.Get(id).ToResource();
         }
@@ -52,7 +52,7 @@ namespace Lidarr.Api.V1.Restrictions
             _restrictionService.Update(resource.ToModel());
         }
 
-        private void Delete(int id)
+        private void DeleteRestriction(int id)
         {
             _restrictionService.Delete(id);
         }
