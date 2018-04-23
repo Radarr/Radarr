@@ -3,7 +3,7 @@ version: 2
 jobs:
     build:
         docker:
-            - image: gallileo/radarr-cci-primary:4.8.2
+            - image: gallileo/radarr-cci-primary:5.8
         steps:
             - checkout
             - run: git submodule update --init --recursive
