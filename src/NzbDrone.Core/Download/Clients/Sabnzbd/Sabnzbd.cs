@@ -11,6 +11,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download.Clients.Sabnzbd
 {
@@ -21,10 +22,11 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         public Sabnzbd(ISabnzbdProxy proxy,
                        IHttpClient httpClient,
                        IConfigService configService,
+                       INamingConfigService namingConfigService,
                        IDiskProvider diskProvider,
                        IRemotePathMappingService remotePathMappingService,
                        Logger logger)
-            : base(httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
         }
@@ -35,7 +37,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         protected override string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents)
         {
             var category = Settings.MovieCategory;
-            var priority = Settings.RecentTvPriority;
+            var priority = remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority;
 
             var response = _proxy.DownloadNzb(fileContents, filename, category, priority, Settings);
 
@@ -78,8 +80,11 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 queueItem.TotalSize = (long)(sabQueueItem.Size * 1024 * 1024);
                 queueItem.RemainingSize = (long)(sabQueueItem.Sizeleft * 1024 * 1024);
                 queueItem.RemainingTime = sabQueueItem.Timeleft;
+                queueItem.CanBeRemoved = true;
+                queueItem.CanMoveFiles = true;
 
-                if (sabQueue.Paused || sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
+                if ((sabQueue.Paused && sabQueueItem.Priority != SabnzbdPriority.Force) ||
+                    sabQueueItem.Status == SabnzbdDownloadStatus.Paused)
                 {
                     queueItem.Status = DownloadItemStatus.Paused;
 
@@ -142,7 +147,10 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     RemainingSize = 0,
                     RemainingTime = TimeSpan.Zero,
 
-                    Message = sabHistoryItem.FailMessage
+                    Message = sabHistoryItem.FailMessage,
+
+                    CanBeRemoved = true,
+                    CanMoveFiles = true
                 };
 
                 if (sabHistoryItem.Status == SabnzbdDownloadStatus.Failed)

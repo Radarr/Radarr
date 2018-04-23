@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.MetadataSource
 
             switch (type)
             {
-                case MediaCoverTypes.Banner:
+                case MediaCoverTypes.Fanart:
                     realUrl += images.backdrop_sizes.Last();
                     break;
                 case MediaCoverTypes.Poster:

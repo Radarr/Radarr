@@ -38,6 +38,11 @@ namespace NzbDrone.Core.Extras.Others
             return Enumerable.Empty<ExtraFile>();
         }
 
+        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        {
+            return Enumerable.Empty<ExtraFile>();
+        }
+
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
         { 
             var extraFiles = _otherExtraFileService.GetFilesByMovie(movie.Id);
@@ -60,12 +65,6 @@ namespace NzbDrone.Core.Extras.Others
 
         public override ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly)
         {
-            // If the extension is .nfo we need to change it to .nfo-orig
-            if (Path.GetExtension(path).Equals(".nfo", StringComparison.OrdinalIgnoreCase))
-            {
-                extension += "-orig";
-            }
-
             var extraFile = ImportFile(movie, movieFile, path, readOnly, extension, null);
 
             _otherExtraFileService.Upsert(extraFile);

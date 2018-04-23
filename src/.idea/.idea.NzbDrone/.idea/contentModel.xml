@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="E:\C++ Projects\Sonarr\_output" t="ExcludeRecursive">
+    <e p="$PROJECT_DIR$/../_output" t="ExcludeRecursive">
       <e p="NzbDrone.Update" t="ExcludeRecursive" />
     </e>
-    <e p="E:\C++ Projects\Sonarr\Logo\1024.png" t="Include" />
-    <e p="E:\C++ Projects\Sonarr\Logo\64.png" t="Include" />
-    <e p="E:\C++ Projects\Sonarr\src" t="IncludeFlat">
+    <e p="$PROJECT_DIR$/../Logo/1024.png" t="Include" />
+    <e p="$PROJECT_DIR$/../Logo/64.png" t="Include" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p=".nuget" t="Include">
         <e p="NuGet.exe" t="Include" />
       </e>
-      <e p="_ReSharper.Caches\ReSharperHost11.NzbDrone.00" t="ExcludeRecursive" />
-      <e p="Common" t="Include">
-        <e p="CodeAnalysisDictionary.xml" t="Include" />
-        <e p="CommonAssemblyInfo.cs" t="Include" />
-        <e p="CommonVersionInfo.cs" t="Include" />
-        <e p="GlobalSuppressions.cs" t="Include" />
-      </e>
+      <e p="_ReSharper.Caches/ReSharperHost12.NzbDrone.00" t="ExcludeRecursive" />
+      <e p="Common/CommonAssemblyInfo.cs" t="Include" />
+      <e p="Common/CommonVersionInfo.cs" t="Include" />
+      <e p="Common/GlobalSuppressions.cs" t="Include" />
       <e p="External" t="Include" />
-      <e p="ExternalModules\CurlSharp\CurlSharp" t="IncludeRecursive">
+      <e p="ExternalModules/CurlSharp/CurlSharp" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="Callbacks" t="Include">
           <e p="CurlEasyCallbacks.cs" t="Include" />
@@ -70,10 +67,10 @@
         </e>
       </e>
       <e p="Host" t="Include" />
-      <e p="Libraries\MediaInfo\libmediainfo.0.dylib" t="Include" />
-      <e p="Libraries\MediaInfo\MediaInfo.dll" t="Include" />
-      <e p="Libraries\Sqlite\libsqlite3.0.dylib" t="Include" />
-      <e p="Libraries\Sqlite\sqlite3.dll" t="Include" />
+      <e p="Libraries/MediaInfo/libmediainfo.0.dylib" t="Include" />
+      <e p="Libraries/MediaInfo/MediaInfo.dll" t="Include" />
+      <e p="Libraries/Sqlite/libsqlite3.0.dylib" t="Include" />
+      <e p="Libraries/Sqlite/sqlite3.dll" t="Include" />
       <e p="LogentriesCore" t="IncludeRecursive">
         <e p="AsyncLogger.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
@@ -1039,6 +1036,7 @@
           <e p="HttpUriConverter.cs" t="Include" />
           <e p="IntConverter.cs" t="Include" />
           <e p="JSON.cs" t="Include" />
+          <e p="UnderscoreStringEnumConverter.cs" t="Include" />
         </e>
         <e p="ServiceFactory.cs" t="Include" />
         <e p="ServiceProvider.cs" t="Include" />
@@ -1336,6 +1334,9 @@
             <e p="142_movie_extras.cs" t="Include" />
             <e p="143_clean_core_tv.cs" t="Include" />
             <e p="147_add_custom_formats.cs" t="Include" />
+            <e p="144_add_cookies_to_indexer_status.cs" t="Include" />
+            <e p="145_banner_to_fanart.cs" t="Include" />
+            <e p="146_naming_config_colon_replacement_format.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />
@@ -1662,6 +1663,7 @@
               <e p="Xbmc" t="Include">
                 <e p="XbmcMetadata.cs" t="Include" />
                 <e p="XbmcMetadataSettings.cs" t="Include" />
+                <e p="XbmcNfoDetector.cs" t="Include" />
               </e>
             </e>
             <e p="ExistingMetadataImporter.cs" t="Include" />
@@ -1684,6 +1686,7 @@
           <e p="Others" t="Include">
             <e p="ExistingOtherExtraImporter.cs" t="Include" />
             <e p="OtherExtraFile.cs" t="Include" />
+            <e p="OtherExtraFileRenamer.cs" t="Include" />
             <e p="OtherExtraFileRepository.cs" t="Include" />
             <e p="OtherExtraFileService.cs" t="Include" />
             <e p="OtherExtraService.cs" t="Include" />
@@ -2613,6 +2616,7 @@
             </e>
             <e p="DownloadClientFixtureBase.cs" t="Include" />
             <e p="DownloadStationTests" t="Include">
+              <e p="DownloadStationsTaskStatusJsonConverterFixture.cs" t="Include" />
               <e p="SerialNumberProviderFixture.cs" t="Include" />
               <e p="SharedFolderResolverFixture.cs" t="Include" />
               <e p="TorrentDownloadStationFixture.cs" t="Include" />
@@ -2664,6 +2668,21 @@
           </e>
           <e p="TrackedDownloads" t="Include">
             <e p="TrackedDownloadServiceFixture.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Extras" t="Include">
+          <e p="Metadata" t="Include">
+            <e p="Consumers" t="Include">
+              <e p="Roksbox" t="Include">
+                <e p="FindMetadataFileFixture.cs" t="Include" />
+              </e>
+              <e p="Wdtv" t="Include">
+                <e p="FindMetadataFileFixture.cs" t="Include" />
+              </e>
+              <e p="Xbmc" t="Include">
+                <e p="FindMetadataFileFixture.cs" t="Include" />
+              </e>
+            </e>
           </e>
         </e>
         <e p="Files" t="Include">
@@ -2909,16 +2928,6 @@
           </e>
           <e p="Events" t="Include">
             <e p="EventAggregatorFixture.cs" t="Include" />
-          </e>
-        </e>
-        <e p="Metadata" t="Include">
-          <e p="Consumers" t="Include">
-            <e p="Roksbox" t="Include">
-              <e p="FindMetadataFileFixture.cs" t="Include" />
-            </e>
-            <e p="Wdtv" t="Include">
-              <e p="FindMetadataFileFixture.cs" t="Include" />
-            </e>
           </e>
         </e>
         <e p="MetadataSource" t="Include">
@@ -3301,7 +3310,7 @@
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Platform" t="Include" />
-      <e p="ServiceHelpers\ServiceInstall" t="IncludeRecursive">
+      <e p="ServiceHelpers/ServiceInstall" t="IncludeRecursive">
         <e p="app.config" t="Include" />
         <e p="app.manifest" t="Include" />
         <e p="green_puzzle.ico" t="Include" />
@@ -3313,7 +3322,7 @@
         <e p="ServiceHelper.cs" t="Include" />
         <e p="ServiceInstall.csproj" t="IncludeRecursive" />
       </e>
-      <e p="ServiceHelpers\ServiceUninstall" t="IncludeRecursive">
+      <e p="ServiceHelpers/ServiceUninstall" t="IncludeRecursive">
         <e p="app.config" t="Include" />
         <e p="app.manifest" t="Include" />
         <e p="obj" t="ExcludeRecursive" />

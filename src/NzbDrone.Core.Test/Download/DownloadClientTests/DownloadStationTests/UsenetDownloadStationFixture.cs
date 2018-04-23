@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination","shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteEpisode.Release.Title) + ".nzb" }
+                        { "uri", CleanFileName(_remoteEpisode.Release.Title) }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -245,6 +245,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Setup(d => d.GetTasks(_settings))
                   .Returns(tasks);
+        }
+
+        protected static string CleanFileName(String name)
+        {
+            return FileNameBuilder.CleanFileName(name, NamingConfig.Default) + ".nzb";
         }
 
         [Test]
@@ -408,32 +413,18 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             items.Should().OnlyContain(v => !v.OutputPath.IsEmpty);
         }
 
-        [TestCase(DownloadStationTaskStatus.Downloading, DownloadItemStatus.Downloading, true)]
-        [TestCase(DownloadStationTaskStatus.Finished, DownloadItemStatus.Completed, false)]
-        [TestCase(DownloadStationTaskStatus.Waiting, DownloadItemStatus.Queued, true)]
-        public void GetItems_should_return_readonly_expected(DownloadStationTaskStatus apiStatus, DownloadItemStatus expectedItemStatus, bool readOnlyExpected)
-        {
-            GivenSerialNumber();
-            GivenSharedFolder();
-
-            _queued.Status = apiStatus;
-
-            GivenTasks(new List<DownloadStationTask>() { _queued });
-
-            var items = Subject.GetItems();
-
-            items.Should().HaveCount(1);
-            items.First().IsReadOnly.Should().Be(readOnlyExpected);
-        }
-
         [TestCase(DownloadStationTaskStatus.Downloading, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.Error, DownloadItemStatus.Failed)]
         [TestCase(DownloadStationTaskStatus.Extracting, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.Finished, DownloadItemStatus.Completed)]
         [TestCase(DownloadStationTaskStatus.Finishing, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.HashChecking, DownloadItemStatus.Downloading)]
+        [TestCase(DownloadStationTaskStatus.CaptchaNeeded, DownloadItemStatus.Downloading)]
         [TestCase(DownloadStationTaskStatus.Paused, DownloadItemStatus.Paused)]
+        [TestCase(DownloadStationTaskStatus.Seeding, DownloadItemStatus.Completed)]
+        [TestCase(DownloadStationTaskStatus.FilehostingWaiting, DownloadItemStatus.Queued)]
         [TestCase(DownloadStationTaskStatus.Waiting, DownloadItemStatus.Queued)]
+        [TestCase(DownloadStationTaskStatus.Unknown, DownloadItemStatus.Queued)]
         public void GetItems_should_return_item_as_downloadItemStatus(DownloadStationTaskStatus apiStatus, DownloadItemStatus expectedItemStatus)
         {
             GivenSerialNumber();

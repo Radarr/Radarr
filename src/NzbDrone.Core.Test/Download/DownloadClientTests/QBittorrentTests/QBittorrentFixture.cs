@@ -89,6 +89,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                 });
         }
 
+        protected void GivenHighPriority()
+        {
+            Subject.Definition.Settings.As<QBittorrentSettings>().OlderMoviePriority = (int) QBittorrentPriority.First;
+            Subject.Definition.Settings.As<QBittorrentSettings>().RecentMoviePriority = (int) QBittorrentPriority.First;
+        }
+
         protected void GivenMaxRatio(float maxRatio, bool removeOnMaxRatio = true)
         {
             Mocker.GetMock<IQBittorrentProxy>()
@@ -266,6 +272,39 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
+        public void Download_should_set_top_priority()
+        {
+            GivenHighPriority();
+            GivenSuccessfulDownload();
+
+            var remoteMovie = CreateRemoteMovie();
+
+            var id = Subject.Download(remoteMovie);
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Verify(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
+        }
+
+        [Test]
+        public void Download_should_not_fail_if_top_priority_not_available()
+        {
+            GivenHighPriority();
+            GivenSuccessfulDownload();
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                  .Setup(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()))
+                  .Throws(new HttpException(new HttpResponse(new HttpRequest("http://me.local/"), new HttpHeader(), new byte[0], System.Net.HttpStatusCode.Forbidden)));
+
+            var remoteMovie = CreateRemoteMovie();
+
+            var id = Subject.Download(remoteMovie);
+
+            id.Should().NotBeNullOrEmpty();
+
+            ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
         public void should_return_status_with_outputdirs()
         {
             var config = new QBittorrentPreferences
@@ -311,7 +350,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
-        public void should_be_read_only_if_max_ratio_not_reached()
+        public void should_not_be_removable_and_should_not_allow_move_files_if_max_ratio_not_reached()
         {
             GivenMaxRatio(1.0f);
 
@@ -330,11 +369,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenTorrents(new List<QBittorrentTorrent> { torrent });
 
             var item = Subject.GetItems().Single();
-            item.IsReadOnly.Should().BeTrue();
+            item.CanBeRemoved.Should().BeFalse();
+            item.CanMoveFiles.Should().BeFalse();
         }
 
         [Test]
-        public void should_be_read_only_if_max_ratio_reached_and_not_paused()
+        public void should_not_be_removable_and_should_not_allow_move_files_if_max_ratio_reached_and_not_paused()
         {
             GivenMaxRatio(1.0f);
 
@@ -353,11 +393,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenTorrents(new List<QBittorrentTorrent> { torrent });
 
             var item = Subject.GetItems().Single();
-            item.IsReadOnly.Should().BeTrue();
+            item.CanBeRemoved.Should().BeFalse();
+            item.CanMoveFiles.Should().BeFalse();
         }
 
         [Test]
-        public void should_be_read_only_if_max_ratio_is_not_set()
+        public void should_not_be_removable_and_should_not_allow_move_files_if_max_ratio_is_not_set()
         {
             GivenMaxRatio(1.0f, false);
 
@@ -376,11 +417,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenTorrents(new List<QBittorrentTorrent> { torrent });
 
             var item = Subject.GetItems().Single();
-            item.IsReadOnly.Should().BeTrue();
+            item.CanBeRemoved.Should().BeFalse();
+            item.CanMoveFiles.Should().BeFalse();
         }
 
         [Test]
-        public void should_not_be_read_only_if_max_ratio_reached_and_paused()
+        public void should_be_removable_and_should_allow_move_files_if_max_ratio_reached_and_paused()
         {
             GivenMaxRatio(1.0f);
 
@@ -399,7 +441,8 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenTorrents(new List<QBittorrentTorrent> { torrent });
 
             var item = Subject.GetItems().Single();
-            item.IsReadOnly.Should().BeFalse();
+            item.CanBeRemoved.Should().BeTrue();
+            item.CanMoveFiles.Should().BeTrue();
         }
 
         [Test]

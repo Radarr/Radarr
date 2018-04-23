@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -43,7 +43,13 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MovieCategory { get; set; }
 
-        [FieldDefinition(5, Label = "Use SSL", Type = FieldType.Checkbox)]
+        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
+        public int RecentMoviePriority { get; set; }
+
+        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(DelugePriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
+        public int OlderMoviePriority { get; set; }
+
+        [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }
 
         public NzbDroneValidationResult Validate()

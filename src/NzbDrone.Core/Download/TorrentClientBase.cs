@@ -25,10 +25,11 @@ namespace NzbDrone.Core.Download
         protected TorrentClientBase(ITorrentFileInfoReader torrentFileInfoReader,
                                     IHttpClient httpClient,
                                     IConfigService configService,
+                                    INamingConfigService namingConfigService,
                                     IDiskProvider diskProvider,
                                     IRemotePathMappingService remotePathMappingService,
                                     Logger logger)
-            : base(configService, diskProvider, remotePathMappingService, logger)
+            : base(configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _httpClient = httpClient;
             _torrentFileInfoReader = torrentFileInfoReader;
@@ -178,7 +179,7 @@ namespace NzbDrone.Core.Download
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading torrent failed", ex);
             }
 
-            var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteMovie.Release.Title));
+            var filename = string.Format("{0}.torrent", CleanFileName(remoteMovie.Release.Title));
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
             var actualHash = AddFromTorrentFile(remoteMovie, hash, filename, torrentFile);
 

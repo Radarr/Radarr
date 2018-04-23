@@ -9,8 +9,7 @@ namespace NzbDrone.Core.MediaFiles.Events
         public MovieFile ImportedMovie { get; private set; }
         public bool NewDownload { get; private set; }
         public string DownloadClient { get; private set; }
-        public string DownloadId { get; private set; }
-        public bool IsReadOnly { get; set; }
+        public string DownloadId { get; private set; }        
 
         public MovieImportedEvent(LocalMovie movieInfo, MovieFile importedMovie, bool newDownload)
         {
@@ -19,14 +18,13 @@ namespace NzbDrone.Core.MediaFiles.Events
             NewDownload = newDownload;
         }
 
-        public MovieImportedEvent(LocalMovie movieInfo, MovieFile importedMovie, bool newDownload, string downloadClient, string downloadId, bool isReadOnly)
+        public MovieImportedEvent(LocalMovie movieInfo, MovieFile importedMovie, bool newDownload, string downloadClient, string downloadId)
         {
             MovieInfo = movieInfo;
             ImportedMovie = importedMovie;
             NewDownload = newDownload;
             DownloadClient = downloadClient;
             DownloadId = downloadId;
-            IsReadOnly = isReadOnly;
         }
     }
 }

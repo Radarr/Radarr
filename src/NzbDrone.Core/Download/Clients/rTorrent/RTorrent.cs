@@ -15,6 +15,7 @@ using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Download.Clients.RTorrent
 {
@@ -27,11 +28,12 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                         ITorrentFileInfoReader torrentFileInfoReader,
                         IHttpClient httpClient,
                         IConfigService configService,
+                        INamingConfigService namingConfigService,
                         IDiskProvider diskProvider,
                         IRemotePathMappingService remotePathMappingService,
                         IRTorrentDirectoryValidator rTorrentDirectoryValidator,
                         Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
             _rTorrentDirectoryValidator = rTorrentDirectoryValidator;
@@ -39,7 +41,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, RTorrentPriority.Normal, Settings.MovieDirectory, Settings);
+            var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
+
+            _proxy.AddTorrentFromUrl(magnetLink, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -57,7 +61,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, RTorrentPriority.Normal, Settings.MovieDirectory, Settings);
+            var priority = (RTorrentPriority)(remoteMovie.Movie.IsRecentMovie ? Settings.RecentMoviePriority : Settings.OlderMoviePriority);
+
+            _proxy.AddTorrentFromFile(filename, fileContent, Settings.MovieCategory, priority, Settings.MovieDirectory, Settings);
 
             var tries = 10;
             var retryDelay = 500;
@@ -115,7 +121,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                     else if (!torrent.IsActive) item.Status = DownloadItemStatus.Paused;
 
                     // No stop ratio data is present, so do not delete
-                    item.IsReadOnly = true;
+                    item.CanMoveFiles = item.CanBeRemoved = false;
 
                     items.Add(item);
                 }

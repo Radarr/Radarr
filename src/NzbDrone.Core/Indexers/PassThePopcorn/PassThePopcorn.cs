@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         public override bool SupportsSearch => true;
         public override int PageSize => 50;
 
-        private readonly ICached<Dictionary<string, string>> _authCookieCache;
         private readonly IHttpClient _httpClient;
+        private readonly IIndexerStatusService _indexerStatusService;
         private readonly Logger _logger;
 
         public PassThePopcorn(IHttpClient httpClient, ICacheManager cacheManager, IIndexerStatusService indexerStatusService,
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             _httpClient = httpClient;
             _logger = logger;
-            _authCookieCache = cacheManager.GetCache<Dictionary<string, string>>(GetType(), "authCookies");
+            _indexerStatusService = indexerStatusService;
         }
 
         public override IIndexerRequestGenerator GetRequestGenerator()
@@ -35,13 +35,27 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                 Settings = Settings,
                 HttpClient = _httpClient,
                 Logger = _logger,
-                AuthCookieCache = _authCookieCache
             };
         }
 
         public override IParseIndexerResponse GetParser()
         {
-            return new PassThePopcornParser(Settings);
+            return new PassThePopcornParser(Settings, _logger);
         }
+        
+        /*protected override IndexerResponse FetchIndexerResponse(IndexerRequest request)
+        {
+            _logger.Debug("Downloading Feed " + request.HttpRequest.ToString(false));
+
+            if (request.HttpRequest.RateLimit < RateLimit)
+            {
+                request.HttpRequest.RateLimit = RateLimit;
+            }
+
+            //Potentially dangerous though if ptp moves domains!
+            request.HttpRequest.AllowAutoRedirect = false;
+
+            return new IndexerResponse(request, _httpClient.Execute(request.HttpRequest));
+        }*/
     }
 }

@@ -9,6 +9,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -23,10 +24,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             ITorrentFileInfoReader torrentFileInfoReader,
             IHttpClient httpClient,
             IConfigService configService,
+            INamingConfigService namingConfigService,
             IDiskProvider diskProvider,
             IRemotePathMappingService remotePathMappingService,
             Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _proxy = proxy;
         }
@@ -106,7 +108,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                     item.Status = DownloadItemStatus.Downloading;
                 }
 
-                item.IsReadOnly = torrent.Status != TransmissionTorrentStatus.Stopped;
+                item.CanMoveFiles = item.CanBeRemoved = torrent.Status == TransmissionTorrentStatus.Stopped;
 
                 items.Add(item);
             }
@@ -139,12 +141,30 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
+
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)TransmissionPriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)TransmissionPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }
+
             return hash;
         }
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
+
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+
+            if (isRecentMovie && Settings.RecentMoviePriority == (int)TransmissionPriority.First ||
+                !isRecentMovie && Settings.OlderMoviePriority == (int)TransmissionPriority.First)
+            {
+                _proxy.MoveTorrentToTopInQueue(hash, Settings);
+            }
+
             return hash;
         }
 

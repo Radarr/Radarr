@@ -20,9 +20,8 @@ namespace NzbDrone.Core.Notifications.Growl
     public class GrowlService : IGrowlService
     {
         private readonly Logger _logger;
-
-        //TODO: Change this to Sonarr, but it is a breaking change (v3)
-        private readonly Application _growlApplication = new Application("NzbDrone");
+        
+        private readonly Application _growlApplication = new Application("Radarr");
         private readonly NotificationType[] _notificationTypes;
 
         private class GrowlRequestState

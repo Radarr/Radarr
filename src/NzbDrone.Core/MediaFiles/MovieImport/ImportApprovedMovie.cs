@@ -92,7 +92,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         default:
                         case ImportMode.Auto:
-                            copyOnly = downloadClientItem != null && downloadClientItem.IsReadOnly;
+                            copyOnly = downloadClientItem != null && !downloadClientItem.CanMoveFiles;
                             break;
                         case ImportMode.Move:
                             copyOnly = false;
@@ -119,12 +119,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (newDownload)
                     {
-                        _extraService.ImportExtraFiles(localMovie, movieFile, copyOnly);
+                        _extraService.ImportMovie(localMovie, movieFile, copyOnly);
                     }
 
                     if (downloadClientItem != null)
                     {
-                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId, downloadClientItem.IsReadOnly));
+                        _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, newDownload, downloadClientItem.DownloadClient, downloadClientItem.DownloadId));
                     }
                     else
                     {

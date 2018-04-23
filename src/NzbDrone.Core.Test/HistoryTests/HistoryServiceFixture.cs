@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.HistoryTests
                                    Path = @"C:\Test\Unsorted\Movie.2011.mkv"
                                };
 
-            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, true, "sab", "abcd", true));
+            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, true, "sab", "abcd"));
 
             Mocker.GetMock<IHistoryRepository>()
                 .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localMovie.Path))));

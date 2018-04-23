@@ -29,8 +29,8 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             MovieCategory = "Movies";
             Username = "nzbget";
             Password = "tegbzn6789";
-            RecentTvPriority = (int)NzbgetPriority.Normal;
-            OlderTvPriority = (int)NzbgetPriority.Normal;
+            RecentMoviePriority = (int)NzbgetPriority.Normal;
+            OlderMoviePriority = (int)NzbgetPriority.Normal;
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -48,11 +48,11 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
         [FieldDefinition(4, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MovieCategory { get; set; }        
 
-        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing releases that aired within the last 14 days")]
-        public int RecentTvPriority { get; set; }
+        [FieldDefinition(5, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
+        public int RecentMoviePriority { get; set; }
 
-        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing releases that aired over 14 days ago")]
-        public int OlderTvPriority { get; set; }
+        [FieldDefinition(6, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(NzbgetPriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
+        public int OlderMoviePriority { get; set; }
 
         [FieldDefinition(7, Label = "Use SSL", Type = FieldType.Checkbox)]
         public bool UseSsl { get; set; }

@@ -28,10 +28,11 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
                                 ITorrentFileInfoReader torrentFileInfoReader,
                                 IHttpClient httpClient,
                                 IConfigService configService,
+                                INamingConfigService namingConfigService,
                                 IDiskProvider diskProvider,
                                 IRemotePathMappingService remotePathMappingService,
                                 Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _scanWatchFolder = scanWatchFolder;
 
@@ -47,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             var title = remoteMovie.Release.Title;
 
-            title = FileNameBuilder.CleanFileName(title);
+            title = CleanFileName(title);
 
             var filepath = Path.Combine(Settings.TorrentFolder, string.Format("{0}.magnet", title));
 
@@ -66,7 +67,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         {
             var title = remoteMovie.Release.Title;
 
-            title = FileNameBuilder.CleanFileName(title);
+            title = CleanFileName(title);
 
             var filepath = Path.Combine(Settings.TorrentFolder, string.Format("{0}.torrent", title));
 
@@ -103,7 +104,8 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
                     Status = item.Status,
 
-                    IsReadOnly = Settings.ReadOnly
+                    CanMoveFiles = !Settings.ReadOnly,
+                    CanBeRemoved = !Settings.ReadOnly
                 };
             }
         }

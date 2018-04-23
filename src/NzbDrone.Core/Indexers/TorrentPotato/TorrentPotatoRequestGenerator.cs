@@ -79,5 +79,8 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
             pageableRequests.Add(GetMovieRequest(searchCriteria));
             return pageableRequests;
         }
+        
+        public Func<IDictionary<string, string>> GetCookies { get; set; }
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
     }
 }

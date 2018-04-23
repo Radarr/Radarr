@@ -86,6 +86,7 @@ section_regexps = [
         r'^[aA]dded?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[uU]pdated?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
         r'^[cC]hanged?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
+        r'^[nN]ew?\s*:?\s*((dev|use?r|pkg|test|doc)\s*:\s*)?([^\n]*)$',
      ]),
     ('**Fixes**', [
         r'^(?![mM]erge\s*)'

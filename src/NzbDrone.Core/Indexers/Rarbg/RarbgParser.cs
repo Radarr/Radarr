@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -75,6 +76,8 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             return results;
         }
+
+        public Action<IDictionary<string, string>, DateTime?> CookiesUpdater { get; set; }
 
         private string GetGuid(RarbgTorrent torrent)
         {

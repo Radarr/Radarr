@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
             return new MetadataFileResult(GetMovieFileMetadataFilename(movieFile.RelativePath), xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
-        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
+        public override List<ImageFileResult> MovieImages(Movie movie)
         {
             if (!Settings.MovieImages)
             {

@@ -262,7 +262,7 @@ module.exports = Marionette.Layout.extend({
 
 		_showBackdrop : function () {
 				$('body').addClass('backdrop');
-				var fanArt = this._getImage('banner');
+				var fanArt = this._getImage('fanart');
 
 				if (fanArt) {
 						this._backstrech = $.backstretch(fanArt);

@@ -11,6 +11,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients.DownloadStation.Proxies;
 using NzbDrone.Core.MediaFiles.TorrentInfo;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
@@ -33,10 +34,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                                       ITorrentFileInfoReader torrentFileInfoReader,
                                       IHttpClient httpClient,
                                       IConfigService configService,
+                                      INamingConfigService namingConfigService,
                                       IDiskProvider diskProvider,
                                       IRemotePathMappingService remotePathMappingService,
                                       Logger logger)
-            : base(torrentFileInfoReader, httpClient, configService, diskProvider, remotePathMappingService, logger)
+            : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _dsInfoProxy = dsInfoProxy;
             _dsTaskProxy = dsTaskProxy;
@@ -90,7 +92,8 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                     RemainingTime = GetRemainingTime(torrent),
                     Status = GetStatus(torrent),
                     Message = GetMessage(torrent),
-                    IsReadOnly = !IsFinished(torrent)
+                    CanMoveFiles = IsCompleted(torrent),
+                    CanBeRemoved = IsFinished(torrent)
                 };
 
                 if (item.Status == DownloadItemStatus.Completed || item.Status == DownloadItemStatus.Failed)
@@ -199,6 +202,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             return torrent.Status == DownloadStationTaskStatus.Finished;
         }
 
+        protected bool IsCompleted(DownloadStationTask torrent)
+        {
+            return torrent.Status == DownloadStationTaskStatus.Seeding || IsFinished(torrent) ||  (torrent.Status == DownloadStationTaskStatus.Waiting && torrent.Size != 0 && GetRemainingSize(torrent) <= 0);
+        }
+
         protected string GetMessage(DownloadStationTask torrent)
         {
             if (torrent.StatusExtra != null)
@@ -221,7 +229,9 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         {
             switch (torrent.Status)
             {
+                case DownloadStationTaskStatus.Unknown:
                 case DownloadStationTaskStatus.Waiting:
+                case DownloadStationTaskStatus.FilehostingWaiting:
                     return torrent.Size == 0 || GetRemainingSize(torrent) > 0 ? DownloadItemStatus.Queued : DownloadItemStatus.Completed;
                 case DownloadStationTaskStatus.Paused:
                     return DownloadItemStatus.Paused;
@@ -314,12 +324,12 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (DownloadClientAuthenticationException ex) // User could not have permission to access to downloadstation
             {
-                _logger.Error(ex);
+                _logger.Error(ex, ex.Message);
                 return new NzbDroneValidationFailure(string.Empty, ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Error testing Torrent Download Station");
                 return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
             }
         }
@@ -340,7 +350,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (WebException ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Unable to connect to Torrent Download Station");
 
                 if (ex.Status == WebExceptionStatus.ConnectFailure)
                 {
@@ -353,7 +363,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             }
             catch (Exception ex)
             {
-                _logger.Error(ex);
+                _logger.Error(ex, "Error testing Torrent Download Station");
                 return new NzbDroneValidationFailure(string.Empty, $"Unknown exception: {ex.Message}");
             }
         }
