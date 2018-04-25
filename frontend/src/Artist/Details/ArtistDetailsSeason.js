@@ -54,7 +54,7 @@ class ArtistDetailsSeason extends Component {
              isAfter(item.releaseDate, { days: -30 });
     });
 
-    onExpandPress(name, expand && name > 0);
+    onExpandPress(name, expand);
   }
 
   //
@@ -130,26 +130,25 @@ class ArtistDetailsSeason extends Component {
       <div
         className={styles.albumType}
       >
-        <div className={styles.header}>
-          <div className={styles.left}>
-            {
-              <div>
-                <span className={styles.albumTypeLabel}>
-                  {label}
-                </span>
+        <Link
+          className={styles.expandButton}
+          onPress={this.onExpandPress}
+        >
+          <div className={styles.header}>
+            <div className={styles.left}>
+              {
+                <div>
+                  <span className={styles.albumTypeLabel}>
+                    {label}
+                  </span>
 
-                <span className={styles.albumCount}>
-                  ({items.length} Releases)
-                </span>
-              </div>
-            }
+                  <span className={styles.albumCount}>
+                    ({items.length} Releases)
+                  </span>
+                </div>
+              }
 
-          </div>
-
-          <Link
-            className={styles.expandButton}
-            onPress={this.onExpandPress}
-          >
+            </div>
 
             <Icon
               className={styles.expandButtonIcon}
@@ -162,9 +161,9 @@ class ArtistDetailsSeason extends Component {
               !isSmallScreen &&
                 <span>&nbsp;</span>
             }
-          </Link>
 
-        </div>
+          </div>
+        </Link>
 
         <div>
           {

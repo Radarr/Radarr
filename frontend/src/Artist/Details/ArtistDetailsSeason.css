@@ -15,6 +15,7 @@
   align-items: center;
   width: 100%;
   font-size: 24px;
+  cursor: pointer;
 }
 
 .albumTypeLabel {
@@ -37,7 +38,7 @@
   composes: link from 'Components/Link/Link.css';
 
   flex-grow: 1;
-  margin: 0 20px;
+  width: 100%;
   text-align: center;
 }
 
