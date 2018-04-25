@@ -234,7 +234,7 @@ class AlbumDetails extends Component {
             <div
               className={styles.backdrop}
               style={{
-                backgroundImage: `url(${getFanartUrl(images)})`
+                backgroundImage: `url(${getFanartUrl(artist.images)})`
               }}
             >
               <div className={styles.backdropOverlay} />
