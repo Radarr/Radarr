@@ -130,6 +130,7 @@ namespace NzbDrone.Core.Notifications
             {
                 Message = GetTrackMessage(message.TrackInfo.Artist, message.TrackInfo.Tracks, message.TrackInfo.Quality),
                 Artist = message.TrackInfo.Artist,
+                Album = message.TrackInfo.Album,
                 TrackFile = message.ImportedTrack,
                 OldFiles = message.OldFiles,
                 SourcePath = message.TrackInfo.Path,

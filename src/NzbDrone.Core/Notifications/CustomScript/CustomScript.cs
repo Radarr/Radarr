@@ -58,6 +58,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
         public override void OnDownload(TrackDownloadMessage message)
         {
             var artist = message.Artist;
+            var album = message.Album;
             var trackFile = message.TrackFile;
             var sourcePath = message.SourcePath;
             var environmentVariables = new StringDictionary();
@@ -69,12 +70,15 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Artist_Path", artist.Path);
             environmentVariables.Add("Lidarr_Artist_MBId", artist.ForeignArtistId);
             environmentVariables.Add("Lidarr_Artist_Type", artist.ArtistType);
+            environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
+            environmentVariables.Add("Lidarr_Album_Title", album.Title);
+            environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Lidarr_TrackFile_Id", trackFile.Id.ToString());
             environmentVariables.Add("Lidarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
             environmentVariables.Add("Lidarr_TrackFile_RelativePath", trackFile.RelativePath);
             environmentVariables.Add("Lidarr_TrackFile_Path", Path.Combine(artist.Path, trackFile.RelativePath));
             environmentVariables.Add("Lidarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
-            environmentVariables.Add("Lidarr_TrackFile_TrackReleaseDates", string.Join(",", trackFile.Tracks.Value.Select(e => e.Album.ReleaseDate)));
             environmentVariables.Add("Lidarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
             environmentVariables.Add("Lidarr_TrackFile_Quality", trackFile.Quality.Quality.Name);
             environmentVariables.Add("Lidarr_TrackFile_QualityVersion", trackFile.Quality.Revision.Version.ToString());
@@ -109,6 +113,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Lidarr_Album_Title", album.Title);
             environmentVariables.Add("Lidarr_Album_MBId", album.ForeignAlbumId);
+            environmentVariables.Add("Lidarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
             environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
 
