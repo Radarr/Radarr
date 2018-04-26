@@ -1333,10 +1333,10 @@
             <e p="141_fix_duplicate_alt_titles.cs" t="Include" />
             <e p="142_movie_extras.cs" t="Include" />
             <e p="143_clean_core_tv.cs" t="Include" />
-            <e p="147_add_custom_formats.cs" t="Include" />
             <e p="144_add_cookies_to_indexer_status.cs" t="Include" />
             <e p="145_banner_to_fanart.cs" t="Include" />
             <e p="146_naming_config_colon_replacement_format.cs" t="Include" />
+            <e p="147_add_custom_formats.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />

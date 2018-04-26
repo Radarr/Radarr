@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         {
             // get a fresh naming config each time, in case the user has made changes
             NamingConfig namingConfig = _namingConfigService.GetConfig();
-
+            
             foreach (var folder in _diskProvider.GetDirectories(watchFolder))
             {
                 var title = FileNameBuilder.CleanFileName(Path.GetFileName(folder), namingConfig);

@@ -13,6 +13,7 @@ using NzbDrone.Core.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
@@ -61,6 +62,7 @@ namespace NzbDrone.Core.Test.Framework
         [SetUp]
         public void CoreTestSetup()
         {
+            Mocker.GetMock<INamingConfigService>().Setup(s => s.GetConfig()).Returns(NamingConfig.Default);
             _subject = null;
         }
 
