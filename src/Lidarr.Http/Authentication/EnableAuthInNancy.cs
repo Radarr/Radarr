@@ -71,7 +71,6 @@ namespace Lidarr.Http.Authentication
                 );
 
             FormsAuthConfig = new FormsAuthenticationConfiguration
-
             {
                 RedirectUrl = _configFileProvider.UrlBase + "/login",
                 UserMapper = _authenticationService,

@@ -87,12 +87,14 @@
     <Compile Include="Extensions\Pipelines\IRegisterNancyPipeline.cs" />
     <Compile Include="Extensions\Pipelines\RequestLoggingPipeline.cs" />
     <Compile Include="Extensions\Pipelines\LidarrVersionPipeline.cs" />
+    <Compile Include="Extensions\Pipelines\UrlBasePipeline.cs" />
     <Compile Include="Extensions\ReqResExtensions.cs" />
     <Compile Include="Extensions\RequestExtensions.cs" />
     <Compile Include="Frontend\CacheableSpecification.cs" />
     <Compile Include="Frontend\Mappers\BackupFileMapper.cs" />
     <Compile Include="Frontend\Mappers\CacheBreakerProvider.cs" />
     <Compile Include="Frontend\Mappers\FaviconMapper.cs" />
+    <Compile Include="Frontend\Mappers\HtmlMapperBase.cs" />
     <Compile Include="Frontend\Mappers\IMapHttpRequestsToDisk.cs" />
     <Compile Include="Frontend\Mappers\IndexHtmlMapper.cs" />
     <Compile Include="Frontend\Mappers\LogFileMapper.cs" />

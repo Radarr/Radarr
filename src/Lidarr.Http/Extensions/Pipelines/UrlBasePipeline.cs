@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Nancy;
 using Nancy.Bootstrapper;
 using Nancy.Responses;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 
-namespace NzbDrone.Api.Extensions.Pipelines
+namespace Lidarr.Http.Extensions.Pipelines
 {
     public class UrlBasePipeline : IRegisterNancyPipeline
     {
