@@ -1,8 +1,5 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import isAfter from 'Utilities/Date/isAfter';
-import isBefore from 'Utilities/Date/isBefore';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
@@ -69,16 +66,10 @@ class AlbumDetailsMedium extends Component {
   _expandByDefault() {
     const {
       mediumNumber,
-      onExpandPress,
-      items
+      onExpandPress
     } = this.props;
 
-    const expand = _.some(items, (item) => {
-      return isAfter(item.airDateUtc) ||
-             isAfter(item.airDateUtc, { days: -30 });
-    });
-
-    onExpandPress(mediumNumber, expand && mediumNumber > 0);
+    onExpandPress(mediumNumber, mediumNumber === 1);
   }
 
   //
