@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NLog;
-using NzbDrone.Core.Configuration;
 using Lidarr.Http.Frontend.Mappers;
 
 namespace Lidarr.Http.Frontend
@@ -11,14 +10,12 @@ namespace Lidarr.Http.Frontend
     public class StaticResourceModule : NancyModule
     {
         private readonly IEnumerable<IMapHttpRequestsToDisk> _requestMappers;
-        private readonly IConfigFileProvider _configFileProvider;
         private readonly Logger _logger;
 
 
-        public StaticResourceModule(IEnumerable<IMapHttpRequestsToDisk> requestMappers, IConfigFileProvider configFileProvider, Logger logger)
+        public StaticResourceModule(IEnumerable<IMapHttpRequestsToDisk> requestMappers, Logger logger)
         {
             _requestMappers = requestMappers;
-            _configFileProvider = configFileProvider;
             _logger = logger;
 
             Get["/{resource*}"] = x => Index();

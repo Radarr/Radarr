@@ -74,16 +74,9 @@ namespace Lidarr.Http.Frontend.Mappers
                 return string.Format("{0}=\"{1}{2}\"", match.Groups["attribute"].Value, UrlBase, url);
             });
 
-            text = ReplaceText(text);
-
             _generatedContent = text;
 
             return _generatedContent;
-        }
-
-        protected virtual string ReplaceText(string text)
-        {
-            return text;
         }
     }
 }

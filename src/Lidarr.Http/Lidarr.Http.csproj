@@ -91,6 +91,7 @@
     <Compile Include="Extensions\ReqResExtensions.cs" />
     <Compile Include="Extensions\RequestExtensions.cs" />
     <Compile Include="Frontend\CacheableSpecification.cs" />
+    <Compile Include="Frontend\InitializeJsModule.cs" />
     <Compile Include="Frontend\Mappers\BackupFileMapper.cs" />
     <Compile Include="Frontend\Mappers\CacheBreakerProvider.cs" />
     <Compile Include="Frontend\Mappers\FaviconMapper.cs" />
