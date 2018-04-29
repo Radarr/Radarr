@@ -35,21 +35,25 @@ function createMapStateToProps() {
     (state) => state.app,
     createDimensionsSelector(),
     (artist, tags, settings, app, dimensions) => {
-      const isPopulated = artist.isPopulated &&
+      const isPopulated = (
+        artist.isPopulated &&
         tags.isPopulated &&
         settings.qualityProfiles.isPopulated &&
         settings.languageProfiles.isPopulated &&
         settings.metadataProfiles.isPopulated &&
         settings.importLists.isPopulated &&
-        settings.ui.isPopulated;
+        settings.ui.isPopulated
+      );
 
-      const hasError = !!artist.error ||
-        !!tags.error ||
-        !!settings.qualityProfiles.error ||
-        !!settings.languageProfiles.error ||
-        !!settings.metadataProfiles.error ||
-        !!settings.importLists.error ||
-        !!settings.ui.error;
+      const hasError = !!(
+        artist.error ||
+        tags.error ||
+        settings.qualityProfiles.error ||
+        settings.languageProfiles.error ||
+        settings.metadataProfiles.error ||
+        settings.importLists.error ||
+        settings.ui.error
+      );
 
       return {
         isPopulated,
