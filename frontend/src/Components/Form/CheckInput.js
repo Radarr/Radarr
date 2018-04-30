@@ -69,6 +69,10 @@ class CheckInput extends Component {
   }
 
   onClick = (event) => {
+    if (this.props.isDisabled) {
+      return;
+    }
+
     const shiftKey = event.nativeEvent.shiftKey;
     const checked = !this._checkbox.checked;
 
