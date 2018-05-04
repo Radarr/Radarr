@@ -8,6 +8,7 @@ namespace Lidarr.Api.V1.Albums
     public class AlbumReleaseResource
     {
         public string Id { get; set; }
+        public string Title { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public int TrackCount { get; set; }
         public int MediaCount { get; set; }
@@ -29,6 +30,7 @@ namespace Lidarr.Api.V1.Albums
             return new AlbumReleaseResource
             {
                 Id = model.Id,
+                Title = model.Title,
                 ReleaseDate = model.ReleaseDate,
                 TrackCount = model.TrackCount,
                 MediaCount = model.MediaCount,
@@ -49,6 +51,7 @@ namespace Lidarr.Api.V1.Albums
             return new AlbumRelease
             {
                 Id = resource.Id,
+                Title = resource.Title,
                 ReleaseDate = resource.ReleaseDate,
                 TrackCount = resource.TrackCount,
                 MediaCount = resource.MediaCount,

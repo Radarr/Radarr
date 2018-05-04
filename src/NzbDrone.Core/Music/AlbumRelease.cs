@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Music
     public class AlbumRelease : IEmbeddedDocument
     {
         public string Id { get; set; }
+        public string Title { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public int TrackCount { get; set; }
         public int MediaCount { get; set; }

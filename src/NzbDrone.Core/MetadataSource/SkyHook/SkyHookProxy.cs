@@ -313,6 +313,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             AlbumRelease albumRelease = new AlbumRelease
             {
                 Id = resource.Id,
+                Title = resource.Title,
                 ReleaseDate = resource.ReleaseDate,
                 TrackCount = resource.TrackCount,
                 Format = resource.Format,

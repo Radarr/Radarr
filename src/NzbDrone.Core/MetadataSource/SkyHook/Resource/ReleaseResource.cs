@@ -12,6 +12,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string Disambiguation { get; set; }
         public List<string> Label {get; set;}
         public List<string> Country { get; set; }
+        public string Title { get; set; }
         public string Format { get; set; }
     }
 }

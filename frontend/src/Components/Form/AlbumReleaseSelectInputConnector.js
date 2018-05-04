@@ -15,17 +15,20 @@ function createMapStateToProps() {
 
         return {
           key: albumRelease.id,
-          value: `${albumRelease.mediaCount} med, ${albumRelease.trackCount} tracks` +
+          value: `${albumRelease.title}` +
+            `${albumRelease.disambiguation ? ' (' : ''}${titleCase(albumRelease.disambiguation)}${albumRelease.disambiguation ? ')' : ''}` +
+            `, ${albumRelease.mediaCount} med, ${albumRelease.trackCount} tracks` +
             `${albumRelease.country.length > 0 ? ', ' : ''}${albumRelease.country}` +
-            `${albumRelease.disambiguation ? ', ' : ''}${titleCase(albumRelease.disambiguation)}` +
             `${albumRelease.format ? ', [' : ''}${albumRelease.format}${albumRelease.format ? ']' : ''}`
         };
       });
 
+      const sortedValues = _.orderBy(values, ['value']);
+
       const value = selectedRelease.value.id;
 
       return {
-        values,
+        values: sortedValues,
         value
       };
     }
