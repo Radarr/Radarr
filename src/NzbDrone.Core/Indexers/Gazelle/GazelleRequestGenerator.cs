@@ -4,6 +4,7 @@ using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Common.Cache;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Indexers.Gazelle
@@ -125,7 +126,7 @@ namespace NzbDrone.Core.Indexers.Gazelle
 
             var index = GetIndex(cookies);
 
-            if (index.Status != "success" || string.IsNullOrWhiteSpace(index.Status))
+            if (index.Status.IsNullOrWhiteSpace() || index.Status != "success")
             {
                 Logger.Debug("Gazelle authentication failed.");
                 throw new Exception("Failed to authenticate with Gazelle.");
