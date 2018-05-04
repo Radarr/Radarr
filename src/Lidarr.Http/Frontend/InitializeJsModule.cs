@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using Nancy;
 using Nancy.Responses;
 using NzbDrone.Common.EnvironmentInfo;
@@ -12,12 +13,19 @@ namespace Lidarr.Http.Frontend
         private readonly IConfigFileProvider _configFileProvider;
         private readonly IAnalyticsService _analyticsService;
 
+        private static string _apiKey;
+        private static string _urlBase;
+        private string _generatedContent;
+
 
         public InitializeJsModule(IConfigFileProvider configFileProvider,
                                   IAnalyticsService analyticsService)
         {
             _configFileProvider = configFileProvider;
             _analyticsService = analyticsService;
+
+            _apiKey = configFileProvider.ApiKey;
+            _urlBase = configFileProvider.UrlBase;
 
             Get["/initialize.js"] = x => Index();
         }
@@ -30,25 +38,41 @@ namespace Lidarr.Http.Frontend
 
         private Stream GetContentStream()
         {
-            var urlBase = _configFileProvider.UrlBase;
+            var text = GetContent();
+
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
 
-            writer.WriteLine("window.Lidarr = {");
-            writer.WriteLine($"  apiRoot: '{urlBase}/api/v1',");
-            writer.WriteLine($"  apiKey: '{_configFileProvider.ApiKey}',");
-            writer.WriteLine($"  release: '{BuildInfo.Release}',");
-            writer.WriteLine($"  version: '{BuildInfo.Version.ToString()}',");
-            writer.WriteLine($"  branch: '{_configFileProvider.Branch.ToLower()}',");
-            writer.WriteLine($"  analytics: {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
-            writer.WriteLine($"  urlBase: '{urlBase}',");
-            writer.WriteLine($"  isProduction: {RuntimeInfo.IsProduction.ToString().ToLowerInvariant()}");
-            writer.WriteLine("};");
 
+            writer.Write(text);
             writer.Flush();
             stream.Position = 0;
 
             return stream;
+        }
+
+        private string GetContent()
+        {
+            if (RuntimeInfo.IsProduction && _generatedContent != null)
+            {
+                return _generatedContent;
+            }
+
+            var builder = new StringBuilder();
+            builder.AppendLine("window.Lidarr = {");
+            builder.AppendLine($"  apiRoot: '{_urlBase}/api/v1',");
+            builder.AppendLine($"  apiKey: '{_apiKey}',");
+            builder.AppendLine($"  release: '{BuildInfo.Release}',");
+            builder.AppendLine($"  version: '{BuildInfo.Version.ToString()}',");
+            builder.AppendLine($"  branch: '{_configFileProvider.Branch.ToLower()}',");
+            builder.AppendLine($"  analytics: {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
+            builder.AppendLine($"  urlBase: '{_urlBase}',");
+            builder.AppendLine($"  isProduction: {RuntimeInfo.IsProduction.ToString().ToLowerInvariant()}");
+            builder.AppendLine("};");
+
+            _generatedContent = builder.ToString();
+
+            return _generatedContent;
         }
     }
 }
