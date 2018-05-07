@@ -232,5 +232,22 @@ namespace NzbDrone.Core.Test.IndexerTests.TorrentRssIndexerTests
             torrentInfo.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
             torrentInfo.DownloadUrl.Should().Be("https://alpharatio.cc/torrents.php?action=download&authkey=private_auth_key&torrent_pass=private_torrent_pass&id=465831");
         }
+
+        [Test]
+        public void should_parse_recent_feed_from_DanishBits_without_description()
+        {
+            GivenRecentFeedResponse("TorrentRss/DanishBits.xml");
+
+            var oldSettings = Subject.Definition.Settings as TorrentRssIndexerSettings;
+            oldSettings.AllowZeroSize = true;
+            Subject.Definition.Settings = oldSettings;
+
+            var releases = Subject.FetchRecent();
+
+            oldSettings.AllowZeroSize = false;
+            Subject.Definition.Settings = oldSettings;
+
+            releases.Should().HaveCount(30);
+        }
     }
 }

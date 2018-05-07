@@ -301,7 +301,7 @@ namespace NzbDrone.Core.Indexers
 
         public static long ParseSize(string sizeString, bool defaultToBinaryPrefix)
         {
-            if (sizeString.All(char.IsDigit))
+            if (sizeString.Length > 0 && sizeString.All(char.IsDigit))
             {
                 return long.Parse(sizeString);
             }
