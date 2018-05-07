@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();
-            url.AppendFormat("{0}?catid=15,16,17&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
+            url.AppendFormat("{0}?catid=15,16,17,31,35&user={1}&api={2}&eng=1&delay={3}", BaseUrl, Settings.Username, Settings.ApiKey, Settings.Delay);
 
             if (query.IsNotNullOrWhiteSpace())
             {
