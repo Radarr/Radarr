@@ -298,7 +298,8 @@ namespace NzbDrone.Core.Indexers
 
                 if (releases.Empty())
                 {
-                    return new ValidationFailure(string.Empty, "No results were returned from your indexer, please check your settings.");
+                    return new ValidationFailure(string.Empty,
+                        "No results were returned from your indexer, please check your settings.");
                 }
             }
             catch (ApiKeyException)
@@ -319,7 +320,8 @@ namespace NzbDrone.Core.Indexers
                 }
                 else
                 {
-                    return new ValidationFailure("CaptchaToken", "Site protected by CloudFlare CAPTCHA. Valid CAPTCHA token required.");
+                    return new ValidationFailure("CaptchaToken",
+                        "Site protected by CloudFlare CAPTCHA. Valid CAPTCHA token required.");
                 }
             }
             catch (UnsupportedFeedException ex)
@@ -333,6 +335,21 @@ namespace NzbDrone.Core.Indexers
                 _logger.Warn(ex, "Unable to connect to indexer");
 
                 return new ValidationFailure(string.Empty, "Unable to connect to indexer. " + ex.Message);
+            }
+            catch (HttpException ex)
+            {
+                if (ex.Response.StatusCode == HttpStatusCode.BadRequest &&
+                    ex.Response.Content.Contains("not support the requested query"))
+                {
+                    _logger.Warn(ex, "Indexer does not support the query");
+                    return new ValidationFailure(string.Empty, "Indexer does not support the current query. Check if the categories and or searching for movies are supported. Check the log for more details.");
+                }
+                else
+                {
+                    _logger.Warn(ex, "Unable to connect to indexer");
+
+                    return new ValidationFailure(string.Empty, "Unable to connect to indexer, check the log for more details");
+                }
             }
             catch (Exception ex)
             {
