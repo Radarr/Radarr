@@ -2,6 +2,20 @@
 
 ## (unreleased)
 
+### **Fixes**
+- Omgwtfnzbs API categories (UHD, Full BR and Other) (#2764) [jusher00]
+- Indexers that do not support movie search should give better error messages. Radarr now also complains if an indexer does not support certain categories. [Leonardo Galli]
+- RSS Feeds with no description failing to be added. [Leonardo Galli]
+
+
+## v0.2.0.1067 (2018-04-17)
+
+### **Fixes**
+- Radarr not loading with an invalid sort key. [Leonardo Galli]
+
+
+## v0.2.0.1066 (2018-04-16)
+
 ### **New features**
 - More logging for strange PTP errors. Please report them immediately when you see them. [Leonardo Galli]
 - Setting for Colon Replacement Format (#2711) [Qstick]
