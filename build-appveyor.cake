@@ -308,7 +308,7 @@ Task("CompressArtifacts").Does(() => {
 Task("Artifacts")
 	.IsDependentOn("CleanArtifacts")
 	.IsDependentOn("ArtifactsWindows")
-	//.IsDependentOn("ArtifactsWindowsInstaller")
+	.IsDependentOn("ArtifactsWindowsInstaller")
 	.IsDependentOn("ArtifactsLinux")
 	.IsDependentOn("ArtifactsOsx")
 	.IsDependentOn("ArtifactsOsxApp")

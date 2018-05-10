@@ -8,7 +8,7 @@
 #define AppExeName "Radarr.exe"
 #define BuildNumber "2.0"
 #define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
-#define BranchName GetEnv('APPVEYOR_REPO_BRANCH')
+#define BranchName StringChange(GetEnv('APPVEYOR_REPO_BRANCH'), "/", "-")
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
