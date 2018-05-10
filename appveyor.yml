@@ -15,8 +15,8 @@ environment:
 install:
   - git submodule update --init --recursive
   
-init:
-  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 build_script:
   - ps: ./build-appveyor.ps1
@@ -43,7 +43,7 @@ pull_requests:
   do_not_increment_build_number: true
 
 on_failure:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: Get-ChildItem .\_artifacts\*.zip | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - ps: Get-ChildItem .\_artifacts\*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - ps: Get-ChildItem .\_artifacts\*.tar.gz | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
@@ -57,6 +57,3 @@ only_commits:
     - setup/
     - appveyor.yml
     - build-appveyor.cake
-
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
