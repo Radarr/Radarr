@@ -193,7 +193,7 @@ var Collection = PageableCollection.extend({
         downloadedQuality : {
           sortValue : function(model, attr) {
             if (model.get("movieFile")) {
-              return model.get("movieFile").quality.quality.name;
+              return model.get("movieFile").quality.qualityDefinition.title;
             }
 
             return "";

@@ -29,14 +29,17 @@ var view = Marionette.ItemView.extend({
 		},
 
 		onRender : function() {
-			this.ui.quality.val(this.model.get("quality").quality.id);
+			this.ui.quality.val(this.model.get("quality").qualityDefinition.id);
 		},
 
 		_onBeforeSave : function() {
 				var qualityId = this.ui.quality.val();
-				var quality = this.qualities.find(function(m){return m.get("quality").id === parseInt(qualityId);}).get("quality");
+				var quality = this.qualities.find(function(m){return m.get("id") === parseInt(qualityId);});
 				var mQuality = this.model.get("quality");
-				mQuality.quality = quality;
+				var staticQuality = quality.get("quality") || quality.get("parentQualityDefinition").quality;
+				quality.set({ qualityTags : undefined, parentQualityDefinition: undefined });
+				mQuality.qualityDefinition = quality;
+				mQuality.quality = staticQuality;
 				this.model.set({ quality : mQuality });
 		},
 
