@@ -41,7 +41,7 @@ pull_requests:
   do_not_increment_build_number: true
 
 on_failure:
-  - ps: $blockRdp = $true
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: Get-ChildItem .\_artifacts\*.zip | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - ps: Get-ChildItem .\_artifacts\*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - ps: Get-ChildItem .\_artifacts\*.tar.gz | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
