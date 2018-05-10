@@ -78,14 +78,14 @@ Task("Compile").Does(() => {
 	}
 
 	MSBuild(solutionFile, config =>
-		config.UseToolVersion(MSBuildToolVersion.VS2015)
+		config.UseToolVersion(MSBuildToolVersion.VS2017)
 			.WithTarget("Clean")
 			.SetVerbosity(Verbosity.Minimal));
 
 	NuGetRestore(solutionFile);
 
 	MSBuild(solutionFile, config =>
-		config.UseToolVersion(MSBuildToolVersion.VS2015)
+		config.UseToolVersion(MSBuildToolVersion.VS2017)
 			.SetPlatformTarget(PlatformTarget.x86)
 			.SetConfiguration("Release")
 			.WithProperty("AllowedReferenceRelatedFileExtensions", new string[] { ".pdb" })
