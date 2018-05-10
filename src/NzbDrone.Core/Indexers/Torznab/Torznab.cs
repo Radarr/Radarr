@@ -83,11 +83,33 @@ namespace NzbDrone.Core.Indexers.Torznab
             failures.AddIfNotNull(TestCapabilities());
         }
 
+        protected static List<int> CategoryIds(List<NewznabCategory> categories)
+        {
+            var l = categories.Select(c => c.Id).ToList();
+
+            foreach (var category in categories)
+            {
+                if (category.Subcategories != null)
+                    l.AddRange(CategoryIds(category.Subcategories));
+            }
+            
+            return l;
+        }
+
         protected virtual ValidationFailure TestCapabilities()
         {
             try
             {
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                var notSupported = Settings.Categories.Except(CategoryIds(capabilities.Categories));
+                
+                if (notSupported.Any())
+                {
+                    _logger.Warn($"{Definition.Name} does not support the following categories: {string.Join(", ", notSupported)}");
+                    if (notSupported.Count() == Settings.Categories.Count())
+                        return new ValidationFailure(string.Empty, $"This indexer does not support any of the selected categories! (You may need to turn on advanced settings to see them)");
+                }
 
                 if (capabilities.SupportedSearchParameters != null && capabilities.SupportedSearchParameters.Contains("q"))
                 {
@@ -95,12 +117,13 @@ namespace NzbDrone.Core.Indexers.Torznab
                 }
 
                 if (capabilities.SupportedMovieSearchParameters != null &&
-                    new[] { "q", "imdbid" }.Any(v => capabilities.SupportedMovieSearchParameters.Contains(v)))
+                    new[] { "q", "imdbid" }.Any(v => capabilities.SupportedMovieSearchParameters.Contains(v)) &&
+                    new[] { "imdbtitle", "imdbyear" }.All(v => capabilities.SupportedMovieSearchParameters.Contains(v)))
                 {
                     return null;
                 }
 
-                return new ValidationFailure(string.Empty, "Indexer does not support required search parameters");
+                return new ValidationFailure(string.Empty, "This indexer does not support searching for movies :(. Tell your indexer staff to enable this or force add the indexer by disabling search, adding the indexer and then enabling it again.");
             }
             catch (Exception ex)
             {

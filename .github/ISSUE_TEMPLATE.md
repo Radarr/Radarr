@@ -1,6 +1,6 @@
 **Description:**
 
-Check first that your problem is not listed in our wiki section:
+<!-- Check first that your problem is not listed in our wiki section:
 * https://github.com/Radarr/Radarr/wiki/Common-Problems
 * https://github.com/Radarr/Radarr/wiki/FAQ
 
@@ -9,7 +9,7 @@ Check first that your problem is not listed in our wiki section:
 Visit our [Discord server](https://discord.gg/NWYch8M) or [Subreddit](https://reddit.com/r/radarr) for support or longer discussions. Support questions posed on here will be closed immediately.
 
 Provide a description of the feature request or bug here, the more details the better. 
-Please also include the following if you are reporting a bug. If you do not include it, the issue will probably be closed as we cannot help you.
+Please also include the following if you are reporting a bug. If you do not include it, the issue will probably be closed as we cannot help you. -->
 
 **Radarr Version:**
 
@@ -17,4 +17,6 @@ Please also include the following if you are reporting a bug. If you do not incl
 
 **Debug Logs:**
 
-Please use the search bar and make sure you are not submitting an already submitted issue.
+# Do not remove anything from your logs and post the full logs! If not everything fits in here use a service like https://pastebin.com to upload them.
+
+<!-- Please use the search bar (make sure to include closed issues as well) and make sure you are not submitting an already submitted issue. -->

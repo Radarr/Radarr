@@ -401,6 +401,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Files\Indexers\TorrentRss\DanishBits.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="License.txt" />
     <None Include="Files\Indexers\BroadcastheNet\RecentFeed.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
