@@ -272,6 +272,7 @@
     <Compile Include="MediaFiles\MovieImport\ImportDecisionMakerFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\SampleServiceFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\FreeSpaceSpecificationFixture.cs" />
+    <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualityFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\MatchesFolderSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\NotSampleSpecificationFixture.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\NotUnpackingSpecificationFixture.cs" />

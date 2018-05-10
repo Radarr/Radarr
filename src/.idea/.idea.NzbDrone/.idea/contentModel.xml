@@ -2914,6 +2914,7 @@
             <e p="SampleServiceFixture.cs" t="Include" />
             <e p="Specifications" t="Include">
               <e p="FreeSpaceSpecificationFixture.cs" t="Include" />
+              <e p="GrabbedReleaseQualityFixture.cs" t="Include" />
               <e p="MatchesFolderSpecificationFixture.cs" t="Include" />
               <e p="NotSampleSpecificationFixture.cs" t="Include" />
               <e p="NotUnpackingSpecificationFixture.cs" t="Include" />

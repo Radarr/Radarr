@@ -45,7 +45,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
             foreach (var item in grabbedHistory)
             {
-                if (item.Quality.Quality != Quality.Unknown && item.Quality != localMovie.Quality)
+                if (item.Quality.QualityDefinition.Quality != Quality.Unknown && item.Quality != localMovie.Quality)
                 {
                     _logger.Debug("Quality for grabbed release ({0}) does not match the quality of the file ({1})", item.Quality, localMovie.Quality);
                     return Decision.Reject("File quality does not match quality of the grabbed release");
