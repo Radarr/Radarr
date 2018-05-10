@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
         {
-            var query = Query.Where(m => m.InCinemas >= start && m.InCinemas <= end).OrWhere(m => m.PhysicalRelease >= start && m.PhysicalRelease <= end);
+            var query = Query.Where(m => (m.InCinemas >= start && m.InCinemas <= end) || (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
 
             if (!includeUnmonitored)
             {
