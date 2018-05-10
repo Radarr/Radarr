@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using FluentAssertions.Equivalency;
 using Moq;
@@ -55,7 +56,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
 
         private History.History HistoryWithData(params string[] data)
         {
-            var dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             for (var i = 0; i < data.Length; i += 2) {
                 dict.Add(data[i], data[i+1]);
             }
