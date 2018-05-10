@@ -103,13 +103,12 @@ namespace NzbDrone.Core.Parser
 
         private ParsedMovieInfo AugmentMovieInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
         {
-            var helperTypes = helpers.Select(h => h.GetType());
-            var augmenters = _augmenters.Where(a => helperTypes.Contains(a.HelperType) || a.HelperType == null);
+            var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
 
             foreach (var augmenter in augmenters)
             {
                 minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
-                    helpers.FirstOrDefault(h => h.GetType() == augmenter.HelperType));
+                    helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
             }
 
             return minimalInfo;

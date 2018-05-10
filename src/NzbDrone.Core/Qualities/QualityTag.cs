@@ -29,6 +29,11 @@ namespace NzbDrone.Core.Qualities
             ParseRawMatch(match);
         }
 
+        private QualityTag()
+        {
+
+        }
+
         public bool DoesItMatch(ParsedMovieInfo movieInfo)
         {
             var match = DoesItMatchWithoutMods(movieInfo);
@@ -180,7 +185,8 @@ namespace NzbDrone.Core.Qualities
 
                     foreach (IndexerFlags flagValue in flagValues)
                     {
-                        if (nameof(flagValue).ToLower().Replace("_", string.Empty) != value.ToLower().Replace("_", string.Empty)) continue;
+                        var flagString = flagValue.ToString();
+                        if (flagString.ToLower().Replace("_", string.Empty) != value.ToLower().Replace("_", string.Empty)) continue;
                         Value = flagValue;
                         break;
                     }

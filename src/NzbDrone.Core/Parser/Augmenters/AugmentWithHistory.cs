@@ -38,24 +38,24 @@ namespace NzbDrone.Core.Parser.Augmenters
                 //First we create a release info from history data.
                 var releaseInfo = new ReleaseInfo();
 
-                if (int.TryParse(history.Data.GetValueOrDefault("IndexerId"), out var indexerId))
+                if (int.TryParse(history.Data.GetValueOrDefault("indexerId"), out var indexerId))
                 {
                     var indexerSettings = _indexerFactory.Get(indexerId).Settings as IIndexerSettings;
                     releaseInfo.IndexerSettings = indexerSettings;
                 }
 
-                if (int.TryParse(history.Data.GetValueOrDefault("Size"), out var size))
+                if (int.TryParse(history.Data.GetValueOrDefault("size"), out var size))
                 {
                     releaseInfo.Size = size;
                 }
 
-                if (Enum.TryParse(history.Data.GetValueOrDefault("IndexerFlags"), out IndexerFlags indexerFlags))
+                if (Enum.TryParse(history.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags indexerFlags))
                 {
                     releaseInfo.IndexerFlags = indexerFlags;
                 }
 
                 //Now we run the release info augmenters from the history release info. TODO: Add setting to only do that if you trust your indexer!
-                var releaseInfoAugmenters = _augmenters.Where(a => a.HelperType == typeof(ReleaseInfo));
+                var releaseInfoAugmenters = _augmenters.Where(a => a.HelperType.IsInstanceOfType(releaseInfo));
                 foreach (var augmenter in releaseInfoAugmenters)
                 {
                     movieInfo = augmenter.AugmentMovieInfo(movieInfo, releaseInfo);
