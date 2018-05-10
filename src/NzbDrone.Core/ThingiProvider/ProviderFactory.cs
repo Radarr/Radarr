@@ -98,7 +98,9 @@ namespace NzbDrone.Core.ThingiProvider
 
         public virtual TProviderDefinition Create(TProviderDefinition definition)
         {
-            return _providerRepository.Insert(definition);
+            var addedDefinition = _providerRepository.Insert(definition);
+            _eventAggregator.PublishEvent(new ProviderAddedEvent<TProvider>(definition));
+            return addedDefinition;
         }
 
         public virtual void Update(TProviderDefinition definition)

@@ -7,6 +7,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.ImportLists
 {
@@ -44,13 +45,32 @@ namespace NzbDrone.Core.ImportLists
         }
 
 
-        private List<Album> Sync()
+        private List<Album> SyncAll()
         {
             _logger.ProgressInfo("Starting Import List Sync");
 
             var rssReleases = _listFetcherAndParser.Fetch();
 
             var reports = rssReleases.ToList();
+
+            return ProcessReports(reports);
+
+        }
+
+        private List<Album> SyncList(ImportListDefinition definition)
+        {
+            _logger.ProgressInfo(string.Format("Starting Import List Refresh for List {0}", definition.Name));
+
+            var rssReleases = _listFetcherAndParser.FetchSingleList(definition);
+
+            var reports = rssReleases.ToList();
+
+            return ProcessReports(reports);
+
+        }
+
+        private List<Album> ProcessReports(List<ImportListItemInfo> reports)
+        {
             var processed = new List<Album>();
             var artistsToAdd = new List<Artist>();
 
@@ -106,19 +126,19 @@ namespace NzbDrone.Core.ImportLists
                         LanguageProfileId = importList.LanguageProfileId,
                         MetadataProfileId = importList.MetadataProfileId,
                         AlbumFolder = true,
-                        AddOptions = new AddArtistOptions{SearchForMissingAlbums = true, Monitored = importList.ShouldMonitor, SelectedOption = 0}
+                        AddOptions = new AddArtistOptions { SearchForMissingAlbums = true, Monitored = importList.ShouldMonitor, SelectedOption = 0 }
                     });
                 }
 
                 // Add Album so we know what to monitor
-                if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && artistsToAdd.Any(s=>s.ForeignArtistId == report.ArtistMusicBrainzId) && importList.ShouldMonitor)
+                if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && artistsToAdd.Any(s => s.ForeignArtistId == report.ArtistMusicBrainzId) && importList.ShouldMonitor)
                 {
                     artistsToAdd.Find(s => s.ForeignArtistId == report.ArtistMusicBrainzId).AddOptions.AlbumsToMonitor.Add(report.AlbumMusicBrainzId);
                 }
             }
 
             _addArtistService.AddArtists(artistsToAdd);
-            
+
             var message = string.Format("Import List Sync Completed. Reports found: {0}, Reports grabbed: {1}", reports.Count, processed.Count);
 
             _logger.ProgressInfo(message);
@@ -128,7 +148,16 @@ namespace NzbDrone.Core.ImportLists
 
         public void Execute(ImportListSyncCommand message)
         {
-            var processed = Sync();
+            List<Album> processed;
+
+            if (message.DefinitionId.HasValue)
+            {
+                processed = SyncList(_importListFactory.Get(message.DefinitionId.Value));
+            }
+            else
+            {
+                processed = SyncAll();
+            }
 
             _eventAggregator.PublishEvent(new ImportListSyncCompleteEvent(processed));
         }
