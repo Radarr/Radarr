@@ -99,7 +99,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             foreach (var category in categories)
             {
-                l.AddRange(CategoryIds(category.Subcategories));
+                if (category.Subcategories != null)
+                    l.AddRange(CategoryIds(category.Subcategories));
             }
             
             return l;
