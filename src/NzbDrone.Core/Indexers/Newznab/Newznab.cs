@@ -116,7 +116,9 @@ namespace NzbDrone.Core.Indexers.Newznab
                 
                 if (notSupported.Any())
                 {
-                    return new ValidationFailure(string.Empty, $"This indexer does not support the following categories: {string.Join(", ", notSupported)}");
+                    _logger.Warn($"{Definition.Name} does not support the following categories: {string.Join(", ", notSupported)}. You should probably remove them.");
+                    if (notSupported.Count() == Settings.Categories.Count())
+                        return new ValidationFailure(string.Empty, $"This indexer does not support any of the selected categories! (You may need to turn on advanced settings to see them)");
                 }
 
                 if (capabilities.SupportedSearchParameters != null && capabilities.SupportedSearchParameters.Contains("q"))
