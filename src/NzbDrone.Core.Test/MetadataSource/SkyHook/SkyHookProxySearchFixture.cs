@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("tmdbid: 99999999999999999999")]
         [TestCase("tmdbid: 0")]
         [TestCase("tmdbid: -12")]
-        [TestCase("tmdbid:289578")]
+        [TestCase("tmdbid:1")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD;EF")]
         public void no_search_result(string term)
         {

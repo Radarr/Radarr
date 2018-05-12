@@ -13,7 +13,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 {
@@ -30,15 +29,13 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-
             _movie = Builder<Movie>.CreateNew()
                                      .Build();
 
             _profile = new Profile
                        {
                            Name = "Test",
-                           Cutoff = QualityWrapper.Dynamic.HDTV720p,
+                           Cutoff = Quality.HDTV720p,
                            Items = new List<ProfileQualityItem>
                                    {
                                        new ProfileQualityItem { Allowed = true, Quality = Quality.HDTV720p },
@@ -52,7 +49,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
             _parsedMovieInfo = Builder<ParsedMovieInfo>.CreateNew().Build();
-            _parsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p);
+            _parsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
 
             _remoteMovie = new RemoteMovie();
 			_remoteMovie.Movie = _movie;

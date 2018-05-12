@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NzbDrone.Api.REST;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -23,14 +24,11 @@ namespace NzbDrone.Api.Qualities
             UpdateResource = Update;
 
             CreateResource = Create;
-
-            Get["/test"] = x => Test();
         }
 
         private int Create(QualityDefinitionResource qualityDefinitionResource)
         {
-            var model = qualityDefinitionResource.ToModel();
-            return _qualityDefinitionService.Insert(model).Id;
+            throw new BadRequestException("Not allowed!");
         }
 
         private void Update(QualityDefinitionResource resource)
@@ -47,21 +45,6 @@ namespace NzbDrone.Api.Qualities
         private List<QualityDefinitionResource> GetAll()
         {
             return _qualityDefinitionService.All().ToResource();
-        }
-
-        private QualityDefinitionTestResource Test()
-        {
-
-            var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new List<object>());
-            if (parsed == null)
-            {
-                return null;
-            }
-            return new QualityDefinitionTestResource
-            {
-                Matches = _parsingService.MatchQualityTags(parsed).ToResource(),
-                BestMatch = parsed.Quality.QualityDefinition.ToResource()
-            };
         }
     }
 }

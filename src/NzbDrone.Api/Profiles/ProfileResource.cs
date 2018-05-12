@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Core.Parser;
@@ -10,7 +10,7 @@ namespace NzbDrone.Api.Profiles
     public class ProfileResource : RestResource
     {
         public string Name { get; set; }
-        public QualityDefinition Cutoff { get; set; }
+        public Quality Cutoff { get; set; }
         public string PreferredTags { get; set; }
         public List<ProfileQualityItemResource> Items { get; set; }
         public Language Language { get; set; }
@@ -18,7 +18,6 @@ namespace NzbDrone.Api.Profiles
 
     public class ProfileQualityItemResource : RestResource
     {
-        public QualityDefinition QualityDefinition { get; set; }
         public Quality Quality { get; set; }
         public bool Allowed { get; set; }
     }
@@ -47,7 +46,6 @@ namespace NzbDrone.Api.Profiles
 
             return new ProfileQualityItemResource
             {
-                QualityDefinition = model.QualityDefinition,
                 Quality = model.Quality,
                 Allowed = model.Allowed
             };
@@ -62,7 +60,7 @@ namespace NzbDrone.Api.Profiles
                 Id = resource.Id,
 
                 Name = resource.Name,
-                Cutoff = QualityDefinitionService.AllQualityDefinitionsById[resource.Cutoff.Id],
+                Cutoff = (Quality)resource.Cutoff.Id,
                 PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
                 Language = resource.Language
@@ -75,8 +73,7 @@ namespace NzbDrone.Api.Profiles
 
             return new ProfileQualityItem
             {
-                QualityDefinition = QualityDefinitionService.AllQualityDefinitionsById[resource.QualityDefinition.Id],
-                Quality = resource.Quality,
+                Quality = (Quality)resource.Quality.Id,
                 Allowed = resource.Allowed
             };
         }

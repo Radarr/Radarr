@@ -12,7 +12,6 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.DecisionEngine;
 
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -28,28 +27,26 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-
             Mocker.Resolve<QualityUpgradableSpecification>();
             _upgradeDisk = Mocker.Resolve<UpgradeDiskSpecification>();
 
-            _firstFile = new MovieFile { Quality = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 2)), DateAdded = DateTime.Now };
+            _firstFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 2)), DateAdded = DateTime.Now };
 
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = new Profile { Cutoff = QualityWrapper.Dynamic.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() })
+                         .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p, Items = Qualities.QualityFixture.GetDefaultQualities() })
                          .With(e => e.MovieFile = _firstFile)
                          .Build();
 
             _parseResultSingle = new RemoteMovie
             {
                 Movie = fakeSeries,
-                ParsedMovieInfo = new ParsedMovieInfo() { Quality = new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)) },
+                ParsedMovieInfo = new ParsedMovieInfo() { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
             };
         }
 
         private void WithFirstFileUpgradable()
         {
-            _firstFile.Quality = new QualityModel(QualityWrapper.Dynamic.SDTV);
+            _firstFile.Quality = new QualityModel(Quality.SDTV);
         }
 
         [Test]
@@ -69,8 +66,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_not_be_upgradable_if_qualities_are_the_same()
         {
-            _firstFile.Quality = new QualityModel(QualityWrapper.Dynamic.WEBDL1080p);
-            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(QualityWrapper.Dynamic.WEBDL1080p);
+            _firstFile.Quality = new QualityModel(Quality.WEBDL1080p);
+            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
             _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
     }

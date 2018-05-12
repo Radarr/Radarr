@@ -270,7 +270,7 @@ namespace NzbDrone.Integration.Test
             return result.MovieFile;
         }
 
-        public ProfileResource EnsureProfileCutoff(int profileId, QualityDefinition cutoff)
+        public ProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
         {
             var profile = Profiles.Get(profileId);
 

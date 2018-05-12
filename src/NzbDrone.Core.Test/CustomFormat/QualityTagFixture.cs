@@ -1,15 +1,15 @@
 ﻿using System.Text.RegularExpressions;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.Qualities
+namespace NzbDrone.Core.Test.CustomFormat
 {
     [TestFixture]
     public class QualityTagFixture : CoreTest
-    {   
+    {
         [TestCase("R_1080", TagType.Resolution, Resolution.R1080P)]
         [TestCase("R_720", TagType.Resolution, Resolution.R720P)]
         [TestCase("R_576", TagType.Resolution, Resolution.R576P)]
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Qualities
         [TestCase("C_RENR_Surround|(5|7)(\\.1)?", TagType.Custom, "surround|(5|7)(\\.1)?", TagModifier.AbsolutelyRequired, TagModifier.Not, TagModifier.Regex)]
         public void should_parse_tag_from_string(string raw, TagType type, object value, params TagModifier[] modifiers)
         {
-            var parsed = new QualityTag(raw);
+            var parsed = new FormatTag(raw);
             TagModifier modifier = 0;
             foreach (var m in modifiers)
             {
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Qualities
             }
             else
             {
-                parsed.Value.Should().Be(value);   
+                parsed.Value.Should().Be(value);
             }
             parsed.TagModifier.Should().Be(modifier);
         }

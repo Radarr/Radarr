@@ -9,7 +9,6 @@ using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 {
@@ -22,10 +21,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-
             _localMovie = Builder<LocalMovie>.CreateNew()
-                                                 .With(l => l.Quality = new QualityModel(QualityWrapper.Dynamic.Bluray720p))
+                                                 .With(l => l.Quality = new QualityModel(Quality.Bluray720p))
                                                  .Build();
 
             _downloadClientItem = Builder<DownloadClientItem>.CreateNew()
@@ -72,7 +69,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             var history = Builder<History.History>.CreateListOfSize(1)
                                                   .All()
                                                   .With(h => h.EventType = HistoryEventType.Grabbed)
-                                                  .With(h => h.Quality = new QualityModel(QualityWrapper.Dynamic.Unknown))
+                                                  .With(h => h.Quality = new QualityModel(Quality.Unknown))
                                                   .BuildList();
 
             GivenHistory(history);
@@ -100,7 +97,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             var history = Builder<History.History>.CreateListOfSize(1)
                                                   .All()
                                                   .With(h => h.EventType = HistoryEventType.Grabbed)
-                                                  .With(h => h.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p))
+                                                  .With(h => h.Quality = new QualityModel(Quality.HDTV720p))
                                                   .BuildList();
 
             GivenHistory(history);

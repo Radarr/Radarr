@@ -14,7 +14,6 @@ namespace NzbDrone.Core.Test.Qualities
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         private void GivenDefaultProfile()
@@ -32,8 +31,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(QualityWrapper.Dynamic.Bluray1080p);
-            var second = new QualityModel(QualityWrapper.Dynamic.DVD);
+            var first = new QualityModel(Quality.Bluray1080p);
+            var second = new QualityModel(Quality.DVD);
 
             var compare = Subject.Compare(first, second);
 
@@ -45,8 +44,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(QualityWrapper.Dynamic.DVD);
-            var second = new QualityModel(QualityWrapper.Dynamic.Bluray1080p);
+            var first = new QualityModel(Quality.DVD);
+            var second = new QualityModel(Quality.Bluray1080p);
 
             var compare = Subject.Compare(first, second);
 
@@ -58,8 +57,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 2));
-            var second = new QualityModel(QualityWrapper.Dynamic.Bluray1080p, new Revision(version: 1));
+            var first = new QualityModel(Quality.Bluray1080p, new Revision(version: 2));
+            var second = new QualityModel(Quality.Bluray1080p, new Revision(version: 1));
 
             var compare = Subject.Compare(first, second);
 
@@ -71,8 +70,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenCustomProfile();
 
-            var first = new QualityModel(QualityWrapper.Dynamic.DVD);
-            var second = new QualityModel(QualityWrapper.Dynamic.Bluray720p);
+            var first = new QualityModel(Quality.DVD);
+            var second = new QualityModel(Quality.Bluray720p);
 
             var compare = Subject.Compare(first, second);
 

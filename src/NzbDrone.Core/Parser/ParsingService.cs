@@ -5,6 +5,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
@@ -27,8 +28,8 @@ namespace NzbDrone.Core.Parser
         ParsedMovieInfo ParseMoviePathInfo(string path, List<object> helpers);
         ParsedMovieInfo ParseMinimalMovieInfo(string path);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
-        QualityDefinition ParseQualityDefinition(ParsedMovieInfo movieInfo);
-        List<QualityTagMatchResult> MatchQualityTags(ParsedMovieInfo movieInfo);
+        List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
+        List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo);
     }
 
     public class ParsingService : IParsingService
@@ -36,6 +37,7 @@ namespace NzbDrone.Core.Parser
         private readonly IMovieService _movieService;
         private readonly IConfigService _config;
         private readonly IQualityDefinitionService _qualityDefinitionService;
+        private readonly ICustomFormatService _formatService;
         private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;
         private readonly Logger _logger;
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
@@ -44,12 +46,14 @@ namespace NzbDrone.Core.Parser
                               IMovieService movieService,
                               IConfigService configService,
                               IQualityDefinitionService qualityDefinitionService,
+                              ICustomFormatService formatService,
                               IEnumerable<IAugmentParsedMovieInfo> augmenters,
                               Logger logger)
         {
             _movieService = movieService;
             _config = configService;
             _qualityDefinitionService = qualityDefinitionService;
+            _formatService = formatService;
             _augmenters = augmenters;
             _logger = logger;
 
@@ -75,7 +79,7 @@ namespace NzbDrone.Core.Parser
         private ParsedMovieInfo EnhanceMinimalInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
         {
             minimalInfo.Languages = LanguageParser.ParseLanguages(minimalInfo.SimpleReleaseTitle);
-            _logger.Debug("Language(s) parsed: {0}", minimalInfo.Languages);
+            _logger.Debug("Language(s) parsed: {0}", string.Join(", ", minimalInfo.Languages));
 
             minimalInfo.Quality = QualityParser.ParseQuality(minimalInfo.SimpleReleaseTitle);
 
@@ -94,7 +98,10 @@ namespace NzbDrone.Core.Parser
             minimalInfo.Languages =
                 LanguageParser.EnhanceLanguages(minimalInfo.SimpleReleaseTitle, minimalInfo.Languages);
 
-            minimalInfo.Quality.QualityDefinition = ParseQualityDefinition(minimalInfo);
+            minimalInfo.Quality.Quality = Quality.FindByInfo(minimalInfo.Quality.Source, minimalInfo.Quality.Resolution,
+                minimalInfo.Quality.Modifier);
+
+            minimalInfo.Quality.CustomFormats = ParseCustomFormat(minimalInfo);
 
             _logger.Debug("Quality parsed: {0}", minimalInfo.Quality);
 
@@ -135,74 +142,42 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        public QualityDefinition ParseQualityDefinition(ParsedMovieInfo movieInfo)
+        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
         {
-            var matches = MatchQualityTags(movieInfo);
+            var matches = MatchFormatTags(movieInfo);
             var goodMatches = matches.Where(m => AreMatchesGood(m.Matches)).ToList();
-            goodMatches = goodMatches.OrderByDescending(m => m.Matches.Count(t => t.Value == true)).ToList();
-            var bestMatchCount = goodMatches.First().Matches.Count(t => t.Value);
-            if (bestMatchCount == 0)
-            {
-                return _qualityDefinitionService.GetById(1); //Unknown
-            }
-            var bestMatches = goodMatches.Where(m => m.Matches.Count(t => t.Value) == bestMatchCount).ToList();
-            if (bestMatches.Count > 1)
-            {
-                //Check Filesize to find best match!
-                var size = movieInfo.ExtraInfo.GetValueOrDefault("Size") as long?;
-
-                var ordered = bestMatches.OrderBy(m =>
-                    (m.QualityDefinition.MaxSize?.Megabytes() ?? 1000000.Megabytes()) - (m.QualityDefinition.MinSize?.Megabytes() ?? 0)).ToList();
-                if (!size.HasValue || size.Value == 0)
-                {
-                    return ordered.Last().QualityDefinition;
-                }
-                return ordered.FirstOrDefault(m =>
-                               (m.QualityDefinition.MaxSize?.Megabytes() ?? 10000000.Megabytes()) * 115 > size.Value &&
-                               (m.QualityDefinition.MinSize?.Megabytes() ?? 0) * 115 < size.Value)?
-                           .QualityDefinition ?? ordered.Last().QualityDefinition; //Always choose qd with largest size spanning.
-            }
-            else
-            {
-                return bestMatches.First().QualityDefinition;
-            }
+            goodMatches = goodMatches.OrderByDescending(m => m.Matches.SelectMany(g => g.Value.Select(d => d.Value)).Count(v => v)).ToList();
+            return goodMatches.Select(r => r.CustomFormat).ToList();
         }
 
-        public List<QualityTagMatchResult> MatchQualityTags(ParsedMovieInfo movieInfo)
+        public List<FormatTagMatchResult> MatchFormatTags(ParsedMovieInfo movieInfo)
         {
-            var definitions = _qualityDefinitionService.All();
+            var formats = _formatService.All();
 
-            var matches = new List<QualityTagMatchResult>();
+            var matches = new List<FormatTagMatchResult>();
 
-            foreach (var definition in definitions)
+            foreach (var customFormat in formats)
             {
-                var currentMatches = new Dictionary<QualityTag, bool>();
+                var formatMatches = customFormat.FormatTags.GroupBy(t => t.TagType).ToDictionary(g => g.Key,
+                    g => g.ToList().ToDictionary(t => t, t => t.DoesItMatch(movieInfo)));
 
-                if (definition.QualityTags != null)
+                matches.Add(new FormatTagMatchResult
                 {
-                    foreach (var qualityTag in definition.QualityTags)
-                    {
-                        currentMatches.Add(qualityTag, qualityTag.DoesItMatch(movieInfo));
-                    }
-                }
-
-                matches.Add(new QualityTagMatchResult
-                {
-                    Matches = currentMatches,
-                    QualityDefinition = definition
+                    CustomFormat = customFormat,
+                    Matches = formatMatches,
+                    GoodMatch = AreMatchesGood(formatMatches)
                 });
             }
 
             return matches;
         }
 
-        private bool AreMatchesGood(Dictionary<QualityTag, bool> matches)
+        private bool AreMatchesGood(Dictionary<TagType, Dictionary<FormatTag, bool>> matches)
         {
-            if (matches.Any(m => m.Value == false && m.Key.TagModifier.HasFlag(TagModifier.AbsolutelyRequired)))
+            if (matches.Values.Any(d => d.Any(m => m.Key.TagModifier == TagModifier.AbsolutelyRequired && m.Value == false)))
                 return false; //If we have any non matching Absolutely Required tags, this isn't a good match
 
-            var groups = matches.GroupBy(m => m.Key.TagType);
-            if (groups.Any(g => g.All(m => m.Value != true))) return false; //If we have any group where no matches were found, this is a bad match
+            if (matches.Any(g => g.Value.All(m => m.Value == false))) return false; //If we have any group where no matches were found, this is a bad match
 
             return true;
         }

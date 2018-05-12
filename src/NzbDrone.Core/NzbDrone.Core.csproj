@@ -123,7 +123,12 @@
     <Compile Include="Authentication\User.cs" />
     <Compile Include="Authentication\UserRepository.cs" />
     <Compile Include="Authentication\UserService.cs" />
-    <Compile Include="Datastore\Converters\QualityDefinitionIntConverter.cs" />
+    <Compile Include="CustomFormats\CustomFormat.cs" />
+    <Compile Include="CustomFormats\CustomFormatRepository.cs" />
+    <Compile Include="CustomFormats\CustomFormatService.cs" />
+    <Compile Include="CustomFormats\FormatTag.cs" />
+    <Compile Include="CustomFormats\FormatTagMatchResult.cs" />
+    <Compile Include="Datastore\Converters\CustomFormatIntConverter.cs" />
     <Compile Include="Datastore\Converters\QualityTagStringConverter.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
     <Compile Include="Datastore\Migration\146_naming_config_colon_replacement_format.cs" />
@@ -986,8 +991,6 @@
     <Compile Include="Profiles\ProfileRepository.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />
-    <Compile Include="Qualities\QualityTag.cs" />
-    <Compile Include="Qualities\QualityTagMatchResult.cs" />
     <Compile Include="Qualities\Revision.cs" />
     <Compile Include="RemotePathMappings\RemotePathMapping.cs" />
     <Compile Include="RemotePathMappings\RemotePathMappingRepository.cs" />
@@ -1297,7 +1300,6 @@
     </Content>
     <Compile Include="Notifications\Telegram\TelegramError.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

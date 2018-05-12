@@ -16,7 +16,6 @@ using NzbDrone.Test.Common;
 using FluentAssertions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.MediaFiles
 {
@@ -30,7 +29,6 @@ namespace NzbDrone.Core.Test.MediaFiles
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             ParseMovieTitle();
             //UseRealParsingService();
 

@@ -13,7 +13,6 @@ using NzbDrone.Test.Common;
 using FizzWare.NBuilder;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles.MediaInfo;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -35,7 +34,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             ParseMovieTitle();
 
             _pass1 = new Mock<IDecisionEngineSpecification>();

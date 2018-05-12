@@ -4,7 +4,6 @@ using NUnit.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.HistoryTests
 {
@@ -14,7 +13,6 @@ namespace NzbDrone.Core.Test.HistoryTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         [Test]
@@ -37,13 +35,13 @@ namespace NzbDrone.Core.Test.HistoryTests
         public void should_get_download_history()
         {
             var historyBluray = Builder<History.History>.CreateNew()
-                .With(c => c.Quality = new QualityModel(QualityWrapper.Dynamic.Bluray1080p))
+                .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
                 .With(c => c.MovieId = 12)
                 .With(c => c.EventType = HistoryEventType.Grabbed)
                 .BuildNew();
 
             var historyDvd = Builder<History.History>.CreateNew()
-                .With(c => c.Quality = new QualityModel(QualityWrapper.Dynamic.DVD))
+                .With(c => c.Quality = new QualityModel(Quality.DVD))
                 .With(c => c.MovieId = 12)
                 .With(c => c.EventType = HistoryEventType.Grabbed)
              .BuildNew();
@@ -51,7 +49,7 @@ namespace NzbDrone.Core.Test.HistoryTests
             Subject.Insert(historyBluray);
             Subject.Insert(historyDvd);
 
-            var downloadHistory = Subject.FindDownloadHistory(12, new QualityModel(QualityWrapper.Dynamic.Bluray1080p));
+            var downloadHistory = Subject.FindDownloadHistory(12, new QualityModel(Quality.Bluray1080p));
 
             downloadHistory.Should().HaveCount(1);
         }

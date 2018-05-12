@@ -3,6 +3,7 @@ using Marr.Data.Converters;
 using Marr.Data.Mapping;
 using NzbDrone.Core.Qualities;
 using Newtonsoft.Json;
+using NzbDrone.Core.CustomFormats;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
@@ -12,12 +13,12 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if (context.DbValue == DBNull.Value)
             {
-                return new QualityTag(""); //Will throw argument exception!
+                return new FormatTag(""); //Will throw argument exception!
             }
 
             var val = Convert.ToString(context.DbValue);
 
-            return new QualityTag(val);
+            return new FormatTag(val);
         }
 
         public object FromDB(ColumnMap map, object dbValue)
@@ -29,12 +30,12 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if(clrValue == DBNull.Value) return 0;
 
-            if(!(clrValue is QualityTag))
+            if(!(clrValue is FormatTag))
             {
                 throw new InvalidOperationException("Attempted to save a quality tag that isn't really a quality tag");
             }
 
-            var quality = (QualityTag) clrValue;
+            var quality = (FormatTag) clrValue;
             return quality.Raw;
         }
 
@@ -42,13 +43,13 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(QualityTag);
+            return objectType == typeof(FormatTag);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var item = reader.Value;
-            return new QualityTag(Convert.ToString(item));
+            return new FormatTag(Convert.ToString(item));
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

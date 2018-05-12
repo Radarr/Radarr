@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+﻿﻿using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 using System.Data;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertQualityProfiles);
             Execute.WithConnection(ConvertQualityModels);
         }
-        
+
         private void ConvertQualityProfiles(IDbConnection conn, IDbTransaction tran)
         {
             var qualityProfileItemConverter = new EmbeddedDocumentConverter(new QualityIntConverter());
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         var allowed = Json.Deserialize<List<Quality>>(allowedJson);
 
-                        var items = QualityDefinition.DefaultQualityDefinitions.OrderBy(v => v.Weight).Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) }).ToList();
+                        var items = Quality.DefaultQualityDefinitions.OrderBy(v => v.Weight).Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) }).ToList();
 
                         var allowedNewJson = qualityProfileItemConverter.ToDB(items);
 

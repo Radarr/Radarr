@@ -5,7 +5,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
 {
@@ -16,7 +15,6 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         [Test]
@@ -26,7 +24,7 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
 
-                    Cutoff = QualityWrapper.Dynamic.Bluray1080p,
+                    Cutoff = Quality.Bluray1080p,
                     Name = "TestProfile"
                 };
 

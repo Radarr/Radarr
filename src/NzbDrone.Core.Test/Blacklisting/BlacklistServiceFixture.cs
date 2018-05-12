@@ -6,7 +6,6 @@ using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Blacklisting
 {
@@ -18,7 +17,6 @@ namespace NzbDrone.Core.Test.Blacklisting
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             _event = new DownloadFailedEvent
                      {
                          MovieId = 69,

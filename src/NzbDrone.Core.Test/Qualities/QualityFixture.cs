@@ -64,11 +64,6 @@ namespace NzbDrone.Core.Test.Qualities
 
         public static List<ProfileQualityItem> GetDefaultQualities(params Quality[] allowed)
         {
-            if (QualityDefinitionService.AllQualityDefinitions == null)
-            {
-                QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-            }
-
             var qualities = new List<Quality>
             {
                 Quality.CAM,
@@ -103,8 +98,6 @@ namespace NzbDrone.Core.Test.Qualities
                 .Select(v => new ProfileQualityItem
                 {
                     Quality = v,
-                    QualityDefinition =
-                        QualityDefinitionService.AllQualityDefinitionsByQuality[v],
                     Allowed = allowed.Contains(v)
                 }).ToList();
 

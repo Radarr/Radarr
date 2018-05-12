@@ -41,7 +41,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void cutoff_should_have_monitored_items()
         {
-            EnsureProfileCutoff(1, QualityWrapper.Dynamic.HDTV720p);
+            EnsureProfileCutoff(1, Quality.HDTV720p);
             var movie = EnsureMovie(680, "Pulp Fiction", true);
             EnsureMovieFile(movie, Quality.SDTV);
 
@@ -63,7 +63,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void cutoff_should_not_have_unmonitored_items()
         {
-            EnsureProfileCutoff(1, QualityWrapper.Dynamic.HDTV720p);
+            EnsureProfileCutoff(1, Quality.HDTV720p);
             var movie = EnsureMovie(680, "Pulp Fiction", false);
             EnsureMovieFile(movie, Quality.SDTV);
 
@@ -75,7 +75,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void cutoff_should_have_movie()
         {
-            EnsureProfileCutoff(1, QualityWrapper.Dynamic.HDTV720p);
+            EnsureProfileCutoff(1, Quality.HDTV720p);
             var movie = EnsureMovie(680, "Pulp Fiction", true);
             EnsureMovieFile(movie, Quality.SDTV);
 
@@ -97,7 +97,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void cutoff_should_have_unmonitored_items()
         {
-            EnsureProfileCutoff(1, QualityWrapper.Dynamic.HDTV720p);
+            EnsureProfileCutoff(1, Quality.HDTV720p);
             var movie = EnsureMovie(680, "Pulp Fiction", false);
             EnsureMovieFile(movie, Quality.SDTV);
 

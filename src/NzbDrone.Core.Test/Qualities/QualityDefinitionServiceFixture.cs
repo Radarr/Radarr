@@ -18,27 +18,6 @@ namespace NzbDrone.Core.Test.Qualities
     [TestFixture]
     public class QualityDefinitionServiceFixture : CoreTest<QualityDefinitionService>
     {
-        public static void SetupDefaultDefinitions()
-        {
-            QualityDefinitionService.AllQualityDefinitions =
-                QualityDefinition.DefaultQualityDefinitions.Select(d =>
-                {
-                    d.Id = d.Quality.Id;
-                    return d;
-                });
-        }
-
-        [Test]
-        public void should_not_have_a_reference()
-        {
-            SetupDefaultDefinitions();
-
-            var parsedEpisodeInfo = new ParsedMovieInfo();
-            parsedEpisodeInfo.Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p);
-            var newInfo = parsedEpisodeInfo.JsonClone();
-            QualityDefinition.DefaultQualityDefinitions.Any(d => d.Quality == Quality.Unknown).Should().BeTrue();
-        }
-
         [Test]
         public void init_should_add_all_definitions()
         {
@@ -95,33 +74,6 @@ namespace NzbDrone.Core.Test.Qualities
 
             Mocker.GetMock<IQualityDefinitionRepository>()
                 .Verify(v => v.DeleteMany(It.Is<List<QualityDefinition>>(d => d.Count == 1)), Times.Once());
-        }
-
-        [Test]
-        [Ignore("I am bad at writing tests.")]
-        public void should_call_profile_service_with_new_format()
-        {
-            Mocker.GetMock<IQualityDefinitionRepository>()
-                .Setup(s => s.All())
-                .Returns(QualityDefinition.DefaultQualityDefinitions.ToList());
-
-            var profileMocker = Mocker.GetMock<IProfileService>();
-
-            Mocker.GetMock<IContainer>().Setup(s => s.Resolve<IProfileService>())
-                .Returns(profileMocker.Object);
-
-            var parent = QualityDefinition.DefaultQualityDefinitions.First(d => d.Quality == Quality.Bluray1080p);
-
-            var newQD = new QualityDefinition
-            {
-                ParentQualityDefinition = parent,
-                Title = parent.Title + " Custom",
-                QualityTags = parent.QualityTags
-            };
-
-            Subject.Insert(newQD);
-
-            profileMocker.Verify(v => v.AddNewQuality(newQD), Times.Once());
         }
     }
 }

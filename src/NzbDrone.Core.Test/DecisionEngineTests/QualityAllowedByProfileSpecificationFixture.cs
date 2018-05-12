@@ -8,7 +8,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -35,15 +34,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             var fakeSeries = Builder<Movie>.CreateNew()
-                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = QualityWrapper.Dynamic.Bluray1080p })
+                         .With(c => c.Profile = (LazyLoaded<Profile>)new Profile { Cutoff = Quality.Bluray1080p })
                          .Build();
 
             remoteMovie = new RemoteMovie
             {
                 Movie = fakeSeries,
-                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)) },
+                ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD, new Revision(version: 2)) },
             };
         }
 
@@ -51,8 +49,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
             remoteMovie.ParsedMovieInfo.Quality.Quality = qualityType;
-            remoteMovie.ParsedMovieInfo.Quality.QualityDefinition =
-                QualityDefinitionService.AllQualityDefinitionsByQuality[qualityType];
             remoteMovie.Movie.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeTrue();
@@ -62,8 +58,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
             remoteMovie.ParsedMovieInfo.Quality.Quality = qualityType;
-            remoteMovie.ParsedMovieInfo.Quality.QualityDefinition =
-                QualityDefinitionService.AllQualityDefinitionsByQuality[qualityType];
             remoteMovie.Movie.Profile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.DVD, Quality.HDTV720p, Quality.Bluray1080p);
 
             Subject.IsSatisfiedBy(remoteMovie, null).Accepted.Should().BeFalse();

@@ -1,6 +1,4 @@
-﻿using NzbDrone.Core.Qualities;
-
-namespace NzbDrone.Core.Parser
+﻿﻿namespace NzbDrone.Core.Parser
 {
     public static class SceneChecker
     {
@@ -12,14 +10,11 @@ namespace NzbDrone.Core.Parser
             if (title.Contains(" ")) return false;
 
             var parsedTitle = Parser.ParseMovieTitle(title, false); //We are not lenient when it comes to scene checking!
-            var rlsGroup = Parser.ParseReleaseGroup(title);
-            var quality = QualityParser.ParseQuality(title);
 
             if (parsedTitle == null ||
-                rlsGroup == null ||
-                string.IsNullOrWhiteSpace(parsedTitle.MovieTitle) ||
-                quality.Resolution == Resolution.Unknown ||
-                quality.Source == Source.UNKNOWN)
+                parsedTitle.ReleaseGroup == null ||
+                parsedTitle.Quality.Quality == Qualities.Quality.Unknown ||
+                string.IsNullOrWhiteSpace(parsedTitle.MovieTitle))
             {
                 return false;
             }

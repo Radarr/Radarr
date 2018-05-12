@@ -6,7 +6,6 @@ using NUnit.Framework;
 using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Blacklisting
 {
@@ -18,8 +17,6 @@ namespace NzbDrone.Core.Test.Blacklisting
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-
             _blacklist = new Blacklist
                      {
                          MovieId = 1234,

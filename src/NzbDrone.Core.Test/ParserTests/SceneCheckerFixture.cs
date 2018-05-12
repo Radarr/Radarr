@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Test.ParserTests
     {
         //[TestCase("South.Park.S04E13.Helen.Keller.The.Musical.720p.WEBRip.AAC2.0.H.264-GC")]
         //[TestCase("Robot.Chicken.S07E02.720p.WEB-DL.DD5.1.H.264-pcsyndicate")]
-        [TestCase("Archer.2009.720p.WEB-DL.DD5.1.H.264-iT00NZ")]
+        //[TestCase("Archer.2009.720p.WEB-DL.DD5.1.H.264-iT00NZ")]
         //[TestCase("30.Rock.S04E17.720p.HDTV.X264-DIMENSION")]
         //[TestCase("30.Rock.S04.720p.HDTV.X264-DIMENSION")]
         public void should_return_true_for_scene_names(string title)

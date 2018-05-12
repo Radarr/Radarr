@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Lifecycle;
@@ -17,22 +17,18 @@ namespace NzbDrone.Core.Profiles
         List<Profile> All();
         Profile Get(int id);
         bool Exists(int id);
-        void AddNewQuality(QualityDefinition qualityDefinition);
     }
 
     public class ProfileService : IProfileService, IHandle<ApplicationStartedEvent>
     {
         private readonly IProfileRepository _profileRepository;
         private readonly IMovieService _movieService;
-        private readonly IQualityDefinitionService _definitionService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, IMovieService movieService,
-            IQualityDefinitionService qualityDefinitionService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IMovieService movieService, Logger logger)
         {
             _profileRepository = profileRepository;
             _movieService = movieService;
-            _definitionService = qualityDefinitionService;
             _logger = logger;
         }
 
@@ -44,23 +40,6 @@ namespace NzbDrone.Core.Profiles
         public void Update(Profile profile)
         {
             _profileRepository.Update(profile);
-        }
-
-        public void AddNewQuality(QualityDefinition qualityDefinition)
-        {
-            var all = All();
-            var updated = new List<Profile>();
-            foreach (var profile in all)
-            {
-                var parent = profile.Items.Find(i => i.QualityDefinition.Id == qualityDefinition.ParentQualityDefinitionId);
-                profile.Items.Insert(profile.Items.IndexOf(parent)+1, new ProfileQualityItem
-                {
-                    Allowed = parent.Allowed,
-                    Quality = null,
-                    QualityDefinition = qualityDefinition
-                });
-                Update(profile);
-            }
         }
 
         public void Delete(int id)
@@ -90,19 +69,18 @@ namespace NzbDrone.Core.Profiles
 
         private Profile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)
         {
-            var items = QualityDefinition.DefaultQualityDefinitions
+            var items = Quality.DefaultQualityDefinitions
                             .OrderBy(v => v.Weight)
-                            .Select(v => new ProfileQualityItem { Quality = v.Quality, QualityDefinition = _definitionService.Get(v.Quality), Allowed = allowed.Contains(v.Quality) })
+                            .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) })
                             .ToList();
 
-            var profile = new Profile { Name = name, Cutoff = _definitionService.Get(cutoff), Items = items, Language = Language.English };
+            var profile = new Profile { Name = name, Cutoff = cutoff, Items = items, Language = Language.English };
 
             return Add(profile);
         }
 
         public void Handle(ApplicationStartedEvent message)
         {
-            // TODO: ERROR: This will probably cause a race condition with adding the default quality definitions!!!
             if (All().Any()) return;
 
             _logger.Info("Setting up default quality profiles");

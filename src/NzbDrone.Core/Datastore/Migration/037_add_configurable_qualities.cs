@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+﻿﻿using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 using System.Data;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         var minSize = qualitySizeReader.GetInt32(1);
                         var maxSize = qualitySizeReader.GetInt32(2);
 
-                        var defaultConfig = QualityDefinition.DefaultQualityDefinitions.Single(p => (int)p.Quality == qualityId);
+                        var defaultConfig = Quality.DefaultQualityDefinitions.Single(p => (int)p.Quality == qualityId);
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
@@ -59,6 +59,6 @@ namespace NzbDrone.Core.Datastore.Migration
                     }
                 }
             }
-        }        
+        }
     }
 }

@@ -70,9 +70,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                .Build();
 
             request.AllowAutoRedirect = true;
-            // request.SuppressHttpError = true;
+            request.SuppressHttpError = true;
 
             var response = _httpClient.Get<MovieResourceRoot>(request);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new MovieNotFoundException("Movie not found.");
+            }
             if (response.StatusCode != HttpStatusCode.OK)
             {
                 throw new HttpException(request, response);
@@ -412,7 +416,15 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 if (parserResult.ImdbId.IsNotNullOrWhiteSpace())
                 {
-                    return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
+                    try
+                    {
+                        return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
+                    }
+                    catch (Exception e)
+                    {
+                        return new List<Movie>();
+                    }
+
                 }
             }
 

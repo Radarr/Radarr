@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Qualities
@@ -8,7 +10,7 @@ namespace NzbDrone.Core.Qualities
     {
         public Quality Quality { get; set; }
 
-        public QualityDefinition QualityDefinition { get; set; }
+        public List<CustomFormat> CustomFormats { get; set; }
 
         [JsonIgnore]
         public Resolution Resolution { get; set; }
@@ -26,21 +28,21 @@ namespace NzbDrone.Core.Qualities
         public QualitySource QualitySource { get; set; }
 
         public QualityModel()
-            : this(QualityDefinitionService.UnknownQualityDefinition, new Revision())
+            : this(Quality.Unknown, new Revision())
         {
 
         }
 
-        public QualityModel(QualityDefinition quality, Revision revision = null)
+        public QualityModel(Quality quality, Revision revision = null)
         {
-            Quality = quality.Quality ?? quality.ParentQualityDefinition.Quality;
-            QualityDefinition = quality;
+            Quality = quality;
             Revision = revision ?? new Revision();
+            CustomFormats = new List<CustomFormat>();
         }
 
         public override string ToString()
         {
-            return string.Format("{0} {1}", QualityDefinition, Revision);
+            return string.Format("{0} {1} ({2})", Quality, Revision, string.Join(", ", CustomFormats));
         }
 
         public override int GetHashCode()
@@ -59,7 +61,7 @@ namespace NzbDrone.Core.Qualities
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return other.QualityDefinition.Id.Equals(QualityDefinition.Id) && other.Revision.Equals(Revision);
+            return other.Quality.Id.Equals(Quality.Id) && other.Revision.Equals(Revision);
         }
 
         public override bool Equals(object obj)

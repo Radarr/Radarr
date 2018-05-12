@@ -11,7 +11,6 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Queue;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -26,7 +25,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
             Mocker.Resolve<QualityUpgradableSpecification>();
 
             _movie = Builder<Movie>.CreateNew()
@@ -39,7 +37,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                    .With(r => r.Movie = _movie)
-                                                   .With(r => r.ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(QualityWrapper.Dynamic.DVD) })
+                                                   .With(r => r.ParsedMovieInfo = new ParsedMovieInfo { Quality = new QualityModel(Quality.DVD) })
                                                    .Build();
         }
 
@@ -83,13 +81,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_quality_in_queue_is_lower()
         {
-            _movie.Profile.Value.Cutoff = QualityWrapper.Dynamic.Bluray1080p;
+            _movie.Profile.Value.Cutoff = Quality.Bluray1080p;
 
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(QualityWrapper.Dynamic.SDTV)
+                                                                                           Quality = new QualityModel(Quality.SDTV)
                                                                                        })
                                                       .Build();
 
@@ -104,7 +102,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(QualityWrapper.Dynamic.DVD)
+                                                                                           Quality = new QualityModel(Quality.DVD)
                                                                                        })
                                                       .Build();
 
@@ -115,13 +113,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_when_quality_in_queue_is_better()
         {
-            _movie.Profile.Value.Cutoff = QualityWrapper.Dynamic.Bluray1080p;
+            _movie.Profile.Value.Cutoff = Quality.Bluray1080p;
 
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                                                        {
-                                                                                           Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p)
+                                                                                           Quality = new QualityModel(Quality.HDTV720p)
                                                                                        })
                                                       .Build();
 
@@ -132,13 +130,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_quality_in_queue_meets_cutoff()
         {
-            _movie.Profile.Value.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.QualityDefinition;
+            _movie.Profile.Value.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality;
 
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                       .With(r => r.Movie = _movie)
                                                       .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
                                                       {
-                                                          Quality = new QualityModel(QualityWrapper.Dynamic.HDTV720p)
+                                                          Quality = new QualityModel(Quality.HDTV720p)
                                                       })
                                                       .Build();
 

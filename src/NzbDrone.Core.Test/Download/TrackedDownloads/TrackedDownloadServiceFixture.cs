@@ -11,7 +11,6 @@ using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Indexers;
 using System.Linq;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Download.TrackedDownloads
 {
@@ -21,7 +20,6 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         private void GivenDownloadHistory()

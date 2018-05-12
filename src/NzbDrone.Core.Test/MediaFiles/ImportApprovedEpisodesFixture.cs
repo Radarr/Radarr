@@ -16,7 +16,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Test.Qualities;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MediaFiles
@@ -33,8 +32,6 @@ namespace NzbDrone.Core.Test.MediaFiles
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-
             _rejectedDecisions = new List<ImportDecision>();
             _approvedDecisions = new List<ImportDecision>();
 
@@ -203,7 +200,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 (new LocalMovie
                 {
                     Movie = fileDecision.LocalMovie.Movie,
-                    Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
+                    Path = @"C:\Test\TV\30 Rock\30 Rock - 2017 - Pilot.avi".AsOsAgnostic(),
                     Quality = new QualityModel(),
                     Size = 80.Megabytes()
                 });

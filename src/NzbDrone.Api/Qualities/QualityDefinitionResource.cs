@@ -8,7 +8,6 @@ namespace NzbDrone.Api.Qualities
     public class QualityDefinitionResource : RestResource
     {
         public Quality Quality { get; set; }
-        public List<string> QualityTags { get; set; }
 
         public string Title { get; set; }
 
@@ -16,8 +15,6 @@ namespace NzbDrone.Api.Qualities
 
         public double? MinSize { get; set; }
         public double? MaxSize { get; set; }
-
-        public QualityDefinitionResource ParentQualityDefinition { get; set; }
     }
 
     public static class QualityDefinitionResourceMapper
@@ -31,7 +28,6 @@ namespace NzbDrone.Api.Qualities
                 Id = model.Id,
 
                 Quality = model.Quality,
-                QualityTags = model.QualityTags?.Select(t => t.Raw.ToUpper()).ToList(),
 
                 Title = model.Title,
 
@@ -39,8 +35,6 @@ namespace NzbDrone.Api.Qualities
 
                 MinSize = model.MinSize,
                 MaxSize = model.MaxSize,
-
-                ParentQualityDefinition = model.ParentQualityDefinition?.ToResource()
             };
         }
 
@@ -53,7 +47,6 @@ namespace NzbDrone.Api.Qualities
                 Id = resource.Id,
 
                 Quality = resource.Quality,
-                QualityTags = resource.QualityTags.Select(s => new QualityTag(s)).ToList(),
 
                 Title = resource.Title,
 
@@ -61,8 +54,6 @@ namespace NzbDrone.Api.Qualities
 
                 MinSize = resource.MinSize,
                 MaxSize = resource.MaxSize,
-
-                ParentQualityDefinition = resource.ParentQualityDefinition?.ToModel()
             };
         }
 

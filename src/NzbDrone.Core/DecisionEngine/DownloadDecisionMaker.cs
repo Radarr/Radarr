@@ -82,7 +82,7 @@ namespace NzbDrone.Core.DecisionEngine
                             MovieTitle = report.Title,
                             Year = 1290,
                             Languages = new List<Language>{Language.Unknown},
-                            Quality = new QualityModel(QualityDefinitionService.UnknownQualityDefinition),
+                            Quality = new QualityModel(),
                         };
 
                         if (_configService.ParsingLeniency == ParsingLeniencyType.MappingLenient)

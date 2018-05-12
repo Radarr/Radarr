@@ -6,7 +6,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.Datastore
 {
@@ -17,7 +16,6 @@ namespace NzbDrone.Core.Test.Datastore
         public void Setup()
         {
             // This is kinda hacky here, since we are kinda testing if the QualityDef converter works as well.
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         [Ignore("MovieFile isnt lazy loaded anymore so this will fail.")]

@@ -12,7 +12,6 @@ using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Test.Qualities;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
@@ -23,8 +22,6 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [SetUp]
         public void SetUp()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
-
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                 .Setup(v => v.PrioritizeDecisionsForMovies(It.IsAny<List<DownloadDecision>>()))
                 .Returns<List<DownloadDecision>>(v => v);
@@ -72,7 +69,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_download_report_if_movie_was_not_already_downloaded()
         {
-            var remoteMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie));
@@ -84,7 +81,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_only_download_movie_once()
         {
-            var remoteMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie));
@@ -97,7 +94,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_return_downloaded_reports()
         {
-            var remoteMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie));
@@ -109,12 +106,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_return_all_downloaded_reports()
         {
             var remoteMovie1 = GetRemoteMovie(
-													new QualityModel(QualityWrapper.Dynamic.HDTV720p),
+													new QualityModel(Quality.HDTV720p),
 											GetMovie(1)
 												 );
 
             var remoteMovie2 = GetRemoteMovie(
-													new QualityModel(QualityWrapper.Dynamic.HDTV720p),
+													new QualityModel(Quality.HDTV720p),
 											GetMovie(2)
 												 );
 
@@ -129,17 +126,17 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_only_return_downloaded_reports()
         {
             var remoteMovie1 = GetRemoteMovie(
-													new QualityModel(QualityWrapper.Dynamic.HDTV720p),
+													new QualityModel(Quality.HDTV720p),
 											GetMovie(1)
 												 );
 
             var remoteMovie2 = GetRemoteMovie(
-													new QualityModel(QualityWrapper.Dynamic.HDTV720p),
+													new QualityModel(Quality.HDTV720p),
 											GetMovie(2)
 												 );
 
             var remoteMovie3 = GetRemoteMovie(
-                                                    new QualityModel(QualityWrapper.Dynamic.HDTV720p),
+                                                    new QualityModel(Quality.HDTV720p),
 											GetMovie(2)
                                                  );
 
@@ -154,7 +151,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_add_to_downloaded_list_when_download_fails()
         {
-            var remoteMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie));
@@ -178,7 +175,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_grab_if_pending()
         {
-            var remoteMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie, new Rejection("Failure!", RejectionType.Temporary)));
@@ -191,7 +188,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_add_to_pending_if_movie_was_grabbed()
         {
-            var removeMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var removeMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(removeMovie));
@@ -205,7 +202,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_add_to_pending_even_if_already_added_to_pending()
         {
 
-            var remoteMovie = GetRemoteMovie(new QualityModel(QualityWrapper.Dynamic.HDTV720p));
+            var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie, new Rejection("Failure!", RejectionType.Temporary)));

@@ -4,19 +4,13 @@ using NLog;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using System;
-using System.Dynamic;
-using System.Runtime.InteropServices;
 using NzbDrone.Common.Cache;
-using NzbDrone.Common.Composition;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Qualities
 {
     public interface IQualityDefinitionService
     {
         void Update(QualityDefinition qualityDefinition);
-        QualityDefinition Insert(QualityDefinition qualityDefinition);
         List<QualityDefinition> All();
         QualityDefinition GetById(int id);
         QualityDefinition Get(Quality quality);
@@ -25,118 +19,41 @@ namespace NzbDrone.Core.Qualities
     public class QualityDefinitionService : IQualityDefinitionService, IHandle<ApplicationStartedEvent>
     {
         private readonly IQualityDefinitionRepository _repo;
-        private readonly ICached<IEnumerable<QualityDefinition>> _cache;
-        private IProfileService _profileService;
-        private readonly IContainer _container;
+        private readonly ICached<Dictionary<Quality, QualityDefinition>> _cache;
         private readonly Logger _logger;
 
-        public static IEnumerable<QualityDefinition> AllQualityDefinitions
-        {
-            get
-            {
-                if (_allQualityDefinitions == null)
-                {
-                    throw new Exception("***FATAL***: Tried accessing quality definitions before they were loaded. Please save this log and open an issue on github!");
-                }
-
-                return _allQualityDefinitions;
-            }
-
-            set
-            {
-                _allQualityDefinitions = value;
-                AllQualityDefinitionsById = value.DistinctBy(d => d.Id).ToDictionary(d => d.Id);
-                AllQualityDefinitionsByQuality = value.Where(d => d.Quality != null).ToDictionary(d => d.Quality); // We only want non custom formats here!
-
-                // Note: Some cases might exist (e.g. tests) where the repo won't return anything, hence we don't have an unknown quality.
-                // Accessing UnknownQualityDefinition will throw an error anyways.
-                if (AllQualityDefinitionsByQuality.Keys.Contains(Quality.Unknown))
-                {
-                    _unknownQualityDefinition = AllQualityDefinitionsByQuality[Quality.Unknown].JsonClone();
-                }
-
-            }
-        }
-
-        public static IDictionary<int, QualityDefinition> AllQualityDefinitionsById;
-        public static IDictionary<Quality, QualityDefinition> AllQualityDefinitionsByQuality;
-
-        private static IEnumerable<QualityDefinition> _allQualityDefinitions;
-
-        public static QualityDefinition UnknownQualityDefinition
-        {
-            get
-            {
-                if (AllQualityDefinitionsByQuality == null || _unknownQualityDefinition == null)
-                {
-                    throw new Exception("***FATAL***: Tried accessing quality definitions before they were loaded. Please save this log and open an issue on github!");
-                }
-
-                return _unknownQualityDefinition;
-            }
-        }
-
-        private static QualityDefinition _unknownQualityDefinition;
-
-        private static bool _applicationStarted = false;
-
-        public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager,
-            //IProfileService profileService,
-            IContainer container,
-            Logger logger)
+        public QualityDefinitionService(IQualityDefinitionRepository repo, ICacheManager cacheManager, Logger logger)
         {
             _repo = repo;
-            _cache = cacheManager.GetCache<IEnumerable<QualityDefinition>>(this.GetType());
-            //_profileService = profileService;
-            _container = container;
+            _cache = cacheManager.GetCache<Dictionary<Quality, QualityDefinition>>(this.GetType());
             _logger = logger;
         }
 
-        private IEnumerable<QualityDefinition> GetAll()
+        private Dictionary<Quality, QualityDefinition> GetAll()
         {
-            //return QualityDefinition.DefaultQualityDefinitions.ToList().Select(WithWeight).ToDictionary(v => v.Quality);
-            return _cache.Get("all", () =>
-            {
-                var all = _repo.All();
-                var qualityDefinitions = all.ToList();
-                all = qualityDefinitions.Select(d => WithParent(d, qualityDefinitions)).Select(WithWeight);
-                AllQualityDefinitions = all;
-                return all;
-            }, TimeSpan.FromMinutes(15));
+            return _cache.Get("all", () => _repo.All().Select(WithWeight).ToDictionary(v => v.Quality), TimeSpan.FromSeconds(5.0));
         }
 
         public void Update(QualityDefinition qualityDefinition)
         {
             _repo.Update(qualityDefinition);
 
-            ClearCache();
-        }
-
-        public QualityDefinition Insert(QualityDefinition qualityDefinition)
-        {
-            var newQD = _repo.Insert(qualityDefinition);
-            if (_profileService == null)
-            {
-                _profileService = _container.Resolve<IProfileService>();
-            }
-            _profileService.AddNewQuality(newQD);
-            ClearCache();
-            return newQD;
+            _cache.Clear();
         }
 
         public List<QualityDefinition> All()
         {
-            return GetAll().OrderBy(d => d.Weight).ToList();
+            return GetAll().Values.OrderBy(d => d.Weight).ToList();
         }
 
         public QualityDefinition GetById(int id)
         {
-            return GetAll().Single(v => v.Id == id);
+            return GetAll().Values.Single(v => v.Id == id);
         }
 
         public QualityDefinition Get(Quality quality)
         {
-            return GetAll().First(v => v.Quality == quality);
+            return GetAll()[quality];
         }
 
         private void InsertMissingDefinitions()
@@ -144,8 +61,8 @@ namespace NzbDrone.Core.Qualities
             List<QualityDefinition> insertList = new List<QualityDefinition>();
             List<QualityDefinition> updateList = new List<QualityDefinition>();
 
-            var allDefinitions = QualityDefinition.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
-            var existingDefinitions = _repo.All().Where(d => !d.ParentQualityDefinitionId.HasValue).ToList(); //Only get default definitions, not custom formats!
+            var allDefinitions = Quality.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
+            var existingDefinitions = _repo.All().ToList();
 
             foreach (var definition in allDefinitions)
             {
@@ -167,46 +84,13 @@ namespace NzbDrone.Core.Qualities
             _repo.UpdateMany(updateList);
             _repo.DeleteMany(existingDefinitions);
 
-            ClearCache();
-        }
-
-        private void AddDefaultQualityTags()
-        {
-            var allDefinitions = All();
-            if (!allDefinitions.Any(d => d.QualityTags != null && d.QualityTags.Count > 0))
-            {
-                _logger.Debug("Adding default quality tags, since none are in the repo");
-                var defaults = QualityDefinition.DefaultQualityDefinitions;
-                var updateList = new List<QualityDefinition>();
-                foreach (var definition in allDefinitions)
-                {
-                    definition.QualityTags = defaults.Single(d => d.Quality == definition.Quality).QualityTags;
-                    updateList.Add(definition);
-                }
-                _repo.UpdateMany(updateList);
-                ClearCache();
-            }
-        }
-
-        private void ClearCache()
-        {
             _cache.Clear();
-            //AllQualityDefinitions = null; dont set them to null, else we have a race condition
-            GetAll(); //Force cache to be refreshed, else AllQualityDefinitions won't get properly reset.
         }
 
         private static QualityDefinition WithWeight(QualityDefinition definition)
         {
-            definition.Weight = QualityDefinition.DefaultQualityDefinitions.Single(d =>
-                definition.ParentQualityDefinitionId != null
-                    ? definition.ParentQualityDefinition.Quality == d.Quality
-                    : d.Quality == definition.Quality).Weight; //Get weight from parent
-            return definition;
-        }
+            definition.Weight = Quality.DefaultQualityDefinitions.Single(d => d.Quality == definition.Quality).Weight;
 
-        private static QualityDefinition WithParent(QualityDefinition definition, IEnumerable<QualityDefinition> all)
-        {
-            definition.ParentQualityDefinition = all.FirstOrDefault(d => d.Id == definition.ParentQualityDefinitionId);
             return definition;
         }
 
@@ -215,28 +99,6 @@ namespace NzbDrone.Core.Qualities
             _logger.Debug("Setting up default quality config");
 
             InsertMissingDefinitions();
-
-            //AddDefaultQualityTags();
-        }
-    }
-
-    public class QualityWrapper : DynamicObject
-    {
-        public static readonly dynamic Dynamic = new QualityWrapper();
-
-        public QualityDefinition GetPropertyValue(string propertyName)
-        {
-            var propInfo = typeof(Quality).GetProperty(propertyName);
-            Quality quality = (Quality)propInfo?.GetValue(null, null);
-            return quality != null ? QualityDefinitionService.AllQualityDefinitionsByQuality[quality] : null;
-        }
-
-        // Implement the TryGetMember method of the DynamicObject class for dynamic member calls.
-        public override bool TryGetMember(GetMemberBinder binder,
-            out object result)
-        {
-            result = GetPropertyValue(binder.Name);
-            return result != null;
         }
     }
 }

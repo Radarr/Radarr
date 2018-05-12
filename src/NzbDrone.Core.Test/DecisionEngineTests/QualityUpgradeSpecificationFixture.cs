@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using FluentAssertions;
+﻿﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
@@ -28,7 +26,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+
         }
 
         private void GivenAutoDownloadPropers(bool autoDownloadPropers)
@@ -45,13 +43,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile,
-                    new QualityModel(
-                        QualityDefinitionService.AllQualityDefinitionsByQuality[current],
-                        new Revision(version: currentVersion)),
-                    new QualityModel(
-                        QualityDefinitionService.AllQualityDefinitionsByQuality[newQuality],
-                        new Revision(version: newVersion)))
+            Subject.IsUpgradable(profile, new QualityModel(current, new Revision(version: currentVersion)), new QualityModel(newQuality, new Revision(version: newVersion)))
                     .Should().Be(expected);
         }
 
@@ -62,7 +54,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
-            Subject.IsUpgradable(profile, new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 2)), new QualityModel(QualityWrapper.Dynamic.DVD, new Revision(version: 1)))
+            Subject.IsUpgradable(profile, new QualityModel(Quality.DVD, new Revision(version: 2)), new QualityModel(Quality.DVD, new Revision(version: 1)))
                     .Should().BeFalse();
         }
     }

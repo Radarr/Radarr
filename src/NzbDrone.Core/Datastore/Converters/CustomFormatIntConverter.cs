@@ -4,11 +4,13 @@ using Marr.Data.Converters;
 using Marr.Data.Mapping;
 using NzbDrone.Core.Qualities;
 using Newtonsoft.Json;
+using NzbDrone.Core.CustomFormats;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
-    public class QualityDefinitionIntConverter : JsonConverter, IConverter
+    public class CustomFormatIntConverter : JsonConverter, IConverter
     {
+        //TODO think of something better.
         public object FromDB(ConverterContext context)
         {
             if (context.DbValue == DBNull.Value)
@@ -18,12 +20,12 @@ namespace NzbDrone.Core.Datastore.Converters
 
             var val = Convert.ToInt32(context.DbValue);
 
-            if (QualityDefinitionService.AllQualityDefinitions == null)
+            if (CustomFormatService.AllCustomFormats == null)
             {
-                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL QUALITY DEFINITIONS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
+                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
-            return QualityDefinitionService.AllQualityDefinitionsById[val];
+            return CustomFormatService.AllCustomFormats[val];
         }
 
         public object FromDB(ColumnMap map, object dbValue)
@@ -35,12 +37,12 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             if(clrValue == DBNull.Value) return null;
 
-            if(!(clrValue is QualityDefinition))
+            if(!(clrValue is CustomFormat))
             {
                 throw new InvalidOperationException("Attempted to save a quality definition that isn't really a quality definition");
             }
 
-            var quality = (QualityDefinition) clrValue;
+            var quality = (CustomFormat) clrValue;
             return quality.Id;
         }
 
@@ -48,19 +50,19 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(QualityDefinition);
+            return objectType == typeof(CustomFormat);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var item = reader.Value;
 
-            if (QualityDefinitionService.AllQualityDefinitions == null)
+            if (CustomFormatService.AllCustomFormats == null)
             {
-                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL QUALITY DEFINITIONS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
+                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
-            return QualityDefinitionService.AllQualityDefinitionsById[Convert.ToInt32(item)];
+            return CustomFormatService.AllCustomFormats[Convert.ToInt32(item)];
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

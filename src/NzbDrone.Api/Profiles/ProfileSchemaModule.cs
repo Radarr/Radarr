@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Profiles;
@@ -22,11 +22,11 @@ namespace NzbDrone.Api.Profiles
         {
             var items = _qualityDefinitionService.All()
                 .OrderBy(v => v.Weight)
-                .Select(v => new ProfileQualityItem { Quality = v.Quality, QualityDefinition = v, Allowed = false})
+                .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = false })
                 .ToList();
 
             var profile = new Profile();
-            profile.Cutoff = QualityDefinitionService.UnknownQualityDefinition;
+            profile.Cutoff = Quality.Unknown;
             profile.Items = items;
             profile.Language = Language.English;
 

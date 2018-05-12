@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Core.Test.Qualities;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
         [TestCase("Chuck.S04E05.HDTV.XviD-LOL", 0)]

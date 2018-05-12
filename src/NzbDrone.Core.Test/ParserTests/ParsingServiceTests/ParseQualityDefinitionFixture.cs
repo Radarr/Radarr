@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
     [TestFixture]
     public class ParseQualityDefinitionFixture : TestBase<ParsingService>
     {
-        public Movie _movie;
+        /*public Movie _movie;
         public IIndexerSettings _multiSettings;
         public IIndexerSettings _notMultiSettings;
         public ReleaseInfo _multiRelease;
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Mocker.GetMock<IQualityDefinitionService>().Setup(s => s.All()).Returns(defaults);
         }
 
-        /* TODO: Add quality definition integration tests?
+         TODO: Add quality definition integration tests?
         [TestCase("Movie 2017 Bluray 1080p", "Bluray-1080p")]
         [TestCase("Movie 2017 Bluray Remux 1080p", "Remux-1080p")]
         [TestCase("27.Dresses.2008.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N", "Remux-1080p")]
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             var result = Subject.ParseMovieInfo(title, new List<object>());
             result.Quality.QualityDefinition.Title.Should().Be(definitionName);
-        }*/
+        }
 
         [Test]
         public void should_correctly_choose_matching_filesize()
@@ -102,20 +102,20 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             GivenExtraQD(new QualityDefinition
             {
                 Title = "Small Bluray 1080p",
-                QualityTags = new List<QualityTag>
+                QualityTags = new List<FormatTag>
                 {
-                    new QualityTag("s_bluray"),
-                    new QualityTag("R_1080")
+                    new FormatTag("s_bluray"),
+                    new FormatTag("R_1080")
                 },
                 MaxSize = 50,
                 MinSize = 0,
             }, new QualityDefinition
             {
                 Title = "Small WEB 1080p",
-                QualityTags = new List<QualityTag>
+                QualityTags = new List<FormatTag>
                 {
-                    new QualityTag("s_webdl"),
-                    new QualityTag("R_1080")
+                    new FormatTag("s_webdl"),
+                    new FormatTag("R_1080")
                 },
                 MaxSize = 50,
                 MinSize = 0,
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.ParseQualityDefinition(CopyWithInfo(webInfo, "Size", largestSize)).Title.Should().Be("WEBDL-1080p");
         }
 
-        /*[TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+        [TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
         [TestCase("Blade.Runner.Directors.Edition.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             "Remux-1080p")]
         [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.MULTI.French.English", "Remux-1080p FR")]
         [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.French", "Remux-1080p FR")]
-        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.English", "Remux-1080p")]*/
+        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.English", "Remux-1080p")]
         [Test]
         public void should_correctly_identify_advanced_definitons()
         {
@@ -173,35 +173,35 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 new QualityDefinition
                 {
                     Title = "Remux-1080p Director",
-                    QualityTags = new List<QualityTag>
+                    QualityTags = new List<FormatTag>
                     {
-                        new QualityTag("s_bluray"),
-                        new QualityTag("R_1080"),
-                        new QualityTag("m_remux"),
-                        new QualityTag("e_director")
+                        new FormatTag("s_bluray"),
+                        new FormatTag("R_1080"),
+                        new FormatTag("m_remux"),
+                        new FormatTag("e_director")
                     }
                 },
                 new QualityDefinition
                 {
                     Title = "Remux-1080p FR",
-                    QualityTags = new List<QualityTag>
+                    QualityTags = new List<FormatTag>
                     {
-                        new QualityTag("s_bluray"),
-                        new QualityTag("R_1080"),
-                        new QualityTag("m_remux"),
-                        new QualityTag("l_re_french"),
-                        new QualityTag("l_english")
+                        new FormatTag("s_bluray"),
+                        new FormatTag("R_1080"),
+                        new FormatTag("m_remux"),
+                        new FormatTag("l_re_french"),
+                        new FormatTag("l_english")
                     }
                 }
             );
 
 
 
-            /*var result = Subject.ParseMovieInfo(title, new List<object>());
-            result.Quality.QualityDefinition.Title.Should().Be(definitionName);*/
+            var result = Subject.ParseMovieInfo(title, new List<object>());
+            result.Quality.QualityDefinition.Title.Should().Be(definitionName);
         }
 
-        /*
+
         [TestCase("My Movie 2017 German English", Language.English, Language.German)]
         //[TestCase("Nocturnal.Animals.2016.MULTi.1080p.BluRay.x264-ANONA", Language.English, Language.French)] fails since no mention of french!
         [TestCase("Nocturnal Animals (2016) MULTi VFQ [1080p] BluRay x264-PopHD", Language.English, Language.French)]
