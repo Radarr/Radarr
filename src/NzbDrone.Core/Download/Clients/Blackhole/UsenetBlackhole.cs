@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         {
             var title = remoteMovie.Release.Title;
 
-            title = CleanFileName(title);
+            title = FileNameBuilder.CleanFileName(title);
 
             var filepath = Path.Combine(Settings.NzbFolder, title + ".nzb");
 

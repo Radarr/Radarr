@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
 
             var title = remoteMovie.Release.Title;
 
-            title = CleanFileName(title);
+            title = FileNameBuilder.CleanFileName(title);
 
             var filepath = Path.Combine(Settings.TorrentFolder, string.Format("{0}.magnet", title));
 
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
         {
             var title = remoteMovie.Release.Title;
 
-            title = CleanFileName(title);
+            title = FileNameBuilder.CleanFileName(title);
 
             var filepath = Path.Combine(Settings.TorrentFolder, string.Format("{0}.torrent", title));
 

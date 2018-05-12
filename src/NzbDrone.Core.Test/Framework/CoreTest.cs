@@ -62,7 +62,6 @@ namespace NzbDrone.Core.Test.Framework
         [SetUp]
         public void CoreTestSetup()
         {
-            Mocker.GetMock<INamingConfigService>().Setup(s => s.GetConfig()).Returns(NamingConfig.Default);
             _subject = null;
         }
 

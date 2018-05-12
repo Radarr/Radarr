@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Download
                 throw new ReleaseDownloadException(remoteMovie.Release, "Downloading torrent failed", ex);
             }
 
-            var filename = string.Format("{0}.torrent", CleanFileName(remoteMovie.Release.Title));
+            var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteMovie.Release.Title));
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
             var actualHash = AddFromTorrentFile(remoteMovie, hash, filename, torrentFile);
 

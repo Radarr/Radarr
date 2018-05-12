@@ -116,7 +116,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 			    {
 			        altTitles.Add(new AlternativeTitle(resource.original_title, SourceType.TMDB, TmdbId, iso.Language));
 			    }
-			    
+
 				//movie.AlternativeTitles.Add(resource.original_title);
 			}
 
@@ -206,17 +206,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             //omdbapi is actually quite good for this info
             //except omdbapi has been having problems recently
             //so i will just leave this in as a comment
-            //and use the 3 month logic that we were using before           
+            //and use the 3 month logic that we were using before
             /*var now = DateTime.Now;
             if (now < movie.InCinemas)
                 movie.Status = MovieStatusType.Announced;
-            if (now >= movie.InCinemas) 
+            if (now >= movie.InCinemas)
                 movie.Status = MovieStatusType.InCinemas;
             if (now >= movie.PhysicalRelease)
                 movie.Status = MovieStatusType.Released;
             */
 
-            
+
             var now = DateTime.Now;
             //handle the case when we have both theatrical and physical release dates
             if (movie.InCinemas.HasValue && movie.PhysicalRelease.HasValue)
@@ -251,7 +251,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
 			if (!hasPreDBEntry)
-			{ 
+			{
 				if (_predbService.HasReleases(movie))
 				{
 					movie.HasPreDBEntry = true;
@@ -376,7 +376,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Error(exception, "Failed to discover movies for action {0}!", action);
             }
 
-            return results.SelectList(MapMovie);       
+            return results.SelectList(MapMovie);
         }
 
         private string StripTrailingTheFromTitle(string title)
@@ -409,7 +409,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     yearTerm = parserResult.Year.ToString();
                 }
-                
+
                 if (parserResult.ImdbId.IsNotNullOrWhiteSpace())
                 {
                     return new List<Movie> { GetMovieInfo(parserResult.ImdbId) };
@@ -432,6 +432,27 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 try
                 {
                     return new List<Movie> { GetMovieInfo(imdbid) };
+                }
+                catch (MovieNotFoundException)
+                {
+                    return new List<Movie>();
+                }
+            }
+
+            if (lowerTitle.StartsWith("tmdb:") || lowerTitle.StartsWith("tmdbid:"))
+            {
+                var slug = lowerTitle.Split(':')[1].Trim();
+
+                int tmdbid = -1;
+
+                if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !(int.TryParse(slug, out tmdbid)))
+                {
+                    return new List<Movie>();
+                }
+
+                try
+                {
+                    return new List<Movie> { GetMovieInfo(tmdbid) };
                 }
                 catch (MovieNotFoundException)
                 {

@@ -250,7 +250,7 @@ namespace NzbDrone.Core.Organizer
             }
 
             string name = ReplaceTokens(namingConfig.MovieFolderFormat, tokenHandlers, namingConfig);
-            return CleanFolderName(name, namingConfig);
+            return CleanFolderName(name, namingConfig.ReplaceIllegalCharacters, namingConfig.ColonReplacementFormat);
         }
 
         public static string CleanTitle(string title)
@@ -284,10 +284,9 @@ namespace NzbDrone.Core.Organizer
             return title.Trim();
         }
 
-        public static string CleanFileName(string name, NamingConfig namingConfig)
+        public static string CleanFileName(string name, bool replace = true, ColonReplacementFormat colonReplacement = ColonReplacementFormat.Delete)
         {
-            bool replace = namingConfig.ReplaceIllegalCharacters;
-            var colonReplacementFormat = namingConfig.ColonReplacementFormat.GetFormatString();
+            var colonReplacementFormat = colonReplacement.GetFormatString();
 
             string result = name;
             string[] badCharacters = { "\\", "/", "<", ">", "?", "*", ":", "|", "\"" };
@@ -301,12 +300,12 @@ namespace NzbDrone.Core.Organizer
             return result.Trim();
         }
 
-        public static string CleanFolderName(string name, NamingConfig namingConfig)
+        public static string CleanFolderName(string name, bool replace = true, ColonReplacementFormat colonReplacement = ColonReplacementFormat.Delete)
         {
             name = FileNameCleanupRegex.Replace(name, match => match.Captures[0].Value[0].ToString());
             name = name.Trim(' ', '.');
 
-            return CleanFileName(name, namingConfig);
+            return CleanFileName(name, replace, colonReplacement);
         }
 
         private void AddMovieTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
@@ -561,7 +560,7 @@ namespace NzbDrone.Core.Organizer
                 replacementText = replacementText.Replace(" ", tokenMatch.Separator);
             }
 
-            replacementText = CleanFileName(replacementText, namingConfig);
+            replacementText = CleanFileName(replacementText, namingConfig.ReplaceIllegalCharacters, namingConfig.ColonReplacementFormat);
 
             if (!replacementText.IsNullOrWhiteSpace())
             {

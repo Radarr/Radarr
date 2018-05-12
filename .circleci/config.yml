@@ -1,12 +1,24 @@
 version: 2
 
+defaults: &defaults
+  docker:
+    - image: gallileo/radarr-cci-primary:5.8.3
+
 jobs:
     build:
-        docker:
-            - image: gallileo/radarr-cci-primary:5.8
+        <<: *defaults
         steps:
+            - restore_cache:
+                keys:
+                    - source-v1-{{ .Branch }}-{{ .Revision }}
+                    - source-v1-{{ .Branch }}-
+                    - source-v1-
             - checkout
             - run: git submodule update --init --recursive
+            - save_cache:
+                key: source-v1-{{ .Branch }}-{{ .Revision }}
+                paths:
+                    - ".git"
             - run:
                 name: Clean Build
                 command: ./build.sh Clean
@@ -16,23 +28,69 @@ jobs:
             - run:
                 name: Build
                 command: ./build.sh Build
+            - restore_cache:
+                keys:
+                    - v1-npm-deps-{{ checksum "package.json" }}
+                    # Find the most recent cache used from any branch
+                    - v1-npm-deps-
             - run:
                 name: Gulp
                 command: ./build.sh Gulp
+            - save_cache:
+                key: v1-npm-deps-{{ checksum "package.json" }}
+                paths:
+                    - "node_modules"
             - run:
                 name: Package
                 command: ./build.sh Package
             - run:
                 name: Preparing Tests
                 command: mkdir -p _tests/reports/junit && mkdir -p ../.config/Radarr && chmod -R 777 ../.config
+            - persist_to_workspace:
+                root: .
+                # Must be relative path from root
+                paths:
+                    - _output
+                    - _output_mono
+                    - _output_osx
+                    - _output_osx_app
+                    - _tests
+                    - .circleci
+    unit_tests:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: Preparing Tests
+                command: mkdir -p ../.config/Radarr && chmod -R 777 ../.config
             - run:
                 name: Unit Tests
-                command: ./test.sh Linux Unit
-            - run:
-                name: Integration Tests
-                command: ./test.sh Linux Integration
+                command: ./_tests/test.sh Linux Unit
             - store_test_results:
                 path: _tests/reports/
+
+    integration_tests:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: Copy Binaries for Integration Tests
+                command: cp -R _output_mono/ _tests/bin
+            - run:
+                name: Preparing Tests
+                command: mkdir -p ../.config/Radarr && chmod -R 777 ../.config
+            - run:
+                name: Integration Tests
+                command: ./_tests/test.sh Linux Integration
+            - store_test_results:
+                path: _tests/reports/
+    publish_artifacts:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                at: .
             - store_artifacts:
                 path: _output
             - store_artifacts:
@@ -41,5 +99,20 @@ jobs:
                 path: _output_osx
             - store_artifacts:
                 path: _output_osx_app
-            - store_artifacts:
-                path: _tests/reports/junit/results.xml
+
+workflows:
+    version: 2
+
+    build_and_test:
+        jobs:
+            - build
+            - unit_tests:
+                requires:
+                    - build
+                    - build
+            - integration_tests:
+                requires:
+                    - build
+            - publish_artifacts:
+                requires:
+                    - build

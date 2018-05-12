@@ -78,13 +78,13 @@ RestoreNuget()
 CleanWithXbuild()
 {
     export MONO_IOMAP=case
-    CheckExitCode xbuild /t:Clean $slnFile
+    CheckExitCode msbuild /t:Clean $slnFile
 }
 
 BuildWithXbuild()
 {
     export MONO_IOMAP=case
-    CheckExitCode xbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
+    CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb /maxcpucount:3 $slnFile
 }
 
 Build()
