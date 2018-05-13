@@ -195,7 +195,7 @@ Handlebars.registerHelper('DownloadedStatus', function() {
 
 Handlebars.registerHelper("DownloadedQuality", function() {
   if (this.movieFile) {
-    return this.movieFile.quality.qualityDefinition.title;
+    return this.movieFile.quality.quality.name;
   }
 
   return "";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Marr.Data;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;

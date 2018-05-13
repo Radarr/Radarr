@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Qualities
         // SD
         public static Quality SDTV => new Quality(1, "SDTV", Source.TV, 480);
         public static Quality DVD => new Quality(2, "DVD", Source.DVD, 480);
-        public static Quality DVDR => new Quality(23, "DVD-R", Source.DVD, 480); // new
+        public static Quality DVDR => new Quality(23, "DVD-R", Source.DVD, 480, Modifier.REMUX); // new
 
         // HDTV
         public static Quality HDTV720p => new Quality(4, "HDTV-720p", Source.TV, 720);
@@ -215,8 +215,8 @@ namespace NzbDrone.Core.Qualities
         public static Quality FindByInfo(Source source, Resolution resolution, Modifier modifier)
         {
             return All.SingleOrDefault(q =>
-                q.Source == source && (q.Resolution == resolution) ||
-                (q.Resolution == Resolution.Unknown) && (q.Modifier == modifier));
+                q.Source == source && ((q.Resolution == resolution) ||
+                (q.Resolution == Resolution.Unknown)) && (q.Modifier == modifier));
         }
     }
 }

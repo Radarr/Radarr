@@ -1,7 +1,8 @@
 ﻿﻿using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.Lifecycle;
+ using NzbDrone.Core.CustomFormats;
+ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.Profiles
     {
         Profile Add(Profile profile);
         void Update(Profile profile);
+        void AddCustomFormat(CustomFormat format);
         void Delete(int id);
         List<Profile> All();
         Profile Get(int id);
@@ -40,6 +42,21 @@ namespace NzbDrone.Core.Profiles
         public void Update(Profile profile)
         {
             _profileRepository.Update(profile);
+        }
+
+        public void AddCustomFormat(CustomFormat customFormat)
+        {
+            var all = All();
+            foreach (var profile in all)
+            {
+                profile.FormatItems.Add(new ProfileFormatItem
+                {
+                    Allowed = true,
+                    Format = customFormat
+                });
+
+                Update(profile);
+            }
         }
 
         public void Delete(int id)

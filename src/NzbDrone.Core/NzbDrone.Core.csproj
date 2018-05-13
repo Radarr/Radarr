@@ -967,6 +967,7 @@
     <Compile Include="Notifications\Twitter\Twitter.cs" />
     <Compile Include="Notifications\Twitter\TwitterService.cs" />
     <Compile Include="Notifications\Twitter\TwitterSettings.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithAdditionalFormats.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithFileSize.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithHistory.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithMediaInfo.cs" />
@@ -988,6 +989,7 @@
     <Compile Include="Profiles\Delay\DelayProfile.cs" />
     <Compile Include="Profiles\Delay\DelayProfileService.cs" />
     <Compile Include="Profiles\Delay\DelayProfileTagInUseValidator.cs" />
+    <Compile Include="Profiles\ProfileFormatItem.cs" />
     <Compile Include="Profiles\ProfileRepository.cs" />
     <Compile Include="ProgressMessaging\ProgressMessageContext.cs" />
     <Compile Include="Qualities\QualitySource.cs" />

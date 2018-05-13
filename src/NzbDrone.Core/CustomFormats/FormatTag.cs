@@ -5,9 +5,9 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
-namespace NzbDrone.Core.Qualities
+namespace NzbDrone.Core.CustomFormats
 {
-    public class QualityTag
+    public class FormatTag
     {
         public string Raw { get; set; }
         public TagType TagType { get; set; }
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Qualities
 
         public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C|I)(_((?<m_r>R)|(?<m_re>RE)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public QualityTag(string raw)
+        public FormatTag(string raw)
         {
             Raw = raw;
 
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Qualities
             ParseRawMatch(match);
         }
 
-        private QualityTag()
+        private FormatTag()
         {
 
         }
@@ -231,11 +231,11 @@ namespace NzbDrone.Core.Qualities
     public enum Resolution
     {
         Unknown = 0,
-        R480P,
-        R576P,
-        R720P,
-        R1080P,
-        R2160P
+        R480P = 480,
+        R576P = 576,
+        R720P = 720,
+        R1080P = 1080,
+        R2160P = 2160
     }
 
     public enum Source

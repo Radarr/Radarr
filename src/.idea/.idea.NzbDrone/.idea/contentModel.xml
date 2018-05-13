@@ -2370,6 +2370,7 @@
         <e p="packages.config" t="Include" />
         <e p="Parser" t="Include">
           <e p="Augmenters" t="Include">
+            <e p="AugmentWithAdditionalFormats.cs" t="Include" />
             <e p="AugmentWithFileSize.cs" t="Include" />
             <e p="AugmentWithHistory.cs" t="Include" />
             <e p="AugmentWithMediaInfo.cs" t="Include" />
@@ -2411,6 +2412,7 @@
             <e p="DelayProfileTagInUseValidator.cs" t="Include" />
           </e>
           <e p="Profile.cs" t="Include" />
+          <e p="ProfileFormatItem.cs" t="Include" />
           <e p="ProfileInUseException.cs" t="Include" />
           <e p="ProfileQualityItem.cs" t="Include" />
           <e p="ProfileRepository.cs" t="Include" />

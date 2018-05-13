@@ -1,0 +1,21 @@
+<div class="add-thingy">
+    <div>
+        {{name}}
+    </div>
+
+    <div class="pull-left">
+        <div class="format-tags">
+            {{#each formatTags}}
+                {{formatTag this}}
+            {{/each}}
+        </div>
+
+    </div>
+
+    <div class="pull-right">
+        <a class="btn btn-xs btn-default x-info" href="{{infoLinkCreator wikiRoot='Custom-Formats' hash=name hashPrefix='templates-'}}">
+            <i class="icon-sonarr-form-info"/>
+        </a>
+    </div>
+
+</div>

@@ -42,7 +42,8 @@ namespace NzbDrone.Core.Qualities
 
         public override string ToString()
         {
-            return string.Format("{0} {1} ({2})", Quality, Revision, string.Join(", ", CustomFormats));
+            var formats = CustomFormats.Count > 0 ? CustomFormats : new List<CustomFormat> {CustomFormat.None};
+            return string.Format("{0} {1} ({2})", Quality, Revision, string.Join(", ", formats));
         }
 
         public override int GetHashCode()

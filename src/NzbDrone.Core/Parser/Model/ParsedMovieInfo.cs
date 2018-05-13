@@ -2,6 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Model

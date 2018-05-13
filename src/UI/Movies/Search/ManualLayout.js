@@ -10,6 +10,7 @@ var ProtocolCell = require('../../Release/ProtocolCell');
 var PeersCell = require('../../Release/PeersCell');
 var EditionCell = require('../../Cells/EditionCell');
 var IndexerFlagsCell = require('../../Cells/IndexerFlagsCell');
+var MultipleFormatsCell = require('../../Cells/MultipleFormatsCell');
 
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Search/ManualLayoutTemplate',
@@ -64,6 +65,11 @@ module.exports = Marionette.Layout.extend({
             name  : 'quality',
             label : 'Quality',
             cell  : QualityCell,
+        },
+        {
+            name : 'quality',
+            label : 'Custom Formats',
+            cell : MultipleFormatsCell
         },
         {
             name      : 'rejections',

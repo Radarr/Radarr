@@ -21,6 +21,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Name").AsString().Unique()
                 .WithColumn("FormatTags").AsString();
 
+            Alter.Table("Profiles").AddColumn("FormatItems").AsString().WithDefaultValue("[{format:0, allowed:true}]").AddColumn("FormatCutoff").AsInt32().WithDefaultValue(0);
+
             Execute.WithConnection(AddCustomFormatsToProfile);
         }
 

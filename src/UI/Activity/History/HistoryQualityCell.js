@@ -20,9 +20,9 @@ module.exports = NzbDroneCell.extend({
         title = title.trim();
 
         if (this.model.get('qualityCutoffNotMet')) {
-            this.$el.html('<span class="badge badge-inverse" title="{0}">{1}</span>'.format(title, quality.qualityDefinition.title));
+            this.$el.html('<span class="badge badge-inverse" title="{0}">{1}</span>'.format(title, quality.quality.name));
         } else {
-            this.$el.html('<span class="badge" title="{0}">{1}</span>'.format(title, quality.qualityDefinition.title));
+            this.$el.html('<span class="badge" title="{0}">{1}</span>'.format(title, quality.quality.name));
         }
 
         return this;

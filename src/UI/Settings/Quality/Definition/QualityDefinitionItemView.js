@@ -2,8 +2,6 @@ var Marionette = require('marionette');
 var AsModelBoundView = require('../../../Mixins/AsModelBoundView');
 require('jquery-ui');
 var FormatHelpers = require('../../../Shared/FormatHelpers');
-require('../../../Mixins/TagInput');
-var QualityDefinition = require('../../../Quality/QualityDefinitionModel');
 
 var view = Marionette.ItemView.extend({
 		template  : 'Settings/Quality/Definition/QualityDefinitionItemViewTemplate',
@@ -20,34 +18,20 @@ var view = Marionette.ItemView.extend({
 				thirtyMinuteMinSize : '.x-min-thirty',
 				sixtyMinuteMinSize  : '.x-min-sixty',
 				thirtyMinuteMaxSize : '.x-max-thirty',
-				sixtyMinuteMaxSize  : '.x-max-sixty',
-				tags : '.x-tags',
-                parent : '.x-parent'
+				sixtyMinuteMaxSize  : '.x-max-sixty'
 		},
-
-
 
 		events : {
 				'slide .x-slider' : '_updateSize',
-				'change .x-tags' : '_updateTags',
-                'click .x-create-format' : '_createFormat',
-                'change .x-parent' : '_changeParent',
                 'blur .x-max-thirty' : '_changeMaxThirty'
 		},
 
 		initialize : function(options) {
 				this.profileCollection = options.profiles;
-            this.templateHelpers = {};
-            this.templateHelpers.qualities = this.model.collection.filter(function (quality){
-                return quality.get("parentQualityDefinition") == undefined;
-            }).map(function (model){
-                return model.toJSON();
-            });
 		},
 
 		onRender : function() {
-		        var quality = this.model.get('quality');
-				if (quality !== undefined && quality.id === 0) {
+				if (this.model.get('quality').id === 0) {
 						this.$el.addClass('row advanced-setting');
 				}
 
@@ -62,41 +46,8 @@ var view = Marionette.ItemView.extend({
 						]
 				});
 
-            this.ui.tags.tagsinput({
-                trimValue : true,
-                allowDuplicates: false,
-                tagClass : function(item) {
-                	var cls = "label ";
-                	var start = item[0].toLowerCase();
-                	if (start == "r") {
-                		return cls + "label-default";
-					}
-					if (start == "s") {
-                		return cls + "label-success";
-					}
-					if (start == "m") {
-                        return cls + "label-warning";
-                    }
-                    if (start == "e") {
-                        return cls + "label-info";
-                    }
-					return cls + "label-danger";
-				}
-            });
-            var self = this;
-            _.each(this.model.get("qualityTags"), function(item){
-            	self.ui.tags.tagsinput('add', item);
-			});
-
 				this._changeSize();
-				var parent = this.model.get("parentQualityDefinition");
-				if (parent !== undefined) {
-				    this.ui.parent.val(parent.id);
-                }
 		},
-
-    _updateTags : function() {
-    },
 
 		_updateSize : function(event, ui) {
 				var minSize = ui.values[0];
@@ -152,24 +103,6 @@ var view = Marionette.ItemView.extend({
 		        values[1] = mbPerMinute || this.slider.max;
 		        this.ui.sizeSlider.slider("option", "values", values);
 		        this._changeSize();
-        },
-
-        _createFormat : function() {
-		    var parent = this.model;
-            var custom = new QualityDefinition({
-                title : "Custom " + parent.get("title"),
-                parentQualityDefinition : parent.toJSON(),
-                qualityTags : parent.get("qualityTags"),
-                minSize : parent.get("minSize"),
-                maxSize : parent.get("maxSize"),
-            });
-            this.model.collection.add(custom);
-        },
-
-        _changeParent : function() {
-            var qualityId = this.ui.parent.val();
-            var quality = this.model.collection.find(function(m){return m.get("id") === parseInt(qualityId);});
-            this.model.set("parentQualityDefinition", quality.toJSON());
         }
 });
 

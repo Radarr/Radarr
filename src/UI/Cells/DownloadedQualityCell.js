@@ -17,8 +17,8 @@ module.exports = Backgrid.Cell.extend({
 
         this.$el.empty();
         if (this.model.get("movieFile")) {
-          var profileId = this.model.get("movieFile").quality.qualityDefinition.id;
-            this.$el.html(this.model.get("movieFile").quality.qualityDefinition.title);
+          var profileId = this.model.get("movieFile").quality.quality.id;
+            this.$el.html(this.model.get("movieFile").quality.quality.name);
 
         }
 

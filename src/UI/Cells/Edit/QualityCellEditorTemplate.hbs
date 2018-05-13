@@ -1,9 +1,9 @@
 {{#eachReverse items}}
-    {{#with qualityDefinition}}
+    {{#with quality}}
         {{#if selected}}
-            <option value="{{id}}" selected="selected">{{title}}</option>
+            <option value="{{id}}" selected="selected">{{name}}</option>
         {{else}}
-            <option value="{{id}}">{{title}}</option>
+            <option value="{{id}}">{{name}}</option>
         {{/if}}
     {{/with}}
 {{/eachReverse}}

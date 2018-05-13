@@ -9,6 +9,7 @@ var MediaManagementLayout = require('./MediaManagement/MediaManagementLayout');
 var MediaManagementSettingsModel = require('./MediaManagement/MediaManagementSettingsModel');
 var ProfileLayout = require('./Profile/ProfileLayout');
 var QualityLayout = require('./Quality/QualityLayout');
+var CustomFormatLayout = require('./CustomFormats/CustomFormatsLayout');
 var IndexerLayout = require('./Indexers/IndexerLayout');
 var IndexerCollection = require('./Indexers/IndexerCollection');
 var IndexerSettingsModel = require('./Indexers/IndexerSettingsModel');
@@ -34,6 +35,7 @@ module.exports = Marionette.Layout.extend({
 				mediaManagement : '#media-management',
 				profiles        : '#profiles',
 				quality         : '#quality',
+                customFormats   : '#custom-formats',
 				indexers        : '#indexers',
 				downloadClient  : '#download-client',
 				netImport : "#net-import",
@@ -48,6 +50,7 @@ module.exports = Marionette.Layout.extend({
 				mediaManagementTab : '.x-media-management-tab',
 				profilesTab        : '.x-profiles-tab',
 				qualityTab         : '.x-quality-tab',
+                customFormatsTab   : '.x-custom-formats-tab',
 				indexersTab        : '.x-indexers-tab',
 				downloadClientTab  : '.x-download-client-tab',
 				netImportTab : ".x-net-import-tab",
@@ -62,6 +65,7 @@ module.exports = Marionette.Layout.extend({
 				'click .x-media-management-tab' : '_showMediaManagement',
 				'click .x-profiles-tab'         : '_showProfiles',
 				'click .x-quality-tab'          : '_showQuality',
+                'click .x-custom-formats-tab'   : '_showCustomFormats',
 				'click .x-indexers-tab'         : '_showIndexers',
 				'click .x-download-client-tab'  : '_showDownloadClient',
 				"click .x-net-import-tab" : "_showNetImport",
@@ -103,6 +107,7 @@ module.exports = Marionette.Layout.extend({
 										}));
 										self.profiles.show(new ProfileLayout());
 										self.quality.show(new QualityLayout());
+										self.customFormats.show(new CustomFormatLayout());
 										self.indexers.show(new IndexerLayout({ model : self.indexerSettings }));
 										self.downloadClient.show(new DownloadClientLayout({ model : self.downloadClientSettings }));
 										self.netImport.show(new NetImportLayout({model : self.netImportSettings}));
@@ -124,6 +129,9 @@ module.exports = Marionette.Layout.extend({
 						case 'quality':
 								this._showQuality();
 								break;
+                        case 'customformats':
+                                this._showCustomFormats();
+                                break;
 						case 'indexers':
 								this._showIndexers();
 								break;
@@ -179,6 +187,15 @@ module.exports = Marionette.Layout.extend({
 				this.ui.qualityTab.tab('show');
 				this._navigate('settings/quality');
 		},
+
+        _showCustomFormats : function(e) {
+		        if (e) {
+		                e.preventDefault();
+                }
+
+                this.ui.customFormatsTab.tab('show');
+		        this._navigate('settings/customformats');
+        },
 
 		_showIndexers : function(e) {
 				if (e) {

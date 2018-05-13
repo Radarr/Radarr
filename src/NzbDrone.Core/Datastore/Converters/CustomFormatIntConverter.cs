@@ -25,6 +25,11 @@ namespace NzbDrone.Core.Datastore.Converters
                 throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
+            if (val == 0)
+            {
+                return CustomFormat.None;
+            }
+
             return CustomFormatService.AllCustomFormats[val];
         }
 
@@ -62,7 +67,14 @@ namespace NzbDrone.Core.Datastore.Converters
                 throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
-            return CustomFormatService.AllCustomFormats[Convert.ToInt32(item)];
+            var val = Convert.ToInt32(item);
+
+            if (val == 0)
+            {
+                return CustomFormat.None;
+            }
+
+            return CustomFormatService.AllCustomFormats[val];
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

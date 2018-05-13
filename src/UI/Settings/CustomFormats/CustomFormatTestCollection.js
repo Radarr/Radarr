@@ -2,15 +2,16 @@ var Backbone = require('backbone');
 var PagableCollection = require('backbone.pageable');
 
 var _ = require('underscore');
-var QualityDefinitionModel = require('./QualityDefinitionTestModel');
-var AsSortedCollection = require('../Mixins/AsSortedCollection');
+var QualityDefinitionModel = require('./CustomFormatTestModel');
+var AsSortedCollection = require('../../Mixins/AsSortedCollection');
 
 var Collection = PagableCollection.extend({
     model : QualityDefinitionModel,
-    url   : window.NzbDrone.ApiRoot + '/qualitydefinition/test',
+    url   : window.NzbDrone.ApiRoot + '/customformat/test',
     bestMatch : undefined,
     parse: function(response) {
-        this.bestMatch = response.bestMatch;
+        this.matchedFormats = response.matchedFormats;
+        console.warn("test");
         return response.matches;
     },
 

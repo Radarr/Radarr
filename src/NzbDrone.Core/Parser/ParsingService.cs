@@ -145,8 +145,7 @@ namespace NzbDrone.Core.Parser
         public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
         {
             var matches = MatchFormatTags(movieInfo);
-            var goodMatches = matches.Where(m => AreMatchesGood(m.Matches)).ToList();
-            goodMatches = goodMatches.OrderByDescending(m => m.Matches.SelectMany(g => g.Value.Select(d => d.Value)).Count(v => v)).ToList();
+            var goodMatches = matches.Where(m => m.GoodMatch);
             return goodMatches.Select(r => r.CustomFormat).ToList();
         }
 
@@ -154,32 +153,28 @@ namespace NzbDrone.Core.Parser
         {
             var formats = _formatService.All();
 
+            if (movieInfo.ExtraInfo.GetValueOrDefault("AdditionalFormats") is List<CustomFormat> additionalFormats)
+            {
+                formats.AddRange(additionalFormats);
+            }
+
             var matches = new List<FormatTagMatchResult>();
 
             foreach (var customFormat in formats)
             {
-                var formatMatches = customFormat.FormatTags.GroupBy(t => t.TagType).ToDictionary(g => g.Key,
-                    g => g.ToList().ToDictionary(t => t, t => t.DoesItMatch(movieInfo)));
+                var formatMatches = customFormat.FormatTags.GroupBy(t => t.TagType).Select(g =>
+                    new FormatTagMatchesGroup(g.Key, g.ToList().ToDictionary(t => t, t => t.DoesItMatch(movieInfo))));
 
+                var formatTagMatchesGroups = formatMatches.ToList();
                 matches.Add(new FormatTagMatchResult
                 {
                     CustomFormat = customFormat,
-                    Matches = formatMatches,
-                    GoodMatch = AreMatchesGood(formatMatches)
+                    GroupMatches = formatTagMatchesGroups,
+                    GoodMatch = formatTagMatchesGroups.All(g => g.DidMatch)
                 });
             }
 
             return matches;
-        }
-
-        private bool AreMatchesGood(Dictionary<TagType, Dictionary<FormatTag, bool>> matches)
-        {
-            if (matches.Values.Any(d => d.Any(m => m.Key.TagModifier == TagModifier.AbsolutelyRequired && m.Value == false)))
-                return false; //If we have any non matching Absolutely Required tags, this isn't a good match
-
-            if (matches.Any(g => g.Value.All(m => m.Value == false))) return false; //If we have any group where no matches were found, this is a bad match
-
-            return true;
         }
 
         public LocalMovie GetLocalMovie(string filename, ParsedMovieInfo minimalInfo, Movie movie, List<object> helpers, bool sceneSource = false)
