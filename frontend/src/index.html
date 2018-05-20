@@ -32,16 +32,16 @@
     -->
     <style>
       .root {
-        height: 100%; /* needed for proper layout */
         overflow: hidden;
+        height: 100%; /* needed for proper layout */
       }
 
       @media only screen and (max-width: 768px) {
         .root {
           display: flex;
           flex-direction: column;
+          min-height: 100%;
           height: auto;
-          min-height: 100%
         }
       }
     </style>
