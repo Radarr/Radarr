@@ -33,6 +33,10 @@ class TablePager extends Component {
     this.props.onPageSelect(parseInt(page));
   }
 
+  onPageSelectBlur = () => {
+    this.setState({ isShowingPageSelect: false });
+  }
+
   //
   // Render
 
@@ -115,10 +119,13 @@ class TablePager extends Component {
               {
                 isShowingPageSelect &&
                   <SelectInput
+                    className={styles.pageSelect}
                     name="pageSelect"
                     value={page}
                     values={pages}
+                    autoFocus={true}
                     onChange={this.onPageSelect}
+                    onBlur={this.onPageSelectBlur}
                   />
               }
             </div>

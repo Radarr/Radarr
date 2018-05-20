@@ -117,7 +117,7 @@ namespace Lidarr.Api.V1.Tracks
         {
             foreach (var track in message.TrackFile.Tracks.Value)
             {
-                BroadcastResourceChange(ModelAction.Deleted, track.Id);
+                BroadcastResourceChange(ModelAction.Updated, track.Id);
             }
         }
 

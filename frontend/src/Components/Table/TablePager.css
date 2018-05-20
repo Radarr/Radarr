@@ -53,6 +53,13 @@
   color: $disabledColor;
 }
 
+.pageSelect {
+  composes: select from 'Components/Form/SelectInput.css';
+
+  padding: 0 2px;
+  height: 25px;
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .pager {
     flex-wrap: wrap;

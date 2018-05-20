@@ -2,8 +2,8 @@ import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import connectSection from 'Store/connectSection';
 import CalendarDay from './CalendarDay';
 
 function createCalendarEventsConnector() {
@@ -52,4 +52,10 @@ CalendarDayConnector.propTypes = {
   date: PropTypes.string.isRequired
 };
 
-export default connect(createMapStateToProps)(CalendarDayConnector);
+export default connectSection(
+  createMapStateToProps,
+  undefined,
+  undefined,
+  undefined,
+  { section: 'calendar' }
+)(CalendarDayConnector);

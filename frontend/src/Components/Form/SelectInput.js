@@ -27,7 +27,9 @@ class SelectInput extends Component {
       values,
       isDisabled,
       hasError,
-      hasWarning
+      hasWarning,
+      autoFocus,
+      onBlur
     } = this.props;
 
     return (
@@ -41,7 +43,9 @@ class SelectInput extends Component {
         disabled={isDisabled}
         name={name}
         value={value}
+        autoFocus={autoFocus}
         onChange={this.onChange}
+        onBlur={onBlur}
       >
         {
           values.map((option) => {
@@ -76,13 +80,16 @@ SelectInput.propTypes = {
   isDisabled: PropTypes.bool,
   hasError: PropTypes.bool,
   hasWarning: PropTypes.bool,
-  onChange: PropTypes.func.isRequired
+  autoFocus: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onBlur: PropTypes.func
 };
 
 SelectInput.defaultProps = {
   className: styles.select,
   disabledClassName: styles.isDisabled,
-  isDisabled: false
+  isDisabled: false,
+  autoFocus: false
 };
 
 export default SelectInput;
