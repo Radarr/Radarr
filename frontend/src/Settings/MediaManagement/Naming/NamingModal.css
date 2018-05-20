@@ -13,5 +13,6 @@
 .namingSelect {
   composes: select from 'Components/Form/SelectInput.css';
 
+  margin-left: 10px;
   width: 200px;
 }
