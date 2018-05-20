@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _logger.Warn(ex, "Failed to set the torrent priority for {0}.", filename);
             }
 
-            SetInitialState(hash);
+            SetInitialState(hash.ToLower());
 
             return hash;
         }
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 item.TotalSize = torrent.Size;
                 item.DownloadClient = Definition.Name;
                 item.RemainingSize = (long)(torrent.Size * (1.0 - torrent.Progress));
-                item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
+                item.RemainingTime = GetRemainingTime(torrent);
 
                 item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.SavePath));
 
@@ -315,7 +315,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         {
             try
             {
-                switch ((QBittorrentState) Settings.InitialState)
+                switch ((QBittorrentState)Settings.InitialState)
                 {
                     case QBittorrentState.ForceStart:
                         _proxy.SetForceStart(hash, true, Settings);
@@ -332,6 +332,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             {
                 _logger.Warn(ex, "Failed to set inital state for {0}.", hash);
             }
+        }
+
+        protected TimeSpan? GetRemainingTime(QBittorrentTorrent torrent)
+        {
+            if (torrent.Eta < 0 || torrent.Eta > 365 * 24 * 3600)
+            {
+                return null;
+            }
+
+            return TimeSpan.FromSeconds((int)torrent.Eta);
         }
     }
 }
