@@ -19,10 +19,14 @@
 }
 
 .alternateTitle {
-  flex: 1 1 1px;
-  margin-left: 5px;
+  composes: title;
+
   color: $disabledColor;
   font-size: $smallFontSize;
+}
+
+.tagContainer {
+  composes: title;
 }
 
 @media only screen and (max-width: $breakpointSmall) {

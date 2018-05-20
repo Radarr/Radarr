@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
@@ -71,6 +70,7 @@ class ArtistSearchInput extends Component {
     return (
       <ArtistSearchResult
         query={query}
+        cleanQuery={jdu.replace(query).toLowerCase()}
         {...item}
       />
     );
@@ -138,14 +138,15 @@ class ArtistSearchInput extends Component {
   onSuggestionsFetchRequested = ({ value }) => {
     const lowerCaseValue = jdu.replace(value).toLowerCase();
 
-    const suggestions = _.filter(this.props.artist, (artist) => {
-      // Check the title first and if there isn't a match fallback to the alternate titles
+    const suggestions = this.props.artist.filter((artist) => {
+      // Check the title first and if there isn't a match fallback to
+      // the alternate titles and finally the tags.
 
-      const titleMatch = jdu.replace(artist.artistName).toLowerCase().contains(lowerCaseValue);
-
-      return titleMatch || _.some(artist.alternateTitles, (alternateTitle) => {
-        return jdu.replace(alternateTitle.title).toLowerCase().contains(lowerCaseValue);
-      });
+      return (
+        artist.cleanName.contains(lowerCaseValue) ||
+        // artist.alternateTitles.some((alternateTitle) => alternateTitle.cleanTitle.contains(lowerCaseValue)) ||
+        artist.tags.some((tag) => tag.cleanLabel.contains(lowerCaseValue))
+      );
     });
 
     this.setState({ suggestions });

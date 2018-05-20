@@ -1,27 +1,43 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { kinds } from 'Helpers/Props';
+import Label from 'Components/Label';
 import ArtistPoster from 'Artist/ArtistPoster';
 import styles from './ArtistSearchResult.css';
 
-function getMatchingAlternateTile(alternateTitles, query) {
-  return _.first(alternateTitles, (alternateTitle) => {
-    return alternateTitle.title.toLowerCase().contains(query.toLowerCase());
+// function findMatchingAlternateTitle(alternateTitles, cleanQuery) {
+//   return alternateTitles.find((alternateTitle) => {
+//     return alternateTitle.cleanTitle.contains(cleanQuery);
+//   });
+// }
+
+function getMatchingTag(tags, cleanQuery) {
+  return tags.find((tag) => {
+    return tag.cleanLabel.contains(cleanQuery);
   });
 }
 
 function ArtistSearchResult(props) {
   const {
-    query,
+    cleanQuery,
     artistName,
+    cleanName,
+    images,
     // alternateTitles,
-    images
+    tags
   } = props;
 
-  const index = artistName.toLowerCase().indexOf(query.toLowerCase());
-  // const alternateTitle = index === -1 ?
-  //   getMatchingAlternateTile(alternateTitles, query) :
-  //   null;
+  const titleContains = cleanName.contains(cleanQuery);
+  // let alternateTitle = null;
+  let tag = null;
+
+  // if (!titleContains) {
+  //   alternateTitle = findMatchingAlternateTitle(alternateTitles, cleanQuery);
+  // }
+
+  if (!titleContains) { // && !alternateTitle) {
+    tag = getMatchingTag(tags, cleanQuery);
+  }
 
   return (
     <div className={styles.result}>
@@ -44,16 +60,30 @@ function ArtistSearchResult(props) {
           //   {alternateTitle.title}
           // </div>
         }
+
+        {
+          !!tag &&
+            <div className={styles.tagContainer}>
+              <Label
+                key={tag.id}
+                kind={kinds.INFO}
+              >
+                {tag.label}
+              </Label>
+            </div>
+        }
       </div>
     </div>
   );
 }
 
 ArtistSearchResult.propTypes = {
-  query: PropTypes.string.isRequired,
+  cleanQuery: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   // alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
-  images: PropTypes.arrayOf(PropTypes.object).isRequired
+  cleanName: PropTypes.string.isRequired,
+  images: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default ArtistSearchResult;
