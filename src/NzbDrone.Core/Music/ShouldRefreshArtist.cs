@@ -30,15 +30,15 @@ namespace NzbDrone.Core.Music
                 return true;
             }
 
-            if (artist.LastInfoSync >= DateTime.UtcNow.AddHours(-6))
+            if (artist.LastInfoSync >= DateTime.UtcNow.AddHours(-12))
             {
-                _logger.Trace("Artist {0} last updated less than 6 hours ago, should not be refreshed.", artist.Name);
+                _logger.Trace("Artist {0} last updated less than 12 hours ago, should not be refreshed.", artist.Name);
                 return false;
             }
 
-            if (artist.Status == ArtistStatusType.Continuing)
+            if (artist.Status == ArtistStatusType.Continuing && artist.LastInfoSync < DateTime.UtcNow.AddDays(-2))
             {
-                _logger.Trace("Artist {0} is continuing, should refresh.", artist.Name);
+                _logger.Trace("Artist {0} is continuing and has not been refreshed in 2 days, should refresh.", artist.Name);
                 return true;
             }
 

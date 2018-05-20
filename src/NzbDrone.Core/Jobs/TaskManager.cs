@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Jobs
                     new ScheduledTask{ Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(ApplicationUpdateCommand).FullName},
                     new ScheduledTask{ Interval = 6*60, TypeName = typeof(CheckHealthCommand).FullName},
-                    new ScheduledTask{ Interval = 12*60, TypeName = typeof(RefreshArtistCommand).FullName},
+                    new ScheduledTask{ Interval = 24*60, TypeName = typeof(RefreshArtistCommand).FullName},
                     new ScheduledTask{ Interval = 24*60, TypeName = typeof(HousekeepingCommand).FullName},
 
                     new ScheduledTask

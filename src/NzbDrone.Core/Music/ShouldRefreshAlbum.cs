@@ -19,15 +19,15 @@ namespace NzbDrone.Core.Music
 
         public bool ShouldRefresh(Album album)
         {
-            if (album.LastInfoSync < DateTime.UtcNow.AddDays(-30))
+            if (album.LastInfoSync < DateTime.UtcNow.AddDays(-60))
             {
-                _logger.Trace("Album {0} last updated more than 30 days ago, should refresh.", album.Title);
+                _logger.Trace("Album {0} last updated more than 60 days ago, should refresh.", album.Title);
                 return true;
             }
 
-            if (album.LastInfoSync >= DateTime.UtcNow.AddHours(-6))
+            if (album.LastInfoSync >= DateTime.UtcNow.AddHours(-12))
             {
-                _logger.Trace("Album {0} last updated less than 6 hours ago, should not be refreshed.", album.Title);
+                _logger.Trace("Album {0} last updated less than 12 hours ago, should not be refreshed.", album.Title);
                 return false;
             }
 
