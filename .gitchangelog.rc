@@ -147,10 +147,10 @@ body_process = ReSub(r'((^|\n)[A-Z]\w+(-\w+)*: .*(\n\s+.*)*)+$', r'') | strip
 
 ## Available constructs are those listed in ``body_process`` doc.
 subject_process = (strip |
-    ReSub(r'^([aA]dd(ed?)?|[nN]ew)(\s?:?\s)(.*)$', r'![New](https://img.shields.io/badge/-- -New-brightgreen.svg?style=flat-square) \4') |
-    ReSub(r'^([cC]hang(ed?)?)(\s?:?\s)(.*)$', r'![Changed](https://img.shields.io/badge/-- -Changed-orange.svg?style=flat-square) \4') |
-    ReSub(r'^([fF]ix(ed?)?)(\s?:?\s)(.*)$', r'![Fixed](https://img.shields.io/badge/-- -Fixed-red.svg?style=flat-square) \4') |
-    ReSub(r'^([uU]pdat(ed?)?)(\s?:?\s)(.*)$', r'![Updated](https://img.shields.io/badge/-- -Updated-blue.svg?style=flat-square) \4') |
+    ReSub(r'^([aA]dd(ed?)?|[nN]ew)(\s?:?\s)(.*)$', r'![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) \4') |
+    ReSub(r'^([cC]hang(ed?)?)(\s?:?\s)(.*)$', r'![Changed](https://img.shields.io/badge/--%20-Changed-orange.svg?style=flat-square) \4') |
+    ReSub(r'^([fF]ix(ed?)?)(\s?:?\s)(.*)$', r'![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) \4') |
+    ReSub(r'^([uU]pdat(ed?)?)(\s?:?\s)(.*)$', r'![Updated](https://img.shields.io/badge/--%20-Updated-blue.svg?style=flat-square) \4') |
     ReSub(r'#(\d{3,4})', r'[#\1](https://github.com/Radarr/Radarr/issues/\1)') |
     SetIfEmpty("No commit message.") | ucfirst | final_dot)
 
