@@ -323,6 +323,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Revolution.S01E02.Chained.Heat.mkv")]
+        [TestCase("Star.Wars.Episode.VII.The.Force.Awakens.mk3d")]
         [TestCase("Dexter - S01E01 - Title.avi")]
         [TestCase("the_x-files.9x18.sunshine_days.avi")]
         [TestCase("[CR] Sailor Moon - 004 [48CE2D0F].avi")]
