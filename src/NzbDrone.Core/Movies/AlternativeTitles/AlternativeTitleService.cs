@@ -1,31 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using NLog;
-using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Organizer;
-using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Messaging.Events;
+using System.Collections.Generic;
+using System.Linq;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Movies.AlternativeTitles
 {
     public interface IAlternativeTitleService
     {
-        List<AlternativeTitle> GetAllTitlesForMovie(Movie movie);
+        List<AlternativeTitle> GetAllTitlesForMovie(int movieId);
         AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie);
         List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, Movie movie);
         AlternativeTitle GetById(int id);
         void DeleteNotEnoughVotes(List<AlternativeTitle> mappingsTitles);
     }
 
-    public class AlternativeTitleService : IAlternativeTitleService
+    public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MovieDeletedEvent>
     {
         private readonly IAlternativeTitleRepository _titleRepo;
         private readonly IConfigService _configService;
@@ -44,9 +35,9 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             _logger = logger;
         }
 
-        public List<AlternativeTitle> GetAllTitlesForMovie(Movie movie)
+        public List<AlternativeTitle> GetAllTitlesForMovie(int movieId)
         {
-            return _titleRepo.All().ToList();
+            return _titleRepo.FindByMovieId(movieId).ToList();
         }
 
         public AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie)
@@ -77,6 +68,13 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             var toRemove = mappingsTitles.Where(t => t.SourceType == SourceType.Mappings && t.Votes < 4);
             var realT = _titleRepo.FindBySourceIds(toRemove.Select(t => t.SourceId).ToList());
             _titleRepo.DeleteMany(realT);
+        }
+
+        public void HandleAsync(MovieDeletedEvent message)
+        {
+            var title = GetAllTitlesForMovie(message.Movie.Id);
+            _titleRepo.DeleteMany(title);
+
         }
     }
 }
