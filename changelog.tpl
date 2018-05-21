@@ -6,7 +6,7 @@
 {{#sections}}
 ### {{{label}}}
 {{#commits}}
-- {{{subject}}} [{{{author}}}]
+- {{{subject}}} [<a href="https://github.com/{{{author}}}">{{{author}}}</a>]
 {{/commits}}
 
 {{/sections}}
