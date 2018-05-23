@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
         private void GivenAlbumLastRefreshedRecently()
         {
-            _album.LastInfoSync = DateTime.UtcNow.AddHours(-1);
+            _album.LastInfoSync = DateTime.UtcNow.AddHours(-7);
         }
 
         private void GivenRecentlyReleased()
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        public void should_return_false_if_album_last_refreshed_less_than_6_hours_ago()
+        public void should_return_false_if_album_last_refreshed_less_than_12_hours_ago()
         {
             GivenAlbumLastRefreshedRecently();
 

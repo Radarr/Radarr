@@ -44,14 +44,14 @@ namespace NzbDrone.Core.Test.MusicTests
             _artist.LastInfoSync = DateTime.UtcNow.AddDays(-1);
         }
 
-        private void GivenArtistLastRefreshedHalfADayAgo()
+        private void GivenArtistLastRefreshedThreeDaysAgo()
         {
-            _artist.LastInfoSync = DateTime.UtcNow.AddHours(-12);
+            _artist.LastInfoSync = DateTime.UtcNow.AddDays(-3);
         }
 
         private void GivenArtistLastRefreshedRecently()
         {
-            _artist.LastInfoSync = DateTime.UtcNow.AddHours(-1);
+            _artist.LastInfoSync = DateTime.UtcNow.AddHours(-7);
         }
 
         private void GivenRecentlyAired()
@@ -68,15 +68,15 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        public void should_return_true_if_running_artist_last_refreshed_more_than_6_hours_ago()
+        public void should_return_true_if_running_artist_last_refreshed_more_than_24_hours_ago()
         {
-            GivenArtistLastRefreshedHalfADayAgo();
+            GivenArtistLastRefreshedThreeDaysAgo();
 
             Subject.ShouldRefresh(_artist).Should().BeTrue();
         }
 
         [Test]
-        public void should_return_false_if_running_artist_last_refreshed_less_than_6_hours_ago()
+        public void should_return_false_if_running_artist_last_refreshed_less_than_12_hours_ago()
         {
             GivenArtistLastRefreshedRecently();
 
