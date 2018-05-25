@@ -4,10 +4,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import connectSection from 'Store/connectSection';
 import { findCommand } from 'Utilities/Command';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createArtistSelector from 'Store/Selectors/createArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { toggleAlbumsMonitored, setAlbumsTableOption, setAlbumsSort } from 'Store/Actions/albumActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
@@ -16,7 +18,7 @@ import ArtistDetailsSeason from './ArtistDetailsSeason';
 function createMapStateToProps() {
   return createSelector(
     (state, { label }) => label,
-    (state) => state.albums,
+    createClientSideCollectionSelector(),
     createArtistSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
@@ -94,4 +96,10 @@ ArtistDetailsSeasonConnector.propTypes = {
   executeCommand: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(ArtistDetailsSeasonConnector);
+export default connectSection(
+  createMapStateToProps,
+  mapDispatchToProps,
+  undefined,
+  undefined,
+  { section: 'albums' }
+)(ArtistDetailsSeasonConnector);

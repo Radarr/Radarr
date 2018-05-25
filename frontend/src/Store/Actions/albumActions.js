@@ -31,6 +31,11 @@ export const defaultState = {
   sortDirection: sortDirections.DESCENDING,
   items: [],
   pendingChanges: {},
+  sortPredicates: {
+    rating: function(item) {
+      return item.ratings.value;
+    }
+  },
 
   columns: [
     {
@@ -72,6 +77,12 @@ export const defaultState = {
       label: 'Duration',
       isSortable: true,
       isVisible: false
+    },
+    {
+      name: 'rating',
+      label: 'Rating',
+      isSortable: true,
+      isVisible: true
     },
     {
       name: 'status',
