@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Music;
@@ -19,6 +20,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
     {
         Artist _artist;
         Album _album;
+        private HttpResponse _httpResponse;
 
         [SetUp]
         public void Setup()
@@ -34,6 +36,9 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                 .With(v => v.Id = 4)
                 .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Cover, "") })
                 .Build();
+
+            _httpResponse = new HttpResponse(null, new HttpHeader(), "");
+            Mocker.GetMock<IHttpClient>().Setup(c => c.Head(It.IsAny<HttpRequest>())).Returns(_httpResponse);
         }
 
         [Test]
@@ -95,7 +100,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_resize_covers_if_main_downloaded()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(false);
 
             Mocker.GetMock<IDiskProvider>()
@@ -112,7 +117,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_resize_covers_if_missing()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
@@ -129,7 +134,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_not_resize_covers_if_exists()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
@@ -150,7 +155,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_resize_covers_if_existing_is_empty()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
@@ -171,7 +176,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         public void should_log_error_if_resize_failed()
         {
             Mocker.GetMock<ICoverExistsSpecification>()
-                  .Setup(v => v.AlreadyExists(It.IsAny<string>(), It.IsAny<string>()))
+                  .Setup(v => v.AlreadyExists(It.IsAny<DateTime>(), It.IsAny<string>()))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()

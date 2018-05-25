@@ -117,6 +117,18 @@ namespace NzbDrone.Common.Http
             }
         }
 
+        public DateTime? LastModified
+        {
+            get
+            {
+                return GetSingleValue("Last-Modified", Convert.ToDateTime);
+            }
+            set
+            {
+                SetSingleValue("Last-Modified", value);
+            }
+        }
+
         public new IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
             return AllKeys.SelectMany(GetValues, (k, c) => new KeyValuePair<string, string>(k, c)).ToList().GetEnumerator();
