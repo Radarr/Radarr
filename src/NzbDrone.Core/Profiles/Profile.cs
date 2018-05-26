@@ -9,6 +9,11 @@ namespace NzbDrone.Core.Profiles
 {
     public class Profile : ModelBase
     {
+        public Profile()
+        {
+            FormatItems = new List<ProfileFormatItem>();
+        }
+
         public string Name { get; set; }
         public Quality Cutoff { get; set; }
         public List<ProfileQualityItem> Items { get; set; }

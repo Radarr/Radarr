@@ -1,18 +1,32 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Test.CustomFormat;
 
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
     public class CutoffSpecificationFixture : CoreTest<QualityUpgradableSpecification>
     {
+
+        private CustomFormats.CustomFormat _customFormat;
+
         [SetUp]
         public void Setup()
         {
+
+        }
+
+        private void GivenCustomFormatHigher()
+        {
+            _customFormat = new CustomFormats.CustomFormat("My Format", "L_ENGLISH") {Id = 1};
+
+            CustomFormatsFixture.GivenCustomFormats(_customFormat, CustomFormats.CustomFormat.None);
         }
 
         [Test]
@@ -50,6 +64,24 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(new Profile { Cutoff = Quality.HDTV720p, Items = Qualities.QualityFixture.GetDefaultQualities() },
                                 new QualityModel(Quality.HDTV720p, new Revision(version: 2)),
                                 new QualityModel(Quality.Bluray1080p, new Revision(version: 2))).Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_false_if_custom_formats_is_met_and_quality_and_format_higher()
+        {
+            GivenCustomFormatHigher();
+            var old = new QualityModel(Quality.HDTV720p);
+            old.CustomFormats = new List<CustomFormats.CustomFormat> {CustomFormats.CustomFormat.None};
+            var newQ = new QualityModel(Quality.Bluray1080p);
+            newQ.CustomFormats = new List<CustomFormats.CustomFormat> {_customFormat};
+            Subject.CutoffNotMet(
+                new Profile
+                {
+                    Cutoff = Quality.HDTV720p,
+                    Items = Qualities.QualityFixture.GetDefaultQualities(),
+                    FormatCutoff = CustomFormats.CustomFormat.None,
+                    FormatItems = CustomFormatsFixture.GetSampleFormatItems("None", "My Format")
+                }, old, newQ).Should().BeFalse();
         }
     }
 }

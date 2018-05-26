@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Qualities
             int leftTotal = leftIndicies.Sum();
             int rightTotal = rightIndicies.Sum();
 
-            return rightTotal.CompareTo(leftTotal);
+            return leftTotal.CompareTo(rightTotal);
         }
 
         public static List<int> GetIndicies(List<CustomFormat> formats, Profile profile)
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Qualities
             int leftIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, left));
             int rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
 
-            return rightIndex.CompareTo(leftIndex);
+            return leftIndex.CompareTo(rightIndex);
         }
 
         public int Compare(List<CustomFormat> left, CustomFormat right)
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Qualities
             var leftIndicies = GetIndicies(left, _profile);
             var rightIndex = _profile.FormatItems.FindIndex(v => Equals(v.Format, right));
 
-            return leftIndicies.Select(i => rightIndex.CompareTo(i)).Sum();
+            return leftIndicies.Select(i => i.CompareTo(rightIndex)).Sum();
         }
 
         public int Compare(QualityModel left, QualityModel right)

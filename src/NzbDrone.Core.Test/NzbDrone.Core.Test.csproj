@@ -112,6 +112,7 @@
     <Compile Include="Blacklisting\BlacklistServiceFixture.cs" />
     <Compile Include="Configuration\ConfigCachingFixture.cs" />
     <Compile Include="Configuration\ConfigServiceFixture.cs" />
+    <Compile Include="CustomFormat\CustomFormatsFixture.cs" />
     <Compile Include="CustomFormat\QualityTagFixture.cs" />
     <Compile Include="Datastore\BasicRepositoryFixture.cs" />
     <Compile Include="Datastore\Converters\ProviderSettingConverterFixture.cs" />

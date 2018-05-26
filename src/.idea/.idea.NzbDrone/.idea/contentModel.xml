@@ -2548,6 +2548,7 @@
           <e p="ConfigServiceFixture.cs" t="Include" />
         </e>
         <e p="CustomFormat" t="Include">
+          <e p="CustomFormatsFixture.cs" t="Include" />
           <e p="QualityTagFixture.cs" t="Include" />
         </e>
         <e p="Datastore" t="Include">
