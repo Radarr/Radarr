@@ -23,7 +23,7 @@ namespace NzbDrone.Core.ImportLists.LidarrLists
 
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(0, Label = "List Id")]
+        [FieldDefinition(0, Label = "List Id", Advanced = true)]
         public string ListId { get; set; }
 
         public NzbDroneValidationResult Validate()
