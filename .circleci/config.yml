@@ -114,6 +114,7 @@ jobs:
                     zip -r ../_packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.osx-app.zip *
             - store_artifacts:
                 path: _packages
+                destination: artifacts
             - persist_to_workspace:
                 root: .
                 # Must be relative path from root
@@ -135,7 +136,7 @@ jobs:
                 command: export LC_ALL=C.UTF-8 && export changelog=$(GITCHANGELOG_CONFIG_FILENAME=.gitchangelog.rc.release gitchangelog) && echo "Deploying v0.2.0.$CIRCLE_BUILD_NUM to Github, with changelog:\n\n$changelog" && github-release release -u Radarr -r Radarr -t "v0.2.0.$CIRCLE_BUILD_NUM" -p --draft -d "$changelog" -n "Pre-Release v0.2.0.$CIRCLE_BUILD_NUM"
             - run:
                 name: Uploading Assets
-                command: ls _packages/Radarr.*.* | xargs -n1 -P0 -I{} -- github-release upload -u Radarr -r Radarr -t "v0.2.0.$CIRCLE_BUILD_NUM" --name {} --file {}
+                command: cd _packages && ls Radarr.*.* | xargs -n1 -P0 -I{} -- github-release upload -u Radarr -r Radarr -t "v0.2.0.$CIRCLE_BUILD_NUM" --name {} --file {}
 
 workflows:
     version: 2
