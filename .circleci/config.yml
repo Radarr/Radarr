@@ -100,13 +100,13 @@ jobs:
                     export BRANCH=$CIRCLE_BRANCH
                     export BRANCH=${BRANCH#refs\/heads\/}
                     export BRANCH=${BRANCH//\//-}
-                    cp -r $outputFolder/ Radarr
+                    cp -r _output/ Radarr
                     zip -r Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.windows.zip Radarr
                     rm -rf Radarr
-                    cp -r $outputFolderMono/ Radarr
+                    cp -r _output_mono/ Radarr
                     tar -zcvf Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.linux.tar.gz Radarr
                     rm -rf Radarr
-                    cp -r $outputFolderOsx/ Radarr
+                    cp -r _output_osx/ Radarr
                     tar -zcvf Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.osx.tar.gz Radarr
                     rm -rf Radarr
                     cd _output_osx_app/
