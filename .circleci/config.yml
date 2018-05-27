@@ -3,9 +3,9 @@ version: 2
 defaults: &defaults
   docker:
     - image: gallileo/radarr-cci-primary:5.8.7
-      environment:
-          BUILD_VERSION: 0.2.0.$CIRCLE_BUILD_NUM
-          BRANCH: ${CIRCLE_BRANCH//\//-}
+  environment:
+      BUILD_VERSION: 0.2.0.$CIRCLE_BUILD_NUM
+      BRANCH: ${CIRCLE_BRANCH//\//-}
 
 jobs:
     build:
