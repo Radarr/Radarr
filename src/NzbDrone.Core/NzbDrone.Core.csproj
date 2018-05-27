@@ -98,6 +98,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
@@ -131,6 +132,7 @@
     <Compile Include="Datastore\Converters\CustomFormatIntConverter.cs" />
     <Compile Include="Datastore\Converters\QualityTagStringConverter.cs" />
     <Compile Include="Datastore\Migration\123_create_netimport_table.cs" />
+    <Compile Include="Datastore\Migration\148_remove_extra_naming_config.cs" />
     <Compile Include="Datastore\Migration\146_naming_config_colon_replacement_format.cs" />
     <Compile Include="Datastore\Migration\147_add_custom_formats.cs" />
     <Compile Include="Datastore\Migration\143_clean_core_tv.cs" />

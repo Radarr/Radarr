@@ -1,5 +1,5 @@
 #! /bin/bash
-msBuild='/c/Program Files (x86)/MSBuild/14.0/Bin'
+msBuild='/MSBuild/15.0/Bin'
 outputFolder='./_output'
 outputFolderMono='./_output_mono'
 outputFolderOsx='./_output_osx'
@@ -64,6 +64,7 @@ AddJsonNet()
 BuildWithMSBuild()
 {
     export PATH=$msBuild:$PATH
+	echo $PATH
     CheckExitCode MSBuild.exe $slnFile //t:Clean //m
     $nuget restore $slnFile
     CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Build //m //p:AllowedReferenceRelatedFileExtensions=.pdb
@@ -261,6 +262,9 @@ case "$(uname -s)" in
     CYGWIN*|MINGW32*|MINGW64*|MSYS*)
         # on windows, use dotnet
         runtime="dotnet"
+		vsLoc=$(./vswhere.exe -property installationPath)
+		vsLoc=$(echo "/$vsLoc" | sed -e 's/\\/\//g' -e 's/://')
+		msBuild="$vsLoc$msBuild"
         ;;
     *)
         # otherwise use mono
