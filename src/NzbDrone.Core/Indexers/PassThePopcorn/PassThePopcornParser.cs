@@ -81,6 +81,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         flags |= IndexerFlags.G_Freeleech;
                     }
 
+                    if (torrent.Scene)
+                    {
+                        flags |= IndexerFlags.G_Scene;
+                    }
+
                     // Only add approved torrents
                     try
                     {
@@ -113,7 +118,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                                          "}. Please immediately report this info on https://github.com/Radarr/Radarr/issues/1584.");
                         throw;
                     }
-                       
+
 
                 }
             }
