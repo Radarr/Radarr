@@ -8,6 +8,7 @@ var QualitySortableCollectionView = require('./QualitySortableCollectionView');
 var EditProfileView = require('./EditProfileView');
 var DeleteView = require('../DeleteProfileView');
 var FullMovieCollection = require('../../../Movies/FullMovieCollection');
+var NetImportCollection = require('../../NetImport/NetImportCollection');
 var Config = require('../../../Config');
 var AsEditModalView = require('../../../Mixins/AsEditModalView');
 
@@ -29,8 +30,11 @@ var view = Marionette.Layout.extend({
     initialize : function(options) {
         this.profileCollection = options.profileCollection;
         this.itemsCollection = new Backbone.Collection(_.toArray(this.model.get('items')).reverse());
+        this.netImportCollection = new NetImportCollection;
+        this.netImportCollection.fetch();
         this.formatItemsCollection = new Backbone.Collection(_.toArray(this.model.get('formatItems')));
         this.listenTo(FullMovieCollection, 'all', this._updateDisableStatus);
+        this.listenTo(this.netImportCollection, 'all', this._updateDisableStatus);
     },
 
     onRender : function() {
@@ -143,9 +147,10 @@ var view = Marionette.Layout.extend({
     },
 
     _updateDisableStatus : function() {
-        if (this._isQualityInUse()) {
+        if (this._isQualityInUse() || this._isQualityInUsebyList()) {
+            this.ui.deleteButton.attr('disabled', 'disabled');
             this.ui.deleteButton.addClass('disabled');
-            this.ui.deleteButton.attr('title', 'Can\'t delete a profile that is attached to a movie.');
+            this.ui.deleteButton.attr('title', 'Can\'t delete a profile that is attached to a movie or list.');
         } else {
             this.ui.deleteButton.removeClass('disabled');
         }
@@ -153,6 +158,10 @@ var view = Marionette.Layout.extend({
 
     _isQualityInUse : function() {
         return FullMovieCollection.where({ 'profileId' : this.model.id }).length !== 0;
+    },
+
+    _isQualityInUsebyList : function() {
+        return this.netImportCollection.where({ 'profileId' : this.model.id }).length !== 0;
     }
 });
 module.exports = AsEditModalView.call(view);

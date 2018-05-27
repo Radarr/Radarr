@@ -62,6 +62,8 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                     Subtitles = x.Element("subtitles").Value,
                     EncodeStatus = x.Element("encodestatus").Value,
                     Freeleech = x.Element("freeleech").Value,
+                    Internal = x.Element("internal").Value == "1",
+                    UserRelease = x.Element("userrelease").Value == "1",
                     ImdbId = x.Element("imdb").Value
                 }).ToList();
 
@@ -71,14 +73,29 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                     var title = $"{torrent.Name}.{torrent.Year}.{torrent.Resolution}.{torrent.Media}.{torrent.Encoding}.{torrent.AudioFormat}-{torrent.ReleaseGroup}";
                     IndexerFlags flags = 0;
 
-                    if (torrent.Freeleech == "0.00" || torrent.Freeleech == "0.25")
+                    if (torrent.Freeleech == "0.00")
                     {
                         flags |= IndexerFlags.G_Freeleech;
+                    }
+
+                    if (torrent.Freeleech == "0.25")
+                    {
+                        flags |= IndexerFlags.G_Freeleech75;
+                    }
+
+                    if (torrent.Freeleech == "0.75")
+                    {
+                        flags |= IndexerFlags.G_Freeleech25;
                     }
 
                     if (torrent.Freeleech == "0.50")
                     {
                         flags |= IndexerFlags.G_Halfleech;
+                    }
+
+                    if (torrent.Internal)
+                    {
+                        flags |= IndexerFlags.AHD_Internal;
                     }
 
                     torrentInfos.Add(new TorrentInfo()

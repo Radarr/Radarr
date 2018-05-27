@@ -22,11 +22,11 @@ module.exports = Backgrid.Cell.extend({
 
             switch (flag) {
               case "G_Freeleech":
-              addon = "⬇";
-              title = "Freeleech";
+              addon = "⬇⬇";
+              title = "100% Freeleech";
               break;
               case "G_Halfleech":
-              addon = "⇩";
+              addon = "⇩⇩";
               title = "50% Freeleech";
               break;
               case "G_DoubleUpload":
@@ -34,7 +34,7 @@ module.exports = Backgrid.Cell.extend({
               title = "Double upload";
               break;
               case "PTP_Golden":
-              addon = "🍿";
+              addon = "🌟";
               title = "Golden";
               break;
               case "PTP_Approved":
@@ -42,12 +42,28 @@ module.exports = Backgrid.Cell.extend({
               title = "Approved by PTP";
               break;
               case "HDB_Internal":
-              addon = "⭐️";
+              addon = "🚪";
               title = "HDBits Internal";
               break;
+                case "G_Scene":
+                    addon = "☠";
+                    title = "Scene Release";
+                    break;
+                case "AHD_Internal":
+                    addon = "🚪";
+                    title = "AHD Internal";
+                    break;
+                case "G_Freeleech75":
+                    addon = "⇩⬇";
+                    title = "75% Freeleech";
+                    break;
+                case "G_Freeleech25":
+                    addon = "⇩";
+                    title = "25% Freeleech";
+                    break;
             }
             if (addon !== "") {
-              html += "<span title='{0}'>{1}</span> ".format(title, addon);
+              html += "<a href='https://github.com/Radarr/Radarr/wiki/Indexer-Flags#supported-flags' target='_blank' style='color: inherit; text-decoration: none;'><span title='{0}'>{1}</span></a>".format(title, addon);
             }
           });
         }

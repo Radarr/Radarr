@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
  using NzbDrone.Core.CustomFormats;
@@ -7,6 +7,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport;
 
 namespace NzbDrone.Core.Profiles
 {
@@ -25,12 +26,14 @@ namespace NzbDrone.Core.Profiles
     {
         private readonly IProfileRepository _profileRepository;
         private readonly IMovieService _movieService;
+        private readonly INetImportFactory _netImportFactory;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, IMovieService movieService, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IMovieService movieService, INetImportFactory netImportFactory, Logger logger)
         {
             _profileRepository = profileRepository;
             _movieService = movieService;
+            _netImportFactory = netImportFactory;
             _logger = logger;
         }
 
@@ -61,7 +64,7 @@ namespace NzbDrone.Core.Profiles
 
         public void Delete(int id)
         {
-            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id))
+            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id) || _netImportFactory.All().Any(c => c.ProfileId == id))
             {
                 throw new ProfileInUseException(id);
             }
