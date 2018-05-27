@@ -58,6 +58,7 @@ jobs:
                     - _output_osx
                     - _output_osx_app
                     - _tests
+                    - setup
                     - .circleci
     unit_tests:
         <<: *defaults
