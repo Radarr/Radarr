@@ -102,13 +102,13 @@ jobs:
                     export BRANCH=${BRANCH//\//-}
                     mkdir -p _packages/
                     cp -r _output/ _packages/Radarr
-                    zip -r _packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.windows.zip Radarr
+                    zip -r _packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.windows.zip _packages/Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_mono/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.linux.tar.gz Radarr
+                    tar -zcvf _packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.linux.tar.gz _packages/Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_osx/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.osx.tar.gz Radarr
+                    tar -zcvf _packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.osx.tar.gz _packages/Radarr
                     rm -rf _packages/Radarr
                     cd _output_osx_app/
                     zip -r ../_packages/Radarr.$BRANCH.v0.2.0.$CIRCLE_BUILD_NUM.osx-app.zip *
