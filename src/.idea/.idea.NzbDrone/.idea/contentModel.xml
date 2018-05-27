@@ -1349,7 +1349,6 @@
             <e p="145_banner_to_fanart.cs" t="Include" />
             <e p="146_naming_config_colon_replacement_format.cs" t="Include" />
             <e p="147_add_custom_formats.cs" t="Include" />
-            <e p="148_remove_extra_naming_config.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />
