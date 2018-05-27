@@ -3,9 +3,12 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) AHD_Internal and G_Scene indexer flags. Also linked a wiki page with more information about indexer flags. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) indexer flags to the list of environmental variable for customs scripts (on grab) ([#2801](https://github.com/Radarr/Radarr/issues/2801)) [<a href="https://github.com/bobbintb">bobbintb</a>]
 - ![Updated](https://img.shields.io/badge/--%20-Updated-blue.svg?style=flat-square) issue templates. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 
 ### **Fixes**
+- ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Rare timing issue on first-use causing duplicate naming config ([#2790](https://github.com/Radarr/Radarr/issues/2790)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Qbittorrent state and eta fixes ([#2789](https://github.com/Radarr/Radarr/issues/2789)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Purge alt titles on movie delete ([#2796](https://github.com/Radarr/Radarr/issues/2796)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Don’t allow profiles in use by lists to be deleted ([#2797](https://github.com/Radarr/Radarr/issues/2797)) [<a href="https://github.com/Qstick">Qstick</a>]
