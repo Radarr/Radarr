@@ -27,13 +27,16 @@ namespace NzbDrone.Core.Profiles
         private readonly IProfileRepository _profileRepository;
         private readonly IMovieService _movieService;
         private readonly INetImportFactory _netImportFactory;
+        private readonly ICustomFormatService _formatService;
         private readonly Logger _logger;
 
-        public ProfileService(IProfileRepository profileRepository, IMovieService movieService, INetImportFactory netImportFactory, Logger logger)
+        public ProfileService(IProfileRepository profileRepository, IMovieService movieService,
+            INetImportFactory netImportFactory, ICustomFormatService formatService, Logger logger)
         {
             _profileRepository = profileRepository;
             _movieService = movieService;
             _netImportFactory = netImportFactory;
+            _formatService = formatService;
             _logger = logger;
         }
 
@@ -94,13 +97,22 @@ namespace NzbDrone.Core.Profiles
                             .Select(v => new ProfileQualityItem { Quality = v.Quality, Allowed = allowed.Contains(v.Quality) })
                             .ToList();
 
-            var profile = new Profile { Name = name, Cutoff = cutoff, Items = items, Language = Language.English };
+            var profile = new Profile { Name = name, Cutoff = cutoff, Items = items, Language = Language.English, FormatCutoff = CustomFormat.None, FormatItems = new List<ProfileFormatItem>
+            {
+                new ProfileFormatItem
+                {
+                    Allowed = true,
+                    Format = CustomFormat.None
+                }
+            }};
 
             return Add(profile);
         }
 
         public void Handle(ApplicationStartedEvent message)
         {
+            // Hack to force custom formats to be loaded into memory, if you have a better solution please let me know.
+            _formatService.All();
             if (All().Any()) return;
 
             _logger.Info("Setting up default quality profiles");

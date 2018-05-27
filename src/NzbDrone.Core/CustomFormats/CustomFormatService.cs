@@ -4,6 +4,9 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Composition;
+using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.CustomFormats
@@ -17,20 +20,36 @@ namespace NzbDrone.Core.CustomFormats
     }
 
 
-    public class CustomFormatService : ICustomFormatService
+    public class CustomFormatService : ICustomFormatService, IHandle<ApplicationStartedEvent>
     {
         private readonly ICustomFormatRepository _formatRepository;
-        private readonly IProfileService _profileService;
+        private IProfileService _profileService;
+
+        public IProfileService ProfileService
+        {
+            get
+            {
+                if (_profileService == null)
+                {
+                    _profileService = _container.Resolve<IProfileService>();
+                }
+
+                return _profileService;
+            }
+        }
+
+        private readonly IContainer _container;
         private readonly ICached<Dictionary<int, CustomFormat>> _cache;
         private readonly Logger _logger;
 
         public static Dictionary<int, CustomFormat> AllCustomFormats;
 
-        public CustomFormatService(ICustomFormatRepository formatRepository, IProfileService profileService, ICacheManager cacheManager,
+        public CustomFormatService(ICustomFormatRepository formatRepository, ICacheManager cacheManager,
+            IContainer container,
             Logger logger)
         {
             _formatRepository = formatRepository;
-            _profileService = profileService;
+            _container = container;
             _cache = cacheManager.GetCache<Dictionary<int, CustomFormat>>(typeof(CustomFormat), "formats");
             _logger = logger;
         }
@@ -46,7 +65,7 @@ namespace NzbDrone.Core.CustomFormats
             var ret = _formatRepository.Insert(customFormat);
             try
             {
-                _profileService.AddCustomFormat(ret);
+                ProfileService.AddCustomFormat(ret);
             }
             catch (Exception e)
             {
@@ -107,6 +126,12 @@ namespace NzbDrone.Core.CustomFormats
                     }
                 };
             }
+        }
+
+        public void Handle(ApplicationStartedEvent message)
+        {
+            // Fillup cache for DataMapper.
+            All();
         }
     }
 }
