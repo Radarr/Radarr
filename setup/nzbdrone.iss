@@ -10,6 +10,13 @@
 #define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
 #define BranchName StringChange(GetEnv('APPVEYOR_REPO_BRANCH'), "/", "-")
 
+#if BuildVersion == ""
+
+#define BuildVersion GetEnv('BUILD_VERSION')
+#define BranchName StringChange(GetEnv('CIRCLE_BRANCH'), "/", "-")
+
+#endif
+
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -44,7 +51,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "windowsService"; Description: "Install as a Windows Service"
 
 [Files]
-Source: "..\_output\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion  
+Source: "..\_output\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\_output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
