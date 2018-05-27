@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.AwesomeHD
 {
@@ -98,6 +99,12 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                         flags |= IndexerFlags.AHD_Internal;
                     }
 
+                    var imdbId = 0;
+                    if (torrent.ImdbId.Length > 2)
+                    {
+                        imdbId = int.Parse(torrent.ImdbId.Substring(2));
+                    }
+
                     torrentInfos.Add(new TorrentInfo()
                     {
                         Guid = string.Format("AwesomeHD-{0}", id),
@@ -108,7 +115,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                         Seeders = int.Parse(torrent.Seeders),
                         Peers = int.Parse(torrent.Leechers) + int.Parse(torrent.Seeders),
                         PublishDate = torrent.Time.ToUniversalTime(),
-                        ImdbId = int.Parse(torrent.ImdbId.Substring(2)),
+                        ImdbId = imdbId,
                         IndexerFlags = flags,
                     });
                 }
