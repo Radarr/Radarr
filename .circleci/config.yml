@@ -102,6 +102,20 @@ jobs:
                 path: _output_osx
             - store_artifacts:
                 path: _output_osx_app
+    deploy:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: Install gitchangelog
+                command: pip install gitchangelog
+            - run:
+                name: Generating changelog
+                command: changelog=$(GITCHANGELOG_CONFIG_FILENAME=.gitchangelog.rc.release gitchangelog) && echo "Deploying v0.2.0.$CIRCLE_BUILD_NUM to Github, with changelog:\n\n$changelog"
+            - run:
+                name: Install github-release
+                command: go get github.com/aktau/github-release
 
 workflows:
     version: 2
@@ -119,3 +133,10 @@ workflows:
             - publish_artifacts:
                 requires:
                     - build
+            - request_deploy:
+                type: approval
+                requires:
+                    - publish_artifacts
+            - deploy:
+                requires:
+                    - request_deploy
