@@ -1,17 +1,15 @@
-using NLog;
-using NzbDrone.Common.Disk;
-using NzbDrone.Common.Exceptions;
-using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Download;
-using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Qualities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using NLog;
+using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Extras;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.TrackImport
 {
@@ -29,17 +27,17 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public ImportApprovedTracks(IUpgradeMediaFiles episodeFileUpgrader,
+        public ImportApprovedTracks(IUpgradeMediaFiles trackFileUpgrader,
                                       IMediaFileService mediaFileService,
                                       IExtraService extraService,
                                       IDiskProvider diskProvider,
                                       IEventAggregator eventAggregator,
                                       Logger logger)
         {
-            _trackFileUpgrader = episodeFileUpgrader;
+            _trackFileUpgrader = trackFileUpgrader;
             _mediaFileService = mediaFileService;
             _extraService = extraService;
-             _diskProvider = diskProvider;
+            _diskProvider = diskProvider;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -55,6 +53,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                .ToList();
 
             var importResults = new List<ImportResult>();
+            var allImportedTrackFiles = new List<TrackFile>();
+            var allOldTrackFiles = new List<TrackFile>();
 
             foreach (var importDecision in qualifiedImports.OrderBy(e => e.LocalTrack.Tracks.Select(track => track.AbsoluteTrackNumber).MinOrDefault())
                                                            .ThenByDescending(e => e.LocalTrack.Size))
@@ -130,6 +130,9 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                         _extraService.ImportTrack(localTrack, trackFile, copyOnly);
                     }
 
+                    allImportedTrackFiles.Add(trackFile);
+                    allOldTrackFiles.AddRange(oldFiles);
+
                     _eventAggregator.PublishEvent(new TrackImportedEvent(localTrack, trackFile, oldFiles, newDownload, downloadClientItem));
 
                 }
@@ -157,7 +160,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
                 }
             }
 
-            var albumImports = importResults.Where(e =>e.ImportDecision.LocalTrack.Album != null)
+            var albumImports = importResults.Where(e => e.ImportDecision.LocalTrack.Album != null)
                 .GroupBy(e => e.ImportDecision.LocalTrack.Album.Id).ToList();
 
             foreach (var albumImport in albumImports)
@@ -167,7 +170,12 @@ namespace NzbDrone.Core.MediaFiles.TrackImport
 
                 if (albumImport.Where(e => e.Errors.Count == 0).ToList().Count > 0 && artist != null && album != null)
                 {
-                    _eventAggregator.PublishEvent(new AlbumImportedEvent(artist, album, albumImport.Select(e => e.ImportDecision.LocalTrack).ToList(), newDownload, downloadClientItem));
+                    _eventAggregator.PublishEvent(new AlbumImportedEvent(
+                        artist,
+                        album,
+                        allImportedTrackFiles.Where(s => s.AlbumId == album.Id).ToList(),
+                        allOldTrackFiles.Where(s => s.AlbumId == album.Id).ToList(), newDownload,
+                        downloadClientItem));
                 }
             }
 

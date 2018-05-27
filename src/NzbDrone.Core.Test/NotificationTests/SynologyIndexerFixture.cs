@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.NotificationTests
     public class SynologyIndexerFixture : CoreTest<SynologyIndexer>
     {
         private Artist _artist;
-        private TrackDownloadMessage _upgrade;
+        private AlbumDownloadMessage _upgrade;
 
         [SetUp]
         public void SetUp()
@@ -24,13 +24,17 @@ namespace NzbDrone.Core.Test.NotificationTests
                 Path = @"C:\Test\".AsOsAgnostic()
             };
 
-            _upgrade = new TrackDownloadMessage()
+            _upgrade = new AlbumDownloadMessage()
             {
                 Artist = _artist,
 
-                TrackFile = new TrackFile
+                TrackFiles = new List<TrackFile>
                 {
-                    RelativePath = "file1.S01E01E02.mkv"
+                    new TrackFile
+                    {
+                        RelativePath = "file1.S01E01E02.mkv"
+                    }
+                    
                 },
 
                 OldFiles = new List<TrackFile>
@@ -69,7 +73,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_remove_old_episodes_on_upgrade()
         {
-            Subject.OnDownload(_upgrade);
+            Subject.OnAlbumDownload(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.DeleteFile(@"C:\Test\file1.S01E01.mkv".AsOsAgnostic()), Times.Once());
@@ -81,7 +85,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_add_new_episode_on_upgrade()
         {
-            Subject.OnDownload(_upgrade);
+            Subject.OnAlbumDownload(_upgrade);
 
             Mocker.GetMock<ISynologyIndexerProxy>()
                 .Verify(v => v.AddFile(@"C:\Test\file1.S01E01E02.mkv".AsOsAgnostic()), Times.Once());

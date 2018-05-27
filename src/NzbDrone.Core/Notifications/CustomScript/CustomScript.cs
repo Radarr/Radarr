@@ -117,6 +117,18 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Lidarr_Download_Client", message.DownloadClient ?? string.Empty);
             environmentVariables.Add("Lidarr_Download_Id", message.DownloadId ?? string.Empty);
 
+            if (message.TrackFiles.Any())
+            {
+                environmentVariables.Add("Lidarr_AddedTrackRelativePaths", string.Join("|", message.TrackFiles.Select(e => e.RelativePath)));
+                environmentVariables.Add("Lidarr_AddedTrackPaths", string.Join("|", message.TrackFiles.Select(e => Path.Combine(artist.Path, e.RelativePath))));
+            }
+
+            if (message.OldFiles.Any())
+            {
+                environmentVariables.Add("Lidarr_DeletedRelativePaths", string.Join("|", message.OldFiles.Select(e => e.RelativePath)));
+                environmentVariables.Add("Lidarr_DeletedPaths", string.Join("|", message.OldFiles.Select(e => Path.Combine(artist.Path, e.RelativePath))));
+            }
+
             ExecuteScript(environmentVariables);
         }
 

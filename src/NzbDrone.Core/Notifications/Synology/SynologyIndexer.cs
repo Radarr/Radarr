@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
@@ -20,7 +21,7 @@ namespace NzbDrone.Core.Notifications.Synology
         public override string Name => "Synology Indexer";
 
 
-        public override void OnDownload(TrackDownloadMessage message)
+        public override void OnAlbumDownload(AlbumDownloadMessage message)
         {
             if (Settings.UpdateLibrary)
             {
@@ -31,8 +32,9 @@ namespace NzbDrone.Core.Notifications.Synology
                     _indexerProxy.DeleteFile(fullPath);
                 }
 
+                foreach (var newFile in message.TrackFiles)
                 {
-                    var fullPath = Path.Combine(message.Artist.Path, message.TrackFile.RelativePath);
+                    var fullPath = Path.Combine(message.Artist.Path, newFile.RelativePath);
 
                     _indexerProxy.AddFile(fullPath);
                 }

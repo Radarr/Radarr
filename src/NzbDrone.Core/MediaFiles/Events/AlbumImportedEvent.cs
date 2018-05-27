@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Music;
-using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.Events
 {
@@ -10,16 +9,18 @@ namespace NzbDrone.Core.MediaFiles.Events
     {
         public Artist Artist { get; private set; }
         public Album Album { get; private set; }
-        public List<LocalTrack> ImportedTracks { get; private set; }
+        public List<TrackFile> ImportedTracks { get; private set; }
+        public List<TrackFile> OldFiles { get; private set; }
         public bool NewDownload { get; private set; }
         public string DownloadClient { get; private set; }
         public string DownloadId { get; private set; }
 
-        public AlbumImportedEvent(Artist artist, Album album, List<LocalTrack> importedTracks, bool newDownload, DownloadClientItem downloadClientItem)
+        public AlbumImportedEvent(Artist artist, Album album, List<TrackFile> importedTracks, List<TrackFile> oldFiles, bool newDownload, DownloadClientItem downloadClientItem)
         {
             Artist = artist;
             Album = album;
             ImportedTracks = importedTracks;
+            OldFiles = oldFiles;
             NewDownload = newDownload;
 
             if (downloadClientItem != null)

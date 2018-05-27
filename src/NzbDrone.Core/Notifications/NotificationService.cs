@@ -4,6 +4,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Qualities;
@@ -64,7 +65,7 @@ namespace NzbDrone.Core.Notifications
                                     qualityString);
         }
 
-        private string GetAlbumDownloadMessage(Artist artist, Album album, List<LocalTrack> tracks)
+        private string GetAlbumDownloadMessage(Artist artist, Album album, List<TrackFile> tracks)
         {
             return string.Format("{0} - {1} ({2} Tracks Imported)",
                 artist.Name,
@@ -172,7 +173,9 @@ namespace NzbDrone.Core.Notifications
                 Artist = message.Artist,
                 Album = message.Album,
                 DownloadClient = message.DownloadClient,
-                DownloadId = message.DownloadId
+                DownloadId = message.DownloadId,
+                TrackFiles = message.ImportedTracks,
+                OldFiles = message.OldFiles,
             };
 
             foreach (var notification in _notificationFactory.OnAlbumDownloadEnabled())

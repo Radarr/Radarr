@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Notifications
         public Artist Artist { get; set; }
         public Album Album { get; set; }
         public List<TrackFile> TrackFiles { get; set; }
+        public List<TrackFile> OldFiles { get; set; }
         public string DownloadClient { get; set; }
         public string DownloadId { get; set; }
 
