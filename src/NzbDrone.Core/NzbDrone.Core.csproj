@@ -188,6 +188,7 @@
     <Compile Include="Datastore\Migration\012_add_release_status.cs" />
     <Compile Include="Datastore\Migration\015_remove_fanzub.cs" />
     <Compile Include="Datastore\Migration\016_update_artist_history_indexes.cs" />
+    <Compile Include="Datastore\Migration\017_remove_nma.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />
@@ -993,10 +994,6 @@
     <Compile Include="Notifications\NotificationFactory.cs" />
     <Compile Include="Notifications\NotificationRepository.cs" />
     <Compile Include="Notifications\NotificationService.cs" />
-    <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroid.cs" />
-    <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroidPriority.cs" />
-    <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroidProxy.cs" />
-    <Compile Include="Notifications\NotifyMyAndroid\NotifyMyAndroidSettings.cs" />
     <Compile Include="Notifications\Plex\PlexClient.cs">
       <SubType>Code</SubType>
     </Compile>
