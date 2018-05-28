@@ -36,7 +36,7 @@ namespace NzbDrone.Host.AccessControl
                 }
                 else if (!passive)
                 {
-                    throw new RemoteAccessException("Failed to register URLs for Sonarr. Sonarr will not be accessible remotely");
+                    throw new RemoteAccessException("Failed to register URLs for Lidarr. Lidarr will not be accessible remotely");
                 }
             }
 
