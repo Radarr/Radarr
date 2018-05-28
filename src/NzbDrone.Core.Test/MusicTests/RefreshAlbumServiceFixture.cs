@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_log_error_if_musicbrainz_id_not_found()
         {
-            Subject.RefreshAlbumInfo(_albums);
+            Subject.RefreshAlbumInfo(_albums, false);
 
             Mocker.GetMock<IAlbumService>()
                 .Verify(v => v.UpdateMany(It.IsAny<List<Album>>()), Times.Never());
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             GivenNewAlbumInfo(newAlbumInfo);
 
-            Subject.RefreshAlbumInfo(_albums);
+            Subject.RefreshAlbumInfo(_albums, false);
 
             Mocker.GetMock<IAlbumService>()
                 .Verify(v => v.UpdateMany(It.Is<List<Album>>(s => s.First().ForeignAlbumId == newAlbumInfo.ForeignAlbumId)));

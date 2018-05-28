@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        private void RefreshArtistInfo(Artist artist)
+        private void RefreshArtistInfo(Artist artist, bool forceAlbumRefresh)
         {
             _logger.ProgressInfo("Updating Info for {0}", artist.Name);
 
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Music
 
             _addAlbumService.AddAlbums(newAlbumsList);
 
-            _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList);
+            _refreshAlbumService.RefreshAlbumInfo(updateAlbumsList, forceAlbumRefresh);
 
             _albumService.DeleteMany(existingAlbums);
 
@@ -160,7 +160,7 @@ namespace NzbDrone.Core.Music
             if (message.ArtistId.HasValue)
             {
                 var artist = _artistService.GetArtist(message.ArtistId.Value);
-                RefreshArtistInfo(artist);
+                RefreshArtistInfo(artist, true);
             }
             else
             {
@@ -168,11 +168,12 @@ namespace NzbDrone.Core.Music
 
                 foreach (var artist in allArtists)
                 {
-                    if (message.Trigger == CommandTrigger.Manual || _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist))
+                    var manualTrigger = message.Trigger == CommandTrigger.Manual;
+                    if (manualTrigger || _checkIfArtistShouldBeRefreshed.ShouldRefresh(artist))
                     {
                         try
                         {
-                            RefreshArtistInfo(artist);
+                            RefreshArtistInfo(artist, manualTrigger);
                         }
                         catch (Exception e)
                         {
