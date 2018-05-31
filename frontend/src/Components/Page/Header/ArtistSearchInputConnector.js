@@ -36,6 +36,7 @@ function createCleanArtistSelector() {
           artistName,
           sortName,
           images,
+          foreignArtistId,
           // alternateTitles,
           tags
         } = artist;
@@ -43,6 +44,7 @@ function createCleanArtistSelector() {
         return {
           artistName,
           sortName,
+          foreignArtistId,
           images,
           cleanName: jdu.replace(artistName).toLowerCase(),
           // alternateTitles: alternateTitles.map((alternateTitle) => {
