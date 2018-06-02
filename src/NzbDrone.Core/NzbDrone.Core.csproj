@@ -581,6 +581,8 @@
     <Compile Include="Indexers\IndexerDefaults.cs" />
     <Compile Include="Indexers\ITorrentIndexerSettings.cs" />
     <Compile Include="Indexers\RssEnclosure.cs" />
+    <Compile Include="Indexers\SeedConfigProvider.cs" />
+    <Compile Include="Indexers\SeedCriteriaSettings.cs" />
     <Compile Include="Indexers\Waffles\WafflesRssParser.cs" />
     <Compile Include="Indexers\Waffles\Waffles.cs" />
     <Compile Include="Indexers\Waffles\WafflesRequestGenerator.cs" />

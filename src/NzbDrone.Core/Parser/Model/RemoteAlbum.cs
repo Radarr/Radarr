@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Parser.Model
@@ -12,6 +13,7 @@ namespace NzbDrone.Core.Parser.Model
         public Artist Artist { get; set; }
         public List<Album> Albums { get; set; }
         public bool DownloadAllowed { get; set; }
+        public TorrentSeedConfiguration SeedConfiguration { get; set; }
 
         public bool IsRecentAlbum()
         {

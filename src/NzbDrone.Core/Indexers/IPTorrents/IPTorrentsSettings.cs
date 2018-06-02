@@ -35,6 +35,9 @@ namespace NzbDrone.Core.Indexers.IPTorrents
         [FieldDefinition(1, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
+        [FieldDefinition(2)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

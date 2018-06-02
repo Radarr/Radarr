@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.Hadouken.Models
+namespace NzbDrone.Core.Download.Clients.Hadouken.Models
 {
     public sealed class HadoukenTorrent
     {
@@ -13,6 +13,7 @@
         public bool IsSeeding { get; set; }
         public long TotalSize { get; set; }
         public long DownloadedBytes { get; set; }
+        public long UploadedBytes { get; set; }
         public long DownloadRate { get; set; }
         public string Error { get; set; }
     }

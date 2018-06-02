@@ -40,10 +40,10 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 _proxy.SetTorrentLabel(hash.ToLower(), Settings.MusicCategory, Settings);
             }
 
-            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)QBittorrentPriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)QBittorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
             }
@@ -108,6 +108,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 item.DownloadClient = Definition.Name;
                 item.RemainingSize = (long)(torrent.Size * (1.0 - torrent.Progress));
                 item.RemainingTime = GetRemainingTime(torrent);
+                item.SeedRatio = torrent.Ratio;
 
                 item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.SavePath));
 

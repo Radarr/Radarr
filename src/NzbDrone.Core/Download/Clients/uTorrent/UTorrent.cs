@@ -40,11 +40,12 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
             _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
 
-            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)UTorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }
@@ -58,11 +59,12 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
             _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
 
-            var isRecentEpisode = remoteAlbum.IsRecentAlbum();
+            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
 
-            if (isRecentEpisode && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
-                !isRecentEpisode && Settings.OlderTvPriority == (int)UTorrentPriority.First)
+            if (isRecentAlbum && Settings.RecentTvPriority == (int)UTorrentPriority.First ||
+                !isRecentAlbum && Settings.OlderTvPriority == (int)UTorrentPriority.First)
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }
@@ -94,6 +96,8 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 item.Category = torrent.Label;
                 item.DownloadClient = Definition.Name;
                 item.RemainingSize = torrent.Remaining;
+                item.SeedRatio = torrent.Ratio;
+
                 if (torrent.Eta != -1)
                 {
                     item.RemainingTime = TimeSpan.FromSeconds(torrent.Eta);
@@ -101,7 +105,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
 
                 var outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.RootDownloadPath));
 
-                if (outputPath == null || outputPath.FileName == torrent.Name)
+                if (outputPath.FileName == torrent.Name)
                 {
                     item.OutputPath = outputPath;
                 }
@@ -134,7 +138,9 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 }
 
                 // 'Started' without 'Queued' is when the torrent is 'forced seeding'
-                item.CanMoveFiles = item.CanBeRemoved = (!torrent.Status.HasFlag(UTorrentTorrentStatus.Queued) && !torrent.Status.HasFlag(UTorrentTorrentStatus.Started));
+                item.CanMoveFiles = item.CanBeRemoved =
+                    !torrent.Status.HasFlag(UTorrentTorrentStatus.Queued) &&
+                    !torrent.Status.HasFlag(UTorrentTorrentStatus.Started);
 
                 queueItems.Add(item);
             }

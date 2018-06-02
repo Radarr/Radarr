@@ -39,6 +39,9 @@ namespace NzbDrone.Core.Indexers.Gazelle
         [FieldDefinition(3, Type = FieldType.Textbox, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
+        [FieldDefinition(4)]
+        public SeedCriteriaSettings SeedCriteria { get; } = new SeedCriteriaSettings();
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));

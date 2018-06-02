@@ -57,9 +57,9 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteAlbum remoteEpisode, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
         {
-            var priority = (RTorrentPriority)(remoteEpisode.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
+            var priority = (RTorrentPriority)(remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 
             _proxy.AddTorrentFromFile(filename, fileContent, Settings.MusicCategory, priority, Settings.TvDirectory, Settings);
 
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             {
                 _logger.Debug("rTorrent didn't add the torrent within {0} seconds: {1}.", tries * retryDelay / 1000, filename);
 
-                throw new ReleaseDownloadException(remoteEpisode.Release, "Downloading torrent failed");
+                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading torrent failed");
             }
 
             return hash;
@@ -104,6 +104,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
                 item.TotalSize = torrent.TotalSize;
                 item.RemainingSize = torrent.RemainingSize;
                 item.Category = torrent.Category;
+                item.SeedRatio = torrent.Ratio;
 
                 if (torrent.DownRate > 0)
                 {

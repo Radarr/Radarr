@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
@@ -25,6 +26,7 @@ namespace NzbDrone.Core.Download
         private readonly IIndexerStatusService _indexerStatusService;
         private readonly IRateLimitService _rateLimitService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly ISeedConfigProvider _seedConfigProvider;
         private readonly Logger _logger;
 
         public DownloadService(IProvideDownloadClient downloadClientProvider,
@@ -32,6 +34,7 @@ namespace NzbDrone.Core.Download
                                IIndexerStatusService indexerStatusService,
                                IRateLimitService rateLimitService,
                                IEventAggregator eventAggregator,
+                               ISeedConfigProvider seedConfigProvider,
                                Logger logger)
         {
             _downloadClientProvider = downloadClientProvider;
@@ -39,6 +42,7 @@ namespace NzbDrone.Core.Download
             _indexerStatusService = indexerStatusService;
             _rateLimitService = rateLimitService;
             _eventAggregator = eventAggregator;
+            _seedConfigProvider = seedConfigProvider;
             _logger = logger;
         }
 
@@ -54,6 +58,9 @@ namespace NzbDrone.Core.Download
             {
                 throw new DownloadClientUnavailableException($"{remoteAlbum.Release.DownloadProtocol} Download client isn't configured yet");
             }
+
+            // Get the seed configuration for this release.
+            remoteAlbum.SeedConfiguration = _seedConfigProvider.GetSeedConfiguration(remoteAlbum);
 
             // Limit grabs to 2 per second.
             if (remoteAlbum.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteAlbum.Release.DownloadUrl.StartsWith("magnet:"))
