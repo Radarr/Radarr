@@ -68,8 +68,8 @@ CleanFolder()
 AddJsonNet()
 {
     rm $outputFolder/Newtonsoft.Json.*
-    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net35/*.dll $outputFolder
-    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net35/*.dll $updateFolder
+    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net45/*.dll $outputFolder
+    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net45/*.dll $updateFolder
 }
 
 BuildWithMSBuild()
