@@ -54,4 +54,6 @@ only_commits:
     - setup/
     - frontend/
     - appveyor.yml
-    - build-appveyor.cake
+    - build.sh
+    - test.sh
+    - appveyor-package.sh
