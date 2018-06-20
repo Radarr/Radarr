@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +32,19 @@ namespace NzbDrone.Common.Extensions
         {
             if (response == null || response.Content == null) return ex;
 
-            var contentSample = response.Content.Substring(0, Math.Min(response.Content.Length, 512));
+            var contentSample = response.Content.Substring(0, Math.Min(response.Content.Length, maxSampleLength));
+
+            if (response.Request != null)
+            {
+                ex.AddData("RequestUri", response.Request.Url.ToString());
+
+                if (response.Request.ContentSummary != null)
+                {
+                    ex.AddData("RequestSummary", response.Request.ContentSummary);
+                }
+            }
+
+            ex.AddData("StatusCode", response.StatusCode.ToString());
 
             if (response.Headers != null)
             {
