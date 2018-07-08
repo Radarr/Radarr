@@ -85,7 +85,7 @@ class RootFolderSelectInputConnector extends Component {
       onChange
     } = this.props;
 
-    if (!value || !_.some(values, (v) => v.hasOwnProperty(value)) || value === ADD_NEW_KEY) {
+    if (!value || !_.some(values, (v) => v.key === value) || value === ADD_NEW_KEY) {
       const defaultValue = values[0];
 
       if (defaultValue.key === ADD_NEW_KEY) {
