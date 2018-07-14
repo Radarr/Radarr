@@ -6,6 +6,7 @@ var EmptyView = require('../Index/EmptyView');
 var FullMovieCollection = require ('../FullMovieCollection');
 var MoviesCollection = require('../MoviesCollection');
 var MovieTitleCell = require('../../Cells/MovieTitleCell');
+var MovieMonitoredCell = require('../../Cells/ToggleCell');
 var DownloadedQualityCell = require('../../Cells/DownloadedQualityCell');
 var ProfileCell = require('../../Cells/ProfileCell');
 var SelectAllCell = require('../../Cells/SelectAllCell');
@@ -44,6 +45,15 @@ module.exports = Marionette.Layout.extend({
             name       : '',
             cell       : SelectAllCell,
             headerCell : 'select-all',
+            sortable   : false
+        },
+        {
+            name       : 'monitored',
+            label      : '',
+            cell       : MovieMonitoredCell,
+            trueClass  : 'icon-sonarr-monitored',
+            falseClass : 'icon-sonarr-unmonitored',
+            tooltip    : 'Toggle movie monitored status',
             sortable   : false
         },
         {
