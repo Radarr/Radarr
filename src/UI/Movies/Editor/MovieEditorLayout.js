@@ -160,7 +160,14 @@ module.exports = Marionette.Layout.extend({
                     icon     : 'icon-sonarr-monitored',
                     callback : this._setFilter
                 },
-		                {
+                {
+                    key      : 'unmonitored',
+                    title    : '',
+                    tooltip  : 'UnMonitored Only',
+                    icon     : 'icon-sonarr-unmonitored',
+                    callback : this._setFilter
+                },
+		        {
                     key      : 'missing',
                     title    : '',
                     tooltip  : 'Missing Only',
