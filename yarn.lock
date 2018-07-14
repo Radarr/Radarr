@@ -6664,9 +6664,9 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-signalr@2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/signalr/-/signalr-2.2.3.tgz#d564f29e90a0e754e7cd73d2dfc0ac4ca54f8265"
+signalr@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/signalr/-/signalr-2.3.0.tgz#2c5aceab8a3d6eaa81785debd8bca069bc3ed14d"
   dependencies:
     jquery ">=1.6.4"
 
