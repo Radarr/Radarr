@@ -30,6 +30,10 @@ var filterModes = {
         'monitored',
         true
     ],
+    'unmonitored'  : [
+        'monitored',
+        false
+    ],
     'missing'  : [
         'downloaded',
         false
