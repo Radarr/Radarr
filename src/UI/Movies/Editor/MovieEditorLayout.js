@@ -22,7 +22,7 @@ module.exports = Marionette.Layout.extend({
     template : 'Movies/Editor/MovieEditorLayoutTemplate',
 
     regions : {
-        seriesRegion : '#x-series-editor',
+        moviesRegion : '#x-movie-editor',
         toolbar      : '#x-toolbar',
         pagerTop : "#x-movie-pager-top",
         pager : "#x-movie-pager"
@@ -143,7 +143,7 @@ module.exports = Marionette.Layout.extend({
         this.filteringOptions = {
             type          : 'radio',
             storeState    : false,
-            menuKey       : 'serieseditor.filterMode',
+            menuKey       : 'movieeditor.filterMode',
             defaultAction : 'all',
             items         : [
                 {
@@ -228,7 +228,7 @@ module.exports = Marionette.Layout.extend({
 
     _showTable : function() {
         if (this.movieCollection.length === 0) {
-            this.seriesRegion.show(new EmptyView());
+            this.moviesRegion.show(new EmptyView());
             this.toolbar.close();
             return;
         }
@@ -240,7 +240,7 @@ module.exports = Marionette.Layout.extend({
             className  : 'table table-hover'
         });
 
-        this.seriesRegion.show(this.editorGrid);
+        this.moviesRegion.show(this.editorGrid);
        	this._showFooter();
 
     },

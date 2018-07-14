@@ -33,8 +33,6 @@ module.exports = Marionette.Layout.extend({
         this.seasonNumber = options.seasonNumber;
 
         var viewOptions = {};
-        //viewOptions.seriesId = this.model.id;
-        //viewOptions.seasonNumber = this.seasonNumber;
         viewOptions.movieId = this.model.id;
 
         this.collection = new RenamePreviewCollection(viewOptions);

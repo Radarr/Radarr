@@ -8,8 +8,8 @@ module.exports = Marionette.ItemView.extend({
     },
 
     events : {
-        'click .x-edit'    : '_editSeries',
-        'click .x-refresh' : '_refreshSeries'
+        'click .x-edit'    : '_editMovie',
+        'click .x-refresh' : '_refreshMovie'
     },
 
     onRender : function() {
@@ -17,16 +17,16 @@ module.exports = Marionette.ItemView.extend({
             element : this.ui.refresh,
             command : {
                 name     : 'refreshMovie',
-                seriesId : this.model.get('id')
+                movieId : this.model.get('id')
             }
         });
     },
 
-    _editSeries : function() {
+    _editMovie : function() {
         vent.trigger(vent.Commands.EditMovieCommand, { movie : this.model });
     },
 
-    _refreshSeries : function() {
+    _refreshMovie : function() {
         CommandController.Execute('refreshMovie', {
             name     : 'refreshMovie',
             movieId : this.model.id

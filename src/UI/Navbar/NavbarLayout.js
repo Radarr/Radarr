@@ -13,7 +13,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     ui : {
-        search   : '.x-series-search',
+        search   : '.x-movies-search',
         collapse : '.x-navbar-collapse'
     },
 

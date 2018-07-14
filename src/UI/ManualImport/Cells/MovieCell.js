@@ -3,7 +3,7 @@ var NzbDroneCell = require('../../Cells/NzbDroneCell');
 var SelectMovieLayout = require('../Movie/SelectMovieLayout');
 
 module.exports = NzbDroneCell.extend({
-    className : 'series-title-cell editable',
+    className : 'movie-title-cell editable',
 
     events : {
         'click' : '_onClick'

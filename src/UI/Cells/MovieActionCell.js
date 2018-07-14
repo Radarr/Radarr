@@ -3,15 +3,15 @@ var NzbDroneCell = require('./NzbDroneCell');
 var CommandController = require('../Commands/CommandController');
 
 module.exports = NzbDroneCell.extend({
-    className : 'series-actions-cell',
+    className : 'movie-actions-cell',
 
     ui : {
         refresh : '.x-refresh'
     },
 
     events : {
-        'click .x-edit'    : '_editSeries',
-        'click .x-refresh' : '_refreshSeries'
+        'click .x-edit'    : '_editMovie',
+        'click .x-refresh' : '_refreshMovie'
     },
 
     render : function() {
@@ -32,11 +32,11 @@ module.exports = NzbDroneCell.extend({
         return this;
     },
 
-    _editSeries : function() {
+    _editMovie : function() {
         vent.trigger(vent.Commands.EditMovieCommand, { movie : this.model });
     },
 
-    _refreshSeries : function() {
+    _refreshMovie : function() {
         CommandController.Execute('refreshMovie', {
             name     : 'refreshMovie',
             movieId : this.model.id

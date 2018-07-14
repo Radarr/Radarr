@@ -2,7 +2,7 @@ var NzbDroneCell = require('../../Cells/NzbDroneCell');
 var BulkImportCollection = require("./BulkImportCollection");
 
 module.exports = NzbDroneCell.extend({
-		className : 'series-title-cell',
+		className : 'movie-title-cell',
 
         render : function() {
             var collection = this.model.collection;

@@ -76,14 +76,14 @@ Handlebars.registerHelper('poster', function() {
 
     if (poster[0]) {
         if (!poster[0].url.match(/^https?:\/\//)) {
-            return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster[0].url, 250)));
+            return new Handlebars.SafeString('<img class="movie-poster x-movie-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster[0].url, 250)));
         } else {
             var url = poster[0].url.replace(/^https?\:/, 'https://'); //IMDb posters need https to work, k?
-            return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
+            return new Handlebars.SafeString('<img class="movie-poster x-movie-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
         }
     }
 
-    return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
+    return new Handlebars.SafeString('<img class="movie-poster placeholder-image" src="{0}">'.format(placeholder));
 });
 
 Handlebars.registerHelper('remotePoster', function() {
@@ -92,14 +92,14 @@ Handlebars.registerHelper('remotePoster', function() {
 
   if (poster) {
       if (!poster.match(/^https?:\/\//)) {
-          return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster, 250)));
+          return new Handlebars.SafeString('<img class="movie-poster x-movie-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, poster, 250)));
       } else {
           var url = poster.replace(/^https?\:/, 'https://'); //IMDb posters need https to work, k?
-          return new Handlebars.SafeString('<img class="series-poster x-series-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
+          return new Handlebars.SafeString('<img class="movie-poster x-movie-poster" {0}>'.format(Handlebars.helpers.defaultImg.call(null, url)));
       }
   }
 
-  return new Handlebars.SafeString('<img class="series-poster placeholder-image" src="{0}">'.format(placeholder));
+  return new Handlebars.SafeString('<img class="movie-poster placeholder-image" src="{0}">'.format(placeholder));
 });
 
 Handlebars.registerHelper('traktUrl', function() {

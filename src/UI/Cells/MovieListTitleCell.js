@@ -1,7 +1,7 @@
 var TemplatedCell = require('./TemplatedCell');
 
 module.exports = TemplatedCell.extend({
-		className : 'series-title-cell',
+		className : 'movie-title-cell',
 		template  : 'Cells/MovieListTitleTemplate',
 
 });
