@@ -4,12 +4,14 @@ var CommandController = require('../../Commands/CommandController');
 
 module.exports = Marionette.ItemView.extend({
     ui : {
-        refresh : '.x-refresh'
+        refresh : '.x-refresh',
+        search  : '.x-search'
     },
 
     events : {
         'click .x-edit'    : '_editMovie',
-        'click .x-refresh' : '_refreshMovie'
+        'click .x-refresh' : '_refreshMovie',
+        'click .x-search'  : '_searchMovie'
     },
 
     onRender : function() {
@@ -18,6 +20,14 @@ module.exports = Marionette.ItemView.extend({
             command : {
                 name     : 'refreshMovie',
                 movieId : this.model.get('id')
+            }
+        });
+
+        CommandController.bindToCommand({
+            element : this.ui.search,
+            command : {
+                name     : 'moviesSearch',
+                movieIds : [this.model.get('id')]
             }
         });
     },
@@ -30,6 +40,13 @@ module.exports = Marionette.ItemView.extend({
         CommandController.Execute('refreshMovie', {
             name     : 'refreshMovie',
             movieId : this.model.id
+        });
+    },
+
+    _searchMovie : function() {
+        CommandController.Execute('moviesSearch', {
+            name     : 'moviesSearch',
+            movieIds : [this.model.id]
         });
     }
 });

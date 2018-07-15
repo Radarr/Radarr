@@ -8,7 +8,7 @@
 .movie-title-cell {
   .text-overflow();
 
-  max-width: 350px;
+  max-width: 322px;
 
   @media @sm {
     max-width: 250px
@@ -167,8 +167,12 @@ td.episode-status-cell, td.quality-cell, td.history-quality-cell, td.progress-ce
 }
 
 .movie-actions-cell {
-  width     : 56px;
-  min-width : 56px;
+  width     : 84px;
+  min-width : 84px;
+
+  i {
+    .clickable();
+  }
 }
 
 .timeleft-cell {
