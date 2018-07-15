@@ -59,23 +59,23 @@ module.exports = Marionette.ItemView.extend({
 						var errorMessage = event.downloading.get('errorMessage');
 
 						if (status === 'pending') {
-								this._addStatusIcon(element, 'icon-sonarr-pending', 'Release will be processed {0}'.format(estimatedCompletionTime));
+								this._addStatusIcon(element, 'icon-radarr-pending', 'Release will be processed {0}'.format(estimatedCompletionTime));
 						}
 
 						else if (errorMessage) {
 								if (status === 'completed') {
-										this._addStatusIcon(element, 'icon-sonarr-import-failed', 'Import failed: {0}'.format(errorMessage));
+										this._addStatusIcon(element, 'icon-radarr-import-failed', 'Import failed: {0}'.format(errorMessage));
 								} else {
-										this._addStatusIcon(element, 'icon-sonarr-download-failed', 'Download failed: {0}'.format(errorMessage));
+										this._addStatusIcon(element, 'icon-radarr-download-failed', 'Download failed: {0}'.format(errorMessage));
 								}
 						}
 
 						else if (status === 'failed') {
-								this._addStatusIcon(element, 'icon-sonarr-download-failed', 'Download failed: check download client for more details');
+								this._addStatusIcon(element, 'icon-radarr-download-failed', 'Download failed: check download client for more details');
 						}
 
 						else if (status === 'warning') {
-								this._addStatusIcon(element, 'icon-sonarr-download-warning', 'Download warning: check download client for more details');
+								this._addStatusIcon(element, 'icon-radarr-download-warning', 'Download warning: check download client for more details');
 						}
 
 						else {
@@ -98,7 +98,7 @@ module.exports = Marionette.ItemView.extend({
 				}
 
 				else if (event.model.get('unverifiedSceneNumbering')) {
-						this._addStatusIcon(element, 'icon-sonarr-form-warning', 'Scene number hasn\'t been verified yet.');
+						this._addStatusIcon(element, 'icon-radarr-form-warning', 'Scene number hasn\'t been verified yet.');
 				}
 		},
 

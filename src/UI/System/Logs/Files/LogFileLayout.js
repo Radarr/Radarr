@@ -64,13 +64,13 @@ module.exports = Marionette.Layout.extend({
             items      : [
                 {
                     title        : 'Refresh',
-                    icon         : 'icon-sonarr-refresh',
+                    icon         : 'icon-radarr-refresh',
                     ownerContext : this,
                     callback     : this._refreshTable
                 },
                 {
                     title          : 'Clear Log Files',
-                    icon           : 'icon-sonarr-clear',
+                    icon           : 'icon-radarr-clear',
                     command        : this.deleteFilesCommand,
                     successMessage : 'Log files have been deleted',
                     errorMessage   : 'Failed to delete log files'

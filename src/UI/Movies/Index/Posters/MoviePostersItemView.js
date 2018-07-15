@@ -1,8 +1,8 @@
-var SeriesIndexItemView = require('../MoviesIndexItemView');
+var MoviesIndexItemView = require('../MoviesIndexItemView');
 
-module.exports = SeriesIndexItemView.extend({
+module.exports = MoviesIndexItemView.extend({
     tagName  : 'li',
-    template : 'Movies/Index/Posters/SeriesPostersItemViewTemplate',
+    template : 'Movies/Index/Posters/MoviePostersItemViewTemplate',
 
     initialize : function() {
         this.events['mouseenter .x-movie-poster-container'] = 'posterHoverAction';

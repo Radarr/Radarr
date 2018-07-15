@@ -15,7 +15,7 @@ module.exports = NzbDroneCell.extend({
         render : function() {
             this.$el.empty();
 
-            this.$el.html('<i class="icon-sonarr-info hidden"></i><input type="text" class="x-tmdbId tmdbId-input form-control" value="' + this.cellValue.get('tmdbId') + '" />');
+            this.$el.html('<i class="icon-radarr-info hidden"></i><input type="text" class="x-tmdbId tmdbId-input form-control" value="' + this.cellValue.get('tmdbId') + '" />');
 
             return this;
         },
@@ -33,7 +33,7 @@ module.exports = NzbDroneCell.extend({
 
             field.prop("disabled", true);
 
-            var icon = this.$(".icon-sonarr-info");
+            var icon = this.$(".icon-radarr-info");
 
             icon.removeClass("hidden");
 

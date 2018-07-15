@@ -57,7 +57,7 @@ module.exports = Marionette.Layout.extend({
     _setupFilter : function () {
         var self = this;
 
-        //TODO: This should be a mixin (same as Add Series searching)
+        //TODO: This should be a mixin (same as Add Movie searching)
         this.ui.filter.keyup(function(e) {
             if (_.contains([
                     9,
