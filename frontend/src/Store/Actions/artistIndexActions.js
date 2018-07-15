@@ -24,7 +24,7 @@ export const defaultState = {
   posterOptions: {
     detailedProgressBar: false,
     size: 'large',
-    showTitle: false,
+    showTitle: true,
     showMonitored: true,
     showQualityProfile: true
   },
