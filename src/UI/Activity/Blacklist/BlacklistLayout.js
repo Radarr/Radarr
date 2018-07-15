@@ -84,7 +84,7 @@ module.exports = Marionette.Layout.extend({
             items      : [
                 {
                     title   : 'Clear Blacklist',
-                    icon    : 'icon-sonarr-clear',
+                    icon    : 'icon-radarr-clear',
                     command : 'clearBlacklist'
                 }
             ]

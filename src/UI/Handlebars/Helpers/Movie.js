@@ -15,20 +15,20 @@ Handlebars.registerHelper('GetStatus', function() {
   
   
     if (status === "announced") {
-      return new Handlebars.SafeString('<i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
+      return new Handlebars.SafeString('<i class="icon-radarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
     }
   
   
     if (status ==="inCinemas") {
-      return new Handlebars.SafeString('<i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
+      return new Handlebars.SafeString('<i class="icon-radarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
     }
   
     if (status === 'released') {
-        return new Handlebars.SafeString('<i class="icon-sonarr-movie-released grid-icon" title=""></i>&nbsp;Released');
+        return new Handlebars.SafeString('<i class="icon-radarr-movie-released grid-icon" title=""></i>&nbsp;Released');
     }
   
     if (!monitored) {
-        return new Handlebars.SafeString('<i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
+        return new Handlebars.SafeString('<i class="icon-radarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
     }
   });
 
@@ -152,14 +152,14 @@ Handlebars.registerHelper('GetBannerStatus', function() {
 
 
   if (status === "inCinemas") {
-    return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-sonarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
+    return new Handlebars.SafeString('<div class="cinemas-banner"><i class="icon-radarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas</div>');
   }
 
   if (status === "announced") {
-    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
+    return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-radarr-movie-announced grid-icon" title=""></i>&nbsp;Announced</div>');
   }
   else if (!monitored) {
-      return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-sonarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
+      return new Handlebars.SafeString('<div class="announced-banner"><i class="icon-radarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored</div>');
   }
 });
 

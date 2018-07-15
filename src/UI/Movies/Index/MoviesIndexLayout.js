@@ -112,29 +112,29 @@ module.exports = Marionette.Layout.extend({
         items      : [
             {
                 title : 'Add Movie',
-                icon  : 'icon-sonarr-add',
+                icon  : 'icon-radarr-add',
                 route : 'addmovies'
             },
             {
                 title : 'Movie Editor',
-                icon  : 'icon-sonarr-edit',
+                icon  : 'icon-radarr-edit',
                 route : 'movieeditor'
             },
             {
                 title        : 'RSS Sync',
-                icon         : 'icon-sonarr-rss',
+                icon         : 'icon-radarr-rss',
                 command      : 'rsssync',
                 errorMessage : 'RSS Sync Failed!'
             },
             {
               title : "PreDB Sync",
-              icon : "icon-sonarr-refresh",
+              icon : "icon-radarr-refresh",
               command : "predbsync",
               errorMessage : "PreDB Sync Failed!"
             },
             {
                 title          : 'Update Library',
-                icon           : 'icon-sonarr-refresh',
+                icon           : 'icon-radarr-refresh',
                 command        : 'refreshmovie',
                 successMessage : 'Library was updated!',
                 errorMessage   : 'Library update failed!'
@@ -242,49 +242,49 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-radarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
                     tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    icon     : 'icon-radarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'unmonitored',
                     title    : '',
                     tooltip  : 'UnMonitored Only',
-                    icon     : 'icon-sonarr-unmonitored',
+                    icon     : 'icon-radarr-unmonitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'missing',
                     title    : '',
                     tooltip  : 'Missing Only',
-                    icon     : 'icon-sonarr-missing',
+                    icon     : 'icon-radarr-missing',
                     callback : this._setFilter
                 },
                 {
                     key      : 'released',
                     title    : '',
                     tooltip  : 'Released',
-                    icon     : 'icon-sonarr-movie-released',
+                    icon     : 'icon-radarr-movie-released',
                     callback : this._setFilter
                 },
                 {
                     key      : 'announced',
                     title    : '',
                     tooltip  : 'Announced',
-                    icon     : 'icon-sonarr-movie-announced',
+                    icon     : 'icon-radarr-movie-announced',
                     callback : this._setFilter
                 },
                 {
                     key      : 'cinemas',
                     title    : '',
                     tooltip  : 'In Cinemas',
-                    icon     : 'icon-sonarr-movie-cinemas',
+                    icon     : 'icon-radarr-movie-cinemas',
                     callback : this._setFilter
                 }
             ]
@@ -300,21 +300,21 @@ module.exports = Marionette.Layout.extend({
                     key      : 'posterView',
                     title    : '',
                     tooltip  : 'Posters',
-                    icon     : 'icon-sonarr-view-poster',
+                    icon     : 'icon-radarr-view-poster',
                     callback : this._showPosters
                 },
                 {
                     key      : 'listView',
                     title    : '',
                     tooltip  : 'Overview List',
-                    icon     : 'icon-sonarr-view-list',
+                    icon     : 'icon-radarr-view-list',
                     callback : this._showList
                 },
                 {
                     key      : 'tableView',
                     title    : '',
                     tooltip  : 'Table',
-                    icon     : 'icon-sonarr-view-table',
+                    icon     : 'icon-radarr-view-table',
                     callback : this._showTable
                 }
             ]

@@ -51,8 +51,8 @@ module.exports = Marionette.Layout.extend({
             name       : 'monitored',
             label      : '',
             cell       : MovieMonitoredCell,
-            trueClass  : 'icon-sonarr-monitored',
-            falseClass : 'icon-sonarr-unmonitored',
+            trueClass  : 'icon-radarr-monitored',
+            falseClass : 'icon-radarr-unmonitored',
             tooltip    : 'Toggle movie monitored status',
             sortable   : false
         },
@@ -111,7 +111,7 @@ module.exports = Marionette.Layout.extend({
                 items      : [
                 {
                     title          : 'Update library',
-                    icon           : 'icon-sonarr-refresh',
+                    icon           : 'icon-radarr-refresh',
                     command        : 'refreshmovie',
                     successMessage : 'Library was updated!',
                     errorMessage   : 'Library update failed!'
@@ -124,13 +124,13 @@ module.exports = Marionette.Layout.extend({
                 },
 				{
                     title : 'Select All',
-                    icon : 'icon-sonarr-checked',
+                    icon : 'icon-radarr-checked',
                     className: 'btn-primary',
                     callback : this._selectAll
                 },
 				{
                     title : 'Unselect All',
-                    icon : 'icon-sonarr-unchecked',
+                    icon : 'icon-radarr-unchecked',
                     className: 'btn-primary',
                     callback : this._unselectAll
                 }
@@ -150,49 +150,49 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-radarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
                     tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    icon     : 'icon-radarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'unmonitored',
                     title    : '',
                     tooltip  : 'UnMonitored Only',
-                    icon     : 'icon-sonarr-unmonitored',
+                    icon     : 'icon-radarr-unmonitored',
                     callback : this._setFilter
                 },
 		        {
                     key      : 'missing',
                     title    : '',
                     tooltip  : 'Missing Only',
-                    icon     : 'icon-sonarr-missing',
+                    icon     : 'icon-radarr-missing',
                     callback : this._setFilter
                 },
                 {
                     key      : 'released',
                     title    : '',
                     tooltip  : 'Released',
-                    icon     : 'icon-sonarr-movie-released',
+                    icon     : 'icon-radarr-movie-released',
                     callback : this._setFilter
                 },
                 {
                     key      : 'announced',
                     title    : '',
                     tooltip  : 'Announced',
-                    icon     : 'icon-sonarr-movie-announced',
+                    icon     : 'icon-radarr-movie-announced',
                     callback : this._setFilter
                 },
                 {
                     key      : 'cinemas',
                     title    : '',
                     tooltip  : 'In Cinemas',
-                    icon     : 'icon-sonarr-movie-cinemas',
+                    icon     : 'icon-radarr-movie-cinemas',
                     callback : this._setFilter
                 }
             ]

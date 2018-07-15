@@ -17,8 +17,8 @@ module.exports = NzbDroneCell.extend({
     render : function() {
         this.$el.empty();
 
-        this.$el.html('<i class="icon-sonarr-refresh x-refresh hidden-xs" title="" data-original-title="Update movie info and scan disk"></i> ' +
-                      '<i class="icon-sonarr-edit x-edit" title="" data-original-title="Edit Movie"></i>');
+        this.$el.html('<i class="icon-radarr-refresh x-refresh hidden-xs" title="" data-original-title="Update movie info and scan disk"></i> ' +
+                      '<i class="icon-radarr-edit x-edit" title="" data-original-title="Edit Movie"></i>');
 
         CommandController.bindToCommand({
             element : this.$el.find('.x-refresh'),

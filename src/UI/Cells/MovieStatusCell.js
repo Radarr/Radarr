@@ -14,16 +14,16 @@ module.exports = NzbDroneCell.extend({
 
 
         if (status === 'released') {
-		  this.$el.html('<i class="icon-sonarr-movie-released grid-icon" title="Released"></i>');
+		  this.$el.html('<i class="icon-radarr-movie-released grid-icon" title="Released"></i>');
 		  this._setStatusWeight(3);
 		}
         if (status === 'inCinemas') {
-          this.$el.html('<i class="icon-sonarr-movie-cinemas grid-icon" title="In Cinemas"></i>');
+          this.$el.html('<i class="icon-radarr-movie-cinemas grid-icon" title="In Cinemas"></i>');
           this._setStatusWeight(2);
         }
 
         if (status === "announced") {
-          this.$el.html('<i class="icon-sonarr-movie-announced grid-icon" title="Announced"></i>');
+          this.$el.html('<i class="icon-radarr-movie-announced grid-icon" title="Announced"></i>');
           this._setStatusWeight(1);
         }
 

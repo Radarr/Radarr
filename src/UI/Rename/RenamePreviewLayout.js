@@ -85,11 +85,11 @@ module.exports = Marionette.Layout.extend({
 
     _setCheckedState : function(checked) {
         if (checked) {
-            this.ui.checkboxIcon.addClass('icon-sonarr-checked');
-            this.ui.checkboxIcon.removeClass('icon-sonarr-unchecked');
+            this.ui.checkboxIcon.addClass('icon-radarr-checked');
+            this.ui.checkboxIcon.removeClass('icon-radarr-unchecked');
         } else {
-            this.ui.checkboxIcon.addClass('icon-sonarr-unchecked');
-            this.ui.checkboxIcon.removeClass('icon-sonarr-checked');
+            this.ui.checkboxIcon.addClass('icon-radarr-unchecked');
+            this.ui.checkboxIcon.removeClass('icon-radarr-checked');
         }
     },
 

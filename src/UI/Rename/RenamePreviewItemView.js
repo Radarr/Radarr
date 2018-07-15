@@ -22,12 +22,12 @@ var view = Marionette.ItemView.extend({
 
         if (checked) {
             this.ui.itemDiv.removeClass('do-not-rename');
-            this.ui.checkboxIcon.addClass('icon-sonarr-checked');
-            this.ui.checkboxIcon.removeClass('icon-sonarr-unchecked');
+            this.ui.checkboxIcon.addClass('icon-radarr-checked');
+            this.ui.checkboxIcon.removeClass('icon-radarr-unchecked');
         } else {
             this.ui.itemDiv.addClass('do-not-rename');
-            this.ui.checkboxIcon.addClass('icon-sonarr-unchecked');
-            this.ui.checkboxIcon.removeClass('icon-sonarr-checked');
+            this.ui.checkboxIcon.addClass('icon-radarr-unchecked');
+            this.ui.checkboxIcon.removeClass('icon-radarr-checked');
         }
     },
 

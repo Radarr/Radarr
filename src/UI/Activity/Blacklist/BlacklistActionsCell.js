@@ -12,8 +12,8 @@ module.exports = NzbDroneCell.extend({
 
     render : function() {
         this.$el.empty();
-        this.$el.html('<i class="icon-sonarr-info x-details"></i>' +
-                      '<i class="icon-sonarr-delete x-delete"></i>');
+        this.$el.html('<i class="icon-radarr-info x-details"></i>' +
+                      '<i class="icon-radarr-delete x-delete"></i>');
 
         return this;
     },
