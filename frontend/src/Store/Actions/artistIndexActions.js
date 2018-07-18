@@ -165,14 +165,16 @@ export const defaultState = {
 
     nextAlbum: function(item) {
       if (item.nextAlbum) {
-        return item.nextAlbum.title;
+        return item.nextAlbum.releaseDate;
       }
+      return '1/1/1000';
     },
 
     lastAlbum: function(item) {
       if (item.lastAlbum) {
-        return item.lastAlbum.title;
+        return item.lastAlbum.releaseDate;
       }
+      return '1/1/1000';
     },
 
     albumCount: function(item) {
