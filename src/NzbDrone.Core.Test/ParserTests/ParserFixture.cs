@@ -56,6 +56,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Mr. Bad Guy [Special Edition]", "Mr. Bad Guy")]
         [TestCase("Sweet Dreams (Album)", "Sweet Dreams")]
         [TestCase("Now What?! (Limited Edition)", "Now What?!")]
+        [TestCase("Random Album Title (Promo CD)", "Random Album Title")]
         public void should_remove_common_tags_from_album_title(string title, string correct)
         {
             var result = Parser.Parser.CleanAlbumTitle(title);
