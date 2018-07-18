@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
         {
             try
             {
-                _logger.Debug("Determining version of Host: {0}", settings.Address);
+                _logger.Debug("Determining version of Host: {0}", _proxy.GetBaseUrl(settings));
                 var version = GetVersion(settings);
                 _logger.Debug("Version is: {0}", version);
             }

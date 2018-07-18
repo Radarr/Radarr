@@ -1,5 +1,6 @@
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.Rest;
 using RestSharp;
 using System.IO;
@@ -9,6 +10,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
 {
     public interface ISubsonicServerProxy
     {
+        string GetBaseUrl(SubsonicSettings settings, string relativePath = null);
         void Notify(SubsonicSettings settings, string message);
         void Update(SubsonicSettings settings);
         string Version(SubsonicSettings settings);
@@ -21,6 +23,14 @@ namespace NzbDrone.Core.Notifications.Subsonic
         public SubsonicServerProxy(Logger logger)
         {
             _logger = logger;
+        }
+
+        public string GetBaseUrl(SubsonicSettings settings, string relativePath = null)
+        {
+            var baseUrl = HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase);
+            baseUrl = HttpUri.CombinePath(baseUrl, relativePath);
+
+            return baseUrl;
         }
 
         public void Notify(SubsonicSettings settings, string message)
@@ -68,9 +78,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
         private RestClient GetSubsonicServerClient(SubsonicSettings settings)
         {
-            var protocol = settings.UseSsl ? "https" : "http";
-
-            return RestClientFactory.BuildClient(string.Format("{0}://{1}:{2}/rest", protocol, settings.Host, settings.Port));
+            return RestClientFactory.BuildClient(GetBaseUrl(settings, "rest"));
         }
 
         private RestRequest GetSubsonicServerRequest(string resource, Method method, SubsonicSettings settings)

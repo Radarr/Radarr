@@ -418,7 +418,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("", "Disable 'Check before download' option in Sabnbzd")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/switches/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/switches/"),
                     DetailedDescription = "Using Check before download affects Lidarr ability to track new downloads. Also Sabnzbd recommends 'Abort jobs that cannot be completed' instead since it's more effective."
                 };
             }
@@ -437,7 +437,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 {
                     return new NzbDroneValidationFailure("MusicCategory", "Enable Job folders")
                     {
-                        InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
+                        InfoLink = _proxy.GetBaseUrl(Settings, "config/categories/"),
                         DetailedDescription = "Lidarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
                     };
                 }
@@ -448,7 +448,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                 {
                     return new NzbDroneValidationFailure("MusicCategory", "Category does not exist")
                     {
-                        InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
+                        InfoLink = _proxy.GetBaseUrl(Settings, "config/categories/"),
                         DetailedDescription = "The Category your entered doesn't exist in Sabnzbd. Go to Sabnzbd to create it."
                     };
                 }
@@ -457,7 +457,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("MusicCategory", "Disable TV Sorting")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
                     DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
@@ -465,7 +465,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("MusicCategory", "Disable Movie Sorting")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
                     DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
@@ -473,7 +473,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 return new NzbDroneValidationFailure("MusicCategory", "Disable Date Sorting")
                 {
-                    InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
+                    InfoLink = _proxy.GetBaseUrl(Settings, "config/sorting/"),
                     DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
                 };
             }
