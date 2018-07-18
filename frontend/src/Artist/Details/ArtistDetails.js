@@ -33,6 +33,7 @@ import ArtistTagsConnector from './ArtistTagsConnector';
 import ArtistDetailsLinks from './ArtistDetailsLinks';
 import styles from './ArtistDetails.css';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
+import Link from 'Components/Link/Link';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
@@ -539,6 +540,10 @@ class ArtistDetails extends Component {
                 </div>
             }
 
+          </div>
+
+          <div className={styles.metadataMessage}>
+            Missing Albums, Singles, or Other Types? Modify or Create a New <Link to='/settings/profiles'> Metadata Profile </Link>!
           </div>
 
           <OrganizePreviewModalConnector
