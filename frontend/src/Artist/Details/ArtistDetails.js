@@ -543,7 +543,7 @@ class ArtistDetails extends Component {
           </div>
 
           <div className={styles.metadataMessage}>
-            Missing Albums, Singles, or Other Types? Modify or Create a New <Link to='/settings/profiles'> Metadata Profile </Link>!
+            Missing Albums, Singles, or Other Types? Modify or Create a New <Link to='/settings/profiles'> Metadata Profile</Link>!
           </div>
 
           <OrganizePreviewModalConnector
