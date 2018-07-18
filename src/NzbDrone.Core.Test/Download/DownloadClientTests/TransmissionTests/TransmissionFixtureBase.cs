@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
         }
 
-        protected void GivenTvCategory()
+        protected void GivenMusicCategory()
         {
             _settings.MusicCategory = "Lidarr";
         }

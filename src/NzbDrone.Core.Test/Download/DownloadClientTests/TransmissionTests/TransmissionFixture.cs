@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         [Test]
         public void Download_with_category_should_force_directory()
         {
-            GivenTvCategory();
+            GivenMusicCategory();
             GivenSuccessfulDownload();
 
             var remoteEpisode = CreateRemoteAlbum();
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         [Test]
         public void Download_with_category_should_not_have_double_slashes()
         {
-            GivenTvCategory();
+            GivenMusicCategory();
             GivenSuccessfulDownload();
 
             _transmissionConfigItems["download-dir"] += "/";
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         [Test]
         public void should_exclude_items_not_in_category()
         {
-            GivenTvCategory();
+            GivenMusicCategory();
 
             _downloading.DownloadDir = @"C:/Downloads/Finished/transmission/Lidarr";
 

@@ -303,7 +303,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                 .Returns(_serialNumber);
         }
 
-        protected void GivenTvCategory()
+        protected void GivenMusicCategory()
         {
             _settings.MusicCategory = _category;
         }
@@ -389,7 +389,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         public void Download_with_category_should_force_directory()
         {
             GivenSerialNumber();
-            GivenTvCategory();
+            GivenMusicCategory();
             GivenSuccessfulDownload();
 
             var remoteEpisode = CreateRemoteAlbum();

@@ -257,7 +257,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
             if (!enabledPlugins.Contains("Label"))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Label plugin not activated")
+                return new NzbDroneValidationFailure("MusicCategory", "Label plugin not activated")
                 {
                     DetailedDescription = "You must have the Label plugin enabled in Deluge to use categories."
                 };
@@ -272,7 +272,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
 
                 if (!labels.Contains(Settings.MusicCategory))
                 {
-                    return new NzbDroneValidationFailure("TvCategory", "Configuration of label failed")
+                    return new NzbDroneValidationFailure("MusicCategory", "Configuration of label failed")
                     {
                         DetailedDescription = "Lidarr as unable to add the label to Deluge."
                     };

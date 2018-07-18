@@ -435,7 +435,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 if (category.Dir.EndsWith("*"))
                 {
-                    return new NzbDroneValidationFailure("TvCategory", "Enable Job folders")
+                    return new NzbDroneValidationFailure("MusicCategory", "Enable Job folders")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
                         DetailedDescription = "Lidarr prefers each download to have a separate folder. With * appended to the Folder/Path Sabnzbd will not create these job folders. Go to Sabnzbd to fix it."
@@ -446,7 +446,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             {
                 if (!Settings.MusicCategory.IsNullOrWhiteSpace())
                 {
-                    return new NzbDroneValidationFailure("TvCategory", "Category does not exist")
+                    return new NzbDroneValidationFailure("MusicCategory", "Category does not exist")
                     {
                         InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/categories/", Settings.Host, Settings.Port),
                         DetailedDescription = "The Category your entered doesn't exist in Sabnzbd. Go to Sabnzbd to create it."
@@ -455,7 +455,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             if (config.Misc.enable_tv_sorting && ContainsCategory(config.Misc.tv_categories, Settings.MusicCategory))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Disable TV Sorting")
+                return new NzbDroneValidationFailure("MusicCategory", "Disable TV Sorting")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
                     DetailedDescription = "You must disable Sabnzbd TV Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
@@ -463,7 +463,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             if (config.Misc.enable_movie_sorting && ContainsCategory(config.Misc.movie_categories, Settings.MusicCategory))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Disable Movie Sorting")
+                return new NzbDroneValidationFailure("MusicCategory", "Disable Movie Sorting")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
                     DetailedDescription = "You must disable Sabnzbd Movie Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."
@@ -471,7 +471,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             }
             if (config.Misc.enable_date_sorting && ContainsCategory(config.Misc.date_categories, Settings.MusicCategory))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Disable Date Sorting")
+                return new NzbDroneValidationFailure("MusicCategory", "Disable Date Sorting")
                 {
                     InfoLink = string.Format("http://{0}:{1}/sabnzbd/config/sorting/", Settings.Host, Settings.Port),
                     DetailedDescription = "You must disable Sabnzbd Date Sorting for the category Lidarr uses to prevent import issues. Go to Sabnzbd to fix it."

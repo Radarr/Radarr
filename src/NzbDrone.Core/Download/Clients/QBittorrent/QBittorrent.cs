@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 else if (Settings.MusicCategory.IsNullOrWhiteSpace())
                 {
                     // warn if labels are supported, but category is not provided
-                    return new NzbDroneValidationFailure("TvCategory", "Category is recommended")
+                    return new NzbDroneValidationFailure("MusicCategory", "Category is recommended")
                     {
                         IsWarning = true,
                         DetailedDescription = "Lidarr will not attempt to import completed downloads without a category."

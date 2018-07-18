@@ -284,7 +284,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
 
             if (!Settings.MusicCategory.IsNullOrWhiteSpace() && !categories.Any(v => v.Name == Settings.MusicCategory))
             {
-                return new NzbDroneValidationFailure("TvCategory", "Category does not exist")
+                return new NzbDroneValidationFailure("MusicCategory", "Category does not exist")
                 {
                     InfoLink = string.Format("http://{0}:{1}/", Settings.Host, Settings.Port),
                     DetailedDescription = "The Category your entered doesn't exist in NzbGet. Go to NzbGet to create it."
