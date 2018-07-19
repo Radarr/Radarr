@@ -38,7 +38,7 @@ function createCleanArtistSelector() {
           images,
           foreignArtistId,
           // alternateTitles,
-          tags
+          tags = []
         } = artist;
 
         return {
