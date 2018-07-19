@@ -46,9 +46,7 @@ class CalendarEvent extends Component {
       id,
       artist,
       title,
-      // seasonNumber,
-      // episodeNumber,
-      // absoluteEpisodeNumber,
+      foreignAlbumId,
       releaseDate,
       monitored,
       // hasFile,
@@ -63,7 +61,6 @@ class CalendarEvent extends Component {
     const downloading = !!(queueItem || grabbed);
     const isMonitored = artist.monitored && monitored;
     const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored);
-    // const missingAbsoluteNumber = artist.artistType === 'anime' && seasonNumber > 0 && !absoluteEpisodeNumber;
 
     return (
       <div>
@@ -78,7 +75,9 @@ class CalendarEvent extends Component {
         >
           <div className={styles.info}>
             <div className={styles.artistName}>
-              {artist.artistName}
+              <Link to={`/artist/${artist.foreignArtistId}`}>
+                {artist.artistName}
+              </Link>
             </div>
 
             {
@@ -102,7 +101,9 @@ class CalendarEvent extends Component {
 
           <div className={styles.albumInfo}>
             <div className={styles.albumTitle}>
-              {title}
+              <Link to={`/album/${foreignAlbumId}`}>
+                {title}
+              </Link>
             </div>
           </div>
         </Link>
@@ -115,6 +116,7 @@ CalendarEvent.propTypes = {
   id: PropTypes.number.isRequired,
   artist: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
+  foreignAlbumId: PropTypes.string.isRequired,
   // seasonNumber: PropTypes.number.isRequired,
   // episodeNumber: PropTypes.number.isRequired,
   // absoluteEpisodeNumber: PropTypes.number,

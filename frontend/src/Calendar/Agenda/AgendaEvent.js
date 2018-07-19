@@ -41,9 +41,11 @@ class AgendaEvent extends Component {
       id,
       artist,
       title,
+      foreignAlbumId,
+      albumType,
       releaseDate,
       monitored,
-      hasFile,
+      // hasFile,
       grabbed,
       queueItem,
       showDate,
@@ -55,7 +57,7 @@ class AgendaEvent extends Component {
     // const endTime = startTime.add(artist.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
     const isMonitored = artist.monitored && monitored;
-    const statusStyle = getStatusStyle(id, hasFile, downloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored);
 
     return (
       <div>
@@ -83,13 +85,17 @@ class AgendaEvent extends Component {
           </div>
 
           <div className={styles.artistName}>
-            {artist.artistName}
+            <Link to={`/artist/${artist.foreignArtistId}`}>
+              {artist.artistName}
+            </Link>
           </div>
 
           <div className={styles.albumSeparator}> - </div>
 
           <div className={styles.albumTitle}>
-            {title}
+            <Link to={`/album/${foreignAlbumId}`}>
+              {title}
+            </Link>
           </div>
 
           {
@@ -116,9 +122,11 @@ AgendaEvent.propTypes = {
   id: PropTypes.number.isRequired,
   artist: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
+  foreignAlbumId: PropTypes.string.isRequired,
+  albumType: PropTypes.string.isRequired,
   releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  hasFile: PropTypes.bool.isRequired,
+  // hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   showDate: PropTypes.bool.isRequired,
