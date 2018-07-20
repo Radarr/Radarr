@@ -269,6 +269,12 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Album CleanTitle}"] = m => CleanTitle(album.Title);
             tokenHandlers["{Album TitleThe}"] = m => TitleThe(album.Title);
             tokenHandlers["{Album Type}"] = m => album.AlbumType;
+
+            if (album.Disambiguation != null)
+            {
+                tokenHandlers["{Album Disambiguation}"] = m => album.Disambiguation;
+            }
+            
             if (album.ReleaseDate.HasValue)
             {
                 tokenHandlers["{Release Year}"] = m => album.ReleaseDate.Value.Year.ToString();

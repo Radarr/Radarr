@@ -20,6 +20,7 @@ function MissingRow(props) {
     albumType,
     foreignAlbumId,
     title,
+    disambiguation,
     isSelected,
     columns,
     onSelectedChange
@@ -55,30 +56,13 @@ function MissingRow(props) {
             );
           }
 
-          // if (name === 'episode') {
-          //   return (
-          //     <TableRowCell
-          //       key={name}
-          //       className={styles.episode}
-          //     >
-          //       <SeasonEpisodeNumber
-          //         seasonNumber={seasonNumber}
-          //         episodeNumber={episodeNumber}
-          //         absoluteEpisodeNumber={absoluteEpisodeNumber}
-          //         sceneSeasonNumber={sceneSeasonNumber}
-          //         sceneEpisodeNumber={sceneEpisodeNumber}
-          //         sceneAbsoluteEpisodeNumber={sceneAbsoluteEpisodeNumber}
-          //       />
-          //     </TableRowCell>
-          //   );
-          // }
-
           if (name === 'albumTitle') {
             return (
               <TableRowCell key={name}>
                 <AlbumTitleLink
                   foreignAlbumId={foreignAlbumId}
                   title={title}
+                  disambiguation={disambiguation}
                 />
               </TableRowCell>
             );
@@ -100,21 +84,6 @@ function MissingRow(props) {
               />
             );
           }
-
-          // if (name === 'status') {
-          //   return (
-          //     <TableRowCell
-          //       key={name}
-          //       className={styles.status}
-          //     >
-          //       <EpisodeStatusConnector
-          //         albumId={id}
-          //         trackFileId={trackFileId}
-          //         albumEntity={albumEntities.WANTED_MISSING}
-          //       />
-          //     </TableRowCell>
-          //   );
-          // }
 
           if (name === 'actions') {
             return (
@@ -144,6 +113,7 @@ MissingRow.propTypes = {
   foreignAlbumId: PropTypes.string.isRequired,
   albumType: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string,
   isSelected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSelectedChange: PropTypes.func.isRequired

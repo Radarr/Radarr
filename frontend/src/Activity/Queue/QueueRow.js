@@ -158,6 +158,7 @@ class QueueRow extends Component {
                   <AlbumTitleLink
                     foreignAlbumId={album.foreignAlbumId}
                     title={album.title}
+                    disambiguation={album.disambiguation}
                   />
                 </TableRowCell>
               );

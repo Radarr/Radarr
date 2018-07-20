@@ -33,6 +33,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _album = Builder<Album>
                     .CreateNew()
                     .With(s => s.Title = "Hybrid Theory")
+                    .With(s => s.AlbumType = "Album")
+                    .With(s => s.Disambiguation = "The Best Album")
                     .Build();
 
 
@@ -145,6 +147,24 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
                    .Should().Be("Hybrid Theory");
+        }
+
+        [Test]
+        public void should_replace_Album_Type()
+        {
+            _namingConfig.StandardTrackFormat = "{Album Type}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                .Should().Be("Album");
+        }
+
+        [Test]
+        public void should_replace_Album_Disambiguation()
+        {
+            _namingConfig.StandardTrackFormat = "{Album Disambiguation}";
+
+            Subject.BuildTrackFileName(new List<Track> { _track1 }, _artist, _album, _trackFile)
+                .Should().Be("The Best Album");
         }
 
         [Test]

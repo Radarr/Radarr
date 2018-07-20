@@ -187,6 +187,7 @@ class ArtistIndexRow extends Component {
                   >
                     <AlbumTitleLink
                       title={nextAlbum.title}
+                      disambiguation={nextAlbum.disambiguation}
                       foreignAlbumId={nextAlbum.foreignAlbumId}
                     />
                   </VirtualTableRowCell>
@@ -211,6 +212,7 @@ class ArtistIndexRow extends Component {
                   >
                     <AlbumTitleLink
                       title={lastAlbum.title}
+                      disambiguation={lastAlbum.disambiguation}
                       foreignAlbumId={lastAlbum.foreignAlbumId}
                     />
                   </VirtualTableRowCell>

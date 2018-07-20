@@ -12,6 +12,7 @@ namespace Lidarr.Api.V1.Albums
     public class AlbumResource : RestResource
     {
         public string Title { get; set; }
+        public string Disambiguation { get; set; }
         public int ArtistId { get; set; }
         public List<string> AlbumLabel { get; set; }
         public string ForeignAlbumId { get; set; }
@@ -66,6 +67,7 @@ namespace Lidarr.Api.V1.Albums
                 ReleaseDate = model.ReleaseDate,
                 Genres = model.Genres,
                 Title = model.Title,
+                Disambiguation = model.Disambiguation,
                 Images = model.Images,
                 Ratings = model.Ratings,
                 Duration = model.Duration,
@@ -87,6 +89,7 @@ namespace Lidarr.Api.V1.Albums
                 Id = resource.Id,
                 ForeignAlbumId = resource.ForeignAlbumId,
                 Title = resource.Title,
+                Disambiguation = resource.Disambiguation,
                 Images = resource.Images,
                 Monitored = resource.Monitored,
                 CurrentRelease = resource.CurrentRelease

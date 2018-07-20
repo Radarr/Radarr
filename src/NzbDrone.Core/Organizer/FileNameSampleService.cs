@@ -38,6 +38,7 @@ namespace NzbDrone.Core.Organizer
                 Title = "The Album Title",
                 ReleaseDate = System.DateTime.Today,
                 AlbumType = "Album",
+                Disambiguation = "The Best Album",
                 Media = new List<Medium>
                 {
                     new Medium

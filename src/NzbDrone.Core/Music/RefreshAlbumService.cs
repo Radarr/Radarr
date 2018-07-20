@@ -92,6 +92,7 @@ namespace NzbDrone.Core.Music
             album.LastInfoSync = DateTime.UtcNow;
             album.CleanTitle = albumInfo.CleanTitle;
             album.Title = albumInfo.Title ?? "Unknown";
+            album.Disambiguation = albumInfo.Disambiguation;
             album.AlbumType = albumInfo.AlbumType;
             album.SecondaryTypes = albumInfo.SecondaryTypes;
             album.Genres = albumInfo.Genres;

@@ -22,6 +22,7 @@ namespace NzbDrone.Core.Music
         public string ForeignAlbumId { get; set; }
         public int ArtistId { get; set; }
         public string Title { get; set; }
+        public string Disambiguation { get; set; }
         public string CleanTitle { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public List<string> Label { get; set; }

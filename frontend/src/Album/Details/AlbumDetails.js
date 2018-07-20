@@ -136,6 +136,7 @@ class AlbumDetails extends Component {
     const {
       id,
       title,
+      disambiguation,
       albumType,
       statistics,
       monitored,
@@ -251,7 +252,7 @@ class AlbumDetails extends Component {
               <div className={styles.info}>
                 <div className={styles.titleContainer}>
                   <div className={styles.title}>
-                    {title}
+                    {title}{disambiguation ? ` (${disambiguation})` : ''}
                   </div>
 
                   <div className={styles.artistNavigationButtons}>
@@ -444,6 +445,7 @@ AlbumDetails.propTypes = {
   id: PropTypes.number.isRequired,
   foreignAlbumId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string,
   albumType: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,

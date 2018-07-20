@@ -21,6 +21,7 @@ function CutoffUnmetRow(props) {
     foreignAlbumId,
     albumType,
     title,
+    disambiguation,
     isSelected,
     columns,
     onSelectedChange
@@ -62,6 +63,7 @@ function CutoffUnmetRow(props) {
                 <AlbumTitleLink
                   foreignAlbumId={foreignAlbumId}
                   title={title}
+                  disambiguation={disambiguation}
                 />
               </TableRowCell>
             );
@@ -140,6 +142,7 @@ CutoffUnmetRow.propTypes = {
   foreignAlbumId: PropTypes.string.isRequired,
   albumType: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  disambiguation: PropTypes.string,
   isSelected: PropTypes.bool,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSelectedChange: PropTypes.func.isRequired

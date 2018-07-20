@@ -76,6 +76,7 @@ class AlbumRow extends Component {
       secondaryTypes,
       title,
       ratings,
+      disambiguation,
       isSaving,
       artistMonitored,
       foreignAlbumId,
@@ -124,8 +125,9 @@ class AlbumRow extends Component {
                   className={styles.title}
                 >
                   <AlbumTitleLink
-                    title={title}
                     foreignAlbumId={foreignAlbumId}
+                    title={title}
+                    disambiguation={disambiguation}
                   />
                 </TableRowCell>
               );
@@ -239,6 +241,7 @@ AlbumRow.propTypes = {
   duration: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
+  disambiguation: PropTypes.string,
   secondaryTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   foreignAlbumId: PropTypes.string.isRequired,
   isSaving: PropTypes.bool,
