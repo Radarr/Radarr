@@ -6,7 +6,7 @@
 #define AppURL "https://lidarr.audio/"
 #define ForumsURL "https://forums.lidarr.audio/"
 #define AppExeName "Lidarr.exe"
-#define BuildNumber "0.2"
+#define BuildNumber "0.3.1"
 #define BuildNumber GetEnv('APPVEYOR_BUILD_NUMBER')
 #define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
 #define BranchName GetEnv('APPVEYOR_REPO_BRANCH')
@@ -17,7 +17,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{56C1065D-3523-4025-B76D-6F73F67F7F93}
 AppName={#AppName}
-AppVersion=0.3
+AppVersion=0.3.1
 AppPublisher={#AppPublisher}
 AppPublisherURL={#AppURL}
 AppSupportURL={#ForumsURL}
@@ -35,7 +35,7 @@ DisableReadyPage=True
 CompressionThreads=2
 Compression=lzma2/normal
 AppContact={#ForumsURL}
-VersionInfoVersion=0.3.0.{#BuildNumber}
+VersionInfoVersion=0.3.1.{#BuildNumber}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
