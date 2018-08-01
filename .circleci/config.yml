@@ -2,7 +2,10 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: gallileo/radarr-cci-primary:5.8.3
+    - image: gallileo/radarr-cci-primary:5.8.7
+  environment:
+      BUILD_VERSION: 0.2.0.$CIRCLE_BUILD_NUM
+      BRANCH: ${CIRCLE_BRANCH//\//-}
 
 jobs:
     build:
@@ -19,6 +22,9 @@ jobs:
                 key: source-v1-{{ .Branch }}-{{ .Revision }}
                 paths:
                     - ".git"
+            - run:
+                name: Patching Assembly Info
+                command: sed -i "s/AssemblyVersion(\".*\")/AssemblyVersion(\"$BUILD_VERSION\")/gi" src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs && cat src/NzbDrone.Common/Properties/SharedAssemblyInfo.cs
             - run:
                 name: Clean Build
                 command: ./build.sh Clean
@@ -55,6 +61,7 @@ jobs:
                     - _output_osx
                     - _output_osx_app
                     - _tests
+                    - setup
                     - .circleci
     unit_tests:
         <<: *defaults
@@ -91,14 +98,49 @@ jobs:
         steps:
             - attach_workspace:
                 at: .
+            - run:
+                name: "Creating packages"
+                command: |
+                    mkdir -p _packages/
+                    cp -r _output/ _packages/Radarr
+                    zip -r _packages/Radarr.$BRANCH.$BUILD_VERSION.windows.zip _packages/Radarr
+                    rm -rf _packages/Radarr
+                    cp -r _output_mono/ _packages/Radarr
+                    tar -zcvf _packages/Radarr.$BRANCH.$BUILD_VERSION.linux.tar.gz _packages/Radarr
+                    rm -rf _packages/Radarr
+                    cp -r _output_osx/ _packages/Radarr
+                    tar -zcvf _packages/Radarr.$BRANCH.$BUILD_VERSION.osx.tar.gz _packages/Radarr
+                    rm -rf _packages/Radarr
+                    cd _output_osx_app/
+                    zip -r ../_packages/Radarr.$BRANCH.$BUILD_VERSION.osx-app.zip *
+            - run:
+                name: "Creating Installer"
+                command: wine setup/inno/ISCC.exe setup/nzbdrone.iss && cp -r setup/Output/Radarr* _packages/
             - store_artifacts:
-                path: _output
-            - store_artifacts:
-                path: _output_mono
-            - store_artifacts:
-                path: _output_osx
-            - store_artifacts:
-                path: _output_osx_app
+                path: _packages
+                destination: artifacts
+            - persist_to_workspace:
+                root: .
+                # Must be relative path from root
+                paths:
+                    - _packages
+    deploy:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                at: .
+            - restore_cache:
+                keys:
+                    - source-v1-{{ .Branch }}-{{ .Revision }}
+                    - source-v1-{{ .Branch }}-
+                    - source-v1-
+            - checkout
+            - run:
+                name: Creating Release
+                command: export LC_ALL=C.UTF-8 && export changelog=$(GITCHANGELOG_CONFIG_FILENAME=.gitchangelog.rc.release gitchangelog) && echo "Deploying v$BUILD_VERSION to Github, with changelog:\n\n$changelog" && github-release release -u Radarr -r Radarr -t "v$BUILD_VERSION" -p --draft -d "$changelog" -n "Pre-Release v$BUILD_VERSION"
+            - run:
+                name: Uploading Assets
+                command: cd _packages && ls Radarr.*.* | xargs -n1 -P0 -I{} -- github-release upload -u Radarr -r Radarr -t "v$BUILD_VERSION" --name {} --file {}
 
 workflows:
     version: 2
@@ -109,10 +151,16 @@ workflows:
             - unit_tests:
                 requires:
                     - build
-                    - build
             - integration_tests:
                 requires:
                     - build
             - publish_artifacts:
                 requires:
                     - build
+            - request_deploy:
+                type: approval
+                requires:
+                    - publish_artifacts
+            - deploy:
+                requires:
+                    - request_deploy
