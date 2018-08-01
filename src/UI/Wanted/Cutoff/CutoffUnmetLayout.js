@@ -26,7 +26,7 @@ module.exports = Marionette.Layout.extend({
     },
 
     ui : {
-        searchSelectedButton : '.btn i.icon-sonarr-search'
+        searchSelectedButton : '.btn i.icon-radarr-search'
     },
 
     columns : [
@@ -101,14 +101,14 @@ module.exports = Marionette.Layout.extend({
             items      : [
                 {
                     title        : 'Search Selected',
-                    icon         : 'icon-sonarr-search',
+                    icon         : 'icon-radarr-search',
                     callback     : this._searchSelected,
                     ownerContext : this,
                     className    : 'x-search-selected'
                 },
                 {
                     title        : 'Search All',
-                    icon         : 'icon-sonarr-search',
+                    icon         : 'icon-radarr-search',
                     callback     : this._searchMissing,
                     ownerContext : this,
                     className    : 'x-search-cutoff'
@@ -126,49 +126,49 @@ module.exports = Marionette.Layout.extend({
                     key      : 'all',
                     title    : '',
                     tooltip  : 'All',
-                    icon     : 'icon-sonarr-all',
+                    icon     : 'icon-radarr-all',
                     callback : this._setFilter
                 },
                 {
                     key      : 'available',
                     title    : '',
                     tooltip  : 'Available & Monitored',
-                    icon     : 'icon-sonarr-available',
+                    icon     : 'icon-radarr-available',
                     callback : this._setFilter
                 },
                 {
                     key      : 'monitored',
                     title    : '',
                     tooltip  : 'Monitored Only',
-                    icon     : 'icon-sonarr-monitored',
+                    icon     : 'icon-radarr-monitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'unmonitored',
                     title    : '',
                     tooltip  : 'Unmonitored Only',
-                    icon     : 'icon-sonarr-unmonitored',
+                    icon     : 'icon-radarr-unmonitored',
                     callback : this._setFilter
                 },
                 {
                     key      : 'announced',
                     title    : '',
                     tooltip  : 'Announced Only',
-                    icon     : 'icon-sonarr-movie-announced',
+                    icon     : 'icon-radarr-movie-announced',
                     callback : this._setFilter
                 },
                 {
                     key      : 'incinemas',
                     title    : '',
                     tooltip  : 'In Cinemas Only',
-                    icon     : 'icon-sonarr-movie-cinemas',
+                    icon     : 'icon-radarr-movie-cinemas',
                     callback : this._setFilter
                 },
                 {
                     key      : 'released',
                     title    : '',
                     tooltip  : 'Released Only',
-                    icon     : 'icon-sonarr-movie-released',
+                    icon     : 'icon-radarr-movie-released',
                     callback : this._setFilter
                 }
         ]

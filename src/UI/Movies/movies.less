@@ -3,7 +3,7 @@
 @import "../Shared/Styles/clickable.less";
 @import "../Content/prefixer";
 
-.series-poster {
+.movie-poster {
   min-width: 56px;
   max-width: 100%;
 }
@@ -31,7 +31,7 @@
 .edit-movie-modal, .delete-movie-modal {
   overflow : visible;
 
-  .series-poster {
+  .movie-poster {
     padding-left : 20px;
     width        : 168px;
   }
@@ -113,7 +113,7 @@
   }
 }
 
-.series-posters {
+.movie-posters {
   list-style-type: none;
 
   @media (max-width: @screen-xs-max) {
@@ -285,7 +285,7 @@
       display          : none;
     }
 
-    .series-poster {
+    .movie-poster {
       width       : 168px;
       height      : 247px;
       display     : block;
@@ -294,7 +294,7 @@
     }
 
     @media (max-width: @screen-xs-max) {
-      .series-poster {
+      .movie-poster {
         width       : 120px;
         height      : 176px;
       }
@@ -395,7 +395,7 @@
   }
 }
 
-.movie-stats {
+.movies-stats {
   font-size : 11px;
 }
 
@@ -451,8 +451,8 @@
 
 //Overview List
 .movie-overview-list-actions {
-  min-width: 56px;
-  max-width: 56px;
+  min-width: 84px;
+  max-width: 84px;
 
   i {
     .clickable();
@@ -478,7 +478,7 @@
   }
 }
 
-//Series Details
+//Movie Details
 
 .movie-not-monitored {
   .season-monitored, .episode-monitored {

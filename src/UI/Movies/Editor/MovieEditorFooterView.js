@@ -18,7 +18,7 @@ module.exports = Marionette.ItemView.extend({
         staticPath        : '.x-static-path',
         rootFolder          : '.x-root-folder',
         selectedCount       : '.x-selected-count',
-        container           : '.series-editor-footer',
+        container           : '.movie-editor-footer',
         actions             : '.x-action'
     },
 

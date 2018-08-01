@@ -12,31 +12,31 @@ module.exports = NzbDroneCell.extend({
 
             switch (this.cellValue.get('eventType')) {
                 case 'grabbed':
-                    icon = 'icon-sonarr-downloading';
+                    icon = 'icon-radarr-downloading';
                     toolTip = 'Movie grabbed from {0} and sent to download client'.format(this.cellValue.get('data').indexer);
                     break;
                 case 'seriesFolderImported':
-                    icon = 'icon-sonarr-hdd';
+                    icon = 'icon-radarr-hdd';
                     toolTip = 'Existing movie file added to library';
                     break;
                 case 'downloadFolderImported':
-                    icon = 'icon-sonarr-imported';
+                    icon = 'icon-radarr-imported';
                     toolTip = 'Movie downloaded successfully and picked up from download client';
                     break;
                 case 'downloadFailed':
-                    icon = 'icon-sonarr-download-failed';
+                    icon = 'icon-radarr-download-failed';
                     toolTip = 'Movie download failed';
                     break;
                 case 'episodeFileDeleted':
-                    icon = 'icon-sonarr-deleted';
+                    icon = 'icon-radarr-deleted';
                     toolTip = 'Movie file deleted';
                     break;
                 case 'movieFileDeleted':
-                    icon = 'icon-sonarr-deleted';
+                    icon = 'icon-radarr-deleted';
                     toolTip = 'Movie file deleted';
                     break;
                 default:
-                    icon = 'icon-sonarr-unknown';
+                    icon = 'icon-radarr-unknown';
                     toolTip = 'unknown event';
             }
 

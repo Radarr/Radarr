@@ -5,10 +5,10 @@
 @import "../Content/mixins";
 @import "../Content/variables";
 
-.series-title-cell {
+.movie-title-cell {
   .text-overflow();
 
-  max-width: 350px;
+  max-width: 322px;
 
   @media @sm {
     max-width: 250px
@@ -178,9 +178,13 @@ table.release-table {
   }
 }
 
-.series-actions-cell {
-  width     : 56px;
-  min-width : 56px;
+.movie-actions-cell {
+  width     : 84px;
+  min-width : 84px;
+
+  i {
+    .clickable();
+  }
 }
 
 .timeleft-cell {
@@ -219,10 +223,6 @@ td.delete-episode-file-cell {
   i {
     .clickable();
   }
-}
-
-.series-status-cell {
-  width: 16px;
 }
 
 .episode-number-cell {

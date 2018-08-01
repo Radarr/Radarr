@@ -236,7 +236,7 @@ var view = Marionette.ItemView.extend({
             Messenger.show({
                 message        : 'Added: ' + self.model.get('title'),
                 actions        : {
-                    goToSeries : {
+                    goToMovie : {
                         label  : 'Go to Movie',
                         action : function() {
                             Backbone.history.navigate('/movies/' + self.model.get('titleSlug'), { trigger : true });
