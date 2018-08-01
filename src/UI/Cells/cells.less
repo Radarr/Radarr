@@ -129,6 +129,18 @@ td.episode-status-cell, td.quality-cell, td.history-quality-cell, td.progress-ce
   }
 }
 
+td.quality-cell, td.history-quality-cell {
+  white-space: nowrap;
+}
+
+table.release-table {
+  td.quality-cell {
+    span.format-badge {
+      display: none;
+    }
+  }
+}
+
 .history-details-cell {
   .clickable();
   width: 10px;
