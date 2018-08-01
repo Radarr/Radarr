@@ -69,5 +69,5 @@ Handlebars.registerHelper('infoLinkCreator', function(options) {
     var wikiRoot = options.hash.wikiRoot;
     var hash = options.hash.hash;
     var hashPrefix = options.hash.hashPrefix || "";
-   return new Handlebars.SafeString("https://github.com/Radarr/Radarr/wiki/{0}#{1}{2}".format(wikiRoot, hashPrefix.toLowerCase().replace(" ", "-"), hash.toLowerCase().replace(" ", "-")));
+   return new Handlebars.SafeString("https://github.com/Radarr/Radarr/wiki/{0}#{1}{2}".format(wikiRoot, hashPrefix.toLowerCase().replace(/ /g, "-"), hash.toLowerCase().replace(/ /g, "-")));
 });
