@@ -23,7 +23,8 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
             var profile = new Profile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
-
+                    FormatItems = CustomFormat.CustomFormatsFixture.GetDefaultFormatItems(),
+                    FormatCutoff = CustomFormats.CustomFormat.None,
                     Cutoff = Quality.Bluray1080p,
                     Name = "TestProfile"
                 };

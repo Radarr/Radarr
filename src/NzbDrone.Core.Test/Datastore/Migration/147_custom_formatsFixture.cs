@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration;
@@ -106,7 +107,32 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 WithDefaultProfiles(c);
             });
 
-            var items = db.Query<Profile70>("SELECT * FROM Profiles");
+            ShouldHaveAddedDefaultFormat(db);
+        }
+
+        private void ShouldHaveAddedDefaultFormat(IDirectDataMapper db)
+        {
+            var items = QueryItems(db);
+
+            foreach (var item in items)
+            {
+                item.DeserializedItems.Count.Should().Be(1);
+                item.DeserializedItems.First().Allowed.Should().Be(true);
+                item.FormatCutoff.Should().Be(0);
+            }
+        }
+
+        private List<Profile147> QueryItems(IDirectDataMapper db)
+        {
+            var test = db.Query("SELECT * FROM Profiles");
+
+            var items = db.Query<Profile147>("SELECT FormatItems, FormatCutoff FROM Profiles");
+
+            return items.Select(i =>
+            {
+                i.DeserializedItems = JsonConvert.DeserializeObject<List<ProfileFormatItem147>>(i.FormatItems);
+                return i;
+            }).ToList();
         }
 
         [Test]
@@ -117,6 +143,20 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddDefaultProfile(c, "My Custom Profile", Quality.WEBDL720p, Quality.WEBDL720p, Quality.WEBDL1080p);
             });
 
+            ShouldHaveAddedDefaultFormat(db);
+        }
+
+        public class Profile147
+        {
+            public string FormatItems { get; set; }
+            public List<ProfileFormatItem147> DeserializedItems;
+            public int FormatCutoff { get; set; }
+        }
+
+        public class ProfileFormatItem147
+        {
+            public int Format;
+            public bool Allowed;
         }
     }
 }

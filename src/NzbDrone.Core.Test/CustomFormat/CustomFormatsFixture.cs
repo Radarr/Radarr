@@ -20,5 +20,17 @@ namespace NzbDrone.Core.Test.CustomFormat
         {
             return _customFormats.Select(f => new ProfileFormatItem {Format = f, Allowed = allowed.Contains(f.Name)}).ToList();
         }
+
+        public static List<ProfileFormatItem> GetDefaultFormatItems()
+        {
+            return new List<ProfileFormatItem>
+            {
+                new ProfileFormatItem
+                {
+                    Allowed = true,
+                    Format = CustomFormats.CustomFormat.None
+                }
+            };
+        }
     }
 }

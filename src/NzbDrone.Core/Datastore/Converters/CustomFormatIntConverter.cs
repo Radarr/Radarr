@@ -20,14 +20,14 @@ namespace NzbDrone.Core.Datastore.Converters
 
             var val = Convert.ToInt32(context.DbValue);
 
-            if (CustomFormatService.AllCustomFormats == null)
-            {
-                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
-            }
-
             if (val == 0)
             {
                 return CustomFormat.None;
+            }
+
+            if (CustomFormatService.AllCustomFormats == null)
+            {
+                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
             return CustomFormatService.AllCustomFormats[val];
@@ -62,16 +62,16 @@ namespace NzbDrone.Core.Datastore.Converters
         {
             var item = reader.Value;
 
-            if (CustomFormatService.AllCustomFormats == null)
-            {
-                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
-            }
-
             var val = Convert.ToInt32(item);
 
             if (val == 0)
             {
                 return CustomFormat.None;
+            }
+
+            if (CustomFormatService.AllCustomFormats == null)
+            {
+                throw new Exception("***FATAL*** WE TRIED ACCESSING ALL CUSTOM FORMATS BEFORE IT WAS INITIALIZED. PLEASE SAVE THIS LOG AND OPEN AN ISSUE ON GITHUB.");
             }
 
             return CustomFormatService.AllCustomFormats[val];
