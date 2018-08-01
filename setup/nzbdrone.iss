@@ -12,7 +12,7 @@
 
 #if BuildVersion == ""
 
-#define BuildVersion GetEnv('BUILD_VERSION')
+#define BuildVersion GetEnv('BUILD_VERSION') + GetEnv('$CIRCLE_BUILD_NUM')
 #define BranchName StringChange(GetEnv('CIRCLE_BRANCH'), "/", "-")
 
 #endif

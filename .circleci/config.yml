@@ -5,7 +5,6 @@ defaults: &defaults
     - image: gallileo/radarr-cci-primary:5.8.7
   environment:
       BUILD_VERSION: 0.2.0
-      BRANCH: ${CIRCLE_BRANCH//\//-}
 
 jobs:
     build:
@@ -103,16 +102,16 @@ jobs:
                 command: |
                     mkdir -p _packages/
                     cp -r _output/ _packages/Radarr
-                    zip -r _packages/Radarr.$BRANCH.$BUILD_VERSION.windows.zip _packages/Radarr
+                    zip -r _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.windows.zip _packages/Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_mono/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.$BRANCH.$BUILD_VERSION.linux.tar.gz _packages/Radarr
+                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.linux.tar.gz _packages/Radarr
                     rm -rf _packages/Radarr
                     cp -r _output_osx/ _packages/Radarr
-                    tar -zcvf _packages/Radarr.$BRANCH.$BUILD_VERSION.osx.tar.gz _packages/Radarr
+                    tar -zcvf _packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx.tar.gz _packages/Radarr
                     rm -rf _packages/Radarr
                     cd _output_osx_app/
-                    zip -r ../_packages/Radarr.$BRANCH.$BUILD_VERSION.osx-app.zip *
+                    zip -r ../_packages/Radarr.${CIRCLE_BRANCH//\//-}.$BUILD_VERSION.$CIRCLE_BUILD_NUM.osx-app.zip *
             - run:
                 name: "Creating Installer"
                 command: wine setup/inno/ISCC.exe setup/nzbdrone.iss && cp -r setup/Output/Radarr* _packages/
@@ -137,10 +136,10 @@ jobs:
             - checkout
             - run:
                 name: Creating Release
-                command: export LC_ALL=C.UTF-8 && export changelog=$(GITCHANGELOG_CONFIG_FILENAME=.gitchangelog.rc.release gitchangelog) && echo "Deploying v$BUILD_VERSION to Github, with changelog:\n\n$changelog" && github-release release -u Radarr -r Radarr -t "v$BUILD_VERSION" -p --draft -d "$changelog" -n "Pre-Release v$BUILD_VERSION"
+                command: export LC_ALL=C.UTF-8 && export changelog=$(GITCHANGELOG_CONFIG_FILENAME=.gitchangelog.rc.release gitchangelog) && echo "Deploying v$BUILD_VERSION.$CIRCLE_BUILD_NUM to Github, with changelog:\n\n$changelog" && github-release release -u Radarr -r Radarr -t "v$BUILD_VERSION" -p --draft -d "$changelog" -n "Pre-Release v$BUILD_VERSION"
             - run:
                 name: Uploading Assets
-                command: cd _packages && ls Radarr.*.* | xargs -n1 -P0 -I{} -- github-release upload -u Radarr -r Radarr -t "v$BUILD_VERSION" --name {} --file {}
+                command: cd _packages && ls Radarr.*.* | xargs -n1 -P0 -I{} -- github-release upload -u Radarr -r Radarr -t "v$BUILD_VERSION.$CIRCLE_BUILD_NUM" --name {} --file {}
 
 workflows:
     version: 2
