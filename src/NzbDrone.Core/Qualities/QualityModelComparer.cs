@@ -3,6 +3,7 @@ using System.Linq;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore.Migration;
+using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Qualities

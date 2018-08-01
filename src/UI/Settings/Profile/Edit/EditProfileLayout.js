@@ -32,7 +32,7 @@ var view = Marionette.Layout.extend({
         this.itemsCollection = new Backbone.Collection(_.toArray(this.model.get('items')).reverse());
         this.netImportCollection = new NetImportCollection;
         this.netImportCollection.fetch();
-        this.formatItemsCollection = new Backbone.Collection(_.toArray(this.model.get('formatItems')));
+        this.formatItemsCollection = new Backbone.Collection(_.toArray(this.model.get('formatItems')).reverse());
         this.listenTo(FullMovieCollection, 'all', this._updateDisableStatus);
         this.listenTo(this.netImportCollection, 'all', this._updateDisableStatus);
     },
@@ -137,7 +137,7 @@ var view = Marionette.Layout.extend({
 
     _updateModel : function() {
         this.model.set('items', this.itemsCollection.toJSON().reverse());
-        this.model.set('formatItems', this.formatItemsCollection.toJSON());
+        this.model.set('formatItems', this.formatItemsCollection.toJSON().reverse());
 
         this._showFieldsView();
     },

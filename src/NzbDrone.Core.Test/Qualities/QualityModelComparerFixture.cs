@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.Qualities
         }
 
         [Test]
-        public void should_be_lesser_when_first_quality_is_better_format()
+        public void should_be_lesser_when_first_quality_is_worse_format()
         {
             GivenDefaultProfileWithFormats();
 
@@ -104,6 +104,19 @@ namespace NzbDrone.Core.Test.Qualities
             var compare = Subject.Compare(first, second);
 
             compare.Should().BeLessThan(0);
+        }
+
+        [Test]
+        public void should_be_greater_when_first_quality_is_better_format()
+        {
+            GivenDefaultProfileWithFormats();
+
+            var first = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat2}};
+            var second = new QualityModel(Quality.DVD) {CustomFormats = new List<CustomFormats.CustomFormat>{_customFormat1}};
+
+            var compare = Subject.Compare(first, second);
+
+            compare.Should().BeGreaterThan(0);
         }
     }
 }

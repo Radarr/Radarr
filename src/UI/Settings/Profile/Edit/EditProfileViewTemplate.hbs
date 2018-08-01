@@ -63,11 +63,11 @@
 
     <div class="col-sm-5">
         <select class="form-control x-cutoff" name="formatCutoff.id" validation-name="formatCutoff">
-            {{#each formatItems}}
+            {{#eachReverse formatItems}}
                 {{#if allowed}}
                     <option value="{{format.id}}">{{format.name}}</option>
                 {{/if}}
-            {{/each}}
+            {{/eachReverse}}
         </select>
     </div>
 
