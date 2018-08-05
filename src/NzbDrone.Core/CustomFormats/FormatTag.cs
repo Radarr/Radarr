@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
@@ -14,7 +16,9 @@ namespace NzbDrone.Core.CustomFormats
         public TagModifier TagModifier { get; set; }
         public object Value { get; set; }
 
-        public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C|I)(_((?<m_r>R)|(?<m_re>RE)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C|I|G)(_((?<m_r>R)|(?<m_re>RE)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        public static Regex SizeTagRegex = new Regex(@"(?<min>\d+(\.\d+)?)\s*<>\s*(?<max>\d+(\.\d+)?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public FormatTag(string raw)
         {
@@ -74,6 +78,10 @@ namespace NzbDrone.Core.CustomFormats
                     return movieInfo.Quality.Modifier == (Modifier) Value;
                 case TagType.Source:
                     return movieInfo.Quality.Source == (Source) Value;
+                case TagType.Size:
+                    var size = (movieInfo.ExtraInfo.GetValueOrDefault("Size", 0.0) as long?) ?? 0;
+                    var tuple = Value as (long, long)? ?? (0, 0);
+                    return size > tuple.Item1 && size < tuple.Item2;
                 case TagType.Indexer:
                     return (movieInfo.ExtraInfo.GetValueOrDefault("IndexerFlags") as IndexerFlags?)?.HasFlag((IndexerFlags) Value) == true;
                 default:
@@ -192,6 +200,13 @@ namespace NzbDrone.Core.CustomFormats
                     }
 
                     break;
+                case "g":
+                    TagType = TagType.Size;
+                    var matches = SizeTagRegex.Match(value);
+                    var min = double.Parse(matches.Groups["min"].Value, CultureInfo.InvariantCulture);
+                    var max = double.Parse(matches.Groups["max"].Value, CultureInfo.InvariantCulture);
+                    Value = (min.Gigabytes(), max.Gigabytes());
+                    break;
                 case "c":
                 default:
                     TagType = TagType.Custom;
@@ -218,6 +233,7 @@ namespace NzbDrone.Core.CustomFormats
         Language = 16,
         Custom = 32,
         Indexer = 64,
+        Size = 128,
     }
 
     [Flags]
