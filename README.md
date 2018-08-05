@@ -100,7 +100,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 ### Requirements
 
-* [Visual Studio Community](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com)
+* [Visual Studio Community 2017](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com)
 * [Git](https://git-scm.com/downloads)
 * [Node.js](https://nodejs.org/en/download/)
 
@@ -119,11 +119,11 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 
 * To build run `sh build.sh`
 
-**Note:** Windows users must have bash available to do this. [cmder](http://cmder.net/) which is a console emulator for windows has bash as part of it's default installation.
+**Note:** Windows users must have bash available to do this. If you installed git, you should have a git bash utility that works.
 
 ### Development
 
-* Open `NzbDrone.sln` in Visual Studio or run the build.sh script, if Mono is installed
+* Open `NzbDrone.sln` in Visual Studio 2017 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
 * Make sure `NzbDrone.Console` is set as the startup project
 * Run `build.sh` before running
 

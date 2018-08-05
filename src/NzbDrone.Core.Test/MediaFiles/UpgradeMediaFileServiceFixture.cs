@@ -40,12 +40,12 @@ namespace NzbDrone.Core.Test.MediaFiles
         private void GivenSingleEpisodeWithSingleEpisodeFile()
         {
             _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = new LazyLoaded<MovieFile>(
+            _localMovie.Movie.MovieFile =
                 new MovieFile
                 {
                     Id = 1,
                     RelativePath = @"Season 01\30.rock.s01e01.avi",
-                });
+                };
         }
 
         [Test]

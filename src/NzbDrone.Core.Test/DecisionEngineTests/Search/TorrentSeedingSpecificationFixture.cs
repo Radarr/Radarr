@@ -32,19 +32,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                 {
                     IndexerId = 1,
                     Title = "Series.Title.S01.720p.BluRay.X264-RlsGrp",
-                    Seeders = 0
+                    Seeders = 0,
+                    IndexerSettings = new TorrentRssIndexerSettings {MinimumSeeders = 5}
                 }
             };
-
-            _indexerDefinition = new IndexerDefinition
-            {
-                Settings = new TorrentRssIndexerSettings { MinimumSeeders = 5 }
-            };
-
-            Mocker.GetMock<IIndexerFactory>()
-                  .Setup(v => v.Get(1))
-                  .Returns(_indexerDefinition);
-
         }
 
         private void GivenReleaseSeeders(int? seeders)
@@ -64,6 +55,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
+        // These tests are not needed anymore, since indexer settings are saved on the release itself!
+        /*
         [Test]
         public void should_return_true_if_indexer_not_specified()
         {
@@ -80,7 +73,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                   .Callback<int>(i => { throw new ModelNotFoundException(typeof(IndexerDefinition), i); });
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
-        }
+        }*/
 
         [Test]
         public void should_return_true_if_seeds_unknown()

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
@@ -94,7 +95,11 @@ namespace NzbDrone.Core.Test.Qualities
             var items = qualities
                 .Except(allowed)
                 .Concat(allowed)
-                .Select(v => new ProfileQualityItem { Quality = v, Allowed = allowed.Contains(v) }).ToList();
+                .Select(v => new ProfileQualityItem
+                {
+                    Quality = v,
+                    Allowed = allowed.Contains(v)
+                }).ToList();
 
             return items;
         }

@@ -23,7 +23,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_get_movies()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", true);
+            var movie = EnsureMovie(680, "Pulp Fiction", true);
 
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
@@ -39,7 +39,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_not_be_able_to_get_unmonitored_movies()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", false);
+            var movie = EnsureMovie(680, "Pulp Fiction", false);
 
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
@@ -55,7 +55,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_get_unmonitored_movies()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", false);
+            var movie = EnsureMovie(680, "Pulp Fiction", false);
 
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");

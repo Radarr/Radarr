@@ -27,6 +27,7 @@ using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Movies;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Authentication;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
@@ -70,7 +71,7 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(i => i.SupportsOnDownload)
                   .Ignore(i => i.SupportsOnUpgrade)
                   .Ignore(i => i.SupportsOnRename);
-            
+
             Mapper.Entity<MetadataDefinition>().RegisterDefinition("Metadata");
 
             Mapper.Entity<DownloadClientDefinition>().RegisterDefinition("DownloadClients")
@@ -101,12 +102,16 @@ namespace NzbDrone.Core.Datastore
                 .SetAltName("AltTitle_Id")
                 .Relationship()
                 .HasOne(t => t.Movie, t => t.MovieId);
-                
+
 
             Mapper.Entity<ImportExclusion>().RegisterModel("ImportExclusions");
-       
+
             Mapper.Entity<QualityDefinition>().RegisterModel("QualityDefinitions")
-                  .Ignore(d => d.Weight);
+                  .Ignore(d => d.Weight)
+                .Relationship();
+
+            Mapper.Entity<CustomFormat>().RegisterModel("CustomFormats")
+                .Relationship();
 
             Mapper.Entity<Profile>().RegisterModel("Profiles");
             Mapper.Entity<Log>().RegisterModel("Logs");
@@ -136,15 +141,18 @@ namespace NzbDrone.Core.Datastore
             RegisterEmbeddedConverter();
             RegisterProviderSettingConverter();
 
-            
+
             MapRepository.Instance.RegisterTypeConverter(typeof(int), new Int32Converter());
             MapRepository.Instance.RegisterTypeConverter(typeof(double), new DoubleConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(DateTime), new UtcConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(bool), new BooleanIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Enum), new EnumIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(Quality), new QualityIntConverter());
+            MapRepository.Instance.RegisterTypeConverter(typeof(CustomFormat), new CustomFormatIntConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileQualityItem>), new EmbeddedDocumentConverter(new QualityIntConverter()));
-            MapRepository.Instance.RegisterTypeConverter(typeof(QualityModel), new EmbeddedDocumentConverter(new QualityIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<ProfileFormatItem>), new EmbeddedDocumentConverter(new CustomFormatIntConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(List<FormatTag>), new EmbeddedDocumentConverter(new QualityTagStringConverter()));
+            MapRepository.Instance.RegisterTypeConverter(typeof(QualityModel), new EmbeddedDocumentConverter(new CustomFormatIntConverter(), new QualityIntConverter()));
             MapRepository.Instance.RegisterTypeConverter(typeof(Dictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(IDictionary<string, string>), new EmbeddedDocumentConverter());
             MapRepository.Instance.RegisterTypeConverter(typeof(List<int>), new EmbeddedDocumentConverter());

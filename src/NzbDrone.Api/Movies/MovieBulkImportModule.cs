@@ -33,10 +33,13 @@ namespace NzbDrone.Api.Movies
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IDiskScanService _diskScanService;
 		private readonly ICached<Core.Movies.Movie> _mappedMovies;
+        private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
 
-        public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService, IMakeImportDecision importDecisionMaker,
-		                             IDiskScanService diskScanService, ICacheManager cacheManager, IMovieService movieService)
+        public MovieBulkImportModule(ISearchForNewMovie searchProxy, IRootFolderService rootFolderService,
+            IMakeImportDecision importDecisionMaker,
+		    IDiskScanService diskScanService, ICacheManager cacheManager,
+            IParsingService parsingService, IMovieService movieService)
             : base("/movies/bulkimport")
         {
             _searchProxy = searchProxy;
@@ -45,6 +48,7 @@ namespace NzbDrone.Api.Movies
             _diskScanService = diskScanService;
 			_mappedMovies = cacheManager.GetCache<Core.Movies.Movie>(GetType(), "mappedMoviesCache");
             _movieService = movieService;
+            _parsingService = parsingService;
             Get["/"] = x => Search();
         }
 
@@ -89,7 +93,8 @@ namespace NzbDrone.Api.Movies
 					return mappedMovie;
 				}
 
-				var parsedTitle = Parser.ParseMoviePath(f.Name, false);
+			    var parsedTitle = _parsingService.ParseMinimalPathMovieInfo(f.Name);
+			    parsedTitle.ImdbId = Parser.ParseImdbId(parsedTitle.SimpleReleaseTitle);
 				if (parsedTitle == null)
 				{
 					m = new Core.Movies.Movie
@@ -119,7 +124,7 @@ namespace NzbDrone.Api.Movies
 				{
 					var local = decision.LocalMovie;
 
-					m.MovieFile = new LazyLoaded<MovieFile>(new MovieFile
+					m.MovieFile = new MovieFile
 					{
 						Path = local.Path,
 						Edition = local.ParsedMovieInfo.Edition,
@@ -127,7 +132,7 @@ namespace NzbDrone.Api.Movies
 						MediaInfo = local.MediaInfo,
 						ReleaseGroup = local.ParsedMovieInfo.ReleaseGroup,
 						RelativePath = f.Path.GetRelativePath(local.Path)
-					});
+					};
 				}
 
 				mappedMovie = _searchProxy.MapMovieToTmdbMovie(m);
@@ -143,7 +148,7 @@ namespace NzbDrone.Api.Movies
 
 				return null;
             });
-            
+
             return new PagingResource<MovieResource>
             {
                 Page = page,

@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                        {
                                            Movie = movie,
                                            Path = Path.Combine(movie.Path, "30 Rock - S01E01 - Pilot.avi"),
-                                           Quality = new QualityModel(Quality.Bluray720p),
+                                           Quality = new QualityModel(),
                                            ParsedMovieInfo = new ParsedMovieInfo()
                                            {
                                                ReleaseGroup = "DRONE"
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_import_each_approved()
         {
-            Subject.Import(_approvedDecisions, false).Should().HaveCount(5);
+            Subject.Import(_approvedDecisions, false).Should().HaveCount(1);
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_use_nzb_title_as_scene_name()
         {
-            _downloadClientItem.Title = "malcolm.in.the.middle.s02e05.dvdrip.xvid-ingot";
+            _downloadClientItem.Title = "malcolm.in.the.middle.2015.dvdrip.xvid-ingot";
 
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
 
@@ -148,7 +148,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [TestCase(".nzb")]
         public void should_remove_extension_from_nzb_title_for_scene_name(string extension)
         {
-            var title = "malcolm.in.the.middle.s02e05.dvdrip.xvid-ingot";
+            var title = "malcolm.in.the.middle.2015.dvdrip.xvid-ingot";
 
             _downloadClientItem.Title = title + extension;
 
@@ -200,8 +200,8 @@ namespace NzbDrone.Core.Test.MediaFiles
                 (new LocalMovie
                 {
                     Movie = fileDecision.LocalMovie.Movie,
-                    Path = @"C:\Test\TV\30 Rock\30 Rock - S01E01 - Pilot.avi".AsOsAgnostic(),
-                    Quality = new QualityModel(Quality.Bluray720p),
+                    Path = @"C:\Test\TV\30 Rock\30 Rock - 2017 - Pilot.avi".AsOsAgnostic(),
+                    Quality = new QualityModel(),
                     Size = 80.Megabytes()
                 });
 

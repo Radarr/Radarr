@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿﻿using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Profiles;
@@ -9,7 +9,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
-    
+
     public class QualityUpgradeSpecificationFixture : CoreTest<QualityUpgradableSpecification>
     {
         public static object[] IsUpgradeTestCases =
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             new object[] { Quality.WEBDL720p, 1, Quality.WEBDL720p, 1, Quality.WEBDL720p, false },
             new object[] { Quality.WEBDL1080p, 1, Quality.WEBDL1080p, 1, Quality.WEBDL1080p, false }
         };
-        
+
         [SetUp]
         public void Setup()
         {

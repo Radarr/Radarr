@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+﻿﻿using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 using System.Data;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(ConvertQualityProfiles);
             Execute.WithConnection(ConvertQualityModels);
         }
-        
+
         private void ConvertQualityProfiles(IDbConnection conn, IDbTransaction tran)
         {
             var qualityProfileItemConverter = new EmbeddedDocumentConverter(new QualityIntConverter());

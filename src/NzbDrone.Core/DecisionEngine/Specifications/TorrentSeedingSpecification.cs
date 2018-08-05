@@ -24,23 +24,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
         {
             var torrentInfo = subject.Release as TorrentInfo;
 
-            if (torrentInfo == null || torrentInfo.IndexerId == 0)
+            if (torrentInfo == null || torrentInfo.IndexerSettings == null)
             {
                 return Decision.Accept();
             }
 
-            IndexerDefinition indexer;
-            try
-            {
-                indexer = _indexerFactory.Get(torrentInfo.IndexerId);
-            }
-            catch (ModelNotFoundException)
-            {
-                _logger.Debug("Indexer with id {0} does not exist, skipping seeders check", torrentInfo.IndexerId);
-                return Decision.Accept();
-            }
-
-            var torrentIndexerSettings = indexer.Settings as ITorrentIndexerSettings;
+            var torrentIndexerSettings = torrentInfo.IndexerSettings as ITorrentIndexerSettings;
 
             if (torrentIndexerSettings != null)
             {

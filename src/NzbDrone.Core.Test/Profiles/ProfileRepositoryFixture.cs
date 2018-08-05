@@ -9,12 +9,19 @@ namespace NzbDrone.Core.Test.Profiles
     [TestFixture]
     public class ProfileRepositoryFixture : DbTest<ProfileRepository, Profile>
     {
+        [SetUp]
+        public void Setup()
+        {
+        }
+
         [Test]
         public void should_be_able_to_read_and_write()
         {
             var profile = new Profile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(Quality.Bluray1080p, Quality.DVD, Quality.HDTV720p),
+                    FormatCutoff = CustomFormats.CustomFormat.None,
+                    FormatItems = CustomFormat.CustomFormatsFixture.GetDefaultFormatItems(),
                     Cutoff = Quality.Bluray1080p,
                     Name = "TestProfile"
                 };

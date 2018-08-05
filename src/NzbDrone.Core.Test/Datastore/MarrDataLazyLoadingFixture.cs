@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.Datastore
                     Items = Qualities.QualityFixture.GetDefaultQualities()
                 };
 
-            
+
             profile = Db.Insert(profile);
 
             var series = Builder<Movie>.CreateListOfSize(1)

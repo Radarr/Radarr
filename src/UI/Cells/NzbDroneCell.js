@@ -26,7 +26,6 @@ module.exports = Backgrid.Cell.extend({
     },
 
     _getValue : function() {
-
         var cellValue = this.column.get('cellValue');
 
         if (cellValue) {

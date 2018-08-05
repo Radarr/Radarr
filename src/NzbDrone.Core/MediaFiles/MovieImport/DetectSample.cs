@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using NLog;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Movies;
@@ -18,7 +19,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly Logger _logger;
 
-        private static List<Quality> _largeSampleSizeQualities = new List<Quality> { Quality.HDTV1080p, Quality.WEBDL1080p, Quality.Bluray1080p };
+        //private static List<Quality> _largeSampleSizeQualities = new List<Quality> { Quality.HDTV1080p, Quality.WEBDL1080p, Quality.Bluray1080p };
+        private static List<Resolution> _largeSampleSizeResolutions = new List<Resolution>{Resolution.R1080P, Resolution.R2160P};
 
         public DetectSample(IVideoFileInfoReader videoFileInfoReader, Logger logger)
         {
@@ -81,7 +83,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         private bool CheckSize(long size, QualityModel quality)
         {
-            if (_largeSampleSizeQualities.Contains(quality.Quality))
+            if (_largeSampleSizeResolutions.Contains(quality.Resolution))
             {
                 if (size < SampleSizeLimit * 2)
                 {

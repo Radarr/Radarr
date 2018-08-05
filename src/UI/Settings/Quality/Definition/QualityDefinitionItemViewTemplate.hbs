@@ -1,31 +1,62 @@
-		<span class="col-md-2 col-sm-3">
-				{{quality.name}}
-		</span>
-		<span class="col-md-2 col-sm-3">
+<div class="row quality-definition-row">
+    <span class="col-md-2 col-sm-3">
+        {{#if parentQualityDefinition }}
+            <span class="label label-warning">Custom Format</span>
+        {{ else }}
+            {{quality.name}}
+        {{/if}}
+    </span>
+    <span class="col-md-2 col-sm-3">
 				<input type="text" class="form-control" name="title">
 		</span>
-		<span class="col-md-4 col-sm-6">
+    <span class="col-md-4 col-sm-6">
 				<div class="x-slider"></div>
 				<div class="size-label-wrapper">
 						<div class="pull-left">
 								<span class="label label-warning x-min-thirty"
-											name="thirtyMinuteMinSize"
-											title="Minimum size for a 90 minute movie">
+                                        name="thirtyMinuteMinSize"
+                                        title="Minimum size for a 90 minute movie">
 								</span>
 								<span class="label label-info x-min-sixty"
-											name="sixtyMinuteMinSize"
-											title="Minimum size for a 140 minute movie">
+                                        name="sixtyMinuteMinSize"
+                                        title="Minimum size for a 140 minute movie">
 								</span>
 						</div>
 						<div class="pull-right">
-								<span class="label label-warning x-max-thirty"
-											name="thirtyMinuteMaxSize"
-											title="Maximum size for a 90 minute movie">
+								<span class="label label-warning"
+                                        title="Maximum size for a 90 minute movie. Click to edit, allows you to go beyond the maximum value.
+                                        Radarr will automatically convert this field from Gigabytes to Megabytes per minute of runtime assuming a 90 minute movie, when you click outside of this label.">
+                                    <input type="text" name="thirtyMinuteMaxSize" class="x-max-thirty label-textfield">
 								</span>
 								<span class="label label-info x-max-sixty"
-											name="sixtyMinuteMaxSize"
-											title="Maximum size for a 140 minute movie">
+                                        name="sixtyMinuteMaxSize"
+                                        title="Maximum size for a 140 minute movie">
 								</span>
 						</div>
 				</div>
 		</span>
+    {{#if parentQualityDefinition }}
+        <span class="col-md-1">
+            Parent:
+        </span>
+        <span class="col-md-3 col-sm-4">
+            <select class="form-control x-parent" name="parentQuality">
+            {{#each qualities}}
+                <option value="{{id}}">{{title}}</option>
+            {{/each}}
+            </select>
+        </span>
+    {{else}}
+
+        <span class="col-md-3 col-sm-4 advanced-setting">
+            <button class="btn btn-success x-create-format">Create Custom Format</button>
+        </span>
+    {{/if}}
+
+
+</div>
+{{#if parentQualityDefinition}}
+
+{{/if}}
+
+

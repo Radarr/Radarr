@@ -246,10 +246,10 @@ namespace NzbDrone.Core.Movies
             if (!list.Any())
             {
                 // no movie matched
-                return list; 
+                return list;
             }
             // build ordered list of movie by position in the search string
-            var query = 
+            var query =
                 list.Select(movie => new
                 {
                     position = cleanTitle.IndexOf(movie.CleanTitle),
@@ -302,6 +302,7 @@ namespace NzbDrone.Core.Movies
             }
             _movieRepository.Delete(movieId);
             _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));
+            _logger.Info("Deleted movie {}", movie);
         }
 
         public List<Movie> GetAllMovies()
@@ -337,7 +338,7 @@ namespace NzbDrone.Core.Movies
                     _logger.Trace("Not changing path for: {0}", s.Title);
                 }
             }
-            
+
             _movieRepository.UpdateMany(movie);
             _logger.Debug("{0} movie updated", movie.Count);
 
@@ -371,7 +372,7 @@ namespace NzbDrone.Core.Movies
 
         public void Handle(MovieFileDeletedEvent message)
         {
-            
+
             var movie = _movieRepository.GetMoviesByFileId(message.MovieFile.Id).First();
             movie.MovieFileId = 0;
             _logger.Debug("Detaching movie {0} from file.", movie.Id);

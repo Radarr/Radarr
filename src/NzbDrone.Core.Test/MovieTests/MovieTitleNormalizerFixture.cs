@@ -7,12 +7,14 @@ namespace NzbDrone.Core.Test.MovieTests
     [TestFixture]
     public class MovieTitleNormalizerFixture
     {
+        //TODO: Decide on reimplementing this!
+        /*
         [TestCase("A to Z", 281588, "a to z")]
         [TestCase("A. D. - The Trials & Triumph of the Early Church", 266757, "ad trials triumph early church")]
         public void should_use_precomputed_title(string title, int tvdbId, string expected)
         {
             MovieTitleNormalizer.Normalize(title, tvdbId).Should().Be(expected);
-        }
+        }*/
 
         [TestCase("2 Broke Girls", "2 broke girls")]
         [TestCase("Archer (2009)", "archer 2009")]

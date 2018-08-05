@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Blacklisting
             _blacklist = new Blacklist
                      {
                          MovieId = 1234,
-                         Quality = new QualityModel(Quality.Bluray720p),
+                         Quality = new QualityModel(),
                          SourceTitle = "series.title.s01e01",
                          Date = DateTime.UtcNow
                      };

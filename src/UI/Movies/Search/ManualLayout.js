@@ -10,6 +10,7 @@ var ProtocolCell = require('../../Release/ProtocolCell');
 var PeersCell = require('../../Release/PeersCell');
 var EditionCell = require('../../Cells/EditionCell');
 var IndexerFlagsCell = require('../../Cells/IndexerFlagsCell');
+var MultipleFormatsCell = require('../../Cells/MultipleFormatsCell');
 
 module.exports = Marionette.Layout.extend({
     template : 'Movies/Search/ManualLayoutTemplate',
@@ -66,6 +67,11 @@ module.exports = Marionette.Layout.extend({
             cell  : QualityCell,
         },
         {
+            name : 'quality',
+            label : 'Custom Formats',
+            cell : MultipleFormatsCell
+        },
+        {
             name      : 'rejections',
             label     : '<i class="icon-radarr-header-rejections" />',
             tooltip   : 'Rejections',
@@ -92,7 +98,7 @@ module.exports = Marionette.Layout.extend({
                 row        : Backgrid.Row,
                 columns    : this.columns,
                 collection : this.collection,
-                className  : 'table table-hover'
+                className  : 'table table-hover release-table'
             }));
         }
     }

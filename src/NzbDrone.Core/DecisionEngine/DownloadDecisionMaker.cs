@@ -24,13 +24,17 @@ namespace NzbDrone.Core.DecisionEngine
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
 	private readonly IConfigService _configService;
+        private readonly IQualityDefinitionService _definitionService;
         private readonly Logger _logger;
 
-        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications, IParsingService parsingService, IConfigService configService, Logger logger)
+        public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications,
+            IParsingService parsingService, IConfigService configService,
+            IQualityDefinitionService qualityDefinitionService, Logger logger)
         {
             _specifications = specifications;
             _parsingService = parsingService;
 		_configService = configService;
+            _definitionService = qualityDefinitionService;
             _logger = logger;
         }
 
@@ -65,7 +69,8 @@ namespace NzbDrone.Core.DecisionEngine
 
                 try
                 {
-                    var parsedMovieInfo = Parser.Parser.ParseMovieTitle(report.Title, _configService.ParsingLeniency > 0);
+
+                    var parsedMovieInfo = _parsingService.ParseMovieInfo(report.Title, new List<object>{report});
 
                     MappingResult result = null;
 
@@ -76,7 +81,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             MovieTitle = report.Title,
                             Year = 1290,
-                            Language = Language.Unknown,
+                            Languages = new List<Language>{Language.Unknown},
                             Quality = new QualityModel(),
                         };
 
@@ -103,7 +108,7 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
                     }
-                    
+
                     result.ReleaseName = report.Title;
                     var remoteMovie = result.RemoteMovie;
 

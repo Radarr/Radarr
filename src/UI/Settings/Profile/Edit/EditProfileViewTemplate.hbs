@@ -57,3 +57,21 @@
 				<i class="icon-radarr-form-info" title="Once this quality is reached Radarr will no longer upgrade movies"/>
 		</div>
 </div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">Custom Format Cutoff</label>
+
+    <div class="col-sm-5">
+        <select class="form-control x-cutoff" name="formatCutoff.id" validation-name="formatCutoff">
+            {{#eachReverse formatItems}}
+                {{#if allowed}}
+                    <option value="{{format.id}}">{{format.name}}</option>
+                {{/if}}
+            {{/eachReverse}}
+        </select>
+    </div>
+
+    <div class="col-sm-1 help-inline">
+        <i class="icon-radarr-form-info" title="Once this format is reached, Radarr will no longer upgrade movies."/>
+    </div>
+</div>

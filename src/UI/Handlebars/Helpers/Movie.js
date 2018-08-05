@@ -12,21 +12,21 @@ Handlebars.registerHelper('GetStatus', function() {
     //var date = new Date(inCinemas);
     //var timeSince = new Date().getTime() - date.getTime();
     //var numOfMonths = timeSince / 1000 / 60 / 60 / 24 / 30;
-  
-  
+
+
     if (status === "announced") {
       return new Handlebars.SafeString('<i class="icon-radarr-movie-announced grid-icon" title=""></i>&nbsp;Announced');
     }
-  
-  
+
+
     if (status ==="inCinemas") {
       return new Handlebars.SafeString('<i class="icon-radarr-movie-cinemas grid-icon" title=""></i>&nbsp;In Cinemas');
     }
-  
+
     if (status === 'released') {
         return new Handlebars.SafeString('<i class="icon-radarr-movie-released grid-icon" title=""></i>&nbsp;Released');
     }
-  
+
     if (!monitored) {
         return new Handlebars.SafeString('<i class="icon-radarr-series-unmonitored grid-icon" title=""></i>&nbsp;Not Monitored');
     }

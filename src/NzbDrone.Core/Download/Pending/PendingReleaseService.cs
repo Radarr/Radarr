@@ -259,7 +259,7 @@ namespace NzbDrone.Core.Download.Pending
         private void RemoveGrabbed(RemoteMovie remoteMovie)
         {
             var pendingReleases = GetPendingReleases();
-            
+
 
 			var existingReports = pendingReleases.Where(r => r.RemoteMovie.Movie.Id == remoteMovie.Movie.Id)
                                                              .ToList();

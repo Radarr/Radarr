@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.QueueTests
 
             var series = Builder<Movie>.CreateNew()
                                         .Build();
-            
+
             var remoteEpisode = Builder<RemoteMovie>.CreateNew()
                                                    .With(r => r.Movie = series)
                                                    .With(r => r.ParsedMovieInfo = new ParsedMovieInfo())
@@ -47,13 +47,13 @@ namespace NzbDrone.Core.Test.QueueTests
 
             var queue = Subject.GetQueue();
 
-            queue.Should().HaveCount(3);
+            queue.Should().HaveCount(1);
 
             queue.All(v => v.Id > 0).Should().BeTrue();
 
             var distinct = queue.Select(v => v.Id).Distinct().ToArray();
 
-            distinct.Should().HaveCount(3);
+            distinct.Should().HaveCount(1);
         }
     }
 }

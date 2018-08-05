@@ -12,12 +12,12 @@ namespace NzbDrone.Core.Test.MovieTests
     public class ShouldRefreshMovieFixture : TestBase<ShouldRefreshMovie>
     {
         private Movie _movie;
-        
+
         [SetUp]
         public void Setup()
         {
             _movie = Builder<Movie>.CreateNew()
-                                     .With(v => v.Status == MovieStatusType.InCinemas)
+                                     .With(v => v.Status = MovieStatusType.InCinemas)
                                      .With(m => m.PhysicalRelease = DateTime.Today.AddDays(-100))
                                      .Build();
         }

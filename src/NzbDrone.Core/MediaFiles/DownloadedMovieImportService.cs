@@ -10,6 +10,7 @@ using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.MediaFiles.Commands;
 
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IImportApprovedMovie _importApprovedMovie;
         private readonly IDetectSample _detectSample;
         private readonly IConfigService _config;
+        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public DownloadedMovieImportService(IDiskProvider diskProvider,
@@ -42,6 +44,7 @@ namespace NzbDrone.Core.MediaFiles
                                                IImportApprovedMovie importApprovedMovie,
                                                IDetectSample detectSample,
                                                IConfigService config,
+                                               IHistoryService historyService,
                                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -52,6 +55,7 @@ namespace NzbDrone.Core.MediaFiles
             _importApprovedMovie = importApprovedMovie;
             _detectSample = detectSample;
             _config = config;
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -111,7 +115,8 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var videoFile in videoFiles)
             {
-                var episodeParseResult = Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), false);
+                var episodeParseResult =
+                    Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), _config.ParsingLeniency > 0);
 
                 if (episodeParseResult == null)
                 {
@@ -120,9 +125,8 @@ namespace NzbDrone.Core.MediaFiles
                 }
 
                 var size = _diskProvider.GetFileSize(videoFile);
-                var quality = QualityParser.ParseQuality(videoFile);
 
-                if (!_detectSample.IsSample(movie, quality, videoFile, size, false))
+                if (!_detectSample.IsSample(movie, QualityParser.ParseQuality(Path.GetFileName(videoFile)), videoFile, size, false))
                 {
                     _logger.Warn("Non-sample file detected: [{0}]", videoFile);
                     return false;
@@ -165,7 +169,9 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
-            var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name, _config.ParsingLeniency > 0);
+            var historyItems = _historyService.FindByDownloadId(downloadClientItem?.DownloadId ?? "");
+            var firstHistoryItem = historyItems?.OrderByDescending(h => h.Date).FirstOrDefault();
+            var folderInfo = _parsingService.ParseMovieInfo(cleanedUpName, new List<object>{firstHistoryItem});
 
             if (folderInfo != null)
             {
@@ -188,7 +194,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, null, folderInfo, true, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(videoFiles.ToList(), movie, downloadClientItem, folderInfo, true, false);
             var importResults = _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
 
             if ((downloadClientItem == null || downloadClientItem.CanBeRemoved) &&
@@ -242,7 +248,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
             }
 
-            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, null, null, true, false);
+            var decisions = _importDecisionMaker.GetImportDecisions(new List<string>() { fileInfo.FullName }, movie, downloadClientItem, null, true, false);
 
             return _importApprovedMovie.Import(decisions, true, downloadClientItem, importMode);
         }

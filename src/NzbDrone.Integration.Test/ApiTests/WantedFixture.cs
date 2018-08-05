@@ -11,7 +11,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void missing_should_be_empty()
         {
-            EnsureNoMovie("tt0110912", "Pulp Fiction");
+            EnsureNoMovie(680, "Pulp Fiction");
 
             var result = WantedMissing.GetPaged(0, 15, "physicalRelease", "desc");
 
@@ -21,7 +21,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void missing_should_have_monitored_items()
         {
-            EnsureMovie("tt0110912", "Pulp Fiction", true);
+            EnsureMovie(680, "Pulp Fiction", true);
 
             var result = WantedMissing.GetPaged(0, 15, "physicalRelease", "desc");
 
@@ -31,7 +31,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void missing_should_have_movie()
         {
-            EnsureMovie("tt0110912", "Pulp Fiction", true);
+            EnsureMovie(680, "Pulp Fiction", true);
 
             var result = WantedMissing.GetPaged(0, 15, "physicalRelease", "desc");
 
@@ -42,7 +42,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_have_monitored_items()
         {
             EnsureProfileCutoff(1, Quality.HDTV720p);
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", true);
+            var movie = EnsureMovie(680, "Pulp Fiction", true);
             EnsureMovieFile(movie, Quality.SDTV);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc");
@@ -53,7 +53,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void missing_should_not_have_unmonitored_items()
         {
-            EnsureMovie("tt0110912", "Pulp Fiction", false);
+            EnsureMovie(680, "Pulp Fiction", false);
 
             var result = WantedMissing.GetPaged(0, 15, "physicalRelease", "desc");
 
@@ -64,7 +64,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_not_have_unmonitored_items()
         {
             EnsureProfileCutoff(1, Quality.HDTV720p);
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", false);
+            var movie = EnsureMovie(680, "Pulp Fiction", false);
             EnsureMovieFile(movie, Quality.SDTV);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc");
@@ -76,7 +76,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_have_movie()
         {
             EnsureProfileCutoff(1, Quality.HDTV720p);
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", true);
+            var movie = EnsureMovie(680, "Pulp Fiction", true);
             EnsureMovieFile(movie, Quality.SDTV);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc");
@@ -87,7 +87,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void missing_should_have_unmonitored_items()
         {
-            EnsureMovie("tt0110912", "Pulp Fiction", false);
+            EnsureMovie(680, "Pulp Fiction", false);
 
             var result = WantedMissing.GetPaged(0, 15, "physicalRelease", "desc", "monitored", "false");
 
@@ -98,7 +98,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_have_unmonitored_items()
         {
             EnsureProfileCutoff(1, Quality.HDTV720p);
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", false);
+            var movie = EnsureMovie(680, "Pulp Fiction", false);
             EnsureMovieFile(movie, Quality.SDTV);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "physicalRelease", "desc", "monitored", "false");

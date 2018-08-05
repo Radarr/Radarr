@@ -22,9 +22,9 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             UseRealHttp();
         }
 
-        [TestCase(75978, "Family Guy")]
-        [TestCase(83462, "Castle (2009)")]
-        [TestCase(266189, "The Blacklist")]
+        [TestCase(11, "Star Wars")]
+        [TestCase(2, "Ariel")]
+        [TestCase(70981, "Prometheus")]
         public void should_be_able_to_get_movie_detail(int tmdbId, string title)
         {
             var details = Subject.GetMovieInfo(tmdbId);
@@ -34,20 +34,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             details.Title.Should().Be(title);
         }
 
-        [Test]
-        public void getting_details_of_invalid_series()
-        {
-            Assert.Throws<MovieNotFoundException>(() => Subject.GetMovieInfo(int.MaxValue));
-        }
-
-        [Test]
-        public void should_not_have_period_at_start_of_title_slug()
-        {
-            var details = Subject.GetMovieInfo(79099);
-
-            details.TitleSlug.Should().Be("dothack");
-        }
-
         private void ValidateMovie(Movie movie)
         {
             movie.Should().NotBeNull();
@@ -55,7 +41,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             movie.CleanTitle.Should().Be(Parser.Parser.CleanSeriesTitle(movie.Title));
             movie.SortTitle.Should().Be(MovieTitleNormalizer.Normalize(movie.Title, movie.TmdbId));
             movie.Overview.Should().NotBeNullOrWhiteSpace();
-            movie.PhysicalRelease.Should().HaveValue();
+            movie.InCinemas.Should().HaveValue();
             movie.Images.Should().NotBeEmpty();
             movie.ImdbId.Should().NotBeNullOrWhiteSpace();
             movie.Studio.Should().NotBeNullOrWhiteSpace();

@@ -52,7 +52,6 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                     Quality = quality,
                     Year = 1998,
                     MovieTitle = "A Movie",
-                    MovieTitleInfo = new SeriesTitleInfo()
                 },
                 Movie = movie,
 
@@ -202,7 +201,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_add_to_pending_even_if_already_added_to_pending()
         {
-           
+
             var remoteMovie = GetRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();

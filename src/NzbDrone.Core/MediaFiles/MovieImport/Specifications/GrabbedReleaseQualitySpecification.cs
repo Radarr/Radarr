@@ -4,6 +4,8 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -13,11 +15,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
     {
         private readonly Logger _logger;
         private readonly IHistoryService _historyService;
+        private readonly IParsingService _parsingService;
 
-        public GrabbedReleaseQualitySpecification(Logger logger, IHistoryService historyService)
+        public GrabbedReleaseQualitySpecification(Logger logger, IHistoryService historyService,
+            IParsingService parsingService)
         {
             _logger = logger;
             _historyService = historyService;
+            _parsingService = parsingService;
         }
 
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
@@ -37,8 +42,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 _logger.Debug("No grabbed history for this download client item");
                 return Decision.Accept();
             }
-
-            var parsedReleaseName = Parser.Parser.ParseMovieTitle(grabbedHistory.First().SourceTitle,false);
 
             foreach (var item in grabbedHistory)
             {

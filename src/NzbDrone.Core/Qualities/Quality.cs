@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Qualities
@@ -9,15 +10,27 @@ namespace NzbDrone.Core.Qualities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public Source Source { get; set; }
+        public Resolution Resolution { get; set; }
+        public Modifier Modifier { get; set; }
 
         public Quality()
         {
         }
 
-        private Quality(int id, string name)
+        private Quality(int id, string name, Source source, Resolution resolution, Modifier modifier = Modifier.NONE)
         {
             Id = id;
             Name = name;
+            Source = source;
+            Resolution = resolution;
+            Modifier = modifier;
+        }
+
+        private Quality(int id, string name, Source source, int resolution, Modifier modifier = Modifier.NONE)
+            : this(id, name, source, (Resolution) resolution, modifier)
+        {
+
         }
 
         public override string ToString()
@@ -56,46 +69,46 @@ namespace NzbDrone.Core.Qualities
         }
 
         // Unable to determine
-        public static Quality Unknown => new Quality(0, "Unknown");
+        public static Quality Unknown => new Quality(0, "Unknown", Source.UNKNOWN, 0);
 
         // Pre-release
-        public static Quality WORKPRINT => new Quality(24, "WORKPRINT"); // new
-        public static Quality CAM => new Quality(25, "CAM"); // new
-        public static Quality TELESYNC => new Quality(26, "TELESYNC"); // new
-        public static Quality TELECINE => new Quality(27, "TELECINE"); // new
-        public static Quality DVDSCR => new Quality(28, "DVDSCR"); // new
-        public static Quality REGIONAL => new Quality(29, "REGIONAL"); // new
+        public static Quality WORKPRINT => new Quality(24, "WORKPRINT", Source.WORKPRINT, 0); // new
+        public static Quality CAM => new Quality(25, "CAM", Source.CAM, 0); // new
+        public static Quality TELESYNC => new Quality(26, "TELESYNC", Source.TELESYNC, 0); // new
+        public static Quality TELECINE => new Quality(27, "TELECINE", Source.TELECINE, 0); // new
+        public static Quality DVDSCR => new Quality(28, "DVDSCR", Source.DVD, 480, Modifier.SCREENER); // new
+        public static Quality REGIONAL => new Quality(29, "REGIONAL", Source.DVD, 480, Modifier.REGIONAL); // new
 
         // SD
-        public static Quality SDTV => new Quality(1, "SDTV");
-        public static Quality DVD => new Quality(2, "DVD");
-        public static Quality DVDR => new Quality(23, "DVD-R"); // new
+        public static Quality SDTV => new Quality(1, "SDTV", Source.TV, 480);
+        public static Quality DVD => new Quality(2, "DVD", Source.DVD, 480);
+        public static Quality DVDR => new Quality(23, "DVD-R", Source.DVD, 480, Modifier.REMUX); // new
 
         // HDTV
-        public static Quality HDTV720p => new Quality(4, "HDTV-720p");
-        public static Quality HDTV1080p => new Quality(9, "HDTV-1080p");
-        public static Quality HDTV2160p => new Quality(16, "HDTV-2160p");
+        public static Quality HDTV720p => new Quality(4, "HDTV-720p", Source.TV, 720);
+        public static Quality HDTV1080p => new Quality(9, "HDTV-1080p", Source.TV, 1080);
+        public static Quality HDTV2160p => new Quality(16, "HDTV-2160p", Source.TV, 2160);
 
         // Web-DL
-        public static Quality WEBDL480p => new Quality(8, "WEBDL-480p");
-        public static Quality WEBDL720p => new Quality(5, "WEBDL-720p");
-        public static Quality WEBDL1080p => new Quality(3, "WEBDL-1080p");
-        public static Quality WEBDL2160p => new Quality(18, "WEBDL-2160p");
+        public static Quality WEBDL480p => new Quality(8, "WEBDL-480p", Source.WEBDL, 480);
+        public static Quality WEBDL720p => new Quality(5, "WEBDL-720p", Source.WEBDL, 720);
+        public static Quality WEBDL1080p => new Quality(3, "WEBDL-1080p", Source.WEBDL, 1080);
+        public static Quality WEBDL2160p => new Quality(18, "WEBDL-2160p", Source.WEBDL, 2160);
 
         // Bluray
-        public static Quality Bluray480p => new Quality(20, "Bluray-480p"); // new
-        public static Quality Bluray576p => new Quality(21, "Bluray-576p"); // new
-        public static Quality Bluray720p => new Quality(6, "Bluray-720p");
-        public static Quality Bluray1080p => new Quality(7, "Bluray-1080p");
-        public static Quality Bluray2160p => new Quality(19, "Bluray-2160p");
+        public static Quality Bluray480p => new Quality(20, "Bluray-480p", Source.BLURAY, 480); // new
+        public static Quality Bluray576p => new Quality(21, "Bluray-576p", Source.BLURAY, 576); // new
+        public static Quality Bluray720p => new Quality(6, "Bluray-720p", Source.BLURAY, 720);
+        public static Quality Bluray1080p => new Quality(7, "Bluray-1080p", Source.BLURAY, 1080);
+        public static Quality Bluray2160p => new Quality(19, "Bluray-2160p", Source.BLURAY, 2160);
 
-        public static Quality Remux1080p => new Quality(30, "Remux-1080p");
-        public static Quality Remux2160p => new Quality(31, "Remux-2160p");
+        public static Quality Remux1080p => new Quality(30, "Remux-1080p", Source.BLURAY, 1080, Modifier.REMUX);
+        public static Quality Remux2160p => new Quality(31, "Remux-2160p", Source.BLURAY, 2160, Modifier.REMUX);
 
-        public static Quality BRDISK => new Quality(22, "BR-DISK"); // new
+        public static Quality BRDISK => new Quality(22, "BR-DISK", Source.BLURAY, 0, Modifier.BRDISK); // new
 
         // Others
-        public static Quality RAWHD => new Quality(10, "Raw-HD");
+        public static Quality RAWHD => new Quality(10, "Raw-HD", Source.TV, 0, Modifier.RAWHD);
 
         static Quality()
         {
@@ -185,7 +198,7 @@ namespace NzbDrone.Core.Qualities
 
             if (quality == null)
                 throw new ArgumentException("ID does not match a known quality", "id");
-                        
+
             return quality;
         }
 
@@ -197,6 +210,13 @@ namespace NzbDrone.Core.Qualities
         public static explicit operator int(Quality quality)
         {
             return quality.Id;
+        }
+
+        public static Quality FindByInfo(Source source, Resolution resolution, Modifier modifier)
+        {
+            return All.SingleOrDefault(q =>
+                q.Source == source && ((q.Resolution == resolution) ||
+                (q.Resolution == Resolution.Unknown)) && (q.Modifier == modifier));
         }
     }
 }

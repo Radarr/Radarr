@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _remoteEpisode.Movie = _movie;
             _remoteEpisode.ParsedMovieInfo = _parsedEpisodeInfo;
             _remoteEpisode.Release = _release;
-            
+
             _temporarilyRejected = new DownloadDecision(_remoteEpisode, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()

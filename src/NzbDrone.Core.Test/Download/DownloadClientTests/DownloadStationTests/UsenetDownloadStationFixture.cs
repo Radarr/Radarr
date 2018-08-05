@@ -249,7 +249,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected static string CleanFileName(String name)
         {
-            return FileNameBuilder.CleanFileName(name, NamingConfig.Default) + ".nzb";
+            return FileNameBuilder.CleanFileName(name) + ".nzb";
         }
 
         [Test]

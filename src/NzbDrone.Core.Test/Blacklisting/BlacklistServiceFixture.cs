@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Blacklisting
             _event = new DownloadFailedEvent
                      {
                          MovieId = 69,
-                         Quality = new QualityModel(Quality.Bluray720p),
+                         Quality = new QualityModel(),
                          SourceTitle = "series.title.s01e01",
                          DownloadClient = "SabnzbdClient",
                          DownloadId = "Sabnzbd_nzo_2dfh73k"

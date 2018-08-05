@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Specialized;
+using System.Security.AccessControl;
+using Moq;
+using NUnit.Framework;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
@@ -8,6 +11,12 @@ using NzbDrone.Test.Common;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.MediaFiles.MediaInfo;
+using NzbDrone.Core.Movies;
+using NzbDrone.Core.Organizer;
+using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Parser;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Test.Framework
 {
@@ -22,6 +31,27 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<IHttpProvider>(new HttpProvider(TestLogger));
             Mocker.SetConstant<IHttpClient>(new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<CacheManager>(), Mocker.Resolve<RateLimitService>(), Mocker.Resolve<FallbackHttpDispatcher>(), TestLogger));
             Mocker.SetConstant<ISonarrCloudRequestBuilder>(new SonarrCloudRequestBuilder());
+        }
+
+        //Used for tests that rely on parsing working correctly.
+        protected void UseRealParsingService()
+        {
+            //Mocker.SetConstant<IParsingService>(new ParsingService(Mocker.Resolve<MovieService>(), Mocker.Resolve<ConfigService>(), Mocker.Resolve<QualityDefinitionService>(), TestLogger));
+        }
+
+        //Used for tests that rely on parsing working correctly. Does some minimal parsing using the old static methods.
+        protected void ParseMovieTitle()
+        {
+            Mocker.GetMock<IParsingService>().Setup(c => c.ParseMovieInfo(It.IsAny<string>(), It.IsAny<System.Collections.Generic.List<object>>()))
+                .Returns<string, System.Collections.Generic.List<object>>((title, helpers) =>
+                {
+                    var result = Parser.Parser.ParseMovieTitle(title, false);
+                    if (result != null)
+                    {
+                        result.Quality = QualityParser.ParseQuality(title);
+                    }
+                    return result;
+                });
         }
     }
 

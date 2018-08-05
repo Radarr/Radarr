@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _movie = Builder<Movie>.CreateNew()
                                      .Build();
 
-          
+
             _profile = new Profile
                        {
                            Name = "Test",
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _remoteMovie.Movie = _movie;
             _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
             _remoteMovie.Release = _release;
-            
+
             _temporarilyRejected = new DownloadDecision(_remoteMovie, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             Mocker.GetMock<IPendingReleaseRepository>()

@@ -13,7 +13,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_movie_with_tags_should_store_them()
         {
-            EnsureNoMovie("tt0110912", "Pulp Fiction");
+            EnsureNoMovie(680, "Pulp Fiction");
             var tag = EnsureTag("abc");
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
@@ -32,7 +32,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_movie_without_profileid_should_return_badrequest()
         {
-            EnsureNoMovie("tt0110912", "Pulp Fiction");
+            EnsureNoMovie(680, "Pulp Fiction");
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(0)]
         public void add_movie_without_path_should_return_badrequest()
         {
-            EnsureNoMovie("tt0110912", "Pulp Fiction");
+            EnsureNoMovie(680, "Pulp Fiction");
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
 
@@ -56,7 +56,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(1)]
         public void add_movie()
         {
-            EnsureNoMovie("tt0110912", "Pulp Fiction");
+            EnsureNoMovie(680, "Pulp Fiction");
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
 
@@ -75,8 +75,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void get_all_movies()
         {
-            EnsureMovie("tt0110912", "Pulp Fiction");
-            EnsureMovie("tt0468569", "The Dark Knight");
+            EnsureMovie(680, "Pulp Fiction");
+            EnsureMovie(155, "The Dark Knight");
 
             Movies.All().Should().NotBeNullOrEmpty();
             Movies.All().Should().Contain(v => v.ImdbId == "tt0110912");
@@ -86,7 +86,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void get_movie_by_id()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction");
+            var movie = EnsureMovie(680, "Pulp Fiction");
 
             var result = Movies.Get(movie.Id);
 
@@ -102,7 +102,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(2)]
         public void update_movie_profile_id()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction");
+            var movie = EnsureMovie(680, "Pulp Fiction");
 
             var profileId = 1;
             if (movie.ProfileId == profileId)
@@ -120,7 +120,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(3)]
         public void update_movie_monitored()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction", false);
+            var movie = EnsureMovie(680, "Pulp Fiction", false);
 
             movie.Monitored.Should().BeFalse();
 
@@ -134,7 +134,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(3)]
         public void update_movie_tags()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction");
+            var movie = EnsureMovie(680, "Pulp Fiction");
             var tag = EnsureTag("abc");
 
             if (movie.Tags.Contains(tag.Id))
@@ -156,7 +156,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test, Order(4)]
         public void delete_movie()
         {
-            var movie = EnsureMovie("tt0110912", "Pulp Fiction");
+            var movie = EnsureMovie(680, "Pulp Fiction");
 
             Movies.Get(movie.Id).Should().NotBeNull();
 
