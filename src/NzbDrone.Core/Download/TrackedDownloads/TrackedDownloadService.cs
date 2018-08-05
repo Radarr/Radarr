@@ -63,9 +63,10 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             {
 
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId);
-                var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+                var grabbedHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+                var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
                 //TODO: Create release info from history and use that here, so we don't loose indexer flags!
-                var parsedMovieInfo = _parsingService.ParseMovieInfo(trackedDownload.DownloadItem.Title, new List<object>{firstHistoryItem});
+                var parsedMovieInfo = _parsingService.ParseMovieInfo(trackedDownload.DownloadItem.Title, new List<object>{grabbedHistoryItem});
 
                 if (parsedMovieInfo != null)
                 {
@@ -80,7 +81,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.RemoteMovie == null ||
                         trackedDownload.RemoteMovie.Movie == null)
                     {
-                        parsedMovieInfo = _parsingService.ParseMovieInfo(firstHistoryItem.SourceTitle, new List<object>{firstHistoryItem});
+                        parsedMovieInfo = _parsingService.ParseMovieInfo(firstHistoryItem.SourceTitle, new List<object>{grabbedHistoryItem});
 
                         if (parsedMovieInfo != null)
                         {
