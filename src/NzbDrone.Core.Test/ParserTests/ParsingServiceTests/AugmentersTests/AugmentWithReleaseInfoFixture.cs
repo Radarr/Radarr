@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Rarbg;
+using NzbDrone.Core.Indexers.TorrentRss;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
@@ -13,15 +15,31 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
     [TestFixture]
     public class AugmentWithReleaseInfoFixture : AugmentMovieInfoFixture<AugmentWithReleaseInfo>
     {
+        private IndexerDefinition _indexerDefinition;
+
+        [SetUp]
+        public void Setup()
+        {
+
+        }
+
         private ReleaseInfo ReleaseInfoWithLanguages(params Language[] languages)
         {
+            _indexerDefinition = new IndexerDefinition
+            {
+                Settings = new RarbgSettings { MultiLanguages = languages.ToList().Select(l => (int) l) }
+            };
+
+            Mocker.GetMock<IIndexerFactory>()
+                .Setup(v => v.Get(1))
+                .Returns(_indexerDefinition);
+
             return new ReleaseInfo
             {
-                IndexerSettings = new RarbgSettings
-                {
-                    MultiLanguages = languages.ToList().Select(l => (int) l)
-                }
+                IndexerId = 1
             };
+
+
         }
 
         [Test]

@@ -13,7 +13,6 @@ namespace NzbDrone.Core.Parser.Model
         public string InfoUrl { get; set; }
         public string CommentUrl { get; set; }
         public int IndexerId { get; set; }
-        public IIndexerSettings IndexerSettings { get; set; }
         public string Indexer { get; set; }
         public DownloadProtocol DownloadProtocol { get; set; }
         public int TvdbId { get; set; }

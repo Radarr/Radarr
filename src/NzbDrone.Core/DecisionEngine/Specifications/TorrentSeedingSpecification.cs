@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Indexers;
@@ -19,19 +20,27 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
 
         //public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
-        
+
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var torrentInfo = subject.Release as TorrentInfo;
 
-            if (torrentInfo == null || torrentInfo.IndexerSettings == null)
+            IIndexerSettings indexerSettings = null;
+            try {
+                indexerSettings = _indexerFactory.Get(subject.Release.IndexerId)?.Settings as IIndexerSettings;
+            }
+            catch (Exception e)
+            {
+                _logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
+            }
+
+
+            if (torrentInfo == null || indexerSettings == null)
             {
                 return Decision.Accept();
             }
 
-            var torrentIndexerSettings = torrentInfo.IndexerSettings as ITorrentIndexerSettings;
-
-            if (torrentIndexerSettings != null)
+            if (indexerSettings is ITorrentIndexerSettings torrentIndexerSettings)
             {
                 var minimumSeeders = torrentIndexerSettings.MinimumSeeders;
 

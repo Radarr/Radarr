@@ -40,8 +40,8 @@ namespace NzbDrone.Core.Parser.Augmenters
 
                 if (int.TryParse(history.Data.GetValueOrDefault("indexerId"), out var indexerId))
                 {
-                    var indexerSettings = _indexerFactory.Get(indexerId).Settings as IIndexerSettings;
-                    releaseInfo.IndexerSettings = indexerSettings;
+                    //var indexerSettings = _indexerFactory.Get(indexerId).Settings as IIndexerSettings;
+                    releaseInfo.IndexerId = indexerId;
                 }
 
                 if (int.TryParse(history.Data.GetValueOrDefault("size"), out var size))

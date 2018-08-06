@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Parser.Augmenters
@@ -8,6 +9,13 @@ namespace NzbDrone.Core.Parser.Augmenters
     public class AugmentWithReleaseInfo : IAugmentParsedMovieInfo
 
     {
+        private readonly IIndexerFactory _indexerFactory;
+
+        public AugmentWithReleaseInfo(IIndexerFactory indexerFactory)
+        {
+            _indexerFactory = indexerFactory;
+        }
+
         public Type HelperType
         {
             get
@@ -18,17 +26,23 @@ namespace NzbDrone.Core.Parser.Augmenters
 
         public ParsedMovieInfo AugmentMovieInfo(ParsedMovieInfo movieInfo, object helper)
         {
-            var releaseInfo = helper as ReleaseInfo;
-
-            if (releaseInfo != null)
+            if (helper is ReleaseInfo releaseInfo)
             {
-                // First, let's augment the language!
+
+                IIndexerSettings indexerSettings = null;
+                try {
+                    indexerSettings = _indexerFactory.Get(releaseInfo.IndexerId)?.Settings as IIndexerSettings;
+                }
+                catch (Exception e)
+                {
+                    //_logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
+                }                // First, let's augment the language!
                 var languageTitle = movieInfo.SimpleReleaseTitle;
                 if (movieInfo.MovieTitle.IsNotNullOrWhiteSpace())
                 {
-                    if (languageTitle.ToLower().Contains("multi") && releaseInfo?.IndexerSettings?.MultiLanguages?.Any() == true)
+                    if (languageTitle.ToLower().Contains("multi") && indexerSettings?.MultiLanguages?.Any() == true)
                     {
-                        foreach (var i in releaseInfo.IndexerSettings.MultiLanguages)
+                        foreach (var i in indexerSettings.MultiLanguages)
                         {
                             var language = (Language) i;
                             if (!movieInfo.Languages.Contains(language))
