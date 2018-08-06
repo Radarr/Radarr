@@ -188,7 +188,7 @@ namespace NzbDrone.Core.Parser
                 Path = filename,
                 ParsedMovieInfo = enhanced,
                 ExistingFile = movie.Path.IsParentPath(filename),
-                MediaInfo = helpers.FirstOrDefault(h => h.GetType() == typeof(MediaInfoModel)) as MediaInfoModel
+                MediaInfo = helpers.FirstOrDefault(h => h?.GetType() == typeof(MediaInfoModel)) as MediaInfoModel
             };
         }
 
