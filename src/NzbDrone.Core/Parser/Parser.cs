@@ -265,7 +265,7 @@ namespace NzbDrone.Core.Parser
             var languageTitle = Regex.Replace(title.Replace(".", " "), foundTitle, "A Movie", RegexOptions.IgnoreCase);
 
             result.Languages = LanguageParser.ParseLanguages(title);
-            Logger.Debug("Language parsed: {0}", result.Languages);
+            Logger.Debug("Language parsed: {0}", result.Languages.ToExtendedString());
 
             result.Quality = QualityParser.ParseQuality(title);
             Logger.Debug("Quality parsed: {0}", result.Quality);

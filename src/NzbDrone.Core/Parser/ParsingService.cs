@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Parser
         private ParsedMovieInfo EnhanceMinimalInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
         {
             minimalInfo.Languages = LanguageParser.ParseLanguages(minimalInfo.SimpleReleaseTitle);
-            _logger.Debug("Language(s) parsed: {0}", string.Join(", ", minimalInfo.Languages));
+            _logger.Debug("Language(s) parsed: {0}", string.Join(", ", minimalInfo.Languages.ToExtendedString()));
 
             minimalInfo.Quality = QualityParser.ParseQuality(minimalInfo.SimpleReleaseTitle);
 

@@ -1,5 +1,6 @@
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
@@ -19,12 +20,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             var wantedLanguage = subject.Movie.Profile.Value.Language;
 
-            _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Languages);
+            _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Languages.ToExtendedString());
 
             if (!subject.ParsedMovieInfo.Languages.Contains(wantedLanguage))
             {
-                _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.ParsedMovieInfo.Languages, wantedLanguage);
-                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.ParsedMovieInfo.Languages);
+                _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.ParsedMovieInfo.Languages.ToExtendedString(), wantedLanguage);
+                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.ParsedMovieInfo.Languages.ToExtendedString());
             }
 
             return Decision.Accept();
