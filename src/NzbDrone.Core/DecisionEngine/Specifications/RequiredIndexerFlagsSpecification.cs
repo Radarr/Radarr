@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Datastore;
@@ -46,13 +47,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
                 var requiredFlags = torrentIndexerSettings.RequiredFlags;
                 var requiredFlag = (IndexerFlags) 0;
 
-                var enumerable = requiredFlags.ToList();
-                if (requiredFlags == null || !enumerable.Any())
+                if (requiredFlags == null || !requiredFlags.Any())
                 {
                     return Decision.Accept();
                 }
 
-                foreach (var flag in enumerable)
+                foreach (var flag in requiredFlags)
                 {
                     if (torrentInfo.IndexerFlags.HasFlag((IndexerFlags)flag))
                     {
