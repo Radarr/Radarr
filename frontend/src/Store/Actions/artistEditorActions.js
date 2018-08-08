@@ -1,12 +1,15 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { sortDirections } from 'Helpers/Props';
+import customFilterHandlers from 'Utilities/customFilterHandlers';
+import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createCustomFilterReducers from './Creators/Reducers/createCustomFilterReducers';
 import createHandleActions from './Creators/createHandleActions';
 import { set, updateItem } from './baseActions';
+import { filters, filterPredicates } from './artistActions';
 
 //
 // Variables
@@ -26,9 +29,58 @@ export const defaultState = {
   secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
   selectedFilterKey: 'all',
-  // filters come from artistActions
+  filters,
+  filterPredicates,
+
+  filterBuilderProps: [
+    {
+      name: 'monitored',
+      label: 'Monitored',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.ARTIST_STATUS
+    },
+    {
+      name: 'qualityProfileId',
+      label: 'Quality Profile',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.QUALITY_PROFILE
+    },
+    {
+      name: 'languageProfileId',
+      label: 'Language Profile',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.LANGUAGE_PROFILE
+    },
+    {
+      name: 'metadataProfileId',
+      label: 'Metadata Profile',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.METADATA_PROFILE
+    },
+    {
+      name: 'path',
+      label: 'Path',
+      type: filterBuilderTypes.STRING
+    },
+    {
+      name: 'rootFolderPath',
+      label: 'Root Folder Path',
+      type: filterBuilderTypes.EXACT
+    },
+    {
+      name: 'tags',
+      label: 'Tags',
+      type: filterBuilderTypes.ARRAY,
+      valueType: filterBuilderValueTypes.TAG
+    }
+  ],
   customFilters: []
-  // filterPredicates come from artistActions
 };
 
 export const persistState = [
@@ -45,6 +97,8 @@ export const SET_ARTIST_EDITOR_SORT = 'artistEditor/setArtistEditorSort';
 export const SET_ARTIST_EDITOR_FILTER = 'artistEditor/setArtistEditorFilter';
 export const SAVE_ARTIST_EDITOR = 'artistEditor/saveArtistEditor';
 export const BULK_DELETE_ARTIST = 'artistEditor/bulkDeleteArtist';
+export const REMOVE_ARTIST_EDITOR_CUSTOM_FILTER = 'artistEditor/removeArtistEditorCustomFilter';
+export const SAVE_ARTIST_EDITOR_CUSTOM_FILTER = 'artistEditor/saveArtistEditorCustomFilter';
 
 //
 // Action Creators
@@ -53,6 +107,8 @@ export const setArtistEditorSort = createAction(SET_ARTIST_EDITOR_SORT);
 export const setArtistEditorFilter = createAction(SET_ARTIST_EDITOR_FILTER);
 export const saveArtistEditor = createThunk(SAVE_ARTIST_EDITOR);
 export const bulkDeleteArtist = createThunk(BULK_DELETE_ARTIST);
+export const removeArtistEditorCustomFilter = createAction(REMOVE_ARTIST_EDITOR_CUSTOM_FILTER);
+export const saveArtistEditorCustomFilter = createAction(SAVE_ARTIST_EDITOR_CUSTOM_FILTER);
 
 //
 // Action Handlers
@@ -137,6 +193,11 @@ export const actionHandlers = handleThunks({
 export const reducers = createHandleActions({
 
   [SET_ARTIST_EDITOR_SORT]: createSetClientSideCollectionSortReducer(section),
-  [SET_ARTIST_EDITOR_FILTER]: createSetClientSideCollectionFilterReducer(section)
+  [SET_ARTIST_EDITOR_FILTER]: createSetClientSideCollectionFilterReducer(section),
+
+  ...createCustomFilterReducers(section, {
+    [customFilterHandlers.REMOVE]: REMOVE_ARTIST_EDITOR_CUSTOM_FILTER,
+    [customFilterHandlers.SAVE]: SAVE_ARTIST_EDITOR_CUSTOM_FILTER
+  })
 
 }, defaultState, section);

@@ -13,9 +13,10 @@ import FilterMenu from 'Components/Menu/FilterMenu';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import NoArtist from 'Artist/NoArtist';
+import OrganizeArtistModal from './Organize/OrganizeArtistModal';
 import ArtistEditorRowConnector from './ArtistEditorRowConnector';
 import ArtistEditorFooter from './ArtistEditorFooter';
-import OrganizeArtistModal from './Organize/OrganizeArtistModal';
+import ArtistEditorFilterModalConnector from './ArtistEditorFilterModalConnector';
 
 function getColumns(showLanguageProfile, showMetadataProfile) {
   return [
@@ -148,6 +149,7 @@ class ArtistEditor extends Component {
       isFetching,
       isPopulated,
       error,
+      totalItems,
       items,
       selectedFilterKey,
       filters,
@@ -184,6 +186,7 @@ class ArtistEditor extends Component {
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={customFilters}
+              filterModalConnectorComponent={ArtistEditorFilterModalConnector}
               onFilterSelect={onFilterSelect}
             />
           </PageToolbarSection>
@@ -234,7 +237,7 @@ class ArtistEditor extends Component {
 
           {
             !error && isPopulated && !items.length &&
-              <NoArtist />
+              <NoArtist totalItems={totalItems} />
           }
         </PageContentBodyConnector>
 
@@ -266,6 +269,7 @@ ArtistEditor.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),

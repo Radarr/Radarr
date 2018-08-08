@@ -15,8 +15,16 @@ function ArtistIndexFooter({ artist }) {
   let totalFileSize = 0;
 
   artist.forEach((s) => {
-    tracks += s.statistics.trackCount || 0;
-    trackFiles += s.statistics.trackFileCount || 0;
+    const { statistics = {} } = s;
+
+    const {
+      trackCount = 0,
+      trackFileCount = 0,
+      sizeOnDisk = 0
+    } = statistics;
+
+    tracks += trackCount;
+    trackFiles += trackFileCount;
 
     if (s.status === 'ended') {
       ended++;
@@ -28,7 +36,7 @@ function ArtistIndexFooter({ artist }) {
       monitored++;
     }
 
-    totalFileSize += s.statistics.sizeOnDisk || 0;
+    totalFileSize += sizeOnDisk;
   });
 
   return (

@@ -51,9 +51,7 @@ class LanguageProfiles extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Language Profiles"
-      >
+      <FieldSet legend="Language Profiles">
         <PageSectionContent
           errorMessage="Unable to load Language Profiles"
           {...otherProps}

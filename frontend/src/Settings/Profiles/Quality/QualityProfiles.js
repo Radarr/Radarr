@@ -51,9 +51,7 @@ class QualityProfiles extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Quality Profiles"
-      >
+      <FieldSet legend="Quality Profiles">
         <PageSectionContent
           errorMessage="Unable to load Quality Profiles"
           {...otherProps}c={true}

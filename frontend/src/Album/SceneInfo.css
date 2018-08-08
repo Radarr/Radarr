@@ -1,3 +1,9 @@
+.descriptionList {
+  composes: descriptionList from 'Components/DescriptionList/DescriptionList.css';
+
+  margin-right: 10px;
+}
+
 .title {
   composes: title from 'Components/DescriptionList/DescriptionListItemTitle.css';
 

@@ -1,5 +1,5 @@
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -8,7 +8,7 @@ import ArtistIndexBanners from './ArtistIndexBanners';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.artistIndex.bannerOptions,
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('artist', 'artistIndex'),
     createUISettingsSelector(),
     createDimensionsSelector(),
     (bannerOptions, artist, uiSettings, dimensions) => {
@@ -24,10 +24,4 @@ function createMapStateToProps() {
   );
 }
 
-export default connectSection(
-  createMapStateToProps,
-  undefined,
-  undefined,
-  undefined,
-  { section: 'artist', uiSection: 'artistIndex' }
-)(ArtistIndexBanners);
+export default connect(createMapStateToProps)(ArtistIndexBanners);

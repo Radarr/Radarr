@@ -124,6 +124,10 @@ const links = [
         to: '/settings/metadata'
       },
       {
+        title: 'Tags',
+        to: '/settings/tags'
+      },
+      {
         title: 'General',
         to: '/settings/general'
       },

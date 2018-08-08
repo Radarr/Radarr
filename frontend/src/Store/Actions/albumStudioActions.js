@@ -9,6 +9,7 @@ import createSetClientSideCollectionFilterReducer from './Creators/Reducers/crea
 import createHandleActions from './Creators/createHandleActions';
 import { set } from './baseActions';
 import { fetchAlbums } from './albumActions';
+import { fetchArtist, filters, filterPredicates } from './artistActions';
 
 //
 // Variables
@@ -26,9 +27,9 @@ export const defaultState = {
   secondarySortKey: 'sortName',
   secondarySortDirection: sortDirections.ASCENDING,
   selectedFilterKey: 'all',
-  // filters come from artistActions
+  filters,
+  filterPredicates,
   customFilters: []
-  // filterPredicates come from artistActions
 };
 
 export const persistState = [

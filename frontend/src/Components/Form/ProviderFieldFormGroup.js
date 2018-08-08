@@ -7,19 +7,6 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 
 function getType(type) {
-  // Textbox,
-  // Password,
-  // Checkbox,
-  // Select,
-  // Path,
-  // FilePath,
-  // Hidden,
-  // Tag,
-  // Action,
-  // Url,
-  // Captcha
-  // OAuth
-
   switch (type) {
     case 'captcha':
       return inputTypes.CAPTCHA;
@@ -27,6 +14,8 @@ function getType(type) {
       return inputTypes.CHECK;
     case 'password':
       return inputTypes.PASSWORD;
+    case 'number':
+      return inputTypes.NUMBER;
     case 'path':
       return inputTypes.PATH;
     case 'select':
@@ -83,6 +72,7 @@ function ProviderFieldFormGroup(props) {
       <FormInputGroup
         type={getType(type)}
         name={name}
+        label={label}
         helpText={helpText}
         helpLink={helpLink}
         value={value}

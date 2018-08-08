@@ -96,7 +96,7 @@ namespace Lidarr.Api.V1.Artist
                 });
             }
 
-            return _artistService.UpdateArtists(artistToUpdate)
+            return _artistService.UpdateArtists(artistToUpdate, !resource.MoveFiles)
                                  .ToResource()
                                  .AsResponse(HttpStatusCode.Accepted);
         }

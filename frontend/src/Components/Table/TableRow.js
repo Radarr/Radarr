@@ -6,6 +6,7 @@ function TableRow(props) {
   const {
     className,
     children,
+    overlayContent,
     ...otherProps
   } = props;
 
@@ -21,7 +22,8 @@ function TableRow(props) {
 
 TableRow.propTypes = {
   className: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  overlayContent: PropTypes.bool
 };
 
 TableRow.defaultProps = {

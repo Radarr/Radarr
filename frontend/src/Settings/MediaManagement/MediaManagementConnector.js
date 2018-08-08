@@ -1,19 +1,21 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import { fetchMediaManagementSettings, setMediaManagementSettingsValue, saveMediaManagementSettings, saveNamingSettings } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
-import connectSection from 'Store/connectSection';
 import MediaManagement from './MediaManagement';
+
+const SECTION = 'mediaManagement';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
     (state) => state.settings.naming,
-    createSettingsSectionSelector(),
+    createSettingsSectionSelector(SECTION),
     createSystemStatusSelector(),
     (advancedSettings, namingSettings, sectionSettings, systemStatus) => {
       return {
@@ -44,7 +46,7 @@ class MediaManagementConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: this.props.section });
+    this.props.clearPendingChanges({ section: SECTION });
   }
 
   //
@@ -74,7 +76,6 @@ class MediaManagementConnector extends Component {
 }
 
 MediaManagementConnector.propTypes = {
-  section: PropTypes.string.isRequired,
   fetchMediaManagementSettings: PropTypes.func.isRequired,
   setMediaManagementSettingsValue: PropTypes.func.isRequired,
   saveMediaManagementSettings: PropTypes.func.isRequired,
@@ -82,10 +83,4 @@ MediaManagementConnector.propTypes = {
   clearPendingChanges: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'settings.mediaManagement' }
-)(MediaManagementConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(MediaManagementConnector);

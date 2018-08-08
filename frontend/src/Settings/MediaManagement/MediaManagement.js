@@ -64,9 +64,7 @@ class MediaManagement extends Component {
 
                 {
                   advancedSettings &&
-                    <FieldSet
-                      legend="Folders"
-                    >
+                    <FieldSet legend="Folders">
                       <FormGroup
                         advancedSettings={advancedSettings}
                         isAdvanced={true}

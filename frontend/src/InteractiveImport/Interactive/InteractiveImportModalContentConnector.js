@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import { fetchInteractiveImportItems, setInteractiveImportSort, clearInteractiveImport, setInteractiveImportMode } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -11,7 +11,7 @@ import InteractiveImportModalContent from './InteractiveImportModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('interactiveImport'),
     (interactiveImport) => {
       return interactiveImport;
     }
@@ -125,8 +125,19 @@ class InteractiveImportModalContentConnector extends Component {
           return false;
         }
 
+        if (!quality) {
+          this.setState({ interactiveImportErrorMessage: 'Quality must be chosen for each selected file' });
+          return false;
+        }
+
+        if (!language) {
+          this.setState({ interactiveImportErrorMessage: 'Language must be chosen for each selected file' });
+          return false;
+        }
+
         files.push({
           path: item.path,
+          folderName: item.folderName,
           artistId: artist.id,
           albumId: album.id,
           trackIds: _.map(tracks, 'id'),
@@ -190,10 +201,4 @@ InteractiveImportModalContentConnector.defaultProps = {
   filterExistingFiles: true
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'interactiveImport' }
-)(InteractiveImportModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(InteractiveImportModalContentConnector);

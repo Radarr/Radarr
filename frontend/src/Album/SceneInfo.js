@@ -14,7 +14,7 @@ function SceneInfo(props) {
   } = props;
 
   return (
-    <DescriptionList>
+    <DescriptionList className={styles.descriptionList}>
       {
         sceneSeasonNumber !== undefined &&
           <DescriptionListItem

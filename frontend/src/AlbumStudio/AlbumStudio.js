@@ -101,6 +101,7 @@ class AlbumStudio extends Component {
       isFetching,
       isPopulated,
       error,
+      totalItems,
       items,
       selectedFilterKey,
       filters,
@@ -178,7 +179,7 @@ class AlbumStudio extends Component {
 
           {
             !error && isPopulated && !items.length &&
-              <NoArtist />
+              <NoArtist totalItems={totalItems} />
           }
         </PageContentBodyConnector>
 
@@ -197,6 +198,7 @@ AlbumStudio.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),

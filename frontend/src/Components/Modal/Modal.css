@@ -54,7 +54,7 @@
 .extraLarge {
   composes: modal;
 
-  width: 1440px;
+  width: 1280px;
 }
 
 @media only screen and (max-width: $breakpointExtraLarge) {

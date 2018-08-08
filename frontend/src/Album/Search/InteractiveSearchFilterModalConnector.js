@@ -18,8 +18,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onRemoveCustomFilterPress(index) {
-      dispatch(releaseActions.removeReleasesCustomFilter({ index }));
+    onRemoveCustomFilterPress(payload) {
+      dispatch(releaseActions.removeReleasesCustomFilter(payload));
     },
 
     onSaveCustomFilterPress(payload) {

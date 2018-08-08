@@ -45,9 +45,7 @@ class DiskSpace extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Disk Space"
-      >
+      <FieldSet legend="Disk Space">
         {
           isFetching &&
             <LoadingIndicator />

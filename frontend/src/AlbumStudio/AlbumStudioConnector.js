@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import { setAlbumStudioSort, setAlbumStudioFilter, saveAlbumStudio } from 'Store/Actions/albumStudioActions';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
@@ -9,7 +9,7 @@ import AlbumStudio from './AlbumStudio';
 
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('artist', 'albumStudio'),
     (artist) => {
       return {
         ...artist
@@ -88,10 +88,4 @@ AlbumStudioConnector.propTypes = {
   saveAlbumStudio: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'artist', uiSection: 'albumStudio' }
-)(AlbumStudioConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(AlbumStudioConnector);

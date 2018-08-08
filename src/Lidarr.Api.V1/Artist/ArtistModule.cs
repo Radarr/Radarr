@@ -9,6 +9,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.ArtistStats;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Commands;
@@ -19,7 +20,6 @@ using Lidarr.Api.V1.Albums;
 using NzbDrone.SignalR;
 using Lidarr.Http;
 using Lidarr.Http.Extensions;
-using Lidarr.Http.Mapping;
 
 namespace Lidarr.Api.V1.Artist
 {
@@ -39,6 +39,7 @@ namespace Lidarr.Api.V1.Artist
         private readonly IArtistStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
+        private readonly IRootFolderService _rootFolderService;
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
                             IArtistService artistService,
@@ -47,6 +48,7 @@ namespace Lidarr.Api.V1.Artist
                             IArtistStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
                             IManageCommandQueue commandQueueManager,
+                            IRootFolderService rootFolderService,
                             RootFolderValidator rootFolderValidator,
                             ArtistPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
@@ -65,6 +67,7 @@ namespace Lidarr.Api.V1.Artist
 
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
+            _rootFolderService = rootFolderService;
 
             GetResourceAll = AllArtists;
             GetResourceById = GetArtist;
@@ -112,6 +115,7 @@ namespace Lidarr.Api.V1.Artist
             FetchAndLinkArtistStatistics(resource);
             LinkNextPreviousAlbums(resource);
             //PopulateAlternateTitles(resource);
+            LinkRootFolderPath(resource);
 
             return resource;
         }
@@ -224,6 +228,11 @@ namespace Lidarr.Api.V1.Artist
 
         //    resource.AlternateTitles = mappings.Select(v => new AlternateTitleResource { Title = v.Title, SeasonNumber = v.SeasonNumber, SceneSeasonNumber = v.SceneSeasonNumber }).ToList();
         //}
+
+        private void LinkRootFolderPath(ArtistResource resource)
+        {
+            resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
+        }
 
         public void Handle(TrackImportedEvent message)
         {

@@ -12,9 +12,7 @@ class MoreInfo extends Component {
 
   render() {
     return (
-      <FieldSet
-        legend="More Info"
-      >
+      <FieldSet legend="More Info">
         <DescriptionList>
           <DescriptionListItemTitle>Home page</DescriptionListItemTitle>
           <DescriptionListItemDescription>

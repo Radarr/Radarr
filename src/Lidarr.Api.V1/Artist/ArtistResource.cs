@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Music;
-using Lidarr.Api.V1.Albums;
 using Lidarr.Http.REST;
 
 namespace Lidarr.Api.V1.Artist
@@ -96,7 +96,8 @@ namespace Lidarr.Api.V1.Artist
 
                 CleanName = model.CleanName,
                 ForeignArtistId = model.ForeignArtistId,
-                RootFolderPath = model.RootFolderPath,
+                // Root folder path is now calculated from the artist path
+                // RootFolderPath = model.RootFolderPath,
                 Genres = model.Genres,
                 Tags = model.Tags,
                 Added = model.Added,

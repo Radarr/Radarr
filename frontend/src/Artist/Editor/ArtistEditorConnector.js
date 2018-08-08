@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createCommandSelector from 'Store/Selectors/createCommandSelector';
 import { setArtistEditorSort, setArtistEditorFilter, saveArtistEditor } from 'Store/Actions/artistEditorActions';
@@ -14,7 +14,7 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('artist', 'artistEditor'),
     createCommandSelector(commandNames.RENAME_ARTIST),
     (languageProfiles, metadataProfiles, artist, isOrganizingArtist) => {
       return {
@@ -89,10 +89,4 @@ ArtistEditorConnector.propTypes = {
   dispatchExecuteCommand: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'artist', uiSection: 'artistEditor' }
-)(ArtistEditorConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(ArtistEditorConnector);

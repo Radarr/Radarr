@@ -57,7 +57,6 @@ namespace Lidarr.Http.ClientSchema
             return (T) ReadFromSchema(fields, typeof(T));
         }
 
-
         // Ideally this function should begin a System.Linq.Expression expression tree since it's faster.
         // But it's probably not needed till performance issues pop up.
         public static FieldMapping[] GetFieldMappings(Type type)

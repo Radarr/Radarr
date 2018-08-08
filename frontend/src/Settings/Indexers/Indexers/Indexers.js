@@ -59,9 +59,7 @@ class Indexers extends Component {
     } = this.state;
 
     return (
-      <FieldSet
-        legend="Indexers"
-      >
+      <FieldSet legend="Indexers">
         <PageSectionContent
           errorMessage="Unable to load Indexers"
           {...otherProps}

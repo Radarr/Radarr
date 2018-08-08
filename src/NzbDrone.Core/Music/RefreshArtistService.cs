@@ -153,6 +153,18 @@ namespace NzbDrone.Core.Music
             return albumsToUpdate;
         }
 
+        private void RescanArtist(Artist artist)
+        {
+            try
+            {
+                _diskScanService.Scan(artist);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Couldn't rescan artist {0}", artist);
+            }
+        }
+
         public void Execute(RefreshArtistCommand message)
         {
             _eventAggregator.PublishEvent(new ArtistRefreshStartingEvent(message.Trigger == CommandTrigger.Manual));
@@ -160,7 +172,17 @@ namespace NzbDrone.Core.Music
             if (message.ArtistId.HasValue)
             {
                 var artist = _artistService.GetArtist(message.ArtistId.Value);
-                RefreshArtistInfo(artist, true);
+
+                try
+                {
+                    RefreshArtistInfo(artist, true);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Couldn't refresh info for {0}", artist);
+                    RescanArtist(artist);
+                    throw;
+                }
             }
             else
             {
@@ -178,20 +200,14 @@ namespace NzbDrone.Core.Music
                         catch (Exception e)
                         {
                             _logger.Error(e, "Couldn't refresh info for {0}", artist);
+                            RescanArtist(artist);
                         }
                     }
 
                     else
                     {
-                        try
-                        {
-                            _logger.Info("Skipping refresh of artist: {0}", artist.Name);
-                            _diskScanService.Scan(artist);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(e, "Couldn't rescan artist {0}", artist);
-                        }
+                        _logger.Info("Skipping refresh of artist: {0}", artist.Name);
+                        RescanArtist(artist);
                     }
                 }
             }

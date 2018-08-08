@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import * as releaseActions from 'Store/Actions/releaseActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
@@ -10,7 +10,7 @@ import InteractiveAlbumSearchModalContent from './InteractiveAlbumSearchModalCon
 function createMapStateToProps() {
   return createSelector(
     (state) => state.releases.items.length,
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('releases'),
     createUISettingsSelector(),
     (totalReleasesCount, releases, uiSettings) => {
       return {
@@ -95,10 +95,4 @@ InteractiveAlbumSearchModalContentConnector.propTypes = {
   dispatchCancelFetchReleases: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  createMapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'releases' }
-)(InteractiveAlbumSearchModalContentConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(InteractiveAlbumSearchModalContentConnector);

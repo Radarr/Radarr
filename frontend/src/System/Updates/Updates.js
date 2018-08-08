@@ -19,6 +19,7 @@ class Updates extends Component {
 
   render() {
     const {
+      isFetching,
       isPopulated,
       error,
       items,
@@ -36,7 +37,7 @@ class Updates extends Component {
       <PageContent title="Updates">
         <PageContentBodyConnector>
           {
-            !isPopulated &&
+            !isPopulated && !error &&
               <LoadingIndicator />
           }
 
@@ -47,14 +48,24 @@ class Updates extends Component {
 
           {
             hasUpdateToInstall &&
+            <div className={styles.updateAvailable}>
               <SpinnerButton
-                kind={kinds.PRIMARY}
                 className={styles.updateAvailable}
+                kind={kinds.PRIMARY}
                 isSpinning={isInstallingUpdate}
                 onPress={onInstallLatestPress}
               >
                 Install Latest
               </SpinnerButton>
+
+              {
+                isFetching &&
+                  <LoadingIndicator
+                    className={styles.loading}
+                    size={20}
+                  />
+              }
+            </div>
           }
 
           {
@@ -68,6 +79,14 @@ class Updates extends Component {
                 <div className={styles.upToDateMessage}>
                   The latest version of Lidarr is already installed
                 </div>
+
+                {
+                  isFetching &&
+                    <LoadingIndicator
+                      className={styles.loading}
+                      size={20}
+                    />
+                }
               </div>
           }
 
@@ -126,7 +145,7 @@ class Updates extends Component {
 
           {
             !!error &&
-              <div className={styles.upToDateMessage}>
+              <div>
                 Failed to fetch updates
               </div>
           }
@@ -138,6 +157,7 @@ class Updates extends Component {
 }
 
 Updates.propTypes = {
+  isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.array.isRequired,

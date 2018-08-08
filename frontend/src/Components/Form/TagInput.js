@@ -58,20 +58,20 @@ class TagInput extends Component {
     return name;
   }
 
-  //
-  // Listeners
-
-  onInputContainerPress = () => {
-    this._autosuggestRef.input.focus();
-  }
-
-  onTagAdd(tag) {
+  addTag = _.debounce((tag) => {
     this.props.onTagAdd(tag);
 
     this.setState({
       value: '',
       suggestions: []
     });
+  }, 250, { leading: true, trailing: false })
+
+  //
+  // Listeners
+
+  onInputContainerPress = () => {
+    this._autosuggestRef.input.focus();
   }
 
   onInputChange = (event, { newValue, method }) => {
@@ -116,10 +116,9 @@ class TagInput extends Component {
       const tag = getTag(value, selectedIndex, suggestions, allowNew);
 
       if (tag) {
-        this.onTagAdd(tag);
+        this.addTag(tag);
+        event.preventDefault();
       }
-
-      event.preventDefault();
     }
   }
 
@@ -147,7 +146,7 @@ class TagInput extends Component {
     const tag = getTag(value, selectedIndex, suggestions, allowNew);
 
     if (tag) {
-      this.onTagAdd(tag);
+      this.addTag(tag);
     }
   }
 
@@ -174,7 +173,7 @@ class TagInput extends Component {
   }
 
   onSuggestionSelected = (event, { suggestion }) => {
-    this.onTagAdd(suggestion);
+    this.addTag(suggestion);
   }
 
   //
@@ -262,7 +261,7 @@ class TagInput extends Component {
 }
 
 export const tagShape = {
-  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  id: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]).isRequired,
   name: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
 };
 

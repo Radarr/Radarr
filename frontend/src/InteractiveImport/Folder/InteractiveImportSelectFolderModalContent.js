@@ -21,6 +21,10 @@ const recentFoldersColumns = [
   {
     name: 'lastUsed',
     label: 'Last Used'
+  },
+  {
+    name: 'actions',
+    label: ''
   }
 ];
 
@@ -62,6 +66,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
   render() {
     const {
       recentFolders,
+      onRemoveRecentFolderPress,
       onModalClose
     } = this.props;
 
@@ -95,6 +100,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
                             folder={recentFolder.folder}
                             lastUsed={recentFolder.lastUsed}
                             onPress={this.onRecentPathPress}
+                            onRemoveRecentFolderPress={onRemoveRecentFolderPress}
                           />
                         );
                       })
@@ -155,6 +161,7 @@ InteractiveImportSelectFolderModalContent.propTypes = {
   recentFolders: PropTypes.arrayOf(PropTypes.object).isRequired,
   onQuickImportPress: PropTypes.func.isRequired,
   onInteractiveImportPress: PropTypes.func.isRequired,
+  onRemoveRecentFolderPress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

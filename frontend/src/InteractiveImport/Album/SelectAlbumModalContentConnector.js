@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import {
   updateInteractiveImportItem,
   fetchInteractiveImportAlbums,
@@ -14,7 +14,7 @@ import SelectAlbumModalContent from './SelectAlbumModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('interactiveImport.albums'),
     (albums) => {
       return albums;
     }
@@ -92,10 +92,4 @@ SelectAlbumModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'interactiveImport.albums' }
-)(SelectAlbumModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(SelectAlbumModalContentConnector);

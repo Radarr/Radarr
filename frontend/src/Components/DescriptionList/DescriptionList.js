@@ -9,11 +9,12 @@ class DescriptionList extends Component {
 
   render() {
     const {
+      className,
       children
     } = this.props;
 
     return (
-      <dl className={styles.descriptionList}>
+      <dl className={className}>
         {children}
       </dl>
     );
@@ -21,7 +22,12 @@ class DescriptionList extends Component {
 }
 
 DescriptionList.propTypes = {
+  className: PropTypes.string.isRequired,
   children: PropTypes.node
+};
+
+DescriptionList.defaultProps = {
+  className: styles.descriptionList
 };
 
 export default DescriptionList;

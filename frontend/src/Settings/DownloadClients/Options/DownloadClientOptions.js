@@ -33,9 +33,7 @@ function DownloadClientOptions(props) {
       {
         hasSettings && !isFetching && !error &&
           <div>
-            <FieldSet
-              legend="Completed Download Handling"
-            >
+            <FieldSet legend="Completed Download Handling">
               <Form>
                 <FormGroup size={sizes.MEDIUM}>
                   <FormLabel>Enable</FormLabel>

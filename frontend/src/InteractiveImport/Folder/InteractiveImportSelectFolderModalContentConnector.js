@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { addRecentFolder } from 'Store/Actions/interactiveImportActions';
+import { addRecentFolder, removeRecentFolder } from 'Store/Actions/interactiveImportActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import InteractiveImportSelectFolderModalContent from './InteractiveImportSelectFolderModalContent';
@@ -20,6 +20,7 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   addRecentFolder,
+  removeRecentFolder,
   executeCommand
 };
 
@@ -44,6 +45,10 @@ class InteractiveImportSelectFolderModalContentConnector extends Component {
     this.props.onFolderSelect(folder);
   }
 
+  onRemoveRecentFolderPress = (folder) => {
+    this.props.removeRecentFolder({ folder });
+  }
+
   //
   // Render
 
@@ -57,6 +62,7 @@ class InteractiveImportSelectFolderModalContentConnector extends Component {
         {...this.props}
         onQuickImportPress={this.onQuickImportPress}
         onInteractiveImportPress={this.onInteractiveImportPress}
+        onRemoveRecentFolderPress={this.onRemoveRecentFolderPress}
       />
     );
   }
@@ -67,6 +73,7 @@ InteractiveImportSelectFolderModalContentConnector.propTypes = {
   onFolderSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   addRecentFolder: PropTypes.func.isRequired,
+  removeRecentFolder: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

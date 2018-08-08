@@ -26,6 +26,7 @@ import ImportListSettings from 'Settings/ImportLists/ImportListSettings';
 import DownloadClientSettings from 'Settings/DownloadClients/DownloadClientSettings';
 import NotificationSettings from 'Settings/Notifications/NotificationSettings';
 import MetadataSettings from 'Settings/Metadata/MetadataSettings';
+import TagSettings from 'Settings/Tags/TagSettings';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
 import UISettingsConnector from 'Settings/UI/UISettingsConnector';
 import Status from 'System/Status/Status';
@@ -189,6 +190,11 @@ function AppRoutes(props) {
       <Route
         path="/settings/metadata"
         component={MetadataSettings}
+      />
+
+      <Route
+        path="/settings/tags"
+        component={TagSettings}
       />
 
       <Route

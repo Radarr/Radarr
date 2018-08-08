@@ -191,6 +191,8 @@ class InteractiveImportRow extends Component {
     const showArtistPlaceholder = isSelected && !artist;
     const showAlbumNumberPlaceholder = isSelected && !!artist && !album;
     const showTrackNumbersPlaceholder = isSelected && !!album && !tracks.length;
+    const showQualityPlaceholder = isSelected && !quality;
+    const showLanguagePlaceholder = isSelected && !language;
 
     return (
       <TableRow>
@@ -237,20 +239,36 @@ class InteractiveImportRow extends Component {
           className={styles.quality}
           onPress={this.onSelectQualityPress}
         >
-          <EpisodeQuality
-            className={styles.label}
-            quality={quality}
-          />
+          {
+            showQualityPlaceholder &&
+              <InteractiveImportRowCellPlaceholder />
+          }
+
+          {
+            !showQualityPlaceholder && !!quality &&
+              <EpisodeQuality
+                className={styles.label}
+                quality={quality}
+              />
+          }
         </TableRowCellButton>
 
         <TableRowCellButton
           className={styles.language}
           onPress={this.onSelectLanguagePress}
         >
-          <EpisodeLanguage
-            className={styles.label}
-            language={language}
-          />
+          {
+            showLanguagePlaceholder &&
+              <InteractiveImportRowCellPlaceholder />
+          }
+
+          {
+            !showLanguagePlaceholder && !!language &&
+              <EpisodeLanguage
+                className={styles.label}
+                language={language}
+              />
+          }
         </TableRowCellButton>
 
         <TableRowCell>
@@ -310,16 +328,16 @@ class InteractiveImportRow extends Component {
         <SelectQualityModal
           isOpen={isSelectQualityModalOpen}
           id={id}
-          qualityId={quality.quality.id}
-          proper={quality.revision.version > 1}
-          real={quality.revision.real > 0}
+          qualityId={quality ? quality.quality.id : 0}
+          proper={quality ? quality.revision.version > 1 : false}
+          real={quality ? quality.revision.real > 0 : false}
           onModalClose={this.onSelectQualityModalClose}
         />
 
         <SelectLanguageModal
           isOpen={isSelectLanguageModalOpen}
           id={id}
-          languageId={language.id}
+          languageId={language ? language.id : 0}
           onModalClose={this.onSelectLanguageModalClose}
         />
       </TableRow>

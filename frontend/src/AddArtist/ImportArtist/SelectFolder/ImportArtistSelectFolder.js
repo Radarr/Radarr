@@ -106,9 +106,7 @@ class ImportArtistSelectFolder extends Component {
                 {
                   items.length > 0 ?
                     <div className={styles.recentFolders}>
-                      <FieldSet
-                        legend="Recent Folders"
-                      >
+                      <FieldSet legend="Recent Folders">
                         <Table
                           columns={rootFolderColumns}
                         >

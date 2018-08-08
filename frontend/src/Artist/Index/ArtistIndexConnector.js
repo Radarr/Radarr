@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import dimensions from 'Styles/Variables/dimensions';
 import createCommandSelector from 'Store/Selectors/createCommandSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -45,18 +46,21 @@ function getScrollTop(view, scrollTop, isSmallScreen) {
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.artist,
-    (state) => state.artistIndex,
+    createClientSideCollectionSelector('artist', 'artistIndex'),
     createCommandSelector(commandNames.REFRESH_ARTIST),
     createCommandSelector(commandNames.RSS_SYNC),
     createDimensionsSelector(),
-    (artist, artistIndex, isRefreshingArtist, isRssSyncExecuting, dimensionsState) => {
+    (
+      artist,
+      isRefreshingArtist,
+      isRssSyncExecuting,
+      dimensionsState
+    ) => {
       return {
+        ...artist,
         isRefreshingArtist,
         isRssSyncExecuting,
-        isSmallScreen: dimensionsState.isSmallScreen,
-        ...artist,
-        ...artistIndex
+        isSmallScreen: dimensionsState.isSmallScreen
       };
     }
   );

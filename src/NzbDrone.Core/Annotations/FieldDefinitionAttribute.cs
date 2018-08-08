@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Annotations
     public enum FieldType
     {
         Textbox,
+        Number,
         Password,
         Checkbox,
         Select,

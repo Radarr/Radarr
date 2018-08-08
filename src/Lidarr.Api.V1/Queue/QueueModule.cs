@@ -57,6 +57,24 @@ namespace Lidarr.Api.V1.Queue
                                       fullQueue.OrderByDescending(q => q.EstimatedCompletionTime, new EstimatedCompletionTimeComparer());
             }
 
+            else if (pagingSpec.SortKey == "protocol")
+            {
+                ordered = ascending ? fullQueue.OrderBy(q => q.Protocol) :
+                    fullQueue.OrderByDescending(q => q.Protocol);
+            }
+
+            else if (pagingSpec.SortKey == "indexer")
+            {
+                ordered = ascending ? fullQueue.OrderBy(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase) :
+                    fullQueue.OrderByDescending(q => q.Indexer, StringComparer.InvariantCultureIgnoreCase);
+            }
+
+            else if (pagingSpec.SortKey == "downloadClient")
+            {
+                ordered = ascending ? fullQueue.OrderBy(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase) :
+                    fullQueue.OrderByDescending(q => q.DownloadClient, StringComparer.InvariantCultureIgnoreCase);
+            }
+
             else
             {
                 ordered = ascending ? fullQueue.OrderBy(orderByFunc) : fullQueue.OrderByDescending(orderByFunc);

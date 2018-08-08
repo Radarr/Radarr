@@ -16,12 +16,14 @@ function createMapStateToProps() {
     createCommandExecutingSelector(commandNames.APPLICATION_UPDATE),
     (updates, uiSettings, isInstallingUpdate) => {
       const {
+        isFetching,
         isPopulated,
         error,
         items
       } = updates;
 
       return {
+        isFetching,
         isPopulated,
         error,
         items,

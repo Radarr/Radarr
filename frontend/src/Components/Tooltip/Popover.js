@@ -89,6 +89,7 @@ class Popover extends Component {
 
   render() {
     const {
+      className,
       anchor,
       title,
       body,
@@ -103,6 +104,7 @@ class Popover extends Component {
         {...tetherOptions[position]}
       >
         <span
+          className={className}
           // onClick={this.onClick}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
@@ -141,6 +143,7 @@ class Popover extends Component {
 }
 
 Popover.propTypes = {
+  className: PropTypes.string,
   anchor: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   body: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,

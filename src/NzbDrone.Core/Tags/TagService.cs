@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Tags
         Tag GetTag(int tagId);
         Tag GetTag(string tag);
         TagDetails Details(int tagId);
+        List<TagDetails> Details();
         List<Tag> All();
         Tag Add(Tag tag);
         Tag Update(Tag tag);
@@ -69,14 +70,41 @@ namespace NzbDrone.Core.Tags
             var artist = _artistService.AllForTag(tagId);
 
             return new TagDetails
-                   {
-                       Id = tagId,
-                       Label = tag.Label,
-                       DelayProfiles = delayProfiles,
-                       Notifications = notifications,
-                       Restrictions = restrictions,
-                       Artist = artist
-                   };
+            {
+                Id = tagId,
+                Label = tag.Label,
+                DelayProfileIds = delayProfiles.Select(c => c.Id).ToList(),
+                NotificationIds = notifications.Select(c => c.Id).ToList(),
+                RestrictionIds = restrictions.Select(c => c.Id).ToList(),
+                ArtistIds = artist.Select(c => c.Id).ToList()
+            };
+        }
+
+        public List<TagDetails> Details()
+        {
+            var tags = All();
+            var delayProfiles = _delayProfileService.All();
+            var notifications = _notificationFactory.All();
+            var restrictions = _restrictionService.All();
+            var artists = _artistService.GetAllArtists();
+
+            var details = new List<TagDetails>();
+
+            foreach (var tag in tags)
+            {
+                details.Add(new TagDetails
+                    {
+                        Id = tag.Id,
+                        Label = tag.Label,
+                        DelayProfileIds = delayProfiles.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                        NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                        RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                        ArtistIds = artists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
+                    }
+                );
+            }
+
+            return details;
         }
 
         public List<Tag> All()

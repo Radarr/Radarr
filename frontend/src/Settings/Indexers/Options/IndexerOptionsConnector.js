@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import { fetchIndexerOptions, setIndexerOptionsValue, saveIndexerOptions } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
-import connectSection from 'Store/connectSection';
 import IndexerOptions from './IndexerOptions';
+
+const SECTION = 'indexerOptions';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    createSettingsSectionSelector(),
+    createSettingsSectionSelector(SECTION),
     (advancedSettings, sectionSettings) => {
       return {
         advancedSettings,
@@ -62,7 +64,7 @@ class IndexerOptionsConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatchClearPendingChanges({ section: this.props.section });
+    this.props.dispatchClearPendingChanges({ section: SECTION });
   }
 
   //
@@ -86,7 +88,6 @@ class IndexerOptionsConnector extends Component {
 }
 
 IndexerOptionsConnector.propTypes = {
-  section: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired,
   hasPendingChanges: PropTypes.bool.isRequired,
   dispatchFetchIndexerOptions: PropTypes.func.isRequired,
@@ -97,10 +98,4 @@ IndexerOptionsConnector.propTypes = {
   onChildStateChange: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'settings.indexerOptions' }
-)(IndexerOptionsConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(IndexerOptionsConnector);

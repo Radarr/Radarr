@@ -10,6 +10,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
     {
         public string Path { get; set; }
         public string RelativePath { get; set; }
+        public string FolderName { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
         public Artist Artist { get; set; }

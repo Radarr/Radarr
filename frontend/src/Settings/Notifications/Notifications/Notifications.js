@@ -59,9 +59,7 @@ class Notifications extends Component {
     } = this.state;
 
     return (
-      <FieldSet
-        legend="Connections"
-      >
+      <FieldSet legend="Connections">
         <PageSectionContent
           errorMessage="Unable to load Notifications"
           {...otherProps}

@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import { setUISettingsValue, saveUISettings, fetchUISettings } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
-import connectSection from 'Store/connectSection';
 import UISettings from './UISettings';
+
+const SECTION = 'ui';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    createSettingsSectionSelector(),
+    createSettingsSectionSelector(SECTION),
     (advancedSettings, sectionSettings) => {
       return {
         advancedSettings,
@@ -37,7 +39,7 @@ class UISettingsConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: this.props.section });
+    this.props.clearPendingChanges({ section: SECTION });
   }
 
   //
@@ -66,17 +68,10 @@ class UISettingsConnector extends Component {
 }
 
 UISettingsConnector.propTypes = {
-  section: PropTypes.string.isRequired,
   setUISettingsValue: PropTypes.func.isRequired,
   saveUISettings: PropTypes.func.isRequired,
   fetchUISettings: PropTypes.func.isRequired,
   clearPendingChanges: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'settings.ui' }
-)(UISettingsConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(UISettingsConnector);

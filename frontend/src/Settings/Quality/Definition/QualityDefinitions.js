@@ -17,9 +17,7 @@ class QualityDefinitions extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Quality Definitions"
-      >
+      <FieldSet legend="Quality Definitions">
         <PageSectionContent
           errorMessage="Unable to load Quality Definitions"
           {...otherProps}

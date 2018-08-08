@@ -9,7 +9,26 @@
 }
 
 .inputContainer {
+  position: relative;
   flex: 1 1 auto;
+}
+
+.inputUnit {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  margin-top: 7px;
+  width: 75px;
+  color: #c6c6c6;
+  text-align: right;
+  pointer-events: none;
+  user-select: none;
+}
+
+.inputUnitNumber {
+  composes: inputUnit;
+
+  right: 40px;
 }
 
 .pendingChangesContainer {

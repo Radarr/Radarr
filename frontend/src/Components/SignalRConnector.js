@@ -5,6 +5,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { repopulatePage } from 'Utilities/pagePopulator';
+import titleCase from 'Utilities/String/titleCase';
 import { updateCommand, finishCommand } from 'Store/Actions/commandActions';
 import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
@@ -32,6 +33,13 @@ function isAppDisconnected(disconnectedTime) {
   }
 
   return Math.floor(new Date().getTime() / 1000) - disconnectedTime > 180;
+}
+
+function getHandlerName(name) {
+  name = titleCase(name);
+  name = name.replace('/', '');
+
+  return `handle${name}`;
 }
 
 function createMapStateToProps() {
@@ -91,6 +99,10 @@ class SignalRConnector extends Component {
   }
 
   componentWillUnmount() {
+    if (this.retryTimeoutId) {
+      this.retryTimeoutId = clearTimeout(this.retryTimeoutId);
+    }
+
     this.signalRconnection.stop();
     this.signalRconnection = null;
   }
@@ -106,6 +118,11 @@ class SignalRConnector extends Component {
     }
 
     this.retryTimeoutId = setTimeout(() => {
+      if (!this.signalRconnection) {
+        console.error('signalR: Connection was disposed');
+        return;
+      }
+
       this.signalRconnection.start(this.signalRconnectionOptions);
       this.retryInterval = Math.min(this.retryInterval + 1, 10);
     }, this.retryInterval * 1000);
@@ -117,70 +134,14 @@ class SignalRConnector extends Component {
       body
     } = message;
 
-    if (name === 'calendar') {
-      this.handleCalendar(body);
+    const handler = this[getHandlerName(name)];
+
+    if (handler) {
+      handler(body);
       return;
     }
 
-    if (name === 'command') {
-      this.handleCommand(body);
-      return;
-    }
-
-    if (name === 'album') {
-      this.handleAlbum(body);
-      return;
-    }
-
-    if (name === 'track') {
-      this.handleTrack(body);
-      return;
-    }
-
-    if (name === 'trackfile') {
-      this.handleTrackFile(body);
-      return;
-    }
-
-    if (name === 'health') {
-      this.handleHealth(body);
-      return;
-    }
-
-    if (name === 'artist') {
-      this.handleArtist(body);
-      return;
-    }
-
-    if (name === 'queue') {
-      this.handleQueue(body);
-      return;
-    }
-
-    if (name === 'queue/details') {
-      this.handleQueueDetails(body);
-      return;
-    }
-
-    if (name === 'queue/status') {
-      this.handleQueueStatus(body);
-      return;
-    }
-
-    if (name === 'version') {
-      this.handleVersion(body);
-      return;
-    }
-
-    if (name === 'wanted/cutoff') {
-      this.handleWantedCutoff(body);
-      return;
-    }
-
-    if (name === 'wanted/missing') {
-      this.handleWantedMissing(body);
-      return;
-    }
+    console.error(`signalR: Unable to find handler for ${name}`);
   }
 
   handleCalendar = (body) => {
@@ -237,7 +198,7 @@ class SignalRConnector extends Component {
     }
   }
 
-  handleHealth = (body) => {
+  handleHealth = () => {
     this.props.fetchHealth();
   }
 
@@ -252,13 +213,13 @@ class SignalRConnector extends Component {
     }
   }
 
-  handleQueue = (body) => {
+  handleQueue = () => {
     if (this.props.isQueuePopulated) {
       this.props.fetchQueue();
     }
   }
 
-  handleQueueDetails = (body) => {
+  handleQueueDetails = () => {
     this.props.fetchQueueDetails();
   }
 
@@ -292,12 +253,16 @@ class SignalRConnector extends Component {
     }
   }
 
+  handleSystemTask = () => {
+    // No-op for now, we may want this later
+  }
+
   //
   // Listeners
 
   onStateChanged = (change) => {
     const state = getState(change.newState);
-    console.log(`SignalR: ${state}`);
+    console.log(`signalR: ${state}`);
 
     if (state === 'connected') {
       // Clear disconnected time
@@ -326,7 +291,7 @@ class SignalRConnector extends Component {
   }
 
   onReceived = (message) => {
-    console.debug('SignalR: received', message.name, message.body);
+    console.debug('signalR: received', message.name, message.body);
 
     this.handleMessage(message);
   }

@@ -26,18 +26,17 @@ class OAuthInputConnector extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      accessToken,
-      accessTokenSecret,
+      result,
       onChange
     } = this.props;
 
-    if (accessToken &&
-        accessToken !== prevProps.accessToken &&
-        accessTokenSecret &&
-        accessTokenSecret !== prevProps.accessTokenSecret) {
-      onChange({ name: 'AccessToken', value: accessToken });
-      onChange({ name: 'AccessTokenSecret', value: accessTokenSecret });
+    if (!result || result === prevProps.result) {
+      return;
     }
+
+    Object.keys(result).forEach((key) => {
+      onChange({ name: key, value: result[key] });
+    });
   }
 
   componentWillUnmount = () => {
@@ -70,8 +69,7 @@ class OAuthInputConnector extends Component {
 }
 
 OAuthInputConnector.propTypes = {
-  accessToken: PropTypes.string,
-  accessTokenSecret: PropTypes.string,
+  result: PropTypes.object,
   provider: PropTypes.string.isRequired,
   providerData: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,

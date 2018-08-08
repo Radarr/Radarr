@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
 import { setIndexerValue, setIndexerFieldValue, saveIndexer, testIndexer } from 'Store/Actions/settingsActions';
-import connectSection from 'Store/connectSection';
 import EditIndexerModalContent from './EditIndexerModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('indexers'),
     (advancedSettings, indexer) => {
       return {
         advancedSettings,
@@ -85,10 +85,4 @@ EditIndexerModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'indexers' }
-)(EditIndexerModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditIndexerModalContentConnector);

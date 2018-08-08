@@ -7,6 +7,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
     public class ManualImportFile
     {
         public string Path { get; set; }
+        public string FolderName { get; set; }
         public int ArtistId { get; set; }
         public int AlbumId { get; set; }
         public List<int> TrackIds { get; set; }

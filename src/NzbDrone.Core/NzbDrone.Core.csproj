@@ -817,6 +817,7 @@
     <Compile Include="Music\AlbumAddedService.cs" />
     <Compile Include="Music\AlbumEditedService.cs" />
     <Compile Include="Music\AlbumRelease.cs" />
+    <Compile Include="Music\ArtistPathBuilder.cs" />
     <Compile Include="Music\ArtistStatusType.cs" />
     <Compile Include="Music\AlbumCutoffService.cs" />
     <Compile Include="Music\Commands\BulkMoveArtistCommand.cs" />

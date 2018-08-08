@@ -16,6 +16,7 @@ namespace Lidarr.Api.V1.ManualImport
     {
         public string Path { get; set; }
         public string RelativePath { get; set; }
+        public string FolderName { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
         public ArtistResource Artist { get; set; }
@@ -39,6 +40,7 @@ namespace Lidarr.Api.V1.ManualImport
                 Id = HashConverter.GetHashInt31(model.Path),
                 Path = model.Path,
                 RelativePath = model.RelativePath,
+                FolderName = model.FolderName,
                 Name = model.Name,
                 Size = model.Size,
                 Artist = model.Artist.ToResource(),

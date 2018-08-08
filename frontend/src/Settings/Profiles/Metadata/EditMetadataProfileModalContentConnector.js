@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProfileInUseSelector from 'Store/Selectors/createProfileInUseSelector';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
 import { fetchMetadataProfileSchema, setMetadataProfileValue, saveMetadataProfile } from 'Store/Actions/settingsActions';
-import connectSection from 'Store/connectSection';
 import EditMetadataProfileModalContent from './EditMetadataProfileModalContent';
 
 function createPrimaryAlbumTypesSelector() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('metadataProfiles'),
     (metadataProfile) => {
       const primaryAlbumTypes = metadataProfile.item.primaryAlbumTypes;
       if (!primaryAlbumTypes || !primaryAlbumTypes.value) {
@@ -79,7 +79,7 @@ function createReleaseStatusesSelector() {
 
 function createMapStateToProps() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('metadataProfiles'),
     createPrimaryAlbumTypesSelector(),
     createSecondaryAlbumTypesSelector(),
     createReleaseStatusesSelector(),
@@ -210,10 +210,4 @@ EditMetadataProfileModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'metadataProfiles' }
-)(EditMetadataProfileModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditMetadataProfileModalContentConnector);

@@ -117,9 +117,9 @@ class InteractiveAlbumSearchModalContent extends Component {
                   selectedFilterKey={selectedFilterKey}
                   filters={filters}
                   customFilters={customFilters}
-                  onFilterSelect={onFilterSelect}
                   buttonComponent={PageMenuButton}
                   filterModalConnectorComponent={InteractiveSearchFilterModalConnector}
+                  onFilterSelect={onFilterSelect}
                 />
               </div>
 

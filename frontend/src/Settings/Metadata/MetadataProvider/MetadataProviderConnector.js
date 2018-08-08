@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import { setMetadataProviderValue, saveMetadataProvider, fetchMetadataProvider } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
-import connectSection from 'Store/connectSection';
 import MetadataProvider from './MetadataProvider';
+
+const SECTION = 'metadataProvider';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    createSettingsSectionSelector(),
+    createSettingsSectionSelector(SECTION),
     (advancedSettings, sectionSettings) => {
       return {
         advancedSettings,
@@ -43,7 +45,7 @@ class MetadataProviderConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: this.props.section });
+    this.props.clearPendingChanges({ section: SECTION });
   }
 
   //
@@ -74,7 +76,6 @@ class MetadataProviderConnector extends Component {
 }
 
 MetadataProviderConnector.propTypes = {
-  section: PropTypes.string.isRequired,
   hasPendingChanges: PropTypes.bool.isRequired,
   setMetadataProviderValue: PropTypes.func.isRequired,
   saveMetadataProvider: PropTypes.func.isRequired,
@@ -83,10 +84,4 @@ MetadataProviderConnector.propTypes = {
   onHasPendingChange: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  { withRef: true },
-  { section: 'settings.metadataProvider' }
-)(MetadataProviderConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(MetadataProviderConnector);

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createFetchHandler from './Creators/createFetchHandler';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createHandleActions from './Creators/createHandleActions';
 import { update } from './baseActions';
 
@@ -16,7 +17,14 @@ export const defaultState = {
   isFetching: false,
   isPopulated: false,
   error: null,
-  items: []
+  items: [],
+
+  details: {
+    isFetching: false,
+    isPopulated: false,
+    error: null,
+    items: []
+  }
 };
 
 //
@@ -24,12 +32,16 @@ export const defaultState = {
 
 export const FETCH_TAGS = 'tags/fetchTags';
 export const ADD_TAG = 'tags/addTag';
+export const DELETE_TAG = 'tags/deleteTag';
+export const FETCH_TAG_DETAILS = 'tags/fetchTagDetails';
 
 //
 // Action Creators
 
 export const fetchTags = createThunk(FETCH_TAGS);
 export const addTag = createThunk(ADD_TAG);
+export const deleteTag = createThunk(DELETE_TAG);
+export const fetchTagDetails = createThunk(FETCH_TAG_DETAILS);
 
 //
 // Action Handlers
@@ -51,7 +63,11 @@ export const actionHandlers = handleThunks({
       dispatch(update({ section, data: tags }));
       payload.onTagCreated(data);
     });
-  }
+  },
+
+  [DELETE_TAG]: createRemoveItemHandler(section, '/tag'),
+  [FETCH_TAG_DETAILS]: createFetchHandler('tags.details', '/tag/detail')
+
 });
 
 //

@@ -83,6 +83,7 @@ function FormInputGroup(props) {
     containerClassName,
     inputClassName,
     type,
+    unit,
     buttons,
     helpText,
     helpTexts,
@@ -115,6 +116,19 @@ function FormInputGroup(props) {
             hasButton={hasButton}
             {...otherProps}
           />
+
+          {
+            unit &&
+              <div
+                className={
+                  type === inputTypes.NUMBER ?
+                    styles.inputUnitNumber :
+                    styles.inputUnit
+                }
+              >
+                {unit}
+              </div>
+          }
         </div>
 
         {
@@ -219,6 +233,7 @@ FormInputGroup.propTypes = {
   containerClassName: PropTypes.string.isRequired,
   inputClassName: PropTypes.string,
   type: PropTypes.string.isRequired,
+  unit: PropTypes.string,
   buttons: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
   helpText: PropTypes.string,
   helpTexts: PropTypes.arrayOf(PropTypes.string),

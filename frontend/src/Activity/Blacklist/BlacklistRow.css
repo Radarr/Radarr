@@ -11,8 +11,8 @@
   width: 80px;
 }
 
-.details {
+.actions {
   composes: cell from 'Components/Table/Cells/TableRowCell.css';
 
-  width: 30px;
+  width: 70px;
 }

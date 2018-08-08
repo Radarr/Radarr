@@ -14,18 +14,21 @@ namespace NzbDrone.Core.Music
     {
         private readonly IArtistService _artistService;
         private readonly IBuildFileNames _filenameBuilder;
+        private readonly IDiskProvider _diskProvider;
         private readonly IDiskTransferService _diskTransferService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public MoveArtistService(IArtistService artistService,
                                  IBuildFileNames filenameBuilder,
+                                 IDiskProvider diskProvider,
                                  IDiskTransferService diskTransferService,
                                  IEventAggregator eventAggregator,
                                  Logger logger)
         {
             _artistService = artistService;
             _filenameBuilder = filenameBuilder;
+            _diskProvider = diskProvider;
             _diskTransferService = diskTransferService;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -33,6 +36,12 @@ namespace NzbDrone.Core.Music
 
         private void MoveSingleArtist(Artist artist, string sourcePath, string destinationPath)
         {
+            if (!_diskProvider.FolderExists(sourcePath))
+            {
+                _logger.Debug("Folder '{0}' for '{1}' does not exist, not moving.", sourcePath, artist.Name);
+                return;
+            }
+
             _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", artist.Name, sourcePath, destinationPath);
 
             try

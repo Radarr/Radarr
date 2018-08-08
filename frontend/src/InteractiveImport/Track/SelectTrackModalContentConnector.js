@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
 import { fetchTracks, setTracksSort, clearTracks } from 'Store/Actions/trackActions';
 import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
@@ -10,7 +10,7 @@ import SelectTrackModalContent from './SelectTrackModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    createClientSideCollectionSelector(),
+    createClientSideCollectionSelector('tracks'),
     (tracks) => {
       return tracks;
     }
@@ -94,10 +94,4 @@ SelectTrackModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'tracks' }
-)(SelectTrackModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(SelectTrackModalContentConnector);

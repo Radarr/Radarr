@@ -4,6 +4,7 @@ import titleCase from 'Utilities/String/titleCase';
 import FieldSet from 'Components/FieldSet';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import styles from './About.css';
 
 class About extends Component {
 
@@ -22,10 +23,8 @@ class About extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="About"
-      >
-        <DescriptionList>
+      <FieldSet legend="About">
+        <DescriptionList className={styles.descriptionList}>
           <DescriptionListItem
             title="Version"
             data={version}

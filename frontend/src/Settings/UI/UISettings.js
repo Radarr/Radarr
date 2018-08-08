@@ -82,9 +82,7 @@ class UISettings extends Component {
                 id="uiSettings"
                 {...otherProps}
               >
-                <FieldSet
-                  legend="Calendar"
-                >
+                <FieldSet legend="Calendar">
                   <FormGroup>
                     <FormLabel>First Day of Week</FormLabel>
 

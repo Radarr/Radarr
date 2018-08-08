@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { align } from 'Helpers/Props';
 import FilterMenu from 'Components/Menu/FilterMenu';
+import ArtistIndexFilterModalConnector from 'Artist/Index/ArtistIndexFilterModalConnector';
 
 function ArtistIndexFilterMenu(props) {
   const {
@@ -19,6 +20,7 @@ function ArtistIndexFilterMenu(props) {
       selectedFilterKey={selectedFilterKey}
       filters={filters}
       customFilters={customFilters}
+      filterModalConnectorComponent={ArtistIndexFilterModalConnector}
       onFilterSelect={onFilterSelect}
     />
   );

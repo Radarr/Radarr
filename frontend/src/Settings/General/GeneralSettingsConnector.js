@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
@@ -9,14 +10,15 @@ import { setGeneralSettingsValue, saveGeneralSettings, fetchGeneralSettings } fr
 import { clearPendingChanges } from 'Store/Actions/baseActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { restart } from 'Store/Actions/systemActions';
-import connectSection from 'Store/connectSection';
 import * as commandNames from 'Commands/commandNames';
 import GeneralSettings from './GeneralSettings';
+
+const SECTION = 'general';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    createSettingsSectionSelector(),
+    createSettingsSectionSelector(SECTION),
     createCommandsSelector(),
     createSystemStatusSelector(),
     (advancedSettings, sectionSettings, commands, systemStatus) => {
@@ -59,7 +61,7 @@ class GeneralSettingsConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: this.props.section });
+    this.props.clearPendingChanges({ section: SECTION });
   }
 
   //
@@ -98,7 +100,6 @@ class GeneralSettingsConnector extends Component {
 }
 
 GeneralSettingsConnector.propTypes = {
-  section: PropTypes.string.isRequired,
   isResettingApiKey: PropTypes.bool.isRequired,
   setGeneralSettingsValue: PropTypes.func.isRequired,
   saveGeneralSettings: PropTypes.func.isRequired,
@@ -108,10 +109,4 @@ GeneralSettingsConnector.propTypes = {
   clearPendingChanges: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'settings.general' }
-)(GeneralSettingsConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(GeneralSettingsConnector);

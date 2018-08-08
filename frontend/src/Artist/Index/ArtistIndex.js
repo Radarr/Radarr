@@ -185,6 +185,7 @@ class ArtistIndex extends Component {
       isFetching,
       isPopulated,
       error,
+      totalItems,
       items,
       selectedFilterKey,
       filters,
@@ -341,7 +342,7 @@ class ArtistIndex extends Component {
 
             {
               !error && isPopulated && !items.length &&
-                <NoArtist />
+                <NoArtist totalItems={totalItems} />
             }
           </PageContentBodyConnector>
 
@@ -379,6 +380,7 @@ ArtistIndex.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,

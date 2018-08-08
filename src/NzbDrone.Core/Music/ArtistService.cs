@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Music
         List<Artist> GetAllArtists();
         List<Artist> AllForTag(int tagId);
         Artist UpdateArtist(Artist artist);
-        List<Artist> UpdateArtists(List<Artist> artist);
+        List<Artist> UpdateArtists(List<Artist> artist, bool useExistingRelativeFolder);
         bool ArtistPathExists(string folder);
         void RemoveAddOptions(Artist artist);
     }
@@ -35,19 +35,19 @@ namespace NzbDrone.Core.Music
         private readonly IArtistRepository _artistRepository;
         private readonly IEventAggregator _eventAggregator;
         private readonly ITrackService _trackService;
-        private readonly IBuildFileNames _fileNameBuilder;
+        private readonly IBuildArtistPaths _artistPathBuilder;
         private readonly Logger _logger;
 
         public ArtistService(IArtistRepository artistRepository,
                             IEventAggregator eventAggregator,
                             ITrackService trackService,
-                            IBuildFileNames fileNameBuilder,
+                            IBuildArtistPaths artistPathBuilder,
                             Logger logger)
         {
             _artistRepository = artistRepository;
             _eventAggregator = eventAggregator;
             _trackService = trackService;
-            _fileNameBuilder = fileNameBuilder;
+            _artistPathBuilder = artistPathBuilder;
             _logger = logger;
         }
 
@@ -141,22 +141,22 @@ namespace NzbDrone.Core.Music
             return updatedArtist;
         }
 
-        public List<Artist> UpdateArtists(List<Artist> artist)
+        public List<Artist> UpdateArtists(List<Artist> artist, bool useExistingRelativeFolder)
         {
             _logger.Debug("Updating {0} artist", artist.Count);
+
             foreach (var s in artist)
             {
                 _logger.Trace("Updating: {0}", s.Name);
+
                 if (!s.RootFolderPath.IsNullOrWhiteSpace())
                 {
-                    // Build the artist folder name instead of using the existing folder name.
-                    // This may lead to folder name changes, but consistent with adding a new artist.
+                    s.Path = _artistPathBuilder.BuildPath(s, useExistingRelativeFolder);
 
-                    s.Path = Path.Combine(s.RootFolderPath, _fileNameBuilder.GetArtistFolder(s));
+                    //s.Path = Path.Combine(s.RootFolderPath, _fileNameBuilder.GetArtistFolder(s));
 
                     _logger.Trace("Changing path for {0} to {1}", s.Name, s.Path);
                 }
-
                 else
                 {
                     _logger.Trace("Not changing path for: {0}", s.Name);

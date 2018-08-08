@@ -26,7 +26,7 @@ class AlbumStudioAlbum extends Component {
       id,
       title,
       monitored,
-      statistics,
+      statistics = {},
       isSaving
     } = this.props;
 

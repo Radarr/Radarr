@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
@@ -31,7 +33,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [Test]
         public void should_call_repo_updateMany()
         {
-            Subject.UpdateArtists(_artists);
+            Subject.UpdateArtists(_artists, false);
 
             Mocker.GetMock<IArtistRepository>().Verify(v => v.UpdateMany(_artists), Times.Once());
         }
@@ -46,13 +48,18 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
             var newRoot = @"C:\Test\Music2".AsOsAgnostic();
             _artists.ForEach(s => s.RootFolderPath = newRoot);
 
-            Subject.UpdateArtists(_artists).ForEach(s => s.Path.Should().StartWith(newRoot));
+            Mocker.GetMock<IBuildArtistPaths>()
+                .Setup(s => s.BuildPath(It.IsAny<Artist>(), false))
+                .Returns<Artist, bool>((s, u) => Path.Combine(s.RootFolderPath, s.Name));
+
+
+            Subject.UpdateArtists(_artists, false).ForEach(s => s.Path.Should().StartWith(newRoot));
         }
 
         [Test]
         public void should_not_update_path_when_rootFolderPath_is_empty()
         {
-            Subject.UpdateArtists(_artists).ForEach(s =>
+            Subject.UpdateArtists(_artists, false).ForEach(s =>
             {
                 var expectedPath = _artists.Single(ser => ser.Id == s.Id).Path;
                 s.Path.Should().Be(expectedPath);
@@ -75,7 +82,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
             var newRoot = @"C:\Test\Music2".AsOsAgnostic();
             artist.ForEach(s => s.RootFolderPath = newRoot);
 
-            Subject.UpdateArtists(artist);
+            Subject.UpdateArtists(artist, false);
         }
     }
 }

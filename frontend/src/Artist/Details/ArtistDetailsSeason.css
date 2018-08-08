@@ -29,9 +29,8 @@
   font-size: 18px;
 }
 
-.episodeCountContainer {
-  margin-left: 10px;
-  vertical-align: text-bottom;
+.episodeCountTooltip {
+  display: flex;
 }
 
 .expandButton {

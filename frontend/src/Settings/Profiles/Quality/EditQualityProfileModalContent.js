@@ -145,7 +145,7 @@ class EditQualityProfileModalContent extends Component {
                     <div className={styles.formGroupsContainer}>
                       <div className={styles.formGroupWrapper}>
                         <FormGroup size={sizes.EXTRA_SMALL}>
-                          <FormLabel size={sizes.small}>
+                          <FormLabel size={sizes.SMALL}>
                             Name
                           </FormLabel>
 
@@ -158,7 +158,7 @@ class EditQualityProfileModalContent extends Component {
                         </FormGroup>
 
                         <FormGroup size={sizes.EXTRA_SMALL}>
-                          <FormLabel size={sizes.small}>
+                          <FormLabel size={sizes.SMALL}>
                             Cutoff
                           </FormLabel>
 

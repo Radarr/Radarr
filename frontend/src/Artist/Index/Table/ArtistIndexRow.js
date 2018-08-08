@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import getProgressBarKind from 'Utilities/Artist/getProgressBarKind';
 import formatBytes from 'Utilities/Number/formatBytes';
 import { icons } from 'Helpers/Props';
+import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
@@ -75,6 +76,8 @@ class ArtistIndexRow extends Component {
       lastAlbum,
       added,
       statistics,
+      genres,
+      ratings,
       path,
       tags,
       columns,
@@ -303,6 +306,34 @@ class ArtistIndexRow extends Component {
               );
             }
 
+            if (name === 'genres') {
+              const joinedGenres = genres.join(', ');
+
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <span title={joinedGenres}>
+                    {joinedGenres}
+                  </span>
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'ratings') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <HeartRating
+                    rating={ratings.value}
+                  />
+                </VirtualTableRowCell>
+              );
+            }
+
             if (name === 'tags') {
               return (
                 <VirtualTableRowCell
@@ -376,6 +407,8 @@ ArtistIndexRow.propTypes = {
   statistics: PropTypes.object.isRequired,
   latestAlbum: PropTypes.object,
   path: PropTypes.string.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
+  ratings: PropTypes.object.isRequired,
   tags: PropTypes.arrayOf(PropTypes.number).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRefreshingArtist: PropTypes.bool.isRequired,

@@ -48,12 +48,14 @@ class NumberInput extends Component {
 
   render() {
     const {
+      value,
       ...otherProps
     } = this.props;
 
     return (
       <TextInput
         type="number"
+        value={value == null ? '' : value}
         {...otherProps}
         onChange={this.onChange}
         onBlur={this.onBlur}

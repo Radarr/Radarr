@@ -1,9 +1,22 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import styles from './NoArtist.css';
 
-function NoArtist() {
+function NoArtist(props) {
+  const { totalItems } = props;
+
+  if (totalItems > 0) {
+    return (
+      <div>
+        <div className={styles.message}>
+        All artists are hidden due to the applied filter.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className={styles.message}>
@@ -30,5 +43,9 @@ function NoArtist() {
     </div>
   );
 }
+
+NoArtist.propTypes = {
+  totalItems: PropTypes.number.isRequired
+};
 
 export default NoArtist;

@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
 import { setDownloadClientValue, setDownloadClientFieldValue, saveDownloadClient, testDownloadClient } from 'Store/Actions/settingsActions';
-import connectSection from 'Store/connectSection';
 import EditDownloadClientModalContent from './EditDownloadClientModalContent';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('downloadClients'),
     (advancedSettings, downloadClient) => {
       return {
         advancedSettings,
@@ -85,10 +85,4 @@ EditDownloadClientModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'downloadClients' }
-)(EditDownloadClientModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditDownloadClientModalContentConnector);

@@ -32,7 +32,7 @@ function RootFolderSelectInputSelectedValue(props) {
 }
 
 RootFolderSelectInputSelectedValue.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   freeSpace: PropTypes.number,
   includeFreeSpace: PropTypes.bool.isRequired
 };

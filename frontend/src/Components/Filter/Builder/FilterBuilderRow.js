@@ -3,10 +3,17 @@ import React, { Component } from 'react';
 import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Props';
 import SelectInput from 'Components/Form/SelectInput';
 import IconButton from 'Components/Link/IconButton';
+import BoolFilterBuilderRowValue from './BoolFilterBuilderRowValue';
+import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
 import FilterBuilderRowValueConnector from './FilterBuilderRowValueConnector';
 import IndexerFilterBuilderRowValueConnector from './IndexerFilterBuilderRowValueConnector';
+import LanguageProfileFilterBuilderRowValueConnector from './LanguageProfileFilterBuilderRowValueConnector';
+import MetadataProfileFilterBuilderRowValueConnector from './MetadataProfileFilterBuilderRowValueConnector';
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
+import QualityProfileFilterBuilderRowValueConnector from './QualityProfileFilterBuilderRowValueConnector';
+import ArtistStatusFilterBuilderRowValue from './ArtistStatusFilterBuilderRowValue';
+import TagFilterBuilderRowValueConnector from './TagFilterBuilderRowValueConnector';
 import styles from './FilterBuilderRow.css';
 
 function getselectedFilterBuilderProp(filterBuilderProps, name) {
@@ -29,6 +36,14 @@ function getDefaultFilterType(selectedFilterBuilderProp) {
   return filterBuilderTypes.possibleFilterTypes[selectedFilterBuilderProp.type][0].key;
 }
 
+function getDefaultFilterValue(selectedFilterBuilderProp) {
+  if (selectedFilterBuilderProp.type === filterBuilderTypes.DATE) {
+    return '';
+  }
+
+  return [];
+}
+
 function getRowValueConnector(selectedFilterBuilderProp) {
   if (!selectedFilterBuilderProp) {
     return FilterBuilderRowValueConnector;
@@ -37,14 +52,35 @@ function getRowValueConnector(selectedFilterBuilderProp) {
   const valueType = selectedFilterBuilderProp.valueType;
 
   switch (valueType) {
+    case filterBuilderValueTypes.BOOL:
+      return BoolFilterBuilderRowValue;
+
+    case filterBuilderValueTypes.DATE:
+      return DateFilterBuilderRowValue;
+
     case filterBuilderValueTypes.INDEXER:
       return IndexerFilterBuilderRowValueConnector;
+
+    case filterBuilderValueTypes.LANGUAGE_PROFILE:
+      return LanguageProfileFilterBuilderRowValueConnector;
+
+    case filterBuilderValueTypes.METADATA_PROFILE:
+      return MetadataProfileFilterBuilderRowValueConnector;
 
     case filterBuilderValueTypes.PROTOCOL:
       return ProtocolFilterBuilderRowValue;
 
     case filterBuilderValueTypes.QUALITY:
       return QualityFilterBuilderRowValueConnector;
+
+    case filterBuilderValueTypes.QUALITY_PROFILE:
+      return QualityProfileFilterBuilderRowValueConnector;
+
+    case filterBuilderValueTypes.ARTIST_STATUS:
+      return ArtistStatusFilterBuilderRowValue;
+
+    case filterBuilderValueTypes.TAG:
+      return TagFilterBuilderRowValueConnector;
 
     default:
       return FilterBuilderRowValueConnector;
@@ -59,9 +95,15 @@ class FilterBuilderRow extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      selectedFilterBuilderProp: null
-    };
+    const {
+      filterKey,
+      filterBuilderProps
+    } = props;
+
+    if (filterKey) {
+      const selectedFilterBuilderProp = filterBuilderProps.find((a) => a.name === filterKey);
+      this.selectedFilterBuilderProp = selectedFilterBuilderProp;
+    }
   }
 
   componentDidMount() {
@@ -74,7 +116,7 @@ class FilterBuilderRow extends Component {
 
     if (filterKey) {
       const selectedFilterBuilderProp = filterBuilderProps.find((a) => a.name === filterKey);
-      this.setState({ selectedFilterBuilderProp });
+      this.selectedFilterBuilderProp = selectedFilterBuilderProp;
 
       return;
     }
@@ -83,13 +125,12 @@ class FilterBuilderRow extends Component {
 
     const filter = {
       key: selectedFilterBuilderProp.name,
-      value: [],
+      value: getDefaultFilterValue(selectedFilterBuilderProp),
       type: getDefaultFilterType(selectedFilterBuilderProp)
     };
 
-    this.setState({ selectedFilterBuilderProp }, () => {
-      onFilterChange(index, filter);
-    });
+    this.selectedFilterBuilderProp = selectedFilterBuilderProp;
+    onFilterChange(index, filter);
   }
 
   //
@@ -107,13 +148,12 @@ class FilterBuilderRow extends Component {
 
     const filter = {
       key,
-      value: [],
+      value: getDefaultFilterValue(selectedFilterBuilderProp),
       type
     };
 
-    this.setState({ selectedFilterBuilderProp }, () => {
-      onFilterChange(index, filter);
-    });
+    this.selectedFilterBuilderProp = selectedFilterBuilderProp;
+    onFilterChange(index, filter);
   }
 
   onFilterChange = ({ name, value }) => {
@@ -163,12 +203,11 @@ class FilterBuilderRow extends Component {
       filterType,
       filterValue,
       filterCount,
-      filterBuilderProps
+      filterBuilderProps,
+      sectionItems
     } = this.props;
 
-    const {
-      selectedFilterBuilderProp
-    } = this.state;
+    const selectedFilterBuilderProp = this.selectedFilterBuilderProp;
 
     const keyOptions = filterBuilderProps.map((availablePropFilter) => {
       return {
@@ -209,8 +248,10 @@ class FilterBuilderRow extends Component {
           {
             filterValue != null && !!selectedFilterBuilderProp &&
               <ValueComponent
+                filterType={filterType}
                 filterValue={filterValue}
                 selectedFilterBuilderProp={selectedFilterBuilderProp}
+                sectionItems={sectionItems}
                 onChange={this.onFilterChange}
               />
           }
@@ -236,10 +277,11 @@ class FilterBuilderRow extends Component {
 FilterBuilderRow.propTypes = {
   index: PropTypes.number.isRequired,
   filterKey: PropTypes.string,
-  filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
+  filterValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array, PropTypes.object]),
   filterType: PropTypes.string,
   filterCount: PropTypes.number.isRequired,
   filterBuilderProps: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sectionItems: PropTypes.arrayOf(PropTypes.object).isRequired,
   onFilterChange: PropTypes.func.isRequired,
   onAddPress: PropTypes.func.isRequired,
   onRemovePress: PropTypes.func.isRequired

@@ -66,9 +66,7 @@ class DelayProfiles extends Component {
 
     return (
       <Measure onMeasure={this.onMeasure}>
-        <FieldSet
-          legend="Delay Profiles"
-        >
+        <FieldSet legend="Delay Profiles">
           <PageSectionContent
             errorMessage="Unable to load Delay Profiles"
             {...otherProps}

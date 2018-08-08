@@ -48,7 +48,7 @@ namespace Lidarr.Api.V1.System
         private Response GetStatus()
         {
             return new
-                {
+            {
                 Version = BuildInfo.Version.ToString(),
                 BuildTime = BuildInfo.BuildDateTime,
                 IsDebug = BuildInfo.IsDebug,
@@ -71,7 +71,8 @@ namespace Lidarr.Api.V1.System
                 MigrationVersion = _database.Migration,
                 UrlBase = _configFileProvider.UrlBase,
                 RuntimeVersion = _platformInfo.Version,
-                RuntimeName = PlatformInfo.Platform
+                RuntimeName = PlatformInfo.Platform,
+                StartTime = _runtimeInfo.StartTime
             }.AsResponse();
         }
 

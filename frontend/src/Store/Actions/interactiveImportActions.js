@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import $ from 'jquery';
 import moment from 'moment';
 import { createAction } from 'redux-actions';
@@ -44,7 +43,7 @@ export const defaultState = {
     },
 
     quality: function(item, direction) {
-      return item.quality.qualityWeight;
+      return item.quality ? item.quality.qualityWeight : 0;
     }
   },
 
@@ -144,7 +143,7 @@ export const reducers = createHandleActions({
     const id = payload.id;
     const newState = Object.assign({}, state);
     const items = newState.items;
-    const index = _.findIndex(items, { id });
+    const index = items.findIndex((item) => item.id === id);
     const item = Object.assign({}, items[index], payload);
 
     newState.items = [...items];
@@ -157,7 +156,7 @@ export const reducers = createHandleActions({
     const folder = payload.folder;
     const recentFolder = { folder, lastUsed: moment().toISOString() };
     const recentFolders = [...state.recentFolders];
-    const index = _.findIndex(recentFolders, { folder });
+    const index = recentFolders.findIndex((r) => r.folder === folder);
 
     if (index > -1) {
       recentFolders.splice(index, 1, recentFolder);
@@ -170,7 +169,10 @@ export const reducers = createHandleActions({
 
   [REMOVE_RECENT_FOLDER]: function(state, { payload }) {
     const folder = payload.folder;
-    const recentFolders = _.remove([...state.recentFolders], { folder });
+    const recentFolders = [...state.recentFolders];
+    const index = recentFolders.findIndex((r) => r.folder === folder);
+
+    recentFolders.splice(index, 1);
 
     return Object.assign({}, state, { recentFolders });
   },

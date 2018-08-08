@@ -2,10 +2,10 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 import selectSettings from 'Store/Selectors/selectSettings';
 
-function createProviderSettingsSelector() {
+function createProviderSettingsSelector(sectionName) {
   return createSelector(
     (state, { id }) => id,
-    (state, { section }) => state.settings[section],
+    (state) => state.settings[sectionName],
     (id, section) => {
       if (!id) {
         const item = _.isArray(section.schema) ? section.selectedSchema : section.schema;

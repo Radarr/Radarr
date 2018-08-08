@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
 import { setImportListValue, setImportListFieldValue, saveImportList, testImportList } from 'Store/Actions/settingsActions';
-import connectSection from 'Store/connectSection';
 import EditImportListModalContent from './EditImportListModalContent';
 
 function createMapStateToProps() {
@@ -11,7 +11,7 @@ function createMapStateToProps() {
     (state) => state.settings.advancedSettings,
     (state) => state.settings.languageProfiles,
     (state) => state.settings.metadataProfiles,
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('importLists'),
     (advancedSettings, languageProfiles, metadataProfiles, importList) => {
       return {
         advancedSettings,
@@ -89,10 +89,4 @@ EditImportListModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'importLists' }
-)(EditImportListModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditImportListModalContentConnector);

@@ -59,9 +59,7 @@ class DownloadClients extends Component {
     } = this.state;
 
     return (
-      <FieldSet
-        legend="Download Clients"
-      >
+      <FieldSet legend="Download Clients">
         <PageSectionContent
           errorMessage="Unable to load download clients"
           {...otherProps}

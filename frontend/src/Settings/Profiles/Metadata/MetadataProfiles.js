@@ -51,9 +51,7 @@ class MetadataProfiles extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Metadata Profiles"
-      >
+      <FieldSet legend="Metadata Profiles">
         <PageSectionContent
           errorMessage="Unable to load Metadata Profiles"
           {...otherProps}

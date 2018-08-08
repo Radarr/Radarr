@@ -163,8 +163,8 @@ class NamingModal extends Component {
     ];
 
     const qualityTokens = [
-      { token: '{Quality Full}', example: 'HDTV 720p Proper' },
-      { token: '{Quality Title}', example: 'HDTV 720p' }
+      { token: '{Quality Full}', example: 'FLAC Proper' },
+      { token: '{Quality Title}', example: 'FLAC' }
     ];
 
     const mediaInfoTokens = [

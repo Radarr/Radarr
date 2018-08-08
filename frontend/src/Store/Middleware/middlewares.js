@@ -15,7 +15,10 @@ export default function(history) {
   middlewares.push(routerMiddleware(history));
   middlewares.push(thunk);
 
-  return compose(
+  // eslint-disable-next-line no-underscore-dangle
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+  return composeEnhancers(
     applyMiddleware(...middlewares),
     persistState
   );

@@ -36,9 +36,7 @@ function MetadataProvider(props) {
           <Form>
             {
               advancedSettings &&
-              <FieldSet
-                legend="Metadata Provider Source"
-              >
+              <FieldSet legend="Metadata Provider Source">
                 <FormGroup
                   advancedSettings={advancedSettings}
                   isAdvanced={true}

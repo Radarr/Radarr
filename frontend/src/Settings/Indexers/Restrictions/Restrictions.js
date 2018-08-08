@@ -45,9 +45,7 @@ class Restrictions extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Restrictions"
-      >
+      <FieldSet legend="Restrictions">
         <PageSectionContent
           errorMessage="Unable to load Restrictions"
           {...otherProps}

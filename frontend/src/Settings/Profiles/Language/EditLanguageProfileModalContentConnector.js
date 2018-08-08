@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProfileInUseSelector from 'Store/Selectors/createProfileInUseSelector';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
 import { fetchLanguageProfileSchema, setLanguageProfileValue, saveLanguageProfile } from 'Store/Actions/settingsActions';
-import connectSection from 'Store/connectSection';
 import EditLanguageProfileModalContent from './EditLanguageProfileModalContent';
 
 function createLanguagesSelector() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('languageProfiles'),
     (languageProfile) => {
       const languages = languageProfile.item.languages;
       if (!languages || !languages.value) {
@@ -33,7 +33,7 @@ function createLanguagesSelector() {
 
 function createMapStateToProps() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('languageProfiles'),
     createLanguagesSelector(),
     createProfileInUseSelector('languageProfileId'),
     (languageProfile, languages, isInUse) => {
@@ -186,10 +186,4 @@ EditLanguageProfileModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'languageProfiles' }
-)(EditLanguageProfileModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditLanguageProfileModalContentConnector);

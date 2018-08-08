@@ -32,17 +32,20 @@ export default function sentryMiddleware() {
   }
 
   const dsn = isProduction ? 'https://c3a5b33e08de4e18b7d0505e942dbc95@sentry.io/216290' :
-    'https://c3a5b33e08de4e18b7d0505e942dbc95@sentry.io/216290';
+    'https://baede6f14da54cf48ff431479e400adf@sentry.io/1249427';
 
-  Raven.config(dsn).install();
+  Raven.config(
+    dsn,
+    {
+      environment: isProduction ? 'production' : 'development',
+      release,
+      tags: {
+        branch,
+        version
+      },
+      dataCallback: cleanseData
+    }
+  ).install();
 
-  return createRavenMiddleware(Raven, {
-    environment: isProduction ? 'production' : 'development',
-    release,
-    tags: {
-      branch,
-      version
-    },
-    dataCallback: cleanseData
-  });
+  return createRavenMiddleware(Raven);
 }

@@ -78,16 +78,19 @@ export const defaultState = {
       {
         name: 'protocol',
         label: 'Protocol',
+        isSortable: true,
         isVisible: false
       },
       {
         name: 'indexer',
         label: 'Indexer',
+        isSortable: true,
         isVisible: false
       },
       {
         name: 'downloadClient',
         label: 'Download Client',
+        isSortable: true,
         isVisible: false
       },
       {
@@ -269,7 +272,7 @@ export const actionHandlers = handleThunks({
 
     promise.done((data) => {
       dispatch(batchActions([
-        dispatch(fetchQueue()),
+        fetchQueue(),
 
         ...ids.map((id) => {
           return updateItem({

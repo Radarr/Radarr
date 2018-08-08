@@ -56,4 +56,5 @@ only_commits:
     - appveyor.yml
     - build.sh
     - test.sh
+    - package.json
     - appveyor-package.sh

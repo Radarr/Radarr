@@ -2,7 +2,8 @@ import _ from 'lodash';
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { filterTypes, sortDirections } from 'Helpers/Props';
+import dateFilterPredicate from 'Utilities/Date/dateFilterPredicate';
+import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
 import createFetchHandler from './Creators/createFetchHandler';
@@ -16,6 +17,95 @@ import { updateItem } from './baseActions';
 
 export const section = 'artist';
 
+export const filters = [
+  {
+    key: 'all',
+    label: 'All',
+    filters: []
+  },
+  {
+    key: 'monitored',
+    label: 'Monitored Only',
+    filters: [
+      {
+        key: 'monitored',
+        value: true,
+        type: filterTypes.EQUAL
+      }
+    ]
+  },
+  {
+    key: 'unmonitored',
+    label: 'Unmonitored Only',
+    filters: [
+      {
+        key: 'monitored',
+        value: false,
+        type: filterTypes.EQUAL
+      }
+    ]
+  },
+  {
+    key: 'continuing',
+    label: 'Continuing Only',
+    filters: [
+      {
+        key: 'status',
+        value: 'continuing',
+        type: filterTypes.EQUAL
+      }
+    ]
+  },
+  {
+    key: 'ended',
+    label: 'Ended Only',
+    filters: [
+      {
+        key: 'status',
+        value: 'ended',
+        type: filterTypes.EQUAL
+      }
+    ]
+  },
+  {
+    key: 'missing',
+    label: 'Missing Tracks',
+    filters: [
+      {
+        key: 'missing',
+        value: true,
+        type: filterTypes.EQUAL
+      }
+    ]
+  }
+];
+
+export const filterPredicates = {
+  missing: function(item) {
+    const { statistics = {} } = item;
+
+    return statistics.trackCount - statistics.trackFileCount > 0;
+  },
+
+  nextAlbum: function(item, filterValue, type) {
+    return dateFilterPredicate(item.nextAlbum, filterValue, type);
+  },
+
+  lastAlbum: function(item, filterValue, type) {
+    return dateFilterPredicate(item.lastAlbum, filterValue, type);
+  },
+
+  added: function(item, filterValue, type) {
+    return dateFilterPredicate(item.added, filterValue, type);
+  },
+
+  ratings: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+
+    return predicate(item.ratings.value * 10, filterValue);
+  }
+};
+
 //
 // State
 
@@ -28,75 +118,6 @@ export const defaultState = {
   items: [],
   sortKey: 'sortName',
   sortDirection: sortDirections.ASCENDING,
-  filters: [
-    {
-      key: 'all',
-      label: 'All',
-      filters: []
-    },
-    {
-      key: 'monitored',
-      label: 'Monitored Only',
-      filters: [
-        {
-          key: 'monitored',
-          value: true,
-          type: filterTypes.EQUAL
-        }
-      ]
-    },
-    {
-      key: 'unmonitored',
-      label: 'Unmonitored Only',
-      filters: [
-        {
-          key: 'monitored',
-          value: false,
-          type: filterTypes.EQUAL
-        }
-      ]
-    },
-    {
-      key: 'continuing',
-      label: 'Continuing Only',
-      filters: [
-        {
-          key: 'status',
-          value: 'continuing',
-          type: filterTypes.EQUAL
-        }
-      ]
-    },
-    {
-      key: 'ended',
-      label: 'Ended Only',
-      filters: [
-        {
-          key: 'status',
-          value: 'ended',
-          type: filterTypes.EQUAL
-        }
-      ]
-    },
-    {
-      key: 'missing',
-      label: 'Missing Albums',
-      filters: [
-        {
-          key: 'missing',
-          value: true,
-          type: filterTypes.EQUAL
-        }
-      ]
-    }
-  ],
-
-  filterPredicates: {
-    missing: function(item) {
-      return item.statistics.trackCount - item.statistics.trackFileCount > 0;
-    }
-  },
-
   pendingChanges: {}
 };
 

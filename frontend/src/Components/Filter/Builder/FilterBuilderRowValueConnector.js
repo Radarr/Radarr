@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import sortByName from 'Utilities/Array/sortByName';
 import { filterBuilderTypes } from 'Helpers/Props';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 
 function createTagListSelector() {
   return createSelector(
-    (state, { sectionItems }) => _.get(state, sectionItems),
+    (state, { sectionItems }) => sectionItems,
     (state, { selectedFilterBuilderProp }) => selectedFilterBuilderProp,
     (sectionItems, selectedFilterBuilderProp) => {
       if (
@@ -19,16 +20,20 @@ function createTagListSelector() {
       let items = [];
 
       if (selectedFilterBuilderProp.optionsSelector) {
-        items = sectionItems.map(selectedFilterBuilderProp.optionsSelector);
+        items = selectedFilterBuilderProp.optionsSelector(sectionItems);
       } else {
-        items = sectionItems.map((item) => {
+        items = sectionItems.reduce((acc, item) => {
           const name = item[selectedFilterBuilderProp.name];
 
-          return {
-            id: name,
-            name
-          };
-        });
+          if (name) {
+            acc.push({
+              id: name,
+              name
+            });
+          }
+
+          return acc;
+        }, []).sort(sortByName);
       }
 
       return _.uniqBy(items, 'id');

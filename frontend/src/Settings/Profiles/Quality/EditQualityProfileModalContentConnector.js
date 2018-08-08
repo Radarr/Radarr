@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createProfileInUseSelector from 'Store/Selectors/createProfileInUseSelector';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
 import { fetchQualityProfileSchema, setQualityProfileValue, saveQualityProfile } from 'Store/Actions/settingsActions';
-import connectSection from 'Store/connectSection';
 import EditQualityProfileModalContent from './EditQualityProfileModalContent';
 
 function getQualityItemGroupId(qualityProfile) {
@@ -33,7 +33,7 @@ function parseIndex(index) {
 
 function createQualitiesSelector() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('qualityProfiles'),
     (qualityProfile) => {
       const items = qualityProfile.item.items;
       if (!items || !items.value) {
@@ -63,7 +63,7 @@ function createQualitiesSelector() {
 
 function createMapStateToProps() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('qualityProfiles'),
     createQualitiesSelector(),
     createProfileInUseSelector('qualityProfileId'),
     (qualityProfile, qualities, isInUse) => {
@@ -439,10 +439,4 @@ EditQualityProfileModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  mapDispatchToProps,
-  undefined,
-  undefined,
-  { section: 'qualityProfiles' }
-)(EditQualityProfileModalContentConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(EditQualityProfileModalContentConnector);

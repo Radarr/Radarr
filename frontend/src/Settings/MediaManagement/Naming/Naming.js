@@ -113,9 +113,7 @@ class Naming extends Component {
     }
 
     return (
-      <FieldSet
-        legend="Track Naming"
-      >
+      <FieldSet legend="Track Naming">
         {
           isFetching &&
             <LoadingIndicator />

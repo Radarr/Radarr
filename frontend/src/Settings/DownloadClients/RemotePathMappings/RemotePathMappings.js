@@ -44,9 +44,7 @@ class RemotePathMappings extends Component {
     } = this.props;
 
     return (
-      <FieldSet
-        legend="Remote Path Mappings"
-      >
+      <FieldSet legend="Remote Path Mappings">
         <PageSectionContent
           errorMessage="Unable to load Remote Path Mappings"
           {...otherProps}

@@ -2,14 +2,15 @@ import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import connectSection from 'Store/connectSection';
+import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import CalendarDay from './CalendarDay';
 
 function createCalendarEventsConnector() {
   return createSelector(
     (state, { date }) => date,
-    (state) => state.calendar,
+    createClientSideCollectionSelector('calendar'),
     (date, calendar) => {
       const filtered = _.filter(calendar.items, (item) => {
         return moment(date).isSame(moment(item.releaseDate), 'day');
@@ -52,10 +53,4 @@ CalendarDayConnector.propTypes = {
   date: PropTypes.string.isRequired
 };
 
-export default connectSection(
-  createMapStateToProps,
-  undefined,
-  undefined,
-  undefined,
-  { section: 'calendar' }
-)(CalendarDayConnector);
+export default connect(createMapStateToProps)(CalendarDayConnector);

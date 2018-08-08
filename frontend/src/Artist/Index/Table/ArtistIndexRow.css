@@ -20,7 +20,8 @@
 
 .nextAlbum,
 .lastAlbum,
-.added {
+.added,
+.genres {
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
   flex: 0 0 180px;
@@ -58,6 +59,12 @@
   composes: cell from 'Components/Table/Cells/VirtualTableRowCell.css';
 
   flex: 0 0 120px;
+}
+
+.ratings {
+  composes: headerCell from 'Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 80px;
 }
 
 .tags {

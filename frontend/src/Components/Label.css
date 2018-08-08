@@ -6,7 +6,6 @@
   color: $white;
   text-align: center;
   white-space: nowrap;
-  font-weight: bold;
   line-height: 1;
   cursor: default;
 }
@@ -92,6 +91,7 @@
 
 .large {
   padding: 3px 7px;
+  font-weight: bold;
   font-size: 14px;
 }
 

@@ -48,6 +48,10 @@ class Menu extends Component {
     this.setMaxHeight();
   }
 
+  componentWillUnmount() {
+    this._removeListener();
+  }
+
   //
   // Control
 

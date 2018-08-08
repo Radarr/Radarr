@@ -103,6 +103,17 @@ function Settings() {
 
         <Link
           className={styles.link}
+          to="/settings/tags"
+        >
+          Tags
+        </Link>
+
+        <div className={styles.summary}>
+          Manage artist, profile, restriction, and notification tags
+        </div>
+
+        <Link
+          className={styles.link}
           to="/settings/general"
         >
           General

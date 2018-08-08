@@ -30,6 +30,9 @@ namespace Lidarr.Api.V1.Calendar
             var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
             var includeEpisodeFile = Request.GetBooleanQueryParameter("includeEpisodeFile");
 
+            //TODO: Add Album Image support to AlbumModuleWithSignalR
+            var includeAlbumImages = Request.GetBooleanQueryParameter("includeAlbumImages");
+
             var queryStart = Request.Query.Start;
             var queryEnd = Request.Query.End;
 

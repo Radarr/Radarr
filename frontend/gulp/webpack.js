@@ -5,6 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const errorHandler = require('./helpers/errorHandler');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const uiFolder = 'UI';
 const root = path.join(__dirname, '..', 'src');
@@ -27,19 +28,49 @@ const extractCSSPlugin = new ExtractTextPlugin({
   ignoreOrder: true
 });
 
+const plugins = [
+  extractCSSPlugin,
+
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor'
+  }),
+
+  new webpack.DefinePlugin({
+    __DEV__: !isProduction,
+    'process.env.NODE_ENV': isProduction ? JSON.stringify('production') : JSON.stringify('development')
+  })
+];
+
+if (isProduction) {
+  plugins.push(new UglifyJSPlugin({
+    sourceMap: true,
+    uglifyOptions: {
+      mangle: false,
+      output: {
+        comments: false,
+        beautify: true
+      }
+    }
+  }));
+}
+
 const config = {
   devtool: '#source-map',
+
   stats: {
     children: false
   },
+
   watchOptions: {
     ignored: /node_modules/
   },
+
   entry: {
     preload: 'preload.js',
     vendor: 'vendor.js',
     index: 'index.js'
   },
+
   resolve: {
     modules: [
       root,
@@ -50,35 +81,21 @@ const config = {
       jquery: 'jquery/src/jquery'
     }
   },
+
   output: {
     filename: path.join('_output', uiFolder, '[name].js'),
     sourceMapFilename: '[file].map'
   },
-  plugins: [
-    extractCSSPlugin,
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    }),
 
-    new webpack.DefinePlugin({
-      __DEV__: !isProduction,
-      'process.env': {
-        NODE_ENV: isProduction ? JSON.stringify('production') : JSON.stringify('development')
-      }
-    })
-  ],
+  plugins,
+
   resolveLoader: {
     modules: [
       'node_modules',
       'frontend/gulp/webpack/'
     ]
   },
-  // TODO: Do we need this loader?
-  // eslint: {
-  //   formatter: function(results) {
-  //     return JSON.stringify(results);
-  //   }
-  // },
+
   module: {
     rules: [
       {

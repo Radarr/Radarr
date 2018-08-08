@@ -16,8 +16,8 @@ export const section = 'oAuth';
 
 export const defaultState = {
   authorizing: false,
-  accessToken: null,
-  accessTokenSecret: null
+  result: null,
+  error: null
 };
 
 //
@@ -50,9 +50,11 @@ function showOAuthWindow(url) {
     const splitQuery = query.substring(1).split('&');
 
     splitQuery.forEach((param) => {
-      const paramSplit = param.split('=');
+      if (param) {
+        const paramSplit = param.split('=');
 
-      queryParams[paramSplit[0]] = paramSplit[1];
+        queryParams[paramSplit[0]] = paramSplit[1];
+      }
     });
 
     onComplete();
@@ -70,7 +72,7 @@ export const actionHandlers = handleThunks({
   [START_OAUTH]: function(getState, payload, dispatch) {
     const actionPayload = {
       action: 'startOAuth',
-      queryParams: { callbackUrl: `${window.location.origin}/oauth.html` },
+      queryParams: { callbackUrl: `${window.location.origin}${window.Lidarr.urlBase}/oauth.html` },
       ...payload
     };
 
@@ -78,33 +80,36 @@ export const actionHandlers = handleThunks({
       authorizing: true
     }));
 
+    let startResponse = {};
+
     const promise = requestAction(actionPayload)
       .then((response) => {
+        startResponse = response;
         return showOAuthWindow(response.oauthUrl);
       })
       .then((queryParams) => {
         return requestAction({
           action: 'getOAuthToken',
-          queryParams,
+          queryParams: {
+            ...startResponse,
+            ...queryParams
+          },
           ...payload
         });
       })
       .then((response) => {
-        const {
-          accessToken,
-          accessTokenSecret
-        } = response;
-
         dispatch(setOAuthValue({
           authorizing: false,
-          accessToken,
-          accessTokenSecret
+          result: response,
+          error: null
         }));
       });
 
-    promise.fail(() => {
+    promise.fail((xhr) => {
       dispatch(setOAuthValue({
-        authorizing: false
+        authorizing: false,
+        result: null,
+        error: xhr
       }));
     });
   }

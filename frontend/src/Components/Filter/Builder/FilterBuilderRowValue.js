@@ -4,7 +4,7 @@ import { kinds, filterBuilderTypes } from 'Helpers/Props';
 import TagInput, { tagShape } from 'Components/Form/TagInput';
 import FilterBuilderRowValueTag from './FilterBuilderRowValueTag';
 
-const NAME = 'value';
+export const NAME = 'value';
 
 class FilterBuilderRowValue extends Component {
 
@@ -91,7 +91,7 @@ class FilterBuilderRowValue extends Component {
 }
 
 FilterBuilderRowValue.propTypes = {
-  filterValue: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+  filterValue: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.number])).isRequired,
   selectedFilterBuilderProp: PropTypes.object.isRequired,
   tagList: PropTypes.arrayOf(PropTypes.shape(tagShape)).isRequired,
   onChange: PropTypes.func.isRequired

@@ -1,3 +1,7 @@
+.updateAvailable {
+  display: flex;
+}
+
 .upToDate {
   display: flex;
   margin-bottom: 20px;
@@ -12,6 +16,13 @@
   padding-left: 5px;
   font-size: 18px;
   line-height: 30px;
+}
+
+.loading {
+  composes: loading from 'Components/Loading/LoadingIndicator.css';
+
+  margin-top: 5px;
+  margin-left: auto;
 }
 
 .update {

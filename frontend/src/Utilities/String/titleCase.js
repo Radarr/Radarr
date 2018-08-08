@@ -3,7 +3,7 @@ function titleCase(input) {
     return '';
   }
 
-  return input.replace(/\w\S*/g, (match) => {
+  return input.replace(/\b\w+/g, (match) => {
     return match.charAt(0).toUpperCase() + match.substr(1).toLowerCase();
   });
 }

@@ -85,6 +85,7 @@ function EditDelayProfileModalContent(props) {
                     <FormInputGroup
                       type={inputTypes.NUMBER}
                       name="usenetDelay"
+                      unit="minutes"
                       {...usenetDelay}
                       helpText="Delay in minutes to wait before grabbing a release from Usenet"
                       onChange={onInputChange}
@@ -100,6 +101,7 @@ function EditDelayProfileModalContent(props) {
                     <FormInputGroup
                       type={inputTypes.NUMBER}
                       name="torrentDelay"
+                      unit="minutes"
                       {...torrentDelay}
                       helpText="Delay in minutes to wait before grabbing a torrent"
                       onChange={onInputChange}

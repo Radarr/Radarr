@@ -13,6 +13,7 @@ using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.MediaFiles.TrackImport;
@@ -38,6 +39,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IConfigService _configService;
         private readonly IArtistService _artistService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
+        private readonly IRootFolderService _rootFolderService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -46,6 +48,7 @@ namespace NzbDrone.Core.MediaFiles
                                IImportApprovedTracks importApprovedTracks,
                                IConfigService configService,
                                IArtistService artistService,
+                               IRootFolderService rootFolderService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IEventAggregator eventAggregator,
                                Logger logger)
@@ -56,6 +59,7 @@ namespace NzbDrone.Core.MediaFiles
             _configService = configService;
             _artistService = artistService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
+            _rootFolderService = rootFolderService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -64,7 +68,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Scan(Artist artist)
         {
-            var rootFolder = _diskProvider.GetParentFolder(artist.Path);
+            var rootFolder = _rootFolderService.GetBestRootFolderPath(artist.Path);
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
@@ -142,6 +146,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
             _logger.Debug("{0} audio files were found in {1}", mediaFileList.Count, path);
+
             return mediaFileList.ToArray();
         }
 
@@ -157,6 +162,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _logger.Trace("{0} files were found in {1}", filesOnDisk.Count, path);
             _logger.Debug("{0} non-music files were found in {1}", mediaFileList.Count, path);
+
             return mediaFileList.ToArray();
         }
 

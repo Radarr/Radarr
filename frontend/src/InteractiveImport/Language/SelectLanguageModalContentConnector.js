@@ -22,7 +22,7 @@ function createMapStateToProps() {
         isFetching,
         isPopulated,
         error,
-        items: schema.languages || []
+        items: schema.languages ? [...schema.languages].reverse() : []
       };
     }
   );
