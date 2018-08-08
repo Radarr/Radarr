@@ -46,6 +46,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Smurfs.​The.​Lost.​Village.​2017.​1080p.​BluRay.​HebDub.​x264-​iSrael",Language.Hebrew)]
         [TestCase("The Danish Girl 2015", Language.English)]
         [TestCase("Nocturnal Animals (2016) MULTi VFQ English [1080p] BluRay x264-PopHD", Language.English, Language.French)]
+        [TestCase("Wonder.Woman.2017.720p.BluRay.DD5.1.x264-TayTO.CZ-FTU", Language.Czech)]
         public void should_parse_language(string postTitle, params Language[] languages)
         {
             var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
