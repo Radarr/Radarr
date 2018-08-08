@@ -1383,6 +1383,7 @@
             <e p="AcceptableSizeSpecification.cs" t="Include" />
             <e p="AnimeVersionUpgradeSpecification.cs" t="Include" />
             <e p="BlacklistSpecification.cs" t="Include" />
+            <e p="CustomFormatAllowedByProfileSpecification.cs" t="Include" />
             <e p="CutoffSpecification.cs" t="Include" />
             <e p="LanguageSpecification.cs" t="Include" />
             <e p="MaximumSizeSpecification.cs" t="Include" />
