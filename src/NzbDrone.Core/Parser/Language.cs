@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Parser
         Korean = 21,
         Hungarian = 22,
         Hebrew = 23,
-	    Czech = 24
+        Czech = 24
     }
     
     public static class LanguageExtensions
