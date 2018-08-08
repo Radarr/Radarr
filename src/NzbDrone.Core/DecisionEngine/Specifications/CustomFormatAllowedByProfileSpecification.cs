@@ -20,6 +20,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
+            //TODO make this work for None as well!
             _logger.Debug("Checking if report meets custom format requirements. {0}", subject.ParsedMovieInfo.Quality.CustomFormats.ToExtendedString());
             var notAllowedFormats = subject.Movie.Profile.Value.FormatItems.Where(v => v.Allowed == false).Select(f => f.Format).ToList();
             var notWantedFormats = notAllowedFormats.Intersect(subject.ParsedMovieInfo.Quality.CustomFormats);

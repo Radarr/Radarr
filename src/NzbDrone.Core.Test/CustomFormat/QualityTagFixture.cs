@@ -32,9 +32,9 @@ namespace NzbDrone.Core.Test.CustomFormat
         [TestCase("C_RE_Surround", TagType.Custom, "surround", TagModifier.AbsolutelyRequired)]
         [TestCase("C_REN_Surround", TagType.Custom, "surround", TagModifier.AbsolutelyRequired, TagModifier.Not)]
         [TestCase("C_RENR_Surround|(5|7)(\\.1)?", TagType.Custom, "surround|(5|7)(\\.1)?", TagModifier.AbsolutelyRequired, TagModifier.Not, TagModifier.Regex)]
-        [TestCase("G_10<>20", TagType.Size, new[] { 10.0, 20.0})]
-        [TestCase("G_15.55<>20", TagType.Size, new[] { 15.55, 20.0})]
-        [TestCase("G_15.55<>25.1908754", TagType.Size, new[] { 15.55, 25.1908754})]
+        [TestCase("G_10<>20", TagType.Size, new[] { 10737418240L, 21474836480L})]
+        [TestCase("G_15.55<>20", TagType.Size, new[] { 16696685363L, 21474836480L})]
+        [TestCase("G_15.55<>25.1908754", TagType.Size, new[] { 16696685363L, 27048496500L})]
         public void should_parse_tag_from_string(string raw, TagType type, object value, params TagModifier[] modifiers)
         {
             var parsed = new FormatTag(raw);
@@ -44,9 +44,9 @@ namespace NzbDrone.Core.Test.CustomFormat
                 modifier |= m;
             }
             parsed.TagType.Should().Be(type);
-            if (value is double[])
+            if (value is long[])
             {
-                value = (((double[]) value)[0], ((double[]) value)[1]);
+                value = (((long[]) value)[0], ((long[]) value)[1]);
             }
             if ((parsed.Value as Regex) != null)
             {
