@@ -25,6 +25,7 @@ namespace NzbDrone.Core.History
         History Get(int historyId);
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
+        List<History> FindByMovieId(int movieId);
     }
 
     public class HistoryService : IHistoryService,
@@ -71,6 +72,11 @@ namespace NzbDrone.Core.History
         public List<History> FindByDownloadId(string downloadId)
         {
             return _historyRepository.FindByDownloadId(downloadId);
+        }
+
+        public List<History> FindByMovieId(int movieId)
+        {
+            return _historyRepository.FindByMovieId(movieId);
         }
 
         public QualityModel GetBestQualityInHistory(Profile profile, int movieId)

@@ -16,6 +16,7 @@ var GridPager = require('../../Shared/Grid/Pager');
 require('../../Mixins/backbone.signalr.mixin');
 var DeleteSelectedView = require('./Delete/DeleteSelectedView');
 var Config = require('../../Config');
+var CommandController = require('../../Commands/CommandController');
 
 window.shownOnce = false;
 module.exports = Marionette.Layout.extend({
@@ -115,6 +116,12 @@ module.exports = Marionette.Layout.extend({
                     command        : 'refreshmovie',
                     successMessage : 'Library was updated!',
                     errorMessage   : 'Library update failed!'
+                },
+                {
+                    title : 'Update Custom Formats',
+                    icon : 'icon-radarr-refresh',
+                    className : 'btn-danger',
+                    callback : this._updateQuality
                 },
                 {
                     title : 'Delete selected',
@@ -296,6 +303,20 @@ module.exports = Marionette.Layout.extend({
 	        });
 		    this.movieCollection.setPageSize(pageSize, {fetch: false});
 		    this.movieCollection.getPage(currentPage, {fetch: false});
-	}
+	},
+
+    _updateQuality : function() {
+        var selected = FullMovieCollection.where({ selected : true});
+        var files = selected.filter(function(model) {
+            return model.get("movieFile") !== undefined;
+        }).map(function(model){
+            return model.get("movieFile").id;
+        });
+        
+        CommandController.Execute('updateMovieFileQuality', {
+            name : 'updateMovieFileQuality',
+            movieFileIds : files
+        });
+    }
 	
 });

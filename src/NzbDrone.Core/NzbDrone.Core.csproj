@@ -149,6 +149,7 @@
     <Compile Include="Extras\Metadata\Consumers\Xbmc\XbmcNfoDetector.cs" />
     <Compile Include="Extras\Others\OtherExtraFileRenamer.cs" />
     <Compile Include="Housekeeping\Housekeepers\CleanupOrphanedAlternativeTitles.cs" />
+    <Compile Include="MediaFiles\Commands\UpdateMovieFileQualityCommand.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\GrabbedReleaseQualitySpecification.cs" />
     <Compile Include="MediaFiles\MovieImport\Specifications\SameFileSpecification.cs" />
     <Compile Include="MediaFiles\Events\MovieFileUpdatedEvent.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Datastore\Migration\133_add_minimumavailability.cs" />
     <Compile Include="IndexerSearch\CutoffUnmetMoviesSearchCommand.cs" />
     <Compile Include="Indexers\HDBits\HDBitsInfo.cs" />
+    <Compile Include="MediaFiles\UpdateMovieFileQualityService.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitle.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleRepository.cs" />
     <Compile Include="Movies\AlternativeTitles\AlternativeTitleService.cs" />

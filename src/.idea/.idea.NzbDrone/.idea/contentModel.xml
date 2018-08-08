@@ -1945,6 +1945,7 @@
             <e p="RenameMovieFilesCommand.cs" t="Include" />
             <e p="RenameMovieFolderCommand.cs" t="Include" />
             <e p="RescanMovieCommand.cs" t="Include" />
+            <e p="UpdateMovieFileQualityCommand.cs" t="Include" />
           </e>
           <e p="DeleteMediaFileReason.cs" t="Include" />
           <e p="DiskScanService.cs" t="Include" />
@@ -2010,6 +2011,7 @@
           <e p="TorrentInfo" t="Include">
             <e p="TorrentFileInfoReader.cs" t="Include" />
           </e>
+          <e p="UpdateMovieFileQualityService.cs" t="Include" />
           <e p="UpdateMovieFileService.cs" t="Include" />
           <e p="UpgradeMediaFileService.cs" t="Include" />
         </e>
