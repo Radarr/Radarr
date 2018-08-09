@@ -65,3 +65,11 @@ Filename: "{app}\Lidarr.exe"; Description: "Start Lidarr"; Flags: postinstall sk
 
 [UninstallRun]
 Filename: "{app}\lidarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist
+
+[Code]
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  ResultCode: Integer;
+begin
+  Exec(ExpandConstant('{commonappdata}\Lidarr\bin\Lidarr.Console.exe'), '/u', '', 0, ewWaitUntilTerminated, ResultCode)
+end;
