@@ -47,7 +47,7 @@ namespace NzbDrone.Api.MovieFiles
 
 
         private void SetQuality(MovieFileResource movieFileResource)
-        {  
+        {
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
             movieFile.Quality = movieFileResource.Quality;
             _mediaFileService.Update(movieFile);

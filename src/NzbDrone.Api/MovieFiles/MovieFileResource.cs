@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.REST;
 using NzbDrone.Api.Movies;
+using NzbDrone.Api.Qualities;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
@@ -14,7 +15,7 @@ namespace NzbDrone.Api.MovieFiles
     {
         public MovieFileResource()
         {
-            
+
         }
 
         //Todo: Sorters should be done completely on the client
@@ -75,7 +76,7 @@ namespace NzbDrone.Api.MovieFiles
 
             return new MovieFile
             {
-                
+
             };
         }
 

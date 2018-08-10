@@ -5,7 +5,11 @@ using System.Runtime.Remoting.Messaging;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Composition;
+using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Download.Pending;
+using NzbDrone.Core.History;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles;
 
@@ -24,6 +28,10 @@ namespace NzbDrone.Core.CustomFormats
     {
         private readonly ICustomFormatRepository _formatRepository;
         private IProfileService _profileService;
+        private readonly IMediaFileService _mediaFileService;
+        private readonly IBlacklistService _blacklistService;
+        private readonly IHistoryService _historyService;
+        private readonly IPendingReleaseService _pendingReleaseService;
 
         public IProfileService ProfileService
         {
@@ -45,12 +53,17 @@ namespace NzbDrone.Core.CustomFormats
         public static Dictionary<int, CustomFormat> AllCustomFormats;
 
         public CustomFormatService(ICustomFormatRepository formatRepository, ICacheManager cacheManager,
-            IContainer container,
+            IContainer container, /*IMediaFileService mediaFileService, IBlacklistService blacklistService,
+            IHistoryService historyService, IPendingReleaseService pendingReleaseService,*/
             Logger logger)
         {
             _formatRepository = formatRepository;
             _container = container;
             _cache = cacheManager.GetCache<Dictionary<int, CustomFormat>>(typeof(CustomFormat), "formats");
+            /*_mediaFileService = mediaFileService;
+            _blacklistService = blacklistService;
+            _historyService = historyService;
+            _pendingReleaseService = pendingReleaseService;*/
             _logger = logger;
         }
 
@@ -75,6 +88,19 @@ namespace NzbDrone.Core.CustomFormats
             }
             _cache.Clear();
             return ret;
+        }
+
+        public void Delete(CustomFormat customFormat)
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         private Dictionary<int, CustomFormat> AllDictionary()
