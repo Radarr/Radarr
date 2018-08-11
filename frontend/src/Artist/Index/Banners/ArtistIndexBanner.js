@@ -61,7 +61,7 @@ class ArtistIndexBanner extends Component {
       status,
       foreignArtistId,
       nextAiring,
-      statistics,
+      statistics = {},
       images,
       bannerWidth,
       bannerHeight,

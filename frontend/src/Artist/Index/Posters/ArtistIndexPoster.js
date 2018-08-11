@@ -61,7 +61,7 @@ class ArtistIndexPoster extends Component {
       foreignArtistId,
       status,
       nextAiring,
-      statistics,
+      statistics = {},
       images,
       posterWidth,
       posterHeight,

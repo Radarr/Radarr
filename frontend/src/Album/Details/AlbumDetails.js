@@ -138,7 +138,7 @@ class AlbumDetails extends Component {
       title,
       disambiguation,
       albumType,
-      statistics,
+      statistics = {},
       monitored,
       releaseDate,
       ratings,
