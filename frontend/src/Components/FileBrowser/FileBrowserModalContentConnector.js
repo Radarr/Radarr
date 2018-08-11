@@ -48,14 +48,20 @@ class FileBrowserModalContentConnector extends Component {
   // Lifecycle
 
   componentDidMount() {
-    this.props.fetchPaths({ path: this.props.value });
+    this.props.fetchPaths({
+      path: this.props.value,
+      allowFoldersWithoutTrailingSlashes: true
+    });
   }
 
   //
   // Listeners
 
   onFetchPaths = (path) => {
-    this.props.fetchPaths({ path });
+    this.props.fetchPaths({
+      path,
+      allowFoldersWithoutTrailingSlashes: true
+    });
   }
 
   onClearPaths = () => {

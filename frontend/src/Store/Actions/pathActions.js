@@ -44,15 +44,21 @@ export const actionHandlers = handleThunks({
   [FETCH_PATHS]: function(getState, payload, dispatch) {
     dispatch(set({ section, isFetching: true }));
 
+    const {
+      path,
+      allowFoldersWithoutTrailingSlashes = false
+    } = payload;
+
     const promise = $.ajax({
       url: '/filesystem',
       data: {
-        path: payload.path
+        path,
+        allowFoldersWithoutTrailingSlashes
       }
     });
 
     promise.done((data) => {
-      dispatch(updatePaths({ path: payload.path, ...data }));
+      dispatch(updatePaths({ path, ...data }));
 
       dispatch(set({
         section,

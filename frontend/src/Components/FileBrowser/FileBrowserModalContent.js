@@ -143,22 +143,22 @@ class FileBrowserModalContent extends Component {
                   <TableBody>
                     {
                       emptyParent &&
-                      <FileBrowserRow
-                        type="computer"
-                        name="My Computer"
-                        path={parent}
-                        onPress={this.onRowPress}
-                      />
+                        <FileBrowserRow
+                          type="computer"
+                          name="My Computer"
+                          path={parent}
+                          onPress={this.onRowPress}
+                        />
                     }
 
                     {
                       !emptyParent && parent &&
-                      <FileBrowserRow
-                        type="parent"
-                        name="..."
-                        path={parent}
-                        onPress={this.onRowPress}
-                      />
+                        <FileBrowserRow
+                          type="parent"
+                          name="..."
+                          path={parent}
+                          onPress={this.onRowPress}
+                        />
                     }
 
                     {

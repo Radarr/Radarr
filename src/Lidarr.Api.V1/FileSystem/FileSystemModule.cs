@@ -32,9 +32,9 @@ namespace Lidarr.Api.V1.FileSystem
         {
             var pathQuery = Request.Query.path;
             var includeFiles = Request.GetBooleanQueryParameter("includeFiles");
+            var allowFoldersWithoutTrailingSlashes = Request.GetBooleanQueryParameter("allowFoldersWithoutTrailingSlashes");
 
-
-            return _fileSystemLookupService.LookupContents((string)pathQuery.Value, includeFiles).AsResponse();
+            return _fileSystemLookupService.LookupContents((string)pathQuery.Value, includeFiles, allowFoldersWithoutTrailingSlashes).AsResponse();
         }
 
         private Response GetEntityType()

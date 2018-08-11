@@ -9,7 +9,7 @@ namespace NzbDrone.Common.Disk
 {
     public interface IFileSystemLookupService
     {
-        FileSystemResult LookupContents(string query, bool includeFiles);
+        FileSystemResult LookupContents(string query, bool includeFiles, bool allowFoldersWithoutTrailingSlashes);
     }
 
     public class FileSystemLookupService : IFileSystemLookupService
@@ -51,14 +51,13 @@ namespace NzbDrone.Common.Disk
             _diskProvider = diskProvider;
         }
 
-        public FileSystemResult LookupContents(string query, bool includeFiles)
+        public FileSystemResult LookupContents(string query, bool includeFiles, bool allowFoldersWithoutTrailingSlashes)
         {
-            var result = new FileSystemResult();
-
             if (query.IsNullOrWhiteSpace())
             {
                 if (OsInfo.IsWindows)
                 {
+                    var result = new FileSystemResult();
                     result.Directories = GetDrives();
 
                     return result;
@@ -67,41 +66,23 @@ namespace NzbDrone.Common.Disk
                 query = "/";
             }
 
+            if (
+                allowFoldersWithoutTrailingSlashes &&
+                query.IsPathValid() &&
+                _diskProvider.FolderExists(query))
+            {
+                return GetResult(query, includeFiles);
+            }
+
             var lastSeparatorIndex = query.LastIndexOf(Path.DirectorySeparatorChar);
             var path = query.Substring(0, lastSeparatorIndex + 1);
 
             if (lastSeparatorIndex != -1)
             {
-                try
-                {
-                    result.Parent = GetParent(path);
-                    result.Directories = GetDirectories(path);
-
-                    if (includeFiles)
-                    {
-                        result.Files = GetFiles(path);
-                    }
-                }
-
-                catch (DirectoryNotFoundException)
-                {
-                    return new FileSystemResult { Parent = GetParent(path) };
-                }
-                catch (ArgumentException)
-                {
-                    return new FileSystemResult();
-                }
-                catch (IOException)
-                {
-                    return new FileSystemResult { Parent = GetParent(path) };
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    return new FileSystemResult { Parent = GetParent(path) };
-                }
+                return GetResult(path, includeFiles);
             }
 
-            return result;
+            return new FileSystemResult();
         }
 
         private List<FileSystemModel> GetDrives()
@@ -115,6 +96,41 @@ namespace NzbDrone.Common.Disk
                                                  LastModified = null
                                              })
                                 .ToList();
+        }
+
+        private FileSystemResult GetResult(string path, bool includeFiles)
+        {
+            var result = new FileSystemResult();
+
+            try
+            {
+                result.Parent = GetParent(path);
+                result.Directories = GetDirectories(path);
+
+                if (includeFiles)
+                {
+                    result.Files = GetFiles(path);
+                }
+            }
+
+            catch (DirectoryNotFoundException)
+            {
+                return new FileSystemResult { Parent = GetParent(path) };
+            }
+            catch (ArgumentException)
+            {
+                return new FileSystemResult();
+            }
+            catch (IOException)
+            {
+                return new FileSystemResult { Parent = GetParent(path) };
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new FileSystemResult { Parent = GetParent(path) };
+            }
+
+            return result;
         }
 
         private List<FileSystemModel> GetDirectories(string path)
