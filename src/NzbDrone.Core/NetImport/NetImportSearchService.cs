@@ -175,6 +175,7 @@ namespace NzbDrone.Core.NetImport
 
         private void CleanLibrary(List<Movie> movies)
         {
+            var moviesToUpdate = new List<Movie>();
             if (_configService.ListSyncLevel != "disabled")
             {
                 var moviesInLibrary = _movieService.GetAllMovies();
@@ -200,6 +201,7 @@ namespace NzbDrone.Core.NetImport
                             case "keepAndUnmonitor":
                                 _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
                                 movie.Monitored = false;
+                                moviesToUpdate.Add(movie);
                                 break;
                             case "removeAndKeep":
                                 _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
@@ -216,6 +218,8 @@ namespace NzbDrone.Core.NetImport
                     }
                 }
             }
+
+            _movieService.UpdateMovie(moviesToUpdate);
         }
     }
 }
