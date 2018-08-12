@@ -31,7 +31,7 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 ## Support
 
 [![OpenCollective](https://opencollective.com/radarr/tiers/backer/badge.svg)](#backers)
-[![OpenCollective](https://opencollective.com/radarr/tiers/flexible-sponsor/badge.svg)](#flexible-sponsor)
+[![OpenCollective](https://opencollective.com/radarr/tiers/flexible-sponsor/badge.svg)](#flexible-sponsors)
 [![OpenCollective](https://opencollective.com/radarr/tiers/sponsor/badge.svg)](#sponsors)
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
@@ -48,7 +48,7 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 [![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
 [![Github Releases](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/radarr.svg?maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr/)
-[![Changelog](https://img.shields.io/github/commit-activity/w/radarr/radarr.svg?style=flat-square)](/CHANGELOG.md)
+[![Changelog](https://img.shields.io/github/commit-activity/w/radarr/radarr.svg?style=flat-square)](/CHANGELOG.md#unreleased)
 
 | Service  | Master                      | Develop                      |
 |----------|:---------------------------:|:----------------------------:|
