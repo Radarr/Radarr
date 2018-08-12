@@ -259,7 +259,7 @@ include_merge = False
 def write_to_file(content):
   with open("CHANGELOG.md", "w+") as f:
     for chunk in content:
-      f.write(chunk)
+      f.write(chunk.encode('utf-8'))
 
 publish = write_to_file
 
