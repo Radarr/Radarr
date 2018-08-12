@@ -3,6 +3,7 @@
 ## (unreleased)
 
 ### **New features**
+- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Ability to add custom formats, working similar to qualities. ([#2669](https://github.com/Radarr/Radarr/issues/2669)) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) The ability to set the number of threads (NOT SUPPORTED!) to use for tasks using THREAD_LIMIT environment variable. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Adds unmonitored filter option in index and editor ([#2888](https://github.com/Radarr/Radarr/issues/2888)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Monitor Toggle on Movies Editor Page ([#2887](https://github.com/Radarr/Radarr/issues/2887)) [<a href="https://github.com/Qstick">Qstick</a>]
@@ -17,8 +18,6 @@
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) No media info causing an error when importing files. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Saving IndexerSettings into DB which confuses the datamapper. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Not using correct info for determining state! [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
-- ![New](https://img.shields.io/badge/--%20-New-brightgreen.svg?style=flat-square) Ability to add custom formats, working similar to qualities. ([#2669](https://github.com/Radarr/Radarr/issues/2669)) [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
-- Create reaction.yml. [<a href="https://github.com/Leonardo Galli">Leonardo Galli</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) .vtt files treated as subtitles ([#2885](https://github.com/Radarr/Radarr/issues/2885)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Debug log Series reference in QualityAllowedByProfile spec ([#2899](https://github.com/Radarr/Radarr/issues/2899)) [<a href="https://github.com/Qstick">Qstick</a>]
 - ![Fixed](https://img.shields.io/badge/--%20-Fixed-red.svg?style=flat-square) Multiple UI Fixes and Additions ([#2894](https://github.com/Radarr/Radarr/issues/2894)) [<a href="https://github.com/Qstick">Qstick</a>]
