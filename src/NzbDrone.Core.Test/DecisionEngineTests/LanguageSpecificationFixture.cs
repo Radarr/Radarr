@@ -61,5 +61,22 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
         }
+
+        [Test]
+        public void should_return_true_if_allowed_language_any()
+        {
+            _remoteEpisode.Movie.Profile = new LazyLoaded<Profile>(new Profile
+            {
+                Language = Language.Any
+            });
+
+            WithGermanRelease();
+
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+
+            WithEnglishRelease();
+
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+        }
     }
 }
