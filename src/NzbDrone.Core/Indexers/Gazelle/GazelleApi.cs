@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.Gazelle

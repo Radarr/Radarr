@@ -5,6 +5,9 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 using System.Collections.Generic;
+using System.Linq;
+using FluentValidation.Results;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Core.Indexers.Gazelle
 {
@@ -73,6 +76,13 @@ namespace NzbDrone.Core.Indexers.Gazelle
             var settings = new GazelleSettings { BaseUrl = url };
 
             return settings;
+        }
+
+        protected override void Test(List<ValidationFailure> failures)
+        {
+            // Remove previous cookies when testing incase user or pwd change
+            _authCookieCache.Remove(Settings.BaseUrl.Trim().TrimEnd('/'));
+            base.Test(failures);
         }
     }
 }

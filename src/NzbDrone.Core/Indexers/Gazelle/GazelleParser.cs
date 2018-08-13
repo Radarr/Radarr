@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Net;
-using Newtonsoft.Json;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser.Model;
