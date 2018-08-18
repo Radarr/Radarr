@@ -33,7 +33,7 @@ function createPrimaryAlbumTypesSelector() {
 
 function createSecondaryAlbumTypesSelector() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('metadataProfiles'),
     (metadataProfile) => {
       const secondaryAlbumTypes = metadataProfile.item.secondaryAlbumTypes;
       if (!secondaryAlbumTypes || !secondaryAlbumTypes.value) {
@@ -56,7 +56,7 @@ function createSecondaryAlbumTypesSelector() {
 
 function createReleaseStatusesSelector() {
   return createSelector(
-    createProviderSettingsSelector(),
+    createProviderSettingsSelector('metadataProfiles'),
     (metadataProfile) => {
       const releaseStatuses = metadataProfile.item.releaseStatuses;
       if (!releaseStatuses || !releaseStatuses.value) {
