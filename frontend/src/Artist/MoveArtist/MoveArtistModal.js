@@ -36,7 +36,7 @@ function MoveArtistModal(props) {
       onModalClose={onSavePress}
     >
       <ModalContent
-        showCloseButton={false}
+        showCloseButton={true}
         onModalClose={onSavePress}
       >
         <ModalHeader>
@@ -46,7 +46,7 @@ function MoveArtistModal(props) {
         <ModalBody>
           {
             destinationRootFolder ?
-              `Would you like to move the artist folders to ${destinationPath}'?` :
+              `Would you like to move the artist folders to '${destinationRootFolder}'?` :
               `Would you like to move the artist files from '${originalPath}' to '${destinationPath}'?`
           }
         </ModalBody>
