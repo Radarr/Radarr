@@ -61,7 +61,7 @@ class ArtistIndexPoster extends Component {
       foreignArtistId,
       status,
       nextAiring,
-      statistics = {},
+      statistics,
       images,
       posterWidth,
       posterHeight,
@@ -243,8 +243,12 @@ ArtistIndexPoster.propTypes = {
 };
 
 ArtistIndexPoster.defaultProps = {
-  trackCount: 0,
-  trackFileCount: 0
+  statistics: {
+    albumCount: 0,
+    trackCount: 0,
+    trackFileCount: 0,
+    totalTrackCount: 0
+  }
 };
 
 export default ArtistIndexPoster;

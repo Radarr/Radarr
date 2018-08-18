@@ -253,8 +253,12 @@ ArtistIndexOverview.propTypes = {
 };
 
 ArtistIndexOverview.defaultProps = {
-  trackCount: 0,
-  trackFileCount: 0
+  statistics: {
+    albumCount: 0,
+    trackCount: 0,
+    trackFileCount: 0,
+    totalTrackCount: 0
+  }
 };
 
 export default ArtistIndexOverview;

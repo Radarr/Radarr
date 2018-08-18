@@ -61,7 +61,7 @@ class ArtistIndexBanner extends Component {
       status,
       foreignArtistId,
       nextAiring,
-      statistics = {},
+      statistics,
       images,
       bannerWidth,
       bannerHeight,
@@ -244,8 +244,12 @@ ArtistIndexBanner.propTypes = {
 };
 
 ArtistIndexBanner.defaultProps = {
-  trackCount: 0,
-  trackFileCount: 0
+  statistics: {
+    albumCount: 0,
+    trackCount: 0,
+    trackFileCount: 0,
+    totalTrackCount: 0
+  }
 };
 
 export default ArtistIndexBanner;

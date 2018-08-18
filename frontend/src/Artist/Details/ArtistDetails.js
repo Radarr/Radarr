@@ -619,6 +619,7 @@ ArtistDetails.propTypes = {
 };
 
 ArtistDetails.defaultProps = {
+  statistics: {},
   isSaving: false
 };
 

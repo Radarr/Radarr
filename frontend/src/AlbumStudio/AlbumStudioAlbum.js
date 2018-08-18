@@ -23,10 +23,9 @@ class AlbumStudioAlbum extends Component {
 
   render() {
     const {
-      id,
       title,
       monitored,
-      statistics = {},
+      statistics,
       isSaving
     } = this.props;
 
