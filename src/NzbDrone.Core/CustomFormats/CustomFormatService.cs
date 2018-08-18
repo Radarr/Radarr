@@ -96,6 +96,7 @@ namespace NzbDrone.Core.CustomFormats
 
         public void Delete(int id)
         {
+            _cache.Clear();
             try
             {
                 //First history:
@@ -133,6 +134,8 @@ namespace NzbDrone.Core.CustomFormats
 
             //Finally delete the format for real!
             _formatRepository.Delete(id);
+
+            _cache.Clear();
         }
 
         private void DeleteInRepo<TModel>(IBasicRepository<TModel> repository, Func<TModel, List<CustomFormat>> queryFunc,
