@@ -19,7 +19,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         {
             var movieFile = localMovie.Movie.MovieFile;
 
-            if (localMovie.Movie.MovieFileId == 0)
+            if (localMovie.Movie.MovieFileId == 0 || movieFile == null)
             {
                 _logger.Debug("No existing movie file, skipping");
                 return Decision.Accept();
