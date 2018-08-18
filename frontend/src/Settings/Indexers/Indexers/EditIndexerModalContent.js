@@ -35,6 +35,7 @@ function EditIndexerModalContent(props) {
 
   const {
     id,
+    implementationName,
     name,
     enableRss,
     enableAutomaticSearch,
@@ -47,7 +48,7 @@ function EditIndexerModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? 'Edit Indexer' : 'Add Indexer'}
+        {`${id ? 'Edit' : 'Add'} Indexer - ${implementationName}`}
       </ModalHeader>
 
       <ModalBody>

@@ -29,6 +29,13 @@ function selectSettings(item, pendingChanges, saveError) {
       return result;
     }
 
+    // Return a flattened value
+    if (key === 'implementationName') {
+      result.implementationName = item[key];
+
+      return result;
+    }
+
     const setting = {
       value: item[key],
       errors: _.map(_.remove(validationFailures, (failure) => {

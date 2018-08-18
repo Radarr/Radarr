@@ -41,6 +41,7 @@ class EditDownloadClientModalContent extends Component {
 
     const {
       id,
+      implementationName,
       name,
       enable,
       fields,
@@ -50,7 +51,7 @@ class EditDownloadClientModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          {id ? 'Edit DownloadClient' : 'Add DownloadClient'}
+          {`${id ? 'Edit' : 'Add'} Download Client - ${implementationName}`}
         </ModalHeader>
 
         <ModalBody>
@@ -61,7 +62,7 @@ class EditDownloadClientModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to add a new downloadClient, please try again.</div>
+              <div>Unable to add a new download client, please try again.</div>
           }
 
           {

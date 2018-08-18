@@ -36,6 +36,7 @@ function EditNotificationModalContent(props) {
 
   const {
     id,
+    implementationName,
     name,
     onGrab,
     onDownload,
@@ -55,7 +56,7 @@ function EditNotificationModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? 'Edit Notification' : 'Add Notification'}
+        {`${id ? 'Edit' : 'Add'} Connection - ${implementationName}`}
       </ModalHeader>
 
       <ModalBody>

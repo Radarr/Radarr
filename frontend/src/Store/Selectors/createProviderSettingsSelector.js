@@ -53,8 +53,8 @@ function createProviderSettingsSelector(sectionName) {
         isSaving,
         saveError,
         isTesting,
-        item: settings.settings,
-        ...settings
+        ...settings,
+        item: settings.settings
       };
     }
   );
