@@ -16,4 +16,6 @@
 
 .isDisabled {
   color: $disabledColor;
+
+  pointer-events: none;
 }

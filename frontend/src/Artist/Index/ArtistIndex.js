@@ -216,7 +216,7 @@ class ArtistIndex extends Component {
 
     const ViewComponent = getViewComponent(view);
     const isLoaded = !error && isPopulated && !!items.length && contentBody;
-    const hasNoArtist = !items.length;
+    const hasNoArtist = !totalItems;
 
     return (
       <PageContent>
