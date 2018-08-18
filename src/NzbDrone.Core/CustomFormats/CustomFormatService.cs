@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Remoting.Messaging;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Composition;
 using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Lifecycle;
@@ -21,6 +23,7 @@ namespace NzbDrone.Core.CustomFormats
         CustomFormat Insert(CustomFormat customFormat);
         List<CustomFormat> All();
         CustomFormat GetById(int id);
+        void Delete(int id);
     }
 
 
@@ -53,7 +56,7 @@ namespace NzbDrone.Core.CustomFormats
         public static Dictionary<int, CustomFormat> AllCustomFormats;
 
         public CustomFormatService(ICustomFormatRepository formatRepository, ICacheManager cacheManager,
-            IContainer container, /*IMediaFileService mediaFileService, IBlacklistService blacklistService,
+            IContainer container, IHistoryService historyService,/*IMediaFileService mediaFileService, IBlacklistService blacklistService,
             IHistoryService historyService, IPendingReleaseService pendingReleaseService,*/
             Logger logger)
         {
@@ -64,6 +67,7 @@ namespace NzbDrone.Core.CustomFormats
             _blacklistService = blacklistService;
             _historyService = historyService;
             _pendingReleaseService = pendingReleaseService;*/
+            _historyService = historyService;
             _logger = logger;
         }
 
@@ -90,16 +94,70 @@ namespace NzbDrone.Core.CustomFormats
             return ret;
         }
 
-        public void Delete(CustomFormat customFormat)
+        public void Delete(int id)
         {
             try
             {
+                //First history:
+                var historyRepo = _container.Resolve<IHistoryRepository>();
+                DeleteInRepo(historyRepo, h => h.Quality.CustomFormats, (h, f) =>
+                {
+                    h.Quality.CustomFormats = f;
+                    return h;
+                }, id);
 
+                //Then Blacklist:
+                var blacklistRepo = _container.Resolve<IBlacklistRepository>();
+                DeleteInRepo(blacklistRepo, h => h.Quality.CustomFormats, (h, f) =>
+                {
+                    h.Quality.CustomFormats = f;
+                    return h;
+                }, id);
+
+                //Then MovieFiles:
+                var moviefileRepo = _container.Resolve<IMediaFileRepository>();
+                DeleteInRepo(moviefileRepo, h => h.Quality.CustomFormats, (h, f) =>
+                {
+                    h.Quality.CustomFormats = f;
+                    return h;
+                }, id);
+
+                //Then Profiles
+                ProfileService.DeleteCustomFormat(id);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
+            }
+
+            //Finally delete the format for real!
+            _formatRepository.Delete(id);
+        }
+
+        private void DeleteInRepo<TModel>(IBasicRepository<TModel> repository, Func<TModel, List<CustomFormat>> queryFunc,
+            Func<TModel, List<CustomFormat>, TModel> updateFunc, int customFormatId) where TModel : ModelBase, new()
+        {
+            var pagingSpec = new PagingSpec<TModel>
+            {
+                Page = 0,
+                PageSize = 2000
+            };
+            while (true)
+            {
+                var allItems = repository.GetPaged(pagingSpec);
+                var toUpdate = allItems.Records.Where(r => queryFunc(r).Exists(c => c.Id == customFormatId)).Select(r =>
+                {
+                    return updateFunc(r, queryFunc(r).Where(c => c.Id != customFormatId).ToList());
+                });
+                repository.UpdateMany(toUpdate.ToList());
+
+                if (pagingSpec.Page * pagingSpec.PageSize >= allItems.TotalRecords)
+                {
+                    break;
+                }
+
+                pagingSpec.Page += 1;
             }
         }
 

@@ -26,6 +26,7 @@ namespace NzbDrone.Core.History
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
         List<History> FindByMovieId(int movieId);
+        void UpdateMany(List<History> toUpdate);
     }
 
     public class HistoryService : IHistoryService,
@@ -85,6 +86,11 @@ namespace NzbDrone.Core.History
             return _historyRepository.GetBestQualityInHistory(movieId)
                 .OrderByDescending(q => q, comparer)
                 .FirstOrDefault();
+        }
+
+        public void UpdateMany(List<History> toUpdate)
+        {
+            _historyRepository.UpdateMany(toUpdate);
         }
 
         public void Handle(MovieGrabbedEvent message)

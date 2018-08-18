@@ -44,6 +44,8 @@ namespace NzbDrone.Api.Qualities
 
             CreateResource = Create;
 
+            DeleteResource = Delete;
+
             Get["/test"] = x => Test();
 
             Post["/test"] = x => TestWithNewModel();
@@ -71,6 +73,11 @@ namespace NzbDrone.Api.Qualities
         private List<CustomFormatResource> GetAll()
         {
             return _formatService.All().ToResource();
+        }
+
+        private void Delete(int id)
+        {
+            _formatService.Delete(id);
         }
 
         private Response GetTemplates()
