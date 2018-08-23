@@ -94,7 +94,6 @@ namespace NzbDrone.Api.Movies
 				}
 
 			    var parsedTitle = _parsingService.ParseMinimalPathMovieInfo(f.Name);
-			    parsedTitle.ImdbId = Parser.ParseImdbId(parsedTitle.SimpleReleaseTitle);
 				if (parsedTitle == null)
 				{
 					m = new Core.Movies.Movie
@@ -105,6 +104,8 @@ namespace NzbDrone.Api.Movies
 				}
 				else
 				{
+				    parsedTitle.ImdbId = Parser.ParseImdbId(parsedTitle.SimpleReleaseTitle);
+
 					m = new Core.Movies.Movie
 					{
 						Title = parsedTitle.MovieTitle,
