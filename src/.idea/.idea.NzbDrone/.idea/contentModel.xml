@@ -1350,6 +1350,7 @@
             <e p="146_naming_config_colon_replacement_format.cs" t="Include" />
             <e p="147_add_custom_formats.cs" t="Include" />
             <e p="148_remove_extra_naming_config.cs" t="Include" />
+            <e p="149_convert_regex_required_tags.cs" t="Include" />
             <e p="Framework" t="Include">
               <e p="MigrationContext.cs" t="Include" />
               <e p="MigrationController.cs" t="Include" />
@@ -2580,6 +2581,7 @@
             <e p="101_add_ultrahd_quality_in_profilesFixture.cs" t="Include" />
             <e p="103_fix_metadata_file_extensionsFixture.cs" t="Include" />
             <e p="147_custom_formatsFixture.cs" t="Include" />
+            <e p="149_regex_required_tagsFixture.cs" t="Include" />
           </e>
           <e p="ObjectDatabaseFixture.cs" t="Include" />
           <e p="PagingSpecExtensionsTests" t="Include">

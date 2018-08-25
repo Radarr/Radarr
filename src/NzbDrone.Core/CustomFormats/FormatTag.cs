@@ -16,7 +16,7 @@ namespace NzbDrone.Core.CustomFormats
         public TagModifier TagModifier { get; set; }
         public object Value { get; set; }
 
-        public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C|I|G)(_((?<m_r>R)|(?<m_re>RE)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        public static Regex QualityTagRegex = new Regex(@"^(?<type>R|S|M|E|L|C|I|G)(_((?<m_r>RX)|(?<m_re>RQ)|(?<m_n>N)){1,3})?_(?<value>.*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static Regex SizeTagRegex = new Regex(@"(?<min>\d+(\.\d+)?)\s*<>\s*(?<max>\d+(\.\d+)?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
