@@ -980,6 +980,7 @@
     <Compile Include="Parser\Augmenters\AugmentWithFileSize.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithHistory.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithMediaInfo.cs" />
+    <Compile Include="Parser\Augmenters\AugmentWithParsedMovieInfo.cs" />
     <Compile Include="Parser\Augmenters\AugmentWithReleaseInfo.cs" />
     <Compile Include="Parser\Augmenters\IAugmentParsedMovieInfo.cs" />
     <Compile Include="Parser\IsoLanguage.cs" />
