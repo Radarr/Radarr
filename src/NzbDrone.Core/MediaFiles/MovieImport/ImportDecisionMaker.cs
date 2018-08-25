@@ -112,12 +112,17 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             try
             {
-                var minimalInfo = shouldUseFolderName
-                    ? folderInfo.JsonClone()
-                    : _parsingService.ParseMinimalPathMovieInfo(file);
+                ParsedMovieInfo modifiedFolderInfo = null;
+                if (folderInfo != null)
+                {
+                    modifiedFolderInfo = folderInfo.JsonClone();
+                    // We want the filename to be used for parsing quality, etc. even if we didn't get any movie info from there.
+                    modifiedFolderInfo.SimpleReleaseTitle = Path.GetFileName(file);
+                }
+                
+                var minimalInfo = _parsingService.ParseMinimalPathMovieInfo(file) ?? modifiedFolderInfo;
 
                 LocalMovie localMovie = null;
-                //var localMovie = _parsingService.GetLocalMovie(file, movie, shouldUseFolderName ? folderInfo : null, sceneSource);
 
                 if (minimalInfo != null)
                 {
@@ -128,16 +133,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
                     var sizeMovie = new LocalMovie();
                     sizeMovie.Size = size;
-                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie}, sceneSource);
+                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie, shouldUseFolderName ? folderInfo : null}, sceneSource);
                     localMovie.Quality = GetQuality(folderInfo, localMovie.Quality, movie);
                     localMovie.Size = size;
 
                     _logger.Debug("Size: {0}", localMovie.Size);
 
                     decision = GetDecision(localMovie, downloadClientItem);
-
                 }
-
                 else
                 {
                     localMovie = new LocalMovie();
