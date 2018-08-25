@@ -86,7 +86,7 @@ namespace NzbDrone.Core.CustomFormats
             }
             catch (Exception e)
             {
-                _logger.Error("Failure while trying to add the new custom format to all profiles.", e);
+                _logger.Error(e, "Failure while trying to add the new custom format to all profiles. Deleting again!");
                 _formatRepository.Delete(ret);
                 throw;
             }
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.CustomFormats
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.Error(e, "Failed to delete format with id {} from other repositories! Format will not be deleted!", id);
                 throw;
             }
 

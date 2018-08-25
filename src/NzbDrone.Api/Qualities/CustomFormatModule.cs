@@ -3,6 +3,7 @@ using System.Linq;
 using FluentValidation;
 using Nancy;
 using NzbDrone.Api.Extensions;
+using NzbDrone.Api.Validation;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Parser;
 
@@ -21,7 +22,7 @@ namespace NzbDrone.Api.Qualities
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
             SharedValidator.RuleFor(c => c.Name)
                 .Must((v, c) => !_formatService.All().Any(f => f.Name == c && f.Id != v.Id)).WithMessage("Must be unique.");
-            SharedValidator.RuleFor(c => c.FormatTags).Must((v, c) => c.All(s => FormatTag.QualityTagRegex.IsMatch(s))).WithMessage("Invalid format.");
+            SharedValidator.RuleFor(c => c.FormatTags).AreValidFormatTags();
             SharedValidator.RuleFor(c => c.FormatTags).Must((v, c) =>
                 {
                     var allFormats = _formatService.All();
@@ -114,6 +115,7 @@ namespace NzbDrone.Api.Qualities
             var resource = ReadResourceFromRequest();
 
             var model = resource.ToModel();
+            model.Name = model.Name += " (New)";
 
             var parsed = _parsingService.ParseMovieInfo((string) Request.Query.title, new List<object>{model});
             if (parsed == null)

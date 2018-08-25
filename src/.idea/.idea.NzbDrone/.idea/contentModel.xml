@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$PROJECT_DIR$/../_output" t="ExcludeRecursive">
+    <e p="E:\C++ Projects\Sonarr\_output" t="ExcludeRecursive">
       <e p="NzbDrone.Update" t="ExcludeRecursive" />
     </e>
-    <e p="$PROJECT_DIR$/../Logo/1024.png" t="Include" />
-    <e p="$PROJECT_DIR$/../Logo/64.png" t="Include" />
-    <e p="$PROJECT_DIR$" t="IncludeFlat">
+    <e p="E:\C++ Projects\Sonarr\Logo\1024.png" t="Include" />
+    <e p="E:\C++ Projects\Sonarr\Logo\64.png" t="Include" />
+    <e p="E:\C++ Projects\Sonarr\src" t="IncludeFlat">
       <e p=".nuget" t="Include">
         <e p="NuGet.exe" t="Include" />
       </e>
-      <e p="_ReSharper.Caches/ReSharperHost12.NzbDrone.00" t="ExcludeRecursive" />
-      <e p="Common/CommonAssemblyInfo.cs" t="Include" />
-      <e p="Common/CommonVersionInfo.cs" t="Include" />
-      <e p="Common/GlobalSuppressions.cs" t="Include" />
+      <e p="_ReSharper.Caches\ReSharperHost11.NzbDrone.00" t="ExcludeRecursive" />
+      <e p="Common" t="Include">
+        <e p="CodeAnalysisDictionary.xml" t="Include" />
+        <e p="CommonAssemblyInfo.cs" t="Include" />
+        <e p="CommonVersionInfo.cs" t="Include" />
+        <e p="GlobalSuppressions.cs" t="Include" />
+      </e>
       <e p="External" t="Include" />
-      <e p="ExternalModules/CurlSharp/CurlSharp" t="IncludeRecursive">
+      <e p="ExternalModules\CurlSharp\CurlSharp" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="Callbacks" t="Include">
           <e p="CurlEasyCallbacks.cs" t="Include" />
@@ -67,10 +70,10 @@
         </e>
       </e>
       <e p="Host" t="Include" />
-      <e p="Libraries/MediaInfo/libmediainfo.0.dylib" t="Include" />
-      <e p="Libraries/MediaInfo/MediaInfo.dll" t="Include" />
-      <e p="Libraries/Sqlite/libsqlite3.0.dylib" t="Include" />
-      <e p="Libraries/Sqlite/sqlite3.dll" t="Include" />
+      <e p="Libraries\MediaInfo\libmediainfo.0.dylib" t="Include" />
+      <e p="Libraries\MediaInfo\MediaInfo.dll" t="Include" />
+      <e p="Libraries\Sqlite\libsqlite3.0.dylib" t="Include" />
+      <e p="Libraries\Sqlite\sqlite3.dll" t="Include" />
       <e p="LogentriesCore" t="IncludeRecursive">
         <e p="AsyncLogger.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
@@ -728,6 +731,7 @@
           <e p="CustomFormatModule.cs" t="Include" />
           <e p="CustomFormatResource.cs" t="Include" />
           <e p="FormatTagMatchResultResource.cs" t="Include" />
+          <e p="FormatTagValidator.cs" t="Include" />
           <e p="QualityDefinitionModule.cs" t="Include" />
           <e p="QualityDefinitionResource.cs" t="Include" />
         </e>
@@ -3331,7 +3335,7 @@
       </e>
       <e p="packages" t="ExcludeRecursive" />
       <e p="Platform" t="Include" />
-      <e p="ServiceHelpers/ServiceInstall" t="IncludeRecursive">
+      <e p="ServiceHelpers\ServiceInstall" t="IncludeRecursive">
         <e p="app.config" t="Include" />
         <e p="app.manifest" t="Include" />
         <e p="green_puzzle.ico" t="Include" />
@@ -3343,7 +3347,7 @@
         <e p="ServiceHelper.cs" t="Include" />
         <e p="ServiceInstall.csproj" t="IncludeRecursive" />
       </e>
-      <e p="ServiceHelpers/ServiceUninstall" t="IncludeRecursive">
+      <e p="ServiceHelpers\ServiceUninstall" t="IncludeRecursive">
         <e p="app.config" t="Include" />
         <e p="app.manifest" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
