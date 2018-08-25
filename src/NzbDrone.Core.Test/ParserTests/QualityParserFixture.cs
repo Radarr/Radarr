@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Test.ParserTests
 
     public class QualityParserFixture : CoreTest
     {
-        /*
+        
         [SetUp]
         public void Setup()
         {
-            QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+            //QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
-        public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
+        //public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
 
         public static object[] OtherSourceQualityParserCases =
         {
@@ -288,7 +288,7 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.UNKNOWN, proper, Resolution.Unknown);
         }
 
-        [Test, TestCaseSource("SelfQualityParserCases")]
+        /*[Test, TestCaseSource("SelfQualityParserCases")]
         public void parsing_our_own_quality_enum_name(QualityDefinition definition)
         {
             var fileName = string.Format("My series S01E01 [{0}]", definition.Title);
@@ -300,7 +300,7 @@ namespace NzbDrone.Core.Test.ParserTests
             if (resolution != null) result.Resolution.Should().Be(resolution);
             if (modifier != null) result.Modifier.Should().Be(modifier);
 
-        }
+        }*/
 
         [Test, TestCaseSource("OtherSourceQualityParserCases")]
         public void should_parse_quality_from_other_source(string qualityString, Source source, Resolution resolution, Modifier modifier = Modifier.NONE)
@@ -352,6 +352,6 @@ namespace NzbDrone.Core.Test.ParserTests
 
             var version = proper ? 2 : 1;
             result.Revision.Version.Should().Be(version);
-        }*/
+        }
     }
 }
