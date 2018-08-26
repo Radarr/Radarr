@@ -13,13 +13,13 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
 		public void Clean()
 		{
-			var mapper = _database.GetDataMapper();
+			/*var mapper = _database.GetDataMapper();
 
 			mapper.ExecuteNonQuery(@"UPDATE Movies
 				SET MovieFileId =
 				(Select Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)
 				WHERE MovieFileId !=
-				(SELECT Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)");
+				(SELECT Id FROM MovieFiles WHERE Movies.Id == MovieFiles.MovieId)");*/
 		}
 	}
 }
