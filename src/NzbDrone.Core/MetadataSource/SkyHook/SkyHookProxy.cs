@@ -255,6 +255,11 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             var album = _albumService.FindById(resource.Id) ?? MapAlbum(resource);
 
+            if (album.Artist == null)
+            {
+                album.Artist = _artistService.GetArtist(album.ArtistId);
+            }
+
             return album;
         }
 
