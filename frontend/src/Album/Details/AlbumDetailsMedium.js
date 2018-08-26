@@ -134,12 +134,13 @@ class AlbumDetailsMedium extends Component {
             className={styles.expandButton}
             onPress={this.onExpandPress}
           >
-            <Icon
-              className={styles.expandButtonIcon}
-              name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
-              title={isExpanded ? 'Hide tracks' : 'Show tracks'}
-              size={24}
-            />
+            <span title={isExpanded ? 'Hide tracks' : 'Show tracks'}>
+              <Icon
+                className={styles.expandButtonIcon}
+                name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
+                size={24}
+              />
+            </span>
             {
               !isSmallScreen &&
                 <span>&nbsp;</span>

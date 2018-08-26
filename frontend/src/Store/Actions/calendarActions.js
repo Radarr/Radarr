@@ -45,7 +45,7 @@ export const defaultState = {
       filters: [
         {
           key: 'monitored',
-          value: false,
+          value: false || true,
           type: filterTypes.EQUAL
         }
       ]
@@ -192,7 +192,6 @@ export const clearCalendar = createAction(CLEAR_CALENDAR);
 // Action Handlers
 
 export const actionHandlers = handleThunks({
-
   [FETCH_CALENDAR]: function(getState, payload, dispatch) {
     const state = getState();
     const unmonitored = state.calendar.selectedFilterKey === 'all';
@@ -339,8 +338,8 @@ export const reducers = createHandleActions({
   [CLEAR_CALENDAR]: (state) => {
     const {
       view,
-      showUpcoming,
       selectedFilterKey,
+      showUpcoming,
       ...otherDefaultState
     } = defaultState;
 

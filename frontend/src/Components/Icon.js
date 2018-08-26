@@ -16,6 +16,10 @@ function Icon(props) {
     ...otherProps
   } = props;
 
+  if (title && !window.Lidarr.isProduction) {
+    console.error('Icons cannot have a title');
+  }
+
   return (
     <FontAwesomeIcon
       className={classNames(
@@ -24,7 +28,6 @@ function Icon(props) {
       )}
       icon={name}
       spin={isSpinning}
-      title={title}
       style={{
         fontSize: `${size}px`
       }}

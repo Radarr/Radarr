@@ -67,14 +67,11 @@ class ArtistBanner extends Component {
         hasError: false,
         isLoaded: true
       });
-    }
-
-    // The banner could not be loaded..
-    if (!nextBanner && (this.props !== prevProps)) {
+    } else if (!nextBanner && banner) {
       this.setState({
-        banner: undefined,
+        banner: nextBanner,
         bannerUrl: bannerPlaceholder,
-        hasError: true
+        hasError: false
       });
     }
   }

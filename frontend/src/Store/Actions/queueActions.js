@@ -225,7 +225,7 @@ export const actionHandlers = handleThunks({
 
     promise.done((data) => {
       dispatch(batchActions([
-        dispatch(fetchQueue()),
+        fetchQueue(),
 
         set({
           section: paged,

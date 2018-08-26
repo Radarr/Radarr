@@ -87,10 +87,11 @@ class BackupRow extends Component {
       <TableRow key={id}>
         <TableRowCell className={styles.type}>
           {
-            <Icon
-              name={iconClassName}
-              title={iconTooltip}
-            />
+            <span title={iconTooltip}>
+              <Icon
+                name={iconClassName}
+              />
+            </span>
           }
         </TableRowCell>
 

@@ -67,14 +67,11 @@ class ArtistPoster extends Component {
         hasError: false,
         isLoaded: true
       });
-    }
-
-    // The poster could not be loaded..
-    if (!nextPoster && (this.props !== prevProps)) {
+    } else if (!nextPoster && poster) {
       this.setState({
-        poster: undefined,
+        poster: nextPoster,
         posterUrl: posterPlaceholder,
-        hasError: true
+        hasError: false
       });
     }
   }

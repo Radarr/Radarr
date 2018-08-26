@@ -125,11 +125,12 @@ class Health extends Component {
                     return (
                       <TableRow key={`health${item.message}`}>
                         <TableRowCell>
-                          <Icon
-                            name={icons.DANGER}
-                            kind={item.type.toLowerCase() === 'error' ? kinds.DANGER : kinds.WARNING}
-                            title={titleCase(item.type)}
-                          />
+                          <span title={titleCase(item.type)}>
+                            <Icon
+                              name={icons.DANGER}
+                              kind={item.type.toLowerCase() === 'error' ? kinds.DANGER : kinds.WARNING}
+                            />
+                          </span>
                         </TableRowCell>
 
                         <TableRowCell>{item.message}</TableRowCell>

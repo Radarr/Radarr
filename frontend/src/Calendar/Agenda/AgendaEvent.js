@@ -107,10 +107,11 @@ class AgendaEvent extends Component {
 
           {
             !queueItem && grabbed &&
-              <Icon
-                name={icons.DOWNLOADING}
-                title="Album is downloading"
-              />
+              <span title="Album is downloading">
+                <Icon
+                  name={icons.DOWNLOADING}
+                />
+              </span>
           }
         </Link>
       </div>

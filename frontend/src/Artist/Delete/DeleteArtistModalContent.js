@@ -136,7 +136,9 @@ DeleteArtistModalContent.propTypes = {
 };
 
 DeleteArtistModalContent.defaultProps = {
-  trackFileCount: 0
+  statistics: {
+    trackFileCount: 0
+  }
 };
 
 export default DeleteArtistModalContent;
