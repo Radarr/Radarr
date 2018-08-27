@@ -153,7 +153,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
+                        var existingArtist = _artistService.FindById(searchGuid.ToString());
+                        if (existingArtist != null)
+                        {
+                            return new List<Artist> { existingArtist };
+                        }
+
                         var metadataProfile = _metadataProfileService.All().First().Id; //Change this to Use last Used profile?
+
                         return new List<Artist> { GetArtistInfo(searchGuid.ToString(), metadataProfile).Item1 };
                     }
                     catch (ArtistNotFoundException)
@@ -210,7 +217,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Album> { GetAlbumInfo(searchGuid.ToString(), null).Item1 };
+                        var existingAlbum = _albumService.FindById(searchGuid.ToString());
+
+                        if (existingAlbum == null)
+                        {
+                            return new List<Album> {GetAlbumInfo(searchGuid.ToString(), null).Item1};
+                        }
+
+                        existingAlbum.Artist = _artistService.GetArtist(existingAlbum.ArtistId);
+                        return new List<Album>{existingAlbum};
+
                     }
                     catch (ArtistNotFoundException)
                     {
