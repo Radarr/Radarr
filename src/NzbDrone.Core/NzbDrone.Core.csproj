@@ -190,6 +190,7 @@
     <Compile Include="Datastore\Migration\016_update_artist_history_indexes.cs" />
     <Compile Include="Datastore\Migration\017_remove_nma.cs" />
     <Compile Include="Datastore\Migration\018_album_disambiguation.cs" />
+    <Compile Include="Datastore\Migration\019_add_ape_quality_in_profiles.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationContext.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationController.cs" />
     <Compile Include="Datastore\Migration\Framework\MigrationDbFactory.cs" />

@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SampleSizeRegex = new Regex(@"\b(?:(?<S24>24[ ]bit|24bit|[\[\(].*24bit.*[\]\)]))");
 
-        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<MP3VBR>MP3.*VBR|MPEG Version 1 Audio, Layer 3 vbr)|(?<MP3CBR>MP3|MPEG Version \d+ Audio, Layer 3)|(?<FLAC>flac)|(?<ALAC>alac)|(?<WMA>WMA\d?)|(?<WAV>WAV|PCM)|(?<AAC>M4A|AAC|mp4a)|(?<OGG>OGG|Vorbis))\b",
+        private static readonly Regex CodecRegex = new Regex(@"\b(?:(?<MP3VBR>MP3.*VBR|MPEG Version 1 Audio, Layer 3 vbr)|(?<MP3CBR>MP3|MPEG Version \d+ Audio, Layer 3)|(?<FLAC>flac)|(?<WAVPACK>wavpack|wv)|(?<ALAC>alac)|(?<WMA>WMA\d?)|(?<WAV>WAV|PCM)|(?<AAC>M4A|AAC|mp4a)|(?<OGG>OGG|Vorbis))\b|(?<APE>monkey's audio|[\[|\(].*ape.*[\]|\)])",
                                                                   RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static QualityModel ParseQuality(string name, string desc, int fileBitrate, int fileSampleSize = 0)
@@ -66,14 +66,14 @@ namespace NzbDrone.Core.Parser
 
             if (desc.IsNotNullOrWhiteSpace())
             {
-                var descCodec = ParseCodec(desc);
+                var descCodec = ParseCodec(desc, "");
 
                 result.Quality = FindQuality(descCodec, fileBitrate, fileSampleSize);
 
                 if (result.Quality != Quality.Unknown) { return result; }
             }
 
-            var codec = ParseCodec(normalizedName);
+            var codec = ParseCodec(normalizedName,name);
             var bitrate = ParseBitRate(normalizedName);
             var sampleSize = ParseSampleSize(normalizedName);
 
@@ -99,6 +99,12 @@ namespace NzbDrone.Core.Parser
                     break;
                 case Codec.ALAC:
                     result.Quality = Quality.ALAC;
+                    break;
+                case Codec.WAVPACK:
+                    result.Quality = Quality.WAVPACK;
+                    break;
+                case Codec.APE:
+                    result.Quality = Quality.APE;
                     break;
                 case Codec.WMA:
                     result.Quality = Quality.WMA;
@@ -154,7 +160,7 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        private static Codec ParseCodec(string name)
+        private static Codec ParseCodec(string name, string origName)
         {
             var match = CodecRegex.Match(name);
 
@@ -167,6 +173,8 @@ namespace NzbDrone.Core.Parser
             if (match.Groups["OGG"].Success) { return Codec.OGG; }
             if (match.Groups["MP3VBR"].Success) { return Codec.MP3VBR; }
             if (match.Groups["MP3CBR"].Success) { return Codec.MP3CBR; }
+            if (match.Groups["WAVPACK"].Success) { return Codec.WAVPACK; }
+            if (match.Groups["APE"].Success) { return Codec.APE; }
 
             return Codec.Unknown;
         }
@@ -232,6 +240,10 @@ namespace NzbDrone.Core.Parser
                     return Quality.FLAC;
                 case Codec.ALAC:
                     return Quality.ALAC;
+                case Codec.WAVPACK:
+                    return Quality.WAVPACK;
+                case Codec.APE:
+                    return Quality.APE;
                 case Codec.WMA:
                     return Quality.WMA;
                 case Codec.WAV:
@@ -289,12 +301,14 @@ namespace NzbDrone.Core.Parser
         MP3VBR,
         FLAC,
         ALAC,
+        APE,
+        WAVPACK,
         WMA,
         AAC,
         AACVBR,
         OGG,
         WAV,
-        Unknown,
+        Unknown
     }
 
     public enum BitRate

@@ -144,6 +144,32 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             ParseAndVerifyQuality(title, desc, bitrate, Quality.ALAC);
         }
+        
+        [TestCase("Stevie Ray Vaughan Discography (1981-1987) [APE]", null, 0)]
+        [TestCase("Brain Ape - Rig it [2014][ape]", null, 0)]
+        [TestCase("", "Monkey's Audio", 0)]
+        public void should_parse_ape_quality(string title, string desc, int bitrate)
+        {
+            ParseAndVerifyQuality(title, desc, bitrate, Quality.APE);
+        }
+
+        [TestCase("Max Roach - Drums Unlimited (1966) [WavPack]", null, 0)]
+        [TestCase("Roxette - Charm School(2011) (2CD) [WV]", null, 0)]
+        [TestCase("", "WavPack", 0)]
+        public void should_parse_wavpack_quality(string title, string desc, int bitrate)
+        {
+            ParseAndVerifyQuality(title, desc, bitrate, Quality.WAVPACK);
+        }
+
+        [TestCase("Arctic Monkeys - AM {2013-Album}", null, 0)]
+        [TestCase("Audio Adrinaline - Audio Adrinaline", null, 0)]
+        [TestCase("Brain Ape - Rig it [2014][flac]", null, 0)]
+        [TestCase("Coil - The Ape Of Naples(2005) (FLAC)", null, 0)]
+        public void should_not_parse_ape_quality(string title, string desc, int bitrate)
+        {
+            var result = QualityParser.ParseQuality(title, desc, bitrate);
+            result.Quality.Should().NotBe(Quality.APE);
+        }
 
         [TestCase("Milky Chance - Sadnecessary [256 Kbps] [M4A]", null, 0)]
         [TestCase("Little Mix - Salute [Deluxe Edition] [2013] [M4A-256]-V3nom [GLT", null, 0)]

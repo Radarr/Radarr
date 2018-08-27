@@ -18,7 +18,9 @@ namespace NzbDrone.Core.MediaFiles
                 { ".ogg", Quality.Unknown },
                 { ".wma", Quality.WMA },
                 { ".wav", Quality.WAV },
-                { ".flac", Quality.FLAC }
+                { ".wv" , Quality.WAVPACK },
+                { ".flac", Quality.FLAC },
+                { ".ape", Quality.APE }
             };
         }
 

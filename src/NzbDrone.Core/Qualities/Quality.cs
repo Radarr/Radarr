@@ -90,6 +90,8 @@ namespace NzbDrone.Core.Qualities
         public static Quality MP3_008 => new Quality(32, "MP3-8"); // For Current Files Only
         public static Quality MP3_112 => new Quality(33, "MP3-112"); // For Current Files Only
         public static Quality MP3_224 => new Quality(34, "MP3-224"); // For Current Files Only
+        public static Quality APE => new Quality(35, "APE");
+        public static Quality WAVPACK => new Quality(36, "WavPack");
 
         static Quality()
         {
@@ -128,6 +130,8 @@ namespace NzbDrone.Core.Qualities
                 VORBIS_Q5,
                 ALAC,
                 FLAC,
+                APE,
+                WAVPACK,
                 FLAC_24,
                 WAV
             };
@@ -173,6 +177,8 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.VORBIS_Q10)  { Weight = 21, MinSize = 0, MaxSize = 550, GroupName = "High Quality Lossy", GroupWeight = 6 },
                 new QualityDefinition(Quality.ALAC)        { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
                 new QualityDefinition(Quality.FLAC)        { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
+                new QualityDefinition(Quality.APE)         { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
+                new QualityDefinition(Quality.WAVPACK)     { Weight = 22, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
                 new QualityDefinition(Quality.FLAC_24)     { Weight = 23, MinSize = 0, MaxSize = null, GroupName = "Lossless", GroupWeight = 7 },
                 new QualityDefinition(Quality.WAV)         { Weight = 24, MinSize = 0, MaxSize = null, GroupWeight = 8}
             };
