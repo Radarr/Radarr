@@ -88,6 +88,10 @@ namespace NzbDrone.Core.Parser
             new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)(?<releaseyear>\d{4})",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
+            //Artist - Album - Year [something]
+            new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?: - )(?<releaseyear>\d{4})\W*(?:\(|\[)",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
             //Artist - Album [something] or Artist - Album (something)
             new Regex(@"^(?:(?<artist>.+?)(?: - )+)(?<album>.+?)\W*(?:\(|\[)",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),

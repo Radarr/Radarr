@@ -167,6 +167,9 @@ namespace NzbDrone.Core.Test.ParserTests
         //[TestCase("(R'n'B / Soul) Moyton - One of the Sta(2014) + Ocean(2014), MP3, 320 kbps", "Moyton", "")]
         [TestCase("(Heavy Metal) Aria - Discography(46 CD) [1985 - 2015], FLAC(image + .cue), lossless", "Aria", "Discography", true)]
         [TestCase("(Heavy Metal) [CD] Forces United - Discography(6 CDs), 2014-2016, FLAC(image + .cue), lossless", "Forces United", "Discography", true)]
+        [TestCase("Gorillaz - The now now - 2018 [FLAC]", "Gorillaz", "The now now")]
+        //Regex Works on below, but ParseAlbumMatchCollection cleans the "..." and converts it to spaces
+        [TestCase("Metallica - ...And Justice for All (1988) [FLAC Lossless]", "Metallica", "...And Justice for All")]
         public void should_parse_artist_name_and_album_title(string postTitle, string name, string title, bool discography = false)
         {
 
