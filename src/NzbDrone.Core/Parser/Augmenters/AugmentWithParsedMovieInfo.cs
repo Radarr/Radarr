@@ -8,7 +8,6 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Augmenters
 {
-    //TODO: Create tests for this augmenter!
     public class AugmentWithParsedMovieInfo : IAugmentParsedMovieInfo
     {
         public Type HelperType
@@ -24,15 +23,21 @@ namespace NzbDrone.Core.Parser.Augmenters
             if (helper is ParsedMovieInfo otherInfo)
             {
                 // Create union of all languages
-                movieInfo.Languages = movieInfo.Languages.Union(otherInfo.Languages).Distinct().ToList();
+                if (otherInfo.Languages != null)
+                {
+                    movieInfo.Languages = movieInfo.Languages.Union(otherInfo.Languages).Distinct().ToList();
+                }
 
-                if (otherInfo.Edition?.Length > movieInfo.Edition?.Length)
+                if ((otherInfo.Edition?.Length ?? 0) > (movieInfo.Edition?.Length ?? 0))
                 {
                     movieInfo.Edition = otherInfo.Edition;
                 }
 
-                movieInfo.Quality.CustomFormats = movieInfo.Quality.CustomFormats.Union(otherInfo.Quality.CustomFormats)
-                    .Distinct().ToList();
+                if (otherInfo.Quality != null)
+                {
+                    movieInfo.Quality.CustomFormats = movieInfo.Quality.CustomFormats.Union(otherInfo.Quality.CustomFormats)
+                        .Distinct().ToList();
+                }
             }
 
             return movieInfo;

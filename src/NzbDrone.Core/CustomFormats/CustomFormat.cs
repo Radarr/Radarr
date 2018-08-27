@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.CustomFormats
@@ -55,6 +56,14 @@ namespace NzbDrone.Core.CustomFormats
         public static string ToExtendedString(this IEnumerable<CustomFormat> formats)
         {
             return string.Join(", ", formats.Select(f => f.ToString()));
+        }
+
+        public static List<CustomFormat> WithNone(this IEnumerable<CustomFormat> formats)
+        {
+            var list = formats.ToList();
+            if (list.Any()) return list;
+
+            return new List<CustomFormat>{CustomFormat.None};
         }
     }
 }

@@ -146,6 +146,7 @@
     <Compile Include="Datastore\ReflectionStrategyFixture\Benchmarks.cs" />
     <Compile Include="Datastore\SqliteSchemaDumperTests\SqliteSchemaDumperFixture.cs" />
     <Compile Include="DecisionEngineTests\AcceptableSizeSpecificationFixture.cs" />
+    <Compile Include="DecisionEngineTests\CustomFormatAllowedByProfileSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\MaximumSizeSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\ProtocolSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\CutoffSpecificationFixture.cs" />
@@ -301,6 +302,7 @@
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithFileSizeFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithHistoryFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithMediaInfoFixture.cs" />
+    <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithParsedMovieInfo.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\AugmentersTests\AugmentWithReleaseInfoFixture.cs" />
     <Compile Include="ParserTests\ParsingServiceTests\ParseQualityDefinitionFixture.cs" />
     <Compile Include="ParserTests\RomanNumeralTests\RomanNumeralConversionFixture.cs" />

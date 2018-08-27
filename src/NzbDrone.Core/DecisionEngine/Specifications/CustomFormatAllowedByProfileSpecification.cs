@@ -6,7 +6,6 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
-    //TODO add tests for this!
     public class CustomFormatAllowedbyProfileSpecification : IDecisionEngineSpecification
     {
         private readonly Logger _logger;
@@ -20,10 +19,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            //TODO make this work for None as well!
-            _logger.Debug("Checking if report meets custom format requirements. {0}", subject.ParsedMovieInfo.Quality.CustomFormats.ToExtendedString());
+            var formats = subject.ParsedMovieInfo.Quality.CustomFormats.WithNone();
+            _logger.Debug("Checking if report meets custom format requirements. {0}", formats.ToExtendedString());
             var notAllowedFormats = subject.Movie.Profile.Value.FormatItems.Where(v => v.Allowed == false).Select(f => f.Format).ToList();
-            var notWantedFormats = notAllowedFormats.Intersect(subject.ParsedMovieInfo.Quality.CustomFormats);
+            var notWantedFormats = notAllowedFormats.Intersect(formats);
             if (notWantedFormats.Any())
             {
                 _logger.Debug("Custom Formats {0} rejected by Movie's profile", notWantedFormats.ToExtendedString());

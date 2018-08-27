@@ -69,11 +69,7 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareCustomFormats(DownloadDecision x, DownloadDecision y)
         {
-            var left = x.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats.ToArray().ToList();
-            if (left.Count == 0)
-            {
-                left.Add(CustomFormat.None);
-            }
+            var left = x.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats.WithNone();
             var right = y.RemoteMovie.ParsedMovieInfo.Quality.CustomFormats;
 
             var leftIndicies = QualityModelComparer.GetIndicies(left, x.RemoteMovie.Movie.Profile.Value);

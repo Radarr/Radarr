@@ -1,16 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
-using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Datastore.Extensions;
 using Marr.Data.QGen;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Parser.RomanNumerals;
-using NzbDrone.Core.Qualities;
-using NzbDrone.Core.Movies;
-using CoreParser = NzbDrone.Core.Parser.Parser;
-namespace NzbDrone.Core
+
+namespace NzbDrone.Core.Movies
 {
     public static class QueryExtensions
     {

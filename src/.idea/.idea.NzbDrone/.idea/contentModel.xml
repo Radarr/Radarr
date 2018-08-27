@@ -2599,6 +2599,7 @@
         </e>
         <e p="DecisionEngineTests" t="Include">
           <e p="AcceptableSizeSpecificationFixture.cs" t="Include" />
+          <e p="CustomFormatAllowedByProfileSpecificationFixture.cs" t="Include" />
           <e p="CutoffSpecificationFixture.cs" t="Include" />
           <e p="DownloadDecisionMakerFixture.cs" t="Include" />
           <e p="HistorySpecificationFixture.cs" t="Include" />
@@ -3018,6 +3019,7 @@
               <e p="AugmentWithFileSizeFixture.cs" t="Include" />
               <e p="AugmentWithHistoryFixture.cs" t="Include" />
               <e p="AugmentWithMediaInfoFixture.cs" t="Include" />
+              <e p="AugmentWithParsedMovieInfo.cs" t="Include" />
               <e p="AugmentWithReleaseInfoFixture.cs" t="Include" />
             </e>
             <e p="GetMovieFixture.cs" t="Include" />

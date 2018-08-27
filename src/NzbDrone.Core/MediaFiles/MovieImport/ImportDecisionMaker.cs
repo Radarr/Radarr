@@ -119,7 +119,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     // We want the filename to be used for parsing quality, etc. even if we didn't get any movie info from there.
                     modifiedFolderInfo.SimpleReleaseTitle = Path.GetFileName(file);
                 }
-                
+
                 var minimalInfo = _parsingService.ParseMinimalPathMovieInfo(file) ?? modifiedFolderInfo;
 
                 LocalMovie localMovie = null;
@@ -130,10 +130,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     var mediaInfo = _config.EnableMediaInfo ? _videoFileInfoReader.GetMediaInfo(file) : null;
                     var size = _diskProvider.GetFileSize(file);
                     var historyItems = _historyService.FindByDownloadId(downloadClientItem?.DownloadId ?? "");
-                    var firstHistoryItem = historyItems.OrderByDescending(h => h.Date).FirstOrDefault();
+                    var firstHistoryItem = historyItems?.OrderByDescending(h => h.Date)?.FirstOrDefault();
                     var sizeMovie = new LocalMovie();
                     sizeMovie.Size = size;
-                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie, shouldUseFolderName ? folderInfo : null}, sceneSource);
+                    localMovie = _parsingService.GetLocalMovie(file, minimalInfo, movie, new List<object>{mediaInfo, firstHistoryItem, sizeMovie, folderInfo}, sceneSource);
                     localMovie.Quality = GetQuality(folderInfo, localMovie.Quality, movie);
                     localMovie.Size = size;
 
@@ -204,38 +204,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return null;
         }
 
+        //TODO: Remove this method, since it is no longer needed.
         private bool ShouldUseFolderName(List<string> videoFiles, Movie movie, ParsedMovieInfo folderInfo)
         {
-            if (folderInfo == null)
-            {
-                return false;
-            }
-
-            //if (folderInfo.FullSeason)
-            //{
-            //    return false;
-            //}
-
-            return videoFiles.Count(file =>
-            {
-                var size = _diskProvider.GetFileSize(file);
-                var fileQuality = QualityParser.ParseQuality(file);
-                //var sample = null;//_detectSample.IsSample(movie, GetQuality(folderInfo, fileQuality, movie), file, size, folderInfo.IsPossibleSpecialEpisode); //Todo to this
-
-                return true;
-
-                //if (sample)
-                {
-                    return false;
-                }
-
-                if (SceneChecker.IsSceneTitle(Path.GetFileName(file)))
-                {
-                    return false;
-                }
-
-                return true;
-            }) == 1;
+            return false;
         }
 
         private QualityModel GetQuality(ParsedMovieInfo folderInfo, QualityModel fileQuality, Movie movie)
