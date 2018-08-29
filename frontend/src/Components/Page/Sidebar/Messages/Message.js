@@ -45,9 +45,10 @@ function Message(props) {
       styles[type]
     )}
     >
-      <div className={styles.iconContainer} title={name}>
+      <div className={styles.iconContainer}>
         <Icon
           name={getIconName(name)}
+          title={name}
         />
       </div>
 

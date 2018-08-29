@@ -169,7 +169,9 @@ class InteractiveImportModalContent extends Component {
   render() {
     const {
       downloadId,
+      allowArtistChange,
       showFilterExistingFiles,
+      showImportMode,
       filterExistingFiles,
       title,
       folder,
@@ -211,17 +213,7 @@ class InteractiveImportModalContent extends Component {
 
         <ModalBody>
           {
-            isFetching &&
-              <LoadingIndicator />
-          }
-
-          {
-            error &&
-              <div>{errorMessage}</div>
-          }
-
-          {
-            isPopulated && showFilterExistingFiles && !isFetching &&
+            showFilterExistingFiles &&
             <div className={styles.filterContainer}>
               <Menu alignMenu={align.RIGHT}>
                 <MenuButton>
@@ -259,6 +251,16 @@ class InteractiveImportModalContent extends Component {
           }
 
           {
+            isFetching &&
+              <LoadingIndicator />
+          }
+
+          {
+            error &&
+              <div>{errorMessage}</div>
+          }
+
+          {
             isPopulated && !!items.length && !isFetching && !isFetching &&
               <Table
                 columns={columns}
@@ -278,6 +280,7 @@ class InteractiveImportModalContent extends Component {
                           key={item.id}
                           isSelected={selectedState[item.id]}
                           {...item}
+                          allowArtistChange={allowArtistChange}
                           onSelectedChange={this.onSelectedChange}
                           onValidRowChange={this.onValidRowChange}
                         />
@@ -295,9 +298,9 @@ class InteractiveImportModalContent extends Component {
         </ModalBody>
 
         <ModalFooter className={styles.footer}>
-          {
-            !downloadId &&
-              <div className={styles.leftButtons}>
+          <div className={styles.leftButtons}>
+            {
+              !downloadId && showImportMode &&
                 <SelectInput
                   className={styles.importMode}
                   name="importMode"
@@ -305,13 +308,16 @@ class InteractiveImportModalContent extends Component {
                   values={importModeOptions}
                   onChange={this.onImportModeChange}
                 />
-              </div>
-          }
+            }
+          </div>
 
-          <div className={downloadId ? styles.leftButtons : styles.centerButtons}>
-            <Button onPress={this.onSelectArtistPress}>
-              Select Artist
-            </Button>
+          <div className={styles.centerButtons}>
+            {
+              allowArtistChange &&
+                <Button onPress={this.onSelectArtistPress}>
+                  Select Artist
+                </Button>
+            }
 
             <Button onPress={this.onSelectAlbumPress}>
               Select Album
@@ -357,6 +363,8 @@ class InteractiveImportModalContent extends Component {
 
 InteractiveImportModalContent.propTypes = {
   downloadId: PropTypes.string,
+  allowArtistChange: PropTypes.bool.isRequired,
+  showImportMode: PropTypes.bool.isRequired,
   showFilterExistingFiles: PropTypes.bool.isRequired,
   filterExistingFiles: PropTypes.bool.isRequired,
   importMode: PropTypes.string.isRequired,
@@ -377,7 +385,9 @@ InteractiveImportModalContent.propTypes = {
 };
 
 InteractiveImportModalContent.defaultProps = {
+  allowArtistChange: true,
   showFilterExistingFiles: false,
+  showImportMode: true,
   importMode: 'move'
 };
 

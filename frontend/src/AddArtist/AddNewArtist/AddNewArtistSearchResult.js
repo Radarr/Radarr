@@ -116,13 +116,12 @@ class AddNewArtistSearchResult extends Component {
 
               {
                 isExistingArtist &&
-                  <span title="Already in your library">
-                    <Icon
-                      className={styles.alreadyExistsIcon}
-                      name={icons.CHECK_CIRCLE}
-                      size={36}
-                    />
-                  </span>
+                <Icon
+                  className={styles.alreadyExistsIcon}
+                  name={icons.CHECK_CIRCLE}
+                  size={36}
+                  title="Already in your library"
+                />
               }
             </div>
 

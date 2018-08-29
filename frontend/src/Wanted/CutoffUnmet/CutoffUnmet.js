@@ -105,7 +105,6 @@ class CutoffUnmet extends Component {
       filters,
       columns,
       totalRecords,
-      isSearchingForAlbums,
       isSearchingForCutoffUnmetAlbums,
       isSaving,
       onFilterSelect,
@@ -129,8 +128,7 @@ class CutoffUnmet extends Component {
             <PageToolbarButton
               label="Search Selected"
               iconName={icons.SEARCH}
-              isDisabled={!itemsSelected}
-              isSpinning={isSearchingForAlbums}
+              isDisabled={!itemsSelected || isSearchingForCutoffUnmetAlbums}
               onPress={this.onSearchSelectedPress}
             />
 
@@ -255,7 +253,6 @@ CutoffUnmet.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
-  isSearchingForAlbums: PropTypes.bool.isRequired,
   isSearchingForCutoffUnmetAlbums: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired,

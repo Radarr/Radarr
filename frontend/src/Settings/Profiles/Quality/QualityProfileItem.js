@@ -92,9 +92,10 @@ class QualityProfileItem extends Component {
 
         {
           connectDragSource(
-            <div className={styles.dragHandle} title="Create group">
+            <div className={styles.dragHandle}>
               <Icon
                 className={styles.dragIcon}
+                title="Create group"
                 name={icons.REORDER}
               />
             </div>

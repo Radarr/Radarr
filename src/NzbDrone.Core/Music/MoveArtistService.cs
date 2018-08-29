@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Music
             _logger = logger;
         }
 
-        private void MoveSingleArtist(Artist artist, string sourcePath, string destinationPath)
+        private void MoveSingleArtist(Artist artist, string sourcePath, string destinationPath, int? index = null, int? total = null)
         {
             if (!_diskProvider.FolderExists(sourcePath))
             {
@@ -42,7 +42,14 @@ namespace NzbDrone.Core.Music
                 return;
             }
 
-            _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", artist.Name, sourcePath, destinationPath);
+            if (index != null && total != null)
+            {
+                _logger.ProgressInfo("Moving {0} from '{1}' to '{2}' ({3}/{4})", artist.Name, sourcePath, destinationPath, index + 1, total);
+            }
+            else
+            {
+                _logger.ProgressInfo("Moving {0} from '{1}' to '{2}'", artist.Name, sourcePath, destinationPath);
+            }
 
             try
             {
@@ -81,12 +88,13 @@ namespace NzbDrone.Core.Music
 
             _logger.ProgressInfo("Moving {0} artist to '{1}'", artistToMove.Count, destinationRootFolder);
 
-            foreach (var s in artistToMove)
+            for (var index = 0; index < artistToMove.Count; index++)
             {
+                var s = artistToMove[index];
                 var artist = _artistService.GetArtist(s.ArtistId);
                 var destinationPath = Path.Combine(destinationRootFolder, _filenameBuilder.GetArtistFolder(artist));
 
-                MoveSingleArtist(artist, s.SourcePath, destinationPath);
+                MoveSingleArtist(artist, s.SourcePath, destinationPath, index, artistToMove.Count);
             }
 
             _logger.ProgressInfo("Finished moving {0} artist to '{1}'", artistToMove.Count, destinationRootFolder);

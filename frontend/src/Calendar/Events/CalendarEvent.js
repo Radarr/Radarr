@@ -91,12 +91,11 @@ class CalendarEvent extends Component {
 
             {
               !queueItem && grabbed &&
-                <span title="Album is downloading">
-                  <Icon
-                    className={styles.statusIcon}
-                    name={icons.DOWNLOADING}
-                  />
-                </span>
+              <Icon
+                className={styles.statusIcon}
+                name={icons.DOWNLOADING}
+                title="Album is downloading"
+              />
             }
           </div>
 

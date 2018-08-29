@@ -45,7 +45,7 @@ export const defaultState = {
       filters: [
         {
           key: 'monitored',
-          value: false || true,
+          value: false,
           type: filterTypes.EQUAL
         }
       ]
@@ -66,7 +66,8 @@ export const defaultState = {
 
 export const persistState = [
   'calendar.view',
-  'calendar.selectedFilterKey'
+  'calendar.selectedFilterKey',
+  'calendar.showUpcoming'
 ];
 
 //

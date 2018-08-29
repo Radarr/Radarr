@@ -580,7 +580,9 @@ class ArtistDetails extends Component {
           <InteractiveImportModal
             isOpen={isInteractiveImportModalOpen}
             folder={path}
+            allowArtistChange={false}
             showFilterExistingFiles={true}
+            showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
           />
         </PageContentBodyConnector>

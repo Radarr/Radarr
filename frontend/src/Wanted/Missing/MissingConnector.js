@@ -19,11 +19,9 @@ function createMapStateToProps() {
     (state) => state.wanted.missing,
     createCommandsSelector(),
     (missing, commands) => {
-      const isSearchingForAlbums = _.some(commands, { name: commandNames.ALBUM_SEARCH });
       const isSearchingForMissingAlbums = _.some(commands, { name: commandNames.MISSING_ALBUM_SEARCH });
 
       return {
-        isSearchingForAlbums,
         isSearchingForMissingAlbums,
         isSaving: _.some(missing.items, { isSaving: true }),
         ...missing

@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Music.Commands
         public string DestinationRootFolder { get; set; }
 
         public override bool SendUpdatesToClient => true;
+        public override bool RequiresDiskAccess => true;
     }
 
     public class BulkMoveArtist : IEquatable<BulkMoveArtist>

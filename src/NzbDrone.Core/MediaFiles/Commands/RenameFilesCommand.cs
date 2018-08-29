@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Messaging.Commands;
 
 namespace NzbDrone.Core.MediaFiles.Commands
@@ -9,6 +9,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
         public List<int> Files { get; set; }
 
         public override bool SendUpdatesToClient => true;
+        public override bool RequiresDiskAccess => true;
 
         public RenameFilesCommand()
         {

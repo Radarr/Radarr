@@ -150,13 +150,12 @@ class ArtistDetailsSeason extends Component {
 
             </div>
 
-            <span title={isExpanded ? 'Hide albums' : 'Show albums'}>
-              <Icon
-                className={styles.expandButtonIcon}
-                name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
-                size={24}
-              />
-            </span>
+            <Icon
+              className={styles.expandButtonIcon}
+              name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
+              title={isExpanded ? 'Hide albums' : 'Show albums'}
+              size={24}
+            />
 
             {
               !isSmallScreen &&

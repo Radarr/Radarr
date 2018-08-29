@@ -48,9 +48,10 @@ function EpisodeStatus(props) {
 
   if (grabbed) {
     return (
-      <div className={styles.center} title="Album is downloading">
+      <div className={styles.center}>
         <Icon
           name={icons.DOWNLOADING}
+          title="Album is downloading"
         />
       </div>
     );
@@ -74,9 +75,10 @@ function EpisodeStatus(props) {
 
   if (!airDateUtc) {
     return (
-      <div className={styles.center} title="TBA">
+      <div className={styles.center}>
         <Icon
           name={icons.TBA}
+          title="TBA"
         />
       </div>
     );
@@ -84,9 +86,10 @@ function EpisodeStatus(props) {
 
   if (!monitored) {
     return (
-      <div className={styles.center} title="Album is not monitored">
+      <div className={styles.center}>
         <Icon
           name={icons.UNMONITORED}
+          title="Album is not monitored"
         />
       </div>
     );
@@ -94,18 +97,20 @@ function EpisodeStatus(props) {
 
   if (hasAired) {
     return (
-      <div className={styles.center} title="Track missing from disk">
+      <div className={styles.center}>
         <Icon
           name={icons.MISSING}
+          title="Track missing from disk"
         />
       </div>
     );
   }
 
   return (
-    <div className={styles.center} title="Album has not aired">
+    <div className={styles.center}>
       <Icon
         name={icons.NOT_AIRED}
+        title="Album has not aired"
       />
     </div>
   );

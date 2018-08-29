@@ -57,7 +57,7 @@ function showCommandMessage(payload, dispatch) {
   const {
     id,
     name,
-    manual,
+    trigger,
     message,
     body = {},
     state
@@ -80,7 +80,7 @@ function showCommandMessage(payload, dispatch) {
     hideAfter = 4;
   } else if (state === 'failed') {
     type = messageTypes.ERROR;
-    hideAfter = manual ? 10 : 4;
+    hideAfter = trigger === 'manual' ? 10 : 4;
   }
 
   dispatch(showMessage({
@@ -95,10 +95,11 @@ function showCommandMessage(payload, dispatch) {
 function scheduleRemoveCommand(command, dispatch) {
   const {
     id,
-    state
+    status,
+    body
   } = command;
 
-  if (state === 'queued') {
+  if (status === 'queued') {
     return;
   }
 
@@ -108,6 +109,12 @@ function scheduleRemoveCommand(command, dispatch) {
     clearTimeout(timeoutId);
   }
 
+  // 5 minute timeout for executing disk access commands and
+  // 30 seconds for all other commands.
+  const timeout = body.requiresDiskAccess && status === 'started' ?
+    60000 * 5 :
+    30000;
+
   removeCommandTimeoutIds[id] = setTimeout(() => {
     dispatch(batchActions([
       removeCommand({ section: 'commands', id }),
@@ -115,7 +122,7 @@ function scheduleRemoveCommand(command, dispatch) {
     ]));
 
     delete removeCommandTimeoutIds[id];
-  }, 30000);
+  }, timeout);
 }
 
 //

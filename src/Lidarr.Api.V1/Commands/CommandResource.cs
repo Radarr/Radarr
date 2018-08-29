@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -23,37 +23,6 @@ namespace Lidarr.Api.V1.Commands
 
         [JsonIgnore]
         public string CompletionMessage { get; set; }
-
-        //Legacy
-        public CommandStatus State
-        {
-            get
-            {
-                return Status;
-            }
-
-            set { }
-        }
-
-        public bool Manual
-        {
-            get
-            {
-                return Trigger == CommandTrigger.Manual;
-            }
-
-            set { }
-        }
-
-        public DateTime StartedOn
-        {
-            get
-            {
-                return Queued;
-            }
-
-            set { }
-        }
 
         public DateTime? StateChangeTime
         {

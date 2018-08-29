@@ -39,12 +39,11 @@ class AlbumStudioRow extends Component {
         />
 
         <TableRowCell className={styles.status}>
-          <span title={status === 'ended' ? 'Ended' : 'Continuing'}>
-            <Icon
-              className={styles.statusIcon}
-              name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
-            />
-          </span>
+          <Icon
+            className={styles.statusIcon}
+            name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
+            title={status === 'ended' ? 'Ended' : 'Continuing'}
+          />
         </TableRowCell>
 
         <TableRowCell className={styles.title}>

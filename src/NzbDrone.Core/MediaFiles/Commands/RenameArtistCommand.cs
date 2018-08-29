@@ -8,6 +8,7 @@ namespace NzbDrone.Core.MediaFiles.Commands
         public List<int> ArtistIds { get; set; }
 
         public override bool SendUpdatesToClient => true;
+        public override bool RequiresDiskAccess => true;
 
         public RenameArtistCommand()
         {

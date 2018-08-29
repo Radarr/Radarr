@@ -19,19 +19,17 @@ function ArtistStatusCell(props) {
       className={className}
       {...otherProps}
     >
-      <span title={monitored ? 'Artist is monitored' : 'Artist is unmonitored'}>
-        <Icon
-          className={styles.statusIcon}
-          name={monitored ? icons.MONITORED : icons.UNMONITORED}
-        />
-      </span>
+      <Icon
+        className={styles.statusIcon}
+        name={monitored ? icons.MONITORED : icons.UNMONITORED}
+        title={monitored ? 'Artist is monitored' : 'Artist is unmonitored'}
+      />
 
-      <span title={status === 'ended' ? 'Ended' : 'Continuing'}>
-        <Icon
-          className={styles.statusIcon}
-          name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
-        />
-      </span>
+      <Icon
+        className={styles.statusIcon}
+        name={status === 'ended' ? icons.ARTIST_ENDED : icons.ARTIST_CONTINUING}
+        title={status === 'ended' ? 'Ended' : 'Continuing'}
+      />
     </Component>
   );
 }

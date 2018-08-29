@@ -163,6 +163,7 @@ class InteractiveImportRow extends Component {
   render() {
     const {
       id,
+      allowArtistChange,
       relativePath,
       artist,
       album,
@@ -210,6 +211,7 @@ class InteractiveImportRow extends Component {
         </TableRowCell>
 
         <TableRowCellButton
+          isDisabled={!allowArtistChange}
           onPress={this.onSelectArtistPress}
         >
           {
@@ -348,6 +350,7 @@ class InteractiveImportRow extends Component {
 
 InteractiveImportRow.propTypes = {
   id: PropTypes.number.isRequired,
+  allowArtistChange: PropTypes.bool.isRequired,
   relativePath: PropTypes.string.isRequired,
   artist: PropTypes.object,
   album: PropTypes.object,

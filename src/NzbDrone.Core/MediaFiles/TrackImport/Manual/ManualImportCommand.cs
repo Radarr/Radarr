@@ -8,6 +8,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Manual
         public List<ManualImportFile> Files { get; set; }
 
         public override bool SendUpdatesToClient => true;
+        public override bool RequiresDiskAccess => true;
 
         public ImportMode ImportMode { get; set; }
     }

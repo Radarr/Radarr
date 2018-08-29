@@ -1,3 +1,4 @@
+#! /bin/bash
 PLATFORM=$1
 TYPE=$2
 WHERE="cat != ManualTest"

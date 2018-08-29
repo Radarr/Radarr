@@ -7,6 +7,7 @@ import styles from './Icon.css';
 
 function Icon(props) {
   const {
+    containerClassName,
     className,
     name,
     kind,
@@ -16,11 +17,7 @@ function Icon(props) {
     ...otherProps
   } = props;
 
-  if (title && !window.Lidarr.isProduction) {
-    console.error('Icons cannot have a title');
-  }
-
-  return (
+  const icon = (
     <FontAwesomeIcon
       className={classNames(
         className,
@@ -34,9 +31,23 @@ function Icon(props) {
       {...otherProps}
     />
   );
+
+  if (title) {
+    return (
+      <span
+        className={containerClassName}
+        title={title}
+      >
+        {icon}
+      </span>
+    );
+  }
+
+  return icon;
 }
 
 Icon.propTypes = {
+  containerClassName: PropTypes.string,
   className: PropTypes.string,
   name: PropTypes.object.isRequired,
   kind: PropTypes.string.isRequired,

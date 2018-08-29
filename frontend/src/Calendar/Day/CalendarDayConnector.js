@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import CalendarDay from './CalendarDay';
 
 function createCalendarEventsConnector() {
   return createSelector(
     (state, { date }) => date,
-    createClientSideCollectionSelector('calendar'),
-    (date, calendar) => {
-      const filtered = _.filter(calendar.items, (item) => {
+    (state) => state.calendar.items,
+    (date, items) => {
+      const filtered = _.filter(items, (item) => {
         return moment(date).isSame(moment(item.releaseDate), 'day');
       });
 
